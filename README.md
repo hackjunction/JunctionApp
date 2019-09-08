@@ -1,6 +1,6 @@
 # Junction Hackathon Platform
 
-All in one app to handle everything related to organising a hackathon.
+All in one app to handle everything related to organising a hackathon. Shall be documented better in the future.
 
 ## Directory structure
 The project is set up as follows:
@@ -13,13 +13,17 @@ The project is set up as follows:
 
 Just use `npm install` and the various `postinstall` scripts will do everything for you.
 
-To run the app, you'll need various values in `frontend/.env` as well as `backend/.env`, and if these are missing the app will throw an error. You can get these from someone else who has them :)
+# Setting up the environment
+
+There are two config-files which take some values from your `.env`, and if these are missing the app will refuse to start. You should:
+
+1) Create `frontend/.env`, and check that all values expected in `frontend/src/constants/config.js` are defined in your .env
+2) Create `backend/.env`, and check that all values expected in `backend/misc/config.js` are defined in your .env
+
+You can get all of these values from someone else who has them :)
 
 # Other setup
-Setting up the shared code integration:
-
-1) Sign into `npm` in your shell, with an account that has access to push to the shared code package
-2) Run `cp pre-commit.sample .git/hooks/pre-commit` to enable a git hook with prevents changes to the shared code
+TODO: Instructions for setting up the shared code package
 
 ## Deployment
 
