@@ -1,0 +1,33 @@
+.LogoutPage {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+
+	&_Inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	&_Logo {
+		width: 200px;
+		height: 200px;
+	}
+
+	&_Content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&_Title {
+		text-transform: uppercase;
+		text-align: center;
+	}
+
+	&_Link {
+		text-align: center;
+	}
+}

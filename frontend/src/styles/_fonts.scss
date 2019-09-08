@@ -1,0 +1,32 @@
+$montserrat: 'Montserrat', sans-serif;
+$lato: 'Lato', sans-serif;
+
+.font-title,
+%font-title {
+    font-family: $montserrat;
+    font-weight: bold;
+}
+
+.font-body,
+%font-body {
+    font-family: $lato;
+    font-size: 16px;
+}
+
+.font-secondary,
+%font-secondary {
+    font-family: $lato;
+    font-size: 16px;
+}
+
+.font-input,
+%font-input {
+    font-family: $lato;
+    font-size: 16px;
+}
+
+.font-link,
+%font-link {
+    font-family: $lato;
+    font-size: 16px;
+}

@@ -1,0 +1,21 @@
+@import '~styles/variables';
+
+.link {
+    color: $green;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+        color: $green;
+    }
+
+    &.dark {
+        text-transform: uppercase;
+        text-decoration: none;
+        color: $black;
+        &:hover {
+            color: $black;
+            text-decoration: underline;
+        }
+    }
+}

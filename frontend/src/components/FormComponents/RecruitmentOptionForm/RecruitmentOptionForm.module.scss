@@ -1,0 +1,22 @@
+@import '~styles/variables';
+
+.relocateWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.checkboxRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.sectionTitle {
+    color: $black;
+    font-weight: bold;
+}
+
+.sectionHelpText {
+    color: $black;
+    display: block;
+}

@@ -1,0 +1,34 @@
+@import '~styles/variables';
+
+.ErrorPage {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $padding-double;
+    background: $junction-black;
+    color: $junction-white;
+
+    &_Logo {
+        width: 200px;
+        height: 200px;
+    }
+
+    &_Title {
+        color: $junction-white;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &_Retry {
+        background: $junction-white;
+        color: $junction-black;
+        padding: $padding-base $padding-double;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.1s ease;
+        user-select: none;
+    }
+}

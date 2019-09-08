@@ -1,0 +1,9 @@
+@import '~styles/variables';
+
+.OrganiserEditEventTimes {
+    padding: $padding-page;
+
+    &--datepicker {
+        width: 100%;
+    }
+}

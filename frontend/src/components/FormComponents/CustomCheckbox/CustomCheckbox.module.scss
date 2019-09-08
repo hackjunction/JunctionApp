@@ -1,0 +1,38 @@
+@import '~styles/variables';
+
+.wrapper {
+    padding: 3px 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin: 1rem;
+    border-radius: 5px;
+
+    .content {
+        font-weight: bold;
+        text-transform: uppercase;
+        color: rgba($black, 0.5);
+        transition: color 0.2s ease;
+    }
+
+    &.inverted {
+        .content {
+            color: $white;
+        }
+
+        &.selected {
+            background: $white;
+
+            .content {
+                color: $black;
+            }
+        }
+    }
+}
+
+.selected {
+    background: $black;
+
+    .content {
+        color: $white;
+    }
+}

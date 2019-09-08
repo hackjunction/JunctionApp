@@ -1,0 +1,43 @@
+{
+    "name": "junctionapp",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "better-npm-run start:prod",
+        "dev": "better-npm-run start:dev",
+        "postinstall": "if-env NODE_ENV=production && better-npm-run postinstall:prod || better-npm-run postinstall:dev",
+        "setup": "better-npm-run setup",
+        "dev:frontend": "cd frontend && npm start",
+        "dev:backend": "cd backend && npm run dev",
+        "db-sync:prod-to-local": "sh ./scripts/sync-production-to-local.sh",
+        "db-sync:staging-to-dev": "sh ./scripts/sync-staging-to-dev.sh",
+        "db-sync:staging-to-local": "sh ./scripts/sync-staging-to-local.sh"
+    },
+    "betterScripts": {
+        "setup": "better-npm-run setup:backend && better-npm-run setup:frontend",
+        "setup:frontend": "cd frontend && npm install",
+        "setup:backend": "cd backend && npm install",
+        "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
+        "start:prod": "cd backend && npm start",
+        "postinstall:dev": "better-npm-run setup",
+        "postinstall:prod": "better-npm-run setup && better-npm-run build",
+        "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
+    },
+    "author": "Juuso Lappalainen",
+    "license": "ISC",
+    "devDependencies": {
+        "npm-run-all": "^4.1.5"
+    },
+    "dependencies": {
+        "better-npm-run": "^0.1.1",
+        "if-env": "^1.0.4",
+        "recharts": "^1.7.1"
+    },
+    "engines": {
+        "node": "^12.3.1",
+        "npm": "^6.9.0"
+    },
+    "type": "module"
+}

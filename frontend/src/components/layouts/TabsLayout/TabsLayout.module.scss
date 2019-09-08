@@ -1,0 +1,57 @@
+@import '~styles/variables';
+
+.wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid $grey;
+        margin: 2rem;
+        padding-right: 3rem;
+        align-self: stretch;
+
+        @include for-tablet-portrait-up {
+            flex-direction: row;
+            align-self: flex-start;
+        }
+    }
+
+    .navItem {
+        padding: 10px 2rem;
+        margin-bottom: 8px;
+        font-size: 16px;
+        color: rgba($black, 0.5);
+        text-transform: uppercase;
+        font-weight: bold;
+        position: relative;
+        line-height: 20px;
+
+        &Active {
+            color: $black;
+        }
+
+        @include for-tablet-portrait-up {
+            &:after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 1px;
+                background: $grey;
+            }
+            &:last-child:after {
+                display: none;
+            }
+        }
+    }
+
+    .content {
+        flex: 1;
+        min-height: 100vh;
+        padding: 0 2rem;
+    }
+}

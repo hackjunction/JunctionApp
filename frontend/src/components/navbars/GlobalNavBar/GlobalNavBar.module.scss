@@ -1,0 +1,22 @@
+@import '~styles/variables';
+
+.wrapper {
+    width: 100%;
+    height: 78px;
+    background: $white;
+    padding: 0 1rem;
+
+    .inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        max-width: $content-max-width;
+        margin: 0 auto;
+        height: 100%;
+    }
+
+    .wordmark {
+        height: 50px;
+    }
+}

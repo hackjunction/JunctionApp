@@ -1,0 +1,25 @@
+.drawerTitle {
+    display: flex;
+    flex-direction: row;
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background: #ececec;
+    padding: 1rem;
+}
+
+.acceptButton {
+    color: green;
+}
+
+.rejectButton {
+    color: red;
+}
+
+.buttonsLabel {
+    font-weight: bold;
+}

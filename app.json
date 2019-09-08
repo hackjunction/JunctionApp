@@ -1,0 +1,15 @@
+{
+    "name": "Junction App",
+    "description": "Junction all-in-one hackathon platform",
+    "buildpacks": [
+        {
+            "url": "heroku/nodejs"
+        }
+    ],
+    "env": {
+        "SECRET_TOKEN": {
+            "required": true,
+            "description": "SECRET_TOKEN which is a must have"
+        }
+    }
+}

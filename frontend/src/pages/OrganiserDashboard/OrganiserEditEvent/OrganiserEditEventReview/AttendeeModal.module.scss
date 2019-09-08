@@ -1,0 +1,11 @@
+@import '~styles/variables';
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.actions {
+    background: $lightgrey;
+}

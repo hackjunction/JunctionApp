@@ -1,0 +1,10 @@
+@import '~styles/variables';
+
+.AccountEditProfile {
+    background: $junction-white;
+    padding: $padding-double;
+
+    &--title {
+        text-align: center;
+    }
+}

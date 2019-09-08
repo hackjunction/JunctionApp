@@ -1,0 +1,27 @@
+@import '~styles/variables';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+
+    .title {
+        color: $white;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .body {
+        color: $white;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .buttons {
+        width: 100%;
+        max-width: 300px;
+    }
+}

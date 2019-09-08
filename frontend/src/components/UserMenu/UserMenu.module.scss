@@ -1,0 +1,54 @@
+@import '~styles/variables';
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+
+    .menuWrapper {
+        width: 0;
+        z-index: -1;
+
+        .menu {
+            background: $white;
+            position: absolute;
+            top: 200%;
+            right: 1rem;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            border-radius: 12px;
+            padding: 1rem 0;
+            box-shadow: 2px 7px 30px rgba(0, 0, 0, 0.12);
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+
+        .menuItem {
+            font-size: 18px;
+            padding: 0.5rem 2rem;
+            color: $black;
+            text-align: right;
+
+            &:hover {
+                background: rgba($black, 0.05);
+            }
+        }
+
+        &Active {
+            z-index: 1000;
+            .menu {
+                top: 140%;
+                opacity: 1;
+            }
+        }
+    }
+
+    .avatar {
+        width: 57px;
+        height: 57px;
+        border-radius: 50%;
+    }
+}

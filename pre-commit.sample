@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, copy this file to .git/hooks/pre-commit
+
+if [ -z "$(git status shared --porcelain)" ]; then
+    echo "[PRE-COMMIT] No changes in /shared"
+else
+    echo "[PRE-COMMIT] Found changes in shared!"
+    echo "[PRE-COMMIT] Publishing new version of @hackjunction/shared"
+    cd shared && npm version patch && npm publish --silent
+    echo "[PRE-COMMIT] Sleeping for 10s (wait for npm to publish package)"
+    sleep 10s
+    echo "[PRE-COMMIT] Upgrading backend to latest version of @hackjunction/shared"
+    cd ../backend && npm upgrade @hackjunction/shared
+    echo "[PRE-COMMIT] Upgrading frontend to latest version of @hackjunction/shared"
+    cd ../frontend && npm upgrade @hackjunction/shared
+    cd ..
+    echo "[PRE-COMMIT] Adding all related changes to commit"
+    git add backend/package.json ./backend/package-lock.json
+    git add frontend/package.json ./frontend/package-lock.json
+    git add shared/package.json ./shared/package-lock.json
+    echo "[PRE-COMMIT] Done."
+fi
+exit 0

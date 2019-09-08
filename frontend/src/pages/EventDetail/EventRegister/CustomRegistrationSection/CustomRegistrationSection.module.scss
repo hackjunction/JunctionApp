@@ -1,0 +1,45 @@
+@import '~styles/variables';
+
+.wrapper {
+    .title {
+        color: $white;
+        font-size: 28px;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .header {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .description {
+        color: $black;
+        text-align: center;
+        max-width: 600px;
+    }
+
+    .conditionalWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .conditionalText {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: $montserrat;
+        color: $white;
+    }
+
+    .conditionalCheckboxes {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+}

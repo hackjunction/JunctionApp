@@ -1,0 +1,20 @@
+@import '~styles/variables';
+
+.wrapper {
+    padding: 0;
+
+    .timelineItem {
+        display: flex;
+        flex-direction: column;
+        padding-left: 5px;
+    }
+
+    .timelineDate {
+        text-transform: uppercase;
+        color: $black;
+    }
+
+    .timelineTitle {
+        color: $black;
+    }
+}

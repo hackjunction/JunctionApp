@@ -1,0 +1,44 @@
+@import '~styles/variables';
+
+.sectionTitle {
+    color: $black;
+
+    strong {
+        color: $green;
+        font-weight: bold;
+    }
+}
+
+.sectionBody {
+    font-size: 18px;
+}
+
+.card {
+    background: $white;
+    box-shadow: 4px 6px 20px rgba($black, 0.06);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cardInputRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.loadingWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bottomActions {
+    display: flex;
+    flex-direction: column;
+
+    @include for-tablet-portrait-up {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}

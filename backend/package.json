@@ -1,0 +1,49 @@
+{
+    "name": "junctionapp-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon index.js",
+        "start": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@hackjunction/shared": "^1.1.44",
+        "@sendgrid/client": "^6.4.0",
+        "@sendgrid/mail": "^6.4.0",
+        "auth0": "^2.17.0",
+        "axios": "^0.19.0",
+        "better-npm-run": "^0.1.1",
+        "bluebird": "^3.5.4",
+        "body-parser": "^1.18.3",
+        "celebrate": "^9.0.2",
+        "cloudinary": "^1.14.0",
+        "dotenv": "^6.2.0",
+        "express": "^4.16.4",
+        "express-async-handler": "^1.1.4",
+        "express-jwt": "^5.3.1",
+        "heroku-ssl-redirect": "0.0.4",
+        "joi": "^14.3.1",
+        "jwks-rsa": "^1.4.0",
+        "lodash": "^4.17.11",
+        "moment-timezone": "^0.5.26",
+        "mongoose": "^5.5.5",
+        "mongoose-slug-plugin": "^1.0.3",
+        "morgan": "^1.9.1",
+        "multer": "^1.4.1",
+        "multer-storage-cloudinary": "^2.2.1",
+        "shortid": "^2.2.14"
+    },
+    "devDependencies": {
+        "eslint": "^5.16.0",
+        "kill-port": "^1.4.0",
+        "nodemon": "^1.18.10"
+    },
+    "engines": {
+        "node": "^12.3.1",
+        "npm": "^6.9.0"
+    }
+}

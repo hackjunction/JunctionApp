@@ -1,0 +1,10 @@
+@import '~styles/variables';
+
+.listItem {
+    padding: 10px;
+    transition: background 0.2s ease;
+}
+
+.listItemSelected {
+    background: rgba($black, 0.15);
+}

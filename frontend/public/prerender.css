@@ -1,0 +1,9 @@
+html {
+	background:#232323;	
+	overflow-y: scroll;
+}
+body {
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	transition-delay: 0.2s;
+}

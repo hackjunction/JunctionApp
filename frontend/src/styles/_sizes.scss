@@ -1,0 +1,30 @@
+$bp-small: 600px;
+$bp-med: 900px;
+$bp-large: 1200px;
+
+@mixin for-phone-only {
+    @media (max-width: $bp-small - 1) {
+        @content;
+    }
+}
+@mixin for-tablet-portrait-up {
+    @media (min-width: $bp-small) {
+        @content;
+    }
+}
+@mixin for-tablet-landscape-up {
+    @media (min-width: $bp-med) {
+        @content;
+    }
+}
+@mixin for-desktop-up {
+    @media (min-width: $bp-large) {
+        @content;
+    }
+}
+
+$padding-base: 10px;
+$padding-double: 20px;
+$padding-page: 30px;
+
+$content-max-width: 1120px;

@@ -1,0 +1,20 @@
+%hide-if-only-child,
+.hide-if-only-child {
+    &:only-child {
+        display: none;
+    }
+}
+
+%hide-if-last-child,
+.hide-if-last-child {
+    &:last-child {
+        display: none;
+    }
+}
+
+%no-margin-if-last,
+.no-margin-if-last {
+    &:last-child {
+        margin-bottom: 0;
+    }
+}

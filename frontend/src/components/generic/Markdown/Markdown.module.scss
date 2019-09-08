@@ -1,0 +1,48 @@
+@import '~styles/variables';
+
+.wrapper {
+    &.light {
+        * {
+            color: $white;
+        }
+
+        a {
+            color: $white;
+
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+
+    &.large {
+        p,
+        a {
+            font-size: 20px;
+        }
+    }
+
+    .heading1 {
+        font-size: 24px;
+        font-weight: normal;
+    }
+
+    .heading2 {
+        font-size: 24px;
+    }
+
+    .heading3 {
+        font-size: 20px;
+    }
+
+    a {
+        font-weight: bold;
+        color: $black;
+        text-decoration: underline;
+
+        &:hover {
+            color: $black;
+            text-decoration: none;
+        }
+    }
+}

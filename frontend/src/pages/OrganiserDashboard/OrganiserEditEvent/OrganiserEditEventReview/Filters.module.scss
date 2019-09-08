@@ -1,0 +1,48 @@
+@import '~styles/variables';
+
+.wrapper {
+    display: flr;
+}
+
+.sectionTitle {
+    color: $black;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.section {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+
+    @include for-tablet-portrait-up {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}
+
+.filtersSection {
+    display: flex;
+    flex-direction: row;
+}
+
+.filtersPreview {
+    display: flex;
+    flex-direction: row;
+}
+
+.filtersPreviewItems {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.filtersPreviewItem {
+    display: flex;
+    flex-direction: column;
+}
