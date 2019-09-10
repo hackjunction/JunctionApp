@@ -36,5 +36,17 @@
                 text-align: right;
             }
         }
+
+        .logos {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+
+            @include for-tablet-portrait-up {
+                justify-content: flex-start;
+            }
+        }
     }
 }
