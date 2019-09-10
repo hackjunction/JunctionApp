@@ -5,7 +5,7 @@ import { Select, PageHeader, Row, Col } from 'antd';
 import DateTimePicker from 'components/FormComponents/DateTimePicker';
 import Divider from 'components/generic/Divider';
 import FormikField from 'components/FormComponents/FormikField';
-import timezones from 'data/timezones.json';
+import timezones from 'constants/timezones.json';
 
 const OrganiserEditEventTimes = props => {
     function renderDateField(field, timezone) {
