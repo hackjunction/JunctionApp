@@ -8,13 +8,14 @@ import PageWrapper from 'components/PageWrapper';
 import Divider from 'components/generic/Divider';
 
 import * as AuthSelectors from 'redux/auth/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import SearchAttendeesPage from './SearchAttendeesPage';
 import AssignAttendeesPage from './AssignAttendeesPage';
 import RatingModal from 'components/modals/RatingModal';
-import AssignModal from 'components/modals/AssignModal/index';
+import UserSelectModal from 'components/modals/UserSelectModal';
 
-const OrganiserEditEventReview = ({ idToken, slug }) => {
+const OrganiserEditEventReview = ({ idToken, slug, organisers }) => {
     const [selectedKey, setSelectedKey] = useState('search');
 
     const renderSelectedKey = () => {
@@ -35,14 +36,15 @@ const OrganiserEditEventReview = ({ idToken, slug }) => {
                 children={<p>Applications to your event</p>}
                 footer={
                     <React.Fragment>
-                        <RatingModal render={showModal => <Button onClick={showModal}>Change rating</Button>} />
-                        <AssignModal
-                            render={showModal => (
-                                <Button type="link" onClick={showModal}>
-                                    Assign
-                                </Button>
-                            )}
+                        {/* <RatingModal
+                            onDone={value => console.log('RATING SELECT DONE', value)}
+                            renderTrigger={showModal => <Button onClick={showModal}>Change rating</Button>}
                         />
+                        <UserSelectModal
+                            onDone={value => console.log('USER SELECT DONE', value)}
+                            renderTrigger={showModal => <Button onClick={showModal}>Assign modal</Button>}
+                            userProfiles={organisers}
+                        /> */}
                         <Menu
                             mode="horizontal"
                             selectedKeys={[selectedKey]}
@@ -61,7 +63,8 @@ const OrganiserEditEventReview = ({ idToken, slug }) => {
 };
 
 const mapStateToProps = state => ({
-    idToken: AuthSelectors.getIdToken(state)
+    idToken: AuthSelectors.getIdToken(state),
+    organisers: OrganiserSelectors.organisers(state)
 });
 
 export default connect(mapStateToProps)(OrganiserEditEventReview);

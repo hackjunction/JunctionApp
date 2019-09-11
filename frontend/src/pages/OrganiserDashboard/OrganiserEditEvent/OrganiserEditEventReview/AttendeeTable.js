@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styles from './AttendeeTable.module.scss';
 import moment from 'moment';
-import { Table, notification, Button as AntButton, Empty } from 'antd';
+import { Table, notification, Button as AntButton, Empty, Icon } from 'antd';
 import { connect } from 'react-redux';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
@@ -11,9 +11,11 @@ import Divider from 'components/generic/Divider';
 import RegistrationsService from 'services/registrations';
 
 import AttendeeModal from './AttendeeModal';
-import AssignModal from './AssignModal';
 
-const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfilesMap, emptyRenderer }) => {
+import UserSelectModal from 'components/modals/UserSelectModal';
+import EditRegistrationModal from 'components/modals/EditRegistrationModal';
+
+const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfilesMap, organisers, emptyRenderer }) => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState();
     const [activeRegistration, setActiveRegistration] = useState();
@@ -86,13 +88,32 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
                         title="Assigned to"
                         dataIndex="assignedTo"
                         rowKey="assignedTo"
-                        render={userId => {
-                            if (!userId) return 'No one';
-                            if (organiserProfilesMap.hasOwnProperty(userId)) {
+                        render={(userId, record) => {
+                            let text;
+                            if (!userId) {
+                                text = 'No one';
+                            } else if (organiserProfilesMap.hasOwnProperty(userId)) {
                                 const user = organiserProfilesMap[userId];
-                                return `${user.firstName} ${user.lastName}`;
+                                text = `${user.firstName} ${user.lastName}`;
+                            } else {
+                                text = 'Unknown user';
                             }
-                            return userId;
+                            return (
+                                <UserSelectModal
+                                    title={`Assign ${record.answers.firstName} ${record.answers.lastName} to`}
+                                    userProfiles={organisers}
+                                    onDone={() => window.alert('HANDLING ASSIGN!!')}
+                                    allowMultiple={false}
+                                    renderTrigger={showModal => (
+                                        <span>
+                                            {text}
+                                            <AntButton size="small" onClick={showModal} type="link">
+                                                <Icon type="edit" />
+                                            </AntButton>
+                                        </span>
+                                    )}
+                                />
+                            );
                         }}
                     />
                     <Table.Column
@@ -103,18 +124,14 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
                         fixed="right"
                         render={(userId, registration) => {
                             return (
-                                <div className={styles.actions}>
-                                    <AntButton
-                                        type="link"
-                                        onClick={() => setActiveRegistration(registration._id.toString())}
-                                    >
-                                        Open
-                                    </AntButton>
-                                    <Divider size={1} />
-                                    <AntButton type="link" onClick={() => setActiveAssigning(registration)}>
-                                        Assign to
-                                    </AntButton>
-                                </div>
+                                <EditRegistrationModal
+                                    registrationId={registration._id}
+                                    renderTrigger={showModal => (
+                                        <AntButton type="link" onClick={showModal}>
+                                            Open
+                                        </AntButton>
+                                    )}
+                                />
                             );
                         }}
                     />
@@ -137,7 +154,7 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
                 registrationId={activeRegistration}
                 onExit={handleModalClose}
             />
-            <AssignModal idToken={idToken} slug={slug} registration={activeAssigning} onExit={handleAssignClose} />
+            {/* <AssignModal idToken={idToken} slug={slug} registration={activeAssigning} onExit={handleAssignClose} /> */}
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>
@@ -145,7 +162,8 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
 };
 
 const mapStateToProps = state => ({
-    organiserProfilesMap: OrganiserSelectors.organisersMap(state)
+    organiserProfilesMap: OrganiserSelectors.organisersMap(state),
+    organisers: OrganiserSelectors.organisers(state)
 });
 
 export default connect(mapStateToProps)(AttendeeTable);
