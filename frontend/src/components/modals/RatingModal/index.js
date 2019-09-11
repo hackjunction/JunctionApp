@@ -1,49 +1,39 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './RatingModal.module.scss';
 
-import { Modal, Rate, Icon, Button, Row, Col } from 'antd';
+import { Rate, Icon, Button } from 'antd';
 
 import Divider from 'components/generic/Divider';
+import GenericModal from '../GenericModal';
 
-const RatingModal = ({ render, initialValue = 0, onDone = () => {}, onCancel = () => {} }) => {
-    const [value, setValue] = useState();
-    const [modalVisible, setModalVisible] = useState(false);
+const RatingModal = ({ renderTrigger, initialValue = 0, onDone = () => {}, onCancel = () => {} }) => {
+    const [value, setValue] = useState(initialValue);
 
-    const handleDone = useCallback(() => {
-        onDone(value);
-        setModalVisible(false);
-    }, [onDone, value]);
-
-    const handleCancel = useCallback(() => {
-        onCancel();
-        setModalVisible(false);
-    }, [onCancel]);
+    const handleReset = useCallback(() => {
+        setValue(initialValue);
+    }, [initialValue]);
 
     return (
-        <React.Fragment>
-            <Modal
-                destroyOnClose={true}
-                visible={modalVisible}
-                title={null}
-                icon={null}
-                footer={null}
-                onCancel={handleCancel}
-            >
+        <GenericModal
+            renderTrigger={renderTrigger}
+            onReset={handleReset}
+            onDone={onDone}
+            onCancel={onCancel}
+            renderContent={onDone => (
                 <div className={styles.wrapper}>
-                    <h2 className={styles.title}>Choose rating</h2>
+                    <h2 className={styles.title}>Select rating</h2>
                     <Rate
                         character={<Icon type="star" theme="filled" style={{ fontSize: 30 }} />}
                         value={value}
                         onChange={setValue}
                     />
                     <Divider size={1} />
-                    <Button type="primary" onClick={handleDone} disabled={!value}>
+                    <Button type="primary" onClick={() => onDone(value)} disabled={!value}>
                         Ok
                     </Button>
                 </div>
-            </Modal>
-            {render(setModalVisible)}
-        </React.Fragment>
+            )}
+        />
     );
 };
 
