@@ -3,7 +3,7 @@ import styles from './EditRegistrationModal.module.scss';
 
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Descriptions, Popover, Divider as AntDivider, Tag, Rate, Icon, Select, Row, Col } from 'antd';
+import { Descriptions, Popover, Divider as AntDivider, Tag, Rate, Icon, Select, Row, Col, Drawer } from 'antd';
 import { isEmpty, groupBy, find } from 'lodash-es';
 import { RegistrationFields, Skills, Roles, Misc } from '@hackjunction/shared';
 
@@ -241,31 +241,6 @@ const EditRegistrationModal = ({ event, idToken, registrationId, onExit, renderT
         );
     };
 
-    const renderBottom = () => {
-        return (
-            <Row gutter={16}>
-                <Col xs={24} md={12}>
-                    <Divider size={1} />
-                    <h4>Change rating</h4>
-                    <Rate
-                        character={<Icon type="star" theme="filled" style={{ fontSize: 24 }} />}
-                        value={registration.rating}
-                        onChange={value => handleEdit('rating', value)}
-                    />
-                </Col>
-                <Col xs={24} md={12}>
-                    <Divider size={1} />
-                    <h4>Assign tags</h4>
-                    <Select style={{ width: '100%' }}>
-                        <Select.Option value="1">Tag 1</Select.Option>
-                        <Select.Option value="2">Tag 2</Select.Option>
-                        <Select.Option value="3">Tag 3</Select.Option>
-                    </Select>
-                </Col>
-            </Row>
-        );
-    };
-
     return (
         <GenericModal
             renderTrigger={renderTrigger}
@@ -278,14 +253,21 @@ const EditRegistrationModal = ({ event, idToken, registrationId, onExit, renderT
             }}
             renderContent={() => (
                 <div className={styles.content}>
+                    {/* <Drawer
+                        title="Basic Drawer"
+                        placement="right"
+                        closable={false}
+                        onClose={this.onClose}
+                        visible={this.state.visible}
+                        getContainer={false}
+                        style={{ position: 'absolute' }}
+                    >
+                        <p>Some contents...</p>
+                    </Drawer> */}
                     <PageWrapper loading={loading} error={error}>
                         {renderContent()}
                         <Divider size={5} />
-                        {renderBottom()}
                     </PageWrapper>
-                    <div className={styles.footerActions}>
-                        <p>Set rating</p>
-                    </div>
                 </div>
             )}
         />
