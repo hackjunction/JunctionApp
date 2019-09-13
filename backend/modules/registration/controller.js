@@ -133,6 +133,8 @@ controller.editRegistration = (registrationId, event, data) => {
         registration.status = data.status;
         registration.rating = data.rating;
         registration.ratedBy = data.ratedBy;
+        registration.tags = data.tags;
+        registration.assignedTo = data.assignedTo;
         return registration.save();
     });
 };

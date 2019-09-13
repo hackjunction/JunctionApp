@@ -32,6 +32,7 @@
         "react-grid-system": "^4.4.6",
         "react-inlinesvg": "^0.8.4",
         "react-json-view": "^1.19.1",
+        "react-lazyload": "^2.6.2",
         "react-markdown": "^4.1.0",
         "react-redux": "^6.0.0",
         "react-remove-scroll": "^2.0.4",

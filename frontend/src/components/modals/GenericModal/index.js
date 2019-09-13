@@ -27,21 +27,35 @@ const GenericModal = ({
         onReset();
     }, [onCancel, onReset]);
 
+    const render = () => {
+        return (
+            <Modal
+                destroyOnClose
+                visible={true}
+                title={null}
+                icon={null}
+                footer={null}
+                onCancel={handleCancel}
+                {...modalProps}
+            >
+                {renderContent(handleDone)}
+            </Modal>
+        );
+    };
+
     return (
         <React.Fragment>
-            {modalVisible && (
-                <Modal
-                    destroyOnClose
-                    visible={true}
-                    title={null}
-                    icon={null}
-                    footer={null}
-                    onCancel={handleCancel}
-                    {...modalProps}
-                >
-                    {renderContent(handleDone)}
-                </Modal>
-            )}
+            <Modal
+                destroyOnClose
+                visible={modalVisible}
+                title={null}
+                icon={null}
+                footer={null}
+                onCancel={handleCancel}
+                {...modalProps}
+            >
+                {renderContent(handleDone)}
+            </Modal>
             {renderTrigger(setModalVisible)}
         </React.Fragment>
     );
