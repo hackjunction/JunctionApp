@@ -33,7 +33,12 @@ const updateRegistration = asyncHandler(async (req, res) => {
 });
 
 const editRegistration = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.editRegistration(req.params.registrationId, req.event, req.body);
+    const registration = await RegistrationController.editRegistration(
+        req.params.registrationId,
+        req.event,
+        req.body,
+        req.user
+    );
     return res.status(200).json(registration);
 });
 

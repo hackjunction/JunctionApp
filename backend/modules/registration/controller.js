@@ -128,11 +128,11 @@ controller.rateRegistration = (registrationId, event, user, rating) => {
     });
 };
 
-controller.editRegistration = (registrationId, event, data) => {
+controller.editRegistration = (registrationId, event, data, user) => {
     return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
         registration.status = data.status;
         registration.rating = data.rating;
-        registration.ratedBy = data.ratedBy;
+        registration.ratedBy = user.sub;
         registration.tags = data.tags;
         registration.assignedTo = data.assignedTo;
         return registration.save();
