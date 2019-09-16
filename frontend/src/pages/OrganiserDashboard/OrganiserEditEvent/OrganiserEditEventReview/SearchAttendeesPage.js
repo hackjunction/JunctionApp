@@ -12,7 +12,7 @@ const SearchAttendeesPage = ({ idToken, slug }) => {
     return (
         <React.Fragment>
             <Divider size={1} />
-            <Filters onSubmit={setFilters} initial={filters} onSelfAssign={() => {}} />
+            <Filters onSubmit={setFilters} initial={filters} />
             <Divider size={1} />
             <AttendeeTable filters={filters} idToken={idToken} slug={slug} />
         </React.Fragment>

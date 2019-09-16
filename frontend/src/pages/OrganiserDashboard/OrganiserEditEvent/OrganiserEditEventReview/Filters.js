@@ -2,21 +2,26 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Filters.module.scss';
 import {
     Radio,
-    Collapse,
     Input,
-    Modal,
     Switch,
     Row,
     Col,
     Select,
     Divider as AntDivider,
     Button as AntButton,
-    Icon
+    Icon,
+    Drawer,
+    Rate,
+    Tag
 } from 'antd';
 import { omit } from 'lodash-es';
+import { connect } from 'react-redux';
+import { RegistrationFields } from '@hackjunction/shared';
 
 import Button from 'components/generic/Button';
 import Divider from 'components/generic/Divider';
+
+import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 const SEARCH_FIELDS = {
     firstName: {
@@ -33,10 +38,14 @@ const SEARCH_FIELDS = {
     }
 };
 
-const Filters = ({ onSubmit, initial = {} }) => {
-    const [modalOpen, setModalOpen] = useState(false);
+const Filters = ({ onSubmit, initial = {}, event = {} }) => {
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchField, setSearchField] = useState(initial.searchField);
     const [searchValue, setSearchValue] = useState(initial.searchValue);
+    const [hasFields, setHasFields] = useState(initial.hasFields);
+    const [hasTags, setHasTags] = useState(initial.hasTags);
+    const [ratingMin, setRatingMin] = useState();
+    const [ratingMax, setRatingMax] = useState();
     const [notRatedOnly, setNotRatedOnly] = useState(initial.notRatedOnly);
     const [notAssignedOnly, setNotAssignedOnly] = useState(initial.notAssignedOnly);
     const [limit, setLimit] = useState(initial.limit);
@@ -44,6 +53,10 @@ const Filters = ({ onSubmit, initial = {} }) => {
     const filters = {
         searchField,
         searchValue,
+        hasFields,
+        hasTags,
+        ratingMin,
+        ratingMax,
         notRatedOnly,
         notAssignedOnly,
         limit
@@ -51,7 +64,7 @@ const Filters = ({ onSubmit, initial = {} }) => {
 
     const handleSearch = useCallback(() => {
         onSubmit(filters);
-        setModalOpen(false);
+        setDrawerOpen(false);
     }, [filters, onSubmit]);
 
     const handleRemove = useCallback(
@@ -65,6 +78,10 @@ const Filters = ({ onSubmit, initial = {} }) => {
     const handleClear = () => {
         setSearchField(undefined);
         setSearchValue(undefined);
+        setHasFields(undefined);
+        setHasTags(undefined);
+        setRatingMin(undefined);
+        setRatingMax(undefined);
         setNotRatedOnly(true);
         setNotAssignedOnly(false);
         setLimit(50);
@@ -111,6 +128,49 @@ const Filters = ({ onSubmit, initial = {} }) => {
             });
         }
 
+        if (hasFields && hasFields.length) {
+            const fields = hasFields.join(', ');
+            const label = `Has fields: ${fields.length > 50 ? fields.slice(0, 50) + '...' : fields}`;
+            items.push({
+                label,
+                onRemove: () => {
+                    handleRemove(['hasFields']);
+                    setHasFields(undefined);
+                }
+            });
+        }
+
+        if (hasTags && hasTags.length) {
+            const tags = hasTags.join(', ');
+            const label = `Has tags: ${tags.length > 50 ? tags.slice(0, 50) + '...' : tags}`;
+            items.push({
+                label,
+                onRemove: () => {
+                    handleRemove(['hasTags']);
+                    setHasTags(undefined);
+                }
+            });
+        }
+
+        if (ratingMin) {
+            items.push({
+                label: `Rating, min.: ${ratingMin}`,
+                onRemove: () => {
+                    handleRemove(['ratingMin']);
+                    setRatingMin(undefined);
+                }
+            });
+        }
+        if (ratingMax) {
+            items.push({
+                label: `Rating, max.: ${ratingMax}`,
+                onRemove: () => {
+                    handleRemove(['ratingMax']);
+                    setRatingMax(undefined);
+                }
+            });
+        }
+
         return items.map(item => {
             return (
                 <React.Fragment>
@@ -137,37 +197,24 @@ const Filters = ({ onSubmit, initial = {} }) => {
         <div className={styles.wrapper}>
             <div className={styles.filtersPreview}>
                 <div className={styles.filtersPreviewItems}>{renderPreviewItems()}</div>
-                <AntButton onClick={() => setModalOpen(true)}>
+                <AntButton onClick={() => setDrawerOpen(true)}>
                     <Icon type="filter" />
                     Filters
                 </AntButton>
             </div>
-            <Modal
-                width={600}
-                title="Set filters"
-                visible={modalOpen}
-                onCancel={() => setModalOpen(false)}
-                footer={
-                    <div className={styles.bottom}>
-                        <Button
-                            text="Clear filters"
-                            button={{
-                                onClick: handleClear
-                            }}
-                        />
-                        <Divider size={1} />
-                        <Button
-                            theme="accent"
-                            text="Search"
-                            button={{
-                                onClick: handleSearch
-                            }}
-                        />
-                    </div>
-                }
+            <Drawer
+                title="Search registrations"
+                placement="right"
+                width={640}
+                closable={true}
+                onClose={() => setDrawerOpen(false)}
+                visible={drawerOpen}
+                getContainer={false}
             >
                 <Divider size={1} />
-                <AntDivider>Search by field</AntDivider>
+                <AntDivider>
+                    <h3>Search by field</h3>
+                </AntDivider>
                 <Row gutter={16}>
                     <Col xs={24}>
                         <Divider size={1} />
@@ -197,7 +244,98 @@ const Filters = ({ onSubmit, initial = {} }) => {
                         />
                     </Col>
                 </Row>
-                <AntDivider>Exclude results</AntDivider>
+                <Divider size={1} />
+                <AntDivider>
+                    <h3>Has fields</h3>
+                </AntDivider>
+                <Row gutter={16}>
+                    <Col xs={24}>
+                        <Select
+                            size="large"
+                            style={{ width: '100%' }}
+                            value={hasFields}
+                            onChange={setHasFields}
+                            placeholder="Registrations where all selected fields are non-empty will be shown"
+                            mode="multiple"
+                        >
+                            <Select.OptGroup label="User details">
+                                {event.userDetailsConfig &&
+                                    Object.keys(event.userDetailsConfig).map(fieldName => {
+                                        return (
+                                            <Select.Option key={fieldName} value={fieldName}>
+                                                {RegistrationFields.getLabel(fieldName)}
+                                            </Select.Option>
+                                        );
+                                    })}
+                            </Select.OptGroup>
+                            {event.customQuestions &&
+                                event.customQuestions.map(section => {
+                                    return (
+                                        <Select.OptGroup label={`Custom questions - ${section.label}`}>
+                                            <Select.Option key={section.name} value={section.name}>
+                                                {section.label} (any)
+                                            </Select.Option>
+                                            {section.questions.map(question => (
+                                                <Select.Option
+                                                    key={`${section.name}.${question.name}`}
+                                                    value={`${section.name}.${question.name}`}
+                                                >
+                                                    {section.label}: {question.label}
+                                                </Select.Option>
+                                            ))}
+                                        </Select.OptGroup>
+                                    );
+                                })}
+                        </Select>
+                    </Col>
+                </Row>
+                <Divider size={1} />
+                <AntDivider>
+                    <h3>Has tags</h3>
+                </AntDivider>
+                <Row gutter={16}>
+                    <Col xs={24}>
+                        <Select
+                            size="large"
+                            style={{ width: '100%' }}
+                            value={hasTags}
+                            onChange={setHasTags}
+                            placeholder="Registrations with any of these tags will be shown"
+                            mode="multiple"
+                        >
+                            {event.tags &&
+                                event.tags.map(tag => (
+                                    <Select.Option value={tag.label} key={tag.label}>
+                                        <Tag color={tag.color}>{tag.label}</Tag>
+                                    </Select.Option>
+                                ))}
+                        </Select>
+                    </Col>
+                </Row>
+                <Divider size={1} />
+                <AntDivider>
+                    <h3>Has rating</h3>
+                </AntDivider>
+                <Row gutter={16}>
+                    <Col xs={24}>
+                        <div className={styles.ratingWrapper}>
+                            <span>Rating is at least:</span>
+                            <Divider size={1} />
+                            <Rate value={ratingMin} onChange={setRatingMin} />
+                        </div>
+                    </Col>
+                    <Col xs={24}>
+                        <div className={styles.ratingWrapper}>
+                            <span>Rating is at most:</span>
+                            <Divider size={1} />
+                            <Rate value={ratingMax} onChange={setRatingMax} />
+                        </div>
+                    </Col>
+                </Row>
+                <Divider size={1} />
+                <AntDivider>
+                    <h3>Exclude results</h3>
+                </AntDivider>
                 <div className={styles.filtersSection}>
                     <Switch checked={notRatedOnly} onChange={setNotRatedOnly} />
                     <Divider size={1} />
@@ -209,7 +347,9 @@ const Filters = ({ onSubmit, initial = {} }) => {
                     <Divider size={1} />
                     <p>Only show registrations which haven't been assigned to anyone</p>
                 </div>
-                <AntDivider>Limit results</AntDivider>
+                <AntDivider>
+                    <h3>Limit results</h3>
+                </AntDivider>
                 <Radio.Group value={limit} onChange={e => setLimit(e.target.value)}>
                     <Radio key={10} value={10}>
                         10
@@ -225,9 +365,29 @@ const Filters = ({ onSubmit, initial = {} }) => {
                     </Radio>
                 </Radio.Group>
                 <Divider size={1} />
-            </Modal>
+                <div className={styles.bottom}>
+                    <Button
+                        text="Reset filters"
+                        button={{
+                            onClick: handleClear
+                        }}
+                    />
+                    <Divider size={1} />
+                    <Button
+                        theme="accent"
+                        text="Search"
+                        button={{
+                            onClick: handleSearch
+                        }}
+                    />
+                </div>
+            </Drawer>
         </div>
     );
 };
 
-export default Filters;
+const mapState = state => ({
+    event: OrganiserSelectors.event(state)
+});
+
+export default connect(mapState)(Filters);

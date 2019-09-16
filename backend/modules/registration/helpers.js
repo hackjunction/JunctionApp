@@ -64,6 +64,8 @@ const RegistrationHelpers = {
     buildAggregation: (eventId, userId, qp) => {
         const aggregationSteps = [];
 
+        console.log('QP', qp);
+
         /** Match the event id first to reduce results */
         aggregationSteps.push({
             $match: {
@@ -101,12 +103,65 @@ const RegistrationHelpers = {
             });
         }
 
+        /** Apply rating filters if specified */
+        if (qp.ratingMin || qp.ratingMax) {
+            if (qp.ratingMin && qp.ratingMax) {
+                aggregationSteps.push({
+                    $match: {
+                        rating: {
+                            $gte: parseInt(qp.ratingMin),
+                            $lte: parseInt(qp.ratingMax)
+                        }
+                    }
+                });
+            } else if (qp.ratingMin) {
+                aggregationSteps.push({
+                    $match: {
+                        rating: {
+                            $gte: parseInt(qp.ratingMin)
+                        }
+                    }
+                });
+            } else {
+                aggregationSteps.push({
+                    $match: {
+                        rating: {
+                            $lte: parseInt(qp.ratingMax)
+                        }
+                    }
+                });
+            }
+        }
+
         /** If searching results, match the search */
         if (qp.searchField && qp.searchValue) {
             aggregationSteps.push({
                 $match: {
                     [`answers.${qp.searchField}`]: qp.searchValue
                 }
+            });
+        }
+
+        if (qp.hasTags && qp.hasTags.length) {
+            aggregationSteps.push({
+                $match: {
+                    tags: {
+                        $in: qp.hasTags
+                    }
+                }
+            });
+        }
+
+        /** If filtering by fields existing, do that last */
+        if (qp.hasFields && qp.hasFields.length) {
+            const match = {};
+            qp.hasFields.forEach(fieldName => {
+                match['answers.' + fieldName] = {
+                    $exists: true
+                };
+            });
+            aggregationSteps.push({
+                $match: match
             });
         }
 

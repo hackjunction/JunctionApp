@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import styles from './OrganiserEditEventReview.module.scss';
 
-import { PageHeader, Menu, Button } from 'antd';
+import { PageHeader, Menu } from 'antd';
 import { connect } from 'react-redux';
 
 import PageWrapper from 'components/PageWrapper';
@@ -12,8 +11,6 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import SearchAttendeesPage from './SearchAttendeesPage';
 import AssignAttendeesPage from './AssignAttendeesPage';
-import RatingModal from 'components/modals/RatingModal';
-import UserSelectModal from 'components/modals/UserSelectModal';
 
 const OrganiserEditEventReview = ({ idToken, slug, organisers }) => {
     const [selectedKey, setSelectedKey] = useState('search');
@@ -36,15 +33,6 @@ const OrganiserEditEventReview = ({ idToken, slug, organisers }) => {
                 children={<p>Applications to your event</p>}
                 footer={
                     <React.Fragment>
-                        {/* <RatingModal
-                            onDone={value => console.log('RATING SELECT DONE', value)}
-                            renderTrigger={showModal => <Button onClick={showModal}>Change rating</Button>}
-                        />
-                        <UserSelectModal
-                            onDone={value => console.log('USER SELECT DONE', value)}
-                            renderTrigger={showModal => <Button onClick={showModal}>Assign modal</Button>}
-                            userProfiles={organisers}
-                        /> */}
                         <Menu
                             mode="horizontal"
                             selectedKeys={[selectedKey]}
