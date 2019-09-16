@@ -173,7 +173,7 @@ const Filters = ({ onSubmit, initial = {}, event = {} }) => {
 
         return items.map(item => {
             return (
-                <React.Fragment>
+                <React.Fragment key={item.label}>
                     <div className={styles.filtersPreviewItem}>
                         <AntButton
                             type="primary"
@@ -271,7 +271,10 @@ const Filters = ({ onSubmit, initial = {}, event = {} }) => {
                             {event.customQuestions &&
                                 event.customQuestions.map(section => {
                                     return (
-                                        <Select.OptGroup label={`Custom questions - ${section.label}`}>
+                                        <Select.OptGroup
+                                            key={section.name}
+                                            label={`Custom questions - ${section.label}`}
+                                        >
                                             <Select.Option key={section.name} value={section.name}>
                                                 {section.label} (any)
                                             </Select.Option>

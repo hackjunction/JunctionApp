@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import styles from './AttendeeTable.module.scss';
 import moment from 'moment';
-import { Table, notification, Button as AntButton, Empty, Icon } from 'antd';
+import { Table, notification, Empty, Tag } from 'antd';
 import { connect } from 'react-redux';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
@@ -9,7 +8,16 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import RegistrationsService from 'services/registrations';
 import EditRegistrationDrawer from 'components/modals/EditRegistrationDrawer';
 
-const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfilesMap, organisers, emptyRenderer }) => {
+const AttendeeTable = ({
+    filters,
+    filtersUpdated,
+    slug,
+    idToken,
+    organiserProfilesMap,
+    organisers,
+    emptyRenderer,
+    event
+}) => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState();
 
@@ -57,7 +65,7 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
         return (
             <React.Fragment>
                 <h3>{`${result.length} results`}</h3>
-                <Table loading={loading} dataSource={result} rowKey="userId" scroll={{ x: 600 }}>
+                <Table loading={loading} dataSource={result} rowKey="user" scroll={{ x: 600 }}>
                     <Table.Column
                         title="Name"
                         dataIndex="answers"
@@ -104,7 +112,11 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
                             if (!tags || !tags.length) {
                                 return '-';
                             } else {
-                                return tags.join(', ');
+                                return event.tags
+                                    .filter(tag => {
+                                        return tags.indexOf(tag.label) !== -1;
+                                    })
+                                    .map(({ color, label }) => <Tag color={color}>{label}</Tag>);
                             }
                         }}
                     />
@@ -139,7 +151,8 @@ const AttendeeTable = ({ filters, filtersUpdated, slug, idToken, organiserProfil
 
 const mapStateToProps = state => ({
     organiserProfilesMap: OrganiserSelectors.organisersMap(state),
-    organisers: OrganiserSelectors.organisers(state)
+    organisers: OrganiserSelectors.organisers(state),
+    event: OrganiserSelectors.event(state)
 });
 
 export default connect(mapStateToProps)(AttendeeTable);
