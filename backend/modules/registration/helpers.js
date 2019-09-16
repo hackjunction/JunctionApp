@@ -64,8 +64,6 @@ const RegistrationHelpers = {
     buildAggregation: (eventId, userId, qp) => {
         const aggregationSteps = [];
 
-        console.log('QP', qp);
-
         /** Match the event id first to reduce results */
         aggregationSteps.push({
             $match: {
