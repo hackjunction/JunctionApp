@@ -45,26 +45,23 @@ const SearchAttendeesPage = ({ idToken, event, registrations, registrationsLoadi
 
     return (
         <React.Fragment>
+            <div className={styles.empty}>
+                <p>
+                    Applications assigned to you will be "reserved" for you to review. This way, your team can avoid two
+                    people accidentally reviewing the same applications at the same time. Using the button below, you
+                    can randomly assign 10 applications to yourself and start reviewing!
+                </p>
+                <Button
+                    text="Assign applications"
+                    theme="accent"
+                    button={{
+                        onClick: handleSelfAssign
+                    }}
+                />
+            </div>
             <Divider size={1} />
             <AttendeeTable attendees={registrations} loading={registrationsLoading} />
-            {!registrationsLoading && !registrations.length && (
-                <div className={styles.empty}>
-                    <strong>No attendees assigned to you</strong>
-                    <Divider size={1} />
-                    <p>
-                        Applications assigned to you will be "reserved" for you to review. This way, your team can avoid
-                        two people accidentally reviewing the same applications at the same time. Using the button
-                        below, you can randomly assign 10 applications to yourself and start reviewing!
-                    </p>
-                    <Button
-                        text="Assign applications"
-                        theme="accent"
-                        button={{
-                            onClick: handleSelfAssign
-                        }}
-                    />
-                </div>
-            )}
+            <Divider size={1} />
         </React.Fragment>
     );
 };

@@ -324,6 +324,36 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
             </Collapse.Panel>
         </Collapse>
     );
+
+    // return (
+    //     <Row>
+    //         <Col xs={24}>
+    //             <Select style={{ width: '100%' }} placeholder="Choose field" size="large">
+    //                 <Select.OptGroup label="System fields">
+    //                     <Select.Option value="rating">Rating</Select.Option>
+    //                 </Select.OptGroup>
+    //                 <Select.OptGroup label="Standard questions">
+    //                     <Select.Option value="answers.firstName">First name</Select.Option>
+    //                     <Select.Option value="answers.lastName">Last name</Select.Option>
+    //                 </Select.OptGroup>
+    //                 <Select.OptGroup label="Custom questions">
+    //                     <Select.Option value="terminal">Terminal</Select.Option>
+    //                 </Select.OptGroup>
+    //             </Select>
+    //         </Col>
+    //         <Col xs={24}>
+    //             <Select style={{ width: '100%' }} placeholder="Choose a filter" size="large">
+    //                 <Select.Option value="exists">Exists</Select.Option>
+    //                 <Select.Option value="nexists">Does not exist</Select.Option>
+    //                 <Select.Option value="atleast">Is at least</Select.Option>
+    //                 <Select.Option value="atleast">Is at most</Select.Option>
+    //             </Select>
+    //         </Col>
+    //         <Col xs={24}>
+    //             <Input placeholder="Filter value" size="large" />
+    //         </Col>
+    //     </Row>
+    // );
 };
 
 const mapState = state => ({
