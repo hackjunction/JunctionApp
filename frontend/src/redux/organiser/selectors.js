@@ -33,6 +33,16 @@ export const registrationsFiltered = createSelector(
     }
 );
 
+export const registrationsAssigned = createSelector(
+    AuthSelectors.getCurrentUser,
+    registrations,
+    (user, registrations) => {
+        return registrations.filter(registration => {
+            return registration.assignedTo === user.sub;
+        });
+    }
+);
+
 export const teams = state => state.organiser.teams.data;
 export const teamsLoading = state => state.organiser.teams.loading;
 export const teamsError = state => state.organiser.teams.error;
