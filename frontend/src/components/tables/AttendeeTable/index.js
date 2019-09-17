@@ -8,7 +8,9 @@ import EditRegistrationDrawer from 'components/modals/EditRegistrationDrawer';
 
 const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [] }) => {
     const renderTable = () => {
-        if (!Array.isArray(attendees) || attendees.length === 0) return null;
+        if (!loading) {
+            if (!Array.isArray(attendees) || attendees.length === 0) return null;
+        }
         return (
             <Table loading={loading} dataSource={attendees} rowKey="user" scroll={{ x: 600 }}>
                 <Table.Column
@@ -87,6 +89,7 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
     };
 
     const renderEmpty = () => {
+        if (loading) return null;
         if (!Array.isArray(attendees) || attendees.length !== 0) return null;
         if (typeof emptyRenderer === 'function') return emptyRenderer();
         return <Empty />;
