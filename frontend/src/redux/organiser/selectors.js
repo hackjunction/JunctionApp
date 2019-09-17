@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { isEmpty } from 'lodash-es';
+import * as FilterUtils from 'utils/filters';
 import * as AuthSelectors from 'redux/auth/selectors';
-import { qualifiedTypeIdentifier } from '@babel/types';
 
 export const event = state => state.organiser.event.data;
 export const eventLoading = state => state.organiser.event.loading;
@@ -29,36 +28,12 @@ export const registrationsFilters = state => state.organiser.registrations.filte
 export const registrationsFiltered = createSelector(
     registrations,
     registrationsFilters,
-    AuthSelectors.getCurrentUser,
-    (registrations, filters, user) => {
-        if (filters.selfAssignedOnly) {
-        }
-        return registrations.filter(registration => {
-            if (filters.selfAssignedOnly) {
-                if (registration.assignedTo !== user.sub) return false;
-            }
-            if (filters.notRatedOnly) {
-                if (!isEmpty(registration.rating)) return false;
-            }
-            if (filters.notAssignedOnly) {
-                if (!isEmpty(registration.assignedTo)) return false;
-            }
-            if (filters.ratingMin && registration.rating < filters.ratingMin) return false;
-            if (filters.ratingMax && registration.rating > filters.ratingMax) return false;
-
-            if (filters.searchField && filters.searchValue) {
-                if (registration.answers[filters.searchField] !== filters.searchValue) return false;
-            }
-
-            if (filters.hasTags && filters.hasTags.length) {
-                //TODO: Filtering by the tags
-            }
-
-            if (filters.hasFields && filters.hasFields.length) {
-                //TODO: Filtering by the fields
-            }
-
-            return true;
-        });
+    (registrations, filters) => {
+        return FilterUtils.applyFilters(registrations, filters);
     }
 );
+
+export const teams = state => state.organiser.teams.data;
+export const teamsLoading = state => state.organiser.teams.loading;
+export const teamsError = state => state.organiser.teams.error;
+export const teamsUpdated = state => state.organiser.teams.updated;

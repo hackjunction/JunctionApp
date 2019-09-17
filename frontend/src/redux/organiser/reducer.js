@@ -30,6 +30,12 @@ const initialState = {
         data: [],
         map: {},
         filters: []
+    },
+    teams: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: []
     }
 };
 
@@ -37,7 +43,8 @@ const initialState = {
 const eventHandler = buildHandler('event');
 const statsHandler = buildHandler('stats');
 const organisersHandler = buildHandler('organisers', 'userId');
-const registrationsHandler = buildHandler('registrations', 'userId');
+const registrationsHandler = buildHandler('registrations', 'user');
+const teamsHandler = buildHandler('teams');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
 
@@ -57,6 +64,28 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_REGISTRATIONS: {
             return registrationsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_TEAMS: {
+            return teamsHandler(state, action);
+        }
+        case ActionTypes.EDIT_REGISTRATION: {
+            const registration = action.payload;
+            return {
+                ...state,
+                registrations: {
+                    ...state.registrations,
+                    data: state.registrations.data.map(reg => {
+                        if (reg.user === registration.user) {
+                            return registration;
+                        }
+                        return reg;
+                    }),
+                    map: {
+                        ...state.registrations.map,
+                        [registration.user]: registration
+                    }
+                }
+            };
         }
         case ActionTypes.SET_REGISTRATIONS_FILTERS: {
             return {
