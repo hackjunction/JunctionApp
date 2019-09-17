@@ -50,16 +50,18 @@ controller.getRegistrationsForEvent = eventId => {
     return Registration.find(
         {
             event: eventId
-        },
-        {
-            user: 1,
-            rating: 1,
-            ratedBy: 1,
-            status: 1,
-            'answers.email': 1,
-            'answers.firstName': 1,
-            'answers.lastName': 1
         }
+        // {
+        //     user: 1,
+        //     rating: 1,
+        //     ratedBy: 1,
+        //     assignedTo: 1,
+        //     tags: 1,
+        //     status: 1,
+        //     'answers.email': 1,
+        //     'answers.firstName': 1,
+        //     'answers.lastName': 1
+        // }
     );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { PageHeader, Menu } from 'antd';
 import { connect } from 'react-redux';
@@ -8,19 +8,27 @@ import Divider from 'components/generic/Divider';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserActions from 'redux/organiser/actions';
 
 import SearchAttendeesPage from './SearchAttendeesPage';
 import AssignAttendeesPage from './AssignAttendeesPage';
+import TeamsPage from './TeamsPage';
 
-const OrganiserEditEventReview = ({ idToken, slug, organisers }) => {
+const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) => {
     const [selectedKey, setSelectedKey] = useState('search');
+
+    useEffect(() => {
+        updateRegistrations(event.slug);
+    }, [event.slug, updateRegistrations]);
 
     const renderSelectedKey = () => {
         switch (selectedKey) {
             case 'search':
-                return <SearchAttendeesPage idToken={idToken} slug={slug} />;
-            case 'assigned':
-                return <AssignAttendeesPage idToken={idToken} slug={slug} />;
+                return <SearchAttendeesPage />;
+            // case 'teams':
+            //     return <TeamsPage />;
+            // case 'assigned':
+            //     return <AssignAttendeesPage />;
             default:
                 return null;
         }
@@ -38,7 +46,8 @@ const OrganiserEditEventReview = ({ idToken, slug, organisers }) => {
                             selectedKeys={[selectedKey]}
                             onSelect={({ key }) => setSelectedKey(key)}
                         >
-                            <Menu.Item key="search">All</Menu.Item>
+                            <Menu.Item key="search">Participants</Menu.Item>
+                            <Menu.Item key="teams">Teams</Menu.Item>
                             <Menu.Item key="assigned">Assigned to you</Menu.Item>
                         </Menu>
                         <Divider size={1} />
@@ -50,9 +59,16 @@ const OrganiserEditEventReview = ({ idToken, slug, organisers }) => {
     );
 };
 
-const mapStateToProps = state => ({
-    idToken: AuthSelectors.getIdToken(state),
-    organisers: OrganiserSelectors.organisers(state)
+const mapState = state => ({
+    organisers: OrganiserSelectors.organisers(state),
+    event: OrganiserSelectors.event(state)
 });
 
-export default connect(mapStateToProps)(OrganiserEditEventReview);
+const mapDispatch = dispatch => ({
+    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(OrganiserEditEventReview);

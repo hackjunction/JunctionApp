@@ -1,69 +1,16 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import moment from 'moment';
-import { Table, notification, Empty, Tag } from 'antd';
+import { Table, Empty, Tag, Divider as AntDivider } from 'antd';
 import { connect } from 'react-redux';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-
-import RegistrationsService from 'services/registrations';
 import EditRegistrationDrawer from 'components/modals/EditRegistrationDrawer';
 
-const AttendeeTable = ({
-    filters,
-    filtersUpdated,
-    slug,
-    idToken,
-    organiserProfilesMap,
-    organisers,
-    emptyRenderer,
-    event
-}) => {
-    const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState();
-
-    const handleSearch = useCallback(
-        filters => {
-            setLoading(true);
-            RegistrationsService.searchRegistrationsForEvent(idToken, slug, filters)
-                .then(data => {
-                    setResult(data);
-                })
-                .catch(err => {
-                    notification.error({
-                        message: 'Something went wrong'
-                    });
-                    setResult([]);
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        },
-        [idToken, slug]
-    );
-
-    const handleEdited = useCallback(
-        registration => {
-            const newData = result.map(reg => {
-                if (reg.user === registration.user) {
-                    return registration;
-                }
-                return reg;
-            });
-            setResult(newData);
-        },
-        [result]
-    );
-
-    useEffect(() => {
-        if (filters) {
-            handleSearch(filters);
-        }
-    }, [filters, filtersUpdated, handleSearch]);
-
+const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [] }) => {
     const renderTable = () => {
-        if (!Array.isArray(result) || result.length === 0) return null;
+        if (!Array.isArray(attendees) || attendees.length === 0) return null;
         return (
-            <Table loading={loading} dataSource={result} rowKey="user" scroll={{ x: 600 }}>
+            <Table loading={loading} dataSource={attendees} rowKey="user" scroll={{ x: 600 }}>
                 <Table.Column
                     title="Name"
                     dataIndex="answers"
@@ -132,7 +79,7 @@ const AttendeeTable = ({
                     rowKey="actions"
                     fixed="right"
                     render={(userId, registration) => {
-                        return <EditRegistrationDrawer registrationId={registration._id} onEdited={handleEdited} />;
+                        return <EditRegistrationDrawer registrationId={registration._id} />;
                     }}
                 />
             </Table>
@@ -140,13 +87,14 @@ const AttendeeTable = ({
     };
 
     const renderEmpty = () => {
-        if (!Array.isArray(result) || result.length !== 0) return null;
+        if (!Array.isArray(attendees) || attendees.length !== 0) return null;
         if (typeof emptyRenderer === 'function') return emptyRenderer();
         return <Empty />;
     };
 
     return (
         <React.Fragment>
+            {attendees.length > 0 && <AntDivider>{attendees.length} results</AntDivider>}
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>
@@ -155,7 +103,6 @@ const AttendeeTable = ({
 
 const mapStateToProps = state => ({
     organiserProfilesMap: OrganiserSelectors.organisersMap(state),
-    organisers: OrganiserSelectors.organisers(state),
     event: OrganiserSelectors.event(state)
 });
 

@@ -1,22 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as FilterUtils from 'utils/filters';
 
 import Divider from 'components/generic/Divider';
-import Filters from './Filters';
-import AttendeeTable from './AttendeeTable';
+import AttendeeTable from 'components/tables/AttendeeTable';
+import AttendeeFilters from './AttendeeFilters';
 
-const SearchAttendeesPage = ({ idToken, slug }) => {
-    const [filters, setFilters] = useState({
-        notRatedOnly: true,
-        limit: 50
-    });
+const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) => {
+    const filtered = FilterUtils.applyFilters(registrations, filters);
     return (
         <React.Fragment>
+            <AttendeeFilters />
             <Divider size={1} />
-            <Filters onSubmit={setFilters} initial={filters} />
-            <Divider size={1} />
-            <AttendeeTable filters={filters} idToken={idToken} slug={slug} />
+            <AttendeeTable attendees={filtered} loading={registrationsLoading} />
         </React.Fragment>
     );
 };
 
-export default SearchAttendeesPage;
+const mapState = state => ({
+    registrations: OrganiserSelectors.registrationsFiltered(state),
+    registrationsLoading: OrganiserSelectors.registrationsLoading(state),
+    filters: OrganiserSelectors.registrationsFilters(state)
+});
+
+export default connect(mapState)(SearchAttendeesPage);
