@@ -78,13 +78,19 @@ const filter = (registration, filter) => {
 };
 
 export const applyFilters = (data, filters) => {
-    return data.filter(registration => {
-        const filtersLen = filters.length;
-        for (let i = 0; i < filtersLen; i++) {
-            if (!filter(registration, filters[i])) {
-                return false;
+    try {
+        return data.filter(registration => {
+            const filtersLen = filters.length;
+            for (let i = 0; i < filtersLen; i++) {
+                if (!filter(registration, filters[i])) {
+                    return false;
+                }
             }
-        }
-        return true;
-    });
+            return true;
+        });
+    } catch (err) {
+        window.alert('Something went wrong! Please try another filter');
+        console.log(err);
+        return [];
+    }
 };
