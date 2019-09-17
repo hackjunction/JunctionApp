@@ -261,6 +261,7 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
                     <span>
                         <Tag>{filter.field}</Tag>
                         <strong style={{ marginLeft: 10 }}>CONTAINS</strong>
+                        <Tag>{filter.value}</Tag>
                     </span>
                 );
             }
@@ -269,6 +270,7 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
                     <span>
                         <Tag>{filter.field}</Tag>
                         <strong style={{ marginLeft: 10 }}>DOES NOT CONTAIN</strong>
+                        <Tag>{filter.value}</Tag>
                     </span>
                 );
             }
