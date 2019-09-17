@@ -25,8 +25,8 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) =>
         switch (selectedKey) {
             case 'search':
                 return <SearchAttendeesPage />;
-            // case 'teams':
-            //     return <TeamsPage />;
+            case 'teams':
+                return <TeamsPage />;
             // case 'assigned':
             //     return <AssignAttendeesPage />;
             default:

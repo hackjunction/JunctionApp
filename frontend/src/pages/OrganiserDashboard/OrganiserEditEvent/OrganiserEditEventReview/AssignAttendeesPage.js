@@ -5,10 +5,11 @@ import { Empty, Modal, message } from 'antd';
 
 import Divider from 'components/generic/Divider';
 import Button from 'components/generic/Button';
-import AttendeeTable from './AttendeeTable';
+// import AttendeeTable from './AttendeeTable';
 
 import RegistrationsService from 'services/registrations';
 
+const AttendeeTable = () => {};
 const SearchAttendeesPage = ({ idToken, slug }) => {
     const [filtersUpdated, setFiltersUpdated] = useState();
     const handleSelfAssign = () => {

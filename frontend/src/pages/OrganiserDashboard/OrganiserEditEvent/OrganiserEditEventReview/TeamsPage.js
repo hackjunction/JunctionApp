@@ -1,6 +1,11 @@
 import React from 'react';
 import styles from './TeamsPage.module.scss';
 
+import { connect } from 'react-redux';
+
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserActions from 'redux/organiser/actions';
+
 import { Table } from 'antd';
 
 const TeamsPage = ({ idToken, slug }) => {
@@ -15,4 +20,15 @@ const TeamsPage = ({ idToken, slug }) => {
     );
 };
 
-export default TeamsPage;
+const mapState = state => ({
+    teams: OrganiserSelectors.teams(state)
+});
+
+const mapDispatch = dispatch => ({
+    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(TeamsPage);

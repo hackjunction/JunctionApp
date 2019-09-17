@@ -10,6 +10,10 @@ function config(idToken) {
     };
 }
 
+TeamsService.getTeamsForEvent = (idToken, eventSlug) => {
+    return _axios.get(`/teams/organiser/${eventSlug}`, config(idToken));
+};
+
 TeamsService.createTeamForEvent = (idToken, eventSlug) => {
     return _axios.post(`/teams/${eventSlug}`, {}, config(idToken));
 };

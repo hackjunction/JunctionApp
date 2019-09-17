@@ -13,6 +13,7 @@ import DescriptionItem from 'components/generic/DescriptionItem';
 import RegistrationsService from 'services/registrations';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserActions from 'redux/organiser/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import MiscUtils from 'utils/misc';
 import UserSelectModal from 'components/modals/UserSelectModal';
@@ -156,7 +157,15 @@ const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers,
     );
 };
 
-const EditRegistrationDrawer = ({ idToken, event, registrationId, organisers, organisersMap, onEdited }) => {
+const EditRegistrationDrawer = ({
+    idToken,
+    event,
+    registrationId,
+    organisers,
+    organisersMap,
+    onEdited = () => {},
+    editRegistration
+}) => {
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -186,7 +195,7 @@ const EditRegistrationDrawer = ({ idToken, event, registrationId, organisers, or
     const handleEdit = async data => {
         setLoading(true);
         await MiscUtils.sleep(1000);
-        RegistrationsService.editRegistration(idToken, slug, registrationId, data)
+        editRegistration(registrationId, data, slug)
             .then(data => {
                 notification.success({
                     message: 'Changes saved!'
@@ -231,11 +240,19 @@ const EditRegistrationDrawer = ({ idToken, event, registrationId, organisers, or
     );
 };
 
-const mapStateToProps = state => ({
+const mapState = state => ({
     event: OrganiserSelectors.event(state),
     idToken: AuthSelectors.getIdToken(state),
     organisersMap: OrganiserSelectors.organisersMap(state),
     organisers: OrganiserSelectors.organisers(state)
 });
 
-export default connect(mapStateToProps)(EditRegistrationDrawer);
+const mapDispatch = dispatch => ({
+    editRegistration: (registrationId, data, slug) =>
+        dispatch(OrganiserActions.editRegistration(registrationId, data, slug))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(EditRegistrationDrawer);

@@ -3,6 +3,7 @@ import * as AuthSelectors from 'redux/auth/selectors';
 import UserProfilesService from 'services/userProfiles';
 import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
+import TeamsService from 'services/teams';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -87,6 +88,33 @@ export const updateRegistrationsForEvent = slug => async (dispatch, getState) =>
         promise: RegistrationsService.getRegistrationsForEvent(idToken, slug),
         meta: {
             onFailure: e => console.log('Error updating registrations', e)
+        }
+    });
+};
+
+export const editRegistration = (registrationId, data, slug) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const registration = await RegistrationsService.editRegistration(idToken, slug, registrationId, data);
+    dispatch({
+        type: ActionTypes.EDIT_REGISTRATION,
+        payload: registration
+    });
+
+    return registration;
+};
+
+/** Update event teams with loading/error data */
+export const updateTeamsForEvent = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    if (!slug) return;
+
+    dispatch({
+        type: ActionTypes.UPDATE_TEAMS,
+        promise: TeamsService.getTeamsForEvent(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error updating teams', e)
         }
     });
 };
