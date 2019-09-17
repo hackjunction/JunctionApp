@@ -2,6 +2,7 @@ import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from 'redux/auth/selectors';
 import UserProfilesService from 'services/userProfiles';
 import EventsService from 'services/events';
+import RegistrationsService from 'services/registrations';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -73,4 +74,27 @@ export const addOrganiserToEvent = (slug, userId) => async (dispatch, getState) 
     });
 
     return organisers;
+};
+
+/** Update event registrations with loading/error data */
+export const updateRegistrationsForEvent = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    if (!slug) return;
+
+    dispatch({
+        type: ActionTypes.UPDATE_REGISTRATIONS,
+        promise: RegistrationsService.getRegistrationsForEvent(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error updating registrations', e)
+        }
+    });
+};
+
+/** Set filters for attendees table */
+export const setRegistrationsFilters = filters => dispatch => {
+    dispatch({
+        type: ActionTypes.SET_REGISTRATIONS_FILTERS,
+        payload: filters
+    });
 };

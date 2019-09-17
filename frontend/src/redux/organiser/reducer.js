@@ -23,20 +23,21 @@ const initialState = {
         data: [],
         map: {}
     },
-    attendees: {
+    registrations: {
         loading: false,
         error: false,
         updated: 0,
-        data: []
-    },
-    attendeeFilters: {}
+        data: [],
+        map: {},
+        filters: []
+    }
 };
 
 /** See redux/utils.js for docs on this */
 const eventHandler = buildHandler('event');
 const statsHandler = buildHandler('stats');
 const organisersHandler = buildHandler('organisers', 'userId');
-const attendeesHandler = buildHandler('attendees');
+const registrationsHandler = buildHandler('registrations', 'userId');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
 
@@ -54,8 +55,17 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_ORGANISERS: {
             return organisersHandler(state, action);
         }
-        case ActionTypes.UPDATE_ATTENDEES: {
-            return attendeesHandler(state, action);
+        case ActionTypes.UPDATE_REGISTRATIONS: {
+            return registrationsHandler(state, action);
+        }
+        case ActionTypes.SET_REGISTRATIONS_FILTERS: {
+            return {
+                ...state,
+                registrations: {
+                    ...state.registrations,
+                    filters: action.payload
+                }
+            };
         }
         case ActionTypes.REMOVE_ORGANISER: {
             const data = filter(state.event.data.organisers, userId => {

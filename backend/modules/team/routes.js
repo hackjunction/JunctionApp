@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 
+const { Auth } = require('@hackjunction/shared');
+
 const TeamController = require('./controller');
 
 const { hasToken } = require('../../common/middleware/token');
-const { hasRegisteredToEvent } = require('../../common/middleware/events');
+const { hasPermission } = require('../../common/middleware/permissions');
+const { hasRegisteredToEvent, isEventOrganiser } = require('../../common/middleware/events');
 
 const createTeamForEvent = asyncHandler(async (req, res) => {
     const team = await TeamController.createTeam(req.event, req.user);
@@ -42,6 +45,17 @@ const getTeamForEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(team);
 });
 
+const getTeamsForEvent = asyncHandler(async (req, res) => {
+    const teams = await TeamController.getTeams(req.event);
+    return res.status(200).json(teams);
+});
+
+/** Organiser routes */
+router
+    .route('/organiser/:slug')
+    .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getTeamsForEvent);
+
+/** User-facing routes */
 router
     .route('/:slug')
     .get(hasToken, hasRegisteredToEvent, getTeamForEvent)

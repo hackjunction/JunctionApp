@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './Filters.module.scss';
 import {
     Radio,
@@ -22,6 +22,7 @@ import Button from 'components/generic/Button';
 import Divider from 'components/generic/Divider';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserActions from 'redux/organiser/actions';
 
 const SEARCH_FIELDS = {
     firstName: {
@@ -38,7 +39,7 @@ const SEARCH_FIELDS = {
     }
 };
 
-const Filters = ({ onSubmit, initial = {}, event = {} }) => {
+const Filters = ({ initial, setFilters, event = {} }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchField, setSearchField] = useState(initial.searchField);
     const [searchValue, setSearchValue] = useState(initial.searchValue);
@@ -63,16 +64,16 @@ const Filters = ({ onSubmit, initial = {}, event = {} }) => {
     };
 
     const handleSearch = useCallback(() => {
-        onSubmit(filters);
+        setFilters(filters);
         setDrawerOpen(false);
-    }, [filters, onSubmit]);
+    }, [filters, setFilters]);
 
     const handleRemove = useCallback(
         fields => {
             const newFilters = omit(filters, fields);
-            onSubmit(newFilters);
+            setFilters(newFilters);
         },
-        [filters, onSubmit]
+        [filters, setFilters]
     );
 
     const handleClear = () => {
@@ -390,7 +391,15 @@ const Filters = ({ onSubmit, initial = {}, event = {} }) => {
 };
 
 const mapState = state => ({
-    event: OrganiserSelectors.event(state)
+    event: OrganiserSelectors.event(state),
+    initial: OrganiserSelectors.registrationsFilters(state)
 });
 
-export default connect(mapState)(Filters);
+const mapDispatch = dispatch => ({
+    setFilters: filters => dispatch(OrganiserActions.setRegistrationsFilters(filters))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(Filters);

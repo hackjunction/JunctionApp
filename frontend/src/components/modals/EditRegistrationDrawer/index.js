@@ -2,26 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styles from './EditRegistrationDrawer.module.scss';
 
 import { connect } from 'react-redux';
-import moment from 'moment';
-import {
-    Modal,
-    Descriptions,
-    Rate,
-    notification,
-    Popover,
-    Divider as AntDivider,
-    Button as AntButton,
-    Tag,
-    PageHeader,
-    Row,
-    Col,
-    Card,
-    Drawer,
-    List,
-    Select
-} from 'antd';
+import { Rate, notification, Divider as AntDivider, Button as AntButton, Tag, Drawer, List, Select } from 'antd';
 import { isEqual, groupBy, find } from 'lodash-es';
-import { RegistrationFields, Skills, Roles, Misc } from '@hackjunction/shared';
+import { RegistrationFields } from '@hackjunction/shared';
 
 import PageWrapper from 'components/PageWrapper';
 import Button from 'components/generic/Button';
