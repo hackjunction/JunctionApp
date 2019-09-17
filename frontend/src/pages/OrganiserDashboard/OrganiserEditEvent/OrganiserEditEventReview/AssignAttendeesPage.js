@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import styles from './AssignAttendeesPage.module.scss';
 
 import { Empty, Modal, message } from 'antd';
+import { connect } from 'react-redux';
 
 import Divider from 'components/generic/Divider';
 import Button from 'components/generic/Button';
+import AttendeeTable from 'components/tables/AttendeeTable';
 // import AttendeeTable from './AttendeeTable';
+
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserActions from 'redux/organiser/actions';
 
 import RegistrationsService from 'services/registrations';
 
-const AttendeeTable = () => {};
-const SearchAttendeesPage = ({ idToken, slug }) => {
+const SearchAttendeesPage = ({ idToken, slug, registrations, registrationsLoading }) => {
     const [filtersUpdated, setFiltersUpdated] = useState();
     const handleSelfAssign = () => {
         Modal.confirm({
@@ -41,38 +45,32 @@ const SearchAttendeesPage = ({ idToken, slug }) => {
     return (
         <React.Fragment>
             <Divider size={1} />
-            <AttendeeTable
-                filters={{ selfAssignedOnly: true }}
-                idToken={idToken}
-                slug={slug}
-                emptyRenderer={() => {
-                    return (
-                        <Empty
-                            description={
-                                <div className={styles.empty}>
-                                    <strong>No attendees assigned to you</strong>
-                                    <Divider size={1} />
-                                    <p>
-                                        Applications assigned to you will be "reserved" for you to review. This way,
-                                        your team can avoid two people accidentally reviewing the same applications at
-                                        the same time. Using the button below, you can randomly assign 10 applications
-                                        to yourself and start reviewing!
-                                    </p>
-                                    <Button
-                                        text="Assign applications"
-                                        theme="accent"
-                                        button={{
-                                            onClick: handleSelfAssign
-                                        }}
-                                    />
-                                </div>
-                            }
-                        />
-                    );
-                }}
-            />
+            <AttendeeTable attendees={registrations} loading={registrationsLoading} />
+            {!registrationsLoading && !registrations.length && (
+                <div className={styles.empty}>
+                    <strong>No attendees assigned to you</strong>
+                    <Divider size={1} />
+                    <p>
+                        Applications assigned to you will be "reserved" for you to review. This way, your team can avoid
+                        two people accidentally reviewing the same applications at the same time. Using the button
+                        below, you can randomly assign 10 applications to yourself and start reviewing!
+                    </p>
+                    <Button
+                        text="Assign applications"
+                        theme="accent"
+                        button={{
+                            onClick: handleSelfAssign
+                        }}
+                    />
+                </div>
+            )}
         </React.Fragment>
     );
 };
 
-export default SearchAttendeesPage;
+const mapState = state => ({
+    registrations: OrganiserSelectors.registrationsAssigned(state),
+    regsitrationsLoading: OrganiserSelectors.registrationsLoading(state)
+});
+
+export default connect(mapState)(SearchAttendeesPage);

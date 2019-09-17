@@ -27,8 +27,8 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) =>
                 return <SearchAttendeesPage />;
             case 'teams':
                 return <TeamsPage />;
-            // case 'assigned':
-            //     return <AssignAttendeesPage />;
+            case 'assigned':
+                return <AssignAttendeesPage />;
             default:
                 return null;
         }
