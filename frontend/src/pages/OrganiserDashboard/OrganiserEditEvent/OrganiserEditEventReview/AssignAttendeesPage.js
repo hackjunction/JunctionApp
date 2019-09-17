@@ -10,12 +10,13 @@ import AttendeeTable from 'components/tables/AttendeeTable';
 // import AttendeeTable from './AttendeeTable';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 
 import RegistrationsService from 'services/registrations';
 
-const SearchAttendeesPage = ({ idToken, slug, registrations, registrationsLoading }) => {
-    const [filtersUpdated, setFiltersUpdated] = useState();
+const SearchAttendeesPage = ({ idToken, event, registrations, registrationsLoading, updateRegistrations }) => {
+    const { slug } = event;
     const handleSelfAssign = () => {
         Modal.confirm({
             title: 'Please read this first :)',
@@ -35,8 +36,8 @@ const SearchAttendeesPage = ({ idToken, slug, registrations, registrationsLoadin
                         message.error("Oops, something wen't wrong...");
                     })
                     .finally(() => {
+                        updateRegistrations(slug);
                         hideMessage();
-                        setFiltersUpdated(Date.now());
                     });
             }
         });
@@ -69,8 +70,17 @@ const SearchAttendeesPage = ({ idToken, slug, registrations, registrationsLoadin
 };
 
 const mapState = state => ({
+    idToken: AuthSelectors.getIdToken(state),
+    event: OrganiserSelectors.event(state),
     registrations: OrganiserSelectors.registrationsAssigned(state),
     regsitrationsLoading: OrganiserSelectors.registrationsLoading(state)
 });
 
-export default connect(mapState)(SearchAttendeesPage);
+const mapDispatch = dispatch => ({
+    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(SearchAttendeesPage);
