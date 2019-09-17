@@ -311,7 +311,9 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
             >
                 {renderForm()}
                 <Steps
-                    progressDot={() => <span className="AttendeeFilters--steps-icon">AND</span>}
+                    progressDot={(idonDot, { index }) =>
+                        index !== 0 && <span className="AttendeeFilters--steps-icon">AND</span>
+                    }
                     direction="vertical"
                     className="AttendeeFilters--steps"
                 >
