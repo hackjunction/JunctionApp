@@ -47,3 +47,17 @@ export const teams = state => state.organiser.teams.data;
 export const teamsLoading = state => state.organiser.teams.loading;
 export const teamsError = state => state.organiser.teams.error;
 export const teamsUpdated = state => state.organiser.teams.updated;
+
+export const teamsPopulated = createSelector(
+    registrationsMap,
+    teams,
+    (map, teams) => {
+        console.log('MAP', map);
+        return teams.map(team => {
+            team.members = team.members.map(member => {
+                return map[member];
+            });
+            return team;
+        });
+    }
+);

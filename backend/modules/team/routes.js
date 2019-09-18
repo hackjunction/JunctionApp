@@ -46,7 +46,7 @@ const getTeamForEvent = asyncHandler(async (req, res) => {
 });
 
 const getTeamsForEvent = asyncHandler(async (req, res) => {
-    const teams = await TeamController.getTeams(req.event);
+    const teams = await TeamController.getTeamsForEvent(req.event._id);
     return res.status(200).json(teams);
 });
 

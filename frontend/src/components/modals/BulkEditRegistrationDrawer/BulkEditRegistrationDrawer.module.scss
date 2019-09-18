@@ -1,0 +1,10 @@
+@import '~styles/variables';
+
+.fieldEnabledText {
+    color: $black;
+    opacity: 0.5;
+}
+
+.fieldEnabledActive {
+    opacity: 1;
+}
