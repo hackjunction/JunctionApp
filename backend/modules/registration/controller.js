@@ -72,12 +72,8 @@ controller.searchRegistrationsForEvent = (eventId, userId, params) => {
 
 controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
     return Registration.find({
-        rating: {
-            $exists: false
-        },
-        assignedTo: {
-            $exists: false
-        }
+        rating: null,
+        assignedTo: null
     })
         .sort([['createdAt', -1]])
         .limit(10)
@@ -110,6 +106,19 @@ controller.assignRegistrationForEvent = data => {
     return Registration.findByIdAndUpdate(data.registrationId, {
         assignedTo: data.userId
     });
+};
+
+controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
+    const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo']);
+    return Registration.updateMany(
+        {
+            event: eventId,
+            _id: {
+                $in: registrationIds
+            }
+        },
+        cleanedEdits
+    );
 };
 
 controller.getFullRegistration = (eventId, registrationId) => {

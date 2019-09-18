@@ -1,4 +1,40 @@
-import { difference, isEmpty } from 'lodash-es';
+import { difference } from 'lodash-es';
+
+const isEmpty = value => {
+    if (Array.isArray(value)) {
+        return value.length === 0;
+    }
+    if (typeof value === 'object') {
+        return Object.keys(value).length === 0;
+    }
+    if (isNaN(value)) {
+        return !value || !value.length;
+    }
+
+    return false;
+};
+
+const contains = (value, answer) => {
+    if (!value || !answer) return false;
+    if (Array.isArray(answer)) {
+        return answer.indexOf(value) !== -1;
+    } else if (typeof answer === 'string') {
+        return answer
+            .toLowerCase()
+            .trim()
+            .indexOf(value.toLowerCase().trim());
+    }
+    return false;
+};
+
+const equals = (value, answer) => {
+    if (!value || !answer) return false;
+    if (typeof answer === 'string') {
+        return value.toLowerCase().trim() === answer.toLowerCase().trim();
+    }
+
+    return answer === value;
+};
 
 const filter = (registration, filter) => {
     switch (filter.type) {
@@ -38,39 +74,22 @@ const filter = (registration, filter) => {
             );
         }
         case 'field-equals': {
-            const answer = registration.answers[filter.field];
-            if (typeof answer === 'string') {
-                return filter.value && answer.toLowerCase() === filter.value.toLowerCase().trim();
-            }
-            return answer === filter.value;
+            return equals(filter.value, registration.answers[filter.field]);
         }
         case 'field-nequals': {
-            const answer = registration.answers[filter.field];
-            if (typeof answer === 'string') {
-                return filter.value && answer.toLowerCase() !== filter.value.toLowerCase().trim();
-            }
-            return answer !== filter.value;
+            return !equals(filter.value, registration.answers[filter.field]);
         }
         case 'field-contains': {
-            const answer = registration.answers[filter.field];
-            return filter.value && answer && answer.toLowerCase().indexOf(filter.value.toLowerCase().trim()) !== -1;
+            return contains(filter.value, registration.answers[filter.field]);
         }
         case 'field-not-contains': {
-            const answer = registration.answers[filter.field];
-            return filter.value && answer && answer.toLowerCase().indexOf(filter.value.toLowerCase().trim()) === -1;
+            return !contains(filter.value, registration.answers[filter.field]);
         }
         case 'field-empty': {
-            return (
-                !registration.answers.hasOwnProperty(filter.field) ||
-                !registration.answers[filter.field] ||
-                !registration.answers[filter.field].length
-            );
+            return isEmpty(registration.answers[filter.field]);
         }
         case 'field-not-empty': {
-            const answer = registration.answers[filter.field];
-            if (isNaN(answer) && !answer) return false;
-            if (isEmpty(answer)) return false;
-            return true;
+            return !isEmpty(registration.answers[filter.field]);
         }
         default:
             return true;
