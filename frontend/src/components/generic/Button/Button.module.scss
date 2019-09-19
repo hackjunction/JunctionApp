@@ -32,6 +32,10 @@
     &.buttonSmall {
         height: 36px;
         min-height: 36px;
+
+        .button_text {
+            font-size: 16px;
+        }
     }
 
     &.buttonLarge {
@@ -63,8 +67,8 @@
     }
 
     &.buttonSecondary {
-        background: $white;
-        border: 2px solid $grey;
+        background: $lightgrey;
+        border: 2px solid rgba($black, 0.4);
 
         &:hover {
             border: 2px solid $black;
@@ -75,8 +79,8 @@
         }
 
         .button_text {
-            background: $white;
-            color: rgba($black, 0.5);
+            background: $lightgrey;
+            color: rgba($black, 0.8);
         }
 
         .button_spinner {

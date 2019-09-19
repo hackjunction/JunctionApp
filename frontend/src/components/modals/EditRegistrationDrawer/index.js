@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styles from './EditRegistrationDrawer.module.scss';
 
 import { connect } from 'react-redux';
-import { Rate, notification, Divider as AntDivider, Button as AntButton, Tag, Drawer, List, Select } from 'antd';
+import { Rate, notification, Divider as AntDivider, Tag, Drawer, List, Select, Button as AntButton } from 'antd';
 import { isEqual, groupBy, find } from 'lodash-es';
 import { RegistrationFields } from '@hackjunction/shared';
 
@@ -17,12 +17,14 @@ import * as OrganiserActions from 'redux/organiser/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import MiscUtils from 'utils/misc';
 import UserSelectModal from 'components/modals/UserSelectModal';
+import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
 
 const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers, organisersMap, onEdit }) => {
     const initialValues = {
         rating: registration.rating,
         assignedTo: registration.assignedTo,
-        tags: registration.tags
+        tags: registration.tags,
+        status: registration.status
     };
     const [formValues, setFormValues] = useState(initialValues);
     const dirty = !isEqual(formValues, initialValues);
@@ -42,7 +44,6 @@ const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers,
         return 'No one';
     };
 
-    // renderTrigger, onDone, onCancel, loading, (userProfiles = []), title, (allowMultiple = true);
     const renderActions = () => {
         return (
             <React.Fragment>
@@ -55,7 +56,9 @@ const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers,
                 <List.Item
                     actions={[
                         <UserSelectModal
-                            renderTrigger={showModal => <AntButton onClick={showModal}>Change</AntButton>}
+                            renderTrigger={showModal => (
+                                <Button text="Change" button={{ onClick: showModal }} size="small" />
+                            )}
                             onDone={value => handleEdit('assignedTo', value.userId)}
                             allowMultiple={false}
                             userProfiles={organisers}
@@ -84,6 +87,17 @@ const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers,
                             </Select>
                         }
                     ></List.Item.Meta>
+                </List.Item>
+                <List.Item>
+                    <List.Item.Meta
+                        title="Status"
+                        description={
+                            <RegistrationStatusSelect
+                                value={formValues.status}
+                                onChange={value => handleEdit('status', value)}
+                            />
+                        }
+                    />
                 </List.Item>
                 <Divider size={1} />
                 <Button
@@ -151,8 +165,8 @@ const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers,
 
     return (
         <React.Fragment>
-            {renderContent()}
             {renderActions()}
+            {renderContent()}
         </React.Fragment>
     );
 };
@@ -235,7 +249,9 @@ const EditRegistrationDrawer = ({
                     />
                 </PageWrapper>
             </Drawer>
-            <AntButton onClick={setVisible}>Open</AntButton>
+            <AntButton type="link" size="small" onClick={setVisible}>
+                Edit
+            </AntButton>
         </React.Fragment>
     );
 };

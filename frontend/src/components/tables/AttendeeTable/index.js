@@ -3,25 +3,38 @@ import moment from 'moment';
 import { Table, Empty, Tag, Divider as AntDivider } from 'antd';
 import { connect } from 'react-redux';
 
+import { RegistrationStatuses } from '@hackjunction/shared';
+
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationDrawer from 'components/modals/EditRegistrationDrawer';
 
-const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [] }) => {
+const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [], footer = null }) => {
+    const renderTotal = (total, range) => {
+        return `${range[0]}-${range[1]} of ${total}`;
+    };
+
     const renderTable = () => {
         if (!loading) {
             if (!Array.isArray(attendees) || attendees.length === 0) return null;
         }
         return (
-            <Table loading={loading} dataSource={attendees} rowKey="user" scroll={{ x: 600 }}>
+            <Table
+                pagination={{
+                    showSizeChanger: true,
+                    showTotal: renderTotal,
+                    position: 'bottom',
+                    hideOnSinglePage: true
+                }}
+                footer={footer}
+                loading={loading}
+                dataSource={attendees}
+                rowKey="user"
+                scroll={{ x: 600 }}
+            >
                 <Table.Column
                     title="Name"
                     dataIndex="answers"
                     key="name"
-                    sorter={(a, b) =>
-                        `${a.answers.firstName}${a.answers.lastName}`.localeCompare(
-                            `${b.answers.firstName}${b.answers.lastName}`
-                        )
-                    }
                     render={answers => {
                         return `${answers.firstName} ${answers.lastName}`;
                     }}
@@ -31,14 +44,42 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
                     title="Rating"
                     dataIndex="rating"
                     rowKey="rating"
-                    sorter={(a, b) => a.rating > b.rating}
                     render={rating => rating || 'Pending'}
+                />
+                <Table.Column
+                    title="Status"
+                    dataIndex="status"
+                    rowKey="status"
+                    render={status => {
+                        const params = RegistrationStatuses.asObject[status];
+                        if (!params) return '-';
+                        return <Tag color={params.color}>{params.label}</Tag>;
+                    }}
+                />
+                <Table.Column
+                    title="Tags"
+                    dataIndex="tags"
+                    rowKey="tags"
+                    render={tags => {
+                        if (!tags || !tags.length) {
+                            return '-';
+                        } else {
+                            return event.tags
+                                .filter(tag => {
+                                    return tags.indexOf(tag.label) !== -1;
+                                })
+                                .map(({ color, label }) => (
+                                    <Tag key={label} color={color}>
+                                        {label}
+                                    </Tag>
+                                ));
+                        }
+                    }}
                 />
                 <Table.Column
                     title="Submitted"
                     dataIndex="createdAt"
                     rowKey="createdAt"
-                    sorter={(a, b) => a.createdAt > b.createdAt}
                     render={date => moment(date).fromNow()}
                 />
                 <Table.Column
@@ -56,22 +97,6 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
                             text = 'Unknown user';
                         }
                         return text;
-                    }}
-                />
-                <Table.Column
-                    title="Tags"
-                    dataIndex="tags"
-                    rowKey="tags"
-                    render={tags => {
-                        if (!tags || !tags.length) {
-                            return '-';
-                        } else {
-                            return event.tags
-                                .filter(tag => {
-                                    return tags.indexOf(tag.label) !== -1;
-                                })
-                                .map(({ color, label }) => <Tag color={color}>{label}</Tag>);
-                        }
                     }}
                 />
                 <Table.Column
@@ -97,7 +122,6 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
 
     return (
         <React.Fragment>
-            {attendees.length > 0 && <AntDivider>{attendees.length} results</AntDivider>}
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>
