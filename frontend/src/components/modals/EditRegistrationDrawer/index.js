@@ -165,8 +165,8 @@ const EditRegistrationDrawerInner = ({ idToken, event, registration, organisers,
 
     return (
         <React.Fragment>
-            {renderContent()}
             {renderActions()}
+            {renderContent()}
         </React.Fragment>
     );
 };

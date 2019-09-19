@@ -12,6 +12,7 @@ import * as OrganiserActions from 'redux/organiser/actions';
 import SearchAttendeesPage from './SearchAttendeesPage';
 import AssignAttendeesPage from './AssignAttendeesPage';
 import TeamsPage from './TeamsPage';
+import AdminPage from './AdminPage';
 
 const OrganiserEditEventReview = ({ event, organisers, updateRegistrations, updateTeams, registrationsLoading }) => {
     const [selectedKey, setSelectedKey] = useState('search');
@@ -33,6 +34,8 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations, upda
                 return <TeamsPage />;
             case 'assigned':
                 return <AssignAttendeesPage />;
+            case 'admin':
+                return <AdminPage />;
             default:
                 return null;
         }
@@ -58,6 +61,7 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations, upda
                             <Menu.Item key="search">Participants</Menu.Item>
                             <Menu.Item key="teams">Teams</Menu.Item>
                             <Menu.Item key="assigned">Assigned to you</Menu.Item>
+                            <Menu.Item key="admin">Admin & Tools</Menu.Item>
                         </Menu>
                         <Divider size={1} />
                         {renderSelectedKey()}

@@ -12,7 +12,8 @@ class PageWrapper extends PureComponent {
         render: PropTypes.func,
         header: PropTypes.func,
         footer: PropTypes.func,
-        wrapContent: PropTypes.bool
+        wrapContent: PropTypes.bool,
+        wrapperProps: PropTypes.object
     };
 
     static defaultProps = {
@@ -21,7 +22,8 @@ class PageWrapper extends PureComponent {
         error: false,
         errorText: 'Oops, something went wrong...',
         errorDesc: 'Please reload the page to try again',
-        wrapContent: true
+        wrapContent: true,
+        wrapperProps: {}
     };
 
     renderContent() {
@@ -51,7 +53,13 @@ class PageWrapper extends PureComponent {
         return (
             <React.Fragment>
                 {this.props.header && this.props.header()}
-                {this.props.wrapContent ? <div style={{ flex: 1 }}>{this.renderContent()}</div> : this.renderContent()}
+                {this.props.wrapContent ? (
+                    <div style={{ flex: 1 }} {...this.props.wrapperProps}>
+                        {this.renderContent()}
+                    </div>
+                ) : (
+                    this.renderContent()
+                )}
                 {this.props.footer && this.props.footer()}
             </React.Fragment>
         );

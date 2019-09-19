@@ -32,6 +32,10 @@
     &.buttonSmall {
         height: 36px;
         min-height: 36px;
+
+        .button_text {
+            font-size: 16px;
+        }
     }
 
     &.buttonLarge {
