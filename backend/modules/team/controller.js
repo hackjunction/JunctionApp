@@ -92,6 +92,12 @@ controller.getTeam = (event, user) => {
         });
 };
 
+controller.getTeamsForEvent = eventId => {
+    return Team.find({
+        event: eventId
+    });
+};
+
 controller.getTeamStatsForEvent = async eventId => {
     const numTeams = await Team.countDocuments({
         event: eventId

@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-import { PageHeader, Menu } from 'antd';
+import { PageHeader, Menu, Button as AntButton } from 'antd';
 import { connect } from 'react-redux';
 
 import PageWrapper from 'components/PageWrapper';
 import Divider from 'components/generic/Divider';
 
-import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 
 import SearchAttendeesPage from './SearchAttendeesPage';
 import AssignAttendeesPage from './AssignAttendeesPage';
 import TeamsPage from './TeamsPage';
+import AdminPage from './AdminPage';
 
-const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) => {
+const OrganiserEditEventReview = ({ event, organisers, updateRegistrations, updateTeams, registrationsLoading }) => {
     const [selectedKey, setSelectedKey] = useState('search');
 
-    useEffect(() => {
+    const updateData = useCallback(() => {
         updateRegistrations(event.slug);
-    }, [event.slug, updateRegistrations]);
+        updateTeams(event.slug);
+    }, [event.slug, updateTeams, updateRegistrations]);
+
+    useEffect(() => {
+        updateData();
+    }, [event.slug, updateData]);
 
     const renderSelectedKey = () => {
         switch (selectedKey) {
@@ -29,6 +34,8 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) =>
                 return <TeamsPage />;
             case 'assigned':
                 return <AssignAttendeesPage />;
+            case 'admin':
+                return <AdminPage />;
             default:
                 return null;
         }
@@ -39,6 +46,11 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) =>
             <PageHeader
                 title="Participants"
                 children={<p>Applications to your event</p>}
+                extra={
+                    <AntButton type="link" onClick={updateData} loading={registrationsLoading}>
+                        Refresh data
+                    </AntButton>
+                }
                 footer={
                     <React.Fragment>
                         <Menu
@@ -49,6 +61,7 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) =>
                             <Menu.Item key="search">Participants</Menu.Item>
                             <Menu.Item key="teams">Teams</Menu.Item>
                             <Menu.Item key="assigned">Assigned to you</Menu.Item>
+                            <Menu.Item key="admin">Admin & Tools</Menu.Item>
                         </Menu>
                         <Divider size={1} />
                         {renderSelectedKey()}
@@ -61,11 +74,13 @@ const OrganiserEditEventReview = ({ event, organisers, updateRegistrations }) =>
 
 const mapState = state => ({
     organisers: OrganiserSelectors.organisers(state),
-    event: OrganiserSelectors.event(state)
+    event: OrganiserSelectors.event(state),
+    registrationsLoading: OrganiserSelectors.registrationsLoading(state)
 });
 
 const mapDispatch = dispatch => ({
-    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
+    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
+    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug))
 });
 
 export default connect(

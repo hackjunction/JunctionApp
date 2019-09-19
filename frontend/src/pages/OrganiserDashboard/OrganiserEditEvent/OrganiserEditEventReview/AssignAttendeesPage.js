@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import styles from './AssignAttendeesPage.module.scss';
 
-import { Empty, Modal, message } from 'antd';
+import { Button as AntButton, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 
 import Divider from 'components/generic/Divider';
-import Button from 'components/generic/Button';
 import AttendeeTable from 'components/tables/AttendeeTable';
-// import AttendeeTable from './AttendeeTable';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 
 import RegistrationsService from 'services/registrations';
+import BulkEditRegistrationDrawer from 'components/modals/BulkEditRegistrationDrawer';
 
-const SearchAttendeesPage = ({ idToken, event, registrations, registrationsLoading, updateRegistrations }) => {
+const SearchAttendeesPage = ({ idToken, event, registrations = [], registrationsLoading, updateRegistrations }) => {
     const { slug } = event;
     const handleSelfAssign = () => {
         Modal.confirm({
@@ -45,21 +44,16 @@ const SearchAttendeesPage = ({ idToken, event, registrations, registrationsLoadi
 
     return (
         <React.Fragment>
-            <div className={styles.empty}>
-                <p>
-                    Applications assigned to you will be "reserved" for you to review. This way, your team can avoid two
-                    people accidentally reviewing the same applications at the same time. Using the button below, you
-                    can randomly assign 10 applications to yourself and start reviewing!
-                </p>
-                <Button
-                    text="Assign applications"
-                    theme="accent"
-                    button={{
-                        onClick: handleSelfAssign
-                    }}
-                />
+            <div className={styles.top}>
+                <span className={styles.title}>{registrations.length} registrations</span>
+                <div className={styles.topLeft}>
+                    <AntButton type="link" onClick={handleSelfAssign} loading={registrationsLoading}>
+                        Assign random registrations
+                    </AntButton>
+                    <Divider size={1} />
+                    <BulkEditRegistrationDrawer registrationIds={registrations.map(r => r._id)} />
+                </div>
             </div>
-            <Divider size={1} />
             <AttendeeTable attendees={registrations} loading={registrationsLoading} />
             <Divider size={1} />
         </React.Fragment>
@@ -70,7 +64,7 @@ const mapState = state => ({
     idToken: AuthSelectors.getIdToken(state),
     event: OrganiserSelectors.event(state),
     registrations: OrganiserSelectors.registrationsAssigned(state),
-    regsitrationsLoading: OrganiserSelectors.registrationsLoading(state)
+    registrationsLoading: OrganiserSelectors.registrationsLoading(state)
 });
 
 const mapDispatch = dispatch => ({

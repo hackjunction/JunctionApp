@@ -32,6 +32,10 @@ RegistrationsService.getRegistrationsForEvent = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/all`, config(idToken));
 };
 
+RegistrationsService.bulkEditRegistrationsForEvent = (idToken, slug, registrationIds, edits) => {
+    return _axios.patch(`${BASE_ROUTE}/${slug}/bulk`, { registrationIds, edits }, config(idToken));
+};
+
 RegistrationsService.searchRegistrationsForEvent = (idToken, slug, filters) => {
     const options = {
         ...config(idToken),

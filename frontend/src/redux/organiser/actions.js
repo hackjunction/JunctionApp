@@ -104,10 +104,19 @@ export const editRegistration = (registrationId, data, slug) => async (dispatch,
     return registration;
 };
 
+export const bulkEditRegistrations = (registrationIds, edits, slug) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    await RegistrationsService.bulkEditRegistrationsForEvent(idToken, slug, registrationIds, edits);
+
+    dispatch(updateRegistrationsForEvent(slug));
+
+    return;
+};
+
 /** Update event teams with loading/error data */
 export const updateTeamsForEvent = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
-
     if (!slug) return;
 
     dispatch({

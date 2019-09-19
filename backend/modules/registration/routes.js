@@ -103,6 +103,15 @@ const getFullRegistration = asyncHandler(async (req, res) => {
     return res.status(200).json(registration);
 });
 
+const bulkEditRegistrations = asyncHandler(async (req, res) => {
+    await RegistrationController.bulkEditRegistrations(
+        req.event._id.toString(),
+        req.body.registrationIds,
+        req.body.edits
+    );
+    return res.status(200).json([]);
+});
+
 router.route('/').get(hasToken, getUserRegistrations);
 
 /** Get, create or update a registration */
@@ -134,6 +143,10 @@ router
     .route('/:slug/assign')
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, selfAssignRegistrationsForEvent)
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, assignRegistrationForEvent);
+
+router
+    .route('/:slug/bulk')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkEditRegistrations);
 
 /** Get or edit single registration as an organiser */
 router
