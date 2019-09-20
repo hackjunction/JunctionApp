@@ -32,7 +32,7 @@ const ReviewersList = ({ data, userProfilesMap = {}, averagesMap = {} }) => {
                     <List.Item.Meta
                         avatar={<Avatar src={item.user.avatar} />}
                         title={`${item.user.firstName} ${item.user.lastName}`}
-                        description={`${item.ratings} reviews / ${item.average} average rating`}
+                        description={`${item.ratings} reviews / ${item.average.toFixed(2)} average rating`}
                     />
                 </List.Item>
             )}
