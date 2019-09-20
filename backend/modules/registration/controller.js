@@ -75,7 +75,7 @@ controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
         rating: null,
         assignedTo: null
     })
-        .sort([['createdAt', -1]])
+        .sort({ createdAt: 'asc' })
         .limit(10)
         .then(registrations => {
             const updates = registrations.map(reg => {
