@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { sortBy } from 'lodash-es';
+import { connect } from 'react-redux';
 
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
+import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 const ApplicationsOverTime = ({ data }) => {
     const formattedData = useMemo(() => {
@@ -39,4 +41,8 @@ const ApplicationsOverTime = ({ data }) => {
     );
 };
 
-export default ApplicationsOverTime;
+const mapState = state => ({
+    data: OrganiserSelectors.registrationsByDay(state)
+});
+
+export default connect(mapState)(ApplicationsOverTime);

@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
 import { sortBy } from 'lodash-es';
+import { connect } from 'react-redux';
+
+import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
 
@@ -39,4 +42,8 @@ const RatingsSplit = ({ data }) => {
     );
 };
 
-export default RatingsSplit;
+const mapState = state => ({
+    data: OrganiserSelectors.registrationsByRating(state)
+});
+
+export default connect(mapState)(RatingsSplit);
