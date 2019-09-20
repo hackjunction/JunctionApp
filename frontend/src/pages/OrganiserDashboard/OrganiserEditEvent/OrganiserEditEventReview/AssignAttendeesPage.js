@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from './AssignAttendeesPage.module.scss';
 
-import { Button as AntButton, Modal, message } from 'antd';
+import { Button as AntButton, Modal, message, Switch } from 'antd';
 import { connect } from 'react-redux';
 
 import Divider from 'components/generic/Divider';
@@ -15,6 +15,7 @@ import RegistrationsService from 'services/registrations';
 import BulkEditRegistrationDrawer from 'components/modals/BulkEditRegistrationDrawer';
 
 const SearchAttendeesPage = ({ idToken, event, registrations = [], registrationsLoading, updateRegistrations }) => {
+    const [hideRated, setHideRated] = useState(false);
     const { slug } = event;
     const handleSelfAssign = () => {
         Modal.confirm({
@@ -42,11 +43,24 @@ const SearchAttendeesPage = ({ idToken, event, registrations = [], registrations
         });
     };
 
+    const filtered = useMemo(() => {
+        return registrations.filter(registration => {
+            if (hideRated) {
+                if (registration.rating) return false;
+            }
+            return true;
+        });
+    }, [registrations, hideRated]);
+
     return (
         <React.Fragment>
             <div className={styles.top}>
-                <span className={styles.title}>{registrations.length} registrations</span>
+                <span className={styles.title}>{filtered.length} registrations</span>
                 <div className={styles.topLeft}>
+                    <div className={styles.toggle}>
+                        <span className={styles.toggleText}>Hide rated registrations</span>
+                        <Switch value={hideRated} onChange={setHideRated} />
+                    </div>
                     <AntButton type="link" onClick={handleSelfAssign} loading={registrationsLoading}>
                         Assign random registrations
                     </AntButton>
@@ -54,7 +68,7 @@ const SearchAttendeesPage = ({ idToken, event, registrations = [], registrations
                     <BulkEditRegistrationDrawer registrationIds={registrations.map(r => r._id)} />
                 </div>
             </div>
-            <AttendeeTable attendees={registrations} loading={registrationsLoading} />
+            <AttendeeTable attendees={filtered} loading={registrationsLoading} />
             <Divider size={1} />
         </React.Fragment>
     );
