@@ -47,22 +47,28 @@ controller.updateRegistration = (user, event, data) => {
 };
 
 controller.getRegistrationsForEvent = eventId => {
-    return Registration.find(
-        {
-            event: eventId
-        }
-        // {
-        //     user: 1,
-        //     rating: 1,
-        //     ratedBy: 1,
-        //     assignedTo: 1,
-        //     tags: 1,
-        //     status: 1,
-        //     'answers.email': 1,
-        //     'answers.firstName': 1,
-        //     'answers.lastName': 1
-        // }
-    );
+    return Registration.find({
+        event: eventId
+    }).then(registrations => {
+        /** Do some minor optimisation here to cut down on size */
+        return registrations.map(reg => {
+            reg.answers = _.mapValues(reg.answers, answer => {
+                if (typeof answer === 'string' && answer.length > 50) {
+                    return answer.slice(0, 10) + '...';
+                }
+                if (typeof answer === 'object' && Object.keys(answer).length > 0) {
+                    return _.mapValues(answer, subAnswer => {
+                        if (typeof subAnswer === 'string' && subAnswer.length > 50) {
+                            return subAnswer.slice(0, 10);
+                        }
+                        return subAnswer;
+                    });
+                }
+                return answer;
+            });
+            return reg;
+        });
+    });
 };
 
 controller.searchRegistrationsForEvent = (eventId, userId, params) => {
