@@ -7,10 +7,12 @@ import { RegistrationStatuses } from '@hackjunction/shared';
 import { Row, Col, Card, Statistic, Tag, List, Button as AntButton } from 'antd';
 import Divider from 'components/generic/Divider';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as AuthSelectors from 'redux/auth/selectors';
+import RegistrationsService from 'services/registrations';
 
 const STATUSES = RegistrationStatuses.asObject;
 
-const AdminPage = ({ registrations }) => {
+const AdminPage = ({ registrations, idToken, event }) => {
     const groupedByStatus = useMemo(() => {
         return groupBy(registrations, 'status');
     }, [registrations]);
@@ -24,6 +26,20 @@ const AdminPage = ({ registrations }) => {
         }, 0);
     };
 
+    const handleBulkAccept = () => {
+        console.log('BULK ACCEPT BEGIN');
+        RegistrationsService.bulkAcceptRegistrationsForEvent(idToken, event.slug)
+            .then(data => {
+                console.log('BULK ACCEPT DONE', data);
+            })
+            .catch(err => {
+                console.log('BULK ACCEPT ERR', err);
+            })
+            .finally(() => {
+                console.log('BULK ACCEPT FINALLY');
+            });
+    };
+
     const total = registrations.length;
     const rated = filter(registrations, reg => reg.rating).length;
     const ratedOrAssigned = filter(registrations, reg => reg.rating || reg.assignedTo).length;
@@ -34,7 +50,7 @@ const AdminPage = ({ registrations }) => {
             description:
                 'Change the status of all Soft Accepted participants to Accepted, and notify them via email that they have been accepted to the event!',
             extra: (
-                <AntButton onClick={() => window.alert('Get permission from Juuso to do this ;--)')} type="link">
+                <AntButton onClick={handleBulkAccept} type="link">
                     Accept
                 </AntButton>
             )
@@ -50,8 +66,6 @@ const AdminPage = ({ registrations }) => {
             )
         }
     ];
-
-    console.log('RATED', rated);
 
     return (
         <React.Fragment>
@@ -152,6 +166,8 @@ const AdminPage = ({ registrations }) => {
 };
 
 const mapState = state => ({
-    registrations: OrganiserSelectors.registrations(state)
+    registrations: OrganiserSelectors.registrations(state),
+    event: OrganiserSelectors.event(state),
+    idToken: AuthSelectors.getIdToken(state)
 });
 export default connect(mapState)(AdminPage);

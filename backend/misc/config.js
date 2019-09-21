@@ -74,6 +74,10 @@ const settings = {
     ENVIRONMENT_TAG: {
         value: process.env.ENVIRONMENT_TAG,
         default: 'none'
+    },
+    DEVTOOLS_ENABLED: {
+        value: process.env.DEVTOOLS_ENABLED === 'true' && process.env.NODE_ENV !== 'production',
+        default: false
     }
 };
 
@@ -81,7 +85,7 @@ const buildConfig = () => {
     const config = {};
     _.forOwn(settings, (obj, key) => {
         if (!obj.value) {
-            if (obj.default) {
+            if (obj.default || obj.default === false) {
                 config[key] = obj.default;
             } else {
                 throw new Error(
@@ -94,7 +98,6 @@ const buildConfig = () => {
     });
 
     console.log('Running app with config', config);
-    console.log('Running app with env', process.env);
 
     return config;
 };
