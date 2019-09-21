@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const RegistrationStatuses = require('@hackjunction/shared');
+const { RegistrationStatuses } = require('@hackjunction/shared');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
+const EmailTaskController = require('../email-task/controller');
 
 const RegistrationSchema = new mongoose.Schema({
     event: {
@@ -14,7 +15,7 @@ const RegistrationSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: RegistrationStatuses.ids,
-        default: 'pending'
+        default: RegistrationStatuses.asObject.pending.id
     },
     assignedTo: {
         type: String
@@ -41,6 +42,35 @@ const RegistrationSchema = new mongoose.Schema({
 RegistrationSchema.set('timestamps', true);
 RegistrationSchema.plugin(updateAllowedPlugin, {
     blacklisted: ['__v', '_id', 'event', 'user', 'createdAt', 'updatedAt']
+});
+
+RegistrationSchema.pre('save', function(next) {
+    this._wasNew = this.isNew;
+    this._previousStatus = this.status;
+    next();
+});
+
+/** Trigger email sending on status changes etc. */
+RegistrationSchema.post('save', function(doc, next) {
+    const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
+    const REJECTED = RegistrationStatuses.asObject.rejected.id;
+
+    /** If a registration was just created, create an email notification about it */
+    if (doc._wasNew) {
+        EmailTaskController.createRegisteredTask(doc.user, doc.event);
+    }
+
+    /** If a registration is accepted, create an email notification about it */
+    if (doc._previousStatus !== ACCEPTED && doc.status === ACCEPTED) {
+        EmailTaskController.createAcceptedTask(doc.user, doc.event);
+    }
+
+    /** If a registration is rejected, create an email notification about it */
+    if ( && doc._previousStatus !== REJECTED && doc.status === REJECTED) {
+        EmailTaskController.createRejectedTask(doc.user, doc.event);
+    }
+
+    next();
 });
 
 RegistrationSchema.index({ event: 1, user: 1 }, { unique: true });

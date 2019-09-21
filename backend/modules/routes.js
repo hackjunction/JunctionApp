@@ -5,6 +5,7 @@ const userProfileRouter = require('./user-profile/routes');
 const registrationRouter = require('./registration/routes');
 const newsletterRouter = require('./newsletter/routes');
 const teamRouter = require('./team/routes');
+const devToolsRouter = require('./devtools/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -21,4 +22,9 @@ module.exports = function(app) {
     app.use('/api/teams', teamRouter);
     app.use('/api/user-profiles', userProfileRouter);
     app.use('/api/registrations', registrationRouter);
+
+    /** Admin tools (development only) */
+    if (global.gConfig.DEVTOOLS_ENABLED) {
+        app.use('/api/devtools', devToolsRouter);
+    }
 };

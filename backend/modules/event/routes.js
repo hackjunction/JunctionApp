@@ -39,17 +39,6 @@ const updateEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(updatedEvent);
 });
 
-const getEventStats = asyncHandler(async (req, res) => {
-    const eventId = req.event._id.toString();
-    const registrationStats = await RegistrationController.getRegistrationStatsForEvent(eventId);
-    const teamStats = await TeamController.getTeamStatsForEvent(eventId);
-
-    return res.status(200).json({
-        ...registrationStats,
-        ...teamStats
-    });
-});
-
 const getEventAsOrganiser = asyncHandler(async (req, res) => {
     const event = await EventController.getEventBySlug(req.event.slug);
     return res.status(200).json(event);
@@ -104,10 +93,6 @@ router
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getEventAsOrganiser)
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateEvent)
     .delete(hasToken, hasPermission(Auth.Permissions.DELETE_EVENT), isEventOwner, deleteEvent);
-
-router
-    .route('/:slug/stats')
-    .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getEventStats);
 
 /** Get organisers for single event */
 router.get('/organisers/:slug', hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOwner, getOrganisers);

@@ -20,10 +20,6 @@ EventsService.getEventsByOrganiser = idToken => {
     return _axios.get(`${BASE_ROUTE}`, config(idToken));
 };
 
-EventsService.getEventStats = (idToken, slug) => {
-    return _axios.get(`${BASE_ROUTE}/${slug}/stats`, config(idToken));
-};
-
 EventsService.getPublicEvents = () => {
     return _axios.get(`${BASE_ROUTE}/public`);
 };

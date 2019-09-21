@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
-const { Auth } = require('@hackjunction/shared');
+const { Auth, RegistrationStatuses } = require('@hackjunction/shared');
 const RegistrationController = require('./controller');
 const EventController = require('../event/controller');
-const UserProfileController = require('../user-profile/controller');
-const EmailTaskController = require('../email-task/controller');
 
 const { hasToken } = require('../../common/middleware/token');
 const { hasPermission } = require('../../common/middleware/permissions');
@@ -42,41 +40,8 @@ const editRegistration = asyncHandler(async (req, res) => {
     return res.status(200).json(registration);
 });
 
-const rateRegistration = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.rateRegistration(
-        req.params.registrationId,
-        req.event,
-        req.user,
-        req.body.rating
-    );
-    return res.status(200).json(registration);
-});
-
-const acceptRegistration = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.acceptRegistration(req.params.registrationId, req.event);
-    const user = await UserProfileController.getUserProfile(registration.user);
-    await EmailTaskController.sendAcceptanceEmail(req.event, user);
-    return res.status(200).json(registration);
-});
-
-const rejectRegistration = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.rejectRegistration(req.params.registrationId, req.event);
-    const user = await UserProfileController.getUserProfile(registration.user);
-    await EmailTaskController.sendAcceptanceEmail(req.event, user);
-    return res.status(200).json(registration);
-});
-
 const getRegistrationsForEvent = asyncHandler(async (req, res) => {
     const registrations = await RegistrationController.getRegistrationsForEvent(req.event._id.toString());
-    return res.status(200).json(registrations);
-});
-
-const searchRegistrationsForEvent = asyncHandler(async (req, res) => {
-    const registrations = await RegistrationController.searchRegistrationsForEvent(
-        req.event._id.toString(),
-        req.user.sub,
-        req.query
-    );
     return res.status(200).json(registrations);
 });
 
@@ -112,6 +77,18 @@ const bulkEditRegistrations = asyncHandler(async (req, res) => {
     return res.status(200).json([]);
 });
 
+const bulkAcceptRegistrations = asyncHandler(async (req, res) => {
+    const eventId = req.event._id.toString();
+    const accepted = await RegistrationController.acceptSoftAccepted(eventId);
+    return res.status(200).json(accepted);
+});
+
+const bulkRejectRegistrations = asyncHandler(async (req, res) => {
+    const eventId = req.event._id.toString();
+    const rejected = await RegistrationController.rejectSoftRejected(eventId);
+    return res.status(200).json(rejected);
+});
+
 router.route('/').get(hasToken, getUserRegistrations);
 
 /** Get, create or update a registration */
@@ -130,15 +107,6 @@ router.get(
     getRegistrationsForEvent
 );
 
-/** Search registrations as organiser */
-router.get(
-    '/:slug/search',
-    hasToken,
-    hasPermission(Auth.Permissions.MANAGE_EVENT),
-    isEventOrganiser,
-    searchRegistrationsForEvent
-);
-
 router
     .route('/:slug/assign')
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, selfAssignRegistrationsForEvent)
@@ -148,23 +116,18 @@ router
     .route('/:slug/bulk')
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkEditRegistrations);
 
+router
+    .route('/:slug/bulk/accept')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkAcceptRegistrations);
+
+router
+    .route('/:slug/bulk/reject')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectRegistrations);
+
 /** Get or edit single registration as an organiser */
 router
     .route('/:slug/:registrationId')
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getFullRegistration)
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, editRegistration);
-
-/** Rate a single registration */
-router
-    .route('/:slug/:registrationId/rate')
-    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, rateRegistration);
-
-router
-    .route('/:slug/:registrationId/accept')
-    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, acceptRegistration);
-
-router
-    .route('/:slug/:registrationId/reject')
-    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, rejectRegistration);
 
 module.exports = router;
