@@ -11,30 +11,39 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, type }) => {
         if (!type) return null;
         switch (type) {
             case 'success':
-                return <Icon className={classNames(styles.typeIcon, styles.typeIconSuccess)} type="check-circle" />;
+                return <Icon className={styles.icon} type="check-circle" />;
             case 'error':
-                return <Icon className={classNames(styles.typeIcon, styles.typeIconError)} type="exclamation-circle" />;
+                return <Icon className={styles.icon} type="exclamation-circle" />;
             case 'warning':
-                return (
-                    <Icon className={classNames(styles.typeIcon, styles.typeIconWarning)} type="exclamation-circle" />
-                );
+                return <Icon className={styles.icon} type="exclamation-circle" />;
             case 'info':
-                return <Icon className={classNames(styles.typeIcon, styles.typeIconInfo)} type="info-circle" />;
+                return <Icon className={styles.icon} type="info-circle" />;
             default:
                 return null;
         }
     };
 
+    const iconWrapperClass = classNames(styles.iconWrapper, {
+        [styles.iconWrapperSuccess]: type === 'success',
+        [styles.iconWrapperInfo]: type === 'info',
+        [styles.iconWrapperWarning]: type === 'warning',
+        [styles.iconWrapperError]: type === 'error'
+    });
+
     return (
         <div className={styles.wrapper}>
-            <span className={styles.title}>
-                {renderTypeIcon()}
-                {title}
-                {titleExtra && <strong className={styles.titleExtra}>{titleExtra}</strong>}
-            </span>
-            <Divider size={1} />
-            <p className={styles.body}>{body}</p>
-            <div className={styles.bottom}>{bottom}</div>
+            <div className={iconWrapperClass}>
+                <div className={styles.iconBubble}>{renderTypeIcon()}</div>
+            </div>
+            <div className={styles.contentWrapper}>
+                <span className={styles.title}>
+                    {title}
+                    {titleExtra && <strong className={styles.titleExtra}>{titleExtra}</strong>}
+                </span>
+                <Divider size={1} />
+                <p className={styles.body}>{body}</p>
+                <div className={styles.bottom}>{bottom}</div>
+            </div>
         </div>
     );
 };

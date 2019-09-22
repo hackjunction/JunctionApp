@@ -47,6 +47,14 @@ const RegistrationStatuses = {
         allowAssign: false,
         allowEdit: false
     },
+    cancelled: {
+        id: 'cancelled',
+        label: 'Cancelled',
+        description: 'Has cancelled their participation',
+        color: '#ff7c0c',
+        allowAssign: false,
+        allowEdit: false
+    },
     checkedIn: {
         id: 'checkedIn',
         label: 'Checked In',

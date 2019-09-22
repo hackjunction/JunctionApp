@@ -2,10 +2,11 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 const { RegistrationStatuses } = require('@hackjunction/shared');
 const Registration = require('./model');
-const { NotFoundError } = require('../../common/errors/errors');
+const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const UserProfileController = require('../user-profile/controller');
 const RegistrationHelpers = require('./helpers');
 
+const STATUSES = RegistrationStatuses.asObject;
 const controller = {};
 
 controller.getUserRegistrations = user => {
@@ -42,6 +43,28 @@ controller.updateRegistration = (user, event, data) => {
         const answers = RegistrationHelpers.validateAnswers(data, event);
         UserProfileController.updateUserProfile(answers, user.sub);
         return Registration.updateAllowed(registration, { answers });
+    });
+};
+
+controller.confirmRegistration = (user, event) => {
+    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
+        if (registration.status === STATUSES.accepted.id) {
+            registration.status = STATUSES.confirmed.id;
+            return registration.save();
+        }
+
+        throw new ForbiddenError('Only accepted registrations can be confirmed');
+    });
+};
+
+controller.cancelRegistration = (user, event) => {
+    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
+        if (registration.status === STATUSES.confirmed.id) {
+            registration.status = STATUSES.cancelled.id;
+            return registration.save();
+        }
+
+        throw new ForbiddenError('Only confirmed registrations can be cancelled');
     });
 };
 
@@ -143,9 +166,9 @@ controller.getFullRegistrationsForEvent = eventId => {
 };
 
 controller.acceptSoftAccepted = async eventId => {
-    const users = await Registration.find({ event: eventId, status: RegistrationStatuses.asObject.accepted.id });
+    const users = await Registration.find({ event: eventId, status: RegistrationStatuses.asObject.softAccepted.id });
     const accepted = await Promise.each(users, user => {
-        user.status = RegistrationStatuses.asObject.softAccepted.id;
+        user.status = RegistrationStatuses.asObject.accepted.id;
         user.save();
     });
     return accepted;

@@ -66,6 +66,10 @@ const settings = {
         value: process.env.SENDGRID_REJECTED_TEMPLATE,
         required: true
     },
+    SENDGRID_GENERIC_TEMPLATE: {
+        value: process.env.SENDGRID_GENERIC_TEMPLATE,
+        required: true
+    },
     FRONTEND_URL: {
         value: process.env.FRONTEND_URL,
         default: '',
