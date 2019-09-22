@@ -201,76 +201,80 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
         );
     };
 
-    const renderItemValue = filter => {
+    const renderItemValue = (filter, label) => {
         switch (filter.type) {
             case 'status-equals':
             case 'status-nequals': {
-                return RegistrationStatuses.asArray
+                const statuses = RegistrationStatuses.asArray
                     .filter(status => {
                         return filter.value && filter.value.indexOf(status.id) !== -1;
                     })
                     .map(status => {
                         return <Tag color={status.color}>{status.label}</Tag>;
                     });
+                return (
+                    <span style={{ fontWeight: 'bold' }}>
+                        {label} {statuses}
+                    </span>
+                );
             }
             case 'rating-lte':
             case 'rating-gte': {
-                return <Rate readOnly value={filter.value} />;
+                return (
+                    <span style={{ fontWeight: 'bold' }}>
+                        {label} <Rate readOnly value={filter.value} />
+                    </span>
+                );
             }
             case 'tags-contain':
             case 'tags-not-contain':
-                return event.tags
+                const tags = event.tags
                     .filter(tag => {
                         return filter.value && filter.value.indexOf(tag.label) !== -1;
                     })
                     .map(tag => {
                         return <Tag color={tag.color}>{tag.label}</Tag>;
                     });
+                return (
+                    <span style={{ fontWeight: 'bold' }}>
+                        {label} {tags}
+                    </span>
+                );
             case 'field-equals':
                 return (
-                    <span>
-                        <Tag>{filter.field}</Tag>
-                        <strong style={{ marginLeft: 10, marginRight: 15 }}>EQUALS</strong>
-                        <Tag>{filter.value}</Tag>
+                    <span style={{ fontWeight: 'bold' }}>
+                        {filter.field} <Tag>EQUALS</Tag> {filter.value}
                     </span>
                 );
             case 'field-nequals':
                 return (
-                    <span>
-                        <Tag>{filter.field}</Tag>
-                        <strong style={{ marginLeft: 10, marginRight: 15 }}>IS NOT</strong>
-                        <Tag>{filter.value}</Tag>
+                    <span style={{ fontWeight: 'bold' }}>
+                        {filter.field} <Tag>DOES NOT EQUAL</Tag> {filter.value}
                     </span>
                 );
             case 'field-empty':
                 return (
-                    <span>
-                        <Tag>{filter.field}</Tag>
-                        <strong style={{ marginLeft: 10 }}>IS EMPTY</strong>
+                    <span style={{ fontWeight: 'bold' }}>
+                        {filter.field} <Tag>IS EMPTY</Tag>
                     </span>
                 );
             case 'field-not-empty':
                 return (
-                    <span>
-                        <Tag>{filter.field}</Tag>
-                        <strong style={{ marginLeft: 10 }}>IS NOT EMPTY</strong>
+                    <span style={{ fontWeight: 'bold' }}>
+                        {filter.field} <Tag>IS NOT EMPTY</Tag>
                     </span>
                 );
             case 'field-contains': {
                 return (
-                    <span>
-                        <Tag>{filter.field}</Tag>
-                        <strong style={{ marginLeft: 10 }}>CONTAINS</strong>
-                        <Tag>{filter.value}</Tag>
+                    <span style={{ fontWeight: 'bold' }}>
+                        {filter.field} <Tag>CONTAINS</Tag> {filter.value}
                     </span>
                 );
             }
             case 'field-not-contains': {
                 return (
-                    <span>
-                        <Tag>{filter.field}</Tag>
-                        <strong style={{ marginLeft: 10 }}>DOES NOT CONTAIN</strong>
-                        <Tag>{filter.value}</Tag>
+                    <span style={{ fontWeight: 'bold' }}>
+                        {filter.field} <Tag>DOES NOT CONTAIN</Tag> {filter.value}
                     </span>
                 );
             }
@@ -287,15 +291,7 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
                 <Steps.Step
                     status="finish"
                     key={filter.type + filter.value}
-                    title={
-                        <div className="AttendeeFilters--steps-top">
-                            <span>{label}</span>
-                            <AntButton type="link" onClick={() => handleRemove(idx)}>
-                                Remove
-                            </AntButton>
-                        </div>
-                    }
-                    description={<div style={{ width: '300px' }}>{renderItemValue(filter)}</div>}
+                    title={<div style={{ width: '100%' }}>{renderItemValue(filter, label)}</div>}
                 />
             );
         });
@@ -324,36 +320,6 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
             </Collapse.Panel>
         </Collapse>
     );
-
-    // return (
-    //     <Row>
-    //         <Col xs={24}>
-    //             <Select style={{ width: '100%' }} placeholder="Choose field" size="large">
-    //                 <Select.OptGroup label="System fields">
-    //                     <Select.Option value="rating">Rating</Select.Option>
-    //                 </Select.OptGroup>
-    //                 <Select.OptGroup label="Standard questions">
-    //                     <Select.Option value="answers.firstName">First name</Select.Option>
-    //                     <Select.Option value="answers.lastName">Last name</Select.Option>
-    //                 </Select.OptGroup>
-    //                 <Select.OptGroup label="Custom questions">
-    //                     <Select.Option value="terminal">Terminal</Select.Option>
-    //                 </Select.OptGroup>
-    //             </Select>
-    //         </Col>
-    //         <Col xs={24}>
-    //             <Select style={{ width: '100%' }} placeholder="Choose a filter" size="large">
-    //                 <Select.Option value="exists">Exists</Select.Option>
-    //                 <Select.Option value="nexists">Does not exist</Select.Option>
-    //                 <Select.Option value="atleast">Is at least</Select.Option>
-    //                 <Select.Option value="atleast">Is at most</Select.Option>
-    //             </Select>
-    //         </Col>
-    //         <Col xs={24}>
-    //             <Input placeholder="Filter value" size="large" />
-    //         </Col>
-    //     </Row>
-    // );
 };
 
 const mapState = state => ({
