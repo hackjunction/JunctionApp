@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import './AdminPage.scss';
 
 import { connect } from 'react-redux';
 import { groupBy, filter } from 'lodash-es';
 import { RegistrationStatuses } from '@hackjunction/shared';
-import { Row, Col, Card, Statistic, Tag, List, Button as AntButton } from 'antd';
+import { Row, Col, Card, Statistic, Tag, List, Button as AntButton, notification } from 'antd';
 import Divider from 'components/generic/Divider';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
@@ -13,6 +13,8 @@ import RegistrationsService from 'services/registrations';
 const STATUSES = RegistrationStatuses.asObject;
 
 const AdminPage = ({ registrations, idToken, event }) => {
+    const [bulkAcceptLoading, setBulkAcceptLoading] = useState(false);
+    const [bulkRejectLoading, setBulkRejectLoading] = useState(false);
     const groupedByStatus = useMemo(() => {
         return groupBy(registrations, 'status');
     }, [registrations]);
@@ -27,16 +29,22 @@ const AdminPage = ({ registrations, idToken, event }) => {
     };
 
     const handleBulkAccept = () => {
-        console.log('BULK ACCEPT BEGIN');
+        setBulkAcceptLoading(true);
         RegistrationsService.bulkAcceptRegistrationsForEvent(idToken, event.slug)
             .then(data => {
-                console.log('BULK ACCEPT DONE', data);
+                notification.success({
+                    message: 'Success!',
+                    description: 'All soft accepted registrations have been accepted'
+                });
             })
             .catch(err => {
-                console.log('BULK ACCEPT ERR', err);
+                notification.error({
+                    message: 'Something went wrong...',
+                    description: "Are you sure you're connected to the internet?"
+                });
             })
             .finally(() => {
-                console.log('BULK ACCEPT FINALLY');
+                setBulkAcceptLoading(false);
             });
     };
 
@@ -50,7 +58,7 @@ const AdminPage = ({ registrations, idToken, event }) => {
             description:
                 'Change the status of all Soft Accepted participants to Accepted, and notify them via email that they have been accepted to the event!',
             extra: (
-                <AntButton onClick={handleBulkAccept} type="link">
+                <AntButton onClick={handleBulkAccept} type="link" loading={bulkAcceptLoading}>
                     Accept
                 </AntButton>
             )
@@ -60,7 +68,11 @@ const AdminPage = ({ registrations, idToken, event }) => {
             description:
                 'Change the status of all Soft Rejected participants to Rejected, and notify them via email that they did not make it.',
             extra: (
-                <AntButton onClick={() => window.alert('Get permission from Juuso to do this ;--)')} type="link">
+                <AntButton
+                    onClick={() => window.alert('Get permission from Juuso to do this ;--)')}
+                    type="link"
+                    loading={bulkRejectLoading}
+                >
                     Reject
                 </AntButton>
             )
