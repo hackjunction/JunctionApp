@@ -1,4 +1,5 @@
 import { difference } from 'lodash-es';
+import objectPath from 'object-path';
 
 const isEmpty = value => {
     if (Array.isArray(value)) {
@@ -19,10 +20,12 @@ const contains = (value, answer) => {
     if (Array.isArray(answer)) {
         return answer.indexOf(value) !== -1;
     } else if (typeof answer === 'string') {
-        return answer
-            .toLowerCase()
-            .trim()
-            .indexOf(value.toLowerCase().trim());
+        return (
+            answer
+                .toLowerCase()
+                .trim()
+                .indexOf(value.toLowerCase().trim()) !== -1
+        );
     }
     return false;
 };
@@ -74,22 +77,22 @@ const filter = (registration, filter) => {
             );
         }
         case 'field-equals': {
-            return equals(filter.value, registration.answers[filter.field]);
+            return equals(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-nequals': {
-            return !equals(filter.value, registration.answers[filter.field]);
+            return !equals(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-contains': {
-            return contains(filter.value, registration.answers[filter.field]);
+            return contains(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-not-contains': {
-            return !contains(filter.value, registration.answers[filter.field]);
+            return !contains(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-empty': {
-            return isEmpty(registration.answers[filter.field]);
+            return isEmpty(objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-not-empty': {
-            return !isEmpty(registration.answers[filter.field]);
+            return !isEmpty(objectPath.get(registration, `answers.${filter.field}`));
         }
         default:
             return true;

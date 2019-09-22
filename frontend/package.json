@@ -22,6 +22,7 @@
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.25",
         "node-sass": "^4.11.0",
+        "object-path": "^0.11.4",
         "react": "^16.8.1",
         "react-animate-height": "^2.0.15",
         "react-app-rewired": "^2.1.3",
