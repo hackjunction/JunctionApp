@@ -14,9 +14,11 @@
 .filters {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     flex-wrap: wrap;
 
     .filterItem {
+        margin-bottom: 1rem;
         padding: 1rem;
         display: flex;
         flex-direction: row;
