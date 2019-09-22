@@ -15,7 +15,11 @@ const RegistrationSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: RegistrationStatuses.ids,
-        default: RegistrationStatuses.asObject.pending.id
+        default: RegistrationStatuses.asObject.pending.id,
+        set: function(status) {
+            this._previousStatus = this.status;
+            return status;
+        }
     },
     assignedTo: {
         type: String
@@ -46,7 +50,6 @@ RegistrationSchema.plugin(updateAllowedPlugin, {
 
 RegistrationSchema.pre('save', function(next) {
     this._wasNew = this.isNew;
-    this._previousStatus = this.status;
     next();
 });
 
@@ -54,20 +57,19 @@ RegistrationSchema.pre('save', function(next) {
 RegistrationSchema.post('save', function(doc, next) {
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
     const REJECTED = RegistrationStatuses.asObject.rejected.id;
-
     /** If a registration was just created, create an email notification about it */
-    if (doc._wasNew) {
-        EmailTaskController.createRegisteredTask(doc.user, doc.event);
+    if (this._wasNew) {
+        EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
     }
 
     /** If a registration is accepted, create an email notification about it */
-    if (doc._previousStatus !== ACCEPTED && doc.status === ACCEPTED) {
-        EmailTaskController.createAcceptedTask(doc.user, doc.event);
+    if (this._previousStatus !== ACCEPTED && this.status === ACCEPTED) {
+        EmailTaskController.createAcceptedTask(doc.user, doc.event, true);
     }
 
     /** If a registration is rejected, create an email notification about it */
-    if ( && doc._previousStatus !== REJECTED && doc.status === REJECTED) {
-        EmailTaskController.createRejectedTask(doc.user, doc.event);
+    if (this._previousStatus !== REJECTED && this.status === REJECTED) {
+        EmailTaskController.createRejectedTask(doc.user, doc.event, true);
     }
 
     next();

@@ -25,65 +25,70 @@ controller.createTask = (userId, eventId, type, message, schedule) => {
             return Promise.resolve();
         }
         // For other types of errors, we'll want to throw the error normally
-        return Promise.reject();
+        return Promise.reject(err);
     });
 };
 
-controller.createAcceptedTask = (userId, eventId) => {
-    return controller.createTask(userId, eventId, EmailTypes.registrationAccepted);
+controller.createAcceptedTask = async (userId, eventId, deliverNow = false) => {
+    const task = await controller.createTask(userId, eventId, EmailTypes.registrationAccepted);
+    if (deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
 };
 
-controller.createRejectedTask = (userId, eventId) => {
-    return controller.createTask(userId, eventId, EmailTypes.registrationRejected);
+controller.createRejectedTask = async (userId, eventId, deliverNow = false) => {
+    const task = await controller.createTask(userId, eventId, EmailTypes.registrationRejected);
+    if (deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
 };
 
-controller.createRegisteredTask = (userId, eventId) => {
-    return controller.createTask(userId, eventId, EmailTypes.registrationReceived);
+controller.createRegisteredTask = async (userId, eventId, deliverNow = false) => {
+    const task = await controller.createTask(userId, eventId, EmailTypes.registrationReceived);
+    if (deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
 };
 
-// controller.sendEmail = (msg, taskParams) => {
-//     return SendgridService.send(msg).catch(message => {
-//         /** If sending the email fails, save a task to the DB and we can retry later */
-//         return controller.createTask(message, taskParams);
-//     });
-// };
+controller.deliverEmailTask = async task => {
+    const [user, event] = await Promise.all([
+        UserController.getUserProfile(task.user),
+        EventController.getEventById(task.event)
+    ]);
+    switch (task.type) {
+        case EmailTypes.registrationAccepted: {
+            await SendgridService.sendAcceptanceEmail('juuso.lappalainen@hackjunction.com', event, user);
+            break;
+        }
+        case EmailTypes.registrationRejected: {
+            console.log('PERFORM REG REJECTED EMAIL');
+            break;
+        }
+        case EmailTypes.registrationReceived: {
+            console.log('PERFORM REG RECEIVED');
+            break;
+        }
+        default: {
+            console.log('PERFORM GENERIC EMAIL!');
+            break;
+        }
+    }
 
-// controller.sendAcceptanceEmail = async (eventId, userId) => {
-//     const event = await EventController.getEventById(eventId);
-//     const user = await UserController.getUserProfile(userId);
+    /** Here we'll have success so we can set the task as delivered */
+    task.deliveredAt = Date.now();
+    return task.save();
+};
 
-//     const msgParams = {
-//         event_name: event.name,
-//         event_logo: event.logo.url
-//     };
-
-//     const msg = SendgridService.buildAcceptanceEmail('juuso.lappalainen@hackjunction.com', msgParams);
-//     const taskParams = {
-//         userId: user.userId,
-//         eventId: event._id,
-//         type: EmailTypes.registrationAccepted
-//     };
-//     return controller
-//         .sendEmail(msg, taskParams)
-//         .then(res => {
-//             console.log('SENT EMAIL', res);
-//         })
-//         .catch(err => {
-//             console.log('ERR SENDING EMAIL', err);
-//         });
-// };
-
-// controller.sendRejectionEmail = (event, user) => {
-//     const msgParams = {
-//         event_name: event.name
-//     };
-//     const msg = SendgridService.buildRejectionEmail(user.email, msgParams);
-//     const taskParams = {
-//         userId: user.userId,
-//         eventId: event._id,
-//         type: EmailTypes.registrationRejected
-//     };
-//     return controller.sendEmail(msg, taskParams);
-// };
+controller.sendPreviewEmail = async (to, msgParams) => {
+    console.log('SENDING TEST TO', to);
+    console.log('WITH PARAMS', msgParams);
+    return SendgridService.sendGenericEmail(to, msgParams).catch(err => {
+        console.log('DA ERR', err);
+        return;
+    });
+};
 
 module.exports = controller;

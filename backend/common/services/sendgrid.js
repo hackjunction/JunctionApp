@@ -34,11 +34,30 @@ const sendgridAddRecipientsToList = (list_id, recipient_ids) => {
 };
 
 const SendgridService = {
-    buildAcceptanceEmail: (to, { event_name }) => {
-        return SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_ACCEPTED_TEMPLATE, {
-            event_name
+    sendAcceptanceEmail: (to, event, user) => {
+        const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_ACCEPTED_TEMPLATE, {
+            event_name: event.name,
+            first_name: user.firstName,
+            dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+            website_link: 'https://2019.hackjunction.com',
+            fb_event_link: 'https://facebook.com',
+            contact_email: 'participants@hackjunction.com'
         });
+        return SendgridService.send(msg);
     },
+    sendGenericEmail: (to, params) => {
+        const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+            subject: params.subject,
+            subtitle: params.subtitle,
+            header_image: params.header_image,
+            body: params.body,
+            cta_text: params.cta_text,
+            cta_link: params.cta_link
+        });
+
+        return SendgridService.send(msg);
+    },
+
     buildRejectionEmail: (to, { event_name }) => {
         return SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_REJECTED_TEMPLATE, {
             event_name

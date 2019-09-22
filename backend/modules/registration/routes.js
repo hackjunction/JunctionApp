@@ -30,6 +30,16 @@ const updateRegistration = asyncHandler(async (req, res) => {
     return res.status(200).json(registration);
 });
 
+const confirmRegistration = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController.confirmRegistration(req.user, req.event);
+    return res.status(200).json(registration);
+});
+
+const cancelRegistration = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController.cancelRegistration(req.user, req.event);
+    return res.status(200).json(registration);
+});
+
 const editRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.editRegistration(
         req.params.registrationId,
@@ -97,6 +107,10 @@ router
     .get(hasToken, getRegistration)
     .post(hasToken, canRegisterToEvent, createRegistration)
     .patch(hasToken, canRegisterToEvent, updateRegistration);
+
+router.route('/:slug/confirm').patch(hasToken, confirmRegistration);
+
+router.route('/:slug/cancel').patch(hasToken, cancelRegistration);
 
 /** Get all registration as organiser */
 router.get(

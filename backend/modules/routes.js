@@ -5,6 +5,7 @@ const userProfileRouter = require('./user-profile/routes');
 const registrationRouter = require('./registration/routes');
 const newsletterRouter = require('./newsletter/routes');
 const teamRouter = require('./team/routes');
+const emailRouter = require('./email-task/routes');
 const devToolsRouter = require('./devtools/routes');
 
 module.exports = function(app) {
@@ -16,6 +17,7 @@ module.exports = function(app) {
     app.use('/api/auth', authRouter);
     app.use('/api/upload', uploadRouter);
     app.use('/api/newsletter', newsletterRouter);
+    app.use('/api/email', emailRouter);
 
     /** Model related routes */
     app.use('/api/events', eventRouter);
