@@ -279,7 +279,7 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
                 );
             }
             default:
-                return null;
+                return <span style={{ fontWeight: 'bold' }}>{label}</span>;
         }
     };
 
