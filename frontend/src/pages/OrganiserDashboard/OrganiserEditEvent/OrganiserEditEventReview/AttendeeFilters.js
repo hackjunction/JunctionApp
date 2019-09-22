@@ -292,6 +292,11 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
                     status="finish"
                     key={filter.type + filter.value}
                     title={<div style={{ width: '100%' }}>{renderItemValue(filter, label)}</div>}
+                    description={
+                        <AntButton type="link" onClick={() => handleRemove(idx)}>
+                            Remove filter
+                        </AntButton>
+                    }
                 />
             );
         });
