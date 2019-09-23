@@ -46,14 +46,7 @@ const EventDetail = ({ event, registration, slug, user, match, location, pushLog
                                 <Divider size={1} />
                             </Col>
                             <StaggeredListItem>
-                                <EventButtons
-                                    event={event}
-                                    eventStatus={eventStatus}
-                                    user={user}
-                                    registration={registration}
-                                    match={match}
-                                    location={location}
-                                />
+                                <EventButtons match={match} location={location} />
                                 <Divider size={3} />
                                 <EventTimeline event={event} />
                             </StaggeredListItem>
