@@ -21,7 +21,6 @@ controller.createTask = (userId, eventId, type, message, schedule) => {
     }
     return task.save().catch(err => {
         if (err.code === 11000) {
-            //The task already exists, so it's ok
             return Promise.resolve();
         }
         // For other types of errors, we'll want to throw the error normally
@@ -60,7 +59,7 @@ controller.deliverEmailTask = async task => {
     ]);
     switch (task.type) {
         case EmailTypes.registrationAccepted: {
-            await SendgridService.sendAcceptanceEmail('juuso.lappalainen@hackjunction.com', event, user);
+            await SendgridService.sendAcceptanceEmail(event, user);
             break;
         }
         case EmailTypes.registrationRejected: {
@@ -83,10 +82,7 @@ controller.deliverEmailTask = async task => {
 };
 
 controller.sendPreviewEmail = async (to, msgParams) => {
-    console.log('SENDING TEST TO', to);
-    console.log('WITH PARAMS', msgParams);
     return SendgridService.sendGenericEmail(to, msgParams).catch(err => {
-        console.log('DA ERR', err);
         return;
     });
 };

@@ -33,9 +33,27 @@ RegistrationsService.createRegistration = (idToken, slug, data) => {
     return _axios.post(`${BASE_ROUTE}/${slug}`, data, config(idToken));
 };
 
+/** Update a registration for an event as the logged in user
+ * PATCH /:slug
+ */
 RegistrationsService.updateRegistration = (idToken, slug, data) => {
     return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken));
 };
+
+/** Confirm participation for an event as the logged in user
+ * PATCH /:slug/confirm
+ */
+RegistrationsService.confirmRegistration = (idToken, slug) => {
+    return _axios.patch(`${BASE_ROUTE}/${slug}/confirm`, {}, config(idToken));
+};
+
+/** Cancel participation for an event as the logged in user
+ * PATCH /:slug/cancel
+ */
+RegistrationsService.cancelRegistration = (idToken, slug) => {
+    return _axios.patch(`${BASE_ROUTE}/${slug}/cancel`, {}, config(idToken));
+};
+
 /** Get all registrations for event
  * GET /:slug/all
  */

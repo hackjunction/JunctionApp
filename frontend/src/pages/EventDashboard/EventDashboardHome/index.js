@@ -15,9 +15,13 @@ const EventDashboardHome = ({ event, registration }) => {
     const [currentStep, setCurrentStep] = useState([]);
 
     useEffect(() => {
-        const status = EventUtils.getEventStatus(event);
-        setCurrentStep(status.index);
+        if (event) {
+            const status = EventUtils.getEventStatus(event);
+            setCurrentStep(status.index);
+        }
     }, [event]);
+
+    if (!event || !registration) return null;
 
     function renderContent() {
         switch (currentStep) {

@@ -41,9 +41,12 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                     body={`Thanks for confirming your participation! We'll let you know about your eligibility for a travel grant as soon as possible!`}
                     bottom={
                         <p style={{ fontSize: '16px', textAlign: 'center' }}>
-                            Please consult the <a href="https://2019.hackjunction.com/info">FAQ section</a> of our
-                            website for details on the travel grant amounts available for the country you're travelling
-                            from.
+                            Please consult the{' '}
+                            <a href="https://2019.hackjunction.com/info" target="_blank" rel="noopener noreferrer">
+                                FAQ section
+                            </a>{' '}
+                            of our website for details on the travel grant amounts available for the country you're
+                            travelling from.
                         </p>
                     }
                 />

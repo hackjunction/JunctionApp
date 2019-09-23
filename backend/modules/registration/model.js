@@ -55,7 +55,9 @@ RegistrationSchema.pre('save', function(next) {
 
 /** Trigger email sending on status changes etc. */
 RegistrationSchema.post('save', function(doc, next) {
+    const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id;
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
+    const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id;
     const REJECTED = RegistrationStatuses.asObject.rejected.id;
     /** If a registration was just created, create an email notification about it */
     // if (this._wasNew) {
@@ -63,12 +65,12 @@ RegistrationSchema.post('save', function(doc, next) {
     // }
 
     /** If a registration is accepted, create an email notification about it */
-    if (this._previousStatus !== ACCEPTED && this.status === ACCEPTED) {
+    if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {
         EmailTaskController.createAcceptedTask(doc.user, doc.event, true);
     }
 
     /** If a registration is rejected, create an email notification about it */
-    if (this._previousStatus !== REJECTED && this.status === REJECTED) {
+    if (this._previousStatus === SOFT_REJECTED && this.status === REJECTED) {
         EmailTaskController.createRejectedTask(doc.user, doc.event, true);
     }
 

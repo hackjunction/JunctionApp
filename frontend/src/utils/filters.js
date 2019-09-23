@@ -84,6 +84,14 @@ const filter = (registration, filter) => {
                 difference(filter.value, registration.tags).length === filter.value.length
             );
         }
+        case 'apply-as-team': {
+            const applyAsTeam = objectPath.get(registration, 'answers.teamOptions.applyAsTeam');
+            return applyAsTeam === true;
+        }
+        case 'not-apply-as-team': {
+            const applyAsTeam = objectPath.get(registration, 'answers.teamOptions.applyAsTeam');
+            return applyAsTeam !== true;
+        }
         case 'field-equals': {
             return equals(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }

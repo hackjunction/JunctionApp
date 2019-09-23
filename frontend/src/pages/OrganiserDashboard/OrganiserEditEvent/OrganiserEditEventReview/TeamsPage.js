@@ -71,6 +71,10 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
         return true;
     });
 
+    const filteredMemberIds = teamsFiltered.reduce((res, team) => {
+        return res.concat(team.members.map(m => m._id));
+    }, []);
+
     return (
         <PageWrapper loading={registrationsLoading || teamsLoading}>
             <div className={styles.filters}>
@@ -94,6 +98,10 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
             </div>
             <div className={styles.top}>
                 <span className={styles.title}>{teamsFiltered.length} teams</span>
+                <BulkEditRegistrationDrawer
+                    registrationIds={filteredMemberIds}
+                    buttonProps={{ children: `Edit all team members ${filteredMemberIds.length}` }}
+                />
             </div>
 
             <Table

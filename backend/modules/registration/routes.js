@@ -7,7 +7,7 @@ const EventController = require('../event/controller');
 
 const { hasToken } = require('../../common/middleware/token');
 const { hasPermission } = require('../../common/middleware/permissions');
-const { canRegisterToEvent, isEventOrganiser } = require('../../common/middleware/events');
+const { canRegisterToEvent, hasRegisteredToEvent, isEventOrganiser } = require('../../common/middleware/events');
 
 const getUserRegistrations = asyncHandler(async (req, res) => {
     const registrations = await RegistrationController.getUserRegistrations(req.user);
@@ -108,9 +108,9 @@ router
     .post(hasToken, canRegisterToEvent, createRegistration)
     .patch(hasToken, canRegisterToEvent, updateRegistration);
 
-router.route('/:slug/confirm').patch(hasToken, confirmRegistration);
+router.route('/:slug/confirm').patch(hasToken, hasRegisteredToEvent, confirmRegistration);
 
-router.route('/:slug/cancel').patch(hasToken, cancelRegistration);
+router.route('/:slug/cancel').patch(hasToken, hasRegisteredToEvent, cancelRegistration);
 
 /** Get all registration as organiser */
 router.get(

@@ -36,6 +36,14 @@ const FilterOptions = [
         label: 'Tags do not contain'
     },
     {
+        id: 'apply-as-team',
+        label: 'Applying as team'
+    },
+    {
+        id: 'not-apply-as-team',
+        label: 'Not applying as team'
+    },
+    {
         id: 'field-equals',
         label: 'Field equals'
     },
