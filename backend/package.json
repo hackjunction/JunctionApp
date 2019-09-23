@@ -11,7 +11,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@hackjunction/shared": "^1.1.44",
+        "@hackjunction/shared": "^1.1.45",
         "@sendgrid/client": "^6.4.0",
         "@sendgrid/mail": "^6.4.0",
         "auth0": "^2.17.0",
