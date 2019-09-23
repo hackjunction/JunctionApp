@@ -14,12 +14,17 @@ const sendPreviewEmail = asyncHandler(async (req, res) => {
     return res.status(200).json({});
 });
 
+const sendBulkEmail = asyncHandler(async (req, res) => {
+    await EmailTaskController.sendBulkEmail(req.body.recipients, req.body.params, req.event, req.body.uniqueId);
+    return res.status(200).json({});
+});
+
 router
     .route('/:slug/preview')
     .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, sendPreviewEmail);
 
 router
     .route('/:slug/send')
-    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, sendPreviewEmail);
+    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, sendBulkEmail);
 
 module.exports = router;

@@ -17,8 +17,17 @@ EmailService.sendPreviewEmail = (idToken, slug, to, params) => {
         to,
         params
     };
-    console.log('SENDING TEST WITH', params);
     return _axios.post(`${BASE_ROUTE}/${slug}/preview`, data, config(idToken));
+};
+
+EmailService.sendBulkEmail = (idToken, slug, recipients, params, uniqueId) => {
+    const data = {
+        recipients,
+        params,
+        uniqueId
+    };
+
+    return _axios.post(`${BASE_ROUTE}/${slug}/send`, data, config(idToken));
 };
 
 export default EmailService;
