@@ -14,6 +14,7 @@ const BulkEmailDrawer = ({ registrationIds, buttonProps, user, idToken, event })
     const [testEmail, setTestEmail] = useState(user.email);
     const [testModalVisible, setTestModalVisible] = useState(false);
     const [testModalLoading, setTestModalLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [subject, setSubject] = useState();
     const [subtitle, setSubtitle] = useState();
@@ -64,8 +65,23 @@ const BulkEmailDrawer = ({ registrationIds, buttonProps, user, idToken, event })
     }, [idToken, event.slug, testEmail, params]);
 
     const handleConfirm = useCallback(() => {
-        window.alert('Try again later :)');
-    }, []);
+        setLoading(true);
+        EmailService.sendBulkEmail(idToken, event.slug, registrationIds, params, messageId)
+            .then(() => {
+                notification.success({
+                    message: 'Success'
+                });
+            })
+            .catch(err => {
+                notification.error({
+                    message: 'Something went wrong...',
+                    description: 'Are you connected to the internet?'
+                });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [idToken, event.slug, params, registrationIds, messageId]);
 
     return (
         <React.Fragment>
@@ -184,7 +200,7 @@ const BulkEmailDrawer = ({ registrationIds, buttonProps, user, idToken, event })
                     okText="Yes"
                     cancelText="No"
                 >
-                    <AntButton size="large" block type="primary">
+                    <AntButton size="large" block type="primary" loading={loading}>
                         Send to {registrationIds.length} recipients
                     </AntButton>
                 </Popconfirm>

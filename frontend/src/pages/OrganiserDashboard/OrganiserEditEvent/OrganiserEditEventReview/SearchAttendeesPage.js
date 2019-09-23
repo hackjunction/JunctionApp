@@ -18,12 +18,13 @@ const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) =
     const renderBulkActions = () => {
         if (!registrations.length) return null;
         const ids = registrations.map(r => r._id);
+        const userIds = registrations.map(r => r.user);
         return (
             <div className={styles.bulkActions}>
                 <div style={{ flex: 1 }}>
                     <span className={styles.title}>{registrations.length} registrations</span>
                 </div>
-                <BulkEmailDrawer registrationIds={ids} />
+                <BulkEmailDrawer registrationIds={userIds} />
                 <BulkEditRegistrationDrawer registrationIds={ids} />
             </div>
         );

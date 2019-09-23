@@ -3,9 +3,11 @@ const SendgridService = require('../../common/services/sendgrid');
 const EmailTypes = require('./types');
 const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
+const shortid = require('shortid');
+const Promise = require('bluebird');
 const controller = {};
 
-controller.createTask = (userId, eventId, type, message, schedule) => {
+controller.createTask = (userId, eventId, type, params, schedule) => {
     const task = new EmailTask({
         user: userId,
         event: eventId,
@@ -16,11 +18,12 @@ controller.createTask = (userId, eventId, type, message, schedule) => {
         task.schedule = schedule;
     }
 
-    if (message) {
-        task.message = message;
+    if (params) {
+        task.params = params;
     }
     return task.save().catch(err => {
         if (err.code === 11000) {
+            console.log('ALREADY EXISTS');
             return Promise.resolve();
         }
         // For other types of errors, we'll want to throw the error normally
@@ -52,6 +55,17 @@ controller.createRegisteredTask = async (userId, eventId, deliverNow = false) =>
     return task;
 };
 
+controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deliverNow = false) => {
+    if (!uniqueId) {
+        uniqueId = shortid.generate();
+    }
+    const task = await controller.createTask(userId, eventId, 'generic_' + uniqueId, msgParams);
+    if (deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
 controller.deliverEmailTask = async task => {
     const [user, event] = await Promise.all([
         UserController.getUserProfile(task.user),
@@ -63,15 +77,13 @@ controller.deliverEmailTask = async task => {
             break;
         }
         case EmailTypes.registrationRejected: {
-            console.log('PERFORM REG REJECTED EMAIL');
             break;
         }
         case EmailTypes.registrationReceived: {
-            console.log('PERFORM REG RECEIVED');
             break;
         }
         default: {
-            console.log('PERFORM GENERIC EMAIL!');
+            await SendgridService.sendGenericEmail(user.email, task.params);
             break;
         }
     }
@@ -85,6 +97,13 @@ controller.sendPreviewEmail = async (to, msgParams) => {
     return SendgridService.sendGenericEmail(to, msgParams).catch(err => {
         return;
     });
+};
+
+controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
+    const promises = recipients.map(recipient => {
+        return controller.createGenericTask(recipient, event._id.toString(), uniqueId, msgParams, true);
+    });
+    return Promise.all(promises);
 };
 
 module.exports = controller;

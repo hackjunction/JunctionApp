@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const EmailTaskSchema = new mongoose.Schema({
-    message: {
-        type: String,
+    params: {
+        type: mongoose.Schema.Types.Mixed,
         default: null
     },
     schedule: {
