@@ -11,6 +11,10 @@ export const registration = state => state.eventdetail.registration.data;
 export const registrationLoading = state => state.eventdetail.registration.loading;
 export const registrationError = state => state.eventdetail.registration.error;
 export const registrationUpdated = state => state.eventdetail.registration.updated;
+export const hasRegistration = createSelector(
+    registration,
+    registration => registration && registration.hasOwnProperty('_id')
+);
 
 export const eventStatus = createSelector(
     event,

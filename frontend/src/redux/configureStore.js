@@ -13,7 +13,7 @@ import createRootReducer from './rootReducer';
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['router', 'organiser', 'dashboard', 'events'],
+    whitelist: ['auth', 'user'],
     stateReconciler: autoMergeLevel2
 };
 

@@ -9,15 +9,17 @@ import { Events } from '@hackjunction/shared';
 
 import Button from 'components/generic/Button';
 import Divider from 'components/generic/Divider';
+import * as EventDetailSelectors from 'redux/eventdetail/selectors';
+import * as AuthSelectors from 'redux/auth/selectors';
 
 const { REGISTRATION_OPEN, REGISTRATION_CLOSED, REGISTRATION_UPCOMING } = Events.status;
 
-const EventButtons = ({ event, eventStatus, user, registration, match, location, pushLogin }) => {
+const EventButtons = ({ event, eventStatus, user, hasRegistration, match, location, pushLogin }) => {
     function renderApplyButton() {
         switch (eventStatus) {
             case REGISTRATION_OPEN.id: {
                 if (user) {
-                    if (registration) {
+                    if (hasRegistration) {
                         return (
                             <React.Fragment>
                                 <Button
@@ -81,11 +83,18 @@ const EventButtons = ({ event, eventStatus, user, registration, match, location,
     return <div className={styles.wrapper}>{renderApplyButton()}</div>;
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapState = state => ({
+    event: EventDetailSelectors.event(state),
+    eventStatus: EventDetailSelectors.eventStatus(state),
+    hasRegistration: EventDetailSelectors.hasRegistration(state),
+    user: AuthSelectors.getCurrentUser(state)
+});
+
+const mapDispatch = dispatch => ({
     pushLogin: nextRoute => dispatch(push('/login', { nextRoute }))
 });
 
 export default connect(
-    null,
-    mapDispatchToProps
+    mapState,
+    mapDispatch
 )(EventButtons);
