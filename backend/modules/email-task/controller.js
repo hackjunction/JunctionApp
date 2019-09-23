@@ -49,7 +49,7 @@ controller.createRejectedTask = async (userId, eventId, deliverNow = false) => {
 
 controller.createRegisteredTask = async (userId, eventId, deliverNow = false) => {
     const task = await controller.createTask(userId, eventId, EmailTypes.registrationReceived);
-    if (deliverNow) {
+    if (task && deliverNow) {
         return controller.deliverEmailTask(task);
     }
     return task;
@@ -60,7 +60,7 @@ controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deli
         uniqueId = shortid.generate();
     }
     const task = await controller.createTask(userId, eventId, 'generic_' + uniqueId, msgParams);
-    if (deliverNow) {
+    if (task && deliverNow) {
         return controller.deliverEmailTask(task);
     }
     return task;
