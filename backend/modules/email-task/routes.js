@@ -18,4 +18,8 @@ router
     .route('/:slug/preview')
     .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, sendPreviewEmail);
 
+router
+    .route('/:slug/send')
+    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, sendPreviewEmail);
+
 module.exports = router;

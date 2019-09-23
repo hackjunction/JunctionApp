@@ -40,9 +40,7 @@ const errorHandler = (error, request, response, next) => {
             }
         }
     }
-    console.log('ERROR', error.message);
-
-    // console.error('Unexpected error', error.toJSON());
+    console.log('FOOBAR', error.message);
 
     return response.status(500).json({
         message: 'Unexpected error',

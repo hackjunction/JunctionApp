@@ -34,8 +34,8 @@ const sendgridAddRecipientsToList = (list_id, recipient_ids) => {
 };
 
 const SendgridService = {
-    sendAcceptanceEmail: (to, event, user) => {
-        const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_ACCEPTED_TEMPLATE, {
+    sendAcceptanceEmail: (event, user) => {
+        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_ACCEPTED_TEMPLATE, {
             event_name: event.name,
             first_name: user.firstName,
             dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,

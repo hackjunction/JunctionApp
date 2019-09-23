@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { connect } from 'react-redux';
-import { Col, Button as AntButton } from 'antd';
+import { Col, Button as AntButton, Popconfirm } from 'antd';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
 import NotificationBlock from 'components/generic/NotificationBlock';
@@ -9,10 +9,26 @@ import Button from 'components/generic/Button';
 import Divider from 'components/generic/Divider';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as DashboardActions from 'redux/dashboard/actions';
 
 const STATUSES = RegistrationStatuses.asObject;
 
-const RegistrationStatusBlock = ({ event, registration }) => {
+const RegistrationStatusBlock = ({ event, registration, confirmRegistration, cancelRegistration }) => {
+    const [loading, setLoading] = useState(false);
+    const handleConfirm = useCallback(() => {
+        setLoading(true);
+        confirmRegistration(event.slug).finally(() => {
+            setLoading(false);
+        });
+    }, [event.slug, confirmRegistration]);
+
+    const handleCancel = useCallback(() => {
+        setLoading(true);
+        cancelRegistration(event.slug).finally(() => {
+            setLoading(false);
+        });
+    }, [event.slug, cancelRegistration]);
+
     if (!registration || !event) return null;
 
     const PENDING_STATUSES = [STATUSES.pending.id, STATUSES.softAccepted.id, STATUSES.softRejected.id];
@@ -55,7 +71,7 @@ const RegistrationStatusBlock = ({ event, registration }) => {
                             theme="accent"
                             text="Confirm participation"
                             block
-                            button={{ onClick: () => window.alert('Confirm this stuff!') }}
+                            button={{ onClick: handleConfirm, loading }}
                         />
                     }
                 />
@@ -98,17 +114,33 @@ const RegistrationStatusBlock = ({ event, registration }) => {
                     bottom={
                         <p style={{ fontSize: '16px', textAlign: 'center' }}>
                             To stay in the loop and let your friends know you're coming, you should go attend the{' '}
-                            <a href="https://facebook.com">Junction 2019 Facebook event!</a> For any other questions and
-                            further event details such as tracks and challenges, see the{' '}
-                            <a href="https://2019.hackjunction.com">event website</a>.
+                            <a
+                                href="https://www.facebook.com/events/891798957858943/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Junction 2019 Facebook event!
+                            </a>{' '}
+                            For any other questions and further event details such as tracks and challenges, see the{' '}
+                            <a href="https://2019.hackjunction.com" target="_blank" rel="noopener noreferrer">
+                                event website
+                            </a>
+                            .
                             <br />
                             <br />
                             Can't make it after all? Bummer. Please let us know by clicking the button below, so we can
                             accept someone else in your place.
                             <br />
-                            <AntButton type="link" block size="large">
-                                Cancel participation
-                            </AntButton>
+                            <Popconfirm
+                                onConfirm={handleCancel}
+                                title="Are you sure? You won't be able to reverse this."
+                                okText="Yes, I'm sure"
+                                cancelText="Back to safety"
+                            >
+                                <AntButton type="link" block size="large" loading={loading}>
+                                    Cancel participation
+                                </AntButton>
+                            </Popconfirm>
                         </p>
                     }
                 />
@@ -155,4 +187,12 @@ const mapState = state => ({
     registration: DashboardSelectors.registration(state)
 });
 
-export default connect(mapState)(RegistrationStatusBlock);
+const mapDispatch = dispatch => ({
+    confirmRegistration: slug => dispatch(DashboardActions.confirmRegistration(slug)),
+    cancelRegistration: slug => dispatch(DashboardActions.cancelRegistration(slug))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(RegistrationStatusBlock);

@@ -1,4 +1,5 @@
 import { sortBy } from 'lodash-es';
+import { push } from 'connected-react-router';
 
 import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from '../auth/selectors';
@@ -23,16 +24,37 @@ export const updateRegistration = slug => (dispatch, getState) => {
 
     dispatch({
         type: ActionTypes.UPDATE_REGISTRATION,
-        promise: RegistrationsService.getRegistration(idToken, slug).catch(err => {
-            if (err.response.status === 404) {
-                return Promise.resolve({});
-            }
-            return Promise.reject(err);
-        }),
+        promise: RegistrationsService.getRegistration(idToken, slug),
         meta: {
-            onFailure: e => console.log('Error updating dashboard registration', e)
+            onFailure: () => dispatch(push('/'))
         }
     });
+};
+
+export const confirmRegistration = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const registration = await RegistrationsService.confirmRegistration(idToken, slug);
+
+    dispatch({
+        type: ActionTypes.EDIT_REGISTRATION,
+        payload: registration
+    });
+
+    return registration;
+};
+
+export const cancelRegistration = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const registration = await RegistrationsService.cancelRegistration(idToken, slug);
+
+    dispatch({
+        type: ActionTypes.EDIT_REGISTRATION,
+        payload: registration
+    });
+
+    return registration;
 };
 
 export const editRegistration = (slug, data) => async (dispatch, getState) => {
