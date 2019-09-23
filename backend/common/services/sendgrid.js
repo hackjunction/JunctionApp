@@ -38,10 +38,7 @@ const SendgridService = {
         const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_ACCEPTED_TEMPLATE, {
             event_name: event.name,
             first_name: user.firstName,
-            dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
-            website_link: 'https://2019.hackjunction.com',
-            fb_event_link: 'https://facebook.com',
-            contact_email: 'participants@hackjunction.com'
+            dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
         });
         return SendgridService.send(msg);
     },
