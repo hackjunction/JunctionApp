@@ -32,8 +32,16 @@ const contains = (value, answer) => {
 
 const equals = (value, answer) => {
     if (!value || !answer) return false;
+    const trimmed = value.trim().toLowerCase();
     if (typeof answer === 'string') {
-        return value.toLowerCase().trim() === answer.toLowerCase().trim();
+        return trimmed === answer.toLowerCase().trim();
+    }
+    if (typeof answer === 'boolean') {
+        if (answer) {
+            return trimmed === 'true' || trimmed === 'yes';
+        } else {
+            return trimmed === 'false' || trimmed === 'no';
+        }
     }
 
     return answer === value;

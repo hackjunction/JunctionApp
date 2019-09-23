@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { Col } from 'antd';
+import { Col, Button as AntButton } from 'antd';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
 import NotificationBlock from 'components/generic/NotificationBlock';
@@ -96,30 +96,20 @@ const RegistrationStatusBlock = ({ event, registration }) => {
                     titleExtra="Confirmed"
                     body={`Awesome, you've confirmed your participation! You should probably start making travel and other arrangements - see the links below to stay up-to-date on all of the information and announcements related to ${event.name}.`}
                     bottom={
-                        <React.Fragment>
-                            <Button
-                                text="Event website"
-                                block
-                                link={{
-                                    external: 'https://2019.hackjunction.com'
-                                }}
-                            />
-                            <Divider size={1} />
-                            <Button
-                                text="Facebook event"
-                                block
-                                link={{
-                                    external: 'https://facebook.com'
-                                }}
-                            />
-                            <Divider size={1} />
-                            <Button
-                                theme="danger"
-                                text="Can't make it after all?"
-                                block
-                                button={{ onClick: () => window.alert('Cancel this shit!') }}
-                            />
-                        </React.Fragment>
+                        <p style={{ fontSize: '16px', textAlign: 'center' }}>
+                            To stay in the loop and let your friends know you're coming, you should go attend the{' '}
+                            <a href="https://facebook.com">Junction 2019 Facebook event!</a> For any other questions and
+                            further event details such as tracks and challenges, see the{' '}
+                            <a href="https://2019.hackjunction.com">event website</a>.
+                            <br />
+                            <br />
+                            Can't make it after all? Bummer. Please let us know by clicking the button below, so we can
+                            accept someone else in your place.
+                            <br />
+                            <AntButton type="link" block size="large">
+                                Cancel participation
+                            </AntButton>
+                        </p>
                     }
                 />
             </Col>

@@ -58,9 +58,9 @@ RegistrationSchema.post('save', function(doc, next) {
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
     const REJECTED = RegistrationStatuses.asObject.rejected.id;
     /** If a registration was just created, create an email notification about it */
-    if (this._wasNew) {
-        EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
-    }
+    // if (this._wasNew) {
+    //     EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
+    // }
 
     /** If a registration is accepted, create an email notification about it */
     if (this._previousStatus !== ACCEPTED && this.status === ACCEPTED) {
