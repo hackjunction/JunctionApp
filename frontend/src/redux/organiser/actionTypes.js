@@ -12,3 +12,5 @@ export const EDIT_REGISTRATION = 'organiser/EDIT_REGISTRATION';
 export const SET_REGISTRATIONS_FILTERS = 'organiser/SET_REGISTRATIONS_FILTERS';
 
 export const UPDATE_TEAMS = 'organiser/UPDATE_TEAMS';
+
+export const UPDATE_TRAVEL_GRANTS = 'organiser/UPDATE_TRAVEL_GRANTS';

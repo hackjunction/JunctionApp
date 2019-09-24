@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { ThemeProvider } from '@material-ui/styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CloudinaryContext } from 'cloudinary-react';
@@ -25,7 +26,9 @@ ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={<div className="Preload" />} persistor={persistor}>
             <CloudinaryContext includeOwnBody={true} cloudName={config.CLOUDINARY_CLOUD_NAME}>
-                <App history={history} />
+                <ThemeProvider>
+                    <App history={history} />
+                </ThemeProvider>
             </CloudinaryContext>
         </PersistGate>
     </Provider>,

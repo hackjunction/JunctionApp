@@ -13,6 +13,7 @@ import OrganiserEditEventDetails from './OrganiserEditEventDetails';
 import OrganiserEditEventStats from './OrganiserEditEventStats';
 import OrganiserEditEventReview from './OrganiserEditEventReview';
 import OrganiserEditEventManage from './OrganiserEditEventManage';
+import OrganiserEditEventGrants from './OrganiserEditEventGrants';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user, match, location }) => {
@@ -75,6 +76,12 @@ const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user,
                         icon: 'star',
                         label: 'Review',
                         render: routeProps => <OrganiserEditEventReview {...routeProps} slug={slug} />
+                    },
+                    {
+                        path: '/grants',
+                        icon: 'star',
+                        label: 'Travel Grants',
+                        render: routeProps => <OrganiserEditEventGrants {...routeProps} slug={slug} />
                     },
                     {
                         path: '/manage',

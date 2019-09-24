@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { meanBy, countBy, groupBy, mapValues } from 'lodash-es';
+import { RegistrationStatuses } from '@hackjunction/shared';
 import * as FilterUtils from 'utils/filters';
 import * as AuthSelectors from 'redux/auth/selectors';
 import moment from 'moment';
@@ -26,6 +27,17 @@ export const registrationsLoading = state => state.organiser.registrations.loadi
 export const registrationsError = state => state.organiser.registrations.error;
 export const registrationsUpdated = state => state.organiser.registrations.updated;
 export const registrationsFilters = state => state.organiser.registrations.filters;
+
+export const teams = state => state.organiser.teams.data;
+export const teamsLoading = state => state.organiser.teams.loading;
+export const teamsError = state => state.organiser.teams.error;
+export const teamsUpdated = state => state.organiser.teams.updated;
+
+export const travelGrants = state => state.organiser.travelGrants.data;
+export const travelGrantsMap = state => state.organiser.travelGrants.map;
+export const travelGrantsLoading = state => state.organiser.travelGrants.loading;
+export const travelGrantsError = state => state.organiser.travelGrants.error;
+export const travelGrantsUpdated = state => state.organiser.travelGrants.updated;
 
 export const registrationsFiltered = createSelector(
     registrations,
@@ -54,10 +66,15 @@ export const registrationsReviewed = createSelector(
     }
 );
 
-export const teams = state => state.organiser.teams.data;
-export const teamsLoading = state => state.organiser.teams.loading;
-export const teamsError = state => state.organiser.teams.error;
-export const teamsUpdated = state => state.organiser.teams.updated;
+export const registrationsConfirmed = createSelector(
+    registrations,
+    registrations => {
+        const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
+        return registrations.filter(registration => {
+            return validStatuses.indexOf(registration.status) !== -1;
+        });
+    }
+);
 
 export const teamsPopulated = createSelector(
     registrationsMap,
