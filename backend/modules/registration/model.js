@@ -43,6 +43,25 @@ const RegistrationSchema = new mongoose.Schema({
     }
 });
 
+RegistrationSchema.index(
+    {
+        event: 1,
+        user: 1
+    },
+    {
+        unique: true
+    }
+);
+
+RegistrationSchema.index({
+    rating: 1,
+    status: 1
+});
+
+RegistrationSchema.index({
+    assignedTo: 1
+});
+
 RegistrationSchema.set('timestamps', true);
 RegistrationSchema.plugin(updateAllowedPlugin, {
     blacklisted: ['__v', '_id', 'event', 'user', 'createdAt', 'updatedAt']

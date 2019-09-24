@@ -26,7 +26,7 @@ const TeamSchema = new mongoose.Schema({
 });
 
 TeamSchema.set('timestamps', true);
-TeamSchema.index({ event: 1, owner: 1, members: 1 });
+TeamSchema.index({ event: 1, owner: 1, code: 1, members: 1 });
 
 const Team = mongoose.model('Team', TeamSchema);
 

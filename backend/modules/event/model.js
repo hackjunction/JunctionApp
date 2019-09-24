@@ -117,6 +117,15 @@ const EventSchema = new mongoose.Schema({
     }
 });
 
+EventSchema.index(
+    {
+        slug: 1
+    },
+    {
+        unique: true
+    }
+);
+
 EventSchema.plugin(mongooseSlugPlugin, {
     tmpl: '<%=name%>',
     alwaysUpdateSlug: false,

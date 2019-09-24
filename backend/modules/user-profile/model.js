@@ -26,6 +26,10 @@ _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
 
 UserProfileSchema.add(fields);
 
+UserProfileSchema.index({
+    userId: 1
+});
+
 UserProfileSchema.plugin(updateAllowedPlugin, {
     blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'userId']
 });
