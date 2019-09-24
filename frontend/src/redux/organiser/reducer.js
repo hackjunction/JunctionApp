@@ -36,6 +36,13 @@ const initialState = {
         error: false,
         updated: 0,
         data: []
+    },
+    travelGrants: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: [],
+        map: {}
     }
 };
 
@@ -44,6 +51,7 @@ const eventHandler = buildHandler('event');
 const statsHandler = buildHandler('stats');
 const organisersHandler = buildHandler('organisers', 'userId');
 const registrationsHandler = buildHandler('registrations', 'user');
+const travelGrantsHandler = buildHandler('travelGrants', 'user');
 const teamsHandler = buildHandler('teams');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
@@ -67,6 +75,9 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TEAMS: {
             return teamsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_TRAVEL_GRANTS: {
+            return travelGrantsHandler(state, action);
         }
         case ActionTypes.EDIT_REGISTRATION: {
             const registration = action.payload;

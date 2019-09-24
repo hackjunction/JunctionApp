@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@hackjunction/shared": "file:../shared",
+        "@material-ui/core": "^4.4.3",
         "@react-pdf/renderer": "^1.6.4",
         "antd": "^3.18.2",
         "auth0-js": "^9.10.0",

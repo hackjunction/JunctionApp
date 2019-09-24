@@ -4,6 +4,7 @@ import UserProfilesService from 'services/userProfiles';
 import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
+import TravelGrantsService from 'services/travelGrants';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -133,5 +134,19 @@ export const setRegistrationsFilters = filters => dispatch => {
     dispatch({
         type: ActionTypes.SET_REGISTRATIONS_FILTERS,
         payload: filters
+    });
+};
+
+/** Update travel grants with loading/error status */
+export const updateTravelGrantsForEvent = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+    if (!slug) return;
+
+    dispatch({
+        type: ActionTypes.UPDATE_TRAVEL_GRANTS,
+        promise: TravelGrantsService.getTravelGrantsForEvent(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error updating travel grants', e)
+        }
     });
 };
