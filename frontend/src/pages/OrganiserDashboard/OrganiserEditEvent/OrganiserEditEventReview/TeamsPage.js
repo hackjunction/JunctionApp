@@ -15,6 +15,7 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
     const [onlyLocked, setOnlyLocked] = useState(false);
     const [onlyReviewed, setOnlyReviewed] = useState(false);
     const [minRating, setMinRating] = useState(0);
+    const [code, setCode] = useState('');
     const renderAttendees = team => {
         return (
             <React.Fragment>
@@ -68,6 +69,9 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
         if (minRating && team.avgRating < minRating) {
             return false;
         }
+        if (code && team.code !== code) {
+            return false;
+        }
         return true;
     });
 
@@ -94,6 +98,10 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
                         value={minRating}
                         onChange={e => setMinRating(e.target.value)}
                     />
+                </div>
+                <div className={styles.filterItem}>
+                    <span className={styles.filterItemLabel}>Code</span>
+                    <Input placeholder="Code" value={code} onChange={e => setCode(e.target.value)} />
                 </div>
             </div>
             <div className={styles.top}>
