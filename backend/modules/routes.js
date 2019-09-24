@@ -7,6 +7,7 @@ const newsletterRouter = require('./newsletter/routes');
 const teamRouter = require('./team/routes');
 const emailRouter = require('./email-task/routes');
 const devToolsRouter = require('./devtools/routes');
+const travelGrantRouter = require('./travel-grant/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -24,6 +25,7 @@ module.exports = function(app) {
     app.use('/api/teams', teamRouter);
     app.use('/api/user-profiles', userProfileRouter);
     app.use('/api/registrations', registrationRouter);
+    app.use('/api/travel-grants', travelGrantRouter);
 
     /** Admin tools (development only) */
     if (global.gConfig.DEVTOOLS_ENABLED) {
