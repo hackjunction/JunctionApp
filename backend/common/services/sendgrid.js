@@ -48,7 +48,7 @@ const SendgridService = {
     },
     sendRegisteredEmail: (event, user) => {
         const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            header_image: event.logo.url,
+            header_image: event.coverImage.url,
             subject: `Thanks for registering to ${event.name}!`,
             subtitle: 'Awesome! Now just sit back and relax.',
             body: `The application period ends <b>${moment(event.registrationEndTime).format(
