@@ -60,9 +60,9 @@ RegistrationSchema.post('save', function(doc, next) {
     const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id;
     const REJECTED = RegistrationStatuses.asObject.rejected.id;
     /** If a registration was just created, create an email notification about it */
-    // if (this._wasNew) {
-    //     EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
-    // }
+    if (this._wasNew) {
+        EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
+    }
 
     /** If a registration is accepted, create an email notification about it */
     if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {

@@ -77,9 +77,11 @@ controller.deliverEmailTask = async task => {
             break;
         }
         case EmailTypes.registrationRejected: {
+            await SendgridService.sendRejectionEmail(event, user);
             break;
         }
         case EmailTypes.registrationReceived: {
+            await SendgridService.sendRegisteredEmail(event, user);
             break;
         }
         default: {
