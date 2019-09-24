@@ -9,6 +9,7 @@ import * as FilterUtils from 'utils/filters';
 import Divider from 'components/generic/Divider';
 import AttendeeTable from 'components/tables/AttendeeTable';
 import BulkEditRegistrationDrawer from 'components/modals/BulkEditRegistrationDrawer';
+import BulkEmailDrawer from 'components/modals/BulkEmailDrawer';
 import AttendeeFilters from './AttendeeFilters';
 
 const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) => {
@@ -16,10 +17,15 @@ const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) =
 
     const renderBulkActions = () => {
         if (!registrations.length) return null;
+        const ids = registrations.map(r => r._id);
+        const userIds = registrations.map(r => r.user);
         return (
             <div className={styles.bulkActions}>
-                <span className={styles.title}>{registrations.length} registrations</span>
-                <BulkEditRegistrationDrawer registrationIds={registrations.map(r => r._id)} />
+                <div style={{ flex: 1 }}>
+                    <span className={styles.title}>{registrations.length} registrations</span>
+                </div>
+                <BulkEmailDrawer registrationIds={userIds} />
+                <BulkEditRegistrationDrawer registrationIds={ids} />
             </div>
         );
     };

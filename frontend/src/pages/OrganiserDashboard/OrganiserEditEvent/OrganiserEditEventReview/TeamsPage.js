@@ -1,17 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './TeamsPage.module.scss';
 
 import { connect } from 'react-redux';
-import { Tag, Table, Switch } from 'antd';
+import { Tag, Table, Switch, Input } from 'antd';
 import { sumBy } from 'lodash-es';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
+import PageWrapper from 'components/PageWrapper';
 import AttendeeTable from 'components/tables/AttendeeTable';
 import BulkEditRegistrationDrawer from 'components/modals/BulkEditRegistrationDrawer';
 
 const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrations, registrationsMap }) => {
     const [onlyLocked, setOnlyLocked] = useState(false);
+    const [onlyReviewed, setOnlyReviewed] = useState(false);
+    const [minRating, setMinRating] = useState(0);
     const renderAttendees = team => {
         return (
             <React.Fragment>
@@ -43,11 +46,14 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
                 .filter(member => typeof member !== 'undefined');
             const ownerMapped = registrationsMap[team.owner] || {};
             const allMembers = membersMapped.concat(ownerMapped);
+            const reviewedCount = allMembers.filter(member => member && member.rating).length;
+            const memberCount = allMembers.length;
             return {
                 ...team,
                 owner: ownerMapped,
                 members: allMembers,
-                avgRating: (sumBy(allMembers, m => m.rating || 0) / allMembers.length).toFixed(2)
+                avgRating: (sumBy(allMembers, m => m.rating || 0) / allMembers.length).toFixed(2),
+                reviewedPercent: Math.floor((reviewedCount * 100) / memberCount)
             };
         });
     }, [teams, registrationsMap]);
@@ -56,19 +62,46 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
         if (onlyLocked && !team.locked) {
             return false;
         }
+        if (onlyReviewed && team.reviewedPercent < 100) {
+            return false;
+        }
+        if (minRating && team.avgRating < minRating) {
+            return false;
+        }
         return true;
     });
 
+    const filteredMemberIds = teamsFiltered.reduce((res, team) => {
+        return res.concat(team.members.map(m => m._id));
+    }, []);
+
     return (
-        <React.Fragment>
+        <PageWrapper loading={registrationsLoading || teamsLoading}>
             <div className={styles.filters}>
                 <div className={styles.filterItem}>
                     <span className={styles.filterItemLabel}>Only locked teams</span>
                     <Switch value={onlyLocked} onChange={setOnlyLocked}></Switch>
                 </div>
+                <div className={styles.filterItem}>
+                    <span className={styles.filterItemLabel}>Only fully reviewed teams</span>
+                    <Switch value={onlyReviewed} onChange={setOnlyReviewed}></Switch>
+                </div>
+                <div className={styles.filterItem}>
+                    <span className={styles.filterItemLabel}>Min. team rating</span>
+                    <Input
+                        type="number"
+                        placeholder="0-5"
+                        value={minRating}
+                        onChange={e => setMinRating(e.target.value)}
+                    />
+                </div>
             </div>
             <div className={styles.top}>
                 <span className={styles.title}>{teamsFiltered.length} teams</span>
+                <BulkEditRegistrationDrawer
+                    registrationIds={filteredMemberIds}
+                    buttonProps={{ children: `Edit all team members ${filteredMemberIds.length}` }}
+                />
             </div>
 
             <Table
@@ -101,15 +134,13 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
                 />
                 <Table.Column
                     title="% Reviewed"
-                    dataIndex="members"
+                    dataIndex="reviewedPercent"
                     key="percentReviewed"
-                    render={members => {
-                        const reviewedCount = members.filter(member => member && member.rating).length;
-                        const memberCount = members.length;
-                        if (reviewedCount === memberCount) {
+                    render={percent => {
+                        if (percent === 100) {
                             return <Tag color="green">100%</Tag>;
                         } else {
-                            return <Tag color="orange">{Math.floor((reviewedCount * 100) / memberCount)}%</Tag>;
+                            return <Tag color="orange">{percent}%</Tag>;
                         }
                     }}
                 />
@@ -120,7 +151,7 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
                     render={locked => (locked ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>)}
                 />
             </Table>
-        </React.Fragment>
+        </PageWrapper>
     );
 };
 

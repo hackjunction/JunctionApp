@@ -33,13 +33,13 @@ const EventRegister = ({
     slug,
     event,
     registration,
+    hasRegistration,
     createRegistration,
     editRegistration,
     userProfile,
     idTokenPayload
 }) => {
     const [submitted, setSubmitted] = useState(false);
-    const hasRegistration = registration && registration.hasOwnProperty('_id');
 
     useEffect(() => {
         if (!hasRegistration) {
@@ -290,6 +290,7 @@ const EventRegister = ({
 const mapStateToProps = state => ({
     event: EventDetailSelectors.event(state),
     registration: EventDetailSelectors.registration(state),
+    hasRegistration: EventDetailSelectors.hasRegistration(state),
     userProfile: UserSelectors.userProfile(state),
     idTokenPayload: AuthSelectors.getCurrentUser(state)
 });

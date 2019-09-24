@@ -1,12 +1,12 @@
 const _ = require('lodash');
-const moment = require('moment');
-
+const Promise = require('bluebird');
+const { RegistrationStatuses } = require('@hackjunction/shared');
 const Registration = require('./model');
-const { NotFoundError } = require('../../common/errors/errors');
+const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const UserProfileController = require('../user-profile/controller');
 const RegistrationHelpers = require('./helpers');
-const { RegistrationStatuses } = require('@hackjunction/shared');
 
+const STATUSES = RegistrationStatuses.asObject;
 const controller = {};
 
 controller.getUserRegistrations = user => {
@@ -46,28 +46,51 @@ controller.updateRegistration = (user, event, data) => {
     });
 };
 
-controller.getRegistrationsForEvent = eventId => {
-    return Registration.find(
-        {
-            event: eventId
+controller.confirmRegistration = (user, event) => {
+    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
+        if (registration.status === STATUSES.accepted.id) {
+            registration.status = STATUSES.confirmed.id;
+            return registration.save();
         }
-        // {
-        //     user: 1,
-        //     rating: 1,
-        //     ratedBy: 1,
-        //     assignedTo: 1,
-        //     tags: 1,
-        //     status: 1,
-        //     'answers.email': 1,
-        //     'answers.firstName': 1,
-        //     'answers.lastName': 1
-        // }
-    );
+
+        throw new ForbiddenError('Only accepted registrations can be confirmed');
+    });
 };
 
-controller.searchRegistrationsForEvent = (eventId, userId, params) => {
-    const aggregationSteps = RegistrationHelpers.buildAggregation(eventId, userId, params);
-    return Registration.aggregate(aggregationSteps);
+controller.cancelRegistration = (user, event) => {
+    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
+        if (registration.status === STATUSES.confirmed.id) {
+            registration.status = STATUSES.cancelled.id;
+            return registration.save();
+        }
+
+        throw new ForbiddenError('Only confirmed registrations can be cancelled');
+    });
+};
+
+controller.getRegistrationsForEvent = eventId => {
+    return Registration.find({
+        event: eventId
+    }).then(registrations => {
+        /** Do some minor optimisation here to cut down on size */
+        return registrations.map(reg => {
+            reg.answers = _.mapValues(reg.answers, answer => {
+                if (typeof answer === 'string' && answer.length > 50) {
+                    return answer.slice(0, 10) + '...';
+                }
+                if (typeof answer === 'object' && Object.keys(answer).length > 0) {
+                    return _.mapValues(answer, subAnswer => {
+                        if (typeof subAnswer === 'string' && subAnswer.length > 50) {
+                            return subAnswer.slice(0, 10);
+                        }
+                        return subAnswer;
+                    });
+                }
+                return answer;
+            });
+            return reg;
+        });
+    });
 };
 
 controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
@@ -75,27 +98,21 @@ controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
         rating: null,
         assignedTo: null
     })
-        .sort([['createdAt', -1]])
+        .sort({ createdAt: 'asc' })
         .limit(10)
         .then(registrations => {
-            const updates = registrations.map(reg => {
-                return {
-                    updateOne: {
-                        filter: {
-                            _id: reg._id
-                        },
-                        update: {
-                            assignedTo: userId
-                        }
+            const registrationIds = registrations.map(r => r._id.toString());
+            return Registration.updateMany(
+                {
+                    event: eventId,
+                    _id: {
+                        $in: registrationIds
                     }
-                };
-            });
-
-            if (updates.length === 0) {
-                return 0;
-            }
-
-            return Registration.bulkWrite(updates).then(data => {
+                },
+                {
+                    assignedTo: userId
+                }
+            ).then(data => {
                 return data.nModified;
             });
         });
@@ -131,14 +148,6 @@ controller.getFullRegistration = (eventId, registrationId) => {
     });
 };
 
-controller.rateRegistration = (registrationId, event, user, rating) => {
-    return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
-        registration.rating = rating;
-        registration.ratedBy = user.sub;
-        return registration.save();
-    });
-};
-
 controller.editRegistration = (registrationId, event, data, user) => {
     return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
         registration.status = data.status;
@@ -150,73 +159,28 @@ controller.editRegistration = (registrationId, event, data, user) => {
     });
 };
 
-controller.acceptRegistration = (registrationId, event) => {
-    return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
-        registration.status = RegistrationStatuses.asObject.accepted.id;
-        return registration.save();
-    });
-};
-
-controller.rejectRegistration = (registrationId, event) => {
-    return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
-        registration.status = RegistrationStatuses.asObject.rejected.id;
-        return registration.save();
-    });
-};
-
 controller.getFullRegistrationsForEvent = eventId => {
     return Registration.find({
         event: eventId
     });
 };
 
-controller.getRegistrationStatsForEvent = async eventId => {
-    const registrations = await Registration.find({ event: eventId }, [
-        'answers.firstName',
-        'answers.lastName',
-        'answers.secretCode',
-        'rating',
-        'ratedBy',
-        'createdAt'
-    ]);
-
-    const registrationsByDay = _.countBy(registrations, r => moment(r.createdAt).format('YYYY-MM-DD'));
-
-    const numRegistrations = registrations.length;
-    const numRegistrationsLastDay = registrations.filter(r => {
-        return Date.now() - r.createdAt < 24 * 60 * 60 * 1000;
-    }).length;
-    const reviewedRegistrations = registrations.filter(r => {
-        return !isNaN(r.rating);
+controller.acceptSoftAccepted = async eventId => {
+    const users = await Registration.find({ event: eventId, status: RegistrationStatuses.asObject.softAccepted.id });
+    const accepted = await Promise.each(users, user => {
+        user.status = RegistrationStatuses.asObject.accepted.id;
+        user.save();
     });
-    const registrationsByReviewer = _.countBy(reviewedRegistrations, r => r.ratedBy);
-    const numRegistrationsReviewed = reviewedRegistrations.length;
-    const registrationsLastFive = _.sortBy(registrations, r => r.createdAt).slice(-5);
-    const topSecretCodes = _.countBy(registrations, r => r.answers.secretCode);
-    const topSecretCodesArray = [];
-    _.forOwn(topSecretCodes, (count, code) => {
-        if (!_.isEmpty(code) && code !== 'undefined') {
-            topSecretCodesArray.push({
-                code,
-                count
-            });
-        }
+    return accepted;
+};
+
+controller.rejectSoftRejected = async eventId => {
+    const users = await Registration.find({ event: eventId, status: RegistrationStatuses.asObject.softRejected.id });
+    const rejected = await Promise.each(users, user => {
+        user.status = RegistrationStatuses.asObject.rejected.id;
+        user.save();
     });
-
-    const registrationsAvgRating = _.meanBy(reviewedRegistrations, 'rating');
-    const registrationsSplit = _.countBy(reviewedRegistrations, 'rating');
-
-    return {
-        numRegistrations,
-        numRegistrationsLastDay,
-        numRegistrationsReviewed,
-        registrationsByDay,
-        registrationsByReviewer,
-        registrationsAvgRating,
-        registrationsLastFive,
-        registrationsSplit,
-        registrationsTopSecretCodes: _.sortBy(topSecretCodesArray, item => item.count * -1)
-    };
+    return rejected;
 };
 
 module.exports = controller;

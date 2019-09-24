@@ -1,17 +1,27 @@
 import React, { useMemo } from 'react';
 
 import { List, Avatar } from 'antd';
-import { map, sortBy } from 'lodash-es';
+import { sortBy } from 'lodash-es';
+import { connect } from 'react-redux';
 
-const ReviewersList = ({ data, userProfilesMap = {} }) => {
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+
+const ReviewersList = ({ data, userProfilesMap = {}, averagesMap = {} }) => {
     const formattedData = useMemo(() => {
-        const asArray = map(Object.keys(data), userId => ({
-            user: userProfilesMap[userId] || {},
-            ratings: data[userId]
-        }));
+        const arr = [];
+        Object.keys(data).forEach(userId => {
+            const user = userProfilesMap[userId];
+            if (user) {
+                arr.push({
+                    user,
+                    ratings: data[userId],
+                    average: averagesMap[userId]
+                });
+            }
+        });
 
-        return sortBy(asArray, 'ratings');
-    }, [data, userProfilesMap]);
+        return sortBy(arr, item => item.ratings * -1);
+    }, [data, userProfilesMap, averagesMap]);
 
     return (
         <List
@@ -22,7 +32,7 @@ const ReviewersList = ({ data, userProfilesMap = {} }) => {
                     <List.Item.Meta
                         avatar={<Avatar src={item.user.avatar} />}
                         title={`${item.user.firstName} ${item.user.lastName}`}
-                        description={`${item.ratings} applications reviewed`}
+                        description={`${item.ratings} reviews / ${item.average.toFixed(2)} average rating`}
                     />
                 </List.Item>
             )}
@@ -30,4 +40,10 @@ const ReviewersList = ({ data, userProfilesMap = {} }) => {
     );
 };
 
-export default ReviewersList;
+const mapState = state => ({
+    data: OrganiserSelectors.registrationsByReviewer(state),
+    userProfilesMap: OrganiserSelectors.organisersMap(state),
+    averagesMap: OrganiserSelectors.reviewAverageByReviewer(state)
+});
+
+export default connect(mapState)(ReviewersList);

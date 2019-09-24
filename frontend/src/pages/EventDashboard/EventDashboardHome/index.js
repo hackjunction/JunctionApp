@@ -11,14 +11,17 @@ import EventDashboardHomeRegistration from './EventDashboardHomeRegistration';
 import EventUtils from 'utils/events';
 import EventConstants from 'constants/events';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
-
 const EventDashboardHome = ({ event, registration }) => {
     const [currentStep, setCurrentStep] = useState([]);
 
     useEffect(() => {
-        const status = EventUtils.getEventStatus(event);
-        setCurrentStep(status.index);
+        if (event) {
+            const status = EventUtils.getEventStatus(event);
+            setCurrentStep(status.index);
+        }
     }, [event]);
+
+    if (!event || !registration) return null;
 
     function renderContent() {
         switch (currentStep) {
@@ -43,7 +46,6 @@ const EventDashboardHome = ({ event, registration }) => {
                 <Col xs={0} lg={24}>
                     <Steps current={currentStep - 1}>
                         <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                        <Steps.Step title="Confirmation" icon={<Icon type="check-circle" />} />
                         <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
                         <Steps.Step title="Finished" icon={<Icon type="crown" />} />
                     </Steps>
@@ -51,7 +53,6 @@ const EventDashboardHome = ({ event, registration }) => {
                 <Col xs={24} lg={0}>
                     <Steps direction="vertical" current={currentStep - 1}>
                         <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                        <Steps.Step title="Confirmation" icon={<Icon type="check-circle" />} />
                         <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
                         <Steps.Step title="Finished" icon={<Icon type="crown" />} />
                     </Steps>

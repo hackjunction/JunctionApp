@@ -273,12 +273,7 @@ const BulkEditRegistrationDrawer = ({
                     />
                 </PageWrapper>
             </Drawer>
-            <AntButton
-                type="link"
-                children={`Edit all ${registrationIds.length} items`}
-                onClick={setVisible}
-                {...buttonProps}
-            />
+            <AntButton type="link" children={`Edit all`} onClick={setVisible} {...buttonProps} />
         </React.Fragment>
     );
 };

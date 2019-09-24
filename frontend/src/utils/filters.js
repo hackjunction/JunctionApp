@@ -1,4 +1,5 @@
 import { difference } from 'lodash-es';
+import objectPath from 'object-path';
 
 const isEmpty = value => {
     if (Array.isArray(value)) {
@@ -19,18 +20,28 @@ const contains = (value, answer) => {
     if (Array.isArray(answer)) {
         return answer.indexOf(value) !== -1;
     } else if (typeof answer === 'string') {
-        return answer
-            .toLowerCase()
-            .trim()
-            .indexOf(value.toLowerCase().trim());
+        return (
+            answer
+                .toLowerCase()
+                .trim()
+                .indexOf(value.toLowerCase().trim()) !== -1
+        );
     }
     return false;
 };
 
 const equals = (value, answer) => {
     if (!value || !answer) return false;
+    const trimmed = value.trim().toLowerCase();
     if (typeof answer === 'string') {
-        return value.toLowerCase().trim() === answer.toLowerCase().trim();
+        return trimmed === answer.toLowerCase().trim();
+    }
+    if (typeof answer === 'boolean') {
+        if (answer) {
+            return trimmed === 'true' || trimmed === 'yes';
+        } else {
+            return trimmed === 'false' || trimmed === 'no';
+        }
     }
 
     return answer === value;
@@ -73,23 +84,31 @@ const filter = (registration, filter) => {
                 difference(filter.value, registration.tags).length === filter.value.length
             );
         }
+        case 'apply-as-team': {
+            const applyAsTeam = objectPath.get(registration, 'answers.teamOptions.applyAsTeam');
+            return applyAsTeam === true;
+        }
+        case 'not-apply-as-team': {
+            const applyAsTeam = objectPath.get(registration, 'answers.teamOptions.applyAsTeam');
+            return applyAsTeam !== true;
+        }
         case 'field-equals': {
-            return equals(filter.value, registration.answers[filter.field]);
+            return equals(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-nequals': {
-            return !equals(filter.value, registration.answers[filter.field]);
+            return !equals(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-contains': {
-            return contains(filter.value, registration.answers[filter.field]);
+            return contains(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-not-contains': {
-            return !contains(filter.value, registration.answers[filter.field]);
+            return !contains(filter.value, objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-empty': {
-            return isEmpty(registration.answers[filter.field]);
+            return isEmpty(objectPath.get(registration, `answers.${filter.field}`));
         }
         case 'field-not-empty': {
-            return !isEmpty(registration.answers[filter.field]);
+            return !isEmpty(objectPath.get(registration, `answers.${filter.field}`));
         }
         default:
             return true;

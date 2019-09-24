@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
+import { meanBy, countBy, groupBy, mapValues } from 'lodash-es';
 import * as FilterUtils from 'utils/filters';
 import * as AuthSelectors from 'redux/auth/selectors';
+import moment from 'moment';
 
 export const event = state => state.organiser.event.data;
 export const eventLoading = state => state.organiser.event.loading;
@@ -43,6 +45,15 @@ export const registrationsAssigned = createSelector(
     }
 );
 
+export const registrationsReviewed = createSelector(
+    registrations,
+    registrations => {
+        return registrations.filter(registration => {
+            return !!registration.rating;
+        });
+    }
+);
+
 export const teams = state => state.organiser.teams.data;
 export const teamsLoading = state => state.organiser.teams.loading;
 export const teamsError = state => state.organiser.teams.error;
@@ -58,6 +69,91 @@ export const teamsPopulated = createSelector(
                 return map[member];
             });
             return team;
+        });
+    }
+);
+
+/** Stats selectors */
+export const registrationsCount = createSelector(
+    registrations,
+    registrations => registrations.length
+);
+
+export const teamsCount = createSelector(
+    teams,
+    teams => teams.length
+);
+
+export const percentReviewed = createSelector(
+    registrations,
+    registrations => {
+        const { reviewed, total } = registrations.reduce(
+            (res, registration) => {
+                res.total += 1;
+                if (registration.rating) {
+                    res.reviewed += 1;
+                }
+                return res;
+            },
+            {
+                reviewed: 0,
+                total: 0
+            }
+        );
+        return (reviewed * 100) / total;
+    }
+);
+
+export const averageRating = createSelector(
+    registrationsReviewed,
+    registrations => {
+        return meanBy(registrations, 'rating');
+    }
+);
+
+export const registrationsLast24h = createSelector(
+    registrations,
+    registrations => {
+        return registrations.filter(registration => {
+            return registration.createdAt > Date.now() - 1000 * 60 * 60 * 24;
+        }).length;
+    }
+);
+
+export const registrationsByDay = createSelector(
+    registrations,
+    registrations => {
+        return countBy(registrations, r => moment(r.createdAt).format('YYYY-MM-DD'));
+    }
+);
+
+export const registrationsByRating = createSelector(
+    registrationsReviewed,
+    registrations => {
+        return countBy(registrations, 'rating');
+    }
+);
+
+export const registrationsByReviewer = createSelector(
+    registrationsReviewed,
+    registrations => {
+        return countBy(registrations, 'ratedBy');
+    }
+);
+
+export const registrationsBySecretCode = createSelector(
+    registrations,
+    registrations => {
+        return countBy(registrations, 'answers.secretCode');
+    }
+);
+
+export const reviewAverageByReviewer = createSelector(
+    registrationsReviewed,
+    registrations => {
+        const grouped = groupBy(registrations, 'ratedBy');
+        return mapValues(grouped, registrations => {
+            return meanBy(registrations, 'rating');
         });
     }
 );

@@ -13,6 +13,14 @@ import config from 'constants/config';
 
 const { store, persistor } = configureStore();
 
+/** Disable log statements in production */
+function noop() {}
+if (process.env.NODE_ENV !== 'development') {
+    console.log = noop;
+    console.warn = noop;
+    console.error = noop;
+}
+
 ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={<div className="Preload" />} persistor={persistor}>
