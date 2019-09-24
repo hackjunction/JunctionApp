@@ -19,7 +19,7 @@ const AccountDashboard = ({ registrations, updateRegistrations }) => {
             <h3 className={styles.sectionTitle}>Your registrations</h3>
             <Row gutter={32}>
                 {registrations.map(registration => (
-                    <Col xs={24} lg={12} xxl={8}>
+                    <Col xs={24} lg={12} xxl={8} key={registration._id}>
                         <EventCardSmall eventId={registration.event} />
                     </Col>
                 ))}

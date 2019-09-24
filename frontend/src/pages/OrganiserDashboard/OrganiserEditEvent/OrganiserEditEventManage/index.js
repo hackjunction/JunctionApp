@@ -68,6 +68,10 @@ const OrganiserEditEventManage = ({
             });
     }
 
+    const testEmail = () => {
+        const recipient = 'juuso.lappalainen@hackjunction.com';
+    };
+
     return (
         <PageWrapper
             loading={eventLoading}
@@ -138,6 +142,9 @@ const OrganiserEditEventManage = ({
                         organisers={concat(event.owner, event.organisers)}
                     />
                     <Divider size={1} />
+                    <Button block onClick={testEmail}>
+                        Test sending email to juuso.lappalainen@hackjunction.com
+                    </Button>
                 </React.Fragment>
             )}
         />

@@ -1,48 +1,63 @@
 @import '~styles/variables';
 
 .wrapper {
-    padding: 1rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     border-radius: 10px;
     box-shadow: 4px 6px 20px #f3f3f3;
+    overflow: hidden;
 
-    .title {
-        font-size: 18px;
-        text-transform: uppercase;
-        color: $black;
+    .iconWrapper {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-    }
-
-    .body {
-        font-size: 18px;
-    }
-
-    .titleExtra {
-        padding-left: 5px;
-    }
-
-    .typeIcon {
-        margin-right: 10px;
-        font-size: 24px;
-
-        &Info {
-            color: $green;
-        }
+        justify-content: center;
+        background: rgba($black, 0.5);
+        padding: 1rem;
 
         &Warning {
-            color: $junction-orange;
+            background: rgba($junction-orange, 0.7);
         }
 
         &Error {
-            color: $color-error;
+            background: rgba($color-error, 0.5);
         }
 
         &Success {
-            color: green;
+            background: $green;
+        }
+
+        .icon {
+            color: white;
+            font-size: 32px;
+        }
+    }
+
+    .contentWrapper {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: $lightgrey;
+
+        .title {
+            font-size: 18px;
+            text-transform: uppercase;
+            color: $black;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            &Extra {
+                padding-left: 5px;
+                font-weight: 900;
+            }
+        }
+
+        .body {
+            font-size: 18px;
+            text-align: center;
         }
     }
 }

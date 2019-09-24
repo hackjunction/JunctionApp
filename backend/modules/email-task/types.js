@@ -1,6 +1,7 @@
 const EmailTypes = {
     registrationAccepted: 'registration-accepted',
-    registrationRejected: 'registration-rejected'
+    registrationRejected: 'registration-rejected',
+    registrationReceived: 'registration-received'
 };
 
 module.exports = EmailTypes;

@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@hackjunction/shared": "^1.1.44",
+        "@hackjunction/shared": "file:../shared",
+        "@react-pdf/renderer": "^1.6.4",
         "antd": "^3.18.2",
         "auth0-js": "^9.10.0",
         "axios": "^0.18.0",
@@ -22,6 +23,7 @@
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.25",
         "node-sass": "^4.11.0",
+        "object-path": "^0.11.4",
         "react": "^16.8.1",
         "react-animate-height": "^2.0.15",
         "react-app-rewired": "^2.1.3",
