@@ -330,7 +330,7 @@ const AttendeeFilters = ({ event, registrations, filters = [], setFilters }) => 
 const mapState = state => ({
     event: OrganiserSelectors.event(state),
     registrations: OrganiserSelectors.registrations(state),
-    filters: OrganiserSelectors.registrationsFilters(state)
+    filters: []
 });
 
 const mapDispatch = dispatch => ({

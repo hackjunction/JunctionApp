@@ -18,7 +18,11 @@ const TravelGrantSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: Misc.travelGrantStatuses.ids
+        enum: Misc.travelGrantStatuses.ids,
+        default: Misc.travelGrantStatuses.items.accepted.id
+    },
+    sum: {
+        type: Number
     },
     receipt: CloudinaryImageSchema
 });

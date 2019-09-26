@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './OrganiserEditEvent.module.scss';
 
 import { connect } from 'react-redux';
@@ -16,25 +16,35 @@ import OrganiserEditEventManage from './OrganiserEditEventManage';
 import OrganiserEditEventGrants from './OrganiserEditEventGrants';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
-const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user, match, location }) => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+const OrganiserEditEvent = ({
+    updateEvent,
+    updateOrganiserProfiles,
+    updateRegistrations,
+    updateTeams,
+    loading,
+    error,
+    event,
+    user,
+    match,
+    location
+}) => {
     const { slug } = match.params;
 
     useEffect(() => {
-        setLoading(true);
-        updateEvent(slug)
-            .catch(err => {
-                setError(true);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [updateEvent, slug]);
+        updateEvent(slug);
+    }, [slug, updateEvent]);
+
+    const updateData = useCallback(() => {
+        if (event.owner) {
+            updateOrganiserProfiles(event.owner, event.organisers);
+            updateRegistrations(slug);
+            updateTeams(slug);
+        }
+    }, [slug, event.owner, event.organisers, updateTeams, updateRegistrations, updateOrganiserProfiles]);
 
     useEffect(() => {
-        updateOrganiserProfiles(event.owner, event.organisers);
-    }, [event.owner, event.organisers, updateOrganiserProfiles]);
+        updateData();
+    }, [updateData]);
 
     return (
         <PageWrapper loading={loading} error={error}>
@@ -75,7 +85,9 @@ const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user,
                         path: '/review',
                         icon: 'star',
                         label: 'Review',
-                        render: routeProps => <OrganiserEditEventReview {...routeProps} slug={slug} />
+                        render: routeProps => (
+                            <OrganiserEditEventReview {...routeProps} slug={slug} updateData={updateData} />
+                        )
                     },
                     {
                         path: '/grants',
@@ -98,13 +110,17 @@ const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user,
 const mapStateToProps = state => ({
     idToken: AuthSelectors.getIdToken(state),
     user: AuthSelectors.getCurrentUser(state),
-    event: OrganiserSelectors.event(state)
+    event: OrganiserSelectors.event(state),
+    loading: OrganiserSelectors.eventLoading(state),
+    error: OrganiserSelectors.eventError(state)
 });
 
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(OrganiserActions.updateEvent(slug)),
     updateOrganiserProfiles: (owner, organisers) =>
-        dispatch(OrganiserActions.updateOrganisersForEvent(owner, organisers))
+        dispatch(OrganiserActions.updateOrganisersForEvent(owner, organisers)),
+    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
+    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug))
 });
 
 export default connect(

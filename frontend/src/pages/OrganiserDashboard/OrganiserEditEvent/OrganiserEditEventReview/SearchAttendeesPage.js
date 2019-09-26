@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './SearchAttendeesPage.module.scss';
 import { connect } from 'react-redux';
 import { Button as AntButton } from 'antd';
+import { FilterHelpers } from '@hackjunction/shared';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as FilterUtils from 'utils/filters';
@@ -10,10 +11,10 @@ import Divider from 'components/generic/Divider';
 import AttendeeTable from 'components/tables/AttendeeTable';
 import BulkEditRegistrationDrawer from 'components/modals/BulkEditRegistrationDrawer';
 import BulkEmailDrawer from 'components/modals/BulkEmailDrawer';
-import AttendeeFilters from './AttendeeFilters';
+import FilterForm from 'components/filters/FilterForm';
 
 const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) => {
-    const filtered = FilterUtils.applyFilters(registrations, filters);
+    const [filter, setFilter] = useState();
 
     const renderBulkActions = () => {
         if (!registrations.length) return null;
@@ -30,9 +31,11 @@ const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) =
         );
     };
 
+    const filtered = FilterHelpers.applyFilters(registrations, [filter]);
+
     return (
         <React.Fragment>
-            <AttendeeFilters />
+            <FilterForm onSubmit={setFilter} />
             <Divider size={1} />
             {renderBulkActions()}
             <AttendeeTable attendees={filtered} loading={registrationsLoading} />
@@ -41,9 +44,9 @@ const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) =
 };
 
 const mapState = state => ({
-    registrations: OrganiserSelectors.registrationsFiltered(state),
+    registrations: OrganiserSelectors.registrations(state),
     registrationsLoading: OrganiserSelectors.registrationsLoading(state),
-    filters: OrganiserSelectors.registrationsFilters(state)
+    filters: []
 });
 
 export default connect(mapState)(SearchAttendeesPage);

@@ -15,12 +15,27 @@ const getTravelGrantsForEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(travelGrants);
 });
 
+const createTravelGrantForEvent = asyncHandler(async (req, res) => {
+    const travelGrant = await TravelGrantController.createTravelGrantForEvent(
+        req.event._id.toString(),
+        req.body.userId,
+        req.body.sum,
+        req.body.travelsFrom
+    ).catch(err => {
+        console.log('ERR', err);
+    });
+    return res.status(200).json(travelGrant);
+});
+
 const getTravelGrantForUser = asyncHandler(async (req, res) => {
     const travelGrant = await TravelGrantController.getTravelGrantForUser(req.user.sub, req.event._id.toString());
     return res.status(200).json(travelGrant);
 });
 
-router.route('/:slug').get(hasToken, hasRegisteredToEvent, getTravelGrantForUser);
+router
+    .route('/:slug')
+    .get(hasToken, hasRegisteredToEvent, getTravelGrantForUser)
+    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, createTravelGrantForEvent);
 
 router
     .route('/:slug/all')

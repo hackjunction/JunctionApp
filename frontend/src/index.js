@@ -11,6 +11,7 @@ import { CloudinaryContext } from 'cloudinary-react';
 
 import configureStore, { history } from 'redux/configureStore';
 import config from 'constants/config';
+import theme from './material-ui-theme';
 
 const { store, persistor } = configureStore();
 
@@ -26,7 +27,7 @@ ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={<div className="Preload" />} persistor={persistor}>
             <CloudinaryContext includeOwnBody={true} cloudName={config.CLOUDINARY_CLOUD_NAME}>
-                <ThemeProvider>
+                <ThemeProvider theme={theme}>
                     <App history={history} />
                 </ThemeProvider>
             </CloudinaryContext>
