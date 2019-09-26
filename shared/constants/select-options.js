@@ -5,6 +5,7 @@ const Languages = require('./languages');
 const Roles = require('./roles');
 const Skills = require('./skills');
 const Themes = require('./themes');
+const RegistrationStatuses = require('./registration-statuses');
 
 const SelectOptions = {
     COUNTRIES: Countries.asArrayOfName.map(country => ({
@@ -38,6 +39,10 @@ const SelectOptions = {
     THEMES: Themes.themes.map(theme => ({
         label: theme,
         value: theme
+    })),
+    STATUSES: RegistrationStatuses.asArray.map(status => ({
+        label: status.label,
+        value: status.id
     }))
 };
 

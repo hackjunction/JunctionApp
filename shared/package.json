@@ -11,10 +11,6 @@
     ],
     "author": "Juuso Lappalainen",
     "license": "ISC",
-    "engines": {
-        "node": "^12.3.1",
-        "npm": "^6.9.0"
-    },
     "dependencies": {
         "lodash": "^4.17.15",
         "object-path": "^0.11.4"
@@ -22,5 +18,9 @@
     "devDependencies": {
         "mocha": "^6.2.0",
         "pre-commit": "^1.2.2"
+    },
+    "engines": {
+        "node": "12.3.1",
+        "npm": "6.9.0"
     }
 }

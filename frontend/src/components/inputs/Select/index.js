@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useEffect } from 'react';
 import { TextField, MenuItem } from '@material-ui/core';
 import { SelectOptions } from '@hackjunction/shared';
 
-const Select = ({ label, helperText, value, onChange = () => {}, options = [], type }) => {
+const Select = ({ label, helperText, value = '', onChange = () => {}, options = [], type }) => {
     const handleChange = useCallback(
         e => {
             onChange(e.target.value);
@@ -29,12 +29,12 @@ const Select = ({ label, helperText, value, onChange = () => {}, options = [], t
                 return SelectOptions.SKILLS;
             case 'theme':
                 return SelectOptions.THEMES;
+            case 'status':
+                return SelectOptions.STATUSES;
             default:
                 return options;
         }
     }, [options, type]);
-
-    console.log('ITEMs', items);
 
     return (
         <TextField select fullWidth label={label} value={value} onChange={handleChange} helperText={helperText}>

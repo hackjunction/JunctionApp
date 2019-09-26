@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "better-npm-run start:prod",
         "dev": "better-npm-run start:dev",
-        "postinstall": "if-env NODE_ENV=production && better-npm-run postinstall:prod || better-npm-run postinstall:dev",
+        "build": "better-npm-run setup && better-npm-run build",
         "setup": "better-npm-run setup",
         "dev:frontend": "cd frontend && npm start",
         "dev:backend": "cd backend && npm run dev",
@@ -21,8 +21,6 @@
         "setup:backend": "cd backend && npm install",
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
         "start:prod": "cd backend && npm start",
-        "postinstall:dev": "better-npm-run setup",
-        "postinstall:prod": "better-npm-run setup && better-npm-run build",
         "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
     },
     "author": "Juuso Lappalainen",
@@ -36,8 +34,8 @@
         "recharts": "^1.7.1"
     },
     "engines": {
-        "node": "^12.3.1",
-        "npm": "^6.9.0"
+        "node": "12.3.1",
+        "npm": "6.9.0"
     },
     "type": "module"
 }

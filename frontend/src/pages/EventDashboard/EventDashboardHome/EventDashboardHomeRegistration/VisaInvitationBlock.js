@@ -15,7 +15,7 @@ const STATUSES = RegistrationStatuses.asObject;
 
 const VisaInvitationBlock = ({ event, registration }) => {
     if (!registration || !event) return null;
-    if (registration.answers && !registration.answers.needsTravelGrant) return null;
+    // if (registration.answers && !registration.answers.needsTravelGrant) return null;
 
     const statuses = [STATUSES.accepted.id, STATUSES.confirmed.id];
 
