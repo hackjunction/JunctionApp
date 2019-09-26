@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 
 import { TextField, MenuItem } from '@material-ui/core';
 import { SelectOptions } from '@hackjunction/shared';
@@ -22,7 +22,7 @@ const Select = ({ label, helperText, value, onChange = () => {}, options = [], t
             case 'industry':
                 return SelectOptions.INDUSTRY;
             case 'language':
-                return SelectOptions.LANGUAGE;
+                return SelectOptions.LANGUAGES;
             case 'role':
                 return SelectOptions.ROLES;
             case 'skill':
@@ -33,6 +33,8 @@ const Select = ({ label, helperText, value, onChange = () => {}, options = [], t
                 return options;
         }
     }, [options, type]);
+
+    console.log('ITEMs', items);
 
     return (
         <TextField select fullWidth label={label} value={value} onChange={handleChange} helperText={helperText}>

@@ -31,6 +31,8 @@ const SearchAttendeesPage = ({ registrations, registrationsLoading, filters }) =
         );
     };
 
+    console.log('FILTER', filter);
+
     const filtered = FilterHelpers.applyFilters(registrations, [filter]);
 
     return (
