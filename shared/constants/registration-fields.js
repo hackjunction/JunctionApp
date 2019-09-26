@@ -975,9 +975,9 @@ function buildFiltersArray() {
         if (!Array.isArray(field.filters) || !field.filters.length) return res;
         const filters = field.filters.map(filter => {
             if (filter.path.length) {
-                filter.path = `${fieldKey}.${filter.path}`;
+                filter.path = `answers.${fieldKey}.${filter.path}`;
             } else {
-                filter.path = fieldKey;
+                filter.path = `answers.${fieldKey}`;
             }
             return filter;
         });
