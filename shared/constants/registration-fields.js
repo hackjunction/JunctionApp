@@ -970,7 +970,27 @@ function buildFieldToLabelMap() {
 
 function buildFiltersArray() {
     const fields = Object.keys(Fields);
-    return fields.reduce((res, fieldKey) => {
+    const baseFilters = [
+        {
+            path: 'rating',
+            label: 'Rating',
+            type: FilterTypes.NUMBER,
+            valueType: FilterValues.NUMBER
+        },
+        {
+            path: 'status',
+            label: 'Status',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STATUS
+        },
+        {
+            path: 'tags',
+            label: 'Tags',
+            type: FilterTypes.ARRAY,
+            valueType: FilterValues.TAG
+        }
+    ];
+    const answerFilters = fields.reduce((res, fieldKey) => {
         const field = Fields[fieldKey];
         if (!Array.isArray(field.filters) || !field.filters.length) return res;
         const filters = field.filters.map(filter => {
@@ -983,6 +1003,8 @@ function buildFiltersArray() {
         });
         return res.concat(filters);
     }, []);
+
+    return baseFilters.concat(answerFilters);
 }
 
 const Helpers = {

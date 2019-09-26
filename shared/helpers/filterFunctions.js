@@ -54,11 +54,7 @@ const contains = (object, path, targetValue) => {
     }
 
     if (Array.isArray(value)) {
-        if (typeof targetValue === 'string') {
-            return value.indexOf(targetValue.trim().toLowerCase()) !== -1;
-        } else {
-            return value.indexOf(targetValue);
-        }
+        return value.indexOf(targetValue) !== -1;
     }
 
     return false;
@@ -66,11 +62,11 @@ const contains = (object, path, targetValue) => {
 
 const isGte = (object, path, targetValue) => {
     const value = objectPath.get(object, path);
-    let numValue = Number(value);
+    let numValue = parseInt(value);
     if (Array.isArray(value) || typeof value === 'string') {
         numValue = value.length;
     }
-    const numTarget = Number(targetValue);
+    const numTarget = parseInt(targetValue);
 
     if (isNaN(numValue) || isNaN(numTarget)) return false;
 
@@ -79,11 +75,11 @@ const isGte = (object, path, targetValue) => {
 
 const isLte = (object, path, targetValue) => {
     const value = objectPath.get(object, path);
-    let numValue = Number(value);
+    let numValue = parseInt(value);
     if (Array.isArray(value) || typeof value === 'string') {
         numValue = value.length;
     }
-    const numTarget = Number(targetValue);
+    const numTarget = parseInt(targetValue);
 
     if (isNaN(numValue) || isNaN(numTarget)) return false;
 

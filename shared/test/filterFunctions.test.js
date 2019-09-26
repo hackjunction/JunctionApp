@@ -330,19 +330,24 @@ describe('Filter functions', function() {
                     filterFunctions.isGte(testObject, 'array', ARRAY.length),
                     filterFunctions.isGte(testObject, 'array', ARRAY.length - 1),
                     filterFunctions.isGte(testObject, 'emptyArray', 0),
+                    filterFunctions.isGte(testObject, 'array', '1'),
                     filterFunctions.isLte(testObject, 'array', ARRAY.length),
                     filterFunctions.isLte(testObject, 'array', ARRAY.length + 1),
                     filterFunctions.isLte(testObject, 'emptyArray', 0),
-                    filterFunctions.isLte(testObject, 'emptyArray', 3)
+                    filterFunctions.isLte(testObject, 'emptyArray', 3),
+                    filterFunctions.isLte(testObject, 'emptyArray', '0'),
+                    filterFunctions.isLte(testObject, 'emptyArray', '7')
                 ];
 
                 const failingValues = [
                     filterFunctions.isLte(testObject, 'array', ARRAY.length - 1),
-                    filterFunctions.isGte(testObject, 'array', ARRAY.length + 1)
+                    filterFunctions.isGte(testObject, 'array', ARRAY.length + 1),
+                    filterFunctions.isGte(testObject, 'array', 10),
+                    filterFunctions.isGte(testObject, 'array', '10')
                 ];
 
-                assert(passingValues.indexOf(false), -1);
-                assert(failingValues.indexOf(true), -1);
+                assert.equal(passingValues.indexOf(false), -1);
+                assert.equal(failingValues.indexOf(true), -1);
             });
         });
         describe('strings', function() {

@@ -26,6 +26,17 @@ export const useFormField = (initialValue, validate = () => null, initialError =
         setError(undefined);
     }, []);
 
+    const handleValidate = useCallback(() => {
+        const err = validate(value);
+        if (err) {
+            setError(err);
+            return err;
+        } else {
+            setError();
+            return;
+        }
+    }, [value, validate]);
+
     return {
         value,
         setValue,
@@ -33,6 +44,6 @@ export const useFormField = (initialValue, validate = () => null, initialError =
         reset,
         error,
         setError,
-        validate
+        validate: handleValidate
     };
 };

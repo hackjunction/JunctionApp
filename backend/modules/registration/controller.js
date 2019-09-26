@@ -78,7 +78,7 @@ controller.getRegistrationsForEvent = eventId => {
                 if (typeof answer === 'string' && answer.length > 50) {
                     return answer.slice(0, 10) + '...';
                 }
-                if (typeof answer === 'object' && Object.keys(answer).length > 0) {
+                if (typeof answer === 'object' && !Array.isArray(answer) && Object.keys(answer).length > 0) {
                     return _.mapValues(answer, subAnswer => {
                         if (typeof subAnswer === 'string' && subAnswer.length > 50) {
                             return subAnswer.slice(0, 10);
