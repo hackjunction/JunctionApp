@@ -1,35 +1,109 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import styles from './OrganiserEditEventGrants.module.scss';
 
+import EmailIcon from '@material-ui/icons/Email';
+import EditIcon from '@material-ui/icons/Edit';
 import { connect } from 'react-redux';
-import { Table } from 'antd';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import PageWrapper from 'components/PageWrapper';
+import * as OrganiserActions from 'redux/organiser/actions';
+import Table from 'components/generic/Table';
 
-const OrganiserEditEventGrants = ({ registrations, travelGrantsByUser, loading, error }) => {
+import EditTravelGrantModal from './EditTravelGrantModal';
+
+import FilterForm from 'components/filters/FilterForm';
+
+const OrganiserEditEventGrants = ({
+    event,
+    registrations,
+    travelGrantsByUser,
+    travelGrantsTotal,
+    updateTravelGrants,
+    loading,
+    error
+}) => {
+    const [activeItem, setActiveItem] = useState();
+
+    const handleClose = useCallback(() => {
+        setActiveItem(undefined);
+    }, []);
+
+    useEffect(() => {
+        updateTravelGrants(event.slug);
+    }, [updateTravelGrants, event.slug]);
+
     const data = useMemo(() => {
-        console.log('BY USER', travelGrantsByUser);
-        return registrations;
+        return registrations.map(reg => {
+            reg.travelGrant = travelGrantsByUser[reg.user];
+            return reg;
+        });
     }, [registrations, travelGrantsByUser]);
 
     return (
-        <PageWrapper loading={false}>
-            <Table dataSource={data} rowKey="user">
-                <Table.Column key="firstName" dataIndex="answers.firstName" title="First name" />
-                <Table.Column key="lastName" dataIndex="answers.lastName" title="Last name" />
-                <Table.Column key="email" dataIndex="answers.email" title="Email" />
-                <Table.Column key="actions" title="Actions" />
-            </Table>
-        </PageWrapper>
+        <div>
+            <EditTravelGrantModal slug={event.slug} activeItem={activeItem} onClose={handleClose} />
+            <h1>Total spend: {travelGrantsTotal}</h1>
+            <Table
+                dataSource={data}
+                rowKey="_id"
+                loading={loading}
+                title="Travel Grants"
+                rowSelection={false}
+                rowActions={[
+                    {
+                        key: 'edit',
+                        label: 'Edit',
+                        action: item => setActiveItem(item)
+                    }
+                ]}
+                columns={[
+                    {
+                        key: 'firstName',
+                        path: 'answers.firstName',
+                        label: 'First name'
+                    },
+                    {
+                        key: 'lastName',
+                        path: 'answers.lastName',
+                        label: 'Last name'
+                    },
+                    {
+                        key: 'email',
+                        path: 'answers.email',
+                        label: 'Email'
+                    },
+                    {
+                        key: 'amount',
+                        path: 'travelGrant.sum',
+                        label: 'Amount',
+                        render: sum => sum || 'N/A'
+                    },
+                    {
+                        key: 'status',
+                        path: 'travelGrant.status',
+                        label: 'Status',
+                        render: status => status || 'Pending'
+                    }
+                ]}
+            />
+        </div>
     );
 };
 
 const mapState = state => ({
-    registrations: OrganiserSelectors.registrations(state),
+    event: OrganiserSelectors.event(state),
+    registrations: OrganiserSelectors.registrationsConfirmed(state),
     travelGrantsByUser: OrganiserSelectors.travelGrantsMap(state),
+    travelGrantsTotal: OrganiserSelectors.travelGrantsTotal(state),
     loading: OrganiserSelectors.registrationsLoading(state) || OrganiserSelectors.travelGrantsLoading(state),
     error: OrganiserSelectors.registrationsError(state) || OrganiserSelectors.travelGrantsError(state)
 });
 
-export default connect(mapState)(OrganiserEditEventGrants);
+const mapDispatch = dispatch => ({
+    updateTravelGrants: slug => dispatch(OrganiserActions.updateTravelGrants(slug))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(OrganiserEditEventGrants);

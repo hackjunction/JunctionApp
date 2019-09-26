@@ -19,12 +19,7 @@ import ReviewedPercent from 'components/plots/ReviewedPercent';
 import ReviewedAverage from 'components/plots/ReviewedAverage';
 import ApplicationsLast24h from 'components/plots/ApplicationsLast24h';
 
-const OrganiserEditEventStats = ({ slug, loading, updateRegistrations, updateTeams }) => {
-    useEffect(() => {
-        updateRegistrations(slug);
-        updateTeams(slug);
-    }, [slug, updateRegistrations, updateTeams]);
-
+const OrganiserEditEventStats = ({ slug, loading }) => {
     const renderContent = () => {
         return (
             <Row gutter={16}>
@@ -94,12 +89,4 @@ const mapState = state => ({
         OrganiserSelectors.organisersLoading(state)
 });
 
-const mapDispatch = dispatch => ({
-    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
-    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug))
-});
-
-export default connect(
-    mapState,
-    mapDispatch
-)(OrganiserEditEventStats);
+export default connect(mapState)(OrganiserEditEventStats);

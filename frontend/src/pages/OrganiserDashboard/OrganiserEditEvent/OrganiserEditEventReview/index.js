@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 
 import { PageHeader, Menu, Button as AntButton } from 'antd';
 import { connect } from 'react-redux';
@@ -7,24 +7,14 @@ import PageWrapper from 'components/PageWrapper';
 import Divider from 'components/generic/Divider';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
 
 import SearchAttendeesPage from './SearchAttendeesPage';
 import AssignAttendeesPage from './AssignAttendeesPage';
 import TeamsPage from './TeamsPage';
 import AdminPage from './AdminPage';
 
-const OrganiserEditEventReview = ({ event, organisers, updateRegistrations, updateTeams, registrationsLoading }) => {
+const OrganiserEditEventReview = ({ event, organisers, registrationsLoading, updateData }) => {
     const [selectedKey, setSelectedKey] = useState('search');
-
-    const updateData = useCallback(() => {
-        updateRegistrations(event.slug);
-        updateTeams(event.slug);
-    }, [event.slug, updateTeams, updateRegistrations]);
-
-    useEffect(() => {
-        updateData();
-    }, [event.slug, updateData]);
 
     const renderSelectedKey = () => {
         switch (selectedKey) {
@@ -78,12 +68,4 @@ const mapState = state => ({
     registrationsLoading: OrganiserSelectors.registrationsLoading(state)
 });
 
-const mapDispatch = dispatch => ({
-    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
-    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug))
-});
-
-export default connect(
-    mapState,
-    mapDispatch
-)(OrganiserEditEventReview);
+export default connect(mapState)(OrganiserEditEventReview);

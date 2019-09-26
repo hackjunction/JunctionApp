@@ -28,8 +28,7 @@ const initialState = {
         error: false,
         updated: 0,
         data: [],
-        map: {},
-        filters: []
+        map: {}
     },
     teams: {
         loading: false,
@@ -79,6 +78,19 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_TRAVEL_GRANTS: {
             return travelGrantsHandler(state, action);
         }
+        case ActionTypes.CREATE_TRAVEL_GRANT: {
+            return {
+                ...state,
+                travelGrants: {
+                    ...state.travelGrants,
+                    data: state.travelGrants.data.concat(action.payload),
+                    map: {
+                        ...state.travelGrants.map,
+                        [action.payload.user]: action.payload
+                    }
+                }
+            };
+        }
         case ActionTypes.EDIT_REGISTRATION: {
             const registration = action.payload;
             return {
@@ -95,15 +107,6 @@ export default function reducer(state = initialState, action) {
                         ...state.registrations.map,
                         [registration.user]: registration
                     }
-                }
-            };
-        }
-        case ActionTypes.SET_REGISTRATIONS_FILTERS: {
-            return {
-                ...state,
-                registrations: {
-                    ...state.registrations,
-                    filters: action.payload
                 }
             };
         }

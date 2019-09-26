@@ -129,16 +129,8 @@ export const updateTeamsForEvent = slug => async (dispatch, getState) => {
     });
 };
 
-/** Set filters for attendees table */
-export const setRegistrationsFilters = filters => dispatch => {
-    dispatch({
-        type: ActionTypes.SET_REGISTRATIONS_FILTERS,
-        payload: filters
-    });
-};
-
 /** Update travel grants with loading/error status */
-export const updateTravelGrantsForEvent = slug => async (dispatch, getState) => {
+export const updateTravelGrants = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
     if (!slug) return;
 
@@ -149,4 +141,18 @@ export const updateTravelGrantsForEvent = slug => async (dispatch, getState) => 
             onFailure: e => console.log('Error updating travel grants', e)
         }
     });
+};
+
+export const createTravelGrant = (slug, sum, travelsFrom, userId) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+    if (!slug) return;
+
+    const travelGrant = await TravelGrantsService.createTravelGrantForUser(idToken, slug, sum, travelsFrom, userId);
+
+    dispatch({
+        type: ActionTypes.CREATE_TRAVEL_GRANT,
+        payload: travelGrant
+    });
+
+    return;
 };

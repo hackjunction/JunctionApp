@@ -58,10 +58,6 @@ const relocationOptions = {
 };
 
 const travelGrantStatuses = {
-    pending: {
-        id: 'pending',
-        label: 'Pending'
-    },
     accepted: {
         id: 'accepted',
         label: 'Accepted'

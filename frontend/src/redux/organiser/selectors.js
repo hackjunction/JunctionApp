@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { meanBy, countBy, groupBy, mapValues } from 'lodash-es';
+import { meanBy, countBy, groupBy, mapValues, sumBy } from 'lodash-es';
 import { RegistrationStatuses } from '@hackjunction/shared';
-import * as FilterUtils from 'utils/filters';
 import * as AuthSelectors from 'redux/auth/selectors';
 import moment from 'moment';
 
@@ -26,7 +25,6 @@ export const registrationsMap = state => state.organiser.registrations.map;
 export const registrationsLoading = state => state.organiser.registrations.loading;
 export const registrationsError = state => state.organiser.registrations.error;
 export const registrationsUpdated = state => state.organiser.registrations.updated;
-export const registrationsFilters = state => state.organiser.registrations.filters;
 
 export const teams = state => state.organiser.teams.data;
 export const teamsLoading = state => state.organiser.teams.loading;
@@ -38,14 +36,6 @@ export const travelGrantsMap = state => state.organiser.travelGrants.map;
 export const travelGrantsLoading = state => state.organiser.travelGrants.loading;
 export const travelGrantsError = state => state.organiser.travelGrants.error;
 export const travelGrantsUpdated = state => state.organiser.travelGrants.updated;
-
-export const registrationsFiltered = createSelector(
-    registrations,
-    registrationsFilters,
-    (registrations, filters) => {
-        return FilterUtils.applyFilters(registrations, filters);
-    }
-);
 
 export const registrationsAssigned = createSelector(
     AuthSelectors.getCurrentUser,
@@ -172,5 +162,12 @@ export const reviewAverageByReviewer = createSelector(
         return mapValues(grouped, registrations => {
             return meanBy(registrations, 'rating');
         });
+    }
+);
+
+export const travelGrantsTotal = createSelector(
+    travelGrants,
+    travelGrants => {
+        return sumBy(travelGrants, 'sum');
     }
 );

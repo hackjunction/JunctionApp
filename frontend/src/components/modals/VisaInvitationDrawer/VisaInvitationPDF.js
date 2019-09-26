@@ -87,10 +87,11 @@ const VisaInvitationPDF = ({
                 2) Optional Junction 2019 pre-events (networking & conferences), from November 11th to 15th 2019
             </Text>
             <Text style={styles.paragraph}>
-                We also invite {granteeFirstName} to get to know {arrivalCity} at their leisure and attend complementary
-                events such as those organised by Slush during the week after, November 18th to 25th.
+                We have arranged accommodation for {granteeFirstName} for the duration of the above events, and
+                participation in the events is fully funded by Junction. We also invite {granteeFirstName} to get to
+                know {arrivalCity} at their leisure and attend complementary events such as those organised by Slush
+                during the week after, November 18th to 25th.
             </Text>
-            <Text style={styles.paragraph}></Text>
             <Text style={styles.paragraph}>Sincerely,</Text>
             <Image style={styles.signature} src={require('assets/images/visa_signature.jpg')} />
             <Text style={styles.paragraph}>{hostName}</Text>
