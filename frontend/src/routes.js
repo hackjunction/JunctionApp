@@ -16,6 +16,7 @@ const EventDashboardPage = lazy(() => import('./pages/EventDashboard'));
 const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/OrganiserDashboardRouter'));
 const AdminPage = lazy(() => import('./pages/Admin'));
 const AccountPage = lazy(() => import('./pages/Account'));
+const RecruitmentPage = lazy(() => import('./pages/Recruitment'));
 
 const routes = [
     {
@@ -71,6 +72,11 @@ const routes = [
     {
         path: '/admin',
         component: RequiresPermission(AdminPage, ['access:admin' /**This does not even exist yet */]),
+        exact: false
+    },
+    {
+        path: '/recruitment',
+        component: RequiresPermission(RecruitmentPage, [AuthConstants.Permissions.ACCESS_RECRUITMENT]),
         exact: false
     }
 ];
