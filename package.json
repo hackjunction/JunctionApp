@@ -26,8 +26,7 @@
     "author": "Juuso Lappalainen",
     "license": "ISC",
     "devDependencies": {
-        "npm-run-all": "^4.1.5",
-        "pre-commit": "^1.2.2"
+        "npm-run-all": "^4.1.5"
     },
     "dependencies": {
         "better-npm-run": "^0.1.1",
