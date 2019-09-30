@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Registration = require('../registration/model');
+const { UserProfile } = require('../user-profile/model');
 
 router.route('/').get((req, res) => {
     return res.status(200).send('DEVTOOLS HERE');
 });
 
-router.route('/anonymize-registrations').get(async (req, res) => {
+router.route('/anonymize-db').get(async (req, res) => {
     const registrations = await Registration.find({});
 
     const updates = registrations.map(registration => {
@@ -17,8 +18,6 @@ router.route('/anonymize-registrations').get(async (req, res) => {
                 },
                 update: {
                     $set: {
-                        'answers.firstName': 'Anonymous',
-                        'answers.lastName': 'Owl',
                         'answers.email':
                             'juuso.lappalainen+' + Math.floor(Math.random() * 1000000) + '@hackjunction.com'
                     }
@@ -27,9 +26,28 @@ router.route('/anonymize-registrations').get(async (req, res) => {
         };
     });
 
-    const result = await Registration.bulkWrite(updates);
+    await Registration.bulkWrite(updates);
 
-    return res.status(200).json(result);
+    const userProfiles = await UserProfile.find({});
+
+    const userUpdates = userProfiles.map(userProfile => {
+        return {
+            updateOne: {
+                filter: {
+                    _id: userProfile._id
+                },
+                update: {
+                    $set: {
+                        email: 'juuso.lappalainen+' + Math.floor(Math.random() * 1000000) + '@hackjunction.com'
+                    }
+                }
+            }
+        };
+    });
+
+    await UserProfile.bulkWrite(userUpdates);
+
+    return res.status(200).send('OK');
 });
 
 module.exports = router;
