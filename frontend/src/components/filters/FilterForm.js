@@ -107,6 +107,7 @@ const FilterForm = ({ onSubmit, event }) => {
                     <Grid item xs={12}>
                         <Select
                             label="Choose field"
+                            placeholder="Choose field"
                             helperText="Choose a field to filter on"
                             value={filter}
                             onChange={setFilter}

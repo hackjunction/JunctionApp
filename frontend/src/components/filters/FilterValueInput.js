@@ -4,7 +4,12 @@ import { FilterTypes, FilterValues } from '@hackjunction/shared';
 import TextInput from 'components/inputs/TextInput';
 import Select from 'components/inputs/Select';
 
-const MULTI_TYPES = [FilterTypes.filterTypes.ONE_OF.id, FilterTypes.filterTypes.NOT_ONE_OF.id];
+const MULTI_TYPES = [
+    FilterTypes.filterTypes.ONE_OF.id,
+    FilterTypes.filterTypes.NOT_ONE_OF.id,
+    FilterTypes.filterTypes.CONTAINS_ONE_OF.id,
+    FilterTypes.filterTypes.NOT_CONTAINS_ONE_OF.id
+];
 
 const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => {
     const inputParams = { value, onChange };
@@ -26,6 +31,8 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
         case FilterTypes.filterTypes.NOT_EQUALS.id:
         case FilterTypes.filterTypes.ONE_OF.id:
         case FilterTypes.filterTypes.NOT_ONE_OF.id:
+        case FilterTypes.filterTypes.CONTAINS_ONE_OF.id:
+        case FilterTypes.filterTypes.NOT_CONTAINS_ONE_OF.id:
             const isMulti = MULTI_TYPES.indexOf(filterType) !== -1;
             switch (valueType) {
                 case FilterValues.STRING:
