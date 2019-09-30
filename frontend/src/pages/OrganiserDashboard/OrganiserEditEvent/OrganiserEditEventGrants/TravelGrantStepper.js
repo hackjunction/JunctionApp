@@ -1,42 +1,34 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { connect } from 'react-redux';
 import { Typography, Box, Grid } from '@material-ui/core';
-import { sumBy, filter, sortBy } from 'lodash-es';
+import { sumBy, filter } from 'lodash-es';
 import Stepper from 'components/generic/Stepper';
-import Empty from 'components/generic/Empty';
-import List from 'components/generic/List';
 import Statistic from 'components/generic/Statistic';
 import Table from 'components/generic/Table';
+import TextInput from 'components/inputs/TextInput';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-import AddGroupModal from './AddGroupModal';
-import TravelGrantStepperPreview from './TravelGrantStepperPreview';
-
-const TravelGrantStepper = ({ registrations }) => {
+const TravelGrantStepper = ({ registrations, filterGroups, filterGroupsLoading }) => {
     const [activeStep, setActiveStep] = useState(0);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [groups, setGroups] = useState([]);
+    const [groups, setGroups] = useState({});
 
-    const handleAddGroup = useCallback(
-        (group, amount) => {
-            const value = sortBy(groups.concat({ group, amount }), amount);
-            setGroups(value);
-        },
-        [groups]
-    );
+    useEffect(() => {
+        if (filterGroups) {
+            setGroups(filterGroups.reduce((res, group) => {
+                res[group.label] = 0;
+                return res;
+            }, {}));
+        }
+    }, [filterGroups]);
 
-    const handleRemoveGroup = useCallback(
-        (item, index) => {
-            setGroups(groups.filter((group, idx) => idx !== index));
-        },
-        [groups]
-    );
-
-    const toggleModal = useCallback(() => {
-        setModalOpen(!modalOpen);
-    }, [modalOpen]);
+    const handleAmountChange = useCallback((group, amount) => {
+        setGroups({
+            ...groups,
+            [group]: amount,
+        });
+    }, [groups]);
 
     return (
         <Box>
@@ -75,34 +67,40 @@ const TravelGrantStepper = ({ registrations }) => {
                 steps={[
                     {
                         key: 'set-groups',
-                        label: 'Configure travel grant groups and amounts',
+                        label: 'Configure the size of travel grant per group',
                         render: () => (
-                            <React.Fragment>
-                                <AddGroupModal isOpen={modalOpen} onClose={toggleModal} onDone={handleAddGroup} />
-                                <List
-                                    data={groups}
-                                    rowKey="group.label"
-                                    renderPrimary={({ group, amount }) => group.label}
-                                    renderSecondary={({ group, amount }) => amount}
-                                    onDelete={handleRemoveGroup}
-                                />
-                                <Empty
-                                    isEmpty={groups.length === 0}
-                                    emptyText="Start by adding your first group"
-                                    button={{ text: 'Add group', onClick: toggleModal }}
-                                />
-                            </React.Fragment>
+                            <Table
+                                title="Filter groups"
+                                rowSelection={false}
+                                rowNumber={false}
+                                pagination={false}
+                                dataSource={filterGroups}
+                                loading={filterGroupsLoading}
+                                columns={[
+                                    {
+                                        key: 'group',
+                                        label: 'Group',
+                                        path: 'label'
+                                    },
+                                    {
+                                        key: 'amount',
+                                        label: 'Amount',
+                                        path: 'label',
+                                        render: (label) => <TextInput label="Enter amount (EUR)" type="number" value={groups[label]} onChange={(value) => handleAmountChange(label, value)} />
+                                    }
+                                ]}
+                            />
                         )
                     },
                     {
                         key: 'preview-spend',
                         label: 'Preview spend',
-                        render: () => <TravelGrantStepperPreview registrations={registrations} groupConfig={groups} />
+                        render: () => <h1>Step 2</h1>
                     },
                     {
                         key: 'assign-grants',
                         label: 'Assign grants',
-                        render: () => <Typography>Submit changes</Typography>
+                        render: () => <h1>Step 3</h1>
                     }
                 ]}
             />
@@ -111,7 +109,9 @@ const TravelGrantStepper = ({ registrations }) => {
 };
 
 const mapState = state => ({
-    registrations: OrganiserSelectors.registrationsConfirmed(state)
+    registrations: OrganiserSelectors.registrationsConfirmed(state),
+    filterGroups: OrganiserSelectors.filterGroups(state),
+    filterGroupsLoading: OrganiserSelectors.filterGroupsLoading(state)
 });
 
 export default connect(mapState)(TravelGrantStepper);
