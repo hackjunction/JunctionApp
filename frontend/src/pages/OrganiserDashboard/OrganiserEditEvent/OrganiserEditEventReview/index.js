@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
-import { PageHeader, Menu, Button as AntButton } from 'antd';
 import { connect } from 'react-redux';
+import { Typography } from '@material-ui/core';
 
 import PageWrapper from 'components/PageWrapper';
 import Divider from 'components/generic/Divider';
+import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
+import PageHeader from 'components/generic/PageHeader';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
@@ -33,30 +35,30 @@ const OrganiserEditEventReview = ({ event, organisers, registrationsLoading, upd
 
     return (
         <PageWrapper>
-            <PageHeader
-                title="Participants"
-                children={<p>Applications to your event</p>}
-                extra={
-                    <AntButton type="link" onClick={updateData} loading={registrationsLoading}>
-                        Refresh data
-                    </AntButton>
-                }
-                footer={
-                    <React.Fragment>
-                        <Menu
-                            mode="horizontal"
-                            selectedKeys={[selectedKey]}
-                            onSelect={({ key }) => setSelectedKey(key)}
-                        >
-                            <Menu.Item key="search">Participants</Menu.Item>
-                            <Menu.Item key="teams">Teams</Menu.Item>
-                            <Menu.Item key="assigned">Assigned to you</Menu.Item>
-                            <Menu.Item key="admin">Admin & Tools</Menu.Item>
-                        </Menu>
-                        <Divider size={1} />
-                        {renderSelectedKey()}
-                    </React.Fragment>
-                }
+            <PageHeader heading="Participants" subheading="Search participants"/>
+            <MaterialTabsLayout 
+                tabs={[
+                    {
+                        label: 'Participants',
+                        content: <SearchAttendeesPage />
+                    },
+                    {
+                        label: 'Teams',
+                        content: <TeamsPage />
+                    },
+                    {
+                        label: 'Assigned to you',
+                        content: <AssignAttendeesPage />
+                    },
+                    {
+                        label: 'Travel',
+                        content: <h1>Travel grants</h1>
+                    },
+                    {
+                        label: 'Admin & Tools',
+                        content: <AdminPage />
+                    },
+                ]}
             />
         </PageWrapper>
     );
