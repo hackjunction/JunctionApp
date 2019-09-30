@@ -25,17 +25,10 @@ const OrganiserEditEventGrants = ({}) => {
 const mapState = state => ({
     event: OrganiserSelectors.event(state),
     registrations: OrganiserSelectors.registrationsConfirmed(state),
-    travelGrantsByUser: OrganiserSelectors.travelGrantsMap(state),
-    travelGrantsTotal: OrganiserSelectors.travelGrantsTotal(state),
-    loading: OrganiserSelectors.registrationsLoading(state) || OrganiserSelectors.travelGrantsLoading(state),
-    error: OrganiserSelectors.registrationsError(state) || OrganiserSelectors.travelGrantsError(state)
-});
-
-const mapDispatch = dispatch => ({
-    updateTravelGrants: slug => dispatch(OrganiserActions.updateTravelGrants(slug))
+    loading: OrganiserSelectors.registrationsLoading(state),
+    error: OrganiserSelectors.registrationsError(state)
 });
 
 export default connect(
-    mapState,
-    mapDispatch
+    mapState
 )(OrganiserEditEventGrants);

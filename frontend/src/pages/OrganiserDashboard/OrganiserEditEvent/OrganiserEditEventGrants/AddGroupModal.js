@@ -26,7 +26,7 @@ const AddGroupModal = ({ isOpen, onClose, onDone }) => {
     }, [handleClose, onDone, group, amount]);
 
     return (
-        <Modal isOpen={isOpen} handleClose={handleClose} title="Add travel grant group">
+        <Modal isOpen={isOpen} handleClose={handleClose} title="Add  grant group">
             <Stepper
                 activeStep={activeStep}
                 onStepChange={setActiveStep}
@@ -39,13 +39,13 @@ const AddGroupModal = ({ isOpen, onClose, onDone }) => {
                     },
                     {
                         key: 'enter-amount',
-                        label: 'Size of travel grant',
+                        label: 'Size of  grant',
                         render: () => (
                             <TextInput
                                 value={amount}
                                 onChange={setAmount}
                                 label="Amount"
-                                helperText="The size of travel grant you want to give to members of this group, in EUR"
+                                helperText="The size of  grant you want to give to members of this group, in EUR"
                             />
                         )
                     }

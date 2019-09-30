@@ -130,34 +130,6 @@ export const updateTeamsForEvent = slug => async (dispatch, getState) => {
     });
 };
 
-/** Update travel grants with loading/error status */
-export const updateTravelGrants = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState());
-    if (!slug) return;
-
-    dispatch({
-        type: ActionTypes.UPDATE_TRAVEL_GRANTS,
-        promise: TravelGrantsService.getTravelGrantsForEvent(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating travel grants', e)
-        }
-    });
-};
-
-export const createTravelGrant = (slug, sum, travelsFrom, userId) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState());
-    if (!slug) return;
-
-    const travelGrant = await TravelGrantsService.createTravelGrantForUser(idToken, slug, sum, travelsFrom, userId);
-
-    dispatch({
-        type: ActionTypes.CREATE_TRAVEL_GRANT,
-        payload: travelGrant
-    });
-
-    return;
-};
-
 /** Update filter groups with loading/error status */
 export const updateFilterGroups = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
