@@ -26,6 +26,16 @@ const buildFiltersArray = filters => {
                     return !FilterFunctions.isEqualTo(item, filter.path, filter.value);
                 };
             }
+            case FilterTypes.ONE_OF.id: {
+                return item => {
+                    return FilterFunctions.isOneOf(item, filter.path, filter.value);
+                };
+            }
+            case FilterTypes.NOT_ONE_OF.id: {
+                return item => {
+                    return !FilterFunctions.isOneOf(item, filter.path, filter.value);
+                };
+            }
             case FilterTypes.CONTAINS.id: {
                 return item => {
                     return FilterFunctions.contains(item, filter.path, filter.value);
@@ -34,6 +44,16 @@ const buildFiltersArray = filters => {
             case FilterTypes.NOT_CONTAINS.id: {
                 return item => {
                     return !FilterFunctions.contains(item, filter.path, filter.value);
+                };
+            }
+            case FilterTypes.CONTAINS_ONE_OF.id: {
+                return item => {
+                    return FilterFunctions.containsOneOf(item, filter.path, filter.value);
+                };
+            }
+            case FilterTypes.NOT_CONTAINS_ONE_OF.id: {
+                return item => {
+                    return !FilterFunctions.containsOneOf(item, filter.path, filter.value);
                 };
             }
             case FilterTypes.LESS_THAN.id: {

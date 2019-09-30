@@ -1,9 +1,7 @@
 const objectPath = require('object-path');
 const _ = require('lodash');
 
-const isEmpty = (object, path) => {
-    const value = objectPath.get(object, path);
-
+const _isEmpty = value => {
     switch (typeof value) {
         case 'object':
             return _.isEmpty(value);
@@ -18,9 +16,12 @@ const isEmpty = (object, path) => {
     }
 };
 
-const isEqualTo = (object, path, targetValue) => {
+const isEmpty = (object, path) => {
     const value = objectPath.get(object, path);
+    return _isEmpty(value);
+};
 
+const _isEqualTo = (value, targetValue) => {
     switch (typeof value) {
         case 'object':
             return _.isEqual(value, targetValue);
@@ -38,9 +39,12 @@ const isEqualTo = (object, path, targetValue) => {
     }
 };
 
-const contains = (object, path, targetValue) => {
+const isEqualTo = (object, path, targetValue) => {
     const value = objectPath.get(object, path);
+    return _isEqualTo(value, targetValue);
+};
 
+const _contains = (value, targetValue) => {
     if (typeof value === 'string') {
         if (typeof targetValue === 'string') {
             return (
@@ -60,8 +64,27 @@ const contains = (object, path, targetValue) => {
     return false;
 };
 
-const isGte = (object, path, targetValue) => {
+const contains = (object, path, targetValue) => {
     const value = objectPath.get(object, path);
+    return _contains(value, targetValue);
+};
+
+const _containsOneOf = (value, targetValue) => {
+    if (!Array.isArray(targetValue)) return false;
+
+    for (let item of targetValue) {
+        if (_contains(value, item)) return true;
+    }
+
+    return false;
+};
+
+const containsOneOf = (object, path, targetValue) => {
+    const value = objectPath.get(object, path);
+    return _containsOneOf(value, targetValue);
+};
+
+const _isGte = (value, targetValue) => {
     let numValue = parseInt(value);
     if (Array.isArray(value) || typeof value === 'string') {
         numValue = value.length;
@@ -73,8 +96,12 @@ const isGte = (object, path, targetValue) => {
     return numValue >= numTarget;
 };
 
-const isLte = (object, path, targetValue) => {
+const isGte = (object, path, targetValue) => {
     const value = objectPath.get(object, path);
+    return _isGte(value, targetValue);
+};
+
+const _isLte = (value, targetValue) => {
     let numValue = parseInt(value);
     if (Array.isArray(value) || typeof value === 'string') {
         numValue = value.length;
@@ -86,10 +113,39 @@ const isLte = (object, path, targetValue) => {
     return numValue <= numTarget;
 };
 
+const isLte = (object, path, targetValue) => {
+    const value = objectPath.get(object, path);
+    return _isLte(value, targetValue);
+};
+
+const _isOneOf = (value, targetValue) => {
+    if (!Array.isArray(targetValue)) return false;
+
+    for (let item of targetValue) {
+        if (_isEqualTo(value, item)) return true;
+    }
+
+    return false;
+};
+
+const isOneOf = (object, path, targetValue) => {
+    const value = objectPath.get(object, path);
+    return _isOneOf(value, targetValue);
+};
+
 module.exports = {
     isEmpty,
     isEqualTo,
     isGte,
     isLte,
-    contains
+    isOneOf,
+    contains,
+    containsOneOf,
+    _isEmpty,
+    _isEqualTo,
+    _isGte,
+    _isLte,
+    _isOneOf,
+    _contains,
+    _containsOneOf
 };
