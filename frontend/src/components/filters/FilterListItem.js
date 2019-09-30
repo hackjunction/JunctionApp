@@ -2,12 +2,20 @@ import React from 'react';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
+import { Typography, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Chip } from '@material-ui/core';
 import { FilterTypes } from '@hackjunction/shared';
 
 const useStyles = makeStyles(theme => ({
     inline: {
         display: 'inline'
+    },
+    chips: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    chip: {
+        margin: 2
     }
 }));
 
@@ -18,6 +26,19 @@ const FilterListItem = ({ filter = {}, onRemove }) => {
         return params ? params.label : filter.type;
     };
 
+    const renderValue = (value) => {
+        if (Array.isArray(value)) {
+            return(
+                <div className={classes.chips}>
+                    {value.map(item => (
+                        <Chip key={item} label={item} className={classes.chip}/>
+                    ))}
+                </div>
+            )
+        }
+        return value;
+    }
+
     return (
         <ListItem>
             <ListItemText
@@ -27,7 +48,7 @@ const FilterListItem = ({ filter = {}, onRemove }) => {
                         <Typography variant="body2" className={classes.inline} color="textPrimary">
                             {getType()}
                         </Typography>{' '}
-                        {filter.value}
+                        {renderValue(filter.value)}
                     </React.Fragment>
                 }
             />

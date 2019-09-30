@@ -114,7 +114,7 @@ const FilterForm = ({ onSubmit, event }) => {
                             options={filterOptions}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         {filterTypeOptions.length > 0 && (
                             <Select
                                 label="How to filter on field"
@@ -125,7 +125,7 @@ const FilterForm = ({ onSubmit, event }) => {
                             />
                         )}
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <FilterValueInput
                             filterType={filterType}
                             valueType={filterParams ? filterParams.valueType : null}

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {FilterTypes} = require('@hackjunction/shared');
 
 const FilterGroupSchema = new mongoose.Schema({
     label: {
@@ -28,11 +29,11 @@ const FilterGroupSchema = new mongoose.Schema({
             },
             type: {
                 type: String,
-                enum: [],
+                enum: Object.keys(FilterTypes.filterTypes),
                 required: true
             },
             value: {
-                type: String
+                type: mongoose.Mixed
             }
         }
     ]
