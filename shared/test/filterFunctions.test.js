@@ -394,4 +394,46 @@ describe('Filter functions', function() {
             });
         });
     });
+    describe('isOneOf', function() {
+        it('should return false when target value is empty array', function() {
+            const value = filterFunctions._isOneOf('something', []);
+            assert.equal(value, false);
+        });
+
+        it('should return false when target value does not include the value', function() {
+            const value = filterFunctions._isOneOf('something', ['other', 'third thing']);
+            assert.equal(value, false);
+        });
+
+        it('should return true when target value includes the value', function() {
+            const value = filterFunctions._isOneOf('something', ['something', 'other']);
+            assert.equal(value, true);
+        });
+    });
+    describe('containsOneOf', function() {
+        it('should return false when value is not an array', function() {
+            const value = filterFunctions._containsOneOf('foobar', ['some', 'values']);
+            assert.equal(value, false);
+        });
+        it('should return false when target value is not an array', function() {
+            const value = filterFunctions._containsOneOf(['foobar'], 'hello');
+            assert.equal(value, false);
+        });
+        it('should return false when target value is empty array', function() {
+            const value = filterFunctions._containsOneOf(['foobar'], []);
+            assert.equal(value, false);
+        });
+        it('should return false when target value is not contained in value', function() {
+            const value = filterFunctions._containsOneOf(['foo'], ['bar']);
+            assert.equal(value, false);
+        });
+        it('should return true when target value is contained in value', function() {
+            const value1 = filterFunctions._containsOneOf(['foo', 'buzz'], ['foo', 'bar']);
+            assert.equal(value1, true);
+            const value2 = filterFunctions._containsOneOf(['fizz'], ['fizz']);
+            assert.equal(value2, true);
+            const value3 = filterFunctions._containsOneOf(['fizz'], ['fizz', 'buzz']);
+            assert.equal(value3, true);
+        });
+    });
 });

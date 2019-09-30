@@ -31,6 +31,14 @@ const filterTypes = {
         id: 'NOT_CONTAINS',
         label: "Doesn't contain"
     },
+    CONTAINS_ONE_OF: {
+        id: 'CONTAINS_ONE_OF',
+        label: 'Contains one of'
+    },
+    NOT_CONTAINS_ONE_OF: {
+        id: 'NOT_CONTAINS_ONE_OF',
+        label: "Doesn't contain one of"
+    },
     LESS_THAN: {
         id: 'LESS_THAN',
         label: 'Is less than',
@@ -85,7 +93,9 @@ const arrayFilterTypes = [
     filterTypes.LESS_THAN.id,
     filterTypes.NOT_LESS_THAN.id,
     filterTypes.MORE_THAN.id,
-    filterTypes.NOT_MORE_THAN.id
+    filterTypes.NOT_MORE_THAN.id,
+    filterTypes.CONTAINS_ONE_OF.id,
+    filterTypes.NOT_CONTAINS_ONE_OF.id
 ];
 
 const numberFilterTypes = [
