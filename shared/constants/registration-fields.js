@@ -240,7 +240,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Country of Residence',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.COUNTRY
+            }
+        ]
     },
     cityOfResidence: {
         label: 'City of residence',
@@ -414,7 +422,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequired: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Motivation',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     portfolio: {
         label: 'Link to Portfolio',
@@ -430,7 +446,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to Portfolio',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     github: {
         label: 'Link to Github',
@@ -446,7 +470,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to GitHub',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     linkedin: {
         label: 'LinkedIn Profile',
@@ -461,7 +493,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'LinkedIn profile',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     countryOfTravel: {
         label: 'Country of Travel',
@@ -473,7 +513,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Country of Travel',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.COUNTRY
+            }
+        ]
     },
     cityOfTravel: {
         label: 'City of Travel',
@@ -496,7 +544,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to Portfolio',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
@@ -513,7 +569,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Applied for travel grant',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            }
+        ]
     },
     needsAccommodation: {
         label: 'Do you need free accommodation?',
@@ -525,7 +589,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Needs accommodation',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            }
+        ]
     },
     recruitmentOptions: {
         label: 'Job opportunities',
@@ -553,7 +625,21 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: 'applyAsTeam',
+                label: 'Team > Applied as team',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            },
+            {
+                path: 'applyAlone',
+                label: 'Team > Applied also alone',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            }
+        ]
     },
     secretCode: {
         label: 'Secret code',
@@ -565,7 +651,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Secret Code',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     }
 };
 

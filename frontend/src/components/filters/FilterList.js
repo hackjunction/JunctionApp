@@ -29,16 +29,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const FilterList = ({ filters = [], onChange = () => {} }) => {
+const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded]);
     const hasFilters = filters.length !== 0;
+
     useEffect(() => {
-        if (hasFilters) {
-            setExpanded(true);
-        }
-    }, [hasFilters]);
+        setExpanded(false);
+    }, [activeItemKey]);
 
     const handleRemove = useCallback(
         index => {

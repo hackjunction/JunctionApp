@@ -1,16 +1,14 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 
 import HyperModal from 'react-hyper-modal';
 import classNames from 'classnames';
-import { Modal, Backdrop, Paper, Box, DialogTitle, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
-import theme from 'material-ui-theme';
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
         display: 'flex',
-        zIndex: 1000000
+        zIndex: 100
     },
     wrapperPadded: {
         padding: theme.spacing(2)
@@ -19,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         background: '#ffffff',
         width: '100% !important',
         maxWidth: '600px',
-        zIndex: 100000,
+        zIndex: 1,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch'
@@ -34,15 +32,10 @@ const useStyles = makeStyles(theme => ({
     },
     header: {
         padding: theme.spacing(3),
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0
+        textAlign: 'left'
     },
     inner: {
-        paddingTop: '100px',
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
+        padding: '1rem',
         flex: 1,
         overflow: 'auto'
     }
@@ -54,7 +47,6 @@ const GenericModal = ({ title, isOpen, handleClose, size, children }) => {
         <HyperModal
             isOpen={isOpen}
             requestClose={handleClose}
-            // isFullscreen={true}
             classes={{
                 contentClassName: classNames({
                     [classes.content]: true,
