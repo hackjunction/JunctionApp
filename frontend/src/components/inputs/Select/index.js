@@ -1,9 +1,18 @@
 import React, { useCallback, useMemo } from 'react';
 
-import { Select, MenuItem } from '@material-ui/core';
+import { TextField, MenuItem } from '@material-ui/core';
 import { SelectOptions } from '@hackjunction/shared';
 
-const _Select = ({ label, helperText, value, onChange = () => {}, options = [], type, multiple = false }) => {
+const _Select = ({
+    label,
+    placeholder,
+    helperText,
+    value,
+    onChange = () => {},
+    options = [],
+    type,
+    multiple = false
+}) => {
     const handleChange = useCallback(
         e => {
             onChange(e.target.value);
@@ -39,16 +48,16 @@ const _Select = ({ label, helperText, value, onChange = () => {}, options = [], 
     const valueOrDefault = value || (multiple ? [] : '');
 
     return (
-        <Select
+        <TextField
             select
             fullWidth
             label={label}
+            placeholder={placeholder}
             value={valueOrDefault}
             onChange={handleChange}
             helperText={helperText}
-            selectProps={{
-                multiple,
-                renderValue: 'Hello'
+            SelectProps={{
+                multiple
             }}
         >
             {items.map(item => (
@@ -56,7 +65,7 @@ const _Select = ({ label, helperText, value, onChange = () => {}, options = [], 
                     {item.label}
                 </MenuItem>
             ))}
-        </Select>
+        </TextField>
     );
 };
 
