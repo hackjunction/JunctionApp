@@ -31,12 +31,6 @@ export const teamsLoading = state => state.organiser.teams.loading;
 export const teamsError = state => state.organiser.teams.error;
 export const teamsUpdated = state => state.organiser.teams.updated;
 
-export const travelGrants = state => state.organiser.travelGrants.data;
-export const travelGrantsMap = state => state.organiser.travelGrants.map;
-export const travelGrantsLoading = state => state.organiser.travelGrants.loading;
-export const travelGrantsError = state => state.organiser.travelGrants.error;
-export const travelGrantsUpdated = state => state.organiser.travelGrants.updated;
-
 export const filterGroups = state => state.organiser.filterGroups.data;
 export const filterGroupsLoading = state => state.organiser.filterGroups.loading;
 export const filterGroupsError = state => state.organiser.filterGroups.error;
@@ -167,12 +161,5 @@ export const reviewAverageByReviewer = createSelector(
         return mapValues(grouped, registrations => {
             return meanBy(registrations, 'rating');
         });
-    }
-);
-
-export const travelGrantsTotal = createSelector(
-    travelGrants,
-    travelGrants => {
-        return sumBy(travelGrants, 'sum');
     }
 );

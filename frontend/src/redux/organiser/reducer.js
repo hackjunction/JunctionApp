@@ -36,13 +36,6 @@ const initialState = {
         updated: 0,
         data: []
     },
-    travelGrants: {
-        loading: false,
-        error: false,
-        updated: 0,
-        data: [],
-        map: {}
-    },
     filterGroups: {
         loading: false,
         error: false,
@@ -56,7 +49,6 @@ const eventHandler = buildHandler('event');
 const statsHandler = buildHandler('stats');
 const organisersHandler = buildHandler('organisers', 'userId');
 const registrationsHandler = buildHandler('registrations', 'user');
-const travelGrantsHandler = buildHandler('travelGrants', 'user');
 const filterGroupsHandler = buildHandler('filterGroups');
 const teamsHandler = buildHandler('teams');
 const editEvent = buildUpdatePath('event.data');
@@ -81,9 +73,6 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TEAMS: {
             return teamsHandler(state, action);
-        }
-        case ActionTypes.UPDATE_TRAVEL_GRANTS: {
-            return travelGrantsHandler(state, action);
         }
         case ActionTypes.UPDATE_FILTER_GROUPS: {
             return filterGroupsHandler(state, action);
@@ -122,19 +111,6 @@ export default function reducer(state = initialState, action) {
                         }
                         return true;
                     })
-                }
-            };
-        }
-        case ActionTypes.CREATE_TRAVEL_GRANT: {
-            return {
-                ...state,
-                travelGrants: {
-                    ...state.travelGrants,
-                    data: state.travelGrants.data.concat(action.payload),
-                    map: {
-                        ...state.travelGrants.map,
-                        [action.payload.user]: action.payload
-                    }
                 }
             };
         }
