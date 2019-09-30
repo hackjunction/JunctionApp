@@ -51,8 +51,7 @@
         "test": "react-app-rewired test",
         "eject": "react-scripts eject",
         "lint": "eslint src",
-        "depcheck": "depcheck .",
-        "find-unused": "delete-react-zombies"
+        "depcheck": "depcheck ."
     },
     "pre-commit": [
         "lint"
