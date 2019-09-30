@@ -4,7 +4,7 @@ import Modal from 'components/generic/Modal';
 import { Typography } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 import { RegistrationFields } from '@hackjunction/shared';
-import { Rate, notification, Divider as AntDivider, Tag, Drawer, List, Select, Button as AntButton } from 'antd';
+import { Rate, notification, Divider as AntDivider, Tag, Drawer, List, Select, Button as AntButton, Input } from 'antd';
 import { isEqual, groupBy, find } from 'lodash-es';
 
 import PageWrapper from 'components/PageWrapper';
@@ -27,7 +27,8 @@ const EditRegistrationModalInner = ({ idToken, event, registration, organisers, 
         rating: registration.rating,
         assignedTo: registration.assignedTo,
         tags: registration.tags,
-        status: registration.status
+        status: registration.status,
+        travelGrant: registration.travelGrant
     };
     const [formValues, setFormValues] = useState(initialValues);
     const dirty = !isEqual(formValues, initialValues);
@@ -99,6 +100,14 @@ const EditRegistrationModalInner = ({ idToken, event, registration, organisers, 
                                 value={formValues.status}
                                 onChange={value => handleEdit('status', value)}
                             />
+                        }
+                    />
+                </List.Item>
+                <List.Item>
+                    <List.Item.Meta
+                        title="Travel grant"
+                        description={
+                            <Input placeholder="Enter amount (EUR)" size="large" type="number" value={formValues.travelGrant} onChange={e => handleEdit('travelGrant', e.target.value)} />
                         }
                     />
                 </List.Item>
