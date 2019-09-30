@@ -126,7 +126,7 @@ controller.assignRegistrationForEvent = data => {
 };
 
 controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
-    const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo']);
+    const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo', 'travelGrant']);
     return Registration.updateMany(
         {
             event: eventId,
@@ -155,6 +155,7 @@ controller.editRegistration = (registrationId, event, data, user) => {
         registration.ratedBy = user.sub;
         registration.tags = data.tags;
         registration.assignedTo = data.assignedTo;
+        registration.travelGrant = data.travelGrant;
         return registration.save();
     });
 };
