@@ -5,6 +5,7 @@ import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
 import TravelGrantsService from 'services/travelGrants';
+import FilterGroupsService from 'services/filterGroups';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -155,4 +156,58 @@ export const createTravelGrant = (slug, sum, travelsFrom, userId) => async (disp
     });
 
     return;
+};
+
+/** Update filter groups with loading/error status */
+export const updateFilterGroups = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.UPDATE_FILTER_GROUPS,
+        promise: FilterGroupsService.getFilterGroupsForEvent(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error updating filter groups', e)
+        }
+    });
+
+    return;
+};
+
+export const createFilterGroup = (slug, label, description, filters) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const filterGroup = await FilterGroupsService.createFilterGroup(idToken, label, description, filters, slug);
+
+    dispatch({
+        type: ActionTypes.CREATE_FILTER_GROUP,
+        payload: filterGroup
+    });
+
+    return filterGroup;
+};
+
+export const editFilterGroup = (slug, label, description, filters) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const filterGroup = await FilterGroupsService.editFilterGroup(idToken, label, description, filters, slug);
+
+    dispatch({
+        type: ActionTypes.EDIT_FILTER_GROUP,
+        payload: filterGroup
+    });
+
+    return filterGroup;
+};
+
+export const deleteFilterGroup = (slug, label) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const filterGroup = await FilterGroupsService.deleteFilterGroup(idToken, label, slug);
+
+    dispatch({
+        type: ActionTypes.DELETE_FILTER_GROUP,
+        payload: filterGroup
+    });
+
+    return filterGroup;
 };

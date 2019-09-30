@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import { TextField, MenuItem } from '@material-ui/core';
+import { Select, MenuItem } from '@material-ui/core';
 import { SelectOptions } from '@hackjunction/shared';
 
-const Select = ({ label, helperText, value = '', onChange = () => {}, options = [], type }) => {
+const _Select = ({ label, helperText, value, onChange = () => {}, options = [], type, multiple = false }) => {
     const handleChange = useCallback(
         e => {
             onChange(e.target.value);
@@ -36,15 +36,28 @@ const Select = ({ label, helperText, value = '', onChange = () => {}, options = 
         }
     }, [options, type]);
 
+    const valueOrDefault = value || (multiple ? [] : '');
+
     return (
-        <TextField select fullWidth label={label} value={value} onChange={handleChange} helperText={helperText}>
+        <Select
+            select
+            fullWidth
+            label={label}
+            value={valueOrDefault}
+            onChange={handleChange}
+            helperText={helperText}
+            selectProps={{
+                multiple,
+                renderValue: 'Hello'
+            }}
+        >
             {items.map(item => (
                 <MenuItem key={item.value} value={item.value}>
                     {item.label}
                 </MenuItem>
             ))}
-        </TextField>
+        </Select>
     );
 };
 
-export default Select;
+export default _Select;

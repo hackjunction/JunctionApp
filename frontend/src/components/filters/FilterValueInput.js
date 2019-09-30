@@ -4,6 +4,8 @@ import { FilterTypes, FilterValues } from '@hackjunction/shared';
 import TextInput from 'components/inputs/TextInput';
 import Select from 'components/inputs/Select';
 
+const MULTI_TYPES = [FilterTypes.filterTypes.ONE_OF.id, FilterTypes.filterTypes.NOT_ONE_OF.id];
+
 const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => {
     const inputParams = { value, onChange };
     switch (filterType) {
@@ -22,6 +24,9 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
         case FilterTypes.filterTypes.NOT_CONTAINS.id:
         case FilterTypes.filterTypes.EQUALS.id:
         case FilterTypes.filterTypes.NOT_EQUALS.id:
+        case FilterTypes.filterTypes.ONE_OF.id:
+        case FilterTypes.filterTypes.NOT_ONE_OF.id:
+            const isMulti = MULTI_TYPES.indexOf(filterType) !== -1;
             switch (valueType) {
                 case FilterValues.STRING:
                     return <TextInput label="Enter value" {...inputParams} />;
@@ -30,19 +35,21 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
                 case FilterValues.DATE:
                     return <TextInput label="Date field" {...inputParams} />;
                 case FilterValues.GENDER:
-                    return <Select label="Gender select" type="gender" {...inputParams} />;
+                    return <Select label="Select gender" type="gender" multiple={isMulti} {...inputParams} />;
                 case FilterValues.NATIONALITY:
-                    return <Select label="Nationality" type="nationality" {...inputParams} />;
+                    return <Select label="Select nationality" type="nationality" multiple={isMulti} {...inputParams} />;
+                case FilterValues.COUNTRY:
+                    return <Select label="Select country" type="country" multiple={isMulti} {...inputParams} />;
                 case FilterValues.LANGUAGE:
-                    return <Select label="Language" type="language" {...inputParams} />;
+                    return <Select label="Select language" type="language" multiple={isMulti} {...inputParams} />;
                 case FilterValues.TAG:
                     const options = event.tags.map(tag => ({
                         value: tag.label,
                         label: tag.label
                     }));
-                    return <Select label="Select tag" options={options} {...inputParams} />;
+                    return <Select label="Select tag" options={options} multiple={isMulti} {...inputParams} />;
                 case FilterValues.STATUS:
-                    return <Select label="Select status" type="status" {...inputParams} />;
+                    return <Select label="Select status" type="status" multiple={isMulti} {...inputParams} />;
                 default:
                     return null;
             }

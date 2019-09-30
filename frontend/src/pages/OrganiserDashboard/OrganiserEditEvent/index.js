@@ -21,6 +21,7 @@ const OrganiserEditEvent = ({
     updateOrganiserProfiles,
     updateRegistrations,
     updateTeams,
+    updateFilterGroups,
     loading,
     error,
     event,
@@ -39,8 +40,17 @@ const OrganiserEditEvent = ({
             updateOrganiserProfiles(event.owner, event.organisers);
             updateRegistrations(slug);
             updateTeams(slug);
+            updateFilterGroups(slug);
         }
-    }, [slug, event.owner, event.organisers, updateTeams, updateRegistrations, updateOrganiserProfiles]);
+    }, [
+        slug,
+        event.owner,
+        event.organisers,
+        updateTeams,
+        updateRegistrations,
+        updateOrganiserProfiles,
+        updateFilterGroups
+    ]);
 
     useEffect(() => {
         updateData();
@@ -120,7 +130,8 @@ const mapDispatchToProps = dispatch => ({
     updateOrganiserProfiles: (owner, organisers) =>
         dispatch(OrganiserActions.updateOrganisersForEvent(owner, organisers)),
     updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
-    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug))
+    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug)),
+    updateFilterGroups: slug => dispatch(OrganiserActions.updateFilterGroups(slug))
 });
 
 export default connect(

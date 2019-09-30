@@ -40,7 +40,7 @@ const errorHandler = (error, request, response, next) => {
             }
         }
     }
-    console.log('FOOBAR', error.message);
+    console.log('UNHANDLED ERROR', error.message);
 
     return response.status(500).json({
         message: 'Unexpected error',

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
-import { Empty, Tag, Divider as AntDivider } from 'antd';
+import { Empty, Tag } from 'antd';
 import { connect } from 'react-redux';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
@@ -10,12 +10,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import Table from 'components/generic/Table';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import EditRegistrationDrawer from 'components/modals/EditRegistrationDrawer';
+import EditRegistrationModal from 'components/modals/EditRegistrationModal';
 
 const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [], footer = null }) => {
-    const renderTotal = (total, range) => {
-        return `${range[0]}-${range[1]} of ${total}`;
-    };
+    const [editing, setEditing] = useState();
 
     const renderTable = () => {
         if (!loading) {
@@ -23,41 +21,31 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
         }
 
         return (
-            // <Table.Column
-            //     width={100}
-            //     title="Actions"
-            //     dataIndex="user"
-            //     rowKey="actions"
-            //     fixed="right"
-            //     render={(userId, registration) => {
-            //         return <EditRegistrationDrawer registrationId={registration._id} />;
-            //     }}
-            // />
             <Table
                 dataSource={attendees}
                 rowKey="user"
                 loading={loading}
-                title="Travel Grants"
+                title={`${attendees.length} results`}
                 footer={footer}
                 selectedActions={[
                     {
                         key: 'edit',
                         label: 'Edit all',
                         icon: <EditIcon />,
-                        action: items => window.alert(items.length)
+                        action: items => window.alert('Bulk edit temporarily unavailable')
                     },
                     {
                         key: 'email',
                         label: 'Email all',
                         icon: <EmailIcon />,
-                        action: items => window.alert(items.length)
+                        action: items => window.alert('Bulk email temporarily unavailable')
                     }
                 ]}
                 rowActions={[
                     {
                         key: 'edit',
                         label: 'Edit',
-                        action: item => window.alert('Edit ' + item.answers.email)
+                        action: item => setEditing(item._id)
                     }
                 ]}
                 columns={[
@@ -134,22 +122,6 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
                 ]}
             />
         );
-        // return (
-        //     <Table
-        //         pagination={{
-        //             showSizeChanger: true,
-        //             showTotal: renderTotal,
-        //             position: 'bottom',
-        //             hideOnSinglePage: true
-        //         }}
-        //         footer={footer}
-        //         loading={loading}
-        //         dataSource={attendees}
-        //         rowKey="user"
-        //         scroll={{ x: 600 }}
-        //     >
-        //     </Table>
-        // );
     };
 
     const renderEmpty = () => {
@@ -161,6 +133,7 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
 
     return (
         <React.Fragment>
+            <EditRegistrationModal registrationId={editing} onClose={setEditing} />
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>

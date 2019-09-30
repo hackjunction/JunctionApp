@@ -37,6 +37,11 @@ export const travelGrantsLoading = state => state.organiser.travelGrants.loading
 export const travelGrantsError = state => state.organiser.travelGrants.error;
 export const travelGrantsUpdated = state => state.organiser.travelGrants.updated;
 
+export const filterGroups = state => state.organiser.filterGroups.data;
+export const filterGroupsLoading = state => state.organiser.filterGroups.loading;
+export const filterGroupsError = state => state.organiser.filterGroups.error;
+export const filterGroupsUpdated = state => state.organiser.filterGroups.updated;
+
 export const registrationsAssigned = createSelector(
     AuthSelectors.getCurrentUser,
     registrations,

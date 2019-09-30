@@ -42,6 +42,12 @@ const initialState = {
         updated: 0,
         data: [],
         map: {}
+    },
+    filterGroups: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: []
     }
 };
 
@@ -51,6 +57,7 @@ const statsHandler = buildHandler('stats');
 const organisersHandler = buildHandler('organisers', 'userId');
 const registrationsHandler = buildHandler('registrations', 'user');
 const travelGrantsHandler = buildHandler('travelGrants', 'user');
+const filterGroupsHandler = buildHandler('filterGroups');
 const teamsHandler = buildHandler('teams');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
@@ -77,6 +84,46 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TRAVEL_GRANTS: {
             return travelGrantsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_FILTER_GROUPS: {
+            return filterGroupsHandler(state, action);
+        }
+        case ActionTypes.CREATE_FILTER_GROUP: {
+            return {
+                ...state,
+                filterGroups: {
+                    ...state.filterGroups,
+                    data: state.filterGroups.data.concat(action.payload)
+                }
+            };
+        }
+        case ActionTypes.EDIT_FILTER_GROUP: {
+            return {
+                ...state,
+                filterGroups: {
+                    ...state.filterGroups,
+                    data: state.filterGroups.data.map(filterGroup => {
+                        if (filterGroup.label === action.payload.label) {
+                            return action.payload;
+                        }
+                        return filterGroup;
+                    })
+                }
+            };
+        }
+        case ActionTypes.DELETE_FILTER_GROUP: {
+            return {
+                ...state,
+                filterGroups: {
+                    ...state.filterGroups,
+                    data: state.filterGroups.data.filter(filterGroup => {
+                        if (filterGroup.label === action.payload.label) {
+                            return false;
+                        }
+                        return true;
+                    })
+                }
+            };
         }
         case ActionTypes.CREATE_TRAVEL_GRANT: {
             return {

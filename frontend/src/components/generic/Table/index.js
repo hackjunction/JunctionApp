@@ -120,7 +120,7 @@ export default ({
                                 </TableCell>
                             )}
                             {rowNumber && <TableCell key="rowNumber">#</TableCell>}
-                            {rowActions && (
+                            {rowActions.length > 0 && (
                                 <TableCell padding="checkbox" key="rowActions">
                                     Actions
                                 </TableCell>
@@ -161,7 +161,7 @@ export default ({
                                     {rowNumber && (
                                         <TableCell key="rowNumber">{1 + index + page * rowsPerPage}</TableCell>
                                     )}
-                                    {rowActions && (
+                                    {rowActions.length > 0 && (
                                         <TableCell padding="checkbox" key="rowActions">
                                             <ActionMenu actions={rowActions} actionProps={[item]} title="Actions" />
                                         </TableCell>
@@ -179,30 +179,36 @@ export default ({
                     </TableBody>
                     {footer && (
                         <TableFooter>
-                            <TableRow>{footer}</TableRow>
+                            <TableRow>
+                                <TableCell colSpan={columnCount} align="right">
+                                     {footer}
+                                </TableCell>
+                            </TableRow>
                         </TableFooter>
                     )}
                 </Table>
             </Paper>
-            <Box mt={1}>
-                <Paper>
-                    <TablePagination
-                        rowsPerPageOptions={[10, 25, 50]}
-                        colSpan={columnCount}
-                        count={dataSource.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        SelectProps={{
-                            inputProps: { 'aria-label': 'rows per page' },
-                            native: true
-                        }}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                        ActionsComponent={TablePaginationActions}
-                        classes={paginationClasses}
-                    />
-                </Paper>
-            </Box>
+            {pagination && (
+                <Box mt={1}>
+                    <Paper>
+                        <TablePagination
+                            rowsPerPageOptions={[10, 25, 50]}
+                            colSpan={columnCount}
+                            count={dataSource.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            SelectProps={{
+                                inputProps: { 'aria-label': 'rows per page' },
+                                native: true
+                            }}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                            classes={paginationClasses}
+                        />
+                    </Paper>
+                </Box>
+            )}
         </React.Fragment>
     );
 };

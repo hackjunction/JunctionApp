@@ -1,7 +1,7 @@
 const filterTypes = {
     IS_EMPTY: {
         id: 'IS_EMPTY',
-        label: 'Is empty',
+        label: 'Is empty'
     },
     NOT_EMPTY: {
         id: 'NOT_EMPTY',
@@ -14,6 +14,14 @@ const filterTypes = {
     NOT_EQUALS: {
         id: 'NOT_EQUALS',
         label: "Isn't equal to"
+    },
+    ONE_OF: {
+        id: 'ONE_OF',
+        label: 'Is one of'
+    },
+    NOT_ONE_OF: {
+        id: 'NOT_ONE_OF',
+        label: "Isn't one of "
     },
     CONTAINS: {
         id: 'CONTAINS',
@@ -30,7 +38,7 @@ const filterTypes = {
     },
     NOT_LESS_THAN: {
         id: 'NOT_LESS_THAN',
-        label: "Is at least",
+        label: 'Is at least',
         helper: 'Or length is at least'
     },
     MORE_THAN: {
@@ -40,7 +48,7 @@ const filterTypes = {
     },
     NOT_MORE_THAN: {
         id: 'NOT_MORE_THAN',
-        label: "Is at most",
+        label: 'Is at most',
         helper: 'Or length is at most'
     },
     BOOLEAN_TRUE: {
@@ -61,6 +69,8 @@ const stringFilterTypes = [
     filterTypes.NOT_EQUALS.id,
     filterTypes.CONTAINS.id,
     filterTypes.NOT_CONTAINS.id,
+    filterTypes.ONE_OF.id,
+    filterTypes.NOT_ONE_OF.id,
     filterTypes.LESS_THAN.id,
     filterTypes.NOT_LESS_THAN.id,
     filterTypes.MORE_THAN.id,

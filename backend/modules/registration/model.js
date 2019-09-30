@@ -40,6 +40,9 @@ const RegistrationSchema = new mongoose.Schema({
     answers: {
         type: mongoose.Mixed,
         default: {}
+    },
+    travelGrant: {
+        type: Number
     }
 });
 

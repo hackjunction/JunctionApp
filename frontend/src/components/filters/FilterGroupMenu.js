@@ -1,17 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { List, ListItem, ListItemText, Menu, MenuItem, Paper, Box } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { sortBy } from 'lodash-es';
+import { List, ListItem, ListItemText, Menu, MenuItem, Paper, Box, Divider } from '@material-ui/core';
 
 import FilterForm from './FilterForm';
 import FilterList from './FilterList';
 import FilterSaveForm from './FilterSaveForm';
 
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+
 const useStyles = makeStyles(theme => ({
-    root: {},
+    root: {}
 }));
 
-const FilterGroupMenu = ({ onChange }) => {
+const FilterGroupMenu = ({
+    onChange = () => {},
+    onSelectedChange = () => {},
+    event,
+    filterGroups,
+    showEdit = true
+}) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -25,6 +35,10 @@ const FilterGroupMenu = ({ onChange }) => {
             setFilters([]);
         }
     }, [selected]);
+
+    useEffect(() => {
+        onSelectedChange(selected);
+    }, [selected, onSelectedChange]);
 
     useEffect(() => {
         onChange(filters);
@@ -49,48 +63,36 @@ const FilterGroupMenu = ({ onChange }) => {
         }
         setAnchorEl(null);
     };
-
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    const options = [
-        {
-            id: 'default',
-            label: 'All participants',
-            description: 'Show all participants',
-            filters: [],
-            isDefault: true
-        },
-        {
-            id: 'terminal-accepted',
-            label: 'Terminal accepted',
-            description: 'Accepted to Terminal & confirmed participation',
-            filters: [
-                {
-                    label: 'Tags',
-                    path: 'tags',
-                    type: 'CONTAINS',
-                    value: 'Accepted to Terminal'
-                },
-                {
-                    label: 'Status',
-                    path: 'status',
-                    type: 'EQUALS',
-                    value: 'confirmed'
-                }
-            ]
-        },
-        {
-            id: 'custom',
-            label: 'Custom filter',
-            description: 'Create a new custom filter group',
-            filters: [],
-            isAdd: true,
+    const options = useMemo(() => {
+        let items = [
+            {
+                label: 'All participants',
+                description: 'No filters',
+                filters: [],
+                isDefault: true
+            }
+        ];
+
+        if (showEdit) {
+            items.push({
+                label: 'New filters',
+                description: 'Apply a set of custom filters',
+                filters: [],
+                isAdd: true
+            });
         }
-    ];
+
+        items = items.concat(sortBy(filterGroups, 'label'));
+
+        return items;
+    }, [filterGroups, showEdit]);
 
     const activeItem = selected || options[0];
+    const reservedLabels = options.map(option => option.label);
 
     return (
         <Paper className={classes.root}>
@@ -107,24 +109,44 @@ const FilterGroupMenu = ({ onChange }) => {
             </List>
             <Menu id="lock-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 {options.map((option, index) => (
-                    <MenuItem
-                        key={option.id}
-                        selected={option.id === activeItem.id}
-                        onClick={() => handleMenuItemClick(option)}
-                    >
-                        <ListItemText primary={option.label} secondary={option.description} />
-                    </MenuItem>
+                    <React.Fragment key={option.label}>
+                        {index !== 0 && <Divider />}
+                        <MenuItem
+                            selected={option.label === activeItem.label}
+                            onClick={() => handleMenuItemClick(option)}
+                        >
+                            <ListItemText
+                                primary={option.label}
+                                secondary={option.isAdd || option.isDefault ? option.description : ''}
+                            />
+                        </MenuItem>
+                    </React.Fragment>
                 ))}
             </Menu>
-            {!activeItem.isDefault && (
+            {showEdit && !activeItem.isDefault && (
                 <Box p={2}>
                     <FilterForm onSubmit={handleFilterAdd} />
-                    <FilterList filters={filters} onChange={setFilters} />
-                    <FilterSaveForm filters={filters} activeItem={activeItem} />
+                    <FilterList
+                        activeItemKey={activeItem ? activeItem.label : null}
+                        filters={filters}
+                        onChange={setFilters}
+                    />
+                    <FilterSaveForm
+                        filters={filters}
+                        activeItem={activeItem}
+                        reservedLabels={reservedLabels}
+                        onSave={setSelected}
+                        onDelete={setSelected}
+                    />
                 </Box>
             )}
         </Paper>
     );
 };
 
-export default FilterGroupMenu;
+const mapState = state => ({
+    filterGroups: OrganiserSelectors.filterGroups(state),
+    event: OrganiserSelectors.event(state)
+});
+
+export default connect(mapState)(FilterGroupMenu);

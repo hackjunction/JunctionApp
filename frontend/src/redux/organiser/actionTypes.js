@@ -14,3 +14,8 @@ export const UPDATE_TEAMS = 'organiser/UPDATE_TEAMS';
 
 export const UPDATE_TRAVEL_GRANTS = 'organiser/UPDATE_TRAVEL_GRANTS';
 export const CREATE_TRAVEL_GRANT = 'organiser/CREATE_TRAVEL_GRANT';
+
+export const UPDATE_FILTER_GROUPS = 'organiser/UPDATE_FILTER_GROUPS';
+export const CREATE_FILTER_GROUP = 'organiser/CREATE_FILTER_GROUP';
+export const EDIT_FILTER_GROUP = 'organiser/EDIT_FILTER_GROUP';
+export const DELETE_FILTER_GROUP = 'organiser/DELETE_FILTER_GROUP';

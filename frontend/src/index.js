@@ -8,6 +8,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CloudinaryContext } from 'cloudinary-react';
+import { SnackbarProvider } from 'notistack';
 
 import configureStore, { history } from 'redux/configureStore';
 import config from 'constants/config';
@@ -28,7 +29,15 @@ ReactDOM.render(
         <PersistGate loading={<div className="Preload" />} persistor={persistor}>
             <CloudinaryContext includeOwnBody={true} cloudName={config.CLOUDINARY_CLOUD_NAME}>
                 <ThemeProvider theme={theme}>
-                    <App history={history} />
+                    <SnackbarProvider
+                        maxSnack={3}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right'
+                        }}
+                    >
+                        <App history={history} />
+                    </SnackbarProvider>
                 </ThemeProvider>
             </CloudinaryContext>
         </PersistGate>
