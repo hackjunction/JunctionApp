@@ -149,6 +149,26 @@ controller.bulkAssignTravelGrants = (eventId, grants) => {
     return Promise.all(updates);
 };
 
+controller.rejectPendingTravelGrants = eventId => {
+    return Registration.find({
+        event: eventId,
+        status: {
+            $in: ['confirmed', 'checkedIn']
+        },
+        travelGrant: {
+            $exists: false
+        },
+        'answers.needsTravelGrant': true
+    }).then(registrations => {
+        const promises = registrations.map(registration => {
+            registration.travelGrant = 0;
+            return registration.save();
+        });
+
+        return Promise.all(promises);
+    });
+};
+
 controller.getFullRegistration = (eventId, registrationId) => {
     return Registration.findById(registrationId).then(registration => {
         if (!registration || registration.event.toString() !== eventId) {

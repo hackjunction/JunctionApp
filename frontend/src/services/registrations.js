@@ -75,6 +75,10 @@ RegistrationsService.bulkAssignTravelGrantsForEvent = (idToken, slug, grants) =>
     return _axios.patch(`${BASE_ROUTE}/${slug}/bulk/grants`, { grants }, config(idToken));
 };
 
+RegistrationsService.bulkRejectTravelGrantsForEvent = (idToken, slug) => {
+    return _axios.delete(`${BASE_ROUTE}/${slug}/bulk/grants`, config(idToken));
+};
+
 /** Accept all soft-accepted registrations
  * PATCH /:slug/bulk/accept
  */

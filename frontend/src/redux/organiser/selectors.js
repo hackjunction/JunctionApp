@@ -73,13 +73,31 @@ export const registrationsEligibleForTravelGrant = createSelector(
         })
 );
 
-export const travelGrantSpend = createSelector(
+export const registrationsWithTravelGrant = createSelector(
     registrationsConfirmed,
+    registrations =>
+        registrations.filter(r => {
+            return r.travelGrant && r.travelGrant !== 0;
+        })
+);
+
+export const travelGrantSpend = createSelector(
+    registrationsWithTravelGrant,
     registrations => {
         return sumBy(registrations, r => {
             return r.travelGrant || 0;
         });
     }
+);
+
+export const travelGrantCount = createSelector(
+    registrationsWithTravelGrant,
+    registrations => registrations.length
+);
+
+export const travelGrantRejectedCount = createSelector(
+    registrationsConfirmed,
+    registrations => registrations.filter(r => r.travelGrant === 0).length
 );
 
 export const teamsPopulated = createSelector(

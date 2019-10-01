@@ -42,7 +42,11 @@ const RegistrationSchema = new mongoose.Schema({
         default: {}
     },
     travelGrant: {
-        type: Number
+        type: Number,
+        set: function(amount) {
+            this._previousGrant = this.travelGrant;
+            return amount;
+        }
     }
 });
 
@@ -72,12 +76,12 @@ RegistrationSchema.plugin(updateAllowedPlugin, {
 
 RegistrationSchema.pre('save', function(next) {
     this._wasNew = this.isNew;
-    this._previousGrant = this.travelGrant;
     next();
 });
 
 /** Trigger email sending on status changes etc. */
 RegistrationSchema.post('save', function(doc, next) {
+    console.log('POST SAVE', doc._id);
     const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id;
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
     const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id;
@@ -97,13 +101,15 @@ RegistrationSchema.post('save', function(doc, next) {
         EmailTaskController.createRejectedTask(doc.user, doc.event, true);
     }
 
-    // if (!this._previousGrant && this.travelGrant === 0) {
-    //     EmailTaskController.createTravelGrantRejectedTask(doc.user, doc.event, true);
-    // }
+    if (!this._previousGrant && this.travelGrant === 0) {
+        EmailTaskController.createTravelGrantRejectedTask(doc, true);
+    }
 
-    // if (!this._previousGrant && this.travelGrant > 0) {
-    //     EmailTaskController.createTravelGrantAcceptedTask(doc.user, doc.event, true);
-    // }
+    if (!this._previousGrant && this.travelGrant > 0) {
+        EmailTaskController.createTravelGrantAcceptedTask(doc, true);
+    }
+
+    next();
 });
 
 RegistrationSchema.index({ event: 1, user: 1 }, { unique: true });
