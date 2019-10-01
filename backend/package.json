@@ -40,7 +40,8 @@
     "devDependencies": {
         "eslint": "^5.16.0",
         "kill-port": "^1.4.0",
-        "nodemon": "^1.18.10"
+        "nodemon": "^1.18.10",
+        "sync-dotenv": "^2.2.1"
     },
     "engines": {
         "node": "12.3.1",
