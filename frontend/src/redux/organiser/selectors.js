@@ -65,6 +65,23 @@ export const registrationsConfirmed = createSelector(
     }
 );
 
+export const registrationsEligibleForTravelGrant = createSelector(
+    registrationsConfirmed,
+    registrations =>
+        registrations.filter(r => {
+            return !r.travelGrant && r.travelGrant !== 0 && r.answers.needsTravelGrant;
+        })
+);
+
+export const travelGrantSpend = createSelector(
+    registrationsConfirmed,
+    registrations => {
+        return sumBy(registrations, r => {
+            return r.travelGrant || 0;
+        });
+    }
+);
+
 export const teamsPopulated = createSelector(
     registrationsMap,
     teams,

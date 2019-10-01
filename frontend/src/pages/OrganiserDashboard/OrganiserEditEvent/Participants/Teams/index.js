@@ -26,10 +26,10 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
                         if (!team.members || !team.members.length) return null;
                         return (
                             <div className={styles.attendeeTableFooter}>
-                                <BulkEditRegistrationDrawer
+                                {/* <BulkEditRegistrationDrawer
                                     registrationIds={team.members.map(r => r._id)}
                                     buttonProps={{ text: 'Edit all team members' }}
-                                />
+                                /> */}
                             </div>
                         );
                     }}
@@ -106,10 +106,10 @@ const TeamsPage = ({ event, teams, registrationsLoading, teamsLoading, registrat
             </div>
             <div className={styles.top}>
                 <span className={styles.title}>{teamsFiltered.length} teams</span>
-                <BulkEditRegistrationDrawer
+                {/* <BulkEditRegistrationDrawer
                     registrationIds={filteredMemberIds}
                     buttonProps={{ children: `Edit all team members ${filteredMemberIds.length}` }}
-                />
+                /> */}
             </div>
 
             <Table

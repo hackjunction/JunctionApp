@@ -65,7 +65,7 @@ const SearchAttendeesPage = ({ idToken, event, registrations = [], registrations
                         Assign random registrations
                     </AntButton>
                     <Divider size={1} />
-                    <BulkEditRegistrationDrawer registrationIds={registrations.map(r => r._id)} />
+                    {/* <BulkEditRegistrationDrawer registrationIds={registrations.map(r => r._id)} /> */}
                 </div>
             </div>
             <AttendeeTable attendees={filtered} loading={registrationsLoading} />

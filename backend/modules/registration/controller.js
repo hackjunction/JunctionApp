@@ -138,6 +138,17 @@ controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
     );
 };
 
+controller.bulkAssignTravelGrants = (eventId, grants) => {
+    const updates = grants.map(({ _id, amount }) => {
+        return Registration.findById(_id).then(reg => {
+            reg.travelGrant = amount;
+            return reg.save();
+        });
+    });
+
+    return Promise.all(updates);
+};
+
 controller.getFullRegistration = (eventId, registrationId) => {
     return Registration.findById(registrationId).then(registration => {
         if (!registration || registration.event.toString() !== eventId) {
