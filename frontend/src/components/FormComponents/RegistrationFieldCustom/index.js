@@ -1,8 +1,12 @@
 import React from 'react';
 
+import joi from 'joi-browser';
 import { Input, Select } from 'antd';
-
+import { RegistrationFields, CustomValidator } from '@hackjunction/shared';
 import FormikField from '../FormikField';
+
+const { fieldTypes } = RegistrationFields;
+const Validator = new CustomValidator(joi, false);
 
 const RegistrationFieldCustom = React.memo(({ section, question }) => {
     const name = `${section.name}.${question.name}`;
@@ -62,6 +66,13 @@ const RegistrationFieldCustom = React.memo(({ section, question }) => {
         return '';
     };
 
+    const validatorOptions = {
+        fieldType: question.fieldType,
+        fieldLabel: question.label,
+        required: question.fieldRequired,
+        fieldOptions: question.settings
+    };
+
     return (
         <FormikField
             name={name}
@@ -70,7 +81,7 @@ const RegistrationFieldCustom = React.memo(({ section, question }) => {
             hintMarkdown={true}
             isFast={true}
             required={question.fieldRequired}
-            validate={() => {}}
+            validate={Validator.validate(validatorOptions)}
             alwaysFocused={false}
             render={renderInputForField}
             renderValue={renderValueForField}
