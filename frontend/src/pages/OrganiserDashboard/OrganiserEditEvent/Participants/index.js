@@ -10,33 +10,17 @@ import PageHeader from 'components/generic/PageHeader';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-import SearchAttendeesPage from './SearchAttendeesPage';
-import AssignAttendeesPage from './AssignAttendeesPage';
-import TeamsPage from './TeamsPage';
-import AdminPage from './AdminPage';
+import SearchAttendeesPage from './Search';
+import AssignAttendeesPage from './Assigned';
+import TeamsPage from './Teams';
+import AdminPage from './Admin';
+import TravelGrantsPage from './Travel';
 
 const OrganiserEditEventReview = ({ event, organisers, registrationsLoading, updateData }) => {
-    const [selectedKey, setSelectedKey] = useState('search');
-
-    const renderSelectedKey = () => {
-        switch (selectedKey) {
-            case 'search':
-                return <SearchAttendeesPage />;
-            case 'teams':
-                return <TeamsPage />;
-            case 'assigned':
-                return <AssignAttendeesPage />;
-            case 'admin':
-                return <AdminPage />;
-            default:
-                return null;
-        }
-    };
-
     return (
         <PageWrapper>
-            <PageHeader heading="Participants" subheading="Search participants"/>
-            <MaterialTabsLayout 
+            <PageHeader heading="Participants" subheading="Search participants" />
+            <MaterialTabsLayout
                 tabs={[
                     {
                         label: 'Participants',
@@ -52,12 +36,12 @@ const OrganiserEditEventReview = ({ event, organisers, registrationsLoading, upd
                     },
                     {
                         label: 'Travel',
-                        content: <h1>Travel grants</h1>
+                        content: <TravelGrantsPage />
                     },
                     {
                         label: 'Admin & Tools',
                         content: <AdminPage />
-                    },
+                    }
                 ]}
             />
         </PageWrapper>

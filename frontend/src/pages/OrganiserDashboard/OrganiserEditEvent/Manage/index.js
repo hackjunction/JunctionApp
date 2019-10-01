@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageHeader, Button, Table, notification, message } from 'antd';
+import { Button, Table, notification, message } from 'antd';
 import { concat } from 'lodash-es';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
@@ -8,7 +8,7 @@ import * as OrganiserActions from 'redux/organiser/actions';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import AddOrganiserDrawer from './AddOrganiserDrawer';
-import Divider from 'components/generic/Divider';
+import PageHeader from 'components/generic/PageHeader';
 import PageWrapper from 'components/PageWrapper';
 
 const OrganiserEditEventManage = ({
@@ -74,61 +74,48 @@ const OrganiserEditEventManage = ({
             error={!event && !eventLoading}
             render={() => (
                 <React.Fragment>
-                    <PageHeader
-                        title="Organisers"
-                        children={<p>Manage who has access to edit this event</p>}
-                        extra={[
-                            <Button type="primary" key="add-organiser" onClick={() => setDrawerOpen(true)}>
-                                Add organisers
-                            </Button>
+                    <PageHeader heading="Organisers" subheading="Manage who has access to edit this event" />
+                    <Button type="primary" key="add-organiser" onClick={() => setDrawerOpen(true)}>
+                        Add organisers
+                    </Button>
+                    <Table
+                        loading={organiserProfilesLoading}
+                        dataSource={organiserProfiles}
+                        pagination={false}
+                        rowKey="userId"
+                        showHeader={false}
+                        columns={[
+                            {
+                                title: 'Name',
+                                dataIndex: 'firstName',
+                                key: 'name',
+                                render: (text, record) => record.firstName + ' ' + record.lastName
+                            },
+                            {
+                                title: 'Email',
+                                dataIndex: 'email',
+                                key: 'email'
+                            },
+                            {
+                                title: 'Actions',
+                                dataIndex: 'userId',
+                                key: 'actions',
+                                render: (text, record) => {
+                                    if (event.owner === record.userId) {
+                                        return (
+                                            <Button disabled={true} type="link">
+                                                Owner
+                                            </Button>
+                                        );
+                                    }
+                                    return (
+                                        <Button type="link" onClick={() => handleOrganiserRemoved(record.userId)}>
+                                            Remove
+                                        </Button>
+                                    );
+                                }
+                            }
                         ]}
-                        footer={
-                            <React.Fragment>
-                                <Table
-                                    loading={organiserProfilesLoading}
-                                    dataSource={organiserProfiles}
-                                    pagination={false}
-                                    rowKey="userId"
-                                    showHeader={false}
-                                    columns={[
-                                        {
-                                            title: 'Name',
-                                            dataIndex: 'firstName',
-                                            key: 'name',
-                                            render: (text, record) => record.firstName + ' ' + record.lastName
-                                        },
-                                        {
-                                            title: 'Email',
-                                            dataIndex: 'email',
-                                            key: 'email'
-                                        },
-                                        {
-                                            title: 'Actions',
-                                            dataIndex: 'userId',
-                                            key: 'actions',
-                                            render: (text, record) => {
-                                                if (event.owner === record.userId) {
-                                                    return (
-                                                        <Button disabled={true} type="link">
-                                                            Owner
-                                                        </Button>
-                                                    );
-                                                }
-                                                return (
-                                                    <Button
-                                                        type="link"
-                                                        onClick={() => handleOrganiserRemoved(record.userId)}
-                                                    >
-                                                        Remove
-                                                    </Button>
-                                                );
-                                            }
-                                        }
-                                    ]}
-                                />
-                                <Divider size={1} />
-                            </React.Fragment>
-                        }
                     />
                     <AddOrganiserDrawer
                         isOpen={drawerOpen}

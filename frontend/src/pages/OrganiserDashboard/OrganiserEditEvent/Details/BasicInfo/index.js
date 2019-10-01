@@ -6,7 +6,7 @@ import * as Validate from 'services/validation';
 import Divider from 'components/generic/Divider';
 import FormikImage from 'components/Forms/FormikImage';
 import FormikField from 'components/FormComponents/FormikField';
-import MarkdownInput from 'components/FormComponents/MarkdownInput/index';
+import MarkdownInput from 'components/FormComponents/MarkdownInput';
 
 const OrganiserEditEventInfo = props => {
     return (

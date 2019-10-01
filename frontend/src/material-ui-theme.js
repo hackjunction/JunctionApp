@@ -16,22 +16,56 @@ const theme = createMuiTheme({
         fontFamily: bodyFont,
         fontWeightRegular: 300,
         h1: {
-            fontFamily: titleFont
+            fontFamily: titleFont,
+            fontWeight: 'bold'
         },
         h2: {
-            fontFamily: titleFont
+            fontFamily: titleFont,
+            fontWeight: 'bold'
         },
         h3: {
-            fontFamily: titleFont
+            fontFamily: titleFont,
+            fontWeight: 'bold'
         },
         h4: {
-            fontFamily: titleFont
+            fontFamily: titleFont,
+            fontWeight: 'bold'
         },
         h5: {
-            fontFamily: titleFont
+            fontFamily: titleFont,
+            fontWeight: 'bold'
         },
         h6: {
-            fontFamily: titleFont
+            fontFamily: titleFont,
+            fontWeight: 'bold'
+        },
+        subtitle1: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
+        },
+        subtitle2: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
+        },
+        body1: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
+        },
+        body2: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
+        },
+        button: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
+        },
+        caption: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
+        },
+        overline: {
+            fontFamily: bodyFont,
+            fontWeight: '300'
         }
     }
 });

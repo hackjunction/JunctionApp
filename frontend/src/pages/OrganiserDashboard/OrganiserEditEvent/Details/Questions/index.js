@@ -14,7 +14,7 @@ const OrganiserEditEventRegistration = props => {
                 name="userDetailsConfig"
                 isFast={true}
                 render={({ field }) => {
-                    const fieldValue = field.value;
+                    const fieldValue = field.value || {};
                     const fieldKeys = Object.keys(fieldValue);
                     const dataSource = fieldKeys.map(field => ({
                         key: field,
