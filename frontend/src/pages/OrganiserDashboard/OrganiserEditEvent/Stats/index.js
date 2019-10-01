@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
-import styles from './OrganiserEditEventStats.module.scss';
+import styles from './Stats.module.scss';
 
 import { connect } from 'react-redux';
-import { PageHeader, Row, Col, Card } from 'antd';
+import { Row, Col, Card } from 'antd';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 
 import Divider from 'components/generic/Divider';
+import PageHeader from 'components/generic/PageHeader';
 import PageWrapper from 'components/PageWrapper';
+
 import ApplicationsOverTime from 'components/plots/ApplicationsOverTime';
 import RatingsSplit from 'components/plots/RatingsSplit';
 import ReviewersList from 'components/plots/ReviewersList';
-
 import ApplicationsCount from 'components/plots/ApplicationsCount';
 import TeamsCount from 'components/plots/TeamsCount';
 import ReviewedPercent from 'components/plots/ReviewedPercent';
@@ -20,8 +21,9 @@ import ReviewedAverage from 'components/plots/ReviewedAverage';
 import ApplicationsLast24h from 'components/plots/ApplicationsLast24h';
 
 const OrganiserEditEventStats = ({ slug, loading }) => {
-    const renderContent = () => {
-        return (
+    return (
+        <PageWrapper loading={loading}>
+            <PageHeader heading="Stats" subheading="Key stats for your event" />
             <Row gutter={16}>
                 <Col xs={24} md={8}>
                     <Divider size={1} />
@@ -72,12 +74,6 @@ const OrganiserEditEventStats = ({ slug, loading }) => {
                     </Card>
                 </Col>
             </Row>
-        );
-    };
-
-    return (
-        <PageWrapper loading={loading}>
-            <PageHeader title="Stats" children={<p>Key stats for the event</p>} footer={renderContent()} />
         </PageWrapper>
     );
 };

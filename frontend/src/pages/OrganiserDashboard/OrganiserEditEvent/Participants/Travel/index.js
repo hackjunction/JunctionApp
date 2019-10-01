@@ -16,19 +16,24 @@ const TravelGrantStepper = ({ registrations, filterGroups, filterGroupsLoading }
 
     useEffect(() => {
         if (filterGroups) {
-            setGroups(filterGroups.reduce((res, group) => {
-                res[group.label] = 0;
-                return res;
-            }, {}));
+            setGroups(
+                filterGroups.reduce((res, group) => {
+                    res[group.label] = 0;
+                    return res;
+                }, {})
+            );
         }
     }, [filterGroups]);
 
-    const handleAmountChange = useCallback((group, amount) => {
-        setGroups({
-            ...groups,
-            [group]: amount,
-        });
-    }, [groups]);
+    const handleAmountChange = useCallback(
+        (group, amount) => {
+            setGroups({
+                ...groups,
+                [group]: amount
+            });
+        },
+        [groups]
+    );
 
     return (
         <Box>
@@ -86,7 +91,14 @@ const TravelGrantStepper = ({ registrations, filterGroups, filterGroupsLoading }
                                         key: 'amount',
                                         label: 'Amount',
                                         path: 'label',
-                                        render: (label) => <TextInput label="Enter amount (EUR)" type="number" value={groups[label]} onChange={(value) => handleAmountChange(label, value)} />
+                                        render: label => (
+                                            <TextInput
+                                                label="Enter amount (EUR)"
+                                                type="number"
+                                                value={groups[label]}
+                                                onChange={value => handleAmountChange(label, value)}
+                                            />
+                                        )
                                     }
                                 ]}
                             />

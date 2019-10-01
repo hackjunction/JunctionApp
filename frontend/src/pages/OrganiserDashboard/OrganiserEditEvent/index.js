@@ -9,11 +9,11 @@ import * as OrganiserActions from 'redux/organiser/actions';
 import PageWrapper from 'components/PageWrapper';
 import Image from 'components/generic/Image';
 import EventNavBar from 'components/navbars/EventNavBar';
-import OrganiserEditEventDetails from './OrganiserEditEventDetails';
-import OrganiserEditEventStats from './OrganiserEditEventStats';
-import OrganiserEditEventReview from './OrganiserEditEventReview';
-import OrganiserEditEventManage from './OrganiserEditEventManage';
-import OrganiserEditEventGrants from './OrganiserEditEventGrants';
+
+import DetailsPage from './Details';
+import StatsPage from './Stats';
+import ParticipantsPage from './Participants';
+import ManagePage from './Manage';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({
@@ -83,33 +83,25 @@ const OrganiserEditEvent = ({
                         path: '',
                         icon: 'home',
                         label: 'Edit',
-                        render: routeProps => <OrganiserEditEventDetails {...routeProps} slug={slug} />
+                        render: routeProps => <DetailsPage {...routeProps} slug={slug} />
                     },
                     {
                         path: '/stats',
                         icon: 'line-chart',
                         label: 'Stats',
-                        render: routeProps => <OrganiserEditEventStats {...routeProps} slug={slug} />
+                        render: routeProps => <StatsPage {...routeProps} slug={slug} />
                     },
                     {
-                        path: '/review',
+                        path: '/participants',
                         icon: 'star',
-                        label: 'Review',
-                        render: routeProps => (
-                            <OrganiserEditEventReview {...routeProps} slug={slug} updateData={updateData} />
-                        )
-                    },
-                    {
-                        path: '/grants',
-                        icon: 'star',
-                        label: 'Travel Grants',
-                        render: routeProps => <OrganiserEditEventGrants {...routeProps} slug={slug} />
+                        label: 'Participants',
+                        render: routeProps => <ParticipantsPage {...routeProps} slug={slug} updateData={updateData} />
                     },
                     {
                         path: '/manage',
                         icon: 'setting',
                         label: 'Manage',
-                        render: routeProps => <OrganiserEditEventManage {...routeProps} slug={slug} />
+                        render: routeProps => <ManagePage {...routeProps} slug={slug} />
                     }
                 ]}
             />
