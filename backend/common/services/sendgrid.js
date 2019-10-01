@@ -64,6 +64,30 @@ const SendgridService = {
 
         return SendgridService.send(msg);
     },
+    sendTravelGrantAcceptedEmail: (event, user, registration) => {
+        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+            header_image: event.coverImage.url,
+            subject: `Your travel grant for ${event.name} has been confirmed`,
+            subtitle: `You have been granted a travel grant of up to ${registration.travelGrant}€`,
+            body: `This means that we will refund your travel costs to Junction 2019, up to the amount above, in exchange for a receipt of your travels. You'll be able to submit your receipt via the platform at a later date.`,
+            cta_text: 'Event dashboard',
+            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
+        });
+
+        return SendgridService.send(msg);
+    },
+    sendTravelGrantRejectedEmail: (event, user, registration) => {
+        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+            header_image: event.coverImage.url,
+            subject: `Your travel grant for ${event.name} has been rejected`,
+            subtitle: `Unfortunately we were unable to give you a travel grant`,
+            body: ``,
+            cta_text: 'Event dashboard',
+            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
+        });
+
+        return SendgridService.send(msg);
+    },
     sendGenericEmail: (to, params) => {
         const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
             subject: params.subject,

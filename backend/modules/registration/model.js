@@ -72,6 +72,7 @@ RegistrationSchema.plugin(updateAllowedPlugin, {
 
 RegistrationSchema.pre('save', function(next) {
     this._wasNew = this.isNew;
+    this._previousGrant = this.travelGrant;
     next();
 });
 
@@ -96,7 +97,13 @@ RegistrationSchema.post('save', function(doc, next) {
         EmailTaskController.createRejectedTask(doc.user, doc.event, true);
     }
 
-    next();
+    if (!this._previousGrant && this.travelGrant === 0) {
+        EmailTaskController.createTravelGrantRejectedTask(doc.user, doc.event, true);
+    }
+
+    if (!this._previousGrant && this.travelGrant > 0) {
+        EmailTaskController.createTravelGrantAcceptedTask(doc.user, doc.event, true);
+    }
 });
 
 RegistrationSchema.index({ event: 1, user: 1 }, { unique: true });

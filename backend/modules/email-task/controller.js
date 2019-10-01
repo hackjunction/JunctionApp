@@ -3,6 +3,7 @@ const SendgridService = require('../../common/services/sendgrid');
 const EmailTypes = require('./types');
 const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
+const RegistrationController = require('../registration/controller');
 const shortid = require('shortid');
 const Promise = require('bluebird');
 const controller = {};
@@ -55,6 +56,22 @@ controller.createRegisteredTask = async (userId, eventId, deliverNow = false) =>
     return task;
 };
 
+controller.createTravelGrantAcceptedTask = async (userId, eventId, deliverNow = false) => {
+    const task = await controller.createTask(userId, eventId, EmailTypes.travelGrantAccepted);
+    if (task && deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
+controller.createTravelGrantRejectedTask = async (userId, eventId, deliverNow = false) => {
+    const task = await controller.createTask(userId, eventId, EmailTypes.travelGrantRejected);
+    if (task && deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
 controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deliverNow = false) => {
     if (!uniqueId) {
         uniqueId = shortid.generate();
@@ -82,6 +99,16 @@ controller.deliverEmailTask = async task => {
         }
         case EmailTypes.registrationReceived: {
             await SendgridService.sendRegisteredEmail(event, user);
+            break;
+        }
+        case EmailTypes.travelGrantAccepted: {
+            const registration = await RegistrationController.getRegistration(task.user, task.event);
+            await SendgridService.sendTravelGrantAcceptedEmail(event, user, registration);
+            break;
+        }
+        case EmailTypes.travelGrantRejected: {
+            const registration = await RegistrationController.getRegistration(task.user, task.event);
+            await SendgridService.sendTravelGrantRejectedEmail(event, user, registration);
             break;
         }
         default: {
