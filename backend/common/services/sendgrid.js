@@ -78,7 +78,7 @@ const SendgridService = {
                     <li>
                         Travel grants are only available to participants who have checked in at the venue. 
                     </li>
-                    <li>
+                    <li>    
                         You will need to supply receipt(s) of your travels, which clearly show the total cost of your trip, per traveller.
                     </li>
                 </ul>

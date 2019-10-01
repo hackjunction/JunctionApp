@@ -81,7 +81,6 @@ RegistrationSchema.pre('save', function(next) {
 
 /** Trigger email sending on status changes etc. */
 RegistrationSchema.post('save', function(doc, next) {
-    console.log('POST SAVE', doc._id);
     const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id;
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
     const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id;
