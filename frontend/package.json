@@ -10,6 +10,7 @@
         "antd": "^3.18.2",
         "auth0-js": "^9.10.0",
         "axios": "^0.18.0",
+        "babel-plugin-import": "^1.12.2",
         "classnames": "^2.2.6",
         "cloudinary-react": "^1.1.1",
         "connected-react-router": "^6.3.0",
@@ -70,7 +71,6 @@
         "npm": "6.9.0"
     },
     "devDependencies": {
-        "babel-plugin-import": "^1.12.2",
         "depcheck": "^0.8.3",
         "sync-dotenv": "^2.2.1"
     }
