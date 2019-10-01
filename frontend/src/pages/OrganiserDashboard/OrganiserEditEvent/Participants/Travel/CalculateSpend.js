@@ -4,6 +4,7 @@ import { FilterHelpers } from '@hackjunction/shared';
 import { connect } from 'react-redux';
 import { sortBy, sumBy, difference } from 'lodash-es';
 import { Grid, Typography, Button, Box } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 
 import TextField from 'components/inputs/TextInput';
 import Table from 'components/generic/Table';
@@ -11,7 +12,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 import RegistrationsService from 'services/registrations';
 
-const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligibleRegistrations }) => {
+const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligibleRegistrations, enqueueSnackbar }) => {
     const [calculations, setCalculations] = useState();
     const [maxSpend, setMaxSpend] = useState(0);
     const { slug } = event;
@@ -85,17 +86,15 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
             amount: item.amount
         }));
 
-        window.alert('Start submission');
-
         RegistrationsService.bulkAssignTravelGrantsForEvent(idToken, slug, data)
             .then(() => {
-                window.alert('DONE!');
+                enqueueSnackbar('Success!', { variant: 'success' });
             })
             .catch(err => {
-                window.alert('ERR');
+                enqueueSnackbar('Something went wrong...', { variant: 'error' });
                 console.log(err);
             });
-    }, [idToken, slug, calculations]);
+    }, [idToken, slug, calculations, enqueueSnackbar]);
 
     const canSubmit = calculations && calculations.granted.length > 0;
 
@@ -162,7 +161,7 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
             </Grid>
             <Grid item xs={12}>
                 <Box display="flex" alignItems="center" justifyContent="center">
-                    <Button disabled={true} variant="contained" color="primary" onClick={handleSubmit}>
+                    <Button disabled={!canSubmit} variant="contained" color="primary" onClick={handleSubmit}>
                         Assign travel grants
                     </Button>
                 </Box>
@@ -175,7 +174,7 @@ const mapState = state => ({
     idToken: AuthSelectors.getIdToken(state),
     event: OrganiserSelectors.event(state),
     filterGroups: OrganiserSelectors.filterGroups(state),
-    eligibleRegistrations: OrganiserSelectors.registrations(state)
+    eligibleRegistrations: OrganiserSelectors.registrationsEligibleForTravelGrant(state)
 });
 
-export default connect(mapState)(CalculateSpend);
+export default withSnackbar(connect(mapState)(CalculateSpend));

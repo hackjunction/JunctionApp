@@ -56,16 +56,19 @@ controller.createRegisteredTask = async (userId, eventId, deliverNow = false) =>
     return task;
 };
 
-controller.createTravelGrantAcceptedTask = async (userId, eventId, deliverNow = false) => {
-    const task = await controller.createTask(userId, eventId, EmailTypes.travelGrantAccepted);
+controller.createTravelGrantAcceptedTask = async (registration, deliverNow = false) => {
+    const task = await controller.createTask(registration.user, registration.event, EmailTypes.travelGrantAccepted, {
+        amount: registration.travelGrant,
+        countryOfTravel: registration.answers.countryOfTravel
+    });
     if (task && deliverNow) {
         return controller.deliverEmailTask(task);
     }
     return task;
 };
 
-controller.createTravelGrantRejectedTask = async (userId, eventId, deliverNow = false) => {
-    const task = await controller.createTask(userId, eventId, EmailTypes.travelGrantRejected);
+controller.createTravelGrantRejectedTask = async (registration, deliverNow = false) => {
+    const task = await controller.createTask(registration.user, registration.event, EmailTypes.travelGrantRejected);
     if (task && deliverNow) {
         return controller.deliverEmailTask(task);
     }
@@ -102,13 +105,11 @@ controller.deliverEmailTask = async task => {
             break;
         }
         case EmailTypes.travelGrantAccepted: {
-            const registration = await RegistrationController.getRegistration(task.user, task.event);
-            await SendgridService.sendTravelGrantAcceptedEmail(event, user, registration);
+            await SendgridService.sendTravelGrantAcceptedEmail(event, user, task.params);
             break;
         }
         case EmailTypes.travelGrantRejected: {
-            const registration = await RegistrationController.getRegistration(task.user, task.event);
-            await SendgridService.sendTravelGrantRejectedEmail(event, user, registration);
+            await SendgridService.sendTravelGrantRejectedEmail(event, user, task.params);
             break;
         }
         default: {

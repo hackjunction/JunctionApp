@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, Typography, Button, Box, CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     value: {
@@ -13,7 +13,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Statistic = ({ label, value, suffix }) => {
+const Statistic = ({ label, value, suffix, action, actionText }) => {
+    const [actionLoading, setActionLoading] = useState();
+
+    const handleAction = useCallback(async () => {
+        setActionLoading(true);
+        await action();
+        setActionLoading(false);
+    }, [action]);
     const classes = useStyles();
     return (
         <Card>
@@ -29,6 +36,14 @@ const Statistic = ({ label, value, suffix }) => {
                         </Typography>
                     )}
                 </Typography>
+                {action && actionText && (
+                    <Box mt={2}>
+                        {actionLoading && <CircularProgress size={24} />}
+                        <Button disabled={actionLoading} color="secondary" onClick={handleAction}>
+                            {actionText}
+                        </Button>
+                    </Box>
+                )}
             </CardContent>
         </Card>
     );

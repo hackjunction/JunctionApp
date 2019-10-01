@@ -1,15 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { sumBy } from 'lodash-es';
 import { connect } from 'react-redux';
 import { Typography, Grid } from '@material-ui/core';
+import { FilterHelpers } from '@hackjunction/shared';
+import { withSnackbar } from 'notistack';
+
 import Table from 'components/generic/Table';
 import TextInput from 'components/inputs/TextInput';
+import Statistic from 'components/generic/Statistic';
 
+import RegistrationsService from 'services/registrations';
+
+import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import CalculateSpend from './CalculateSpend';
 
-const TravelGrantPage = ({ registrations, filterGroups, filterGroupsLoading }) => {
+const TravelGrantPage = ({
+    enqueueSnackbar,
+    event,
+    idToken,
+    registrations,
+    registrationsWithTravelGrant,
+    filterGroups,
+    filterGroupsLoading,
+    travelGrantSpend,
+    travelGrantCount,
+    travelGrantRejectedCount
+}) => {
     const [groups, setGroups] = useState({});
 
     useEffect(() => {
@@ -33,8 +52,45 @@ const TravelGrantPage = ({ registrations, filterGroups, filterGroupsLoading }) =
         [groups]
     );
 
+    const filterGroupsMapped = filterGroups.map(group => {
+        const items = FilterHelpers.applyFilters(registrationsWithTravelGrant, group.filters);
+        return {
+            ...group,
+            spend: sumBy(items, r => r.travelGrant || 0)
+        };
+    });
+
+    const handleBulkReject = useCallback(() => {
+        return RegistrationsService.bulkRejectTravelGrantsForEvent(idToken, event.slug)
+            .then(() => {
+                enqueueSnackbar('Success!', { variant: 'success' });
+                return;
+            })
+            .catch(err => {
+                enqueueSnackbar('Something went wrong', { variant: 'error' });
+                return;
+            });
+    }, [idToken, event.slug, enqueueSnackbar]);
+
     return (
         <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <Statistic
+                    label="Number of grants pending"
+                    value={registrations.length}
+                    action={handleBulkReject}
+                    actionText="Reject all"
+                />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <Statistic label="Number of grants accepted" value={travelGrantCount} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <Statistic label="Number of grants rejected" value={travelGrantRejectedCount} />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+                <Statistic label="Current spend" value={travelGrantSpend} suffix="€" />
+            </Grid>
             <Grid item xs={12}>
                 <Typography variant="body">
                     Here you can automatically grant travel grants based on your filter groups. Set the amount you want
@@ -59,13 +115,18 @@ const TravelGrantPage = ({ registrations, filterGroups, filterGroupsLoading }) =
                     rowSelection={false}
                     rowNumber={false}
                     pagination={false}
-                    dataSource={filterGroups}
+                    dataSource={filterGroupsMapped}
                     loading={filterGroupsLoading}
                     columns={[
                         {
                             key: 'group',
                             label: 'Group',
                             path: 'label'
+                        },
+                        {
+                            key: 'spend',
+                            label: 'Current spend',
+                            path: 'spend'
                         },
                         {
                             key: 'amount',
@@ -96,9 +157,15 @@ const TravelGrantPage = ({ registrations, filterGroups, filterGroupsLoading }) =
 };
 
 const mapState = state => ({
-    registrations: OrganiserSelectors.registrationsConfirmed(state),
+    idToken: AuthSelectors.getIdToken(state),
+    event: OrganiserSelectors.event(state),
+    registrations: OrganiserSelectors.registrationsEligibleForTravelGrant(state),
+    registrationsWithTravelGrant: OrganiserSelectors.registrationsWithTravelGrant(state),
     filterGroups: OrganiserSelectors.filterGroups(state),
-    filterGroupsLoading: OrganiserSelectors.filterGroupsLoading(state)
+    filterGroupsLoading: OrganiserSelectors.filterGroupsLoading(state),
+    travelGrantSpend: OrganiserSelectors.travelGrantSpend(state),
+    travelGrantCount: OrganiserSelectors.travelGrantCount(state),
+    travelGrantRejectedCount: OrganiserSelectors.travelGrantRejectedCount(state)
 });
 
-export default connect(mapState)(TravelGrantPage);
+export default withSnackbar(connect(mapState)(TravelGrantPage));

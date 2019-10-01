@@ -532,7 +532,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'City of Travel',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     needsVisa: {
         label: 'Do you need a visa?',

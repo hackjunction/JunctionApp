@@ -4,7 +4,6 @@ import UserProfilesService from 'services/userProfiles';
 import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
-import TravelGrantsService from 'services/travelGrants';
 import FilterGroupsService from 'services/filterGroups';
 
 /** Update event with loading/error data */
