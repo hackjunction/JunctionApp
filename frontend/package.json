@@ -51,11 +51,10 @@
         "test": "react-app-rewired test",
         "eject": "react-scripts eject",
         "lint": "eslint ./src",
-        "depcheck": "depcheck ."
+        "depcheck": "depcheck .",
+        "sync-env": "sync-dotenv",
+        "precommit": "npm run lint && npm run sync-env"
     },
-    "pre-commit": [
-        "lint"
-    ],
     "eslintConfig": {
         "extends": "react-app"
     },
@@ -73,6 +72,6 @@
     "devDependencies": {
         "babel-plugin-import": "^1.12.2",
         "depcheck": "^0.8.3",
-        "pre-commit": "^1.2.2"
+        "sync-dotenv": "^2.2.1"
     }
 }
