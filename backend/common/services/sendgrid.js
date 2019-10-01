@@ -64,27 +64,32 @@ const SendgridService = {
 
         return SendgridService.send(msg);
     },
+
     sendTravelGrantAcceptedEmail: (event, user, params) => {
         const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
             header_image: event.coverImage.url,
             subject: `Your travel grant for ${event.name} has been confirmed`,
             subtitle: `You have been granted a travel grant of up to ${params.amount}€`,
-            body: `This means that we will refund your travel costs to ${event.name}, up to the amount above. Please note that the following conditions apply: 
+            body: `This means that we will assist you with your travel costs to Junction 2019, up to the amount above. Please note that the following conditions apply:
                 <ul>
                     <li>
-                        The travel grant is valid for travel from ${params.countryOfTravel} to Junction 2019. If you are travelling from somewhere else, Junction reserves the 
-                        right to change your travel grant class and/or amount.
+                        The travel grant is valid for travel from ${params.countryOfTravel} to ${event.name}. If you are travelling from somewhere else, 
+                        Junction reserves the right to change your travel grant class and/or amount.
                     </li>
                     <li>
                         Travel grants are only available to participants who have checked in at the venue. 
                     </li>
                     <li>    
-                        You will need to supply receipt(s) of your travels, which clearly show the total cost of your trip, per traveller.
+                        You will need to supply receipt(s) of your travel to ${event.name}, which clearly shows the total cost of your trip, per traveller. You may provide additional details in the travel receipt file.
+                    </li>
+                    <li>
+                        You have to submit the travel receipt file and additional required information before 24th November 23:59 Finnish Time.
                     </li>
                 </ul>
 
-                You will be able to submit your receipts and other travel grant details via the registration platform
-                once you have checked in to the event. See you soon!
+                You will be able to submit your receipts and other information required for receiving the travel grant via the registration platform once you have checked in to the event. See you soon!
+
+                Psst, please note that the transaction will be made in Euros, so please make sure you have a bank account able to receive Euro payments available.
             `,
             cta_text: 'Event dashboard',
             cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
