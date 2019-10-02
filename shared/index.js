@@ -9,6 +9,7 @@ module.exports = {
     Industries: require('./constants/industries'),
     Languages: require('./constants/languages'),
     Misc: require('./constants/misc'),
+    FieldTypes: require('./constants/field-types'),
     FilterTypes: require('./constants/filter-types'),
     FilterValues: require('./constants/filter-values'),
     FilterHelpers: require('./helpers/filterHelpers'),

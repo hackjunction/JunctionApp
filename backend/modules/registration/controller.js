@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
-const { RegistrationStatuses } = require('@hackjunction/shared');
+const { RegistrationStatuses, RegistrationFields, FieldTypes } = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const UserProfileController = require('../user-profile/controller');
@@ -74,19 +74,26 @@ controller.getRegistrationsForEvent = eventId => {
     }).then(registrations => {
         /** Do some minor optimisation here to cut down on size */
         return registrations.map(reg => {
-            reg.answers = _.mapValues(reg.answers, answer => {
-                if (typeof answer === 'string' && answer.length > 50) {
-                    return answer.slice(0, 10) + '...';
-                }
-                if (typeof answer === 'object' && !Array.isArray(answer) && Object.keys(answer).length > 0) {
-                    return _.mapValues(answer, subAnswer => {
-                        if (typeof subAnswer === 'string' && subAnswer.length > 50) {
-                            return subAnswer.slice(0, 10);
+            reg.answers = _.mapValues(reg.answers, (answer, field) => {
+                const fieldType = RegistrationFields.getFieldType(field);
+                switch (fieldType) {
+                    case FieldTypes.LONG_TEXT.id:
+                        if (answer && answer.length > 10) {
+                            return answer.slice(0, 10) + '...';
                         }
-                        return subAnswer;
-                    });
+                        return answer;
+                    default: {
+                        if (typeof answer === 'object' && !Array.isArray(answer) && Object.keys(answer).length > 0) {
+                            return _.mapValues(answer, subAnswer => {
+                                if (typeof subAnswer === 'string' && subAnswer.length > 50) {
+                                    return subAnswer.slice(0, 10);
+                                }
+                                return subAnswer;
+                            });
+                        }
+                        return answer;
+                    }
                 }
-                return answer;
             });
             return reg;
         });
