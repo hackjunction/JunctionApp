@@ -6,6 +6,7 @@
         "@hackjunction/shared": "file:../shared",
         "@material-ui/core": "^4.4.3",
         "@material-ui/icons": "^4.4.3",
+        "@material-ui/lab": "^4.0.0-alpha.28",
         "@react-pdf/renderer": "^1.6.4",
         "antd": "^3.18.2",
         "auth0-js": "^9.10.0",

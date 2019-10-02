@@ -36,7 +36,11 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
             const isMulti = MULTI_TYPES.indexOf(filterType) !== -1;
             switch (valueType) {
                 case FilterValues.STRING:
-                    return <TextInput label="Enter value" {...inputParams} />;
+                    if (isMulti) {
+                        return <TextInput label="Enter values (comma-separated)" formatValue={value => Array.isArray(value) ? value.join(',') : ''} formatOnChange={value => value.split(',')} {...inputParams} />;
+                    } else {
+                        return <TextInput label="Enter value" {...inputParams} />;
+                    }
                 case FilterValues.BOOLEAN:
                     return <TextInput label="Boolean field" {...inputParams} />;
                 case FilterValues.DATE:
