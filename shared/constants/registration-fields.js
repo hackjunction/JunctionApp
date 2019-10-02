@@ -1118,6 +1118,7 @@ const Helpers = {
     },
     getFields: () => Fields,
     getField: field => Fields[field],
+    getFieldType: field => (Fields[field] ? Fields[field].fieldType.id : null),
     filters: buildFiltersArray(),
     fieldToLabelMap: buildFieldToLabelMap(),
     fieldTypes: FieldTypes,
