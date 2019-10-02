@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, forwardRef } from 'react';
 import moment from 'moment';
 import { Empty, Tag } from 'antd';
 import { connect } from 'react-redux';
@@ -7,14 +7,33 @@ import { RegistrationStatuses } from '@hackjunction/shared';
 
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
-import Table from 'components/generic/Table';
 import MaterialTable from 'components/generic/MaterialTable';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationModal from 'components/modals/EditRegistrationModal';
+import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
 
-const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [], footer = null }) => {
+const AttendeeTable = ({
+    organiserProfilesMap,
+    emptyRenderer,
+    event,
+    loading,
+    attendees = [],
+    footer = null,
+    title = 'Participants'
+}) => {
     const [editing, setEditing] = useState();
+    const [selected, setSelected] = useState([]);
+    const [bulkEdit, setBulkEdit] = useState(false);
+    const [bulkEmail, setBulkEmail] = useState(false);
+
+    const toggleBulkEdit = useCallback(() => {
+        setBulkEdit(!bulkEdit);
+    }, [bulkEdit]);
+
+    const toggleBulkEmail = useCallback(() => {
+        setBulkEmail(!bulkEmail);
+    }, [bulkEmail]);
 
     const renderTable = () => {
         if (!loading) {
@@ -23,11 +42,34 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
 
         return (
             <MaterialTable
+                title={title}
                 isLoading={loading}
                 data={attendees}
                 onRowClick={(e, row) => setEditing(row._id)}
+                onSelectionChange={rows => setSelected(rows.map(r => r._id))}
+                actions={[
+                    {
+                        icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
+                        tooltip: 'Email selected',
+                        onClick: toggleBulkEmail
+                    },
+                    {
+                        icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
+                        tooltip: 'Edit selected',
+                        onClick: toggleBulkEdit
+                    }
+                ]}
                 options={{
-                    exportButton: true
+                    exportButton: true,
+                    selection: true,
+                    showSelectAllCheckbox: true,
+                    pageSizeOptions: [5, 25, 50]
+                }}
+                localization={{
+                    toolbar: {
+                        searchPlaceholder: 'Search by name/email',
+                        nRowsSelected: '{0} selected'
+                    }
                 }}
                 columns={[
                     {
@@ -105,109 +147,6 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
                 ]}
             />
         );
-
-        // return (
-        //     <Table
-        //         dataSource={attendees}
-        //         rowKey="user"
-        //         loading={loading}
-        //         title={`${attendees.length} results`}
-        //         footer={footer}
-        //         selectedActions={[
-        //             {
-        //                 key: 'edit',
-        //                 label: 'Edit all',
-        //                 icon: <EditIcon />,
-        //                 action: items => window.alert('Bulk edit temporarily unavailable')
-        //             },
-        //             {
-        //                 key: 'email',
-        //                 label: 'Email all',
-        //                 icon: <EmailIcon />,
-        //                 action: items => window.alert('Bulk email temporarily unavailable')
-        //             }
-        //         ]}
-        //         rowActions={[
-        //             {
-        //                 key: 'edit',
-        //                 label: 'Edit',
-        //                 action: item => setEditing(item._id)
-        //             }
-        //         ]}
-        //         columns={[
-        //             {
-        //                 key: 'name',
-        //                 path: 'answers',
-        //                 label: 'Name',
-        //                 render: answers => `${answers.firstName} ${answers.lastName}`
-        //             },
-        //             {
-        //                 key: 'email',
-        //                 path: 'answers.email',
-        //                 label: 'Email'
-        //             },
-        //             {
-        //                 key: 'rating',
-        //                 path: 'rating',
-        //                 label: 'Rating',
-        //                 render: rating => rating || 'Pending'
-        //             },
-        //             {
-        //                 key: 'status',
-        //                 path: 'status',
-        //                 label: 'Status',
-        //                 render: status => {
-        //                     const params = RegistrationStatuses.asObject[status];
-        //                     if (!params) return '-';
-        //                     return <Tag color={params.color}>{params.label}</Tag>;
-        //                 }
-        //             },
-        //             {
-        //                 key: 'tags',
-        //                 path: 'tags',
-        //                 label: 'Tags',
-        //                 render: tags => {
-        //                     if (!tags || !tags.length) {
-        //                         return '-';
-        //                     } else {
-        //                         return event.tags
-        //                             .filter(tag => {
-        //                                 return tags.indexOf(tag.label) !== -1;
-        //                             })
-        //                             .map(({ color, label }) => (
-        //                                 <Tag key={label} color={color}>
-        //                                     {label}
-        //                                 </Tag>
-        //                             ));
-        //                     }
-        //                 }
-        //             },
-        //             {
-        //                 key: 'createdAt',
-        //                 path: 'createdAt',
-        //                 label: 'Submitted',
-        //                 render: date => moment(date).fromNow()
-        //             },
-        //             {
-        //                 key: 'assignedTo',
-        //                 path: 'assignedTo',
-        //                 label: 'Assigned to',
-        //                 render: (userId, record) => {
-        //                     let text;
-        //                     if (!userId) {
-        //                         text = 'No one';
-        //                     } else if (organiserProfilesMap.hasOwnProperty(userId)) {
-        //                         const user = organiserProfilesMap[userId];
-        //                         text = `${user.firstName} ${user.lastName}`;
-        //                     } else {
-        //                         text = 'Unknown user';
-        //                     }
-        //                     return text;
-        //                 }
-        //             }
-        //         ]}
-        //     />
-        // );
     };
 
     const renderEmpty = () => {
@@ -220,6 +159,11 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
     return (
         <React.Fragment>
             <EditRegistrationModal registrationId={editing} onClose={setEditing} />
+            <BulkEditRegistrationModal
+                hidden={selected.length === 0}
+                registrationIds={bulkEdit ? selected : []}
+                onClose={setBulkEdit}
+            />
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>

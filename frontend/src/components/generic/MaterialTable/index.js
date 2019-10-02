@@ -17,6 +17,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+import { Typography } from '@material-ui/core';
+
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -38,7 +40,13 @@ const tableIcons = {
 };
 
 const _MaterialTable = props => {
-    return <MaterialTable icons={tableIcons} {...props} />;
+    return (
+        <MaterialTable
+            {...props}
+            icons={tableIcons}
+            title={<Typography variant="subtitle1">{props.title}</Typography>}
+        />
+    );
 };
 
 export default _MaterialTable;
