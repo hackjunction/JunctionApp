@@ -109,7 +109,7 @@ const numberFilterTypes = [
     filterTypes.NOT_MORE_THAN.id
 ];
 
-const booleanFilterTypes = [filterTypes.BOOLEAN_TRUE, filterTypes.BOOLEAN_FALSE];
+const booleanFilterTypes = [filterTypes.BOOLEAN_TRUE.id, filterTypes.BOOLEAN_FALSE.id];
 
 const STRING = 'STRING';
 const ARRAY = 'ARRAY';

@@ -1090,6 +1090,12 @@ function buildFiltersArray() {
             label: 'Tags',
             type: FilterTypes.ARRAY,
             valueType: FilterValues.TAG
+        },
+        {
+            path: 'travelGrant',
+            label: 'Travel Grant',
+            type: FilterTypes.NUMBER,
+            valueType: FilterValues.NUMBER
         }
     ];
     const answerFilters = fields.reduce((res, fieldKey) => {

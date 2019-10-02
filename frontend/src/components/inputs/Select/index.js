@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField, MenuItem, Chip } from '@material-ui/core';
+import { TextField, MenuItem, Chip, ListItemText } from '@material-ui/core';
 import { SelectOptions } from '@hackjunction/shared';
 
 const useStyles = makeStyles(theme => ({
@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap'
     },
     chip: {
-        margin: 2,
+        margin: 2
     }
 }));
 
@@ -24,7 +24,7 @@ const _Select = ({
     type,
     multiple = false
 }) => {
-    const classes = useStyles()
+    const classes = useStyles();
     const handleChange = useCallback(
         e => {
             onChange(e.target.value);
@@ -62,14 +62,14 @@ const _Select = ({
     const selectProps = { multiple };
     if (multiple) {
         selectProps.renderValue = (value = []) => {
-            return(
+            return (
                 <div className={classes.chips}>
                     {value.map(item => (
                         <Chip key={item} label={item} className={classes.chip} />
                     ))}
                 </div>
             );
-        }
+        };
     }
 
     return (
@@ -85,7 +85,7 @@ const _Select = ({
         >
             {items.map(item => (
                 <MenuItem key={item.value} value={item.value}>
-                    {item.label}
+                    <ListItemText primary={item.label} secondary={item.helper} />
                 </MenuItem>
             ))}
         </TextField>
