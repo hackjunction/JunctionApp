@@ -40,6 +40,7 @@
     "dependencies": {
         "better-npm-run": "^0.1.1",
         "if-env": "^1.0.4",
+        "material-table": "^1.51.0",
         "recharts": "^1.7.1"
     },
     "engines": {
