@@ -20,7 +20,7 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
         case FilterTypes.filterTypes.NOT_MORE_THAN.id:
             return (
                 <TextInput
-                    label="Enter a number here"
+                    label="Enter a number"
                     helperText="If the field is a text field or a list of values, compares the length of the value"
                     {...inputParams}
                 />
@@ -57,6 +57,8 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
                     return <Select label="Select tag" options={options} multiple={isMulti} {...inputParams} />;
                 case FilterValues.STATUS:
                     return <Select label="Select status" type="status" multiple={isMulti} {...inputParams} />;
+                case FilterValues.NUMBER:
+                    return <TextInput type="number" label="Enter a number" {...inputParams} />;
                 default:
                     return null;
             }

@@ -91,7 +91,8 @@ const FilterForm = ({ onSubmit, event }) => {
 
         return options.map(option => ({
             value: option,
-            label: FilterTypes.filterTypes[option].label
+            label: FilterTypes.filterTypes[option].label,
+            helper: FilterTypes.filterTypes[option].helper
         }));
     }, [filterParams]);
 
