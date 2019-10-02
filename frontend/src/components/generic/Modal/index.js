@@ -59,9 +59,11 @@ const GenericModal = ({ title, isOpen, handleClose, size, children }) => {
                 })
             }}
         >
-            <Box className={classes.header}>
-                <Typography variant="button">{title}</Typography>
-            </Box>
+            {title && (
+                <Box className={classes.header}>
+                    <Typography variant="button">{title}</Typography>
+                </Box>
+            )}
             <Box className={classes.inner}>{children}</Box>
         </HyperModal>
     );
