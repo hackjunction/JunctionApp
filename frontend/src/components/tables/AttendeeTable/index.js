@@ -1,115 +1,126 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
-import { Table, Empty, Tag, Divider as AntDivider } from 'antd';
+import { Empty, Tag } from 'antd';
 import { connect } from 'react-redux';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
 
+import EmailIcon from '@material-ui/icons/Email';
+import EditIcon from '@material-ui/icons/Edit';
+import Table from 'components/generic/Table';
+
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import EditRegistrationDrawer from 'components/modals/EditRegistrationDrawer';
+import EditRegistrationModal from 'components/modals/EditRegistrationModal';
 
 const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, attendees = [], footer = null }) => {
-    const renderTotal = (total, range) => {
-        return `${range[0]}-${range[1]} of ${total}`;
-    };
+    const [editing, setEditing] = useState();
 
     const renderTable = () => {
         if (!loading) {
             if (!Array.isArray(attendees) || attendees.length === 0) return null;
         }
+
         return (
             <Table
-                pagination={{
-                    showSizeChanger: true,
-                    showTotal: renderTotal,
-                    position: 'bottom',
-                    hideOnSinglePage: true
-                }}
-                footer={footer}
-                loading={loading}
                 dataSource={attendees}
                 rowKey="user"
-                scroll={{ x: 600 }}
-            >
-                <Table.Column
-                    title="Name"
-                    dataIndex="answers"
-                    key="name"
-                    render={answers => {
-                        return `${answers.firstName} ${answers.lastName}`;
-                    }}
-                />
-                <Table.Column title="Email" dataIndex="answers.email" rowKey="email" />
-                <Table.Column
-                    title="Rating"
-                    dataIndex="rating"
-                    rowKey="rating"
-                    render={rating => rating || 'Pending'}
-                />
-                <Table.Column
-                    title="Status"
-                    dataIndex="status"
-                    rowKey="status"
-                    render={status => {
-                        const params = RegistrationStatuses.asObject[status];
-                        if (!params) return '-';
-                        return <Tag color={params.color}>{params.label}</Tag>;
-                    }}
-                />
-                <Table.Column
-                    title="Tags"
-                    dataIndex="tags"
-                    rowKey="tags"
-                    render={tags => {
-                        if (!tags || !tags.length) {
-                            return '-';
-                        } else {
-                            return event.tags
-                                .filter(tag => {
-                                    return tags.indexOf(tag.label) !== -1;
-                                })
-                                .map(({ color, label }) => (
-                                    <Tag key={label} color={color}>
-                                        {label}
-                                    </Tag>
-                                ));
+                loading={loading}
+                title={`${attendees.length} results`}
+                footer={footer}
+                selectedActions={[
+                    {
+                        key: 'edit',
+                        label: 'Edit all',
+                        icon: <EditIcon />,
+                        action: items => window.alert('Bulk edit temporarily unavailable')
+                    },
+                    {
+                        key: 'email',
+                        label: 'Email all',
+                        icon: <EmailIcon />,
+                        action: items => window.alert('Bulk email temporarily unavailable')
+                    }
+                ]}
+                rowActions={[
+                    {
+                        key: 'edit',
+                        label: 'Edit',
+                        action: item => setEditing(item._id)
+                    }
+                ]}
+                columns={[
+                    {
+                        key: 'name',
+                        path: 'answers',
+                        label: 'Name',
+                        render: answers => `${answers.firstName} ${answers.lastName}`
+                    },
+                    {
+                        key: 'email',
+                        path: 'answers.email',
+                        label: 'Email'
+                    },
+                    {
+                        key: 'rating',
+                        path: 'rating',
+                        label: 'Rating',
+                        render: rating => rating || 'Pending'
+                    },
+                    {
+                        key: 'status',
+                        path: 'status',
+                        label: 'Status',
+                        render: status => {
+                            const params = RegistrationStatuses.asObject[status];
+                            if (!params) return '-';
+                            return <Tag color={params.color}>{params.label}</Tag>;
                         }
-                    }}
-                />
-                <Table.Column
-                    title="Submitted"
-                    dataIndex="createdAt"
-                    rowKey="createdAt"
-                    render={date => moment(date).fromNow()}
-                />
-                <Table.Column
-                    title="Assigned to"
-                    dataIndex="assignedTo"
-                    rowKey="assignedTo"
-                    render={(userId, record) => {
-                        let text;
-                        if (!userId) {
-                            text = 'No one';
-                        } else if (organiserProfilesMap.hasOwnProperty(userId)) {
-                            const user = organiserProfilesMap[userId];
-                            text = `${user.firstName} ${user.lastName}`;
-                        } else {
-                            text = 'Unknown user';
+                    },
+                    {
+                        key: 'tags',
+                        path: 'tags',
+                        label: 'Tags',
+                        render: tags => {
+                            if (!tags || !tags.length) {
+                                return '-';
+                            } else {
+                                return event.tags
+                                    .filter(tag => {
+                                        return tags.indexOf(tag.label) !== -1;
+                                    })
+                                    .map(({ color, label }) => (
+                                        <Tag key={label} color={color}>
+                                            {label}
+                                        </Tag>
+                                    ));
+                            }
                         }
-                        return text;
-                    }}
-                />
-                <Table.Column
-                    width={100}
-                    title="Actions"
-                    dataIndex="user"
-                    rowKey="actions"
-                    fixed="right"
-                    render={(userId, registration) => {
-                        return <EditRegistrationDrawer registrationId={registration._id} />;
-                    }}
-                />
-            </Table>
+                    },
+                    {
+                        key: 'createdAt',
+                        path: 'createdAt',
+                        label: 'Submitted',
+                        render: date => moment(date).fromNow()
+                    },
+                    {
+                        key: 'assignedTo',
+                        path: 'assignedTo',
+                        label: 'Assigned to',
+                        render: (userId, record) => {
+                            let text;
+                            if (!userId) {
+                                text = 'No one';
+                            } else if (organiserProfilesMap.hasOwnProperty(userId)) {
+                                const user = organiserProfilesMap[userId];
+                                text = `${user.firstName} ${user.lastName}`;
+                            } else {
+                                text = 'Unknown user';
+                            }
+                            return text;
+                        }
+                    }
+                ]}
+            />
         );
     };
 
@@ -122,6 +133,7 @@ const AttendeeTable = ({ organiserProfilesMap, emptyRenderer, event, loading, at
 
     return (
         <React.Fragment>
+            <EditRegistrationModal registrationId={editing} onClose={setEditing} />
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>
