@@ -6,6 +6,9 @@ const Themes = require('../constants/themes');
 const Roles = require('../constants/roles');
 const Skills = require('../constants/skills');
 const Misc = require('../constants/misc');
+const FieldTypes = require('./field-types');
+const FilterTypes = require('./filter-types');
+const FilterValues = require('./filter-values');
 
 const Categories = {
     basicDetails: {
@@ -34,75 +37,6 @@ const Categories = {
     }
 };
 
-const FieldTypes = {
-    SHORT_TEXT: {
-        id: 'SHORT_TEXT'
-    },
-    LONG_TEXT: {
-        id: 'LONG_TEXT'
-    },
-    BOOLEAN: {
-        id: 'BOOLEAN'
-    },
-    EMAIL: {
-        id: 'EMAIL'
-    },
-    PHONE_NUMBER: {
-        id: 'PHONE_NUMBER'
-    },
-    DATE: {
-        id: 'DATE'
-    },
-    GENDER: {
-        id: 'GENDER'
-    },
-    NATIONALITY: {
-        id: 'NATIONALITY'
-    },
-    LANGUAGES: {
-        id: 'LANGUAGES'
-    },
-    COUNTRY: {
-        id: 'COUNTRY'
-    },
-    ROLES: {
-        id: 'ROLES'
-    },
-    SKILLS: {
-        id: 'SKILLS'
-    },
-    INDUSTRIES: {
-        id: 'INDUSTRIES'
-    },
-    THEMES: {
-        id: 'THEMES'
-    },
-    EDUCATION: {
-        id: 'EDUCATION'
-    },
-    SMALL_NUMBER: {
-        id: 'SMALL_NUMBER'
-    },
-    NUM_HACKATHONS: {
-        id: 'NUM_HACKATHONS'
-    },
-    T_SHIRT_SIZE: {
-        id: 'T_SHIRT_SIZE'
-    },
-    URL: {
-        id: 'URL'
-    },
-    DIETARY_RESTRICTIONS: {
-        id: 'DIETARY_RESTRICTIONS'
-    },
-    TEAM_OPTIONS: {
-        id: 'TEAM_OPTIONS'
-    },
-    RECRUITMENT_OPTIONS: {
-        id: 'RECRUITMENT_OPTIONS'
-    }
-};
-
 const FieldProps = {
     firstName: {
         label: 'First name',
@@ -120,7 +54,15 @@ const FieldProps = {
             defaultEnable: true,
             defaultRequire: true,
             editable: false
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'First name',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     lastName: {
         label: 'Last name',
@@ -138,7 +80,15 @@ const FieldProps = {
             defaultEnable: true,
             defaultRequire: true,
             editable: false
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Last name',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     email: {
         label: 'Email',
@@ -155,7 +105,15 @@ const FieldProps = {
             defaultEnable: true,
             defaultRequire: true,
             editable: false
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Email',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     phoneNumber: {
         label: 'Phone number',
@@ -188,7 +146,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Date of birth',
+                type: FilterTypes.DATE,
+                valueType: FilterValues.DATE
+            }
+        ]
     },
     gender: {
         label: 'Gender',
@@ -203,7 +169,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Gender',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.GENDER
+            }
+        ]
     },
     nationality: {
         label: 'Nationality',
@@ -218,7 +192,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Nationality',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.NATIONALITY
+            }
+        ]
     },
     spokenLanguages: {
         label: 'Spoken languages',
@@ -235,7 +217,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Spoken languages',
+                type: FilterTypes.ARRAY,
+                valueType: FilterValues.LANGUAGE
+            }
+        ]
     },
     countryOfResidence: {
         label: 'Country of residence',
@@ -250,7 +240,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Country of Residence',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.COUNTRY
+            }
+        ]
     },
     cityOfResidence: {
         label: 'City of residence',
@@ -424,7 +422,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequired: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Motivation',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     portfolio: {
         label: 'Link to Portfolio',
@@ -440,7 +446,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to Portfolio',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     github: {
         label: 'Link to Github',
@@ -456,7 +470,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to GitHub',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     linkedin: {
         label: 'LinkedIn Profile',
@@ -471,7 +493,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'LinkedIn profile',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     countryOfTravel: {
         label: 'Country of Travel',
@@ -483,7 +513,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Country of Travel',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.COUNTRY
+            }
+        ]
     },
     cityOfTravel: {
         label: 'City of Travel',
@@ -494,7 +532,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'City of Travel',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     needsVisa: {
         label: 'Do you need a visa?',
@@ -506,7 +552,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to Portfolio',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
@@ -523,7 +577,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Applied for travel grant',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            }
+        ]
     },
     needsAccommodation: {
         label: 'Do you need free accommodation?',
@@ -535,7 +597,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Needs accommodation',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            }
+        ]
     },
     recruitmentOptions: {
         label: 'Job opportunities',
@@ -563,7 +633,21 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: 'applyAsTeam',
+                label: 'Team > Applied as team',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            },
+            {
+                path: 'applyAlone',
+                label: 'Team > Applied also alone',
+                type: FilterTypes.BOOLEAN,
+                valueType: FilterValues.BOOLEAN
+            }
+        ]
     },
     secretCode: {
         label: 'Secret code',
@@ -575,7 +659,15 @@ const FieldProps = {
             defaultEnable: false,
             defaultRequire: false,
             editable: true
-        }
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Secret Code',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
     }
 };
 
@@ -978,6 +1070,45 @@ function buildFieldToLabelMap() {
     return result;
 }
 
+function buildFiltersArray() {
+    const fields = Object.keys(Fields);
+    const baseFilters = [
+        {
+            path: 'rating',
+            label: 'Rating',
+            type: FilterTypes.NUMBER,
+            valueType: FilterValues.NUMBER
+        },
+        {
+            path: 'status',
+            label: 'Status',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STATUS
+        },
+        {
+            path: 'tags',
+            label: 'Tags',
+            type: FilterTypes.ARRAY,
+            valueType: FilterValues.TAG
+        }
+    ];
+    const answerFilters = fields.reduce((res, fieldKey) => {
+        const field = Fields[fieldKey];
+        if (!Array.isArray(field.filters) || !field.filters.length) return res;
+        const filters = field.filters.map(filter => {
+            if (filter.path.length) {
+                filter.path = `answers.${fieldKey}.${filter.path}`;
+            } else {
+                filter.path = `answers.${fieldKey}`;
+            }
+            return filter;
+        });
+        return res.concat(filters);
+    }, []);
+
+    return baseFilters.concat(answerFilters);
+}
+
 const Helpers = {
     getLabel: field => {
         if (Fields.hasOwnProperty(field)) {
@@ -987,6 +1118,8 @@ const Helpers = {
     },
     getFields: () => Fields,
     getField: field => Fields[field],
+    getFieldType: field => (Fields[field] ? Fields[field].fieldType.id : null),
+    filters: buildFiltersArray(),
     fieldToLabelMap: buildFieldToLabelMap(),
     fieldTypes: FieldTypes,
     getCategory: field => {

@@ -9,6 +9,10 @@ export const ADD_ORGANISER = 'organiser/ADD_ORGANISER';
 
 export const UPDATE_REGISTRATIONS = 'organiser/UPDATE_REGISTRATIONS';
 export const EDIT_REGISTRATION = 'organiser/EDIT_REGISTRATION';
-export const SET_REGISTRATIONS_FILTERS = 'organiser/SET_REGISTRATIONS_FILTERS';
 
 export const UPDATE_TEAMS = 'organiser/UPDATE_TEAMS';
+
+export const UPDATE_FILTER_GROUPS = 'organiser/UPDATE_FILTER_GROUPS';
+export const CREATE_FILTER_GROUP = 'organiser/CREATE_FILTER_GROUP';
+export const EDIT_FILTER_GROUP = 'organiser/EDIT_FILTER_GROUP';
+export const DELETE_FILTER_GROUP = 'organiser/DELETE_FILTER_GROUP';

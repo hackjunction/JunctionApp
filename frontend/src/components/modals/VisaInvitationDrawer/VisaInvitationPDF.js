@@ -92,7 +92,6 @@ const VisaInvitationPDF = ({
                 know {arrivalCity} at their leisure and attend complementary events such as those organised by Slush
                 during the week after, November 18th to 25th.
             </Text>
-            <Text style={styles.paragraph}></Text>
             <Text style={styles.paragraph}>Sincerely,</Text>
             <Image style={styles.signature} src={require('assets/images/visa_signature.jpg')} />
             <Text style={styles.paragraph}>{hostName}</Text>

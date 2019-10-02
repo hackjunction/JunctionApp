@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
-const { RegistrationStatuses } = require('@hackjunction/shared');
+const { RegistrationStatuses, RegistrationFields, FieldTypes } = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const UserProfileController = require('../user-profile/controller');
@@ -74,19 +74,26 @@ controller.getRegistrationsForEvent = eventId => {
     }).then(registrations => {
         /** Do some minor optimisation here to cut down on size */
         return registrations.map(reg => {
-            reg.answers = _.mapValues(reg.answers, answer => {
-                if (typeof answer === 'string' && answer.length > 50) {
-                    return answer.slice(0, 10) + '...';
-                }
-                if (typeof answer === 'object' && Object.keys(answer).length > 0) {
-                    return _.mapValues(answer, subAnswer => {
-                        if (typeof subAnswer === 'string' && subAnswer.length > 50) {
-                            return subAnswer.slice(0, 10);
+            reg.answers = _.mapValues(reg.answers, (answer, field) => {
+                const fieldType = RegistrationFields.getFieldType(field);
+                switch (fieldType) {
+                    case FieldTypes.LONG_TEXT.id:
+                        if (answer && answer.length > 10) {
+                            return answer.slice(0, 10) + '...';
                         }
-                        return subAnswer;
-                    });
+                        return answer;
+                    default: {
+                        if (typeof answer === 'object' && !Array.isArray(answer) && Object.keys(answer).length > 0) {
+                            return _.mapValues(answer, subAnswer => {
+                                if (typeof subAnswer === 'string' && subAnswer.length > 50) {
+                                    return subAnswer.slice(0, 10);
+                                }
+                                return subAnswer;
+                            });
+                        }
+                        return answer;
+                    }
                 }
-                return answer;
             });
             return reg;
         });
@@ -126,7 +133,7 @@ controller.assignRegistrationForEvent = data => {
 };
 
 controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
-    const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo']);
+    const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo', 'travelGrant']);
     return Registration.updateMany(
         {
             event: eventId,
@@ -136,6 +143,37 @@ controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
         },
         cleanedEdits
     );
+};
+
+controller.bulkAssignTravelGrants = (eventId, grants) => {
+    const updates = grants.map(({ _id, amount }) => {
+        return Registration.findById(_id).then(reg => {
+            reg.travelGrant = amount;
+            return reg.save();
+        });
+    });
+
+    return Promise.all(updates);
+};
+
+controller.rejectPendingTravelGrants = eventId => {
+    return Registration.find({
+        event: eventId,
+        status: {
+            $in: ['confirmed', 'checkedIn']
+        },
+        travelGrant: {
+            $exists: false
+        },
+        'answers.needsTravelGrant': true
+    }).then(registrations => {
+        const promises = registrations.map(registration => {
+            registration.travelGrant = 0;
+            return registration.save();
+        });
+
+        return Promise.all(promises);
+    });
 };
 
 controller.getFullRegistration = (eventId, registrationId) => {
@@ -155,6 +193,7 @@ controller.editRegistration = (registrationId, event, data, user) => {
         registration.ratedBy = user.sub;
         registration.tags = data.tags;
         registration.assignedTo = data.assignedTo;
+        registration.travelGrant = data.travelGrant;
         return registration.save();
     });
 };
