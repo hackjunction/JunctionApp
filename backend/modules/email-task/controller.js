@@ -3,6 +3,7 @@ const SendgridService = require('../../common/services/sendgrid');
 const EmailTypes = require('./types');
 const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
+const RegistrationController = require('../registration/controller');
 const shortid = require('shortid');
 const Promise = require('bluebird');
 const controller = {};
@@ -55,6 +56,25 @@ controller.createRegisteredTask = async (userId, eventId, deliverNow = false) =>
     return task;
 };
 
+controller.createTravelGrantAcceptedTask = async (registration, deliverNow = false) => {
+    const task = await controller.createTask(registration.user, registration.event, EmailTypes.travelGrantAccepted, {
+        amount: registration.travelGrant,
+        countryOfTravel: registration.answers.countryOfTravel
+    });
+    if (task && deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
+controller.createTravelGrantRejectedTask = async (registration, deliverNow = false) => {
+    const task = await controller.createTask(registration.user, registration.event, EmailTypes.travelGrantRejected);
+    if (task && deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
 controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deliverNow = false) => {
     if (!uniqueId) {
         uniqueId = shortid.generate();
@@ -82,6 +102,14 @@ controller.deliverEmailTask = async task => {
         }
         case EmailTypes.registrationReceived: {
             await SendgridService.sendRegisteredEmail(event, user);
+            break;
+        }
+        case EmailTypes.travelGrantAccepted: {
+            await SendgridService.sendTravelGrantAcceptedEmail(event, user, task.params);
+            break;
+        }
+        case EmailTypes.travelGrantRejected: {
+            await SendgridService.sendTravelGrantRejectedEmail(event, user, task.params);
             break;
         }
         default: {

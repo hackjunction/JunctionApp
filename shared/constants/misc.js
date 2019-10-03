@@ -57,6 +57,21 @@ const relocationOptions = {
     }
 };
 
+const travelGrantStatuses = {
+    accepted: {
+        id: 'accepted',
+        label: 'Accepted'
+    },
+    rejected: {
+        id: 'rejected',
+        label: 'Rejected'
+    },
+    confirmed: {
+        id: 'confirmed',
+        label: 'Confirmed'
+    }
+};
+
 const dietaryRestrictions = [
     'Vegan',
     'Vegetarian',
@@ -89,6 +104,13 @@ Misc.relocationOptions = {
     items: relocationOptions,
     asArray: Object.keys(relocationOptions).map(id => relocationOptions[id]),
     getLabelForValue: value => (relocationOptions.hasOwnProperty(value) ? relocationOptions[value].label : '')
+};
+
+Misc.travelGrantStatuses = {
+    items: travelGrantStatuses,
+    ids: Object.keys(travelGrantStatuses),
+    asArray: Object.keys(travelGrantStatuses).map(id => travelGrantStatuses[id]),
+    getLabelForValue: value => (travelGrantStatuses.hasOwnProperty(value) ? travelGrantStatuses[value].label : '')
 };
 
 Misc.tShirtSizes = tShirtSizes;

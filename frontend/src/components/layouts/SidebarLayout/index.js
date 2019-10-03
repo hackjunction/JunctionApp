@@ -118,7 +118,11 @@ const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, loca
                                 if (hidden) {
                                     return null;
                                 } else {
-                                    return <Route key={index} exact path={`${baseRoute}${path}`} render={render} />;
+                                    return (
+                                        <Route key={index} exact path={`${baseRoute}${path}`}>
+                                            {render()}
+                                        </Route>
+                                    );
                                 }
                             })}
                             <Redirect to={baseRoute} />
