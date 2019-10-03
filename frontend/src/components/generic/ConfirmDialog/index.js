@@ -2,7 +2,16 @@ import React, { useCallback } from 'react';
 
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 
-const ConfirmDialog = ({ open, onClose, onCancel, onOk, title, message, cancelText = 'Cancel', okText = 'OK' }) => {
+const ConfirmDialog = ({
+    open,
+    onClose = () => {},
+    onCancel = () => {},
+    onOk = () => {},
+    title,
+    message,
+    cancelText = 'Cancel',
+    okText = 'OK'
+}) => {
     const handleCancel = useCallback(() => {
         onClose();
         onCancel();
