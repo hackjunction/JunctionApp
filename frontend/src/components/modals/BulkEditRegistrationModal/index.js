@@ -3,75 +3,58 @@ import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
 
-import { Typography, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Button } from '@material-ui/core';
+import {
+    Box,
+    Typography,
+    ExpansionPanel,
+    ExpansionPanelSummary,
+    ExpansionPanelDetails,
+    Button,
+    ListItem,
+    ListItemText,
+    Divider,
+    Paper
+} from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import PageWrapper from 'components/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
-import UserSelectModal from 'components/modals/UserSelectModal';
+import OrganiserSelectModal from 'components/modals/OrganiserSelectModal';
+import OrganiserListItem from 'components/generic/UserListItem/OrganiserListItem';
+import EventTagsSelect from 'components/FormComponents/EventTagsSelect';
+import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import { useFormField } from 'hooks/formHooks';
 
-const BulkEditRegistrationModal = ({ registrationIds = [], onClose, organisers }) => {
+const BulkEditRegistrationModal = ({ visible, registrationIds = [], onClose, organisers, event }) => {
     const [loading, setLoading] = useState(false);
+    const [organiserModal, setOrganiserModal] = useState(false);
     const rating = useFormField(0);
     const assignedTo = useFormField(null);
-    // const [error, setError] = useState(false);
-    // const [registration, setRegistration] = useState();
-    // const { slug } = event;
+    const tags = useFormField([]);
+    const status = useFormField('pending');
 
-    // useEffect(() => {
-    //     if (registrationId) {
-    //         setLoading(true);
-    //         RegistrationsService.getFullRegistration(idToken, slug, registrationId)
-    //             .then(data => {
-    //                 setRegistration(data);
-    //             })
-    //             .catch(err => {
-    //                 setError(true);
-    //             })
-    //             .finally(() => {
-    //                 setLoading(false);
-    //             });
-    //     }
-    // }, [idToken, registrationId, slug]);
+    const [expandedIds, setExpandedIds] = useState([]);
 
-    // const participantName = useMemo(() => {
-    //     if (!registration) return '';
-    //     const { firstName, lastName } = registration.answers;
-    //     return `${firstName} ${lastName}`;
-    // }, [registration]);
+    const isExpanded = panel => {
+        return expandedIds.indexOf(panel) !== -1;
+    };
 
-    // const participantSubheading = useMemo(() => {
-    //     if (!registration) return '';
-    //     return registration.answers.countryOfResidence;
-    // }, [registration]);
+    const toggleExpanded = panel => {
+        if (isExpanded(panel)) {
+            setExpandedIds(expandedIds.filter(id => id !== panel));
+        } else {
+            setExpandedIds(expandedIds.concat(panel));
+        }
+    };
 
-    // const handleEdit = useCallback(
-    //     async data => {
-    //         setLoading(true);
-    //         await MiscUtils.sleep(1000);
-    //         editRegistration(registrationId, data, slug)
-    //             .then(data => {
-    //                 enqueueSnackbar('Changes saved!', { variant: 'success' });
-    //                 onEdited(data);
-    //                 onClose();
-    //             })
-    //             .catch(err => {
-    //                 enqueueSnackbar('Something went wrong', { variant: 'error' });
-    //             })
-    //             .finally(() => {
-    //                 setLoading(false);
-    //             });
-    //     },
-    //     [enqueueSnackbar, editRegistration, registrationId, slug, onClose, onEdited]
-    // );
+    if (!registrationIds.length) return null;
 
     return (
-        <Modal isOpen={registrationIds.length !== 0} handleClose={onClose} size="max">
+        <Modal isOpen={visible} handleClose={onClose} size="max">
             <PageWrapper loading={loading} wrapContent={false}>
                 <CenteredContainer>
                     <PageHeader heading="Bulk edit" subheading={registrationIds.length + ' selected participants'} />
@@ -80,95 +63,105 @@ const BulkEditRegistrationModal = ({ registrationIds = [], onClose, organisers }
                         want to edit - if a panel is left <strong>un-expanded</strong>, that field will not be edited in
                         the registrations.
                     </Typography>
-                    <ExpansionPanel>
+                    <ExpansionPanel expanded={isExpanded('rating')} onChange={() => toggleExpanded('rating')}>
                         <ExpansionPanelSummary>
-                            <Typography>Rating</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Rating name="pristine" value={rating.value} onChange={rating.onChange} />
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel>
-                        <ExpansionPanelSummary>
-                            <Typography>Assigned to</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <UserSelectModal
-                                renderTrigger={showModal => (
-                                    <React.Fragment>
-                                        <span>{assignedTo.value}</span>
-                                        <Button variant="contained" color="primary">
-                                            Change
-                                        </Button>
-                                        {assignedTo && (
-                                            <Button variant="contained" onClick={assignedTo.setValue}>
-                                                Clear
-                                            </Button>
-                                        )}
-                                    </React.Fragment>
+                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                <Typography variant="subtitle1">Rating</Typography>
+                                {isExpanded('rating') ? (
+                                    <Typography variant="button" color="secondary">
+                                        {rating.value ? 'Set rating to ' + rating.value : 'Clear rating'}
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="button" color="primary">
+                                        Leave unchanged
+                                    </Typography>
                                 )}
-                                onDone={value => assignedTo.setValue(value.userId)}
-                                allowMultiple={false}
-                                userProfiles={organisers}
+                            </Box>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <Rating value={rating.value} onChange={(e, num) => rating.setValue(num)} />
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel expanded={isExpanded('assignedTo')} onChange={() => toggleExpanded('assignedTo')}>
+                        <ExpansionPanelSummary>
+                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                <Typography variant="subtitle1">Assigned to</Typography>
+                                {isExpanded('assignedTo') ? (
+                                    <Typography variant="button" color="secondary">
+                                        {assignedTo.value ? 'Change assigned to' : 'Clear assigned to'}
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="button" color="primary">
+                                        Leave unchanged
+                                    </Typography>
+                                )}
+                            </Box>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <OrganiserSelectModal
+                                open={organiserModal}
+                                onClose={setOrganiserModal}
+                                onSelect={value => assignedTo.setValue(value.userId)}
+                                onClear={assignedTo.setValue}
                             />
-                            <Typography>Details here</Typography>
+                            <Box display="flex" flexDirection="column">
+                                <Box mb={1} width="100%">
+                                    <OrganiserListItem userId={assignedTo ? assignedTo.value : null} />
+                                </Box>
+                                <Button variant="contained" color="primary" onClick={() => setOrganiserModal(true)}>
+                                    Change
+                                </Button>
+                            </Box>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                    <ExpansionPanel>
+                    <ExpansionPanel expanded={isExpanded('tags')} onChange={() => toggleExpanded('tags')}>
                         <ExpansionPanelSummary>
-                            <Typography>Tags</Typography>
+                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                <Typography variant="subtitle1">Tags</Typography>
+                                {isExpanded('tags') ? (
+                                    <Typography variant="button" color="secondary">
+                                        {tags.value && tags.value.length
+                                            ? 'Set tags to ' + tags.value.join(', ')
+                                            : 'Clear tags'}
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="button" color="primary">
+                                        Leave unchanged
+                                    </Typography>
+                                )}
+                            </Box>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Typography>Details here</Typography>
+                            <EventTagsSelect value={tags.value} onChange={tags.setValue} tags={event.tags} />
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                    <ExpansionPanel>
+                    <ExpansionPanel expanded={isExpanded('status')} onChange={() => toggleExpanded('status')}>
                         <ExpansionPanelSummary>
-                            <Typography>Status</Typography>
+                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                <Typography variant="subtitle1">Status</Typography>
+                                {isExpanded('status') ? (
+                                    <Typography variant="button" color="secondary">
+                                        Set status to {status.value}
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="button" color="primary">
+                                        Leave unchanged
+                                    </Typography>
+                                )}
+                            </Box>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Typography>Details here</Typography>
+                            <RegistrationStatusSelect value={status.value} onChange={status.setValue} />
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
+                    <Box p={2} display="flex" alignItems="center" justifyContent="center">
+                        <Button variant="contained" color="primary" disabled={expandedIds.length === 0}>
+                            {expandedIds.length === 0
+                                ? 'Expand panels to make edits'
+                                : ` Apply edits to ${registrationIds.length} registrations`}
+                        </Button>
+                    </Box>
                 </CenteredContainer>
-                {/* <Collapse activeKey={enabledFields} onChange={setEnabledFields}>
-                    <Collapse.Panel key="assignedTo" header="Assigned to" extra={renderFieldEnabled('assignedTo')}>
-                        <UserSelectModal
-                            renderTrigger={showModal => (
-                                <React.Fragment>
-                                    <span>{renderAssignedTo()}</span>
-                                    <AntButton type="link" onClick={showModal} size="small">
-                                        Change
-                                        </AntButton>
-                                    {assignedTo && (
-                                        <AntButton type="link" onClick={() => setAssignedTo(null)}>
-                                            Clear
-                                            </AntButton>
-                                    )}
-                                </React.Fragment>
-                            )}
-                            onDone={handleAssignedChange}
-                            allowMultiple={false}
-                            userProfiles={organisers}
-                        />
-                    </Collapse.Panel>
-                    <Collapse.Panel key="tags" header="Tags" extra={renderFieldEnabled('tags')}>
-                        <EventTagsSelect value={tags} onChange={setTags} tags={event.tags} />
-                    </Collapse.Panel>
-                    <Collapse.Panel key="status" header="Status" extra={renderFieldEnabled('status')}>
-                        <RegistrationStatusSelect value={status} onChange={setStatus} />
-                    </Collapse.Panel>
-                </Collapse>
-                <Divider size={1} />
-                {renderPreview()}
-                <Button theme="secondary" block text="Cancel" button={{ onClick: () => setVisible(false) }} />
-                <Divider size={1} />
-                <Button
-                    theme="danger"
-                    text={`Apply changes to ${registrationIds.length} items`}
-                    block
-                    button={{ onClick: handleSubmit, disabled: enabledFields.length === 0 }}
-                /> */}
             </PageWrapper>
         </Modal>
     );

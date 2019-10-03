@@ -109,6 +109,7 @@ const numberFilterTypes = [
     filterTypes.NOT_MORE_THAN.id
 ];
 
+const objectFilterTypes = [filterTypes.IS_EMPTY.id, filterTypes.NOT_EMPTY.id];
 const booleanFilterTypes = [filterTypes.BOOLEAN_TRUE.id, filterTypes.BOOLEAN_FALSE.id];
 
 const STRING = 'STRING';
@@ -116,6 +117,7 @@ const ARRAY = 'ARRAY';
 const NUMBER = 'NUMBER';
 const BOOLEAN = 'BOOLEAN';
 const DATE = 'DATE';
+const OBJECT = 'OBJECT';
 
 module.exports = {
     filterTypes,
@@ -124,11 +126,13 @@ module.exports = {
         ARRAY: arrayFilterTypes,
         NUMBER: numberFilterTypes,
         BOOLEAN: booleanFilterTypes,
+        OBJECT: objectFilterTypes,
         DATE: []
     },
     STRING,
     ARRAY,
     NUMBER,
     BOOLEAN,
-    DATE
+    DATE,
+    OBJECT
 };

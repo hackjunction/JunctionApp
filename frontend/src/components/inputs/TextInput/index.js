@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { TextField } from '@material-ui/core';
 
-const TextInput = ({ label, helperText, value = '', onChange = () => {}, error, disabled, rawOnChange = false, type = 'text', multiline = false, formatValue, formatOnChange }) => {
+const TextInput = ({ label, helperText, value = '', onChange = () => {}, error, disabled, rawOnChange = false, type = 'text', textarea = false, formatValue, formatOnChange }) => {
     const handleChange = useCallback(
         e => {
             if (rawOnChange) {
@@ -13,12 +13,25 @@ const TextInput = ({ label, helperText, value = '', onChange = () => {}, error, 
                 onChange(val);
             }
         },
-        [onChange, rawOnChange]
+        [onChange, rawOnChange, formatOnChange]
     );
 
     const formattedValue = formatValue ? formatValue(value) : value;
 
-    return <TextField fullWidth label={label} value={formattedValue} onChange={handleChange} helperText={error || helperText} error={error} disabled={disabled} type={type} />;
+    return(
+        <TextField 
+            fullWidth 
+            label={label} 
+            value={formattedValue} 
+            onChange={handleChange} 
+            helperText={error || helperText} 
+            error={error} 
+            disabled={disabled} 
+            type={type} 
+            multiline={textarea}
+            rows={5}
+        />
+    );
 };
 
 export default TextInput;
