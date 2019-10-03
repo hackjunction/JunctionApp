@@ -34,4 +34,8 @@ UserProfilesService.getUsersByEmail = (email, idToken) => {
     return _axios.get('/user-profiles/search', { params: { email }, ...config(idToken) });
 };
 
+UserProfilesService.queryUsers = idToken => {
+    return _axios.get('/user-profiles/recruitment/search', config(idToken));
+};
+
 export default UserProfilesService;
