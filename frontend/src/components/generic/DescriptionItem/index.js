@@ -2,13 +2,22 @@ import React from 'react';
 import styles from './DescriptionItem.module.scss';
 
 import { isEmpty } from 'lodash-es';
-import { Tag, List, Popover, Row, Col } from 'antd';
+import { Tag } from 'antd';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Box, Grid, List, ListItem, ListItemText } from '@material-ui/core';
 import { Skills, Roles, Misc } from '@hackjunction/shared';
 import moment from 'moment';
 
 import Divider from 'components/generic/Divider';
 
+const useStyles = makeStyles(theme => ({
+    title: {
+        fontWeight: 'bold'
+    }
+}));
+
 const DescriptionItem = ({ title, content, fieldName }) => {
+    const classes = useStyles();
     const renderBoolean = bool => {
         if (bool === true) {
             return <Tag color="green">Yes</Tag>;
@@ -21,15 +30,18 @@ const DescriptionItem = ({ title, content, fieldName }) => {
 
     const renderObjectFields = (obj, labelMap = {}, valueMap = {}) => {
         return (
-            <Row gutter={16}>
+            <List>
                 {Object.keys(obj).map(key => (
-                    <Col key={key} xs={12}>
-                        <Divider size={1} />
-                        <strong>{labelMap[key] || key}</strong>
-                        <p>{valueMap[key] ? valueMap[key](obj[key]) : obj[key] || 'N/A'}</p>
-                    </Col>
+                    <ListItem key={key}>
+                        <ListItemText
+                            primaryTypographyProps={{ variant: 'body2', classes: { root: classes.title } }}
+                            secondaryTypographyProps={{ variant: 'subtitle1' }}
+                            primary={labelMap[key] || key}
+                            secondary={valueMap[key] ? valueMap[key](obj[key]) : obj[key] || 'N/A'}
+                        ></ListItemText>
+                    </ListItem>
                 ))}
-            </Row>
+            </List>
         );
     };
 
@@ -37,41 +49,36 @@ const DescriptionItem = ({ title, content, fieldName }) => {
         switch (fieldName) {
             case 'roles':
                 return (
-                    <List
-                        dataSource={content}
-                        renderItem={item => (
-                            <List.Item key={item.role}>
-                                <List.Item.Meta
-                                    title={item.role}
-                                    description={Roles.getLabelForExperienceLevel(item.years)}
+                    <List>
+                        {content.map(item => (
+                            <ListItem key={item.role}>
+                                <ListItemText
+                                    primary={item.role}
+                                    secondary={Roles.getLabelForExperienceLevel(item.years)}
+                                    primaryTypographyProps={{ variant: 'body2', classes: { root: classes.title } }}
+                                    secondaryTypographyProps={{ variant: 'subtitle1' }}
                                 />
-                            </List.Item>
-                        )}
-                    />
+                            </ListItem>
+                        ))}
+                    </List>
                 );
             case 'skills':
                 return (
-                    <List
-                        dataSource={content}
-                        renderItem={item => {
+                    <List>
+                        {content.map(item => {
                             const label = Skills.getLabelForSkillLevel(item.level);
-                            const description = (
-                                <div style={{ width: '200px' }}>{Skills.getDescriptionForSkillLevel(item.level)}</div>
-                            );
                             return (
-                                <List.Item key={item.skill}>
-                                    <List.Item.Meta
-                                        title={item.skill}
-                                        description={
-                                            <Popover placement="right" title={label} content={description}>
-                                                {label}
-                                            </Popover>
-                                        }
+                                <ListItem key={item.skill}>
+                                    <ListItemText
+                                        primary={item.skill}
+                                        secondary={label}
+                                        primaryTypographyProps={{ variant: 'body2', classes: { root: classes.title } }}
+                                        secondaryTypographyProps={{ variant: 'subtitle1' }}
                                     />
-                                </List.Item>
+                                </ListItem>
                             );
-                        }}
-                    />
+                        })}
+                    </List>
                 );
             case 'education':
                 return renderObjectFields(content, {
@@ -124,7 +131,19 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                 return content.join(', ');
             case 'themesOfInterest':
             case 'industriesOfInterest':
-                return <List dataSource={content} renderItem={item => <List.Item key={item}>{item}</List.Item>}></List>;
+                return (
+                    <List>
+                        {content.map(item => (
+                            <ListItem key={item}>
+                                <ListItemText
+                                    primary={item}
+                                    primaryTypographyProps={{ variant: 'body2', classes: { root: classes.title } }}
+                                    secondaryTypographyProps={{ variant: 'subtitle1' }}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                );
             case 'phoneNumber':
                 return `${content.country_code} ${content.number}`;
             default:
@@ -148,10 +167,14 @@ const DescriptionItem = ({ title, content, fieldName }) => {
     };
 
     return (
-        <div className={styles.wrapper}>
-            <span className={styles.title}>{title}</span>
-            <div className={styles.content}>{renderContent(content, fieldName)}</div>
-        </div>
+        <Grid item xs={12}>
+            <Typography variant="body2" classes={{ root: classes.title }}>
+                {title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+                {renderContent(content, fieldName)}
+            </Typography>
+        </Grid>
     );
 };
 

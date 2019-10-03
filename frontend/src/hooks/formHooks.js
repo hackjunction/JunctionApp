@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react';
 
-export const useFormField = (initialValue, validate = () => null, initialError = null) => {
+export const useFormField = (initialValue, validate = () => null, initialError = null, onChangeEvent = true) => {
     const [value, setValue] = useState(initialValue);
     const [error, setError] = useState(initialError);
 
     const onChange = useCallback(
         e => {
-            const value = e.target.value;
+            const value = onChangeEvent ? e.target.value : e;
             setValue(value);
             if (error) {
                 const newError = validate(value);
@@ -18,13 +18,24 @@ export const useFormField = (initialValue, validate = () => null, initialError =
                 }
             }
         },
-        [error, validate]
+        [error, validate, onChangeEvent]
     );
 
     const reset = useCallback(() => {
         setValue(undefined);
         setError(undefined);
     }, []);
+
+    const handleValidate = useCallback(() => {
+        const err = validate(value);
+        if (err) {
+            setError(err);
+            return err;
+        } else {
+            setError();
+            return;
+        }
+    }, [value, validate]);
 
     return {
         value,
@@ -33,6 +44,7 @@ export const useFormField = (initialValue, validate = () => null, initialError =
         reset,
         error,
         setError,
-        validate
+        validate: handleValidate,
+        dirty: value !== initialValue
     };
 };

@@ -87,6 +87,18 @@ const bulkEditRegistrations = asyncHandler(async (req, res) => {
     return res.status(200).json([]);
 });
 
+const bulkAssignTravelGrants = asyncHandler(async (req, res) => {
+    await RegistrationController.bulkAssignTravelGrants(req.event._id.toString(), req.body.grants);
+
+    return res.status(200).json([]);
+});
+
+const bulkRejectTravelGrants = asyncHandler(async (req, res) => {
+    await RegistrationController.rejectPendingTravelGrants(req.event._id.toString());
+
+    return res.status(200).json([]);
+});
+
 const bulkAcceptRegistrations = asyncHandler(async (req, res) => {
     const eventId = req.event._id.toString();
     const accepted = await RegistrationController.acceptSoftAccepted(eventId);
@@ -129,6 +141,11 @@ router
 router
     .route('/:slug/bulk')
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkEditRegistrations);
+
+router
+    .route('/:slug/bulk/grants')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkAssignTravelGrants)
+    .delete(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectTravelGrants);
 
 router
     .route('/:slug/bulk/accept')

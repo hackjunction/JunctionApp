@@ -4,12 +4,15 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { ThemeProvider } from '@material-ui/styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CloudinaryContext } from 'cloudinary-react';
+import { SnackbarProvider } from 'notistack';
 
 import configureStore, { history } from 'redux/configureStore';
 import config from 'constants/config';
+import theme from './material-ui-theme';
 
 const { store, persistor } = configureStore();
 
@@ -25,7 +28,17 @@ ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={<div className="Preload" />} persistor={persistor}>
             <CloudinaryContext includeOwnBody={true} cloudName={config.CLOUDINARY_CLOUD_NAME}>
-                <App history={history} />
+                <ThemeProvider theme={theme}>
+                    <SnackbarProvider
+                        maxSnack={3}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right'
+                        }}
+                    >
+                        <App history={history} />
+                    </SnackbarProvider>
+                </ThemeProvider>
             </CloudinaryContext>
         </PersistGate>
     </Provider>,

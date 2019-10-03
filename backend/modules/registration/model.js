@@ -40,6 +40,13 @@ const RegistrationSchema = new mongoose.Schema({
     answers: {
         type: mongoose.Mixed,
         default: {}
+    },
+    travelGrant: {
+        type: Number,
+        set: function(amount) {
+            this._previousGrant = this.travelGrant;
+            return amount;
+        }
     }
 });
 
@@ -91,6 +98,14 @@ RegistrationSchema.post('save', function(doc, next) {
     /** If a registration is rejected, create an email notification about it */
     if (this._previousStatus === SOFT_REJECTED && this.status === REJECTED) {
         EmailTaskController.createRejectedTask(doc.user, doc.event, true);
+    }
+
+    if (!this._previousGrant && this.travelGrant === 0) {
+        EmailTaskController.createTravelGrantRejectedTask(doc, true);
+    }
+
+    if (!this._previousGrant && this.travelGrant > 0) {
+        EmailTaskController.createTravelGrantAcceptedTask(doc, true);
     }
 
     next();
