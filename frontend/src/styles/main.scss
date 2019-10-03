@@ -24,6 +24,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
+    padding: 0 !important;
 }
 
 body.body {
@@ -39,40 +40,9 @@ body.body {
     flex-direction: column;
 }
 
-/* Define sensible defaults for common elements */
+/* Define some overrides */
 
 .body {
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @extend %font-title;
-    }
-
-    p,
-    span,
-    li,
-    td,
-    th {
-        @extend %font-body;
-    }
-
-    label,
-    small {
-        @extend %font-secondary;
-    }
-
-    input,
-    textarea {
-        @extend %font-input;
-    }
-
-    a {
-        @extend %font-link;
-    }
-
     .ant-timeline-item-head-custom {
         background: $lightgrey;
     }

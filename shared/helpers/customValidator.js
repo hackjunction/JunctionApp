@@ -15,7 +15,7 @@ class CustomValidator extends BaseValidator {
                 return this.joi
                     .string()
                     .min(fieldOptions.minLength || 0)
-                    .max(fieldOptions.maxLength || 100)
+                    .max(fieldOptions.maxLength || 10000)
                     .allow(...allowArgs)
                     .label(fieldLabel);
             }
@@ -25,7 +25,7 @@ class CustomValidator extends BaseValidator {
                 return this.joi
                     .string()
                     .min(fieldOptions.minLength || 0)
-                    .max(fieldOptions.maxLength || 1000)
+                    .max(fieldOptions.maxLength || 10000)
                     .allow(...allowArgs)
                     .label(fieldLabel);
             }
