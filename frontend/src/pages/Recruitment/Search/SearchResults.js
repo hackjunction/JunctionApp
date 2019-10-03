@@ -10,17 +10,13 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 const SearchResults = ({ searchResults }) => {
   const [selected, setSelected] = useState();
 
-  useEffect(() => {
-    setSelected('5d5a860fdc07b6002b2329d2');
-  });
-
   return (
     <React.Fragment>
       <List>
         {searchResults.map(item => (
           <Box mb={1} key={item._id}>
             <Paper>
-              <ListItem>
+              <ListItem onClick={e => setSelected(item.userId)}>
                 <ListItemText
                   primary={item.firstName}
                   secondary={item.lastName}
@@ -30,13 +26,7 @@ const SearchResults = ({ searchResults }) => {
           </Box>
         ))}
       </List>
-      <RecruitmentUserModal
-        registrationId={selected}
-        event={event}
-        idToken={
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpCI6Ik5FWkZOa1U1TWtZMk1EWkNRelZGUVRGQ1JVWkZOVGRDUkVVNFF6SkdSRVZFTTBSRFJrWXdSZyJ9'
-        }
-      />
+      <RecruitmentUserModal profileId={selected} onClose={setSelected} />
     </React.Fragment>
   );
 };

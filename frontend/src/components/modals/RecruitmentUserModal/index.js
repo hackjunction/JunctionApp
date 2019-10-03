@@ -1,29 +1,32 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
+import Image from 'components/generic/Image';
 import { withSnackbar } from 'notistack';
 
 import PageWrapper from 'components/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 
+import RecruitmentProfileInfo from './RecruitmentProfileInfo';
+
 import * as AuthSelectors from 'redux/auth/selectors';
-import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-import RegistrationsService from 'services/registrations';
+import UserProfilesService from 'services/userProfiles';
 
-const RecruitmentUserModal = ({ idToken, registrationId, onClose, event }) => {
+const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [registration, setRegistration] = useState();
-  const { slug } = event;
+  const [profile, setProfile] = useState();
 
   useEffect(() => {
-    if (registrationId) {
+    console.log('id:', profileId);
+    if (profileId) {
       setLoading(true);
-      RegistrationsService.getFullRegistration(idToken, slug, registrationId)
+      UserProfilesService.getUserProfileRecruitment(profileId, idToken)
         .then(data => {
-          setRegistration(data);
+          setProfile(data);
+          console.log(data);
         })
         .catch(err => {
           setError(true);
@@ -32,27 +35,33 @@ const RecruitmentUserModal = ({ idToken, registrationId, onClose, event }) => {
           setLoading(false);
         });
     }
-  }, [idToken, registrationId, slug]);
+  }, [idToken, profileId]);
 
   const participantName = useMemo(() => {
-    if (!registration) return '';
-    const { firstName, lastName } = registration.answers;
+    if (!profile) return '';
+    const { firstName, lastName } = profile;
     return `${firstName} ${lastName}`;
-  }, [registration]);
+  }, [profile]);
 
   const participantSubheading = useMemo(() => {
-    if (!registration) return '';
-    return registration.answers.countryOfResidence;
-  }, [registration]);
+    if (!profile) return '';
+    return profile.countryOfResidence;
+  }, [profile]);
 
   return (
-    <Modal isOpen={true} handleClose={onClose} size="max" title="Test user">
-      <PageWrapper loading={false} error={error}>
+    <Modal
+      isOpen={!!profileId}
+      handleClose={onClose}
+      size="max"
+      title="Profile details"
+    >
+      <PageWrapper loading={loading || !profile} error={error}>
         <CenteredContainer>
           <PageHeader
             heading={participantName}
             subheading={participantSubheading}
           />
+          <RecruitmentProfileInfo profile={profile} />
         </CenteredContainer>
       </PageWrapper>
     </Modal>
@@ -60,10 +69,7 @@ const RecruitmentUserModal = ({ idToken, registrationId, onClose, event }) => {
 };
 
 const mapState = state => ({
-  idToken: AuthSelectors.getIdToken(state),
-  event: OrganiserSelectors.event(state),
-  organisersMap: OrganiserSelectors.organisersMap(state),
-  organisers: OrganiserSelectors.organisers(state)
+  idToken: AuthSelectors.getIdToken(state)
 });
 
 const mapDispatch = dispatch => ({});
