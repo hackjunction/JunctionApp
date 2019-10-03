@@ -12,6 +12,7 @@ import MaterialTable from 'components/generic/MaterialTable';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationModal from 'components/modals/EditRegistrationModal';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
+import BulkEmailModal from 'components/modals/BulkEmailModal';
 
 const AttendeeTable = ({
     organiserProfilesMap,
@@ -45,8 +46,8 @@ const AttendeeTable = ({
                 title={title}
                 isLoading={loading}
                 data={attendees}
-                onRowClick={(e, row) => setEditing(row._id)}
-                onSelectionChange={rows => setSelected(rows.map(r => r._id))}
+                onRowClick={(e, row) => setEditing(row.user)}
+                onSelectionChange={rows => setSelected(rows.map(r => r.user))}
                 actions={[
                     {
                         icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
@@ -159,11 +160,8 @@ const AttendeeTable = ({
     return (
         <React.Fragment>
             <EditRegistrationModal registrationId={editing} onClose={setEditing} />
-            <BulkEditRegistrationModal
-                hidden={selected.length === 0}
-                registrationIds={bulkEdit ? selected : []}
-                onClose={setBulkEdit}
-            />
+            <BulkEditRegistrationModal visible={bulkEdit} onClose={setBulkEdit} registrationIds={selected} />
+            <BulkEmailModal visible={bulkEmail} onClose={setBulkEmail} registrationIds={selected} />
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>
