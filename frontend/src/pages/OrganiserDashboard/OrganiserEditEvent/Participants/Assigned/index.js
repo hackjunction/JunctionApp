@@ -1,46 +1,45 @@
 import React, { useState, useMemo } from 'react';
-import styles from './AssignAttendeesPage.module.scss';
 
-import { Button as AntButton, Modal, message, Switch } from 'antd';
 import { connect } from 'react-redux';
+import { Switch, Button, Typography, Grid, Box } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 
-import Divider from 'components/generic/Divider';
 import AttendeeTable from 'components/tables/AttendeeTable';
-
+import ConfirmDialog from 'components/generic/ConfirmDialog';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 
-import RegistrationsService from 'services/registrations';
-import BulkEditRegistrationDrawer from 'components/modals/BulkEditRegistrationDrawer';
+import { useToggle } from 'hooks/customHooks';
 
-const SearchAttendeesPage = ({ idToken, event, registrations = [], registrationsLoading, updateRegistrations }) => {
+import RegistrationsService from 'services/registrations';
+
+const SearchAttendeesPage = ({
+    idToken,
+    event,
+    registrations = [],
+    registrationsLoading,
+    updateRegistrations,
+    enqueueSnackbar
+}) => {
     const [hideRated, setHideRated] = useState(false);
+    const [confirmModal, toggleConfirmModal] = useToggle(false);
     const { slug } = event;
     const handleSelfAssign = () => {
-        Modal.confirm({
-            title: 'Please read this first :)',
-            content:
-                "This means 10 random, un-rated registrations will be assigned to you, and won't be shown to other reviewers. Please make sure you review all of the registrations assigned to you.",
-            onOk() {
-                const hideMessage = message.loading('Assigning random registrations', 0);
-                RegistrationsService.assignRandomRegistrations(idToken, slug)
-                    .then(data => {
-                        if (data === 0) {
-                            message.success('No available registrations to assign!');
-                        } else {
-                            message.success('Done! Assigned ' + data + ' registrations to you');
-                        }
-                    })
-                    .catch(() => {
-                        message.error("Oops, something wen't wrong...");
-                    })
-                    .finally(() => {
-                        updateRegistrations(slug);
-                        hideMessage();
-                    });
-            }
-        });
+        RegistrationsService.assignRandomRegistrations(idToken, slug)
+            .then(data => {
+                if (data === 0) {
+                    enqueueSnackbar('No available registrations to assign!', { variant: 'success' });
+                } else {
+                    enqueueSnackbar('Assigned ' + data + ' registrations to you', { variant: 'success' });
+                }
+            })
+            .catch(() => {
+                enqueueSnackbar('Something went wrong...');
+            })
+            .finally(() => {
+                updateRegistrations(slug);
+            });
     };
 
     const filtered = useMemo(() => {
@@ -53,24 +52,27 @@ const SearchAttendeesPage = ({ idToken, event, registrations = [], registrations
     }, [registrations, hideRated]);
 
     return (
-        <React.Fragment>
-            <div className={styles.top}>
-                <span className={styles.title}>{filtered.length} registrations</span>
-                <div className={styles.topLeft}>
-                    <div className={styles.toggle}>
-                        <span className={styles.toggleText}>Hide rated registrations</span>
-                        <Switch value={hideRated} onChange={setHideRated} />
-                    </div>
-                    <AntButton type="link" onClick={handleSelfAssign} loading={registrationsLoading}>
+        <Grid container spacing={2}>
+            <ConfirmDialog
+                visible={confirmModal}
+                title="Assign random registrations"
+                message="This means 10 random, not rated registrations will be assigned to you, and will be your responsibility to review. Please make sure you review all of these applications."
+                onOk={handleSelfAssign}
+                onClose={toggleConfirmModal}
+            />
+            <Grid item xs={12}>
+                <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center">
+                    <Typography variant="subtitle1">Hide rated registrations</Typography>
+                    <Switch color="primary" checked={hideRated} onChange={e => setHideRated(e.target.checked)} />
+                    <Button color="primary" onClick={toggleConfirmModal} disabled={registrationsLoading}>
                         Assign random registrations
-                    </AntButton>
-                    <Divider size={1} />
-                    {/* <BulkEditRegistrationDrawer registrationIds={registrations.map(r => r._id)} /> */}
-                </div>
-            </div>
-            <AttendeeTable attendees={filtered} loading={registrationsLoading} />
-            <Divider size={1} />
-        </React.Fragment>
+                    </Button>
+                </Box>
+            </Grid>
+            <Grid item xs={12}>
+                <AttendeeTable attendees={filtered} loading={registrationsLoading} />
+            </Grid>
+        </Grid>
     );
 };
 
@@ -85,7 +87,9 @@ const mapDispatch = dispatch => ({
     updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
 });
 
-export default connect(
-    mapState,
-    mapDispatch
-)(SearchAttendeesPage);
+export default withSnackbar(
+    connect(
+        mapState,
+        mapDispatch
+    )(SearchAttendeesPage)
+);
