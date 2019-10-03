@@ -26,6 +26,24 @@ class PageWrapper extends PureComponent {
         wrapperProps: {}
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            error: false
+        };
+    }
+
+    static getDerivedStateFromError(error) {
+        // Update state so the next render will show the fallback UI.
+        return { error: true };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error('PageWrapper error', error);
+        console.error(errorInfo);
+    }
+
     renderContent() {
         if (this.props.loading) {
             return (
@@ -35,7 +53,7 @@ class PageWrapper extends PureComponent {
             );
         }
 
-        if (this.props.error) {
+        if (this.props.error || this.state.error) {
             return (
                 <div className="PageWrapper--error">
                     <Icon type="warning" size="large" style={{ fontSize: '30px' }} />

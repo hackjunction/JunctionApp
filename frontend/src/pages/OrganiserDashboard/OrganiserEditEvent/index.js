@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './OrganiserEditEvent.module.scss';
 
 import { connect } from 'react-redux';
@@ -9,31 +9,52 @@ import * as OrganiserActions from 'redux/organiser/actions';
 import PageWrapper from 'components/PageWrapper';
 import Image from 'components/generic/Image';
 import EventNavBar from 'components/navbars/EventNavBar';
-import OrganiserEditEventDetails from './OrganiserEditEventDetails';
-import OrganiserEditEventStats from './OrganiserEditEventStats';
-import OrganiserEditEventReview from './OrganiserEditEventReview';
-import OrganiserEditEventManage from './OrganiserEditEventManage';
+
+import DetailsPage from './Details';
+import StatsPage from './Stats';
+import ParticipantsPage from './Participants';
+import ManagePage from './Manage';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
-const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user, match, location }) => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+const OrganiserEditEvent = ({
+    updateEvent,
+    updateOrganiserProfiles,
+    updateRegistrations,
+    updateTeams,
+    updateFilterGroups,
+    loading,
+    error,
+    event,
+    user,
+    match,
+    location
+}) => {
     const { slug } = match.params;
 
     useEffect(() => {
-        setLoading(true);
-        updateEvent(slug)
-            .catch(err => {
-                setError(true);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [updateEvent, slug]);
+        updateEvent(slug);
+    }, [slug, updateEvent]);
+
+    const updateData = useCallback(() => {
+        if (event.owner) {
+            updateOrganiserProfiles(event.owner, event.organisers);
+            updateRegistrations(slug);
+            updateTeams(slug);
+            updateFilterGroups(slug);
+        }
+    }, [
+        slug,
+        event.owner,
+        event.organisers,
+        updateTeams,
+        updateRegistrations,
+        updateOrganiserProfiles,
+        updateFilterGroups
+    ]);
 
     useEffect(() => {
-        updateOrganiserProfiles(event.owner, event.organisers);
-    }, [event.owner, event.organisers, updateOrganiserProfiles]);
+        updateData();
+    }, [updateData]);
 
     return (
         <PageWrapper loading={loading} error={error}>
@@ -62,25 +83,25 @@ const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user,
                         path: '',
                         icon: 'home',
                         label: 'Edit',
-                        render: routeProps => <OrganiserEditEventDetails {...routeProps} slug={slug} />
+                        render: routeProps => <DetailsPage {...routeProps} slug={slug} />
                     },
                     {
                         path: '/stats',
                         icon: 'line-chart',
                         label: 'Stats',
-                        render: routeProps => <OrganiserEditEventStats {...routeProps} slug={slug} />
+                        render: routeProps => <StatsPage {...routeProps} slug={slug} />
                     },
                     {
-                        path: '/review',
+                        path: '/participants',
                         icon: 'star',
-                        label: 'Review',
-                        render: routeProps => <OrganiserEditEventReview {...routeProps} slug={slug} />
+                        label: 'Participants',
+                        render: routeProps => <ParticipantsPage {...routeProps} slug={slug} updateData={updateData} />
                     },
                     {
                         path: '/manage',
                         icon: 'setting',
                         label: 'Manage',
-                        render: routeProps => <OrganiserEditEventManage {...routeProps} slug={slug} />
+                        render: routeProps => <ManagePage {...routeProps} slug={slug} />
                     }
                 ]}
             />
@@ -91,13 +112,18 @@ const OrganiserEditEvent = ({ updateEvent, updateOrganiserProfiles, event, user,
 const mapStateToProps = state => ({
     idToken: AuthSelectors.getIdToken(state),
     user: AuthSelectors.getCurrentUser(state),
-    event: OrganiserSelectors.event(state)
+    event: OrganiserSelectors.event(state),
+    loading: OrganiserSelectors.eventLoading(state),
+    error: OrganiserSelectors.eventError(state)
 });
 
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(OrganiserActions.updateEvent(slug)),
     updateOrganiserProfiles: (owner, organisers) =>
-        dispatch(OrganiserActions.updateOrganisersForEvent(owner, organisers))
+        dispatch(OrganiserActions.updateOrganisersForEvent(owner, organisers)),
+    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
+    updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug)),
+    updateFilterGroups: slug => dispatch(OrganiserActions.updateFilterGroups(slug))
 });
 
 export default connect(
