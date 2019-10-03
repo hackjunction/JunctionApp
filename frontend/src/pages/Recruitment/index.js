@@ -2,6 +2,7 @@ import React from 'react';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import AccountNavBar from 'components/navbars/AccountNavBar';
+import SearchPage from './Search';
 
 const RecruitmentPage = ({ location, match }) => {
     return (
@@ -18,7 +19,7 @@ const RecruitmentPage = ({ location, match }) => {
                     path: '',
                     icon: 'home',
                     label: 'Search',
-                    render: () => <h1>Home</h1>
+                    render: () => <SearchPage />
                 },
                 {
                     path: '/favorites',
