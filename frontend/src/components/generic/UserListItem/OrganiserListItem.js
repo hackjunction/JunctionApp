@@ -4,8 +4,6 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import UserListItem from './index';
 
 const OrganiserListItem = ({ userId, organisersMap = {} }) => {
-    console.log('USER ID', userId);
-    console.log('ORGANISER MAP', organisersMap);
     return <UserListItem user={organisersMap[userId]} />;
 };
 

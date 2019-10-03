@@ -9,11 +9,7 @@ import {
     ExpansionPanel,
     ExpansionPanelSummary,
     ExpansionPanelDetails,
-    Button,
-    ListItem,
-    ListItemText,
-    Divider,
-    Paper
+    Button
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import PageWrapper from 'components/PageWrapper';
@@ -23,25 +19,38 @@ import OrganiserSelectModal from 'components/modals/OrganiserSelectModal';
 import OrganiserListItem from 'components/generic/UserListItem/OrganiserListItem';
 import EventTagsSelect from 'components/FormComponents/EventTagsSelect';
 import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
+import ConfirmDialog from 'components/generic/ConfirmDialog';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import { useFormField } from 'hooks/formHooks';
 
-const BulkEditRegistrationModal = ({ visible, registrationIds = [], onClose, organisers, event }) => {
+const BulkEditRegistrationModal = ({
+    visible,
+    registrationIds = [],
+    onClose,
+    onSubmit,
+    organisers,
+    event,
+    enqueueSnackbar
+}) => {
     const [loading, setLoading] = useState(false);
     const [organiserModal, setOrganiserModal] = useState(false);
-    const rating = useFormField(0);
+    const [confirmDialog, setConfirmDialog] = useState(false);
+    const rating = useFormField(null);
     const assignedTo = useFormField(null);
     const tags = useFormField([]);
     const status = useFormField('pending');
 
     const [expandedIds, setExpandedIds] = useState([]);
 
-    const isExpanded = panel => {
-        return expandedIds.indexOf(panel) !== -1;
-    };
+    const isExpanded = useCallback(
+        panel => {
+            return expandedIds.indexOf(panel) !== -1;
+        },
+        [expandedIds]
+    );
 
     const toggleExpanded = panel => {
         if (isExpanded(panel)) {
@@ -51,11 +60,57 @@ const BulkEditRegistrationModal = ({ visible, registrationIds = [], onClose, org
         }
     };
 
-    if (!registrationIds.length) return null;
+    const reset = useCallback(() => {
+        rating.reset();
+        assignedTo.reset();
+        tags.reset();
+        status.reset();
+        setLoading(false);
+        setExpandedIds([]);
+    }, [rating, assignedTo, tags, status]);
 
+    const handleClose = useCallback(() => {
+        reset();
+        onClose();
+    }, [reset, onClose]);
+
+    const getEdits = useCallback(() => {
+        const edits = {};
+        if (isExpanded('rating')) edits.rating = rating.value;
+        if (isExpanded('assignedTo')) edits.assignedTo = assignedTo.value;
+        if (isExpanded('tags')) edits.tags = tags.value;
+        if (isExpanded('status')) edits.status = status.value;
+        return edits;
+    }, [rating, assignedTo, tags, status, isExpanded]);
+
+    const handleSubmit = useCallback(() => {
+        setLoading(true);
+        const edits = getEdits();
+
+        onSubmit(registrationIds, edits, event.slug)
+            .then(() => {
+                enqueueSnackbar(`Edited ${registrationIds.length} registrations`, { variant: 'success' });
+            })
+            .catch(err => {
+                enqueueSnackbar('Something went wrong', { variant: 'error' });
+            })
+            .finally(() => {
+                setLoading(false);
+                handleClose();
+            });
+    }, [onSubmit, handleClose, getEdits, event.slug, registrationIds, enqueueSnackbar]);
+
+    if (!registrationIds.length) return null;
     return (
-        <Modal isOpen={visible} handleClose={onClose} size="max">
+        <Modal isOpen={visible} handleClose={handleClose} size="max">
             <PageWrapper loading={loading} wrapContent={false}>
+                <ConfirmDialog
+                    open={confirmDialog}
+                    title="Are you sure?"
+                    message={`This will apply your configured changes to ${registrationIds.length} registrations, and you won't be able to revert them. Please make sure you are not making any unintended changes.`}
+                    onClose={() => setConfirmDialog(false)}
+                    onOk={handleSubmit}
+                />
                 <CenteredContainer>
                     <PageHeader heading="Bulk edit" subheading={registrationIds.length + ' selected participants'} />
                     <Typography variant="body1" paragraph>
@@ -155,7 +210,12 @@ const BulkEditRegistrationModal = ({ visible, registrationIds = [], onClose, org
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <Box p={2} display="flex" alignItems="center" justifyContent="center">
-                        <Button variant="contained" color="primary" disabled={expandedIds.length === 0}>
+                        <Button
+                            onClick={() => setConfirmDialog(true)}
+                            variant="contained"
+                            color="primary"
+                            disabled={expandedIds.length === 0}
+                        >
                             {expandedIds.length === 0
                                 ? 'Expand panels to make edits'
                                 : ` Apply edits to ${registrationIds.length} registrations`}
@@ -175,8 +235,8 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-    editRegistration: (registrationId, data, slug) =>
-        dispatch(OrganiserActions.editRegistration(registrationId, data, slug))
+    onSubmit: (registrationIds, edits, slug) =>
+        dispatch(OrganiserActions.bulkEditRegistrations(registrationIds, edits, slug))
 });
 
 export default withSnackbar(

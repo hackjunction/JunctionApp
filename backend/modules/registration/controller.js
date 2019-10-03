@@ -138,7 +138,7 @@ controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
     return Registration.updateMany(
         {
             event: eventId,
-            _id: {
+            user: {
                 $in: registrationIds
             }
         },
