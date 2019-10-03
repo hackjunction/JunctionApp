@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { UserProfile } = require('./model');
 const { NotFoundError } = require('../../common/errors/errors');
 
@@ -48,6 +49,12 @@ controller.updateUserProfile = (data, userId) => {
 
 controller.getUsersByEmail = email => {
     return UserProfile.find({ email });
+};
+
+controller.queryUsers = () => {
+    return UserProfile.find({}).then(users => {
+        return _.shuffle(users).slice(0, 10);
+    });
 };
 
 module.exports = controller;

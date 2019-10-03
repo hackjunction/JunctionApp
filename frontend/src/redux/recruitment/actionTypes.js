@@ -1,0 +1,1 @@
+export const UPDATE_SEARCH_RESULTS = 'recruitment/UPDATE_SEARCH_RESULTS';
