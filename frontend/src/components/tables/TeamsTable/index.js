@@ -3,13 +3,14 @@ import React, { useMemo, useState, useCallback, forwardRef } from 'react';
 import { connect } from 'react-redux';
 import { sumBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, FormControlLabel, Switch, FormGroup, Box, Slider } from '@material-ui/core';
+import { Typography, Grid, FormControlLabel, Switch, FormGroup, Box, Slider, Paper } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import MaterialTable from 'components/generic/MaterialTable';
 import AttendeeTable from 'components/tables/AttendeeTable';
+import Select from 'components/inputs/Select';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
 import BulkEmailModal from 'components/modals/BulkEmailModal';
 
@@ -22,10 +23,8 @@ const useStyles = makeStyles(theme => ({
 
 const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
     const classes = useStyles();
-    const [showLocked, setShowLocked] = useState(true);
-    const [showNotLocked, setShowNotLocked] = useState(true);
-    const [showPartiallyReviewed, setShowPartiallyReviewed] = useState(true);
-    const [showFullyReviewed, setShowFullyReviewed] = useState(true);
+    const [reviewStatus, setReviewStatus] = useState('any');
+    const [lockedStatus, setLockedStatus] = useState('any');
     const [ratingRange, setRatingRange] = useState([0, 5]);
     const [bulkEdit, setBulkEdit] = useState(false);
     const [bulkEmail, setBulkEmail] = useState(false);
@@ -65,18 +64,17 @@ const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
     }, [teams, registrationsMap]);
 
     const teamsFiltered = teamsPopulated.filter(team => {
-        if (!showLocked && team.locked) {
+        if (lockedStatus === 'locked' && !team.locked) {
             return false;
         }
-        if (!showNotLocked && !team.locked) {
+        if (lockedStatus === 'not-locked' && team.locked) {
+            return false;
+        }
+        if (reviewStatus === 'fully-reviewed' && team.reviewedPercent !== 100) {
             return false;
         }
 
-        if (!showFullyReviewed && team.reviewedPercent === 100) {
-            return false;
-        }
-
-        if (!showPartiallyReviewed && team.reviewedPercent < 100) {
+        if (reviewStatus === 'not-reviewed' && team.reviewedPercent === 100) {
             return false;
         }
 
@@ -97,69 +95,78 @@ const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
     }, [teamsFiltered]);
 
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
             <BulkEditRegistrationModal visible={bulkEdit} onClose={setBulkEdit} registrationIds={filteredMemberIds} />
             <BulkEmailModal visible={bulkEmail} onClose={setBulkEmail} registrationIds={filteredMemberIds} />
-            <Grid item xs={12}>
-                <FormGroup row>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={showLocked}
-                                onChange={e => setShowLocked(e.target.checked)}
-                                color="primary"
-                            />
-                        }
-                        label="Locked"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={showNotLocked}
-                                onChange={e => setShowNotLocked(e.target.checked)}
-                                color="primary"
-                            />
-                        }
-                        label="Not locked"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={showPartiallyReviewed}
-                                onChange={e => setShowPartiallyReviewed(e.target.checked)}
-                                color="primary"
-                            />
-                        }
-                        label="Partially reviewed"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={showFullyReviewed}
-                                onChange={e => setShowFullyReviewed(e.target.checked)}
-                                color="primary"
-                            />
-                        }
-                        label="Fully reviewed"
-                    />
-                </FormGroup>
-            </Grid>
-            <Grid item xs={12}>
-                <Box padding={2} display="flex" flexDirection="row" alignItems="center">
-                    <Typography>Rating between</Typography>
-                    <Box p={1} />
-                    <Box flex="1">
-                        <Slider
-                            defaultValue={ratingRange}
-                            onChangeCommitted={handleRatingRangeChange}
-                            valueLabelDisplay="on"
-                            aria-labelledby="range-slider"
-                            min={0}
-                            max={5}
-                            step={0.1}
+            <Grid item xs={12} md={6}>
+                <Paper p={2}>
+                    <Box p={2}>
+                        <Select
+                            value={lockedStatus}
+                            onChange={setLockedStatus}
+                            label="Locked status"
+                            options={[
+                                {
+                                    value: 'any',
+                                    label: 'Any'
+                                },
+                                {
+                                    value: 'locked',
+                                    label: 'Locked'
+                                },
+                                {
+                                    value: 'not-locked',
+                                    label: 'Not locked'
+                                }
+                            ]}
                         />
                     </Box>
-                </Box>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Paper>
+                    <Box p={2}>
+                        <Select
+                            value={reviewStatus}
+                            onChange={setReviewStatus}
+                            label="Review status"
+                            options={[
+                                {
+                                    value: 'any',
+                                    label: 'Any'
+                                },
+                                {
+                                    value: 'fully-reviewed',
+                                    label: 'Fully reviewed'
+                                },
+                                {
+                                    value: 'not-reviewed',
+                                    label: 'Not fully reviewed'
+                                }
+                            ]}
+                        />
+                    </Box>
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper>
+                    <Box padding={2} display="flex" flexDirection="column">
+                        <Typography variant="subtitle1" paragraph align="center">
+                            Rating between
+                        </Typography>
+                        <Box paddingLeft={2} paddingRight={2}>
+                            <Slider
+                                defaultValue={ratingRange}
+                                onChangeCommitted={handleRatingRangeChange}
+                                valueLabelDisplay="on"
+                                aria-labelledby="range-slider"
+                                min={0}
+                                max={5}
+                                step={0.1}
+                            />
+                        </Box>
+                    </Box>
+                </Paper>
             </Grid>
             <Grid item xs={12}>
                 <MaterialTable
