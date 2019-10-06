@@ -17,9 +17,7 @@ import ThemeSelect from '../ThemeSelect';
 import EducationForm from '../EducationForm';
 import JobRoleForm from '../JobRoleForm';
 import BooleanField from '../BooleanField';
-
-import TextInput from 'components/inputs/TextInput';
-
+import { Input } from 'antd';
 import { RegistrationFields, RegistrationValidator, Misc } from '@hackjunction/shared';
 import NumHackathonsSelect from 'components/FormComponents/NumHackathonsSelect';
 import TShirtSizeSelect from 'components/FormComponents/TShirtSizeSelect';
@@ -37,9 +35,9 @@ const RegistrationField = React.memo(({ name, required, isFast, fieldConfig }) =
     const renderInputForField = ({ field, form }) => {
         switch (fieldConfig.fieldType.id) {
             case fieldTypes.SHORT_TEXT.id:
-                return <TextInput {...field} placeholder={fieldConfig.placeholder} rawOnChange />;
+                return <Input {...field} size="large" placeholder={fieldConfig.placeholder} />;
             case fieldTypes.EMAIL.id:
-                return <TextInput {...field} placeholder={fieldConfig.placeholder} rawOnChange />;
+                return <Input {...field} size="large" placeholder={fieldConfig.placeholder} />;
             case fieldTypes.PHONE_NUMBER.id:
                 return (
                     <PhoneNumberInput
@@ -162,14 +160,14 @@ const RegistrationField = React.memo(({ name, required, isFast, fieldConfig }) =
                     />
                 );
             case fieldTypes.LONG_TEXT.id:
-                return <span>TEXT AREA!</span>;
-            // return (
-            //     <Input.TextArea
-            //         {...field}
-            //         autosize={{ minRows: 5, maxRows: 15 }}
-            //         placeholder={fieldConfig.placeholder}
-            //     />
-            // );
+                return (
+                    <Input.TextArea
+                        {...field}
+                        size="large"
+                        autosize={{ minRows: 5, maxRows: 15 }}
+                        placeholder={fieldConfig.placeholder}
+                    />
+                );
             case fieldTypes.NUM_HACKATHONS.id:
                 return (
                     <NumHackathonsSelect
@@ -193,7 +191,7 @@ const RegistrationField = React.memo(({ name, required, isFast, fieldConfig }) =
                     />
                 );
             case fieldTypes.URL.id:
-                return <TextInput {...field} placeholder="https://" />;
+                return <Input {...field} size="large" placeholder="https://" />;
             case fieldTypes.BOOLEAN.id:
                 return (
                     <BooleanField

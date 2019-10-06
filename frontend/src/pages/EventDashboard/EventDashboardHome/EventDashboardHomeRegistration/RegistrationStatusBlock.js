@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { connect } from 'react-redux';
 import { Col, Button as AntButton, Popconfirm } from 'antd';
+import { Typography } from '@material-ui/core';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
 import NotificationBlock from 'components/generic/NotificationBlock';
@@ -13,7 +14,13 @@ import * as DashboardActions from 'redux/dashboard/actions';
 
 const STATUSES = RegistrationStatuses.asObject;
 
-const RegistrationStatusBlock = ({ event, registration, confirmRegistration, cancelRegistration }) => {
+const RegistrationStatusBlock = ({
+    event,
+    registration,
+    confirmRegistration,
+    cancelRegistration,
+    isRegistrationOpen
+}) => {
     const [loading, setLoading] = useState(false);
     const handleConfirm = useCallback(() => {
         setLoading(true);
@@ -34,6 +41,19 @@ const RegistrationStatusBlock = ({ event, registration, confirmRegistration, can
     const PENDING_STATUSES = [STATUSES.pending.id, STATUSES.softAccepted.id, STATUSES.softRejected.id];
 
     if (PENDING_STATUSES.indexOf(registration.status) !== -1) {
+        const bottom = isRegistrationOpen ? (
+            <Button
+                size="large"
+                theme="accent"
+                link={{
+                    internal: `/events/${event.slug}/register`
+                }}
+                text="Edit your registration"
+            />
+        ) : null;
+        const body = isRegistrationOpen
+            ? "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! If you wish, you can still tweak your registration to maximise your chances of being accepted."
+            : "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! The registration period is now over and you can no longer edit your application.";
         return (
             <Col xs={24} md={12}>
                 <Divider size={1} />
@@ -41,17 +61,8 @@ const RegistrationStatusBlock = ({ event, registration, confirmRegistration, can
                     type="info"
                     title="Registration status:"
                     titleExtra="Pending"
-                    body="Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! If you wish, you can still tweak your registration to maximise your chances of being accepted."
-                    bottom={
-                        <Button
-                            size="large"
-                            theme="accent"
-                            link={{
-                                internal: `/events/${event.slug}/register`
-                            }}
-                            text="Edit your registration"
-                        />
-                    }
+                    body={body}
+                    bottom={bottom}
                 />
             </Col>
         );
@@ -184,7 +195,8 @@ const RegistrationStatusBlock = ({ event, registration, confirmRegistration, can
 
 const mapState = state => ({
     event: DashboardSelectors.event(state),
-    registration: DashboardSelectors.registration(state)
+    registration: DashboardSelectors.registration(state),
+    isRegistrationOpen: DashboardSelectors.isRegistrationOpen(state)
 });
 
 const mapDispatch = dispatch => ({
