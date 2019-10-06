@@ -16,6 +16,7 @@ const EventDashboardPage = lazy(() => import('./pages/EventDashboard'));
 const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/OrganiserDashboardRouter'));
 const AdminPage = lazy(() => import('./pages/Admin'));
 const AccountPage = lazy(() => import('./pages/Account'));
+const DemoPage = lazy(() => import('./pages/Demo'));
 
 const routes = [
     {
@@ -52,6 +53,11 @@ const routes = [
         path: '/logout',
         component: LogoutPage,
         exact: false
+    },
+    {
+        path: '/demo',
+        component: RequiresPermission(DemoPage, [AuthConstants.Permissions.MANAGE_EVENT]),
+        exact: true
     },
     {
         path: '/organise',
