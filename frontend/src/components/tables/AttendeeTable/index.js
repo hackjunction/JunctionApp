@@ -7,11 +7,13 @@ import { RegistrationStatuses } from '@hackjunction/shared';
 
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
+import { Box, Paper } from '@material-ui/core';
 import MaterialTable from 'components/generic/MaterialTable';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationModal from 'components/modals/EditRegistrationModal';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
+import BulkEmailModal from 'components/modals/BulkEmailModal';
 
 const AttendeeTable = ({
     organiserProfilesMap,
@@ -20,7 +22,8 @@ const AttendeeTable = ({
     loading,
     attendees = [],
     footer = null,
-    title = 'Participants'
+    title = 'Participants',
+    minimal = false
 }) => {
     const [editing, setEditing] = useState();
     const [selected, setSelected] = useState([]);
@@ -43,33 +46,46 @@ const AttendeeTable = ({
         return (
             <MaterialTable
                 title={title}
+                showCount
                 isLoading={loading}
                 data={attendees}
-                onRowClick={(e, row) => setEditing(row._id)}
-                onSelectionChange={rows => setSelected(rows.map(r => r._id))}
-                actions={[
-                    {
-                        icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
-                        tooltip: 'Email selected',
-                        onClick: toggleBulkEmail
-                    },
-                    {
-                        icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
-                        tooltip: 'Edit selected',
-                        onClick: toggleBulkEdit
-                    }
-                ]}
+                onRowClick={(e, row) => setEditing(row.user)}
+                onSelectionChange={rows => setSelected(rows.map(r => r.user))}
+                actions={
+                    !minimal
+                        ? [
+                              {
+                                  icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
+                                  tooltip: 'Email selected',
+                                  onClick: toggleBulkEmail
+                              },
+                              {
+                                  icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
+                                  tooltip: 'Edit selected',
+                                  onClick: toggleBulkEdit
+                              }
+                          ]
+                        : []
+                }
                 options={{
-                    exportButton: true,
-                    selection: true,
-                    showSelectAllCheckbox: true,
-                    pageSizeOptions: [5, 25, 50]
+                    exportButton: !minimal,
+                    selection: !minimal,
+                    showSelectAllCheckbox: !minimal,
+                    pageSizeOptions: [5, 25, 50],
+                    debounceInterval: 500,
+                    search: !minimal,
+                    paging: !minimal
                 }}
                 localization={{
                     toolbar: {
                         searchPlaceholder: 'Search by name/email',
                         nRowsSelected: '{0} selected'
                     }
+                }}
+                components={{
+                    Container: forwardRef((props, ref) =>
+                        minimal ? <Box {...props} ref={ref} /> : <Paper {...props} ref={ref} />
+                    )
                 }}
                 columns={[
                     {
@@ -85,7 +101,8 @@ const AttendeeTable = ({
                     {
                         title: 'Email',
                         field: 'answers.email',
-                        searchable: true
+                        searchable: true,
+                        hidden: minimal
                     },
                     {
                         title: 'Rating',
@@ -130,6 +147,7 @@ const AttendeeTable = ({
                     {
                         title: 'Assigned to',
                         field: 'assignedTo',
+                        hidden: minimal,
                         render: row => {
                             const userId = row.assignedTo;
                             let text;
@@ -159,11 +177,8 @@ const AttendeeTable = ({
     return (
         <React.Fragment>
             <EditRegistrationModal registrationId={editing} onClose={setEditing} />
-            <BulkEditRegistrationModal
-                hidden={selected.length === 0}
-                registrationIds={bulkEdit ? selected : []}
-                onClose={setBulkEdit}
-            />
+            <BulkEditRegistrationModal visible={bulkEdit} onClose={setBulkEdit} registrationIds={selected} />
+            <BulkEmailModal visible={bulkEmail} onClose={setBulkEmail} registrationIds={selected} />
             {renderTable()}
             {renderEmpty()}
         </React.Fragment>
