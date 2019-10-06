@@ -77,10 +77,14 @@ controller.createTravelGrantRejectedTask = async (registration, deliverNow = fal
 
 controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deliverNow = false) => {
     if (!uniqueId) {
+        console.log('GENERATING UNIQUE ID');
         uniqueId = shortid.generate();
     }
+    console.log('CREATING TASK');
     const task = await controller.createTask(userId, eventId, 'generic_' + uniqueId, msgParams);
+    console.log('CREATED TASK');
     if (task && deliverNow) {
+        console.log('DELIVERING NOW', task);
         return controller.deliverEmailTask(task);
     }
     return task;

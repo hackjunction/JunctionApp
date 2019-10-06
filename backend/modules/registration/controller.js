@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
+const mongoose = require('mongoose');
 const { RegistrationStatuses, RegistrationFields, FieldTypes } = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
@@ -137,7 +138,7 @@ controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
     return Registration.updateMany(
         {
             event: eventId,
-            _id: {
+            user: {
                 $in: registrationIds
             }
         },
@@ -177,13 +178,16 @@ controller.rejectPendingTravelGrants = eventId => {
 };
 
 controller.getFullRegistration = (eventId, registrationId) => {
-    return Registration.findById(registrationId).then(registration => {
-        if (!registration || registration.event.toString() !== eventId) {
-            throw new NotFoundError(`Registration with id ${registrationId} does not exist`);
-        }
+    const query = mongoose.Types.ObjectId.isValid(registrationId) ? { _id: registrationId } : { user: registrationId };
+    return Registration.findOne(query)
+        .and({ event: eventId })
+        .then(registration => {
+            if (!registration) {
+                throw new NotFoundError(`Registration with id ${registrationId} does not exist`);
+            }
 
-        return registration;
-    });
+            return registration;
+        });
 };
 
 controller.editRegistration = (registrationId, event, data, user) => {
