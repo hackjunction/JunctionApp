@@ -23,6 +23,12 @@ controller.getUserProfiles = userIds => {
     });
 };
 
+controller.queryProfiles = async query => {
+    const found = await UserProfile.find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
+    const count = await UserProfile.find(query.query).countDocuments();
+    return {found, count};
+};
+
 controller.getUserProfilesPublic = userIds => {
     return controller.getUserProfiles(userIds).then(profiles => {
         return UserProfile.publicFields(profiles);
