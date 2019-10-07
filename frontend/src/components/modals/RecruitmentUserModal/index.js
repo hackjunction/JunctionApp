@@ -4,6 +4,8 @@ import Modal from 'components/generic/Modal';
 import Image from 'components/generic/Image';
 import { withSnackbar } from 'notistack';
 
+import styles from './RecruitmentUserModal.module.scss';
+
 import PageWrapper from 'components/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
@@ -48,6 +50,11 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
     return profile.countryOfResidence;
   }, [profile]);
 
+  const participantImageUrl = useMemo(() => {
+    if (!profile) return '';
+    return profile.avatar;
+  }, [profile]);
+
   return (
     <Modal
       isOpen={!!profileId}
@@ -56,11 +63,18 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       title="Profile details"
     >
       <PageWrapper loading={loading || !profile} error={error}>
-        <CenteredContainer>
+        <CenteredContainer wrapperClass={styles.wrapper}>
           <PageHeader
             heading={participantName}
             subheading={participantSubheading}
           />
+          <Image
+            url={participantImageUrl}
+            alt="Profile picture"
+            transformation={{ width: '20%', height: '20%' }}
+          />
+        </CenteredContainer>
+        <CenteredContainer>
           <RecruitmentProfileInfo profile={profile} />
         </CenteredContainer>
       </PageWrapper>
