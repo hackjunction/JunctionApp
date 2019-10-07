@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 
 import { connect } from 'react-redux';
 import { Switch, Button, Typography, Grid, Box } from '@material-ui/core';
@@ -24,8 +24,10 @@ const SearchAttendeesPage = ({
 }) => {
     const [hideRated, setHideRated] = useState(false);
     const [confirmModal, toggleConfirmModal] = useToggle(false);
+    const [assignLoading, setAssignLoading] = useState(false);
     const { slug } = event;
-    const handleSelfAssign = () => {
+    const handleSelfAssign = useCallback(() => {
+        setAssignLoading(true);
         RegistrationsService.assignRandomRegistrations(idToken, slug)
             .then(data => {
                 if (data === 0) {
@@ -38,9 +40,10 @@ const SearchAttendeesPage = ({
                 enqueueSnackbar('Something went wrong...');
             })
             .finally(() => {
+                setAssignLoading(false);
                 updateRegistrations(slug);
             });
-    };
+    }, [enqueueSnackbar, updateRegistrations, idToken, slug]);
 
     const filtered = useMemo(() => {
         return registrations.filter(registration => {
@@ -54,7 +57,7 @@ const SearchAttendeesPage = ({
     return (
         <Grid container spacing={2}>
             <ConfirmDialog
-                visible={confirmModal}
+                open={confirmModal}
                 title="Assign random registrations"
                 message="This means 10 random, not rated registrations will be assigned to you, and will be your responsibility to review. Please make sure you review all of these applications."
                 onOk={handleSelfAssign}
@@ -64,7 +67,11 @@ const SearchAttendeesPage = ({
                 <Box display="flex" flexDirection="row" justifyContent="flex-end" alignItems="center">
                     <Typography variant="subtitle1">Hide rated registrations</Typography>
                     <Switch color="primary" checked={hideRated} onChange={e => setHideRated(e.target.checked)} />
-                    <Button color="primary" onClick={toggleConfirmModal} disabled={registrationsLoading}>
+                    <Button
+                        color="primary"
+                        onClick={toggleConfirmModal}
+                        disabled={registrationsLoading || assignLoading}
+                    >
                         Assign random registrations
                     </Button>
                 </Box>
