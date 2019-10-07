@@ -21,25 +21,20 @@ const RecruitmentProfileInfo = React.memo(({ profile }) => {
   const { education, portfolio, spokenLanguages, avatar } = profile;
   return (
     <React.Fragment>
-      <Image
-        url={avatar}
-        alt="Profile picture"
-        transformation={{ width: '20%', height: '20%' }}
-      />
       {education && (
         <React.Fragment>
-          <Typography variant="h2">Education</Typography>
+          <Typography variant="h4">Education</Typography>
           <Typography>{education.level}</Typography>
         </React.Fragment>
       )}
       {portfolio && (
         <React.Fragment>
-          <Typography variant="h2">Portfolio</Typography>
+          <Typography variant="h4">Portfolio</Typography>
           <Link>{portfolio}</Link>
         </React.Fragment>
       )}
 
-      <Typography variant="h2">Interests</Typography>
+      <Typography variant="h4">Interests</Typography>
       <Link>{portfolio}</Link>
       <ExpansionPanel key="languages">
         <ExpansionPanelSummary
@@ -57,6 +52,7 @@ const RecruitmentProfileInfo = React.memo(({ profile }) => {
           ))}
         </ExpansionPanelDetails>
       </ExpansionPanel>
+      <textarea></textarea>
     </React.Fragment>
   );
 });
