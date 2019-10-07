@@ -65,8 +65,6 @@ router.get('/search', hasToken, getUsersByEmail);
 /** Shitty route name but lets think about it later */
 router.get(
   '/recruitment/search',
-  hasToken,
-  hasPermission(Auth.Permissions.MANAGE_EVENT),
   queryUsers
 );
 
