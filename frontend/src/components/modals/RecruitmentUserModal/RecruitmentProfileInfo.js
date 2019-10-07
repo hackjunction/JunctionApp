@@ -5,7 +5,9 @@ import { groupBy } from 'lodash-es';
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
-  Typography
+  ExpansionPanelDetails,
+  Typography,
+  Link
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -16,26 +18,41 @@ const RecruitmentProfileInfo = React.memo(({ profile }) => {
   const grouped = groupBy(fields, field =>
     RegistrationFields.getCategory(field)
   );
-  const categoryNames = Object.keys(grouped).filter(key => key !== '');
-
+  const { education, portfolio, spokenLanguages, avatar } = profile;
   return (
     <React.Fragment>
-      <Image
-        url={profile.avatar}
-        alt="Profile picture"
-        transformation={{ width: '20%', height: '20%' }}
-      />
-      {categoryNames.map(name => (
-        <ExpansionPanel key={name}>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`${name}-content`}
-            id={`${name}-header`}
-          >
-            <Typography>{name}</Typography>
-          </ExpansionPanelSummary>
-        </ExpansionPanel>
-      ))}
+      {education && (
+        <React.Fragment>
+          <Typography variant="h4">Education</Typography>
+          <Typography>{education.level}</Typography>
+        </React.Fragment>
+      )}
+      {portfolio && (
+        <React.Fragment>
+          <Typography variant="h4">Portfolio</Typography>
+          <Link>{portfolio}</Link>
+        </React.Fragment>
+      )}
+
+      <Typography variant="h4">Interests</Typography>
+      <Link>{portfolio}</Link>
+      <ExpansionPanel key="languages">
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="languages-content"
+          id="languages-header"
+        >
+          <Typography>Languages</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          {spokenLanguages.map(language => (
+            <p>
+              <Typography>{language}</Typography>
+            </p>
+          ))}
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <textarea></textarea>
     </React.Fragment>
   );
 });
