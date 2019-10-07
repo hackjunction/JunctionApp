@@ -12,23 +12,22 @@ import EventUtils from 'utils/events';
 import EventConstants from 'constants/events';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 const EventDashboardHome = ({ event, registration }) => {
-    const [currentStep, setCurrentStep] = useState([]);
+    const [currentStep, setCurrentStep] = useState(1);
 
-    useEffect(() => {
-        if (event) {
-            const status = EventUtils.getEventStatus(event);
-            setCurrentStep(status.index);
-        }
-    }, [event]);
+    // useEffect(() => {
+    //     if (event) {
+    //         const status = EventUtils.getEventStatus(event);
+    //         setCurrentStep(status.index);
+    //     }
+    // }, [event]);
 
     if (!event || !registration) return null;
 
     function renderContent() {
         switch (currentStep) {
             case EventConstants.STATUS.Registration.index:
-                return <EventDashboardHomeRegistration />;
             case EventConstants.STATUS.Confirmation.index:
-                return <h1>Confirm your participation</h1>;
+                return <EventDashboardHomeRegistration />;
             case EventConstants.STATUS.InProgress.index:
                 return <h1>Event in progress</h1>;
             case EventConstants.STATUS.Finished.index:
