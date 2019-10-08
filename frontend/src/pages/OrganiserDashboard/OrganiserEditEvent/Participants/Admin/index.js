@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import './AdminPage.scss';
 
 import { connect } from 'react-redux';
 import { groupBy, filter } from 'lodash-es';
