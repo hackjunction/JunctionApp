@@ -178,7 +178,11 @@ controller.rejectPendingTravelGrants = eventId => {
 };
 
 controller.getFullRegistration = (eventId, registrationId) => {
-    const query = mongoose.Types.ObjectId.isValid(registrationId) ? { _id: registrationId } : { user: registrationId };
+    const query =
+        mongoose.Types.ObjectId.isValid(registrationId) && registrationId.indexOf('|') === -1
+            ? { _id: registrationId }
+            : { user: registrationId };
+    console.log('QUERY', query);
     return Registration.findOne(query)
         .and({ event: eventId })
         .then(registration => {
