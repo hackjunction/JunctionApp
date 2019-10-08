@@ -6,12 +6,12 @@ import SearchBox from './SearchBox';
 import SearchResults from './SearchResults';
 
 const SearchPage = () => {
-  return (
-    <PageWrapper>
-      <SearchBox />
-      <SearchResults />
-    </PageWrapper>
-  );
+    return (
+        <PageWrapper>
+            <SearchBox />
+            <SearchResults />
+        </PageWrapper>
+    );
 };
 
 export default SearchPage;
