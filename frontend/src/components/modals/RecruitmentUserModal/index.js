@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import Image from 'components/generic/Image';
+import Button from 'components/generic/Button';
+
 import { withSnackbar } from 'notistack';
 import { Typography, Grid } from '@material-ui/core';
 
@@ -64,6 +66,7 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       title="Profile details"
     >
       <PageWrapper loading={loading || !participant} error={error}>
+        <Button block text="Add to favorites" button={{}} />
         <Grid container direction="row" justify="space-around">
           <Grid item sm={8} md={8} lg={8}>
             <Typography variant="h3">{participantName}</Typography>
