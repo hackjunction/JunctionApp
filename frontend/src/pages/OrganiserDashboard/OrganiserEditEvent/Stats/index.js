@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
-import styles from './Stats.module.scss';
+import React from 'react';
 
 import { connect } from 'react-redux';
 import { Row, Col, Card } from 'antd';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
 
 import Divider from 'components/generic/Divider';
 import PageHeader from 'components/generic/PageHeader';
