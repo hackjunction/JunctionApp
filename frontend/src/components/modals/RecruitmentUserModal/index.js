@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import Image from 'components/generic/Image';
 import { withSnackbar } from 'notistack';
+import { Box, Typography } from '@material-ui/core';
 
 import styles from './RecruitmentUserModal.module.scss';
 
 import PageWrapper from 'components/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
-import PageHeader from 'components/generic/PageHeader';
 
 import RecruitmentProfileInfo from './RecruitmentProfileInfo';
 
@@ -63,18 +63,27 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       title="Profile details"
     >
       <PageWrapper loading={loading || !profile} error={error}>
-        <CenteredContainer wrapperClass={styles.wrapper}>
-          <PageHeader
-            heading={participantName}
-            subheading={participantSubheading}
-          />
+        <CenteredContainer className={styles.wrapper}>
+          <Box width="60%">
+            <Typography variant="h3">{participantName}</Typography>
+            <Typography variant="subtitle1">{participantSubheading}</Typography>
+            <Typography>
+              Insert here some basic data about the participant Insert here some
+              basic data about the participant Insert here some basic data about
+              the participant
+            </Typography>
+          </Box>
           <Image
             url={participantImageUrl}
             alt="Profile picture"
-            transformation={{ width: '20%', height: '20%' }}
+            transformation={{
+              width: '30%',
+              height: '30%',
+              radius: '20'
+            }}
           />
         </CenteredContainer>
-        <CenteredContainer>
+        <CenteredContainer className={styles.wrapper}>
           <RecruitmentProfileInfo profile={profile} />
         </CenteredContainer>
       </PageWrapper>
