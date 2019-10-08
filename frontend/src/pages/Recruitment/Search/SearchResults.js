@@ -15,12 +15,15 @@ const SearchResults = ({ searchResults }) => {
     <React.Fragment>
       <List>
         {searchResults.map(item => (
-          <Box mb={1} key={item._id}>
+          <Box mb={1} key={`box-${item.userId}`}>
             <Paper>
-              <ListItem onClick={e => setSelected(item.userId)}>
+              <ListItem
+                key={`item-${item.userId}`}
+                onClick={e => setSelected(item.userId)}
+              >
                 <ListItemText
-                  primary={item.firstName}
-                  secondary={item.lastName}
+                  primary={item.profile.firstName}
+                  secondary={item.profile.lastName}
                 />
               </ListItem>
             </Paper>

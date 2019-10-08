@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import Image from 'components/generic/Image';
 import { withSnackbar } from 'notistack';
-import { Box, Typography, Grid } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 import styles from './RecruitmentUserModal.module.scss';
 
 import PageWrapper from 'components/PageWrapper';
-import CenteredContainer from 'components/generic/CenteredContainer';
 
 import RecruitmentProfileInfo from './RecruitmentProfileInfo';
 
@@ -55,6 +54,8 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
     return participant.profile.avatar;
   }, [participant]);
 
+  const { education, roles } = participant || {};
+
   return (
     <Modal
       isOpen={!!profileId}
@@ -63,26 +64,38 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       title="Profile details"
     >
       <PageWrapper loading={loading || !participant} error={error}>
-        <Grid>
-          <Box>
+        <Grid container direction="row" justify="space-around">
+          <Grid item sm={8} md={8} lg={8}>
             <Typography variant="h3">{participantName}</Typography>
             <Typography variant="subtitle1">{participantSubheading}</Typography>
-            <Typography>
-              Insert here some basic data about the participant Insert here some
-              basic data about the participant Insert here some basic data about
-              the participant
-            </Typography>
-          </Box>
-          <Image
-            url={participantImageUrl}
-            alt="Profile picture"
-            transformation={{
-              width: '30%',
-              height: '30%'
-            }}
-          />
-          <RecruitmentProfileInfo participant={participant} />
+            {education && education.level && (
+              <Grid item mb={1}>
+                <Typography variant="h6">Education</Typography>
+                <Typography>
+                  {education.level} in {education.degree},{' '}
+                  {education.university} ({education.graduationYear})
+                </Typography>
+              </Grid>
+            )}
+            {roles && roles.length !== 0 && (
+              <Grid item mb={1}>
+                <Typography variant="h6">Previous roles</Typography>
+                {roles.map(a => {
+                  return <Typography>{a.role}</Typography>;
+                })}
+              </Grid>
+            )}
+          </Grid>
+          <Grid item sm={4} md={4} lg={4}>
+            <Image
+              url={participantImageUrl}
+              defaultImage="https://avatars1.githubusercontent.com/u/11797156?s=460&v=4"
+              alt="Profile picture"
+              className={styles.profilePic}
+            />
+          </Grid>
         </Grid>
+        <RecruitmentProfileInfo participant={participant} />
       </PageWrapper>
     </Modal>
   );

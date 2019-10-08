@@ -1,52 +1,81 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RegistrationFields } from '@hackjunction/shared';
-import { groupBy } from 'lodash-es';
-import { Typography, Link, Box } from '@material-ui/core';
+import { Typography, Link, Grid, Box } from '@material-ui/core';
 
 import { Input } from 'antd';
 
-const RecruitmentProfileInfo = React.memo(({ participant }) => {
-  const fields = Object.keys(participant);
-  const grouped = groupBy(fields, field =>
-    RegistrationFields.getCategory(field)
-  );
-  const { education, portfolio, firstName, previousEvents } = participant;
-  return (
-    <React.Fragment>
-      <Box width="30%">
-        {education && education.level && (
-          <React.Fragment>
-            <Typography variant="h6">Education</Typography>
-            <Typography>
-              {education.level} in {education.degree}, {education.university} (
-              {education.graduationYear})
-            </Typography>
-          </React.Fragment>
+const getListOf = (areas, subject) => {
+  if (areas && areas.length !== 0)
+    return (
+      <Box mb={1} sm={12} md={6} lg={6}>
+        {subject === 'theme' ? (
+          <Typography variant="h6">Themes of interest</Typography>
+        ) : (
+          <Typography variant="h6">Industries of interest</Typography>
         )}
-        {portfolio && (
-          <React.Fragment>
-            <Typography variant="h6">Portfolio</Typography>
-            <Link>{portfolio}</Link>
-          </React.Fragment>
-        )}
-        <Typography variant="h6">Interests</Typography>
-        <Link>{portfolio}</Link>
-        {previousEvents && (
-          <Typography variant="subtitle1">Past hackathons</Typography>
-        )}
-        {previousEvents.map(event => {
-          <Typography>{event.name}</Typography>;
+        {areas.map(area => {
+          return <Typography key={area}>{area}</Typography>;
         })}
       </Box>
-      <Box>
-        <Typography>Contact {firstName}</Typography>
+    );
+};
+
+const getActionHistory = history => {
+  if (history && history.length !== 0)
+    return (
+      <Grid item mb={1} sm={12} md={6} lg={6}>
+        <Typography variant="subtitle1">Previous messages</Typography>
+        {history.map(action => {
+          return <Typography key={action}>{action}</Typography>;
+        })}
+      </Grid>
+    );
+};
+
+const getPrevEvents = events => {
+  if (events && events.length !== 0)
+    return (
+      <Grid item mb={1} sm={12} md={6} lg={6}>
+        <Typography variant="h6">Past hackathons</Typography>
+        {events.map(event => {
+          return <Typography key={event.id}>{event.name}</Typography>;
+        })}
+      </Grid>
+    );
+};
+
+const RecruitmentProfileInfo = React.memo(({ participant }) => {
+  const {
+    portfolio,
+    profile,
+    previousEvents,
+    themesOfInterest,
+    industriesOfInterest,
+    recruitmentActionHistory
+  } = participant;
+  return (
+    <Grid container>
+      <Grid container direction="column" justify="space-between">
+        {portfolio && portfolio.length !== 0 && (
+          <Grid item mb={2} sm={12} md={6} lg={6}>
+            <Typography variant="h6">Portfolio</Typography>
+            <Link>{portfolio}</Link>
+          </Grid>
+        )}
+        {getListOf(themesOfInterest, 'theme')}
+        {getListOf(industriesOfInterest, 'industry')}
+        {getPrevEvents(previousEvents)}
+      </Grid>
+      <Grid item sm={12} md={8} lg={6}>
+        <Typography variant="h6">Contact</Typography>
+        {getActionHistory(recruitmentActionHistory)}
+        <Typography>Send {profile.firstName} a message</Typography>
         <Input.TextArea
           autosize={{ minRows: 10, maxRows: 20 }}
           placeholder="Max 1000 characters"
         />
-      </Box>
-    </React.Fragment>
+      </Grid>
+    </Grid>
   );
 });
 
