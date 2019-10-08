@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import Image from 'components/generic/Image';
 import { withSnackbar } from 'notistack';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Grid } from '@material-ui/core';
 
 import styles from './RecruitmentUserModal.module.scss';
 
@@ -19,7 +19,7 @@ import UserProfilesService from 'services/userProfiles';
 const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [profile, setProfile] = useState();
+  const [participant, setParticipant] = useState();
 
   useEffect(() => {
     console.log('id:', profileId);
@@ -27,7 +27,7 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       setLoading(true);
       UserProfilesService.getUserProfileRecruitment(profileId, idToken)
         .then(data => {
-          setProfile(data);
+          setParticipant(data);
           console.log(data);
         })
         .catch(err => {
@@ -40,20 +40,20 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
   }, [idToken, profileId]);
 
   const participantName = useMemo(() => {
-    if (!profile) return '';
-    const { firstName, lastName } = profile;
+    if (!participant) return '';
+    const { firstName, lastName } = participant.profile;
     return `${firstName} ${lastName}`;
-  }, [profile]);
+  }, [participant]);
 
   const participantSubheading = useMemo(() => {
-    if (!profile) return '';
-    return profile.countryOfResidence;
-  }, [profile]);
+    if (!participant) return '';
+    return participant.profile.countryOfResidence;
+  }, [participant]);
 
   const participantImageUrl = useMemo(() => {
-    if (!profile) return '';
-    return profile.avatar;
-  }, [profile]);
+    if (!participant) return '';
+    return participant.profile.avatar;
+  }, [participant]);
 
   return (
     <Modal
@@ -62,9 +62,9 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       size="max"
       title="Profile details"
     >
-      <PageWrapper loading={loading || !profile} error={error}>
-        <CenteredContainer className={styles.wrapper}>
-          <Box width="60%">
+      <PageWrapper loading={loading || !participant} error={error}>
+        <Grid>
+          <Box>
             <Typography variant="h3">{participantName}</Typography>
             <Typography variant="subtitle1">{participantSubheading}</Typography>
             <Typography>
@@ -78,14 +78,11 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
             alt="Profile picture"
             transformation={{
               width: '30%',
-              height: '30%',
-              radius: '20'
+              height: '30%'
             }}
           />
-        </CenteredContainer>
-        <CenteredContainer className={styles.wrapper}>
-          <RecruitmentProfileInfo profile={profile} />
-        </CenteredContainer>
+          <RecruitmentProfileInfo participant={participant} />
+        </Grid>
       </PageWrapper>
     </Modal>
   );
