@@ -112,7 +112,7 @@ controller.saveRecruiterAction = async (actionToSave) => {
   } 
   if(action.type === 'remove-favorite'){
     // Remove previous favorite
-    await RecruitmentAction.deleteOne({recruiter: action.recruiter, user: action.user, type: 'favorite'});
+    await RecruitmentAction.deleteMany({recruiter: action.recruiter, user: action.user, type: 'favorite'});
   }
   if(action.type === 'message'){
       await EmailTaskController.createRecruiterMessageTask(action);
@@ -120,6 +120,16 @@ controller.saveRecruiterAction = async (actionToSave) => {
 
   action.save();
   return action;
+}
+
+controller.getFavorites = async (recruiter) => {
+  return RecruitmentAction
+  .find({type: 'favorite', recruiter: recruiter})
+  .populate('_user').then(actions => Promise.all(actions.map(async action => { 
+    // Convert profiles so we don't reveal contact data
+    action._user = await controller.createRecruitmentProfile(action._user);
+    return action._user;
+  })));
 }
 
 module.exports = controller;

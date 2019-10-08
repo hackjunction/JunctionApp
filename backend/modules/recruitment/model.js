@@ -22,6 +22,20 @@ const RecruitmentActionSchema = new mongoose.Schema({
     type: mongoose.Mixed,
     default: {}
   }
+}, { toJSON: { virtuals: true } });
+
+RecruitmentActionSchema.virtual('_user', {
+  ref: 'UserProfile', // The model to use
+  localField: 'user', // Find people where `localField`
+  foreignField: 'userId', // is equal to `foreignField`
+  justOne: true
+});
+
+RecruitmentActionSchema.virtual('_recruiter', {
+  ref: 'UserProfile', // The model to use
+  localField: 'recruiter', // Find people where `localField`
+  foreignField: 'userId', // is equal to `foreignField`
+  justOne: true
 });
 
 RecruitmentActionSchema.set('timestamps', true);

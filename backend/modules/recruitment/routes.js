@@ -25,10 +25,14 @@ const saveRecruiterAction = asyncHandler(async (req, res) => {
     return res.status(200).json({ success: false, error: error.message });
   }
 });
+const getFavorites = asyncHandler(async (req, res) => {
+  const users = await RecruitmentController.getFavorites(req.user.sub);
+  return res.status(200).json(users);
+});
 
 router.get(
   "/search",
-   hasToken,
+  hasToken,
   hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
   queryUsers
 );
@@ -41,10 +45,16 @@ router
   );
 router
   .route("/action")
-  .get(
+  .post(
     hasToken,
     hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
     saveRecruiterAction
   );
+router.get(
+  "/favorites",
+  hasToken,
+  hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+  getFavorites
+);
 
 module.exports = router;
