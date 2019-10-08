@@ -17,11 +17,19 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
   );
   return res.status(200).json(userProfile);
 });
+const saveRecruiterAction = asyncHandler(async (req, res) => {
+  try {
+    await RecruitmentController.saveRecruiterAction(req.body);
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
 
 router.get(
   "/search",
- /*  hasToken,
-  hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), */
+   hasToken,
+  hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
   queryUsers
 );
 router
@@ -30,6 +38,13 @@ router
     hasToken,
     hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
     getUserProfileRecruitment
+  );
+router
+  .route("/action")
+  .get(
+    hasToken,
+    hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+    saveRecruiterAction
   );
 
 module.exports = router;

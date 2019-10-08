@@ -1,8 +1,8 @@
 const _ = require("lodash");
 const { RecruitmentAction } = require("./model");
-const RegistrationController = require("../registration/controller");
 const UserController = require("../user-profile/controller");
 const Registration = require("../registration/model");
+const EmailTaskController = require('../email-task/controller');
 
 const controller = {};
 
@@ -33,7 +33,6 @@ controller.queryProfiles = query => {
       limit: query.pagination.page_size
     };
   }
-  console.log(userQuery);
   return UserController.queryProfiles({
     query: userQuery,
     pagination: pagination
@@ -69,7 +68,7 @@ controller.createRecruitmentProfile = async (userProfile, eager = false) => {
       nationality: userProfile.nationality,
       countryOfResidence: userProfile.countryOfResidence,
       dateOfBirth: userProfile.dateOfBirth,
-      profilePicture: userProfile.profilePicture || null,
+      profilePicture: userProfile.avatar || null,
       bio: null // TODO add bio implementation!
     },
     skills: userProfile.skills,
@@ -94,6 +93,7 @@ controller.createRecruitmentProfile = async (userProfile, eager = false) => {
         });
       });
 
+    // TODO filter only those actions that match the organization from the token!
     profile.recruitmentActionHistory = await RecruitmentAction.find({
       userId: profile.userId
     });
@@ -103,5 +103,23 @@ controller.createRecruitmentProfile = async (userProfile, eager = false) => {
 
   return profile;
 };
+
+controller.saveRecruiterAction = async (actionToSave) => {
+  const action = new RecruitmentAction(actionToSave);
+
+  if(action.type === 'favorite'){
+      // Nothing todo, just save the action
+  } 
+  if(action.type === 'remove-favorite'){
+    // Remove previous favorite
+    await RecruitmentAction.deleteOne({recruiter: action.recruiter, user: action.user, type: 'favorite'});
+  }
+  if(action.type === 'message'){
+      await EmailTaskController.createRecruiterMessageTask(action);
+  }
+
+  action.save();
+  return action;
+}
 
 module.exports = controller;
