@@ -20,8 +20,8 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
 
 router.get(
   "/search",
-  hasToken,
-  hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+ /*  hasToken,
+  hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), */
   queryUsers
 );
 router

@@ -13,16 +13,19 @@ controller.getRecruitmentProfile = userId => {
 };
 
 controller.queryProfiles = query => {
-  const userQuery = {};
+  let userQuery = {};
   let pagination = {};
   if (query.filters.length) {
-    query.filters.map(filter => {
-      userQuery[filter.field] = {
-        [controller.filterOperatorToMongoOperator(
-          filter.operator
-        )]: filter.value
+    const whereFields = query.filters.map(filter => {
+      return {
+        [filter.field]: {
+          [controller.filterOperatorToMongoOperator(
+            filter.operator
+          )]: filter.value
+        }
       };
     });
+    userQuery = { $and: whereFields };
   }
   if (query.pagination) {
     pagination = {
@@ -30,6 +33,7 @@ controller.queryProfiles = query => {
       limit: query.pagination.page_size
     };
   }
+  console.log(userQuery);
   return UserController.queryProfiles({
     query: userQuery,
     pagination: pagination
@@ -65,8 +69,8 @@ controller.createRecruitmentProfile = async (userProfile, eager = false) => {
       nationality: userProfile.nationality,
       countryOfResidence: userProfile.countryOfResidence,
       dateOfBirth: userProfile.dateOfBirth,
-      profilePicture: userProfile.profilePicture,
-      bio: "" // TODO add bio implementation!
+      profilePicture: userProfile.profilePicture || null,
+      bio: null // TODO add bio implementation!
     },
     skills: userProfile.skills,
     roles: userProfile.roles,
