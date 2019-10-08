@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Typography, Link, Grid, Box } from '@material-ui/core';
-
+import Button from 'components/generic/Button';
 import { Input } from 'antd';
 
 const getListOf = (areas, subject) => {
@@ -74,6 +74,7 @@ const RecruitmentProfileInfo = React.memo(({ participant }) => {
           autosize={{ minRows: 10, maxRows: 20 }}
           placeholder="Max 1000 characters"
         />
+        <Button block text="Send" button={{}} />
       </Grid>
     </Grid>
   );
