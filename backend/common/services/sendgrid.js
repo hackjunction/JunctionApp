@@ -128,6 +128,26 @@ const SendgridService = {
 
         return SendgridService.send(msg);
     },
+    sendRecruiterMessageEmail: (recruiter, user, organization, message) => {
+        const params = {
+            subject: `You have a message from a recruiter!`,
+            subtitle: `${recruiter.firstName} ${recruiter.lastName} messaged you on ${global.gConfig.SENDGRID_FROM_NAME} Recruitment.`,
+            body: `
+                Look at that, someone is interested in your hacker skills! ${recruiter.firstName} ${recruiter.lastName} from ${organization}
+                has just sent you a message via the ${global.gConfig.SENDGRID_FROM_NAME} Recruitment platform. Here is their message:
+                <br/>
+                <br/>
+                <div style="padding: 1rem; background: lightgray;">
+                ${message}
+                </div>
+                <br/>
+                <br/>
+                Just reply to this email to communicate directly with the recruiter. Good luck on your (potential) new job!
+            `,
+            reply_to: recruiter.email
+        }
+        return SendgridService.sendGenericEmail(user.email, params)
+    },
     sendGenericEmail: (to, params) => {
         const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
             subject: params.subject,
@@ -135,7 +155,8 @@ const SendgridService = {
             header_image: params.header_image,
             body: params.body,
             cta_text: params.cta_text,
-            cta_link: params.cta_link
+            cta_link: params.cta_link,
+            reply_to: params.reply_to
         });
 
         return SendgridService.send(msg);
@@ -145,8 +166,9 @@ const SendgridService = {
             to,
             from: {
                 name: global.gConfig.SENDGRID_FROM_NAME,
-                email: global.gConfig.SENDGRID_FROM_EMAIL
+                email: global.gConfig.SENDGRID_FROM_EMAIL,
             },
+            replyTo: data.reply_to,
             templateId,
             dynamic_template_data: data
         };
