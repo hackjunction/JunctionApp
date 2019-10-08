@@ -27,7 +27,7 @@ import FormStatus from 'components/FormComponents/FormStatus';
 import CustomRegistrationSection from './CustomRegistrationSection';
 
 import RequiresPermission from 'hocs/RequiresPermission';
-import FacebookPixel from 'services/facebookPixel';
+import AnalyticsService from 'services/analytics';
 
 const EventRegister = ({
     slug,
@@ -43,7 +43,7 @@ const EventRegister = ({
 
     useEffect(() => {
         if (!hasRegistration) {
-            FacebookPixel.beginRegistration(slug);
+            AnalyticsService.events.BEGIN_REGISTRATION(slug);
         }
     }, [hasRegistration, slug]);
 
@@ -107,7 +107,7 @@ const EventRegister = ({
                 await createRegistration(event.slug, values);
             }
             setSubmitted(true);
-            FacebookPixel.completeRegistration(slug);
+            AnalyticsService.events.COMPLETE_REGISTRATION(slug);
         } catch (e) {
             notification.error({
                 message: 'Oopsie!',
