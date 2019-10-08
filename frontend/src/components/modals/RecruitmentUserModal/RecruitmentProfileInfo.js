@@ -6,19 +6,22 @@ import { Typography, Link, Box } from '@material-ui/core';
 
 import { Input } from 'antd';
 
-const RecruitmentProfileInfo = React.memo(({ profile }) => {
-  const fields = Object.keys(profile);
+const RecruitmentProfileInfo = React.memo(({ participant }) => {
+  const fields = Object.keys(participant);
   const grouped = groupBy(fields, field =>
     RegistrationFields.getCategory(field)
   );
-  const { education, portfolio, spokenLanguages, firstName } = profile;
+  const { education, portfolio, firstName, previousEvents } = participant;
   return (
     <React.Fragment>
       <Box width="30%">
-        {education && (
+        {education && education.level && (
           <React.Fragment>
             <Typography variant="h6">Education</Typography>
-            <Typography>{education.level}</Typography>
+            <Typography>
+              {education.level} in {education.degree}, {education.university} (
+              {education.graduationYear})
+            </Typography>
           </React.Fragment>
         )}
         {portfolio && (
@@ -29,6 +32,12 @@ const RecruitmentProfileInfo = React.memo(({ profile }) => {
         )}
         <Typography variant="h6">Interests</Typography>
         <Link>{portfolio}</Link>
+        {previousEvents && (
+          <Typography variant="subtitle1">Past hackathons</Typography>
+        )}
+        {previousEvents.map(event => {
+          <Typography>{event.name}</Typography>;
+        })}
       </Box>
       <Box>
         <Typography>Contact {firstName}</Typography>
