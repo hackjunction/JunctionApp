@@ -8,7 +8,7 @@ import { push } from 'connected-react-router';
 import EventHeroImage from 'components/events/EventHeroImage';
 import Divider from 'components/generic/Divider';
 import Markdown from 'components/generic/Markdown';
-import FacebookPixel from 'services/facebookPixel';
+import AnalyticsService from 'services/analytics';
 
 import EventTimeline from './EventTimeline';
 import EventButtons from './EventButtons';
@@ -21,7 +21,7 @@ import FadeInWrapper from 'components/animated/FadeInWrapper';
 
 const EventDetail = ({ event, registration, slug, user, match, location, pushLogin, eventStatus }) => {
     useEffect(() => {
-        FacebookPixel.viewEvent();
+        AnalyticsService.events.VIEW_EVENT(slug);
     }, [slug]);
 
     return (
