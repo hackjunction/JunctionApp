@@ -3,7 +3,10 @@ import { buildHandler, buildUpdatePath } from 'redux/utils';
 
 const initialState = {
     searchResults: {
-        data: [],
+        data: {
+            data: [],
+            count: 0
+        },
         loading: false,
         error: false,
         updated: 0
