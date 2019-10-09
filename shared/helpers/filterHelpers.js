@@ -77,7 +77,13 @@ const buildFiltersArray = filters => {
                 };
             }
             case FilterTypes.BOOLEAN_TRUE.id:
+                return item => {
+                    return FilterFunctions.isEqualTo(item, filter.path, true);
+                };
             case FilterTypes.BOOLEAN_FALSE.id:
+                return item => {
+                    return FilterFunctions.isEqualTo(item, filter.path, false);
+                };
             default:
                 return () => true;
         }
