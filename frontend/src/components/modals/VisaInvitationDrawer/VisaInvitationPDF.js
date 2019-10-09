@@ -50,15 +50,15 @@ const VisaInvitationPDF = ({
     hostEmail = 'karoliina.pellinen@hackjunction.com',
     hostTitle = 'Head of Participants',
     hostCompany = 'Junction Oy',
-    date = '01.01.2019',
-    granteeFirstName = 'Juuso',
-    granteeLastName = 'Lappalainen',
-    granteeNationality = 'Finnish',
-    granteePassportNo = '755245118',
-    profession = 'Employed at VKontakte',
+    date = '',
+    granteeFirstName = '',
+    granteeLastName = '',
+    granteeNationality = '',
+    granteePassportNo = '',
+    profession = '',
     arrivalCity = 'Helsinki',
     arrivalCountry = 'Finland',
-    arrivalDate = '01.01.2019'
+    arrivalDate = ''
 }) => (
     <Document>
         <Page size="A4" style={styles.body}>
@@ -88,7 +88,7 @@ const VisaInvitationPDF = ({
             </Text>
             <Text style={styles.paragraph}>
                 We have arranged accommodation for {granteeFirstName} for the duration of the above events, and
-                participation in the events is fully funded by Junction. We also invite {granteeFirstName} to get to
+                participation in the events is fully supported by Junction. We also invite {granteeFirstName} to get to
                 know {arrivalCity} at their leisure and attend complementary events such as those organised by Slush
                 during the week after, November 18th to 25th.
             </Text>
