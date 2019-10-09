@@ -44,7 +44,11 @@ const SendgridService = {
         return SendgridService.send(msg);
     },
     sendRejectionEmail: (event, user) => {
-        return Promise.resolve();
+        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_REJECTED_TEMPLATE, {
+            event_name: event.name,
+            first_name: user.firstName
+        });
+        return SendgridService.send(msg);
     },
     sendRegisteredEmail: (event, user) => {
         const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
