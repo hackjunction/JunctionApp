@@ -3,7 +3,6 @@ const SendgridService = require('../../common/services/sendgrid');
 const EmailTypes = require('./types');
 const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
-const RegistrationController = require('../registration/controller');
 const shortid = require('shortid');
 const Promise = require('bluebird');
 const controller = {};
@@ -77,14 +76,10 @@ controller.createTravelGrantRejectedTask = async (registration, deliverNow = fal
 
 controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deliverNow = false) => {
     if (!uniqueId) {
-        console.log('GENERATING UNIQUE ID');
         uniqueId = shortid.generate();
     }
-    console.log('CREATING TASK');
     const task = await controller.createTask(userId, eventId, 'generic_' + uniqueId, msgParams);
-    console.log('CREATED TASK');
     if (task && deliverNow) {
-        console.log('DELIVERING NOW', task);
         return controller.deliverEmailTask(task);
     }
     return task;
@@ -128,7 +123,7 @@ controller.deliverEmailTask = async task => {
 };
 
 controller.sendPreviewEmail = async (to, msgParams) => {
-    return SendgridService.sendGenericEmail(to, msgParams).catch(err => {
+    return SendgridService.sendGenericEmail(to, msgParams).catch(() => {
         return;
     });
 };

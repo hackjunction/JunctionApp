@@ -135,15 +135,41 @@ controller.assignRegistrationForEvent = data => {
 
 controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
     const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo', 'travelGrant']);
-    return Registration.updateMany(
-        {
-            event: eventId,
-            user: {
-                $in: registrationIds
-            }
-        },
-        cleanedEdits
-    );
+    return Registration.find({
+        event: eventId,
+        user: {
+            $in: registrationIds
+        }
+    }).then(registrations => {
+        const updates = registrations
+            .map(registration => {
+                let edits = _.cloneDeep(cleanedEdits);
+                if (edits.hasOwnProperty('status')) {
+                    const status = RegistrationStatuses.asObject[registration.status];
+                    if (status && !status.allowEdit) {
+                        delete edits.status;
+                    }
+                }
+
+                if (edits.hasOwnProperty('tags')) {
+                    edits.tags = _.uniq((registration.tags || []).concat(edits.tags));
+                }
+
+                if (Object.keys(edits).length === 0) return null;
+
+                return {
+                    updateOne: {
+                        filter: {
+                            _id: registration._id
+                        },
+                        update: edits
+                    }
+                };
+            })
+            .filter(edit => edit !== null);
+
+        return Registration.bulkWrite(updates);
+    });
 };
 
 controller.bulkAssignTravelGrants = (eventId, grants) => {
