@@ -182,7 +182,6 @@ controller.getFullRegistration = (eventId, registrationId) => {
         mongoose.Types.ObjectId.isValid(registrationId) && registrationId.indexOf('|') === -1
             ? { _id: registrationId }
             : { user: registrationId };
-    console.log('QUERY', query);
     return Registration.findOne(query)
         .and({ event: eventId })
         .then(registration => {
