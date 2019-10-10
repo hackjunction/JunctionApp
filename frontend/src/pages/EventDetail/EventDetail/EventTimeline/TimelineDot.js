@@ -18,8 +18,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '12px',
         borderColor: theme.palette.primary.main,
         borderWidth: '3px'
-    },
-    completed: {}
+    }
 }));
 
 const TimelineDot = ({ active, completed }) => {
