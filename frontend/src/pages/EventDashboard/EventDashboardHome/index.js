@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import styles from './EventDashboardHome.module.scss';
 
 import { Steps, Icon, Row, Col } from 'antd';
 import { connect } from 'react-redux';
+import { Box } from '@material-ui/core';
 
 import Divider from 'components/generic/Divider';
-
-import EventDashboardHomeRegistration from './EventDashboardHomeRegistration';
+import PageHeader from 'components/generic/PageHeader';
+import RegistrationPhase from './RegistrationPhase';
+import EventPhase from './EventPhase';
 
 import EventUtils from 'utils/events';
 import EventConstants from 'constants/events';
@@ -27,9 +28,9 @@ const EventDashboardHome = ({ event, registration }) => {
         switch (currentStep) {
             case EventConstants.STATUS.Registration.index:
             case EventConstants.STATUS.Confirmation.index:
-                return <EventDashboardHomeRegistration />;
+                return <RegistrationPhase />;
             case EventConstants.STATUS.InProgress.index:
-                return <h1>Event in progress</h1>;
+                return <EventPhase />;
             case EventConstants.STATUS.Finished.index:
                 return <h1>Finished</h1>;
             default:
@@ -38,28 +39,15 @@ const EventDashboardHome = ({ event, registration }) => {
     }
 
     return (
-        <div className={styles.wrapper}>
-            <h1 className={styles.sectionTitle}>Event timeline</h1>
-            <Divider size={1} />
-            <Row>
-                <Col xs={0} lg={24}>
-                    <Steps current={currentStep - 1}>
-                        <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                        <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
-                        <Steps.Step title="Finished" icon={<Icon type="crown" />} />
-                    </Steps>
-                </Col>
-                <Col xs={24} lg={0}>
-                    <Steps direction="vertical" current={currentStep - 1}>
-                        <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                        <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
-                        <Steps.Step title="Finished" icon={<Icon type="crown" />} />
-                    </Steps>
-                </Col>
-            </Row>
-            <Divider size={1} />
+        <Box>
+            <PageHeader heading="Event timeline" />
+            <Steps current={currentStep - 1}>
+                <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
+                <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
+                <Steps.Step title="Finished" icon={<Icon type="crown" />} />
+            </Steps>
             {renderContent()}
-        </div>
+        </Box>
     );
 };
 
