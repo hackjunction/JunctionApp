@@ -54,11 +54,27 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
             }
         }
         default: {
-            return (
-                <Typography variant="subtitle1" align="center">
-                    The application period for this event has ended!
-                </Typography>
-            );
+            if (user) {
+                if (hasRegistration) {
+                    return (
+                        <Button fullWidth onClick={pushDashboard} variant="contained" color="primary">
+                            Event dashboard
+                        </Button>
+                    );
+                } else {
+                    return (
+                        <Typography variant="subtitle1" align="center">
+                            The application period for this event has ended!
+                        </Typography>
+                    );
+                }
+            } else {
+                return (
+                    <Button fullWidth onClick={pushLogin} variant="contained" color="primary">
+                        Log in
+                    </Button>
+                );
+            }
         }
     }
 };
