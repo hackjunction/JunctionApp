@@ -68,7 +68,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
                 }
             } else {
                 return (
-                    <Button fullWidth onClick={pushLogin} variant="contained" color="primary">
+                    <Button fullWidth onClick={pushLogin} variant="contained" color="black">
                         Log in
                     </Button>
                 );
@@ -87,7 +87,7 @@ const mapState = state => ({
 const mapDispatch = (dispatch, ownProps) => ({
     pushDashboard: () => dispatch(push(`/dashboard/${ownProps.slug}`)),
     pushRegistration: () => dispatch(push(`${ownProps.match.url}/register`)),
-    pushLogin: nextRoute => dispatch(push('/login', { nextRoute }))
+    pushLogin: () => dispatch(push('/login', { nextRoute: ownProps.match.url }))
 });
 
 export default connect(
