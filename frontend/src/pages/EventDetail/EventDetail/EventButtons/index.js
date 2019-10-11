@@ -9,8 +9,6 @@ import { Typography, Grid, Button } from '@material-ui/core';
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 
-// const { REGISTRATION_OPEN, REGISTRATION_CLOSED, REGISTRATION_UPCOMING } = Events.status;
-
 const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pushRegistration, pushDashboard }) => {
     switch (eventStatus) {
         case EventStatuses.PUBLISHED.id: {

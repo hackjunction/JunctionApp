@@ -83,7 +83,7 @@ export const registrationsWithTravelGrant = createSelector(
 );
 
 export const travelGrantSpend = createSelector(
-    registrationsWithTravelGrant,
+    registrationsConfirmed,
     registrations => {
         return sumBy(registrations, r => {
             return r.travelGrant || 0;
