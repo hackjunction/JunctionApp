@@ -88,9 +88,9 @@ const VisaInvitationPDF = ({
             </Text>
             <Text style={styles.paragraph}>
                 We have arranged accommodation for {granteeFirstName} for the duration of the above events, and
-                participation in the events is fully supported by Junction. We also invite {granteeFirstName} to get to
-                know {arrivalCity} at their leisure and attend complementary events such as those organised by Slush
-                during the week after, November 18th to 25th.
+                participation in the events is supported by Junction. We also invite {granteeFirstName} to get to know{' '}
+                {arrivalCity} at their leisure and attend complementary events such as those organised by Slush during
+                the week after, November 18th to 25th.
             </Text>
             <Text style={styles.paragraph}>Sincerely,</Text>
             <Image style={styles.signature} src={require('assets/images/visa_signature.jpg')} />
