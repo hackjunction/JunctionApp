@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
+import { Button as AntButton, Popconfirm } from 'antd';
 import { connect } from 'react-redux';
 import { Box } from '@material-ui/core';
 import { RegistrationStatuses } from '@hackjunction/shared';
@@ -124,8 +125,7 @@ const RegistrationStatusBlock = ({
                         Can't make it after all? Bummer. Please let us know by clicking the button below, so we can
                         accept someone else in your place.
                         <br />
-                        <span>Cancel button here</span>
-                        {/* <Popconfirm
+                        <Popconfirm
                             onConfirm={handleCancel}
                             title="Are you sure? You won't be able to reverse this."
                             okText="Yes, I'm sure"
@@ -134,7 +134,7 @@ const RegistrationStatusBlock = ({
                             <AntButton type="link" block size="large" loading={loading}>
                                 Cancel participation
                             </AntButton>
-                        </Popconfirm> */}
+                        </Popconfirm>
                     </p>
                 }
             />

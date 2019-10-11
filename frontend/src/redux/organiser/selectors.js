@@ -83,7 +83,7 @@ export const registrationsWithTravelGrant = createSelector(
 );
 
 export const travelGrantSpend = createSelector(
-    registrationsConfirmed,
+    registrationsWithTravelGrant,
     registrations => {
         return sumBy(registrations, r => {
             return r.travelGrant || 0;
@@ -105,7 +105,6 @@ export const teamsPopulated = createSelector(
     registrationsMap,
     teams,
     (map, teams) => {
-        console.log('MAP', map);
         return teams.map(team => {
             team.members = team.members.map(member => {
                 return map[member];
