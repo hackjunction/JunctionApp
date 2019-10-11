@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from 'lodash-es';
 import moment from 'moment';
-import { EventHelpers, Events } from '@hackjunction/shared';
+import { EventHelpers, EventStatuses } from '@hackjunction/shared';
 
 export const event = state => state.dashboard.event.data;
 export const eventLoading = state => state.dashboard.event.loading;
@@ -15,9 +15,7 @@ export const eventStatus = createSelector(
 
 export const isRegistrationOpen = createSelector(
     eventStatus,
-    status => {
-        return status === Events.status.REGISTRATION_OPEN.id;
-    }
+    status => status.id === EventStatuses.REGISTRATION_OPEN.id
 );
 
 export const registration = state => state.dashboard.registration.data;

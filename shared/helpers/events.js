@@ -1,4 +1,4 @@
-const EventConstants = require('../constants/events');
+const EventStatuses = require('../constants/event-statuses');
 
 const EventHelpers = {
     isRegistrationOpen: (event, moment) => {
@@ -14,22 +14,23 @@ const EventHelpers = {
         const now = moment().utc();
 
         if (now.isBefore(event.registrationStartTime)) {
-            return EventConstants.status.REGISTRATION_UPCOMING.id;
+            return EventStatuses.PUBLISHED.id;
         } else if (now.isBefore(event.registrationEndTime)) {
-            return EventConstants.status.REGISTRATION_OPEN.id;
+            return EventStatuses.REGISTRATION_OPEN.id;
+        } else if (now.isBefore(event.endTime)) {
+            if (now.isBefore(event.startTime)) {
+                const eventBegins = moment(event.startTime).utc();
+                if (eventBegins.diff(now, 'days') < 7) {
+                    return EventStatuses.WEEK_OF_EVENT;
+                } else {
+                    return EventStatuses.REGISTRATION_ENDED;
+                }
+            } else {
+                return EventStatuses.IN_PROGRESS;
+            }
         } else {
-            return EventConstants.status.REGISTRATION_CLOSED.id;
+            return EventStatuses.FINISHED;
         }
-    },
-    validations: {
-        firstName: (validateJS, required) => value =>
-            validateJS.single(value, { minimum: 0, maximum: 100, type: 'string' }),
-        lastName: (validateJS, required) => value =>
-            validateJS.single(value, { minimum: 0, maximum: 100, type: 'string' }),
-        email: (validateJS, required) => value =>
-            validateJS.single(value, { email: true, presence: { allowEmpty: !required } }),
-        dateOfBirth: (validateJS, required) => value =>
-            validateJS.single(value, { dateOnly: true, presence: { allowEmpty: !required } })
     }
 };
 
