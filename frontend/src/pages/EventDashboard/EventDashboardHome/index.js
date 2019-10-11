@@ -17,14 +17,23 @@ const EventDashboardHome = ({ event, registration }) => {
     if (!event || !registration) return null;
 
     function renderContent() {
-        return <RegistrationPhase />;
+        switch (currentStep) {
+            case 0:
+                return <RegistrationPhase />;
+            case 1:
+                return <EventPhase />;
+            default:
+                return <RegistrationPhase />;
+        }
     }
+
+    const currentStep = 1;
 
     return (
         <Box>
             <PageHeader heading="Event timeline" />
             <Box mt={2} />
-            <Steps current={0}>
+            <Steps current={currentStep}>
                 <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
                 <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
                 <Steps.Step title="Finished" icon={<Icon type="crown" />} />
