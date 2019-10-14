@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import QrReader from 'react-qr-reader';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,11 +23,14 @@ const useStyles = makeStyles(theme => ({
 
 const QRCodeReaderModal = ({ open, onClose, enqueueSnackbar, registrationsMap, event, editRegistration }) => {
     const classes = useStyles();
+    const reader = useRef(null);
     const [user, setUser] = useState();
+    const [legacyMode, setLegacyMode] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const handleError = useCallback(() => {
         enqueueSnackbar('Error scanning QR code', { variant: 'error' });
+        setLegacyMode(true);
     }, [enqueueSnackbar]);
 
     const handleCheckIn = useCallback(() => {
@@ -36,7 +39,6 @@ const QRCodeReaderModal = ({ open, onClose, enqueueSnackbar, registrationsMap, e
         editRegistration(registration._id, { status: RegistrationStatuses.asObject.checkedIn.id }, event.slug)
             .then(() => {
                 enqueueSnackbar('Changed status to checked in', { variant: 'success' });
-                // setUser();
             })
             .catch(err => {
                 enqueueSnackbar('Something went wrong', { variant: 'error' });
@@ -64,9 +66,13 @@ const QRCodeReaderModal = ({ open, onClose, enqueueSnackbar, registrationsMap, e
                     .finally(() => {
                         setLoading(false);
                     });
+            } else {
+                if (legacyMode) {
+                    enqueueSnackbar('No QR code detected, please upload another image', { variant: 'error' });
+                }
             }
         },
-        [enqueueSnackbar]
+        [enqueueSnackbar, legacyMode]
     );
 
     const renderRegistrationInfo = () => {
@@ -133,13 +139,24 @@ const QRCodeReaderModal = ({ open, onClose, enqueueSnackbar, registrationsMap, e
                         {renderRegistrationInfo()}
                     </Box>
                 ) : (
-                    <QrReader
-                        delay={500}
-                        onError={handleError}
-                        onScan={handleScan}
-                        style={{ width: '100%', maxWidth: 600 }}
-                        facingMode="environment"
-                    />
+                    <React.Fragment>
+                        <QrReader
+                            ref={reader}
+                            delay={500}
+                            onError={handleError}
+                            onScan={handleScan}
+                            style={{ width: '100%', maxWidth: 600 }}
+                            facingMode="environment"
+                            legacyMode={legacyMode}
+                        />
+                        <Box p={2}>
+                            <Typography variant="subtitle1">Camera not working?</Typography>
+                            <Box mt={1} />
+                            <Button variant="contained" onClick={() => reader.current.openImageDialog()}>
+                                Take a picture
+                            </Button>
+                        </Box>
+                    </React.Fragment>
                 )}
             </Box>
         </Modal>
