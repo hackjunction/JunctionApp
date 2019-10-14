@@ -23,6 +23,12 @@ controller.getUserProfiles = userIds => {
     });
 };
 
+controller.queryProfiles = async query => {
+    const found = await UserProfile.find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
+    const count = await UserProfile.find(query.query).countDocuments();
+    return {found, count};
+};
+
 controller.getUserProfilesPublic = userIds => {
     return controller.getUserProfiles(userIds).then(profiles => {
         return UserProfile.publicFields(profiles);
@@ -51,10 +57,5 @@ controller.getUsersByEmail = email => {
     return UserProfile.find({ email });
 };
 
-controller.queryUsers = () => {
-    return UserProfile.find({}).then(users => {
-        return _.shuffle(users).slice(0, 10);
-    });
-};
 
 module.exports = controller;
