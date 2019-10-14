@@ -11,18 +11,18 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    dot: {
+    dot: ({ active }) => ({
         width: '24px',
         height: '24px',
         borderStyle: 'solid',
         borderRadius: '12px',
-        borderColor: theme.palette.primary.main,
+        borderColor: active ? theme.palette.primary.main : '#ccc',
         borderWidth: '3px'
-    }
+    })
 }));
 
 const TimelineDot = ({ active, completed }) => {
-    const classes = useStyles();
+    const classes = useStyles({ active });
     return (
         <div className={classes.root}>
             {completed ? <CheckIcon color="primary" fontSize="small" /> : <div className={classes.dot} />}

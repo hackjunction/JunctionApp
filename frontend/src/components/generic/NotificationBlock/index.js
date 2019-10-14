@@ -1,50 +1,48 @@
 import React from 'react';
-import styles from './NotificationBlock.module.scss';
 
-import { Icon } from 'antd';
-import classNames from 'classnames';
+import { Card, CardMedia, CardContent, CardActions, Typography, CircularProgress, Box } from '@material-ui/core';
+import { SuccessHeader, ErrorHeader, InfoHeader, WarningHeader } from './IconHeader';
 
-import Divider from 'components/generic/Divider';
-
-const NotificationBlock = ({ title, titleExtra, body, bottom, type }) => {
-    const renderTypeIcon = () => {
-        if (!type) return null;
+const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, type }) => {
+    const headerComponent = () => {
         switch (type) {
             case 'success':
-                return <Icon className={styles.icon} type="check-circle" />;
+                return SuccessHeader;
             case 'error':
-                return <Icon className={styles.icon} type="exclamation-circle" />;
+                return ErrorHeader;
             case 'warning':
-                return <Icon className={styles.icon} type="exclamation-circle" />;
+                return WarningHeader;
             case 'info':
-                return <Icon className={styles.icon} type="info-circle" />;
+                return InfoHeader;
             default:
-                return null;
+                return InfoHeader;
         }
     };
 
-    const iconWrapperClass = classNames(styles.iconWrapper, {
-        [styles.iconWrapperSuccess]: type === 'success',
-        [styles.iconWrapperInfo]: type === 'info',
-        [styles.iconWrapperWarning]: type === 'warning',
-        [styles.iconWrapperError]: type === 'error'
-    });
-
     return (
-        <div className={styles.wrapper}>
-            <div className={iconWrapperClass}>
-                <div className={styles.iconBubble}>{renderTypeIcon()}</div>
-            </div>
-            <div className={styles.contentWrapper}>
-                <span className={styles.title}>
-                    {title}
-                    {titleExtra && <strong className={styles.titleExtra}>{titleExtra}</strong>}
-                </span>
-                <Divider size={1} />
-                <p className={styles.body}>{body}</p>
-                <div className={styles.bottom}>{bottom}</div>
-            </div>
-        </div>
+        <Card>
+            <CardMedia component={headerComponent()} height="200" />
+            <CardContent>
+                <Typography variant="button">{title}</Typography>
+                <Typography variant="h6" paragraph>
+                    {titleExtra}
+                </Typography>
+                <Typography variant="subtitle1">{body}</Typography>
+            </CardContent>
+            <CardActions>
+                <Box
+                    p={2}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    flexWrap="wrap"
+                    width="100%"
+                >
+                    {bottomLoading ? <CircularProgress size={24} /> : bottom}
+                </Box>
+            </CardActions>
+        </Card>
     );
 };
 
