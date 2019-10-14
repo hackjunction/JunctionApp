@@ -40,18 +40,6 @@ const getUsersByEmail = asyncHandler(async (req, res) => {
   return res.status(200).json(users);
 });
 
-const queryUsers = asyncHandler(async (req, res) => {
-  const users = await UserProfileController.queryUsers();
-  return res.status(200).json(users);
-});
-
-const getUserProfileRecruitment = asyncHandler(async (req, res) => {
-  const userProfile = await UserProfileController.getUserProfile(
-    req.query.userId
-  );
-  return res.status(200).json(userProfile);
-});
-
 router
   .route('/')
   .get(hasToken, getUserProfile)
@@ -61,15 +49,5 @@ router
 router.route('/public').get(getUserProfilesPublic);
 
 router.get('/search', hasToken, getUsersByEmail);
-
-/** Shitty route name but lets think about it later */
-router.get(
-  '/recruitment/search',
-  hasToken,
-  hasPermission(Auth.Permissions.MANAGE_EVENT),
-  queryUsers
-);
-
-router.route('/recruitment/profile').get(hasToken, getUserProfileRecruitment);
 
 module.exports = router;
