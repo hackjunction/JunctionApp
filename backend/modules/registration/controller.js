@@ -60,12 +60,12 @@ controller.confirmRegistration = (user, event) => {
 
 controller.cancelRegistration = (user, event) => {
     return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status === STATUSES.confirmed.id) {
+        if (registration.status === STATUSES.confirmed.id || registration.status === STATUSES.accepted.id) {
             registration.status = STATUSES.cancelled.id;
             return registration.save();
         }
 
-        throw new ForbiddenError('Only confirmed registrations can be cancelled');
+        throw new ForbiddenError('Only accepted or confirmed registrations can be cancelled');
     });
 };
 

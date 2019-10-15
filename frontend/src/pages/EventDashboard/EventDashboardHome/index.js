@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Steps, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Stepper, Step, StepLabel, StepContent, Typography, Grid } from '@material-ui/core';
+import { Box, Stepper, Step, StepLabel, StepContent, Typography, CircularProgress } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { EventStatuses } from '@hackjunction/shared';
 
@@ -11,6 +11,7 @@ import Divider from 'components/generic/Divider';
 import PageHeader from 'components/generic/PageHeader';
 import TimelineDot from 'components/generic/TimelineDot';
 import RegistrationPhase from './RegistrationPhase';
+import ConfirmedPhase from './ConfirmedPhase';
 import EventPhase from './EventPhase';
 
 import EventUtils from 'utils/events';
@@ -52,17 +53,9 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             <PageHeader heading="Event timeline" />
             <Box mt={2} />
             {loading ? (
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <Skeleton variant="rect" width="100%" height="220px" />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Skeleton variant="rect" width="100%" height="220px" />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Skeleton variant="rect" width="100%" height="220px" />
-                    </Grid>
-                </Grid>
+                <Box p={2} display="flex" alignItems="center" justifyContent="center">
+                    <CircularProgress size={24} />
+                </Box>
             ) : (
                 <Stepper activeStep={getActiveStep()} className={classes.stepper} orientation="vertical">
                     <Step key="pending">
@@ -78,7 +71,7 @@ const EventDashboardHome = ({ event, registration, loading }) => {
                             <Typography variant="button">Confirmed participation</Typography>
                         </StepLabel>
                         <StepContent>
-                            <p>Confirmed all the shit</p>
+                            <ConfirmedPhase />
                         </StepContent>
                     </Step>
                     <Step key="event">
