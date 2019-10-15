@@ -19,7 +19,7 @@ const RegistrationStatusBlock = ({
     isRegistrationOpen
 }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    if (!registration || !event || !registration.user) return null;
+    if (!registration || !event || !registration.user) return <NotificationBlock loading />;
 
     if (registration.status === STATUSES.checkedIn.id) {
         return (
@@ -36,7 +36,7 @@ const RegistrationStatusBlock = ({
                 type="info"
                 title="Check-in status:"
                 titleExtra="Incomplete"
-                body="Head to the venue, and check-in with this QR Code!"
+                body="Once you arrive at the venue, you'll be able to check in with with your event id"
                 bottom={
                     <React.Fragment>
                         <QRCodeModal

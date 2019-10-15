@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { Card, CardMedia, CardContent, CardActions, Typography, CircularProgress, Box } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { SuccessHeader, ErrorHeader, InfoHeader, WarningHeader } from './IconHeader';
 
-const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, type }) => {
+const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, type, loading }) => {
     const headerComponent = () => {
         switch (type) {
             case 'success':
@@ -18,6 +19,20 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, typ
                 return InfoHeader;
         }
     };
+
+    if (loading) {
+        return (
+            <Card>
+                <CardContent>
+                    <Skeleton variant="rect" width="100%" height="60px" />
+                    <Box mt={1} />
+                    <Skeleton variant="rect" width="60%" height="30px" />
+                    <Box mt={1} />
+                    <Skeleton variant="rect" width="100%" height="200px" />
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card>
@@ -35,7 +50,7 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, typ
                     display="flex"
                     flexDirection="row"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent="flex-end"
                     flexWrap="wrap"
                     width="100%"
                 >
