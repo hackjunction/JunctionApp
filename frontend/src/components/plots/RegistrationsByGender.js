@@ -17,9 +17,11 @@ const RegistrationsByNationality = ({ registrations }) => {
 
     return (
         <Box p={2}>
-            <Typography paragraph variant="h6" align="center">
+            <Typography variant="h6" align="center">
                 By gender
-                <Typography variant="subtitle1">{formattedData.length} genders</Typography>
+            </Typography>
+            <Typography variant="overline" align="center" paragraph>
+                {formattedData.length} genders
             </Typography>
             <ResponsiveContainer width="100%" height={400}>
                 <BarChart

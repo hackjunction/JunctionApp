@@ -92,7 +92,7 @@ const TravelGrantPage = ({
                 <Statistic label="Current spend" value={travelGrantSpend} suffix="€" />
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="body">
+                <Typography variant="body1">
                     Here you can automatically grant travel grants based on your filter groups. Set the amount you want
                     to grant for each group (or 0 to skip that group), and the tool will go through confirmed
                     participants in order of registration time, and assign them their respective travel grant amounts as
