@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Rate, Tag, List, Select, Input } from 'antd';
+import { Rate, List, Input } from 'antd';
 import { Grid, Typography, Box } from '@material-ui/core';
 
 import Button from 'components/generic/Button';
-
+import EventTagsSelect from 'components/FormComponents/EventTagsSelect';
 import UserSelectModal from 'components/modals/UserSelectModal';
 import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
 
@@ -86,22 +86,7 @@ const EditRegistrationActions = ({ registration, event, organisers, organisersMa
                 <List.Item>
                     <List.Item.Meta
                         title="Tags"
-                        description={
-                            <Select
-                                placeholder="Select tags"
-                                size="large"
-                                value={tags.value}
-                                style={{ width: '100%' }}
-                                onChange={tags.setValue}
-                                mode="multiple"
-                            >
-                                {event.tags.map(tag => (
-                                    <Select.Option value={tag.label}>
-                                        <Tag color={tag.color}>{tag.label}</Tag>
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        }
+                        description={<EventTagsSelect value={tags.value} onChange={tags.setValue} tags={event.tags} />}
                     ></List.Item.Meta>
                 </List.Item>
             </Grid>

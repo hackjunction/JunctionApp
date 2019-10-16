@@ -1,11 +1,21 @@
-import React, { useState, useCallback } from 'react';
-import styles from './EventTagsForm.module.scss';
+import React, { useCallback } from 'react';
 
-import { Input, Row, Col, Table, Tag, Select, Button as AntButton, Modal } from 'antd';
+import { Input, Select } from 'antd';
 import { findIndex } from 'lodash-es';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {
+    List,
+    ListItem,
+    ListItemText,
+    ListItemSecondaryAction,
+    IconButton,
+    Box,
+    Divider,
+    Grid,
+    Button
+} from '@material-ui/core';
 
-import Divider from 'components/generic/Divider';
-import Button from 'components/generic/Button';
+import Tag from 'components/generic/Tag';
 import FormFieldBottom from 'components/FormComponents/FormFieldBottom';
 
 import { useFormField } from 'hooks/formHooks';
@@ -73,78 +83,68 @@ const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
 
     const handleDelete = useCallback(
         label => {
-            Modal.confirm({
-                title: `Are you sure you want to delete the tag ${label}?`,
-                content:
-                    'This will NOT remove the tag from any applications which it has been applied to, but you will no longer be able to search by this tag.',
-                onOk() {
-                    setFieldValue(fieldName, value.filter(tag => tag.label !== label));
-                }
-            });
+            setFieldValue(fieldName, value.filter(tag => tag.label !== label));
         },
         [setFieldValue, fieldName, value]
     );
 
+    const renderRows = () => {
+        if (!value) return null;
+        return value.map((item, index) => [
+            index !== 0 ? <Divider /> : null,
+            <ListItem>
+                <ListItemText
+                    primary={
+                        <Box mb={0.5}>
+                            <Tag color={item.color} label={item.label} />
+                        </Box>
+                    }
+                    secondary={item.description}
+                />
+                <ListItemSecondaryAction>
+                    <IconButton onClick={() => handleDelete(item.label)} edge="end" aria-label="comments">
+                        <DeleteIcon />
+                    </IconButton>
+                </ListItemSecondaryAction>
+            </ListItem>
+        ]);
+    };
+
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.form}>
-                <Row gutter={16}>
-                    <Col xs={24} md={12}>
-                        <Divider size={1} />
-                        <Input placeholder="Tag name" size="large" {...label} />
-                        <FormFieldBottom errorMessage={label.error} />
-                    </Col>
-                    <Col xs={24} md={12}>
-                        <Divider size={1} />
-                        <Select
-                            style={{ width: '100%' }}
-                            placeholder="Choose color"
-                            size="large"
-                            value={color.value}
-                            onChange={color.setValue}
-                        >
-                            {COLORS.map(color => (
-                                <Select.Option key={color} value={color}>
-                                    <Tag color={color}>{color}</Tag>
-                                </Select.Option>
-                            ))}
-                        </Select>
-                        <FormFieldBottom errorMessage={color.error} />
-                    </Col>
-                    <Col xs={24} md={18}>
-                        <Divider size={1} />
-                        <Input placeholder="Tag description" size="large" {...description} />
-                        <FormFieldBottom errorMessage={description.error} />
-                    </Col>
-                    <Col xs={24} md={6}>
-                        <Divider size={1} />
-                        <Button block text="Add" button={{ onClick: handleAdd }} />
-                    </Col>
-                </Row>
-            </div>
-            <Divider size={1} />
-            <Table dataSource={value}>
-                <Table.Column
-                    title="Tag"
-                    dataIndex="label"
-                    key="label"
-                    render={(label, record) => <Tag color={record.color}>{label}</Tag>}
-                />
-                <Table.Column title="Description" dataIndex="description" key="description" />
-                <Table.Column
-                    title="Actions"
-                    dataIndex="label"
-                    key="actions"
-                    render={label => {
-                        return (
-                            <AntButton type="link" onClick={() => handleDelete(label)}>
-                                Delete
-                            </AntButton>
-                        );
-                    }}
-                />
-            </Table>
-        </div>
+        <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+                <Input placeholder="Tag name" size="large" {...label} />
+                <FormFieldBottom errorMessage={label.error} />
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Select
+                    style={{ width: '100%' }}
+                    placeholder="Choose color"
+                    size="large"
+                    value={color.value}
+                    onChange={color.setValue}
+                >
+                    {COLORS.map(color => (
+                        <Select.Option key={color} value={color}>
+                            <Tag color={color} label={color} />
+                        </Select.Option>
+                    ))}
+                </Select>
+                <FormFieldBottom errorMessage={color.error} />
+            </Grid>
+            <Grid item xs={12} md={9}>
+                <Input placeholder="Tag description" size="large" {...description} />
+                <FormFieldBottom errorMessage={description.error} />
+            </Grid>
+            <Grid item xs={12} md={3}>
+                <Button fullWidth variant="contained" color="primary" onClick={handleAdd}>
+                    Add
+                </Button>
+            </Grid>
+            <Grid item xs={12}>
+                <List>{renderRows()}</List>
+            </Grid>
+        </Grid>
     );
 };
 

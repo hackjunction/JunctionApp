@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
-import { Select, Tag } from 'antd';
+import StatusBadge from 'components/generic/StatusBadge';
+import { Select } from 'antd';
 
 const RegistrationStatusSelect = ({
     value,
@@ -15,7 +16,7 @@ const RegistrationStatusSelect = ({
         .map(status => {
             return (
                 <Select.Option key={status.id} value={status.id} disabled={!allowRestricted}>
-                    <Tag color={status.color}>{status.label}</Tag>
+                    <StatusBadge status={status.id} />
                 </Select.Option>
             );
         });
@@ -34,7 +35,7 @@ const RegistrationStatusSelect = ({
                     .map(status => {
                         return (
                             <Select.Option key={status.id} value={status.id}>
-                                <Tag color={status.color}>{status.label}</Tag>
+                                <StatusBadge status={status.id} />
                             </Select.Option>
                         );
                     })}

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { groupBy, filter } from 'lodash-es';
 import { RegistrationStatuses } from '@hackjunction/shared';
 import { Grid, Paper, Typography, Button, Box } from '@material-ui/core';
-import { Tag } from 'antd';
 import { withSnackbar } from 'notistack';
+import StatusBadge from 'components/generic/StatusBadge';
 import Statistic from 'components/generic/Statistic';
 import PageWrapper from 'components/PageWrapper';
 import QRCodeReaderModal from 'components/modals/QRCodeReaderModal';
@@ -86,7 +86,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={4}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.confirmed.color}>{STATUSES.confirmed.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.confirmed.id} />}
                             value={getCount(['confirmed'])}
                         ></Statistic>
                     </Paper>
@@ -94,7 +94,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={4}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.accepted.color}>{STATUSES.accepted.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.accepted.id} />}
                             value={getCount(['accepted'])}
                         ></Statistic>
                     </Paper>
@@ -102,7 +102,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={4}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.cancelled.color}>{STATUSES.cancelled.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.cancelled.id} />}
                             value={getCount(['cancelled'])}
                         ></Statistic>
                     </Paper>
@@ -110,7 +110,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={4}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.rejected.color}>{STATUSES.rejected.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.rejected.id} />}
                             value={getCount(['rejected'])}
                         ></Statistic>
                     </Paper>
@@ -118,7 +118,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={4}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.checkedIn.color}>{STATUSES.checkedIn.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.checkedIn.id} />}
                             value={getCount(['checkedIn'])}
                         ></Statistic>
                     </Paper>
@@ -126,7 +126,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={4}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.noShow.color}>{STATUSES.noShow.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.noShow.id} />}
                             value={getCount(['noShow'])}
                         ></Statistic>
                     </Paper>
@@ -134,7 +134,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={6}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.softAccepted.color}>{STATUSES.softAccepted.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.softAccepted.id} />}
                             value={getCount(['softAccepted'])}
                             action={handleBulkAccept}
                             actionText="Accept all"
@@ -144,7 +144,7 @@ const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event
                 <Grid item xs={6}>
                     <Paper>
                         <Statistic
-                            label={<Tag color={STATUSES.softRejected.color}>{STATUSES.softRejected.label}</Tag>}
+                            label={<StatusBadge status={STATUSES.softRejected.id} />}
                             value={getCount(['softRejected'])}
                             action={handleBulkReject}
                             actionText="Reject all"

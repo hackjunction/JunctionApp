@@ -1,14 +1,14 @@
 import React, { useState, useCallback, forwardRef } from 'react';
 import moment from 'moment';
-import { Empty, Tag } from 'antd';
+import { Empty } from 'antd';
 import { connect } from 'react-redux';
-
-import { RegistrationStatuses } from '@hackjunction/shared';
 
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
 import { Box, Paper } from '@material-ui/core';
 import MaterialTable from 'components/generic/MaterialTable';
+import StatusBadge from 'components/generic/StatusBadge';
+import Tag from 'components/generic/Tag';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationModal from 'components/modals/EditRegistrationModal';
@@ -112,9 +112,7 @@ const AttendeeTable = ({
                         title: 'Status',
                         field: 'status',
                         render: row => {
-                            const params = RegistrationStatuses.asObject[row.status];
-                            if (!params) return '-';
-                            return <Tag color={params.color}>{params.label}</Tag>;
+                            return <StatusBadge status={row.status} />;
                         }
                     },
                     {
@@ -129,11 +127,7 @@ const AttendeeTable = ({
                                     .filter(tag => {
                                         return tags.indexOf(tag.label) !== -1;
                                     })
-                                    .map(({ color, label }) => (
-                                        <Tag key={label} color={color}>
-                                            {label}
-                                        </Tag>
-                                    ));
+                                    .map(({ color, label }) => <Tag key={label} color={color} label={label} />);
                             }
                         }
                     },
