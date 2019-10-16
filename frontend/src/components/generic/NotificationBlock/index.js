@@ -8,15 +8,15 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, typ
     const headerComponent = () => {
         switch (type) {
             case 'success':
-                return SuccessHeader;
+                return <SuccessHeader />;
             case 'error':
-                return ErrorHeader;
+                return <ErrorHeader />;
             case 'warning':
-                return WarningHeader;
+                return <WarningHeader />;
             case 'info':
-                return InfoHeader;
+                return <InfoHeader />;
             default:
-                return InfoHeader;
+                return <InfoHeader />;
         }
     };
 
@@ -36,7 +36,9 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, typ
 
     return (
         <Card>
-            <CardMedia component={headerComponent()} height="200" />
+            <CardMedia component="div" height="200">
+                {headerComponent()}
+            </CardMedia>
             <CardContent>
                 <Typography variant="button">{title}</Typography>
                 <Typography variant="h6" paragraph>

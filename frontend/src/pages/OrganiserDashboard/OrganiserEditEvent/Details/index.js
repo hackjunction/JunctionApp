@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Details.module.scss';
 
 import { notification } from 'antd';
 import { Formik } from 'formik';

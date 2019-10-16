@@ -15,7 +15,8 @@ import RegistrationsByCountry from 'components/plots/RegistrationsByCountry';
 import RegistrationsByNationality from 'components/plots/RegistrationsByNationality';
 import RegistrationsByGender from 'components/plots/RegistrationsByGender';
 
-const OrganiserEditEventStats = ({ registrations, slug, loading }) => {
+const OrganiserEditEventStats = props => {
+    const { registrations, loading } = props;
     const [filters, setFilters] = useState([]);
 
     const filtered = useMemo(() => {

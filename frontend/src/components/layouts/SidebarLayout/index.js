@@ -1,17 +1,16 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import styles from './SidebarLayout.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
-import { Layout, Icon } from 'antd';
+import { connect } from 'react-redux';
 import { findIndex } from 'lodash-es';
-import { motion } from 'framer-motion';
-import classNames from 'classnames';
-import { Switch, Route, Redirect, Link } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import CenteredContainer from 'components/generic/CenteredContainer/index';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, IconButton, Box } from '@material-ui/core';
+import { push } from 'connected-react-router';
 
 const SIDEBAR_WIDTH = 300;
-const COLLAPSED_WIDTH = 0;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,17 +37,40 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '80%',
         background: 'black'
     },
-    listItemRoot: {
+
+    listItem: {
+        color: 'rgba(255,255,255,0.6)'
+    },
+    listItemSelected: {
         color: 'white'
     },
+    listItemText: {
+        color: 'inherit'
+    },
     listItemIcon: {
-        color: 'white'
+        color: 'inherit'
     }
 }));
 
-const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, location, routes, theme = 'white' }) => {
+const propTypes = {
+    topContent: PropTypes.node,
+    sidebarTopContent: PropTypes.node,
+    baseRoute: PropTypes.string.isRequired,
+    routes: PropTypes.arrayOf(
+        PropTypes.shape({
+            key: PropTypes.string.isRequired,
+            path: PropTypes.string.isRequired,
+            icon: PropTypes.node.isRequired,
+            label: PropTypes.string.isRequired,
+            component: PropTypes.node.isRequired,
+            hidden: PropTypes.bool
+        })
+    ),
+    location: PropTypes.object.isRequired
+};
+
+const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, location, routes, pushRoute }) => {
     const classes = useStyles();
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
     const activeIndex = useMemo(() => {
         const relativePath = location.pathname.replace(baseRoute, '');
@@ -56,18 +78,6 @@ const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, loca
 
         return idx !== -1 ? idx : 0;
     }, [baseRoute, location.pathname, routes]);
-
-    const closeSidebar = useCallback(() => {
-        setSidebarCollapsed(true);
-    }, []);
-
-    const openSidebar = useCallback(() => {
-        setSidebarCollapsed(false);
-    }, []);
-
-    const hasTop = typeof renderTop === 'function';
-    const hasSidebarTop = typeof renderSidebarTop === 'function';
-    const topHeight = hasSidebarTop ? 200 : 50;
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -77,22 +87,22 @@ const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, loca
 
     const drawerContent = (
         <React.Fragment>
-            <Box p={2}>{hasSidebarTop && renderSidebarTop()}</Box>
+            <Box p={2}>{sidebarTopContent}</Box>
             <List>
                 {routes.map((route, index) => {
                     return (
                         <ListItem
-                            classes={{
-                                root: classes.listItemRoot
-                            }}
                             button
                             key={route.path}
-                            onClick={() => window.alert('Hello')}
+                            selected={index === activeIndex}
+                            classes={{
+                                root: classes.listItem,
+                                selected: classes.listItemSelected
+                            }}
+                            onClick={() => pushRoute(route.path)}
                         >
-                            <ListItemIcon>
-                                <MenuIcon className={classes.listItemIcon} />
-                            </ListItemIcon>
-                            <ListItemText primary={route.label} />
+                            <ListItemIcon className={classes.listItemIcon}>{route.icon}</ListItemIcon>
+                            <ListItemText className={classes.listItemText} primary={route.label} />
                         </ListItem>
                     );
                 })}
@@ -142,18 +152,14 @@ const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, loca
                 </Hidden>
             </nav>
             <main className={classes.content}>
-                {hasTop && renderTop()}
+                {topContent}
                 <CenteredContainer className={styles.pageWrapperInner} wrapperClass={styles.pageWrapper}>
                     <Switch>
-                        {routes.map(({ key, path, hidden, render }, index) => {
+                        {routes.map(({ key, path, hidden, component }, index) => {
                             if (hidden) {
                                 return null;
                             } else {
-                                return (
-                                    <Route key={index} exact path={`${baseRoute}${path}`}>
-                                        {render()}
-                                    </Route>
-                                );
+                                return <Route key={key} exact path={`${baseRoute}${path}`} component={component} />;
                             }
                         })}
                         <Redirect to={baseRoute} />
@@ -162,114 +168,15 @@ const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, loca
             </main>
         </div>
     );
-
-    // return(
-    //     <Drawer>
-
-    //     </Drawer>
-    // )
-
-    // return (
-    //     <Layout
-    //         className={classNames({
-    //             [styles.layout]: true,
-    //             [styles.layoutWhite]: theme === 'white',
-    //             [styles.layoutLight]: theme === 'light'
-    //         })}
-    //     >
-    //         <Layout.Sider
-    //             theme="light"
-    //             collapsible
-    //             collapsed={sidebarCollapsed}
-    //             onCollapse={setSidebarCollapsed}
-    //             breakpoint="lg"
-    //             width={SIDEBAR_WIDTH}
-    //             collapsedWidth={COLLAPSED_WIDTH}
-    //             className={styles.sidebar}
-    //             trigger={null}
-    //         >
-    //             <div className={styles.sidebarInner}>
-    //                 <motion.div
-    //                     className={styles.sidebarOverlayTop}
-    //                     animate={{
-    //                         paddingBottom: topHeight + activeIndex * 50
-    //                     }}
-    //                     transition="linear"
-    //                 />
-    //                 <motion.div
-    //                     className={styles.sidebarOverlayBottom}
-    //                     animate={{
-    //                         top: topHeight + (activeIndex + 1) * 50
-    //                     }}
-    //                     transition="linear"
-    //                 />
-    //                 <div className={styles.sidebarContentTop}>
-    //                     {hasSidebarTop && renderSidebarTop(sidebarCollapsed)}
-    //                 </div>
-    //                 <div className={styles.sidebarContentBottom} style={{ top: topHeight }}>
-    //                     {routes.map((route, index) => {
-    //                         const className = classNames({
-    //                             [styles.sidebarInnerItem]: true,
-    //                             [styles.sidebarInnerItemActive]: index === activeIndex
-    //                         });
-    //                         return (
-    //                             <Link className={className} key={index} to={`${baseRoute}${route.path}`}>
-    //                                 <Icon type={route.icon} className={styles.sidebarInnerItemIcon} />
-    //                                 <span
-    //                                     className={classNames({
-    //                                         [styles.sidebarInnerItemTitle]: true,
-    //                                         [styles.sidebarInnerItemTitleCollapsed]: sidebarCollapsed
-    //                                     })}
-    //                                 >
-    //                                     {route.label}
-    //                                 </span>
-    //                             </Link>
-    //                         );
-    //                     })}
-    //                     <div className={styles.sidebarClose} onClick={closeSidebar}>
-    //                         <span className={styles.sidebarCloseText}>Close menu</span>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </Layout.Sider>
-    //         <Layout.Content>
-    //             <div
-    //                 className={classNames({
-    //                     [styles.content]: true,
-    //                     [styles.contentCollapsed]: sidebarCollapsed
-    //                 })}
-    //             >
-    //                 <div
-    //                     onClick={openSidebar}
-    //                     className={classNames({
-    //                         [styles.sidebarTrigger]: true,
-    //                         [styles.sidebarTriggerCollapsed]: sidebarCollapsed
-    //                     })}
-    //                 >
-    //                     <Icon type="menu" className={styles.sidebarTriggerIcon} />
-    //                 </div>
-    //                 {hasTop && renderTop()}
-    //                 <CenteredContainer className={styles.pageWrapperInner} wrapperClass={styles.pageWrapper}>
-    //                     <Switch>
-    //                         {routes.map(({ key, path, hidden, render }, index) => {
-    //                             if (hidden) {
-    //                                 return null;
-    //                             } else {
-    //                                 return (
-    //                                     <Route key={index} exact path={`${baseRoute}${path}`}>
-    //                                         {render()}
-    //                                     </Route>
-    //                                 );
-    //                             }
-    //                         })}
-    //                         <Redirect to={baseRoute} />
-    //                     </Switch>
-    //                 </CenteredContainer>
-    //             </div>
-    //         </Layout.Content>
-    //         {!sidebarCollapsed && <div className={styles.hideSidebarOverlay} onClick={closeSidebar} />}
-    //     </Layout>
-    // );
 });
 
-export default SidebarLayout;
+SidebarLayout.propTypes = propTypes;
+
+const mapDispatch = (dispatch, ownProps) => ({
+    pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
+});
+
+export default connect(
+    null,
+    mapDispatch
+)(SidebarLayout);
