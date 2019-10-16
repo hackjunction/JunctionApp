@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, Avatar, Button, CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
-import { Tag } from 'antd';
 import { RegistrationStatuses } from '@hackjunction/shared';
 
 import Modal from 'components/generic/Modal';
+import StatusBadge from 'components/generic/StatusBadge';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import UserProfilesService from 'services/userProfiles';
@@ -92,7 +92,7 @@ const QRCodeReaderModal = ({ open, onClose, enqueueSnackbar, registrationsMap, e
             <React.Fragment>
                 <Typography variant="subtitle1" color="textSecondary" align="center">
                     Registration status: <br />
-                    <Tag color={status.color}>{status.label}</Tag>
+                    <StatusBadge status={status.id} />
                 </Typography>
                 <Box mt={2} />
                 {renderActions(status)}
