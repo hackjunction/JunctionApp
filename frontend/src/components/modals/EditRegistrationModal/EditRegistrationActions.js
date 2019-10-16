@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Rate, List, Input } from 'antd';
-import { Grid, Typography, Box } from '@material-ui/core';
+import { Grid, Typography, Box, Button } from '@material-ui/core';
+import { Rating } from '@material-ui/lab';
 
-import Button from 'components/generic/Button';
+import TextInput from 'components/inputs/TextInput';
 import EventTagsSelect from 'components/FormComponents/EventTagsSelect';
 import UserSelectModal from 'components/modals/UserSelectModal';
 import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
@@ -59,73 +59,41 @@ const EditRegistrationActions = ({ registration, event, organisers, organisersMa
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <List.Item>
-                    <List.Item.Meta
-                        title="Rating"
-                        description={<Rate value={rating.value} onChange={rating.setValue} />}
-                    ></List.Item.Meta>
-                </List.Item>
+                <Typography variant="subtitle1">Rating</Typography>
+                <Rating name="disabled" value={rating.value} onChange={(e, value) => rating.setValue(value)} />
             </Grid>
             <Grid item xs={12}>
-                <List.Item
-                    actions={[
-                        <UserSelectModal
-                            renderTrigger={showModal => (
-                                <Button text="Change" button={{ onClick: showModal }} size="small" />
-                            )}
-                            onDone={value => assignedTo.setValue(value.userId)}
-                            allowMultiple={false}
-                            userProfiles={organisers}
-                        />
-                    ]}
-                >
-                    <List.Item.Meta title={'Assigned to'} description={renderAssignedTo()}></List.Item.Meta>
-                </List.Item>
-            </Grid>
-            <Grid item xs={12}>
-                <List.Item>
-                    <List.Item.Meta
-                        title="Tags"
-                        description={<EventTagsSelect value={tags.value} onChange={tags.setValue} tags={event.tags} />}
-                    ></List.Item.Meta>
-                </List.Item>
-            </Grid>
-            <Grid item xs={12}>
-                <List.Item>
-                    <List.Item.Meta
-                        title="Status"
-                        description={
-                            <RegistrationStatusSelect allowRestricted value={status.value} onChange={status.setValue} />
-                        }
-                    />
-                </List.Item>
-            </Grid>
-            <Grid item xs={12}>
-                <List.Item>
-                    <List.Item.Meta
-                        title="Travel grant"
-                        description={
-                            <Input
-                                placeholder="Enter amount (EUR)"
-                                size="large"
-                                type="number"
-                                value={travelGrant.value}
-                                onChange={travelGrant.onChange}
-                            />
-                        }
-                    />
-                </List.Item>
-            </Grid>
-            <Grid item xs={12}>
-                <Button
-                    text="Save changes"
-                    block
-                    theme="accent"
-                    button={{
-                        onClick: handleSubmit,
-                        disabled: !formDirty
-                    }}
+                <Typography variant="subtitle1">Assigned to</Typography>
+                <Typography variant="subtitle2">{renderAssignedTo()}</Typography>
+                <UserSelectModal
+                    renderTrigger={showModal => <Button onClick={showModal}>Change</Button>}
+                    onDone={value => assignedTo.setValue(value.userId)}
+                    allowMultiple={false}
+                    userProfiles={organisers}
                 />
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="subtitle1">Tags</Typography>
+                <EventTagsSelect value={tags.value} onChange={tags.setValue} tags={event.tags} />
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="subtitle1">Status</Typography>
+                <RegistrationStatusSelect allowRestricted value={status.value} onChange={status.setValue} />
+            </Grid>
+            <Grid item xs={12}>
+                <TextInput
+                    label="Travel grant amount (EUR)"
+                    helperText="Enter 0 to reject travel grant. If the participant previously had no travel grant value, entering a value will trigger an email notification."
+                    type="number"
+                    value={travelGrant.value}
+                    onChange={travelGrant.onChange}
+                    rawOnChange
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Button color="primary" fullWidth variant="contained" onClick={handleSubmit} disabled={!formDirty}>
+                    Save changes
+                </Button>
             </Grid>
         </Grid>
     );

@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Steps, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Stepper, Step, StepLabel, StepContent, Typography, CircularProgress } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { EventStatuses } from '@hackjunction/shared';
 
-import Divider from 'components/generic/Divider';
 import PageHeader from 'components/generic/PageHeader';
 import TimelineDot from 'components/generic/TimelineDot';
 import RegistrationPhase from './RegistrationPhase';
 import ConfirmedPhase from './ConfirmedPhase';
 import EventPhase from './EventPhase';
-
-import EventUtils from 'utils/events';
-import EventConstants from 'constants/events';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
 const useStyles = makeStyles(theme => ({

@@ -18,7 +18,6 @@ const TextInput = React.memo(
         type = 'text',
         value = ''
     }) => {
-        console.log('TEXT INPUT RENDER');
         const handleChange = useCallback(
             e => {
                 if (rawOnChange) {
