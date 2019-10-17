@@ -36,6 +36,10 @@ const _Select = React.memo(
                     return SelectOptions.COUNTRY_CODES;
                 case 'nationality':
                     return SelectOptions.NATIONALITIES;
+                case 'dietary-restriction':
+                    return SelectOptions.DIETARY_RESTRICTIONS;
+                case 'num-hackathons':
+                    return SelectOptions.NUM_HACKATHONS;
                 case 'gender':
                     return SelectOptions.GENDERS;
                 case 'industry':

@@ -5,7 +5,7 @@ import moment from 'moment';
 import Select from 'components/inputs/Select';
 
 const DateInput = ({ value, onChange }) => {
-    const momentValue = moment(value);
+    const momentValue = value ? moment(value) : null;
 
     const handleDateChange = useCallback(
         date => {
@@ -37,13 +37,28 @@ const DateInput = ({ value, onChange }) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={4}>
-                <Select label="Day" type="day" value={momentValue.date()} onChange={handleDateChange} />
+                <Select
+                    label="Day"
+                    type="day"
+                    value={momentValue ? momentValue.date() : null}
+                    onChange={handleDateChange}
+                />
             </Grid>
             <Grid item xs={4}>
-                <Select label="Month" type="month" value={momentValue.month() + 1} onChange={handleMonthChange} />
+                <Select
+                    label="Month"
+                    type="month"
+                    value={momentValue ? momentValue.month() + 1 : null}
+                    onChange={handleMonthChange}
+                />
             </Grid>
             <Grid item xs={4}>
-                <Select label="Year" type="year" value={momentValue.year()} onChange={handleYearChange} />
+                <Select
+                    label="Year"
+                    type="year"
+                    value={momentValue ? momentValue.year() : null}
+                    onChange={handleYearChange}
+                />
             </Grid>
         </Grid>
     );

@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Typography, Box, Button } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 
 import TextInput from 'components/inputs/TextInput';
 import EventTagsSelect from 'components/FormComponents/EventTagsSelect';
-import UserSelectModal from 'components/modals/UserSelectModal';
+import OrganiserSelectModal from 'components/modals/OrganiserSelectModal';
 import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
@@ -13,6 +13,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import { useFormField } from 'hooks/formHooks';
 
 const EditRegistrationActions = ({ registration, event, organisers, organisersMap, onSubmit }) => {
+    const [organiserModalOpen, setOrganiserModalOpen] = useState(false);
     const rating = useFormField(registration.rating);
     const assignedTo = useFormField(registration.assignedTo);
     const tags = useFormField(registration.tags);
@@ -65,11 +66,11 @@ const EditRegistrationActions = ({ registration, event, organisers, organisersMa
             <Grid item xs={12}>
                 <Typography variant="subtitle1">Assigned to</Typography>
                 <Typography variant="subtitle2">{renderAssignedTo()}</Typography>
-                <UserSelectModal
-                    renderTrigger={showModal => <Button onClick={showModal}>Change</Button>}
-                    onDone={value => assignedTo.setValue(value.userId)}
-                    allowMultiple={false}
-                    userProfiles={organisers}
+                <OrganiserSelectModal
+                    open={organiserModalOpen}
+                    onClose={() => setOrganiserModalOpen(false)}
+                    onClear={() => assignedTo.setValue()}
+                    onSelect={({ userId }) => assignedTo.setValue(userId)}
                 />
             </Grid>
             <Grid item xs={12}>

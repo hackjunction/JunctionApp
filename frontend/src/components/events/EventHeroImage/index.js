@@ -22,6 +22,12 @@ const useStyles = makeStyles(theme => ({
             height: '300px'
         }
     },
+    backButtonWrapper: {
+        position: 'absolute',
+        zIndex: 10,
+        width: '100%',
+        paddingTop: theme.spacing(1)
+    },
     logoWrapper: {
         position: 'absolute',
         zIndex: 2,
@@ -80,7 +86,7 @@ const EventHeroImage = ({ event, goBack }) => {
                     </Box>
                 </FadeInWrapper>
             </Box>
-            <CenteredContainer>
+            <CenteredContainer wrapperClass={classes.backButtonWrapper}>
                 <Button onClick={goBack}>
                     <ArrowBackIosIcon style={{ color: 'white' }} />
                     <Typography variant="button" style={{ color: 'white' }}>

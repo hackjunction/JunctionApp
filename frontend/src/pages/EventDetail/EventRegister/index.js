@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import styles from './EventRegister.module.scss';
 
 import { Formik } from 'formik';
@@ -6,6 +6,8 @@ import { Row, Col, notification, Alert, Icon } from 'antd';
 import { forOwn, sortBy } from 'lodash-es';
 import { connect } from 'react-redux';
 import { motion } from 'framer-motion';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Stepper, Step, StepLabel, StepContent, Button } from '@material-ui/core';
 import { RegistrationFields } from '@hackjunction/shared';
 import classNames from 'classnames';
 
@@ -14,7 +16,8 @@ import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import * as UserSelectors from 'redux/user/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 
-import Button from 'components/generic/Button';
+import CenteredContainer from 'components/generic/CenteredContainer';
+// import Button from 'components/generic/Button';
 import Image from 'components/generic/Image';
 import NewsLetterButton from 'components/FormComponents/NewsLetterButton';
 import FadeInWrapper from 'components/animated/FadeInWrapper';
@@ -29,6 +32,28 @@ import CustomRegistrationSection from './CustomRegistrationSection';
 import RequiresPermission from 'hocs/RequiresPermission';
 import AnalyticsService from 'services/analytics';
 
+import RegistrationSection from './RegistrationSection';
+
+const useStyles = makeStyles(theme => ({
+    mainTitle: {
+        color: 'white',
+        textAlign: 'center'
+    },
+    sectionTitle: {
+        color: 'white',
+        fontSize: '1.4rem',
+        textTransform: 'uppercase',
+        fontWeight: 'bold'
+    },
+    content: {
+        position: 'relative',
+        zIndex: 1000
+    },
+    stepper: {
+        background: 'transparent'
+    }
+}));
+
 const EventRegister = ({
     slug,
     event,
@@ -39,13 +64,16 @@ const EventRegister = ({
     userProfile,
     idTokenPayload
 }) => {
-    const [submitted, setSubmitted] = useState(false);
+    const classes = useStyles();
+    const [activeStep, setActiveStep] = useState(0);
 
-    useEffect(() => {
-        if (!hasRegistration) {
-            AnalyticsService.events.BEGIN_REGISTRATION(slug);
-        }
-    }, [hasRegistration, slug]);
+    const setNextStep = useCallback(() => {
+        setActiveStep(activeStep + 1);
+    }, [activeStep]);
+
+    const setPrevStep = useCallback(() => {
+        setActiveStep(activeStep - 1);
+    }, [activeStep]);
 
     const sections = useMemo(() => {
         const fieldCategories = {};
@@ -83,90 +111,33 @@ const EventRegister = ({
         return sorted;
     }, [event.userDetailsConfig]);
 
-    function getInitialValues() {
-        if (registration && registration.hasOwnProperty('_id')) {
-            return registration.answers;
-        } else {
-            return RegistrationFields.getDefaultValuesFromConfig(
-                event.userDetailsConfig,
-                event.customQuestions,
-                userProfile,
-                idTokenPayload
-            );
-        }
-    }
+    const submitted = false;
 
-    async function handleSubmit(values, formikProps) {
-        formikProps.setSubmitting(true);
-
-        const isUpdate = registration && registration.hasOwnProperty('_id');
-        try {
-            if (isUpdate) {
-                await editRegistration(event.slug, values);
-            } else {
-                await createRegistration(event.slug, values);
-            }
-            setSubmitted(true);
-            AnalyticsService.events.COMPLETE_REGISTRATION(slug);
-        } catch (e) {
-            notification.error({
-                message: 'Oopsie!',
-                description:
-                    "Looks like that didn't work... Please make sure you're connected to the internet and try again"
-            });
-        } finally {
-            formikProps.setSubmitting(false);
-        }
-    }
-
-    function renderFields(fields, formikProps) {
-        return fields.map(field => (
-            <Col xs={24} key={field.fieldName}>
-                <StaggeredListItem>
-                    <RegistrationField
-                        name={field.fieldName}
-                        required={field.require}
-                        isFast={true}
-                        fieldConfig={field.fieldConfig}
-                    />
-                    <Divider size={2} />
-                </StaggeredListItem>
-            </Col>
-        ));
-    }
-
-    function renderSections(formikProps) {
-        return sections.map(section => {
+    const renderSteps = () => {
+        return sections.map((section, index) => {
+            const nextStep = index !== sections.length - 1 ? sections[index + 1] : null;
+            const prevStep = index !== 0 ? sections[index - 1] : null;
             return (
-                <Row gutter={1} key={section.label}>
-                    <Col xs={24}>
-                        <Divider size={2} />
-                        <StaggeredListItem>
-                            <h3 className={styles.registrationSectionTitle}>{section.label}</h3>
-                        </StaggeredListItem>
-                        <Divider size={2} />
-                    </Col>
-                    {renderFields(section.fields, formikProps)}
-                </Row>
+                <Step key={section.label}>
+                    <StepLabel>
+                        <Typography className={classes.sectionTitle} variant="subtitle1">
+                            {section.label}
+                        </Typography>
+                    </StepLabel>
+                    <StepContent>
+                        <RegistrationSection
+                            label={section.label}
+                            fields={section.fields}
+                            onPrevious={setPrevStep}
+                            onNext={setNextStep}
+                            previousLabel={prevStep ? prevStep.label : null}
+                            nextLabel={nextStep ? nextStep.label : null}
+                        />
+                    </StepContent>
+                </Step>
             );
         });
-    }
-
-    function renderCustomSections(formikProps) {
-        return event.customQuestions.map(section => {
-            const hasValue = formikProps.values.hasOwnProperty(section.name);
-            return (
-                <Row gutter={1} key={section.label}>
-                    <Col xs={24}>
-                        <StaggeredListItem>
-                            <CustomRegistrationSection section={section} hasValue={hasValue} />
-                        </StaggeredListItem>
-                    </Col>
-                </Row>
-            );
-        });
-    }
-
+    };
     return (
         <FadeInWrapper className={styles.wrapper}>
             <Image
@@ -181,108 +152,22 @@ const EventRegister = ({
                     height: 1080
                 }}
             />
-            <Formik
-                initialValues={getInitialValues()}
-                enableReinitialize={true}
-                onSubmit={handleSubmit}
-                validateOnChange={false}
-                validateOnBlur={false}
-            >
-                {formikProps => {
-                    return (
-                        <React.Fragment>
-                            <div className={styles.scrollable}>
-                                <div className={styles.inner}>
-                                    <FadeInWrapper className={styles.registrationTop} enterDelay={0.4}>
-                                        <Image
-                                            className={styles.logo}
-                                            publicId={event && event.logo ? event.logo.publicId : null}
-                                            transformation={{
-                                                width: 600
-                                            }}
-                                        />
-                                        <h2 className={styles.registrationTopTitle}>Register</h2>
-                                    </FadeInWrapper>
-                                    <motion.div
-                                        style={{ overflow: 'hidden' }}
-                                        animate={{
-                                            opacity: submitted ? 1 : 0,
-                                            height: submitted ? 'auto' : 0
-                                        }}
-                                        initial={{
-                                            opacity: 0,
-                                            height: 0
-                                        }}
-                                    >
-                                        <div className={styles.submittedWrapper}>
-                                            <Icon type="check-circle" className={styles.submittedIcon} />
-                                            <h3 className={styles.submittedMessage}>Your submission has been saved!</h3>
-                                            <Button
-                                                block
-                                                round
-                                                theme="accent"
-                                                text="Event dashboard"
-                                                link={{
-                                                    internal: '/dashboard/' + slug
-                                                }}
-                                            />
-                                            <Divider size={1} />
-                                            <Button
-                                                block
-                                                round
-                                                text="Back to event page"
-                                                theme="minimal"
-                                                link={{
-                                                    internal: '/events/' + slug
-                                                }}
-                                            />
-                                        </div>
-                                    </motion.div>
-                                    <StaggeredList animate={submitted ? 'collapsed' : 'visible'}>
-                                        {hasRegistration && (
-                                            <StaggeredListItem>
-                                                <Alert
-                                                    message="Your registration has already been submitted"
-                                                    description="We'll process it as soon as possible. You can still make changes to it, but keep in mind that we may have already reviewed your registration"
-                                                    type="success"
-                                                />
-                                            </StaggeredListItem>
-                                        )}
-                                        {renderSections(formikProps)}
-                                        {renderCustomSections(formikProps)}
-                                        <Divider size={5} />
-                                        <StaggeredListItem>
-                                            <NewsLetterButton
-                                                email={
-                                                    !formikProps.errors.hasOwnProperty('email')
-                                                        ? formikProps.values.email
-                                                        : null
-                                                }
-                                                country={formikProps.values.countryOfResidence}
-                                            />
-                                        </StaggeredListItem>
-                                        <Divider size={5} />
-                                        <StaggeredListItem>
-                                            <SubmitButton formikProps={formikProps} />
-                                        </StaggeredListItem>
-                                        <Divider size={5} />
-                                    </StaggeredList>
-                                </div>
-                            </div>
-                            <motion.div
-                                animate={{
-                                    bottom: submitted ? '-100px' : 0
-                                }}
-                                className={styles.footer}
-                            >
-                                <div className={styles.footerInner}>
-                                    <FormStatus formikProps={formikProps} />
-                                </div>
-                            </motion.div>
-                        </React.Fragment>
-                    );
-                }}
-            </Formik>
+            <CenteredContainer wrapperClass={classes.content}>
+                <FadeInWrapper className={styles.registrationTop} enterDelay={0.4}>
+                    <Image
+                        publicId={event && event.logo ? event.logo.publicId : null}
+                        transformation={{
+                            width: 600
+                        }}
+                    />
+                    <Typography variant="h3" className={classes.mainTitle}>
+                        Register
+                    </Typography>
+                </FadeInWrapper>
+                <Stepper className={classes.stepper} activeStep={activeStep} orientation="vertical">
+                    {renderSteps()}
+                </Stepper>
+            </CenteredContainer>
         </FadeInWrapper>
     );
 };
