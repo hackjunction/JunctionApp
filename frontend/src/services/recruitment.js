@@ -14,6 +14,23 @@ RecruitmentService.search = idToken => {
     return _axios.post(
         '/recruitment/search',
         {
+            filters: [
+                {
+                    field: 'countryOfResidence',
+                    operator: '==',
+                    value: 'Finland'
+                },
+                {
+                    field: 'roles',
+                    operator: 'array-contains',
+                    value: {
+                        role: 'Fullstack Developer',
+                        years: {
+                            $gte: 1
+                        }
+                    }
+                }
+            ],
             pagination: {
                 page_size: 25,
                 page: 0

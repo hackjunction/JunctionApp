@@ -8,7 +8,6 @@ const { hasToken } = require('../../common/middleware/token');
 const { hasPermission } = require('../../common/middleware/permissions');
 
 const queryUsers = asyncHandler(async (req, res) => {
-    console.log('BODY', req.body);
     const users = await RecruitmentController.queryProfiles(req.body);
     return res.status(200).json(users);
 });
@@ -18,7 +17,7 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
 });
 const saveRecruiterAction = asyncHandler(async (req, res) => {
     try {
-        await RecruitmentController.saveRecruiterAction(req.body);
+        await RecruitmentController.saveRecruiterAction(req.user.sub, req.body);
         return res.status(200).json({ success: true });
     } catch (error) {
         return res.status(200).json({ success: false, error: error.message });
