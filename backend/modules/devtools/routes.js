@@ -1,4 +1,5 @@
 const express = require('express');
+const _ = require('lodash');
 const router = express.Router();
 const Registration = require('../registration/model');
 const { UserProfile } = require('../user-profile/model');
@@ -53,6 +54,39 @@ router.route('/anonymize-db').get(async (req, res) => {
     await UserProfile.bulkWrite(userUpdates);
 
     return res.status(200).send('OK');
+});
+
+router.route('/sync-user-profiles').get(async (req, res) => {
+    const registrations = await Registration.find({});
+    const userProfiles = await UserProfile.find({});
+
+    const updates = [];
+
+    userProfiles.forEach(user => {
+        const registration = _.find(registrations, reg => reg.user === user.userId);
+
+        if (registration && registration.answers) {
+            updates.push({
+                updateOne: {
+                    filter: {
+                        userId: user.userId
+                    },
+                    update: {
+                        roles: registration.answers.roles,
+                        skills: registration.answers.skills
+                    }
+                }
+            });
+        }
+    });
+
+    return UserProfile.bulkWrite(updates)
+        .then(result => {
+            return res.status(200).json(result);
+        })
+        .catch(err => {
+            return res.status(500).json(err);
+        });
 });
 
 module.exports = router;

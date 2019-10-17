@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import RecruitmentUserModal from 'components/modals/RecruitmentUserModal';
 
 import { connect } from 'react-redux';
@@ -6,21 +6,30 @@ import { connect } from 'react-redux';
 import { Paper, Box, List, ListItem, ListItemText } from '@material-ui/core';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
-import ResultCard from './ResultCard';
+import { Typography } from 'antd';
 
-const SearchResults = ({ searchResults }) => {
+const SearchResults = ({ searchResults, searchResultsCount }) => {
     const [selected, setSelected] = useState();
 
-    console.log(searchResults);
+    console.log('SEARCH RESULTS', searchResults);
+
     return (
         <React.Fragment>
+            <Typography variant="h6">{searchResultsCount} results</Typography>
             <List>
                 {searchResults.map(item => (
-                    <Box mb={1} key={`box-${item.userId}`}>
-                        <ResultCard
-                            data={item}
-                            onClick={() => setSelected(item.userId)}
-                        />
+                    <Box mb={1} key={item._id}>
+                        <Paper>
+                            <ListItem
+                                key={`item-${item.userId}`}
+                                onClick={e => setSelected(item.userId)}
+                            >
+                                <ListItemText
+                                    primary={item.profile.firstName}
+                                    secondary={item.profile.lastName}
+                                />
+                            </ListItem>
+                        </Paper>
                     </Box>
                 ))}
             </List>
@@ -30,7 +39,8 @@ const SearchResults = ({ searchResults }) => {
 };
 
 const mapState = state => ({
-    searchResults: RecruitmentSelectors.searchResults(state)
+    searchResults: RecruitmentSelectors.searchResults(state),
+    searchResultsCount: RecruitmentSelectors.searchResultsCount(state)
 });
-
+// onClick={e => setSelected(item.userId)}
 export default connect(mapState)(SearchResults);

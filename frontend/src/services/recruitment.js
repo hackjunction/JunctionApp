@@ -16,19 +16,9 @@ RecruitmentService.search = idToken => {
         {
             filters: [
                 {
-                    field: 'countryOfResidence',
+                    field: 'roles.role',
                     operator: '==',
-                    value: 'Finland'
-                },
-                {
-                    field: 'roles',
-                    operator: 'array-contains',
-                    value: {
-                        role: 'Fullstack Developer',
-                        years: {
-                            $gte: 1
-                        }
-                    }
+                    value: 'Fullstack Developer'
                 }
             ],
             pagination: {
@@ -39,7 +29,6 @@ RecruitmentService.search = idToken => {
         config(idToken)
     );
 };
-
 RecruitmentService.getUserProfile = (idToken, userId) => {
     return _axios.get(`/recruitment/profile/${userId}`, config(idToken));
 };

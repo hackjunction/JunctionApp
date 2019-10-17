@@ -75,6 +75,17 @@ controller.createTravelGrantRejectedTask = async (registration, deliverNow = fal
     return task;
 };
 
+controller.createRecruiterMessageTask = async (recruiterAction) => {
+    const [user, recruiter] = await Promise.all([
+        UserController.getUserProfile(recruiterAction.user),
+        UserController.getUserProfile(recruiterAction.recruiter)
+    ]
+        )
+    // TODO implement Task for this type as well! Event is missing in this type of email.
+    return SendgridService
+    .sendRecruiterMessageEmail(recruiter, user, recruiterAction.organization, recruiterAction.data.message)
+};
+
 controller.createGenericTask = async (userId, eventId, uniqueId, msgParams, deliverNow = false) => {
     if (!uniqueId) {
         uniqueId = shortid.generate();
