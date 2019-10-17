@@ -305,7 +305,7 @@ const FieldProps = {
                     type: String,
                     enum: Roles.items
                 },
-                level: {
+                years: {
                     type: Number,
                     min: 1,
                     max: 5
