@@ -17,7 +17,7 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
 });
 const saveRecruiterAction = asyncHandler(async (req, res) => {
     try {
-        await RecruitmentController.saveRecruiterAction(req.body);
+        await RecruitmentController.saveRecruiterAction(req.user.sub, req.body);
         return res.status(200).json({ success: true });
     } catch (error) {
         return res.status(200).json({ success: false, error: error.message });
@@ -28,7 +28,7 @@ const getFavorites = asyncHandler(async (req, res) => {
     return res.status(200).json(users);
 });
 
-router.get('/search', hasToken, hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), queryUsers);
+router.post('/search', hasToken, hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), queryUsers);
 
 router
     .route('/profile/:id')

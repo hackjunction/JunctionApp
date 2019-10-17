@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import RecruitmentUserModal from 'components/modals/RecruitmentUserModal';
 
 import { connect } from 'react-redux';
@@ -6,14 +6,16 @@ import { connect } from 'react-redux';
 import { Paper, Box, List, ListItem, ListItemText } from '@material-ui/core';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import { Typography } from 'antd';
 
-const SearchResults = ({ searchResults }) => {
+const SearchResults = ({ searchResults, searchResultsCount }) => {
     const [selected, setSelected] = useState();
 
     console.log('SEARCH RESULTS', searchResults);
 
     return (
         <React.Fragment>
+            <Typography variant="h6">{searchResultsCount} results</Typography>
             <List>
                 {searchResults.map(item => (
                     <Box mb={1} key={item._id}>
@@ -31,7 +33,8 @@ const SearchResults = ({ searchResults }) => {
 };
 
 const mapState = state => ({
-    searchResults: RecruitmentSelectors.searchResultsMapped(state)
+    searchResults: RecruitmentSelectors.searchResults(state),
+    searchResultsCount: RecruitmentSelectors.searchResultsCount(state)
 });
 
 export default connect(mapState)(SearchResults);
