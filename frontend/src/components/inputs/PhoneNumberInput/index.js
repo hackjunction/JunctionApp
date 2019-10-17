@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 
-import { Grid, InputAdornment } from '@material-ui/core';
+import { Grid, InputAdornment, Typography } from '@material-ui/core';
 import Select from 'components/inputs/Select';
 import TextInput from 'components/inputs/TextInput';
 
-const PhoneNumberInput = React.memo(({ value, onChange }) => {
-    console.log('PHONE NUMBER RENDER');
+const PhoneNumberInput = React.memo(({ label, value = {}, onChange }) => {
     const handleCodeChange = useCallback(
         code => {
             onChange({
@@ -31,7 +30,7 @@ const PhoneNumberInput = React.memo(({ value, onChange }) => {
             <Grid item xs={12} md={4}>
                 <Select
                     type="countryCode"
-                    label="Choose country"
+                    label="Country code"
                     value={value.country_code}
                     onChange={handleCodeChange}
                 />

@@ -6,9 +6,9 @@ const Roles = require('./roles');
 const Skills = require('./skills');
 const Themes = require('./themes');
 const RegistrationStatuses = require('./registration-statuses');
+const Misc = require('./misc');
 
 const currentYear = new Date().getFullYear();
-console.log('CURRENT YEAR', typeof currentYear);
 
 const SelectOptions = {
     COUNTRIES: Countries.asArrayOfName.map(country => ({
@@ -22,6 +22,11 @@ const SelectOptions = {
     NATIONALITIES: Countries.asArrayOfNationalities.map(nationality => ({
         label: nationality,
         value: nationality
+    })),
+    NUM_HACKATHONS: Misc.numHackathonOptions.asArray,
+    DIETARY_RESTRICTIONS: Misc.dietaryRestrictions.map(item => ({
+        label: item,
+        value: item
     })),
     GENDERS: Genders.map(gender => ({
         label: gender,
