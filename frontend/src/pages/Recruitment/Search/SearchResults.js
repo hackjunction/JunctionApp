@@ -6,37 +6,31 @@ import { connect } from 'react-redux';
 import { Paper, Box, List, ListItem, ListItemText } from '@material-ui/core';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import ResultCard from './ResultCard';
 
 const SearchResults = ({ searchResults }) => {
-  const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState();
 
-  console.log(searchResults);
-  return (
-    <React.Fragment>
-      <List>
-        {searchResults.map(item => (
-          <Box mb={1} key={`box-${item.userId}`}>
-            <Paper>
-              <ListItem
-                key={`item-${item.userId}`}
-                onClick={e => setSelected(item.userId)}
-              >
-                <ListItemText
-                  primary={item.profile.firstName}
-                  secondary={item.profile.lastName}
-                />
-              </ListItem>
-            </Paper>
-          </Box>
-        ))}
-      </List>
-      <RecruitmentUserModal profileId={selected} onClose={setSelected} />
-    </React.Fragment>
-  );
+    console.log(searchResults);
+    return (
+        <React.Fragment>
+            <List>
+                {searchResults.map(item => (
+                    <Box mb={1} key={`box-${item.userId}`}>
+                        <ResultCard
+                            data={item}
+                            onClick={() => setSelected(item.userId)}
+                        />
+                    </Box>
+                ))}
+            </List>
+            <RecruitmentUserModal profileId={selected} onClose={setSelected} />
+        </React.Fragment>
+    );
 };
 
 const mapState = state => ({
-  searchResults: RecruitmentSelectors.searchResults(state)
+    searchResults: RecruitmentSelectors.searchResults(state)
 });
-// onClick={e => setSelected(item.userId)}
+
 export default connect(mapState)(SearchResults);
