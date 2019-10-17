@@ -1,68 +1,38 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { RegistrationFields } from '@hackjunction/shared';
 import TextInput from 'components/inputs/TextInput';
+import TextAreaInput from 'components/inputs/TextAreaInput';
 import PhoneNumberInput from 'components/inputs/PhoneNumberInput';
+import JobRoleInput from 'components/inputs/JobRoleInput';
+import SkillsInput from 'components/inputs/SkillsInput';
 import DateInput from 'components/inputs/DateInput';
-import Select from 'components/inputs/Select';
 import FormControl from 'components/inputs/FormControl';
-
+import Select from 'components/inputs/Select';
 const { fieldTypes } = RegistrationFields;
 
-const useStyles = makeStyles(theme => ({
-    label: {
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-    },
-    hint: {
-        marginTop: theme.spacing(0.5)
-    },
-    fieldWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1
-    }
-}));
-
-const RegistrationQuestion = ({ field, form, config, required }) => {
-    const classes = useStyles();
-    // const renderInputForField = () => {
-    //     switch (field.fieldConfig.fieldType.id) {
-    //         case fieldTypes.EMAIL.id:
-    //         case fieldTypes.URL.id:
-    //         case fieldTypes.SHORT_TEXT.id:
-    //             return (
-    //                 <TextInput
-    //                     name={field.name}
-    //                     label={field.fieldConfig.placeholder}
-    //                     value={field.value}
-    //                     onChange={field.onChange}
-    //                     rawOnChange
-    //                 />
-    //             );
-    //         default:
-    //             return null;
-    //     }
-    // };
-
-    console.log('RENDER', form);
-
+const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
     const renderInput = () => {
         switch (config.fieldType.id) {
             case fieldTypes.EMAIL.id:
             case fieldTypes.URL.id:
             case fieldTypes.SHORT_TEXT.id:
                 return (
-                    <TextInput
-                        name={field.name}
-                        error={form.touched[field.name] ? form.errors[field.name] : null}
+                    <FormControl
                         label={config.label}
-                        value={field.value}
-                        onChange={value => form.setFieldValue(field.name, value)}
-                        onBlur={() => form.setFieldTouched(field.name)}
-                    />
+                        error={form.errors[field.name]}
+                        touched={form.touched[field.name]}
+                        hint={config.hint}
+                    >
+                        <TextInput
+                            autoFocus={autoFocus}
+                            name={field.name}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
                 );
             case fieldTypes.PHONE_NUMBER.id:
                 return (
@@ -73,8 +43,10 @@ const RegistrationQuestion = ({ field, form, config, required }) => {
                         error={form.errors[field.name]}
                     >
                         <PhoneNumberInput
+                            autoFocus={autoFocus}
                             value={field.value}
                             onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={value => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
                 );
@@ -86,183 +58,267 @@ const RegistrationQuestion = ({ field, form, config, required }) => {
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <DateInput value={field.value} onChange={date => form.setFieldValue(field.name, date)} />
+                        <DateInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={date => form.setFieldValue(field.name, date)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
                     </FormControl>
                 );
             case fieldTypes.GENDER.id:
                 return (
-                    <Select
+                    <FormControl
                         label={config.label}
-                        helperText={config.hint}
-                        value={field.value}
-                        onChange={gender => form.setFieldValue(field.name, gender)}
-                        type="gender"
-                    />
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={gender => form.setFieldValue(field.name, gender)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="gender"
+                        />
+                    </FormControl>
                 );
             case fieldTypes.NATIONALITY.id:
                 return (
-                    <Select
+                    <FormControl
                         label={config.label}
-                        value={field.value}
-                        onChange={nationality => form.setFieldValue(field.name, nationality)}
-                        type="nationality"
-                    />
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={nationality => form.setFieldValue(field.name, nationality)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="nationality"
+                        />
+                    </FormControl>
                 );
             case fieldTypes.LANGUAGES.id:
                 return (
-                    <Select
+                    <FormControl
                         label={config.label}
-                        helperText={config.hint}
-                        value={field.value}
-                        onChange={languages => form.setFieldValue(field.name, languages)}
-                        type="language"
-                        multiple={true}
-                    />
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={languages => form.setFieldValue(field.name, languages)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="language"
+                            isMulti={true}
+                        />
+                    </FormControl>
                 );
             case fieldTypes.COUNTRY.id:
                 return (
-                    <Select
+                    <FormControl
+                        autoFocus={autoFocus}
                         label={config.label}
-                        helperText={config.hint}
-                        value={field.value}
-                        onChange={country => form.setFieldValue(field.name, country)}
-                        type="country"
-                    />
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={country => form.setFieldValue(field.name, country)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="country"
+                        />
+                    </FormControl>
                 );
             case fieldTypes.ROLES.id:
-                return null;
-            // return (
-            //     <JobRoleForm
-            //         value={field.value}
-            //         name={field.name}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         setFieldValue={form.setFieldValue}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <JobRoleInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={roles => form.setFieldValue(field.name, roles)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
             case fieldTypes.SKILLS.id:
-                return null;
-            // return (
-            //     <SkillsForm
-            //         value={field.value}
-            //         name={field.name}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         setFieldValue={form.setFieldValue}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <SkillsInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={skills => form.setFieldValue(field.name, skills)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
             case fieldTypes.INDUSTRIES.id:
                 return (
-                    <Select
-                        label="Select all that apply"
-                        value={field.value}
-                        onChange={items => form.setFieldValue(field.name, items)}
-                        type="industry"
-                        multiple={true}
-                    />
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="industry"
+                            isMulti={true}
+                        />
+                    </FormControl>
                 );
             case fieldTypes.THEMES.id:
                 return (
-                    <Select
-                        label="Select all that apply"
-                        value={field.value}
-                        onChange={items => form.setFieldValue(field.name, items)}
-                        type="theme"
-                        multiple={true}
-                    />
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="theme"
+                            isMulti={true}
+                        />
+                    </FormControl>
                 );
             case fieldTypes.EDUCATION.id:
-                return null;
-            // return (
-            //     <EducationForm
-            //         value={field.value}
-            //         name={field.name}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         setFieldValue={form.setFieldValue}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <span>Education form</span>
+                    </FormControl>
+                );
             case fieldTypes.LONG_TEXT.id:
-                return null;
-            // return (
-            //     <Input.TextArea
-            //         {...field}
-            //         size="large"
-            //         autosize={{ minRows: 5, maxRows: 15 }}
-            //         placeholder={fieldConfig.placeholder}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <TextAreaInput
+                            autoFocus={autoFocus}
+                            name={field.name}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
             case fieldTypes.NUM_HACKATHONS.id:
                 return (
-                    <Select
-                        label="Choose one"
-                        type="num-hackathons"
-                        value={field.value}
-                        onChange={value => form.setFieldValue(field.name, value)}
-                    />
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="num-hackathons"
+                        />
+                    </FormControl>
                 );
             case fieldTypes.T_SHIRT_SIZE.id:
-                return null;
-            // return (
-            //     <TShirtSizeSelect
-            //         value={field.value}
-            //         name={field.name}
-            //         setFieldValue={form.setFieldValue}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <span>T-shirt size select</span>
+                    </FormControl>
+                );
             case fieldTypes.BOOLEAN.id:
-                return null;
-            // return (
-            //     <BooleanField
-            //         value={field.value}
-            //         name={field.name}
-            //         setFieldValue={form.setFieldValue}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <span>Boolean here</span>
+                    </FormControl>
+                );
             case fieldTypes.DIETARY_RESTRICTIONS.id:
                 return (
-                    <Select
+                    <FormControl
                         label={config.label}
-                        helperText={config.hint}
-                        type="dietary-restriction"
-                        value={field.value}
-                        onChange={items => form.setFieldValue(field.name, items)}
-                        multiple={true}
-                    />
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            options="dietary-restriction"
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            isMulti={true}
+                        />
+                    </FormControl>
                 );
             case fieldTypes.TEAM_OPTIONS.id:
-                return null;
-            // return (
-            //     <TeamOptionForm
-            //         value={field.value}
-            //         name={field.name}
-            //         setFieldValue={form.setFieldValue}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <span>Team options here</span>
+                    </FormControl>
+                );
             case fieldTypes.RECRUITMENT_OPTIONS.id:
-                return null;
-            // return (
-            //     <RecruitmentOptionForm
-            //         value={field.value}
-            //         name={field.name}
-            //         setFieldValue={form.setFieldValue}
-            //         validateField={form.validateField}
-            //         setFieldTouched={form.setFieldTouched}
-            //         touched={form.touched[field.name]}
-            //     />
-            // );
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <span>Recruitment options</span>
+                    </FormControl>
+                );
             default:
                 return null;
         }

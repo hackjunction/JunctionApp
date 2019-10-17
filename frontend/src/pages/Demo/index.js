@@ -7,7 +7,7 @@ import CenteredContainer from 'components/generic/CenteredContainer';
 import TextInput from 'components/inputs/TextInput';
 import PhoneNumberInput from 'components/inputs/PhoneNumberInput';
 import DateInput from 'components/inputs/DateInput';
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/SelectOld';
 
 const DemoPage = () => {
     const textInput = useFormField('');

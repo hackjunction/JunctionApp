@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         flex: 1
     },
     label: {
-        fontWeight: 'bold',
+        fontWeight: 'normal',
         textTransform: 'uppercase'
     },
     hint: ({ hasError }) => ({
@@ -22,17 +22,36 @@ const useStyles = makeStyles(theme => ({
 const FormControl = ({ label, hint, touched, error, children }) => {
     const hasError = touched && error;
     const classes = useStyles({ hasError });
-    const theme = useTheme();
-    console.log('THEME', theme);
+
+    const renderHintOrError = () => {
+        if (!touched || !error) {
+            return hint;
+        }
+
+        if (typeof error === 'string') {
+            return error;
+        }
+
+        if (Object.keys(error).length > 0) {
+            return Object.keys(error)
+                .map(key => {
+                    return error[key];
+                })
+                .join(', ');
+        }
+
+        return hint;
+    };
+
     return (
         <Box className={classes.wrapper}>
-            <Typography className={classes.label} variant="caption">
+            <Typography className={classes.label} variant="h6">
                 {label}
             </Typography>
-            {children}
-            <Typography className={classes.hint} variant="caption">
-                {hasError ? error : hint}
+            <Typography className={classes.hint} variant="subtitle2" paragraph>
+                {renderHintOrError()}
             </Typography>
+            {children}
         </Box>
     );
 };

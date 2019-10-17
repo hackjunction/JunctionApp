@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import { Grid, InputAdornment } from '@material-ui/core';
 
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/SelectOld';
 import TextInput from 'components/inputs/TextInput';
 
 const PhoneNumberInput = React.memo(({ value = {}, name, setFieldValue, setFieldTouched, validateField, touched }) => {

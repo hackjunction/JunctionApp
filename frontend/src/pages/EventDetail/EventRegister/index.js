@@ -33,6 +33,7 @@ import RequiresPermission from 'hocs/RequiresPermission';
 import AnalyticsService from 'services/analytics';
 
 import RegistrationSection from './RegistrationSection';
+import RegistrationSectionLabel from './RegistrationSectionLabel';
 
 const useStyles = makeStyles(theme => ({
     mainTitle: {
@@ -43,14 +44,21 @@ const useStyles = makeStyles(theme => ({
         color: 'white',
         fontSize: '1.4rem',
         textTransform: 'uppercase',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'center'
     },
     content: {
         position: 'relative',
         zIndex: 1000
     },
     stepper: {
-        background: 'transparent'
+        background: 'transparent',
+        padding: 0
+    },
+    stepContent: {
+        border: 'none',
+        marginLeft: 0,
+        paddingLeft: '8px'
     }
 }));
 
@@ -65,11 +73,19 @@ const EventRegister = ({
     idTokenPayload
 }) => {
     const classes = useStyles();
+    const [formData, setFormData] = useState({});
     const [activeStep, setActiveStep] = useState(0);
 
-    const setNextStep = useCallback(() => {
-        setActiveStep(activeStep + 1);
-    }, [activeStep]);
+    const setNextStep = useCallback(
+        values => {
+            setFormData({
+                ...formData,
+                ...values
+            });
+            setActiveStep(activeStep + 1);
+        },
+        [formData, activeStep]
+    );
 
     const setPrevStep = useCallback(() => {
         setActiveStep(activeStep - 1);
@@ -119,12 +135,21 @@ const EventRegister = ({
             const prevStep = index !== 0 ? sections[index - 1] : null;
             return (
                 <Step key={section.label}>
-                    <StepLabel>
+                    <RegistrationSectionLabel
+                        label={section.label}
+                        previousLabel={prevStep ? prevStep.label : null}
+                        onPrevious={setPrevStep}
+                    />
+                    {/* <StepLabel>
                         <Typography className={classes.sectionTitle} variant="subtitle1">
                             {section.label}
                         </Typography>
-                    </StepLabel>
-                    <StepContent>
+                    </StepLabel> */}
+                    <StepContent
+                        classes={{
+                            root: classes.stepContent
+                        }}
+                    >
                         <RegistrationSection
                             label={section.label}
                             fields={section.fields}
@@ -164,7 +189,7 @@ const EventRegister = ({
                         Register
                     </Typography>
                 </FadeInWrapper>
-                <Stepper className={classes.stepper} activeStep={activeStep} orientation="vertical">
+                <Stepper connector={<div />} className={classes.stepper} activeStep={activeStep} orientation="vertical">
                     {renderSteps()}
                 </Stepper>
             </CenteredContainer>
