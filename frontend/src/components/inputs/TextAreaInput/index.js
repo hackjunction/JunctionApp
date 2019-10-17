@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { TextField } from '@material-ui/core';
 
-const TextInput = React.memo(
+const TextAreaInput = React.memo(
     ({ disabled, label, onBlur, onChange = () => {}, placeholder = '', required = false, value = '', autoFocus }) => {
         const handleChange = useCallback(
             e => {
@@ -22,9 +22,12 @@ const TextInput = React.memo(
                 placeholder={placeholder}
                 required={required}
                 value={value}
+                multiline
+                rows={10}
+                rowsMax={100}
             />
         );
     }
 );
 
-export default TextInput;
+export default TextAreaInput;

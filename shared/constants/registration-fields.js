@@ -1,3 +1,4 @@
+const yup = require('yup');
 const Genders = require('../constants/genders');
 const Countries = require('../constants/countries');
 const Languages = require('../constants/languages');
@@ -676,25 +677,21 @@ const Fields = {
         ...FieldProps.firstName,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.firstName || idToken.given_name || '',
-        validationSchema: (yup, required) => {
-            return yup
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .min(1)
-                .max(10);
-            // const base = yup
-            //     .string()
-            //     .min(required ? 1 : 0)
-            //     .max(100)
-            //     .label(FieldProps.firstName.label);
+                .min(required ? 1 : 0)
+                .max(10)
+                .label(FieldProps.firstName.label);
 
-            // return required ? base.required() : base;
+            return required ? base.required() : base;
         }
     },
     lastName: {
         ...FieldProps.lastName,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.lastName || idToken.family_name || '',
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
@@ -707,7 +704,7 @@ const Fields = {
         ...FieldProps.email,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.email || idToken.email || '',
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .email()
@@ -719,55 +716,59 @@ const Fields = {
         ...FieldProps.phoneNumber,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.phoneNumber || undefined,
-        validationSchema: (yup, required) => {
-            const base = yup
-                .object()
-                .shape({
-                    country_code: yup
-                        .string()
-                        .oneOf(Countries.asArrayOfPhoneCodes)
-                        .label('Country code'),
-                    number: yup
-                        .string()
-                        .matches(/^[0-9]{7,14}$/)
-                        .label('Number')
-                })
-                .label(FieldProps.phoneNumber.label);
+        validationSchema: required => {
+            const country_code = yup
+                .string()
+                .oneOf(Countries.asArrayOfPhoneCodes)
+                .label('Country code');
+            const number = yup
+                .string()
+                .matches(/^[0-9]{7,14}$/)
+                .label('Phone number');
+            const shape = required
+                ? {
+                      country_code: country_code.required(),
+                      number: number.required()
+                  }
+                : {
+                      country_code,
+                      number
+                  };
 
-            return required ? base.required() : base;
+            return yup.object(shape).label(FieldProps.phoneNumber.label);
         }
     },
     dateOfBirth: {
         ...FieldProps.dateOfBirth,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.dateOfBirth || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .date()
                 .min(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120))
                 .max(new Date(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16))
                 .label(FieldProps.dateOfBirth.label);
 
-            return required ? base.required : base;
+            return required ? base.required() : base;
         }
     },
     gender: {
         ...FieldProps.gender,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.gender || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .oneOf(Genders)
                 .label(FieldProps.gender.label);
-            return required ? base.required : base;
+            return required ? base.required() : base;
         }
     },
     nationality: {
         ...FieldProps.nationality,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.nationality || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .oneOf(Countries.asArrayOfNationalities)
@@ -780,7 +781,7 @@ const Fields = {
         ...FieldProps.spokenLanguages,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.spokenLanguages || [],
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .array()
                 .of(yup.string().oneOf(Languages.asArrayOfNames))
@@ -793,7 +794,7 @@ const Fields = {
         ...FieldProps.countryOfResidence,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.countryOfResidence || idToken.country || '',
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .oneOf(Countries.asArrayOfName)
@@ -806,7 +807,7 @@ const Fields = {
         ...FieldProps.cityOfResidence,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.cityOfResidence || idToken.city || '',
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
@@ -819,7 +820,7 @@ const Fields = {
         ...FieldProps.tShirtSize,
         category: Categories.basicDetails,
         default: userProfile => userProfile.tShirtSize || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .oneOf(Misc.tShirtSizes)
@@ -832,7 +833,7 @@ const Fields = {
         ...FieldProps.dietaryRestrictions,
         category: Categories.basicDetails,
         default: () => [],
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .array()
                 .of(yup.string().oneOf(Misc.dietaryRestrictions))
@@ -845,7 +846,7 @@ const Fields = {
         ...FieldProps.roles,
         category: Categories.skillsAndInterests,
         default: () => [],
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .array()
                 .of(
@@ -873,7 +874,7 @@ const Fields = {
         ...FieldProps.skills,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.skills || [],
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .array()
                 .of(
@@ -901,7 +902,7 @@ const Fields = {
         ...FieldProps.motivation,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => '',
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
@@ -915,7 +916,7 @@ const Fields = {
         ...FieldProps.industriesOfInterest,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.industriesOfInterest || [],
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .array()
                 .of(yup.string().oneOf(Industries.industries))
@@ -928,10 +929,10 @@ const Fields = {
         ...FieldProps.themesOfInterest,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.themesOfInterest || [],
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .array()
-                .of(yup.string().valid(Themes.themes))
+                .of(yup.string().oneOf(Themes.themes))
                 .max(3)
                 .label(FieldProps.themesOfInterest.label);
 
@@ -942,7 +943,7 @@ const Fields = {
         ...FieldProps.numHackathons,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.numHackathons || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .number()
                 .min(0)
@@ -956,7 +957,7 @@ const Fields = {
         ...FieldProps.education,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.education || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .object()
                 .shape({
@@ -982,7 +983,7 @@ const Fields = {
         ...FieldProps.portfolio,
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.portfolio || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .url()
@@ -995,7 +996,7 @@ const Fields = {
         ...FieldProps.github,
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.github || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .url()
@@ -1008,7 +1009,7 @@ const Fields = {
         ...FieldProps.linkedin,
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.linkedin || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .url()
@@ -1021,7 +1022,7 @@ const Fields = {
         ...FieldProps.countryOfTravel,
         category: Categories.travelAndAccommodation,
         default: userProfile => userProfile.countryOfResidence || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .oneOf(Countries.asArrayOfName)
@@ -1034,7 +1035,7 @@ const Fields = {
         ...FieldProps.cityOfTravel,
         category: Categories.travelAndAccommodation,
         default: userProfile => userProfile.cityOfResidence || undefined,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
@@ -1048,7 +1049,7 @@ const Fields = {
         ...FieldProps.needsVisa,
         category: Categories.travelAndAccommodation,
         default: () => false,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .boolean()
                 .transform(value => {
@@ -1064,7 +1065,7 @@ const Fields = {
         ...FieldProps.needsTravelGrant,
         category: Categories.travelAndAccommodation,
         default: () => false,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .boolean()
                 .transform(value => {
@@ -1080,7 +1081,7 @@ const Fields = {
         ...FieldProps.needsAccommodation,
         category: Categories.travelAndAccommodation,
         default: () => false,
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .boolean()
                 .transform(value => {
@@ -1099,7 +1100,7 @@ const Fields = {
             applyAsTeam: false,
             applyAlone: false
         }),
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .object()
                 .shape({
@@ -1128,7 +1129,7 @@ const Fields = {
         ...FieldProps.secretCode,
         category: Categories.other,
         default: () => '',
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .string()
                 .max(100)
@@ -1143,7 +1144,7 @@ const Fields = {
         default: () => ({
             consent: false
         }),
-        validationSchema: (yup, required) => {
+        validationSchema: required => {
             const base = yup
                 .object()
                 .shape({
