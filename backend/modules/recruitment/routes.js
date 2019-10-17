@@ -8,6 +8,7 @@ const { hasToken } = require('../../common/middleware/token');
 const { hasPermission } = require('../../common/middleware/permissions');
 
 const queryUsers = asyncHandler(async (req, res) => {
+    console.log('BODY', req.body);
     const users = await RecruitmentController.queryProfiles(req.body);
     return res.status(200).json(users);
 });
@@ -28,7 +29,7 @@ const getFavorites = asyncHandler(async (req, res) => {
     return res.status(200).json(users);
 });
 
-router.get('/search', hasToken, hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), queryUsers);
+router.post('/search', hasToken, hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), queryUsers);
 
 router
     .route('/profile/:id')
