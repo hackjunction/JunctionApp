@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { Skills, Roles } from '@hackjunction/shared';
 
-export const searchResults = state => state.recruitment.searchResults.data;
+export const searchResults = state => state.recruitment.searchResults.data.data;
 
 export const searchResultsMapped = createSelector(
     searchResults,
