@@ -52,7 +52,7 @@ controller.filterOperatorToMongoOperator = operator => {
     if (operator == '>=') return '$gte';
     if (operator == '==') return '$eq';
     if (operator == '!=') return '$ne';
-    if (operator == 'array-contains') return '$in';
+    if (operator == 'array-contains') return '$elemMatch';
     if (operator == 'array-not-contains') return '$nin';
 };
 
@@ -102,15 +102,18 @@ controller.createRecruitmentProfile = async (userProfile, eager = false) => {
     return profile;
 };
 
-controller.saveRecruiterAction = async actionToSave => {
-    const action = new RecruitmentAction(actionToSave);
+controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
+    const action = new RecruitmentAction({
+        recruiter: recruiterId,
+        ...actionToSave
+    });
 
     if (action.type === 'favorite') {
         // Nothing todo, just save the action
     }
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
-        await RecruitmentAction.deleteMany({ recruiter: action.recruiter, user: action.user, type: 'favorite' });
+        await RecruitmentAction.deleteMany({ recruiter: recruiterId, user: action.user, type: 'favorite' });
     }
     if (action.type === 'message') {
         await EmailTaskController.createRecruiterMessageTask(action);
