@@ -13,16 +13,17 @@ import { Typography } from 'antd';
 import { userInfo } from 'os';
 
 const ResultCard = ({ data, onClick }) => {
-    const skills = data => {
-        data.skills.map(skills => {
-            return <Typography key={data.userId}>{skills}</Typography>;
-        });
-    };
+    const skills =
+        data.skills.map(item => {
+            return item.skill + ' (' + item.level + ')';
+        }).join(', ');
+
+    console.log(data.skills);
 
     return (
         <Card>
             <CardContent>
-                <Avatar />
+                <Avatar src={data.profile.profilePicture} />
                 <Typography component="h2">
                     {data.profile.firstName} {data.profile.lastName}
                 </Typography>
