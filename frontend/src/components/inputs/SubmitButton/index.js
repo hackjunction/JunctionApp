@@ -5,18 +5,13 @@ import Button from 'components/generic/Button';
 import ExternalLink from 'components/generic/ExternalLink';
 import { Switch } from 'antd';
 
-const SubmitButton = ({ formikProps }) => {
+const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
     const [confirmed, setConfirmed] = useState(false);
-    const hasErrors = Object.keys(formikProps.errors).length !== 0;
 
     return (
         <div>
             <div className={styles.privacyClause}>
-                <Switch
-                    className={styles.privacyClauseSwitch}
-                    checked={confirmed}
-                    onChange={setConfirmed}
-                />
+                <Switch className={styles.privacyClauseSwitch} checked={confirmed} onChange={setConfirmed} />
                 <ul className={styles.privacyClauseList}>
                     <li className={styles.privacyClauseListItem}>
                         <span className={styles.privacyClauseText}>
@@ -27,7 +22,9 @@ const SubmitButton = ({ formikProps }) => {
                     <li className={styles.privacyClauseListItem}>
                         <span className={styles.privacyClauseText}>
                             I've read and agree to the{' '}
-                            <ExternalLink href="https://hackjunction.com/terms">Junction Terms & Conditions</ExternalLink>
+                            <ExternalLink href="https://hackjunction.com/terms">
+                                Junction Terms & Conditions
+                            </ExternalLink>
                         </span>
                     </li>
                     <li className={styles.privacyClauseListItem}>
@@ -44,8 +41,8 @@ const SubmitButton = ({ formikProps }) => {
                 size="large"
                 button={{
                     disabled: hasErrors || !confirmed,
-                    loading: formikProps.isSubmitting,
-                    onClick: formikProps.submitForm
+                    loading,
+                    onClick: onSubmit
                 }}
             />
         </div>

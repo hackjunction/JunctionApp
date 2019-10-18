@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     },
     hint: ({ hasError }) => ({
         marginTop: theme.spacing(0.5),
-        color: hasError ? theme.palette.error.main : theme.palette.text.hint
+        color: hasError ? theme.palette.error.main : theme.palette.text.primary
     })
 }));
 

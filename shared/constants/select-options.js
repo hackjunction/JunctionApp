@@ -52,6 +52,10 @@ const SelectOptions = {
         label: theme,
         value: theme
     })),
+    T_SHIRT_SIZES: Misc.tShirtSizes.map(size => ({
+        label: size,
+        value: size
+    })),
     STATUSES: RegistrationStatuses.asArray.map(status => ({
         label: status.label,
         value: status.id
@@ -80,6 +84,10 @@ const SelectOptions = {
     YEARS: Array.apply(null, Array(120)).map((val, index) => ({
         value: currentYear - index,
         label: currentYear - index
+    })),
+    YEARS_FUTURE: Array.apply(null, Array(120)).map((val, index) => ({
+        value: currentYear + 15 - index,
+        label: currentYear + 15 - index
     }))
 };
 

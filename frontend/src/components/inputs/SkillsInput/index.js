@@ -27,12 +27,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SkillsInput = React.memo(({ enqueueSnackbar }) => {
+const SkillsInput = React.memo(({ value, onChange, onBlur, autoFocus, enqueueSnackbar }) => {
     const classes = useStyles();
     const selectEl = useRef(null);
     const [level, setLevel] = useState();
     const [skill, setSkill] = useState();
-    const [value, onChange] = useState([]);
 
     const handleLevelChange = useCallback(event => {
         setLevel(event.target.value);
@@ -46,10 +45,10 @@ const SkillsInput = React.memo(({ enqueueSnackbar }) => {
             return;
         }
         onChange(value.concat(item));
-        setLevel();
-        setSkill();
+        setLevel(undefined);
+        setSkill(undefined);
         selectEl.current.focus();
-    }, [skill, level, value, enqueueSnackbar]);
+    }, [skill, level, value, onChange, enqueueSnackbar]);
 
     const handleRemove = useCallback(
         index => {
@@ -59,7 +58,7 @@ const SkillsInput = React.memo(({ enqueueSnackbar }) => {
                 })
             );
         },
-        [value]
+        [value, onChange]
     );
 
     const buttonDisabled = !level || !skill;
@@ -72,6 +71,8 @@ const SkillsInput = React.memo(({ enqueueSnackbar }) => {
                 </Grid>
                 <Grid item xs={8}>
                     <Select
+                        autoFocus={autoFocus}
+                        onBlur={onBlur}
                         innerRef={selectEl}
                         label="Choose a skill"
                         placeholder="Type to search for skills"
@@ -92,6 +93,7 @@ const SkillsInput = React.memo(({ enqueueSnackbar }) => {
                     >
                         {Skills.skillLevelLabelsArray.map((label, index) => (
                             <FormControlLabel
+                                key={label}
                                 value={`${index + 1}`}
                                 control={<Radio color="primary" />}
                                 label={label}
