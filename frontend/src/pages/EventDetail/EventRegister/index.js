@@ -1,13 +1,10 @@
 import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import styles from './EventRegister.module.scss';
 
-import { Formik } from 'formik';
-import { Row, Col, notification, Alert, Icon } from 'antd';
 import { forOwn, sortBy } from 'lodash-es';
 import { connect } from 'react-redux';
-import { motion } from 'framer-motion';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Stepper, Step, StepLabel, StepContent, Button } from '@material-ui/core';
+import { Typography, Stepper, Step, StepContent, Box, Button } from '@material-ui/core';
 import { RegistrationFields } from '@hackjunction/shared';
 import classNames from 'classnames';
 
@@ -17,23 +14,16 @@ import * as UserSelectors from 'redux/user/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 
 import CenteredContainer from 'components/generic/CenteredContainer';
-// import Button from 'components/generic/Button';
 import Image from 'components/generic/Image';
-import NewsLetterButton from 'components/FormComponents/NewsLetterButton';
 import FadeInWrapper from 'components/animated/FadeInWrapper';
-import StaggeredList from 'components/animated/StaggeredList';
-import StaggeredListItem from 'components/animated/StaggeredListItem';
-import Divider from 'components/generic/Divider';
-import RegistrationField from 'components/FormComponents/RegistrationField';
-import SubmitButton from 'components/FormComponents/SubmitButton';
-import FormStatus from 'components/FormComponents/FormStatus';
-import CustomRegistrationSection from './CustomRegistrationSection';
 
 import RequiresPermission from 'hocs/RequiresPermission';
-import AnalyticsService from 'services/analytics';
 
 import RegistrationSection from './RegistrationSection';
+import RegistrationSectionCustom from './RegistrationSectionCustom';
 import RegistrationSectionLabel from './RegistrationSectionLabel';
+import NewsLetterButton from 'components/inputs/NewsLetterButton';
+import SubmitButton from 'components/inputs/SubmitButton';
 
 const useStyles = makeStyles(theme => ({
     mainTitle: {
@@ -59,6 +49,32 @@ const useStyles = makeStyles(theme => ({
         border: 'none',
         marginLeft: 0,
         paddingLeft: '8px'
+    },
+    top: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        padding: theme.spacing(2),
+        background: 'black',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        zIndex: 2000
+    },
+    topTitle: {
+        fontSize: '1rem',
+        color: 'white',
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        margin: '2px'
+    },
+    topTitleExtra: {
+        fontSize: '1rem',
+        color: 'white',
+        textTransform: 'uppercase',
+        fontWeight: 'normal',
+        margin: '2px'
     }
 }));
 
@@ -77,15 +93,31 @@ const EventRegister = ({
     const [activeStep, setActiveStep] = useState(0);
 
     const setNextStep = useCallback(
-        values => {
-            setFormData({
-                ...formData,
-                ...values
-            });
-            setActiveStep(activeStep + 1);
+        (nextStep, values, path) => {
+            if (path) {
+                setFormData({
+                    ...formData,
+                    [path]: {
+                        ...formData[path],
+                        ...values
+                    }
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    ...values
+                });
+            }
+            setActiveStep(nextStep);
         },
-        [formData, activeStep]
+        [formData]
     );
+
+    useEffect(() => {
+        setTimeout(function() {
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        }, 500);
+    }, [activeStep]);
 
     const setPrevStep = useCallback(() => {
         setActiveStep(activeStep - 1);
@@ -124,45 +156,65 @@ const EventRegister = ({
         });
 
         const sorted = sortBy(fieldSections, 'order');
-        return sorted;
-    }, [event.userDetailsConfig]);
+        return sorted.concat(event.customQuestions);
+    }, [event.userDetailsConfig, event.customQuestions]);
 
     const submitted = false;
 
     const renderSteps = () => {
         return sections.map((section, index) => {
+            const isCustomSection = section.hasOwnProperty('name');
             const nextStep = index !== sections.length - 1 ? sections[index + 1] : null;
             const prevStep = index !== 0 ? sections[index - 1] : null;
             return (
                 <Step key={section.label}>
                     <RegistrationSectionLabel
+                        isFirst={index === 0}
+                        onClick={() => setActiveStep(index)}
                         label={section.label}
                         previousLabel={prevStep ? prevStep.label : null}
                         onPrevious={setPrevStep}
                     />
-                    {/* <StepLabel>
-                        <Typography className={classes.sectionTitle} variant="subtitle1">
-                            {section.label}
-                        </Typography>
-                    </StepLabel> */}
                     <StepContent
                         classes={{
                             root: classes.stepContent
                         }}
                     >
-                        <RegistrationSection
-                            label={section.label}
-                            fields={section.fields}
-                            onPrevious={setPrevStep}
-                            onNext={setNextStep}
-                            previousLabel={prevStep ? prevStep.label : null}
-                            nextLabel={nextStep ? nextStep.label : null}
-                        />
+                        {isCustomSection ? (
+                            <RegistrationSectionCustom
+                                section={section}
+                                data={formData}
+                                onNext={(values, path) => setNextStep(index + 1, values, path)}
+                                nextLabel={nextStep ? nextStep.label : null}
+                            />
+                        ) : (
+                            <RegistrationSection
+                                data={formData}
+                                label={section.label}
+                                fields={section.fields}
+                                onNext={values => setNextStep(index + 1, values)}
+                                nextLabel={nextStep ? nextStep.label : null}
+                            />
+                        )}
+                        {index === sections.length - 1 && (
+                            <Box mb={3} display="flex" flexDirection="column">
+                                <Button
+                                    fullWidth
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => setActiveStep(index + 1)}
+                                >
+                                    Finish
+                                </Button>
+                                <div style={{ height: '100px' }} />
+                            </Box>
+                        )}
                     </StepContent>
                 </Step>
             );
         });
     };
+
     return (
         <FadeInWrapper className={styles.wrapper}>
             <Image
@@ -178,19 +230,26 @@ const EventRegister = ({
                 }}
             />
             <CenteredContainer wrapperClass={classes.content}>
-                <FadeInWrapper className={styles.registrationTop} enterDelay={0.4}>
-                    <Image
-                        publicId={event && event.logo ? event.logo.publicId : null}
-                        transformation={{
-                            width: 600
-                        }}
-                    />
-                    <Typography variant="h3" className={classes.mainTitle}>
-                        Register
-                    </Typography>
+                <FadeInWrapper enterDelay={0.4}>
+                    <Box className={classes.top}>
+                        <Typography variant="h1" className={classes.topTitle}>
+                            Register
+                        </Typography>
+                        <Box p={1} />
+                        <Typography variant="h2" className={classes.topTitleExtra}>
+                            Junction 2019
+                        </Typography>
+                    </Box>
                 </FadeInWrapper>
+                <div style={{ height: '100px' }} />
                 <Stepper connector={<div />} className={classes.stepper} activeStep={activeStep} orientation="vertical">
                     {renderSteps()}
+                    <Step>
+                        <StepContent>
+                            <NewsLetterButton email={formData.email} country={formData.countryOfResidence} />
+                            <SubmitButton hasErrors={false} onSubmit={() => window.alert('SUBMIT')} loading={false} />
+                        </StepContent>
+                    </Step>
                 </Stepper>
             </CenteredContainer>
         </FadeInWrapper>

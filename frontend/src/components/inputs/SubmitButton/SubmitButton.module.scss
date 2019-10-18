@@ -7,17 +7,18 @@
     display: flex;
 
     .privacyClauseList {
-          flex: 1;
-          margin: 0;
-          padding: 0;
-          margin-left: 1rem;
-          list-style: dot;
+        flex: 1;
+        margin: 0;
+        padding: 0;
+        margin-left: 1rem;
+        list-style: dot;
     }
 }
 
 .privacyClauseText {
     margin-left: 10px;
     color: $white;
+    font-size: 1.1rem;
 }
 
 .privacyClauseListItem {
@@ -34,7 +35,7 @@
 .privacyClauseSwitch {
     background: $grey;
 
-    &[aria-checked="true"] {
+    &[aria-checked='true'] {
         background: $green;
     }
 }

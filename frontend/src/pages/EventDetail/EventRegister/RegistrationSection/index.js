@@ -1,11 +1,12 @@
 import React, { useMemo, useRef } from 'react';
 import { RegistrationFields } from '@hackjunction/shared';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, Grid } from '@material-ui/core';
+import { makeStyles, lighten } from '@material-ui/core/styles';
+import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { Formik, FastField } from 'formik';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
 
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import * as UserSelectors from 'redux/user/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
@@ -31,10 +32,24 @@ const useStyles = makeStyles(theme => ({
         '&:focus-within': {
             opacity: 1
         }
+    },
+    errorMsg: {
+        color: 'white',
+        alignSelf: 'stretch',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        background: lighten('#ff0000', 0.3),
+        padding: theme.spacing(1),
+        marginBottom: theme.spacing(1)
+    },
+    errorIcon: {
+        marginRight: theme.spacing(1)
     }
 }));
 
-const RegistrationSection = ({ fields, label, onNext, nextLabel, userProfile, idTokenPayload }) => {
+const RegistrationSection = props => {
+    const { fields, onNext, nextLabel, data, userProfile, idTokenPayload } = props;
     const classes = useStyles();
     const mainRef = useRef(null);
 
@@ -48,6 +63,10 @@ const RegistrationSection = ({ fields, label, onNext, nextLabel, userProfile, id
                     result.initialValues[field.fieldName] = fieldParams.default(userProfile, idTokenPayload);
                 }
 
+                if (data.hasOwnProperty(field.fieldName)) {
+                    result.initialValues[field.fieldName] = data[field.fieldName];
+                }
+
                 return result;
             },
             {
@@ -55,7 +74,22 @@ const RegistrationSection = ({ fields, label, onNext, nextLabel, userProfile, id
                 initialValues: {}
             }
         );
-    }, [fields, userProfile, idTokenPayload]);
+    }, [fields, userProfile, idTokenPayload, data]);
+
+    const renderErrors = errors => {
+        if (Object.keys(errors).length === 0) return null;
+        return (
+            <Box flex="1" mr={1} mb={1} display="flex" flexDirection="column" alignItems="flex-start">
+                {Object.keys(errors).map(fieldName => {
+                    return (
+                        <Typography className={classes.errorMsg} variant="subtitle1">
+                            <ErrorOutlineIcon className={classes.errorIcon} /> {errors[fieldName]}
+                        </Typography>
+                    );
+                })}
+            </Box>
+        );
+    };
 
     return (
         <Formik
@@ -88,9 +122,15 @@ const RegistrationSection = ({ fields, label, onNext, nextLabel, userProfile, id
                             ))}
                         </Grid>
                     </Box>
-                    <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                    <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end" alignItems="flex-start">
+                        {renderErrors(errors)}
                         {onNext && nextLabel && (
-                            <Button color="primary" variant="contained" onClick={handleSubmit}>
+                            <Button
+                                disabled={Object.keys(errors).length > 0}
+                                color="primary"
+                                variant="contained"
+                                onClick={handleSubmit}
+                            >
                                 Next: {nextLabel} <ArrowForwardIcon />
                             </Button>
                         )}

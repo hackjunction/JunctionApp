@@ -10,9 +10,13 @@ import SkillsInput from 'components/inputs/SkillsInput';
 import DateInput from 'components/inputs/DateInput';
 import FormControl from 'components/inputs/FormControl';
 import Select from 'components/inputs/Select';
+import EducationInput from 'components/inputs/EducationInput';
+import BooleanInput from 'components/inputs/BooleanInput';
+import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput';
+import TeamOptionInput from 'components/inputs/TeamOptionInput';
 const { fieldTypes } = RegistrationFields;
 
-const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
+const RegistrationQuestion = ({ field, form, config, required, autoFocus, isCustom }) => {
     const renderInput = () => {
         switch (config.fieldType.id) {
             case fieldTypes.EMAIL.id:
@@ -218,7 +222,12 @@ const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <span>Education form</span>
+                        <EducationInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
                     </FormControl>
                 );
             case fieldTypes.LONG_TEXT.id:
@@ -264,7 +273,14 @@ const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <span>T-shirt size select</span>
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            options="t-shirt-size"
+                        />
                     </FormControl>
                 );
             case fieldTypes.BOOLEAN.id:
@@ -275,7 +291,12 @@ const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <span>Boolean here</span>
+                        <BooleanInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
                     </FormControl>
                 );
             case fieldTypes.DIETARY_RESTRICTIONS.id:
@@ -305,7 +326,12 @@ const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <span>Team options here</span>
+                        <TeamOptionInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
                     </FormControl>
                 );
             case fieldTypes.RECRUITMENT_OPTIONS.id:
@@ -316,7 +342,12 @@ const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <span>Recruitment options</span>
+                        <RecruitmentOptionInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
                     </FormControl>
                 );
             default:
@@ -324,7 +355,111 @@ const RegistrationQuestion = ({ field, form, config, required, autoFocus }) => {
         }
     };
 
-    return <Box display="flex">{renderInput()}</Box>;
+    const renderCustomInput = () => {
+        switch (config.fieldType) {
+            case 'text':
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <TextInput
+                            autoFocus={autoFocus}
+                            name={field.name}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
+            case 'textarea':
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <TextAreaInput
+                            autoFocus={autoFocus}
+                            name={field.name}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
+            case 'boolean':
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <BooleanInput
+                            autoFocus={autoFocus}
+                            value={field.value}
+                            onChange={value => form.setFieldValue(field.name, value)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
+            case 'single-choice':
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={'Choose one'}
+                            options={config.settings.options.map(option => ({
+                                value: option,
+                                label: option
+                            }))}
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                    </FormControl>
+                );
+            case 'multiple-choice':
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={'Choose many'}
+                            options={config.settings.options.map(option => ({
+                                value: option,
+                                label: option
+                            }))}
+                            value={field.value}
+                            onChange={items => form.setFieldValue(field.name, items)}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            isMulti={true}
+                        />
+                    </FormControl>
+                );
+            default:
+                return null;
+        }
+    };
+
+    if (isCustom) {
+        return <Box display="flex">{renderCustomInput()}</Box>;
+    } else {
+        return <Box display="flex">{renderInput()}</Box>;
+    }
 };
 
 export default RegistrationQuestion;

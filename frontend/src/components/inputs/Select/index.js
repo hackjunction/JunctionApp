@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { SelectOptions } from '@hackjunction/shared';
 import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -301,16 +302,18 @@ const components = {
 };
 
 export default function IntegrationReactSelect({
-    name,
-    label,
-    placeholder,
-    options = [],
-    value,
-    onChange,
-    onBlur,
-    isMulti = false,
+    autoFocus,
+    disabled,
     innerRef,
-    autoFocus
+    isMulti = false,
+    label,
+    name,
+    onBlur,
+    onChange,
+    options = [],
+    placeholder,
+    value,
+    allowCreate = false
 }) {
     const classes = useStyles();
     const theme = useTheme();
@@ -353,6 +356,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.SKILLS;
                 case 'theme':
                     return SelectOptions.THEMES;
+                case 't-shirt-size':
+                    return SelectOptions.T_SHIRT_SIZES;
                 case 'status':
                     return SelectOptions.STATUSES;
                 case 'day':
@@ -361,6 +366,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.MONTHS;
                 case 'year':
                     return SelectOptions.YEARS;
+                case 'year-future':
+                    return SelectOptions.YEARS_FUTURE;
                 default:
                     return [];
             }
@@ -399,29 +406,32 @@ export default function IntegrationReactSelect({
         [onChange, transformedOutput]
     );
 
+    const SelectProps = {
+        isDisabled: disabled,
+        autoFocus,
+        classes,
+        styles: selectStyles,
+        inputId,
+        TextFieldProps: {
+            label,
+            InputLabelProps: {
+                htmlFor: inputId,
+                shrink: true
+            }
+        },
+        placeholder,
+        options: _options,
+        components,
+        value: transformedInput,
+        onChange: handleChange,
+        onBlur,
+        isMulti,
+        ref: innerRef
+    };
+
     return (
         <div className={classes.root}>
-            <Select
-                autoFocus={autoFocus}
-                classes={classes}
-                styles={selectStyles}
-                inputId={inputId}
-                TextFieldProps={{
-                    label,
-                    InputLabelProps: {
-                        htmlFor: inputId,
-                        shrink: true
-                    }
-                }}
-                placeholder={placeholder}
-                options={_options}
-                components={components}
-                value={transformedInput}
-                onChange={handleChange}
-                onBlur={onBlur}
-                isMulti={isMulti}
-                ref={innerRef}
-            />
+            {allowCreate ? <CreatableSelect {...SelectProps} /> : <Select {...SelectProps} />}
         </div>
     );
 }
