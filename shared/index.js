@@ -12,6 +12,7 @@ module.exports = {
     FilterValues: require('./constants/filter-values'),
     FilterHelpers: require('./helpers/filterHelpers'),
     RegistrationFields: require('./constants/registration-fields'),
+    RegistrationFieldsCustom: require('./constants/registration-fields-custom'),
     RegistrationFieldsHelpers: require('./helpers/registration-fields'),
     RegistrationStatuses: require('./constants/registration-statuses'),
     Roles: require('./constants/roles'),

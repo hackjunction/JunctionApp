@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button, Typography } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import * as yup from 'yup';
+import { RegistrationFieldsCustom } from '@hackjunction/shared';
 
 import RegistrationQuestion from '../RegistrationQuestion';
 
@@ -42,54 +43,11 @@ const RegistrationSectionCustom = ({ section, onNext, nextLabel }) => {
 
     const buildValidationSchema = () => {
         return section.questions.reduce((schema, question) => {
-            switch (question.fieldType) {
-                case 'text': {
-                    schema[question.name] = yup
-                        .string()
-                        .min(question.fieldRequired ? 1 : 0)
-                        .max(200)
-                        .label(question.label);
-                    break;
-                }
-                case 'textarea': {
-                    schema[question.name] = yup
-                        .string()
-                        .min(question.fieldRequired ? 1 : 0)
-                        .max(1500)
-                        .label(question.label);
-                    break;
-                }
-                case 'boolean': {
-                    schema[question.name] = yup
-                        .boolean()
-                        .transform(value => {
-                            if (!value) return false;
-                            return true;
-                        })
-                        .label(question.label);
-                    break;
-                }
-                case 'single-choice': {
-                    schema[question.name] = yup
-                        .string()
-                        .oneOf(question.settings.options)
-                        .label(question.label);
-                    break;
-                }
-                case 'multiple-choice': {
-                    schema[question.name] = yup
-                        .array()
-                        .of(
-                            yup
-                                .string()
-                                .oneOf(question.settings.options)
-                                .label(question.label)
-                        )
-                        .label(question.label);
-                    break;
-                }
-                default: {
-                }
+            if (RegistrationFieldsCustom.hasOwnProperty(question.fieldType)) {
+                schema[question.name] = RegistrationFieldsCustom[question.fieldType].validationSchema(
+                    question.fieldRequired,
+                    question
+                );
             }
             return schema;
         }, {});
@@ -97,6 +55,7 @@ const RegistrationSectionCustom = ({ section, onNext, nextLabel }) => {
 
     const validationSchema = buildValidationSchema();
 
+    console.log('SCHEMA', validationSchema);
     return (
         <Formik
             initialValues={{}}
@@ -111,7 +70,13 @@ const RegistrationSectionCustom = ({ section, onNext, nextLabel }) => {
         >
             {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
                 <Box display="flex" flexDirection="column">
-                    <Box p={2} display="flex" flexDirection="column" alignItems="center">
+                    <Box
+                        p={2}
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        className={classes.descriptionWrapper}
+                    >
                         <Typography variant="subtitle1" className={classes.description}>
                             {section.description}
                         </Typography>

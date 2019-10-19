@@ -247,6 +247,7 @@ const EventRegister = ({
                     <Step>
                         <StepContent>
                             <NewsLetterButton email={formData.email} country={formData.countryOfResidence} />
+                            <Box mt={5} />
                             <SubmitButton hasErrors={false} onSubmit={() => window.alert('SUBMIT')} loading={false} />
                         </StepContent>
                     </Step>
