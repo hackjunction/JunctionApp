@@ -122,7 +122,7 @@ const RegistrationSection = props => {
                             ))}
                         </Grid>
                     </Box>
-                    <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end" alignItems="flex-start">
+                    <Box mt={2} display="flex" flexDirection="column" alignItems="flex-end">
                         {renderErrors(errors)}
                         {onNext && nextLabel && (
                             <Button

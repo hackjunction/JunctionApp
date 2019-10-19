@@ -1,8 +1,31 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
+const { RegistrationFields } = require('@hackjunction/shared');
 
 const RegistrationHelpers = {
     validateAnswers: (answers, event) => {
+        const validationSchema = {};
+
+        // Build validation schema for standard fields
+        Object.keys(event.userDetailsConfig.toObject()).map(fieldName => {
+            const field = event.userDetailsConfig[fieldName];
+
+            if (field.enable) {
+                const required = field.require;
+                const params = RegistrationFields.getField(fieldName);
+
+                validationSchema[fieldName] = params.validationSchema(required);
+            }
+        });
+
+        // Build validation schema for custom questions
+        // event.customQuestions.forEach(section => {
+        //     const sectionSchema = {};
+
+        //     section.questions.forEach(question => {
+        //         switch(question.fieldType)
+        //     });
+        // });
         return answers;
         // const errors = {};
         // const result = {};

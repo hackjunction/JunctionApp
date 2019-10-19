@@ -1,13 +1,35 @@
 import React, { useState, useCallback } from 'react';
-import styles from './NewsLetterButton.module.scss';
 
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Button, Box } from '@material-ui/core';
 import { motion } from 'framer-motion';
-import Button from 'components/generic/Button';
-import Divider from 'components/generic/Divider';
 
 import NewsletterService from 'services/newsletter';
 
-const NewsLetterButton = ({ email, country }) => {
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        overflow: 'hidden'
+    },
+    title: {
+        color: 'white',
+        fontSize: '1.25rem',
+        fontWeight: 'bold'
+    },
+    description: {
+        color: 'white',
+        maxWidth: '600px',
+        textAlign: 'center'
+    },
+    cancelButton: {
+        color: 'white'
+    }
+}));
+
+const NewsLetterButton = ({ email = 'juuso.lappalainen@hackjunction.com', country }) => {
+    const classes = useStyles();
     const [hidden, setHidden] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -36,36 +58,23 @@ const NewsLetterButton = ({ email, country }) => {
                 }
             }}
             animate={isHidden ? 'hidden' : 'visible'}
-            className={styles.wrapper}
+            className={classes.wrapper}
         >
-            <span className={styles.title}>While you're here</span>
-            <Divider size={1} />
-            <p className={styles.body}>
+            <Typography className={classes.title} variant="button" paragraph>
+                While you're here
+            </Typography>
+            <Typography className={classes.description} variant="subtitle1" paragraph>
                 This is a perfect opportunity to join our mailing list, where we send very occasional (monthly) updates
                 about our upcoming events and other things happening around the Junction community. Care to join?
-            </p>
-            <Divider size={1} />
-            <div className={styles.buttons}>
-                <Button
-                    text="Sign me up!"
-                    theme="accent"
-                    button={{
-                        loading: loading,
-                        onClick: handleSubscribe
-                    }}
-                    block
-                />
-                <Divider size={1} />
-                <Button
-                    text="Not now, thanks"
-                    theme="transparent"
-                    block
-                    button={{
-                        disabled: loading,
-                        onClick: () => setHidden(true)
-                    }}
-                />
-            </div>
+            </Typography>
+
+            <Button variant="contained" color="primary" onClick={handleSubscribe} disabled={loading}>
+                Sign me up!
+            </Button>
+            <Box p={1} />
+            <Button className={classes.cancelButton} onClick={() => setHidden(true)} disabled={loading}>
+                Not now, thanks
+            </Button>
         </motion.div>
     );
 };
