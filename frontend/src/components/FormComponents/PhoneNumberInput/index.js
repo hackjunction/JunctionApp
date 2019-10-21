@@ -1,16 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
-import styles from './PhoneNumberInput.module.scss';
 
-import { Countries } from '@hackjunction/shared';
-import { Row, Col, Select, Input } from 'antd';
+import { Grid, InputAdornment } from '@material-ui/core';
 
-import Divider from 'components/generic/Divider';
-
-const options = Countries.asArray.map(country => (
-    <Select.Option key={country.phone_code + ',' + country.en_short_name}>{`${country.en_short_name} (${
-        country.phone_code
-    })`}</Select.Option>
-));
+import Select from 'components/inputs/Select';
+import TextInput from 'components/inputs/TextInput';
 
 const PhoneNumberInput = React.memo(({ value = {}, name, setFieldValue, setFieldTouched, validateField, touched }) => {
     useEffect(() => {
@@ -30,50 +23,45 @@ const PhoneNumberInput = React.memo(({ value = {}, name, setFieldValue, setField
         val => {
             onChange({
                 ...value,
-                country_code: val.split(',')[0]
+                country_code: val
             });
         },
         [onChange, value]
     );
     const setNumber = useCallback(
-        e => {
+        number => {
             onChange({
                 ...value,
-                number: e.target.value
+                number
             });
         },
         [onChange, value]
     );
     return (
-        <Row gutter={16}>
-            <Col xs={24} md={8}>
+        <Grid container spacing={3} direction="row" alignItems="flex-end">
+            <Grid item xs={12} md={4}>
                 <Select
+                    type="countryCode"
+                    label="Choose country"
                     value={value.country_code}
                     onChange={setCountryCode}
-                    style={{ width: '100%' }}
-                    size="large"
-                    showSearch
-                    placeholder="Choose country"
-                >
-                    {options}
-                </Select>
-            </Col>
-            <Col xs={24} md={0}>
-                <Divider size={1} />
-            </Col>
-            <Col xs={24} md={16}>
-                <Input
+                />
+            </Grid>
+            <Grid item xs={12} md={8}>
+                <TextInput
+                    label="Phone number"
                     type="number"
-                    size="large"
                     value={value.number}
                     onChange={setNumber}
                     disabled={!value.country_code}
-                    addonBefore={value.country_code && <span>{value.country_code}</span>}
-                    style={{ width: '100%' }}
-                    placeholder="Phone number"
+                    textFieldProps={{
+                        InputProps: {
+                            startAdornment: <InputAdornment position="start">{value.country_code}</InputAdornment>
+                        }
+                    }}
                 />
-            </Col>
-        </Row>
+            </Grid>
+        </Grid>
     );
 });
 

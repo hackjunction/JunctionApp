@@ -1,11 +1,10 @@
 import React, { Suspense } from 'react';
 
 import { connect } from 'react-redux';
-import { Col, Icon } from 'antd';
+import { CircularProgress } from '@material-ui/core';
 
 import { RegistrationStatuses } from '@hackjunction/shared';
 import NotificationBlock from 'components/generic/NotificationBlock';
-import Divider from 'components/generic/Divider';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
@@ -21,19 +20,16 @@ const VisaInvitationBlock = ({ event, registration }) => {
 
     if (statuses.indexOf(registration.status) !== -1) {
         return (
-            <Col xs={24} md={12}>
-                <Divider size={1} />
-                <NotificationBlock
-                    type="info"
-                    title="Visa Invitation"
-                    body={`If you need a visa to travel to the event, you're in luck! Click the button below to download a visa invitation letter.`}
-                    bottom={
-                        <Suspense fallback={<Icon type="loading" />}>
-                            <VisaInvitationDrawer />
-                        </Suspense>
-                    }
-                />
-            </Col>
+            <NotificationBlock
+                type="info"
+                title="Visa Invitation"
+                body={`If you need a visa to travel to the event, you're in luck! Click the button below to download a visa invitation letter.`}
+                bottom={
+                    <Suspense fallback={<CircularProgress />}>
+                        <VisaInvitationDrawer />
+                    </Suspense>
+                }
+            />
         );
     }
 

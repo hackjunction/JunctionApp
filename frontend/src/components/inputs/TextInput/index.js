@@ -2,23 +2,55 @@ import React, { useCallback } from 'react';
 
 import { TextField } from '@material-ui/core';
 
-const TextInput = ({ label, helperText, value = '', onChange = () => {}, error, disabled, rawOnChange = false, type = 'text', multiline = false, formatValue, formatOnChange }) => {
-    const handleChange = useCallback(
-        e => {
-            if (rawOnChange) {
-                e.target.value = formatOnChange ? formatOnChange(e.target.value) : e.target.value;
-                onChange(e);
-            } else {
-                const val = formatOnChange ? formatOnChange(e.target.value) : e.target.value;
-                onChange(val);
-            }
-        },
-        [onChange, rawOnChange]
-    );
+const TextInput = React.memo(
+    ({
+        disabled,
+        error,
+        formatOnChange,
+        formatValue,
+        helperText,
+        label,
+        name,
+        onChange = () => {},
+        rawOnChange = false,
+        textarea = false,
+        textFieldProps = {},
+        type = 'text',
+        value = ''
+    }) => {
+        console.log('TEXT INPUT RENDER');
+        const handleChange = useCallback(
+            e => {
+                if (rawOnChange) {
+                    e.target.value = formatOnChange ? formatOnChange(e.target.value) : e.target.value;
+                    onChange(e);
+                } else {
+                    const val = formatOnChange ? formatOnChange(e.target.value) : e.target.value;
+                    onChange(val);
+                }
+            },
+            [onChange, rawOnChange, formatOnChange]
+        );
 
-    const formattedValue = formatValue ? formatValue(value) : value;
+        const formattedValue = formatValue ? formatValue(value) : value;
 
-    return <TextField fullWidth label={label} value={formattedValue} onChange={handleChange} helperText={error || helperText} error={error} disabled={disabled} type={type} />;
-};
+        return (
+            <TextField
+                disabled={disabled}
+                error={error}
+                fullWidth
+                helperText={error || helperText}
+                label={label}
+                multiline={textarea}
+                name={name}
+                onChange={handleChange}
+                rows={5}
+                type={type}
+                value={formattedValue}
+                {...textFieldProps}
+            />
+        );
+    }
+);
 
 export default TextInput;
