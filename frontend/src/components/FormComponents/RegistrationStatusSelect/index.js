@@ -3,7 +3,22 @@ import React from 'react';
 import { RegistrationStatuses } from '@hackjunction/shared';
 import { Select, Tag } from 'antd';
 
-const RegistrationStatusSelect = ({ value, onChange, placeholder = 'Select status', selectProps }) => {
+const RegistrationStatusSelect = ({
+    value,
+    onChange,
+    placeholder = 'Select status',
+    selectProps,
+    allowRestricted = false
+}) => {
+    const restrictedOptions = RegistrationStatuses.asArray
+        .filter(status => !status.allowAssign)
+        .map(status => {
+            return (
+                <Select.Option key={status.id} value={status.id} disabled={!allowRestricted}>
+                    <Tag color={status.color}>{status.label}</Tag>
+                </Select.Option>
+            );
+        });
     return (
         <Select
             placeholder={placeholder}
@@ -23,18 +38,11 @@ const RegistrationStatusSelect = ({ value, onChange, placeholder = 'Select statu
                             </Select.Option>
                         );
                     })}
+                {allowRestricted ? restrictedOptions : null}
             </Select.OptGroup>
-            <Select.OptGroup label="Can't assign directly">
-                {RegistrationStatuses.asArray
-                    .filter(status => !status.allowAssign)
-                    .map(status => {
-                        return (
-                            <Select.Option key={status.id} value={status.id} disabled={true}>
-                                <Tag color={status.color}>{status.label}</Tag>
-                            </Select.Option>
-                        );
-                    })}
-            </Select.OptGroup>
+            {!allowRestricted ? (
+                <Select.OptGroup label="Can't assign directly">{restrictedOptions}</Select.OptGroup>
+            ) : null}
         </Select>
     );
 };

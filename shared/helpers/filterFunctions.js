@@ -33,6 +33,8 @@ const _isEqualTo = (value, targetValue) => {
             } else {
                 return value.trim().toLowerCase() == targetValue;
             }
+        case 'boolean':
+            return value === targetValue;
         case 'undefined':
         default:
             return false;

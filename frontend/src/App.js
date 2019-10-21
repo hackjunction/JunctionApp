@@ -9,9 +9,20 @@ import routeConfig from './routes';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import { renewSession } from 'redux/auth/actions';
+import AnalyticsService from 'services/analytics';
 
-const App = ({ isAuthenticated, isSessionExpired, renewSession, history }) => {
+const App = ({ isAuthenticated, isSessionExpired, renewSession, history, location }) => {
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        AnalyticsService.init();
+        AnalyticsService.pageView(window.location);
+        const unlisten = history.listen(AnalyticsService.pageView);
+
+        return () => {
+            unlisten();
+        };
+    }, [location, history]);
 
     useEffect(() => {
         if (isAuthenticated) {

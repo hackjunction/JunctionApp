@@ -38,5 +38,5 @@ const mapState = state => ({
     searchResults: RecruitmentSelectors.searchResults(state),
     searchResultsCount: RecruitmentSelectors.searchResultsCount(state)
 });
-// onClick={e => setSelected(item.userId)}
+
 export default connect(mapState)(SearchResults);
