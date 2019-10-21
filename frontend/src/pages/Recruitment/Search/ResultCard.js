@@ -1,50 +1,43 @@
 import React from 'react';
 
-import {
-    Grid,
-    Button,
-    Avatar,
-    List,
-    Paper,
-    Typography
-} from '@material-ui/core';
+import { Grid, Button, Avatar, List, Paper, Typography } from '@material-ui/core';
 
+import { sortBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
-import { relative } from 'path';
-
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 1
     },
     paper: {
         padding: theme.spacing(2),
-        margin: 'auto',
+        margin: 'auto'
     },
     avatar: {
         margin: 10,
         width: 200,
-        height: 200,
+        height: 200
     },
     button: {
-        align: 'center',
+        align: 'center'
     }
 }));
 
 const ResultCard = ({ data, onClick }) => {
-
     const classes = useStyles();
 
     const skills =
-        data.skills.map(item => {
-            return ' ' + item.skill + ' (' + item.level + ')';
-        }).join(', ');
+        sortBy(data.skills, skill => -1 * skill.level)
+            .map(item => {
+                return ' ' + item.skill + ' (' + item.level + ')';
+            })
+            .join(', ') + `and ${data.skills.length - 3} more`;
 
-    const roles =
-        data.roles.map(item => {
+    const roles = data.roles
+        .map(item => {
             return ' ' + item.role + ': ' + item.years + ' years';
-        }).join(', ');
-
+        })
+        .join(', ');
 
     return (
         <div className={classes.root}>
@@ -70,7 +63,9 @@ const ResultCard = ({ data, onClick }) => {
                                         className={classes.button}
                                         variant="contained"
                                         color="primary"
-                                        onClick={onClick}>Details
+                                        onClick={onClick}
+                                    >
+                                        Details
                                     </Button>
                                 </Grid>
                             </Grid>
