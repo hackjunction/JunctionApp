@@ -3,7 +3,6 @@ const SendgridService = require('../../common/services/sendgrid');
 const EmailTypes = require('./types');
 const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
-const RegistrationController = require('../registration/controller');
 const shortid = require('shortid');
 const Promise = require('bluebird');
 const controller = {};
@@ -135,7 +134,7 @@ controller.deliverEmailTask = async task => {
 };
 
 controller.sendPreviewEmail = async (to, msgParams) => {
-    return SendgridService.sendGenericEmail(to, msgParams).catch(err => {
+    return SendgridService.sendGenericEmail(to, msgParams).catch(() => {
         return;
     });
 };

@@ -90,7 +90,7 @@ RegistrationsService.bulkAcceptRegistrationsForEvent = (idToken, slug) => {
  * PATCH /:slug/bulk/reject
  */
 RegistrationsService.bulkRejectRegistrationsForEvent = (idToken, slug) => {
-    return _axios.patch(`${BASE_ROUTE}/${slug}/bulk/reject`);
+    return _axios.patch(`${BASE_ROUTE}/${slug}/bulk/reject`, {}, config(idToken));
 };
 
 /** Assign 10 registrations to logged in user

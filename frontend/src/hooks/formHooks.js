@@ -22,9 +22,9 @@ export const useFormField = (initialValue, validate = () => null, initialError =
     );
 
     const reset = useCallback(() => {
-        setValue(undefined);
+        setValue(initialValue);
         setError(undefined);
-    }, []);
+    }, [initialValue]);
 
     const handleValidate = useCallback(() => {
         const err = validate(value);
