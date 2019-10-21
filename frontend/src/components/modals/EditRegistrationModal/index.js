@@ -24,7 +24,8 @@ const EditRegistrationModal = ({
     event,
     editRegistration,
     enqueueSnackbar,
-    onEdited = () => {}
+    onEdited = () => {},
+    teamsMap
 }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -55,8 +56,12 @@ const EditRegistrationModal = ({
 
     const participantSubheading = useMemo(() => {
         if (!registration) return '';
-        return registration.answers.countryOfResidence;
-    }, [registration]);
+        const team = teamsMap[registration.user];
+        const countryText = registration.answers.countryOfResidence;
+        const teamText = team ? team.code : 'No team';
+
+        return `${countryText} // ${teamText} `;
+    }, [registration, teamsMap]);
 
     const handleEdit = useCallback(
         async data => {
@@ -94,8 +99,7 @@ const EditRegistrationModal = ({
 const mapState = state => ({
     idToken: AuthSelectors.getIdToken(state),
     event: OrganiserSelectors.event(state),
-    organisersMap: OrganiserSelectors.organisersMap(state),
-    organisers: OrganiserSelectors.organisers(state)
+    teamsMap: OrganiserSelectors.teamsMap(state)
 });
 
 const mapDispatch = dispatch => ({

@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import styles from './SearchAttendeesPage.module.scss';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { FilterHelpers } from '@hackjunction/shared';
 
@@ -17,7 +16,6 @@ const SearchAttendeesPage = ({ registrations, registrationsLoading }) => {
         <React.Fragment>
             <FilterGroupMenu onChange={setFilters} />
             <Divider size={1} />
-            {/* {renderBulkActions()} */}
             <AttendeeTable attendees={filtered} loading={registrationsLoading} />
         </React.Fragment>
     );
