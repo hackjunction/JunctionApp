@@ -109,7 +109,9 @@ const EditRegistrationActions = ({ registration, event, organisers, organisersMa
                 <List.Item>
                     <List.Item.Meta
                         title="Status"
-                        description={<RegistrationStatusSelect value={status.value} onChange={status.setValue} />}
+                        description={
+                            <RegistrationStatusSelect allowRestricted value={status.value} onChange={status.setValue} />
+                        }
                     />
                 </List.Item>
             </Grid>

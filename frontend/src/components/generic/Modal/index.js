@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     },
     header: {
         padding: theme.spacing(3),
-        textAlign: 'left'
+        textAlign: 'center'
     },
     inner: {
         padding: '1rem',
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const GenericModal = ({ title, isOpen, handleClose, size, children }) => {
+const GenericModal = ({ title, isOpen, handleClose, size, children, footer = null }) => {
     const classes = useStyles();
     return (
         <HyperModal
@@ -61,10 +61,11 @@ const GenericModal = ({ title, isOpen, handleClose, size, children }) => {
         >
             {title && (
                 <Box className={classes.header}>
-                    <Typography variant="button">{title}</Typography>
+                    <Typography variant="h6">{title}</Typography>
                 </Box>
             )}
             <Box className={classes.inner}>{children}</Box>
+            {footer}
         </HyperModal>
     );
 };
