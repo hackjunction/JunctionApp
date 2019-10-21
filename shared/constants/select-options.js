@@ -8,7 +8,6 @@ const Themes = require('./themes');
 const RegistrationStatuses = require('./registration-statuses');
 
 const currentYear = new Date().getFullYear();
-console.log('CURRENT YEAR', typeof currentYear);
 
 const SelectOptions = {
     COUNTRIES: Countries.asArrayOfName.map(country => ({
