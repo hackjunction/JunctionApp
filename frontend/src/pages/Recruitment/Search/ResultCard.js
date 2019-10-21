@@ -10,15 +10,19 @@ import {
 } from '@material-ui/core';
 
 import { Typography } from 'antd';
-import { userInfo } from 'os';
+// import { userInfo } from 'os';
 
 const ResultCard = ({ data, onClick }) => {
     const skills =
         data.skills.map(item => {
-            return item.skill + ' (' + item.level + ')';
+            return ' ' + item.skill + ' (' + item.level + ')';
         }).join(', ');
 
-    console.log(data.skills);
+    const roles =
+        data.roles.map(item => {
+            return ' ' + item.role + ' years: ' + item.years;
+        }).join(', ');
+
 
     return (
         <Card>
@@ -32,6 +36,7 @@ const ResultCard = ({ data, onClick }) => {
                 </Typography>
                 <Typography>{data.profile.bio}</Typography>
                 <List>{skills}</List>
+                <List>{roles}</List>
             </CardContent>
             <CardActions style={{ justifyContent: 'center' }}>
                 <Button onClick={onClick}>Details</Button>
