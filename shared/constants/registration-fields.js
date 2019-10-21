@@ -785,6 +785,7 @@ const Fields = {
             const base = yup
                 .array()
                 .of(yup.string().oneOf(Languages.asArrayOfNames))
+                .ensure()
                 .label(FieldProps.spokenLanguages.label);
 
             return required ? base.required() : base;
@@ -837,6 +838,7 @@ const Fields = {
             const base = yup
                 .array()
                 .of(yup.string().oneOf(Misc.dietaryRestrictions))
+                .ensure()
                 .label(FieldProps.dietaryRestrictions.label);
 
             return required ? base.required() : base;
@@ -864,6 +866,7 @@ const Fields = {
                             .label('Years of experience')
                     })
                 )
+                .ensure()
                 .max(5)
                 .label(FieldProps.roles.label);
 
@@ -893,6 +896,7 @@ const Fields = {
                     })
                 )
                 .max(10)
+                .ensure()
                 .label(FieldProps.skills.label);
 
             return required ? base.required() : base;
@@ -921,6 +925,7 @@ const Fields = {
                 .array()
                 .of(yup.string().oneOf(Industries.industries))
                 .max(3)
+                .ensure()
                 .label(FieldProps.industriesOfInterest.label);
             return required ? base.required() : base;
         }
@@ -934,6 +939,7 @@ const Fields = {
                 .array()
                 .of(yup.string().oneOf(Themes.themes))
                 .max(3)
+                .ensure()
                 .label(FieldProps.themesOfInterest.label);
 
             return required ? base.required() : base;

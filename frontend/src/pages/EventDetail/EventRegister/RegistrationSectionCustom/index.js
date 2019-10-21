@@ -1,20 +1,22 @@
 import React, { useMemo } from 'react';
+import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux';
 import { Formik, FastField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Button, Typography } from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { Box, Grid, Typography } from '@material-ui/core';
 import * as yup from 'yup';
 import { RegistrationFieldsCustom } from '@hackjunction/shared';
 
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import RegistrationQuestion from '../RegistrationQuestion';
+import RegistrationBottomBar from '../RegistrationBottomBar';
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
         backgroundColor: 'transparent',
-        padding: 0
+        padding: 0,
+        marginBottom: '200px'
     },
     question: {
         backgroundColor: 'white',
@@ -40,7 +42,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const RegistrationSectionCustom = ({ section, onNext, nextLabel, registration, hasRegistration }) => {
+const RegistrationSectionCustom = ({
+    section,
+    onNext,
+    nextLabel,
+    onPrev,
+    prevLabel,
+    registration,
+    hasRegistration
+}) => {
     const classes = useStyles();
 
     const { initialValues, validationSchema } = useMemo(() => {
@@ -106,13 +116,16 @@ const RegistrationSectionCustom = ({ section, onNext, nextLabel, registration, h
                             ))}
                         </Grid>
                     </Box>
-                    <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end">
-                        {onNext && nextLabel && (
-                            <Button color="primary" variant="contained" onClick={handleSubmit}>
-                                Next: {nextLabel} <ArrowForwardIcon />
-                            </Button>
-                        )}
-                    </Box>
+                    {ReactDOM.createPortal(
+                        <RegistrationBottomBar
+                            prevLabel={prevLabel}
+                            onPrev={onPrev}
+                            nextLabel={nextLabel}
+                            onNext={handleSubmit}
+                            errors={errors}
+                        />,
+                        document.body
+                    )}
                 </Box>
             )}
         </Formik>
