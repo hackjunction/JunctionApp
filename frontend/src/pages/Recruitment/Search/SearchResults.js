@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import RecruitmentUserModal from 'components/modals/RecruitmentUserModal';
-
+import ResultCard from './ResultCard';
 import { connect } from 'react-redux';
 
 import { Paper, Box, List, ListItem, ListItemText } from '@material-ui/core';
@@ -20,15 +20,11 @@ const SearchResults = ({ searchResults, searchResultsCount }) => {
                 {searchResults.map(item => (
                     <Box mb={1} key={item._id}>
                         <Paper>
-                            <ListItem
+                            <ResultCard
                                 key={`item-${item.userId}`}
+                                data={item}
                                 onClick={e => setSelected(item.userId)}
-                            >
-                                <ListItemText
-                                    primary={item.profile.firstName}
-                                    secondary={item.profile.lastName}
-                                />
-                            </ListItem>
+                            />
                         </Paper>
                     </Box>
                 ))}
