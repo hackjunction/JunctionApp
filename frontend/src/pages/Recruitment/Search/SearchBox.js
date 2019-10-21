@@ -50,34 +50,12 @@ const SearchBox = ({ loading, updateSearchResults }) => {
                 </Grid>
             </Box>
             <Box p={2}>
-                <Button fullWidth variant="contained" color="primary">
-                    Apply
+                <Button disabled={loading} fullWidth variant="contained" color="primary" onClick={updateSearchResults}>
+                    Search
                 </Button>
             </Box>
         </Box>
     );
-    // return (
-    //     <Paper>
-    //         <Box p={3}>
-    //             <Grid container spacing={3}>
-    //                 <Grid item xs={12}>
-    //                     <Typography variant="h6">Search participants</Typography>
-    //                 </Grid>
-    //                 <Grid item xs={10}>
-    //                     <Divider />
-    //                 </Grid>
-    //             </Grid>
-    //         </Box>
-    //         <Box p={3} display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-    //             {loading && <CircularProgress size={24} />}
-    //             {!loading && (
-    //                 <Button variant="contained" color="primary" onClick={updateSearchResults}>
-    //                     Search
-    //                 </Button>
-    //             )}
-    //         </Box>
-    //     </Paper>
-    // );
 };
 
 const mapState = state => ({
