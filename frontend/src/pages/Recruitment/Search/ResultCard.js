@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { relative } from 'path';
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,21 +36,24 @@ const ResultCard = ({ data, onClick }) => {
 
     const skills =
         data.skills.map(item => {
-            return ' ' + item.skill + ' (' + item.level + ')';
+            return item.skill + ' (' + item.level + ')';
         }).join(', ');
 
     const roles =
         data.roles.map(item => {
-            return ' ' + item.role + ': ' + item.years + ' years';
+            return item.role + ': ' + item.years + ' years';
         }).join(', ');
-
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <Grid container spacing={2}>
                     <Grid item>
-                        <Avatar alt="profile pic" className={classes.avatar} src={data.profile.profilePicture} />
+                        <Avatar
+                            alt="profile pic"
+                            className={classes.avatar}
+                            src={data.profile.profilePicture}
+                        />
                     </Grid>
                     <Grid item xs={12} sm container>
                         <Grid item xs container direction="column" spacing={2}>
@@ -62,15 +64,19 @@ const ResultCard = ({ data, onClick }) => {
                                 <Typography variant="h6" gutterBottom>
                                     {data.profile.countryOfResidence}
                                 </Typography>
-                                {/* <Typography>{data.profile.bio}</Typography> */}
-                                <List>{skills}</List>
-                                <List>{roles}</List>
+                                <br />
+                                <Typography variant="body1">Skills: <br />{skills}</Typography>
+                                <br />
+                                <Typography variant="body1">Previous roles: <br />{roles}</Typography>
+                                <br />
                                 <Grid item>
                                     <Button
                                         className={classes.button}
                                         variant="contained"
                                         color="primary"
-                                        onClick={onClick}>Details
+                                        onClick={onClick}
+                                    >
+                                        Details
                                     </Button>
                                 </Grid>
                             </Grid>
