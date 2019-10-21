@@ -19,7 +19,10 @@ controller.queryProfiles = (query = {}) => {
         const whereFields = query.filters.map(filter => {
             return {
                 [filter.field]: {
-                    [controller.filterOperatorToMongoOperator(filter.operator)]: filter.value
+
+                    [controller.filterOperatorToMongoOperator(
+                        filter.operator
+                    )]: filter.value
                 }
             };
         });
@@ -113,7 +116,12 @@ controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
     }
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
-        await RecruitmentAction.deleteMany({ recruiter: recruiterId, user: action.user, type: 'favorite' });
+
+        await RecruitmentAction.deleteMany({
+            recruiter: recruiterId,
+            user: action.user,
+            type: 'favorite'
+        });
     }
     if (action.type === 'message') {
         await EmailTaskController.createRecruiterMessageTask(action);
@@ -130,7 +138,10 @@ controller.getFavorites = async recruiter => {
             Promise.all(
                 actions.map(async action => {
                     // Convert profiles so we don't reveal contact data
-                    action._user = await controller.createRecruitmentProfile(action._user);
+
+                    action._user = await controller.createRecruitmentProfile(
+                        action._user
+                    );
                     return action._user;
                 })
             )

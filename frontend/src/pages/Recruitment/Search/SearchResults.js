@@ -20,8 +20,14 @@ const SearchResults = ({ searchResults, searchResultsCount }) => {
                 {searchResults.map(item => (
                     <Box mb={1} key={item._id}>
                         <Paper>
-                            <ListItem onClick={e => setSelected(item.userId)}>
-                                <ListItemText primary={item.firstName} secondary={item.lastName} />
+                            <ListItem
+                                key={`item-${item.userId}`}
+                                onClick={e => setSelected(item.userId)}
+                            >
+                                <ListItemText
+                                    primary={item.profile.firstName}
+                                    secondary={item.profile.lastName}
+                                />
                             </ListItem>
                         </Paper>
                     </Box>
@@ -36,5 +42,5 @@ const mapState = state => ({
     searchResults: RecruitmentSelectors.searchResults(state),
     searchResultsCount: RecruitmentSelectors.searchResultsCount(state)
 });
-
+// onClick={e => setSelected(item.userId)}
 export default connect(mapState)(SearchResults);
