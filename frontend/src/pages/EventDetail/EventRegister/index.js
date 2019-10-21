@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback, useState, useMemo } from 'react';
-import styles from './EventRegister.module.scss';
 
 import { forOwn, sortBy } from 'lodash-es';
 import { connect } from 'react-redux';
@@ -7,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Stepper, Step, StepContent, Box, Button } from '@material-ui/core';
 import { RegistrationFields } from '@hackjunction/shared';
 import { withSnackbar } from 'notistack';
-import classNames from 'classnames';
+import { push } from 'connected-react-router';
 
 import * as EventDetailActions from 'redux/eventdetail/actions';
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
@@ -28,6 +27,26 @@ import NewsLetterButton from 'components/inputs/NewsLetterButton';
 import SubmitButton from 'components/inputs/SubmitButton';
 
 const useStyles = makeStyles(theme => ({
+    wrapper: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        minHeight: '100%',
+        background: 'black',
+        zIndex: 100
+    },
+    backgroundImage: {
+        position: 'fixed',
+        zIndex: 1,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        opacity: 0.3,
+        filter: 'blur(5px)'
+    },
     mainTitle: {
         color: 'white',
         textAlign: 'center'
@@ -77,6 +96,10 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'uppercase',
         fontWeight: 'normal',
         margin: '2px'
+    },
+    doneTitle: {
+        color: 'white',
+        textAlign: 'center'
     }
 }));
 
@@ -89,11 +112,12 @@ const EventRegister = ({
     editRegistration,
     userProfile,
     idTokenPayload,
-    enqueueSnackbar
+    enqueueSnackbar,
+    openDashboard,
+    openEvent
 }) => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
     const [formData, setFormData] = useState({});
     const [activeStep, setActiveStep] = useState(0);
 
@@ -102,6 +126,12 @@ const EventRegister = ({
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }, 500);
     }, [activeStep]);
+
+    useEffect(() => {
+        if (!hasRegistration) {
+            AnalyticsService.events.BEGIN_REGISTRATION(slug);
+        }
+    }, [hasRegistration, slug]);
 
     useEffect(() => {
         document.querySelector('html').style.backgroundColor = '#000000';
@@ -147,16 +177,6 @@ const EventRegister = ({
         return sorted.concat(event.customQuestions);
     }, [event.userDetailsConfig, event.customQuestions]);
 
-    const { prevStep, nextStep } = useMemo(() => {
-        const prevStep = activeStep !== 0 ? sections[activeStep - 1] : null;
-        const nextStep = activeStep < sections.length - 1 ? sections[activeStep + 1] : null;
-
-        return {
-            prevStep,
-            nextStep
-        };
-    }, [activeStep, sections]);
-
     const setNextStep = useCallback(
         (nextStep, values, path) => {
             if (path) {
@@ -190,14 +210,14 @@ const EventRegister = ({
             } else {
                 await createRegistration(event.slug, formData);
             }
-            //AnalyticsService.events.COMPLETE_REGISTRATION(event.slug);
+            AnalyticsService.events.COMPLETE_REGISTRATION(event.slug);
         } catch (e) {
-            console.log('ERR', e);
-            // enqueueSnackbar('Oops, something went wrong...');
+            enqueueSnackbar('Oops, something went wrong... Please try again');
         } finally {
-            console.log('FINALLY');
+            setActiveStep(sections.length + 1);
+            setLoading(false);
         }
-    }, [createRegistration, editRegistration, hasRegistration, event.slug, formData]);
+    }, [sections, createRegistration, editRegistration, hasRegistration, event.slug, formData, enqueueSnackbar]);
 
     const renderSteps = () => {
         return sections.map((section, index) => {
@@ -220,32 +240,25 @@ const EventRegister = ({
                     >
                         {isCustomSection ? (
                             <RegistrationSectionCustom
+                                isActive={activeStep === index}
                                 section={section}
                                 data={formData}
+                                onPrev={setPrevStep}
+                                prevLabel={prevStep ? prevStep.label : null}
                                 onNext={(values, path) => setNextStep(index + 1, values, path)}
-                                nextLabel={nextStep ? nextStep.label : null}
+                                nextLabel={nextStep ? nextStep.label : 'Finish'}
                             />
                         ) : (
                             <RegistrationSection
+                                isActive={activeStep === index}
                                 data={formData}
                                 label={section.label}
                                 fields={section.fields}
+                                onPrev={setPrevStep}
+                                prevLabel={prevStep ? prevStep.label : null}
                                 onNext={values => setNextStep(index + 1, values)}
-                                nextLabel={nextStep ? nextStep.label : null}
+                                nextLabel={nextStep ? nextStep.label : 'Finish'}
                             />
-                        )}
-                        {index === sections.length - 1 && (
-                            <Box mb={3} display="flex" flexDirection="column">
-                                <Button
-                                    fullWidth
-                                    color="primary"
-                                    variant="contained"
-                                    onClick={() => setActiveStep(index + 1)}
-                                >
-                                    Finish
-                                </Button>
-                                <div style={{ height: '100px' }} />
-                            </Box>
                         )}
                     </StepContent>
                 </Step>
@@ -254,11 +267,9 @@ const EventRegister = ({
     };
 
     return (
-        <FadeInWrapper className={styles.wrapper}>
+        <FadeInWrapper className={classes.wrapper}>
             <Image
-                className={classNames({
-                    [styles.backgroundImage]: true
-                })}
+                className={classes.backgroundImage}
                 publicId={event && event.coverImage ? event.coverImage.publicId : null}
                 default={require('assets/images/default_cover_image.png')}
                 transformation={{
@@ -281,11 +292,44 @@ const EventRegister = ({
                 <div style={{ height: '100px' }} />
                 <Stepper connector={<div />} className={classes.stepper} activeStep={activeStep} orientation="vertical">
                     {renderSteps()}
-                    <Step>
-                        <StepContent>
+                    <Step key="finish">
+                        <StepContent
+                            classes={{
+                                root: classes.stepContent
+                            }}
+                        >
                             <NewsLetterButton email={formData.email} country={formData.countryOfResidence} />
                             <Box mt={5} />
                             <SubmitButton hasErrors={false} onSubmit={handleSubmit} loading={loading} />
+                        </StepContent>
+                    </Step>
+                    <Step key="done">
+                        <StepContent
+                            classes={{
+                                root: classes.stepContent
+                            }}
+                        >
+                            <Box mt={'200px'} display="flex" flexDirection="column" alignItems="center">
+                                <Typography className={classes.doneTitle} variant="h3">
+                                    Registration saved!
+                                </Typography>
+                                <div style={{ height: '50px' }} />
+                                <Button
+                                    onClick={() => openDashboard(event.slug)}
+                                    style={{ width: '300px' }}
+                                    color="primary"
+                                    variant="contained"
+                                >
+                                    Event dashboard
+                                </Button>
+                                <div style={{ height: '1rem' }} />
+                                <Button
+                                    onClick={() => openEvent(event.slug)}
+                                    style={{ width: '300px', color: 'white' }}
+                                >
+                                    Back to event page
+                                </Button>
+                            </Box>
                         </StepContent>
                     </Step>
                 </Stepper>
@@ -305,7 +349,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     createRegistration: (slug, data) => dispatch(EventDetailActions.createRegistration(slug, data)),
-    editRegistration: (slug, data) => dispatch(EventDetailActions.editRegistration(slug, data))
+    editRegistration: (slug, data) => dispatch(EventDetailActions.editRegistration(slug, data)),
+    openDashboard: slug => dispatch(push(`/dashboard/${slug}`)),
+    openEvent: slug => dispatch(push(`/events/${slug}`))
 });
 
 export default withSnackbar(

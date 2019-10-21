@@ -6,7 +6,7 @@ import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlin
 
 const useStyles = makeStyles(theme => ({
     wrapper: ({ active, completed }) => ({
-        transition: 'all 0.2s ease',
+        transition: 'all 0.25s ease',
         opacity: !active && !completed ? 0 : 1,
         display: 'flex',
         alignItems: 'center',
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
         return style;
     },
     left: ({ completed }) => ({
-        transition: 'all 0.5s ease',
+        transition: 'all 0.25s ease',
         flex: completed ? 0 : 1
     }),
     check: ({ completed }) => ({
@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'row'
     },
     right: {
-        transition: 'all 0.5s ease',
+        transition: 'all 0.25s ease',
         flex: 1
     }
 }));
