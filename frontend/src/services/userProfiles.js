@@ -38,14 +38,11 @@ UserProfilesService.getUsersByEmail = (email, idToken) => {
 };
 
 UserProfilesService.queryUsers = idToken => {
-  return _axios.get('/user-profiles/recruitment/search', config(idToken));
+  return _axios.get('/recruitment/search', config(idToken));
 };
 
 UserProfilesService.getUserProfileRecruitment = (userId, idToken) => {
-  return _axios.get('/user-profiles/recruitment/profile', {
-    params: { userId },
-    ...config(idToken)
-  });
+  return _axios.get(`/recruitment/profile/${userId}`, config(idToken));
 };
 
 export default UserProfilesService;
