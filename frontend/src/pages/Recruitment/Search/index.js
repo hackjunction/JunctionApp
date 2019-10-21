@@ -18,6 +18,10 @@ const useStyles = makeStyles(theme => ({
         flexShrink: 0,
         backgroundColor: 'white'
     },
+    drawerInner: {
+        width: DRAWER_WIDTH,
+        display: 'flex'
+    },
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
@@ -29,7 +33,13 @@ const SearchPage = () => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <Drawer className={classes.drawer} variant="permanent">
+            <Drawer
+                className={classes.drawer}
+                classes={{
+                    paper: classes.drawerInner
+                }}
+                variant="permanent"
+            >
                 <SearchBox />
             </Drawer>
             <main className={classes.content}>
