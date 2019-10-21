@@ -1,41 +1,84 @@
 import React from 'react';
 
 import {
-    Card,
+    Grid,
     Button,
     Avatar,
-    CardContent,
-    CardActions,
-    List
+    List,
+    Paper,
+    Typography
 } from '@material-ui/core';
 
-import { Typography } from 'antd';
-import { userInfo } from 'os';
+import { makeStyles } from '@material-ui/core/styles';
+import { relative } from 'path';
+
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        padding: theme.spacing(2),
+        margin: 'auto',
+    },
+    avatar: {
+        margin: 10,
+        width: 200,
+        height: 200,
+    },
+    button: {
+        align: 'center',
+    }
+}));
 
 const ResultCard = ({ data, onClick }) => {
-    const skills = data => {
-        data.skills.map(skills => {
-            return <Typography key={data.userId}>{skills}</Typography>;
-        });
-    };
+
+    const classes = useStyles();
+
+    const skills =
+        data.skills.map(item => {
+            return ' ' + item.skill + ' (' + item.level + ')';
+        }).join(', ');
+
+    const roles =
+        data.roles.map(item => {
+            return ' ' + item.role + ': ' + item.years + ' years';
+        }).join(', ');
+
 
     return (
-        <Card>
-            <CardContent>
-                <Avatar />
-                <Typography component="h2">
-                    {data.profile.firstName} {data.profile.lastName}
-                </Typography>
-                <Typography component="h3">
-                    {data.profile.countryOfResidence}
-                </Typography>
-                <Typography>{data.profile.bio}</Typography>
-                <List>{skills}</List>
-            </CardContent>
-            <CardActions style={{ justifyContent: 'center' }}>
-                <Button onClick={onClick}>Details</Button>
-            </CardActions>
-        </Card>
+        <div className={classes.root}>
+            <Paper className={classes.paper}>
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <Avatar alt="profile pic" className={classes.avatar} src={data.profile.profilePicture} />
+                    </Grid>
+                    <Grid item xs={12} sm container>
+                        <Grid item xs container direction="column" spacing={2}>
+                            <Grid item xs>
+                                <Typography variant="h5" gutterBottom>
+                                    {data.profile.firstName} {data.profile.lastName}
+                                </Typography>
+                                <Typography variant="h6" gutterBottom>
+                                    {data.profile.countryOfResidence}
+                                </Typography>
+                                {/* <Typography>{data.profile.bio}</Typography> */}
+                                <List>{skills}</List>
+                                <List>{roles}</List>
+                                <Grid item>
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={onClick}>Details
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </div>
     );
 };
 
