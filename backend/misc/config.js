@@ -82,7 +82,11 @@ const settings = {
     DEVTOOLS_ENABLED: {
         value: process.env.DEVTOOLS_ENABLED === 'true' && process.env.NODE_ENV !== 'production',
         default: false
-    }
+    },
+    DISCORD_BOT_TOKEN: {
+        value: process.env.DISCORD_BOT_TOKEN,
+        required: false
+    },
 };
 
 const buildConfig = () => {

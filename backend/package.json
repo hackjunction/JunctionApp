@@ -21,6 +21,7 @@
         "body-parser": "^1.18.3",
         "celebrate": "^9.0.2",
         "cloudinary": "^1.14.0",
+        "discord.js": "^11.5.1",
         "dotenv": "^6.2.0",
         "express": "^4.16.4",
         "express-async-handler": "^1.1.4",
