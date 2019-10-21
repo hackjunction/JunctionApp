@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Stepper, Step, StepContent, Box, Button } from '@material-ui/core';
 import { RegistrationFields } from '@hackjunction/shared';
+import { withSnackbar } from 'notistack';
 import classNames from 'classnames';
 
 import * as EventDetailActions from 'redux/eventdetail/actions';
@@ -16,6 +17,7 @@ import * as AuthSelectors from 'redux/auth/selectors';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import Image from 'components/generic/Image';
 import FadeInWrapper from 'components/animated/FadeInWrapper';
+import AnalyticsService from 'services/analytics';
 
 import RequiresPermission from 'hocs/RequiresPermission';
 
@@ -86,32 +88,14 @@ const EventRegister = ({
     createRegistration,
     editRegistration,
     userProfile,
-    idTokenPayload
+    idTokenPayload,
+    enqueueSnackbar
 }) => {
     const classes = useStyles();
+    const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
     const [formData, setFormData] = useState({});
     const [activeStep, setActiveStep] = useState(0);
-
-    const setNextStep = useCallback(
-        (nextStep, values, path) => {
-            if (path) {
-                setFormData({
-                    ...formData,
-                    [path]: {
-                        ...formData[path],
-                        ...values
-                    }
-                });
-            } else {
-                setFormData({
-                    ...formData,
-                    ...values
-                });
-            }
-            setActiveStep(nextStep);
-        },
-        [formData]
-    );
 
     useEffect(() => {
         setTimeout(function() {
@@ -119,9 +103,13 @@ const EventRegister = ({
         }, 500);
     }, [activeStep]);
 
-    const setPrevStep = useCallback(() => {
-        setActiveStep(activeStep - 1);
-    }, [activeStep]);
+    useEffect(() => {
+        document.querySelector('html').style.backgroundColor = '#000000';
+
+        return () => {
+            delete document.querySelector('html').style.backgroundColor;
+        };
+    });
 
     const sections = useMemo(() => {
         const fieldCategories = {};
@@ -159,7 +147,57 @@ const EventRegister = ({
         return sorted.concat(event.customQuestions);
     }, [event.userDetailsConfig, event.customQuestions]);
 
-    const submitted = false;
+    const { prevStep, nextStep } = useMemo(() => {
+        const prevStep = activeStep !== 0 ? sections[activeStep - 1] : null;
+        const nextStep = activeStep < sections.length - 1 ? sections[activeStep + 1] : null;
+
+        return {
+            prevStep,
+            nextStep
+        };
+    }, [activeStep, sections]);
+
+    const setNextStep = useCallback(
+        (nextStep, values, path) => {
+            if (path) {
+                setFormData({
+                    ...formData,
+                    [path]: {
+                        ...formData[path],
+                        ...values
+                    }
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    ...values
+                });
+            }
+            setActiveStep(nextStep);
+        },
+        [formData]
+    );
+
+    const setPrevStep = useCallback(() => {
+        setActiveStep(activeStep - 1);
+    }, [activeStep]);
+
+    const handleSubmit = useCallback(async () => {
+        setLoading(true);
+        try {
+            if (hasRegistration) {
+                await editRegistration(event.slug, formData);
+            } else {
+                await createRegistration(event.slug, formData);
+            }
+            //AnalyticsService.events.COMPLETE_REGISTRATION(event.slug);
+        } catch (e) {
+            console.log('ERR', e);
+            // enqueueSnackbar('Oops, something went wrong...');
+        } finally {
+            console.log('FINALLY');
+        }
+    }, [createRegistration, editRegistration, hasRegistration, event.slug, formData]);
 
     const renderSteps = () => {
         return sections.map((section, index) => {
@@ -219,8 +257,7 @@ const EventRegister = ({
         <FadeInWrapper className={styles.wrapper}>
             <Image
                 className={classNames({
-                    [styles.backgroundImage]: true,
-                    [styles.backgroundImageSubmitted]: submitted
+                    [styles.backgroundImage]: true
                 })}
                 publicId={event && event.coverImage ? event.coverImage.publicId : null}
                 default={require('assets/images/default_cover_image.png')}
@@ -248,10 +285,11 @@ const EventRegister = ({
                         <StepContent>
                             <NewsLetterButton email={formData.email} country={formData.countryOfResidence} />
                             <Box mt={5} />
-                            <SubmitButton hasErrors={false} onSubmit={() => window.alert('SUBMIT')} loading={false} />
+                            <SubmitButton hasErrors={false} onSubmit={handleSubmit} loading={loading} />
                         </StepContent>
                     </Step>
                 </Stepper>
+                <div style={{ height: '100px' }} />
             </CenteredContainer>
         </FadeInWrapper>
     );
@@ -270,7 +308,9 @@ const mapDispatchToProps = dispatch => ({
     editRegistration: (slug, data) => dispatch(EventDetailActions.editRegistration(slug, data))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(RequiresPermission(EventRegister));
+export default withSnackbar(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(RequiresPermission(EventRegister))
+);

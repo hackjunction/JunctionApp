@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { makeStyles, lighten } from '@material-ui/core/styles';
-import { Box, Checkbox, Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box, Checkbox, Typography, Button, CircularProgress } from '@material-ui/core';
 import ExternalLink from 'components/generic/ExternalLink';
 
 const useStyles = makeStyles(theme => ({
@@ -68,17 +68,29 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     I confirm that the information entered in this form is truthful and accurate
                 </Typography>
             </Box>
-            <Box width="100%" maxWidth={600} mt={2}>
-                <Button
-                    onClick={onSubmit}
-                    fullWidth
-                    color="primary"
-                    variant="contained"
-                    className={classes.button}
-                    disabled={hasErrors || !confirmed || loading}
-                >
-                    Submit
-                </Button>
+            <Box
+                width="100%"
+                maxWidth={600}
+                mt={2}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+            >
+                {loading ? (
+                    <CircularProgress size={24} />
+                ) : (
+                    <Button
+                        onClick={onSubmit}
+                        fullWidth
+                        color="primary"
+                        variant="contained"
+                        className={classes.button}
+                        disabled={hasErrors || !confirmed || loading}
+                    >
+                        Submit
+                    </Button>
+                )}
             </Box>
         </Box>
     );

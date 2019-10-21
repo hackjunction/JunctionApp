@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { connect } from 'react-redux';
 import { Formik, FastField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button, Typography } from '@material-ui/core';
@@ -7,6 +8,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import * as yup from 'yup';
 import { RegistrationFieldsCustom } from '@hackjunction/shared';
 
+import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import RegistrationQuestion from '../RegistrationQuestion';
 
 const useStyles = makeStyles(theme => ({
@@ -38,27 +40,33 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const RegistrationSectionCustom = ({ section, onNext, nextLabel }) => {
+const RegistrationSectionCustom = ({ section, onNext, nextLabel, registration, hasRegistration }) => {
     const classes = useStyles();
 
-    const buildValidationSchema = () => {
-        return section.questions.reduce((schema, question) => {
-            if (RegistrationFieldsCustom.hasOwnProperty(question.fieldType)) {
-                schema[question.name] = RegistrationFieldsCustom[question.fieldType].validationSchema(
-                    question.fieldRequired,
-                    question
-                );
+    const { initialValues, validationSchema } = useMemo(() => {
+        return section.questions.reduce(
+            (result, question) => {
+                if (RegistrationFieldsCustom.hasOwnProperty(question.fieldType)) {
+                    result.validationSchema[question.name] = RegistrationFieldsCustom[
+                        question.fieldType
+                    ].validationSchema(question.fieldRequired, question);
+                }
+
+                if (registration && registration.answers && registration.answers[section.name]) {
+                    result.initialValues[question.name] = registration.answers[section.name][question.name];
+                }
+                return result;
+            },
+            {
+                validationSchema: {},
+                initialValues: {}
             }
-            return schema;
-        }, {});
-    };
+        );
+    }, [registration, section]);
 
-    const validationSchema = buildValidationSchema();
-
-    console.log('SCHEMA', validationSchema);
     return (
         <Formik
-            initialValues={{}}
+            initialValues={initialValues}
             validationSchema={props => {
                 return yup.lazy(values => {
                     return yup.object().shape(validationSchema);
@@ -111,4 +119,9 @@ const RegistrationSectionCustom = ({ section, onNext, nextLabel }) => {
     );
 };
 
-export default RegistrationSectionCustom;
+const mapState = state => ({
+    registration: EventDetailSelectors.registration(state),
+    hasRegistration: EventDetailSelectors.hasRegistration(state)
+});
+
+export default connect(mapState)(RegistrationSectionCustom);

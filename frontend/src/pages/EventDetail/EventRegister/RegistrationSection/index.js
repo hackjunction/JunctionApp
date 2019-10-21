@@ -1,16 +1,21 @@
 import React, { useMemo, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { RegistrationFields } from '@hackjunction/shared';
 import { makeStyles, lighten } from '@material-ui/core/styles';
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { Formik, FastField } from 'formik';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
-
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import * as UserSelectors from 'redux/user/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
+import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import RegistrationQuestion from '../RegistrationQuestion';
+import ErrorDisplay from './ErrorDisplay';
+
+const registrationButtons = document.getElementById('registration-step-buttons');
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -45,13 +50,32 @@ const useStyles = makeStyles(theme => ({
     },
     errorIcon: {
         marginRight: theme.spacing(1)
+    },
+    bottom: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        background: '#000000',
+        padding: theme.spacing(2),
+        zIndex: 2000
+    },
+    bottomRight: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 }));
 
 const RegistrationSection = props => {
-    const { fields, onNext, nextLabel, data, userProfile, idTokenPayload } = props;
+    const { fields, onNext, nextLabel, data, userProfile, registration, idTokenPayload } = props;
     const classes = useStyles();
     const mainRef = useRef(null);
+
+    console.log('REGISTRATION BUTTONS', registrationButtons);
 
     const { validationSchema, initialValues } = useMemo(() => {
         return fields.reduce(
@@ -60,7 +84,11 @@ const RegistrationSection = props => {
 
                 if (fieldParams) {
                     result.validationSchema[field.fieldName] = fieldParams.validationSchema(field.require);
-                    result.initialValues[field.fieldName] = fieldParams.default(userProfile, idTokenPayload);
+                    if (registration && registration.answers && registration.answers[field.fieldName]) {
+                        result.initialValues[field.fieldName] = registration.answers[field.fieldName];
+                    } else {
+                        result.initialValues[field.fieldName] = fieldParams.default(userProfile, idTokenPayload);
+                    }
                 }
 
                 if (data.hasOwnProperty(field.fieldName)) {
@@ -74,7 +102,7 @@ const RegistrationSection = props => {
                 initialValues: {}
             }
         );
-    }, [fields, userProfile, idTokenPayload, data]);
+    }, [fields, userProfile, idTokenPayload, data, registration]);
 
     const renderErrors = errors => {
         if (Object.keys(errors).length === 0) return null;
@@ -122,7 +150,35 @@ const RegistrationSection = props => {
                             ))}
                         </Grid>
                     </Box>
-                    <Box mt={2} display="flex" flexDirection="column" alignItems="flex-end">
+                    {/* <Box className={classes.bottom}>
+                        <Button className={classes.backButton}>Back</Button>
+                        <Button
+                            disabled={Object.keys(errors).length > 0}
+                            color="primary"
+                            variant="contained"
+                            onClick={handleSubmit}
+                        >
+                            Next: {nextLabel} <ArrowForwardIcon />
+                        </Button>
+                    </Box> */}
+                    {ReactDOM.createPortal(
+                        <Box className={classes.bottom}>
+                            <Button>Previous: Basic Details</Button>
+                            <Box className={classes.bottomRight}>
+                                <ErrorDisplay errors={errors} />
+                                <Button
+                                    disabled={Object.keys(errors).length > 0}
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={handleSubmit}
+                                >
+                                    Next: {nextLabel} <ArrowForwardIcon />
+                                </Button>
+                            </Box>
+                        </Box>,
+                        document.body
+                    )}
+                    {/* <Box mt={2} display="flex" flexDirection="column" alignItems="flex-end">
                         {renderErrors(errors)}
                         {onNext && nextLabel && (
                             <Button
@@ -134,7 +190,7 @@ const RegistrationSection = props => {
                                 Next: {nextLabel} <ArrowForwardIcon />
                             </Button>
                         )}
-                    </Box>
+                    </Box> */}
                 </Box>
             )}
         </Formik>
@@ -143,7 +199,9 @@ const RegistrationSection = props => {
 
 const mapStateToProps = state => ({
     userProfile: UserSelectors.userProfile(state),
-    idTokenPayload: AuthSelectors.getCurrentUser(state)
+    idTokenPayload: AuthSelectors.getCurrentUser(state),
+    registration: EventDetailSelectors.registration(state),
+    hasRegistration: EventDetailSelectors.hasRegistration(state)
 });
 
 export default connect(mapStateToProps)(RegistrationSection);

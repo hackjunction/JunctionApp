@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const { RegistrationFields } = require('@hackjunction/shared');
+const yup = require('yup');
+const { RegistrationFields, RegistrationFieldsCustom } = require('@hackjunction/shared');
 
 const RegistrationHelpers = {
     validateAnswers: (answers, event) => {
@@ -19,65 +20,21 @@ const RegistrationHelpers = {
         });
 
         // Build validation schema for custom questions
-        // event.customQuestions.forEach(section => {
-        //     const sectionSchema = {};
+        event.customQuestions.forEach(section => {
+            const sectionSchema = {};
 
-        //     section.questions.forEach(question => {
-        //         switch(question.fieldType)
-        //     });
-        // });
-        return answers;
-        // const errors = {};
-        // const result = {};
-        // const userDetailsFields = Object.keys(event.userDetailsConfig.toObject());
-        // const customSectionNames = event.customQuestions.map(s => s.name);
-        // const customSectionsMap = _.reduce(
-        //     event.customQuestions,
-        //     (map, section) => {
-        //         section.questions.forEach(question => {
-        //             map[`${section.name}.${question.name}`] = question;
-        //         });
-        //         return map;
-        //     },
-        //     {}
-        // );
+            section.questions.forEach(question => {
+                sectionSchema[question.name] = RegistrationFieldsCustom[question.fieldType].validationSchema(
+                    question.fieldRequired,
+                    question
+                );
+            });
 
-        // _.forOwn(answers, (answer, field) => {
-        //     if (userDetailsFields.indexOf(field) !== -1) {
-        //         const error = _RegistrationValidator.validate(field, event.userDetailsConfig[field].require)(answer);
-        //         if (error) {
-        //             errors[field] = error;
-        //         } else {
-        //             result[field] = answer;
-        //         }
-        //     } else if (customSectionNames.indexOf(field) !== -1) {
-        //         _.forOwn(answers[field], (answer, subField) => {
-        //             const name = `${field}.${subField}`;
-        //             const question = customSectionsMap[name];
-        //             const error = _CustomValidator.validate({
-        //                 fieldType: question.fieldType,
-        //                 fieldOptions: question.settings,
-        //                 fieldLabel: question.label,
-        //                 required: question.fieldRequired
-        //             })(answer);
-        //             if (error) {
-        //                 errors[name] = error;
-        //             } else {
-        //                 if (result.hasOwnProperty(field)) {
-        //                     result[field][subField] = answer;
-        //                 } else {
-        //                     result[field] = {
-        //                         [subField]: answer
-        //                     };
-        //                 }
-        //             }
-        //         });
-        //     } else {
-        //         console.log('Extra field in validation: ' + field, answer);
-        //     }
-        // });
+            validationSchema[section.name] = yup.object().shape(sectionSchema);
+        });
 
-        // return result;
+        const schema = yup.object().shape(validationSchema);
+        return schema.validate(answers, { stripUknown: true });
     },
     buildAggregation: (eventId, userId, qp) => {
         const aggregationSteps = [];
