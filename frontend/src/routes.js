@@ -54,6 +54,11 @@ const routes = [
         component: LogoutPage,
         exact: false
     },
+    // {
+    //     path: '/demo',
+    //     component: RequiresPermission(DemoPage, [AuthConstants.Permissions.MANAGE_EVENT]),
+    //     exact: true
+    // },
     {
         path: '/organise',
         component: RequiresPermission(OrganiserDashboardRouter, [AuthConstants.Permissions.MANAGE_EVENT]),

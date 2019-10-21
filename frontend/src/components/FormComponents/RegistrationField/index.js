@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './RegistrationField.module.scss';
 
 import joi from 'joi-browser';
-import { Input } from 'antd';
 import moment from 'moment';
 
 import FormikField from '../FormikField';
@@ -18,7 +17,7 @@ import ThemeSelect from '../ThemeSelect';
 import EducationForm from '../EducationForm';
 import JobRoleForm from '../JobRoleForm';
 import BooleanField from '../BooleanField';
-
+import { Input } from 'antd';
 import { RegistrationFields, RegistrationValidator, Misc } from '@hackjunction/shared';
 import NumHackathonsSelect from 'components/FormComponents/NumHackathonsSelect';
 import TShirtSizeSelect from 'components/FormComponents/TShirtSizeSelect';
@@ -164,6 +163,7 @@ const RegistrationField = React.memo(({ name, required, isFast, fieldConfig }) =
                 return (
                     <Input.TextArea
                         {...field}
+                        size="large"
                         autosize={{ minRows: 5, maxRows: 15 }}
                         placeholder={fieldConfig.placeholder}
                     />
@@ -191,7 +191,7 @@ const RegistrationField = React.memo(({ name, required, isFast, fieldConfig }) =
                     />
                 );
             case fieldTypes.URL.id:
-                return <Input {...field} size="large" placeholder="https://..." />;
+                return <Input {...field} size="large" placeholder="https://" />;
             case fieldTypes.BOOLEAN.id:
                 return (
                     <BooleanField

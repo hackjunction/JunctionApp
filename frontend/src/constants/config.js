@@ -21,6 +21,10 @@ const settings = {
         value: process.env.REACT_APP_FACEBOOK_PIXEL_ID,
         required: false
     },
+    GOOGLE_ANALYTICS_ID: {
+        value: process.env.GOOGLE_ANALYTICS_ID,
+        required: false
+    },
     IS_DEBUG: {
         value: process.env.IS_DEBUG,
         default: process.env.NODE_ENV === 'development',

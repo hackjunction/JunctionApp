@@ -49,19 +49,26 @@ const RecruitmentProfileInfo = React.memo(({ participant }) => {
     education,
     themesOfInterest,
     industriesOfInterest,
-    previousEvents
+    previousEvents,
+    social
   } = participant;
-  const { portfolio } = participant.social;
   const {
     spokenLanguages = [],
     profilePicture,
-
     recruitmentActionHistory,
     firstName
   } = participant.profile;
   return (
     <Grid container>
       <Grid container direction="column" justify="space-between">
+        {social && social.length !== 0 && (
+          <Grid item mb={2} sm={12} md={6} lg={6}>
+            <Typography variant="h6">Social stuff</Typography>
+            {Object.keys(social).map(service => {
+              return <Link>{social[service]}</Link>;
+            })}
+          </Grid>
+        )}
         {getListOf(themesOfInterest, 'theme')}
         {getListOf(industriesOfInterest, 'industry')}
         {getPrevEvents(previousEvents)}

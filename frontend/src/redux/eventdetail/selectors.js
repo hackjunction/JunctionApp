@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { EventHelpers, Events } from '@hackjunction/shared';
+import { EventHelpers, EventStatuses } from '@hackjunction/shared';
 
 export const event = state => state.eventdetail.event.data;
 export const eventLoading = state => state.eventdetail.event.loading;
@@ -23,17 +23,16 @@ export const eventStatus = createSelector(
 
 export const isRegistrationOpen = createSelector(
     eventStatus,
-    status => {
-        return status === Events.status.REGISTRATION_OPEN.id;
-    }
+    status => status === EventStatuses.REGISTRATION_OPEN.id
 );
 
 export const isRegistrationUpcoming = createSelector(
     eventStatus,
-    status => status === Events.status.REGISTRATION_UPCOMING.id
+    status => status === EventStatuses.PUBLISHED.id
 );
 
 export const isRegistrationClosed = createSelector(
-    eventStatus,
-    status => status === Events.status.REGISTRATION_CLOSED.id
+    isRegistrationOpen,
+    isRegistrationUpcoming,
+    (open, upcoming) => !open && !upcoming
 );

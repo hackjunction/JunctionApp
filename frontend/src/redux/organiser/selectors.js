@@ -27,6 +27,7 @@ export const registrationsError = state => state.organiser.registrations.error;
 export const registrationsUpdated = state => state.organiser.registrations.updated;
 
 export const teams = state => state.organiser.teams.data;
+export const teamsMap = state => state.organiser.teams.map;
 export const teamsLoading = state => state.organiser.teams.loading;
 export const teamsError = state => state.organiser.teams.error;
 export const teamsUpdated = state => state.organiser.teams.updated;
@@ -104,7 +105,6 @@ export const teamsPopulated = createSelector(
     registrationsMap,
     teams,
     (map, teams) => {
-        console.log('MAP', map);
         return teams.map(team => {
             team.members = team.members.map(member => {
                 return map[member];
