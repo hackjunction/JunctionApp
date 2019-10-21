@@ -5,12 +5,13 @@ import {
     Button,
     Avatar,
     List,
-    Paper
+    Paper,
+    Typography
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { relative } from 'path';
 
-import { Typography } from 'antd';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles(theme => ({
         margin: 10,
         width: 200,
         height: 200,
+    },
+    button: {
+        align: 'center',
     }
 }));
 
@@ -52,17 +56,22 @@ const ResultCard = ({ data, onClick }) => {
                     <Grid item xs={12} sm container>
                         <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
-                                <Typography component="h2" gutterBottom>
+                                <Typography variant="h5" gutterBottom>
                                     {data.profile.firstName} {data.profile.lastName}
                                 </Typography>
-                                <Typography component="h3" gutterBottom>
+                                <Typography variant="h6" gutterBottom>
                                     {data.profile.countryOfResidence}
                                 </Typography>
-                                <Typography>{data.profile.bio}</Typography>
+                                {/* <Typography>{data.profile.bio}</Typography> */}
                                 <List>{skills}</List>
                                 <List>{roles}</List>
                                 <Grid item>
-                                    <Button variant="raisedButton" onClick={onClick}>Details</Button>
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={onClick}>Details
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Grid>
