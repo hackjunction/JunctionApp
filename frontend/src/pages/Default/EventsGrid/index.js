@@ -8,7 +8,7 @@ import * as EventsSelectors from 'redux/events/selectors';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import EventCard from 'components/events/EventCard';
 import Button from 'components/generic/Button';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 
 const EventsGrid = ({ events, loading }) => {
     function renderEvents() {

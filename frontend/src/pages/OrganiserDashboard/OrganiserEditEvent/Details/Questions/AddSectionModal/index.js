@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { Modal, Radio, Input } from 'antd';
-
-import FormFieldLabel from 'components/FormComponents/FormFieldLabel';
-import FormFieldHint from 'components/FormComponents/FormFieldHint';
-import MarkdownInput from 'components/FormComponents/MarkdownInput';
+import { Typography } from '@material-ui/core';
+import MarkdownInput from 'components/inputs/MarkdownInput';
 import Divider from 'components/generic/Divider';
 
 const AddSectionModal = ({ visible, onVisibleChange, onSubmit, onEditDone, onEditCancel, editing, reservedNames }) => {
@@ -98,9 +96,8 @@ const AddSectionModal = ({ visible, onVisibleChange, onSubmit, onEditDone, onEdi
             maskClosable={false}
             centered={true}
         >
-            <FormFieldLabel label="Section name" required show />
-            <FormFieldHint hint="The name of your section" show />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Section name</Typography>
+            <Typography variant="caption">The name of your section</Typography>
             <Input
                 placeholder="Section title"
                 size="large"
@@ -108,9 +105,8 @@ const AddSectionModal = ({ visible, onVisibleChange, onSubmit, onEditDone, onEdi
                 onChange={e => handleChange('label', e.target.value)}
             />
             <Divider size={2} />
-            <FormFieldLabel label="Machine name" required show />
-            <FormFieldHint hint="A machine-readable name for the section" show />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Machine name</Typography>
+            <Typography variant="caption">A machine-readable name for the section</Typography>
             <Input
                 disabled={editing}
                 placeholder="mySectionName"
@@ -119,17 +115,14 @@ const AddSectionModal = ({ visible, onVisibleChange, onSubmit, onEditDone, onEdi
                 onChange={e => handleChange('name', e.target.value)}
             />
             <Divider size={2} />
-            <FormFieldLabel label="Description" show />
-            <FormFieldHint hint="A longer description for what this section is about, if needed" show />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Description</Typography>
+            <Typography variant="caption">A longer description for what this section is about, if needed</Typography>
             <MarkdownInput value={data.description} onChange={e => handleChange('description', e.target.value)} />
             <Divider size={2} />
-            <FormFieldLabel label="Visibility" show />
-            <FormFieldHint
-                hint="Do you want this section to be visible always, or have the user answer a yes/no question to expand it?"
-                show
-            />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Visibility</Typography>
+            <Typography variant="caption">
+                Do you want this section to be visible always, or have the user answer a yes/no question to expand it?
+            </Typography>
             <Radio.Group
                 value={isConditional}
                 onChange={e => setIsConditional(e.target.value)}
@@ -143,12 +136,11 @@ const AddSectionModal = ({ visible, onVisibleChange, onSubmit, onEditDone, onEdi
             {isConditional && (
                 <React.Fragment>
                     <Divider size={2} />
-                    <FormFieldLabel label="Conditional question" required show />
-                    <FormFieldHint
-                        hint="What is the yes/no question you want to ask? When choosing yes, the questions in this section will be shown"
-                        show
-                    />
-                    <Divider size={1} />
+                    <Typography variant="subtitle1">Conditional question</Typography>
+                    <Typography variant="caption">
+                        What is the yes/no question you want to ask? When choosing yes, the questions in this section
+                        will be shown
+                    </Typography>
                     <Input
                         placeholder="E.g. do you want to apply to Terminal?"
                         size="large"

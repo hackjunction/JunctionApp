@@ -3,7 +3,7 @@ import React, { useMemo, useState, useCallback, forwardRef } from 'react';
 import { connect } from 'react-redux';
 import { sumBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, FormControlLabel, Switch, FormGroup, Box, Slider, Paper } from '@material-ui/core';
+import { Typography, Grid, Box, Slider, Paper } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
 

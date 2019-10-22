@@ -4,9 +4,9 @@ import { Grid, Typography, Box, Button } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 
 import TextInput from 'components/inputs/TextInput';
-import EventTagsSelect from 'components/FormComponents/EventTagsSelect';
+import EventTagsSelect from 'components/inputs/EventTagsSelect';
 import OrganiserSelectModal from 'components/modals/OrganiserSelectModal';
-import RegistrationStatusSelect from 'components/FormComponents/RegistrationStatusSelect';
+import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 

@@ -34,11 +34,11 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles(theme => ({
-    root: {
+    root: ({ transparent }) => ({
         flexGrow: 1,
         width: '100%',
-        backgroundColor: theme.palette.background.paper
-    },
+        backgroundColor: transparent ? 'transparent' : theme.palette.background.paper
+    }),
     wrapper: {
         textAlign: 'left',
         alignItems: 'flex-start'
@@ -54,8 +54,8 @@ const propTypes = {
     )
 };
 
-const MaterialTabsLayout = ({ tabs }) => {
-    const classes = useStyles();
+const MaterialTabsLayout = ({ tabs, transparent = false }) => {
+    const classes = useStyles({ transparent });
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
