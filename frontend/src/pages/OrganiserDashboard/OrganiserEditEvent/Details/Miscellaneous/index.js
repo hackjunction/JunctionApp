@@ -1,34 +1,28 @@
 import React from 'react';
 
-import { Row, Col } from 'react-grid-system';
-
-import Divider from 'components/generic/Divider';
-import FormikField from 'components/FormComponents/FormikField';
-import EventTagsForm from 'components/FormComponents/EventTagsForm';
+import { Grid } from '@material-ui/core';
+import { FastField } from 'formik';
+import FormControl from 'components/inputs/FormControl';
+import EventTagsForm from './EventTagsForm';
 
 const OrganiserEditEventMisc = props => {
     return (
-        <React.Fragment>
-            <Row gutter={16}>
-                <Col xs={12}>
-                    <FormikField
-                        name="tags"
-                        label="Tags"
-                        hint="Add tags with which you can mark registrations"
-                        render={({ field, form }) => {
-                            return (
-                                <EventTagsForm
-                                    value={field.value}
-                                    fieldName={field.name}
-                                    setFieldValue={form.setFieldValue}
-                                />
-                            );
-                        }}
-                    />
-                    <Divider size={2} />
-                </Col>
-            </Row>
-        </React.Fragment>
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <FastField
+                    name="tags"
+                    render={({ field, form }) => (
+                        <FormControl label="Tags" hint="Add tags with which you can mark registrations">
+                            <EventTagsForm
+                                value={field.value}
+                                fieldName={field.name}
+                                setFieldValue={form.setFieldValue}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+        </Grid>
     );
 };
 

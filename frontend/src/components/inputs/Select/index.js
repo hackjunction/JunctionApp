@@ -358,6 +358,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.THEMES;
                 case 't-shirt-size':
                     return SelectOptions.T_SHIRT_SIZES;
+                case 'timezone':
+                    return SelectOptions.TIMEZONES;
                 case 'status':
                     return SelectOptions.STATUSES;
                 case 'day':

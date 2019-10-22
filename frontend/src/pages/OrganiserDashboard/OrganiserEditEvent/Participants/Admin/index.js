@@ -7,7 +7,7 @@ import { Grid, Paper, Typography, Button, Box } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 import StatusBadge from 'components/generic/StatusBadge';
 import Statistic from 'components/generic/Statistic';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import QRCodeReaderModal from 'components/modals/QRCodeReaderModal';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';

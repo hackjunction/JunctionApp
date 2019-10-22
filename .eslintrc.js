@@ -15,6 +15,7 @@ module.exports = {
     },
     rules: {
         'no-console': 1,
-        'import/no-unused-modules': [1, { unusedExports: true }]
+        'import/no-unused-modules': [1, { unusedExports: true }],
+        'jsx-a11y/img-redundant-alt': 0
     }
 };

@@ -8,7 +8,6 @@ import PageHeader from 'components/generic/PageHeader';
 import TimelineDot from 'components/generic/TimelineDot';
 import RegistrationPhase from './RegistrationPhase';
 import ConfirmedPhase from './ConfirmedPhase';
-import EventPhase from './EventPhase';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -20,19 +19,6 @@ const useStyles = makeStyles(theme => ({
 const EventDashboardHome = ({ event, registration, loading }) => {
     const classes = useStyles();
     if (!event || !registration) return null;
-
-    function renderContent() {
-        switch (currentStep) {
-            case 0:
-                return <RegistrationPhase />;
-            case 1:
-                return <EventPhase />;
-            default:
-                return <RegistrationPhase />;
-        }
-    }
-
-    const currentStep = 1;
 
     const getActiveStep = () => {
         if (registration.status === 'confirmed') {

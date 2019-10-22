@@ -6,17 +6,15 @@ import { connect } from 'react-redux';
 import { forOwn } from 'lodash-es';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
-import BlockExitIfDirty from 'components/FormComponents/BlockExitIfDirty';
 import PageHeader from 'components/generic/PageHeader';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
-
-import { Box, Button } from '@material-ui/core';
 
 import BasicInfoTab from './BasicInfo';
 import ScheduleTab from './Schedule';
 import QuestionsTab from './Questions';
 import MiscellaneousTab from './Miscellaneous';
+import BottomBar from './BottomBar';
 
 const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
     const { slug } = event;
@@ -68,48 +66,38 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
         <PageWrapper loading={loading}>
             <PageHeader heading="Edit event" subheading="Configure event information, schedule and other settings" />
             <Formik initialValues={event} enableReinitialize={true} onSubmit={onSubmit}>
-                {formikProps => {
-                    const errorCount = Object.keys(formikProps.errors).length;
-                    const hasErrors = errorCount !== 0;
-                    const canSave = formikProps.dirty && !hasErrors;
-                    const isPublic = formikProps.values.published;
-
-                    return (
-                        <React.Fragment>
-                            <Box p={2}>
-                                <Button
-                                    disabled={!formikProps.dirty}
-                                    onClick={formikProps.submitForm}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Save changes
-                                </Button>
-                            </Box>
-                            <MaterialTabsLayout
-                                tabs={[
-                                    {
-                                        label: 'Basic Details',
-                                        content: <BasicInfoTab {...formikProps} />
-                                    },
-                                    {
-                                        label: 'Schedule',
-                                        content: <ScheduleTab {...formikProps} />
-                                    },
-                                    {
-                                        label: 'Questions',
-                                        content: <QuestionsTab {...formikProps} />
-                                    },
-                                    {
-                                        label: 'Miscellaneous',
-                                        content: <MiscellaneousTab {...formikProps} />
-                                    }
-                                ]}
-                            />
-                            <BlockExitIfDirty {...formikProps} />
-                        </React.Fragment>
-                    );
-                }}
+                {formikProps => (
+                    <React.Fragment>
+                        <MaterialTabsLayout
+                            transparent
+                            tabs={[
+                                {
+                                    label: 'Basic Details',
+                                    content: <BasicInfoTab {...formikProps} />
+                                },
+                                {
+                                    label: 'Schedule',
+                                    content: <ScheduleTab {...formikProps} />
+                                },
+                                {
+                                    label: 'Questions',
+                                    content: <QuestionsTab {...formikProps} />
+                                },
+                                {
+                                    label: 'Miscellaneous',
+                                    content: <MiscellaneousTab {...formikProps} />
+                                }
+                            ]}
+                        />
+                        <div style={{ height: '100px' }} />
+                        <BottomBar
+                            onSubmit={formikProps.handleSubmit}
+                            errors={formikProps.errors}
+                            dirty={formikProps.dirty}
+                            loading={formikProps.isSubmitting}
+                        />
+                    </React.Fragment>
+                )}
             </Formik>
         </PageWrapper>
     );

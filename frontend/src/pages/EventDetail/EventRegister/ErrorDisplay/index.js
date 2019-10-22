@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Popper, Fade, Paper, Typography, Box } from '@material-ui/core';
+import { IconButton, Popper, Paper, Typography, Box } from '@material-ui/core';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CloseIcon from '@material-ui/icons/Close';
 
