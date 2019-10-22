@@ -4,7 +4,7 @@ import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
 
 import { Typography, Grid, Box, Button } from '@material-ui/core';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 import TextInput from 'components/inputs/TextInput';

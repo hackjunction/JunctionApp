@@ -6,7 +6,7 @@ import { FilterHelpers } from '@hackjunction/shared';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import FilterGroupMenu from 'components/filters/FilterGroupMenu';
 import PageHeader from 'components/generic/PageHeader';
 import Statistic from 'components/generic/Statistic';

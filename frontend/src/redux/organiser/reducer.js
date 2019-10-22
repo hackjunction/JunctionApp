@@ -1,7 +1,7 @@
 import * as ActionTypes from './actionTypes';
 import * as AuthActionTypes from '../auth/actionTypes';
 import { buildHandler, buildUpdatePath } from '../utils';
-import { concat, filter, find } from 'lodash-es';
+import { concat, filter } from 'lodash-es';
 
 const initialState = {
     event: {
