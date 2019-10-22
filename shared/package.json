@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha",
-        "precommit": "npm run test"
+        "precommit": "echo \"Shared: running pre-commit checks\" && npm run test"
     },
     "author": "Juuso Lappalainen",
     "license": "ISC",
