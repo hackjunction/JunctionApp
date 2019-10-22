@@ -17,6 +17,8 @@ import * as AuthSelectors from 'redux/auth/selectors';
 
 import UserProfilesService from 'services/userProfiles';
 
+import { toggleFavorite } from 'redux/recruitment/actions';
+
 const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -66,7 +68,11 @@ const RecruitmentUserModal = ({ idToken, profileId, onClose, event }) => {
       title="Profile details"
     >
       <PageWrapper loading={loading || !participant} error={error}>
-        <Button block text="Add to favorites" button={{}} />
+        <Button
+          block
+          text="Add to favorites"
+          button={{ onClick: () => toggleFavorite(profileId, idToken) }}
+        />
         <Grid container direction="row" justify="space-around">
           <Grid item sm={8} md={8} lg={8}>
             <Typography variant="h3">{participantName}</Typography>
@@ -108,11 +114,4 @@ const mapState = state => ({
   idToken: AuthSelectors.getIdToken(state)
 });
 
-const mapDispatch = dispatch => ({});
-
-export default withSnackbar(
-  connect(
-    mapState,
-    mapDispatch
-  )(RecruitmentUserModal)
-);
+export default withSnackbar(connect(mapState)(RecruitmentUserModal));
