@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -50,6 +50,13 @@ const useStyles = makeStyles(theme => ({
 
 const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors }) => {
     const classes = useStyles();
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        setTimeout(function() {
+            setEnabled(true);
+        }, 1000);
+    }, []);
     return (
         <Box className={classes.wrapper}>
             {prevLabel && onPrev && (
@@ -62,7 +69,7 @@ const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors })
                 <ErrorDisplay errors={errors} />
                 <Button
                     className={classes.nextButton}
-                    disabled={Object.keys(errors).length > 0}
+                    disabled={Object.keys(errors).length > 0 || !enabled}
                     color="primary"
                     variant="contained"
                     onClick={onNext}

@@ -1,12 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux';
 import { Formik, FastField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography, RadioGroup, Radio, FormControlLabel } from '@material-ui/core';
 import * as yup from 'yup';
 import { RegistrationFieldsCustom } from '@hackjunction/shared';
+
+import BooleanInput from 'components/inputs/BooleanInput';
+import Markdown from 'components/generic/Markdown';
 
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import RegistrationQuestion from '../RegistrationQuestion';
@@ -34,11 +37,13 @@ const useStyles = makeStyles(theme => ({
             opacity: 1
         }
     },
-    description: {
-        color: 'white',
-        fontSize: '1rem',
-        textAlign: 'center',
-        maxWidth: '600px'
+    radioGroupWrapper: {
+        background: 'white',
+        padding: theme.spacing(2),
+        width: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 }));
 
@@ -52,6 +57,7 @@ const RegistrationSectionCustom = ({
     hasRegistration
 }) => {
     const classes = useStyles();
+    const [visible, setVisible] = useState(!section.conditional);
 
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
@@ -88,34 +94,36 @@ const RegistrationSectionCustom = ({
         >
             {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
                 <Box display="flex" flexDirection="column">
-                    <Box
-                        p={2}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        className={classes.descriptionWrapper}
-                    >
-                        <Typography variant="subtitle1" className={classes.description}>
-                            {section.description}
-                        </Typography>
+                    <Box p={2} display="flex" flexDirection="column" alignItems="center">
+                        <Box maxWidth="600px">
+                            <Markdown source={section.description} light alignCenter />
+                        </Box>
+                        <Box maxWidth="600px" className={classes.radioGroupWrapper}>
+                            <Typography style={{ textAlign: 'center' }} variant="subtitle1">
+                                {section.conditional}
+                            </Typography>
+                            <BooleanInput alignCenter value={visible} onChange={setVisible} />
+                        </Box>
                     </Box>
-                    <Box p={2} className={classes.wrapper}>
-                        <Grid container spacing={0}>
-                            {section.questions.map((question, index) => (
-                                <Grid item xs={12} key={question.name} className={classes.question}>
-                                    <div className={classes.questionInner}>
-                                        <FastField
-                                            autoFocus={index === 0}
-                                            name={question.name}
-                                            component={RegistrationQuestion}
-                                            config={question}
-                                            isCustom={true}
-                                        />
-                                    </div>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
+                    {visible && (
+                        <Box p={2} className={classes.wrapper}>
+                            <Grid container spacing={0}>
+                                {section.questions.map((question, index) => (
+                                    <Grid item xs={12} key={question.name} className={classes.question}>
+                                        <div className={classes.questionInner}>
+                                            <FastField
+                                                autoFocus={index === 0}
+                                                name={question.name}
+                                                component={RegistrationQuestion}
+                                                config={question}
+                                                isCustom={true}
+                                            />
+                                        </div>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
+                    )}
                     {ReactDOM.createPortal(
                         <RegistrationBottomBar
                             prevLabel={prevLabel}
