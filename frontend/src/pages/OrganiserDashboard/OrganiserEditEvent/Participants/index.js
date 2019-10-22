@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
-
-import { connect } from 'react-redux';
-import { Typography } from '@material-ui/core';
+import React from 'react';
 
 import PageWrapper from 'components/PageWrapper';
-import Divider from 'components/generic/Divider';
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
 import PageHeader from 'components/generic/PageHeader';
-
-import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import SearchAttendeesPage from './Search';
 import AssignAttendeesPage from './Assigned';
@@ -16,7 +10,7 @@ import TeamsPage from './Teams';
 import AdminPage from './Admin';
 import TravelGrantsPage from './Travel';
 
-const OrganiserEditEventReview = ({ event, organisers, registrationsLoading, updateData }) => {
+const OrganiserEditEventReview = () => {
     return (
         <PageWrapper>
             <PageHeader heading="Participants" subheading="Search participants" />
@@ -48,10 +42,4 @@ const OrganiserEditEventReview = ({ event, organisers, registrationsLoading, upd
     );
 };
 
-const mapState = state => ({
-    organisers: OrganiserSelectors.organisers(state),
-    event: OrganiserSelectors.event(state),
-    registrationsLoading: OrganiserSelectors.registrationsLoading(state)
-});
-
-export default connect(mapState)(OrganiserEditEventReview);
+export default OrganiserEditEventReview;

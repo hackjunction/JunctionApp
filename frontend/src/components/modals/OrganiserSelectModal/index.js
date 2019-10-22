@@ -41,7 +41,7 @@ const OrganiserSelectModal = ({ open, onClose, onClear, onSelect, organisers }) 
                         selectable
                         onSelect={() => setSelected(organiser)}
                         selected={selected && selected.userId === organiser.userId}
-                        key={organisers.userId}
+                        key={organiser.userId}
                         user={organiser}
                     />
                 ))}

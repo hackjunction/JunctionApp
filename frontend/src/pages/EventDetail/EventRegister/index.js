@@ -1,33 +1,107 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import styles from './EventRegister.module.scss';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 
-import { Formik } from 'formik';
-import { Row, Col, notification, Alert, Icon } from 'antd';
 import { forOwn, sortBy } from 'lodash-es';
 import { connect } from 'react-redux';
-import { motion } from 'framer-motion';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Stepper, Step, StepContent, Box, Button } from '@material-ui/core';
 import { RegistrationFields } from '@hackjunction/shared';
-import classNames from 'classnames';
+import { withSnackbar } from 'notistack';
+import { push } from 'connected-react-router';
 
 import * as EventDetailActions from 'redux/eventdetail/actions';
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import * as UserSelectors from 'redux/user/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 
-import Button from 'components/generic/Button';
+import CenteredContainer from 'components/generic/CenteredContainer';
 import Image from 'components/generic/Image';
-import NewsLetterButton from 'components/FormComponents/NewsLetterButton';
 import FadeInWrapper from 'components/animated/FadeInWrapper';
-import StaggeredList from 'components/animated/StaggeredList';
-import StaggeredListItem from 'components/animated/StaggeredListItem';
-import Divider from 'components/generic/Divider';
-import RegistrationField from 'components/FormComponents/RegistrationField';
-import SubmitButton from 'components/FormComponents/SubmitButton';
-import FormStatus from 'components/FormComponents/FormStatus';
-import CustomRegistrationSection from './CustomRegistrationSection';
+import AnalyticsService from 'services/analytics';
 
 import RequiresPermission from 'hocs/RequiresPermission';
-import AnalyticsService from 'services/analytics';
+
+import RegistrationSection from './RegistrationSection';
+import RegistrationSectionCustom from './RegistrationSectionCustom';
+import RegistrationSectionLabel from './RegistrationSectionLabel';
+import NewsLetterButton from 'components/inputs/NewsLetterButton';
+import SubmitButton from 'components/inputs/SubmitButton';
+
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        minHeight: '100%',
+        background: 'black',
+        zIndex: 100
+    },
+    backgroundImage: {
+        position: 'fixed',
+        zIndex: 1,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        opacity: 0.3,
+        filter: 'blur(5px)'
+    },
+    mainTitle: {
+        color: 'white',
+        textAlign: 'center'
+    },
+    sectionTitle: {
+        color: 'white',
+        fontSize: '1.4rem',
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    content: {
+        position: 'relative',
+        zIndex: 1000
+    },
+    stepper: {
+        background: 'transparent',
+        padding: 0
+    },
+    stepContent: {
+        border: 'none',
+        marginLeft: 0,
+        paddingLeft: '8px'
+    },
+    top: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        padding: theme.spacing(2),
+        background: 'black',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        zIndex: 2000
+    },
+    topTitle: {
+        fontSize: '1rem',
+        color: 'white',
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        margin: '2px'
+    },
+    topTitleExtra: {
+        fontSize: '1rem',
+        color: 'white',
+        textTransform: 'uppercase',
+        fontWeight: 'normal',
+        margin: '2px'
+    },
+    doneTitle: {
+        color: 'white',
+        textAlign: 'center'
+    }
+}));
 
 const EventRegister = ({
     slug,
@@ -37,15 +111,35 @@ const EventRegister = ({
     createRegistration,
     editRegistration,
     userProfile,
-    idTokenPayload
+    idTokenPayload,
+    enqueueSnackbar,
+    openDashboard,
+    openEvent
 }) => {
-    const [submitted, setSubmitted] = useState(false);
+    const classes = useStyles();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({});
+    const [activeStep, setActiveStep] = useState(0);
+
+    useEffect(() => {
+        setTimeout(function() {
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        }, 500);
+    }, [activeStep]);
 
     useEffect(() => {
         if (!hasRegistration) {
             AnalyticsService.events.BEGIN_REGISTRATION(slug);
         }
     }, [hasRegistration, slug]);
+
+    useEffect(() => {
+        document.querySelector('html').style.backgroundColor = '#000000';
+
+        return () => {
+            delete document.querySelector('html').style.backgroundColor;
+        };
+    });
 
     const sections = useMemo(() => {
         const fieldCategories = {};
@@ -80,100 +174,102 @@ const EventRegister = ({
         });
 
         const sorted = sortBy(fieldSections, 'order');
-        return sorted;
-    }, [event.userDetailsConfig]);
+        return sorted.concat(event.customQuestions);
+    }, [event.userDetailsConfig, event.customQuestions]);
 
-    function getInitialValues() {
-        if (registration && registration.hasOwnProperty('_id')) {
-            return registration.answers;
-        } else {
-            return RegistrationFields.getDefaultValuesFromConfig(
-                event.userDetailsConfig,
-                event.customQuestions,
-                userProfile,
-                idTokenPayload
-            );
-        }
-    }
-
-    async function handleSubmit(values, formikProps) {
-        formikProps.setSubmitting(true);
-
-        const isUpdate = registration && registration.hasOwnProperty('_id');
-        try {
-            if (isUpdate) {
-                await editRegistration(event.slug, values);
+    const setNextStep = useCallback(
+        (nextStep, values, path) => {
+            if (path) {
+                setFormData({
+                    ...formData,
+                    [path]: {
+                        ...formData[path],
+                        ...values
+                    }
+                });
             } else {
-                await createRegistration(event.slug, values);
+                setFormData({
+                    ...formData,
+                    ...values
+                });
             }
-            setSubmitted(true);
-            AnalyticsService.events.COMPLETE_REGISTRATION(slug);
+            setActiveStep(nextStep);
+        },
+        [formData]
+    );
+
+    const setPrevStep = useCallback(() => {
+        setActiveStep(activeStep - 1);
+    }, [activeStep]);
+
+    const handleSubmit = useCallback(async () => {
+        setLoading(true);
+        try {
+            if (hasRegistration) {
+                await editRegistration(event.slug, formData);
+            } else {
+                await createRegistration(event.slug, formData);
+            }
+            AnalyticsService.events.COMPLETE_REGISTRATION(event.slug);
         } catch (e) {
-            notification.error({
-                message: 'Oopsie!',
-                description:
-                    "Looks like that didn't work... Please make sure you're connected to the internet and try again"
-            });
+            enqueueSnackbar('Oops, something went wrong... Please try again');
         } finally {
-            formikProps.setSubmitting(false);
+            setActiveStep(sections.length + 1);
+            setLoading(false);
         }
-    }
+    }, [sections, createRegistration, editRegistration, hasRegistration, event.slug, formData, enqueueSnackbar]);
 
-    function renderFields(fields, formikProps) {
-        return fields.map(field => (
-            <Col xs={24} key={field.fieldName}>
-                <StaggeredListItem>
-                    <RegistrationField
-                        name={field.fieldName}
-                        required={field.require}
-                        isFast={true}
-                        fieldConfig={field.fieldConfig}
+    const renderSteps = () => {
+        return sections.map((section, index) => {
+            const isCustomSection = section.hasOwnProperty('name');
+            const nextStep = index !== sections.length - 1 ? sections[index + 1] : null;
+            const prevStep = index !== 0 ? sections[index - 1] : null;
+            return (
+                <Step key={section.label}>
+                    <RegistrationSectionLabel
+                        isFirst={index === 0}
+                        onClick={() => setActiveStep(index)}
+                        label={section.label}
+                        previousLabel={prevStep ? prevStep.label : null}
+                        onPrevious={setPrevStep}
                     />
-                    <Divider size={2} />
-                </StaggeredListItem>
-            </Col>
-        ));
-    }
-
-    function renderSections(formikProps) {
-        return sections.map(section => {
-            return (
-                <Row gutter={1} key={section.label}>
-                    <Col xs={24}>
-                        <Divider size={2} />
-                        <StaggeredListItem>
-                            <h3 className={styles.registrationSectionTitle}>{section.label}</h3>
-                        </StaggeredListItem>
-                        <Divider size={2} />
-                    </Col>
-                    {renderFields(section.fields, formikProps)}
-                </Row>
+                    <StepContent
+                        classes={{
+                            root: classes.stepContent
+                        }}
+                    >
+                        {isCustomSection ? (
+                            <RegistrationSectionCustom
+                                isActive={activeStep === index}
+                                section={section}
+                                data={formData}
+                                onPrev={setPrevStep}
+                                prevLabel={prevStep ? prevStep.label : null}
+                                onNext={(values, path) => setNextStep(index + 1, values, path)}
+                                nextLabel={nextStep ? nextStep.label : 'Finish'}
+                            />
+                        ) : (
+                            <RegistrationSection
+                                isActive={activeStep === index}
+                                data={formData}
+                                label={section.label}
+                                fields={section.fields}
+                                onPrev={setPrevStep}
+                                prevLabel={prevStep ? prevStep.label : null}
+                                onNext={values => setNextStep(index + 1, values)}
+                                nextLabel={nextStep ? nextStep.label : 'Finish'}
+                            />
+                        )}
+                    </StepContent>
+                </Step>
             );
         });
-    }
-
-    function renderCustomSections(formikProps) {
-        return event.customQuestions.map(section => {
-            const hasValue = formikProps.values.hasOwnProperty(section.name);
-            return (
-                <Row gutter={1} key={section.label}>
-                    <Col xs={24}>
-                        <StaggeredListItem>
-                            <CustomRegistrationSection section={section} hasValue={hasValue} />
-                        </StaggeredListItem>
-                    </Col>
-                </Row>
-            );
-        });
-    }
+    };
 
     return (
-        <FadeInWrapper className={styles.wrapper}>
+        <FadeInWrapper className={classes.wrapper}>
             <Image
-                className={classNames({
-                    [styles.backgroundImage]: true,
-                    [styles.backgroundImageSubmitted]: submitted
-                })}
+                className={classes.backgroundImage}
                 publicId={event && event.coverImage ? event.coverImage.publicId : null}
                 default={require('assets/images/default_cover_image.png')}
                 transformation={{
@@ -181,108 +277,64 @@ const EventRegister = ({
                     height: 1080
                 }}
             />
-            <Formik
-                initialValues={getInitialValues()}
-                enableReinitialize={true}
-                onSubmit={handleSubmit}
-                validateOnChange={false}
-                validateOnBlur={false}
-            >
-                {formikProps => {
-                    return (
-                        <React.Fragment>
-                            <div className={styles.scrollable}>
-                                <div className={styles.inner}>
-                                    <FadeInWrapper className={styles.registrationTop} enterDelay={0.4}>
-                                        <Image
-                                            className={styles.logo}
-                                            publicId={event && event.logo ? event.logo.publicId : null}
-                                            transformation={{
-                                                width: 600
-                                            }}
-                                        />
-                                        <h2 className={styles.registrationTopTitle}>Register</h2>
-                                    </FadeInWrapper>
-                                    <motion.div
-                                        style={{ overflow: 'hidden' }}
-                                        animate={{
-                                            opacity: submitted ? 1 : 0,
-                                            height: submitted ? 'auto' : 0
-                                        }}
-                                        initial={{
-                                            opacity: 0,
-                                            height: 0
-                                        }}
-                                    >
-                                        <div className={styles.submittedWrapper}>
-                                            <Icon type="check-circle" className={styles.submittedIcon} />
-                                            <h3 className={styles.submittedMessage}>Your submission has been saved!</h3>
-                                            <Button
-                                                block
-                                                round
-                                                theme="accent"
-                                                text="Event dashboard"
-                                                link={{
-                                                    internal: '/dashboard/' + slug
-                                                }}
-                                            />
-                                            <Divider size={1} />
-                                            <Button
-                                                block
-                                                round
-                                                text="Back to event page"
-                                                theme="minimal"
-                                                link={{
-                                                    internal: '/events/' + slug
-                                                }}
-                                            />
-                                        </div>
-                                    </motion.div>
-                                    <StaggeredList animate={submitted ? 'collapsed' : 'visible'}>
-                                        {hasRegistration && (
-                                            <StaggeredListItem>
-                                                <Alert
-                                                    message="Your registration has already been submitted"
-                                                    description="We'll process it as soon as possible. You can still make changes to it, but keep in mind that we may have already reviewed your registration"
-                                                    type="success"
-                                                />
-                                            </StaggeredListItem>
-                                        )}
-                                        {renderSections(formikProps)}
-                                        {renderCustomSections(formikProps)}
-                                        <Divider size={5} />
-                                        <StaggeredListItem>
-                                            <NewsLetterButton
-                                                email={
-                                                    !formikProps.errors.hasOwnProperty('email')
-                                                        ? formikProps.values.email
-                                                        : null
-                                                }
-                                                country={formikProps.values.countryOfResidence}
-                                            />
-                                        </StaggeredListItem>
-                                        <Divider size={5} />
-                                        <StaggeredListItem>
-                                            <SubmitButton formikProps={formikProps} />
-                                        </StaggeredListItem>
-                                        <Divider size={5} />
-                                    </StaggeredList>
-                                </div>
-                            </div>
-                            <motion.div
-                                animate={{
-                                    bottom: submitted ? '-100px' : 0
-                                }}
-                                className={styles.footer}
-                            >
-                                <div className={styles.footerInner}>
-                                    <FormStatus formikProps={formikProps} />
-                                </div>
-                            </motion.div>
-                        </React.Fragment>
-                    );
-                }}
-            </Formik>
+            <CenteredContainer wrapperClass={classes.content}>
+                <FadeInWrapper enterDelay={0.4}>
+                    <Box className={classes.top}>
+                        <Typography variant="h1" className={classes.topTitle}>
+                            Register
+                        </Typography>
+                        <Box p={1} />
+                        <Typography variant="h2" className={classes.topTitleExtra}>
+                            Junction 2019
+                        </Typography>
+                    </Box>
+                </FadeInWrapper>
+                <div style={{ height: '100px' }} />
+                <Stepper connector={<div />} className={classes.stepper} activeStep={activeStep} orientation="vertical">
+                    {renderSteps()}
+                    <Step key="finish">
+                        <StepContent
+                            classes={{
+                                root: classes.stepContent
+                            }}
+                        >
+                            <NewsLetterButton email={formData.email} country={formData.countryOfResidence} />
+                            <Box mt={5} />
+                            <SubmitButton hasErrors={false} onSubmit={handleSubmit} loading={loading} />
+                        </StepContent>
+                    </Step>
+                    <Step key="done">
+                        <StepContent
+                            classes={{
+                                root: classes.stepContent
+                            }}
+                        >
+                            <Box mt={'200px'} display="flex" flexDirection="column" alignItems="center">
+                                <Typography className={classes.doneTitle} variant="h3">
+                                    Registration saved!
+                                </Typography>
+                                <div style={{ height: '50px' }} />
+                                <Button
+                                    onClick={() => openDashboard(event.slug)}
+                                    style={{ width: '300px' }}
+                                    color="primary"
+                                    variant="contained"
+                                >
+                                    Event dashboard
+                                </Button>
+                                <div style={{ height: '1rem' }} />
+                                <Button
+                                    onClick={() => openEvent(event.slug)}
+                                    style={{ width: '300px', color: 'white' }}
+                                >
+                                    Back to event page
+                                </Button>
+                            </Box>
+                        </StepContent>
+                    </Step>
+                </Stepper>
+                <div style={{ height: '100px' }} />
+            </CenteredContainer>
         </FadeInWrapper>
     );
 };
@@ -297,10 +349,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     createRegistration: (slug, data) => dispatch(EventDetailActions.createRegistration(slug, data)),
-    editRegistration: (slug, data) => dispatch(EventDetailActions.editRegistration(slug, data))
+    editRegistration: (slug, data) => dispatch(EventDetailActions.editRegistration(slug, data)),
+    openDashboard: slug => dispatch(push(`/dashboard/${slug}`)),
+    openEvent: slug => dispatch(push(`/events/${slug}`))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(RequiresPermission(EventRegister));
+export default withSnackbar(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(RequiresPermission(EventRegister))
+);

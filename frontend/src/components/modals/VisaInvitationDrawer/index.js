@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from 'react';
-import styles from './VisaInvitationDrawer.module.scss';
 
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { Typography, Grid, Button } from '@material-ui/core';
 
-import { Drawer, Input, Button as AntButton } from 'antd';
+import { Drawer } from 'antd';
 
-import Divider from 'components/generic/Divider';
-import Button from 'components/generic/Button';
+import TextInput from 'components/inputs/TextInput';
+import DateInput from 'components/inputs/DateInput';
 import { useFormField } from 'hooks/formHooks';
 
 import VisaInvitationPDF from './VisaInvitationPDF';
@@ -21,7 +21,7 @@ const VisaInvitationDrawer = ({ registration }) => {
     const nationality = useFormField(registration ? registration.answers.nationality : '');
     const passportNo = useFormField('');
     const profession = useFormField('');
-    const arrivalDate = useFormField('');
+    const arrivalDate = useFormField(Date.now());
     const arrivalCity = 'Helsinki';
     const arrivalCountry = 'Finland';
 
@@ -42,64 +42,95 @@ const VisaInvitationDrawer = ({ registration }) => {
                 visible={visible}
                 getContainer={false}
             >
-                <p className={styles.label}>
+                <Typography variant="body1" paragraph>
                     Just fill in a few more travel details and we'll generate a visa invitation letter for you. We will
                     not save this information for later use - in fact it is never sent anywhere from your device.
-                    <br />
-                    <br />
+                </Typography>
+                <Typography variant="body1" paragraph>
                     Once you've generated the visa invitation letter, double check it to make sure all of the
                     information is correct. You can always generate a new invitation should you need to.
-                </p>
-                <Divider size={1} />
-                <label className={styles.label}>First name</label>
-                <Input size="large" {...firstName} />
-                <Divider size={1} />
-                <label className={styles.label}>Last name</label>
-                <Input size="large" {...lastName} />
-                <Divider size={1} />
-                <label className={styles.label}>Nationality</label>
-                <Input size="large" {...nationality} />
-                <span className={styles.hint}>E.g. "Finnish", "American", "German"</span>
-                <Divider size={1} />
-                <label className={styles.label}>Passport Number</label>
-                <Input size="large" {...passportNo} />
-                <Divider size={1} />
-                <label className={styles.label}>Profession</label>
-                <Input size="large" {...profession} />
-                <span className={styles.hint}>E.g. "Student at Aalto University" / "Employed at BigCorp Inc."</span>
-                <Divider size={1} />
-                <label className={styles.label}>Arrival date</label>
-                <Input size="large" {...arrivalDate} placeholder="DD.MM.YYYY" />
-                <span className={styles.hint}>The date of your arrival to the country</span>
-                <Divider size={1} />
-                <AntButton type="secondary" size="large" block onClick={setGenerated}>
-                    Generate PDF
-                </AntButton>
-                <Divider size={1} />
-                {generated && (
-                    <PDFDownloadLink
-                        document={
-                            <VisaInvitationPDF
-                                date={moment().format('DD.MM.YYYY')}
-                                granteeFirstName={firstName.value}
-                                granteeLastName={lastName.value}
-                                granteeNationality={nationality.value}
-                                granteePassportNo={passportNo.value}
-                                profession={profession.value}
-                                arrivalCity={arrivalCity}
-                                arrivalCountry={arrivalCountry}
-                                arrivalDate={arrivalDate.value}
-                            />
-                        }
-                        fileName="visa_invitation_letter.pdf"
-                    >
-                        <AntButton type="primary" size="large" block>
-                            Download PDF
-                        </AntButton>
-                    </PDFDownloadLink>
-                )}
+                </Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <TextInput
+                            label="First name"
+                            value={firstName.value}
+                            onChange={firstName.onChange}
+                            rawOnChange
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <TextInput label="Last name" value={lastName.value} onChange={lastName.onChange} rawOnChange />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextInput
+                            label="Nationality"
+                            helperText="E.g. 'Finnish', 'American', 'German'"
+                            value={nationality.value}
+                            onChange={nationality.onChange}
+                            rawOnChange
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextInput
+                            label="Passport Number"
+                            value={passportNo.value}
+                            onChange={passportNo.onChange}
+                            rawOnChange
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextInput
+                            label="Profession"
+                            value={profession.value}
+                            helperText='E.g. " Student at Aalto University" / "Employed at BigCorp Inc.'
+                            onChange={profession.onChange}
+                            rawOnChange
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="caption" color="textSecondary">
+                            Date of arrival
+                        </Typography>
+                        <DateInput value={arrivalDate.value} onChange={arrivalDate.setValue} />
+                        <Typography variant="caption" color="textSecondary">
+                            The date you will be arriving to the country
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button fullWidth color="primary" variant="contained" onClick={setGenerated}>
+                            Generate PDF
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {generated && (
+                            <PDFDownloadLink
+                                document={
+                                    <VisaInvitationPDF
+                                        date={moment().format('DD.MM.YYYY')}
+                                        granteeFirstName={firstName.value}
+                                        granteeLastName={lastName.value}
+                                        granteeNationality={nationality.value}
+                                        granteePassportNo={passportNo.value}
+                                        profession={profession.value}
+                                        arrivalCity={arrivalCity}
+                                        arrivalCountry={arrivalCountry}
+                                        arrivalDate={moment(arrivalDate.value).format('DD.MM.YYYY')}
+                                    />
+                                }
+                                fileName="visa_invitation_letter.pdf"
+                            >
+                                <Button fullWidth color="primary" variant="contained">
+                                    Download PDF
+                                </Button>
+                            </PDFDownloadLink>
+                        )}
+                    </Grid>
+                </Grid>
             </Drawer>
-            <Button text="Generate" button={{ onClick: setVisible }}></Button>
+            <Button color="primary" variant="contained" onClick={setVisible}>
+                Generate
+            </Button>
         </React.Fragment>
     );
 };

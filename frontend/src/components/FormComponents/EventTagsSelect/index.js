@@ -1,6 +1,6 @@
 import React from 'react';
-
-import { Select, Tag } from 'antd';
+import Tag from 'components/generic/Tag';
+import { Select } from 'antd';
 
 const EventTagsSelect = ({ value, onChange, tags = [], mode = 'multiple', placeholder = 'Select tags' }) => {
     return (
@@ -14,7 +14,7 @@ const EventTagsSelect = ({ value, onChange, tags = [], mode = 'multiple', placeh
         >
             {tags.map(tag => (
                 <Select.Option key={tag.label} value={tag.label}>
-                    <Tag color={tag.color}>{tag.label}</Tag>
+                    <Tag color={tag.color} label={tag.label} />
                 </Select.Option>
             ))}
         </Select>

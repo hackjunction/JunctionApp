@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Statistic, Icon } from 'antd';
+import Statistic from 'components/generic/Statistic';
+import StarIcon from '@material-ui/icons/Star';
 import { connect } from 'react-redux';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 const ReviewedAverage = ({ value }) => {
-    return <Statistic title="Avg. Rating" value={value} precision={2} suffix={<Icon type="star" theme="filled" />} />;
+    return <Statistic label="Avg. Rating" value={value.toFixed(2)} suffix={<StarIcon />} />;
 };
 
 const mapState = state => ({

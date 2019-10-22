@@ -1,17 +1,76 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import styles from './SidebarLayout.module.scss';
-import { Layout, Icon } from 'antd';
+import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import { findIndex } from 'lodash-es';
-import { motion } from 'framer-motion';
-import classNames from 'classnames';
-import { Switch, Route, Redirect, Link } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import CenteredContainer from 'components/generic/CenteredContainer/index';
+import MenuIcon from '@material-ui/icons/Menu';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, IconButton, Box } from '@material-ui/core';
+import { push } from 'connected-react-router';
 
 const SIDEBAR_WIDTH = 300;
-const COLLAPSED_WIDTH = 0;
 
-const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, location, routes, theme = 'white' }) => {
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex'
+    },
+    drawer: {
+        [theme.breakpoints.up('md')]: {
+            width: SIDEBAR_WIDTH,
+            flexShrink: 0
+        }
+    },
+    drawerToggle: {
+        padding: '10px',
+        position: 'fixed',
+        top: theme.spacing(1),
+        left: theme.spacing(1),
+        background: '#fbfbfb'
+    },
+    content: {
+        flexGrow: 1
+    },
+    drawerPaper: {
+        width: SIDEBAR_WIDTH,
+        maxWidth: '80%',
+        background: 'black'
+    },
+
+    listItem: {
+        color: 'rgba(255,255,255,0.6)'
+    },
+    listItemSelected: {
+        color: 'white'
+    },
+    listItemText: {
+        color: 'inherit'
+    },
+    listItemIcon: {
+        color: 'inherit'
+    }
+}));
+
+const propTypes = {
+    topContent: PropTypes.node,
+    sidebarTopContent: PropTypes.node,
+    baseRoute: PropTypes.string.isRequired,
+    routes: PropTypes.arrayOf(
+        PropTypes.shape({
+            key: PropTypes.string.isRequired,
+            path: PropTypes.string.isRequired,
+            icon: PropTypes.node.isRequired,
+            label: PropTypes.string.isRequired,
+            component: PropTypes.node.isRequired,
+            hidden: PropTypes.bool
+        })
+    ),
+    location: PropTypes.object.isRequired
+};
+
+const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, location, routes, pushRoute }) => {
+    const classes = useStyles();
 
     const activeIndex = useMemo(() => {
         const relativePath = location.pathname.replace(baseRoute, '');
@@ -20,119 +79,104 @@ const SidebarLayout = React.memo(({ renderTop, renderSidebarTop, baseRoute, loca
         return idx !== -1 ? idx : 0;
     }, [baseRoute, location.pathname, routes]);
 
-    const closeSidebar = useCallback(() => {
-        setSidebarCollapsed(true);
-    }, []);
+    const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const openSidebar = useCallback(() => {
-        setSidebarCollapsed(false);
-    }, []);
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
-    const hasTop = typeof renderTop === 'function';
-    const hasSidebarTop = typeof renderSidebarTop === 'function';
-    const topHeight = hasSidebarTop ? 200 : 50;
+    const drawerContent = (
+        <React.Fragment>
+            <Box p={2}>{sidebarTopContent}</Box>
+            <List>
+                {routes.map((route, index) => {
+                    return (
+                        <ListItem
+                            button
+                            key={route.path}
+                            selected={index === activeIndex}
+                            classes={{
+                                root: classes.listItem,
+                                selected: classes.listItemSelected
+                            }}
+                            onClick={() => pushRoute(route.path)}
+                        >
+                            <ListItemIcon className={classes.listItemIcon}>{route.icon}</ListItemIcon>
+                            <ListItemText className={classes.listItemText} primary={route.label} />
+                        </ListItem>
+                    );
+                })}
+            </List>
+        </React.Fragment>
+    );
 
     return (
-        <Layout
-            className={classNames({
-                [styles.layout]: true,
-                [styles.layoutWhite]: theme === 'white',
-                [styles.layoutLight]: theme === 'light'
-            })}
-        >
-            <Layout.Sider
-                theme="light"
-                collapsible
-                collapsed={sidebarCollapsed}
-                onCollapse={setSidebarCollapsed}
-                breakpoint="lg"
-                width={SIDEBAR_WIDTH}
-                collapsedWidth={COLLAPSED_WIDTH}
-                className={styles.sidebar}
-                trigger={null}
-            >
-                <div className={styles.sidebarInner}>
-                    <motion.div
-                        className={styles.sidebarOverlayTop}
-                        animate={{
-                            paddingBottom: topHeight + activeIndex * 50
+        <div className={classes.root}>
+            <nav className={classes.drawer}>
+                <Hidden mdUp implementation="css">
+                    <Drawer
+                        variant="temporary"
+                        anchor="left"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        classes={{
+                            paper: classes.drawerPaper
                         }}
-                        transition="linear"
-                    />
-                    <motion.div
-                        className={styles.sidebarOverlayBottom}
-                        animate={{
-                            top: topHeight + (activeIndex + 1) * 50
+                        ModalProps={{
+                            keepMounted: true // Better open performance on mobile.
                         }}
-                        transition="linear"
-                    />
-                    <div className={styles.sidebarContentTop}>
-                        {hasSidebarTop && renderSidebarTop(sidebarCollapsed)}
-                    </div>
-                    <div className={styles.sidebarContentBottom} style={{ top: topHeight }}>
-                        {routes.map((route, index) => {
-                            const className = classNames({
-                                [styles.sidebarInnerItem]: true,
-                                [styles.sidebarInnerItemActive]: index === activeIndex
-                            });
-                            return (
-                                <Link className={className} key={index} to={`${baseRoute}${route.path}`}>
-                                    <Icon type={route.icon} className={styles.sidebarInnerItemIcon} />
-                                    <span
-                                        className={classNames({
-                                            [styles.sidebarInnerItemTitle]: true,
-                                            [styles.sidebarInnerItemTitleCollapsed]: sidebarCollapsed
-                                        })}
-                                    >
-                                        {route.label}
-                                    </span>
-                                </Link>
-                            );
-                        })}
-                        <div className={styles.sidebarClose} onClick={closeSidebar}>
-                            <span className={styles.sidebarCloseText}>Close menu</span>
-                        </div>
-                    </div>
-                </div>
-            </Layout.Sider>
-            <Layout.Content>
-                <div
-                    className={classNames({
-                        [styles.content]: true,
-                        [styles.contentCollapsed]: sidebarCollapsed
-                    })}
-                >
-                    <div
-                        onClick={openSidebar}
-                        className={classNames({
-                            [styles.sidebarTrigger]: true,
-                            [styles.sidebarTriggerCollapsed]: sidebarCollapsed
-                        })}
                     >
-                        <Icon type="menu" className={styles.sidebarTriggerIcon} />
-                    </div>
-                    {hasTop && renderTop()}
-                    <CenteredContainer className={styles.pageWrapperInner} wrapperClass={styles.pageWrapper}>
-                        <Switch>
-                            {routes.map(({ key, path, hidden, render }, index) => {
-                                if (hidden) {
-                                    return null;
-                                } else {
-                                    return (
-                                        <Route key={index} exact path={`${baseRoute}${path}`}>
-                                            {render()}
-                                        </Route>
-                                    );
-                                }
-                            })}
-                            <Redirect to={baseRoute} />
-                        </Switch>
-                    </CenteredContainer>
-                </div>
-            </Layout.Content>
-            {!sidebarCollapsed && <div className={styles.hideSidebarOverlay} onClick={closeSidebar} />}
-        </Layout>
+                        {drawerContent}
+                    </Drawer>
+                </Hidden>
+                <Hidden mdUp implementation="css">
+                    <IconButton
+                        onClick={handleDrawerToggle}
+                        className={classes.drawerToggle}
+                        aria-label="toggle drawer"
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </Hidden>
+                <Hidden smDown implementation="css">
+                    <Drawer
+                        classes={{
+                            paper: classes.drawerPaper
+                        }}
+                        variant="permanent"
+                        anchor="left"
+                        open
+                    >
+                        {drawerContent}
+                    </Drawer>
+                </Hidden>
+            </nav>
+            <main className={classes.content}>
+                {topContent}
+                <CenteredContainer className={styles.pageWrapperInner} wrapperClass={styles.pageWrapper}>
+                    <Switch>
+                        {routes.map(({ key, path, hidden, component }, index) => {
+                            if (hidden) {
+                                return null;
+                            } else {
+                                return <Route key={key} exact path={`${baseRoute}${path}`} component={component} />;
+                            }
+                        })}
+                        <Redirect to={baseRoute} />
+                    </Switch>
+                </CenteredContainer>
+            </main>
+        </div>
     );
 });
 
-export default SidebarLayout;
+SidebarLayout.propTypes = propTypes;
+
+const mapDispatch = (dispatch, ownProps) => ({
+    pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
+});
+
+export default connect(
+    null,
+    mapDispatch
+)(SidebarLayout);
