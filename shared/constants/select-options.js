@@ -7,6 +7,7 @@ const Skills = require('./skills');
 const Themes = require('./themes');
 const RegistrationStatuses = require('./registration-statuses');
 const Misc = require('./misc');
+const Timezones = require('../data/timezones');
 
 const currentYear = new Date().getFullYear();
 
@@ -55,6 +56,10 @@ const SelectOptions = {
     T_SHIRT_SIZES: Misc.tShirtSizes.map(size => ({
         label: size,
         value: size
+    })),
+    TIMEZONES: Timezones.map(tz => ({
+        label: tz,
+        value: tz
     })),
     STATUSES: RegistrationStatuses.asArray.map(status => ({
         label: status.label,

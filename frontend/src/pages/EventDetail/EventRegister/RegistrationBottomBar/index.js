@@ -7,6 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import ErrorDisplay from './ErrorDisplay';
+import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty';
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors }) => {
+const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors, dirty }) => {
     const classes = useStyles();
     const [enabled, setEnabled] = useState(false);
 
@@ -78,6 +79,7 @@ const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors })
                     <ArrowForwardIcon className={classes.buttonIcon} />
                 </Button>
             </Box>
+            <BlockExitIfDirty dirty={dirty} />
         </Box>
     );
 };

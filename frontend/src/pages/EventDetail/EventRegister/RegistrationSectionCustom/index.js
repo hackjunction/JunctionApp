@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Formik, FastField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Grid, Typography, RadioGroup, Radio, FormControlLabel } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import * as yup from 'yup';
 import { RegistrationFieldsCustom } from '@hackjunction/shared';
 
@@ -92,7 +92,7 @@ const RegistrationSectionCustom = ({
                 onNext(values, section.name);
             }}
         >
-            {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+            {({ handleSubmit, handleChange, handleBlur, values, errors, dirty }) => (
                 <Box display="flex" flexDirection="column">
                     <Box p={2} display="flex" flexDirection="column" alignItems="center">
                         <Box maxWidth="600px">
@@ -131,6 +131,7 @@ const RegistrationSectionCustom = ({
                             nextLabel={nextLabel}
                             onNext={handleSubmit}
                             errors={errors}
+                            dirty={dirty}
                         />,
                         document.body
                     )}

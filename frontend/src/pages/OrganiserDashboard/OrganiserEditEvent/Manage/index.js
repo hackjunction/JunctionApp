@@ -9,7 +9,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import AddOrganiserDrawer from './AddOrganiserDrawer';
 import PageHeader from 'components/generic/PageHeader';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 
 const OrganiserEditEventManage = props => {
     const {

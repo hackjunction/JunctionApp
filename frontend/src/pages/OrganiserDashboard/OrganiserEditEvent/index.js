@@ -10,7 +10,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import Image from 'components/generic/Image';
 import EventNavBar from 'components/navbars/EventNavBar';
 

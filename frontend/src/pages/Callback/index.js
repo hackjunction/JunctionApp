@@ -8,7 +8,7 @@ import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserActions from 'redux/user/actions';
 
 import UserProfilesService from 'services/userProfiles';
-import LoadingOverlay from 'components/LoadingOverlay';
+import LoadingOverlay from 'components/loaders/LoadingOverlay';
 import MiscUtils from 'utils/misc';
 import AnalyticsService from 'services/analytics';
 

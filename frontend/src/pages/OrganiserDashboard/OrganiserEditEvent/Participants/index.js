@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
 import PageHeader from 'components/generic/PageHeader';
 

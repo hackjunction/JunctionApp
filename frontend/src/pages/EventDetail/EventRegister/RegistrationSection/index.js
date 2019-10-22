@@ -91,7 +91,7 @@ const RegistrationSection = props => {
                 onNext(values);
             }}
         >
-            {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+            {({ handleSubmit, handleChange, handleBlur, values, errors, dirty }) => (
                 <Box display="flex" flexDirection="column" ref={mainRef}>
                     <Box p={2} className={classes.wrapper}>
                         <Grid container spacing={0}>
@@ -117,6 +117,7 @@ const RegistrationSection = props => {
                             nextLabel={nextLabel}
                             onNext={handleSubmit}
                             errors={errors}
+                            dirty={dirty}
                         />,
                         document.body
                     )}

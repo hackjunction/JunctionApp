@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import TeamsTable from 'components/tables/TeamsTable';
 
 const TeamsPage = ({ loading, teams }) => {

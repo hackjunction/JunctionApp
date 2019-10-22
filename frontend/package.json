@@ -61,7 +61,7 @@
         "lint": "eslint ./src",
         "depcheck": "depcheck .",
         "sync-env": "sync-dotenv",
-        "precommit": "npm run lint && npm run sync-env"
+        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint && npm run sync-env"
     },
     "eslintConfig": {
         "extends": "react-app"

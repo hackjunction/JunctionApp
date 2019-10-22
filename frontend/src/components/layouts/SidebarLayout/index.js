@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
         background: '#fbfbfb'
     },
     content: {
-        flexGrow: 1
+        flexGrow: 1,
+        position: 'relative'
     },
     drawerPaper: {
         width: SIDEBAR_WIDTH,
