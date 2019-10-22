@@ -16,8 +16,8 @@ controller.getUserRegistrations = user => {
     });
 };
 
-controller.createRegistration = (user, event, data) => {
-    const answers = RegistrationHelpers.validateAnswers(data, event);
+controller.createRegistration = async (user, event, data) => {
+    const answers = await RegistrationHelpers.validateAnswers(data, event);
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
@@ -40,8 +40,8 @@ controller.getRegistration = (userId, eventId) => {
 };
 
 controller.updateRegistration = (user, event, data) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        const answers = RegistrationHelpers.validateAnswers(data, event);
+    return controller.getRegistration(user.sub, event._id.toString()).then(async registration => {
+        const answers = await RegistrationHelpers.validateAnswers(data, event);
         UserProfileController.updateUserProfile(answers, user.sub);
         return Registration.updateAllowed(registration, { answers });
     });
@@ -60,12 +60,12 @@ controller.confirmRegistration = (user, event) => {
 
 controller.cancelRegistration = (user, event) => {
     return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status === STATUSES.confirmed.id) {
+        if (registration.status === STATUSES.confirmed.id || registration.status === STATUSES.accepted.id) {
             registration.status = STATUSES.cancelled.id;
             return registration.save();
         }
 
-        throw new ForbiddenError('Only confirmed registrations can be cancelled');
+        throw new ForbiddenError('Only accepted or confirmed registrations can be cancelled');
     });
 };
 

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
 
 import { Typography, Grid, Box, Button } from '@material-ui/core';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 import TextInput from 'components/inputs/TextInput';
@@ -221,9 +221,7 @@ const BulkEmailModal = ({
                         </Grid>
                         <Grid item xs={12}>
                             <Box display="flex" flexDirection="row" justifyContent="flex-end">
-                                <Button color="textPrimary" onClick={handleTestEmail}>
-                                    Send to yourself
-                                </Button>
+                                <Button onClick={handleTestEmail}>Send to yourself</Button>
                                 <Box p={1} />
                                 <Button variant="contained" color="primary" onClick={setConfirmModalOpen}>
                                     Send to {registrationIds.length} recipients

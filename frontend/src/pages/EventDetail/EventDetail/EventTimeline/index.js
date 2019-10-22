@@ -5,7 +5,7 @@ import { Stepper, Step, StepLabel, StepContent, Typography } from '@material-ui/
 import { sortBy } from 'lodash-es';
 import moment from 'moment';
 import MiscUtils from 'utils/misc';
-import TimelineDot from './TimelineDot';
+import TimelineDot from 'components/generic/TimelineDot';
 
 const useStyles = makeStyles(theme => ({
     root: {

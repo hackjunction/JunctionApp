@@ -7,9 +7,9 @@ import { Input, message, Row, Col, notification } from 'antd';
 
 import Divider from 'components/generic/Divider';
 import Button from 'components/generic/Button';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import GlobalNavBar from 'components/navbars/GlobalNavBar';
-import Footer from 'components/Footer';
+import Footer from 'components/layouts/Footer';
 import EventCard from 'components/events/EventCard';
 
 import * as AuthSelectors from 'redux/auth/selectors';

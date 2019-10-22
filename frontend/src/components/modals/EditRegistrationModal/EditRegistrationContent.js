@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RegistrationFields } from '@hackjunction/shared';
 import { groupBy, find } from 'lodash-es';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Box, Grid } from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography, Grid } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import DescriptionItem from 'components/generic/DescriptionItem';

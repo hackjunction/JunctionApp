@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
+import GroupIcon from '@material-ui/icons/Group';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
 import EventNavBar from 'components/navbars/EventNavBar/index';
@@ -47,36 +50,34 @@ const EventDashboard = ({
 
     return (
         <SidebarLayout
-            theme="light"
             baseRoute={match.url}
             location={location}
-            renderSidebarTop={collapsed => {
-                if (collapsed) return null;
-                return (
-                    <div className={styles.sidebarTop}>
-                        <Image
-                            className={styles.sidebarLogo}
-                            publicId={event.logo ? event.logo.publicId : ''}
-                            transformation={{
-                                width: 200
-                            }}
-                        />
-                    </div>
-                );
-            }}
-            renderTop={() => <EventNavBar />}
+            sidebarTopContent={
+                <div className={styles.sidebarTop}>
+                    <Image
+                        className={styles.sidebarLogo}
+                        publicId={event.logo ? event.logo.publicId : ''}
+                        transformation={{
+                            width: 200
+                        }}
+                    />
+                </div>
+            }
+            topContent={<EventNavBar />}
             routes={[
                 {
+                    key: 'dashboard',
                     path: '',
-                    icon: 'home',
+                    icon: <DashboardIcon />,
                     label: 'Dashboard',
-                    render: () => <EventDashboardHome />
+                    component: EventDashboardHome
                 },
                 {
+                    key: 'team',
                     path: '/team',
-                    icon: 'team',
+                    icon: <GroupIcon />,
                     label: 'Team',
-                    render: () => <EventDashboardTeam />
+                    component: EventDashboardTeam
                 }
             ]}
         />

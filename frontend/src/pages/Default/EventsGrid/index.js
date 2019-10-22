@@ -1,21 +1,20 @@
 import React from 'react';
-import styles from './EventsGrid.module.scss';
 
-import { Row, Col } from 'antd';
 import { connect } from 'react-redux';
+import { Grid, Typography } from '@material-ui/core';
 
 import * as EventsSelectors from 'redux/events/selectors';
 
+import CenteredContainer from 'components/generic/CenteredContainer';
 import EventCard from 'components/events/EventCard';
 import Button from 'components/generic/Button';
-import Divider from 'components/generic/Divider';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 
 const EventsGrid = ({ events, loading }) => {
     function renderEvents() {
         return events.map(event => {
             return (
-                <Col xs={24} md={12} lg={8} key={event.slug}>
+                <Grid item xs={12} md={6} lg={4}>
                     <EventCard
                         event={event}
                         buttons={[
@@ -29,8 +28,7 @@ const EventsGrid = ({ events, loading }) => {
                             />
                         ]}
                     />
-                    <Divider size={1} />
-                </Col>
+                </Grid>
             );
         });
     }
@@ -39,15 +37,14 @@ const EventsGrid = ({ events, loading }) => {
         <PageWrapper
             loading={loading}
             render={() => (
-                <div className={styles.wrapper}>
-                    <Row>
-                        <Col xs={24}>
-                            <h3>Upcoming events</h3>
-                            <Divider size={1} />
-                        </Col>
-                    </Row>
-                    <Row gutter={16}>{renderEvents()}</Row>
-                </div>
+                <CenteredContainer>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography variant="h6">Upcoming events</Typography>
+                        </Grid>
+                        {renderEvents()}
+                    </Grid>
+                </CenteredContainer>
             )}
         />
     );
