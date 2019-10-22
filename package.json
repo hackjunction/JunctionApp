@@ -28,6 +28,7 @@
     },
     "pre-commit": [
         "pre-commit:frontend",
+        "pre-commit:backend",
         "pre-commit:shared"
     ],
     "author": "Juuso Lappalainen",
