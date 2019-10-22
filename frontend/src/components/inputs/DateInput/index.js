@@ -4,14 +4,14 @@ import { Grid } from '@material-ui/core';
 import moment from 'moment';
 import Select from 'components/inputs/Select';
 
-const DateInput = ({ value, onChange }) => {
-    const momentValue = moment(value);
+const DateInput = ({ value, onChange, onBlur }) => {
+    const momentValue = value ? moment(value) : null;
 
     const handleDateChange = useCallback(
         date => {
             const newValue = moment(value);
             newValue.date(date);
-            onChange(newValue);
+            onChange(newValue.startOf('day').format());
         },
         [value, onChange]
     );
@@ -20,7 +20,7 @@ const DateInput = ({ value, onChange }) => {
         month => {
             const newValue = moment(value);
             newValue.month(month - 1);
-            onChange(newValue);
+            onChange(newValue.startOf('day').format());
         },
         [value, onChange]
     );
@@ -29,7 +29,7 @@ const DateInput = ({ value, onChange }) => {
         year => {
             const newValue = moment(value);
             newValue.year(year);
-            onChange(newValue);
+            onChange(newValue.startOf('day').format());
         },
         [value, onChange]
     );
@@ -37,13 +37,29 @@ const DateInput = ({ value, onChange }) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={4}>
-                <Select label="Day" type="day" value={momentValue.date()} onChange={handleDateChange} />
+                <Select
+                    label="Day"
+                    options="day"
+                    value={momentValue ? momentValue.date() : null}
+                    onChange={handleDateChange}
+                />
             </Grid>
             <Grid item xs={4}>
-                <Select label="Month" type="month" value={momentValue.month() + 1} onChange={handleMonthChange} />
+                <Select
+                    label="Month"
+                    options="month"
+                    value={momentValue ? momentValue.month() + 1 : null}
+                    onChange={handleMonthChange}
+                />
             </Grid>
             <Grid item xs={4}>
-                <Select label="Year" type="year" value={momentValue.year()} onChange={handleYearChange} />
+                <Select
+                    label="Year"
+                    options="year"
+                    value={momentValue ? momentValue.year() : null}
+                    onChange={handleYearChange}
+                    onBlur={onBlur}
+                />
             </Grid>
         </Grid>
     );

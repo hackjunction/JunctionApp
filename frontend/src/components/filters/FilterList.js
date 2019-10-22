@@ -9,9 +9,7 @@ import {
     ExpansionPanel,
     ExpansionPanelSummary,
     ExpansionPanelDetails,
-    ExpansionPanelActions,
     Typography,
-    Button,
     Badge
 } from '@material-ui/core';
 import FilterListItem from 'components/filters/FilterListItem';

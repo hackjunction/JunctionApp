@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Box, Grid, Button, CircularProgress, Typography, Divider } from '@material-ui/core';
+import { Box, Grid, Button, Typography } from '@material-ui/core';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 

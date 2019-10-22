@@ -108,10 +108,14 @@ const FilterGroupMenu = ({
                 </ListItem>
             </List>
             <Menu id="lock-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                {options.map((option, index) => (
-                    <React.Fragment key={option.label}>
-                        {index !== 0 && <Divider />}
+                {options.map((option, index) => {
+                    let items = [];
+                    if (index !== 0) {
+                        items.push(<Divider key={option.label + 'divider'} />);
+                    }
+                    items.push(
                         <MenuItem
+                            key={option.label}
                             selected={option.label === activeItem.label}
                             onClick={() => handleMenuItemClick(option)}
                         >
@@ -120,8 +124,9 @@ const FilterGroupMenu = ({
                                 secondary={option.isAdd || option.isDefault ? option.description : ''}
                             />
                         </MenuItem>
-                    </React.Fragment>
-                ))}
+                    );
+                    return items;
+                })}
             </Menu>
             {showEdit && !activeItem.isDefault && (
                 <Box p={2}>

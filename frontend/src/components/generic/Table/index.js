@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     Table,
     TableBody,
@@ -181,7 +181,7 @@ export default ({
                         <TableFooter>
                             <TableRow>
                                 <TableCell colSpan={columnCount} align="right">
-                                     {footer}
+                                    {footer}
                                 </TableCell>
                             </TableRow>
                         </TableFooter>

@@ -6,7 +6,7 @@ import { FilterHelpers } from '@hackjunction/shared';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import FilterGroupMenu from 'components/filters/FilterGroupMenu';
 import PageHeader from 'components/generic/PageHeader';
 import Statistic from 'components/generic/Statistic';
@@ -15,7 +15,8 @@ import RegistrationsByCountry from 'components/plots/RegistrationsByCountry';
 import RegistrationsByNationality from 'components/plots/RegistrationsByNationality';
 import RegistrationsByGender from 'components/plots/RegistrationsByGender';
 
-const OrganiserEditEventStats = ({ registrations, slug, loading }) => {
+const OrganiserEditEventStats = props => {
+    const { registrations, loading } = props;
     const [filters, setFilters] = useState([]);
 
     const filtered = useMemo(() => {

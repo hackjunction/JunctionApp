@@ -4,9 +4,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { connect } from 'react-redux';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import GlobalNavBar from 'components/navbars/GlobalNavBar';
-import Footer from 'components/Footer';
+import Footer from 'components/layouts/Footer';
 import * as EventDetailActions from 'redux/eventdetail/actions';
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import * as AuthSelectors from '../../redux/auth/selectors';

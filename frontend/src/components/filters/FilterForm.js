@@ -14,7 +14,7 @@ import {
     Typography
 } from '@material-ui/core';
 
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/SelectOld';
 import FilterValueInput from './FilterValueInput';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 

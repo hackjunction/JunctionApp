@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 
 class AdminPage extends PureComponent {

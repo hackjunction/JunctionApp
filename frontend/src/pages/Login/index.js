@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as AuthActions from 'redux/auth/actions';
 
-import LoadingOverlay from 'components/LoadingOverlay';
+import LoadingOverlay from 'components/loaders/LoadingOverlay';
 import MiscUtils from 'utils/misc';
 
 class LoginPage extends Component {
