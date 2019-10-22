@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 export const useStateWithReset = initialValue => {
     const [value, setValue] = useState(initialValue);
@@ -14,4 +14,10 @@ export const useToggle = initialValue => {
     }, [value]);
 
     return [value, toggleValue];
+};
+
+export const useInitialFocus = ref => {
+    useEffect(() => {
+        ref.current.focus();
+    }, [ref]);
 };

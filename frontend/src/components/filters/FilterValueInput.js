@@ -2,7 +2,7 @@ import React from 'react';
 import { FilterTypes, FilterValues } from '@hackjunction/shared';
 
 import TextInput from 'components/inputs/TextInput';
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/SelectOld';
 
 const MULTI_TYPES = [
     FilterTypes.filterTypes.ONE_OF.id,
@@ -37,7 +37,14 @@ const FilterValueInput = ({ filterType, valueType, value, onChange, event }) => 
             switch (valueType) {
                 case FilterValues.STRING:
                     if (isMulti) {
-                        return <TextInput label="Enter values (comma-separated)" formatValue={value => Array.isArray(value) ? value.join(',') : ''} formatOnChange={value => value.split(',')} {...inputParams} />;
+                        return (
+                            <TextInput
+                                label="Enter values (comma-separated)"
+                                formatValue={value => (Array.isArray(value) ? value.join(',') : '')}
+                                formatOnChange={value => value.split(',')}
+                                {...inputParams}
+                            />
+                        );
                     } else {
                         return <TextInput label="Enter value" {...inputParams} />;
                     }

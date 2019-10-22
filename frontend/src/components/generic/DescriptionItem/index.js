@@ -1,14 +1,11 @@
 import React from 'react';
-import styles from './DescriptionItem.module.scss';
 
 import { isEmpty } from 'lodash-es';
-import { Tag } from 'antd';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Box, Grid, List, ListItem, ListItemText } from '@material-ui/core';
+import { Typography, Grid, List, ListItem, ListItemText } from '@material-ui/core';
 import { Skills, Roles, Misc } from '@hackjunction/shared';
+import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants';
 import moment from 'moment';
-
-import Divider from 'components/generic/Divider';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -20,12 +17,12 @@ const DescriptionItem = ({ title, content, fieldName }) => {
     const classes = useStyles();
     const renderBoolean = bool => {
         if (bool === true) {
-            return <Tag color="green">Yes</Tag>;
+            return <Yes />;
         }
         if (bool === false) {
-            return <Tag color="red">No</Tag>;
+            return <No />;
         }
-        return <Tag color="orange">N/A</Tag>;
+        return <NotAvailable />;
     };
 
     const renderObjectFields = (obj, labelMap = {}, valueMap = {}) => {
@@ -147,7 +144,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
             case 'phoneNumber':
                 return `${content.country_code} ${content.number}`;
             default:
-                if (!content) return <Tag color="orange">N/A</Tag>;
+                if (!content) return <NotAvailable />;
                 const contentType = typeof content;
 
                 switch (contentType) {

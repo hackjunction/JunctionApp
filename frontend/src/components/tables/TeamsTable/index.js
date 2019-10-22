@@ -10,7 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import MaterialTable from 'components/generic/MaterialTable';
 import AttendeeTable from 'components/tables/AttendeeTable';
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/SelectOld';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
 import BulkEmailModal from 'components/modals/BulkEmailModal';
 

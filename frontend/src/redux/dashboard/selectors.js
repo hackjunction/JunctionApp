@@ -15,7 +15,7 @@ export const eventStatus = createSelector(
 
 export const isRegistrationOpen = createSelector(
     eventStatus,
-    status => status.id === EventStatuses.REGISTRATION_OPEN.id
+    status => status === EventStatuses.REGISTRATION_OPEN.id
 );
 
 export const registration = state => state.dashboard.registration.data;

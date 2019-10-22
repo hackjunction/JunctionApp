@@ -6,6 +6,7 @@ const Roles = require('./roles');
 const Skills = require('./skills');
 const Themes = require('./themes');
 const RegistrationStatuses = require('./registration-statuses');
+const Misc = require('./misc');
 
 const currentYear = new Date().getFullYear();
 
@@ -21,6 +22,11 @@ const SelectOptions = {
     NATIONALITIES: Countries.asArrayOfNationalities.map(nationality => ({
         label: nationality,
         value: nationality
+    })),
+    NUM_HACKATHONS: Misc.numHackathonOptions.asArray,
+    DIETARY_RESTRICTIONS: Misc.dietaryRestrictions.map(item => ({
+        label: item,
+        value: item
     })),
     GENDERS: Genders.map(gender => ({
         label: gender,
@@ -45,6 +51,10 @@ const SelectOptions = {
     THEMES: Themes.themes.map(theme => ({
         label: theme,
         value: theme
+    })),
+    T_SHIRT_SIZES: Misc.tShirtSizes.map(size => ({
+        label: size,
+        value: size
     })),
     STATUSES: RegistrationStatuses.asArray.map(status => ({
         label: status.label,
@@ -74,6 +84,10 @@ const SelectOptions = {
     YEARS: Array.apply(null, Array(120)).map((val, index) => ({
         value: currentYear - index,
         label: currentYear - index
+    })),
+    YEARS_FUTURE: Array.apply(null, Array(120)).map((val, index) => ({
+        value: currentYear + 15 - index,
+        label: currentYear + 15 - index
     }))
 };
 
