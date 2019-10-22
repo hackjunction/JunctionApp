@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Button, Avatar, List, Paper, Typography } from '@material-ui/core';
+import { Grid, Button, Avatar, Paper, Typography } from '@material-ui/core';
 
 import { sortBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
@@ -62,7 +62,9 @@ const ResultCard = ({ data, onClick }) => {
                                     {data.profile.countryOfResidence}
                                 </Typography>
                                 <Typography gutterBottom variant="body1">Skills:<br />{skills}</Typography>
-                                <Typography gutterBottom variant="body1">Previous roles:<br />{roles}{(data.roles.length > 3 ? ` and ${data.roles.length - 3} more` : null)}</Typography>
+                                <Typography gutterBottom variant="body1">
+                                    Previous roles:<br />{roles}{(data.roles.length > 3 ? ` and ${data.roles.length - 3} more` : null)}
+                                </Typography>
                                 {/* <Grid item>
                                     <Button
                                         className={classes.button}
