@@ -4,15 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, RadioGroup, Radio, FormControlLabel } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-    radioGroup: {
+    radioGroup: ({ alignCenter }) => ({
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'wrap'
-    }
+        flexWrap: 'wrap',
+        justifyContent: alignCenter ? 'center' : 'flex-start'
+    })
 }));
 
-const BooleanInput = ({ value, onChange }) => {
-    const classes = useStyles();
+const BooleanInput = ({ value, onChange, alignCenter = false }) => {
+    const classes = useStyles({ alignCenter });
 
     const handleChange = useCallback(
         e => {
@@ -22,12 +23,7 @@ const BooleanInput = ({ value, onChange }) => {
     );
     return (
         <Box>
-            <RadioGroup
-                className={classes.radioGroup}
-                aria-label="Years of experience"
-                value={value}
-                onChange={handleChange}
-            >
+            <RadioGroup className={classes.radioGroup} aria-label="yes-no" value={value} onChange={handleChange}>
                 <FormControlLabel
                     key={'yes'}
                     value={true}
