@@ -5,13 +5,14 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha",
-        "precommit": "npm run test"
+        "precommit": "echo \"Shared: running pre-commit checks\" && npm run test"
     },
     "author": "Juuso Lappalainen",
     "license": "ISC",
     "dependencies": {
         "lodash": "^4.17.15",
-        "object-path": "^0.11.4"
+        "object-path": "^0.11.4",
+        "yup": "^0.27.0"
     },
     "devDependencies": {
         "mocha": "^6.2.0"

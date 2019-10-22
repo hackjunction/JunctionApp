@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
 
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 

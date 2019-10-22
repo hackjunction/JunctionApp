@@ -3,14 +3,14 @@ import React, { useMemo, useState, useCallback, forwardRef } from 'react';
 import { connect } from 'react-redux';
 import { sumBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, FormControlLabel, Switch, FormGroup, Box, Slider, Paper } from '@material-ui/core';
+import { Typography, Grid, Box, Slider, Paper } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import MaterialTable from 'components/generic/MaterialTable';
 import AttendeeTable from 'components/tables/AttendeeTable';
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/SelectOld';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
 import BulkEmailModal from 'components/modals/BulkEmailModal';
 

@@ -1,13 +1,25 @@
 import React from 'react';
-import './style.scss';
 
-import { Select, PageHeader, Row, Col } from 'antd';
-import DateTimePicker from 'components/FormComponents/DateTimePicker';
-import Divider from 'components/generic/Divider';
-import FormikField from 'components/FormComponents/FormikField';
-import timezones from 'constants/timezones.json';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
+import { FastField } from 'formik';
+import Select from 'components/inputs/Select';
+import FormControl from 'components/inputs/FormControl';
+import DateTimePicker from 'components/inputs/DateTimePicker';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        '& .MuiBox-root': {
+            background: theme.palette.background.paper,
+            padding: theme.spacing(2),
+            boxShadow: theme.shadows[1],
+            borderRadius: '2px'
+        }
+    }
+}));
 
 const OrganiserEditEventTimes = props => {
+    const classes = useStyles();
     function renderDateField(field, timezone) {
         return (
             <DateTimePicker
@@ -22,87 +34,114 @@ const OrganiserEditEventTimes = props => {
     }
 
     return (
-        <div>
-            <PageHeader title="Event schedule" subTitle="Choose the important times for your event" />
-            <Row>
-                <Col xs={24}>
-                    <FormikField
-                        name="timezone"
-                        label="Timezone"
-                        hint="Which timezone is your event happening in?"
-                        hintAbove
-                        alwaysShowHint
-                        render={({ field }) => {
-                            return (
-                                <Select
-                                    placeholder="Search for timezones"
-                                    showSearch={true}
-                                    value={field.value}
-                                    size="large"
-                                    onChange={val => props.setFieldValue('timezone', val)}
-                                    style={{ width: '100%' }}
-                                >
-                                    {timezones.map(tz => (
-                                        <Select.Option key={tz}>{tz}</Select.Option>
-                                    ))}
-                                </Select>
-                            );
-                        }}
-                    />
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={24}>
-                    <FormikField
-                        name="registrationStartTime"
-                        label="Registration opens"
-                        hideLabel
-                        render={({ field }) => renderDateField(field, props.values.timezone)}
-                    />
-                </Col>
-                <Col xs={24}>
-                    <FormikField
-                        name="registrationEndTime"
-                        label="Registration closes"
-                        hideLabel
-                        render={({ field }) => renderDateField(field, props.values.timezone)}
-                    />
-                </Col>
-                <Col xs={24}>
-                    <FormikField
-                        name="startTime"
-                        label="Event begins"
-                        hideLabel
-                        render={({ field }) => renderDateField(field, props.values.timezone)}
-                    />
-                </Col>
-                <Col xs={24}>
-                    <FormikField
-                        name="submissionsStartTime"
-                        label="Submissions open"
-                        hideLabel
-                        render={({ field }) => renderDateField(field, props.values.timezone)}
-                    />
-                </Col>
-                <Col xs={24}>
-                    <FormikField
-                        name="submissionsEndTime"
-                        label="Submissions close"
-                        hideLabel
-                        render={({ field }) => renderDateField(field, props.values.timezone)}
-                    />
-                </Col>
-                <Col xs={24}>
-                    <FormikField
-                        name="endTime"
-                        label="Event ends"
-                        hideLabel
-                        render={({ field }) => renderDateField(field, props.values.timezone)}
-                    />
-                </Col>
-            </Row>
-            <Divider />
-        </div>
+        <Grid container spacing={3} classes={{ root: classes.root }}>
+            <Grid item xs={12}>
+                <FastField
+                    name="timezone"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Timezone"
+                            hint="Which timezone is your event happening in?"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <Select
+                                placeholder="Choose a timezone"
+                                value={field.value}
+                                options="timezone"
+                                onChange={timezone => form.setFieldValue(field.name, timezone)}
+                                onBlur={() => form.setFieldTouched}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="registrationStartTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Registration opens"
+                            hint=""
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            {renderDateField(field, props.values.timezone)}
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="registrationEndTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Registration closes"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            {renderDateField(field, props.values.timezone)}
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="startTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Event begins"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            {renderDateField(field, props.values.timezone)}
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="submissionsStartTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Submissions open"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            {renderDateField(field, props.values.timezone)}
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="submissionsEndTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Submissions close"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            {renderDateField(field, props.values.timezone)}
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="endTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Event ends"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            {renderDateField(field, props.values.timezone)}
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+        </Grid>
     );
 };
 

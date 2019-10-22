@@ -9,18 +9,18 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import AddOrganiserDrawer from './AddOrganiserDrawer';
 import PageHeader from 'components/generic/PageHeader';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 
-const OrganiserEditEventManage = ({
-    addOrganiser,
-    removeOrganiser,
-    updateOrganiserProfiles,
-    organiserProfiles,
-    organiserProfilesLoading,
-    push,
-    event,
-    eventLoading
-}) => {
+const OrganiserEditEventManage = props => {
+    const {
+        addOrganiser,
+        removeOrganiser,
+        updateOrganiserProfiles,
+        organiserProfiles,
+        organiserProfilesLoading,
+        event,
+        eventLoading
+    } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
     const { slug } = event;
 
