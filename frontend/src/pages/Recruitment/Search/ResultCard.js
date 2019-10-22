@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         height: 200
     },
     button: {
-        align: 'center'
+        margin: 10
     }
 }));
 
@@ -32,18 +32,19 @@ const ResultCard = ({ data, onClick }) => {
             .map(item => {
                 return item.skill + ' (' + item.level + ')';
             })
-            .slice(0, 3).join(', ') + ` and ${data.skills.length - 3} more`;
+            .slice(0, 3).join(', ') + (data.skills.length > 3 ? ` and ${data.skills.length - 3} more` : null);//if data.skills length > 3 then add string
 
-    const roles = data.roles
-        .map(item => {
-            return item.role + ' years: ' + item.years;
-        })
-        .slice(0, 3).join(', ') + ` and ${data.roles.length - 3} more`; //if data.roles.legth <= 3 then add string
+    const roles =
+        sortBy(data.roles, role => -1 * role.level)
+            .map(item => {
+                return item.role + ' years: ' + item.years;
+            })
+            .slice(0, 3).join(', ') + (data.roles.length > 3 ? ` and ${data.roles.length - 3} more` : null);//if data.roles length > 3 then add string
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} justify="center" alignItems="center">
                     <Grid item>
                         <Avatar
                             alt="profile pic"
@@ -60,12 +61,9 @@ const ResultCard = ({ data, onClick }) => {
                                 <Typography variant="h6" gutterBottom>
                                     {data.profile.countryOfResidence}
                                 </Typography>
-                                <br />
-                                <Typography variant="body1">Skills: <br />{skills}</Typography>
-                                <br />
-                                <Typography variant="body1">Previous roles: <br />{roles}</Typography>
-                                <br />
-                                <Grid item>
+                                <Typography gutterBottom variant="body1">Skills:<br />{skills}</Typography>
+                                <Typography gutterBottom variant="body1">Previous roles:<br />{roles}{(data.roles.length > 3 ? ` and ${data.roles.length - 3} more` : null)}</Typography>
+                                {/* <Grid item>
                                     <Button
                                         className={classes.button}
                                         variant="contained"
@@ -74,9 +72,19 @@ const ResultCard = ({ data, onClick }) => {
                                     >
                                         Details
                                     </Button>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
+                    </Grid>
+                    <Grid item justify="center" alignItems="center" direction="column">
+                        <Button
+                            className={classes.button}
+                            variant="contained"
+                            color="primary"
+                            onClick={onClick}
+                        >
+                            Details
+                            </Button>
                     </Grid>
                 </Grid>
             </Paper>
