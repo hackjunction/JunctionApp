@@ -44,6 +44,8 @@ const getPrevEvents = events => {
     );
 };
 
+const handleSendClick = () => {};
+
 const RecruitmentProfileInfo = React.memo(({ participant }) => {
   const {
     education,
@@ -81,7 +83,11 @@ const RecruitmentProfileInfo = React.memo(({ participant }) => {
           autosize={{ minRows: 10, maxRows: 20 }}
           placeholder="Max 1000 characters"
         />
-        <Button block text="Send" button={{}} />
+        <Button
+          block
+          text="Send"
+          button={{ onClick: () => this.handleSendCLick }}
+        />
       </Grid>
     </Grid>
   );
@@ -89,4 +95,9 @@ const RecruitmentProfileInfo = React.memo(({ participant }) => {
 
 const mapState = state => ({});
 
-export default connect(mapState)(RecruitmentProfileInfo);
+const mapDispatch = dispatch => ({});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(RecruitmentProfileInfo);
