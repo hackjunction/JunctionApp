@@ -3,7 +3,6 @@ import { push } from 'connected-react-router';
 
 import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from '../auth/selectors';
-import * as DashboardSelectors from './selectors';
 import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';

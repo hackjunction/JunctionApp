@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Text, Image, Document, StyleSheet, Font, View } from '@react-pdf/renderer';
+import { Page, Text, Image, Document, StyleSheet, Font } from '@react-pdf/renderer';
 
 Font.register({
     family: 'Montserrat',

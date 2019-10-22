@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import styles from './AccountDashboard.module.scss';
 
 import { connect } from 'react-redux';
-import { Row, Col } from 'antd';
+import { Grid, Typography } from '@material-ui/core';
 
 import * as AccountSelectors from 'redux/account/selectors';
 import * as AccountActions from 'redux/account/actions';
@@ -15,16 +14,18 @@ const AccountDashboard = ({ registrations, updateRegistrations }) => {
     }, [updateRegistrations]);
 
     return (
-        <div className={styles.wrapper}>
-            <h3 className={styles.sectionTitle}>Your registrations</h3>
-            <Row gutter={32}>
-                {registrations.map(registration => (
-                    <Col xs={24} lg={12} xxl={8} key={registration._id}>
-                        <EventCardSmall eventId={registration.event} />
-                    </Col>
-                ))}
-            </Row>
-        </div>
+        <Grid container spacing={3}>
+            <Grid xs={12}>
+                <Typography variant="h6" paragraph>
+                    Your registrations
+                </Typography>
+            </Grid>
+            {registrations.map(registration => (
+                <Grid item xs={12} lg={4}>
+                    <EventCardSmall eventId={registration.event} />
+                </Grid>
+            ))}
+        </Grid>
     );
 };
 

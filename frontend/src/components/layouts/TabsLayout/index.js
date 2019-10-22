@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { findIndex } from 'lodash-es';
 import { Link } from 'react-router-dom';
-import Footer from 'components/Footer';
+import Footer from 'components/layouts/Footer';
 
 const TabsLayout = ({ renderHeader, baseRoute, location, routes }) => {
     const hasHeader = typeof renderHeader === 'function';

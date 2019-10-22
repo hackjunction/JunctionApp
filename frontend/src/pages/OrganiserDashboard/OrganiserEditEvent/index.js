@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import styles from './OrganiserEditEvent.module.scss';
+import React, { useEffect, useCallback } from 'react';
 
 import { connect } from 'react-redux';
+import { Typography, Box } from '@material-ui/core';
+import TuneIcon from '@material-ui/icons/Tune';
+import SettingsIcon from '@material-ui/icons/Settings';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+import PeopleIcon from '@material-ui/icons/People';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
-import PageWrapper from 'components/PageWrapper';
+import PageWrapper from 'components/layouts/PageWrapper';
 import Image from 'components/generic/Image';
 import EventNavBar from 'components/navbars/EventNavBar';
 
@@ -59,49 +63,50 @@ const OrganiserEditEvent = ({
     return (
         <PageWrapper loading={loading} error={error}>
             <SidebarLayout
-                renderSidebarTop={collapsed => {
-                    if (collapsed) return null;
-                    return (
-                        <div className={styles.sidebarTop}>
-                            <Image
-                                className={styles.sidebarLogo}
-                                publicId={event.logo ? event.logo.publicId : ''}
-                                transformation={{
-                                    width: 200
-                                }}
-                            />
-                        </div>
-                    );
-                }}
-                renderTop={() => {
-                    return <EventNavBar />;
-                }}
+                sidebarTopContent={
+                    <Box p={2} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                        <Image
+                            publicId={event.logo ? event.logo.publicId : ''}
+                            transformation={{
+                                width: 200
+                            }}
+                        />
+                        <Typography variant="button" style={{ color: 'white' }}>
+                            Admin
+                        </Typography>
+                    </Box>
+                }
+                topContent={<EventNavBar />}
                 baseRoute={match.url}
                 location={location}
                 routes={[
                     {
+                        key: 'edit',
                         path: '',
-                        icon: 'home',
+                        icon: <TuneIcon />,
                         label: 'Edit',
-                        render: routeProps => <DetailsPage {...routeProps} slug={slug} />
+                        component: DetailsPage
                     },
                     {
+                        key: 'stats',
                         path: '/stats',
-                        icon: 'line-chart',
+                        icon: <EqualizerIcon />,
                         label: 'Stats',
-                        render: routeProps => <StatsPage {...routeProps} slug={slug} />
+                        component: StatsPage
                     },
                     {
+                        key: 'participants',
                         path: '/participants',
-                        icon: 'star',
+                        icon: <PeopleIcon />,
                         label: 'Participants',
-                        render: routeProps => <ParticipantsPage {...routeProps} slug={slug} updateData={updateData} />
+                        component: ParticipantsPage
                     },
                     {
+                        key: 'manage',
                         path: '/manage',
-                        icon: 'setting',
+                        icon: <SettingsIcon />,
                         label: 'Manage',
-                        render: routeProps => <ManagePage {...routeProps} slug={slug} />
+                        component: ManagePage
                     }
                 ]}
             />
