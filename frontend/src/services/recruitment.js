@@ -10,14 +10,14 @@ function config(idToken) {
     };
 }
 
-RecruitmentService.search = (idToken, filters) => {
+RecruitmentService.search = (idToken, filters, page, page_size) => {
     return _axios.post(
         '/recruitment/search',
         {
             filters,
             pagination: {
-                page_size: 25,
-                page: 0
+                page_size,
+                page
             }
         },
         config(idToken)

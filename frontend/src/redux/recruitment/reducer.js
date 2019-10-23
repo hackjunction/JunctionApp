@@ -11,7 +11,11 @@ const initialState = {
         error: false,
         updated: 0
     },
-    filters: []
+    filters: [],
+    pagination: {
+        page: 0,
+        page_size: 25
+    }
 };
 
 const searchResultsHandler = buildHandler('searchResults');
@@ -25,6 +29,42 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 filters: action.payload
+            };
+        }
+        case ActionTypes.SET_PAGE_SIZE: {
+            return {
+                ...state,
+                pagination: {
+                    ...state.pagination,
+                    page_size: action.payload
+                }
+            };
+        }
+        case ActionTypes.SET_PAGE: {
+            return {
+                ...state,
+                pagination: {
+                    ...state.pagination,
+                    page: action.payload
+                }
+            };
+        }
+        case ActionTypes.SET_PREV_PAGE: {
+            return {
+                ...state,
+                pagination: {
+                    ...state.pagination,
+                    page: state.pagination.page - 1
+                }
+            };
+        }
+        case ActionTypes.SET_NEXT_PAGE: {
+            return {
+                ...state,
+                pagination: {
+                    ...state.pagination,
+                    page: state.pagination.page + 1
+                }
             };
         }
         default:

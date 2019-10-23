@@ -65,14 +65,34 @@ export const setFilters = data => dispatch => {
     });
 };
 
+export const setPageSize = size => ({
+    type: ActionTypes.SET_PAGE_SIZE,
+    payload: size
+});
+
+export const setPage = page => ({
+    type: ActionTypes.SET_PAGE,
+    payload: page
+});
+
+export const setPrevPage = () => ({
+    type: ActionTypes.SET_PREV_PAGE
+});
+
+export const setNextPage = () => ({
+    type: ActionTypes.SET_NEXT_PAGE
+});
+
 export const updateSearchResults = () => (dispatch, getState) => {
     const state = getState();
     const idToken = AuthSelectors.getIdToken(state);
     const filters = RecruitmentSelectors.filters(state);
+    const page = RecruitmentSelectors.page(state);
+    const pageSize = RecruitmentSelectors.pageSize(state);
 
     dispatch({
         type: ActionTypes.UPDATE_SEARCH_RESULTS,
-        promise: RecruitmentService.search(idToken, filters),
+        promise: RecruitmentService.search(idToken, filters, page, pageSize),
         meta: {
             onFailure: e => console.log('Error getting search results', e)
         }
