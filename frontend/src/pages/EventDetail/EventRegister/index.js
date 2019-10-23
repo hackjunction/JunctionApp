@@ -137,9 +137,9 @@ const EventRegister = ({
         document.querySelector('html').style.backgroundColor = '#000000';
 
         return () => {
-            delete document.querySelector('html').style.backgroundColor;
+            document.querySelector('html').style.backgroundColor = '#ffffff';
         };
-    });
+    }, []);
 
     const sections = useMemo(() => {
         const fieldCategories = {};
