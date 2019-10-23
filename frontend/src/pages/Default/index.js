@@ -1,17 +1,14 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styles from './DefaultPage.module.scss';
 
 import { connect } from 'react-redux';
-import * as AuthSelectors from 'redux/auth/selectors';
-import * as AuthActions from 'redux/auth/actions';
 import * as EventActions from 'redux/events/actions';
-import * as EventSelectors from 'redux/events/selectors';
 
 import Divider from 'components/generic/Divider';
 import LineDivider from 'components/generic/LineDivider/';
 import ExternalLink from 'components/generic/ExternalLink';
-import Footer from 'components/Footer';
-import PageWrapper from 'components/PageWrapper';
+import Footer from 'components/layouts/Footer';
+import PageWrapper from 'components/layouts/PageWrapper';
 
 import EventHighlight from './EventHighlight';
 import EventsGrid from './EventsGrid';

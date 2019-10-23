@@ -44,7 +44,13 @@ const _MaterialTable = props => {
         <MaterialTable
             {...props}
             icons={tableIcons}
-            title={<Typography variant="subtitle1">{props.title}</Typography>}
+            title={
+                <div>
+                    <Typography variant="subtitle1">{`${props.title} ${
+                        props.showCount ? '(' + props.data.length + ')' : ''
+                    }`}</Typography>
+                </div>
+            }
         />
     );
 };

@@ -5,7 +5,7 @@ import { push } from 'connected-react-router';
 import { difference } from 'lodash-es';
 import moment from 'moment';
 
-import { isAuthenticated, isSessionExpired, getPermissions, getSession } from 'redux/auth/selectors';
+import { isAuthenticated, isSessionExpired, getPermissions } from 'redux/auth/selectors';
 import * as AuthActions from 'redux/auth/actions';
 import * as UserSelectors from 'redux/user/selectors';
 

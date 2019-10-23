@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Statistic } from 'antd';
+import Statistic from 'components/generic/Statistic';
 import { connect } from 'react-redux';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 const TeamsCount = ({ value }) => {
-    return <Statistic title="Teams" value={value} />;
+    return <Statistic label="Teams" value={value} />;
 };
 
 const mapState = state => ({

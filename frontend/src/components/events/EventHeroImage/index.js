@@ -1,44 +1,108 @@
 import React from 'react';
-import styles from './EventHeroImage.module.scss';
 
-import { Icon } from 'antd';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
+import { Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { Button, Typography } from '@material-ui/core';
 import Image from 'components/generic/Image';
 import FadeInWrapper from 'components/animated/FadeInWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import MiscUtils from 'utils/misc';
 
-const EventHeroImage = ({ event }) => {
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        height: '200px',
+        width: '100%',
+        position: 'relative',
+        background: 'black',
+        [theme.breakpoints.up('sm')]: {
+            height: '300px'
+        }
+    },
+    backButtonWrapper: {
+        position: 'absolute',
+        zIndex: 10,
+        width: '100%',
+        paddingTop: theme.spacing(1)
+    },
+    logoWrapper: {
+        position: 'absolute',
+        zIndex: 2,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(0,0,0,0.6)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
+    title: {
+        color: 'white'
+    },
+    overline: {
+        color: 'white',
+        fontSize: '1.25rem'
+    },
+    image: {
+        position: 'absolute',
+        zIndex: 1,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover'
+    }
+}));
+
+const EventHeroImage = ({ event, goBack }) => {
+    const classes = useStyles();
     return (
-        <div className={styles.wrapper}>
+        <Box className={classes.wrapper}>
             <Image
-                className={styles.coverImage}
+                className={classes.image}
                 publicId={event && event.coverImage ? event.coverImage.publicId : null}
                 defaultImage={require('assets/images/default_cover_image.png')}
                 transformation={{
                     width: 1440,
-                    height: 600
+                    height: 300
                 }}
             />
-            <div className={styles.logoWrapper}>
+            <Box className={classes.logoWrapper}>
                 <FadeInWrapper enterDelay={0.3} verticalOffset={50}>
-                    <div className={styles.logoInner}>
-                        <span className={styles.eventDate}>
+                    <Box p={3} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                        <Typography className={classes.overline} variant="button">
                             {MiscUtils.formatDateInterval(event.startTime, event.endTime)}
-                        </span>
-                        <h1 className={styles.eventName}>{event.name}</h1>
-                        <span className={styles.eventLocation}>{event.location}</span>
-                    </div>
+                        </Typography>
+                        <Typography className={classes.title} variant="h3">
+                            {event.name}
+                        </Typography>
+                        <Typography className={classes.overline} variant="button">
+                            {event.location}
+                        </Typography>
+                    </Box>
                 </FadeInWrapper>
-            </div>
-            <CenteredContainer className={styles.backButton}>
-                <a href="/" className={styles.backButtonText}>
-                    <Icon type="left" />
-                    Back
-                </a>
+            </Box>
+            <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+                <Button onClick={goBack}>
+                    <ArrowBackIosIcon style={{ color: 'white' }} />
+                    <Typography variant="button" style={{ color: 'white' }}>
+                        Back
+                    </Typography>
+                </Button>
             </CenteredContainer>
-        </div>
+        </Box>
     );
 };
 
-export default EventHeroImage;
+const mapDispatch = dispatch => ({
+    goBack: () => dispatch(push('/'))
+});
+
+export default connect(
+    null,
+    mapDispatch
+)(EventHeroImage);

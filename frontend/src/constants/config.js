@@ -1,4 +1,4 @@
-import { forOwn, isEmpty } from 'lodash-es';
+import { forOwn } from 'lodash-es';
 
 const settings = {
     CLOUDINARY_CLOUD_NAME: {
@@ -19,6 +19,10 @@ const settings = {
     },
     FACEBOOK_PIXEL_ID: {
         value: process.env.REACT_APP_FACEBOOK_PIXEL_ID,
+        required: false
+    },
+    GOOGLE_ANALYTICS_ID: {
+        value: process.env.GOOGLE_ANALYTICS_ID,
         required: false
     },
     IS_DEBUG: {

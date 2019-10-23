@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
+const mongoose = require('mongoose');
 const { RegistrationStatuses, RegistrationFields, FieldTypes } = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
@@ -15,8 +16,8 @@ controller.getUserRegistrations = user => {
     });
 };
 
-controller.createRegistration = (user, event, data) => {
-    const answers = RegistrationHelpers.validateAnswers(data, event);
+controller.createRegistration = async (user, event, data) => {
+    const answers = await RegistrationHelpers.validateAnswers(data, event);
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
@@ -39,8 +40,8 @@ controller.getRegistration = (userId, eventId) => {
 };
 
 controller.updateRegistration = (user, event, data) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        const answers = RegistrationHelpers.validateAnswers(data, event);
+    return controller.getRegistration(user.sub, event._id.toString()).then(async registration => {
+        const answers = await RegistrationHelpers.validateAnswers(data, event);
         UserProfileController.updateUserProfile(answers, user.sub);
         return Registration.updateAllowed(registration, { answers });
     });
@@ -59,12 +60,12 @@ controller.confirmRegistration = (user, event) => {
 
 controller.cancelRegistration = (user, event) => {
     return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status === STATUSES.confirmed.id) {
+        if (registration.status === STATUSES.confirmed.id || registration.status === STATUSES.accepted.id) {
             registration.status = STATUSES.cancelled.id;
             return registration.save();
         }
 
-        throw new ForbiddenError('Only confirmed registrations can be cancelled');
+        throw new ForbiddenError('Only accepted or confirmed registrations can be cancelled');
     });
 };
 
@@ -134,15 +135,41 @@ controller.assignRegistrationForEvent = data => {
 
 controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
     const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo', 'travelGrant']);
-    return Registration.updateMany(
-        {
-            event: eventId,
-            _id: {
-                $in: registrationIds
-            }
-        },
-        cleanedEdits
-    );
+    return Registration.find({
+        event: eventId,
+        user: {
+            $in: registrationIds
+        }
+    }).then(registrations => {
+        const updates = registrations
+            .map(registration => {
+                let edits = _.cloneDeep(cleanedEdits);
+                if (edits.hasOwnProperty('status')) {
+                    const status = RegistrationStatuses.asObject[registration.status];
+                    if (status && !status.allowEdit) {
+                        delete edits.status;
+                    }
+                }
+
+                if (edits.hasOwnProperty('tags')) {
+                    edits.tags = _.uniq((registration.tags || []).concat(edits.tags));
+                }
+
+                if (Object.keys(edits).length === 0) return null;
+
+                return {
+                    updateOne: {
+                        filter: {
+                            _id: registration._id
+                        },
+                        update: edits
+                    }
+                };
+            })
+            .filter(edit => edit !== null);
+
+        return Registration.bulkWrite(updates);
+    });
 };
 
 controller.bulkAssignTravelGrants = (eventId, grants) => {
@@ -177,13 +204,19 @@ controller.rejectPendingTravelGrants = eventId => {
 };
 
 controller.getFullRegistration = (eventId, registrationId) => {
-    return Registration.findById(registrationId).then(registration => {
-        if (!registration || registration.event.toString() !== eventId) {
-            throw new NotFoundError(`Registration with id ${registrationId} does not exist`);
-        }
+    const query =
+        mongoose.Types.ObjectId.isValid(registrationId) && registrationId.indexOf('|') === -1
+            ? { _id: registrationId }
+            : { user: registrationId };
+    return Registration.findOne(query)
+        .and({ event: eventId })
+        .then(registration => {
+            if (!registration) {
+                throw new NotFoundError(`Registration with id ${registrationId} does not exist`);
+            }
 
-        return registration;
-    });
+            return registration;
+        });
 };
 
 controller.editRegistration = (registrationId, event, data, user) => {

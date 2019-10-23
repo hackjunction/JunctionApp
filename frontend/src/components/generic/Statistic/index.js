@@ -28,14 +28,16 @@ const Statistic = ({ label, value, suffix, action, actionText }) => {
                 <Typography variant="body2" color="textSecondary" gutterBottom>
                     {label}
                 </Typography>
-                <Typography variant="h4" className={classes.value}>
-                    {value}
+                <Box display="flex" flexDirection="row" alignItems="flex-end">
+                    <Typography variant="h4" className={classes.value}>
+                        {value}
+                    </Typography>
                     {suffix && (
                         <Typography variant="h6" className={classes.suffix}>
                             {suffix}
                         </Typography>
                     )}
-                </Typography>
+                </Box>
                 {action && actionText && (
                     <Box mt={2}>
                         {actionLoading && <CircularProgress size={24} />}

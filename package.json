@@ -19,9 +19,10 @@
         "pre-commit:shared": "cd shared && npm run precommit"
     },
     "betterScripts": {
-        "setup": "better-npm-run setup:backend && better-npm-run setup:frontend",
+        "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
         "setup:frontend": "cd frontend && npm install",
         "setup:backend": "cd backend && npm install",
+        "setup:shared": "cd shared && npm install",
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
         "start:prod": "cd backend && npm start",
         "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
@@ -40,8 +41,7 @@
     "dependencies": {
         "better-npm-run": "^0.1.1",
         "if-env": "^1.0.4",
-        "material-table": "^1.51.0",
-        "recharts": "^1.7.1"
+        "yup": "^0.27.0"
     },
     "engines": {
         "node": "12.3.1",

@@ -1,3 +1,4 @@
+const yup = require('yup');
 const Genders = require('../constants/genders');
 const Countries = require('../constants/countries');
 const Languages = require('../constants/languages');
@@ -676,387 +677,495 @@ const Fields = {
         ...FieldProps.firstName,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.firstName || idToken.given_name || '',
-        validator: (joi, required) => {
-            const allowArgs = [];
-            if (!required) allowArgs.push('');
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .max(100)
-                .allow(...allowArgs)
+                .min(required ? 1 : 0)
+                .max(10)
                 .label(FieldProps.firstName.label);
+
+            return required ? base.required() : base;
         }
     },
     lastName: {
         ...FieldProps.lastName,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.lastName || idToken.family_name || '',
-        validator: (joi, required) => {
-            const allowArgs = [];
-            if (!required) allowArgs.push('');
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .max(100)
-                .allow(...allowArgs)
+                .min(required ? 1 : 0)
+                .max(200)
                 .label(FieldProps.lastName.label);
+            return required ? base.required() : base;
         }
     },
     email: {
         ...FieldProps.email,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.email || idToken.email || '',
-        validator: (joi, required) => {
-            const allowArgs = [];
-            if (!required) allowArgs.push('');
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .string()
                 .email()
-                .allow(...allowArgs)
                 .label(FieldProps.email.label);
+            return required ? base.required() : base;
         }
     },
     phoneNumber: {
         ...FieldProps.phoneNumber,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.phoneNumber || undefined,
-        validator: (joi, required) => {
-            const allowArgs = [];
-            if (!required) {
-                allowArgs.push('');
-            }
-            return joi
-                .object()
-                .allow(...allowArgs)
-                .keys({
-                    country_code: joi.string().valid(Countries.asArrayOfPhoneCodes),
-                    number: joi
-                        .string()
-                        .regex(/^[0-9]{7,14}$/)
-                        .label('Phone number')
-                })
-                .label(FieldProps.phoneNumber.label);
+        validationSchema: required => {
+            const country_code = yup
+                .string()
+                .oneOf(Countries.asArrayOfPhoneCodes)
+                .label('Country code');
+            const number = yup
+                .string()
+                .matches(/^[0-9]{7,14}$/)
+                .label('Phone number');
+            const shape = required
+                ? {
+                      country_code: country_code.required(),
+                      number: number.required()
+                  }
+                : {
+                      country_code,
+                      number
+                  };
+
+            return yup.object(shape).label(FieldProps.phoneNumber.label);
         }
     },
     dateOfBirth: {
         ...FieldProps.dateOfBirth,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.dateOfBirth || undefined,
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .date()
-                .max(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16)
-                .min(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120)
-                .label(FieldProps.dateOfBirth.label)
+                .min(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120))
+                .max(new Date(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16))
+                .label(FieldProps.dateOfBirth.label);
+
+            return required ? base.required() : base;
+        }
     },
     gender: {
         ...FieldProps.gender,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.gender || undefined,
-        validator: (joi, required) =>
-            joi
-                .any()
-                .valid(Genders)
-                .label(FieldProps.gender.label)
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .oneOf(Genders)
+                .label(FieldProps.gender.label);
+            return required ? base.required() : base;
+        }
     },
     nationality: {
         ...FieldProps.nationality,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.nationality || undefined,
-        validator: (joi, required) =>
-            joi
-                .any()
-                .valid(Countries.asArrayOfNationalities)
-                .label(FieldProps.nationality.label)
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .oneOf(Countries.asArrayOfNationalities)
+                .label(FieldProps.nationality.label);
+
+            return required ? base.required() : base;
+        }
     },
     spokenLanguages: {
         ...FieldProps.spokenLanguages,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.spokenLanguages || [],
-        validator: (joi, required) => {
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .array()
-                .min(required ? 1 : 0)
-                .items(joi.any().valid(Languages.asArrayOfNames))
+                .of(yup.string().oneOf(Languages.asArrayOfNames))
+                .ensure()
                 .label(FieldProps.spokenLanguages.label);
+
+            return required ? base.required() : base;
         }
     },
     countryOfResidence: {
         ...FieldProps.countryOfResidence,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.countryOfResidence || idToken.country || '',
-        validator: (joi, required) =>
-            joi
-                .any()
-                .valid(Countries.asArrayOfName)
-                .label(FieldProps.countryOfResidence.label)
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .oneOf(Countries.asArrayOfName)
+                .label(FieldProps.countryOfResidence.label);
+
+            return required ? base.required() : base;
+        }
     },
     cityOfResidence: {
         ...FieldProps.cityOfResidence,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.cityOfResidence || idToken.city || '',
-        validator: (joi, required) => {
-            const allowArgs = [];
-            if (!required) allowArgs.push('');
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .string()
+                .min(required ? 1 : 0)
                 .max(100)
-                .allow(...allowArgs)
                 .label(FieldProps.cityOfResidence.label);
+            return required ? base.required() : base;
         }
     },
     tShirtSize: {
         ...FieldProps.tShirtSize,
         category: Categories.basicDetails,
         default: userProfile => userProfile.tShirtSize || undefined,
-        validator: joi => {
-            return joi
-                .any()
-                .allow(Misc.tShirtSizes)
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .oneOf(Misc.tShirtSizes)
                 .label(FieldProps.tShirtSize.label);
+
+            return required ? base.required() : base;
         }
     },
     dietaryRestrictions: {
         ...FieldProps.dietaryRestrictions,
         category: Categories.basicDetails,
         default: () => [],
-        validator: (joi, required) => {
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .array()
-                .min(required ? 1 : 0)
-                .items(joi.any().valid(Misc.dietaryRestrictions))
+                .of(yup.string().oneOf(Misc.dietaryRestrictions))
+                .ensure()
                 .label(FieldProps.dietaryRestrictions.label);
+
+            return required ? base.required() : base;
         }
     },
     roles: {
         ...FieldProps.roles,
         category: Categories.skillsAndInterests,
         default: () => [],
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .array()
-                .min(required ? 1 : 0)
-                .items(
-                    joi
-                        .object()
-                        .keys({
-                            role: joi
-                                .any()
-                                .valid(Roles.items)
-                                .label('Role'),
-                            years: joi
-                                .number()
-                                .min(1)
-                                .max(5)
-                                .label('Years of experience')
-                        })
-                        .label('Role')
+                .of(
+                    yup.object().shape({
+                        role: yup
+                            .string()
+                            .oneOf(Roles.items)
+                            .required()
+                            .label('Role'),
+                        years: yup
+                            .number()
+                            .min(1)
+                            .max(5)
+                            .required()
+                            .label('Years of experience')
+                    })
                 )
+                .ensure()
                 .max(5)
-                .label(FieldProps.roles.label)
+                .label(FieldProps.roles.label);
+
+            return required ? base.required() : base;
+        }
     },
     skills: {
         ...FieldProps.skills,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.skills || [],
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .array()
-                .min(required ? 1 : 0)
-                .max(10)
-                .items(
-                    joi
-                        .object()
-                        .keys({
-                            skill: joi.any().valid(Skills.items),
-                            level: joi
-                                .number()
-                                .min(1)
-                                .max(5)
-                        })
-                        .unknown()
+                .of(
+                    yup.object().shape({
+                        skill: yup
+                            .string()
+                            .oneOf(Skills.items)
+                            .required()
+                            .label('Skill'),
+                        level: yup
+                            .number()
+                            .min(1)
+                            .max(5)
+                            .required()
+                            .label('Experience level')
+                    })
                 )
-                .label(FieldProps.skills.label)
+                .max(10)
+                .ensure()
+                .label(FieldProps.skills.label);
+
+            return required ? base.required() : base;
+        }
     },
     motivation: {
         ...FieldProps.motivation,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => '',
-        validator: (joi, required) => {
-            const allowArgs = [];
-            if (!required) allowArgs.push('');
-
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .string()
+                .min(required ? 1 : 0)
                 .max(2000)
-                .allow(...allowArgs)
                 .label(FieldProps.motivation.label);
+
+            return required ? base.required() : base;
         }
     },
     industriesOfInterest: {
         ...FieldProps.industriesOfInterest,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.industriesOfInterest || [],
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .array()
-                .min(required ? 1 : 0)
-                .items(joi.any().valid(Industries.industries))
+                .of(yup.string().oneOf(Industries.industries))
                 .max(3)
-                .label(FieldProps.industriesOfInterest.label)
+                .ensure()
+                .label(FieldProps.industriesOfInterest.label);
+            return required ? base.required() : base;
+        }
     },
     themesOfInterest: {
         ...FieldProps.themesOfInterest,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.themesOfInterest || [],
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .array()
-                .min(required ? 1 : 0)
-                .items(joi.any().valid(Themes.themes))
+                .of(yup.string().oneOf(Themes.themes))
                 .max(3)
-                .label(FieldProps.themesOfInterest.label)
+                .ensure()
+                .label(FieldProps.themesOfInterest.label);
+
+            return required ? base.required() : base;
+        }
     },
     numHackathons: {
         ...FieldProps.numHackathons,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.numHackathons || undefined,
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .number()
                 .min(0)
                 .max(5)
-                .label(FieldProps.numHackathons.label)
+                .label(FieldProps.numHackathons.label);
+
+            return required ? base.required() : base;
+        }
     },
     education: {
         ...FieldProps.education,
         category: Categories.skillsAndInterests,
         default: (userProfile, idToken) => userProfile.education || undefined,
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .object()
-                .keys({
-                    level: joi
+                .shape({
+                    level: yup
                         .string()
                         .label('Level of Education')
                         .required(),
-                    university: joi.string().label('University'),
-                    degree: joi.string().label('Degree'),
-                    graduationYear: joi.number().label('Graduation year')
+                    university: yup.string().label('University'),
+                    degree: yup.string().label('Degree'),
+                    graduationYear: yup
+                        .number()
+                        .min(1900)
+                        .max(2100)
+                        .label('Graduation year')
                 })
-                .optional()
-                .unknown()
-                .allow({})
-                .label('Education')
+                .noUnknown()
+                .label(FieldProps.education.label);
+
+            return required ? base.required() : base;
+        }
     },
     portfolio: {
         ...FieldProps.portfolio,
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.portfolio || undefined,
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .uri()
-                .label(FieldProps.portfolio.label)
+                .url()
+                .label(FieldProps.portfolio.label);
+
+            return required ? base.required() : base;
+        }
     },
     github: {
         ...FieldProps.github,
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.github || undefined,
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .uri()
-                .label(FieldProps.github.label)
+                .url()
+                .label(FieldProps.github.label);
+
+            return required ? base.required() : base;
+        }
     },
     linkedin: {
         ...FieldProps.linkedin,
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.linkedin || undefined,
-        validator: (joi, required) =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .uri()
-                .label(FieldProps.linkedin.label)
+                .url()
+                .label(FieldProps.linkedin.label);
+
+            return required ? base.required() : base;
+        }
     },
     countryOfTravel: {
         ...FieldProps.countryOfTravel,
         category: Categories.travelAndAccommodation,
         default: userProfile => userProfile.countryOfResidence || undefined,
-        validator: joi =>
-            joi
-                .any()
-                .valid(Countries.asArrayOfName)
-                .label(FieldProps.countryOfTravel.label)
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .oneOf(Countries.asArrayOfName)
+                .label(FieldProps.countryOfTravel.label);
+
+            return required ? base.required() : base;
+        }
     },
     cityOfTravel: {
         ...FieldProps.cityOfTravel,
         category: Categories.travelAndAccommodation,
         default: userProfile => userProfile.cityOfResidence || undefined,
-        validator: (joi, required) => {
-            const allowArgs = required ? [] : [''];
-            return joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .allow(...allowArgs)
-                .max(100)
+                .min(required ? 1 : 0)
+                .max(200)
                 .label(FieldProps.cityOfTravel.label);
+
+            return required ? base.required() : base;
         }
     },
     needsVisa: {
         ...FieldProps.needsVisa,
         category: Categories.travelAndAccommodation,
         default: () => false,
-        validator: (joi, required) => joi.boolean().label(FieldProps.needsVisa.label)
+        validationSchema: required => {
+            const base = yup
+                .boolean()
+                .transform(value => {
+                    if (!value) return false;
+                    return true;
+                })
+                .label(FieldProps.needsVisa.label);
+
+            return required ? base.required() : base;
+        }
     },
     needsTravelGrant: {
         ...FieldProps.needsTravelGrant,
         category: Categories.travelAndAccommodation,
         default: () => false,
-        validator: (joi, required) => joi.boolean().label(FieldProps.needsTravelGrant.label)
+        validationSchema: required => {
+            const base = yup
+                .boolean()
+                .transform(value => {
+                    if (!value) return false;
+                    return true;
+                })
+                .label(FieldProps.needsTravelGrant.label);
+
+            return required ? base.required() : base;
+        }
     },
     needsAccommodation: {
         ...FieldProps.needsAccommodation,
         category: Categories.travelAndAccommodation,
         default: () => false,
-        validator: (joi, required) => joi.boolean().label(FieldProps.needsAccommodation.label)
+        validationSchema: required => {
+            const base = yup
+                .boolean()
+                .transform(value => {
+                    if (!value) return false;
+                    return true;
+                })
+                .label(FieldProps.needsAccommodation.label);
+
+            return required ? base.required() : base;
+        }
     },
     teamOptions: {
         ...FieldProps.teamOptions,
         category: Categories.other,
-        default: () => {},
-        validator: joi =>
-            joi
+        default: () => ({
+            applyAsTeam: false,
+            applyAlone: false
+        }),
+        validationSchema: required => {
+            const base = yup
                 .object()
-                .keys({
-                    applyAsTeam: joi.boolean(),
-                    applyAlone: joi.boolean()
+                .shape({
+                    applyAsTeam: yup
+                        .boolean()
+                        .transform(value => {
+                            if (!value) return false;
+                            return true;
+                        })
+                        .label('Applying as a team?'),
+                    applyAlone: yup
+                        .boolean()
+                        .transform(value => {
+                            if (!value) return false;
+                            return true;
+                        })
+                        .label('Applying also alone?')
                 })
-                .unknown()
-                .label(FieldProps.teamOptions.label)
+                .noUnknown()
+                .label(FieldProps.teamOptions.label);
+
+            return required ? base.required() : base;
+        }
     },
     secretCode: {
         ...FieldProps.secretCode,
         category: Categories.other,
         default: () => '',
-        validator: joi =>
-            joi
+        validationSchema: required => {
+            const base = yup
                 .string()
-                .allow('')
-                .max(500)
-                .label(FieldProps.secretCode.label)
+                .max(100)
+                .label(FieldProps.secretCode.label);
+
+            return required ? base.required() : base;
+        }
     },
     recruitmentOptions: {
         ...FieldProps.recruitmentOptions,
         category: Categories.recruitment,
-        default: () => {},
-        validator: joi =>
-            joi
+        default: () => ({
+            consent: false
+        }),
+        validationSchema: required => {
+            const base = yup
                 .object()
-                .keys({
-                    status: joi.string(),
-                    consent: joi.boolean(),
-                    relocation: joi.string()
+                .shape({
+                    status: yup.string(),
+                    consent: yup.boolean().transform(value => {
+                        if (!value) return false;
+                        return true;
+                    }),
+                    relocation: yup.string()
                 })
-                .unknown()
-                .label(FieldProps.recruitmentOptions.label)
+                .noUnknown()
+                .label(FieldProps.recruitmentOptions.label);
+
+            return required ? base.required() : base;
+        }
     }
 };
 
@@ -1112,7 +1221,46 @@ function buildFiltersArray() {
         return res.concat(filters);
     }, []);
 
-    return baseFilters.concat(answerFilters);
+    const extraFilters = [
+        {
+            label: 'Terminal',
+            path: 'answers.terminal',
+            type: FilterTypes.OBJECT,
+            valueType: FilterValues.BOOLEAN
+        },
+        {
+            label: 'Terminal > Motivation',
+            path: 'answers.terminal.motivation',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STRING
+        },
+        {
+            label: 'Terminal > Most fascinating project',
+            path: 'answers.terminal.mostFascinatingProject',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STRING
+        },
+        {
+            label: 'Terminal > Ideal work environment',
+            path: 'answers.terminal.idealWorkEnvironment',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STRING
+        },
+        {
+            label: 'Terminal > What makes you awesome',
+            path: 'answers.terminal.whatMakesYouAwesome',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STRING
+        },
+        {
+            label: 'Terminal > Accomodation',
+            path: 'answers.terminal.accomodation',
+            type: FilterTypes.STRING,
+            valueType: FilterValues.STRING
+        }
+    ];
+
+    return baseFilters.concat(answerFilters).concat(extraFilters);
 }
 
 const Helpers = {
@@ -1170,16 +1318,6 @@ const Helpers = {
         });
 
         return result;
-    },
-    getValidator: (joi, field, required) => {
-        if (!joi) {
-            throw new Error('Must pass an instance of joi to getValidator');
-        }
-        if (Fields.hasOwnProperty(field) && typeof Fields[field].validator === 'function') {
-            return Fields[field].validator(joi, required);
-        } else {
-            return joi.any();
-        }
     },
     getCategoryOrderByLabel: categoryLabel => {
         for (let categoryId of Object.keys(Categories)) {

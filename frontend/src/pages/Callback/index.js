@@ -8,9 +8,9 @@ import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserActions from 'redux/user/actions';
 
 import UserProfilesService from 'services/userProfiles';
-import LoadingOverlay from 'components/LoadingOverlay';
+import LoadingOverlay from 'components/loaders/LoadingOverlay';
 import MiscUtils from 'utils/misc';
-import FacebookPixel from 'services/facebookPixel';
+import AnalyticsService from 'services/analytics';
 
 class CallbackPage extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class CallbackPage extends Component {
         if (/access_token|id_token|error/.test(location.hash)) {
             handleAuthentication()
                 .then(idToken => {
-                    FacebookPixel.loggedIn();
+                    AnalyticsService.events.LOG_IN();
                     this.getOrCreateProfile(idToken);
                 })
                 .catch(err => {
