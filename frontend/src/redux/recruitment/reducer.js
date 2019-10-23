@@ -28,7 +28,11 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.SET_FILTERS: {
             return {
                 ...state,
-                filters: action.payload
+                filters: action.payload,
+                pagination: {
+                    ...state.pagination,
+                    page: 0
+                }
             };
         }
         case ActionTypes.SET_PAGE_SIZE: {
