@@ -4,7 +4,7 @@ export const buildFilterArray = ({ skills = [], roles = [], countries = [] }) =>
     if (countries.length) {
         filters.push({
             field: 'countryOfResidence',
-            operator: '==',
+            operator: 'contains',
             value: countries
         });
     }
@@ -13,7 +13,7 @@ export const buildFilterArray = ({ skills = [], roles = [], countries = [] }) =>
         if (levels.length) {
             filters.push({
                 field: 'skills',
-                operator: 'array-contains',
+                operator: 'array-element-match',
                 value: {
                     skill,
                     level: {
@@ -34,7 +34,7 @@ export const buildFilterArray = ({ skills = [], roles = [], countries = [] }) =>
         if (years.length) {
             filters.push({
                 field: 'roles',
-                operator: 'array-contains',
+                operator: 'array-element-match',
                 value: {
                     role,
                     years: {
