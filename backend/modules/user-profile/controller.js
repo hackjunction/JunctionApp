@@ -23,9 +23,12 @@ controller.getUserProfiles = userIds => {
     });
 };
 
-controller.queryProfiles = async query => {
-    const found = await UserProfile.find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
-    const count = await UserProfile.find(query.query).countDocuments();
+controller.queryProfiles = async (query, loadRegistrations = false) => {
+    const found = await UserProfile.populate(loadRegistrations ? 'registrations' : '')
+    .find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
+    
+    const count = await UserProfile.populate(loadRegistrations ? 'registrations' : '')
+    .find(query.query).countDocuments();
     return {found, count};
 };
 

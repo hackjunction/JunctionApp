@@ -12,7 +12,7 @@ const queryUsers = asyncHandler(async (req, res) => {
     return res.status(200).json(users);
 });
 const getUserProfileRecruitment = asyncHandler(async (req, res) => {
-    const userProfile = await RecruitmentController.getRecruitmentProfile(req.params.id);
+    const userProfile = await RecruitmentController.getRecruitmentProfile(req.params.id, req.user.sub);
     return res.status(200).json(userProfile);
 });
 const saveRecruiterAction = asyncHandler(async (req, res) => {
