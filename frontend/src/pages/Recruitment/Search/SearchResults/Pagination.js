@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { Paper, Box, Typography, IconButton } from '@material-ui/core';
+import { Paper, Box, Typography, IconButton, CircularProgress } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -13,9 +13,14 @@ const Pagination = ({ currentPage, pageSize, totalResults, totalPages, setPage, 
         <Paper elevation={0}>
             <Box p={2} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
                 <Box display="flex" flexDirection="column">
-                    <Typography variant="h6">{totalResults} results</Typography>
+                    <Typography variant="h6">{loading ? 'Loading results' : `${totalResults} results`}</Typography>
                     <Typography variant="overline">
-                        Showing {pageSize * currentPage + 1} to {Math.min(pageSize * (currentPage + 1), totalResults)}
+                        {loading
+                            ? '...'
+                            : `Showing ${pageSize * currentPage + 1} to ${Math.min(
+                                  pageSize * (currentPage + 1),
+                                  totalResults
+                              )}`}
                     </Typography>
                 </Box>
                 <Box display="flex" flexDirection="row" alignItems="center">
@@ -23,9 +28,13 @@ const Pagination = ({ currentPage, pageSize, totalResults, totalPages, setPage, 
                         <ChevronLeftIcon />
                     </IconButton>
                     <Box padding={1}>
-                        <Typography variant="overline">
-                            Page {currentPage + 1} of {totalPages}
-                        </Typography>
+                        {totalResults === 0 && loading ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            <Typography variant="overline">
+                                Page {currentPage + 1} of {totalPages}
+                            </Typography>
+                        )}
                     </Box>
                     <IconButton
                         disabled={loading || currentPage + 1 === totalPages}
