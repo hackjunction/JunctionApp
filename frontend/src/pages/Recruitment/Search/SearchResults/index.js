@@ -9,6 +9,7 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
 import Pagination from './Pagination';
+import LoadingCard from './LoadingCard';
 
 const SearchResults = ({
     searchResults,
@@ -31,32 +32,36 @@ const SearchResults = ({
     return (
         <React.Fragment>
             <Pagination />
-            <List>
-                {searchResults.map(item => (
-                    <Box mb={1} key={item._id}>
-                        <Paper>
-                            <ResultCard
-                                key={`item-${item.userId}`}
-                                data={item}
-                                onClick={e => setSelected(item.userId)}
-                            />
-                        </Paper>
-                    </Box>
-                ))}
-            </List>
-            <Box display="flex" flexDirection="row" justifyContent="space-between">
-                <Button disabled={loading || page === 0} color="primary" variant="contained" onClick={setPrevPage}>
-                    Previous page
-                </Button>
-                <Button
-                    disabled={loading || page + 1 === pageCount}
-                    color="primary"
-                    variant="contained"
-                    onClick={setNextPage}
-                >
-                    Next page
-                </Button>
-            </Box>
+            {loading ? (
+                <React.Fragment>
+                    <LoadingCard />
+                    <LoadingCard />
+                    <LoadingCard />
+                    <LoadingCard />
+                    <LoadingCard />
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    {searchResults.map(item => (
+                        <ResultCard key={`item-${item.userId}`} data={item} onClick={e => setSelected(item.userId)} />
+                    ))}
+                </React.Fragment>
+            )}
+            {pageCount > 0 && (
+                <Box mt={2} display="flex" flexDirection="row" justifyContent="space-between">
+                    <Button disabled={loading || page === 0} color="primary" variant="contained" onClick={setPrevPage}>
+                        Previous page
+                    </Button>
+                    <Button
+                        disabled={loading || page + 1 === pageCount}
+                        color="primary"
+                        variant="contained"
+                        onClick={setNextPage}
+                    >
+                        Next page
+                    </Button>
+                </Box>
+            )}
             <RecruitmentUserModal profileId={selected} onClose={setSelected} />
         </React.Fragment>
     );
