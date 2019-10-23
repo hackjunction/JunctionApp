@@ -23,7 +23,6 @@ controller.createRegistration = async (user, event, data) => {
         user: user.sub,
         answers
     });
-    UserProfileController.updateUserProfile(answers, user.sub);
     return registration.save();
 };
 
@@ -42,7 +41,6 @@ controller.getRegistration = (userId, eventId) => {
 controller.updateRegistration = (user, event, data) => {
     return controller.getRegistration(user.sub, event._id.toString()).then(async registration => {
         const answers = await RegistrationHelpers.validateAnswers(data, event);
-        UserProfileController.updateUserProfile(answers, user.sub);
         return Registration.updateAllowed(registration, { answers });
     });
 };

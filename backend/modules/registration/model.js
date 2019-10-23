@@ -3,6 +3,7 @@ const _ = require('lodash');
 const { RegistrationStatuses } = require('@hackjunction/shared');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const EmailTaskController = require('../email-task/controller');
+const UserProfileController = require('../user-profile/controller');
 
 const RegistrationSchema = new mongoose.Schema({
     event: {
@@ -107,6 +108,10 @@ RegistrationSchema.post('save', function(doc, next) {
     if (!this._previousGrant && this.travelGrant > 0) {
         EmailTaskController.createTravelGrantAcceptedTask(doc, true);
     }
+
+    UserProfileController.updateUserProfile(
+        doc.answers, doc.user, {registration: doc._id, event: doc.event, status: doc.status});
+
 
     next();
 });

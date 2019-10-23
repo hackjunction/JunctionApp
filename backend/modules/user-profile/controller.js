@@ -23,13 +23,13 @@ controller.getUserProfiles = userIds => {
     });
 };
 
-controller.queryProfiles = async (query, loadRegistrations = false) => {
-    const found = await UserProfile.populate(loadRegistrations ? 'registrations' : '')
-    .find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
-    
-    const count = await UserProfile.populate(loadRegistrations ? 'registrations' : '')
-    .find(query.query).countDocuments();
-    return {found, count};
+controller.queryProfiles = async (query) => {
+    const found = await UserProfile
+        .find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
+
+    const count = await UserProfile
+        .find(query.query).countDocuments();
+    return { found, count };
 };
 
 controller.getUserProfilesPublic = userIds => {
@@ -50,8 +50,22 @@ controller.createUserProfile = (data, userId) => {
     return userProfile.save();
 };
 
-controller.updateUserProfile = (data, userId) => {
+controller.updateUserProfile = (data, userId, updatedRegistration = {}) => {
     return controller.getUserProfile(userId).then(userProfile => {
+        if (updatedRegistration !== null) {
+            userProfile.registrations = 
+            (userProfile.registrations ? userProfile.registrations : [])
+            .map(r => {
+                if (r.registration === updatedRegistration.registration) {
+                    return updatedRegistration;
+                } return r;
+            })
+            if(userProfile.registrations.length === 0){
+                userProfile.registrations.push(updatedRegistration);
+            }
+            data.registrations = userProfile.registrations;
+        }
+
         return UserProfile.updateAllowed(userProfile, data);
     });
 };
