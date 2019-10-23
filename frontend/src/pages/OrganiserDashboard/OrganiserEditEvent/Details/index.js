@@ -14,6 +14,7 @@ import BasicInfoTab from './BasicInfo';
 import ScheduleTab from './Schedule';
 import QuestionsTab from './Questions';
 import MiscellaneousTab from './Miscellaneous';
+import ConfigurationTab from './ConfigurationTab';
 import BottomBar from './BottomBar';
 
 const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
@@ -74,6 +75,10 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
                                 {
                                     label: 'Basic Details',
                                     content: <BasicInfoTab {...formikProps} />
+                                },
+                                {
+                                    label: 'Configuration',
+                                    content: <ConfigurationTab {...formikProps} />
                                 },
                                 {
                                     label: 'Schedule',
