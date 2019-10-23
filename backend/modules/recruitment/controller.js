@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { RecruitmentAction } = require('./model');
 const UserController = require('../user-profile/controller');
 const Registration = require('../registration/model');
@@ -34,11 +33,10 @@ controller.queryProfiles = (query = {}) => {
             limit: query.pagination.page_size
         };
     }
-    console.log(query)
     return UserController.queryProfiles({
         query: userQuery,
         pagination: pagination
-    }, true).then(results => {
+    }).then(results => {
         return Promise.all(
             results.found.map(profile => {
                 return controller.createRecruitmentProfile(profile, false);
@@ -81,7 +79,8 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
         social: {
             github: userProfile.github,
             linkedin: userProfile.linkedin
-        }
+        },
+        registrations: userProfile.registrations
     };
 
     if (eager) {
@@ -95,7 +94,6 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
                 });
             });
 
-        // TODO filter only those actions that match the organization from the token!
         profile.recruitmentActionHistory = await RecruitmentAction.find({
             userId: profile.userId,
             recruiter: recruiterId

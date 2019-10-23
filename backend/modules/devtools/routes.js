@@ -78,9 +78,21 @@ router.route('/sync-user-profiles').get(async (req, res) => {
             userId: user.userId
           },
           update: {
-            roles: registration.answers.roles,
-            skills: registration.answers.skills
+            $set: {
+              roles: registration.answers.roles,
+              skills: registration.answers.skills
+            },
+            /* $unset: {
+              registrations: ""
+            } */
+             $addToSet: {
+               registrations:
+                 { registration: registration._id, status: registration.status, event: registration.event }
+             }
           }
+
+
+
         }
       });
     }
