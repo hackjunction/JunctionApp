@@ -25,7 +25,7 @@
         "setup:shared": "cd shared && npm install",
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
         "start:prod": "cd backend && npm start",
-        "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
+        "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build && cd shared && npm install"
     },
     "pre-commit": [
         "pre-commit:frontend",
