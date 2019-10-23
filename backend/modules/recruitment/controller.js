@@ -22,6 +22,8 @@ controller.queryProfiles = (query = {}) => {
                 }
             };
         });
+
+        console.log(whereFields)
         userQuery = { $and: whereFields };
     }
     if (query.pagination) {
@@ -30,6 +32,11 @@ controller.queryProfiles = (query = {}) => {
             limit: query.pagination.page_size
         };
     }
+    // Set default filters
+    userQuery["$and"] ?
+        userQuery["$and"].push({ 'recruitmentOptions.consent': { $eq: true } }) :
+        userQuery = { 'recruitmentOptions.consent': true }
+
     return UserController.queryProfiles({
         query: userQuery,
         pagination: pagination
