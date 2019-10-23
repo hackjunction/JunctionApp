@@ -51,8 +51,9 @@ controller.filterOperatorToMongoOperator = operator => {
     if (operator == '>=') return '$gte';
     if (operator == '==') return '$eq';
     if (operator == '!=') return '$ne';
-    if (operator == 'array-contains') return '$elemMatch';
-    if (operator == 'array-not-contains') return '$nin';
+    if (operator == 'array-element-match') return '$elemMatch';
+    if (operator == 'contains') return '$in';
+    if (operator == 'not-contains') return '$nin';
 };
 
 controller.createRecruitmentProfile = async (userProfile, eager = false, recruiterId = null) => {
