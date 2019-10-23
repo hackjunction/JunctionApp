@@ -1,72 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import styles from './EventDashboardHome.module.scss';
+import React from 'react';
 
-import { Steps, Icon, Row, Col } from 'antd';
 import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box, Stepper, Step, StepLabel, StepContent, Typography, CircularProgress } from '@material-ui/core';
 
-import Divider from 'components/generic/Divider';
-
-import EventDashboardHomeRegistration from './EventDashboardHomeRegistration';
-
-import EventUtils from 'utils/events';
-import EventConstants from 'constants/events';
+import PageHeader from 'components/generic/PageHeader';
+import TimelineDot from 'components/generic/TimelineDot';
+import RegistrationPhase from './RegistrationPhase';
+import ConfirmedPhase from './ConfirmedPhase';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
-const EventDashboardHome = ({ event, registration }) => {
-    const [currentStep, setCurrentStep] = useState([]);
 
-    useEffect(() => {
-        if (event) {
-            const status = EventUtils.getEventStatus(event);
-            setCurrentStep(status.index);
-        }
-    }, [event]);
+const useStyles = makeStyles(theme => ({
+    stepper: {
+        backgroundColor: 'transparent'
+    }
+}));
 
+const EventDashboardHome = ({ event, registration, loading }) => {
+    const classes = useStyles();
     if (!event || !registration) return null;
 
-    function renderContent() {
-        switch (currentStep) {
-            case EventConstants.STATUS.Registration.index:
-                return <EventDashboardHomeRegistration />;
-            case EventConstants.STATUS.Confirmation.index:
-                return <h1>Confirm your participation</h1>;
-            case EventConstants.STATUS.InProgress.index:
-                return <h1>Event in progress</h1>;
-            case EventConstants.STATUS.Finished.index:
-                return <h1>Finished</h1>;
-            default:
-                return null;
+    const getActiveStep = () => {
+        if (registration.status === 'confirmed') {
+            return 1;
         }
-    }
+        return 0;
+    };
 
     return (
-        <div className={styles.wrapper}>
-            <h1 className={styles.sectionTitle}>Event timeline</h1>
-            <Divider size={1} />
-            <Row>
-                <Col xs={0} lg={24}>
-                    <Steps current={currentStep - 1}>
-                        <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                        <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
-                        <Steps.Step title="Finished" icon={<Icon type="crown" />} />
-                    </Steps>
-                </Col>
-                <Col xs={24} lg={0}>
-                    <Steps direction="vertical" current={currentStep - 1}>
-                        <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                        <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
-                        <Steps.Step title="Finished" icon={<Icon type="crown" />} />
-                    </Steps>
-                </Col>
-            </Row>
-            <Divider size={1} />
-            {renderContent()}
-        </div>
+        <Box>
+            <PageHeader heading="Event timeline" />
+            <Box mt={2} />
+            {loading ? (
+                <Box p={2} display="flex" alignItems="center" justifyContent="center">
+                    <CircularProgress size={24} />
+                </Box>
+            ) : (
+                <Stepper activeStep={getActiveStep()} className={classes.stepper} orientation="vertical">
+                    <Step key="pending">
+                        <StepLabel StepIconComponent={TimelineDot}>
+                            <Typography variant="button">Registration period</Typography>
+                        </StepLabel>
+                        <StepContent>
+                            <RegistrationPhase />
+                        </StepContent>
+                    </Step>
+                    <Step key="confirmed">
+                        <StepLabel StepIconComponent={TimelineDot}>
+                            <Typography variant="button">Confirmed participation</Typography>
+                        </StepLabel>
+                        <StepContent>
+                            <ConfirmedPhase />
+                        </StepContent>
+                    </Step>
+                    <Step key="event">
+                        <StepLabel StepIconComponent={TimelineDot}>
+                            <Typography variant="button">Event in progress</Typography>
+                        </StepLabel>
+                        <StepContent>
+                            <RegistrationPhase />
+                        </StepContent>
+                    </Step>
+                    <Step key="event-finished">
+                        <StepLabel StepIconComponent={TimelineDot}>
+                            <Typography variant="button">Event finished</Typography>
+                        </StepLabel>
+                        <StepContent>
+                            <Box mt={3} />
+                        </StepContent>
+                    </Step>
+                </Stepper>
+            )}
+            {/* <Steps current={currentStep}>
+                <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
+                <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
+                <Steps.Step title="Finished" icon={<Icon type="crown" />} />
+            </Steps>
+            <Box mt={2} />
+            {renderContent()} */}
+        </Box>
     );
 };
 
 const mapStateToProps = state => ({
     event: DashboardSelectors.event(state),
-    registration: DashboardSelectors.registration(state)
+    registration: DashboardSelectors.registration(state),
+    loading: DashboardSelectors.registrationLoading(state) || DashboardSelectors.eventLoading(state)
 });
 
 export default connect(mapStateToProps)(EventDashboardHome);

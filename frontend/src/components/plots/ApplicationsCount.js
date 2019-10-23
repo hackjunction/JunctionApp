@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Statistic } from 'antd';
+import Statistic from 'components/generic/Statistic';
 import { connect } from 'react-redux';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 const ApplicationsCount = ({ value }) => {
-    return <Statistic title="Applications" value={value} />;
+    return <Statistic label="Applications" value={value} />;
 };
 
 const mapState = state => ({

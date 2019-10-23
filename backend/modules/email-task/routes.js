@@ -15,6 +15,7 @@ const sendPreviewEmail = asyncHandler(async (req, res) => {
 });
 
 const sendBulkEmail = asyncHandler(async (req, res) => {
+    console.log('BODY', req.body);
     await EmailTaskController.sendBulkEmail(req.body.recipients, req.body.params, req.event, req.body.uniqueId);
     return res.status(200).json({});
 });

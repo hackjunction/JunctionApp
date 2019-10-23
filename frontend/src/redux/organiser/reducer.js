@@ -1,7 +1,7 @@
 import * as ActionTypes from './actionTypes';
 import * as AuthActionTypes from '../auth/actionTypes';
 import { buildHandler, buildUpdatePath } from '../utils';
-import { concat, filter, find } from 'lodash-es';
+import { concat, filter } from 'lodash-es';
 
 const initialState = {
     event: {
@@ -34,7 +34,8 @@ const initialState = {
         loading: false,
         error: false,
         updated: 0,
-        data: []
+        data: [],
+        map: {}
     },
     filterGroups: {
         loading: false,
@@ -72,7 +73,25 @@ export default function reducer(state = initialState, action) {
             return registrationsHandler(state, action);
         }
         case ActionTypes.UPDATE_TEAMS: {
-            return teamsHandler(state, action);
+            const newState = teamsHandler(state, action);
+            if (action.payload) {
+                const byUser = action.payload.reduce((map, team) => {
+                    map[team.owner] = team;
+                    team.members.forEach(member => {
+                        map[member] = team;
+                    });
+                    return map;
+                }, {});
+                return {
+                    ...newState,
+                    teams: {
+                        ...newState.teams,
+                        map: byUser
+                    }
+                };
+            } else {
+                return newState;
+            }
         }
         case ActionTypes.UPDATE_FILTER_GROUPS: {
             return filterGroupsHandler(state, action);

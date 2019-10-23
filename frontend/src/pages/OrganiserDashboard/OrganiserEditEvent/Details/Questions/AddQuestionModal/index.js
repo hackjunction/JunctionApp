@@ -3,9 +3,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Modal, Input, Select, Radio } from 'antd';
 import { isEmpty } from 'lodash-es';
 
-import FormFieldLabel from 'components/FormComponents/FormFieldLabel';
-import FormFieldHint from 'components/FormComponents/FormFieldHint';
-import MarkdownInput from 'components/FormComponents/MarkdownInput';
+import { Typography } from '@material-ui/core';
+
+import MarkdownInput from 'components/inputs/MarkdownInput';
 import Divider from 'components/generic/Divider';
 
 const initialData = {
@@ -54,9 +54,7 @@ const AddQuestionModal = ({
 
         if (!editing) {
             if (reservedNames.indexOf(data.name) !== -1) {
-                return `This section already contains a question with the machine name ${
-                    data.name
-                }, please use something else`;
+                return `This section already contains a question with the machine name ${data.name}, please use something else`;
             }
         }
 
@@ -105,9 +103,10 @@ const AddQuestionModal = ({
     const renderPlaceholderInput = () => {
         return (
             <React.Fragment>
-                <FormFieldLabel label="Placeholder" show />
-                <FormFieldHint hint="Text to show in the field if it's empty" show />
-                <Divider size={1} />
+                <Typography variant="subtitle1">Placeholder</Typography>
+                <Typography variant="caption" paragraph>
+                    Text to show in the field if it's empty
+                </Typography>
                 <Input
                     placeholder="Placeholder"
                     size="large"
@@ -125,9 +124,10 @@ const AddQuestionModal = ({
             case 'single-choice': {
                 return (
                     <React.Fragment>
-                        <FormFieldLabel required show label="Options to choose from" />
-                        <FormFieldHint show hint="Enter options to choose from, separated by a comma" />
-                        <Divider size={1} />
+                        <Typography variant="subtitle1">Options to choose from</Typography>
+                        <Typography variant="caption" paragraph>
+                            Enter options to choose from, separated by a comma
+                        </Typography>
                         <Input
                             type="text"
                             placeholder="Bacon,Cheese,Eggs"
@@ -149,9 +149,10 @@ const AddQuestionModal = ({
             case 'boolean': {
                 return (
                     <React.Fragment>
-                        <FormFieldLabel required show label="Default value" />
-                        <FormFieldHint show hint="Is this field checked/yes by default?" />
-                        <Divider size={1} />
+                        <Typography variant="subtitle1">Default value</Typography>
+                        <Typography variant="caption" paragraph>
+                            Is this field checked/yes by default?
+                        </Typography>
                         <Radio.Group
                             value={data.settings.default || false}
                             buttonStyle="solid"
@@ -185,9 +186,10 @@ const AddQuestionModal = ({
             centered={true}
         >
             {/** Label */}
-            <FormFieldLabel label="Label" required show />
-            <FormFieldHint hint="The name of your question" show />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Label</Typography>
+            <Typography variant="caption" paragraph>
+                The name of your question
+            </Typography>
             <Input
                 placeholder="Label"
                 size="large"
@@ -196,12 +198,11 @@ const AddQuestionModal = ({
             />
             <Divider size={2} />
             {/** Machine name */}
-            <FormFieldLabel label="Machine name" required show />
-            <FormFieldHint
-                hint="A unique machine-readable name. This should be only letters, and be written in camelCase: e.g. letterOfMotivation. This field will not be visible to the end-user."
-                show
-            />
-            <Divider size="sm" />
+            <Typography variant="subtitle1">Machine name</Typography>
+            <Typography variant="caption" paragraph>
+                A unique machine-readable name. This should be only letters, and be written in camelCase: e.g.
+                letterOfMotivation. This field will not be visible to the end-user.
+            </Typography>
             <Input
                 placeholder="machineName"
                 size="large"
@@ -211,12 +212,11 @@ const AddQuestionModal = ({
             />
             <Divider size={2} />
             {/** Question Type */}
-            <FormFieldLabel label="Question Type" required show />
-            <FormFieldHint
-                hint="Which kind of answer do you want? Choose a type and you will be presented with any available additional options"
-                show
-            />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Question type</Typography>
+            <Typography variant="caption" paragraph>
+                Which kind of answer do you want? Choose a type and you will be presented with any available additional
+                options
+            </Typography>
             <Select
                 size="large"
                 style={{ width: '100%' }}
@@ -234,21 +234,17 @@ const AddQuestionModal = ({
             <Divider size={2} />
             {renderFieldTypeOptions()}
             {/** Hint */}
-            <FormFieldLabel label="Hint" show />
-            <FormFieldHint
-                hint="Add an optional help text to show under the question label - just like the one you're reading right now"
-                show
-            />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Hint</Typography>
+            <Typography variant="caption" paragraph>
+                Add an optional help text to show under the question label - just like the one you're reading right now
+            </Typography>
             <MarkdownInput placeholder="Hint" value={data.hint} onChange={e => handleChange('hint', e.target.value)} />
             <Divider size={2} />
             {/** Required? */}
-            <FormFieldLabel label="Is this question required or optional?" show />
-            <FormFieldHint
-                hint="Users will not be able to submit the form without answering this question, if it is required."
-                show
-            />
-            <Divider size={1} />
+            <Typography variant="subtitle1">Is this question required or optional?</Typography>
+            <Typography variant="caption" paragraph>
+                Users will not be able to submit the form without answering this question, if it is required.
+            </Typography>
             <Radio.Group
                 buttonStyle="solid"
                 value={data.fieldRequired || false}

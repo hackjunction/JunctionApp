@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import styles from './AddOrganiserDrawer.module.scss';
 
 import { connect } from 'react-redux';
-import { Drawer, Row, Col, Button, Input, List, notification, message } from 'antd';
+import { Drawer, Row, Col, Button, Input, List, notification } from 'antd';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import Divider from 'components/generic/Divider';
 import UserProfilesService from 'services/userProfiles';
-import EventsService from 'services/events';
 
 const AddOrganiserDrawer = ({ isOpen, onClose, onAdded, idToken, organisers, slug }) => {
     const [results, setResults] = useState([]);

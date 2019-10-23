@@ -1,20 +1,24 @@
-import React, { useMemo, useState } from 'react';
-import './AdminPage.scss';
+import React, { useMemo } from 'react';
 
 import { connect } from 'react-redux';
 import { groupBy, filter } from 'lodash-es';
 import { RegistrationStatuses } from '@hackjunction/shared';
-import { Row, Col, Card, Statistic, Tag, List, Button as AntButton, notification } from 'antd';
-import Divider from 'components/generic/Divider';
+import { Grid, Paper, Typography, Button, Box } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
+import StatusBadge from 'components/generic/StatusBadge';
+import Statistic from 'components/generic/Statistic';
+import PageWrapper from 'components/layouts/PageWrapper';
+import QRCodeReaderModal from 'components/modals/QRCodeReaderModal';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
+import * as OrganiserActions from 'redux/organiser/actions';
 import RegistrationsService from 'services/registrations';
+import { useToggle } from 'hooks/customHooks';
 
 const STATUSES = RegistrationStatuses.asObject;
 
-const AdminPage = ({ registrations, idToken, event }) => {
-    const [bulkAcceptLoading, setBulkAcceptLoading] = useState(false);
-    const [bulkRejectLoading, setBulkRejectLoading] = useState(false);
+const AdminPage = ({ registrations, updateRegistrations, loading, idToken, event, enqueueSnackbar }) => {
+    const [qrReaderOpen, setQrReaderOpen] = useToggle(false);
     const groupedByStatus = useMemo(() => {
         return groupBy(registrations, 'status');
     }, [registrations]);
@@ -29,157 +33,151 @@ const AdminPage = ({ registrations, idToken, event }) => {
     };
 
     const handleBulkAccept = () => {
-        setBulkAcceptLoading(true);
-        RegistrationsService.bulkAcceptRegistrationsForEvent(idToken, event.slug)
+        return RegistrationsService.bulkAcceptRegistrationsForEvent(idToken, event.slug)
             .then(data => {
-                notification.success({
-                    message: 'Success!',
-                    description: 'All soft accepted registrations have been accepted'
-                });
+                enqueueSnackbar('Success! All soft accepted registrations have been accepted.', { variant: 'success' });
             })
             .catch(err => {
-                notification.error({
-                    message: 'Something went wrong...',
-                    description: "Are you sure you're connected to the internet?"
+                enqueueSnackbar("Something went wrong... Are you sure you're connected to the internet ?", {
+                    variant: 'error'
                 });
             })
             .finally(() => {
-                setBulkAcceptLoading(false);
+                updateRegistrations(event.slug);
+                return;
+            });
+    };
+
+    const handleBulkReject = () => {
+        return RegistrationsService.bulkRejectRegistrationsForEvent(idToken, event.slug)
+            .then(data => {
+                enqueueSnackbar('Success! All soft rejected registrations have been rejected.', { variant: 'success' });
+            })
+            .catch(err => {
+                enqueueSnackbar("Something went wrong... Are you sure you're connected to the internet ?", {
+                    variant: 'success'
+                });
+            })
+            .finally(() => {
+                updateRegistrations(event.slug);
+                return;
             });
     };
 
     const total = registrations.length;
     const rated = filter(registrations, reg => reg.rating).length;
-    const ratedOrAssigned = filter(registrations, reg => reg.rating || reg.assignedTo).length;
-
-    const ACTIONS = [
-        {
-            title: 'Accept all soft accepted',
-            description:
-                'Change the status of all Soft Accepted participants to Accepted, and notify them via email that they have been accepted to the event!',
-            extra: (
-                <AntButton onClick={handleBulkAccept} type="link" loading={bulkAcceptLoading}>
-                    Accept
-                </AntButton>
-            )
-        },
-        {
-            title: 'Reject all soft rejected',
-            description:
-                'Change the status of all Soft Rejected participants to Rejected, and notify them via email that they did not make it.',
-            extra: (
-                <AntButton
-                    onClick={() => window.alert('Get permission from Juuso to do this ;--)')}
-                    type="link"
-                    loading={bulkRejectLoading}
-                >
-                    Reject
-                </AntButton>
-            )
-        }
-    ];
 
     return (
-        <React.Fragment>
-            <Divider size={1} />
-            <Row gutter={16}>
-                <Col xs={24} md={8}>
-                    <Divider size={1} />
-                    <Card title="Total registrations">
-                        <Statistic title="" value={total}></Statistic>
-                    </Card>
-                </Col>
-                <Col xs={24} md={8}>
-                    <Divider size={1} />
-                    <Card title="Rated">
-                        <Statistic title="" value={`${rated} / ${total}`}></Statistic>
-                    </Card>
-                </Col>
-                <Col xs={24} md={8}>
-                    <Divider size={1} />
-                    <Card title="Rated or Assigned">
-                        <Statistic title="" value={`${ratedOrAssigned} / ${total}`}></Statistic>
-                    </Card>
-                </Col>
-                <Col xs={24}>
-                    <Divider size={1} />
-                    <Card title="By status" bodyStyle={{ padding: 0 }}>
-                        <Row>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.pending.color}>{STATUSES.pending.label}</Tag>
-                                    <Statistic value={getCount(['pending'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.softAccepted.color}>{STATUSES.softAccepted.label}</Tag>
-                                    <Statistic value={getCount(['softAccepted'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.accepted.color}>{STATUSES.accepted.label}</Tag>
-                                    <Statistic value={getCount(['accepted'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.softRejected.color}>{STATUSES.softRejected.label}</Tag>
-                                    <Statistic value={getCount(['softRejected'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.rejected.color}>{STATUSES.rejected.label}</Tag>
-                                    <Statistic value={getCount(['rejected'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.confirmed.color}>{STATUSES.confirmed.label}</Tag>
-                                    <Statistic value={getCount(['confirmed'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.checkedIn.color}>{STATUSES.checkedIn.label}</Tag>
-                                    <Statistic value={getCount(['checkedIn'])} />
-                                </Card.Grid>
-                            </Col>
-                            <Col xs={12} md={6}>
-                                <Card.Grid style={{ width: '100%' }}>
-                                    <Tag color={STATUSES.noShow.color}>{STATUSES.noShow.label}</Tag>
-                                    <Statistic value={getCount(['noShow'])} />
-                                </Card.Grid>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
-                <Col xs={24}>
-                    <Divider size={1} />
-                    <Card title="Actions">
-                        <List>
-                            <List
-                                itemLayout="horizontal"
-                                dataSource={ACTIONS}
-                                renderItem={item => (
-                                    <List.Item extra={item.extra}>
-                                        <List.Item.Meta title={item.title} description={item.description} />
-                                    </List.Item>
-                                )}
-                            />
-                        </List>
-                    </Card>
-                </Col>
-            </Row>
-        </React.Fragment>
+        <PageWrapper loading={loading}>
+            <Typography variant="h5" paragraph>
+                Stats
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                    <Paper>
+                        <Statistic label="Total registrations" value={total}></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper>
+                        <Statistic label="Rated" value={`${rated} / ${total}`}></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.confirmed.id} />}
+                            value={getCount(['confirmed'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.accepted.id} />}
+                            value={getCount(['accepted'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.cancelled.id} />}
+                            value={getCount(['cancelled'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.rejected.id} />}
+                            value={getCount(['rejected'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.checkedIn.id} />}
+                            value={getCount(['checkedIn'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.noShow.id} />}
+                            value={getCount(['noShow'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.softAccepted.id} />}
+                            value={getCount(['softAccepted'])}
+                            action={handleBulkAccept}
+                            actionText="Accept all"
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper>
+                        <Statistic
+                            label={<StatusBadge status={STATUSES.softRejected.id} />}
+                            value={getCount(['softRejected'])}
+                            action={handleBulkReject}
+                            actionText="Reject all"
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+            </Grid>
+            <Box mt={5} />
+            <Typography variant="h5" paragraph>
+                Tools
+            </Typography>
+            <Button variant="contained" color="primary" onClick={() => setQrReaderOpen(true)}>
+                Check In Participants
+            </Button>
+            <QRCodeReaderModal open={qrReaderOpen} onClose={() => setQrReaderOpen(false)} />
+        </PageWrapper>
     );
 };
 
 const mapState = state => ({
     registrations: OrganiserSelectors.registrations(state),
     event: OrganiserSelectors.event(state),
-    idToken: AuthSelectors.getIdToken(state)
+    idToken: AuthSelectors.getIdToken(state),
+    loading: OrganiserSelectors.registrationsLoading(state)
 });
-export default connect(mapState)(AdminPage);
+
+const mapDispatch = dispatch => ({
+    updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
+});
+
+export default withSnackbar(
+    connect(
+        mapState,
+        mapDispatch
+    )(AdminPage)
+);
