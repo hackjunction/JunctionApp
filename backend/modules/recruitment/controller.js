@@ -6,9 +6,9 @@ const EmailTaskController = require('../email-task/controller');
 
 const controller = {};
 
-controller.getRecruitmentProfile = userId => {
+controller.getRecruitmentProfile = (userId, recruiterId) => {
     return UserController.getUserProfile(userId).then(userProfile => {
-        return controller.createRecruitmentProfile(userProfile, true);
+        return controller.createRecruitmentProfile(userProfile, true, recruiterId);
     });
 };
 
@@ -34,10 +34,11 @@ controller.queryProfiles = (query = {}) => {
             limit: query.pagination.page_size
         };
     }
+    console.log(query)
     return UserController.queryProfiles({
         query: userQuery,
         pagination: pagination
-    }).then(results => {
+    }, true).then(results => {
         return Promise.all(
             results.found.map(profile => {
                 return controller.createRecruitmentProfile(profile, false);
@@ -59,7 +60,7 @@ controller.filterOperatorToMongoOperator = operator => {
     if (operator == 'array-not-contains') return '$nin';
 };
 
-controller.createRecruitmentProfile = async (userProfile, eager = false) => {
+controller.createRecruitmentProfile = async (userProfile, eager = false, recruiterId = null) => {
     const profile = {
         userId: userProfile.userId,
         profile: {
@@ -96,7 +97,8 @@ controller.createRecruitmentProfile = async (userProfile, eager = false) => {
 
         // TODO filter only those actions that match the organization from the token!
         profile.recruitmentActionHistory = await RecruitmentAction.find({
-            userId: profile.userId
+            userId: profile.userId,
+            recruiter: recruiterId
         });
     }
 

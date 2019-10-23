@@ -26,6 +26,13 @@ _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
 
 UserProfileSchema.add(fields);
 
+// Virtual field to fetch registrations if required
+UserProfileSchema.virtual('registrations', {
+    ref: 'Registration', // The model to use
+    localField: 'userId', // Find people where `localField`
+    foreignField: 'user', // is equal to `foreignField`
+  });
+
 UserProfileSchema.index({
     userId: 1
 });
