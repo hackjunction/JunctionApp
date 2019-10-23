@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
     wrapper: {
         display: 'flex',
-        zIndex: 100
+        zIndex: 2000
     },
     wrapperPadded: {
         padding: theme.spacing(2)
