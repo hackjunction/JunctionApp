@@ -50,12 +50,12 @@ const FiltersDrawer = ({ loading, onSubmit, filters, setFilters }) => {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Typography variant="button" className={classes.title}>
-                            Filters
+                            Filter participants
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="overline" className={classes.sectionTitle}>
-                            Skills
+                        <Typography variant="subtitle1" className={classes.sectionTitle}>
+                            By skillset
                         </Typography>
                         <SkillsFilter
                             skills={skills}
@@ -65,14 +65,14 @@ const FiltersDrawer = ({ loading, onSubmit, filters, setFilters }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="overline" className={classes.sectionTitle}>
-                            Roles
+                        <Typography variant="subtitle1" className={classes.sectionTitle}>
+                            By role
                         </Typography>
                         <RolesFilter roles={roles} addRole={addRole} removeRole={removeRole} editRole={editRole} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="overline" className={classes.sectionTitle}>
-                            Country of residence
+                        <Typography variant="subtitle1" className={classes.sectionTitle}>
+                            By country of residence
                         </Typography>
                         <Select options="country" value={countries} onChange={setCountries} isMulti={true} />
                     </Grid>
