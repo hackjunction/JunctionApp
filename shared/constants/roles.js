@@ -51,6 +51,7 @@ Roles.items = categories.reduce((res, category) => {
     res = res.concat(category.items);
     return res;
 }, []);
+Roles.experienceLevelArray = Object.keys(experienceLevels).map(idx => ({ value: idx, ...experienceLevels[idx] }));
 Roles.experienceLevelsLabelsArray = Object.keys(experienceLevels).map(idx => experienceLevels[idx].label);
 Roles.getLabelForExperienceLevel = level =>
     experienceLevels.hasOwnProperty(level) ? experienceLevels[level].label : '';

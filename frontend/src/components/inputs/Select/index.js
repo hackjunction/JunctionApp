@@ -319,6 +319,8 @@ export default function IntegrationReactSelect({
     const theme = useTheme();
     const inputId = 'select-' + name;
 
+    console.log('VALUE', value);
+
     const selectStyles = {
         input: base => ({
             ...base,
@@ -389,7 +391,9 @@ export default function IntegrationReactSelect({
     );
 
     const transformedInput = useMemo(() => {
-        if (!value) return value;
+        if (!value) {
+            return '';
+        }
         if (isMulti) {
             return value
                 .map(item => {

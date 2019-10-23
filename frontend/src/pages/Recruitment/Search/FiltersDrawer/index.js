@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Button, Typography } from '@material-ui/core';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+
+import Select from 'components/inputs/Select';
+
+import { useArray } from 'hooks/customHooks';
+
+import SkillsFilter from './SkillsFilter';
+import RolesFilter from './RolesFilter';
 
 const useStyles = makeStyles(theme => ({
     content: {
@@ -21,8 +28,22 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SearchBox = ({ loading, updateSearchResults }) => {
+const FiltersDrawer = ({ loading, onSubmit, filters, setFilters }) => {
     const classes = useStyles();
+
+    const [skills, addSkill, removeSkill, editSkill] = useArray(filters.skills);
+    const [roles, addRole, removeRole, editRole] = useArray(filters.roles);
+    const [countries, setCountries] = useState(filters.countries);
+
+    const handleSubmit = useCallback(() => {
+        setFilters({
+            skills,
+            roles,
+            countries
+        });
+        onSubmit();
+    }, [onSubmit, setFilters, skills, roles, countries]);
+
     return (
         <Box flex="1" width="100%" display="flex" flexDirection="column">
             <Box className={classes.content}>
@@ -36,21 +57,29 @@ const SearchBox = ({ loading, updateSearchResults }) => {
                         <Typography variant="overline" className={classes.sectionTitle}>
                             Skills
                         </Typography>
+                        <SkillsFilter
+                            skills={skills}
+                            addSkill={addSkill}
+                            removeSkill={removeSkill}
+                            editSkill={editSkill}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="overline" className={classes.sectionTitle}>
                             Roles
                         </Typography>
+                        <RolesFilter roles={roles} addRole={addRole} removeRole={removeRole} editRole={editRole} />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="overline" className={classes.sectionTitle}>
                             Country of residence
                         </Typography>
+                        <Select options="country" value={countries} onChange={setCountries} isMulti={true} />
                     </Grid>
                 </Grid>
             </Box>
             <Box p={2}>
-                <Button disabled={loading} fullWidth variant="contained" color="primary" onClick={updateSearchResults}>
+                <Button disabled={loading} fullWidth variant="contained" color="primary" onClick={handleSubmit}>
                     Search
                 </Button>
             </Box>
@@ -59,14 +88,15 @@ const SearchBox = ({ loading, updateSearchResults }) => {
 };
 
 const mapState = state => ({
-    loading: RecruitmentSelectors.searchResultsLoading(state)
+    loading: RecruitmentSelectors.searchResultsLoading(state),
+    filters: RecruitmentSelectors.filters(state)
 });
 
 const mapDispatch = dispatch => ({
-    updateSearchResults: () => dispatch(RecruitmentActions.updateSearchResults())
+    setFilters: data => dispatch(RecruitmentActions.setFilters(data))
 });
 
 export default connect(
     mapState,
     mapDispatch
-)(SearchBox);
+)(FiltersDrawer);
