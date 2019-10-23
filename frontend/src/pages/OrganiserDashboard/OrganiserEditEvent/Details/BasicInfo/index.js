@@ -1,34 +1,21 @@
 import React from 'react';
 
 import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { FastField } from 'formik';
 
 import MarkdownInput from 'components/inputs/MarkdownInput';
 import FormControl from 'components/inputs/FormControl';
 import TextInput from 'components/inputs/TextInput';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        '& .MuiBox-root': {
-            background: theme.palette.background.paper,
-            padding: theme.spacing(2),
-            boxShadow: theme.shadows[1],
-            borderRadius: '2px'
-        }
-    }
-}));
-
 const OrganiserEditEventInfo = props => {
-    const classes = useStyles();
     return (
-        <Grid container spacing={3} classes={{ root: classes.root }}>
+        <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
                 <FastField
                     name="name"
                     render={({ field, form }) => (
                         <FormControl
-                            label="Name"
+                            label="Event name"
                             hint="The name of your event"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
@@ -68,7 +55,7 @@ const OrganiserEditEventInfo = props => {
                     name="description"
                     render={({ field, form }) => (
                         <FormControl
-                            // label="Description"
+                            label="Description"
                             hint="A hype description for your event."
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
