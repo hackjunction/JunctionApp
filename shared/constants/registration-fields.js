@@ -612,6 +612,20 @@ const FieldProps = {
         label: 'Job opportunities',
         hint: '',
         fieldType: FieldTypes.RECRUITMENT_OPTIONS,
+        userProfileConfig: {
+            status: {
+                type: String,
+                enum: Object.keys(Misc.recruitmentStatuses.items)
+            }, 
+            consent: {
+                type: Boolean,
+                default: false
+            },
+            relocation: {
+                type: String,
+                enum: Object.keys(Misc.relocationOptions.items)
+            },
+        },
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,

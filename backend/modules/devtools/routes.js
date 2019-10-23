@@ -80,7 +80,8 @@ router.route('/sync-user-profiles').get(async (req, res) => {
           update: {
             $set: {
               roles: registration.answers.roles,
-              skills: registration.answers.skills
+              skills: registration.answers.skills,
+              recruitmentOptions: registration.answers.recruitmentOptions
             },
             /* $unset: {
               registrations: ""
