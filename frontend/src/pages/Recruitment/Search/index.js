@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Drawer } from '@material-ui/core';
+import { Drawer, Button, Box } from '@material-ui/core';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import SearchResults from './SearchResults';
 import FiltersDrawer from './FiltersDrawer';
@@ -15,8 +16,7 @@ const useStyles = makeStyles(theme => ({
     },
     drawer: {
         width: DRAWER_WIDTH,
-        flexShrink: 0,
-        backgroundColor: 'white'
+        flexShrink: 0
     },
     drawerInner: {
         width: DRAWER_WIDTH,
@@ -32,6 +32,11 @@ const useStyles = makeStyles(theme => ({
 const SearchPage = () => {
     const classes = useStyles();
 
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const openDrawer = useCallback(() => setDrawerOpen(true), []);
+    const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+
     return (
         <div className={classes.root}>
             <Drawer
@@ -39,11 +44,18 @@ const SearchPage = () => {
                 classes={{
                     paper: classes.drawerInner
                 }}
-                variant="permanent"
+                variant="temporary"
+                open={drawerOpen}
+                onClose={closeDrawer}
             >
-                <FiltersDrawer />
+                <FiltersDrawer onSubmit={closeDrawer} />
             </Drawer>
             <main className={classes.content}>
+                <Button onClick={openDrawer}>
+                    <FilterListIcon />
+                    Filters
+                </Button>
+                <Box mt={1} />
                 <SearchResults />
             </main>
         </div>

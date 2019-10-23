@@ -16,7 +16,7 @@ export const useToggle = initialValue => {
     return [value, toggleValue];
 };
 
-export const useArray = initialValue => {
+export const useArray = (initialValue = []) => {
     const [value, setValue] = useState(initialValue);
 
     if (!Array.isArray(value)) {

@@ -28,12 +28,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const FiltersDrawer = ({ loading, updateSearchResults, setFilters }) => {
+const FiltersDrawer = ({ loading, onSubmit, filters, setFilters }) => {
     const classes = useStyles();
 
-    const [skills, addSkill, removeSkill, editSkill] = useArray([]);
-    const [roles, addRole, removeRole, editRole] = useArray([]);
-    const [countries, setCountries] = useState([]);
+    const [skills, addSkill, removeSkill, editSkill] = useArray(filters.skills);
+    const [roles, addRole, removeRole, editRole] = useArray(filters.roles);
+    const [countries, setCountries] = useState(filters.countries);
 
     const handleSubmit = useCallback(() => {
         setFilters({
@@ -41,7 +41,8 @@ const FiltersDrawer = ({ loading, updateSearchResults, setFilters }) => {
             roles,
             countries
         });
-    }, [setFilters, skills, roles, countries]);
+        onSubmit();
+    }, [onSubmit, setFilters, skills, roles, countries]);
 
     return (
         <Box flex="1" width="100%" display="flex" flexDirection="column">
@@ -87,11 +88,11 @@ const FiltersDrawer = ({ loading, updateSearchResults, setFilters }) => {
 };
 
 const mapState = state => ({
-    loading: RecruitmentSelectors.searchResultsLoading(state)
+    loading: RecruitmentSelectors.searchResultsLoading(state),
+    filters: RecruitmentSelectors.filters(state)
 });
 
 const mapDispatch = dispatch => ({
-    updateSearchResults: () => dispatch(RecruitmentActions.updateSearchResults()),
     setFilters: data => dispatch(RecruitmentActions.setFilters(data))
 });
 
