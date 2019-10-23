@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RecruitmentUserModal from 'components/modals/RecruitmentUserModal';
 import ResultCard from './ResultCard';
 import { connect } from 'react-redux';
@@ -6,12 +6,15 @@ import { connect } from 'react-redux';
 import { Paper, Box, List } from '@material-ui/core';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import * as RecruitmentActions from 'redux/recruitment/actions';
 import { Typography } from 'antd';
 
-const SearchResults = ({ searchResults, searchResultsCount }) => {
+const SearchResults = ({ searchResults, searchResultsCount, updateSearchResults, filters }) => {
     const [selected, setSelected] = useState();
 
-    console.log('SEARCH RESULTS', searchResults);
+    useEffect(() => {
+        updateSearchResults();
+    }, [filters, updateSearchResults]); //eslint-disable-line
 
     return (
         <React.Fragment>
@@ -36,7 +39,15 @@ const SearchResults = ({ searchResults, searchResultsCount }) => {
 
 const mapState = state => ({
     searchResults: RecruitmentSelectors.searchResults(state),
-    searchResultsCount: RecruitmentSelectors.searchResultsCount(state)
+    searchResultsCount: RecruitmentSelectors.searchResultsCount(state),
+    filters: RecruitmentSelectors.filters(state)
 });
 
-export default connect(mapState)(SearchResults);
+const mapDispatch = dispatch => ({
+    updateSearchResults: () => dispatch(RecruitmentActions.updateSearchResults())
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(SearchResults);

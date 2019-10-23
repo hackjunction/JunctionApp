@@ -10,7 +10,8 @@ const initialState = {
         loading: false,
         error: false,
         updated: 0
-    }
+    },
+    filters: []
 };
 
 const searchResultsHandler = buildHandler('searchResults');
@@ -19,6 +20,12 @@ export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.UPDATE_SEARCH_RESULTS: {
             return searchResultsHandler(state, action);
+        }
+        case ActionTypes.SET_FILTERS: {
+            return {
+                ...state,
+                filters: action.payload
+            };
         }
         default:
             return state;

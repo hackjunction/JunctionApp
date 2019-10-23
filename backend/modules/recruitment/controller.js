@@ -19,10 +19,7 @@ controller.queryProfiles = (query = {}) => {
         const whereFields = query.filters.map(filter => {
             return {
                 [filter.field]: {
-
-                    [controller.filterOperatorToMongoOperator(
-                        filter.operator
-                    )]: filter.value
+                    [controller.filterOperatorToMongoOperator(filter.operator)]: filter.value
                 }
             };
         });
@@ -139,9 +136,7 @@ controller.getFavorites = async recruiter => {
                 actions.map(async action => {
                     // Convert profiles so we don't reveal contact data
 
-                    action._user = await controller.createRecruitmentProfile(
-                        action._user
-                    );
+                    action._user = await controller.createRecruitmentProfile(action._user);
                     return action._user;
                 })
             )
