@@ -1,67 +1,14 @@
 import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import { buildFilterArray } from './helpers';
 
 import RecruitmentService from 'services/recruitment';
 
 export const setFilters = data => dispatch => {
-    const { skills = [], roles = [], countries = [] } = data;
-
-    const filters = [];
-
-    if (countries.length) {
-        filters.push({
-            field: 'countryOfResidence',
-            operator: '==',
-            value: countries
-        });
-    }
-
-    skills.forEach(({ skill, levels }) => {
-        if (levels.length) {
-            filters.push({
-                field: 'skills',
-                operator: 'array-contains',
-                value: {
-                    skill,
-                    level: {
-                        $in: levels.map(level => parseInt(level))
-                    }
-                }
-            });
-        } else {
-            filters.push({
-                field: 'skills.skill',
-                operator: '==',
-                value: skill
-            });
-        }
-    });
-
-    roles.forEach(({ role, years }) => {
-        if (years.length) {
-            filters.push({
-                field: 'roles',
-                operator: 'array-contains',
-                value: {
-                    role,
-                    years: {
-                        $in: years.map(year => parseInt(year))
-                    }
-                }
-            });
-        } else {
-            filters.push({
-                field: 'roles.role',
-                operator: '==',
-                value: role
-            });
-        }
-    });
-
     dispatch({
         type: ActionTypes.SET_FILTERS,
-        payload: filters
+        payload: data
     });
 };
 
@@ -86,9 +33,9 @@ export const setNextPage = () => ({
 export const updateSearchResults = () => (dispatch, getState) => {
     const state = getState();
     const idToken = AuthSelectors.getIdToken(state);
-    const filters = RecruitmentSelectors.filters(state);
     const page = RecruitmentSelectors.page(state);
     const pageSize = RecruitmentSelectors.pageSize(state);
+    const filters = buildFilterArray(RecruitmentSelectors.filters(state));
 
     dispatch({
         type: ActionTypes.UPDATE_SEARCH_RESULTS,

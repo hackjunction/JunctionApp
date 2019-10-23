@@ -11,7 +11,7 @@ const initialState = {
         error: false,
         updated: 0
     },
-    filters: [],
+    filters: {},
     pagination: {
         page: 0,
         page_size: 25
