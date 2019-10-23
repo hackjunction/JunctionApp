@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Drawer } from '@material-ui/core';
 
 import SearchResults from './SearchResults';
-import SearchBox from './SearchBox';
+import FiltersDrawer from './FiltersDrawer';
 
 const DRAWER_WIDTH = 500;
 
@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchPage = () => {
     const classes = useStyles();
+
     return (
         <div className={classes.root}>
             <Drawer
@@ -40,7 +41,7 @@ const SearchPage = () => {
                 }}
                 variant="permanent"
             >
-                <SearchBox />
+                <FiltersDrawer />
             </Drawer>
             <main className={classes.content}>
                 <SearchResults />
