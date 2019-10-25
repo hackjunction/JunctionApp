@@ -46,7 +46,7 @@ export const updateSearchResults = () => (dispatch, getState) => {
   });
 };
 
-export const sendMessage = (message, userId) => (getState, dispatch) => {
+export const sendMessage = (message, userId) => (dispatch, getState) => {
   const idToken = AuthSelectors.getIdToken(getState());
 
   dispatch({
@@ -74,3 +74,8 @@ export const toggleFavorite = userId => (dispatch, getState) => {
     }
   });
 };
+
+export const changeMessageValue = message => ({
+  type: ActionTypes.CHANGE_MESSAGE_VAL,
+  payload: message
+});

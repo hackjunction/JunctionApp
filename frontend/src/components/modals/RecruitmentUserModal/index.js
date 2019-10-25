@@ -31,7 +31,6 @@ const RecruitmentUserModal = ({
   const [participant, setParticipant] = useState();
 
   useEffect(() => {
-    console.log('id:', profileId);
     if (profileId) {
       setLoading(true);
       UserProfilesService.getUserProfileRecruitment(profileId, idToken)
@@ -112,10 +111,7 @@ const RecruitmentUserModal = ({
             />
           </Grid>
         </Grid>
-        <RecruitmentProfileInfo
-          participant={participant}
-          sendMessage={sendMessage}
-        />
+        <RecruitmentProfileInfo participant={participant} />
       </PageWrapper>
     </Modal>
   );
@@ -127,8 +123,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   toggleFavorite: profileId =>
-    dispatch(RecruitmentActions.toggleFavorite(profileId)),
-  sendMessage: () => dispatch(RecruitmentActions.sendMessage())
+    dispatch(RecruitmentActions.toggleFavorite(profileId))
 });
 
 export default withSnackbar(
