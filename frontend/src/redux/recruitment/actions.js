@@ -46,17 +46,15 @@ export const updateSearchResults = () => (dispatch, getState) => {
   });
 };
 
-export const sendMessage = (organization, message, recruiter, userId) => (getState, dispatch) => {
-  const state = getState();
-  const idToken = AuthSelectors.getIdToken(state);
+export const sendMessage = (message, userId) => (getState, dispatch) => {
+  const idToken = AuthSelectors.getIdToken(getState());
+
   dispatch({
     type: ActionTypes.SUBMIT_ACTION,
     promise: RecruitmentService.submitAction(
       'message',
       idToken,
-      recruiter,
       userId,
-      organization,
       message
     ),
     meta: {
@@ -65,18 +63,12 @@ export const sendMessage = (organization, message, recruiter, userId) => (getSta
   });
 };
 
-export const toggleFavorite = (organization, recruiter, userId) => (dispatch, getState) => {
+export const toggleFavorite = userId => (dispatch, getState) => {
   const idToken = AuthSelectors.getIdToken(getState());
-  console.log('called toggle');
+
   dispatch({
     type: ActionTypes.SUBMIT_ACTION,
-    promise: RecruitmentService.submitAction(
-      'favorite',
-      idToken,
-      recruiter,
-      userId,
-      organization
-    ),
+    promise: RecruitmentService.submitAction('favorite', idToken, userId),
     meta: {
       onFailure: e => console.log('Error adding to favorites', e)
     }

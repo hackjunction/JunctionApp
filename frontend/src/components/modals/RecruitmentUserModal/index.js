@@ -77,7 +77,9 @@ const RecruitmentUserModal = ({
         <Button
           block
           text="Add to favorites"
-          button={{ onClick: e => toggleFavorite(profileId, idToken) }}
+          button={{
+            onClick: () => toggleFavorite(profileId)
+          }}
         />
         <Grid container direction="row" justify="space-around">
           <Grid item sm={8} md={8} lg={8}>
@@ -124,7 +126,8 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  toggleFavorite: () => dispatch(RecruitmentActions.toggleFavorite()),
+  toggleFavorite: profileId =>
+    dispatch(RecruitmentActions.toggleFavorite(profileId)),
   sendMessage: () => dispatch(RecruitmentActions.sendMessage())
 });
 
