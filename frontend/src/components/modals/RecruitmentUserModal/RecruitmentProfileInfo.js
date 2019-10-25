@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Typography, Link, Grid, Box } from '@material-ui/core';
 import Button from 'components/generic/Button';
 import { Input } from 'antd';
+import { changeMessageValue } from 'redux/recruitment/actions';
 
+import { sendMessage } from 'redux/recruitment/actions';
 
 const getListOf = (areas, subject) => {
   if (areas && areas.length !== 0)
@@ -44,42 +47,63 @@ const getPrevEvents = events => {
     );
 };
 
-const RecruitmentProfileInfo = React.memo(({ participant, sendMessage }) => {
-  const {
-    // education,
-    themesOfInterest,
-    industriesOfInterest,
-    previousEvents,
-    social
-  } = participant;
-  const { recruitmentActionHistory, firstName } = participant.profile;
-  return (
-    <Grid container>
-      <Grid container direction="column" justify="space-between">
-        {social && social.length !== 0 && (
-          <Grid item mb={2} sm={12} md={6} lg={6}>
-            <Typography variant="h6">Social stuff</Typography>
-            {Object.keys(social).map(service => {
-              return <Link>{social[service]}</Link>;
-            })}
-          </Grid>
-        )}
-        {getListOf(themesOfInterest, 'theme')}
-        {getListOf(industriesOfInterest, 'industry')}
-        {getPrevEvents(previousEvents)}
+const RecruitmentProfileInfo = React.memo(
+  ({ participant, sendMessage, changeMessageValue, messageValue }) => {
+    const {
+      themesOfInterest,
+      industriesOfInterest,
+      previousEvents,
+      social
+    } = participant;
+    const { recruitmentActionHistory, firstName } = participant.profile;
+    return (
+      <Grid container>
+        <Grid container direction="column" justify="space-between">
+          {social && social.length !== 0 && (
+            <Grid item mb={2} sm={12} md={6} lg={6}>
+              <Typography variant="h6">Social stuff</Typography>
+              {Object.keys(social).map(service => {
+                return <Link>{social[service]}</Link>;
+              })}
+            </Grid>
+          )}
+          {getListOf(themesOfInterest, 'theme')}
+          {getListOf(industriesOfInterest, 'industry')}
+          {getPrevEvents(previousEvents)}
+        </Grid>
+        <Grid item sm={12} md={8} lg={6}>
+          <Typography variant="h6">Contact</Typography>
+          {getActionHistory(recruitmentActionHistory)}
+          <Typography>Send {firstName} a message</Typography>
+          <Input.TextArea
+            onChange={e => changeMessageValue(e.target.value)}
+            value={messageValue}
+            autosize={{ minRows: 10, maxRows: 20 }}
+            placeholder="Max 1000 characters"
+          />
+          <Button
+            block
+            text="Send"
+            button={{
+              onClick: () => sendMessage(messageValue, participant.userId)
+            }}
+          />
+        </Grid>
       </Grid>
-      <Grid item sm={12} md={8} lg={6}>
-        <Typography variant="h6">Contact</Typography>
-        {getActionHistory(recruitmentActionHistory)}
-        <Typography>Send {firstName} a message</Typography>
-        <Input.TextArea
-          autosize={{ minRows: 10, maxRows: 20 }}
-          placeholder="Max 1000 characters"
-        />
-        <Button block text="Send" button={{ onClick: () => sendMessage() }} />
-      </Grid>
-    </Grid>
-  );
+    );
+  }
+);
+
+const mapState = state => ({
+  messageValue: state.recruitment.messageValue
 });
 
-export default RecruitmentProfileInfo;
+const mapDispatch = dispatch => ({
+  changeMessageValue: value => dispatch(changeMessageValue(value)),
+  sendMessage: (message, profileId) => dispatch(sendMessage(message, profileId))
+});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(RecruitmentProfileInfo);
