@@ -63,16 +63,30 @@ export const sendMessage = (message, userId) => (dispatch, getState) => {
   });
 };
 
-export const toggleFavorite = userId => (dispatch, getState) => {
+export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
   const idToken = AuthSelectors.getIdToken(getState());
 
-  dispatch({
-    type: ActionTypes.SUBMIT_ACTION,
-    promise: RecruitmentService.submitAction('favorite', idToken, userId),
-    meta: {
-      onFailure: e => console.log('Error adding to favorites', e)
-    }
-  });
+  if (isFavorite) {
+    dispatch({
+      type: ActionTypes.SUBMIT_ACTION,
+      promise: RecruitmentService.submitAction('favorite', idToken, userId),
+      meta: {
+        onFailure: e => console.log('Error adding to favorites', e)
+      }
+    });
+  } else {
+    dispatch({
+      type: ActionTypes.SUBMIT_ACTION,
+      promise: RecruitmentService.submitAction(
+        'remove-favorite',
+        idToken,
+        userId
+      ),
+      meta: {
+        onFailure: e => console.log('Error adding to favorites', e)
+      }
+    });
+  }
 };
 
 export const changeMessageValue = message => ({
