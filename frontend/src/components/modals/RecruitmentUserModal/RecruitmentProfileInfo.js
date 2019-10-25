@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Typography, Link, Grid, Box } from '@material-ui/core';
 import Button from 'components/generic/Button';
 import { Input } from 'antd';
 
-import * as RecruitmentActions from 'redux/recruitment/actions';
 
 const getListOf = (areas, subject) => {
   if (areas && areas.length !== 0)
