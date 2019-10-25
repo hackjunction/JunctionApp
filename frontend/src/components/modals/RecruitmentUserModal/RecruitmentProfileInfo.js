@@ -39,7 +39,7 @@ const getPrevEvents = events => {
   if (events && events.length !== 0)
     return (
       <Grid item mb={1} sm={12} md={6} lg={6}>
-        <Typography variant="h6">Past hackathons</Typography>
+        <Typography variant="h6">Hackathons</Typography>
         {events.map(event => {
           return <Typography key={event.id}>{event.name}</Typography>;
         })}
@@ -59,11 +59,15 @@ const RecruitmentProfileInfo = React.memo(
     return (
       <Grid container>
         <Grid container direction="column" justify="space-between">
-          {social && social.length !== 0 && (
+          {social && Object.entries(social).length !== 0 && (
             <Grid item mb={2} sm={12} md={6} lg={6}>
-              <Typography variant="h6">Social stuff</Typography>
+              <Typography variant="h6">On other media</Typography>
               {Object.keys(social).map(service => {
-                return <Link>{social[service]}</Link>;
+                return (
+                  <Typography>
+                    <Link>{social[service]}</Link>
+                  </Typography>
+                );
               })}
             </Grid>
           )}

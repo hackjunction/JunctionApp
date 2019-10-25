@@ -23,8 +23,7 @@ const RecruitmentUserModal = ({
   idToken,
   profileId,
   onClose,
-  toggleFavorite,
-  sendMessage
+  toggleFavorite
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -60,7 +59,7 @@ const RecruitmentUserModal = ({
 
   const participantImageUrl = useMemo(() => {
     if (!participant) return '';
-    return participant.profile.avatar;
+    return participant.profile.profilePicture;
   }, [participant]);
 
   const { education, roles } = participant || {};
