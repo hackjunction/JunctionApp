@@ -77,6 +77,7 @@ const RecruitmentProfileInfo = React.memo(
         </Grid>
         <Grid item sm={12} md={8} lg={6}>
           <Typography variant="h6">Contact</Typography>
+          <Typography variant="b">Action history here</Typography>
           {getActionHistory(recruitmentActionHistory)}
           <Typography>Send {firstName} a message</Typography>
           <Input.TextArea

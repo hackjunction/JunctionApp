@@ -64,6 +64,8 @@ const RecruitmentUserModal = ({
 
   const { education, roles } = participant || {};
 
+  const isFavorite = 'Implement some logic';
+
   return (
     <Modal
       isOpen={!!profileId}
@@ -76,7 +78,7 @@ const RecruitmentUserModal = ({
           block
           text="Add to favorites"
           button={{
-            onClick: () => toggleFavorite(profileId)
+            onClick: () => toggleFavorite(profileId, isFavorite)
           }}
         />
         <Grid container direction="row" justify="space-around">
@@ -121,8 +123,8 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  toggleFavorite: profileId =>
-    dispatch(RecruitmentActions.toggleFavorite(profileId))
+  toggleFavorite: (profileId, isFavorite) =>
+    dispatch(RecruitmentActions.toggleFavorite(profileId, isFavorite))
 });
 
 export default withSnackbar(
