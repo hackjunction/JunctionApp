@@ -3,7 +3,7 @@ import RecruitmentUserModal from 'components/modals/RecruitmentUserModal';
 import ResultCard from './ResultCard';
 import { connect } from 'react-redux';
 
-import { Paper, Box, List, Button } from '@material-ui/core';
+import { Grid, Box, Button } from '@material-ui/core';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
@@ -40,16 +40,24 @@ const SearchResults = ({
           <LoadingCard />
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          {searchResults.map(item => (
-            <ResultCard
-              key={`item-${item.userId}`}
-              data={item}
-              onClick={e => setSelected(item.userId)}
-            />
-          ))}
-        </React.Fragment>
-      )}
+          <React.Fragment>
+
+
+            <Grid container>
+              {searchResults.map(item => (
+                <Grid key={item} item xs={3}>
+                  <ResultCard
+                    // key={`item-${item.userId}`}
+                    data={item}
+                    onClick={e => setSelected(item.userId)}
+                  />
+                </Grid>
+              ))}
+
+            </Grid>
+
+          </React.Fragment>
+        )}
       {pageCount > 0 && (
         <Box
           mt={2}
