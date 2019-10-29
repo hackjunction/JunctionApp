@@ -1,83 +1,57 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Stepper, Step, StepLabel, StepContent, Typography, CircularProgress } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 
 import PageHeader from 'components/generic/PageHeader';
-import TimelineDot from 'components/generic/TimelineDot';
-import RegistrationPhase from './RegistrationPhase';
-import ConfirmedPhase from './ConfirmedPhase';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
-const useStyles = makeStyles(theme => ({
-    stepper: {
-        backgroundColor: 'transparent'
-    }
-}));
+import QuickLinks from './QuickLinks';
+import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock';
+import TeamStatusBlock from './Blocks/TeamStatusBlock';
+import VisaInvitationBlock from './Blocks/VisaInvitationBlock';
+import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock';
+
+// const useStyles = makeStyles(theme => ({
+//     stepper: {
+//         backgroundColor: 'transparent'
+//     }
+// }));
 
 const EventDashboardHome = ({ event, registration, loading }) => {
-    const classes = useStyles();
-    if (!event || !registration) return null;
+    // const classes = useStyles();
+    // if (!event || !registration) return null;
 
-    const getActiveStep = () => {
-        if (registration.status === 'confirmed') {
-            return 1;
-        }
-        return 0;
-    };
+    // const getActiveStep = () => {
+    //     if (registration.status === 'confirmed') {
+    //         return 1;
+    //     }
+    //     return 0;
+    // };
 
     return (
         <Box>
-            <PageHeader heading="Event timeline" />
+            <PageHeader heading={event.name} subheading="Dashboard" />
             <Box mt={2} />
-            {loading ? (
-                <Box p={2} display="flex" alignItems="center" justifyContent="center">
-                    <CircularProgress size={24} />
-                </Box>
-            ) : (
-                <Stepper activeStep={getActiveStep()} className={classes.stepper} orientation="vertical">
-                    <Step key="pending">
-                        <StepLabel StepIconComponent={TimelineDot}>
-                            <Typography variant="button">Registration period</Typography>
-                        </StepLabel>
-                        <StepContent>
-                            <RegistrationPhase />
-                        </StepContent>
-                    </Step>
-                    <Step key="confirmed">
-                        <StepLabel StepIconComponent={TimelineDot}>
-                            <Typography variant="button">Confirmed participation</Typography>
-                        </StepLabel>
-                        <StepContent>
-                            <ConfirmedPhase />
-                        </StepContent>
-                    </Step>
-                    <Step key="event">
-                        <StepLabel StepIconComponent={TimelineDot}>
-                            <Typography variant="button">Event in progress</Typography>
-                        </StepLabel>
-                        <StepContent>
-                            <RegistrationPhase />
-                        </StepContent>
-                    </Step>
-                    <Step key="event-finished">
-                        <StepLabel StepIconComponent={TimelineDot}>
-                            <Typography variant="button">Event finished</Typography>
-                        </StepLabel>
-                        <StepContent>
-                            <Box mt={3} />
-                        </StepContent>
-                    </Step>
-                </Stepper>
-            )}
-            {/* <Steps current={currentStep}>
-                <Steps.Step title="Registration Period" icon={<Icon type="solution" />} />
-                <Steps.Step title="In progress" icon={<Icon type="dashboard" />} />
-                <Steps.Step title="Finished" icon={<Icon type="crown" />} />
-            </Steps>
-            <Box mt={2} />
-            {renderContent()} */}
+            <QuickLinks />
+            <Grid container spacing={5}>
+                <Grid item xs={12} md={6}>
+                    <Box mb={5}>
+                        <RegistrationStatusBlock />
+                    </Box>
+                    <Box mb={5}>
+                        <TravelGrantStatusBlock />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Box mb={5}>
+                        <TeamStatusBlock />
+                    </Box>
+                    <Box mb={5}>
+                        <VisaInvitationBlock />
+                    </Box>
+                </Grid>
+            </Grid>
         </Box>
     );
 };
