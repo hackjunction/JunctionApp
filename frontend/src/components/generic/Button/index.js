@@ -1,60 +1,69 @@
 import React from 'react';
-import styles from './Button.module.scss';
 
-import { Icon } from 'antd';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import { Button as MuiButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Button = ({ text, button, link, theme, block = false, round = false, size = 'default' }) => {
-    const wrapperClass = classNames({
-        [styles.button]: true,
-        [styles.buttonDisabled]: button && (button.disabled || button.loading),
-        [styles.buttonLoading]: button && button.loading,
-        [styles.buttonDefault]: true,
-        [styles.buttonSmall]: size === 'small',
-        [styles.buttonLarge]: size === 'large',
-        [styles.buttonRound]: round,
-        [styles.buttonBlock]: block,
-        [styles.buttonSecondary]: theme === 'secondary',
-        [styles.buttonAccent]: theme === 'accent',
-        [styles.buttonWarning]: theme === 'warning',
-        [styles.buttonDanger]: theme === 'danger',
-        [styles.buttonMinimal]: theme === 'minimal',
-        [styles.buttonTransparent]: theme === 'transparent'
-    });
-
-    if (button) {
-        /** Render as button */
-        return (
-            <button disabled={button.disabled || button.loading} className={wrapperClass} onClick={button.onClick}>
-                <span className={styles.button_text}>
-                    {text}
-                    <Icon type="loading" className={styles.button_spinner} />
-                </span>
-            </button>
-        );
-    }
-
-    if (link) {
-        const { external, internal } = link;
-
-        if (external) {
-            /** Render as external link */
-            return (
-                <a className={wrapperClass} href={external} target="_blank" rel="noopener noreferrer">
-                    <span className={styles.button_text}>{text}</span>
-                </a>
-            );
+const baseStyles = (theme, props, variant) => {
+    return {
+        borderRadius: '13px',
+        padding: '0.5rem 1.5rem',
+        fontSize: '16px',
+        letterSpacing: '0.02em',
+        lineHeight: '22px',
+        boxShadow: 'none',
+        fontFamily: props.strong ? theme.typography.h1.fontFamily : theme.typography.body1.fontFamily,
+        fontWeight: props.strong ? 'bold' : 'normal',
+        textTransform: props.strong ? 'uppercase' : 'none',
+        '&:focus': {
+            boxShadow: 'none'
         }
-        /** Render as internal link */
-        return (
-            <Link className={wrapperClass} to={internal}>
-                <span className={styles.button_text}>{text}</span>
-            </Link>
-        );
-    }
+    };
+};
 
-    return null;
+const variantStyles = (theme, props) => {
+    const color = theme.palette[props.color];
+    switch (props.variant) {
+        case 'contained': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                '&:hover': {
+                    backgroundColor: color.dark
+                }
+            };
+        }
+        case 'outlined': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.main,
+                border: `2px solid ${color.main}`
+            };
+        }
+        default: {
+            return {
+                borderRadius: 0,
+                color: color.main
+            };
+        }
+    }
+};
+
+const useStyles = makeStyles(theme => ({
+    root: props => {
+        return {
+            ...baseStyles(theme, props),
+            ...variantStyles(theme, props),
+            '&:focus': {
+                boxShadow: 'none'
+            }
+        };
+    }
+}));
+
+const Button = ({ color = 'primary', strong, ...props }) => {
+    const classes = useStyles({ color, strong, variant: props.variant });
+
+    return <MuiButton classes={classes} {...props} />;
 };
 
 export default Button;
