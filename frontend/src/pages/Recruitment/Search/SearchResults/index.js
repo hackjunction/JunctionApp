@@ -43,9 +43,9 @@ const SearchResults = ({
                     <React.Fragment>
 
 
-                        <Grid container spacing={2}>
+                        <Grid direction="row" alignItems="stretch" container spacing={2}>
                             {searchResults.map(item => (
-                                <Grid key={`item-${item.userId}`} item xs={12} md={6} lg={3} >
+                                <Grid direction="row" alignItems="stretch" container key={`item-${item.userId}`} item xs={12} md={6} lg={3} >
                                     <ResultCard
                                         data={item}
                                         onClick={e => setSelected(item.userId)}
