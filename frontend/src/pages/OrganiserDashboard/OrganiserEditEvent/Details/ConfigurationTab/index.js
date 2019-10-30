@@ -1,13 +1,16 @@
 import React from 'react';
 
+import { ReviewingMethods, EventTypes } from '@hackjunction/shared';
 import { Grid } from '@material-ui/core';
 import { FastField, Field } from 'formik';
 
 import FormControl from 'components/inputs/FormControl';
-import TextInput from 'components/inputs/TextInput';
 import Select from 'components/inputs/Select';
 import StreetAddressForm from 'components/inputs/StreetAddressForm';
-import BooleanInput from 'components/inputs/BooleanInput';
+import TravelGrantConfig from './TravelGrantConfig';
+import ParticipantConfig from './ParticipantConfig';
+import DiscordConfig from './DiscordConfig';
+import TracksConfig from './TracksConfig';
 
 const ConfigurationTab = () => {
     return (
@@ -25,16 +28,10 @@ const ConfigurationTab = () => {
                             <Select
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
-                                options={[
-                                    {
-                                        label: 'Physical event',
-                                        value: 'physical'
-                                    },
-                                    {
-                                        label: 'Online event',
-                                        value: 'online'
-                                    }
-                                ]}
+                                options={Object.keys(EventTypes).map(key => ({
+                                    label: EventTypes[key].label,
+                                    value: key
+                                }))}
                             />
                         </FormControl>
                     )}
@@ -42,7 +39,7 @@ const ConfigurationTab = () => {
             </Grid>
             <Grid item xs={12}>
                 <Field
-                    name="location"
+                    name="eventLocation"
                     render={({ field, form }) => {
                         if (form.values.eventType === 'physical') {
                             return (
@@ -61,19 +58,14 @@ const ConfigurationTab = () => {
             </Grid>
             <Grid item xs={12}>
                 <Field
-                    name="travelGrants"
+                    name="travelGrantConfig"
                     render={({ field, form }) => {
                         if (form.values.eventType === 'physical') {
                             return (
-                                <FormControl
-                                    label="Travel grants"
-                                    hint="Will you be offering travel grants for participants?"
-                                >
-                                    <BooleanInput
-                                        value={field.value || false}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                    />
-                                </FormControl>
+                                <TravelGrantConfig
+                                    value={field.value}
+                                    onChange={value => form.setFieldValue(field.name, value)}
+                                />
                             );
                         }
                         return null;
@@ -82,56 +74,54 @@ const ConfigurationTab = () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="vetting"
+                    name="participantConfig"
                     render={({ field, form }) => {
                         return (
-                            <FormControl
-                                label="Participant vetting"
-                                hint="Do you want to be able to vet participants? If no, all applicants are automatically accepted"
-                            >
-                                <BooleanInput
-                                    value={field.value || false}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                />
-                            </FormControl>
+                            <ParticipantConfig
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         );
                     }}
                 />
             </Grid>
             <Grid item xs={12}>
-                <Field
-                    name="maxParticipants"
-                    render={({ field, form }) => {
-                        return (
-                            <FormControl label="Maximum participants" hint="Is there a maximum amount of participants?">
-                                <TextInput
-                                    label="Maximum participants"
-                                    placeholder="Or leave empty for no maximum"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                />
-                            </FormControl>
-                        );
-                    }}
+                <FastField
+                    name="tracksConfig"
+                    render={({ field, form }) => (
+                        <TracksConfig value={field.value} onChange={value => form.setFieldValue(field.name, value)} />
+                    )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <ul>
-                    <li>Quick links on dashboard</li>
-                    <li>Event announcements</li>
-                    <li>Discord configuration for event - what</li>
-                    <li>Is it a physical event or online?</li>
-                    <li>If physical: Travel grants available? If yes, in what currency>?</li>
-                    <li>If physical: Where is the event?</li>
-                    <li>Participant vetting or no? If no, is there a maximum amount of participants?</li>
-                    <li>Does the event have multiple tracks?</li>
-                    <li>Does the event have multiple challenges?</li>
-                    <li>Which judging method to use?</li>
-                </ul>
-                <p>
-                    Once the event configuration is done, probably best to not send all of this config to the client
-                    every time
-                </p>
+                <FastField
+                    name="discordConfig"
+                    render={({ field, form }) => (
+                        <DiscordConfig value={field.value} onChange={value => form.setFieldValue(field.name, value)} />
+                    )}
+                ></FastField>
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="reviewConfig"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Reviewing method"
+                            hint="Which reviewing method should be used?"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <Select
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                                options={Object.keys(ReviewingMethods).map(key => ({
+                                    label: ReviewingMethods[key].label,
+                                    value: key
+                                }))}
+                            />
+                        </FormControl>
+                    )}
+                />
             </Grid>
         </Grid>
     );

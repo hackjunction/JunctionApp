@@ -3,7 +3,17 @@ import React, { useCallback } from 'react';
 import { TextField } from '@material-ui/core';
 
 const TextInput = React.memo(
-    ({ disabled, label, onBlur, onChange = () => {}, placeholder = '', required = false, value = '', autoFocus }) => {
+    ({
+        disabled,
+        label,
+        onBlur,
+        onChange = () => {},
+        placeholder = '',
+        required = false,
+        value = '',
+        autoFocus,
+        type = 'text'
+    }) => {
         const handleChange = useCallback(
             e => {
                 onChange(e.target.value);
@@ -22,6 +32,7 @@ const TextInput = React.memo(
                 placeholder={placeholder}
                 required={required}
                 value={value}
+                type={type}
             />
         );
     }

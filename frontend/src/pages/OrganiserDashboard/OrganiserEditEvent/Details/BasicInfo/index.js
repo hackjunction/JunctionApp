@@ -10,7 +10,7 @@ import TextInput from 'components/inputs/TextInput';
 const OrganiserEditEventInfo = props => {
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
                 <FastField
                     name="name"
                     render={({ field, form }) => (
@@ -23,25 +23,6 @@ const OrganiserEditEventInfo = props => {
                             <TextInput
                                 name="name"
                                 placeholder="Big Hackathon 2020"
-                                value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
-                                onBlur={() => form.setFieldTouched(field.name)}
-                            />
-                        </FormControl>
-                    )}
-                />
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <FastField
-                    name="location"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Location"
-                            hint="If your event takes place at a physical location, enter it here"
-                        >
-                            <TextInput
-                                name="location"
-                                placeholder="Helsinki, Finland"
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
                                 onBlur={() => form.setFieldTouched(field.name)}

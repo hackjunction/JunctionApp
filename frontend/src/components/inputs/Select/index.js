@@ -338,6 +338,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.COUNTRIES;
                 case 'countryCode':
                     return SelectOptions.COUNTRY_CODES;
+                case 'currency':
+                    return SelectOptions.CURRENCIES;
                 case 'nationality':
                     return SelectOptions.NATIONALITIES;
                 case 'dietary-restriction':

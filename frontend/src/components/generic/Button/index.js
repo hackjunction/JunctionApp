@@ -35,8 +35,8 @@ const variantStyles = (theme, props) => {
         case 'outlined': {
             return {
                 backgroundColor: 'transparent',
-                color: color.main,
-                border: `2px solid ${color.main}`
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`
             };
         }
         default: {
