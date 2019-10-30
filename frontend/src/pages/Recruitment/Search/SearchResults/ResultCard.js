@@ -4,7 +4,8 @@ import { Grid, Button, Avatar, Paper, Typography } from '@material-ui/core';
 
 import { sortBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
-import { relative } from 'path';
+
+import SkillRating from './SkillRating';
 
 const useStyles = makeStyles(theme => ({
     // root: {
@@ -22,15 +23,64 @@ const useStyles = makeStyles(theme => ({
     // button: {
     //     margin: 10
     // }
+
+
     root: {
-        position: relative,
+        padding: '1em',
+        position: 'relative',
+        height: 'auto',
+        width: 'auto',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+        transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
 
         '&:hover': {
-            top: -3,
-            left: -3
+            top: '-3px',
+            left: '-3px',
+            boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+            cursor: 'pointer'
         }
+    },
+
+    avatar: {
+        margin: '15px auto',
+        width: 100,
+        height: 100,
+
+    },
+
+    typography: {
+        textAlign: 'center'
     }
 }));
+
+
+
+const ResultCard = ({ data, onClick }) => {
+    const classes = useStyles();
+
+    return (
+        <Paper className={classes.root} onClick={onClick}>
+            <Avatar
+                className={classes.avatar}
+                alt="profile pic"
+                src={data.profile.profilePicture}
+            />
+            <Typography className={classes.typography} variant="h6">{data.profile.firstName} {data.profile.lastName}</Typography>
+            <Typography className={classes.typography} variant="subtitle1" display="block">{data.profile.countryOfResidence}</Typography>
+
+            {sortBy(data.skills, skill => -1 * skill.level).map(item => (
+                <SkillRating
+                    data={item}
+                    key={item.skill}
+                />
+
+            ))}
+
+        </Paper>
+    );
+};
+
+export default ResultCard;
 
 // const ResultCard = ({ data, onClick }) => {
 
@@ -103,21 +153,4 @@ const useStyles = makeStyles(theme => ({
 //     );
 // };
 
-const ResultCard = ({ data, onClick }) => {
-    const classes = useStyles();
-
-    return (
-        <div className={classes.root} onClick={onClick}>
-            <Paper>
-                <Avatar
-                    alt="profile pic"
-                    src={data.profile.profilePicture}
-                />
-                <Typography variant="h6">{data.profile.firstName} {data.profile.lastName}</Typography>
-                <Typography variant="subtitle">{data.profile.countryOfResidence}</Typography>
-            </Paper>
-        </div>
-    );
-};
-
-export default ResultCard;
+//export default ResultCard;
