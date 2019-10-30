@@ -12,99 +12,96 @@ import Pagination from './Pagination';
 import LoadingCard from './LoadingCard';
 
 const SearchResults = ({
-  searchResults,
-  updateSearchResults,
-  filters,
-  pageSize,
-  page,
-  pageCount,
-  setNextPage,
-  setPrevPage,
-  loading
+    searchResults,
+    updateSearchResults,
+    filters,
+    pageSize,
+    page,
+    pageCount,
+    setNextPage,
+    setPrevPage,
+    loading
 }) => {
-  const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState();
 
-  useEffect(() => {
-    updateSearchResults();
-  }, [pageSize, page, filters, updateSearchResults]); //eslint-disable-line
-
-  return (
-    <React.Fragment>
-      <Pagination />
-      {loading ? (
+    useEffect(() => {
+        updateSearchResults();
+    }, [pageSize, page, filters, updateSearchResults]); //eslint-disable-line
+    console.log(searchResults)
+    return (
         <React.Fragment>
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
+            <Pagination />
+            {loading ? (
+                <React.Fragment>
+                    <LoadingCard />
+                    <LoadingCard />
+                    <LoadingCard />
+                    <LoadingCard />
+                    <LoadingCard />
+                </React.Fragment>
+            ) : (
+                    <React.Fragment>
+
+
+                        <Grid container spacing={2}>
+                            {searchResults.map(item => (
+                                <Grid key={`item-${item.userId}`} item xs={12} md={6} lg={3} >
+                                    <ResultCard
+                                        data={item}
+                                        onClick={e => setSelected(item.userId)}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </React.Fragment>
+                )}
+            {pageCount > 0 && (
+                <Box
+                    mt={2}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                >
+                    <Button
+                        disabled={loading || page === 0}
+                        color="primary"
+                        variant="contained"
+                        onClick={setPrevPage}
+                    >
+                        Previous page
+          </Button>
+                    <Button
+                        disabled={loading || page + 1 === pageCount}
+                        color="primary"
+                        variant="contained"
+                        onClick={setNextPage}
+                    >
+                        Next page
+          </Button>
+                </Box>
+            )}
+            <RecruitmentUserModal profileId={selected} onClose={setSelected} />
         </React.Fragment>
-      ) : (
-          <React.Fragment>
-
-
-            <Grid container>
-              {searchResults.map(item => (
-                <Grid key={item} item xs={3}>
-                  <ResultCard
-                    // key={`item-${item.userId}`}
-                    data={item}
-                    onClick={e => setSelected(item.userId)}
-                  />
-                </Grid>
-              ))}
-
-            </Grid>
-
-          </React.Fragment>
-        )}
-      {pageCount > 0 && (
-        <Box
-          mt={2}
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          <Button
-            disabled={loading || page === 0}
-            color="primary"
-            variant="contained"
-            onClick={setPrevPage}
-          >
-            Previous page
-          </Button>
-          <Button
-            disabled={loading || page + 1 === pageCount}
-            color="primary"
-            variant="contained"
-            onClick={setNextPage}
-          >
-            Next page
-          </Button>
-        </Box>
-      )}
-      <RecruitmentUserModal profileId={selected} onClose={setSelected} />
-    </React.Fragment>
-  );
+    );
 };
 
 const mapState = state => ({
-  searchResults: RecruitmentSelectors.searchResults(state),
-  searchResultsCount: RecruitmentSelectors.searchResultsCount(state),
-  loading: RecruitmentSelectors.searchResultsLoading(state),
-  filters: RecruitmentSelectors.filters(state),
-  pageSize: RecruitmentSelectors.pageSize(state),
-  page: RecruitmentSelectors.page(state),
-  pageCount: RecruitmentSelectors.pageCount(state)
+    searchResults: RecruitmentSelectors.searchResults(state),
+    searchResultsCount: RecruitmentSelectors.searchResultsCount(state),
+    loading: RecruitmentSelectors.searchResultsLoading(state),
+    filters: RecruitmentSelectors.filters(state),
+    pageSize: RecruitmentSelectors.pageSize(state),
+    page: RecruitmentSelectors.page(state),
+    pageCount: RecruitmentSelectors.pageCount(state)
 });
 
 const mapDispatch = dispatch => ({
-  updateSearchResults: () => dispatch(RecruitmentActions.updateSearchResults()),
-  setPrevPage: () => dispatch(RecruitmentActions.setPrevPage()),
-  setNextPage: () => dispatch(RecruitmentActions.setNextPage())
+    updateSearchResults: () => dispatch(RecruitmentActions.updateSearchResults()),
+    setPrevPage: () => dispatch(RecruitmentActions.setPrevPage()),
+    setNextPage: () => dispatch(RecruitmentActions.setNextPage())
 });
 
 export default connect(
-  mapState,
-  mapDispatch
+    mapState,
+    mapDispatch
 )(SearchResults);
