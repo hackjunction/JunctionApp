@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Button, Avatar, Paper, Typography } from '@material-ui/core';
+import { Avatar, Paper, Typography } from '@material-ui/core';
 
 import { sortBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 
     root: {
-        padding: '1em',
+        padding: '2em',
         position: 'relative',
         height: 'auto',
         width: 'auto',
@@ -34,8 +34,8 @@ const useStyles = makeStyles(theme => ({
         transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
 
         '&:hover': {
-            top: '-3px',
-            left: '-3px',
+            // top: '-3px',
+            // left: '-3px',
             boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
             cursor: 'pointer'
         }
@@ -50,7 +50,13 @@ const useStyles = makeStyles(theme => ({
 
     typography: {
         textAlign: 'center'
+    },
+
+    fab: {
+
+
     }
+
 }));
 
 
@@ -66,7 +72,13 @@ const ResultCard = ({ data, onClick }) => {
                 src={data.profile.profilePicture}
             />
             <Typography className={classes.typography} variant="h6">{data.profile.firstName} {data.profile.lastName}</Typography>
-            <Typography className={classes.typography} variant="subtitle1" display="block">{data.profile.countryOfResidence}</Typography>
+            <Typography
+                className={classes.typography}
+                variant="subtitle1"
+                display="block"
+            >
+                {data.profile.countryOfResidence}
+            </Typography>
 
             {sortBy(data.skills, skill => -1 * skill.level).map(item => (
                 <SkillRating
@@ -74,7 +86,8 @@ const ResultCard = ({ data, onClick }) => {
                     key={item.skill}
                 />
 
-            ))}
+            )).slice(0, 3)}
+
 
         </Paper>
     );
