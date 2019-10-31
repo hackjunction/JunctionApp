@@ -30,11 +30,15 @@ const useStyles = makeStyles(theme => ({
 
 const RolesFilter = ({ filters, setFilters }) => {
     const classes = useStyles();
-    const [roles, addRole, removeRole, editRole] = useArray([]);
+    const [roles, addRole, removeRole, editRole, setRoles] = useArray(filters);
 
     const handleSubmit = useCallback(() => {
         setFilters(roles);
     }, [roles, setFilters]);
+
+    const handleReset = useCallback(() => {
+        setRoles(filters);
+    }, [filters, setRoles]);
 
     const handleAdd = useCallback(
         role => {
@@ -65,7 +69,7 @@ const RolesFilter = ({ filters, setFilters }) => {
     };
 
     return (
-        <FilterItem label="Roles" active={roles.length > 0} onClose={handleSubmit}>
+        <FilterItem label="Roles" active={filters.length > 0} onSubmit={handleSubmit} onClose={handleReset}>
             <Box className={classes.wrapper}>
                 <Select label="Add a role" options="role" onChange={handleAdd} />
                 <Box className={classes.items}>{renderRoles()}</Box>

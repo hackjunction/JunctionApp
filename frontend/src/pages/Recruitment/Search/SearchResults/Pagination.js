@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { Paper, Box, Typography, IconButton, CircularProgress } from '@material-ui/core';
+import { Box, Typography, IconButton, CircularProgress } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -10,41 +10,23 @@ import * as RecruitmentActions from 'redux/recruitment/actions';
 
 const Pagination = ({ currentPage, pageSize, totalResults, totalPages, setPage, loading }) => {
     return (
-        <Paper elevation={0}>
-            <Box p={2} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Box display="flex" flexDirection="column">
-                    <Typography variant="h6">{loading ? 'Loading results' : `${totalResults} results`}</Typography>
+        <Box display="flex" flexDirection="row" alignItems="center">
+            <IconButton disabled={loading || currentPage === 0} onClick={() => setPage(currentPage - 1)}>
+                <ChevronLeftIcon />
+            </IconButton>
+            <Box padding={1}>
+                {totalResults === 0 && loading ? (
+                    <CircularProgress size={24} />
+                ) : (
                     <Typography variant="overline">
-                        {loading
-                            ? '...'
-                            : `Showing ${pageSize * currentPage + 1} to ${Math.min(
-                                  pageSize * (currentPage + 1),
-                                  totalResults
-                              )}`}
+                        Page {currentPage + 1} of {totalPages}
                     </Typography>
-                </Box>
-                <Box display="flex" flexDirection="row" alignItems="center">
-                    <IconButton disabled={loading || currentPage === 0} onClick={() => setPage(currentPage - 1)}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                    <Box padding={1}>
-                        {totalResults === 0 && loading ? (
-                            <CircularProgress size={24} />
-                        ) : (
-                            <Typography variant="overline">
-                                Page {currentPage + 1} of {totalPages}
-                            </Typography>
-                        )}
-                    </Box>
-                    <IconButton
-                        disabled={loading || currentPage + 1 === totalPages}
-                        onClick={() => setPage(currentPage + 1)}
-                    >
-                        <ChevronRightIcon />
-                    </IconButton>
-                </Box>
+                )}
             </Box>
-        </Paper>
+            <IconButton disabled={loading || currentPage + 1 === totalPages} onClick={() => setPage(currentPage + 1)}>
+                <ChevronRightIcon />
+            </IconButton>
+        </Box>
     );
 };
 

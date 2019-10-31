@@ -8,7 +8,7 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
 const AgeFilter = ({ filters, setFilters }) => {
-    const [draft, setDraft] = useState([0, 120]);
+    const [draft, setDraft] = useState(filters);
 
     const handleSubmit = useCallback(() => {
         setFilters(draft);
@@ -18,11 +18,15 @@ const AgeFilter = ({ filters, setFilters }) => {
         setDraft(value);
     }, []);
 
+    const handleReset = useCallback(() => {
+        setDraft(filters);
+    }, [filters]);
+
     return (
-        <FilterItem label="Age" active onClose={handleSubmit}>
+        <FilterItem label="Age" active onSubmit={handleSubmit} onClose={handleReset}>
             <Box padding={2} display="flex" flexDirection="column" justifyContent="space-between" width="300px">
-                <Typography>
-                    Is between {draft[0]} and {draft[1]}
+                <Typography variant="subtitle1" style={{ textAlign: 'center' }}>
+                    Between {draft[0]} and {draft[1]}
                 </Typography>
                 <Box height="50px" />
                 <Slider
@@ -38,7 +42,7 @@ const AgeFilter = ({ filters, setFilters }) => {
 };
 
 const mapState = state => ({
-    filters: RecruitmentSelectors.filters(state).age || []
+    filters: RecruitmentSelectors.filters(state).age || [0, 120]
 });
 
 const mapDispatch = dispatch => ({

@@ -14,7 +14,7 @@ const initialState = {
     filters: {},
     pagination: {
         page: 0,
-        page_size: 25
+        page_size: 24
     },
     messageValue: ''
 };
