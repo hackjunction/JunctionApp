@@ -11,6 +11,7 @@ const queryUsers = asyncHandler(async (req, res) => {
     const users = await RecruitmentController.queryProfiles(req.body);
     return res.status(200).json(users);
 });
+
 const getUserProfileRecruitment = asyncHandler(async (req, res) => {
     const userProfile = await RecruitmentController.getRecruitmentProfile(req.params.id, req.user.sub);
     return res.status(200).json(userProfile);
