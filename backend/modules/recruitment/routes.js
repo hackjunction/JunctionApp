@@ -18,6 +18,7 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
 });
 const saveRecruiterAction = asyncHandler(async (req, res) => {
     const actionHistory = await RecruitmentController.saveRecruiterAction(req.user.sub, req.body);
+    console.log('ACTION HISTORY', actionHistory);
     return res.status(200).json(actionHistory);
 });
 const getFavorites = asyncHandler(async (req, res) => {
