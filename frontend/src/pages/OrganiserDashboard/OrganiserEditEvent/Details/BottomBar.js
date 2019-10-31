@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
 
+import Button from 'components/generic/Button';
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty/index';
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +22,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        zIndex: 3000
     }),
     saveButton: {
         transition: 'all 0.2s ease',
@@ -43,7 +45,7 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
                 {loading || !dirty ? (
                     <CircularProgress size={24} style={{ color: 'white' }} />
                 ) : (
-                    <Button onClick={onSubmit} className={classes.saveButton}>
+                    <Button color="theme_white" variant="contained" onClick={onSubmit}>
                         Save changes
                     </Button>
                 )}

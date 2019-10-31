@@ -3,22 +3,23 @@ import React, { useState, useCallback } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Typography, Grid, Button } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 import { Drawer } from 'antd';
 
 import TextInput from 'components/inputs/TextInput';
 import DateInput from 'components/inputs/DateInput';
+import Button from 'components/generic/Button';
 import { useFormField } from 'hooks/formHooks';
 
 import VisaInvitationPDF from './VisaInvitationPDF';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
-const VisaInvitationDrawer = ({ registration }) => {
+const VisaInvitationDrawer = ({ registration = {} }) => {
     const [visible, setVisible] = useState(false);
-    const firstName = useFormField(registration ? registration.answers.firstName : '');
-    const lastName = useFormField(registration ? registration.answers.lastName : '');
-    const nationality = useFormField(registration ? registration.answers.nationality : '');
+    const firstName = useFormField(registration.answers ? registration.answers.firstName : '');
+    const lastName = useFormField(registration.answers ? registration.answers.lastName : '');
+    const nationality = useFormField(registration.answers ? registration.answers.nationality : '');
     const passportNo = useFormField('');
     const profession = useFormField('');
     const arrivalDate = useFormField(Date.now());
@@ -128,8 +129,8 @@ const VisaInvitationDrawer = ({ registration }) => {
                     </Grid>
                 </Grid>
             </Drawer>
-            <Button color="primary" variant="contained" onClick={setVisible}>
-                Generate
+            <Button color="theme_white" variant="contained" onClick={setVisible}>
+                Generate Visa Invitation
             </Button>
         </React.Fragment>
     );

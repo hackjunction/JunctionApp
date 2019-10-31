@@ -10,8 +10,9 @@ const useStyles = makeStyles(theme => ({
         flex: 1
     },
     label: {
-        fontWeight: 'normal',
-        textTransform: 'uppercase'
+        fontWeight: 'bold',
+
+        fontSize: '1.1rem'
     },
     hint: ({ hasError }) => ({
         marginTop: theme.spacing(0.5),
