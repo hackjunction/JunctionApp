@@ -2,7 +2,6 @@ const { RecruitmentAction } = require('./model');
 const UserController = require('../user-profile/controller');
 const Registration = require('../registration/model');
 const EmailTaskController = require('../email-task/controller');
-const AuthenticationController = require('../auth/controller');
 
 const controller = {};
 
@@ -151,23 +150,5 @@ controller.getFavorites = async recruiter => {
             )
         );
 };
-
-controller.updateRecruiterAccessToEvents = async (userId, eventIds, organizationName) => {
-    const user = await UserController.getUserProfile(userId);
-    if(!eventIds.length){
-        // Revoke the role if all events are removed
-        await AuthenticationController.revokeRecruiterPermission(user.userId);
-    } else if(!user.recruiterEvents || !user.recruiterEvents.length){
-        // Grant the recruiter role if they didn't have it previously
-        await AuthenticationController.grantRecruiterPermission(user.userId);
-    }
-
-    user.recruiterEvents = eventIds;
-    await UserController.updateUserProfile(user, user.userId);
-    await AuthenticationController.updateRecruiterEventAccess(userId, eventIds, organizationName);
-    return {success: true, events: user.recruiterEvents};
-
-
-}
 
 module.exports = controller;

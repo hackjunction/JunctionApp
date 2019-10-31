@@ -11,18 +11,13 @@ const queryUsers = asyncHandler(async (req, res) => {
     const users = await RecruitmentController.queryProfiles(req.body);
     return res.status(200).json(users);
 });
-const updateEventAccess = asyncHandler(async (req, res) => {
-    console.log(req.user);
-    const result = await RecruitmentController.updateRecruiterAccessToEvents(req.user.sub, req.body.events, req.body.recruiterOrganization);
-    return res.status(200).json(result);
-});
+
 const getUserProfileRecruitment = asyncHandler(async (req, res) => {
     const userProfile = await RecruitmentController.getRecruitmentProfile(req.params.id, req.user.sub);
     return res.status(200).json(userProfile);
 });
 const saveRecruiterAction = asyncHandler(async (req, res) => {
     try {
-        
         await RecruitmentController.saveRecruiterAction(req.user.sub, req.body);
         return res.status(200).json({ success: true });
     } catch (error) {
@@ -43,7 +38,5 @@ router
 router.route('/action').post(hasToken, hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), saveRecruiterAction);
 
 router.get('/favorites', hasToken, hasPermission(Auth.Permissions.ACCESS_RECRUITMENT), getFavorites);
-
-router.post('/event-access', hasToken, hasPermission(Auth.Permissions.MANAGE_RECRUITMENT), updateEventAccess);
 
 module.exports = router;
