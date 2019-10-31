@@ -70,9 +70,11 @@ const RecruitmentUserModal = ({
     return participant.profile.profilePicture;
   }, [participant]);
 
-  const { social } = participant || {};
+  const { social, recruitmentActionHistory } = participant || {};
 
-  const isFavorite = false;
+  const isFavorite =
+    recruitmentActionHistory.filter(action => action.type === 'favorite')
+      .length > 0;
   const renderStar = () => {
     if (isFavorite) {
       return (
