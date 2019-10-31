@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Typography, Link, Grid, Box } from '@material-ui/core';
+import { Typography, Link, Grid, Box, Icon } from '@material-ui/core';
 import Button from 'components/generic/Button';
 import { Input } from 'antd';
 import { changeMessageValue } from 'redux/recruitment/actions';
@@ -18,6 +18,22 @@ const getListOf = (areas, subject) => {
         )}
         {areas.map(area => {
           return <Typography key={area}>{area}</Typography>;
+        })}
+      </Box>
+    );
+};
+
+const getSkills = skills => {
+  if (skills && skills.length !== 0)
+    return (
+      <Box mb={1} sm={12} md={6} lg={6}>
+        <Typography variant="h6">Skills</Typography>
+        {skills.map(a => {
+          return (
+            <Typography key={a.skill}>
+              {a.skill} {a.level}/5
+            </Typography>
+          );
         })}
       </Box>
     );
@@ -53,38 +69,27 @@ const RecruitmentProfileInfo = React.memo(
       themesOfInterest,
       industriesOfInterest,
       previousEvents,
+      skills,
       social
     } = participant;
     const { recruitmentActionHistory, firstName } = participant.profile;
     return (
       <Grid container>
         <Grid container direction="column" justify="space-between">
-          {social && Object.entries(social).length !== 0 && (
-            <Grid item mb={2} sm={12} md={6} lg={6}>
-              <Typography variant="h6">On other media</Typography>
-              {Object.keys(social).map(service => {
-                return (
-                  <Typography>
-                    <Link>{social[service]}</Link>
-                  </Typography>
-                );
-              })}
-            </Grid>
-          )}
+          {getSkills(skills)}
           {getListOf(themesOfInterest, 'theme')}
           {getListOf(industriesOfInterest, 'industry')}
           {getPrevEvents(previousEvents)}
         </Grid>
         <Grid item sm={12} md={8} lg={6}>
           <Typography variant="h6">Contact</Typography>
-          <Typography variant="b">Action history here</Typography>
           {getActionHistory(recruitmentActionHistory)}
-          <Typography>Send {firstName} a message</Typography>
+          <Typography>Here you can send {firstName} a message.</Typography>
           <Input.TextArea
             onChange={e => changeMessageValue(e.target.value)}
             value={messageValue}
             autosize={{ minRows: 10, maxRows: 20 }}
-            placeholder="Max 1000 characters"
+            placeholder="Type message here..."
           />
           <Button
             block
