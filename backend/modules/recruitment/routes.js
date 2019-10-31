@@ -17,12 +17,8 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
     return res.status(200).json(userProfile);
 });
 const saveRecruiterAction = asyncHandler(async (req, res) => {
-    try {
-        await RecruitmentController.saveRecruiterAction(req.user.sub, req.body);
-        return res.status(200).json({ success: true });
-    } catch (error) {
-        return res.status(200).json({ success: false, error: error.message });
-    }
+    const actionHistory = await RecruitmentController.saveRecruiterAction(req.user.sub, req.body);
+    return res.status(200).json(actionHistory);
 });
 const getFavorites = asyncHandler(async (req, res) => {
     const users = await RecruitmentController.getFavorites(req.user.sub);
