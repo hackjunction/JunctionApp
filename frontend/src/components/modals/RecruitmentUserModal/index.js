@@ -127,12 +127,12 @@ const RecruitmentUserModal = ({
                 </Grid>
                 <Grid item>
                   {social && social.linkedin && (
-                    <LinkBall target={social.linkedin} color="blue">
+                    <LinkBall target={social.linkedin}>
                       <LinkedInIcon />
                     </LinkBall>
                   )}
                   {social && social.github && (
-                    <LinkBall target={social.github} color="red">
+                    <LinkBall target={social.github}>
                       <GitHubIcon />
                     </LinkBall>
                   )}
