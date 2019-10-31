@@ -1,8 +1,10 @@
 module.exports = {
     Auth: require('./constants/auth'),
     Countries: require('./constants/countries'),
+    Currencies: require('./constants/currencies'),
     EventStatuses: require('./constants/event-statuses'),
     EventHelpers: require('./helpers/events'),
+    EventTypes: require('./constants/event-types'),
     Genders: require('./constants/genders'),
     Industries: require('./constants/industries'),
     Languages: require('./constants/languages'),
@@ -15,6 +17,7 @@ module.exports = {
     RegistrationFieldsCustom: require('./constants/registration-fields-custom'),
     RegistrationFieldsHelpers: require('./helpers/registration-fields'),
     RegistrationStatuses: require('./constants/registration-statuses'),
+    ReviewingMethods: require('./constants/reviewing-methods'),
     Roles: require('./constants/roles'),
     Skills: require('./constants/skills'),
     SelectOptions: require('./constants/select-options'),

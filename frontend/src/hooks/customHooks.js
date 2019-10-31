@@ -48,7 +48,7 @@ export const useArray = (initialValue = []) => {
         [value]
     );
 
-    return [value, addValue, removeValue, editValue];
+    return [value, addValue, removeValue, editValue, setValue];
 };
 
 export const useInitialFocus = ref => {
