@@ -18,6 +18,11 @@ const UserProfileSchema = new mongoose.Schema({
         type: Array, 
         required: false,
         default: []
+    },
+    recruiterEvents: {
+        type: Array, 
+        required: false,
+        default: []
     }
 });
 
