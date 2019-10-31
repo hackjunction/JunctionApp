@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import moment from 'moment-timezone';
 import { EventStatuses } from '@hackjunction/shared';
-import { Typography, Grid, Button } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
+import Button from 'components/generic/Button';
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 
@@ -30,7 +31,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
                                 </Button>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button fullWidth onClick={pushDashboard} variant="contained" color="textPrimary">
+                                <Button fullWidth onClick={pushDashboard} variant="contained" color="theme_lightgray">
                                     Event dashboard
                                 </Button>
                             </Grid>
