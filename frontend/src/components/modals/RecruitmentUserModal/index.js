@@ -5,7 +5,10 @@ import Image from 'components/generic/Image';
 import Button from 'components/generic/Button';
 
 import { withSnackbar } from 'notistack';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, Icon, Link } from '@material-ui/core';
+
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 import styles from './RecruitmentUserModal.module.scss';
 
@@ -62,7 +65,7 @@ const RecruitmentUserModal = ({
     return participant.profile.profilePicture;
   }, [participant]);
 
-  const { education, roles } = participant || {};
+  const { education, roles, social } = participant || {};
 
   const isFavorite = 'Implement some logic';
 
@@ -89,16 +92,24 @@ const RecruitmentUserModal = ({
               <Grid item mb={1}>
                 <Typography variant="h6">Education</Typography>
                 <Typography>
-                  {education.level} in {education.degree},{' '}
-                  {education.university} ({education.graduationYear})
+                  <strong>
+                    {education.level} in {education.degree}
+                  </strong>
                 </Typography>
+                <Typography>{education.university}</Typography>
+                <Typography>{education.graduationYear}</Typography>
               </Grid>
             )}
             {roles && roles.length !== 0 && (
               <Grid item mb={1}>
                 <Typography variant="h6">Previous roles</Typography>
                 {roles.map(a => {
-                  return <Typography>{a.role}</Typography>;
+                  return (
+                    <React.Fragment>
+                      <Typography>{a.role}</Typography>
+                      <Typography>{a.years} years</Typography>
+                    </React.Fragment>
+                  );
                 })}
               </Grid>
             )}
@@ -110,6 +121,16 @@ const RecruitmentUserModal = ({
               alt="Profile picture"
               className={styles.profilePic}
             />
+            {social && social.linkedin && (
+              <Link to={social.linkedin}>
+                <GitHubIcon color="primary" size="large" />
+              </Link>
+            )}
+            {social && social.github && (
+              <Link to={social.github}>
+                <LinkedInIcon color="primary" size="large" />
+              </Link>
+            )}
           </Grid>
         </Grid>
         <RecruitmentProfileInfo participant={participant} />
