@@ -100,7 +100,7 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
             });
 
         profile.recruitmentActionHistory = await RecruitmentAction.find({
-            userId: profile.userId,
+            user: profile.userId,
             recruiter: recruiterId
         });
     }
@@ -113,6 +113,7 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
 controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
     const action = new RecruitmentAction({
         recruiter: recruiterId,
+        organisation: 'Junction Ltd.',
         ...actionToSave
     });
 
@@ -121,7 +122,6 @@ controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
     }
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
-
         await RecruitmentAction.deleteMany({
             recruiter: recruiterId,
             user: action.user,
