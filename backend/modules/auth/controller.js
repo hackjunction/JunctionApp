@@ -29,7 +29,7 @@ function getAuthorizationToken() {
     };
 
     return new Promise((resolve, reject) => {
-        request(options, function(error, response, body) {
+        request(options, function (error, response, body) {
             if (error) {
                 reject(error);
             } else {
@@ -89,5 +89,26 @@ controller.revokeAssistantOrganiser = async userId => {
     const role = await getRoleByName(access_token, AuthConstants.Roles.ASSISTANT_ORGANISER);
     return removeRole(access_token, userId, role._id);
 };
+
+controller.grantRecruiterPermission = async userId => {
+    const { access_token } = await getAuthorizationToken();
+    const role = await getRoleByName(access_token, AuthConstants.Roles.RECRUITER);
+    return assignRole(access_token, userId, role._id);
+};
+
+controller.revokeRecruiterPermission = async userId => {
+    const { access_token } = await getAuthorizationToken();
+    const role = await getRoleByName(access_token, AuthConstants.Roles.RECRUITER);
+    return removeRole(access_token, userId, role._id);
+};
+
+
+controller.updateRecruiterEventAccess = async (userId, events, organizationName) => {
+    var params = { id: userId };
+    const user = await auth0.getUser({id: userId});
+    const metaData = { ...user.user_metadata, recruiterEvents: events, recruiterOrganization: organizationName};
+    const updatedUser = await auth0.updateUserMetadata(params, metaData);
+    return updatedUser; 
+}
 
 module.exports = controller;
