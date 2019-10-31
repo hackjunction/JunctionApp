@@ -1,18 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Drawer, Button, Box } from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
 
 import SearchResults from './SearchResults';
-import FiltersDrawer from './FiltersDrawer';
+import Filters from './Filters';
+import CenteredContainer from 'components/generic/CenteredContainer';
 
 const DRAWER_WIDTH = 500;
 
 const useStyles = makeStyles(theme => ({
     root: {
-        display: 'flex',
-        flex: 1
+        flex: 1,
+        backgroundColor: theme.palette.background.default,
+        padding: theme.spacing(3)
     },
     drawer: {
         width: DRAWER_WIDTH,
@@ -32,37 +32,13 @@ const useStyles = makeStyles(theme => ({
 const SearchPage = () => {
     const classes = useStyles();
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
-
-    const openDrawer = useCallback(() => setDrawerOpen(true), []);
-    const closeDrawer = useCallback(() => setDrawerOpen(false), []);
-
     return (
         <div className={classes.root}>
-            <Drawer
-                className={classes.drawer}
-                classes={{
-                    paper: classes.drawerInner
-                }}
-                variant="temporary"
-                open={drawerOpen}
-                onClose={closeDrawer}
-            >
-                <FiltersDrawer onSubmit={closeDrawer} />
-            </Drawer>
-            <main className={classes.content}>
-                <Button onClick={openDrawer}>
-                    <FilterListIcon />
-                    Filters
-                </Button>
-                <Box mt={1} />
+            <CenteredContainer>
+                <Filters />
                 <SearchResults />
-            </main>
+            </CenteredContainer>
         </div>
-        // <PageWrapper>
-        //     <SearchBox />
-        //     <SearchResults />
-        // </PageWrapper>
     );
 };
 
