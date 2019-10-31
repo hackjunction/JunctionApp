@@ -62,13 +62,9 @@ const OrganiserEventList = ({ editEvent, idToken }) => {
                 <EventCard
                     event={event}
                     buttons={[
-                        <Button
-                            theme="accent"
-                            text="Manage"
-                            link={{
-                                internal: '/organise/edit/' + event.slug
-                            }}
-                        />
+                        <Button color="primary" variant="contained" onClick={() => editEvent(event.slug)}>
+                            Manage
+                        </Button>
                     ]}
                 />
             </Col>
@@ -95,15 +91,9 @@ const OrganiserEventList = ({ editEvent, idToken }) => {
                             />
                         </Col>
                         <Col xs={6}>
-                            <Button
-                                theme="accent"
-                                block
-                                text="Create event"
-                                button={{
-                                    disabled: !inputValue,
-                                    onClick: handleCreate
-                                }}
-                            />
+                            <Button color="primary" variant="contained" onClick={handleCreate} disabled>
+                                Create event
+                            </Button>
                         </Col>
                     </Row>
                     <Divider size={1} />
