@@ -6,6 +6,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import SearchResults from './SearchResults';
 import FiltersDrawer from './FiltersDrawer';
+import Filters from './Filters';
 
 const DRAWER_WIDTH = 500;
 
@@ -51,10 +52,11 @@ const SearchPage = () => {
                 <FiltersDrawer onSubmit={closeDrawer} />
             </Drawer>
             <main className={classes.content}>
-                <Button onClick={openDrawer}>
+                {/* <Button onClick={openDrawer}>
                     <FilterListIcon />
                     Filters
-                </Button>
+                </Button> */}
+                <Filters />
                 <Box mt={1} />
                 <SearchResults />
             </main>
