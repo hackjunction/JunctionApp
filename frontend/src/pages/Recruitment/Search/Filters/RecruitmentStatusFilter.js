@@ -26,8 +26,17 @@ const RecruitmentStatusFilter = ({ filters, setFilters }) => {
         setFilters(draft);
     }, [draft, setFilters]);
 
+    const handleReset = useCallback(() => {
+        setDraft(filters);
+    }, [filters]);
+
     return (
-        <FilterItem label="Recruitment status" active={filters.length !== 0} onClose={handleSubmit}>
+        <FilterItem
+            label="Recruitment status"
+            active={filters.length !== 0}
+            onSubmit={handleSubmit}
+            onClose={handleReset}
+        >
             <Box p={1} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="body1">Actively looking</Typography>
                 <Checkbox
@@ -57,11 +66,11 @@ const RecruitmentStatusFilter = ({ filters, setFilters }) => {
 };
 
 const mapState = state => ({
-    filters: RecruitmentSelectors.filters(state).recruitmentStatuses || []
+    filters: RecruitmentSelectors.filters(state).recruitmentStatus || []
 });
 
 const mapDispatch = dispatch => ({
-    setFilters: value => dispatch(RecruitmentActions.setFiltersField('recruitmentStatuses', value))
+    setFilters: value => dispatch(RecruitmentActions.setFiltersField('recruitmentStatus', value))
 });
 
 export default connect(

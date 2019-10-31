@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,12 +29,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SkillsFilter = ({ filters, setFilters }) => {
-    const [skills, addSkill, removeSkill, editSkill] = useArray([]);
+    const [skills, addSkill, removeSkill, editSkill, setSkills] = useArray(filters);
     const classes = useStyles();
 
     const handleSubmit = useCallback(() => {
         setFilters(skills);
     }, [skills, setFilters]);
+
+    const handleReset = useCallback(() => {
+        setSkills(filters);
+    }, [setSkills, filters]);
 
     const handleAdd = useCallback(
         skill => {
@@ -65,7 +69,7 @@ const SkillsFilter = ({ filters, setFilters }) => {
     };
 
     return (
-        <FilterItem label="Skills" active={skills.length > 0} onClose={handleSubmit}>
+        <FilterItem label="Skills" active={filters.length > 0} onSubmit={handleSubmit} onClose={handleReset}>
             <Box className={classes.wrapper}>
                 <Select label="Add a skill" options="skill" onChange={handleAdd} />
                 <Box className={classes.items}>{renderSkills()}</Box>

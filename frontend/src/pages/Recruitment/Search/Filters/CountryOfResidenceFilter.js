@@ -15,8 +15,12 @@ const CountryOfResidenceFilter = ({ filters, setFilters }) => {
         setFilters(draft);
     }, [draft, setFilters]);
 
+    const handleReset = useCallback(() => {
+        setDraft(filters);
+    }, [filters]);
+
     return (
-        <FilterItem label="Country of residence" active onClose={handleSubmit}>
+        <FilterItem label="Country of residence" active onSubmit={handleSubmit} onClose={handleReset}>
             <Box width="300px" height="300px" overflow="hidden">
                 <Select options="country" value={draft} onChange={setDraft} isMulti={true} />
             </Box>
