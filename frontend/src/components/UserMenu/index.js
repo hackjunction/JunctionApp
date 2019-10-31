@@ -16,7 +16,9 @@ const UserMenu = ({ user, logout, push, hasPermission }) => {
     if (!user) {
         return (
             <div className={styles.wrapper}>
-                <Button link={{ internal: '/login' }} theme="minimal" round text="SIGN IN" />
+                <Button color="theme_white" variant="contained" strong onClick={() => push('/login')}>
+                    Sign in
+                </Button>
             </div>
         );
     }

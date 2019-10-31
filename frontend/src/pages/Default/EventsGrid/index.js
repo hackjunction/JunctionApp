@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { Grid, Typography } from '@material-ui/core';
 
 import * as EventsSelectors from 'redux/events/selectors';
@@ -10,7 +11,7 @@ import EventCard from 'components/events/EventCard';
 import Button from 'components/generic/Button';
 import PageWrapper from 'components/layouts/PageWrapper';
 
-const EventsGrid = ({ events, loading }) => {
+const EventsGrid = ({ events, loading, push }) => {
     function renderEvents() {
         return events.map(event => {
             return (
@@ -19,13 +20,12 @@ const EventsGrid = ({ events, loading }) => {
                         event={event}
                         buttons={[
                             <Button
-                                key={1}
-                                text="See more"
-                                theme="secondary"
-                                link={{
-                                    internal: '/events/' + event.slug
-                                }}
-                            />
+                                color="theme_lightgray"
+                                variant="outlined"
+                                onClick={() => push('/events/' + event.slug)}
+                            >
+                                See more
+                            </Button>
                         ]}
                     />
                 </Grid>
@@ -55,4 +55,7 @@ const mapStateToProps = state => ({
     loading: EventsSelectors.eventsLoading(state)
 });
 
-export default connect(mapStateToProps)(EventsGrid);
+export default connect(
+    mapStateToProps,
+    { push }
+)(EventsGrid);

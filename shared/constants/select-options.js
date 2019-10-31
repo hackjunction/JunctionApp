@@ -7,6 +7,7 @@ const Skills = require('./skills');
 const Themes = require('./themes');
 const RegistrationStatuses = require('./registration-statuses');
 const Misc = require('./misc');
+const Currencies = require('./currencies');
 const Timezones = require('../data/timezones');
 
 const currentYear = new Date().getFullYear();
@@ -19,6 +20,10 @@ const SelectOptions = {
     COUNTRY_CODES: Countries.asArray.map(country => ({
         label: country.en_short_name,
         value: country.phone_code
+    })),
+    CURRENCIES: Currencies.asArray.map(currency => ({
+        label: currency.name,
+        value: currency.code
     })),
     NATIONALITIES: Countries.asArrayOfNationalities.map(nationality => ({
         label: nationality,

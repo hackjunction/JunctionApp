@@ -1,25 +1,12 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import { FastField } from 'formik';
 import Select from 'components/inputs/Select';
 import FormControl from 'components/inputs/FormControl';
 import DateTimePicker from 'components/inputs/DateTimePicker';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        '& .MuiBox-root': {
-            background: theme.palette.background.paper,
-            padding: theme.spacing(2),
-            boxShadow: theme.shadows[1],
-            borderRadius: '2px'
-        }
-    }
-}));
-
 const OrganiserEditEventTimes = props => {
-    const classes = useStyles();
     function renderDateField(field, timezone) {
         return (
             <DateTimePicker
@@ -34,7 +21,7 @@ const OrganiserEditEventTimes = props => {
     }
 
     return (
-        <Grid container spacing={3} classes={{ root: classes.root }}>
+        <Grid container spacing={3}>
             <Grid item xs={12}>
                 <FastField
                     name="timezone"
