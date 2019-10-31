@@ -3,7 +3,7 @@ import RecruitmentUserModal from 'components/modals/RecruitmentUserModal';
 import ResultCard from './ResultCard';
 import { connect } from 'react-redux';
 
-import { Grid, Box, Typography, CircularProgress } from '@material-ui/core';
+import { Grid, Box, Typography } from '@material-ui/core';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
@@ -28,7 +28,7 @@ const SearchResults = ({
     useEffect(() => {
         updateSearchResults();
     }, [pageSize, page, filters, updateSearchResults]); //eslint-disable-line
-    console.log(searchResults);
+
     return (
         <React.Fragment>
             <Box p={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">

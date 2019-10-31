@@ -31,11 +31,12 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
+        backgroundColor: '#FBFBFB',
 
         '&:hover': {
             // top: '-3px',
             // left: '-3px',
-            boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+            boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
             cursor: 'pointer'
         }
     },
@@ -60,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const ResultCard = ({ data, onClick }) => {
+const ResultCard = ({ data, onClick, isFavourite }) => {
     const classes = useStyles();
 
     return (
@@ -75,6 +76,7 @@ const ResultCard = ({ data, onClick }) => {
                 className={classes.typography}
                 variant="subtitle1"
                 display="block"
+                paragraph
             >
                 {data.profile.countryOfResidence}
             </Typography>
