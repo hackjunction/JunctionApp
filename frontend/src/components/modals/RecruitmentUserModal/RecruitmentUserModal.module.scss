@@ -15,4 +15,14 @@
   min-width: 100%;
   min-height: 100%;
   object-fit: cover;
+  height: 300px;
+}
+
+.centered {
+  align-items: center;
+  align-content: center;
+}
+
+.nameContainer {
+  text-align: center;
 }
