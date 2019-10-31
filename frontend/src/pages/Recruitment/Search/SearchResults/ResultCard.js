@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Paper, Typography } from '@material-ui/core';
+import { Avatar, Paper, Typography, Box } from '@material-ui/core';
 
 import { sortBy } from 'lodash-es';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import SkillRating from './SkillRating';
 
 const useStyles = makeStyles(theme => ({
-
     root: {
         flex: 1,
         padding: '2em',
@@ -17,62 +16,46 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#FBFBFB',
 
         '&:hover': {
-            // top: '-3px',
-            // left: '-3px',
             boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
             cursor: 'pointer'
         }
     },
-
     avatar: {
         margin: '15px auto',
         width: 100,
-        height: 100,
-
+        height: 100
     },
-
-    typography: {
+    name: {
+        textAlign: 'center',
+        fontSize: '1.15rem',
+        lineHeight: 1.2
+    },
+    country: {
         textAlign: 'center'
     },
-
-    fab: {
-
-
+    topWrapper: {
+        minHeight: '75px'
     }
-
 }));
-
-
 
 const ResultCard = ({ data, onClick, isFavourite }) => {
     const classes = useStyles();
 
     return (
         <Paper className={classes.root} onClick={onClick}>
-            <Avatar
-                className={classes.avatar}
-                alt="Profile Picture"
-                src={data.profile.profilePicture}
-            />
-            <Typography className={classes.typography} variant="h6">{data.profile.firstName} {data.profile.lastName}</Typography>
-            <Typography
-                className={classes.typography}
-                variant="subtitle1"
-                display="block"
-                paragraph
-            >
-                {data.profile.countryOfResidence}
-            </Typography>
+            <Avatar className={classes.avatar} alt="Profile Picture" src={data.profile.profilePicture} />
+            <Box className={classes.topWrapper} mb={1}>
+                <Typography className={classes.name} variant="h6">
+                    {data.profile.firstName} {data.profile.lastName}
+                </Typography>
+                <Typography className={classes.country} variant="subtitle1" display="block">
+                    {data.profile.countryOfResidence}
+                </Typography>
+            </Box>
 
-            {sortBy(data.skills, skill => -1 * skill.level).map(item => (
-                <SkillRating
-                    data={item}
-                    key={item.skill}
-                />
-
-            )).slice(0, 3)}
-
-
+            {sortBy(data.skills, skill => -1 * skill.level)
+                .map(item => <SkillRating data={item} key={item.skill} />)
+                .slice(0, 3)}
         </Paper>
     );
 };

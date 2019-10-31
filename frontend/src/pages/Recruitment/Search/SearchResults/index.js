@@ -36,32 +36,41 @@ const SearchResults = ({
                 <Pagination />
             </Box>
             {loading ? (
-                <React.Fragment>
-                    <LoadingCard />
-                    <LoadingCard />
-                    <LoadingCard />
-                    <LoadingCard />
-                    <LoadingCard />
-                </React.Fragment>
+                <Grid container spacing={2}>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(index => (
+                        <Grid
+                            direction="row"
+                            alignItems="stretch"
+                            container
+                            key={index}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={4}
+                            lg={3}
+                        >
+                            <LoadingCard />
+                        </Grid>
+                    ))}
+                </Grid>
             ) : (
-                <React.Fragment>
-                    <Grid direction="row" alignItems="stretch" container spacing={2}>
-                        {searchResults.map(item => (
-                            <Grid
-                                direction="row"
-                                alignItems="stretch"
-                                container
-                                key={`item-${item.userId}`}
-                                item
-                                xs={12}
-                                md={6}
-                                lg={3}
-                            >
-                                <ResultCard data={item} onClick={e => setSelected(item.userId)} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </React.Fragment>
+                <Grid direction="row" alignItems="stretch" container spacing={2}>
+                    {searchResults.map(item => (
+                        <Grid
+                            direction="row"
+                            alignItems="stretch"
+                            container
+                            key={`item-${item.userId}`}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={4}
+                            lg={3}
+                        >
+                            <ResultCard data={item} onClick={e => setSelected(item.userId)} />
+                        </Grid>
+                    ))}
+                </Grid>
             )}
             <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
                 <Pagination />
