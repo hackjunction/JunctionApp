@@ -9,26 +9,24 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        padding: theme.spacing(2),
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row'
-        }
+        padding: theme.spacing(2)
     }
 }));
 
 const LoadingCard = () => {
     const classes = useStyles();
     return (
-        <Paper elevation={0} style={{ marginTop: '3px' }}>
+        <Paper elevation={0} style={{ marginTop: '3px', flex: 1 }}>
             <Box className={classes.wrapper}>
                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                    <Skeleton variant="rect" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
+                    <Skeleton variant="rect" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
                 </Box>
-                <Box padding={2} flex="1" display="flex" flexDirection="column">
-                    <Skeleton height={24} width="200px" />
-                    <Skeleton height={20} width="80px" />
-                    <Skeleton height={20} width="320px" />
-                    <Skeleton height={20} width="320px" />
+                <Box padding={2} flex="1" display="flex" flexDirection="column" alignItems="center">
+                    <Skeleton height={24} width="60%" />
+                    <Skeleton height={12} width="40%" />
+                    <Skeleton height={12} width="80%" />
+                    <Skeleton height={12} width="80%" />
+                    <Skeleton height={12} width="80%" />
                 </Box>
             </Box>
         </Paper>

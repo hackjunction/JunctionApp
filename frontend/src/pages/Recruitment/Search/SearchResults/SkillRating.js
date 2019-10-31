@@ -4,47 +4,44 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core/';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
-
-
 const useStyles = makeStyles(theme => ({
     inline: {
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '0.2rem'
+    },
+    label: {
+        lineHeight: 1.1
     }
-
 }));
 
-
 const SkillRating = ({ data }) => {
-
     const classes = useStyles();
 
     const StyledRating = withStyles({
         iconFilled: {
-            color: '#F38100',
+            color: '#F38100'
         },
         iconHover: {
-            color: '#F38100',
-        },
+            color: '#F38100'
+        }
     })(Rating);
 
-
     return (
-        <div>
-
-            <Box component="fieldset" borderColor="transparent">
-                <div className={classes.inline}>
-                    <Typography component="legend">{data.skill}</Typography>
-                    <StyledRating
-                        value={data.level}
-                        icon={<FiberManualRecordIcon fontSize="inherit" />}
-                        readOnly
-                        size="small"
-                    />
-                </div>
-            </Box>
-
+        <div className={classes.inline}>
+            <Typography variant="caption" className={classes.label}>
+                {data.skill}
+            </Typography>
+            <StyledRating
+                value={data.level}
+                icon={<FiberManualRecordIcon fontSize="inherit" />}
+                readOnly
+                size="small"
+            />
         </div>
     );
-}
+};
 
 export default SkillRating;
