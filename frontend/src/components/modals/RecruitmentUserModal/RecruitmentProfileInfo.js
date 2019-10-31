@@ -53,7 +53,9 @@ const getActionHistory = messages => {
         {messages.map(action => {
           return (
             <React.Fragment>
-              <Typography>{action.data.rectuiter}</Typography>
+              <Typography>
+                {action.recruiter} from {action.organisation}
+              </Typography>
               <Typography key={action._id}>{action.data.message}</Typography>
             </React.Fragment>
           );
