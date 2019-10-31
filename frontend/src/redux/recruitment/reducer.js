@@ -16,15 +16,25 @@ const initialState = {
         page: 0,
         page_size: 24
     },
+    actionHistory: {
+        data: [],
+        loading: false,
+        error: false,
+        updated: 0
+    },
     messageValue: ''
 };
 
 const searchResultsHandler = buildHandler('searchResults');
+const actionHistoryHandler = buildHandler('actionHistory');
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.UPDATE_SEARCH_RESULTS: {
             return searchResultsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_ACTION_HISTORY: {
+            return actionHistoryHandler(state, action);
         }
         case ActionTypes.SET_FILTERS: {
             return {
