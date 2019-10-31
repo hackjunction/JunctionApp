@@ -27,7 +27,7 @@ const SearchResults = ({
     useEffect(() => {
         updateSearchResults();
     }, [pageSize, page, filters, updateSearchResults]); //eslint-disable-line
-    console.log(searchResults)
+
     return (
         <React.Fragment>
             <Pagination />
