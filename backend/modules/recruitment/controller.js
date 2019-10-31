@@ -119,6 +119,7 @@ controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
 
     if (action.type === 'favorite') {
         // Nothing todo, just save the action
+        return action.save();
     }
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
@@ -130,10 +131,10 @@ controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
     }
     if (action.type === 'message') {
         await EmailTaskController.createRecruiterMessageTask(action);
+        return action.save();
     }
 
-    action.save();
-    return action;
+    return RecruitmentAction.find({ recruiter: recruiterId, user: action.user });
 };
 
 controller.getFavorites = async recruiter => {
