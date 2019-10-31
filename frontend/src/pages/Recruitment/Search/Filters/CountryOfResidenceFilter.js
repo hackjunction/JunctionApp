@@ -9,34 +9,46 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
 const CountryOfResidenceFilter = ({ filters, setFilters }) => {
-    const [draft, setDraft] = useState(filters);
+  const [draft, setDraft] = useState(filters);
 
-    const handleSubmit = useCallback(() => {
-        setFilters(draft);
-    }, [draft, setFilters]);
+  const handleSubmit = useCallback(() => {
+    setFilters(draft);
+  }, [draft, setFilters]);
 
-    const handleReset = useCallback(() => {
-        setDraft(filters);
-    }, [filters]);
+  const handleReset = useCallback(() => {
+    setDraft(filters);
+  }, [filters]);
 
-    return (
-        <FilterItem label="Country of residence" active onSubmit={handleSubmit} onClose={handleReset}>
-            <Box width="300px" height="300px" overflow="hidden">
-                <Select options="country" value={draft} onChange={setDraft} isMulti={true} />
-            </Box>
-        </FilterItem>
-    );
+  return (
+    <FilterItem
+      label="Country of residence"
+      active
+      onSubmit={handleSubmit}
+      onClose={handleReset}
+    >
+      <Box width="300px" height="300px" overflow="hidden">
+        <Select
+          options="country"
+          value={draft}
+          onChange={setDraft}
+          isMulti={true}
+          autoFocus
+        />
+      </Box>
+    </FilterItem>
+  );
 };
 
 const mapState = state => ({
-    filters: RecruitmentSelectors.filters(state).countryOfResidence || []
+  filters: RecruitmentSelectors.filters(state).countryOfResidence || []
 });
 
 const mapDispatch = dispatch => ({
-    setFilters: value => dispatch(RecruitmentActions.setFiltersField('countryOfResidence', value))
+  setFilters: value =>
+    dispatch(RecruitmentActions.setFiltersField('countryOfResidence', value))
 });
 
 export default connect(
-    mapState,
-    mapDispatch
+  mapState,
+  mapDispatch
 )(CountryOfResidenceFilter);
