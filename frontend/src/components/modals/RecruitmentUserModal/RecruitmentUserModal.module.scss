@@ -26,3 +26,17 @@
 .nameContainer {
   text-align: center;
 }
+
+.listItem {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+}
+
+.linkBall {
+  height: 40px;
+  width: 40px;
+  background-color: #1890ff;
+  border-radius: 50%;
+  display: inline-block;
+}

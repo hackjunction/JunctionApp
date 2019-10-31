@@ -7,6 +7,7 @@ import { changeMessageValue } from 'redux/recruitment/actions';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import SkillRating from '../../../pages/Recruitment/Search/SearchResults/SkillRating';
 import { sendMessage } from 'redux/recruitment/actions';
+import styles from './RecruitmentUserModal.module.scss';
 
 const getListOf = (areas, subject) => {
   if (areas && areas.length !== 0)
@@ -20,7 +21,10 @@ const getListOf = (areas, subject) => {
         {areas.map(area => {
           return (
             <Typography key={area}>
-              <CheckCircleRoundedIcon />
+              <CheckCircleRoundedIcon
+                fontSize="inherit"
+                className={styles.listItem}
+              />
               {area}
             </Typography>
           );
@@ -112,7 +116,7 @@ const RecruitmentProfileInfo = React.memo(
         </Grid>
         <Grid container item direction="column" xs={12} wrap="nowrap" sm={8}>
           {/* getPrevEvents(previousEvents */}
-          <Grid container item>
+          <Grid container item spacing={4}>
             {getSkills(skills)}
             {education && education.level && (
               <Grid item mb={1} xs={12} md={6} lg={6}>
