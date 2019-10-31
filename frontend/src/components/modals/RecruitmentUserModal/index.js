@@ -70,7 +70,7 @@ const RecruitmentUserModal = ({
     return participant.profile.profilePicture;
   }, [participant]);
 
-  const { social, recruitmentActionHistory } = participant || {};
+  const { social, recruitmentActionHistory = [] } = participant || {};
 
   const isFavorite =
     recruitmentActionHistory.filter(action => action.type === 'favorite')
