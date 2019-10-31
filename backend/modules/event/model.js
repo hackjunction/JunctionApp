@@ -3,9 +3,16 @@ const mongooseSlugPlugin = require('mongoose-slug-plugin');
 const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
 const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig');
 const RegistrationQuestionSchema = require('../../common/schemas/RegistrationQuestion');
+const TravelGrantConfigSchema = require('../../common/schemas/TravelGrantConfig');
+const ParticipantConfigSchema = require('../../common/schemas/ParticipantConfig');
+const DiscordConfigSchema = require('../../common/schemas/DiscordConfig');
+const TracksConfigSchema = require('../../common/schemas/TracksConfig');
+const AddressSchema = require('../../common/schemas/Address');
 const allowPublishPlugin = require('../../common/plugins/allowPublish');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const uploadHelper = require('../../modules/upload/helper');
+
+const { EventTypes, ReviewingMethods } = require('@hackjunction/shared');
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -20,12 +27,6 @@ const EventSchema = new mongoose.Schema({
         type: String,
         requiredForPublish: true,
         maxLength: 5000,
-        trim: true
-    },
-    location: {
-        type: String,
-        required: false,
-        maxLength: 100,
         trim: true
     },
     /** Times */
@@ -65,6 +66,44 @@ const EventSchema = new mongoose.Schema({
     /** Event customisation */
     coverImage: CloudinaryImageSchema,
     logo: CloudinaryImageSchema,
+    /** Event configuration */
+    eventType: {
+        type: String,
+        enum: Object.keys(EventTypes),
+        required: true,
+        default: EventTypes.physical.id
+    },
+    eventLocation: {
+        type: AddressSchema,
+        required: [
+            function() {
+                return this.eventTypes === EventTypes.physical.id;
+            },
+            `is required for physical events`
+        ]
+    },
+    travelGrantConfig: {
+        type: TravelGrantConfigSchema,
+        default: TravelGrantConfigSchema
+    },
+    participantConfig: {
+        type: ParticipantConfigSchema,
+        default: ParticipantConfigSchema
+    },
+    tracksConfig: {
+        type: TracksConfigSchema,
+        default: TracksConfigSchema
+    },
+    discordConfig: {
+        type: DiscordConfigSchema,
+        default: DiscordConfigSchema
+    },
+    reviewMethod: {
+        type: String,
+        enum: Object.keys(ReviewingMethods),
+        required: true,
+        default: ReviewingMethods.gavelPeerReview.id
+    },
     userDetailsConfig: {
         type: UserDetailsConfigSchema,
         default: UserDetailsConfigSchema
