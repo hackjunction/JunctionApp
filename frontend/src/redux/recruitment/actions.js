@@ -59,7 +59,7 @@ export const sendMessage = (message, userId) => (dispatch, getState) => {
   const idToken = AuthSelectors.getIdToken(getState());
 
   dispatch({
-    type: ActionTypes.SUBMIT_ACTION,
+    type: ActionTypes.SEND_MESSAGE,
     promise: RecruitmentService.submitAction(
       'message',
       idToken,
