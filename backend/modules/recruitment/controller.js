@@ -15,7 +15,17 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
 controller.queryProfiles = (query = {}, user) => {
     let userQuery = {};
     let pagination = {};
-    if (query.filters && query.filters.length) {
+    if (typeof query.filters === 'string') {
+        userQuery = {
+            $and: [
+                {
+                    $text: {
+                        $search: query.filters
+                    }
+                }
+            ]
+        };
+    } else if (query.filters && query.filters.length) {
         const whereFields = query.filters.map(filter => {
             return {
                 [filter.field]: {
