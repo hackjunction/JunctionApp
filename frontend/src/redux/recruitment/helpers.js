@@ -28,7 +28,7 @@ export const buildFilterArray = ({
         });
     }
 
-    if (countryOfResidence.length) {
+    if (countryOfResidence && countryOfResidence.length) {
         filters.push({
             field: 'countryOfResidence',
             operator: 'contains',
@@ -36,7 +36,7 @@ export const buildFilterArray = ({
         });
     }
 
-    if (recruitmentStatus.length) {
+    if (recruitmentStatus && recruitmentStatus.length) {
         filters.push({
             field: 'recruitmentOptions.status',
             operator: 'contains',

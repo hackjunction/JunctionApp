@@ -15,10 +15,11 @@ import CountryOfResidenceFilter from './CountryOfResidenceFilter';
 import AgeFilter from './AgeFilter';
 import SkillsFilter from './SkillsFilter';
 import RolesFilter from './RolesFilter';
+import FilteredBy from './FilteredBy';
 import TextInput from 'components/inputs/TextInput';
 
-const Filters = ({ textSearch, setTextSearch, loading }) => {
-    const [searchValue, setSearchValue] = useState(textSearch);
+const Filters = ({ filters, setTextSearch, loading }) => {
+    const [searchValue, setSearchValue] = useState(filters.textSearch || '');
 
     const debouncedSearchValue = useDebounce(searchValue, 500);
     const handleSearch = useCallback(
@@ -54,6 +55,7 @@ const Filters = ({ textSearch, setTextSearch, loading }) => {
                     <AgeFilter />
                     <SkillsFilter />
                     <RolesFilter />
+                    <FilteredBy />
                 </Box>
             </motion.div>
         </Box>
@@ -61,7 +63,7 @@ const Filters = ({ textSearch, setTextSearch, loading }) => {
 };
 
 const mapState = state => ({
-    textSearch: RecruitmentSelectors.filters(state).textSearch || '',
+    filters: RecruitmentSelectors.filters(state),
     loading: RecruitmentSelectors.searchResultsLoading(state)
 });
 
