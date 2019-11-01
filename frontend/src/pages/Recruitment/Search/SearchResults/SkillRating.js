@@ -1,7 +1,7 @@
 import React from 'react';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core/';
+import { Typography } from '@material-ui/core/';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const useStyles = makeStyles(theme => ({
