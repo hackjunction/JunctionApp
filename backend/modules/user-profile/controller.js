@@ -23,12 +23,12 @@ controller.getUserProfiles = userIds => {
     });
 };
 
-controller.queryProfiles = async (query) => {
-    const found = await UserProfile
-        .find(query.query).skip(query.pagination.skip).limit(query.pagination.limit);
+controller.queryProfiles = async query => {
+    const found = await UserProfile.find(query.query)
+        .skip(query.pagination.skip)
+        .limit(query.pagination.limit);
 
-    const count = await UserProfile
-        .find(query.query).countDocuments();
+    const count = await UserProfile.find(query.query).countDocuments();
     return { found, count };
 };
 
@@ -53,14 +53,13 @@ controller.createUserProfile = (data, userId) => {
 controller.updateUserProfile = (data, userId, updatedRegistration = {}) => {
     return controller.getUserProfile(userId).then(userProfile => {
         if (updatedRegistration !== null) {
-            userProfile.registrations = 
-            (userProfile.registrations ? userProfile.registrations : [])
-            .map(r => {
+            userProfile.registrations = (userProfile.registrations ? userProfile.registrations : []).map(r => {
                 if (r.registration === updatedRegistration.registration) {
                     return updatedRegistration;
-                } return r;
-            })
-            if(userProfile.registrations.length === 0){
+                }
+                return r;
+            });
+            if (userProfile.registrations.length === 0) {
                 userProfile.registrations.push(updatedRegistration);
             }
             data.registrations = userProfile.registrations;
@@ -74,5 +73,22 @@ controller.getUsersByEmail = email => {
     return UserProfile.find({ email });
 };
 
+controller.searchUsers = terms => {
+    return UserProfile.find({ $text: { $search: terms } }).limit(25);
+};
+
+controller.getRecruiters = () => {
+    return UserProfile.find({
+        $nor: [{ recruiterEvents: { $exists: false } }, { recruiterEvents: { $size: 0 } }]
+    });
+};
+
+controller.updateRecruiter = (userId, events, organisation) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = events;
+        user.recruiterOrganisation = organisation;
+        return user.save();
+    });
+};
 
 module.exports = controller;

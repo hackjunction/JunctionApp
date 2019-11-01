@@ -90,4 +90,23 @@ controller.revokeAssistantOrganiser = async userId => {
     return removeRole(access_token, userId, role._id);
 };
 
+controller.grantRecruiterPermission = async userId => {
+    const { access_token } = await getAuthorizationToken();
+    const role = await getRoleByName(access_token, AuthConstants.Roles.RECRUITER);
+    return assignRole(access_token, userId, role._id);
+};
+
+controller.revokeRecruiterPermission = async userId => {
+    const { access_token } = await getAuthorizationToken();
+    const role = await getRoleByName(access_token, AuthConstants.Roles.RECRUITER);
+    return removeRole(access_token, userId, role._id);
+};
+
+controller.updateMetadata = async (userId, updates) => {
+    const user = await auth0.getUser({ id: userId });
+    const metadata = { ...user.user_metadata, ...updates };
+    const updatedUser = await auth0.updateUserMetadata({ id: userId }, metadata);
+    return updatedUser;
+};
+
 module.exports = controller;
