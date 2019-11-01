@@ -12,7 +12,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import PageWrapper from 'components/layouts/PageWrapper';
 import Image from 'components/generic/Image';
-import EventNavBar from 'components/navbars/EventNavBar';
+import BasicNavBar from 'components/navbars/BasicNavBar';
 
 import DetailsPage from './Details';
 import StatsPage from './Stats';
@@ -76,7 +76,7 @@ const OrganiserEditEvent = ({
                         </Typography>
                     </Box>
                 }
-                topContent={<EventNavBar />}
+                topContent={<BasicNavBar text={event.name} />}
                 baseRoute={match.url}
                 location={location}
                 routes={[

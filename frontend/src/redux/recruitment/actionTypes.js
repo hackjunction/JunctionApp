@@ -9,9 +9,8 @@ export const UPDATE_EVENTS = 'recruitment/UPDATE_EVENTS';
 export const UPDATE_ACTION_HISTORY = 'recruitment/UPDATE_ACTION_HISTORY';
 export const UPDATE_SEARCH_RESULTS = 'recruitment/UPDATE_SEARCH_RESULTS';
 
-export const CHANGE_MESSAGE_VAL = 'recruitment/CHANGE_MESSAGE_VAL';
-
 /* Admin panel actions */
 export const ADMIN_UPDATE_RECRUITERS = 'recruitment/ADMIN_UPDATE_RECRUITERS';
-export const ADMIN_UPDATE_SEARCH_RESULTS = 'recruitment/ADMIN_UPDATE_SEARCH_RESULTS';
+export const ADMIN_UPDATE_SEARCH_RESULTS =
+  'recruitment/ADMIN_UPDATE_SEARCH_RESULTS';
 export const ADMIN_UPDATE_USER = 'recruitment/ADMIN_GRANT_ACCESS';

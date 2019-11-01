@@ -51,6 +51,18 @@ export const updateEvents = () => (dispatch, getState) => {
     });
 };
 
+export const updateActionHistory = () => (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.UPDATE_ACTION_HISTORY,
+        promise: RecruitmentService.getActionHistory(idToken),
+        meta: {
+            onFailure: e => console.log('Error getting action history', e)
+        }
+    });
+};
+
 export const updateSearchResults = () => (dispatch, getState) => {
     const state = getState();
     const idToken = AuthSelectors.getIdToken(state);
@@ -149,8 +161,3 @@ export const adminRevokeRecruiterAccess = userId => async (dispatch, getState) =
         payload: user
     });
 };
-
-export const changeMessageValue = message => ({
-    type: ActionTypes.CHANGE_MESSAGE_VAL,
-    payload: message
-});
