@@ -18,8 +18,8 @@ const getListOf = (areas, subject) => {
         {subject === 'theme' ? (
           <Typography variant="h6">Themes of interest</Typography>
         ) : (
-            <Typography variant="h6">Industries of interest</Typography>
-          )}
+          <Typography variant="h6">Industries of interest</Typography>
+        )}
         {areas.map(area => {
           return (
             <Typography key={area}>

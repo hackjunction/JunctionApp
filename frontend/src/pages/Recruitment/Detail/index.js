@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/generic/Modal';
 import Image from 'components/generic/Image';
-import Button from 'components/generic/Button';
 
 import { withSnackbar } from 'notistack';
-import { Typography, Grid, Icon, Link, Box } from '@material-ui/core';
+import { Typography, Grid, Box } from '@material-ui/core';
+import emblem_black from '../../../assets/logos/emblem_black.png';
 
 import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -28,22 +28,24 @@ import UserProfilesService from 'services/userProfiles';
 
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
-const RecruitmentUserModal = ({
+const DetailPage = ({
   idToken,
-  profileId,
-  onClose,
+  match,
   isFavorite,
-  toggleFavorite
+  toggleFavorite,
+  enqueueSnackbar
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [participant, setParticipant] = useState();
 
+  const { id } = match.params;
+
   useEffect(() => {
-    if (profileId) {
+    if (id) {
       setLoading(true);
 
-      UserProfilesService.getUserProfileRecruitment(profileId, idToken)
+      UserProfilesService.getUserProfileRecruitment(id, idToken)
         .then(data => {
           setParticipant(data);
           console.log(data);
@@ -55,7 +57,7 @@ const RecruitmentUserModal = ({
           setLoading(false);
         });
     }
-  }, [idToken, profileId]);
+  }, [idToken, id]);
 
   const participantName = useMemo(() => {
     if (!participant) return '';
@@ -75,77 +77,66 @@ const RecruitmentUserModal = ({
 
   const { social } = participant || {};
 
+  const onStarClick = () => {
+    toggleFavorite(id, isFavorite);
+    enqueueSnackbar('asdasd', { variant: 'success' });
+  };
+
   const renderStar = () => {
     if (isFavorite) {
-      return (
-        <StarIcon
-          fontSize="large"
-          onClick={() => toggleFavorite(profileId, isFavorite)}
-        />
-      );
+      return <StarIcon fontSize="large" onClick={() => onStarClick()} />;
     }
-    return (
-      <StarBorderIcon
-        fontSize="large"
-        onClick={() => toggleFavorite(profileId, isFavorite)}
-      />
-    );
+    return <StarBorderIcon fontSize="large" onClick={() => onStarClick()} />;
   };
   return (
-    <Modal
-      isOpen={!!profileId}
-      handleClose={onClose}
-      size="max"
-      title="Profile details"
-    >
-      <PageWrapper
-        loading={loading || !participant}
-        error={error}
-        render={() => (
-          <CenteredContainer>
-            <Box alignItems="center" justifyContent="center">
+    <PageWrapper
+      loading={loading || !participant}
+      error={error}
+      render={() => (
+        <CenteredContainer>
+          <Box alignItems="center" justifyContent="center">
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Grid item>{renderStar()}</Grid>
+              <Grid item>
+                <Image
+                  url={participantImageUrl}
+                  alt="Profile picture"
+                  className={styles.profilePic}
+                  defaultImage={emblem_black}
+                />
+              </Grid>
               <Grid
-                container
-                direction="column"
+                item
                 alignItems="center"
                 justifyContent="center"
+                className={styles.nameContainer}
               >
-                <Grid item>{renderStar()}</Grid>
-                <Grid item>
-                  <Image
-                    url={participantImageUrl}
-                    alt="Profile picture"
-                    className={styles.profilePic}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  alignItems="center"
-                  justifyContent="center"
-                  className={styles.nameContainer}
-                >
-                  <Typography variant="h3">{participantName}</Typography>
-                  <Typography variant="h6">{participantSubheading}</Typography>
-                </Grid>
-                <Grid item>
-                  {social && social.linkedin && (
-                    <LinkBall target={social.linkedin}>
-                      <LinkedInIcon />
-                    </LinkBall>
-                  )}
-                  {social && social.github && (
-                    <LinkBall target={social.github}>
-                      <GitHubIcon />
-                    </LinkBall>
-                  )}
-                </Grid>
+                <Typography variant="h3">{participantName}</Typography>
+                <Typography variant="h6">{participantSubheading}</Typography>
               </Grid>
-              <RecruitmentProfileInfo participant={participant} />
-            </Box>
-          </CenteredContainer>
-        )}
-      />
-    </Modal>
+              <Grid item>
+                {social && social.linkedin && (
+                  <LinkBall target={social.linkedin}>
+                    <LinkedInIcon />
+                  </LinkBall>
+                )}
+                {social && social.github && (
+                  <LinkBall target={social.github}>
+                    <GitHubIcon />
+                  </LinkBall>
+                )}
+              </Grid>
+            </Grid>
+            <RecruitmentProfileInfo participant={participant} />
+          </Box>
+        </CenteredContainer>
+      )}
+    />
   );
 };
 
@@ -175,5 +166,5 @@ export default withSnackbar(
   connect(
     mapState,
     mapDispatch
-  )(RecruitmentUserModal)
+  )(DetailPage)
 );
