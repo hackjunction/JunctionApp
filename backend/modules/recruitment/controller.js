@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Promise = require('bluebird');
 const { RecruitmentAction } = require('./model');
 const UserController = require('../user-profile/controller');
 const Registration = require('../registration/model');
@@ -34,7 +35,6 @@ controller.queryProfiles = (query = {}, user) => {
             };
         });
 
-        console.log(whereFields);
         userQuery = { $and: whereFields };
     }
     if (query.pagination) {
@@ -62,14 +62,10 @@ controller.queryProfiles = (query = {}, user) => {
         userQuery['$and'] = [consentFilter, eventFilter];
     }
 
-    console.log(userQuery);
-
     return UserController.queryProfiles({
         query: userQuery,
         pagination: pagination
     }).then(results => {
-        console.log('RESULTS COUNT', results.count);
-        console.log(results.found.map(r => r.registrations));
         return Promise.all(
             results.found.map(profile => {
                 return controller.createRecruitmentProfile(profile, false);
@@ -128,10 +124,10 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
                 });
             });
 
-        profile.recruitmentActionHistory = await RecruitmentAction.find({
-            user: profile.userId,
-            recruiter: recruiterId
-        });
+        // profile.recruitmentActionHistory = await RecruitmentAction.find({
+        //     user: profile.userId,
+        //     recruiter: recruiterId
+        // });
     }
 
     // TODO get profile picture from social
@@ -139,10 +135,10 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
     return profile;
 };
 
-controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
+controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     const action = new RecruitmentAction({
-        recruiter: recruiterId,
-        organisation: 'Junction Ltd.',
+        recruiter: recruiter.sub,
+        organisation: recruiter.recruiter_organisation,
         ...actionToSave
     });
 
@@ -153,7 +149,7 @@ controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
         await RecruitmentAction.deleteMany({
-            recruiter: recruiterId,
+            recruiter: recruiter.sub,
             user: action.user,
             type: 'favorite'
         });
@@ -163,22 +159,21 @@ controller.saveRecruiterAction = async (recruiterId, actionToSave) => {
         await action.save();
     }
 
-    return RecruitmentAction.find({ recruiter: recruiterId, user: action.user });
+    return controller.getRecruiterActions(recruiter);
 };
 
-controller.getFavorites = async recruiter => {
-    return RecruitmentAction.find({ type: 'favorite', recruiter: recruiter })
-        .populate('_user')
-        .then(actions =>
-            Promise.all(
-                actions.map(async action => {
-                    // Convert profiles so we don't reveal contact data
-
-                    action._user = await controller.createRecruitmentProfile(action._user);
-                    return action._user;
-                })
-            )
-        );
+controller.getRecruiterActions = async recruiter => {
+    return RecruitmentAction.find({
+        organisation: recruiter.recruiter_organisation
+    })
+        .populate('_user _recruiter')
+        .lean()
+        .then(actions => {
+            return Promise.map(actions, async action => {
+                action._user = await controller.createRecruitmentProfile(action._user);
+                return action;
+            });
+        });
 };
 
 module.exports = controller;
