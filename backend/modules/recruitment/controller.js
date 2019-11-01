@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { RecruitmentAction } = require('./model');
 const UserController = require('../user-profile/controller');
 const Registration = require('../registration/model');
@@ -11,7 +12,7 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
     });
 };
 
-controller.queryProfiles = (query = {}) => {
+controller.queryProfiles = (query = {}, user) => {
     let userQuery = {};
     let pagination = {};
     if (query.filters && query.filters.length) {
@@ -32,15 +33,33 @@ controller.queryProfiles = (query = {}) => {
             limit: query.pagination.page_size
         };
     }
-    // Set default filters
-    userQuery['$and']
-        ? userQuery['$and'].push({ 'recruitmentOptions.consent': { $eq: true } })
-        : (userQuery = { 'recruitmentOptions.consent': true });
+
+    // Set event filters based on recruiter scope
+    const consentFilter = { 'recruitmentOptions.consent': true };
+    const eventFilter = {
+        registrations: {
+            $elemMatch: {
+                event: {
+                    $in: [mongoose.Types.ObjectId('5d5a7b2e9b1056002b824ad8')]
+                }
+            }
+        }
+    };
+    //Set default filters (consent & recruiter scope)
+    if (userQuery['$and']) {
+        userQuery['$and'] = userQuery['$and'].concat([consentFilter, eventFilter]);
+    } else {
+        userQuery['$and'] = [consentFilter, eventFilter];
+    }
+
+    console.log(userQuery);
 
     return UserController.queryProfiles({
         query: userQuery,
         pagination: pagination
     }).then(results => {
+        console.log('RESULTS COUNT', results.count);
+        console.log(results.found.map(r => r.registrations));
         return Promise.all(
             results.found.map(profile => {
                 return controller.createRecruitmentProfile(profile, false);

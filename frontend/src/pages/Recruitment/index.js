@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import SearchPage from './Search';
 import AdminPage from './Admin';
 
-const RecruitmentPage = ({ location, match }) => {
+import * as RecruitmentActions from 'redux/recruitment/actions';
+
+const RecruitmentPage = ({ location, match, updateEvents }) => {
+    useEffect(() => {
+        updateEvents();
+    }, []);
+
     return (
         <Switch>
             <Route exact path="/recruitment" component={SearchPage} />
@@ -15,4 +22,11 @@ const RecruitmentPage = ({ location, match }) => {
     );
 };
 
-export default RecruitmentPage;
+const mapDispatch = dispatch => ({
+    updateEvents: () => dispatch(RecruitmentActions.updateEvents())
+});
+
+export default connect(
+    null,
+    mapDispatch
+)(RecruitmentPage);
