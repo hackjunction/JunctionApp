@@ -2,16 +2,16 @@ import React from 'react';
 
 import { Avatar, Paper, Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Star, StarBorder, ArrowDropDownCircle } from '@material-ui/icons/';
+import { Star, StarBorder, KeyboardArrowDown } from '@material-ui/icons/';
 
 import { sortBy } from 'lodash-es';
 import SkillRating from './SkillRating';
-import emblem_black from '../../../../assets/logos/emblem_black.png'
+import emblem_black from '../../../../assets/logos/emblem_black.png';
 
 const useStyles = makeStyles(theme => ({
     root: {
         flex: 1,
-        padding: '2em',
+        padding: '2rem',
         position: 'relative',
         boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
         transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
@@ -21,13 +21,15 @@ const useStyles = makeStyles(theme => ({
 
         '&:hover': {
             boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            paddingBottom: '1.75rem',
+            paddingTop: '2.25rem'
         }
     },
     avatar: {
         margin: '15px auto',
         width: 100,
-        height: 100,
+        height: 100
     },
     name: {
         textAlign: 'center',
@@ -46,7 +48,6 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         flexGrow: 1,
         height: '3rem'
-
     },
     button: {
         marginTop: 'auto'
@@ -54,7 +55,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ResultCard = ({ data, onClick, isFavorite }) => {
-
     const classes = useStyles();
 
     const renderStar = () => {
@@ -68,7 +68,16 @@ const ResultCard = ({ data, onClick, isFavorite }) => {
         <Paper className={classes.root} onClick={onClick}>
             <div style={{ flex: 1 }}>
                 <div>{renderStar()}</div>
-                <Avatar className={classes.avatar} alt="Profile Picture" src={data.profile.profilePicture} imgProps={{ onError: (e) => { e.target.src = emblem_black; } }} />
+                <Avatar
+                    className={classes.avatar}
+                    alt="Profile Picture"
+                    src={data.profile.profilePicture}
+                    imgProps={{
+                        onError: e => {
+                            e.target.src = emblem_black;
+                        }
+                    }}
+                />
                 <Box className={classes.topWrapper} mb={1}>
                     <Typography className={classes.name} variant="h6">
                         {data.profile.firstName} {data.profile.lastName}
@@ -85,12 +94,10 @@ const ResultCard = ({ data, onClick, isFavorite }) => {
                 </Box>
             </div>
             <Box className={classes.bottomWrapper}>
-                <ArrowDropDownCircle className={classes.button} fontSize="large" color="secondary" />
+                <KeyboardArrowDown className={classes.button} fontSize="large" color="secondary" />
             </Box>
         </Paper>
     );
 };
-
-
 
 export default ResultCard;

@@ -62,7 +62,7 @@ const getActionHistory = messages => {
 };
 
 const RecruitmentProfileInfo = React.memo(
-  ({ participant, sendMessage, actionHistory }) => {
+  ({ participant, sendMessage, messages }) => {
     const {
       themesOfInterest,
       industriesOfInterest,
@@ -92,17 +92,16 @@ const RecruitmentProfileInfo = React.memo(
           sm={4}
           spacing={4}
         >
-          {roles && roles.length !== 0 && (
-            <Grid item mb={1}>
-              <Typography variant="h6">Previous roles</Typography>
-              {roles.map(a => {
-                return (
-                  <React.Fragment>
-                    <Typography variant="subtitle1">{a.role}</Typography>
-                    <Typography>{a.years} years</Typography>
-                  </React.Fragment>
-                );
-              })}
+          {education && education.level && (
+            <Grid item mb={1} xs={12} md={6} lg={6}>
+              <Typography variant="h6">Education</Typography>
+              <Typography>
+                <strong>
+                  {education.level} in {education.degree}
+                </strong>
+              </Typography>
+              <Typography>{education.university}</Typography>
+              <Typography>{education.graduationYear}</Typography>
             </Grid>
           )}
           {getListOf(industriesOfInterest, 'industry')}
@@ -111,24 +110,23 @@ const RecruitmentProfileInfo = React.memo(
         <Grid container item direction="column" xs={12} wrap="nowrap" sm={8}>
           <Grid container item spacing={4}>
             {getSkills(skills)}
-            {education && education.level && (
-              <Grid item mb={1} xs={12} md={6} lg={6}>
-                <Typography variant="h6">Education</Typography>
-                <Typography>
-                  <strong>
-                    {education.level} in {education.degree}
-                  </strong>
-                </Typography>
-                <Typography>{education.university}</Typography>
-                <Typography>{education.graduationYear}</Typography>
+            {roles && roles.length !== 0 && (
+              <Grid item mb={1}>
+                <Typography variant="h6">Previous roles</Typography>
+                {roles.map(a => {
+                  return (
+                    <React.Fragment>
+                      <Typography variant="subtitle1">{a.role}</Typography>
+                      <Typography>{a.years} years</Typography>
+                    </React.Fragment>
+                  );
+                })}
               </Grid>
             )}
           </Grid>
           <Grid item>
             <Typography variant="h6">Contact</Typography>
-            {getActionHistory(
-              actionHistory.filter(action => action.type === 'message')
-            )}
+            {getActionHistory(messages)}
             <Typography>Here you can send {firstName} a message.</Typography>
             <Input.TextArea
               onChange={e => changeMessageValue(e.target.value)}
@@ -154,9 +152,19 @@ const RecruitmentProfileInfo = React.memo(
   }
 );
 
-const mapState = state => ({
-  actionHistory: RecruitmentSelectors.actionHistory(state)
-});
+const mapState = (state, ownProps) => {
+  const actionHistory = RecruitmentSelectors.actionHistory(state);
+
+  console.log('ACTIONS', actionHistory);
+
+  const messages = actionHistory.filter(
+    action =>
+      action.type === 'message' && action.user === ownProps.participant.userId
+  );
+  return {
+    messages
+  };
+};
 
 const mapDispatch = dispatch => ({
   sendMessage: (message, profileId) => dispatch(sendMessage(message, profileId))
