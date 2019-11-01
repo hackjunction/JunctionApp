@@ -23,7 +23,12 @@ const AgeFilter = ({ filters, setFilters }) => {
     }, [filters]);
 
     return (
-        <FilterItem label="Age" active onSubmit={handleSubmit} onClose={handleReset}>
+        <FilterItem
+            label="Age"
+            active={filters && filters[1] - filters[0] !== 120}
+            onSubmit={handleSubmit}
+            onClose={handleReset}
+        >
             <Box padding={2} display="flex" flexDirection="column" justifyContent="space-between" width="300px">
                 <Typography variant="subtitle1" style={{ textAlign: 'center' }}>
                     Between {draft[0]} and {draft[1]}
