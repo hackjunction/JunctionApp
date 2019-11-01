@@ -4,6 +4,8 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import { buildFilterArray } from './helpers';
 
 import RecruitmentService from 'services/recruitment';
+import UserProfilesService from 'services/userProfiles';
+import EventsService from 'services/events';
 
 export const setFilters = data => dispatch => {
     dispatch({
@@ -38,6 +40,16 @@ export const setPrevPage = () => ({
 export const setNextPage = () => ({
     type: ActionTypes.SET_NEXT_PAGE
 });
+
+export const updateEvents = () => (dispatch, getState) => {
+    dispatch({
+        type: ActionTypes.UPDATE_EVENTS,
+        promise: EventsService.getPublicEvents(),
+        meta: {
+            onFailure: e => console.log('Error updating events', e)
+        }
+    });
+};
 
 export const updateSearchResults = () => (dispatch, getState) => {
     const state = getState();
@@ -87,6 +99,55 @@ export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
             }
         });
     }
+};
+
+/* Admin actions */
+export const updateAdminRecruiters = () => (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_RECRUITERS,
+        promise: UserProfilesService.getRecruiters(idToken),
+        meta: {
+            onFailure: e => console.log('Error getting recruiters', e)
+        }
+    });
+};
+
+export const updateAdminSearchResults = query => (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_SEARCH_RESULTS,
+        promise: UserProfilesService.queryUsers(idToken, query),
+        meta: {
+            onFailure: e => console.log('Error querying users', e)
+        }
+    });
+};
+
+export const adminGrantRecruiterAccess = (userId, events, organisation) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const user = await UserProfilesService.updateRecruiter(idToken, userId, events, organisation);
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_USER,
+        payload: user
+    });
+
+    dispatch(updateAdminRecruiters());
+
+    return user;
+};
+
+export const adminRevokeRecruiterAccess = userId => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const user = await UserProfilesService.updateRecruiter(idToken, userId, [], '');
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_USER,
+        payload: user
+    });
 };
 
 export const changeMessageValue = message => ({

@@ -53,11 +53,16 @@ UserProfileSchema.virtual('registrations', {
   }); */
 
 UserProfileSchema.post('save', function(doc, next) {
-    if (this._previousRecruiterEvents.length !== 0 && this.recruiterEvents.length === 0) {
-        AuthController.revokeRecruiterPermission(this.userId);
-    }
-    if (this._previousRecruiterEvents.length === 0 && this.recruiterEvents.length !== 0) {
-        AuthController.grantRecruiterPermission(this.userId);
+    if (_.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0) {
+        if (this.recruiterEvents.length === 0) {
+            AuthController.revokeRecruiterPermission(this.userId);
+        } else {
+            AuthController.grantRecruiterPermission(this.userId);
+        }
+        AuthController.updateMetadata(this.userId, {
+            recruiterEvents: this.recruiterEvents,
+            recruiterOrganisation: this.recruiterOrganisation
+        });
     }
     next();
 });
