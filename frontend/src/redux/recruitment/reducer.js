@@ -144,12 +144,6 @@ export default function reducer(state = initialState, action) {
                 }
             };
         }
-        case ActionTypes.CHANGE_MESSAGE_VAL: {
-            return {
-                ...state,
-                messageValue: action.payload
-            };
-        }
         default:
             return state;
     }

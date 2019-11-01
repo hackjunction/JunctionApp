@@ -45,25 +45,20 @@ const getSkills = skills => {
     );
 };
 
-const getActionHistory = history => {
-  if (history && history.length !== 0)
+const getActionHistory = messages => {
+  if (messages && messages.length !== 0)
     return (
       <Grid item mb={1}>
         <Typography variant="subtitle1">Previous messages</Typography>
-        {history.map(action => {
-          return <Typography key={action}>{action}</Typography>;
-        })}
-      </Grid>
-    );
-};
-
-const getPrevEvents = events => {
-  if (events && events.length !== 0)
-    return (
-      <Grid item mb={1}>
-        <Typography variant="h6">Hackathons</Typography>
-        {events.map(event => {
-          return <Typography key={event.id}>{event.name}</Typography>;
+        {messages.map(action => {
+          return (
+            <React.Fragment>
+              <Typography>
+                {action.recruiter} from {action.organisation}
+              </Typography>
+              <Typography key={action._id}>{action.data.message}</Typography>
+            </React.Fragment>
+          );
         })}
       </Grid>
     );
@@ -74,12 +69,13 @@ const RecruitmentProfileInfo = React.memo(
     const {
       themesOfInterest,
       industriesOfInterest,
-      previousEvents,
+
       skills,
       education,
-      roles
+      roles,
+      recruitmentActionHistory
     } = participant;
-    const { recruitmentActionHistory, firstName } = participant.profile;
+    const { firstName } = participant.profile;
     return (
       <Grid
         container
@@ -115,7 +111,6 @@ const RecruitmentProfileInfo = React.memo(
           {getListOf(themesOfInterest, 'theme')}
         </Grid>
         <Grid container item direction="column" xs={12} wrap="nowrap" sm={8}>
-          {/* getPrevEvents(previousEvents */}
           <Grid container item spacing={4}>
             {getSkills(skills)}
             {education && education.level && (
@@ -133,7 +128,11 @@ const RecruitmentProfileInfo = React.memo(
           </Grid>
           <Grid item>
             <Typography variant="h6">Contact</Typography>
-            {getActionHistory(recruitmentActionHistory)}
+            {getActionHistory(
+              recruitmentActionHistory.filter(
+                action => action.type === 'message'
+              )
+            )}
             <Typography>Here you can send {firstName} a message.</Typography>
             <Input.TextArea
               onChange={e => changeMessageValue(e.target.value)}
