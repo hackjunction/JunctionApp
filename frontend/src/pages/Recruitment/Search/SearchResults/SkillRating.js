@@ -5,43 +5,46 @@ import { Typography } from '@material-ui/core/';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const useStyles = makeStyles(theme => ({
-    inline: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '0.2rem'
-    },
-    label: {
-        lineHeight: 1.1
-    }
+  inline: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '0.2rem'
+  },
+  label: {
+    lineHeight: 1.1
+  }
 }));
 
-const SkillRating = ({ data }) => {
-    const classes = useStyles();
+const SkillRating = ({ data, small = false }) => {
+  const classes = useStyles();
 
-    const StyledRating = withStyles({
-        iconFilled: {
-            color: '#F38100'
-        },
-        iconHover: {
-            color: '#F38100'
-        }
-    })(Rating);
+  const StyledRating = withStyles({
+    iconFilled: {
+      color: '#F38100'
+    },
+    iconHover: {
+      color: '#F38100'
+    }
+  })(Rating);
 
-    return (
-        <div className={classes.inline}>
-            <Typography variant="caption" className={classes.label}>
-                {data.skill}
-            </Typography>
-            <StyledRating
-                value={data.level}
-                icon={<FiberManualRecordIcon fontSize="inherit" />}
-                readOnly
-                size="small"
-            />
-        </div>
-    );
+  return (
+    <div className={classes.inline}>
+      <Typography
+        variant={small ? 'caption' : 'inherit'}
+        className={classes.label}
+      >
+        {data.skill}
+      </Typography>
+      <StyledRating
+        value={data.level}
+        icon={<FiberManualRecordIcon fontSize="inherit" />}
+        readOnly
+        size="small"
+      />
+    </div>
+  );
 };
 
 export default SkillRating;

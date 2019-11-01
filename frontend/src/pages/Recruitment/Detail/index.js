@@ -2,12 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import { withSnackbar } from 'notistack';
-import { Typography, Grid, Box, Avatar } from '@material-ui/core';
+import { Typography, Grid, Avatar, Button } from '@material-ui/core';
 import emblem_black from '../../../assets/logos/emblem_black.png';
+import { goBack } from 'connected-react-router';
 
 import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import StarIcon from '@material-ui/icons/Star';
 
 import styles from './RecruitmentUserModal.module.scss';
@@ -31,7 +33,8 @@ const DetailPage = ({
   match,
   isFavorite,
   toggleFavorite,
-  enqueueSnackbar
+  enqueueSnackbar,
+  toSearchResults
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -115,50 +118,58 @@ const DetailPage = ({
       error={error}
       render={() => (
         <CenteredContainer>
-          <Box alignItems="center" justifyContent="center">
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid style={{ alignSelf: 'flex-start' }} item>
+              <Button
+                onClick={() => toSearchResults()}
+                variant="contained"
+                color="secondary"
+                startIcon={<ArrowBackIosIcon />}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item>{renderStar()}</Grid>
+            <Grid item>
+              <Avatar
+                style={{ height: '300px', width: '300px' }}
+                alt="Profile Picture"
+                src={participantImageUrl}
+                imgProps={{
+                  onError: e => {
+                    e.target.src = emblem_black;
+                  }
+                }}
+              />
+            </Grid>
             <Grid
-              container
-              direction="column"
+              item
               alignItems="center"
               justifyContent="center"
+              className={styles.nameContainer}
             >
-              <Grid item>{renderStar()}</Grid>
-              <Grid item>
-                <Avatar
-                  style={{ height: '300px', width: '300px' }}
-                  alt="Profile Picture"
-                  src={participantImageUrl}
-                  imgProps={{
-                    onError: e => {
-                      e.target.src = emblem_black;
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                alignItems="center"
-                justifyContent="center"
-                className={styles.nameContainer}
-              >
-                <Typography variant="h3">{participantName}</Typography>
-                <Typography variant="h6">{participantSubheading}</Typography>
-              </Grid>
-              <Grid item>
-                {social && social.linkedin && (
-                  <LinkBall target={social.linkedin}>
-                    <LinkedInIcon />
-                  </LinkBall>
-                )}
-                {social && social.github && (
-                  <LinkBall target={social.github}>
-                    <GitHubIcon />
-                  </LinkBall>
-                )}
-              </Grid>
+              <Typography variant="h3">{participantName}</Typography>
+              <Typography variant="h6">{participantSubheading}</Typography>
             </Grid>
-            <RecruitmentProfileInfo participant={participant} />
-          </Box>
+            <Grid item>
+              {social && social.linkedin && (
+                <LinkBall target={social.linkedin}>
+                  <LinkedInIcon />
+                </LinkBall>
+              )}
+              {social && social.github && (
+                <LinkBall target={social.github}>
+                  <GitHubIcon />
+                </LinkBall>
+              )}
+            </Grid>
+          </Grid>
+          <RecruitmentProfileInfo participant={participant} />
         </CenteredContainer>
       )}
     />
@@ -184,7 +195,8 @@ const mapState = (state, ownProps) => {
 
 const mapDispatch = dispatch => ({
   toggleFavorite: (profileId, isFavorite) =>
-    dispatch(RecruitmentActions.toggleFavorite(profileId, isFavorite))
+    dispatch(RecruitmentActions.toggleFavorite(profileId, isFavorite)),
+  toSearchResults: () => dispatch(goBack())
 });
 
 export default withSnackbar(
