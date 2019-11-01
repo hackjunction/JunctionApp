@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'components/generic/Modal';
-import Image from 'components/generic/Image';
 
 import { withSnackbar } from 'notistack';
 import { Typography, Grid, Box, Avatar } from '@material-ui/core';
@@ -27,7 +25,6 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import UserProfilesService from 'services/userProfiles';
 
 import * as RecruitmentActions from 'redux/recruitment/actions';
-import { height } from '@material-ui/system';
 
 const DetailPage = ({
   idToken,
@@ -80,14 +77,37 @@ const DetailPage = ({
 
   const onStarClick = () => {
     toggleFavorite(id, isFavorite);
-    enqueueSnackbar('asdasd', { variant: 'success' });
+    if (isFavorite) {
+      enqueueSnackbar(`${participant.profile.firstName} added to favorites`, {
+        variant: 'success'
+      });
+    } else {
+      enqueueSnackbar(
+        `${participant.profile.firstName} removed from favorites`,
+        {
+          variant: 'success'
+        }
+      );
+    }
   };
 
   const renderStar = () => {
     if (isFavorite) {
-      return <StarIcon fontSize="large" onClick={() => onStarClick()} />;
+      return (
+        <StarIcon
+          className={styles.star}
+          fontSize="large"
+          onClick={() => onStarClick()}
+        />
+      );
     }
-    return <StarBorderIcon fontSize="large" onClick={() => onStarClick()} />;
+    return (
+      <StarBorderIcon
+        className={styles.star}
+        fontSize="large"
+        onClick={() => onStarClick()}
+      />
+    );
   };
   return (
     <PageWrapper
@@ -114,12 +134,6 @@ const DetailPage = ({
                     }
                   }}
                 />
-                {/* Image .scss rules still exist */}
-                {/* <Image
-                      url={participantImageUrl}
-                      alt="Profile picture"
-                      className={styles.profilePic}
-                                    /> */}
               </Grid>
               <Grid
                 item

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Typography, Grid, Button, List } from '@material-ui/core';
+import { withSnackbar } from 'notistack';
 
 import { MessageItem } from './MessageItem';
 import EmailIcon from '@material-ui/icons/Email';
@@ -62,7 +63,7 @@ const getActionHistory = messages => {
 };
 
 const RecruitmentProfileInfo = React.memo(
-  ({ participant, sendMessage, messages }) => {
+  ({ participant, sendMessage, messages, enqueueSnackbar }) => {
     const {
       themesOfInterest,
       industriesOfInterest,
@@ -71,6 +72,23 @@ const RecruitmentProfileInfo = React.memo(
       roles
     } = participant;
     const { firstName } = participant.profile;
+
+    const onSendClick = message => {
+      if (message.length < 1) {
+        enqueueSnackbar(`You cannot send empty message!`, {
+          variant: 'failure'
+        });
+      } else {
+        sendMessage(message, participant.userId);
+        changeMessageValue('');
+        enqueueSnackbar(
+          `Message sent to ${participant.profile.firstName} successfully`,
+          {
+            variant: 'success'
+          }
+        );
+      }
+    };
 
     const [messageVal, changeMessageValue] = useState('');
 
@@ -133,14 +151,16 @@ const RecruitmentProfileInfo = React.memo(
               value={messageVal}
               autosize={{ minRows: 10, maxRows: 20 }}
               placeholder="Type message here..."
+              maxLength={1000}
             />
             <Button
+              style={{
+                marginTop: '1rem',
+                float: 'right'
+              }}
               variant="contained"
               color="secondary"
-              onClick={() => (
-                sendMessage(messageVal, participant.userId),
-                changeMessageValue('')
-              )}
+              onClick={e => onSendClick(messageVal)}
               startIcon={<EmailIcon />}
             >
               Send
@@ -170,7 +190,9 @@ const mapDispatch = dispatch => ({
   sendMessage: (message, profileId) => dispatch(sendMessage(message, profileId))
 });
 
-export default connect(
-  mapState,
-  mapDispatch
-)(RecruitmentProfileInfo);
+export default withSnackbar(
+  connect(
+    mapState,
+    mapDispatch
+  )(RecruitmentProfileInfo)
+);
