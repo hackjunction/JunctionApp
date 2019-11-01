@@ -1,7 +1,18 @@
 import moment from 'moment';
 
-export const buildFilterArray = ({ skills = [], roles = [], countryOfResidence = [], age, recruitmentStatus = [] }) => {
+export const buildFilterArray = ({
+    skills = [],
+    roles = [],
+    countryOfResidence = [],
+    age,
+    recruitmentStatus = [],
+    textSearch = ''
+}) => {
     const filters = [];
+
+    if (textSearch.length > 0) {
+        return textSearch;
+    }
 
     if (age && age.length === 2) {
         filters.push({
@@ -17,7 +28,7 @@ export const buildFilterArray = ({ skills = [], roles = [], countryOfResidence =
         });
     }
 
-    if (countryOfResidence.length) {
+    if (countryOfResidence && countryOfResidence.length) {
         filters.push({
             field: 'countryOfResidence',
             operator: 'contains',
@@ -25,7 +36,7 @@ export const buildFilterArray = ({ skills = [], roles = [], countryOfResidence =
         });
     }
 
-    if (recruitmentStatus.length) {
+    if (recruitmentStatus && recruitmentStatus.length) {
         filters.push({
             field: 'recruitmentOptions.status',
             operator: 'contains',

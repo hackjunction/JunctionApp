@@ -7,23 +7,32 @@ import SearchPage from './Search';
 import AdminPage from './Admin';
 
 import * as RecruitmentActions from 'redux/recruitment/actions';
+import CenteredContainer from 'components/generic/CenteredContainer';
+import BasicNavBar from 'components/navbars/BasicNavBar';
 
-const RecruitmentPage = ({ location, match, updateEvents }) => {
+const RecruitmentPage = ({ location, match, updateEvents, updateActionHistory }) => {
     useEffect(() => {
         updateEvents();
+        updateActionHistory();
     }, []);
 
     return (
-        <Switch>
-            <Route exact path="/recruitment" component={SearchPage} />
-            <Route exact path="/recruitment/admin" component={AdminPage} />
-            <Redirect to="/recruitment" />
-        </Switch>
+        <React.Fragment>
+            <CenteredContainer>
+                <BasicNavBar text="Junction Recruitment Tool" />
+            </CenteredContainer>
+            <Switch>
+                <Route exact path="/recruitment" component={SearchPage} />
+                <Route exact path="/recruitment/admin" component={AdminPage} />
+                <Redirect to="/recruitment" />
+            </Switch>
+        </React.Fragment>
     );
 };
 
 const mapDispatch = dispatch => ({
-    updateEvents: () => dispatch(RecruitmentActions.updateEvents())
+    updateEvents: () => dispatch(RecruitmentActions.updateEvents()),
+    updateActionHistory: () => dispatch(RecruitmentActions.updateActionHistory())
 });
 
 export default connect(

@@ -11,9 +11,6 @@ import PageHeader from 'components/generic/PageHeader';
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
-import { usePromise } from 'hooks/apiHooks';
-
-import EventsService from 'services/events';
 import SearchBox from './SearchBox';
 import RecruitersList from './RecruitersList';
 import RevokeAccessDialog from './RevokeAccessDialog';
@@ -22,8 +19,6 @@ import GrantAccessDialog from './GrantAccessDialog';
 const RecruitmentAdminPage = () => {
     const [grantingUser, setGrantingUser] = useState();
     const [revokingUser, setRevokingUser] = useState();
-
-    console.log('REVOKING USEr', revokingUser);
 
     return (
         <CenteredContainer>
