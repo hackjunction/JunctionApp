@@ -3,6 +3,7 @@ const _ = require('lodash');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const publicFieldsPlugin = require('../../common/plugins/publicFields');
 const Shared = require('@hackjunction/shared');
+const AuthController = require('../auth/controller');
 const { RegistrationFields } = Shared;
 
 const UserProfileSchema = new mongoose.Schema({
@@ -15,9 +16,22 @@ const UserProfileSchema = new mongoose.Schema({
         type: String
     },
     registrations: {
-        type: Array, 
+        type: Array,
         required: false,
         default: []
+    },
+    recruiterEvents: {
+        type: Array,
+        required: false,
+        default: [],
+        set: function(recruiterEvents) {
+            this._previousRecruiterEvents = this.recruiterEvents;
+            return recruiterEvents;
+        }
+    },
+    recruiterOrganisation: {
+        type: String,
+        required: false
     }
 });
 
@@ -38,8 +52,29 @@ UserProfileSchema.virtual('registrations', {
     foreignField: 'user', // is equal to `foreignField`
   }); */
 
+UserProfileSchema.post('save', function(doc, next) {
+    if (_.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0) {
+        if (this.recruiterEvents.length === 0) {
+            AuthController.revokeRecruiterPermission(this.userId);
+        } else {
+            AuthController.grantRecruiterPermission(this.userId);
+        }
+        AuthController.updateMetadata(this.userId, {
+            recruiterEvents: this.recruiterEvents,
+            recruiterOrganisation: this.recruiterOrganisation
+        });
+    }
+    next();
+});
+
 UserProfileSchema.index({
     userId: 1
+});
+
+UserProfileSchema.index({
+    firstName: 'text',
+    lastName: 'text',
+    email: 'text'
 });
 
 UserProfileSchema.plugin(updateAllowedPlugin, {

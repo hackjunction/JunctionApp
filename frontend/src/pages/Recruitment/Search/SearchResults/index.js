@@ -24,7 +24,7 @@ const SearchResults = ({
     loading
 }) => {
     const [selected, setSelected] = useState();
-
+    console.log(searchResults)
     useEffect(() => {
         updateSearchResults();
     }, [pageSize, page, filters, updateSearchResults]); //eslint-disable-line
@@ -54,24 +54,24 @@ const SearchResults = ({
                     ))}
                 </Grid>
             ) : (
-                <Grid direction="row" alignItems="stretch" container spacing={2}>
-                    {searchResults.map(item => (
-                        <Grid
-                            direction="row"
-                            alignItems="stretch"
-                            container
-                            key={`item-${item.userId}`}
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                            lg={3}
-                        >
-                            <ResultCard data={item} onClick={e => setSelected(item.userId)} />
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
+                    <Grid direction="row" alignItems="stretch" container spacing={2}>
+                        {searchResults.map(item => (
+                            <Grid
+                                direction="row"
+                                alignItems="stretch"
+                                container
+                                key={`item-${item.userId}`}
+                                item
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                lg={3}
+                            >
+                                <ResultCard data={item} onClick={e => setSelected(item.userId)} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                )}
             <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
                 <Pagination />
             </Box>

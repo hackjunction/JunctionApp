@@ -4,6 +4,8 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import { buildFilterArray } from './helpers';
 
 import RecruitmentService from 'services/recruitment';
+import UserProfilesService from 'services/userProfiles';
+import EventsService from 'services/events';
 
 export const setFilters = data => dispatch => {
     dispatch({
@@ -39,6 +41,16 @@ export const setNextPage = () => ({
     type: ActionTypes.SET_NEXT_PAGE
 });
 
+export const updateEvents = () => (dispatch, getState) => {
+    dispatch({
+        type: ActionTypes.UPDATE_EVENTS,
+        promise: EventsService.getPublicEvents(),
+        meta: {
+            onFailure: e => console.log('Error updating events', e)
+        }
+    });
+};
+
 export const updateSearchResults = () => (dispatch, getState) => {
     const state = getState();
     const idToken = AuthSelectors.getIdToken(state);
@@ -59,7 +71,7 @@ export const sendMessage = (message, userId) => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
     dispatch({
-        type: ActionTypes.SUBMIT_ACTION,
+        type: ActionTypes.UPDATE_ACTION_HISTORY,
         promise: RecruitmentService.submitAction('message', idToken, userId, message),
         meta: {
             onFailure: e => console.log('Error sending message', e)
@@ -70,9 +82,9 @@ export const sendMessage = (message, userId) => (dispatch, getState) => {
 export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
-    if (isFavorite) {
+    if (!isFavorite) {
         dispatch({
-            type: ActionTypes.SUBMIT_ACTION,
+            type: ActionTypes.UPDATE_ACTION_HISTORY,
             promise: RecruitmentService.submitAction('favorite', idToken, userId),
             meta: {
                 onFailure: e => console.log('Error adding to favorites', e)
@@ -80,13 +92,62 @@ export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
         });
     } else {
         dispatch({
-            type: ActionTypes.SUBMIT_ACTION,
+            type: ActionTypes.UPDATE_ACTION_HISTORY,
             promise: RecruitmentService.submitAction('remove-favorite', idToken, userId),
             meta: {
                 onFailure: e => console.log('Error adding to favorites', e)
             }
         });
     }
+};
+
+/* Admin actions */
+export const updateAdminRecruiters = () => (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_RECRUITERS,
+        promise: UserProfilesService.getRecruiters(idToken),
+        meta: {
+            onFailure: e => console.log('Error getting recruiters', e)
+        }
+    });
+};
+
+export const updateAdminSearchResults = query => (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_SEARCH_RESULTS,
+        promise: UserProfilesService.queryUsers(idToken, query),
+        meta: {
+            onFailure: e => console.log('Error querying users', e)
+        }
+    });
+};
+
+export const adminGrantRecruiterAccess = (userId, events, organisation) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const user = await UserProfilesService.updateRecruiter(idToken, userId, events, organisation);
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_USER,
+        payload: user
+    });
+
+    dispatch(updateAdminRecruiters());
+
+    return user;
+};
+
+export const adminRevokeRecruiterAccess = userId => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const user = await UserProfilesService.updateRecruiter(idToken, userId, [], '');
+    dispatch({
+        type: ActionTypes.ADMIN_UPDATE_USER,
+        payload: user
+    });
 };
 
 export const changeMessageValue = message => ({
