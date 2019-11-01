@@ -34,11 +34,11 @@ const Filters = ({ textSearch, setTextSearch, loading }) => {
 
     return (
         <Box display="flex" flexDirection="column">
-            <Box width="300px" display="flex" flexDirection="row" alignItems="center">
+            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="flex-start">
                 <SearchIcon />
-                <Box p={0.5} />
-                <TextInput value={searchValue} onChange={setSearchValue} placeholder="Search by name/email" />
-                <Box p={1} />
+                <Box width="300px" pl={0.5} pr={1}>
+                    <TextInput value={searchValue} onChange={setSearchValue} placeholder="Search by name/email" />
+                </Box>
                 {loading && <CircularProgress size={24} />}
             </Box>
             <motion.div
