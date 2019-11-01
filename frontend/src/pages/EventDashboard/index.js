@@ -7,7 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
-import EventNavBar from 'components/navbars/EventNavBar/index';
+import BasicNavBar from 'components/navbars/BasicNavBar';
 
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
@@ -63,7 +63,7 @@ const EventDashboard = ({
                     />
                 </div>
             }
-            topContent={<EventNavBar />}
+            topContent={<BasicNavBar text={event.name} />}
             routes={[
                 {
                     key: 'dashboard',

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const baseStyles = (theme, props, variant) => {
     return {
         borderRadius: '13px',
-        padding: '0.5rem 1.5rem',
+        padding: '0.25rem 1.5rem',
         fontSize: '16px',
         letterSpacing: '0.02em',
         lineHeight: '22px',
