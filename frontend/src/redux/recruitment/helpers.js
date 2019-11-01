@@ -1,7 +1,18 @@
 import moment from 'moment';
 
-export const buildFilterArray = ({ skills = [], roles = [], countryOfResidence = [], age, recruitmentStatus = [] }) => {
+export const buildFilterArray = ({
+    skills = [],
+    roles = [],
+    countryOfResidence = [],
+    age,
+    recruitmentStatus = [],
+    textSearch = ''
+}) => {
     const filters = [];
+
+    if (textSearch.length > 0) {
+        return textSearch;
+    }
 
     if (age && age.length === 2) {
         filters.push({
