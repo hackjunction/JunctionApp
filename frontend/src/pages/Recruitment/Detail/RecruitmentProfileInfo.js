@@ -52,7 +52,7 @@ const getActionHistory = messages => {
   if (messages && messages.length !== 0) {
     return (
       <Grid item mb={1}>
-        <List>
+        <List className={styles.messageList}>
           {messages.map(action => {
             return <MessageItem action={action} />;
           })}
@@ -111,7 +111,7 @@ const RecruitmentProfileInfo = React.memo(
           spacing={4}
         >
           {education && education.level && (
-            <Grid item mb={1} xs={12} md={6} lg={6}>
+            <Grid item mb={1}>
               <Typography variant="h6">Education</Typography>
               <Typography>
                 <strong>
@@ -125,7 +125,16 @@ const RecruitmentProfileInfo = React.memo(
           {getListOf(industriesOfInterest, 'industry')}
           {getListOf(themesOfInterest, 'theme')}
         </Grid>
-        <Grid container item direction="column" xs={12} wrap="nowrap" sm={8}>
+        <Grid
+          container
+          justifyContent="center"
+          item
+          direction="column"
+          xs={12}
+          spacing={4}
+          wrap="nowrap"
+          sm={8}
+        >
           <Grid container item spacing={4}>
             {getSkills(skills)}
             {roles && roles.length !== 0 && (
@@ -151,7 +160,7 @@ const RecruitmentProfileInfo = React.memo(
               value={messageVal}
               autosize={{ minRows: 10, maxRows: 20 }}
               placeholder="Type message here..."
-              maxLength={1000}
+              maxLength={500}
             />
             <Button
               style={{

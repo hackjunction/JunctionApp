@@ -25,7 +25,7 @@ export const MessageItem = props => {
   }, [action]);
 
   return (
-    <ListItem>
+    <ListItem disableGutters>
       <ListItemAvatar>
         <Avatar
           src={profile.avatar}
