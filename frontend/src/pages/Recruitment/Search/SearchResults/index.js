@@ -22,10 +22,10 @@ const SearchResults = ({
     pageCount,
     setNextPage,
     setPrevPage,
-    loading
+    loading,
+    paginationEnabled
 }) => {
     const [selected, setSelected] = useState();
-    const [isFavorites, setIsFavorites] = useState(false);
 
     useEffect(() => {
         updateSearchResults();
@@ -90,32 +90,40 @@ const SearchResults = ({
 
     return (
         <React.Fragment>
-            <Box p={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Typography variant="subtitle1">{searchResultsCount} results</Typography>
-                <Pagination />
-            </Box>
+            {paginationEnabled && (
+                <Box p={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="subtitle1">{searchResultsCount} results</Typography>
+
+                    <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                        <Pagination />
+                    </Box>
+                </Box>
+            )}
             {renderLoading()}
             {renderResults()}
-            <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
-                <Pagination />
-            </Box>
+            {paginationEnabled && (
+                <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                    <Pagination />
+                </Box>
+            )}
             <RecruitmentUserModal profileId={selected} onClose={setSelected} />
         </React.Fragment>
     );
 };
 
-const mapState = state => ({
-    searchResults: RecruitmentSelectors.searchResults(state),
+const mapState = (state, ownProps) => ({
+    searchResults: ownProps.items || RecruitmentSelectors.searchResults(state),
     searchResultsCount: RecruitmentSelectors.searchResultsCount(state),
     loading: RecruitmentSelectors.searchResultsLoading(state),
     filters: RecruitmentSelectors.filters(state),
     pageSize: RecruitmentSelectors.pageSize(state),
     page: RecruitmentSelectors.page(state),
-    pageCount: RecruitmentSelectors.pageCount(state)
+    pageCount: RecruitmentSelectors.pageCount(state),
+    paginationEnabled: !ownProps.items
 });
 
-const mapDispatch = dispatch => ({
-    updateSearchResults: () => dispatch(RecruitmentActions.updateSearchResults()),
+const mapDispatch = (dispatch, ownProps) => ({
+    updateSearchResults: ownProps.items ? () => {} : () => dispatch(RecruitmentActions.updateSearchResults()),
     setPrevPage: () => dispatch(RecruitmentActions.setPrevPage()),
     setNextPage: () => dispatch(RecruitmentActions.setNextPage())
 });

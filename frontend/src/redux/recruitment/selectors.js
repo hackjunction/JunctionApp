@@ -33,7 +33,7 @@ export const adminSearchResultsUpdated = state => state.recruitment.adminSearchR
 
 export const favorites = createSelector(
     actionHistory,
-    actions => actionHistory.filter(action => action.type === 'favorite')
+    actions => actions.filter(action => action.type === 'favorite').map(action => action._user)
 );
 
 export const filters = state => state.recruitment.filters;
