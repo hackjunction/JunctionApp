@@ -25,6 +25,7 @@ const SearchResults = ({
     loading
 }) => {
     const [selected, setSelected] = useState();
+    const [isFavorites, setIsFavorites] = useState(false);
 
     useEffect(() => {
         updateSearchResults();
