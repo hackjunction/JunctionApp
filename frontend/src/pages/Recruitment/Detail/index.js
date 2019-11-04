@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import { withSnackbar } from 'notistack';
-import { Typography, Grid, Avatar, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Grid, Avatar, Button, Dialog } from '@material-ui/core';
 import emblem_black from '../../../assets/logos/emblem_black.png';
 import { goBack } from 'connected-react-router';
 
@@ -28,181 +29,163 @@ import UserProfilesService from 'services/userProfiles';
 
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
-const DetailPage = ({
-  idToken,
-  match,
-  isFavorite,
-  toggleFavorite,
-  enqueueSnackbar,
-  toSearchResults
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [participant, setParticipant] = useState();
-
-  const { id } = match.params;
-
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-
-      UserProfilesService.getUserProfileRecruitment(id, idToken)
-        .then(data => {
-          setParticipant(data);
-          console.log(data);
-        })
-        .catch(err => {
-          setError(true);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'red'
     }
-  }, [idToken, id]);
+}));
 
-  const participantName = useMemo(() => {
-    if (!participant) return '';
-    const { firstName, lastName } = participant.profile;
-    return `${firstName} ${lastName}`;
-  }, [participant]);
+const DetailPage = ({ idToken, match, isFavorite, toggleFavorite, enqueueSnackbar, toSearchResults }) => {
+    const classes = useStyles();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [participant, setParticipant] = useState();
 
-  const participantSubheading = useMemo(() => {
-    if (!participant) return '';
-    return participant.profile.countryOfResidence;
-  }, [participant]);
+    const { id } = match.params;
 
-  const participantImageUrl = useMemo(() => {
-    if (!participant) return '';
-    return participant.profile.profilePicture;
-  }, [participant]);
+    useEffect(() => {
+        if (id) {
+            setLoading(true);
 
-  const { social } = participant || {};
-
-  const onStarClick = () => {
-    toggleFavorite(id, isFavorite);
-    if (isFavorite) {
-      enqueueSnackbar(`${participant.profile.firstName} added to favorites`, {
-        variant: 'success'
-      });
-    } else {
-      enqueueSnackbar(
-        `${participant.profile.firstName} removed from favorites`,
-        {
-          variant: 'success'
+            UserProfilesService.getUserProfileRecruitment(id, idToken)
+                .then(data => {
+                    setParticipant(data);
+                    console.log(data);
+                })
+                .catch(err => {
+                    setError(true);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         }
-      );
-    }
-  };
+    }, [idToken, id]);
 
-  const renderStar = () => {
-    if (isFavorite) {
-      return (
-        <StarIcon
-          className={styles.star}
-          fontSize="large"
-          onClick={() => onStarClick()}
-        />
-      );
-    }
+    const participantName = useMemo(() => {
+        if (!participant) return '';
+        const { firstName, lastName } = participant.profile;
+        return `${firstName} ${lastName}`;
+    }, [participant]);
+
+    const participantSubheading = useMemo(() => {
+        if (!participant) return '';
+        return participant.profile.countryOfResidence;
+    }, [participant]);
+
+    const participantImageUrl = useMemo(() => {
+        if (!participant) return '';
+        return participant.profile.profilePicture;
+    }, [participant]);
+
+    const { social } = participant || {};
+
+    const onStarClick = () => {
+        toggleFavorite(id, isFavorite);
+        if (isFavorite) {
+            enqueueSnackbar(`${participant.profile.firstName} added to favorites`, {
+                variant: 'success'
+            });
+        } else {
+            enqueueSnackbar(`${participant.profile.firstName} removed from favorites`, {
+                variant: 'success'
+            });
+        }
+    };
+
+    const renderStar = () => {
+        if (isFavorite) {
+            return <StarIcon className={styles.star} fontSize="large" onClick={() => onStarClick()} />;
+        }
+        return <StarBorderIcon className={styles.star} fontSize="large" onClick={() => onStarClick()} />;
+    };
     return (
-      <StarBorderIcon
-        className={styles.star}
-        fontSize="large"
-        onClick={() => onStarClick()}
-      />
+        <Dialog fullScreen open={!loading && !!participant}>
+            <PageWrapper
+                error={error}
+                wrapContent={false}
+                render={() => (
+                    <CenteredContainer>
+                        <Grid
+                            container
+                            direction="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            style={{ marginBottom: '3rem' }}
+                        >
+                            <Grid style={{ alignSelf: 'flex-start' }} item>
+                                <Button
+                                    onClick={() => toSearchResults()}
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<ArrowBackIosIcon />}
+                                >
+                                    Back
+                                </Button>
+                            </Grid>
+                            <Grid item>{renderStar()}</Grid>
+                            <Grid item>
+                                <Avatar
+                                    style={{ height: '300px', width: '300px' }}
+                                    alt="Profile Picture"
+                                    src={participantImageUrl}
+                                    imgProps={{
+                                        onError: e => {
+                                            e.target.src = emblem_black;
+                                        }
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item alignItems="center" justifyContent="center" className={styles.nameContainer}>
+                                <Typography variant="h4">{participantName}</Typography>
+                                <Typography variant="h6">{participantSubheading}</Typography>
+                            </Grid>
+                            <Grid item>
+                                {social && social.linkedin && (
+                                    <LinkBall target={social.linkedin}>
+                                        <LinkedInIcon fontSize="large" />
+                                    </LinkBall>
+                                )}
+                                {social && social.github && (
+                                    <LinkBall target={social.github}>
+                                        <GitHubIcon fontSize="large" />
+                                    </LinkBall>
+                                )}
+                            </Grid>
+                        </Grid>
+                        <RecruitmentProfileInfo participant={participant} />
+                    </CenteredContainer>
+                )}
+            />
+        </Dialog>
     );
-  };
-  return (
-    <PageWrapper
-      loading={loading || !participant}
-      error={error}
-      render={() => (
-        <CenteredContainer>
-          <Grid
-            container
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            style={{ marginBottom: '3rem' }}
-          >
-            <Grid style={{ alignSelf: 'flex-start' }} item>
-              <Button
-                onClick={() => toSearchResults()}
-                variant="contained"
-                color="secondary"
-                startIcon={<ArrowBackIosIcon />}
-              >
-                Back
-              </Button>
-            </Grid>
-            <Grid item>{renderStar()}</Grid>
-            <Grid item>
-              <Avatar
-                style={{ height: '300px', width: '300px' }}
-                alt="Profile Picture"
-                src={participantImageUrl}
-                imgProps={{
-                  onError: e => {
-                    e.target.src = emblem_black;
-                  }
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="center"
-              className={styles.nameContainer}
-            >
-              <Typography variant="h4">{participantName}</Typography>
-              <Typography variant="h6">{participantSubheading}</Typography>
-            </Grid>
-            <Grid item>
-              {social && social.linkedin && (
-                <LinkBall target={social.linkedin}>
-                  <LinkedInIcon fontSize="large" />
-                </LinkBall>
-              )}
-              {social && social.github && (
-                <LinkBall target={social.github}>
-                  <GitHubIcon fontSize="large" />
-                </LinkBall>
-              )}
-            </Grid>
-          </Grid>
-          <RecruitmentProfileInfo participant={participant} />
-        </CenteredContainer>
-      )}
-    />
-  );
 };
 
 const mapState = (state, ownProps) => {
-  const actionHistory = RecruitmentSelectors.actionHistory(state);
-  const filteredActions = actionHistory.filter(
-    action => action.user === ownProps.profileId
-  );
-  const isFavorite =
-    actionHistory.filter(
-      action => action.user === ownProps.profileId && action.type === 'favorite'
-    ).length !== 0;
+    const actionHistory = RecruitmentSelectors.actionHistory(state);
+    const filteredActions = actionHistory.filter(action => action.user === ownProps.profileId);
+    const isFavorite =
+        actionHistory.filter(action => action.user === ownProps.profileId && action.type === 'favorite').length !== 0;
 
-  return {
-    idToken: AuthSelectors.getIdToken(state),
-    actions: filteredActions,
-    isFavorite
-  };
+    return {
+        idToken: AuthSelectors.getIdToken(state),
+        actions: filteredActions,
+        isFavorite
+    };
 };
 
 const mapDispatch = dispatch => ({
-  toggleFavorite: (profileId, isFavorite) =>
-    dispatch(RecruitmentActions.toggleFavorite(profileId, isFavorite)),
-  toSearchResults: () => dispatch(goBack())
+    toggleFavorite: (profileId, isFavorite) => dispatch(RecruitmentActions.toggleFavorite(profileId, isFavorite)),
+    toSearchResults: () => dispatch(goBack())
 });
 
 export default withSnackbar(
-  connect(
-    mapState,
-    mapDispatch
-  )(DetailPage)
+    connect(
+        mapState,
+        mapDispatch
+    )(DetailPage)
 );
