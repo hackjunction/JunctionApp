@@ -79,24 +79,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DetailTop = ({ user = {}, toggleFavorite, isFavorite, goBack, enqueueSnackbar }) => {
-    const classes = useStyles({ isFavorite });
-    const [loading, setLoading] = useState(false);
+    //Toggle favorited state locally for instant feedback on favorite action
+    const [_isFavorite, setIsFavorite] = useState(isFavorite);
+    const classes = useStyles({ isFavorite: _isFavorite });
     const { profile = {}, social = {} } = user;
 
     const handleFavorite = useCallback(async () => {
-        setLoading(true);
-        const { error } = await toggleFavorite(user.userId, isFavorite);
+        setIsFavorite(!_isFavorite);
+        const { error } = await toggleFavorite(user.userId, _isFavorite);
         if (error) {
             enqueueSnackbar('Something went wrong...', { variant: 'error' });
-        } else {
-            if (isFavorite) {
-                enqueueSnackbar(`Removed ${user.profile.firstName} from favorites`, { variant: 'success' });
-            } else {
-                enqueueSnackbar(`Added ${user.profile.firstName} to favorites`, { variant: 'success' });
-            }
+            setIsFavorite(_isFavorite);
         }
-        setLoading(false);
-    }, [enqueueSnackbar, user.userId, user.profile.firstName, isFavorite, toggleFavorite]);
+    }, [enqueueSnackbar, user.userId, _isFavorite, toggleFavorite]);
 
     const renderRecruitmentStatus = () => {
         switch (user.recruitmentOptions.status) {
@@ -163,12 +158,7 @@ const DetailTop = ({ user = {}, toggleFavorite, isFavorite, goBack, enqueueSnack
                 />
                 <Box className={classes.favoriteWrapper}>
                     <Tooltip title={isFavorite ? 'Remove from favorites' : 'Add to favorites'} placement="right">
-                        <IconButton
-                            disabled={loading}
-                            onClick={handleFavorite}
-                            aria-label="favorite"
-                            className={classes.margin}
-                        >
+                        <IconButton onClick={handleFavorite} aria-label="favorite" className={classes.margin}>
                             <StarIcon className={classes.favoriteIcon} fontSize="large" />
                         </IconButton>
                     </Tooltip>
