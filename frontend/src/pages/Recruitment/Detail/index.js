@@ -12,7 +12,6 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 
 import * as AuthSelectors from 'redux/auth/selectors';
-import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 
 import UserProfilesService from 'services/userProfiles';
 
