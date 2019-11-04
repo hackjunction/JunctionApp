@@ -123,6 +123,7 @@ const DetailPage = ({
             direction="column"
             alignItems="center"
             justifyContent="center"
+            style={{ marginBottom: '3rem' }}
           >
             <Grid style={{ alignSelf: 'flex-start' }} item>
               <Button
@@ -153,18 +154,18 @@ const DetailPage = ({
               justifyContent="center"
               className={styles.nameContainer}
             >
-              <Typography variant="h3">{participantName}</Typography>
+              <Typography variant="h4">{participantName}</Typography>
               <Typography variant="h6">{participantSubheading}</Typography>
             </Grid>
             <Grid item>
               {social && social.linkedin && (
                 <LinkBall target={social.linkedin}>
-                  <LinkedInIcon />
+                  <LinkedInIcon fontSize="large" />
                 </LinkBall>
               )}
               {social && social.github && (
                 <LinkBall target={social.github}>
-                  <GitHubIcon />
+                  <GitHubIcon fontSize="large" />
                 </LinkBall>
               )}
             </Grid>
