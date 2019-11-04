@@ -30,7 +30,7 @@ const SearchPage = ({ favorites }) => {
     return (
         <div className={classes.root}>
             <CenteredContainer>
-                <Box display="flex" flexDirection="row" justifyContent="flex-end">
+                <Box display="flex" flexDirection="row" justifyContent="flex-end" mb={2}>
                     <ToggleFavorites count={favorites.length} active={showFavorites} onChange={toggleFavorites} />
                 </Box>
                 {showFavorites ? (

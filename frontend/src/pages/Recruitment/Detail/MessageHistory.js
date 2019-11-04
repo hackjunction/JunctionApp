@@ -64,12 +64,11 @@ const MessageHistory = ({ messages, user }) => {
 };
 
 const mapState = (state, ownProps) => {
-    const actionHistory = RecruitmentSelectors.actionHistory(state);
-    const messageHistory = actionHistory.filter(action => {
-        return action.type === 'message' && action.user === ownProps.user.userId;
-    });
+    const actionHistoryByUser = RecruitmentSelectors.actionHistoryByUser(state);
+    const userHistory = actionHistoryByUser[ownProps.user.userId] || [];
+    const messages = userHistory.filter(action => action.type === 'message');
     return {
-        messages: messageHistory
+        messages
     };
 };
 

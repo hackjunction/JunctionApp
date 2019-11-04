@@ -151,7 +151,7 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
         await RecruitmentAction.deleteMany({
-            recruiter: recruiter.sub,
+            organisation: recruiter.recruiter_organisation,
             user: action.user,
             type: 'favorite'
         });
