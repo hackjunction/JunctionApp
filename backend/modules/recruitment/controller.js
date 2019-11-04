@@ -108,8 +108,10 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
         education: userProfile.education,
         social: {
             github: userProfile.github,
-            linkedin: userProfile.linkedin
+            linkedin: userProfile.linkedin,
+            portfolio: userProfile.portfolio
         },
+        recruitmentOptions: userProfile.recruitmentOptions,
         registrations: userProfile.registrations
     };
 

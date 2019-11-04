@@ -1,24 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 
 import { withSnackbar } from 'notistack';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, Avatar, Button, Dialog } from '@material-ui/core';
-import emblem_black from '../../../assets/logos/emblem_black.png';
-import { goBack } from 'connected-react-router';
-
-import GitHubIcon from '@material-ui/icons/GitHub';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import StarIcon from '@material-ui/icons/Star';
-
-import styles from './RecruitmentUserModal.module.scss';
-import LinkBall from './LinkBall';
+import { Typography, Grid, Dialog, Box } from '@material-ui/core';
+import { Roles } from '@hackjunction/shared';
+import CheckIcon from '@material-ui/icons/Check';
 
 import PageWrapper from 'components/layouts/PageWrapper';
-
-import RecruitmentProfileInfo from './RecruitmentProfileInfo';
 
 import CenteredContainer from 'components/generic/CenteredContainer';
 
@@ -29,22 +18,62 @@ import UserProfilesService from 'services/userProfiles';
 
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
+import { useFormField } from 'hooks/formHooks';
+
+import DetailTop from './DetailTop';
+import DetailSection from './DetailSection';
+import MessageHistory from './MessageHistory';
+import SkillRating from '../Search/SearchResults/SkillRating';
+import TextAreaInput from 'components/inputs/TextAreaInput';
+import FormControl from 'components/inputs/FormControl';
+import Button from 'components/generic/Button';
+
 const useStyles = makeStyles(theme => ({
-    wrapper: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'red'
+    iconBlue: {
+        backgroundColor: theme.palette.theme_turquoise.main,
+        width: '20px',
+        height: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        marginRight: '8px'
+    },
+    iconPurple: {
+        backgroundColor: theme.palette.theme_purple.main,
+        width: '20px',
+        height: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        marginRight: '8px'
+    },
+    bold: {
+        fontWeight: 'bold'
     }
 }));
 
-const DetailPage = ({ idToken, match, isFavorite, toggleFavorite, enqueueSnackbar, toSearchResults }) => {
+const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
     const classes = useStyles();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [participant, setParticipant] = useState();
+    const [user, setUser] = useState();
+    const message = useFormField(
+        '',
+        value => {
+            if (value.length < 50) {
+                return 'Your message must be at least 50 characters long';
+            }
+            if (value.length > 1000) {
+                return "Your message can't be more than 1000 characters long";
+            }
+
+            return;
+        },
+        false,
+        false
+    );
 
     const { id } = match.params;
 
@@ -54,7 +83,7 @@ const DetailPage = ({ idToken, match, isFavorite, toggleFavorite, enqueueSnackba
 
             UserProfilesService.getUserProfileRecruitment(id, idToken)
                 .then(data => {
-                    setParticipant(data);
+                    setUser(data);
                     console.log(data);
                 })
                 .catch(err => {
@@ -66,98 +95,147 @@ const DetailPage = ({ idToken, match, isFavorite, toggleFavorite, enqueueSnackba
         }
     }, [idToken, id]);
 
-    const participantName = useMemo(() => {
-        if (!participant) return '';
-        const { firstName, lastName } = participant.profile;
-        return `${firstName} ${lastName}`;
-    }, [participant]);
+    const handleSendMessage = useCallback(async () => {
+        const err = message.validate();
+        if (err) return;
+        setLoading(true);
+        const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        const res = await sendMessage(formatted, user.userId);
 
-    const participantSubheading = useMemo(() => {
-        if (!participant) return '';
-        return participant.profile.countryOfResidence;
-    }, [participant]);
-
-    const participantImageUrl = useMemo(() => {
-        if (!participant) return '';
-        return participant.profile.profilePicture;
-    }, [participant]);
-
-    const { social } = participant || {};
-
-    const onStarClick = () => {
-        toggleFavorite(id, isFavorite);
-        if (isFavorite) {
-            enqueueSnackbar(`${participant.profile.firstName} added to favorites`, {
-                variant: 'success'
+        if (res.error) {
+            enqueueSnackbar('Something went wrong... Please try again.', {
+                variant: 'error'
             });
         } else {
-            enqueueSnackbar(`${participant.profile.firstName} removed from favorites`, {
-                variant: 'success'
-            });
+            message.reset();
+            enqueueSnackbar('Message sent!', { variant: 'success' });
         }
-    };
+        setLoading(false);
+    }, [message, sendMessage, user, enqueueSnackbar]);
 
-    const renderStar = () => {
-        if (isFavorite) {
-            return <StarIcon className={styles.star} fontSize="large" onClick={() => onStarClick()} />;
-        }
-        return <StarBorderIcon className={styles.star} fontSize="large" onClick={() => onStarClick()} />;
-    };
     return (
-        <Dialog fullScreen open={!loading && !!participant}>
+        <Dialog fullScreen open={true} transitionDuration={0}>
             <PageWrapper
                 error={error}
                 wrapContent={false}
+                loading={loading || !user}
                 render={() => (
                     <CenteredContainer>
-                        <Grid
-                            container
-                            direction="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            style={{ marginBottom: '3rem' }}
-                        >
-                            <Grid style={{ alignSelf: 'flex-start' }} item>
-                                <Button
-                                    onClick={() => toSearchResults()}
-                                    variant="contained"
-                                    color="secondary"
-                                    startIcon={<ArrowBackIosIcon />}
-                                >
-                                    Back
-                                </Button>
+                        <DetailTop user={user} />
+                        <Box mt={3} />
+                        <Grid container>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <DetailSection label="Skills">
+                                    <Box>
+                                        {user.skills.map(skill => (
+                                            <SkillRating data={skill} />
+                                        ))}
+                                    </Box>
+                                </DetailSection>
                             </Grid>
-                            <Grid item>{renderStar()}</Grid>
-                            <Grid item>
-                                <Avatar
-                                    style={{ height: '300px', width: '300px' }}
-                                    alt="Profile Picture"
-                                    src={participantImageUrl}
-                                    imgProps={{
-                                        onError: e => {
-                                            e.target.src = emblem_black;
-                                        }
-                                    }}
-                                />
+                            <Grid item xs={12} sm={6} md={4}>
+                                <DetailSection label="Previous roles">
+                                    {user.roles.map(role => (
+                                        <Box mb={0.3}>
+                                            <Typography className={classes.bold} variant="body2">
+                                                {role.role}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                {Roles.getLabelForExperienceLevel(role.years)}
+                                            </Typography>
+                                        </Box>
+                                    ))}
+                                </DetailSection>
+                                <DetailSection label="Education">
+                                    {user.education.university ? (
+                                        <React.Fragment>
+                                            <Typography className={classes.bold} variant="body2">
+                                                {user.education.level}, {user.education.degree}
+                                            </Typography>
+                                            <Typography variant="body2">{user.education.university}</Typography>
+                                            <Typography variant="body2">
+                                                {user.education.graduationYear < new Date().getFullYear()
+                                                    ? `Graduation year: ${user.education.graduationYear}`
+                                                    : `Expected graduation year: ${user.education.graduationYear}`}
+                                            </Typography>
+                                        </React.Fragment>
+                                    ) : (
+                                        <Typography className={classes.bold} variant="body2">
+                                            {user.education.level}
+                                        </Typography>
+                                    )}
+                                </DetailSection>
                             </Grid>
-                            <Grid item alignItems="center" justifyContent="center" className={styles.nameContainer}>
-                                <Typography variant="h4">{participantName}</Typography>
-                                <Typography variant="h6">{participantSubheading}</Typography>
+                            <Grid item xs={12} md={4} container>
+                                <Grid item xs={12} sm={6} md={12}>
+                                    <DetailSection label="Industries of interest">
+                                        {user.industriesOfInterest.map(industry => (
+                                            <Box
+                                                key={industry}
+                                                display="flex"
+                                                flexDirection="row"
+                                                alignItems="center"
+                                                mb={1}
+                                            >
+                                                <div className={classes.iconBlue}>
+                                                    <CheckIcon fontSize="inherit" style={{ color: 'white' }} />
+                                                </div>
+                                                <Typography variant="body2">{industry}</Typography>
+                                            </Box>
+                                        ))}
+                                    </DetailSection>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={12}>
+                                    <DetailSection label="Themes of interest">
+                                        {user.themesOfInterest.map(theme => (
+                                            <Box
+                                                key={theme}
+                                                display="flex"
+                                                flexDirection="row"
+                                                alignItems="center"
+                                                mb={1}
+                                            >
+                                                <div className={classes.iconPurple}>
+                                                    <CheckIcon fontSize="inherit" style={{ color: 'white' }} />
+                                                </div>
+                                                <Typography variant="body2">{theme}</Typography>
+                                            </Box>
+                                        ))}
+                                    </DetailSection>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                {social && social.linkedin && (
-                                    <LinkBall target={social.linkedin}>
-                                        <LinkedInIcon fontSize="large" />
-                                    </LinkBall>
-                                )}
-                                {social && social.github && (
-                                    <LinkBall target={social.github}>
-                                        <GitHubIcon fontSize="large" />
-                                    </LinkBall>
-                                )}
+                            <Grid item xs={12}>
+                                <DetailSection label="Message history">
+                                    <MessageHistory user={user} />
+                                </DetailSection>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DetailSection label="Send message">
+                                    <FormControl
+                                        touched={true}
+                                        error={message.error}
+                                        hint={`Type a message for ${user.profile.firstName} here. They will receive an email notification with the message as well as your email address, so you can continue the conversation in the medium of your choice.`}
+                                    >
+                                        <TextAreaInput
+                                            label="Your message"
+                                            placeholder={`Hi ${user.profile.firstName}! We're hiring, and I'm just reaching out to let you know that...`}
+                                            value={message.value}
+                                            onChange={message.onChange}
+                                        />
+                                    </FormControl>
+                                    <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                                        <Button
+                                            disabled={message.error}
+                                            onClick={handleSendMessage}
+                                            color="secondary"
+                                            variant="contained"
+                                        >
+                                            Send message
+                                        </Button>
+                                    </Box>
+                                </DetailSection>
                             </Grid>
                         </Grid>
-                        <RecruitmentProfileInfo participant={participant} />
                     </CenteredContainer>
                 )}
             />
@@ -165,22 +243,13 @@ const DetailPage = ({ idToken, match, isFavorite, toggleFavorite, enqueueSnackba
     );
 };
 
-const mapState = (state, ownProps) => {
-    const actionHistory = RecruitmentSelectors.actionHistory(state);
-    const filteredActions = actionHistory.filter(action => action.user === ownProps.profileId);
-    const isFavorite =
-        actionHistory.filter(action => action.user === ownProps.profileId && action.type === 'favorite').length !== 0;
-
+const mapState = state => {
     return {
-        idToken: AuthSelectors.getIdToken(state),
-        actions: filteredActions,
-        isFavorite
+        idToken: AuthSelectors.getIdToken(state)
     };
 };
-
 const mapDispatch = dispatch => ({
-    toggleFavorite: (profileId, isFavorite) => dispatch(RecruitmentActions.toggleFavorite(profileId, isFavorite)),
-    toSearchResults: () => dispatch(goBack())
+    sendMessage: (message, userId) => dispatch(RecruitmentActions.sendMessage(message, userId))
 });
 
 export default withSnackbar(
