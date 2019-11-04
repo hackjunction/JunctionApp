@@ -24,8 +24,8 @@ const RecruitmentPage = ({ location, match, updateEvents, updateActionHistory })
             </CenteredContainer>
             <Route path="/recruitment" component={SearchPage} />
             <Switch>
-                <Route path="/recruitment/:id" component={DetailPage} />
                 <Route exact path="/recruitment/admin" component={AdminPage} />
+                <Route path="/recruitment/:id" component={DetailPage} />
                 <Redirect to="/recruitment" />
             </Switch>
         </React.Fragment>

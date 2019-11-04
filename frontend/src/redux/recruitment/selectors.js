@@ -5,13 +5,14 @@ export const eventsLoading = state => state.recruitment.events.loading;
 export const eventsError = state => state.recruitment.events.error;
 export const eventsUpdated = state => state.recruitment.events.updated;
 
-export const searchResults = state => state.recruitment.searchResults.data.data;
-export const searchResultsCount = state => state.recruitment.searchResults.data.count;
+export const searchResults = state => state.recruitment.searchResults.data;
+export const searchResultsCount = state => state.recruitment.searchResults.count;
 export const searchResultsLoading = state => state.recruitment.searchResults.loading;
 export const searchResultsError = state => state.recruitment.searchResults.error;
 export const searchResultsUpdated = state => state.recruitment.searchResults.updated;
 
 export const actionHistory = state => state.recruitment.actionHistory.data;
+export const actionHistoryByUser = state => state.recruitment.actionHistory.map;
 export const actionHistoryLoading = state => state.recruitment.actionHistory.loading;
 export const actionHistoryError = state => state.recruitment.actionHistory.error;
 export const actionHistoryUpdated = state => state.recruitment.actionHistory.updated;
