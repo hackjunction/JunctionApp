@@ -38,7 +38,7 @@ import { reduce, cloneDeep, set } from 'lodash-es';
  * like _id.
  */
 
-export const buildHandler = (field, mapByField) => (state, action) =>
+export const buildHandler = (field, mapByField, mapIsArray) => (state, action) =>
     handle(state, action, {
         start: prevState => ({
             ...prevState,
@@ -67,7 +67,16 @@ export const buildHandler = (field, mapByField) => (state, action) =>
                 const map = reduce(
                     action.payload,
                     (res, object) => {
-                        res[object[mapByField]] = object;
+                        const key = object[mapByField];
+                        if (mapIsArray) {
+                            if (res.hasOwnProperty(key)) {
+                                res[key] = res[key].concat(object);
+                            } else {
+                                res[key] = [object];
+                            }
+                        } else {
+                            res[key] = object;
+                        }
                         return res;
                     },
                     {}

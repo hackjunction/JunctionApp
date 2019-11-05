@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { Auth } from '@hackjunction/shared';
-import { Typography } from '@material-ui/core';
+import { Typography, Dialog } from '@material-ui/core';
 import RequiresPermission from 'hocs/RequiresPermission';
 
 import CenteredContainer from 'components/generic/CenteredContainer';
@@ -21,15 +21,17 @@ const RecruitmentAdminPage = () => {
     const [revokingUser, setRevokingUser] = useState();
 
     return (
-        <CenteredContainer>
-            <PageHeader heading="Recruitment admin" subheading="Manage access to recruitment dashboard" />
-            <Typography variant="h6">Add recruiters</Typography>
-            <SearchBox onGrant={setGrantingUser} onRevoke={setRevokingUser} />
-            <Typography variant="h6">Manage recruiters</Typography>
-            <RecruitersList onRevoke={setRevokingUser} />
-            <GrantAccessDialog userId={grantingUser} onClose={() => setGrantingUser()} />
-            <RevokeAccessDialog userId={revokingUser} onClose={() => setRevokingUser()} />
-        </CenteredContainer>
+        <Dialog fullScreen open={true} transitionDuration={0}>
+            <CenteredContainer>
+                <PageHeader heading="Recruitment admin" subheading="Manage access to recruitment dashboard" />
+                <Typography variant="h6">Add recruiters</Typography>
+                <SearchBox onGrant={setGrantingUser} onRevoke={setRevokingUser} />
+                <Typography variant="h6">Manage recruiters</Typography>
+                <RecruitersList onRevoke={setRevokingUser} />
+                <GrantAccessDialog userId={grantingUser} onClose={() => setGrantingUser()} />
+                <RevokeAccessDialog userId={revokingUser} onClose={() => setRevokingUser()} />
+            </CenteredContainer>
+        </Dialog>
     );
 };
 

@@ -108,8 +108,10 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
         education: userProfile.education,
         social: {
             github: userProfile.github,
-            linkedin: userProfile.linkedin
+            linkedin: userProfile.linkedin,
+            portfolio: userProfile.portfolio
         },
+        recruitmentOptions: userProfile.recruitmentOptions,
         registrations: userProfile.registrations
     };
 
@@ -149,7 +151,7 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
         await RecruitmentAction.deleteMany({
-            recruiter: recruiter.sub,
+            organisation: recruiter.recruiter_organisation,
             user: action.user,
             type: 'favorite'
         });

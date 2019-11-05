@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
-import { Avatar, Paper, Typography, Box } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { findIndex } from 'lodash-es';
+import { push } from 'connected-react-router';
+import { withSnackbar } from 'notistack';
+import { Avatar, Paper, Typography, Box, Tooltip, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Star, StarBorder, KeyboardArrowDown } from '@material-ui/icons/';
+import { KeyboardArrowDown } from '@material-ui/icons/';
+import StarIcon from '@material-ui/icons/Star';
 
 import { sortBy } from 'lodash-es';
 import SkillRating from './SkillRating';
-import emblem_black from '../../../../assets/logos/emblem_black.png';
+import emblem_black from 'assets/logos/emblem_black.png';
+
+import MiscUtils from 'utils/misc';
+import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import * as RecruitmentActions from 'redux/recruitment/actions';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,9 +30,7 @@ const useStyles = makeStyles(theme => ({
 
         '&:hover': {
             boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-            cursor: 'pointer',
-            paddingBottom: '1.75rem',
-            paddingTop: '2.25rem'
+            cursor: 'pointer'
         }
     },
     avatar: {
@@ -51,22 +58,54 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         marginTop: 'auto'
-    }
+    },
+    iconRight: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        padding: theme.spacing(2)
+    },
+    iconLeft: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        padding: theme.spacing(1)
+    },
+    favoriteIcon: ({ isFavorite }) => ({
+        transition: 'color 0.2s ease',
+        color: isFavorite ? theme.palette.secondary.light : theme.palette.text.secondary
+    })
 }));
 
-const ResultCard = ({ data, onClick, isFavorite }) => {
-    const classes = useStyles();
+const ResultCard = props => {
+    const { data, isFavorite, toggleFavorite, enqueueSnackbar = () => { }, openDetail } = props;
+    // Toggle the favorited state locally for immediate feedback on favorite action
+    const [_isFavorite, setIsFavorite] = useState(isFavorite);
+    const classes = useStyles({ isFavorite: _isFavorite });
 
-    const renderStar = () => {
-        if (isFavorite) {
-            return <Star style={{ float: 'right' }} />;
-        }
-        return <StarBorder style={{ float: 'right' }} />;
-    };
+    const handleFavorite = useCallback(
+        async e => {
+            e.stopPropagation();
+            setIsFavorite(!_isFavorite);
+            toggleFavorite(_isFavorite).then(({ error }) => {
+                if (error) {
+                    enqueueSnackbar('Something went wrong...', { variant: 'error' });
+                    setIsFavorite(_isFavorite);
+                }
+            });
+        },
+        [_isFavorite, enqueueSnackbar, toggleFavorite]
+    );
 
     return (
-        <Paper className={classes.root} onClick={onClick}>
-            <div>{renderStar()}</div>
+        <Paper className={classes.root} onClick={openDetail}>
+            <Box className={classes.iconRight}>
+                <Tooltip title={_isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+                    <IconButton onClick={handleFavorite}>
+                        <StarIcon className={classes.favoriteIcon} />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             <div style={{ flex: 1 }}>
                 <Avatar
                     className={classes.avatar}
@@ -82,11 +121,7 @@ const ResultCard = ({ data, onClick, isFavorite }) => {
                     <Typography className={classes.name} variant="h6">
                         {data.profile.firstName} {data.profile.lastName}
                     </Typography>
-                    <Typography
-                        className={classes.country}
-                        variant="subtitle1"
-                        display="block"
-                    >
+                    <Typography className={classes.country} variant="subtitle1" display="block">
                         {data.profile.countryOfResidence}
                     </Typography>
                 </Box>
@@ -98,14 +133,41 @@ const ResultCard = ({ data, onClick, isFavorite }) => {
                 </Box>
             </div>
             <Box className={classes.bottomWrapper}>
-                <KeyboardArrowDown
-                    className={classes.button}
-                    fontSize="large"
-                    color="secondary"
-                />
+                <KeyboardArrowDown className={classes.button} fontSize="large" color="secondary" />
             </Box>
         </Paper>
     );
 };
 
-export default ResultCard;
+const MemoizedResultCard = React.memo(ResultCard, (prevProps, nextProps) => {
+    if (prevProps.isFavorite !== nextProps.isFavorite) {
+        return false;
+    }
+    if (prevProps.data.userId !== nextProps.data.userId) {
+        return false;
+    }
+    // If the above didn't change, no need to render again
+    return true;
+});
+
+const mapState = (state, ownProps) => {
+    const actionHistoryByUser = RecruitmentSelectors.actionHistoryByUser(state);
+    const userHistory = actionHistoryByUser[ownProps.data.userId] || [];
+    const isFavorite = findIndex(userHistory, action => action.type === 'favorite') !== -1;
+    const messages = userHistory.filter(action => action.type === 'message');
+
+    return {
+        isFavorite,
+        messages
+    };
+};
+
+const mapDispatch = (dispatch, ownProps) => ({
+    toggleFavorite: isFavorite => dispatch(RecruitmentActions.toggleFavorite(ownProps.data.userId, isFavorite)),
+    openDetail: () => dispatch(push(`/recruitment/${ownProps.data.userId}`))
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(MemoizedResultCard);
