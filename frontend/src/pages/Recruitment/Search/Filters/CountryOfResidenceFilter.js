@@ -27,7 +27,14 @@ const CountryOfResidenceFilter = ({ filters, setFilters }) => {
             onClose={handleReset}
         >
             <Box width="300px" height="300px" overflow="hidden">
-                <Select options="country" value={draft} onChange={setDraft} isMulti={true} autoFocus />
+                <Select
+                    label="Choose countries (can be any of)"
+                    options="country"
+                    value={draft}
+                    onChange={setDraft}
+                    isMulti={true}
+                    autoFocus
+                />
             </Box>
         </FilterItem>
     );
