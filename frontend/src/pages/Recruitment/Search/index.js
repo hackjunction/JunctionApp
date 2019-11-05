@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
@@ -9,6 +9,7 @@ import Filters from './Filters';
 import CenteredContainer from 'components/generic/CenteredContainer';
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import * as AuthSelectors from 'redux/auth/selectors';
 
 import ToggleFavorites from './ToggleFavorites';
 
@@ -22,10 +23,28 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SearchPage = ({ favorites }) => {
+const SearchPage = ({ user, favorites }) => {
     const classes = useStyles();
 
     const [showFavorites, toggleFavorites] = useToggle(false);
+
+    useEffect(() => {
+        if (!user) {
+            throw new Error(
+                'Invalid access token. Please try logging out and logging in again. If the problem persists, please contact support.'
+            );
+        }
+        if (!user.recruiter_events) {
+            throw new Error(
+                "You don't have access to any events. Please try logging out and logging in again. If the problem persists, please contact support."
+            );
+        }
+        if (!user.recruiter_organisation) {
+            throw new Error(
+                "You don't belong to any organisation. Please try logging out and logging in again. If the problem persists, please contact support."
+            );
+        }
+    }, [user]);
 
     return (
         <div className={classes.root}>
@@ -47,7 +66,8 @@ const SearchPage = ({ favorites }) => {
 };
 
 const mapState = state => ({
-    favorites: RecruitmentSelectors.favorites(state)
+    favorites: RecruitmentSelectors.favorites(state),
+    user: AuthSelectors.getCurrentUser(state)
 });
 
 export default connect(mapState)(SearchPage);

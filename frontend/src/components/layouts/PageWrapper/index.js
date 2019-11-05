@@ -30,13 +30,14 @@ class PageWrapper extends PureComponent {
         super(props);
 
         this.state = {
-            error: false
+            error: false,
+            errorMessage: null
         };
     }
 
     static getDerivedStateFromError(error) {
         // Update state so the next render will show the fallback UI.
-        return { error: true };
+        return { error: true, errorMessage: error.message };
     }
 
     componentDidCatch(error, errorInfo) {
@@ -59,7 +60,7 @@ class PageWrapper extends PureComponent {
                     <Icon type="warning" size="large" style={{ fontSize: '30px' }} />
                     <div style={{ height: '20px' }} />
                     <h3 className="PageWrapper--error__title">{this.props.errorText}</h3>
-                    <p className="PageWrapper--error__desc">{this.props.errorDesc}</p>
+                    <p className="PageWrapper--error__desc">{this.state.errorMessage || this.props.errorDesc}</p>
                 </div>
             );
         }
