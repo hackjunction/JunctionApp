@@ -56,6 +56,7 @@ const SearchResults = ({
     };
 
     const renderResults = () => {
+        console.log('SEARCH RESULTS', searchResults);
         if (searchResults.length === 0) {
             if (filters.textSearch) {
                 return (

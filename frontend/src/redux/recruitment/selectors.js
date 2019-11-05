@@ -5,6 +5,15 @@ export const eventsLoading = state => state.recruitment.events.loading;
 export const eventsError = state => state.recruitment.events.error;
 export const eventsUpdated = state => state.recruitment.events.updated;
 
+export const eventsMap = createSelector(
+    events,
+    events =>
+        events.reduce((res, event) => {
+            res[event._id] = event;
+            return res;
+        }, {})
+);
+
 export const searchResults = state => state.recruitment.searchResults.data;
 export const searchResultsCount = state => state.recruitment.searchResults.count;
 export const searchResultsLoading = state => state.recruitment.searchResults.loading;

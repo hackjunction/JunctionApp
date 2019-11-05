@@ -31,7 +31,7 @@ const GrantAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar, events 
     const handleGrantAccess = useCallback(async () => {
         setLoading(true);
         try {
-            await onSubmit(userId, selectedEvents, organisation);
+            await onSubmit(userId, selectedEvents, organisation.trim());
             enqueueSnackbar('Success!', { variant: 'success' });
             onClose();
         } catch (e) {

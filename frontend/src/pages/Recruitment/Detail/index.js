@@ -131,6 +131,9 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
                                         ))}
                                     </Box>
                                 </DetailSection>
+                                <DetailSection label="Spoken languages">
+                                    <Typography variant="body2">{user.profile.spokenLanguages.join(', ')}</Typography>
+                                </DetailSection>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <DetailSection label="Previous roles">
