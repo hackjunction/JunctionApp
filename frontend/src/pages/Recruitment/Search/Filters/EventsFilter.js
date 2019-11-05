@@ -54,7 +54,7 @@ const EventsFilter = ({ user, allEvents, eventsMap, filters, setFilters }) => {
     const eventOptions = useMemo(() => {
         return allEvents
             .filter(event => {
-                return user.recruiter_events.indexOf(event._id) !== -1;
+                return user.recruiter_events && user.recruiter_events.indexOf(event._id) !== -1;
             })
             .map(event => ({
                 label: event.name,
