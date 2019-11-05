@@ -19,8 +19,8 @@ const getListOf = (areas, subject) => {
         {subject === 'theme' ? (
           <Typography variant="h6">Themes of interest</Typography>
         ) : (
-          <Typography variant="h6">Industries of interest</Typography>
-        )}
+            <Typography variant="h6">Industries of interest</Typography>
+          )}
         {areas.map(area => {
           return (
             <Typography key={area}>
@@ -42,7 +42,7 @@ const getSkills = skills => {
       <Grid item mb={1} xs={12} md={6} lg={6}>
         <Typography variant="h6">Skills</Typography>
         {skills.map(a => {
-          return <SkillRating data={a} key={a.skill} />;
+          return <SkillRating showTooltip data={a} key={a.skill} />;
         })}
       </Grid>
     );
