@@ -25,6 +25,7 @@ controller.getUserProfiles = userIds => {
 
 controller.queryProfiles = async query => {
     const found = await UserProfile.find(query.query)
+        .sort('updatedAt')
         .skip(query.pagination.skip)
         .limit(query.pagination.limit);
 

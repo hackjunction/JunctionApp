@@ -12,9 +12,11 @@ import { useDebounce } from 'hooks/customHooks';
 
 import RecruitmentStatusFilter from './RecruitmentStatusFilter';
 import CountryOfResidenceFilter from './CountryOfResidenceFilter';
-import AgeFilter from './AgeFilter';
+import RelocationStatusFilter from './RelocationStatusFilter';
+import LanguagesFilter from './LanguagesFilter';
 import SkillsFilter from './SkillsFilter';
 import RolesFilter from './RolesFilter';
+import EventsFilter from './EventsFilter';
 import FilteredBy from './FilteredBy';
 import TextInput from 'components/inputs/TextInput';
 
@@ -50,11 +52,14 @@ const Filters = ({ filters, setTextSearch, loading }) => {
                 }}
             >
                 <Box p={2} display="flex" flexDirection="row" alignItems="flex-end" flexWrap="wrap">
-                    <RecruitmentStatusFilter />
-                    <CountryOfResidenceFilter />
-                    <AgeFilter />
                     <SkillsFilter />
                     <RolesFilter />
+                    <RecruitmentStatusFilter />
+                    <RelocationStatusFilter />
+                    <CountryOfResidenceFilter />
+                    <LanguagesFilter />
+                    <EventsFilter />
+                    {/* <AgeFilter /> */}
                     <FilteredBy />
                 </Box>
             </motion.div>

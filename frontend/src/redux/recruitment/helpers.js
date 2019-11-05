@@ -1,31 +1,17 @@
-import moment from 'moment';
-
 export const buildFilterArray = ({
     skills = [],
     roles = [],
     countryOfResidence = [],
-    age,
+    spokenLanguages = [],
     recruitmentStatus = [],
+    relocationStatus = [],
+    events = [],
     textSearch = ''
 }) => {
     const filters = [];
 
     if (textSearch.length > 0) {
         return textSearch;
-    }
-
-    if (age && age.length === 2) {
-        filters.push({
-            field: 'dateOfBirth',
-            operator: '<=',
-            value: moment().subtract(age[0], 'years')
-        });
-
-        filters.push({
-            field: 'dateOfBirth',
-            operator: '>=',
-            value: moment().subtract(age[1], 'years')
-        });
     }
 
     if (countryOfResidence && countryOfResidence.length) {
@@ -36,6 +22,14 @@ export const buildFilterArray = ({
         });
     }
 
+    if (relocationStatus && relocationStatus.length) {
+        filters.push({
+            field: 'recruitmentOptions.relocation',
+            operator: 'contains',
+            value: relocationStatus
+        });
+    }
+
     if (recruitmentStatus && recruitmentStatus.length) {
         filters.push({
             field: 'recruitmentOptions.status',
@@ -43,6 +37,35 @@ export const buildFilterArray = ({
             value: recruitmentStatus
         });
     }
+
+    if (spokenLanguages && spokenLanguages.length) {
+        filters.push({
+            field: 'spokenLanguages',
+            operator: 'contains-all',
+            value: spokenLanguages
+        });
+    }
+
+    events.forEach(({ event, statuses }) => {
+        if (statuses.length) {
+            filters.push({
+                field: 'registrations',
+                operator: 'array-element-match',
+                value: {
+                    event,
+                    status: {
+                        $in: statuses
+                    }
+                }
+            });
+        } else {
+            filters.push({
+                field: 'registrations.event',
+                operator: '==',
+                value: event
+            });
+        }
+    });
 
     skills.forEach(({ skill, levels }) => {
         if (levels.length) {

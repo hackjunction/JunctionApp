@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
 const Promise = require('bluebird');
 const { RecruitmentAction } = require('./model');
+const MongoUtils = require('../../common/utils/mongoUtils');
 const UserController = require('../user-profile/controller');
 const Registration = require('../registration/model');
 const EmailTaskController = require('../email-task/controller');
@@ -28,9 +28,10 @@ controller.queryProfiles = (query = {}, user) => {
         };
     } else if (query.filters && query.filters.length) {
         const whereFields = query.filters.map(filter => {
+            const formatted = MongoUtils.ensureObjectId(filter.value);
             return {
                 [filter.field]: {
-                    [controller.filterOperatorToMongoOperator(filter.operator)]: filter.value
+                    [MongoUtils.filterOperatorToMongoOperator(filter.operator)]: formatted
                 }
             };
         });
@@ -50,11 +51,12 @@ controller.queryProfiles = (query = {}, user) => {
         registrations: {
             $elemMatch: {
                 event: {
-                    $in: [mongoose.Types.ObjectId('5d5a7b2e9b1056002b824ad8')]
+                    $in: MongoUtils.ensureObjectId(user.recruiter_events)
                 }
             }
         }
     };
+
     //Set default filters (consent & recruiter scope)
     if (userQuery['$and']) {
         userQuery['$and'] = userQuery['$and'].concat([consentFilter, eventFilter]);
@@ -76,18 +78,6 @@ controller.queryProfiles = (query = {}, user) => {
     });
 };
 
-controller.filterOperatorToMongoOperator = operator => {
-    if (operator == '<') return '$lt';
-    if (operator == '<=') return '$lte';
-    if (operator == '>') return '$gt';
-    if (operator == '>=') return '$gte';
-    if (operator == '==') return '$eq';
-    if (operator == '!=') return '$ne';
-    if (operator == 'array-element-match') return '$elemMatch';
-    if (operator == 'contains') return '$in';
-    if (operator == 'not-contains') return '$nin';
-};
-
 controller.createRecruitmentProfile = async (userProfile, eager = false, recruiterId = null) => {
     const profile = {
         userId: userProfile.userId,
@@ -98,6 +88,7 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
             nationality: userProfile.nationality,
             countryOfResidence: userProfile.countryOfResidence,
             dateOfBirth: userProfile.dateOfBirth,
+            spokenLanguages: userProfile.spokenLanguages,
             profilePicture: userProfile.avatar || null,
             bio: null // TODO add bio implementation!
         },

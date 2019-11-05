@@ -67,6 +67,8 @@ UserProfileSchema.post('save', function(doc, next) {
     next();
 });
 
+UserProfileSchema.set('timestamps', true);
+
 UserProfileSchema.index({
     userId: 1
 });
