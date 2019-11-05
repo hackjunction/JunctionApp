@@ -79,23 +79,27 @@ export const updateSearchResults = () => (dispatch, getState) => {
     });
 };
 
-export const sendMessage = (message, userId) => (dispatch, getState) => {
+export const sendMessage = (message, userId) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
-    dispatch({
+    const res = await dispatch({
         type: ActionTypes.UPDATE_ACTION_HISTORY,
         promise: RecruitmentService.submitAction('message', idToken, userId, message),
         meta: {
             onFailure: e => console.log('Error sending message', e)
         }
     });
+
+    return res;
 };
 
-export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
+export const toggleFavorite = (userId, isFavorite) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
+    let res;
+
     if (!isFavorite) {
-        dispatch({
+        res = await dispatch({
             type: ActionTypes.UPDATE_ACTION_HISTORY,
             promise: RecruitmentService.submitAction('favorite', idToken, userId),
             meta: {
@@ -103,7 +107,7 @@ export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
             }
         });
     } else {
-        dispatch({
+        res = await dispatch({
             type: ActionTypes.UPDATE_ACTION_HISTORY,
             promise: RecruitmentService.submitAction('remove-favorite', idToken, userId),
             meta: {
@@ -111,6 +115,8 @@ export const toggleFavorite = (userId, isFavorite) => (dispatch, getState) => {
             }
         });
     }
+
+    return res;
 };
 
 /* Admin actions */
