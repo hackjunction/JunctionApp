@@ -18,12 +18,12 @@ TeamsService.createTeamForEvent = (idToken, eventSlug) => {
     return _axios.post(`/teams/${eventSlug}`, {}, config(idToken));
 };
 
-TeamsService.deleteTeamForEvent = (idToken, eventSlug, teamCode) => {
-    return _axios.delete(`/teams/${eventSlug}/${teamCode}`, config(idToken));
+TeamsService.deleteTeamForEvent = (idToken, eventSlug) => {
+    return _axios.delete(`/teams/${eventSlug}`, config(idToken));
 };
 
-TeamsService.lockTeamForEvent = (idToken, eventSlug, teamCode) => {
-    return _axios.patch(`/teams/${eventSlug}/${teamCode}`, {}, config(idToken));
+TeamsService.editTeamForEvent = (idToken, eventSlug, edits) => {
+    return _axios.patch(`/teams/${eventSlug}`, edits, config(idToken));
 };
 
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode) => {

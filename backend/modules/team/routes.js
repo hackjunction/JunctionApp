@@ -8,40 +8,40 @@ const TeamController = require('./controller');
 
 const { hasToken } = require('../../common/middleware/token');
 const { hasPermission } = require('../../common/middleware/permissions');
-const { hasRegisteredToEvent, isEventOrganiser } = require('../../common/middleware/events');
+const { hasRegisteredToEvent, isEventOrganiser, isBefore } = require('../../common/middleware/events');
 
-const createTeamForEvent = asyncHandler(async (req, res) => {
-    const team = await TeamController.createTeam(req.event, req.user);
+const createTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.createTeam(req.event._id, req.user.sub);
     return res.status(200).json(team);
 });
 
-const deleteTeamForEvent = asyncHandler(async (req, res) => {
-    const team = await TeamController.deleteTeam(req.event, req.user, req.params.code);
+const deleteTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.deleteTeam(req.event._id, req.user.sub);
     return res.status(200).json(team);
 });
 
-const lockTeamForEvent = asyncHandler(async (req, res) => {
-    const team = await TeamController.lockTeam(req.event, req.user, req.params.code);
+const editTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.editTeam(req.event._id, req.user.sub, req.body);
     return res.status(200).json(team);
 });
 
-const joinTeamForEvent = asyncHandler(async (req, res) => {
-    const team = await TeamController.joinTeam(req.event, req.user, req.params.code);
+const joinTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.joinTeam(req.event._id, req.user.sub, req.params.code);
     return res.status(200).json(team);
 });
 
-const leaveTeamForEvent = asyncHandler(async (req, res) => {
-    const team = await TeamController.leaveTeam(req.event, req.user);
+const leaveTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.leaveTeam(req.event._id, req.user.sub);
     return res.status(200).json(team);
 });
 
-const removeMemberFromTeam = asyncHandler(async (req, res) => {
-    const team = await TeamController.removeMemberFromTeam(req.event, req.user, req.params.userId);
+const removeMember = asyncHandler(async (req, res) => {
+    const team = await TeamController.removeMemberFromTeam(req.event._id, req.user.sub, req.params.userId);
     return res.status(200).json(team);
 });
 
-const getTeamForEvent = asyncHandler(async (req, res) => {
-    const team = await TeamController.getTeam(req.event, req.user);
+const getTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.getTeam(req.event._id, req.user.sub);
     return res.status(200).json(team);
 });
 
@@ -58,19 +58,18 @@ router
 /** User-facing routes */
 router
     .route('/:slug')
-    .get(hasToken, hasRegisteredToEvent, getTeamForEvent)
-    .post(hasToken, hasRegisteredToEvent, createTeamForEvent);
-
-router
-    .route('/:slug/:code')
-    .delete(hasToken, hasRegisteredToEvent, deleteTeamForEvent)
-    .patch(hasToken, hasRegisteredToEvent, lockTeamForEvent);
+    .get(hasToken, hasRegisteredToEvent, getTeam)
+    .post(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, createTeam)
+    .patch(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, editTeam)
+    .delete(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, deleteTeam);
 
 router
     .route('/:slug/:code/members')
-    .post(hasToken, hasRegisteredToEvent, joinTeamForEvent)
-    .delete(hasToken, hasRegisteredToEvent, leaveTeamForEvent);
+    .post(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, joinTeam)
+    .delete(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, leaveTeam);
 
-router.route('/:slug/:code/members/:userId').delete(hasToken, hasRegisteredToEvent, removeMemberFromTeam);
+router
+    .route('/:slug/:code/members/:userId')
+    .delete(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, removeMember);
 
 module.exports = router;

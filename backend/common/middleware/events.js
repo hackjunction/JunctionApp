@@ -93,12 +93,27 @@ const EventMiddleware = {
     },
     hasRegisteredToEvent: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
-        const registration = getRegistration(req.user, event);
+        const registration = await getRegistration(req.user, event);
         const error = hasRegistered(event, registration);
         if (error) return next(error);
         req.event = event;
         req.registration = registration;
         next();
+    },
+    /** Can only be called after req.event has been set by other middleware */
+    isBefore: {
+        submissionsEndTime: async (req, res, next) => {
+            const now = moment().utc();
+
+            if (now.isAfter(req.event.submissionsEndTime)) {
+                next(new ForbiddenError('Submission deadline has passed.'));
+            } else {
+                next();
+            }
+        }
+    },
+    isAfter: {
+        /** TODO as needed */
     }
 };
 

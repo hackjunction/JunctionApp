@@ -3,73 +3,63 @@ const { InsufficientPrivilegesError, ForbiddenError, NotFoundError } = require('
 
 const controller = {};
 
-controller.createTeam = (event, user) => {
+controller.createTeam = (eventId, userId) => {
     const team = new Team({
-        event: event._id.toString(),
-        owner: user.sub
+        event: eventId,
+        owner: userId
     });
 
     return team.save();
 };
 
-controller.deleteTeam = (event, user, code) => {
-    return controller.getTeamByCode(event, code).then(team => {
-        if (team.owner !== user.sub) {
-            throw new InsufficientPrivilegesError('Only the team owner can delete team');
+controller.deleteTeam = (eventId, userId) => {
+    return controller.getTeam(eventId, userId).then(team => {
+        if (team.owner !== userId) {
+            throw new InsufficientPrivilegesError('Only the team owner can delete a team.');
         }
         return team.remove();
     });
 };
 
-controller.lockTeam = (event, user, code) => {
-    return controller.getTeamByCode(event, code).then(team => {
-        if (team.owner !== user.sub) {
-            throw new InsufficientPrivilegesError('Only the team owner can lock a team');
+controller.editTeam = (eventId, userId, edits) => {
+    return controller.getTeam(eventId, userId).then(team => {
+        if (team.owner !== userId) {
+            throw new InsufficientPrivilegesError('Only the team owner can edit a team.');
         }
-        team.locked = true;
-        return team.save();
+        return Team.updateAllowed(team, edits);
     });
 };
 
-controller.joinTeam = (event, user, code) => {
-    return controller.getTeamByCode(event, code).then(team => {
-        if (team.locked) {
-            throw new ForbiddenError('Cannot join a locked team');
-        }
+controller.joinTeam = (eventId, userId, code) => {
+    return controller.getTeamByCode(eventId, code).then(team => {
         if (team.members.length >= 4) {
             throw new ForbiddenError('Teams can have at most 5 members');
         }
-        team.members = team.members.concat(user.sub);
+        team.members = team.members.concat(userId);
         return team.save();
     });
 };
 
-controller.leaveTeam = (event, user) => {
-    return controller.getTeam(event, user).then(team => {
-        if (team.locked) {
-            throw new ForbiddenError('Cannot leave a locked team');
-        }
-        team.members = team.members.filter(member => member !== user.sub);
-        return team.save();
-    });
-};
-
-controller.removeMemberFromTeam = (event, user, userId) => {
-    return controller.getTeam(event, user).then(team => {
-        if (team.owner !== user.sub) {
-            throw new InsufficientPrivilegesError('Only the team owner can remove members');
-        }
-        if (team.locked) {
-            throw new ForbiddenError('Cannot remove members from a locked team');
-        }
+controller.leaveTeam = (eventId, userId) => {
+    return controller.getTeam(eventId, userId).then(team => {
         team.members = team.members.filter(member => member !== userId);
         return team.save();
     });
 };
 
-controller.getTeamByCode = (event, code) => {
+controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
+    return controller.getTeam(eventId, userId).then(team => {
+        if (team.owner !== userId) {
+            throw new InsufficientPrivilegesError('Only the team owner can remove members');
+        }
+        team.members = team.members.filter(member => member !== userToRemove);
+        return team.save();
+    });
+};
+
+controller.getTeamByCode = (eventId, code) => {
     return Team.findOne({
-        event: event._id,
+        event: eventId,
         code: code
     }).then(team => {
         if (!team) {
@@ -79,11 +69,11 @@ controller.getTeamByCode = (event, code) => {
     });
 };
 
-controller.getTeam = (event, user) => {
+controller.getTeam = (eventId, userId) => {
     return Team.findOne({
-        event: event._id
+        event: eventId
     })
-        .or([{ owner: user.sub }, { members: user.sub }])
+        .or([{ owner: userId }, { members: userId }])
         .then(team => {
             if (!team) {
                 throw new NotFoundError('No team exists for this user and event');
