@@ -94,7 +94,7 @@ const EventDashboardTeam = ({
             okType: 'danger',
             onOk: () => {
                 setLoading(true);
-                deleteTeam(event.slug, team.code)
+                deleteTeam(event.slug)
                     .then(() => {
                         notification.success({
                             message: 'Deleted team ' + team.code

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
     const classes = useStyles();
     const [reviewStatus, setReviewStatus] = useState('any');
-    const [lockedStatus, setLockedStatus] = useState('any');
+    const [completedStatus, setCompletedStatus] = useState('any');
     const [ratingRange, setRatingRange] = useState([0, 5]);
     const [bulkEdit, setBulkEdit] = useState(false);
     const [bulkEmail, setBulkEmail] = useState(false);
@@ -64,10 +64,10 @@ const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
     }, [teams, registrationsMap]);
 
     const teamsFiltered = teamsPopulated.filter(team => {
-        if (lockedStatus === 'locked' && !team.locked) {
+        if (completedStatus === 'completed' && !team.complete) {
             return false;
         }
-        if (lockedStatus === 'not-locked' && team.locked) {
+        if (completedStatus === 'not-completed' && team.complete) {
             return false;
         }
         if (reviewStatus === 'fully-reviewed' && team.reviewedPercent !== 100) {
@@ -102,21 +102,21 @@ const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
                 <Paper p={2}>
                     <Box p={2}>
                         <Select
-                            value={lockedStatus}
-                            onChange={setLockedStatus}
-                            label="Locked status"
+                            value={completedStatus}
+                            onChange={setCompletedStatus}
+                            label="Completed status"
                             options={[
                                 {
                                     value: 'any',
                                     label: 'Any'
                                 },
                                 {
-                                    value: 'locked',
-                                    label: 'Locked'
+                                    value: 'completed',
+                                    label: 'Completed'
                                 },
                                 {
-                                    value: 'not-locked',
-                                    label: 'Not locked'
+                                    value: 'not-completed',
+                                    label: 'Not completed'
                                 }
                             ]}
                         />
@@ -255,10 +255,10 @@ const TeamsTable = ({ loading, teams = [], registrationsMap }) => {
                             }
                         },
                         {
-                            title: 'Locked',
-                            field: 'locked',
+                            title: 'Completed',
+                            field: 'complete',
                             render: row => {
-                                if (row.locked) {
+                                if (row.complete) {
                                     return (
                                         <Typography variant="button" color="primary">
                                             Yes
