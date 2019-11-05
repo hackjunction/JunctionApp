@@ -127,7 +127,7 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
                                 <DetailSection label="Skills">
                                     <Box>
                                         {user.skills.map(skill => (
-                                            <SkillRating data={skill} />
+                                            <SkillRating showTooltip data={skill} />
                                         ))}
                                     </Box>
                                 </DetailSection>
@@ -162,10 +162,10 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
                                             </Typography>
                                         </React.Fragment>
                                     ) : (
-                                        <Typography className={classes.bold} variant="body2">
-                                            {user.education.level}
-                                        </Typography>
-                                    )}
+                                            <Typography className={classes.bold} variant="body2">
+                                                {user.education.level}
+                                            </Typography>
+                                        )}
                                 </DetailSection>
                             </Grid>
                             <Grid item xs={12} md={4} container>

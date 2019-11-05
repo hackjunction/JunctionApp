@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ResultCard = props => {
-    const { data, isFavorite, toggleFavorite, enqueueSnackbar = () => {}, openDetail } = props;
+    const { data, isFavorite, toggleFavorite, enqueueSnackbar = () => { }, openDetail } = props;
     // Toggle the favorited state locally for immediate feedback on favorite action
     const [_isFavorite, setIsFavorite] = useState(isFavorite);
     const classes = useStyles({ isFavorite: _isFavorite });
