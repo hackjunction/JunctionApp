@@ -6,7 +6,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import SearchPage from './Search';
 import AdminPage from './Admin';
 import DetailPage from './Detail';
-
+import PageWrapper from 'components/layouts/PageWrapper'
 import * as RecruitmentActions from 'redux/recruitment/actions';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import BasicNavBar from 'components/navbars/BasicNavBar';
@@ -18,7 +18,7 @@ const RecruitmentPage = ({ location, match, updateEvents, updateActionHistory })
     }, []);
 
     return (
-        <React.Fragment>
+        <PageWrapper wrapContent={false}>
             <CenteredContainer>
                 <BasicNavBar text="Junction Recruitment Tool" />
             </CenteredContainer>
@@ -28,7 +28,7 @@ const RecruitmentPage = ({ location, match, updateEvents, updateActionHistory })
                 <Route path="/recruitment/:id" component={DetailPage} />
                 <Redirect to="/recruitment" />
             </Switch>
-        </React.Fragment>
+        </PageWrapper>
     );
 };
 
