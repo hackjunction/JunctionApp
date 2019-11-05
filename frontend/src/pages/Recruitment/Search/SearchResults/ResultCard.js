@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { findIndex } from 'lodash-es';
 import { push } from 'connected-react-router';
-import { withSnackbar } from 'notistack';
 import { Avatar, Paper, Typography, Box, Tooltip, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { KeyboardArrowDown } from '@material-ui/icons/';
@@ -13,7 +12,6 @@ import { sortBy } from 'lodash-es';
 import SkillRating from './SkillRating';
 import emblem_black from 'assets/logos/emblem_black.png';
 
-import MiscUtils from 'utils/misc';
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
@@ -78,10 +76,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ResultCard = props => {
-    const { data, isFavorite, toggleFavorite, enqueueSnackbar = () => { }, openDetail } = props;
+    const { data, isFavorite, toggleFavorite, enqueueSnackbar = () => {}, openDetail } = props;
     // Toggle the favorited state locally for immediate feedback on favorite action
     const [_isFavorite, setIsFavorite] = useState(isFavorite);
     const classes = useStyles({ isFavorite: _isFavorite });
+
+    useEffect(() => {
+        setIsFavorite(isFavorite);
+    }, [isFavorite]);
 
     const handleFavorite = useCallback(
         async e => {
