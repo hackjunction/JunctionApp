@@ -23,7 +23,8 @@ const SearchResults = ({
     setNextPage,
     setPrevPage,
     loading,
-    paginationEnabled
+    paginationEnabled,
+    isFavorited
 }) => {
     useEffect(() => {
         updateSearchResults();
@@ -56,9 +57,10 @@ const SearchResults = ({
     };
 
     const renderResults = () => {
-        console.log('SEARCH RESULTS', searchResults);
-        if (searchResults.length === 0) {
-            if (filters.textSearch) {
+        if (searchResults.length === 0 && !loading) {
+            if (isFavorited) {
+                return <Empty isEmpty emptyText="You haven't added any favorites" />;
+            } else if (filters.textSearch) {
                 return (
                     <Empty isEmpty emptyText="No results / too many results. Please try specifying your search term." />
                 );
@@ -117,7 +119,8 @@ const mapState = (state, ownProps) => ({
     pageSize: RecruitmentSelectors.pageSize(state),
     page: RecruitmentSelectors.page(state),
     pageCount: RecruitmentSelectors.pageCount(state),
-    paginationEnabled: !ownProps.items
+    paginationEnabled: !ownProps.items,
+    isFavorited: !!ownProps.items
 });
 
 const mapDispatch = (dispatch, ownProps) => ({
