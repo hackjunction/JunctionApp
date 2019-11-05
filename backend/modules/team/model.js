@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const shortid = require('shortid');
+const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 
 const TeamSchema = new mongoose.Schema({
     event: {
@@ -19,14 +20,20 @@ const TeamSchema = new mongoose.Schema({
         type: String,
         default: shortid.generate
     },
-    locked: {
+    complete: {
         type: Boolean,
         default: false
     }
 });
 
+/** Removed locked property and added complete */
+
 TeamSchema.set('timestamps', true);
 TeamSchema.index({ event: 1, owner: 1, code: 1, members: 1 });
+
+TeamSchema.plugin(updateAllowedPlugin, {
+    blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'code', 'event', 'owner', 'members']
+});
 
 const Team = mongoose.model('Team', TeamSchema);
 

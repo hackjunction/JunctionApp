@@ -177,9 +177,9 @@ export const removeMemberFromTeam = (slug, code, userId) => async (dispatch, get
     return team;
 };
 
-export const deleteTeam = (slug, code) => async (dispatch, getState) => {
+export const deleteTeam = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
-    const team = await TeamsService.deleteTeamForEvent(idToken, slug, code);
+    const team = await TeamsService.deleteTeamForEvent(idToken, slug);
 
     dispatch({
         type: ActionTypes.CLEAR_TEAM

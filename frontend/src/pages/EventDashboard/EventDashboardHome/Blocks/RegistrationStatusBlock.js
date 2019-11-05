@@ -58,7 +58,7 @@ const RegistrationStatusBlock = ({
             case RegistrationStatuses.asObject.pending.id:
             case RegistrationStatuses.asObject.softAccepted.id:
             case RegistrationStatuses.asObject.softRejected.id: {
-                return 'theme_lightgray';
+                return 'theme_turquoise';
             }
             case RegistrationStatuses.asObject.rejected.id: {
                 return 'error';
@@ -106,7 +106,11 @@ const RegistrationStatusBlock = ({
             case RegistrationStatuses.asObject.pending.id:
             case RegistrationStatuses.asObject.softAccepted.id:
             case RegistrationStatuses.asObject.softRejected.id: {
-                return "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! If you wish, you can still tweak your registration to maximise your chances of being accepted.";
+                if (isRegistrationOpen) {
+                    return "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! The registration period is still open, so you can still tweak your registration to maximise your chances of being accepted!";
+                } else {
+                    return "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! The registration period is now closed, so you may no longer edit your registration.";
+                }
             }
             case RegistrationStatuses.asObject.rejected.id: {
                 return "Unfortunately you didn't quite make it this time...But don't be discouraged, we get a lot of applications and sometimes we have to reject even very talented applicants. Luckily we organise events all of the time, and we would love to have you at one of our other events.";
@@ -123,18 +127,21 @@ const RegistrationStatusBlock = ({
             default:
                 return null;
         }
-    }, [event, status]);
+    }, [event, status, isRegistrationOpen]);
 
     const action = useMemo(() => {
         switch (status) {
             case RegistrationStatuses.asObject.pending.id:
             case RegistrationStatuses.asObject.softAccepted.id:
             case RegistrationStatuses.asObject.softRejected.id: {
-                return (
-                    <Button onClick={() => editRegistration(event.slug)} color="primary" variant="contained">
-                        Edit registration
-                    </Button>
-                );
+                if (isRegistrationOpen) {
+                    return (
+                        <Button onClick={() => editRegistration(event.slug)} color="theme_white" variant="contained">
+                            Edit registration
+                        </Button>
+                    );
+                }
+                return null;
             }
             case RegistrationStatuses.asObject.rejected.id:
             case RegistrationStatuses.asObject.cancelled.id: {
@@ -170,7 +177,7 @@ const RegistrationStatusBlock = ({
             default:
                 return null;
         }
-    }, [event, status, editRegistration, handleConfirm]);
+    }, [event, status, editRegistration, handleConfirm, isRegistrationOpen]);
 
     if (!title) {
         return null;
