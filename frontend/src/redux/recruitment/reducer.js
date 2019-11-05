@@ -18,7 +18,7 @@ const initialState = {
     filters: {},
     pagination: {
         page: 0,
-        page_size: 12
+        page_size: 24
     },
     actionHistory: {
         data: [],

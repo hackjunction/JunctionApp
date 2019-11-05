@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import { Box, Typography, IconButton, CircularProgress } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
+import { useDebounce } from 'hooks/customHooks';
+
 import * as RecruitmentSelectors from 'redux/recruitment/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
 
 const Pagination = ({ currentPage, pageSize, totalResults, totalPages, setPage, loading }) => {
+    const [_currentPage, _setCurrentPage] = useState(currentPage);
+    const debouncedPage = useDebounce(_currentPage, 200);
+
+    const handlePageChange = useCallback(
+        page => {
+            setPage(page);
+        },
+        [setPage]
+    );
+
+    useEffect(() => {
+        handlePageChange(debouncedPage);
+    }, [debouncedPage, handlePageChange]);
+
+    const handlePrevPage = useCallback(() => {
+        _setCurrentPage(_currentPage - 1);
+    }, [_currentPage]);
+
+    const handleNextPage = useCallback(() => {
+        _setCurrentPage(_currentPage + 1);
+    }, [_currentPage]);
+
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
-            <IconButton disabled={loading || currentPage === 0} onClick={() => setPage(currentPage - 1)}>
+            <IconButton disabled={_currentPage === 0} onClick={handlePrevPage}>
                 <ChevronLeftIcon />
             </IconButton>
             <Box padding={1}>
@@ -19,11 +43,11 @@ const Pagination = ({ currentPage, pageSize, totalResults, totalPages, setPage, 
                     <CircularProgress size={24} />
                 ) : (
                     <Typography variant="overline">
-                        Page {currentPage + 1} of {totalPages}
+                        Page {_currentPage + 1} of {totalPages}
                     </Typography>
                 )}
             </Box>
-            <IconButton disabled={loading || currentPage + 1 === totalPages} onClick={() => setPage(currentPage + 1)}>
+            <IconButton disabled={_currentPage + 1 === totalPages} onClick={handleNextPage}>
                 <ChevronRightIcon />
             </IconButton>
         </Box>
