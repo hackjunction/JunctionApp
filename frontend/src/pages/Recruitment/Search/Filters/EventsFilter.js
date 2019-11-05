@@ -82,9 +82,9 @@ const EventsFilter = ({ user, allEvents, eventsMap, filters, setFilters }) => {
     };
 
     return (
-        <FilterItem active={false} label="Events" onSubmit={handleSubmit} onClose={handleReset}>
+        <FilterItem active={filters.length > 0} label="Events" onSubmit={handleSubmit} onClose={handleReset}>
             <Box className={classes.wrapper}>
-                <Select label="Choose events" options={eventOptions} onChange={handleAdd} />
+                <Select autoFocus label="Choose events (must have all)" options={eventOptions} onChange={handleAdd} />
                 <Box className={classes.items}>{renderEvents()}</Box>
             </Box>
         </FilterItem>

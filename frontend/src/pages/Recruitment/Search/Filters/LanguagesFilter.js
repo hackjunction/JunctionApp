@@ -22,7 +22,14 @@ const LanguagesFilter = ({ filters, setFilters }) => {
     return (
         <FilterItem label="Spoken languages" active={filters.length > 0} onSubmit={handleSubmit} onClose={handleReset}>
             <Box width="300px" height="300px" overflow="hidden">
-                <Select options="language" value={draft} onChange={setDraft} isMulti={true} autoFocus />
+                <Select
+                    label="Choose languages (must have all)"
+                    options="language"
+                    value={draft}
+                    onChange={setDraft}
+                    isMulti={true}
+                    autoFocus
+                />
             </Box>
         </FilterItem>
     );

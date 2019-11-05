@@ -71,7 +71,7 @@ const RolesFilter = ({ filters, setFilters }) => {
     return (
         <FilterItem label="Roles" active={filters.length > 0} onSubmit={handleSubmit} onClose={handleReset}>
             <Box className={classes.wrapper}>
-                <Select label="Add a role" options="role" onChange={handleAdd} autoFocus />
+                <Select label="Add a role (must have all)" options="role" onChange={handleAdd} autoFocus />
                 <Box className={classes.items}>{renderRoles()}</Box>
             </Box>
         </FilterItem>
