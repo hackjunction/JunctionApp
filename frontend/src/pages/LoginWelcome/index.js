@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './LoginWelcome.module.scss';
 
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
-import { Icon, notification } from 'antd';
 import { Typography, Checkbox, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -30,11 +30,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const LoginWelcome = ({ user, idToken, setUserProfile, pushNextRoute }) => {
+const LoginWelcome = ({ idTokenData, idToken, setUserProfile, pushNextRoute, enqueueSnackbar }) => {
     const classes = useStyles();
-    const firstName = useFormField(user.given_name || '', String({ min: 0, max: 100, required: true }), null);
-    const lastName = useFormField(user.family_name || '', String({ min: 0, max: 100, required: true }), null);
-    const email = useFormField(user.email || '', Email({ required: true }), null);
+    const firstName = useFormField(idTokenData.given_name || '', String({ min: 0, max: 100, required: true }), null);
+    const lastName = useFormField(idTokenData.family_name || '', String({ min: 0, max: 100, required: true }), null);
+    const email = useFormField(idTokenData.email || '', Email({ required: true }), null);
     const [accepted, setAccepted] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -58,7 +58,7 @@ const LoginWelcome = ({ user, idToken, setUserProfile, pushNextRoute }) => {
             firstName: firstName.value,
             lastName: lastName.value,
             email: email.value,
-            avatar: user.picture
+            avatar: idTokenData.picture
         };
         if (!validate()) return;
 
@@ -70,11 +70,7 @@ const LoginWelcome = ({ user, idToken, setUserProfile, pushNextRoute }) => {
                 pushNextRoute();
             })
             .catch(err => {
-                notification.error({
-                    message: 'Something went wrong',
-                    description:
-                        "Well, that didn't work... Make sure you're connected to the internet, and try again. If the problem persists, it's probably on our end and we're working hard to fix it."
-                });
+                enqueueSnackbar('Something went wrong... Please try again.', { variant: 'error' });
             })
             .finally(() => {
                 setLoading(false);
@@ -205,7 +201,7 @@ const LoginWelcome = ({ user, idToken, setUserProfile, pushNextRoute }) => {
 
 const mapStateToProps = state => ({
     idToken: AuthSelectors.getIdToken(state),
-    user: AuthSelectors.getCurrentUser(state)
+    idTokenData: AuthSelectors.idTokenData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -213,7 +209,9 @@ const mapDispatchToProps = dispatch => ({
     pushNextRoute: () => dispatch(AuthActions.pushNextRoute())
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoginWelcome);
+export default withSnackbar(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(LoginWelcome)
+);

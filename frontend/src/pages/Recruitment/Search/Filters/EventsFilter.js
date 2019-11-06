@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const EventsFilter = ({ user, allEvents, eventsMap, filters, setFilters }) => {
+const EventsFilter = ({ idTokenData, allEvents, eventsMap, filters, setFilters }) => {
     const classes = useStyles();
     const [events, addEvent, removeEvent, editEvent, setEvents] = useArray(filters);
 
@@ -54,13 +54,13 @@ const EventsFilter = ({ user, allEvents, eventsMap, filters, setFilters }) => {
     const eventOptions = useMemo(() => {
         return allEvents
             .filter(event => {
-                return user.recruiter_events && user.recruiter_events.indexOf(event._id) !== -1;
+                return idTokenData.recruiter_events && idTokenData.recruiter_events.indexOf(event._id) !== -1;
             })
             .map(event => ({
                 label: event.name,
                 value: event._id
             }));
-    }, [user, allEvents]);
+    }, [idTokenData, allEvents]);
 
     const renderEvents = () => {
         if (!events.length) {
@@ -92,7 +92,7 @@ const EventsFilter = ({ user, allEvents, eventsMap, filters, setFilters }) => {
 };
 
 const mapState = state => ({
-    user: AuthSelectors.getCurrentUser(state),
+    idTokenData: AuthSelectors.idTokenData(state),
     allEvents: RecruitmentSelectors.events(state),
     eventsMap: RecruitmentSelectors.eventsMap(state),
     filters: RecruitmentSelectors.filters(state).events || []

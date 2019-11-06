@@ -24,7 +24,7 @@ export const getHasPermission = state => {
     };
 };
 
-export const getCurrentUser = createSelector(
+export const idTokenData = createSelector(
     getIdTokenPayload,
     data => {
         if (!data) {

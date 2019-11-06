@@ -7,7 +7,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import PeopleIcon from '@material-ui/icons/People';
 
-import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import PageWrapper from 'components/layouts/PageWrapper';
@@ -29,7 +28,6 @@ const OrganiserEditEvent = ({
     loading,
     error,
     event,
-    user,
     match,
     location
 }) => {
@@ -115,8 +113,6 @@ const OrganiserEditEvent = ({
 };
 
 const mapStateToProps = state => ({
-    idToken: AuthSelectors.getIdToken(state),
-    user: AuthSelectors.getCurrentUser(state),
     event: OrganiserSelectors.event(state),
     loading: OrganiserSelectors.eventLoading(state),
     error: OrganiserSelectors.eventError(state)

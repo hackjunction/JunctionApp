@@ -1,6 +1,7 @@
 import { push } from 'connected-react-router';
 import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from './selectors';
+import * as UserActions from '../user/actions';
 import Auth0Service from 'services/auth0';
 
 export const login = (params, nextRoute = '/') => dispatch => {
@@ -48,6 +49,7 @@ export const renewSession = () => dispatch => {
     return Auth0Service.checkSession()
         .then(authResult => {
             dispatch(setSession(authResult));
+            dispatch(UserActions.updateUserProfile(authResult.idToken));
         })
         .catch(err => {
             dispatch(logout());

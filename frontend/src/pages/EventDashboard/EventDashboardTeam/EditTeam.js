@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 
 const EditTeam = ({
     team,
-    user,
+    idTokenData,
     event,
     teamMemberProfiles,
     teamMemberProfilesLoading,
@@ -55,7 +55,7 @@ const EditTeam = ({
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const isTeamOwner = team.owner === user.sub;
+    const isTeamOwner = team.owner === idTokenData.sub;
 
     const handleLeave = useCallback(() => {
         setLoading(true);
@@ -129,7 +129,7 @@ const EditTeam = ({
                             }
                             secondary={<Typography variant="body2">{profile.email}</Typography>}
                         />
-                        {isTeamOwner && profile.userId !== user.sub && (
+                        {isTeamOwner && profile.userId !== idTokenData.sub && (
                             <ListItemSecondaryAction>
                                 <Tooltip title="Remove from team">
                                     <IconButton
@@ -204,7 +204,7 @@ const EditTeam = ({
 
 const mapState = state => ({
     team: DashboardSelectors.team(state),
-    user: AuthSelectors.getCurrentUser(state),
+    idTokenData: AuthSelectors.idTokenData(state),
     event: DashboardSelectors.event(state),
     teamMemberProfiles: DashboardSelectors.profiles(state),
     teamMemberProfilesLoading: DashboardSelectors.profilesLoading(state)
