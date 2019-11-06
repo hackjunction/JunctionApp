@@ -22,6 +22,10 @@ const Pagination = ({ currentPage, pageSize, totalResults, totalPages, setPage, 
     );
 
     useEffect(() => {
+        _setCurrentPage(currentPage);
+    }, [currentPage]);
+
+    useEffect(() => {
         handlePageChange(debouncedPage);
     }, [debouncedPage, handlePageChange]);
 
