@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Account.module.scss';
 
 import { Typography, Box } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -9,6 +8,7 @@ import * as AuthSelectors from 'redux/auth/selectors';
 import AccountNavBar from 'components/navbars/AccountNavBar';
 
 import AccountDashboard from './AccountDashboard';
+import AccountEditProfile from './AccountEditProfile';
 
 const AccountPage = ({ match, location }) => {
     return (
@@ -25,16 +25,7 @@ const AccountPage = ({ match, location }) => {
                 {
                     path: '/preferences',
                     label: 'Preferences',
-                    render: routeProps => (
-                        <Box maxWidth="600px">
-                            <Typography variant="body1">
-                                Coming soon! Here you'll be able to edit your account details and manage your privacy
-                                preferences. In the meantime, if you have anything to contact us about, don't hesitate
-                                to shoot us an email at{' '}
-                                <a href="mailto:hello@hackjunction.com">hello@hackjunction.com</a>
-                            </Typography>
-                        </Box>
-                    )
+                    render: routeProps => <AccountEditProfile />
                 },
                 {
                     path: '/achievements',
