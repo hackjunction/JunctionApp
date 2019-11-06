@@ -1,63 +1,15 @@
 const express = require('express');
+const asyncHandler = require('express-async-handler');
 const _ = require('lodash');
-const router = express.Router();
+
 const Registration = require('../registration/model');
 const { UserProfile } = require('../user-profile/model');
-const DiscordService = require('../../common/services/discord');
 
-router.route('/').get((req, res) => {
-    return res.status(200).send('DEVTOOLS HERE');
-});
+const router = express.Router();
 
-router.route('/anonymize-db').get(async (req, res) => {
-    const registrations = await Registration.find({});
+const { hasAdminToken } = require('../../common/middleware/admin');
 
-    const updates = registrations.map(registration => {
-        return {
-            updateOne: {
-                filter: {
-                    _id: registration._id
-                },
-                update: {
-                    $set: {
-                        'answers.email':
-                            'juuso.lappalainen+' + Math.floor(Math.random() * 1000000) + '@hackjunction.com'
-                    }
-                }
-            }
-        };
-    });
-
-    await Registration.bulkWrite(updates);
-
-    const userProfiles = await UserProfile.find({});
-
-    const userUpdates = userProfiles.map(userProfile => {
-        return {
-            updateOne: {
-                filter: {
-                    _id: userProfile._id
-                },
-                update: {
-                    $set: {
-                        email: 'juuso.lappalainen+' + Math.floor(Math.random() * 1000000) + '@hackjunction.com'
-                    }
-                }
-            }
-        };
-    });
-
-    await UserProfile.bulkWrite(userUpdates);
-
-    return res.status(200).send('OK');
-});
-
-router.route('/test-discord').get(async (req, res) => {
-    await DiscordService.initialize();
-    res.status(200).send('Initialized');
-});
-
-router.route('/sync-user-profiles').get(async (req, res) => {
+const syncUserProfiles = asyncHandler(async (req, res) => {
     const registrations = await Registration.find({});
     const userProfiles = await UserProfile.find({});
 
@@ -99,5 +51,7 @@ router.route('/sync-user-profiles').get(async (req, res) => {
             return res.status(500).json(err);
         });
 });
+
+router.route('/sync-user-profiles').get(hasAdminToken, syncUserProfiles);
 
 module.exports = router;

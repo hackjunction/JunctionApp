@@ -9,6 +9,7 @@ const teamRouter = require('./team/routes');
 const emailRouter = require('./email-task/routes');
 const devToolsRouter = require('./devtools/routes');
 const filterGroupRouter = require('./filter-group/routes');
+const adminRouter = require('./admin/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -28,6 +29,9 @@ module.exports = function(app) {
     app.use('/api/teams', teamRouter);
     app.use('/api/user-profiles', userProfileRouter);
     app.use('/api/recruitment', recruitmentRouter);
+
+    /** Admin tools */
+    app.use('/api/admin', adminRouter);
 
     /** Admin tools (development only) */
     if (global.gConfig.DEVTOOLS_ENABLED) {

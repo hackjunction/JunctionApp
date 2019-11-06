@@ -87,6 +87,10 @@ const settings = {
         value: process.env.DISCORD_BOT_TOKEN,
         required: false,
         default: 'asdasd'
+    },
+    ADMIN_TOKEN: {
+        value: process.env.ADMIN_TOKEN,
+        required: true
     }
 };
 
