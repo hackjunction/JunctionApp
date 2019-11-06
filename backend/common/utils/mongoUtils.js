@@ -1,3 +1,4 @@
+const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const _ = require('lodash');
 
@@ -12,7 +13,8 @@ const MongoUtils = {
                 });
             }
         } else {
-            if (mongoose.Types.ObjectId.isValid(value)) {
+            if (value.length === 24 && mongodb.ObjectID.isValid(value)) {
+                console.log('IS VALID MONGO ID', value);
                 return mongoose.Types.ObjectId(value);
             }
         }
