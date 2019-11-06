@@ -38,11 +38,11 @@ export const filterGroupsError = state => state.organiser.filterGroups.error;
 export const filterGroupsUpdated = state => state.organiser.filterGroups.updated;
 
 export const registrationsAssigned = createSelector(
-    AuthSelectors.getCurrentUser,
+    AuthSelectors.idTokenData,
     registrations,
-    (user, registrations) => {
+    (idTokenData, registrations) => {
         return registrations.filter(registration => {
-            return registration.assignedTo === user.sub;
+            return registration.assignedTo === idTokenData.sub;
         });
     }
 );

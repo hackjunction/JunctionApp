@@ -87,7 +87,7 @@ const mapState = state => ({
     event: EventDetailSelectors.event(state),
     eventStatus: EventDetailSelectors.eventStatus(state),
     hasRegistration: EventDetailSelectors.hasRegistration(state),
-    user: AuthSelectors.getCurrentUser(state)
+    idTokenData: AuthSelectors.idTokenData(state)
 });
 
 const mapDispatch = (dispatch, ownProps) => ({

@@ -111,7 +111,6 @@ const EventRegister = ({
     createRegistration,
     editRegistration,
     userProfile,
-    idTokenPayload,
     enqueueSnackbar,
     openDashboard,
     openEvent
@@ -343,8 +342,7 @@ const mapStateToProps = state => ({
     event: EventDetailSelectors.event(state),
     registration: EventDetailSelectors.registration(state),
     hasRegistration: EventDetailSelectors.hasRegistration(state),
-    userProfile: UserSelectors.userProfile(state),
-    idTokenPayload: AuthSelectors.getCurrentUser(state)
+    userProfile: UserSelectors.userProfile(state)
 });
 
 const mapDispatchToProps = dispatch => ({

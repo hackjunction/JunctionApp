@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import { logout } from 'redux/auth/actions';
-import { getCurrentUser, getHasPermission } from 'redux/auth/selectors';
+import * as AuthSelectors from 'redux/auth/selectors';
+import * as UserSelectors from 'redux/user/selectors';
 import Button from 'components/generic/Button';
 import Divider from 'components/generic/Divider';
 
@@ -28,7 +29,7 @@ const UserMenu = ({ user, logout, push, hasPermission }) => {
         <div className={styles.wrapper}>
             <UserMenuIcon active={menuActive} onClick={() => setMenuActive(!menuActive)} />
             <Divider size={1} />
-            <img className={styles.avatar} src={user.picture} alt="Avatar" />
+            <img className={styles.avatar} src={user.avatar} alt="Avatar" />
             <div
                 className={classNames({
                     [styles.menuWrapper]: true,
@@ -52,8 +53,8 @@ const UserMenu = ({ user, logout, push, hasPermission }) => {
 };
 
 const mapStateToProps = state => ({
-    user: getCurrentUser(state),
-    hasPermission: getHasPermission(state)
+    user: UserSelectors.userProfile(state),
+    hasPermission: AuthSelectors.getHasPermission(state)
 });
 
 export default connect(

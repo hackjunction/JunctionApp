@@ -12,13 +12,12 @@ import EventTimeline from './EventTimeline';
 import EventButtons from './EventButtons';
 
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
-import * as AuthSelectors from 'redux/auth/selectors';
 import StaggeredList from 'components/animated/StaggeredList';
 import StaggeredListItem from 'components/animated/StaggeredListItem';
 import FadeInWrapper from 'components/animated/FadeInWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 
-const EventDetail = ({ event, registration, slug, user, match, location, pushLogin, eventStatus }) => {
+const EventDetail = ({ event, registration, slug, match, location, pushLogin, eventStatus }) => {
     useEffect(() => {
         AnalyticsService.events.VIEW_EVENT(slug);
     }, [slug]);
@@ -53,7 +52,6 @@ const EventDetail = ({ event, registration, slug, user, match, location, pushLog
 };
 
 const mapStateToProps = state => ({
-    user: AuthSelectors.getCurrentUser(state),
     event: EventDetailSelectors.event(state),
     registration: EventDetailSelectors.registration(state),
     eventStatus: EventDetailSelectors.eventStatus(state)

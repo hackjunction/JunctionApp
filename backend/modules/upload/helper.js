@@ -26,6 +26,9 @@ const UploadHelper = {
     generateEventTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}`;
     },
+    generateUserTag: userId => {
+        return `${cloudinaryRootPath}-user-${userId}`;
+    },
 
     deleteWithTag: tag => {
         return new Promise(function(resolve, reject) {
@@ -36,6 +39,21 @@ const UploadHelper = {
                 resolve(result);
             });
         });
+    },
+
+    uploadUserAvatar: userId => {
+        const storage = createStorageWithPath(
+            `users/avatars/`,
+            {
+                width: 480,
+                height: 480,
+                crop: 'fill'
+            },
+            {
+                tag: UploadHelper.generateUserTag(userId)
+            }
+        );
+        return multer({ storage }).single('image');
     },
 
     uploadEventCoverImage: slug => {
