@@ -26,7 +26,12 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
                     return (
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <Button fullWidth onClick={pushRegistration} variant="contained" color="primary">
+                                <Button
+                                    fullWidth
+                                    onClick={pushRegistration}
+                                    variant="contained"
+                                    color="theme_turquoise"
+                                >
                                     Edit your registration
                                 </Button>
                             </Grid>
@@ -39,14 +44,14 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
                     );
                 } else {
                     return (
-                        <Button fullWidth onClick={pushRegistration} variant="container" color="primary">
+                        <Button fullWidth onClick={pushRegistration} variant="contained" color="theme_turquoise">
                             Apply now
                         </Button>
                     );
                 }
             } else {
                 return (
-                    <Button fullWidth onClick={pushLogin} variant="contained" color="primary">
+                    <Button fullWidth onClick={pushLogin} variant="contained" color="theme_turquoise">
                         Log in to apply
                     </Button>
                 );
@@ -56,7 +61,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
             if (user) {
                 if (hasRegistration) {
                     return (
-                        <Button fullWidth onClick={pushDashboard} variant="contained" color="primary">
+                        <Button fullWidth onClick={pushDashboard} variant="contained" color="theme_turquoise">
                             Event dashboard
                         </Button>
                     );
@@ -69,7 +74,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
                 }
             } else {
                 return (
-                    <Button fullWidth onClick={pushLogin} variant="contained" color="black">
+                    <Button fullWidth onClick={pushLogin} variant="contained" color="theme_turquoise">
                         Log in
                     </Button>
                 );

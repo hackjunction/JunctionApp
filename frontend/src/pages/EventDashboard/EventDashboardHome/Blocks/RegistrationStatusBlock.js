@@ -10,7 +10,9 @@ import {
     DialogActions,
     DialogContentText,
     CircularProgress,
-    Typography
+    Typography,
+    Box,
+    Grid
 } from '@material-ui/core';
 
 import Button from 'components/generic/Button';
@@ -49,6 +51,7 @@ const RegistrationStatusBlock = ({
                 enqueueSnackbar('Something went wrong while cancelling your participation', { variant: 'error' });
             })
             .finally(() => {
+                setCancelDialogOpen(false);
                 setLoading(false);
             });
     }, [event.slug, cancelRegistration, enqueueSnackbar]);
@@ -64,7 +67,7 @@ const RegistrationStatusBlock = ({
                 return 'error';
             }
             case RegistrationStatuses.asObject.accepted.id: {
-                return 'theme_success';
+                return 'theme_turquoise';
             }
             case RegistrationStatuses.asObject.confirmed.id: {
                 return 'theme_turquoise';
@@ -157,19 +160,23 @@ const RegistrationStatusBlock = ({
             }
             case RegistrationStatuses.asObject.accepted.id: {
                 return (
-                    <React.Fragment>
-                        <Button onClick={handleConfirm} color="theme_white" variant="contained">
-                            Confirm participation
-                        </Button>
-                        <Button onClick={() => setCancelDialogOpen(true)} color="theme_white">
-                            Can't make it after all?
-                        </Button>
-                    </React.Fragment>
+                    <Box display="flex" flexDirection="row" justifyContent="flex-end" flexWrap="wrap">
+                        <Box ml={1} mt={1}>
+                            <Button onClick={() => setCancelDialogOpen(true)} color="theme_white">
+                                Can't make it after all?
+                            </Button>
+                        </Box>
+                        <Box ml={1} mt={1}>
+                            <Button onClick={handleConfirm} color="theme_white" variant="contained">
+                                Confirm participation
+                            </Button>
+                        </Box>
+                    </Box>
                 );
             }
             case RegistrationStatuses.asObject.confirmed.id: {
                 return (
-                    <Button onClick={() => setCancelDialogOpen(false)} color="theme_white" variant="contained">
+                    <Button onClick={() => setCancelDialogOpen(true)} color="theme_white" variant="contained">
                         Cancel participation
                     </Button>
                 );
@@ -184,48 +191,44 @@ const RegistrationStatusBlock = ({
     }
 
     return (
-        <GradientBox p={3} color={color}>
-            <Dialog
-                open={cancelDialogOpen}
-                onClose={() => setCancelDialogOpen(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Cancel your participation?</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you wish to cancel your participation? This means your spot will be given to
-                        someone on the waiting list, and you won't be able to attend the event yourself. If you really
-                        can't make it, please cancel your participation so we can take someone else instead.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    {loading && <CircularProgress size={24} />}
-                    <Button
-                        size="small"
-                        strong
-                        disabled={loading}
-                        onClick={() => setCancelDialogOpen(false)}
-                        color="text"
-                    >
-                        No, I don't want to cancel
-                    </Button>
-                    <Button size="small" disabled={loading} onClick={handleCancel} color="secondary" strong>
-                        Yes, I'm sure
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Typography key="overline" variant="button" color="inherit">
-                Registration status
-            </Typography>
-            <Typography key="title" variant="h4" color="inherit" paragraph>
-                {title}
-            </Typography>
-            <Typography key="body" variant="body1" paragraph>
-                {body}
-            </Typography>
-            {action}
-        </GradientBox>
+        <Grid item xs={12}>
+            <GradientBox p={3} color={color}>
+                <Dialog
+                    open={cancelDialogOpen}
+                    onClose={() => setCancelDialogOpen(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">Cancel your participation?</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you wish to cancel your participation? This means your spot will be given to
+                            someone on the waiting list, and you won't be able to attend the event yourself. If you
+                            really can't make it, please cancel your participation so we can take someone else instead.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        {loading && <CircularProgress size={24} />}
+                        <Button loading={loading} onClick={() => setCancelDialogOpen(false)} color="primary">
+                            No, I don't want to cancel
+                        </Button>
+                        <Button loading={loading} onClick={handleCancel} color="secondary">
+                            Yes, I'm sure
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Typography key="overline" variant="button" color="inherit">
+                    Registration status
+                </Typography>
+                <Typography key="title" variant="h4" color="inherit" paragraph>
+                    {title}
+                </Typography>
+                <Typography key="body" variant="body1" paragraph>
+                    {body}
+                </Typography>
+                {action}
+            </GradientBox>
+        </Grid>
     );
 };
 

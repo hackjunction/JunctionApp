@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from 'lodash-es';
 import moment from 'moment';
-import { EventHelpers, EventStatuses } from '@hackjunction/shared';
+import { EventHelpers, EventStatuses, RegistrationStatuses } from '@hackjunction/shared';
 
 export const event = state => state.dashboard.event.data;
 export const eventLoading = state => state.dashboard.event.loading;
@@ -22,6 +22,19 @@ export const registration = state => state.dashboard.registration.data;
 export const registrationLoading = state => state.dashboard.registration.loading;
 export const registrationError = state => state.dashboard.registration.error;
 export const registrationUpdated = state => state.dashboard.registration.updated;
+
+export const isAcceptancePending = createSelector(
+    registration,
+    registration => {
+        return (
+            [
+                RegistrationStatuses.asObject.pending.id,
+                RegistrationStatuses.asObject.softAccepted.id,
+                RegistrationStatuses.asObject.softRejected.id
+            ].indexOf(registration.status) !== -1
+        );
+    }
+);
 
 export const appliedAsTeam = createSelector(
     registration,
@@ -49,13 +62,13 @@ export const hasTeam = createSelector(
     }
 );
 
-export const isTeamLocked = createSelector(
+export const isTeamComplete = createSelector(
     team,
     team => {
         if (isEmpty(team)) {
             return false;
         } else {
-            return team.locked;
+            return team.complete;
         }
     }
 );

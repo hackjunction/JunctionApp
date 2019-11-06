@@ -1,10 +1,8 @@
-@import '~styles/variables';
-
 .wrapper {
     display: flex;
     flex-direction: column;
 
-    background: $grey;
+    background: #f8f8f8;
     padding: 1rem;
     margin-bottom: 1rem;
 }

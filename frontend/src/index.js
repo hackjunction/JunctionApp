@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CloudinaryContext } from 'cloudinary-react';
 import { SnackbarProvider } from 'notistack';
+import WebFont from 'webfontloader';
 
 import configureStore, { history } from 'redux/configureStore';
 import config from 'constants/config';
@@ -23,6 +24,12 @@ if (process.env.NODE_ENV !== 'development') {
     console.warn = noop;
     console.error = noop;
 }
+
+WebFont.load({
+    google: {
+        families: ['Montserrat:400,400i,700,700i', 'Lato:400,400i,700,700i']
+    }
+});
 
 ReactDOM.render(
     <Provider store={store}>

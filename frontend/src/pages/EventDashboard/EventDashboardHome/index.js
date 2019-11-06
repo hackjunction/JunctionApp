@@ -19,38 +19,17 @@ import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock';
 // }));
 
 const EventDashboardHome = ({ event, registration, loading }) => {
-    // const classes = useStyles();
-    // if (!event || !registration) return null;
-
-    // const getActiveStep = () => {
-    //     if (registration.status === 'confirmed') {
-    //         return 1;
-    //     }
-    //     return 0;
-    // };
-
+    //TODO: Re-add quick links at a later time
     return (
         <Box>
-            <PageHeader heading={event.name} subheading="Dashboard" />
+            <PageHeader heading="Dashboard" />
             <Box mt={2} />
-            <QuickLinks />
+            {/* <QuickLinks /> */}
             <Grid container spacing={5}>
-                <Grid item xs={12} md={6}>
-                    <Box mb={5}>
-                        <RegistrationStatusBlock />
-                    </Box>
-                    <Box mb={5}>
-                        <TravelGrantStatusBlock />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Box mb={5}>
-                        <TeamStatusBlock />
-                    </Box>
-                    <Box mb={5}>
-                        <VisaInvitationBlock />
-                    </Box>
-                </Grid>
+                <RegistrationStatusBlock />
+                <TravelGrantStatusBlock />
+                <TeamStatusBlock />
+                <VisaInvitationBlock />
             </Grid>
         </Box>
     );

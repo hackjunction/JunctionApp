@@ -122,7 +122,10 @@ export const updateTeam = slug => (dispatch, getState) => {
             return Promise.reject(err);
         }),
         meta: {
-            onFailure: e => console.log('Error updating dashboard team', e)
+            onFailure: e => console.log('Error updating dashboard team', e),
+            onSuccess: team => {
+                dispatch(updateProfiles(team));
+            }
         }
     });
 };
@@ -137,6 +140,8 @@ export const createTeam = slug => async (dispatch, getState) => {
         payload: team
     });
 
+    dispatch(updateProfiles(team));
+
     return team;
 };
 
@@ -149,6 +154,8 @@ export const joinTeam = (slug, code) => async (dispatch, getState) => {
         type: ActionTypes.EDIT_TEAM,
         payload: team
     });
+
+    dispatch(updateProfiles(team));
 
     return team;
 };
@@ -173,6 +180,8 @@ export const removeMemberFromTeam = (slug, code, userId) => async (dispatch, get
         type: ActionTypes.EDIT_TEAM,
         payload: team
     });
+
+    dispatch(updateProfiles(team));
 
     return team;
 };

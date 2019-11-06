@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 
-import { Icon } from 'antd';
+import { Box, Typography, CircularProgress } from '@material-ui/core';
 
 class PageWrapper extends PureComponent {
     static propTypes = {
@@ -13,7 +13,8 @@ class PageWrapper extends PureComponent {
         header: PropTypes.func,
         footer: PropTypes.func,
         wrapContent: PropTypes.bool,
-        wrapperProps: PropTypes.object
+        wrapperProps: PropTypes.object,
+        showErrorMessage: PropTypes.bool
     };
 
     static defaultProps = {
@@ -23,7 +24,8 @@ class PageWrapper extends PureComponent {
         errorText: 'Oops, something went wrong...',
         errorDesc: 'Please reload the page to try again',
         wrapContent: true,
-        wrapperProps: {}
+        wrapperProps: {},
+        showErrorMessage: false
     };
 
     constructor(props) {
@@ -48,20 +50,25 @@ class PageWrapper extends PureComponent {
     renderContent() {
         if (this.props.loading) {
             return (
-                <div className="PageWrapper--loading">
-                    <Icon type="loading" size="large" style={{ fontSize: '30px' }} />
-                </div>
+                <Box p={2} display="flex" alignItems="center" justifyContent="center">
+                    <CircularProgress size={24} />
+                </Box>
             );
         }
 
         if (this.props.error || this.state.error) {
             return (
-                <div className="PageWrapper--error">
-                    <Icon type="warning" size="large" style={{ fontSize: '30px' }} />
-                    <div style={{ height: '20px' }} />
-                    <h3 className="PageWrapper--error__title">{this.props.errorText}</h3>
-                    <p className="PageWrapper--error__desc">{this.state.errorMessage || this.props.errorDesc}</p>
-                </div>
+                <Box p={2} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                    <Box maxWidth="600px">
+                        <Box p={1} />
+                        <Typography variant="h6">{this.props.errorText}</Typography>
+                        <Typography variant="body1">
+                            {this.props.showErrorMessage
+                                ? this.state.errorMessage || this.props.errorDesc
+                                : this.props.errorDesc}
+                        </Typography>
+                    </Box>
+                </Box>
             );
         }
 

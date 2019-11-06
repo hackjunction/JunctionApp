@@ -1,5 +1,3 @@
-@import '~styles/variables';
-
 .wrapper {
     display: flex;
     flex-direction: row;
@@ -11,7 +9,7 @@
         z-index: -1;
 
         .menu {
-            background: $white;
+            background: white;
             position: absolute;
             top: 200%;
             right: 1rem;
@@ -29,11 +27,11 @@
         .menuItem {
             font-size: 18px;
             padding: 0.5rem 2rem;
-            color: $black;
+            color: black;
             text-align: right;
 
             &:hover {
-                background: rgba($black, 0.05);
+                background: rgba(black, 0.05);
             }
         }
 

@@ -1,59 +1,62 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Montserrat:400,400i,700,700i');
-
-@import 'colors';
-@import 'sizes';
-@import 'fonts';
-@import 'common';
-
-* {
-    box-sizing: border-box;
-    font-family: $lato;
-}
-
 html,
-body {
-    margin: 0;
-}
-
-html {
-    font-size: 16px;
-    background-color: $lightgrey;
-}
-
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 16px;
-    padding: 0 !important;
-}
-
-body.body {
-    opacity: 1;
-    background-color: $lightgrey;
-    display: flex;
-    flex-direction: column;
-}
-
+body,
 #root {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    background: #fafafa !important;
 }
+// @import 'colors';
+// @import 'sizes';
+// @import 'fonts';
+// @import 'common';
 
-/* Define some overrides */
+// * {
+//     box-sizing: border-box;
+//     font-family: $lato;
+// }
 
-.body {
-    .ant-timeline-item-head-custom {
-        background: $lightgrey;
-    }
-}
+// html,
+// body {
+//     margin: 0;
+// }
 
-.LoadingPage {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: $padding-double;
-    background: $junction-black;
-}
+// html {
+//     font-size: 16px;
+//     background-color: $lightgrey;
+// }
+
+// body {
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+//     font-size: 16px;
+//     padding: 0 !important;
+// }
+
+// body.body {
+//     opacity: 1;
+//     background-color: $lightgrey;
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// #root {
+//     flex: 1;
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// /* Define some overrides */
+
+// .body {
+//     .ant-timeline-item-head-custom {
+//         background: $lightgrey;
+//     }
+// }
+
+// .LoadingPage {
+//     height: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     padding: $padding-double;
+//     background: $junction-black;
+// }

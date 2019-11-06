@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Button as MuiButton } from '@material-ui/core';
+import { Button as MuiButton, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const baseStyles = (theme, props, variant) => {
     return {
         borderRadius: '13px',
-        padding: '0.25rem 1.5rem',
+        padding: '0.35rem 1.5rem',
         fontSize: '16px',
         letterSpacing: '0.02em',
         lineHeight: '22px',
@@ -25,10 +25,15 @@ const variantStyles = (theme, props) => {
     switch (props.variant) {
         case 'contained': {
             return {
-                backgroundColor: color.main,
+                backgroundColor: color.dark,
                 color: color.contrastText,
                 '&:hover': {
-                    backgroundColor: color.dark
+                    backgroundColor: color.main
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: color.dark,
+                    color: color.contrastText,
+                    opacity: 0.5
                 }
             };
         }
@@ -60,10 +65,17 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Button = ({ color = 'primary', strong, ...props }) => {
+const Button = ({ color = 'primary', strong, loading, ...props }) => {
     const classes = useStyles({ color, strong, variant: props.variant });
 
-    return <MuiButton classes={classes} {...props} />;
+    return (
+        <MuiButton
+            {...props}
+            classes={classes}
+            disabled={loading || props.disabled}
+            children={loading ? <CircularProgress size={20} /> : props.children}
+        />
+    );
 };
 
 export default Button;

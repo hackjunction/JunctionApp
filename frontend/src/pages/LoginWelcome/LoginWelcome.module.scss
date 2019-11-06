@@ -1,4 +1,27 @@
-@import '~styles/variables';
+$bp-small: 600px;
+$bp-med: 900px;
+$bp-large: 1200px;
+
+@mixin for-phone-only {
+    @media (max-width: $bp-small - 1) {
+        @content;
+    }
+}
+@mixin for-tablet-portrait-up {
+    @media (min-width: $bp-small) {
+        @content;
+    }
+}
+@mixin for-tablet-landscape-up {
+    @media (min-width: $bp-med) {
+        @content;
+    }
+}
+@mixin for-desktop-up {
+    @media (min-width: $bp-large) {
+        @content;
+    }
+}
 
 .wrapper {
     position: fixed;
@@ -42,7 +65,7 @@
 }
 
 .contentLeft {
-    background: $junction-black;
+    background: black;
     flex: 3;
     display: flex;
     flex-direction: column;
@@ -101,13 +124,13 @@
 .formTitle {
     text-align: center;
     text-transform: uppercase;
-    color: $junction-white;
+    color: white;
     font-weight: bold;
 }
 
 .formDesc {
     text-align: center;
-    color: $junction-white;
+    color: white;
     font-weight: bold;
 }
 
@@ -116,27 +139,15 @@
     height: 40px;
     background: transparent;
     border: none;
-    border-bottom: 1.5px solid rgba($junction-white, 0.6);
+    border-bottom: 1.5px solid rgba(white, 0.6);
     transition: all 0.2s ease;
-    color: rgba($junction-white, 0.6);
+    color: rgba(white, 0.6);
 
     &:focus {
         outline: none;
-        border-bottom-color: $junction-white;
-        color: $junction-white;
+        border-bottom-color: white;
+        color: white;
     }
-}
-
-.formLabel {
-    color: $junction-white;
-    font-weight: bold;
-}
-
-.formError {
-    color: $color-error;
-    font-size: 14px !important;
-    font-weight: bold;
-    margin-top: 3px;
 }
 
 .checkboxWrapper {
@@ -152,73 +163,5 @@
 
 .checkboxText {
     margin-left: 1rem;
-    color: $junction-white;
-}
-
-.submitButton {
-    width: 100%;
-    max-width: 300px;
-    align-self: center;
-    height: 40px;
-    font-size: 16px;
-    font-weight: bold;
-    background: rgba($junction-lila, 0.7);
-    color: $junction-white;
-    border: none;
-    border-radius: 7px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-
-    &:hover {
-        background: $junction-lila;
-    }
-
-    &:focus {
-        outline: none;
-        background: $junction-lila;
-    }
-}
-
-.submitButtonText {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.3s ease;
-    display: block;
-}
-
-.submitButtonSpinner {
-    opacity: 0;
-    transform: translateY(-100px);
-    transition: all 0.3s ease;
-    height: 0;
-}
-
-.submitButtonLoading {
-    background: $junction-lila;
-    .submitButtonText {
-        opacity: 0;
-        transform: translateY(100px);
-        height: 0;
-    }
-
-    .submitButtonSpinner {
-        opacity: 1;
-        transform: translateY(0);
-        height: auto;
-        font-size: 20px;
-    }
-}
-
-.submitButtonDisabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-
-    &:hover {
-        background: rgba($junction-lila, 0.7);
-    }
+    color: white;
 }
