@@ -134,7 +134,9 @@ const SendgridService = {
     },
     sendRecruiterMessageEmail: (recruiter, user, organization, message) => {
         const params = {
-            subject: `You have a message from a recruiter!`,
+            header_image:
+                'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_600/v1573050918/wordmark_black.png',
+            subject: `Junction: You have a message from a recruiter!`,
             subtitle: `${recruiter.firstName} ${recruiter.lastName} messaged you on ${global.gConfig.SENDGRID_FROM_NAME} Recruitment.`,
             body: `
                 Look at that, someone is interested in your hacker skills! ${recruiter.firstName} ${recruiter.lastName} from ${organization}
@@ -149,8 +151,8 @@ const SendgridService = {
                 Just reply to this email to communicate directly with the recruiter. Good luck on your (potential) new job!
             `,
             reply_to: recruiter.email
-        }
-        return SendgridService.sendGenericEmail(user.email, params)
+        };
+        return SendgridService.sendGenericEmail(user.email, params);
     },
     sendGenericEmail: (to, params) => {
         const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
@@ -170,7 +172,7 @@ const SendgridService = {
             to,
             from: {
                 name: global.gConfig.SENDGRID_FROM_NAME,
-                email: global.gConfig.SENDGRID_FROM_EMAIL,
+                email: global.gConfig.SENDGRID_FROM_EMAIL
             },
             replyTo: data.reply_to,
             templateId,
