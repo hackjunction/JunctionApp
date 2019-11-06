@@ -44,8 +44,7 @@ const UploadHelper = {
             {
                 width: 1920,
                 height: 1080,
-                crop: 'fill',
-                gravity: 'auto'
+                crop: 'fit'
             },
             {
                 tag: UploadHelper.generateEventTag(slug)
