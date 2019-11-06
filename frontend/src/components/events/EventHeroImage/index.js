@@ -41,11 +41,17 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center'
     },
     title: {
-        color: 'white'
+        color: 'white',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1.75rem'
+        }
     },
     overline: {
         color: 'white',
-        fontSize: '1.25rem'
+        fontSize: '1.25rem',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1rem'
+        }
     },
     image: {
         position: 'absolute',

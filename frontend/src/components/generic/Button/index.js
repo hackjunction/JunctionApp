@@ -12,7 +12,7 @@ const baseStyles = (theme, props, variant) => {
         lineHeight: '22px',
         boxShadow: 'none',
         fontFamily: props.strong ? theme.typography.h1.fontFamily : theme.typography.body1.fontFamily,
-        fontWeight: props.strong ? 'bold' : 'normal',
+        fontWeight: 'bold',
         textTransform: props.strong ? 'uppercase' : 'none',
         '&:focus': {
             boxShadow: 'none'
@@ -25,7 +25,7 @@ const variantStyles = (theme, props) => {
     switch (props.variant) {
         case 'contained': {
             return {
-                backgroundColor: color.dark,
+                backgroundColor: color.main,
                 color: color.contrastText,
                 '&:hover': {
                     backgroundColor: color.main

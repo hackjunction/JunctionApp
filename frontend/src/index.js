@@ -1,9 +1,9 @@
-import './styles/main.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -44,6 +44,7 @@ ReactDOM.render(
                             horizontal: 'right'
                         }}
                     >
+                        <CssBaseline />
                         <App history={history} />
                     </SnackbarProvider>
                 </ThemeProvider>

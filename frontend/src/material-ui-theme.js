@@ -46,6 +46,12 @@ const theme = createMuiTheme({
             light: '#ffffff',
             dark: '#ffffff',
             contrastText: '#000000'
+        },
+        background: {
+            paper: '#fff',
+            default: '#fafafa',
+            level2: '#f5f5f5',
+            level1: '#fff'
         }
     },
     typography: {
@@ -53,55 +59,55 @@ const theme = createMuiTheme({
         fontWeightRegular: 300,
         h1: {
             fontFamily: titleFont,
-            fontWeight: 'bold'
+            fontWeight: '700'
         },
         h2: {
             fontFamily: titleFont,
-            fontWeight: 'bold'
+            fontWeight: '700'
         },
         h3: {
             fontFamily: titleFont,
-            fontWeight: 'bold'
+            fontWeight: '700'
         },
         h4: {
             fontFamily: titleFont,
-            fontWeight: 'bold'
+            fontWeight: '700'
         },
         h5: {
             fontFamily: titleFont,
-            fontWeight: 'bold'
+            fontWeight: '700'
         },
         h6: {
             fontFamily: titleFont,
-            fontWeight: 'bold'
+            fontWeight: '700'
         },
         subtitle1: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         },
         subtitle2: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         },
         body1: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         },
         body2: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         },
         button: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         },
         caption: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         },
         overline: {
             fontFamily: bodyFont,
-            fontWeight: '300'
+            fontWeight: '400'
         }
     }
 });
