@@ -8,6 +8,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
 import BasicNavBar from 'components/navbars/BasicNavBar';
+import PageWrapper from 'components/layouts/PageWrapper';
 
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
@@ -24,7 +25,9 @@ const EventDashboard = ({
     updateTeam,
     updateProfiles,
     event,
-    team
+    team,
+    eventLoading,
+    registrationLoading
 }) => {
     const { slug } = match.params;
 
@@ -43,44 +46,41 @@ const EventDashboard = ({
         updateTeam(slug);
     }, [slug, updateTeam]);
 
-    /** Update team member profiles if team changes */
-    useEffect(() => {
-        updateProfiles(team);
-    }, [team, updateProfiles]);
-
     return (
-        <SidebarLayout
-            baseRoute={match.url}
-            location={location}
-            sidebarTopContent={
-                <div className={styles.sidebarTop}>
-                    <Image
-                        className={styles.sidebarLogo}
-                        publicId={event.logo ? event.logo.publicId : ''}
-                        transformation={{
-                            width: 200
-                        }}
-                    />
-                </div>
-            }
-            topContent={<BasicNavBar text={event.name} />}
-            routes={[
-                {
-                    key: 'dashboard',
-                    path: '',
-                    icon: <DashboardIcon />,
-                    label: 'Dashboard',
-                    component: EventDashboardHome
-                },
-                {
-                    key: 'team',
-                    path: '/team',
-                    icon: <GroupIcon />,
-                    label: 'Team',
-                    component: EventDashboardTeam
+        <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
+            <SidebarLayout
+                baseRoute={match.url}
+                location={location}
+                sidebarTopContent={
+                    <div className={styles.sidebarTop}>
+                        <Image
+                            className={styles.sidebarLogo}
+                            publicId={event.logo ? event.logo.publicId : ''}
+                            transformation={{
+                                width: 200
+                            }}
+                        />
+                    </div>
                 }
-            ]}
-        />
+                topContent={<BasicNavBar text={event.name} />}
+                routes={[
+                    {
+                        key: 'dashboard',
+                        path: '',
+                        icon: <DashboardIcon />,
+                        label: 'Dashboard',
+                        component: EventDashboardHome
+                    },
+                    {
+                        key: 'team',
+                        path: '/team',
+                        icon: <GroupIcon />,
+                        label: 'Team',
+                        component: EventDashboardTeam
+                    }
+                ]}
+            />
+        </PageWrapper>
     );
 };
 
@@ -89,7 +89,8 @@ const mapStateToProps = state => ({
     event: DashboardSelectors.event(state),
     eventLoading: DashboardSelectors.eventLoading(state),
     eventError: DashboardSelectors.eventError(state),
-    team: DashboardSelectors.team(state)
+    team: DashboardSelectors.team(state),
+    registrationLoading: DashboardSelectors.registrationLoading(state)
 });
 
 const mapDispatchToProps = dispatch => ({

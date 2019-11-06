@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import styles from './SidebarLayout.module.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { findIndex } from 'lodash-es';
@@ -27,7 +26,8 @@ const useStyles = makeStyles(theme => ({
         position: 'fixed',
         top: theme.spacing(1),
         left: theme.spacing(1),
-        background: '#fbfbfb'
+        background: '#fbfbfb',
+        zIndex: 10
     },
     content: {
         flexGrow: 1,
@@ -50,6 +50,15 @@ const useStyles = makeStyles(theme => ({
     },
     listItemIcon: {
         color: 'inherit'
+    },
+    pageWrapper: {
+        padding: 0,
+        [theme.breakpoints.up('md')]: {
+            padding: theme.spacing(2)
+        }
+    },
+    pageWrapperInner: {
+        padding: theme.spacing(2)
     }
 }));
 
@@ -154,7 +163,7 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
             </nav>
             <main className={classes.content}>
                 {topContent}
-                <CenteredContainer className={styles.pageWrapperInner} wrapperClass={styles.pageWrapper}>
+                <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
                     <Switch>
                         {routes.map(({ key, path, hidden, component }, index) => {
                             if (hidden) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './EventHighlight.module.scss';
 
+import { Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
@@ -23,10 +24,9 @@ const EventHighlight = ({ event, push }) => {
                 />
             </div>
             <div className={styles.right}>
-                <span className={styles.highlightLabel + ' ' + styles.desktopOnly}>Highlight</span>
-                <span className={styles.eventDate}>{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</span>
-                <h3 className={styles.eventName}>{event.name}</h3>
-                <span className={styles.eventLocation}>{event.location}</span>
+                <Typography variant="button">{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</Typography>
+                <Typography variant="h4">{event.name}</Typography>
+                <Typography variant="subtitle1">{event.location}</Typography>
                 <div className={styles.buttons}>
                     <Button color="theme_lightgray" variant="outlined" onClick={() => push('/events/' + event.slug)}>
                         See more

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './EventCard.module.scss';
 
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Typography } from '@material-ui/core';
 import Image from 'components/generic/Image';
 
 import MiscUtils from 'utils/misc';
@@ -21,9 +21,9 @@ const EventsGridItem = ({ event, buttons = [] }) => {
                 />
             </div>
             <div className={styles.bottom}>
-                <span className={styles.eventDate}>{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</span>
-                <h3 className={styles.eventName}>{event.name}</h3>
-                <span className={styles.eventLocation}>{event.location}</span>
+                <Typography variant="button">{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</Typography>
+                <Typography variant="h6">{event.name}</Typography>
+                <Typography variant="body1">{event.location}</Typography>
                 <Box mt={1} />
                 <Grid container spacing={1}>
                     {buttons.map(btn => (

@@ -3,6 +3,7 @@ import styles from './UserMenu.module.scss';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { Link } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import { logout } from 'redux/auth/actions';
 import { getCurrentUser, getHasPermission } from 'redux/auth/selectors';
@@ -16,7 +17,7 @@ const UserMenu = ({ user, logout, push, hasPermission }) => {
     if (!user) {
         return (
             <div className={styles.wrapper}>
-                <Button color="theme_white" variant="contained" strong onClick={() => push('/login')}>
+                <Button color="theme_white" variant="outlined" strong onClick={() => push('/login')}>
                     Sign in
                 </Button>
             </div>
@@ -36,13 +37,13 @@ const UserMenu = ({ user, logout, push, hasPermission }) => {
             >
                 <div className={styles.menu}>
                     <Link className={styles.menuItem} to="/account">
-                        My Account
+                        <Typography variant="button">My Account</Typography>
                     </Link>
                     <Link className={styles.menuItem} to="/account/preferences">
-                        Preferences
+                        <Typography variant="button">Preferences</Typography>
                     </Link>
                     <Link className={styles.menuItem} to="/logout">
-                        Log out
+                        <Typography variant="button">Log out</Typography>
                     </Link>
                 </div>
             </div>

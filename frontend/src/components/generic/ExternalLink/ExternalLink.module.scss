@@ -1,20 +1,18 @@
-@import '~styles/variables';
-
 .link {
-    color: $green;
+    color: #52d7af;
     text-decoration: underline;
     cursor: pointer;
 
     &:hover {
-        color: $green;
+        color: #52d7af;
     }
 
     &.dark {
         text-transform: uppercase;
         text-decoration: none;
-        color: $black;
+        color: black;
         &:hover {
-            color: $black;
+            color: black;
             text-decoration: underline;
         }
     }

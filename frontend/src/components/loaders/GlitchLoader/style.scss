@@ -1,5 +1,3 @@
-@import '~styles/variables';
-
 .GlitchLoader {
     display: flex;
     align-items: center;
@@ -31,28 +29,28 @@
         .LogoSvg1 {
             animation: glitch1 2.5s infinite;
             path {
-                fill: $junction-white;
+                fill: white;
             }
         }
 
         .LogoSvg2 {
             animation: glitch2 2.5s infinite;
             path {
-                fill: $junction-lila;
+                fill: #b200b7;
             }
         }
 
         .LogoSvg3 {
             animation: glitch3 2.5s infinite;
             path {
-                fill: $junction-white;
+                fill: white;
             }
         }
     }
 
     &_Title {
         h3 {
-            color: $junction-white;
+            color: white;
             text-transform: uppercase;
             font-weight: bold;
             text-align: center;
@@ -64,12 +62,12 @@
 
             &:nth-child(2n) {
                 animation: glitch2 2.5s infinite;
-                color: $junction-lila;
+                color: #b200b7;
             }
 
             &:nth-child(3n) {
                 animation: glitch3 2.5s infinite;
-                color: $junction-white;
+                color: white;
             }
         }
     }

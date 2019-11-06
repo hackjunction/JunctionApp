@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { connect } from 'react-redux';
@@ -15,16 +15,24 @@ import { useFormField } from 'hooks/formHooks';
 import VisaInvitationPDF from './VisaInvitationPDF';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
-const VisaInvitationDrawer = ({ registration = {} }) => {
+const VisaInvitationDrawer = ({ defaults }) => {
     const [visible, setVisible] = useState(false);
-    const firstName = useFormField(registration.answers ? registration.answers.firstName : '');
-    const lastName = useFormField(registration.answers ? registration.answers.lastName : '');
-    const nationality = useFormField(registration.answers ? registration.answers.nationality : '');
+    const firstName = useFormField('');
+    const lastName = useFormField('');
+    const nationality = useFormField('');
     const passportNo = useFormField('');
     const profession = useFormField('');
     const arrivalDate = useFormField(Date.now());
     const arrivalCity = 'Helsinki';
     const arrivalCountry = 'Finland';
+
+    useEffect(() => {
+        if (defaults) {
+            firstName.setValue(defaults.firstName);
+            lastName.setValue(defaults.lastName);
+            nationality.setValue(defaults.nationality);
+        }
+    }, [defaults]); //eslint-disable-line
 
     const [generated, setGenerated] = useState(false);
 
@@ -43,51 +51,35 @@ const VisaInvitationDrawer = ({ registration = {} }) => {
                 visible={visible}
                 getContainer={false}
             >
-                <Typography variant="body1" paragraph>
+                <Typography variant="body1" color="textPrimary" paragraph>
                     Just fill in a few more travel details and we'll generate a visa invitation letter for you. We will
                     not save this information for later use - in fact it is never sent anywhere from your device.
                 </Typography>
-                <Typography variant="body1" paragraph>
+                <Typography variant="body1" color="textPrimary" paragraph>
                     Once you've generated the visa invitation letter, double check it to make sure all of the
                     information is correct. You can always generate a new invitation should you need to.
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
-                        <TextInput
-                            label="First name"
-                            value={firstName.value}
-                            onChange={firstName.onChange}
-                            rawOnChange
-                        />
+                        <TextInput label="First name" value={firstName.value} onChange={firstName.setValue} />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <TextInput label="Last name" value={lastName.value} onChange={lastName.onChange} rawOnChange />
+                        <TextInput label="Last name" value={lastName.value} onChange={lastName.setValue} />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextInput
-                            label="Nationality"
-                            helperText="E.g. 'Finnish', 'American', 'German'"
-                            value={nationality.value}
-                            onChange={nationality.onChange}
-                            rawOnChange
-                        />
+                        <TextInput label="Nationality" value={nationality.value} onChange={nationality.setValue} />
+                        <Typography variant="caption" color="textSecondary">
+                            "E.g. 'Finnish', 'American', 'German'"
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextInput
-                            label="Passport Number"
-                            value={passportNo.value}
-                            onChange={passportNo.onChange}
-                            rawOnChange
-                        />
+                        <TextInput label="Passport Number" value={passportNo.value} onChange={passportNo.setValue} />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextInput
-                            label="Profession"
-                            value={profession.value}
-                            helperText='E.g. " Student at Aalto University" / "Employed at BigCorp Inc.'
-                            onChange={profession.onChange}
-                            rawOnChange
-                        />
+                        <TextInput label="Profession" value={profession.value} onChange={profession.setValue} />
+                        <Typography variant="caption" color="textSecondary">
+                            E.g. " Student at Aalto University" / "Employed at BigCorp Inc.
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="caption" color="textSecondary">
@@ -136,8 +128,23 @@ const VisaInvitationDrawer = ({ registration = {} }) => {
     );
 };
 
-const mapState = state => ({
-    registration: DashboardSelectors.registration(state)
-});
+const mapState = state => {
+    const registration = DashboardSelectors.registration(state);
+
+    if (registration && registration.answers) {
+        const { firstName, lastName, nationality } = registration.answers;
+        return {
+            defaults: {
+                firstName,
+                lastName,
+                nationality
+            }
+        };
+    }
+
+    return {
+        defaults: null
+    };
+};
 
 export default connect(mapState)(VisaInvitationDrawer);
