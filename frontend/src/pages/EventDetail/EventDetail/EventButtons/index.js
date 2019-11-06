@@ -36,7 +36,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
                                 </Button>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button fullWidth onClick={pushDashboard} variant="contained" color="theme_lightgray">
+                                <Button fullWidth onClick={pushDashboard} variant="contained" color="theme_orange">
                                     Event dashboard
                                 </Button>
                             </Grid>

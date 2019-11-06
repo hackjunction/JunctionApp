@@ -1,8 +1,6 @@
-@import '~styles/variables';
-
 .AccountEditProfile {
-    background: $junction-white;
-    padding: $padding-double;
+    background: 'white';
+    padding: 1rem;
 
     &--title {
         text-align: center;
