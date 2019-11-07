@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import styles from './UserMenu.module.scss';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Typography,
     Popover,
     IconButton,
     Avatar,
@@ -19,7 +17,6 @@ import { logout } from 'redux/auth/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserSelectors from 'redux/user/selectors';
 import Button from 'components/generic/Button';
-import { hasRecruiterAccess } from '../../redux/auth/selectors';
 
 const useStyles = makeStyles(theme => ({
     menuDot: {
@@ -41,7 +38,6 @@ const UserMenu = ({
     hasRecruiterAccess
 }) => {
     const classes = useStyles();
-    const [menuActive, setMenuActive] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleMenuOpen = e => {
@@ -54,11 +50,11 @@ const UserMenu = ({
 
     if (!userProfile) {
         return (
-            <div className={styles.wrapper}>
+            <Box display="flex" flexDirection="row" alignItems="center">
                 <Button color="theme_white" variant="outlined" strong onClick={() => push('/login')}>
                     Sign in
                 </Button>
-            </div>
+            </Box>
         );
     }
 
