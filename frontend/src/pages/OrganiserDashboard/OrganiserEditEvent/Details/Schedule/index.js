@@ -5,6 +5,7 @@ import { FastField } from 'formik';
 import Select from 'components/inputs/Select';
 import FormControl from 'components/inputs/FormControl';
 import DateTimePicker from 'components/inputs/DateTimePicker';
+import DateTimeInput from 'components/inputs/DateTimeInput';
 
 const OrganiserEditEventTimes = props => {
     function renderDateField(field, timezone) {
@@ -22,6 +23,7 @@ const OrganiserEditEventTimes = props => {
 
     return (
         <Grid container spacing={3}>
+            <DateTimeInput onChange={() => {}} />
             <Grid item xs={12}>
                 <FastField
                     name="timezone"
