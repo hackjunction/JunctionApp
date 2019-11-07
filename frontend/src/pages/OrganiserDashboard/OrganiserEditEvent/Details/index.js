@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { notification } from 'antd';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import { forOwn } from 'lodash-es';
+import { withSnackbar } from 'notistack';
+import { Box, Typography } from '@material-ui/core';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import PageHeader from 'components/generic/PageHeader';
@@ -17,8 +18,9 @@ import MiscellaneousTab from './Miscellaneous';
 import ConfigurationTab from './ConfigurationTab';
 import BottomBar from './BottomBar';
 
-const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
+const OrganiserEditEventDetails = ({ event, loading, editEvent, enqueueSnackbar }) => {
     const { slug } = event;
+
     function onSubmit(values, actions) {
         const changed = {};
         forOwn(values, (value, field) => {
@@ -28,9 +30,7 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
         });
         editEvent(slug, changed)
             .then(savedEvent => {
-                notification.success({
-                    message: 'Your changes were saved successfully'
-                });
+                enqueueSnackbar('Your changes were saved successfully', { variant: 'success' });
                 actions.setSubmitting(false);
             })
             .catch(err => {
@@ -38,10 +38,9 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
 
                 if (errors) {
                     const errorKeys = Object.keys(errors);
-
-                    notification.error({
-                        message: 'Unable to save changes',
-                        description: (
+                    enqueueSnackbar(
+                        <Box>
+                            <Typography variant="body1">Unable to save changes</Typography>
                             <ul>
                                 {errorKeys.map(key => (
                                     <li>
@@ -49,13 +48,22 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent }) => {
                                     </li>
                                 ))}
                             </ul>
-                        )
-                    });
+                        </Box>,
+                        {
+                            variant: 'error',
+                            autoHideDuration: 3000
+                        }
+                    );
                 } else {
-                    notification.error({
-                        message: 'Unable to save changes',
-                        description: message
-                    });
+                    enqueueSnackbar(
+                        <Box>
+                            <Typography variant="body1">Unable to save changes</Typography>
+                            <Typography variant="caption">{message}</Typography>
+                        </Box>,
+                        {
+                            variant: 'error'
+                        }
+                    );
                 }
             })
             .finally(() => {
@@ -117,7 +125,9 @@ const mapDispatchToProps = dispatch => ({
     editEvent: (slug, data) => dispatch(OrganiserActions.editEvent(slug, data))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OrganiserEditEventDetails);
+export default withSnackbar(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(OrganiserEditEventDetails)
+);

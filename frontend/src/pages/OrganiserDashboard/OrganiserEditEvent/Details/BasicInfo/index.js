@@ -92,7 +92,11 @@ const OrganiserEditEventInfo = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <MarkdownInput {...field} />
+                            <MarkdownInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                                placeholder="Description goes here"
+                            />
                         </FormControl>
                     )}
                 />

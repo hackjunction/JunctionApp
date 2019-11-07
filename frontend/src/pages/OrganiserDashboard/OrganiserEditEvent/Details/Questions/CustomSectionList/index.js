@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import styles from './CustomSectionList.module.scss';
 
-import { Empty } from 'antd';
 import { RegistrationFields } from '@hackjunction/shared';
+import { Box } from '@material-ui/core';
 
+import Empty from 'components/generic/Empty';
 import Button from 'components/generic/Button';
 import AddSectionModal from '../AddSectionModal';
 import CustomSectionListItem from '../CustomSectionListItem';
@@ -84,17 +84,13 @@ const CustomSectionList = ({ sections = [], onChange }) => {
     );
 
     const renderAdd = () => (
-        <Button
-            text="Add section"
-            block
-            button={{
-                onClick: () => setModalOpen(true)
-            }}
-        />
+        <Button onClick={() => setModalOpen(true)} fullWidth color="primary" variant="contained">
+            Add section
+        </Button>
     );
 
     const renderEmpty = () => {
-        return <Empty description="No custom questions" />;
+        return <Empty isEmpty emptyText="No custom questions" />;
     };
 
     const renderList = () => {
@@ -125,7 +121,18 @@ const CustomSectionList = ({ sections = [], onChange }) => {
                 onEditCancel={() => setEditing(undefined)}
             />
             {sections.length === 0 ? renderEmpty() : renderList()}
-            <div className={styles.addButtonWrapper}>{renderAdd()}</div>
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                maxWidth="300px"
+                width="100%"
+                margin="0 auto"
+                padding={2}
+            >
+                {renderAdd()}
+            </Box>
         </React.Fragment>
     );
 };

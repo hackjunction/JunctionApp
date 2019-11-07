@@ -62,11 +62,28 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
     );
 
     const universityOptions = useMemo(() => {
-        return Universities.getByAlpha2Code(Countries.alpha2CodeFromName(country)).map(uni => ({
-            label: uni.name,
-            value: uni.name
-        }));
-    }, [country]);
+        const baseOptions = value.university
+            ? [
+                  {
+                      label: value.university,
+                      value: value.university
+                  }
+              ]
+            : [];
+        const countryOptions = Universities.getByAlpha2Code(Countries.alpha2CodeFromName(country))
+            .map(uni => ({
+                label: uni.name,
+                value: uni.name
+            }))
+            .filter(uni => {
+                if (uni.name === value.university) {
+                    return false;
+                }
+                return true;
+            });
+
+        return baseOptions.concat(countryOptions);
+    }, [country, value]);
 
     return (
         <Grid container spacing={3}>

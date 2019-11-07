@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 
-import { Input, Select } from 'antd';
 import { findIndex } from 'lodash-es';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
@@ -12,11 +11,13 @@ import {
     Box,
     Divider,
     Grid,
-    Button,
     Typography
 } from '@material-ui/core';
 
+import Select from 'components/inputs/Select';
+import TextInput from 'components/inputs/TextInput';
 import Tag from 'components/generic/Tag';
+import Button from 'components/generic/Button';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useFormField } from 'hooks/formHooks';
@@ -119,33 +120,30 @@ const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
     };
 
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} alignItems="flex-end">
             <Grid item xs={12} md={6}>
-                <Input placeholder="Tag name" size="large" {...label} />
+                <TextInput label="Tag name" value={label.value} onChange={label.setValue} />
                 <Typography variant="caption" className={classes.errorMessage}>
                     {label.error}
                 </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
                 <Select
-                    style={{ width: '100%' }}
+                    label="Tag color"
                     placeholder="Choose color"
-                    size="large"
                     value={color.value}
                     onChange={color.setValue}
-                >
-                    {COLORS.map(color => (
-                        <Select.Option key={color} value={color}>
-                            <Tag color={color} label={color} />
-                        </Select.Option>
-                    ))}
-                </Select>
+                    options={COLORS.map(color => ({
+                        label: color,
+                        value: color
+                    }))}
+                />
                 <Typography variant="caption" className={classes.errorMessage}>
                     {color.error}
                 </Typography>
             </Grid>
             <Grid item xs={12} md={9}>
-                <Input placeholder="Tag description" size="large" {...description} />
+                <TextInput label="Tag description" value={description.value} onChange={description.setValue} />
                 <Typography variant="caption" className={classes.errorMessage}>
                     {description.error}
                 </Typography>

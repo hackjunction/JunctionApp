@@ -1,6 +1,5 @@
 import React, { useState, useCallback, forwardRef } from 'react';
 import moment from 'moment';
-import { Empty } from 'antd';
 import { connect } from 'react-redux';
 
 import EmailIcon from '@material-ui/icons/Email';
@@ -14,6 +13,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationModal from 'components/modals/EditRegistrationModal';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
 import BulkEmailModal from 'components/modals/BulkEmailModal';
+import Empty from 'components/generic/Empty';
 
 const AttendeeTable = ({
     organiserProfilesMap,
@@ -165,7 +165,7 @@ const AttendeeTable = ({
         if (loading) return null;
         if (!Array.isArray(attendees) || attendees.length !== 0) return null;
         if (typeof emptyRenderer === 'function') return emptyRenderer();
-        return <Empty />;
+        return <Empty isEmpty />;
     };
 
     return (
