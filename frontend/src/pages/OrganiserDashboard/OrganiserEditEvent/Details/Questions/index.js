@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Grid } from '@material-ui/core';
+import { Grid, Switch } from '@material-ui/core';
 import { FastField } from 'formik';
-import { Table, Switch } from 'antd';
 import CustomSectionList from './CustomSectionList';
 import FormControl from 'components/inputs/FormControl';
+import MaterialTable from 'components/generic/MaterialTable';
 import Shared from '@hackjunction/shared';
 
 const OrganiserEditEventRegistration = props => {
@@ -30,36 +30,43 @@ const OrganiserEditEventRegistration = props => {
                                 label="Registration questions"
                                 hint="Choose the questions you want to ask in the registration form for this event"
                             >
-                                <Table
-                                    bordered={true}
-                                    style={{ background: 'white' }}
-                                    dataSource={dataSource}
-                                    pagination={false}
+                                <MaterialTable
+                                    title="Questions"
+                                    data={dataSource}
+                                    options={{
+                                        exportButton: false,
+                                        selection: false,
+                                        showSelectAllCheckbox: false,
+                                        pageSizeOptions: [5, 25, 50],
+                                        debounceInterval: 500,
+                                        search: false,
+                                        paging: false
+                                    }}
                                     columns={[
                                         {
                                             title: 'Name',
-                                            dataIndex: 'label'
+                                            field: 'label'
                                         },
                                         {
                                             title: 'Category',
-                                            dataIndex: 'category'
+                                            field: 'category'
                                         },
                                         {
                                             title: 'Enabled',
-                                            dataIndex: 'enable',
-                                            align: 'center',
-                                            render: (enable, record) => {
+                                            field: 'enabled',
+                                            render: row => {
                                                 return (
                                                     <Switch
-                                                        disabled={!record.editable}
-                                                        checked={enable}
-                                                        onChange={enable => {
+                                                        color="primary"
+                                                        disabled={!row.editable}
+                                                        checked={row.enable}
+                                                        onChange={(e, enable) => {
                                                             props.setFieldValue(field.name, {
                                                                 ...fieldValue,
-                                                                [record.key]: {
-                                                                    ...fieldValue[record.key],
+                                                                [row.key]: {
+                                                                    ...fieldValue[row.key],
                                                                     enable,
-                                                                    require: !enable ? false : record.require
+                                                                    require: !enable ? false : row.require
                                                                 }
                                                             });
                                                         }}
@@ -69,18 +76,18 @@ const OrganiserEditEventRegistration = props => {
                                         },
                                         {
                                             title: 'Required',
-                                            dataIndex: 'require',
-                                            align: 'center',
-                                            render: (require, record) => {
+                                            field: 'require',
+                                            render: row => {
                                                 return (
                                                     <Switch
-                                                        disabled={!record.editable || !record.enable}
+                                                        color="primary"
+                                                        disabled={!row.editable || !row.enable}
                                                         checked={require}
-                                                        onChange={require => {
+                                                        onChange={(e, require) => {
                                                             props.setFieldValue(field.name, {
                                                                 ...fieldValue,
-                                                                [record.key]: {
-                                                                    ...fieldValue[record.key],
+                                                                [row.key]: {
+                                                                    ...fieldValue[row.key],
                                                                     require
                                                                 }
                                                             });

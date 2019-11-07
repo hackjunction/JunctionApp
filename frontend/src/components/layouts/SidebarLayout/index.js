@@ -12,10 +12,10 @@ import { push } from 'connected-react-router';
 const SIDEBAR_WIDTH = 300;
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex'
-    },
     drawer: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
         [theme.breakpoints.up('md')]: {
             width: SIDEBAR_WIDTH,
             flexShrink: 0
@@ -31,7 +31,10 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        position: 'relative'
+        position: 'relative',
+        [theme.breakpoints.up('md')]: {
+            marginLeft: SIDEBAR_WIDTH
+        }
     },
     drawerPaper: {
         width: SIDEBAR_WIDTH,

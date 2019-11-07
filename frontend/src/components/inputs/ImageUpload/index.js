@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import Upload from 'antd/es/upload';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, CircularProgress } from '@material-ui/core';
-import { Upload } from 'antd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 

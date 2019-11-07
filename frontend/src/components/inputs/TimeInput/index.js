@@ -3,37 +3,37 @@ import React, { useCallback } from 'react';
 import { Grid } from '@material-ui/core';
 import Select from 'components/inputs/Select';
 
-const HOURS = [
-    '00',
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23'
-];
-const MINUTES = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
+const HOURS = Array.apply(null, Array(24)).map((value, index) => {
+    if (index < 10) {
+        return {
+            value: index,
+            label: '0' + index
+        };
+    } else {
+        return {
+            value: index,
+            label: index.toString()
+        };
+    }
+});
+
+const MINUTES = Array.apply(null, Array(12)).map((value, index) => {
+    if (index < 2) {
+        return {
+            value: index * 5,
+            label: '0' + index * 5
+        };
+    } else {
+        return {
+            value: index * 5,
+            label: (index * 5).toString()
+        };
+    }
+});
 
 const DEFAULT_VALUE = {
-    hours: HOURS[0],
-    minutes: MINUTES[0]
+    hours: HOURS[0].value,
+    minutes: MINUTES[0].value
 };
 
 const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
@@ -60,26 +60,10 @@ const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={6}>
-                <Select
-                    label="HH"
-                    options={HOURS.map(hour => ({
-                        value: hour,
-                        label: hour
-                    }))}
-                    value={value.hours}
-                    onChange={handleHoursChange}
-                />
+                <Select label="HH" options={HOURS} value={value.hours} onChange={handleHoursChange} />
             </Grid>
             <Grid item xs={6}>
-                <Select
-                    label="mm"
-                    options={MINUTES.map(minute => ({
-                        value: minute,
-                        label: minute
-                    }))}
-                    value={value.minutes}
-                    onChange={handleMinutesChange}
-                />
+                <Select label="mm" options={MINUTES} value={value.minutes} onChange={handleMinutesChange} />
             </Grid>
         </Grid>
     );

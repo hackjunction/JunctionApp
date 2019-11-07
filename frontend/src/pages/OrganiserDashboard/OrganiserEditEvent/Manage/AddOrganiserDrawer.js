@@ -1,95 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
-import { Drawer, Row, Col, Button, Input, List, notification } from 'antd';
+import {
+    Drawer,
+    Box,
+    Typography,
+    List,
+    ListItemText,
+    ListItem,
+    ListItemSecondaryAction,
+    IconButton
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 import * as AuthSelectors from 'redux/auth/selectors';
-import Divider from 'components/generic/Divider';
+import Button from 'components/generic/Button';
+import TextInput from 'components/inputs/TextInput';
 import UserProfilesService from 'services/userProfiles';
 
-const AddOrganiserDrawer = ({ isOpen, onClose, onAdded, idToken, organisers, slug }) => {
+const AddOrganiserDrawer = ({ isOpen, onClose, onAdded, idToken, organisers, slug, enqueueSnackbar }) => {
     const [results, setResults] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
 
-    function getResults(search) {
-        UserProfilesService.getUsersByEmail(search, idToken)
+    const handleSearch = useCallback(() => {
+        UserProfilesService.queryUsers(idToken, searchValue)
             .then(users => {
                 if (users.length === 0) {
-                    notification.error({
-                        message: 'No users found',
-                        description:
-                            "Please make sure you've written their email correctly, and that they've created an account already."
-                    });
+                    enqueueSnackbar('No users found');
                 }
                 setResults(users);
             })
             .catch(err => {
-                notification.error({
-                    message: 'Oops, something went wrong',
-                    description: 'Unable to search users'
-                });
+                enqueueSnackbar('Something went wrong... Please try again.', { variant: 'error' });
             });
-    }
+    }, [searchValue, idToken, enqueueSnackbar]);
 
-    function handleAdd(user) {
-        onAdded(user.userId);
-        // const hideMessage = message.loading('Adding organiser', 0);
-        // EventsService.addOrganiserToEvent(idToken, slug, user.userId)
-        //     .then(userId => {
-        //         hideMessage();
-        //         onAdded(userId);
-        //         message.success('Added organiser');
-        //     })
-        //     .catch(err => {
-        //         hideMessage();
-        //         notification.error({
-        //             message: 'Oops, something went wrong',
-        //             description: 'Please try again'
-        //         });
-        //     });
-    }
-
-    function renderRow(item) {
-        const exists = organisers.indexOf(item.userId) !== -1;
-        return (
-            <List.Item
-                actions={[
-                    <Button disabled={exists} type="link" onClick={() => handleAdd(item)}>
-                        {exists ? 'Added' : 'Add'}
-                    </Button>
-                ]}
-            >
-                <List.Item.Meta title={item.firstName + ' ' + item.lastName} description={item.userId} />
-            </List.Item>
-        );
-    }
+    const handleAdd = useCallback(
+        user => {
+            onAdded(user.userId);
+            onClose();
+        },
+        [onAdded, onClose]
+    );
 
     return (
-        <Drawer
-            title="Search for users"
-            placement="right"
-            closable="false"
-            onClose={onClose}
-            visible={isOpen}
-            width={500}
-        >
-            <Row gutter={16}>
-                <Col xs={24}>
-                    <Input.Search
-                        placeholder="Search by email address"
-                        enterButton="Search"
-                        size="large"
-                        onSearch={value => getResults(value)}
-                    />
-                    <Divider size={1} />
-                    <List
-                        itemLayout="horizontal"
-                        dataSource={results}
-                        rowKey="userId"
-                        bordered={true}
-                        renderItem={renderRow}
-                    />
-                </Col>
-            </Row>
+        <Drawer anchor="right" onClose={onClose} open={isOpen}>
+            <Box width="500px" p={3}>
+                <Typography variant="h6" gutterBottom>
+                    Search for users
+                </Typography>
+                <TextInput placeholder="Name / email" value={searchValue} onChange={setSearchValue} />
+                <Box p={1} />
+                <Button fullWidth color="primary" variant="contained" onClick={handleSearch}>
+                    Search
+                </Button>
+                <Box p={1} />
+                <List>
+                    {results.map(user => (
+                        <ListItem key={user.userId}>
+                            <ListItemText primary={`${user.firstName} ${user.lastName}`} secondary={user.userId} />
+                            {organisers.indexOf(user.userId) === -1 ? (
+                                <ListItemSecondaryAction>
+                                    <IconButton onClick={() => handleAdd(user)}>
+                                        <AddIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            ) : (
+                                <ListItemSecondaryAction>
+                                    <Typography variant="button">Added</Typography>
+                                </ListItemSecondaryAction>
+                            )}
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
         </Drawer>
     );
 };
@@ -98,4 +83,4 @@ const mapStateToProps = state => ({
     idToken: AuthSelectors.getIdToken(state)
 });
 
-export default connect(mapStateToProps)(AddOrganiserDrawer);
+export default withSnackbar(connect(mapStateToProps)(AddOrganiserDrawer));
