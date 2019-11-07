@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { reduce, difference } from 'lodash-es';
+import { Auth } from '@hackjunction/shared';
 const namespace = 'https://app.hackjunction.com/';
 
 export const getAccessToken = state => state.auth.session.accessToken || null;
@@ -38,5 +39,25 @@ export const idTokenData = createSelector(
             },
             {}
         );
+    }
+);
+
+export const hasRecruiterAccess = createSelector(
+    getHasPermission,
+    idTokenData,
+    (hasPermission, idTokenData) => {
+        return (
+            hasPermission([Auth.Permissions.ACCESS_RECRUITMENT]) &&
+            idTokenData.recruiter_events &&
+            idTokenData.recruiter_events.length > 0 &&
+            idTokenData.recruiter_organisation
+        );
+    }
+);
+
+export const hasOrganiserAccess = createSelector(
+    getHasPermission,
+    hasPermission => {
+        return hasPermission([Auth.Permissions.MANAGE_EVENT]);
     }
 );

@@ -19,6 +19,7 @@ import { logout } from 'redux/auth/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserSelectors from 'redux/user/selectors';
 import Button from 'components/generic/Button';
+import { hasRecruiterAccess } from '../../redux/auth/selectors';
 
 const useStyles = makeStyles(theme => ({
     menuDot: {
@@ -30,7 +31,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const UserMenu = ({ userProfile, logout, push, hasPermission }) => {
+const UserMenu = ({
+    userProfile,
+    idTokenData,
+    logout,
+    push,
+    hasPermission,
+    hasOrganiserAccess,
+    hasRecruiterAccess
+}) => {
     const classes = useStyles();
     const [menuActive, setMenuActive] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -53,8 +62,47 @@ const UserMenu = ({ userProfile, logout, push, hasPermission }) => {
         );
     }
 
+    const renderEventItems = () => {
+        //const items = [];
+        //TODO: Add links to event dashboard here for ongoing events
+        return null;
+    };
+
+    const renderOtherItems = () => {
+        const items = [];
+
+        if (hasOrganiserAccess) {
+            items.push({
+                label: 'Organiser dashboard',
+                onClick: () => push('/organise')
+            });
+        }
+
+        if (hasRecruiterAccess) {
+            items.push({
+                label: 'Recruitment dashboard',
+                onClick: () => push('/recruitment')
+            });
+        }
+
+        if (items.length > 0) {
+            return (
+                <React.Fragment>
+                    <ListSubheader disableSticky>Other</ListSubheader>
+                    {items.map(({ label, onClick }) => (
+                        <ListItem key={label} button onClick={onClick}>
+                            <ListItemText primary={label} />
+                        </ListItem>
+                    ))}
+                </React.Fragment>
+            );
+        }
+
+        return null;
+    };
+
     return (
-        <div className={styles.wrapper}>
+        <Box display="flex" flexDirection="row" alignItems="center">
             <IconButton onClick={handleMenuOpen}>
                 <Box
                     width="40px"
@@ -84,68 +132,44 @@ const UserMenu = ({ userProfile, logout, push, hasPermission }) => {
                 anchorEl={anchorEl}
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'center'
+                    horizontal: 'left'
                 }}
                 transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'center'
+                    horizontal: 'right'
                 }}
             >
                 <Box width="300px">
-                    <List>
+                    <List onClick={handleMenuClose}>
                         <ListSubheader disableSticky>Your account</ListSubheader>
                         <ListItem button>
-                            <ListItemText primary="Dashboard" />
+                            <ListItemText primary="Dashboard" onClick={() => push('/account')} />
                         </ListItem>
                         <ListItem button>
-                            <ListItemText primary="Settings" />
+                            <ListItemText primary="Settings" onClick={() => push('/account/preferences')} />
                         </ListItem>
-                        <ListSubheader disableSticky>Your events</ListSubheader>
-                        <ListItem button>
-                            <ListItemText primary="Junction 2019" />
-                        </ListItem>
-                        <ListSubheader disableSticky>Other</ListSubheader>
-                        <ListItem button>
-                            <ListItemText primary="Organiser dashboard" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemText primary="Recruitment dashboard" />
-                        </ListItem>
+                        {renderEventItems()}
+                        {renderOtherItems()}
                         <Divider />
-                        <ListItem button>
+                        <ListItem button onClick={() => push('/')}>
                             <ListItemText primary="Front page" />
                         </ListItem>
-                        <ListItem button>
+                        <ListItem button onClick={() => push('/logout')}>
                             <ListItemText primary="Log out" />
                         </ListItem>
                     </List>
                 </Box>
             </Popover>
-            {/* <div
-                className={classNames({
-                    [styles.menuWrapper]: true,
-                    [styles.menuWrapperActive]: menuActive
-                })}
-            >
-                <div className={styles.menu}>
-                    <Link className={styles.menuItem} to="/account">
-                        <Typography variant="button">My Account</Typography>
-                    </Link>
-                    <Link className={styles.menuItem} to="/account/preferences">
-                        <Typography variant="button">Preferences</Typography>
-                    </Link>
-                    <Link className={styles.menuItem} to="/logout">
-                        <Typography variant="button">Log out</Typography>
-                    </Link>
-                </div>
-            </div> */}
-        </div>
+        </Box>
     );
 };
 
 const mapStateToProps = state => ({
     userProfile: UserSelectors.userProfile(state),
-    hasPermission: AuthSelectors.getHasPermission(state)
+    idTokenData: AuthSelectors.idTokenData(state),
+    hasPermission: AuthSelectors.getHasPermission(state),
+    hasOrganiserAccess: AuthSelectors.hasOrganiserAccess(state),
+    hasRecruiterAccess: AuthSelectors.hasRecruiterAccess(state)
 });
 
 export default connect(
