@@ -65,50 +65,45 @@ const SkillsInput = React.memo(({ value, onChange, onBlur, autoFocus, enqueueSna
 
     return (
         <Grid container spacing={3}>
-            <Grid container spacing={3} item xs={12}>
-                <Grid item xs={4}>
-                    <Typography variant="subtitle1">Skill</Typography>
-                </Grid>
-                <Grid item xs={8}>
-                    <Select
-                        autoFocus={autoFocus}
-                        onBlur={onBlur}
-                        innerRef={selectEl}
-                        label="Choose a skill"
-                        placeholder="Type to search for skills"
-                        options="skill"
-                        value={skill}
-                        onChange={setSkill}
-                    />
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography variant="subtitle1">Level of expertise</Typography>
-                </Grid>
-                <Grid item xs={8}>
-                    <RadioGroup
-                        className={classes.radioGroup}
-                        aria-label="Level of expertise"
-                        value={level}
-                        onChange={handleLevelChange}
-                    >
-                        {Skills.skillLevelLabelsArray.map((label, index) => (
-                            <FormControlLabel
-                                key={label}
-                                value={`${index + 1}`}
-                                control={<Radio color="primary" />}
-                                label={label}
-                                labelPlacement="left"
-                            />
-                        ))}
-                    </RadioGroup>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box display="flex" flexDirection="row" justifyContent="flex-end">
-                        <Button onClick={handleAdd} disabled={buttonDisabled} color="primary" variant="contained">
-                            Add
-                        </Button>
-                    </Box>
-                </Grid>
+            <Grid item xs={12}>
+                <Select
+                    autoFocus={autoFocus}
+                    onBlur={onBlur}
+                    innerRef={selectEl}
+                    label="Choose a skill"
+                    placeholder="Type to search for skills"
+                    options="skill"
+                    value={skill}
+                    onChange={setSkill}
+                />
+            </Grid>
+            <Grid item xs={4}>
+                <Typography variant="subtitle1">Level of expertise</Typography>
+            </Grid>
+            <Grid item xs={8}>
+                <RadioGroup
+                    className={classes.radioGroup}
+                    aria-label="Level of expertise"
+                    value={level}
+                    onChange={handleLevelChange}
+                >
+                    {Skills.skillLevelLabelsArray.map((label, index) => (
+                        <FormControlLabel
+                            key={label}
+                            value={`${index + 1}`}
+                            control={<Radio color="primary" />}
+                            label={label}
+                            labelPlacement="left"
+                        />
+                    ))}
+                </RadioGroup>
+            </Grid>
+            <Grid item xs={12}>
+                <Box display="flex" flexDirection="row" justifyContent="flex-end">
+                    <Button onClick={handleAdd} disabled={buttonDisabled} color="primary" variant="contained">
+                        Add
+                    </Button>
+                </Box>
             </Grid>
             <Grid item xs={12}>
                 <List>
