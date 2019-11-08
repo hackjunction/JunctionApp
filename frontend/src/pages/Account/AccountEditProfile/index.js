@@ -239,7 +239,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar
                                     name="headline"
                                     render={({ field, form }) => (
                                         <TextInput
-                                            label="Short bio"
+                                            label={RegistrationFields.getFields()['headline'].label}
                                             placeholder="Fullstack developer, hackathon enthusiast"
                                             value={field.value}
                                             onChange={value => form.setFieldValue(field.name, value)}
@@ -248,7 +248,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar
                                     )}
                                 />
                                 <Typography variant="caption">
-                                    Who are you and what do you do, in one sentence?
+                                    {RegistrationFields.getFields()['headline'].hint}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -257,7 +257,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar
                                         name="biography"
                                         render={({ field, form }) => (
                                             <TextAreaInput
-                                                label="Long bio"
+                                                label={RegistrationFields.getFields()['biography'].label}
                                                 placeholder={`Hi my name is ${form.values.firstName} and...`}
                                                 value={field.value}
                                                 onChange={value => form.setFieldValue(field.name, value)}
@@ -266,7 +266,9 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar
                                         )}
                                     />
                                 </Box>
-                                <Typography variant="caption">A longer introduction of yourself</Typography>
+                                <Typography variant="caption">
+                                    {RegistrationFields.getFields()['biography'].hint}
+                                </Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <FastField
