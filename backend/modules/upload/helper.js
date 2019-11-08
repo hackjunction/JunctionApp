@@ -22,6 +22,18 @@ const createStorageWithPath = (path, transformation, options) => {
     });
 };
 
+const createDocumentStorageWithPath = (path, transformation, options) => {
+    return cloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            tags: [options.tag],
+            folder: `${cloudinaryRootPath}/${path}`,
+            allowed_formats: ['pdf'],
+            transformation
+        }
+    });
+};
+
 const UploadHelper = {
     generateEventTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}`;
