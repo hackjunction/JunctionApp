@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { withSnackbar } from 'notistack';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, Dialog, Box } from '@material-ui/core';
-import { Roles } from '@hackjunction/shared';
+import { Typography, Grid, Dialog, Box, Chip } from '@material-ui/core';
+import { Roles, Misc } from '@hackjunction/shared';
 import CheckIcon from '@material-ui/icons/Check';
 
 import PageWrapper from 'components/layouts/PageWrapper';
@@ -112,6 +112,60 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
         setLoading(false);
     }, [message, sendMessage, user, enqueueSnackbar]);
 
+    const renderRecruitmentStatus = () => {
+        switch (user.recruitmentOptions.status) {
+            case Misc.recruitmentStatuses.items['actively-looking'].id:
+                return (
+                    <Chip
+                        label={'Recruitment: ' + Misc.recruitmentStatuses.items['actively-looking'].label}
+                        color="primary"
+                        variant="outlined"
+                    />
+                );
+            case Misc.recruitmentStatuses.items['up-for-discussions'].id:
+                return (
+                    <Chip
+                        label={'Recruitment: ' + Misc.recruitmentStatuses.items['up-for-discussions'].label}
+                        color="secondary"
+                        variant="outlined"
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
+    const renderRelocationStatus = () => {
+        switch (user.recruitmentOptions.relocation) {
+            case Misc.relocationOptions.items['looking-for-change'].id:
+                return (
+                    <Chip
+                        label={'Relocation: ' + Misc.relocationOptions.items['looking-for-change'].label}
+                        color="primary"
+                        variant="outlined"
+                    />
+                );
+            case Misc.relocationOptions.items['willing-to-relocate'].id:
+                return (
+                    <Chip
+                        label={'Relocation: ' + Misc.relocationOptions.items['willing-to-relocate'].label}
+                        color="primary"
+                        variant="outlined"
+                    />
+                );
+            case Misc.relocationOptions.items['not-currently'].id:
+                return (
+                    <Chip
+                        label={'Relocation: ' + Misc.relocationOptions.items['not-currently'].label}
+                        color="secondary"
+                        variant="outlined"
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <PageWrapper
@@ -123,6 +177,50 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
                         <DetailTop user={user} />
                         <Box mt={3} />
                         <Grid container>
+                            {user.profile.biography ? (
+                                <React.Fragment>
+                                    <Grid item xs={12} md={8}>
+                                        <DetailSection label="Biography">
+                                            <Typography variant="body2">{user.profile.biography}</Typography>
+                                        </DetailSection>
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <Box
+                                            p={2}
+                                            display="flex"
+                                            flexDirection="row"
+                                            flexWrap="wrap"
+                                            justifyContent="flex-start"
+                                        >
+                                            <Box ml={0.5} mr={0.5} mb={0.5}>
+                                                {renderRecruitmentStatus()}
+                                            </Box>
+                                            <Box ml={0.5} mr={0.5} mb={0.5}>
+                                                {renderRelocationStatus()}
+                                            </Box>
+                                        </Box>
+                                    </Grid>
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    <Grid item xs={12}>
+                                        <Box
+                                            p={2}
+                                            display="flex"
+                                            flexDirection="row"
+                                            flexWrap="wrap"
+                                            justifyContent="center"
+                                        >
+                                            <Box mr={0.5} mb={0.5}>
+                                                {renderRecruitmentStatus()}
+                                            </Box>
+                                            <Box mr={0.5} mb={0.5}>
+                                                {renderRelocationStatus()}
+                                            </Box>
+                                        </Box>
+                                    </Grid>
+                                </React.Fragment>
+                            )}
                             <Grid item xs={12} sm={6} md={4}>
                                 <DetailSection label="Skills">
                                     <Box>
@@ -162,10 +260,10 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
                                             </Typography>
                                         </React.Fragment>
                                     ) : (
-                                            <Typography className={classes.bold} variant="body2">
-                                                {user.education.level}
-                                            </Typography>
-                                        )}
+                                        <Typography className={classes.bold} variant="body2">
+                                            {user.education.level}
+                                        </Typography>
+                                    )}
                                 </DetailSection>
                             </Grid>
                             <Grid item xs={12} md={4} container>

@@ -402,7 +402,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar
                             )}
                         />
                     </Box>
-                    <Box height="100px" />
+                    <Box height="300px" />
                     <BottomBar
                         onSubmit={formikProps.handleSubmit}
                         errors={formikProps.errors}

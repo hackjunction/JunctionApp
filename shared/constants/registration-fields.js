@@ -360,17 +360,19 @@ const FieldProps = {
         `,
         hintMarkdown: false,
         fieldType: FieldTypes.SKILLS,
-        userProfileConfig: {
-            skill: {
-                type: String,
-                enum: Skills.items
-            },
-            level: {
-                type: Number,
-                min: 1,
-                max: 5
+        userProfileConfig: [
+            {
+                skill: {
+                    type: String,
+                    enum: Skills.items
+                },
+                level: {
+                    type: Number,
+                    min: 1,
+                    max: 5
+                }
             }
-        },
+        ],
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,

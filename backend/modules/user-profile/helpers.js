@@ -17,7 +17,7 @@ const UserProfileHelpers = {
             .nullable();
 
         const schema = yup.object().shape(validations);
-        return schema.validate(data, { stripUknown: true });
+        return schema.validate(data, { stripUnknown: true });
     }
 };
 
