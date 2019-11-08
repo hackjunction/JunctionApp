@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
-const { Auth, RegistrationStatuses } = require('@hackjunction/shared');
+const { Auth } = require('@hackjunction/shared');
 const RegistrationController = require('./controller');
 const EventController = require('../event/controller');
 
@@ -37,6 +37,18 @@ const confirmRegistration = asyncHandler(async (req, res) => {
 
 const cancelRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.cancelRegistration(req.user, req.event);
+    return res.status(200).json(registration);
+});
+
+const setTravelReimbursementDetails = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController
+    .setTravelReimbursementDetailsForRegistration(req.user, req.event, req.travelReimbursementDetails);
+    return res.status(200).json(registration);
+});
+
+const updateTravelReimbursementStatus = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController
+    .updateTravelReimbursementStatus(req.user, req.event, req.status);
     return res.status(200).json(registration);
 });
 
@@ -124,6 +136,8 @@ router.route('/:slug/confirm').patch(hasToken, hasRegisteredToEvent, confirmRegi
 
 router.route('/:slug/cancel').patch(hasToken, hasRegisteredToEvent, cancelRegistration);
 
+router.route('/:slug/reimbursementDetails').patch(hasToken, hasRegisteredToEvent, setTravelReimbursementDetails);
+
 /** Get all registration as organiser */
 router.get(
     '/:slug/all',
@@ -154,6 +168,10 @@ router
 router
     .route('/:slug/bulk/reject')
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectRegistrations);
+
+router
+    .route('/:slug/reimbursementStatus')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelReimbursementStatus);
 
 /** Get or edit single registration as an organiser */
 router

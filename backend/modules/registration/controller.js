@@ -1,13 +1,14 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
-const { RegistrationStatuses, RegistrationFields, FieldTypes } = require('@hackjunction/shared');
+const { RegistrationStatuses, RegistrationFields, FieldTypes, RegistrationReimbursementStatuses } = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const UserProfileController = require('../user-profile/controller');
 const RegistrationHelpers = require('./helpers');
 
 const STATUSES = RegistrationStatuses.asObject;
+const REIMBURSEMENT_STATUSES = RegistrationReimbursementStatuses.asObject;
 const controller = {};
 
 controller.getUserRegistrations = user => {
@@ -66,6 +67,35 @@ controller.cancelRegistration = (user, event) => {
         throw new ForbiddenError('Only accepted or confirmed registrations can be cancelled');
     });
 };
+
+controller.setTravelReimbursementDetailsForRegistration = (user, event, reimbursementDetails) => {
+    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
+        if (registration.status !== STATUSES.checkedIn.id){
+            throw new ForbiddenError('Only those can receive reimbursement who have checked-in at the event!');
+        }
+        if (registration.travelGrant <= 0){
+            throw new ForbiddenError('This registration has no travel grant given.');
+        }
+        if (registration.reimbursementStatus !== REIMBURSEMENT_STATUSES.pending.id || 
+            registration.reimbursementStatus !== REIMBURSEMENT_STATUSES.not_submitted.id){
+            throw new ForbiddenError('Only new or pending travel reimbursement forms can be updated.');
+        }
+        
+        registration.reimbursementDetails = reimbursementDetails;
+        registration.reimbursementStatus = REIMBURSEMENT_STATUSES.pending.id;
+        return registration.save();
+        
+
+    });
+};
+
+controller.updateTravelReimbursementStatus = (user, event, status) => {
+    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
+        registration.reimbursementStatus = status;
+        return registration.save();
+    });
+
+}
 
 controller.getRegistrationsForEvent = eventId => {
     return Registration.find({
