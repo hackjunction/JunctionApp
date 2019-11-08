@@ -5,6 +5,7 @@ const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
 const shortid = require('shortid');
 const Promise = require('bluebird');
+const _ = require('lodash');
 const controller = {};
 
 controller.createTask = (userId, eventId, type, params, schedule) => {
@@ -148,7 +149,7 @@ controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
             return controller
                 .createGenericTask(recipient, event._id.toString(), uniqueId, msgParams, true)
                 .then(task => {
-                    if (task.deliveredAt) {
+                    if (task && task.deliveredAt) {
                         return true;
                     }
                     return false;
@@ -157,7 +158,24 @@ controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
         {
             concurrency: 10
         }
-    );
+    ).then(deliveredTasks => {
+        const delivered = deliveredTasks.filter(taskDelivered => taskDelivered === true).length;
+        const total = recipients.length;
+
+        console.log('Email send statistics', {
+            event: event._id.toString(),
+            uniqueId,
+            delivered,
+            failed: total - delivered,
+            total
+        });
+
+        return {
+            delivered,
+            failed: total - delivered,
+            total
+        };
+    });
 };
 
 module.exports = controller;
