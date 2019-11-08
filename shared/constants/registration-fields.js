@@ -312,7 +312,7 @@ const FieldProps = {
     biography: {
         label: 'Biography',
         hint:
-            'Tell us a little bit more about yourself in general - what do you do, what are you interested in, are you looking to gain a certain type of experience or perhaps seeking new recruitment opportunities? Should you consent to sharing your data with Junction partners, your biography will be visible to them as well.',
+            "Add a bit of personal touch to your profile by writing a little bit more about yourself and what you do. Especially if you're looking to catch the attention of some of our recruiting partners and get hired, this is a good chance to stand out from the crowd!",
         hintMarkdown: false,
         fieldType: FieldTypes.LONG_TEXT,
         schemaConfig: {
