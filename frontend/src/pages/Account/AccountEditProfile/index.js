@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { connect } from 'react-redux';
 import { Box, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, FastField, Field } from 'formik';
+import { withSnackbar } from 'notistack';
+import { RegistrationFields } from '@hackjunction/shared';
+import * as yup from 'yup';
 
 import ImageUpload from 'components/inputs/ImageUpload';
 import DateInput from 'components/inputs/DateInput';
@@ -15,6 +18,7 @@ import SkillsInput from 'components/inputs/SkillsInput';
 import EducationInput from 'components/inputs/EducationInput';
 import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput';
 import Select from 'components/inputs/Select';
+import BottomBar from 'components/inputs/BottomBar';
 
 import * as UserSelectors from 'redux/user/selectors';
 import * as UserActions from 'redux/user/actions';
@@ -45,13 +49,59 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AccountEditProfile = ({ userProfile = {}, editUserProfile }) => {
+const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar }) => {
     const classes = useStyles();
 
+    const validationSchema = useCallback(data => {
+        const validations = {};
+        Object.keys(data).forEach(field => {
+            const fieldConfig = RegistrationFields.getField(field);
+            if (fieldConfig) {
+                const required = ['email', 'firstName', 'lastName'].indexOf(field) !== -1;
+                validations[field] = fieldConfig.validationSchema(required);
+            }
+        });
+
+        validations['avatar'] = yup
+            .string()
+            .url()
+            .nullable();
+
+        return validations;
+    }, []);
+
+    const handleSubmit = useCallback(
+        (values, formikBag) => {
+            formikBag.setSubmitting(true);
+            editUserProfile(values)
+                .then(() => {
+                    enqueueSnackbar('Changes saved!', { variant: 'success' });
+                })
+                .catch(err => {
+                    console.log('ERR', err.message);
+                    enqueueSnackbar('Something went wrong... Please try again', { variant: 'error' });
+                })
+                .finally(() => {
+                    formikBag.setSubmitting(false);
+                });
+        },
+        [editUserProfile, enqueueSnackbar]
+    );
+
     return (
-        <Formik initialValues={userProfile} onSubmit={values => console.log('VALUES', values)}>
+        <Formik
+            validationSchema={props => {
+                return yup.lazy(values => {
+                    return yup.object().shape(validationSchema(values));
+                });
+            }}
+            enableReinitialize
+            initialValues={userProfile}
+            onSubmit={handleSubmit}
+        >
             {formikProps => (
                 <React.Fragment>
+                    {console.log(formikProps.errors)}
                     <Box className={classes.topWrapper}>
                         <Box width="300px" height="300px" margin={3}>
                             <FastField
@@ -72,7 +122,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile }) => {
                                                       }
                                                     : undefined
                                             }
-                                            onChange={imageUrl => form.setFieldValue(field.name, imageUrl)}
+                                            onChange={value => form.setFieldValue(field.name, value ? value.url : null)}
                                             uploadUrl="/api/upload/users/avatar/"
                                             resizeMode="cover"
                                         />
@@ -186,7 +236,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile }) => {
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <FastField
-                                    name="bioShort"
+                                    name="headline"
                                     render={({ field, form }) => (
                                         <TextInput
                                             label="Short bio"
@@ -204,7 +254,7 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile }) => {
                             <Grid item xs={12}>
                                 <Box>
                                     <Field
-                                        name="bioLong"
+                                        name="biography"
                                         render={({ field, form }) => (
                                             <TextAreaInput
                                                 label="Long bio"
@@ -351,6 +401,12 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile }) => {
                         />
                     </Box>
                     <Box height="100px" />
+                    <BottomBar
+                        onSubmit={formikProps.handleSubmit}
+                        errors={formikProps.errors}
+                        dirty={formikProps.dirty}
+                        loading={formikProps.isSubmitting}
+                    />
                 </React.Fragment>
             )}
         </Formik>
@@ -365,7 +421,9 @@ const mapDispatch = dispatch => ({
     editUserProfile: data => dispatch(UserActions.editUserProfile(data))
 });
 
-export default connect(
-    mapState,
-    mapDispatch
-)(AccountEditProfile);
+export default withSnackbar(
+    connect(
+        mapState,
+        mapDispatch
+    )(AccountEditProfile)
+);

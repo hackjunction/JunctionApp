@@ -294,6 +294,37 @@ const FieldProps = {
             editable: true
         }
     },
+    headline: {
+        label: 'Headline',
+        hint: 'In one sentence, who are you / what do you do?',
+        hintMarkdown: false,
+        fieldType: FieldTypes.SHORT_TEXT,
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true
+        },
+        userProfileConfig: {
+            type: String,
+            trim: true
+        }
+    },
+    biography: {
+        label: 'Biography',
+        hint:
+            'Tell us a little bit more about yourself in general - what do you do, what are you interested in, are you looking to gain a certain type of experience or perhaps seeking new recruitment opportunities? Should you consent to sharing your data with Junction partners, your biography will be visible to them as well.',
+        hintMarkdown: false,
+        fieldType: FieldTypes.LONG_TEXT,
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true
+        },
+        userProfileConfig: {
+            type: String,
+            trim: true
+        }
+    },
     roles: {
         label: 'Roles',
         hint:
@@ -616,7 +647,7 @@ const FieldProps = {
             status: {
                 type: String,
                 enum: Object.keys(Misc.recruitmentStatuses.items)
-            }, 
+            },
             consent: {
                 type: Boolean,
                 default: false
@@ -624,7 +655,7 @@ const FieldProps = {
             relocation: {
                 type: String,
                 enum: Object.keys(Misc.relocationOptions.items)
-            },
+            }
         },
         schemaConfig: {
             defaultEnable: false,
@@ -854,6 +885,33 @@ const Fields = {
                 .of(yup.string().oneOf(Misc.dietaryRestrictions))
                 .ensure()
                 .label(FieldProps.dietaryRestrictions.label);
+
+            return required ? base.required() : base;
+        }
+    },
+    headline: {
+        ...FieldProps.headline,
+        category: Categories.skillsAndInterests,
+        default: () => '',
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .min(required ? 1 : 0)
+                .max(100)
+                .label(FieldProps.headline.label);
+            return required ? base.required() : base;
+        }
+    },
+    biography: {
+        ...FieldProps.biography,
+        category: Categories.skillsAndInterests,
+        default: () => '',
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .min(required ? 1 : 0)
+                .max(1000)
+                .label(FieldProps.biography.label);
 
             return required ? base.required() : base;
         }
