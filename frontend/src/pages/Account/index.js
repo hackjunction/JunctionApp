@@ -19,11 +19,11 @@ const AccountPage = ({ match, location }) => {
                     {
                         label: 'Dashboard',
                         content: <AccountDashboard />
-                    },
-                    {
-                        label: 'Profile',
-                        content: <AccountEditProfile />
                     }
+                    // {
+                    //     label: 'Profile',
+                    //     content: <AccountEditProfile />
+                    // }
                 ]}
                 // baseRoute={match.url}
                 // location={location}
