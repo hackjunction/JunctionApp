@@ -23,7 +23,6 @@ controller.createTask = (userId, eventId, type, params, schedule) => {
     }
     return task.save().catch(err => {
         if (err.code === 11000) {
-            console.log('ALREADY EXISTS');
             return Promise.resolve();
         }
         // For other types of errors, we'll want to throw the error normally
@@ -143,10 +142,22 @@ controller.sendPreviewEmail = async (to, msgParams) => {
 };
 
 controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
-    const promises = recipients.map(recipient => {
-        return controller.createGenericTask(recipient, event._id.toString(), uniqueId, msgParams, true);
-    });
-    return Promise.all(promises);
+    return Promise.map(
+        recipients,
+        recipient => {
+            return controller
+                .createGenericTask(recipient, event._id.toString(), uniqueId, msgParams, true)
+                .then(task => {
+                    if (task.deliveredAt) {
+                        return true;
+                    }
+                    return false;
+                });
+        },
+        {
+            concurrency: 10
+        }
+    );
 };
 
 module.exports = controller;
