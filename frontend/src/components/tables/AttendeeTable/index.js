@@ -171,8 +171,8 @@ const AttendeeTable = ({
     return (
         <React.Fragment>
             <EditRegistrationModal registrationId={editing} onClose={setEditing} />
-            <BulkEditRegistrationModal visible={bulkEdit} onClose={setBulkEdit} registrationIds={selected} />
-            <BulkEmailModal visible={bulkEmail} onClose={setBulkEmail} registrationIds={selected} />
+            <BulkEditRegistrationModal visible={bulkEdit} onClose={toggleBulkEdit} registrationIds={selected} />
+            <BulkEmailModal visible={bulkEmail} onClose={toggleBulkEmail} registrationIds={selected} />
             {table}
             {renderEmpty()}
         </React.Fragment>
