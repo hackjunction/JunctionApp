@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SkillsInput = React.memo(({ value, onChange, onBlur, autoFocus, enqueueSnackbar }) => {
+const SkillsInput = React.memo(({ value = [], onChange, onBlur, autoFocus, enqueueSnackbar }) => {
     const classes = useStyles();
     const selectEl = useRef(null);
     const [level, setLevel] = useState();
