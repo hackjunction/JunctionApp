@@ -39,6 +39,10 @@ const UploadHelper = {
         return `${cloudinaryRootPath}-event-${slug}`;
     },
 
+    generateReimbursementDetailsTag: (slug, userId) => {
+        return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`;
+    },
+
     deleteWithTag: tag => {
         return new Promise(function(resolve, reject) {
             cloudinary.v2.api.delete_resources_by_tag(tag, function(error, result) {
@@ -79,6 +83,17 @@ const UploadHelper = {
             }
         );
         return multer({ storage }).single('image');
+    },
+
+    uploadReimbursementReceipt: (slug, userId) => {
+        const storage = createDocumentStorageWithPath(
+            `events/reimbursements-receipts/`,
+            {},
+            {
+                tag: UploadHelper.generateReimbursementDetailsTag(slug, userId)
+            }
+        );
+        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024} }).single('receipt');
     },
 
     removeEventImages: slug => {
