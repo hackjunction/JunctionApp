@@ -142,7 +142,7 @@ const UserMenu = ({
                             <ListItemText primary="Dashboard" onClick={() => push('/account')} />
                         </ListItem>
                         <ListItem button>
-                            <ListItemText primary="Settings" onClick={() => push('/account/preferences')} />
+                            <ListItemText primary="Edit profile" onClick={() => push('/account/profile')} />
                         </ListItem>
                         {renderEventItems()}
                         {renderOtherItems()}
