@@ -101,7 +101,6 @@ const AccountEditProfile = ({ userProfile = {}, editUserProfile, enqueueSnackbar
         >
             {formikProps => (
                 <React.Fragment>
-                    {console.log(formikProps.errors)}
                     <Box className={classes.topWrapper}>
                         <Box width="300px" height="300px" margin={3}>
                             <FastField

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,6 +16,7 @@ import {
 import { logout } from 'redux/auth/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserSelectors from 'redux/user/selectors';
+import * as UserActions from 'redux/user/actions';
 import Button from 'components/generic/Button';
 
 const useStyles = makeStyles(theme => ({
@@ -31,14 +32,22 @@ const useStyles = makeStyles(theme => ({
 const UserMenu = ({
     userProfile,
     idTokenData,
+    idToken,
     logout,
     push,
     hasPermission,
     hasOrganiserAccess,
-    hasRecruiterAccess
+    hasRecruiterAccess,
+    updateUserProfile
 }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
+
+    useEffect(() => {
+        if (idToken) {
+            updateUserProfile(idToken);
+        }
+    }, [idToken, updateUserProfile]);
 
     const handleMenuOpen = e => {
         setAnchorEl(e.currentTarget);
@@ -160,15 +169,22 @@ const UserMenu = ({
     );
 };
 
-const mapStateToProps = state => ({
+const mapState = state => ({
     userProfile: UserSelectors.userProfile(state),
     idTokenData: AuthSelectors.idTokenData(state),
+    idToken: AuthSelectors.getIdToken(state),
     hasPermission: AuthSelectors.getHasPermission(state),
     hasOrganiserAccess: AuthSelectors.hasOrganiserAccess(state),
     hasRecruiterAccess: AuthSelectors.hasRecruiterAccess(state)
 });
 
+const mapDispatch = dispatch => ({
+    push: (...args) => dispatch(push(...args)),
+    logout: (...args) => dispatch(logout(...args)),
+    updateUserProfile: idToken => dispatch(UserActions.updateUserProfile(idToken))
+});
+
 export default connect(
-    mapStateToProps,
-    { logout, push }
+    mapState,
+    mapDispatch
 )(UserMenu);
