@@ -111,7 +111,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    editEvent: slug => dispatch(push('/organise/edit/' + slug))
+    editEvent: slug => dispatch(push('/organise/' + slug))
 });
 
 export default withSnackbar(

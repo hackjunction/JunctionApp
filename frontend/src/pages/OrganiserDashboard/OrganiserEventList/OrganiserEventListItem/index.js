@@ -38,7 +38,7 @@ class OrganiserEventListItem extends PureComponent {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-    editEvent: event => dispatch(push('/organise/edit/' + event.slug))
+    editEvent: event => dispatch(push('/organise/' + event.slug))
 });
 
 export default connect(

@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import { forOwn } from 'lodash-es';
 import { withSnackbar } from 'notistack';
+import { withRouter } from 'react-router';
 import { Box, Typography } from '@material-ui/core';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -18,7 +19,7 @@ import MiscellaneousTab from './Miscellaneous';
 import ConfigurationTab from './ConfigurationTab';
 import BottomBar from './BottomBar';
 
-const OrganiserEditEventDetails = ({ event, loading, editEvent, enqueueSnackbar }) => {
+const OrganiserEditEventDetails = ({ event, loading, editEvent, enqueueSnackbar, location, match }) => {
     const { slug } = event;
 
     function onSubmit(values, actions) {
@@ -81,26 +82,38 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent, enqueueSnackbar 
                             transparent
                             tabs={[
                                 {
+                                    path: '',
+                                    key: 'basic-details',
                                     label: 'Basic Details',
                                     content: <BasicInfoTab {...formikProps} />
                                 },
                                 {
+                                    path: '/configuration',
+                                    key: 'configuration',
                                     label: 'Configuration',
                                     content: <ConfigurationTab {...formikProps} />
                                 },
                                 {
+                                    path: '/schedule',
+                                    key: 'schedule',
                                     label: 'Schedule',
                                     content: <ScheduleTab {...formikProps} />
                                 },
                                 {
+                                    path: '/questions',
+                                    key: 'questions',
                                     label: 'Questions',
                                     content: <QuestionsTab {...formikProps} />
                                 },
                                 {
+                                    path: '/other',
+                                    key: 'other',
                                     label: 'Miscellaneous',
                                     content: <MiscellaneousTab {...formikProps} />
                                 }
                             ]}
+                            location={location}
+                            baseRoute={match.url}
                         />
                         <div style={{ height: '100px' }} />
                         <BottomBar
@@ -125,9 +138,11 @@ const mapDispatchToProps = dispatch => ({
     editEvent: (slug, data) => dispatch(OrganiserActions.editEvent(slug, data))
 });
 
-export default withSnackbar(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(OrganiserEditEventDetails)
+export default withRouter(
+    withSnackbar(
+        connect(
+            mapStateToProps,
+            mapDispatchToProps
+        )(OrganiserEditEventDetails)
+    )
 );

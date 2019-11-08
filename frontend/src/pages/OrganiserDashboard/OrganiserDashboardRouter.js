@@ -32,7 +32,7 @@ const routes = [
     },
     {
         exact: false,
-        path: '/organise/edit/:slug',
+        path: '/organise/:slug',
         component: OrganiserEditEvent
     }
 ];

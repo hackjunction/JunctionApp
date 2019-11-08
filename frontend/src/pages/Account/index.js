@@ -18,28 +18,19 @@ const AccountPage = ({ match, location }) => {
                 tabs={[
                     {
                         label: 'Dashboard',
+                        key: 'dashboard',
+                        path: '',
                         content: <AccountDashboard />
+                    },
+                    {
+                        label: 'Profile',
+                        key: 'profile',
+                        path: '/profile',
+                        content: <AccountEditProfile />
                     }
-                    // {
-                    //     label: 'Profile',
-                    //     content: <AccountEditProfile />
-                    // }
                 ]}
-                // baseRoute={match.url}
-                // location={location}
-                // renderHeader={() => <AccountNavBar />}
-                // routes={[
-                //     {
-                //         path: '',
-                //         label: 'Dashboard',
-                //         render: routeProps => <AccountDashboard />
-                //     },
-                //     {
-                //         path: '/profile',
-                //         label: 'Profile',
-                //         render: routeProps => <AccountEditProfile />
-                //     }
-                // ]}
+                baseRoute={match.url}
+                location={location}
             />
         </CenteredContainer>
     );

@@ -80,7 +80,7 @@ const OrganiserEditEvent = ({
                 routes={[
                     {
                         key: 'edit',
-                        path: '',
+                        path: '/edit',
                         icon: <TuneIcon />,
                         label: 'Edit',
                         component: DetailsPage

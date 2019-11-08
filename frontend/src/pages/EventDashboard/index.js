@@ -67,6 +67,7 @@ const EventDashboard = ({
                     {
                         key: 'dashboard',
                         path: '',
+                        exact: true,
                         icon: <DashboardIcon />,
                         label: 'Dashboard',
                         component: EventDashboardHome
