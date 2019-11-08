@@ -53,4 +53,24 @@ router.post(
     }
 );
 
+/**
+ * Upload a travel reimbursement document for an event
+ */
+router.post(
+    '/registrations/:slug/reimbursementReceipt',
+    hasToken,
+    (req, res, next) => {
+        helper.uploadReimbursementReceipt(req.event.slug, req.user.sub)(req, res, function(err) {
+            if (err) {
+                next(err);
+            } else {
+                res.status(200).json({
+                    url: req.file.secure_url || req.file.url,
+                    publicId: req.file.public_id
+                });
+            }
+        });
+    }
+);
+
 module.exports = router;

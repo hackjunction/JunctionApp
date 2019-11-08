@@ -76,8 +76,8 @@ controller.setTravelReimbursementDetailsForRegistration = (user, event, reimburs
         if (registration.travelGrant <= 0){
             throw new ForbiddenError('This registration has no travel grant given.');
         }
-        if (registration.reimbursementStatus !== REIMBURSEMENT_STATUSES.pending.id || 
-            registration.reimbursementStatus !== REIMBURSEMENT_STATUSES.not_submitted.id){
+        if (registration.reimbursementStatus && (registration.reimbursementStatus !== REIMBURSEMENT_STATUSES.pending.id || 
+            registration.reimbursementStatus !== REIMBURSEMENT_STATUSES.not_submitted.id)){
             throw new ForbiddenError('Only new or pending travel reimbursement forms can be updated.');
         }
         
