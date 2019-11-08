@@ -7,6 +7,7 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 import TextInput from 'components/inputs/TextInput';
+import TextAreaInput from 'components/inputs/TextAreaInput';
 import ConfirmDialog from 'components/generic/ConfirmDialog';
 import Button from 'components/generic/Button';
 
@@ -190,7 +191,7 @@ const BulkEmailModal = ({
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextInput
+                                <TextAreaInput
                                     value={body.value}
                                     textarea
                                     onChange={body.setValue}
