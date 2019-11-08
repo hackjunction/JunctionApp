@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
+import { withRouter } from 'react-router';
+import { findIndex } from 'lodash-es';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Tabs, Tab, Typography, Box, useMediaQuery } from '@material-ui/core';
 
@@ -49,19 +53,33 @@ const propTypes = {
     tabs: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.string,
-            content: PropTypes.node
+            content: PropTypes.node,
+            path: PropTypes.string.isRequired,
+            key: PropTypes.string.isRequired
         })
     )
 };
 
-const MaterialTabsLayout = ({ tabs, transparent = false }) => {
+const MaterialTabsLayout = ({ tabs, location, baseRoute, transparent = false, pushRoute }) => {
     const classes = useStyles({ transparent });
-    const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        pushRoute(tabs[newValue].path);
     };
 
+    const activeIndex = useMemo(() => {
+        const relativePath = location.pathname.replace(baseRoute, '');
+        const idx = findIndex(tabs, item => item.path === relativePath);
+        return idx;
+    }, [baseRoute, location.pathname, tabs]);
+
+    useEffect(() => {
+        if (activeIndex === -1) {
+            pushRoute(tabs[0].path);
+        }
+    }, [tabs, activeIndex, pushRoute]);
+
+    const safeIndex = activeIndex !== -1 ? activeIndex : 0;
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -69,7 +87,7 @@ const MaterialTabsLayout = ({ tabs, transparent = false }) => {
         <div className={classes.root}>
             <Tabs
                 orientation={isMobile ? 'vertical' : 'horizontal'}
-                value={value}
+                value={safeIndex}
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
@@ -88,7 +106,7 @@ const MaterialTabsLayout = ({ tabs, transparent = false }) => {
             </Tabs>
             <Box mt={3} p={2}>
                 {tabs.map((tab, index) => (
-                    <TabPanel key={tab.label} value={value} index={index}>
+                    <TabPanel key={tab.label} value={safeIndex} index={index}>
                         {tab.content}
                     </TabPanel>
                 ))}
@@ -99,4 +117,11 @@ const MaterialTabsLayout = ({ tabs, transparent = false }) => {
 
 MaterialTabsLayout.propTypes = propTypes;
 
-export default MaterialTabsLayout;
+const mapDispatch = (dispatch, ownProps) => ({
+    pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
+});
+
+export default connect(
+    null,
+    mapDispatch
+)(MaterialTabsLayout);

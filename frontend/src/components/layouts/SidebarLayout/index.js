@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -87,10 +87,24 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
 
     const activeIndex = useMemo(() => {
         const relativePath = location.pathname.replace(baseRoute, '');
-        const idx = findIndex(routes, item => item.path === relativePath);
+        const idx = findIndex(routes, item => {
+            if (item.exact) {
+                return relativePath === item.path;
+            } else {
+                return relativePath.indexOf(item.path) !== -1;
+            }
+        });
 
-        return idx !== -1 ? idx : 0;
+        return idx;
     }, [baseRoute, location.pathname, routes]);
+
+    useEffect(() => {
+        if (activeIndex === -1) {
+            pushRoute(routes[0].path);
+        }
+    }, [routes, activeIndex, pushRoute]);
+
+    const safeIndex = activeIndex === -1 ? 0 : activeIndex;
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -107,7 +121,7 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
                         <ListItem
                             button
                             key={route.path}
-                            selected={index === activeIndex}
+                            selected={index === safeIndex}
                             classes={{
                                 root: classes.listItem,
                                 selected: classes.listItemSelected
@@ -168,11 +182,13 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
                 {topContent}
                 <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
                     <Switch>
-                        {routes.map(({ key, path, hidden, component }, index) => {
+                        {routes.map(({ key, path, hidden, component, exact = false }, index) => {
                             if (hidden) {
                                 return null;
                             } else {
-                                return <Route key={key} exact path={`${baseRoute}${path}`} component={component} />;
+                                return (
+                                    <Route key={key} exact={exact} path={`${baseRoute}${path}`} component={component} />
+                                );
                             }
                         })}
                         <Redirect to={baseRoute} />
