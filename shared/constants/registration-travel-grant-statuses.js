@@ -1,4 +1,4 @@
-const RegistrationReimbursementStatuses = {
+const RegistrationTravelGrantStatuses = {
     not_submitted: {
         id: 'not_submitted',
         label: 'Not Submitted',
@@ -35,7 +35,7 @@ const RegistrationReimbursementStatuses = {
 };
 
 module.exports = {
-    ids: Object.keys(RegistrationReimbursementStatuses),
-    asObject: RegistrationReimbursementStatuses,
-    asArray: Object.keys(RegistrationReimbursementStatuses).map(status => RegistrationReimbursementStatuses[status])
+    ids: Object.keys(RegistrationTravelGrantStatuses),
+    asObject: RegistrationTravelGrantStatuses,
+    asArray: Object.keys(RegistrationTravelGrantStatuses).map(status => RegistrationTravelGrantStatuses[status])
 };

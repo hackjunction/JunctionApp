@@ -40,15 +40,15 @@ const cancelRegistration = asyncHandler(async (req, res) => {
     return res.status(200).json(registration);
 });
 
-const setTravelReimbursementDetails = asyncHandler(async (req, res) => {
+const setTravelGrantDetails = asyncHandler(async (req, res) => {
     const registration = await RegistrationController
-    .setTravelReimbursementDetailsForRegistration(req.user, req.event, req.travelReimbursementDetails);
+    .setTravelGrantDetailsForRegistration(req.user, req.event, req.travelGrantDetails);
     return res.status(200).json(registration);
 });
 
-const updateTravelReimbursementStatus = asyncHandler(async (req, res) => {
+const updateTravelGrantStatus = asyncHandler(async (req, res) => {
     const registration = await RegistrationController
-    .updateTravelReimbursementStatus(req.user, req.event, req.status);
+    .updateTravelGrantStatus(req.user, req.event, req.status);
     return res.status(200).json(registration);
 });
 
@@ -136,7 +136,7 @@ router.route('/:slug/confirm').patch(hasToken, hasRegisteredToEvent, confirmRegi
 
 router.route('/:slug/cancel').patch(hasToken, hasRegisteredToEvent, cancelRegistration);
 
-router.route('/:slug/reimbursementDetails').patch(hasToken, hasRegisteredToEvent, setTravelReimbursementDetails);
+router.route('/:slug/travelGrantDetails').patch(hasToken, hasRegisteredToEvent, setTravelGrantDetails);
 
 /** Get all registration as organiser */
 router.get(
@@ -170,8 +170,8 @@ router
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectRegistrations);
 
 router
-    .route('/:slug/reimbursementStatus')
-    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelReimbursementStatus);
+    .route('/:slug/travelGrantStatus')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelGrantStatus);
 
 /** Get or edit single registration as an organiser */
 router

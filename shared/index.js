@@ -17,7 +17,7 @@ module.exports = {
     RegistrationFieldsCustom: require('./constants/registration-fields-custom'),
     RegistrationFieldsHelpers: require('./helpers/registration-fields'),
     RegistrationStatuses: require('./constants/registration-statuses'),
-    RegistrationReimbursementStatuses: require('./constants/registration-reimbursement-statuses'),
+    RegistrationTravelGrantStatuses: require('./constants/registration-travel-grant-statuses'),
     ReviewingMethods: require('./constants/reviewing-methods'),
     Roles: require('./constants/roles'),
     Skills: require('./constants/skills'),
