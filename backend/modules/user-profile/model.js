@@ -15,6 +15,12 @@ const UserProfileSchema = new mongoose.Schema({
     avatar: {
         type: String
     },
+    bioShort: {
+        type: String
+    },
+    bioLong: {
+        type: String
+    },
     registrations: {
         type: Array,
         required: false,
