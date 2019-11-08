@@ -83,7 +83,6 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
             UserProfilesService.getUserProfileRecruitment(id, idToken)
                 .then(data => {
                     setUser(data);
-                    console.log(data);
                 })
                 .catch(err => {
                     setError(true);
@@ -171,7 +170,7 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
             <PageWrapper
                 error={error}
                 wrapContent={false}
-                loading={loading || !user}
+                loading={loading}
                 render={() => (
                     <CenteredContainer>
                         <DetailTop user={user} />
