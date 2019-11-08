@@ -1,4 +1,4 @@
-import React, { useState, useCallback, forwardRef } from 'react';
+import React, { useState, useCallback, useMemo, forwardRef } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
@@ -38,7 +38,7 @@ const AttendeeTable = ({
         setBulkEmail(!bulkEmail);
     }, [bulkEmail]);
 
-    const renderTable = () => {
+    const table = useMemo(() => {
         if (!loading) {
             if (!Array.isArray(attendees) || attendees.length === 0) return null;
         }
@@ -159,7 +159,7 @@ const AttendeeTable = ({
                 ]}
             />
         );
-    };
+    }, [attendees, event.tags, loading, minimal, organiserProfilesMap, title, toggleBulkEmail, toggleBulkEdit]);
 
     const renderEmpty = () => {
         if (loading) return null;
@@ -173,7 +173,7 @@ const AttendeeTable = ({
             <EditRegistrationModal registrationId={editing} onClose={setEditing} />
             <BulkEditRegistrationModal visible={bulkEdit} onClose={setBulkEdit} registrationIds={selected} />
             <BulkEmailModal visible={bulkEmail} onClose={setBulkEmail} registrationIds={selected} />
-            {renderTable()}
+            {table}
             {renderEmpty()}
         </React.Fragment>
     );
