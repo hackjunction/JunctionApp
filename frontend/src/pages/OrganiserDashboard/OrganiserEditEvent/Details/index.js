@@ -17,7 +17,7 @@ import ScheduleTab from './Schedule';
 import QuestionsTab from './Questions';
 import MiscellaneousTab from './Miscellaneous';
 import ConfigurationTab from './ConfigurationTab';
-import BottomBar from './BottomBar';
+import BottomBar from 'components/inputs/BottomBar';
 
 const OrganiserEditEventDetails = ({ event, loading, editEvent, enqueueSnackbar, location, match }) => {
     const { slug } = event;
