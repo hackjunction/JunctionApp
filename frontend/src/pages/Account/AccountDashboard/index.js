@@ -16,13 +16,13 @@ const AccountDashboard = ({ registrations, updateRegistrations }) => {
     return (
         <Box p={2}>
             <Grid container spacing={3}>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                     <Typography variant="h6" paragraph>
                         Your registrations
                     </Typography>
                 </Grid>
                 {registrations.map(registration => (
-                    <Grid item xs={12} md={6}>
+                    <Grid key={registration._id} item xs={12} md={6}>
                         <EventCardSmall eventId={registration.event} />
                     </Grid>
                 ))}
