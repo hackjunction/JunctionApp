@@ -155,7 +155,7 @@ router
     .route('/:slug/bulk/reject')
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectRegistrations);
 
-/** Get or edit single registration as an organiser */
+/** Get or edit single registration as an organiser. Also works with the user's Auth0 userId */
 router
     .route('/:slug/:registrationId')
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getFullRegistration)

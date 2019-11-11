@@ -16,6 +16,7 @@ const OrganiserEditEventReview = ({ match, location }) => {
         <PageWrapper>
             <PageHeader heading="Participants" subheading="Search participants" />
             <MaterialTabsLayout
+                transparent
                 baseRoute={match.url}
                 location={location}
                 tabs={[
