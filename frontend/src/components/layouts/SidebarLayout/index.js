@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(1),
         left: theme.spacing(1),
         background: '#fbfbfb',
-        zIndex: 10
+        zIndex: 100
     },
     content: {
         flexGrow: 1,
@@ -155,6 +155,11 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
 
     return (
         <div className={classes.root}>
+            <Hidden mdUp implementation="css">
+                <IconButton onClick={handleDrawerToggle} className={classes.drawerToggle} aria-label="toggle drawer">
+                    <MenuIcon />
+                </IconButton>
+            </Hidden>
             <nav className={classes.drawer}>
                 <Hidden mdUp implementation="css">
                     <Drawer
@@ -171,15 +176,6 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
                     >
                         {drawerContent}
                     </Drawer>
-                </Hidden>
-                <Hidden mdUp implementation="css">
-                    <IconButton
-                        onClick={handleDrawerToggle}
-                        className={classes.drawerToggle}
-                        aria-label="toggle drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
                 </Hidden>
                 <Hidden smDown implementation="css">
                     <Drawer
