@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 
 import { connect } from 'react-redux';
 import { Typography, Box } from '@material-ui/core';
+import { EventTypes } from '@hackjunction/shared';
 import TuneIcon from '@material-ui/icons/Tune';
 import SettingsIcon from '@material-ui/icons/Settings';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
@@ -106,6 +107,8 @@ const OrganiserEditEvent = ({
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
+                        locked: event.eventType !== EventTypes.physical.id,
+                        lockedDescription: 'Only for physical events',
                         icon: <CropFreeIcon />,
                         label: 'Check-in',
                         component: CheckIn
