@@ -9,8 +9,17 @@ import { Typography, Grid } from '@material-ui/core';
 import Button from 'components/generic/Button';
 import * as EventDetailSelectors from 'redux/eventdetail/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
+import * as UserSelectors from 'redux/user/selectors';
 
-const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pushRegistration, pushDashboard }) => {
+const EventButtons = ({
+    event,
+    eventStatus,
+    userProfile,
+    hasRegistration,
+    pushLogin,
+    pushRegistration,
+    pushDashboard
+}) => {
     switch (eventStatus) {
         case EventStatuses.PUBLISHED.id: {
             return (
@@ -21,7 +30,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
             );
         }
         case EventStatuses.REGISTRATION_OPEN.id: {
-            if (user) {
+            if (userProfile) {
                 if (hasRegistration) {
                     return (
                         <Grid container spacing={1}>
@@ -58,7 +67,7 @@ const EventButtons = ({ event, eventStatus, user, hasRegistration, pushLogin, pu
             }
         }
         default: {
-            if (user) {
+            if (userProfile) {
                 if (hasRegistration) {
                     return (
                         <Button fullWidth onClick={pushDashboard} variant="contained" color="theme_turquoise">
@@ -87,6 +96,7 @@ const mapState = state => ({
     event: EventDetailSelectors.event(state),
     eventStatus: EventDetailSelectors.eventStatus(state),
     hasRegistration: EventDetailSelectors.hasRegistration(state),
+    userProfile: UserSelectors.userProfile(state),
     idTokenData: AuthSelectors.idTokenData(state)
 });
 
