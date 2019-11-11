@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Grid } from '@material-ui/core';
-import { FastField } from 'formik';
+import { FastField, Field } from 'formik';
 import Select from 'components/inputs/Select';
 import FormControl from 'components/inputs/FormControl';
 import DateTimeInput from 'components/inputs/DateTimeInput';
@@ -31,7 +31,7 @@ const OrganiserEditEventTimes = () => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="registrationStartTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -43,13 +43,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="registrationEndTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -60,13 +61,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="startTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -77,13 +79,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="submissionsStartTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -94,13 +97,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="submissionsEndTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -111,13 +115,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="reviewingStartTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -128,13 +133,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="reviewingEndTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -145,13 +151,14 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="endTime"
                     render={({ field, form }) => (
                         <FormControl
@@ -162,6 +169,7 @@ const OrganiserEditEventTimes = () => {
                             <DateTimeInput
                                 value={field.value}
                                 onChange={value => form.setFieldValue(field.name, value)}
+                                timezone={form.values.timezone}
                             />
                         </FormControl>
                     )}
