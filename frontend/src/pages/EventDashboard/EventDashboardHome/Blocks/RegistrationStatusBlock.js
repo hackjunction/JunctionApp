@@ -28,7 +28,8 @@ const RegistrationStatusBlock = ({
     cancelRegistration,
     isRegistrationOpen,
     editRegistration,
-    enqueueSnackbar
+    enqueueSnackbar,
+    openEventId
 }) => {
     const [loading, setLoading] = useState(false);
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
@@ -176,15 +177,24 @@ const RegistrationStatusBlock = ({
             }
             case RegistrationStatuses.asObject.confirmed.id: {
                 return (
-                    <Button onClick={() => setCancelDialogOpen(true)} color="theme_white" variant="contained">
-                        Cancel participation
-                    </Button>
+                    <Box display="flex" flexDirection="row" justifyContent="flex-end" flexWrap="wrap">
+                        <Box ml={1} mt={1}>
+                            <Button onClick={() => setCancelDialogOpen(true)} color="theme_white">
+                                Cancel participation
+                            </Button>
+                        </Box>
+                        <Box ml={1} mt={1}>
+                            <Button onClick={() => openEventId(event.slug)} color="theme_white" variant="contained">
+                                Your event ID
+                            </Button>
+                        </Box>
+                    </Box>
                 );
             }
             default:
                 return null;
         }
-    }, [event, status, editRegistration, handleConfirm, isRegistrationOpen]);
+    }, [event, status, editRegistration, handleConfirm, isRegistrationOpen, openEventId]);
 
     if (!title) {
         return null;
@@ -241,7 +251,8 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
     confirmRegistration: slug => dispatch(DashboardActions.confirmRegistration(slug)),
     cancelRegistration: slug => dispatch(DashboardActions.cancelRegistration(slug)),
-    editRegistration: slug => dispatch(push(`/events/${slug}/register`))
+    editRegistration: slug => dispatch(push(`/events/${slug}/register`)),
+    openEventId: slug => dispatch(push(`/dashboard/${slug}/event-id`))
 });
 
 export default withSnackbar(
