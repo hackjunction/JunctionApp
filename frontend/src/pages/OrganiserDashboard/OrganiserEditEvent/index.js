@@ -6,6 +6,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import SettingsIcon from '@material-ui/icons/Settings';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import PeopleIcon from '@material-ui/icons/People';
+import CropFreeIcon from '@material-ui/icons/CropFree';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -17,6 +18,7 @@ import DetailsPage from './Details';
 import StatsPage from './Stats';
 import ParticipantsPage from './Participants';
 import ManagePage from './Manage';
+import CheckIn from './CheckIn';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({
@@ -88,6 +90,7 @@ const OrganiserEditEvent = ({
                     {
                         key: 'stats',
                         path: '/stats',
+                        exact: true,
                         icon: <EqualizerIcon />,
                         label: 'Stats',
                         component: StatsPage
@@ -100,8 +103,17 @@ const OrganiserEditEvent = ({
                         component: ParticipantsPage
                     },
                     {
+                        key: 'checkin',
+                        path: '/check-in',
+                        exact: true,
+                        icon: <CropFreeIcon />,
+                        label: 'Check-in',
+                        component: CheckIn
+                    },
+                    {
                         key: 'manage',
                         path: '/manage',
+                        exact: true,
                         icon: <SettingsIcon />,
                         label: 'Manage',
                         component: ManagePage
