@@ -32,36 +32,39 @@ const EventSchema = new mongoose.Schema({
     /** Times */
     timezone: {
         type: String,
-        required: false,
-        requiredForPublish: true
+        required: true
     },
     registrationStartTime: {
         type: Date,
-        required: false,
-        requiredForPublish: true
+        required: true
     },
     registrationEndTime: {
         type: Date,
-        required: false,
-        requiredForPublish: true
+        required: true
     },
     startTime: {
         type: Date,
-        required: false,
-        requiredForPublish: true
+        required: true
     },
     endTime: {
         type: Date,
-        required: false,
-        requiredForPublish: true
+        required: true
     },
     submissionsStartTime: {
         type: Date,
-        required: false
+        required: true
     },
     submissionsEndTime: {
         type: Date,
-        required: false
+        required: true
+    },
+    reviewingStartTime: {
+        type: Date,
+        required: true
+    },
+    reviewingEndTime: {
+        type: Date,
+        required: true
     },
     /** Event customisation */
     coverImage: CloudinaryImageSchema,
@@ -77,7 +80,7 @@ const EventSchema = new mongoose.Schema({
         type: AddressSchema,
         required: [
             function() {
-                return this.eventTypes === EventTypes.physical.id;
+                return this.eventType === EventTypes.physical.id;
             },
             `is required for physical events`
         ]

@@ -118,6 +118,40 @@ const OrganiserEditEventTimes = () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
+                    name="reviewingStartTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Reviewing period begins"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="reviewingEndTime"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Reviewing period ends"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
                     name="endTime"
                     render={({ field, form }) => (
                         <FormControl
