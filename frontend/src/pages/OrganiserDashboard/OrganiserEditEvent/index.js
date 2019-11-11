@@ -126,6 +126,7 @@ const OrganiserEditEvent = ({
         </PageWrapper>
     );
 };
+//asd
 
 const mapStateToProps = state => ({
     event: OrganiserSelectors.event(state),
