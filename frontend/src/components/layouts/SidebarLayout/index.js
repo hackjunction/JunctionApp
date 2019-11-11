@@ -6,6 +6,7 @@ import { findIndex } from 'lodash-es';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import CenteredContainer from 'components/generic/CenteredContainer/index';
 import MenuIcon from '@material-ui/icons/Menu';
+import LockIcon from '@material-ui/icons/Lock';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, IconButton, Box } from '@material-ui/core';
 import { push } from 'connected-react-router';
 
@@ -48,7 +49,10 @@ const useStyles = makeStyles(theme => ({
     listItemSelected: {
         color: 'white'
     },
-    listItemText: {
+    listItemTextPrimary: {
+        color: 'inherit'
+    },
+    listItemTextSecondary: {
         color: 'inherit'
     },
     listItemIcon: {
@@ -116,23 +120,35 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
         <React.Fragment>
             <Box p={2}>{sidebarTopContent}</Box>
             <List>
-                {routes.map((route, index) => {
-                    return (
-                        <ListItem
-                            button
-                            key={route.path}
-                            selected={index === safeIndex}
-                            classes={{
-                                root: classes.listItem,
-                                selected: classes.listItemSelected
-                            }}
-                            onClick={() => pushRoute(route.path)}
-                        >
-                            <ListItemIcon className={classes.listItemIcon}>{route.icon}</ListItemIcon>
-                            <ListItemText className={classes.listItemText} primary={route.label} />
-                        </ListItem>
-                    );
-                })}
+                {routes
+                    .filter(route => !route.hidden)
+                    .map((route, index) => {
+                        return (
+                            <ListItem
+                                disabled={route.locked}
+                                button
+                                key={route.path}
+                                selected={index === safeIndex}
+                                classes={{
+                                    root: classes.listItem,
+                                    selected: classes.listItemSelected
+                                }}
+                                onClick={() => pushRoute(route.path)}
+                            >
+                                <ListItemIcon className={classes.listItemIcon}>
+                                    {route.locked ? <LockIcon /> : route.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    classes={{
+                                        primary: classes.listItemTextPrimary,
+                                        secondary: classes.listItemTextSecondary
+                                    }}
+                                    primary={route.label}
+                                    secondary={route.locked ? route.lockedDescription : ''}
+                                />
+                            </ListItem>
+                        );
+                    })}
             </List>
         </React.Fragment>
     );
@@ -182,8 +198,8 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
                 {topContent}
                 <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
                     <Switch>
-                        {routes.map(({ key, path, hidden, component, exact = false }, index) => {
-                            if (hidden) {
+                        {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
+                            if (hidden || locked) {
                                 return null;
                             } else {
                                 return (

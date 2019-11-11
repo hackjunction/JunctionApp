@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
+import { EventTypes } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -12,6 +14,7 @@ import PageWrapper from 'components/layouts/PageWrapper';
 
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
+import EventDashboardId from './EventDashboardId';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -75,9 +78,19 @@ const EventDashboard = ({
                     {
                         key: 'team',
                         path: '/team',
+                        exact: true,
                         icon: <GroupIcon />,
                         label: 'Team',
                         component: EventDashboardTeam
+                    },
+                    {
+                        key: 'eventid',
+                        path: '/event-id',
+                        exact: true,
+                        hidden: event.eventType !== EventTypes.physical.id,
+                        icon: <FingerprintIcon />,
+                        label: 'Event ID',
+                        component: EventDashboardId
                     }
                 ]}
             />
