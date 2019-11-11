@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
 
 import {
@@ -9,7 +8,9 @@ import {
     ExpansionPanel,
     ExpansionPanelSummary,
     ExpansionPanelDetails,
-    Button
+    Dialog,
+    DialogContent,
+    DialogActions
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import PageWrapper from 'components/layouts/PageWrapper';
@@ -20,6 +21,7 @@ import OrganiserListItem from 'components/generic/UserListItem/OrganiserListItem
 import EventTagsSelect from 'components/inputs/EventTagsSelect';
 import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect';
 import ConfirmDialog from 'components/generic/ConfirmDialog';
+import Button from 'components/generic/Button';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
@@ -102,128 +104,137 @@ const BulkEditRegistrationModal = ({
 
     if (!registrationIds.length) return null;
     return (
-        <Modal isOpen={visible} handleClose={handleClose} size="max">
+        <Dialog fullScreen open={visible} onClose={handleClose}>
             <PageWrapper loading={loading} wrapContent={false}>
-                <ConfirmDialog
-                    open={confirmDialog}
-                    title="Are you sure?"
-                    message={`This will apply your configured changes to ${registrationIds.length} registrations, and you won't be able to revert them. Please make sure you are not making any unintended changes.`}
-                    onClose={() => setConfirmDialog(false)}
-                    onOk={handleSubmit}
-                />
-                <CenteredContainer>
-                    <PageHeader heading="Bulk edit" subheading={registrationIds.length + ' selected participants'} />
-                    <Typography variant="body1" paragraph>
-                        Here you can edit all of the selected registrations. Expand the panels for the fields which you
-                        want to edit - if a panel is left <strong>un-expanded</strong>, that field will not be edited in
-                        the registrations.
-                    </Typography>
-                    <ExpansionPanel expanded={isExpanded('rating')} onChange={() => toggleExpanded('rating')}>
-                        <ExpansionPanelSummary>
-                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
-                                <Typography variant="subtitle1">Rating</Typography>
-                                {isExpanded('rating') ? (
-                                    <Typography variant="button" color="secondary">
-                                        {rating.value ? 'Set rating to ' + rating.value : 'Clear rating'}
-                                    </Typography>
-                                ) : (
-                                    <Typography variant="button" color="primary">
-                                        Leave unchanged
-                                    </Typography>
-                                )}
-                            </Box>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Rating value={rating.value} onChange={(e, num) => rating.setValue(num)} />
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel expanded={isExpanded('assignedTo')} onChange={() => toggleExpanded('assignedTo')}>
-                        <ExpansionPanelSummary>
-                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
-                                <Typography variant="subtitle1">Assigned to</Typography>
-                                {isExpanded('assignedTo') ? (
-                                    <Typography variant="button" color="secondary">
-                                        {assignedTo.value ? 'Change assigned to' : 'Clear assigned to'}
-                                    </Typography>
-                                ) : (
-                                    <Typography variant="button" color="primary">
-                                        Leave unchanged
-                                    </Typography>
-                                )}
-                            </Box>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <OrganiserSelectModal
-                                open={organiserModal}
-                                onClose={setOrganiserModal}
-                                onSelect={value => assignedTo.setValue(value.userId)}
-                                onClear={assignedTo.setValue}
-                            />
-                            <Box display="flex" flexDirection="column">
-                                <Box mb={1} width="100%">
-                                    <OrganiserListItem userId={assignedTo ? assignedTo.value : null} />
+                <DialogContent>
+                    <ConfirmDialog
+                        open={confirmDialog}
+                        title="Are you sure?"
+                        message={`This will apply your configured changes to ${registrationIds.length} registrations, and you won't be able to revert them. Please make sure you are not making any unintended changes.`}
+                        onClose={() => setConfirmDialog(false)}
+                        onOk={handleSubmit}
+                    />
+                    <CenteredContainer>
+                        <PageHeader
+                            heading="Bulk edit"
+                            subheading={registrationIds.length + ' selected participants'}
+                        />
+                        <Typography variant="body1" paragraph>
+                            Here you can edit all of the selected registrations. Expand the panels for the fields which
+                            you want to edit - if a panel is left <strong>un-expanded</strong>, that field will not be
+                            edited in the registrations.
+                        </Typography>
+                        <ExpansionPanel expanded={isExpanded('rating')} onChange={() => toggleExpanded('rating')}>
+                            <ExpansionPanelSummary>
+                                <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                    <Typography variant="subtitle1">Rating</Typography>
+                                    {isExpanded('rating') ? (
+                                        <Typography variant="button" color="secondary">
+                                            {rating.value ? 'Set rating to ' + rating.value : 'Clear rating'}
+                                        </Typography>
+                                    ) : (
+                                        <Typography variant="button" color="primary">
+                                            Leave unchanged
+                                        </Typography>
+                                    )}
                                 </Box>
-                                <Button variant="contained" color="primary" onClick={() => setOrganiserModal(true)}>
-                                    Change
-                                </Button>
-                            </Box>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel expanded={isExpanded('tags')} onChange={() => toggleExpanded('tags')}>
-                        <ExpansionPanelSummary>
-                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
-                                <Typography variant="subtitle1">Tags</Typography>
-                                {isExpanded('tags') ? (
-                                    <Typography variant="button" color="secondary">
-                                        {tags.value && tags.value.length
-                                            ? 'Set tags to ' + tags.value.join(', ')
-                                            : 'Clear tags'}
-                                    </Typography>
-                                ) : (
-                                    <Typography variant="button" color="primary">
-                                        Leave unchanged
-                                    </Typography>
-                                )}
-                            </Box>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <EventTagsSelect value={tags.value} onChange={tags.setValue} tags={event.tags} />
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel expanded={isExpanded('status')} onChange={() => toggleExpanded('status')}>
-                        <ExpansionPanelSummary>
-                            <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
-                                <Typography variant="subtitle1">Status</Typography>
-                                {isExpanded('status') ? (
-                                    <Typography variant="button" color="secondary">
-                                        Set status to {status.value}
-                                    </Typography>
-                                ) : (
-                                    <Typography variant="button" color="primary">
-                                        Leave unchanged
-                                    </Typography>
-                                )}
-                            </Box>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <RegistrationStatusSelect value={status.value} onChange={status.setValue} />
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <Box p={2} display="flex" alignItems="center" justifyContent="center">
-                        <Button
-                            onClick={() => setConfirmDialog(true)}
-                            variant="contained"
-                            color="primary"
-                            disabled={expandedIds.length === 0}
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Rating value={rating.value} onChange={(e, num) => rating.setValue(num)} />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel
+                            expanded={isExpanded('assignedTo')}
+                            onChange={() => toggleExpanded('assignedTo')}
                         >
-                            {expandedIds.length === 0
-                                ? 'Expand panels to make edits'
-                                : ` Apply edits to ${registrationIds.length} registrations`}
-                        </Button>
-                    </Box>
-                </CenteredContainer>
+                            <ExpansionPanelSummary>
+                                <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                    <Typography variant="subtitle1">Assigned to</Typography>
+                                    {isExpanded('assignedTo') ? (
+                                        <Typography variant="button" color="secondary">
+                                            {assignedTo.value ? 'Change assigned to' : 'Clear assigned to'}
+                                        </Typography>
+                                    ) : (
+                                        <Typography variant="button" color="primary">
+                                            Leave unchanged
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <OrganiserSelectModal
+                                    open={organiserModal}
+                                    onClose={setOrganiserModal}
+                                    onSelect={value => assignedTo.setValue(value.userId)}
+                                    onClear={assignedTo.setValue}
+                                />
+                                <Box display="flex" flexDirection="column">
+                                    <Box mb={1} width="100%">
+                                        <OrganiserListItem userId={assignedTo ? assignedTo.value : null} />
+                                    </Box>
+                                    <Button variant="contained" color="primary" onClick={() => setOrganiserModal(true)}>
+                                        Change
+                                    </Button>
+                                </Box>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel expanded={isExpanded('tags')} onChange={() => toggleExpanded('tags')}>
+                            <ExpansionPanelSummary>
+                                <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                    <Typography variant="subtitle1">Tags</Typography>
+                                    {isExpanded('tags') ? (
+                                        <Typography variant="button" color="secondary">
+                                            {tags.value && tags.value.length
+                                                ? 'Set tags to ' + tags.value.join(', ')
+                                                : 'Clear tags'}
+                                        </Typography>
+                                    ) : (
+                                        <Typography variant="button" color="primary">
+                                            Leave unchanged
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <EventTagsSelect value={tags.value} onChange={tags.setValue} tags={event.tags} />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel expanded={isExpanded('status')} onChange={() => toggleExpanded('status')}>
+                            <ExpansionPanelSummary>
+                                <Box flex="1" display="flex" flexDirection="row" justifyContent="space-between">
+                                    <Typography variant="subtitle1">Status</Typography>
+                                    {isExpanded('status') ? (
+                                        <Typography variant="button" color="secondary">
+                                            Set status to {status.value}
+                                        </Typography>
+                                    ) : (
+                                        <Typography variant="button" color="primary">
+                                            Leave unchanged
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <RegistrationStatusSelect value={status.value} onChange={status.setValue} />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </CenteredContainer>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button
+                        onClick={() => setConfirmDialog(true)}
+                        variant="contained"
+                        color="primary"
+                        disabled={expandedIds.length === 0}
+                    >
+                        {expandedIds.length === 0
+                            ? 'Expand panels to make edits'
+                            : ` Apply edits to ${registrationIds.length} registrations`}
+                    </Button>
+                </DialogActions>
             </PageWrapper>
-        </Modal>
+        </Dialog>
     );
 };
 
