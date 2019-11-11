@@ -107,6 +107,13 @@ RegistrationsService.getFullRegistration = (idToken, slug, registrationId) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/${registrationId}`, config(idToken));
 };
 
+/** Get a user's registration to a given event by userId
+ * GET /:slug/user/:userId
+ */
+RegistrationsService.getRegistrationByUserId = (idToken, slug, userId) => {
+    return _axios.get(`${BASE_ROUTE}/${slug}/user/${userId}`, config(idToken));
+};
+
 /** Edit a single registration
  * PATCH /:slug/:registrationId
  */

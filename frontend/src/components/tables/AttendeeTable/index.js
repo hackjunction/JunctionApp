@@ -38,6 +38,10 @@ const AttendeeTable = ({
         setBulkEmail(!bulkEmail);
     }, [bulkEmail]);
 
+    const handleEditClose = useCallback(() => {
+        setEditing();
+    }, []);
+
     const table = useMemo(() => {
         if (!loading) {
             if (!Array.isArray(attendees) || attendees.length === 0) return null;
@@ -170,7 +174,7 @@ const AttendeeTable = ({
 
     return (
         <React.Fragment>
-            <EditRegistrationModal registrationId={editing} onClose={setEditing} />
+            <EditRegistrationModal registrationId={editing} onClose={handleEditClose} />
             <BulkEditRegistrationModal visible={bulkEdit} onClose={toggleBulkEdit} registrationIds={selected} />
             <BulkEmailModal visible={bulkEmail} onClose={toggleBulkEmail} registrationIds={selected} />
             {table}
