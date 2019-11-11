@@ -65,7 +65,7 @@ const EventDashboard = ({
                         />
                     </div>
                 }
-                topContent={<BasicNavBar text={event.name} />}
+                topContent={<BasicNavBar />}
                 routes={[
                     {
                         key: 'dashboard',
