@@ -7,7 +7,7 @@ const { hasPermission } = require('../../common/middleware/permissions');
 
 const { hasToken } = require('../../common/middleware/token');
 
-const { isEventOrganiser } = require('../../common/middleware/events');
+const { isEventOrganiser, canSubmitProject } = require('../../common/middleware/events');
 
 /**
  * Upload a new avatar for a user
@@ -57,6 +57,28 @@ router.post(
     isEventOrganiser,
     (req, res, next) => {
         helper.uploadEventLogo(req.event.slug)(req, res, function(err) {
+            if (err) {
+                next(err);
+            } else {
+                res.status(200).json({
+                    url: req.file.secure_url || req.file.url,
+                    publicId: req.file.public_id
+                });
+            }
+        });
+    }
+);
+
+/**
+ * Upload images for a project
+ */
+router.post(
+    '/events/:slug/projects',
+    hasToken,
+    canSubmitProject,
+    //TODO: Is participant in project,
+    (req, res, next) => {
+        helper.uploadProjectImage(req.event.slug, req.team.code)(req, res, function(err) {
             if (err) {
                 next(err);
             } else {

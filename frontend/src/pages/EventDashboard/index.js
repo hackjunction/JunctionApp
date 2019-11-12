@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
-import { EventTypes } from '@hackjunction/shared';
+import { EventTypes, RegistrationStatuses } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
@@ -15,6 +15,7 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
+import EventDashboardSubmission from './EventDashboardSubmission';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -30,7 +31,8 @@ const EventDashboard = ({
     event,
     team,
     eventLoading,
-    registrationLoading
+    registrationLoading,
+    registration
 }) => {
     const { slug } = match.params;
 
@@ -48,6 +50,28 @@ const EventDashboard = ({
     useEffect(() => {
         updateTeam(slug);
     }, [slug, updateTeam]);
+
+    const showEventID = useMemo(() => {
+        // If the event is not a physical event, hide event ID
+        if (event.eventType !== EventTypes.physical.id) {
+            return false;
+        }
+        // If the participant has not confirmed their participation (or checked in), hide event ID
+        const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
+        if (!registration || validStatuses.indexOf(registration.status) === -1) {
+            return false;
+        }
+
+        return true;
+    }, [event, registration]);
+
+    const showSubmission = useMemo(() => {
+        if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
+            return false;
+        }
+
+        return true;
+    }, [registration]);
 
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
@@ -87,10 +111,19 @@ const EventDashboard = ({
                         key: 'eventid',
                         path: '/event-id',
                         exact: true,
-                        hidden: event.eventType !== EventTypes.physical.id,
+                        hidden: !showEventID,
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
                         component: EventDashboardId
+                    },
+                    {
+                        key: 'project',
+                        path: '/project',
+                        exact: true,
+                        hidden: !showSubmission,
+                        icon: <FingerprintIcon />,
+                        label: 'Project submission',
+                        component: EventDashboardSubmission
                     }
                 ]}
             />
@@ -104,7 +137,8 @@ const mapStateToProps = state => ({
     eventLoading: DashboardSelectors.eventLoading(state),
     eventError: DashboardSelectors.eventError(state),
     team: DashboardSelectors.team(state),
-    registrationLoading: DashboardSelectors.registrationLoading(state)
+    registrationLoading: DashboardSelectors.registrationLoading(state),
+    registration: DashboardSelectors.registration(state)
 });
 
 const mapDispatchToProps = dispatch => ({
