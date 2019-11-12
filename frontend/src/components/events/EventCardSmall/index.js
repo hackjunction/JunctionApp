@@ -72,7 +72,7 @@ const EventCardSmall = ({ eventId, event, push }) => {
     };
 
     const renderContent = () => {
-        if (loading) {
+        if (loading || !data) {
             return (
                 <React.Fragment>
                     <Skeleton width="40%" />
@@ -88,8 +88,8 @@ const EventCardSmall = ({ eventId, event, push }) => {
                     </Typography>
                     <Typography variant="h6">{data.name}</Typography>
                     <Typography variant="subtitle1">
-                        {event.eventType === 'physical'
-                            ? `${event.eventLocation.city}, ${event.eventLocation.country}`
+                        {data.eventType === 'physical'
+                            ? `${data.eventLocation.city}, ${data.eventLocation.country}`
                             : 'Online'}
                     </Typography>
                 </React.Fragment>
