@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     })
 }));
 
-const BooleanInput = ({ value, onChange, alignCenter = false }) => {
+const BooleanInput = ({ value = false, onChange, alignCenter = false }) => {
     const classes = useStyles({ alignCenter });
 
     const handleChange = useCallback(
