@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import DateInput from '../DateInput';
 import TimeInput from '../TimeInput';
 
-const DateTimeInput = ({ value, onChange, onBlur, timezone = 'UTC' }) => {
+const DateTimeInput = React.memo(({ value, onChange, onBlur, timezone = 'UTC' }) => {
     const momentValue =
         value && timezone
             ? moment(value).tz(timezone)
@@ -55,6 +55,6 @@ const DateTimeInput = ({ value, onChange, onBlur, timezone = 'UTC' }) => {
             </Grid>
         </Grid>
     );
-};
+});
 
 export default DateTimeInput;
