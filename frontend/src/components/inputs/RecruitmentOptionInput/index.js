@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 
 import { Misc } from '@hackjunction/shared';
-import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 
 import Select from 'components/inputs/Select';
@@ -17,23 +16,22 @@ const RELOCATION_OPTIONS = Misc.relocationOptions.asArray.map(({ id, label }) =>
     label
 }));
 
-const useStyles = makeStyles(theme => ({
-    label: {
-        fontWeight: 'bold'
-    },
-    hint: {}
-}));
-
 const RecruitmentOptionInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
-    const classes = useStyles();
-
     const handleChange = useCallback(
         (field, fieldValue) => {
-            const newValue = {
-                ...value,
-                [field]: fieldValue
-            };
-            onChange(newValue);
+            if (field === 'status' && fieldValue === 'not-interested') {
+                onChange({
+                    ...value,
+                    status: fieldValue,
+                    consent: false,
+                    relocation: undefined
+                });
+            } else {
+                onChange({
+                    ...value,
+                    [field]: fieldValue
+                });
+            }
         },
         [onChange, value]
     );
@@ -41,7 +39,7 @@ const RecruitmentOptionInput = ({ value = {}, onChange, onBlur, autoFocus }) => 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Typography className={classes.label} variant="subtitle2" paragraph>
+                <Typography variant="body1" gutterBottom>
                     What is your current professional situation?
                 </Typography>
                 <Select
@@ -56,19 +54,19 @@ const RecruitmentOptionInput = ({ value = {}, onChange, onBlur, autoFocus }) => 
             {value.status &&
                 value.status !== 'not-interested' && [
                     <Grid item xs={12}>
-                        <Typography className={classes.label} variant="subtitle2" paragraph>
+                        <Typography variant="body1">
                             Cool! Can our partners contact you regarding job opportunities they have?
                         </Typography>
-                        <Typography className={classes.hint} variant="subtitle2" paragraph>
+                        <Typography variant="body2" gutterBottom>
                             This means that relevant recruitment information about you (ex. contact info, education,
-                            skills and other cv information) will be visible to the event partners representatives
-                            before, during and after the event. You can also choose to opt out of this later.
+                            skills and other cv information) will be visible to select Junction partners representatives
+                            who are looking to hire. You can also choose to opt out of this later.
                         </Typography>
                         <BooleanInput value={value.consent} onChange={consent => handleChange('consent', consent)} />
                     </Grid>,
                     <Grid item xs={12}>
-                        <Typography className={classes.label} variant="subtitle2" paragraph>
-                            And finally: would you consider relocating to another country for work as a possibility?
+                        <Typography variant="body1" gutterBottom>
+                            Would you consider relocating to another country for work as a possibility?
                         </Typography>
                         <Select
                             placeholder="Choose one"

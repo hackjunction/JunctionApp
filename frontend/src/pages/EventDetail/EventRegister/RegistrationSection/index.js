@@ -46,7 +46,7 @@ const RegistrationSection = props => {
         data,
         userProfile,
         registration,
-        idTokenPayload,
+        idTokenData,
         isActive
     } = props;
     const classes = useStyles({ isActive });
@@ -62,7 +62,7 @@ const RegistrationSection = props => {
                     if (registration && registration.answers && registration.answers[field.fieldName]) {
                         result.initialValues[field.fieldName] = registration.answers[field.fieldName];
                     } else {
-                        result.initialValues[field.fieldName] = fieldParams.default(userProfile, idTokenPayload);
+                        result.initialValues[field.fieldName] = fieldParams.default(userProfile, idTokenData);
                     }
                 }
 
@@ -77,7 +77,7 @@ const RegistrationSection = props => {
                 initialValues: {}
             }
         );
-    }, [fields, userProfile, idTokenPayload, data, registration]);
+    }, [fields, userProfile, idTokenData, data, registration]);
 
     return (
         <Formik
@@ -129,7 +129,7 @@ const RegistrationSection = props => {
 
 const mapStateToProps = state => ({
     userProfile: UserSelectors.userProfile(state),
-    idTokenPayload: AuthSelectors.getCurrentUser(state),
+    idTokenData: AuthSelectors.idTokenData(state),
     registration: EventDetailSelectors.registration(state),
     hasRegistration: EventDetailSelectors.hasRegistration(state)
 });

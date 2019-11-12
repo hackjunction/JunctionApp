@@ -23,28 +23,28 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SearchPage = ({ user, favorites }) => {
+const SearchPage = ({ idTokenData, favorites }) => {
     const classes = useStyles();
 
     const [showFavorites, toggleFavorites] = useToggle(false);
 
     useEffect(() => {
-        if (!user) {
+        if (!idTokenData) {
             throw new Error(
                 'Invalid access token. Please try logging out and logging in again. If the problem persists, please contact support.'
             );
         }
-        if (!user.recruiter_events) {
+        if (!idTokenData.recruiter_events) {
             throw new Error(
                 "You don't have access to any events. Please try logging out and logging in again. If the problem persists, please contact support."
             );
         }
-        if (!user.recruiter_organisation) {
+        if (!idTokenData.recruiter_organisation) {
             throw new Error(
                 "You don't belong to any organisation. Please try logging out and logging in again. If the problem persists, please contact support."
             );
         }
-    }, [user]);
+    }, [idTokenData]);
 
     return (
         <div className={classes.root}>
@@ -67,7 +67,7 @@ const SearchPage = ({ user, favorites }) => {
 
 const mapState = state => ({
     favorites: RecruitmentSelectors.favorites(state),
-    user: AuthSelectors.getCurrentUser(state)
+    idTokenData: AuthSelectors.idTokenData(state)
 });
 
 export default connect(mapState)(SearchPage);

@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone';
-import Typography from 'antd/lib/typography/Typography';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,7 +44,7 @@ const Empty = ({ isEmpty, emptyText = 'No data', button, hideIfNotEmpty = false 
         >
             <InfoTwoToneIcon />
             <Box mt={2}>
-                <Typography>{emptyText}</Typography>
+                <Typography variant="body1">{emptyText}</Typography>
             </Box>
             {button && <Box mt={2}>{renderButton()}</Box>}
         </Box>

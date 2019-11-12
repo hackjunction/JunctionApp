@@ -38,6 +38,9 @@ const UploadHelper = {
     generateEventTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}`;
     },
+    generateUserTag: userId => {
+        return `${cloudinaryRootPath}-user-${userId}`;
+    },
 
     generateReimbursementDetailsTag: (slug, userId) => {
         return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`;
@@ -54,14 +57,28 @@ const UploadHelper = {
         });
     },
 
+    uploadUserAvatar: userId => {
+        const storage = createStorageWithPath(
+            `users/avatars/`,
+            {
+                width: 480,
+                height: 480,
+                crop: 'fill'
+            },
+            {
+                tag: UploadHelper.generateUserTag(userId)
+            }
+        );
+        return multer({ storage }).single('image');
+    },
+
     uploadEventCoverImage: slug => {
         const storage = createStorageWithPath(
             `events/cover-images/`,
             {
                 width: 1920,
                 height: 1080,
-                crop: 'fill',
-                gravity: 'auto'
+                crop: 'fit'
             },
             {
                 tag: UploadHelper.generateEventTag(slug)

@@ -7,7 +7,6 @@ import * as AuthActions from 'redux/auth/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserActions from 'redux/user/actions';
 
-import UserProfilesService from 'services/userProfiles';
 import LoadingOverlay from 'components/loaders/LoadingOverlay';
 import MiscUtils from 'utils/misc';
 import AnalyticsService from 'services/analytics';
@@ -41,12 +40,12 @@ class CallbackPage extends Component {
     }
 
     getOrCreateProfile(idToken) {
-        UserProfilesService.getUserProfile(idToken)
+        this.props
+            .updateUserProfile(idToken)
             .then(userProfile => {
                 if (!userProfile) {
                     this.props.pushAccountCreate();
                 } else {
-                    this.props.setUserProfile(userProfile);
                     this.props.pushNextRoute();
                 }
             })
@@ -74,7 +73,7 @@ const mapDispatchToProps = dispatch => ({
     pushError: state => dispatch(push('/error', state)),
     pushNextRoute: () => dispatch(AuthActions.pushNextRoute()),
     pushAccountCreate: () => dispatch(push('/login/welcome')),
-    setUserProfile: profile => dispatch(UserActions.setUserProfile(profile))
+    updateUserProfile: idToken => dispatch(UserActions.updateUserProfile(idToken))
 });
 
 export default connect(

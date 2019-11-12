@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Box, Typography } from '@material-ui/core';
 
 import * as AccountSelectors from 'redux/account/selectors';
 import * as AccountActions from 'redux/account/actions';
@@ -14,18 +14,20 @@ const AccountDashboard = ({ registrations, updateRegistrations }) => {
     }, [updateRegistrations]);
 
     return (
-        <Grid container spacing={3}>
-            <Grid xs={12}>
-                <Typography variant="h6" paragraph>
-                    Your registrations
-                </Typography>
-            </Grid>
-            {registrations.map(registration => (
-                <Grid item xs={12} lg={4}>
-                    <EventCardSmall eventId={registration.event} />
+        <Box p={2}>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Typography variant="h6" paragraph>
+                        Your registrations
+                    </Typography>
                 </Grid>
-            ))}
-        </Grid>
+                {registrations.map(registration => (
+                    <Grid key={registration._id} item xs={12} md={6}>
+                        <EventCardSmall eventId={registration.event} />
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
     );
 };
 

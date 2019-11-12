@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const { UserProfile } = require('./model');
 const { NotFoundError } = require('../../common/errors/errors');
+const UserProfileHelpers = require('./helpers');
 
 const controller = {};
 
@@ -51,7 +52,8 @@ controller.createUserProfile = (data, userId) => {
     return userProfile.save();
 };
 
-controller.updateUserProfile = (data, userId, updatedRegistration = {}) => {
+controller.updateUserProfile = async (data, userId, updatedRegistration = {}) => {
+    const validatedData = await UserProfileHelpers.validate(data);
     return controller.getUserProfile(userId).then(userProfile => {
         if (updatedRegistration !== null) {
             userProfile.registrations = (userProfile.registrations ? userProfile.registrations : []).map(r => {
@@ -63,10 +65,10 @@ controller.updateUserProfile = (data, userId, updatedRegistration = {}) => {
             if (userProfile.registrations.length === 0) {
                 userProfile.registrations.push(updatedRegistration);
             }
-            data.registrations = userProfile.registrations;
+            validatedData.registrations = userProfile.registrations;
         }
 
-        return UserProfile.updateAllowed(userProfile, data);
+        return UserProfile.updateAllowed(userProfile, validatedData);
     });
 };
 

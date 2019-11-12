@@ -2,12 +2,13 @@ import React, { useEffect, useCallback } from 'react';
 
 import { connect } from 'react-redux';
 import { Typography, Box } from '@material-ui/core';
+import { EventTypes } from '@hackjunction/shared';
 import TuneIcon from '@material-ui/icons/Tune';
 import SettingsIcon from '@material-ui/icons/Settings';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import PeopleIcon from '@material-ui/icons/People';
+import CropFreeIcon from '@material-ui/icons/CropFree';
 
-import * as AuthSelectors from 'redux/auth/selectors';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 import PageWrapper from 'components/layouts/PageWrapper';
@@ -18,6 +19,7 @@ import DetailsPage from './Details';
 import StatsPage from './Stats';
 import ParticipantsPage from './Participants';
 import ManagePage from './Manage';
+import CheckIn from './CheckIn';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({
@@ -29,7 +31,6 @@ const OrganiserEditEvent = ({
     loading,
     error,
     event,
-    user,
     match,
     location
 }) => {
@@ -82,7 +83,7 @@ const OrganiserEditEvent = ({
                 routes={[
                     {
                         key: 'edit',
-                        path: '',
+                        path: '/edit',
                         icon: <TuneIcon />,
                         label: 'Edit',
                         component: DetailsPage
@@ -90,6 +91,7 @@ const OrganiserEditEvent = ({
                     {
                         key: 'stats',
                         path: '/stats',
+                        exact: true,
                         icon: <EqualizerIcon />,
                         label: 'Stats',
                         component: StatsPage
@@ -102,8 +104,19 @@ const OrganiserEditEvent = ({
                         component: ParticipantsPage
                     },
                     {
+                        key: 'checkin',
+                        path: '/check-in',
+                        exact: true,
+                        locked: event.eventType !== EventTypes.physical.id,
+                        lockedDescription: 'Only for physical events',
+                        icon: <CropFreeIcon />,
+                        label: 'Check-in',
+                        component: CheckIn
+                    },
+                    {
                         key: 'manage',
                         path: '/manage',
+                        exact: true,
                         icon: <SettingsIcon />,
                         label: 'Manage',
                         component: ManagePage
@@ -115,8 +128,6 @@ const OrganiserEditEvent = ({
 };
 
 const mapStateToProps = state => ({
-    idToken: AuthSelectors.getIdToken(state),
-    user: AuthSelectors.getCurrentUser(state),
     event: OrganiserSelectors.event(state),
     loading: OrganiserSelectors.eventLoading(state),
     error: OrganiserSelectors.eventError(state)

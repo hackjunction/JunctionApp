@@ -90,7 +90,8 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
             dateOfBirth: userProfile.dateOfBirth,
             spokenLanguages: userProfile.spokenLanguages,
             profilePicture: userProfile.avatar || null,
-            bio: null // TODO add bio implementation!
+            headline: userProfile.headline,
+            biography: userProfile.biography
         },
         skills: userProfile.skills,
         roles: userProfile.roles,

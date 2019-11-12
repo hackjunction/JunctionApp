@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -6,16 +6,17 @@ import { findIndex } from 'lodash-es';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import CenteredContainer from 'components/generic/CenteredContainer/index';
 import MenuIcon from '@material-ui/icons/Menu';
+import LockIcon from '@material-ui/icons/Lock';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, IconButton, Box } from '@material-ui/core';
 import { push } from 'connected-react-router';
 
 const SIDEBAR_WIDTH = 300;
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex'
-    },
     drawer: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
         [theme.breakpoints.up('md')]: {
             width: SIDEBAR_WIDTH,
             flexShrink: 0
@@ -27,11 +28,14 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(1),
         left: theme.spacing(1),
         background: '#fbfbfb',
-        zIndex: 10
+        zIndex: 100
     },
     content: {
         flexGrow: 1,
-        position: 'relative'
+        position: 'relative',
+        [theme.breakpoints.up('md')]: {
+            marginLeft: SIDEBAR_WIDTH
+        }
     },
     drawerPaper: {
         width: SIDEBAR_WIDTH,
@@ -45,7 +49,10 @@ const useStyles = makeStyles(theme => ({
     listItemSelected: {
         color: 'white'
     },
-    listItemText: {
+    listItemTextPrimary: {
+        color: 'inherit'
+    },
+    listItemTextSecondary: {
         color: 'inherit'
     },
     listItemIcon: {
@@ -84,10 +91,24 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
 
     const activeIndex = useMemo(() => {
         const relativePath = location.pathname.replace(baseRoute, '');
-        const idx = findIndex(routes, item => item.path === relativePath);
+        const idx = findIndex(routes, item => {
+            if (item.exact) {
+                return relativePath === item.path;
+            } else {
+                return relativePath.indexOf(item.path) !== -1;
+            }
+        });
 
-        return idx !== -1 ? idx : 0;
+        return idx;
     }, [baseRoute, location.pathname, routes]);
+
+    useEffect(() => {
+        if (activeIndex === -1) {
+            pushRoute(routes[0].path);
+        }
+    }, [routes, activeIndex, pushRoute]);
+
+    const safeIndex = activeIndex === -1 ? 0 : activeIndex;
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -99,29 +120,46 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
         <React.Fragment>
             <Box p={2}>{sidebarTopContent}</Box>
             <List>
-                {routes.map((route, index) => {
-                    return (
-                        <ListItem
-                            button
-                            key={route.path}
-                            selected={index === activeIndex}
-                            classes={{
-                                root: classes.listItem,
-                                selected: classes.listItemSelected
-                            }}
-                            onClick={() => pushRoute(route.path)}
-                        >
-                            <ListItemIcon className={classes.listItemIcon}>{route.icon}</ListItemIcon>
-                            <ListItemText className={classes.listItemText} primary={route.label} />
-                        </ListItem>
-                    );
-                })}
+                {routes
+                    .filter(route => !route.hidden)
+                    .map((route, index) => {
+                        return (
+                            <ListItem
+                                disabled={route.locked}
+                                button
+                                key={route.path}
+                                selected={index === safeIndex}
+                                classes={{
+                                    root: classes.listItem,
+                                    selected: classes.listItemSelected
+                                }}
+                                onClick={() => pushRoute(route.path)}
+                            >
+                                <ListItemIcon className={classes.listItemIcon}>
+                                    {route.locked ? <LockIcon /> : route.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    classes={{
+                                        primary: classes.listItemTextPrimary,
+                                        secondary: classes.listItemTextSecondary
+                                    }}
+                                    primary={route.label}
+                                    secondary={route.locked ? route.lockedDescription : ''}
+                                />
+                            </ListItem>
+                        );
+                    })}
             </List>
         </React.Fragment>
     );
 
     return (
         <div className={classes.root}>
+            <Hidden mdUp implementation="css">
+                <IconButton onClick={handleDrawerToggle} className={classes.drawerToggle} aria-label="toggle drawer">
+                    <MenuIcon />
+                </IconButton>
+            </Hidden>
             <nav className={classes.drawer}>
                 <Hidden mdUp implementation="css">
                     <Drawer
@@ -138,15 +176,6 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
                     >
                         {drawerContent}
                     </Drawer>
-                </Hidden>
-                <Hidden mdUp implementation="css">
-                    <IconButton
-                        onClick={handleDrawerToggle}
-                        className={classes.drawerToggle}
-                        aria-label="toggle drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
                 </Hidden>
                 <Hidden smDown implementation="css">
                     <Drawer
@@ -165,11 +194,13 @@ const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, lo
                 {topContent}
                 <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
                     <Switch>
-                        {routes.map(({ key, path, hidden, component }, index) => {
-                            if (hidden) {
+                        {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
+                            if (hidden || locked) {
                                 return null;
                             } else {
-                                return <Route key={key} exact path={`${baseRoute}${path}`} component={component} />;
+                                return (
+                                    <Route key={key} exact={exact} path={`${baseRoute}${path}`} component={component} />
+                                );
                             }
                         })}
                         <Redirect to={baseRoute} />

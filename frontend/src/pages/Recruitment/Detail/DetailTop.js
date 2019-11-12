@@ -93,50 +93,6 @@ const DetailTop = ({ user = {}, toggleFavorite, isFavorite, goBack, enqueueSnack
         }
     }, [enqueueSnackbar, user.userId, _isFavorite, toggleFavorite]);
 
-    const renderRecruitmentStatus = () => {
-        switch (user.recruitmentOptions.status) {
-            case Misc.recruitmentStatuses.items['actively-looking'].id:
-                return (
-                    <Typography color="primary" variant="body1">
-                        {Misc.recruitmentStatuses.items['actively-looking'].label}
-                    </Typography>
-                );
-            case Misc.recruitmentStatuses.items['up-for-discussions'].id:
-                return (
-                    <Typography color="secondary" variant="body1">
-                        {Misc.recruitmentStatuses.items['up-for-discussions'].label}
-                    </Typography>
-                );
-            default:
-                return null;
-        }
-    };
-
-    const renderRelocationStatus = () => {
-        switch (user.recruitmentOptions.relocation) {
-            case Misc.relocationOptions.items['looking-for-change'].id:
-                return (
-                    <Typography color="primary" variant="body1">
-                        {Misc.relocationOptions.items['looking-for-change'].label}
-                    </Typography>
-                );
-            case Misc.relocationOptions.items['willing-to-relocate'].id:
-                return (
-                    <Typography color="primary" variant="body1">
-                        {Misc.relocationOptions.items['willing-to-relocate'].label}
-                    </Typography>
-                );
-            case Misc.relocationOptions.items['not-currently'].id:
-                return (
-                    <Typography color="secondary" variant="body1">
-                        {Misc.relocationOptions.items['not-currently'].label}
-                    </Typography>
-                );
-            default:
-                return null;
-        }
-    };
-
     return (
         <Box className={classes.wrapper}>
             <Box className={classes.backButtonWrapper}>
@@ -167,10 +123,7 @@ const DetailTop = ({ user = {}, toggleFavorite, isFavorite, goBack, enqueueSnack
             <Box className={classes.nameWrapper}>
                 <Typography variant="h6">{`${profile.firstName} ${profile.lastName}`}</Typography>
                 <Typography variant="subtitle1">{profile.countryOfResidence}</Typography>
-                <Box p={1}>
-                    {renderRecruitmentStatus()}
-                    {renderRelocationStatus()}
-                </Box>
+                <Typography variant="subtitle1">{profile.headline}</Typography>
             </Box>
             <Box className={classes.linksWrapper}>
                 {social.github && (

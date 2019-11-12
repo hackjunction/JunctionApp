@@ -1,6 +1,5 @@
-import React, { useState, useCallback, forwardRef } from 'react';
+import React, { useState, useCallback, useMemo, forwardRef } from 'react';
 import moment from 'moment';
-import { Empty } from 'antd';
 import { connect } from 'react-redux';
 
 import EmailIcon from '@material-ui/icons/Email';
@@ -14,6 +13,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 import EditRegistrationModal from 'components/modals/EditRegistrationModal';
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
 import BulkEmailModal from 'components/modals/BulkEmailModal';
+import Empty from 'components/generic/Empty';
 
 const AttendeeTable = ({
     organiserProfilesMap,
@@ -38,7 +38,11 @@ const AttendeeTable = ({
         setBulkEmail(!bulkEmail);
     }, [bulkEmail]);
 
-    const renderTable = () => {
+    const handleEditClose = useCallback(() => {
+        setEditing();
+    }, []);
+
+    const table = useMemo(() => {
         if (!loading) {
             if (!Array.isArray(attendees) || attendees.length === 0) return null;
         }
@@ -159,21 +163,21 @@ const AttendeeTable = ({
                 ]}
             />
         );
-    };
+    }, [attendees, event.tags, loading, minimal, organiserProfilesMap, title, toggleBulkEmail, toggleBulkEdit]);
 
     const renderEmpty = () => {
         if (loading) return null;
         if (!Array.isArray(attendees) || attendees.length !== 0) return null;
         if (typeof emptyRenderer === 'function') return emptyRenderer();
-        return <Empty />;
+        return <Empty isEmpty />;
     };
 
     return (
         <React.Fragment>
-            <EditRegistrationModal registrationId={editing} onClose={setEditing} />
-            <BulkEditRegistrationModal visible={bulkEdit} onClose={setBulkEdit} registrationIds={selected} />
-            <BulkEmailModal visible={bulkEmail} onClose={setBulkEmail} registrationIds={selected} />
-            {renderTable()}
+            <EditRegistrationModal registrationId={editing} onClose={handleEditClose} />
+            <BulkEditRegistrationModal visible={bulkEdit} onClose={toggleBulkEdit} registrationIds={selected} />
+            <BulkEmailModal visible={bulkEmail} onClose={toggleBulkEmail} registrationIds={selected} />
+            {table}
             {renderEmpty()}
         </React.Fragment>
     );
