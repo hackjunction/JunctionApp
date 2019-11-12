@@ -29,6 +29,9 @@ const UploadHelper = {
     generateUserTag: userId => {
         return `${cloudinaryRootPath}-user-${userId}`;
     },
+    generateProjectTag: (slug, teamCode) => {
+        return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`;
+    },
 
     deleteWithTag: tag => {
         return new Promise(function(resolve, reject) {
@@ -81,6 +84,21 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateEventTag(slug)
+            }
+        );
+        return multer({ storage }).single('image');
+    },
+
+    uploadProjectImage: (slug, teamCode) => {
+        const storage = createStorageWithPath(
+            `projects/${slug}/${teamCode}`,
+            {
+                width: 1200,
+                height: 600,
+                crop: 'fill'
+            },
+            {
+                tag: UploadHelper.generateProjectTag(slug, teamCode)
             }
         );
         return multer({ storage }).single('image');

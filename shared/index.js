@@ -19,6 +19,7 @@ module.exports = {
     RegistrationStatuses: require('./constants/registration-statuses'),
     ReviewingMethods: require('./constants/reviewing-methods'),
     Roles: require('./constants/roles'),
+    ProjectSchema: require('./constants/project-schema.js'),
     Skills: require('./constants/skills'),
     SelectOptions: require('./constants/select-options'),
     Themes: require('./constants/themes'),
