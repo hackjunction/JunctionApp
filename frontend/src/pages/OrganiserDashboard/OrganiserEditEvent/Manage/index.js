@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, notification, message } from 'antd';
 import { concat } from 'lodash-es';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
+import { withSnackbar } from 'notistack';
 
 import * as OrganiserActions from 'redux/organiser/actions';
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import AddOrganiserDrawer from './AddOrganiserDrawer';
+import Button from 'components/generic/Button';
 import PageHeader from 'components/generic/PageHeader';
 import PageWrapper from 'components/layouts/PageWrapper';
+import { ListItemSecondaryAction, List, ListItem, ListItemText } from '@material-ui/core';
 
 const OrganiserEditEventManage = props => {
     const {
@@ -17,54 +19,45 @@ const OrganiserEditEventManage = props => {
         removeOrganiser,
         updateOrganiserProfiles,
         organiserProfiles,
-        organiserProfilesLoading,
         event,
-        eventLoading
+        eventLoading,
+        enqueueSnackbar
     } = props;
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { slug } = event;
 
     useEffect(() => {
         updateOrganiserProfiles(event.owner, event.organisers).catch(err => {
-            notification.error({
-                message: 'Oops, something went wrong',
-                description: 'Unable to load organisers'
-            });
+            enqueueSnackbar('Oops, something went wrong... Unable to load organisers. Please try again.');
         });
-    }, [event.organisers, updateOrganiserProfiles, event.owner]);
+    }, [event.organisers, updateOrganiserProfiles, event.owner, enqueueSnackbar]);
 
     function handleOrganiserRemoved(userId) {
-        const hideMessage = message.loading('Removing organiser', 0);
+        setLoading(true);
         removeOrganiser(slug, userId)
             .then(() => {
-                message.success('Organiser removed');
+                enqueueSnackbar('Organiser removed', { variant: 'success' });
             })
             .catch(err => {
-                notification.error({
-                    message: 'Oops, something went wrong',
-                    description: 'Unable to remove organiser'
-                });
+                enqueueSnackbar('Oops something went wrong... Unable to remove organiser', { variant: 'error' });
             })
             .finally(() => {
-                hideMessage();
+                setLoading(false);
             });
     }
 
     function handleOrganiserAdded(userId) {
-        const hideMessage = message.loading('Adding organiser', 0);
+        setLoading(true);
         addOrganiser(slug, userId)
             .then(() => {
-                hideMessage();
-                message.success('Added organiser');
+                enqueueSnackbar('Added organiser');
             })
             .catch(err => {
-                notification.error({
-                    message: 'Oops, something went wrong',
-                    description: 'Please try again'
-                });
+                enqueueSnackbar('Oops, something went wrong... Please try again.', { variant: 'error' });
             })
             .finally(() => {
-                hideMessage();
+                setLoading(false);
             });
     }
 
@@ -75,48 +68,29 @@ const OrganiserEditEventManage = props => {
             render={() => (
                 <React.Fragment>
                     <PageHeader heading="Organisers" subheading="Manage who has access to edit this event" />
-                    <Button type="primary" key="add-organiser" onClick={() => setDrawerOpen(true)}>
+                    <Button loading={loading} color="primary" variant="contained" onClick={() => setDrawerOpen(true)}>
                         Add organisers
                     </Button>
-                    <Table
-                        loading={organiserProfilesLoading}
-                        dataSource={organiserProfiles}
-                        pagination={false}
-                        rowKey="userId"
-                        showHeader={false}
-                        columns={[
-                            {
-                                title: 'Name',
-                                dataIndex: 'firstName',
-                                key: 'name',
-                                render: (text, record) => record.firstName + ' ' + record.lastName
-                            },
-                            {
-                                title: 'Email',
-                                dataIndex: 'email',
-                                key: 'email'
-                            },
-                            {
-                                title: 'Actions',
-                                dataIndex: 'userId',
-                                key: 'actions',
-                                render: (text, record) => {
-                                    if (event.owner === record.userId) {
-                                        return (
-                                            <Button disabled={true} type="link">
-                                                Owner
-                                            </Button>
-                                        );
-                                    }
-                                    return (
-                                        <Button type="link" onClick={() => handleOrganiserRemoved(record.userId)}>
-                                            Remove
-                                        </Button>
-                                    );
-                                }
-                            }
-                        ]}
-                    />
+                    <List>
+                        {organiserProfiles.map(profile => (
+                            <ListItem key={profile.userId} divider>
+                                <ListItemText
+                                    primary={`${profile.firstName} ${profile.lastName}`}
+                                    secondary={profile.email}
+                                />
+                                <ListItemSecondaryAction>
+                                    <Button
+                                        loading={loading}
+                                        color="error"
+                                        onClick={() => handleOrganiserRemoved(profile.userId)}
+                                    >
+                                        Remove
+                                    </Button>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        ))}
+                    </List>
+
                     <AddOrganiserDrawer
                         isOpen={drawerOpen}
                         onClose={() => setDrawerOpen(false)}
@@ -144,7 +118,9 @@ const mapDispatchToProps = dispatch => ({
     push: (...args) => dispatch(push(...args))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OrganiserEditEventManage);
+export default withSnackbar(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(OrganiserEditEventManage)
+);

@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Typography, Box, Button } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 
+import Button from 'components/generic/Button';
 import TextInput from 'components/inputs/TextInput';
 import EventTagsSelect from 'components/inputs/EventTagsSelect';
 import OrganiserSelectModal from 'components/modals/OrganiserSelectModal';
@@ -12,7 +13,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors';
 
 import { useFormField } from 'hooks/formHooks';
 
-const EditRegistrationActions = ({ registration, event, organisers, organisersMap, onSubmit }) => {
+const EditRegistrationActions = ({ registration, event, organisers, organisersMap, onSubmit, onCancel }) => {
     const [organiserModalOpen, setOrganiserModalOpen] = useState(false);
     const rating = useFormField(registration.rating);
     const assignedTo = useFormField(registration.assignedTo);
@@ -92,9 +93,12 @@ const EditRegistrationActions = ({ registration, event, organisers, organisersMa
                 />
             </Grid>
             <Grid item xs={12}>
-                <Button color="primary" fullWidth variant="contained" onClick={handleSubmit} disabled={!formDirty}>
-                    Save changes
-                </Button>
+                <Box display="flex" flexDirection="row" justifyContent="flex-end">
+                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button color="primary" variant="contained" onClick={handleSubmit} disabled={!formDirty}>
+                        Save changes
+                    </Button>
+                </Box>
             </Grid>
         </Grid>
     );

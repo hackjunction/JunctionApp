@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
 
-import { Typography, Grid, Box, Button } from '@material-ui/core';
+import { Typography, Grid, Box, Dialog, DialogContent, DialogActions } from '@material-ui/core';
 import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 import TextInput from 'components/inputs/TextInput';
+import TextAreaInput from 'components/inputs/TextAreaInput';
 import ConfirmDialog from 'components/generic/ConfirmDialog';
+import Button from 'components/generic/Button';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserSelectors from 'redux/user/selectors';
@@ -91,10 +92,13 @@ const BulkEmailModal = ({
             .filter(error => typeof error !== 'undefined');
 
         if (errors.length > 0) {
+            errors.forEach(error => {
+                enqueueSnackbar(error, { variant: 'error' });
+            });
             return false;
         }
         return true;
-    }, [fields]);
+    }, [fields, enqueueSnackbar]);
 
     const handleTestEmail = useCallback(() => {
         if (!validate()) return;
@@ -117,8 +121,11 @@ const BulkEmailModal = ({
         if (!validate()) return;
         setLoading(true);
         EmailService.sendBulkEmail(idToken, event.slug, registrationIds, params, messageId.value)
-            .then(() => {
-                enqueueSnackbar('Email sent to ' + registrationIds.length + ' recipients', { variant: 'success' });
+            .then(data => {
+                enqueueSnackbar('Email sent to ' + registrationIds.length + ' recipients', {
+                    variant: 'success',
+                    autoHideDuration: 5000
+                });
             })
             .catch(err => {
                 console.log(err);
@@ -133,167 +140,110 @@ const BulkEmailModal = ({
     if (!registrationIds.length) return null;
 
     return (
-        <Modal isOpen={visible} handleClose={onClose} size="max">
-            <PageWrapper loading={loading} wrapContent={false}>
-                <CenteredContainer>
-                    <ConfirmDialog
-                        open={confirmModalOpen}
-                        title="Are you sure?"
-                        message={`This will send an email to ${registrationIds.length} recipient(s). If you haven't yet, please send the email to yourself and make sure it looks like you want.`}
-                        onClose={setConfirmModalOpen}
-                        onOk={handleConfirm}
-                    />
-                    <PageHeader heading="Bulk email" subheading={registrationIds.length + ' selected participants'} />
-                    <Typography variant="body1" paragraph>
-                        Here you can send an email to all selected participants. Type in your own email address below to
-                        test the email before sending it out to everyone!
-                    </Typography>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={headerImage.value}
-                                onChange={headerImage.onChange}
-                                error={headerImage.error}
-                                rawOnChange
-                                label="Header image url"
-                                helperText="Url to a header image for your email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={subject.value}
-                                onChange={subject.onChange}
-                                error={subject.error}
-                                rawOnChange
-                                label="Subject"
-                                helperText="The subject line of your message"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={subtitle.value}
-                                onChange={subtitle.onChange}
-                                error={subtitle.error}
-                                rawOnChange
-                                label="Subtitle"
-                                helperText="A subtitle to be shown under the subject (optional)"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={body.value}
-                                textarea
-                                onChange={body.onChange}
-                                rawOnChange
-                                label="Message body"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={messageId.value}
-                                onChange={messageId.onChange}
-                                error={messageId.error}
-                                rawOnChange
-                                label="Unique message id"
-                                helperText=" If you want, you can enter a unique message id here. Messages with the same id will only be sent
+        <Dialog fullScreen open={visible} onClose={onClose}>
+            <DialogContent>
+                <PageWrapper loading={loading} wrapContent={false}>
+                    <CenteredContainer>
+                        <ConfirmDialog
+                            open={confirmModalOpen}
+                            title="Are you sure?"
+                            message={`This will send an email to ${registrationIds.length} recipient(s). If you haven't yet, please send the email to yourself and make sure it looks like you want.`}
+                            onClose={setConfirmModalOpen}
+                            onOk={handleConfirm}
+                        />
+                        <PageHeader
+                            heading="Bulk email"
+                            subheading={registrationIds.length + ' selected participants'}
+                        />
+                        <Typography variant="body1" paragraph>
+                            Here you can send an email to all selected participants. Type in your own email address
+                            below to test the email before sending it out to everyone!
+                        </Typography>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <TextInput
+                                    value={headerImage.value}
+                                    onChange={headerImage.setValue}
+                                    error={headerImage.error}
+                                    rawOnChange
+                                    label="Header image url"
+                                    helperText="Url to a header image for your email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInput
+                                    value={subject.value}
+                                    onChange={subject.setValue}
+                                    error={subject.error}
+                                    rawOnChange
+                                    label="Subject"
+                                    helperText="The subject line of your message"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInput
+                                    value={subtitle.value}
+                                    onChange={subtitle.setValue}
+                                    error={subtitle.error}
+                                    rawOnChange
+                                    label="Subtitle"
+                                    helperText="A subtitle to be shown under the subject (optional)"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextAreaInput
+                                    value={body.value}
+                                    textarea
+                                    onChange={body.setValue}
+                                    rawOnChange
+                                    label="Message body"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInput
+                                    value={messageId.value}
+                                    onChange={messageId.setValue}
+                                    error={messageId.error}
+                                    rawOnChange
+                                    label="Unique message id"
+                                    helperText=" If you want, you can enter a unique message id here. Messages with the same id will only be sent
                                 once to a given participant - this is useful if you want to avoid sending out the same message to a
                                 participant who has already received it earlier."
-                            />
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInput
+                                    value={ctaText.value}
+                                    onChange={ctaText.setValue}
+                                    error={ctaText.error}
+                                    rawOnChange
+                                    label="Call to action title"
+                                    helperText="If your want a Call to Action button in your email, enter the text for the button here."
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextInput
+                                    value={ctaLink.value}
+                                    onChange={ctaLink.setValue}
+                                    error={ctaLink.error}
+                                    rawOnChange
+                                    label="Call to action link"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={ctaText.value}
-                                onChange={ctaText.onChange}
-                                error={ctaText.error}
-                                rawOnChange
-                                label="Call to action title"
-                                helperText="If your want a Call to Action button in your email, enter the text for the button here."
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextInput
-                                value={ctaLink.value}
-                                onChange={ctaLink.onChange}
-                                error={ctaLink.error}
-                                rawOnChange
-                                label="Call to action link"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box display="flex" flexDirection="row" justifyContent="flex-end">
-                                <Button onClick={handleTestEmail}>Send to yourself</Button>
-                                <Box p={1} />
-                                <Button variant="contained" color="primary" onClick={setConfirmModalOpen}>
-                                    Send to {registrationIds.length} recipients
-                                </Button>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                    {/* 
-                    <label className={styles.label}>Message body</label>
-                    <Input.TextArea
-                        size="large"
-                        type="text"
-                        placeholder="We're just reaching out to let you know..."
-                        value={body}
-                        onChange={e => setBody(e.target.value)}
-                        autosize={{
-                            minRows: 10,
-                            maxRows: 20
-                        }}
-                    ></Input.TextArea>
-                    <span className={styles.hint}>The content of your email</span>
-                    <Divider size={1} />
-                    <label className={styles.label}>Unique message id</label>
-                    <Input
-                        value={messageId}
-                        onChange={e => setMessageId(e.target.value)}
-                        size="large"
-                        placeholder="something-you-will-remember"
-                    />
-                    <span className={styles.hint}>
-                        If you want, you can enter a unique message id here. Messages with the same id will only be sent
-                        once to a given participant - this is useful if you want to avoid sending out the same message to a
-                        participant who has already received it earlier.
-                </span>
-                    <Divider size={1} />
-                    <label className={styles.label}>Call to action</label>
-                    <Input
-                        value={ctaText}
-                        onChange={e => setCtaText(e.target.value)}
-                        size="large"
-                        placeholder="Click this button"
-                    />
-                    <span className={styles.hint}>
-                        If your want a Call to Action button in your email, enter the text for the button here.
-                </span>
-                    <Divider size={1} />
-                    <label className={styles.label}>Call to action link</label>
-                    <Input
-                        value={ctaLink}
-                        onChange={e => setCtaLink(e.target.value)}
-                        size="large"
-                        placeholder="https://..."
-                    />
-                    <span className={styles.hint}>Enter the link where your Call to Action button should lead</span>
-                    <Divider size={2} />
-                    <AntButton size="large" block type="primary" onClick={setTestModalVisible}>
-                        Test email
-                </AntButton>
-                    <Divider size={1} />
-                    <Popconfirm
-                        title="Are you sure? You can't un-send this email"
-                        onConfirm={handleConfirm}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <AntButton size="large" block type="primary" loading={loading}>
-                            Send to {registrationIds.length} recipients
-                    </AntButton>
-                    </Popconfirm>  */}
-                </CenteredContainer>
-            </PageWrapper>
-        </Modal>
+                    </CenteredContainer>
+                </PageWrapper>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose}>Cancel</Button>
+                <Box p={1} />
+                <Button onClick={handleTestEmail}>Send to yourself</Button>
+                <Box p={1} />
+                <Button loading={loading} variant="contained" color="primary" onClick={setConfirmModalOpen}>
+                    Send to {registrationIds.length} recipients
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

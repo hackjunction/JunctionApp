@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'components/generic/Modal';
 import { withSnackbar } from 'notistack';
+
+import { Dialog } from '@material-ui/core';
 
 import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
@@ -84,15 +85,15 @@ const EditRegistrationModal = ({
     );
 
     return (
-        <Modal isOpen={!!registrationId} handleClose={onClose} size="max">
+        <Dialog open={!!registrationId} onClose={onClose} fullScreen>
             <PageWrapper loading={loading || !registration} error={error}>
                 <CenteredContainer>
                     <PageHeader heading={participantName} subheading={participantSubheading} />
                     <EditRegistrationContent registration={registration} />
-                    <EditRegistrationActions registration={registration} onSubmit={handleEdit} />
+                    <EditRegistrationActions registration={registration} onSubmit={handleEdit} onCancel={onClose} />
                 </CenteredContainer>
             </PageWrapper>
-        </Modal>
+        </Dialog>
     );
 };
 

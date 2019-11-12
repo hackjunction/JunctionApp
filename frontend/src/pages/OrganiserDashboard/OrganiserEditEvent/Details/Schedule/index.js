@@ -4,22 +4,9 @@ import { Grid } from '@material-ui/core';
 import { FastField } from 'formik';
 import Select from 'components/inputs/Select';
 import FormControl from 'components/inputs/FormControl';
-import DateTimePicker from 'components/inputs/DateTimePicker';
+import DateTimeInput from 'components/inputs/DateTimeInput';
 
-const OrganiserEditEventTimes = props => {
-    function renderDateField(field, timezone) {
-        return (
-            <DateTimePicker
-                value={field.value}
-                onChange={value => {
-                    props.setFieldValue(field.name, value);
-                }}
-                defaultTime="12:00"
-                timezone={timezone}
-            />
-        );
-    }
-
+const OrganiserEditEventTimes = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -53,7 +40,10 @@ const OrganiserEditEventTimes = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            {renderDateField(field, props.values.timezone)}
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         </FormControl>
                     )}
                 />
@@ -67,7 +57,10 @@ const OrganiserEditEventTimes = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            {renderDateField(field, props.values.timezone)}
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         </FormControl>
                     )}
                 />
@@ -81,7 +74,10 @@ const OrganiserEditEventTimes = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            {renderDateField(field, props.values.timezone)}
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         </FormControl>
                     )}
                 />
@@ -95,7 +91,10 @@ const OrganiserEditEventTimes = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            {renderDateField(field, props.values.timezone)}
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         </FormControl>
                     )}
                 />
@@ -109,7 +108,10 @@ const OrganiserEditEventTimes = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            {renderDateField(field, props.values.timezone)}
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         </FormControl>
                     )}
                 />
@@ -123,7 +125,10 @@ const OrganiserEditEventTimes = props => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            {renderDateField(field, props.values.timezone)}
+                            <DateTimeInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
                         </FormControl>
                     )}
                 />

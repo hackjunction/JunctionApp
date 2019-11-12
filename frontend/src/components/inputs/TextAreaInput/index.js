@@ -13,7 +13,8 @@ const TextAreaInput = React.memo(
 
         return (
             <TextField
-                variant="outlined"
+                type="text"
+                variant="filled"
                 autoFocus={autoFocus}
                 disabled={disabled}
                 fullWidth

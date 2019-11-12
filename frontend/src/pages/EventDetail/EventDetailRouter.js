@@ -15,7 +15,7 @@ import EventDetail from './EventDetail';
 import EventRegister from './EventRegister';
 
 const EventDetailRouter = ({
-    user,
+    isAuthenticated,
     match,
     location,
     event,
@@ -29,10 +29,10 @@ const EventDetailRouter = ({
 
     useEffect(() => {
         updateEvent(slug);
-        if (user) {
+        if (isAuthenticated) {
             updateRegistration(slug);
         }
-    }, [slug, updateEvent, updateRegistration, user]);
+    }, [slug, updateEvent, updateRegistration, isAuthenticated]);
 
     return (
         <PageWrapper
@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
     event: EventDetailSelectors.event(state),
     eventLoading: EventDetailSelectors.eventLoading(state),
     eventError: EventDetailSelectors.eventError(state),
-    user: AuthSelectors.getCurrentUser(state),
+    isAuthenticated: AuthSelectors.isAuthenticated(state),
     registrationOpen: EventDetailSelectors.isRegistrationOpen(state)
 });
 

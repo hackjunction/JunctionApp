@@ -5,6 +5,7 @@ const EventController = require('../event/controller');
 const UserController = require('../user-profile/controller');
 const shortid = require('shortid');
 const Promise = require('bluebird');
+const _ = require('lodash');
 const controller = {};
 
 controller.createTask = (userId, eventId, type, params, schedule) => {
@@ -23,7 +24,6 @@ controller.createTask = (userId, eventId, type, params, schedule) => {
     }
     return task.save().catch(err => {
         if (err.code === 11000) {
-            console.log('ALREADY EXISTS');
             return Promise.resolve();
         }
         // For other types of errors, we'll want to throw the error normally
@@ -143,10 +143,39 @@ controller.sendPreviewEmail = async (to, msgParams) => {
 };
 
 controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
-    const promises = recipients.map(recipient => {
-        return controller.createGenericTask(recipient, event._id.toString(), uniqueId, msgParams, true);
+    return Promise.map(
+        recipients,
+        recipient => {
+            return controller
+                .createGenericTask(recipient, event._id.toString(), uniqueId, msgParams, true)
+                .then(task => {
+                    if (task && task.deliveredAt) {
+                        return true;
+                    }
+                    return false;
+                });
+        },
+        {
+            concurrency: 10
+        }
+    ).then(deliveredTasks => {
+        const delivered = deliveredTasks.filter(taskDelivered => taskDelivered === true).length;
+        const total = recipients.length;
+
+        console.log('Email send statistics', {
+            event: event._id.toString(),
+            uniqueId,
+            delivered,
+            failed: total - delivered,
+            total
+        });
+
+        return {
+            delivered,
+            failed: total - delivered,
+            total
+        };
     });
-    return Promise.all(promises);
 };
 
 module.exports = controller;

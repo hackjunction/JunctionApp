@@ -4,8 +4,9 @@ import './style.scss';
 
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { Button } from 'antd';
 import { Image, Transformation } from 'cloudinary-react';
+
+import Button from 'components/generic/Button';
 
 class OrganiserEventListItem extends PureComponent {
     static propTypes = {
@@ -25,8 +26,8 @@ class OrganiserEventListItem extends PureComponent {
                 <div className="OrganiserEventListItem--content">
                     <h3 className="OrganiserEventListItem--name">{event.name}</h3>
                     <span className="OrganiserEventListItem--dates">{event.location}</span>
-                    <Button type="primary" onClick={() => editEvent(event)}>
-                        Manage
+                    <Button color="theme_turquoise" variant="contained" onClick={() => editEvent(event)}>
+                        Manage event
                     </Button>
                 </div>
             </div>
@@ -37,7 +38,7 @@ class OrganiserEventListItem extends PureComponent {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-    editEvent: event => dispatch(push('/organise/edit/' + event.slug))
+    editEvent: event => dispatch(push('/organise/' + event.slug))
 });
 
 export default connect(

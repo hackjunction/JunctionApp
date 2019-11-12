@@ -42,13 +42,13 @@ const cancelRegistration = asyncHandler(async (req, res) => {
 
 const setTravelGrantDetails = asyncHandler(async (req, res) => {
     const registration = await RegistrationController
-    .setTravelGrantDetailsForRegistration(req.user, req.event, req.travelGrantDetails);
+        .setTravelGrantDetailsForRegistration(req.user, req.event, req.travelGrantDetails);
     return res.status(200).json(registration);
 });
 
 const updateTravelGrantStatus = asyncHandler(async (req, res) => {
     const registration = await RegistrationController
-    .updateTravelGrantStatus(req.user, req.event, req.status);
+        .updateTravelGrantStatus(req.user, req.event, req.status);
     return res.status(200).json(registration);
 });
 

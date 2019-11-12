@@ -10,6 +10,22 @@ const { hasToken } = require('../../common/middleware/token');
 const { isEventOrganiser } = require('../../common/middleware/events');
 
 /**
+ * Upload a new avatar for a user
+ */
+router.post('/users/avatar', hasToken, (req, res, next) => {
+    helper.uploadUserAvatar(req.user.sub)(req, res, function(err) {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).json({
+                url: req.file.secure_url || req.file.url,
+                publicId: req.file.publicId
+            });
+        }
+    });
+});
+
+/**
  * Upload a cover image for an event
  */
 router.post(

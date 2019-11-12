@@ -3,7 +3,8 @@ import styles from './OrganiserEditEventList.module.scss';
 
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { Input, message, Row, Col, notification } from 'antd';
+import { withSnackbar } from 'notistack';
+import { Grid } from '@material-ui/core';
 
 import Divider from 'components/generic/Divider';
 import Button from 'components/generic/Button';
@@ -11,12 +12,13 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import GlobalNavBar from 'components/navbars/GlobalNavBar';
 import Footer from 'components/layouts/Footer';
 import EventCard from 'components/events/EventCard';
+import TextInput from 'components/inputs/TextInput';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import EventsService from 'services/events';
 
-const OrganiserEventList = ({ editEvent, idToken }) => {
+const OrganiserEventList = ({ editEvent, idToken, enqueueSnackbar }) => {
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(true);
     const [events, setEvents] = useState([]);
@@ -28,29 +30,26 @@ const OrganiserEventList = ({ editEvent, idToken }) => {
                 setEvents(data);
             })
             .catch(e => {
-                notification.error({
-                    message: 'Something went wrong',
-                    description: 'Unable to get events'
-                });
+                enqueueSnackbar('Something went wrong... Unable to get events', { variant: 'error' });
             })
             .finally(() => {
                 setLoading(false);
             });
-    }, [idToken]);
+    }, [idToken, enqueueSnackbar]);
 
     const handleCreate = useCallback(() => {
-        const hideMessage = message.loading('Creating ' + inputValue, 0);
+        setLoading(true);
         EventsService.createEvent(idToken, { name: inputValue })
             .then(data => {
                 editEvent(data.slug);
             })
             .catch(e => {
-                message.error('Oops, something went wrong');
+                enqueueSnackbar('Something went wrong... Unable to get events', { variant: 'error' });
             })
             .finally(() => {
-                hideMessage();
+                setLoading(false);
             });
-    }, [editEvent, idToken, inputValue]);
+    }, [editEvent, idToken, inputValue, enqueueSnackbar]);
 
     useEffect(() => {
         updateEvents();
@@ -58,7 +57,7 @@ const OrganiserEventList = ({ editEvent, idToken }) => {
 
     function renderEvents() {
         return events.map(event => (
-            <Col xs={24} md={12} lg={8} key={event.slug}>
+            <Grid item xs={12} md={6} lg={4} key={event.slug}>
                 <EventCard
                     event={event}
                     buttons={[
@@ -67,7 +66,7 @@ const OrganiserEventList = ({ editEvent, idToken }) => {
                         </Button>
                     ]}
                 />
-            </Col>
+            </Grid>
         ));
     }
 
@@ -79,25 +78,28 @@ const OrganiserEventList = ({ editEvent, idToken }) => {
             render={() => (
                 <CenteredContainer className={styles.content}>
                     <Divider size={2} />
-                    <Row gutter={16}>
-                        <Col xs={18}>
-                            <Input
-                                className="OrganiserEventList--form__input"
-                                type="text"
+                    <Grid container spacing={3}>
+                        <Grid item xs={9}>
+                            <TextInput
+                                label="Event name"
                                 placeholder="Enter a name for your event"
                                 value={inputValue}
-                                size="large"
-                                onChange={e => setInputValue(e.target.value)}
+                                onChange={setInputValue}
                             />
-                        </Col>
-                        <Col xs={6}>
-                            <Button color="primary" variant="contained" onClick={handleCreate} disabled>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button
+                                loading={loading}
+                                color="primary"
+                                variant="contained"
+                                onClick={handleCreate}
+                                disabled
+                            >
                                 Create event
                             </Button>
-                        </Col>
-                    </Row>
-                    <Divider size={1} />
-                    <Row gutter={16}>{renderEvents()}</Row>
+                        </Grid>
+                        {renderEvents()}
+                    </Grid>
                 </CenteredContainer>
             )}
         />
@@ -109,10 +111,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    editEvent: slug => dispatch(push('/organise/edit/' + slug))
+    editEvent: slug => dispatch(push('/organise/' + slug))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OrganiserEventList);
+export default withSnackbar(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(OrganiserEventList)
+);

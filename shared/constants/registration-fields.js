@@ -294,6 +294,37 @@ const FieldProps = {
             editable: true
         }
     },
+    headline: {
+        label: 'Headline',
+        hint: 'In one sentence, who are you / what do you do?',
+        hintMarkdown: false,
+        fieldType: FieldTypes.SHORT_TEXT,
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true
+        },
+        userProfileConfig: {
+            type: String,
+            trim: true
+        }
+    },
+    biography: {
+        label: 'Biography',
+        hint:
+            "Add a bit of personal touch to your profile by writing a little bit more about yourself and what you do. Especially if you're looking to catch the attention of some of our recruiting partners and get hired, this is a good chance to stand out from the crowd!",
+        hintMarkdown: false,
+        fieldType: FieldTypes.LONG_TEXT,
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true
+        },
+        userProfileConfig: {
+            type: String,
+            trim: true
+        }
+    },
     roles: {
         label: 'Roles',
         hint:
@@ -329,17 +360,19 @@ const FieldProps = {
         `,
         hintMarkdown: false,
         fieldType: FieldTypes.SKILLS,
-        userProfileConfig: {
-            skill: {
-                type: String,
-                enum: Skills.items
-            },
-            level: {
-                type: Number,
-                min: 1,
-                max: 5
+        userProfileConfig: [
+            {
+                skill: {
+                    type: String,
+                    enum: Skills.items
+                },
+                level: {
+                    type: Number,
+                    min: 1,
+                    max: 5
+                }
             }
-        },
+        ],
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
@@ -616,7 +649,7 @@ const FieldProps = {
             status: {
                 type: String,
                 enum: Object.keys(Misc.recruitmentStatuses.items)
-            }, 
+            },
             consent: {
                 type: Boolean,
                 default: false
@@ -624,7 +657,7 @@ const FieldProps = {
             relocation: {
                 type: String,
                 enum: Object.keys(Misc.relocationOptions.items)
-            },
+            }
         },
         schemaConfig: {
             defaultEnable: false,
@@ -854,6 +887,33 @@ const Fields = {
                 .of(yup.string().oneOf(Misc.dietaryRestrictions))
                 .ensure()
                 .label(FieldProps.dietaryRestrictions.label);
+
+            return required ? base.required() : base;
+        }
+    },
+    headline: {
+        ...FieldProps.headline,
+        category: Categories.skillsAndInterests,
+        default: () => '',
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .min(required ? 1 : 0)
+                .max(100)
+                .label(FieldProps.headline.label);
+            return required ? base.required() : base;
+        }
+    },
+    biography: {
+        ...FieldProps.biography,
+        category: Categories.skillsAndInterests,
+        default: () => '',
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .min(required ? 1 : 0)
+                .max(1000)
+                .label(FieldProps.biography.label);
 
             return required ? base.required() : base;
         }
