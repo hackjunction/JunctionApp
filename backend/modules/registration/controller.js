@@ -1,10 +1,9 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
-const { RegistrationStatuses, RegistrationFields, FieldTypes } = require('@hackjunction/shared');
+const { RegistrationStatuses, RegistrationFields, FieldTypes, EventTypes } = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
-const UserProfileController = require('../user-profile/controller');
 const RegistrationHelpers = require('./helpers');
 
 const STATUSES = RegistrationStatuses.asObject;
@@ -23,6 +22,13 @@ controller.createRegistration = async (user, event, data) => {
         user: user.sub,
         answers
     });
+    if (event.eventType === EventTypes.physical.id) {
+        registration.status = RegistrationStatuses.asObject.pending.id;
+    }
+    if (event.eventType === EventTypes.online.id) {
+        registration.status = RegistrationStatuses.asObject.checkedIn.id;
+    }
+
     return registration.save();
 };
 

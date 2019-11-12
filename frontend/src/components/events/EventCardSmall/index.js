@@ -87,7 +87,11 @@ const EventCardSmall = ({ eventId, event, push }) => {
                         {MiscUtils.formatDateInterval(data.startTime, data.endTime)}
                     </Typography>
                     <Typography variant="h6">{data.name}</Typography>
-                    <Typography variant="subtitle1">{data.location}</Typography>
+                    <Typography variant="subtitle1">
+                        {event.eventType === 'physical'
+                            ? `${event.eventLocation.city}, ${event.eventLocation.country}`
+                            : 'Online'}
+                    </Typography>
                 </React.Fragment>
             );
         }

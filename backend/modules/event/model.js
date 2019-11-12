@@ -4,7 +4,6 @@ const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
 const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig');
 const RegistrationQuestionSchema = require('../../common/schemas/RegistrationQuestion');
 const TravelGrantConfigSchema = require('../../common/schemas/TravelGrantConfig');
-const ParticipantConfigSchema = require('../../common/schemas/ParticipantConfig');
 const DiscordConfigSchema = require('../../common/schemas/DiscordConfig');
 const TracksConfigSchema = require('../../common/schemas/TracksConfig');
 const AddressSchema = require('../../common/schemas/Address');
@@ -32,39 +31,39 @@ const EventSchema = new mongoose.Schema({
     /** Times */
     timezone: {
         type: String,
-        required: true
+        requiredForPublish: true
     },
     registrationStartTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     registrationEndTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     startTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     endTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     submissionsStartTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     submissionsEndTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     reviewingStartTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     reviewingEndTime: {
         type: Date,
-        required: true
+        requiredForPublish: true
     },
     /** Event customisation */
     coverImage: CloudinaryImageSchema,
@@ -74,7 +73,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         enum: Object.keys(EventTypes),
         required: true,
-        default: EventTypes.physical.id
+        default: EventTypes.online.id
     },
     eventLocation: {
         type: AddressSchema,
@@ -88,10 +87,6 @@ const EventSchema = new mongoose.Schema({
     travelGrantConfig: {
         type: TravelGrantConfigSchema,
         default: TravelGrantConfigSchema
-    },
-    participantConfig: {
-        type: ParticipantConfigSchema,
-        default: ParticipantConfigSchema
     },
     tracksConfig: {
         type: TracksConfigSchema,
