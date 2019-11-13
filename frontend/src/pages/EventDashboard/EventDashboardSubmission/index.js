@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as yup from 'yup';
+import { connect } from 'react-redux';
 import { Formik, FastField, Field } from 'formik';
 import { ProjectSchema } from '@hackjunction/shared';
 import { Grid, Box } from '@material-ui/core';
@@ -11,14 +12,18 @@ import TextInput from 'components/inputs/TextInput';
 import TextAreaInput from 'components/inputs/TextAreaInput';
 import MarkdownInput from 'components/inputs/MarkdownInput';
 import BooleanInput from 'components/inputs/BooleanInput';
-import BottomBar from 'components/inputs/BottomBar';
+import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
 import ProjectImages from './ProjectImages';
 
-const EventDashboardSubmission = () => {
+import * as DashboardSelectors from 'redux/dashboard/selectors';
+
+const EventDashboardSubmission = ({ event }) => {
     const initialValues = {
         sourcePublic: true
     };
+
+    console.log('EVENT', event);
 
     return (
         <Formik
@@ -118,6 +123,48 @@ const EventDashboardSubmission = () => {
                                 )}
                             />
                         </Grid>
+                        {event.tracksEnabled && (
+                            <Grid item xs={12}>
+                                <FastField
+                                    name="track"
+                                    render={({ field, form }) => (
+                                        <FormControl
+                                            label="Track"
+                                            hint="Choose the track you are participating on. If you've completed multiple challenges from different tracks, choose the one that best matches your project."
+                                            touched={form.touched[field.name]}
+                                            error={form.errors[field.name]}
+                                        >
+                                            <Select
+                                                label="Track"
+                                                value={field.value}
+                                                onChange={value => form.setFieldValue(field.name, value)}
+                                            />
+                                        </FormControl>
+                                    )}
+                                />
+                            </Grid>
+                        )}
+                        {event.challengesEnabled && (
+                            <Grid item xs={12}>
+                                <FastField
+                                    name="challenges"
+                                    render={({ field, form }) => (
+                                        <FormControl
+                                            label="Challenges"
+                                            hint="Which partner challenges do you want to submit your project in? You can choose up to 5."
+                                            touched={form.touched[field.name]}
+                                            error={form.errors[field.name]}
+                                        >
+                                            <Select
+                                                label="Challenges"
+                                                value={field.value}
+                                                onChange={value => form.setFieldValue(field.name, value)}
+                                            />
+                                        </FormControl>
+                                    )}
+                                />
+                            </Grid>
+                        )}
                         <Grid item xs={12}>
                             <FastField
                                 name="demo"
@@ -205,4 +252,8 @@ const EventDashboardSubmission = () => {
     );
 };
 
-export default EventDashboardSubmission;
+const mapState = state => ({
+    event: DashboardSelectors.event(state)
+});
+
+export default connect(mapState)(EventDashboardSubmission);
