@@ -1,4 +1,3 @@
-import { sortBy } from 'lodash-es';
 import { push } from 'connected-react-router';
 
 import * as ActionTypes from './actionTypes';
@@ -6,7 +5,6 @@ import * as AuthSelectors from '../auth/selectors';
 import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
-import UserProfilesService from 'services/userProfiles';
 
 export const updateEvent = slug => dispatch => {
     dispatch({
@@ -82,50 +80,19 @@ export const createRegistration = (slug, data) => async (dispatch, getState) => 
     return registration;
 };
 
-export const updateProfiles = team => async dispatch => {
-    if (!team) {
-        dispatch({
-            type: ActionTypes.EDIT_PROFILES,
-            payload: []
-        });
-    }
-
-    const userIds = [team.owner].concat(team.members);
-
-    dispatch({
-        type: ActionTypes.UPDATE_PROFILES,
-        promise: UserProfilesService.getPublicUserProfiles(userIds).then(profiles => {
-            const sorted = sortBy(profiles, profile => {
-                if (profile.userId === team.owner) {
-                    return 0;
-                }
-                return 1;
-            });
-
-            return sorted;
-        }),
-        meta: {
-            onFailure: e => console.log('Error updating profiles', e)
-        }
-    });
-};
-
 export const updateTeam = slug => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
     dispatch({
         type: ActionTypes.UPDATE_TEAM,
-        promise: TeamsService.getTeamForEvent(idToken, slug).catch(err => {
+        promise: TeamsService.getTeamForEvent(idToken, slug, true).catch(err => {
             if (err.response.status === 404) {
                 return Promise.resolve({});
             }
             return Promise.reject(err);
         }),
         meta: {
-            onFailure: e => console.log('Error updating dashboard team', e),
-            onSuccess: team => {
-                dispatch(updateProfiles(team));
-            }
+            onFailure: e => console.log('Error updating dashboard team', e)
         }
     });
 };
@@ -140,7 +107,7 @@ export const createTeam = slug => async (dispatch, getState) => {
         payload: team
     });
 
-    dispatch(updateProfiles(team));
+    //TODO: Update team meta
 
     return team;
 };
@@ -148,14 +115,12 @@ export const createTeam = slug => async (dispatch, getState) => {
 export const joinTeam = (slug, code) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
-    const team = await TeamsService.joinTeamForEvent(idToken, slug, code);
+    const team = await TeamsService.joinTeamForEvent(idToken, slug, code, true);
 
     dispatch({
         type: ActionTypes.EDIT_TEAM,
         payload: team
     });
-
-    dispatch(updateProfiles(team));
 
     return team;
 };
@@ -180,8 +145,6 @@ export const removeMemberFromTeam = (slug, code, userId) => async (dispatch, get
         type: ActionTypes.EDIT_TEAM,
         payload: team
     });
-
-    dispatch(updateProfiles(team));
 
     return team;
 };

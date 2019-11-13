@@ -1,4 +1,7 @@
+const _ = require('lodash');
 const Team = require('./model');
+const Registration = require('../registration/model');
+const UserProfileController = require('../user-profile/controller');
 const { InsufficientPrivilegesError, ForbiddenError, NotFoundError } = require('../../common/errors/errors');
 
 const controller = {};
@@ -80,6 +83,29 @@ controller.getTeam = (eventId, userId) => {
             }
             return team;
         });
+};
+
+controller.getTeamMeta = async team => {
+    const userIds = [team.owner].concat(team.members);
+    const [registrations, userProfiles] = await Promise.all([
+        Registration.find({ event: team.event, user: { $in: userIds } }),
+        UserProfileController.getUserProfilesPublic(userIds)
+    ]);
+
+    const meta = userIds.reduce((res, userId) => {
+        const registration = _.find(registrations, registration => registration.user === userId);
+        const profile = _.find(userProfiles, profile => profile.userId === userId);
+
+        res[userId] = {
+            registration: {
+                status: registration.status
+            },
+            profile
+        };
+        return res;
+    }, {});
+
+    return meta;
 };
 
 controller.getTeamsForEvent = eventId => {

@@ -19,23 +19,14 @@ const initialState = {
         loading: true,
         error: false,
         updated: 0
-    },
-    profiles: {
-        data: [],
-        loading: true,
-        error: false,
-        updated: 0
     }
 };
 
 const updateEventHandler = buildHandler('event');
 const updateRegistrationHandler = buildHandler('registration');
 const updateTeamHandler = buildHandler('team');
-const updateProfilesHandler = buildHandler('profiles');
-
 const editRegistration = buildUpdatePath('registration.data');
 const editTeam = buildUpdatePath('team.data');
-const editProfiles = buildUpdatePath('profiles.data');
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
@@ -48,9 +39,6 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_TEAM: {
             return updateTeamHandler(state, action);
         }
-        case ActionTypes.UPDATE_PROFILES: {
-            return updateProfilesHandler(state, action);
-        }
         case ActionTypes.EDIT_REGISTRATION: {
             return editRegistration(state, action.payload);
         }
@@ -59,9 +47,6 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.CLEAR_TEAM: {
             return editTeam(state, initialState.team.data);
-        }
-        case ActionTypes.EDIT_PROFILES: {
-            return editProfiles(state, action.payload);
         }
         default:
             return state;

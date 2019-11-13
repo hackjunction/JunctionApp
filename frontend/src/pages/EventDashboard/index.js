@@ -27,7 +27,6 @@ const EventDashboard = ({
     updateEvent,
     updateRegistration,
     updateTeam,
-    updateProfiles,
     event,
     team,
     eventLoading,
@@ -144,11 +143,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(DashboardActions.updateEvent(slug)),
     updateRegistration: slug => dispatch(DashboardActions.updateRegistration(slug)),
-    updateTeam: slug => dispatch(DashboardActions.updateTeam(slug)),
-    updateProfiles: team => dispatch(DashboardActions.updateProfiles(team))
+    updateTeam: slug => dispatch(DashboardActions.updateTeam(slug))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(EventDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard);
