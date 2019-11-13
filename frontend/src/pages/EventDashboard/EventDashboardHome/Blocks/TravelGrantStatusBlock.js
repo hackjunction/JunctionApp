@@ -12,8 +12,7 @@ const STATUSES = RegistrationStatuses.asObject;
 
 const TravelGrantStatusBlock = ({ event, registration }) => {
     if (!registration || !event) return null;
-    if (!event.travelGrantConfig || !event.eventType !== EventTypes.physical.id || !event.travelGrantConfig.enabled)
-        return null;
+    if (event.eventType !== EventTypes.physical.id) return null;
     if (registration.answers && !registration.answers.needsTravelGrant) return null;
 
     //TODO: When status is checkedIn, show the travel grant details submission form here
