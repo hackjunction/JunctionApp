@@ -1,5 +1,16 @@
 const EventStatuses = require('../constants/event-statuses');
 
+const nowIsBefore = (time, moment) => {
+    if (!time) {
+        console.log('No time supplied to nowIsBefore');
+    }
+
+    const now = moment().utc();
+    const timeMoment = moment(time).utc();
+
+    return now.isBefore(timeMoment);
+};
+
 const nowIsBetween = (startTime, endTime, moment) => {
     if (!startTime) {
         console.log('No startTime supplied to nowIsBetween');
@@ -24,6 +35,14 @@ const EventHelpers = {
     isSubmissionsOpen: (event, moment) => {
         if (!event) return false;
         return nowIsBetween(event.submissionsStartTime, event.submissionsEndTime, moment);
+    },
+    isSubmissionsUpcoming: (event, moment) => {
+        if (!event) return false;
+        return nowIsBefore(event.submissionsStartTime, moment);
+    },
+    isSubmissionsPast: (event, moment) => {
+        if (!event) return false;
+        return !nowIsBefore(event.submissionsEndTime, moment);
     },
     getEventStatus: (event, moment) => {
         if (!event) return null;

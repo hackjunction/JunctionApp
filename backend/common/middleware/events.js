@@ -56,7 +56,7 @@ function hasRegistered(event, registration) {
     return null;
 }
 
-function canSubmitProject(event, registration, team) {
+function canSubmitProject(event, registration, teamWithMeta) {
     if (!event) {
         return new NotFoundError('Event does not exist');
     }
@@ -69,13 +69,25 @@ function canSubmitProject(event, registration, team) {
         return new ForbiddenError('You must be checked in to the event to submit a project');
     }
 
-    if (!EventHelpers.isSubmissionsOpen(event, moment)) {
-        return new ForbiddenError('Event submissions are not open');
-    }
-
-    if (!team) {
-        //TODO: Check if team is valid? (e.g. everyone has checked in)
+    if (!teamWithMeta) {
         return new ForbiddenError('You must belong to a team before submitting a project');
+    } else {
+        const isTeamValid =
+            [teamWithMeta.owner]
+                .concat(teamWithMeta.members)
+                .map(userId => {
+                    return teamWithMeta.meta[userId];
+                })
+                .filter(member => {
+                    if (member.registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
+                        return true;
+                    }
+                    return false;
+                }).length === 0;
+
+        if (!isTeamValid) {
+            return new ForbiddenError('All team members must have checked in before you can submit a project');
+        }
     }
 
     return null;
@@ -95,8 +107,9 @@ async function getRegistration(user, event) {
     return RegistrationController.getRegistration(user.sub, event._id.toString());
 }
 
-async function getTeam(user, event) {
-    return TeamController.getTeam(event._id.toString(), user.sub);
+async function getTeamWithMeta(user, event) {
+    const team = await TeamController.getTeam(event._id, user.sub);
+    return TeamController.attachMeta(team);
 }
 
 const EventMiddleware = {
@@ -132,7 +145,10 @@ const EventMiddleware = {
     },
     canSubmitProject: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
-        const [registration, team] = await Promise.all([getRegistration(req.user, event), getTeam(req.user, event)]);
+        const [registration, team] = await Promise.all([
+            getRegistration(req.user, event),
+            getTeamWithMeta(req.user, event)
+        ]);
         const error = canSubmitProject(event, registration, team);
         if (error) return next(error);
         req.event = event;
@@ -151,8 +167,18 @@ const EventMiddleware = {
                 next();
             }
         }
+        /** TODO as needed */
     },
     isAfter: {
+        submissionsStartTime: async (req, res, next) => {
+            const now = moment().utc();
+
+            if (now.isBefore(req.event.submissionsStartTime)) {
+                next(new ForbiddenError('Submissions are not yet open'));
+            } else {
+                next();
+            }
+        }
         /** TODO as needed */
     }
 };

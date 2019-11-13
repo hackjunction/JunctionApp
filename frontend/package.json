@@ -30,6 +30,7 @@
         "react": "16.11.0",
         "react-animate-height": "^2.0.15",
         "react-app-rewired": "^2.1.3",
+        "react-countdown-now": "^2.1.2",
         "react-dom": "^16.8.1",
         "react-dropzone": "^10.1.10",
         "react-facebook-pixel": "^0.1.3",

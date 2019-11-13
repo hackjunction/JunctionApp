@@ -88,7 +88,7 @@ export const updateTeam = slug => (dispatch, getState) => {
         type: ActionTypes.UPDATE_TEAM,
         promise: TeamsService.getTeamForEvent(idToken, slug, true).catch(err => {
             if (err.response.status === 404) {
-                return Promise.resolve({});
+                return Promise.resolve(null);
             }
             return Promise.reject(err);
         }),
