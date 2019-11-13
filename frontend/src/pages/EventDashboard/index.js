@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
-import { EventTypes } from '@hackjunction/shared';
+import { EventTypes, RegistrationStatuses } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
@@ -30,7 +30,8 @@ const EventDashboard = ({
     event,
     team,
     eventLoading,
-    registrationLoading
+    registrationLoading,
+    registration
 }) => {
     const { slug } = match.params;
 
@@ -48,6 +49,16 @@ const EventDashboard = ({
     useEffect(() => {
         updateTeam(slug);
     }, [slug, updateTeam]);
+
+    const showEventID = useMemo(() => {
+        if (event.eventType !== EventTypes.physical.id) return false;
+        const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
+        if (!registration || validStatuses.indexOf(registration.status) === -1) {
+            return false;
+        }
+
+        return true;
+    }, [event, registration]);
 
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
@@ -87,7 +98,7 @@ const EventDashboard = ({
                         key: 'eventid',
                         path: '/event-id',
                         exact: true,
-                        hidden: event.eventType !== EventTypes.physical.id,
+                        hidden: !showEventID,
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
                         component: EventDashboardId
@@ -104,7 +115,8 @@ const mapStateToProps = state => ({
     eventLoading: DashboardSelectors.eventLoading(state),
     eventError: DashboardSelectors.eventError(state),
     team: DashboardSelectors.team(state),
-    registrationLoading: DashboardSelectors.registrationLoading(state)
+    registrationLoading: DashboardSelectors.registrationLoading(state),
+    registration: DashboardSelectors.registration(state)
 });
 
 const mapDispatchToProps = dispatch => ({
