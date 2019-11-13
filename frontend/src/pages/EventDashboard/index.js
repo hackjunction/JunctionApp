@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -15,6 +16,7 @@ import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
 import EventDashboardSubmission from './EventDashboardSubmission';
+import Hackerpack from './Hackerpack';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -102,6 +104,14 @@ const EventDashboard = ({
                         icon: <FingerprintIcon />,
                         label: 'Project submission',
                         component: EventDashboardSubmission
+                    },
+                    {
+                        key: 'hackerpack',
+                        path: '/hackerpack',
+                        exact: true,
+                        icon: <AmpStoriesIcon />,
+                        label: 'Hackerpack',
+                        component: Hackerpack
                     }
                 ]}
             />
