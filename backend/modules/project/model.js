@@ -70,10 +70,6 @@ ProjectSchema.index({
     event: 1
 });
 
-ProjectSchema.plugin(updateAllowedPlugin, {
-    blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'team', 'event']
-});
-
 const Project = mongoose.model('Project', ProjectSchema);
 
 module.exports = Project;

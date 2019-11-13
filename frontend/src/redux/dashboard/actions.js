@@ -4,6 +4,7 @@ import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from '../auth/selectors';
 import * as DashboardSelectors from './selectors';
 import EventsService from 'services/events';
+import ProjectsService from 'services/projects';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
 
@@ -178,4 +179,40 @@ export const lockTeam = (slug, code) => async (dispatch, getState) => {
     });
 
     return team;
+};
+
+export const updateProject = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    return dispatch({
+        type: ActionTypes.UPDATE_PROJECT,
+        promise: ProjectsService.getProjectForEventAndTeam(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error updating dashboard project', e)
+        }
+    });
+};
+
+export const createProject = (slug, data) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    return dispatch({
+        type: ActionTypes.UPDATE_PROJECT,
+        promise: ProjectsService.createProjectForEventAndTeam(idToken, slug, data),
+        meta: {
+            onFailure: e => console.log('Error creating dashboard project', e)
+        }
+    });
+};
+
+export const editProject = (slug, data) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    return dispatch({
+        type: ActionTypes.UPDATE_PROJECT,
+        promise: ProjectsService.updateProjectForEventAndTeam(idToken, slug, data),
+        meta: {
+            onFailure: e => console.log('Error editing dashboard project', e)
+        }
+    });
 };

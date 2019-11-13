@@ -19,12 +19,19 @@ const initialState = {
         loading: true,
         error: false,
         updated: 0
+    },
+    project: {
+        data: null,
+        loading: true,
+        error: false,
+        updated: 0
     }
 };
 
 const updateEventHandler = buildHandler('event');
 const updateRegistrationHandler = buildHandler('registration');
 const updateTeamHandler = buildHandler('team');
+const updateProjectHandler = buildHandler('project');
 const editRegistration = buildUpdatePath('registration.data');
 const editTeam = buildUpdatePath('team.data');
 
@@ -38,6 +45,9 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TEAM: {
             return updateTeamHandler(state, action);
+        }
+        case ActionTypes.UPDATE_PROJECT: {
+            return updateProjectHandler(state, action);
         }
         case ActionTypes.EDIT_REGISTRATION: {
             return editRegistration(state, action.payload);
