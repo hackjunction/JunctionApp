@@ -85,27 +85,63 @@ controller.getTeam = (eventId, userId) => {
         });
 };
 
-controller.getTeamMeta = async team => {
+controller.attachMeta = async team => {
     const userIds = [team.owner].concat(team.members);
     const [registrations, userProfiles] = await Promise.all([
         Registration.find({ event: team.event, user: { $in: userIds } }),
         UserProfileController.getUserProfilesPublic(userIds)
     ]);
 
+    const userIdsToRemove = [];
     const meta = userIds.reduce((res, userId) => {
         const registration = _.find(registrations, registration => registration.user === userId);
         const profile = _.find(userProfiles, profile => profile.userId === userId);
 
-        res[userId] = {
-            registration: {
-                status: registration.status
-            },
-            profile
-        };
-        return res;
+        if (!registration || !profile) {
+            userIdsToRemove.push(userId);
+            return res;
+        } else {
+            res[userId] = {
+                registration: {
+                    status: registration.status
+                },
+                profile
+            };
+            return res;
+        }
     }, {});
 
-    return meta;
+    let result;
+
+    if (userIdsToRemove.length > 0) {
+        //For whatever reason, some team members no longer exist -> remove missing team members
+        team.members = team.toJSON().members.filter(member => {
+            if (userIdsToRemove.indexOf(member) !== -1) {
+                return false;
+            }
+            return true;
+        });
+
+        if (userIdsToRemove.indexOf(team.owner) !== -1) {
+            // If the owner no longer exists
+            if (team.members.length > 0) {
+                //If there are still members left, promote first member to owner
+                team.owner = team.members[0];
+                team.members = team.members.slice(1);
+            } else {
+                //If there are no members left either, delete the team
+                team.remove();
+                //Throw not found error
+                throw new NotFoundError('No team exists for this user and event');
+            }
+        }
+        team.save();
+    }
+
+    result = team.toJSON();
+    result.meta = meta;
+
+    return result;
 };
 
 controller.getTeamsForEvent = eventId => {

@@ -2,6 +2,7 @@ import { push } from 'connected-react-router';
 
 import * as ActionTypes from './actionTypes';
 import * as AuthSelectors from '../auth/selectors';
+import * as DashboardSelectors from './selectors';
 import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
@@ -99,15 +100,12 @@ export const updateTeam = slug => (dispatch, getState) => {
 
 export const createTeam = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
-
-    const team = await TeamsService.createTeamForEvent(idToken, slug);
+    const team = await TeamsService.createTeamForEvent(idToken, slug, true);
 
     dispatch({
         type: ActionTypes.EDIT_TEAM,
         payload: team
     });
-
-    //TODO: Update team meta
 
     return team;
 };
@@ -138,12 +136,17 @@ export const leaveTeam = (slug, code) => async (dispatch, getState) => {
 };
 
 export const removeMemberFromTeam = (slug, code, userId) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState());
+    const state = getState();
+    const idToken = AuthSelectors.getIdToken(state);
+    const oldTeam = DashboardSelectors.team(state);
     const team = await TeamsService.removeMemberFromTeam(idToken, slug, code, userId);
 
     dispatch({
         type: ActionTypes.EDIT_TEAM,
-        payload: team
+        payload: {
+            ...team,
+            meta: oldTeam.meta
+        }
     });
 
     return team;
@@ -161,12 +164,17 @@ export const deleteTeam = slug => async (dispatch, getState) => {
 };
 
 export const lockTeam = (slug, code) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState());
+    const state = getState();
+    const idToken = AuthSelectors.getIdToken(state);
+    const oldTeam = DashboardSelectors.team(state);
     const team = await TeamsService.lockTeamForEvent(idToken, slug, code);
 
     dispatch({
         type: ActionTypes.EDIT_TEAM,
-        payload: team
+        payload: {
+            ...team,
+            meta: oldTeam.meta
+        }
     });
 
     return team;
