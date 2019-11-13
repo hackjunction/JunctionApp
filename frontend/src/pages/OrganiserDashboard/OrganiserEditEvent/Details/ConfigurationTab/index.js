@@ -8,13 +8,25 @@ import FormControl from 'components/inputs/FormControl';
 import Select from 'components/inputs/Select';
 import StreetAddressForm from 'components/inputs/StreetAddressForm';
 import TravelGrantConfig from './TravelGrantConfig';
-import ParticipantConfig from './ParticipantConfig';
 import DiscordConfig from './DiscordConfig';
 import TracksConfig from './TracksConfig';
 
 const ConfigurationTab = () => {
     return (
         <Grid spacing={3} container>
+            <Grid item xs={12}>
+                <FastField
+                    name="published"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Published"
+                            hint="Once published, this event will be visible to the public"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        />
+                    )}
+                />
+            </Grid>
             <Grid item xs={12}>
                 <FastField
                     name="eventType"
@@ -69,19 +81,6 @@ const ConfigurationTab = () => {
                             );
                         }
                         return null;
-                    }}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <FastField
-                    name="participantConfig"
-                    render={({ field, form }) => {
-                        return (
-                            <ParticipantConfig
-                                value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
-                            />
-                        );
                     }}
                 />
             </Grid>

@@ -3,7 +3,7 @@ import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { CircularProgress, Typography, Grid } from '@material-ui/core';
 
-import { RegistrationStatuses } from '@hackjunction/shared';
+import { RegistrationStatuses, EventTypes } from '@hackjunction/shared';
 import GradientBox from 'components/generic/GradientBox';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -13,6 +13,7 @@ const VisaInvitationDrawer = React.lazy(() => import('components/modals/VisaInvi
 
 const VisaInvitationBlock = ({ event, registration }) => {
     if (!registration || !event) return null;
+    if (!event.eventType !== EventTypes.physical.id) return null;
 
     const statuses = [STATUSES.accepted.id, STATUSES.confirmed.id];
 
