@@ -13,7 +13,7 @@ const VisaInvitationDrawer = React.lazy(() => import('components/modals/VisaInvi
 
 const VisaInvitationBlock = ({ event, registration }) => {
     if (!registration || !event) return null;
-    if (!event.eventType !== EventTypes.physical.id) return null;
+    if (event.eventType !== EventTypes.physical.id) return null;
 
     const statuses = [STATUSES.accepted.id, STATUSES.confirmed.id];
 
