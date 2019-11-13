@@ -34,15 +34,21 @@ const ProjectImages = ({ value = [], onChange, event, idToken, maxImages = 5 }) 
     };
 
     const handleChange = index => data => {
-        if (value.length > index) {
+        if (!data) {
             const newValue = value.slice();
-            newValue[index] = data;
+            newValue.splice(index, 1);
             onChange(newValue);
         } else {
-            const newValue = value.slice();
-            newValue.push(data);
-            onChange(newValue);
-            setActiveStep(newValue.length - 1);
+            if (value.length > index) {
+                const newValue = value.slice();
+                newValue[index] = data;
+                onChange(newValue);
+            } else {
+                const newValue = value.slice();
+                newValue.push(data);
+                onChange(newValue);
+                setActiveStep(newValue.length - 1);
+            }
         }
     };
 

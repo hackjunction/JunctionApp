@@ -21,6 +21,7 @@ const ProjectSchema = {
     source: yup
         .string()
         .url()
+        .required()
         .label('Source code'),
     sourcePublic: yup
         .boolean()

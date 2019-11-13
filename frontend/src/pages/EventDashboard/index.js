@@ -28,6 +28,7 @@ const EventDashboard = ({
     updateEvent,
     updateRegistration,
     updateTeam,
+    updateProject,
     event,
     team,
     eventLoading,
@@ -52,6 +53,11 @@ const EventDashboard = ({
     useEffect(() => {
         updateTeam(slug);
     }, [slug, updateTeam]);
+
+    /** Update project if slug changes */
+    useEffect(() => {
+        updateProject(slug);
+    }, [slug, updateProject]);
 
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
@@ -134,7 +140,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(DashboardActions.updateEvent(slug)),
     updateRegistration: slug => dispatch(DashboardActions.updateRegistration(slug)),
-    updateTeam: slug => dispatch(DashboardActions.updateTeam(slug))
+    updateTeam: slug => dispatch(DashboardActions.updateTeam(slug)),
+    updateProject: slug => dispatch(DashboardActions.updateProject(slug))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard);

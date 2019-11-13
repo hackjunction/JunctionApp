@@ -8,16 +8,26 @@ export const eventLoading = state => state.dashboard.event.loading;
 export const eventError = state => state.dashboard.event.error;
 export const eventUpdated = state => state.dashboard.event.updated;
 
+export const registration = state => state.dashboard.registration.data;
+export const registrationLoading = state => state.dashboard.registration.loading;
+export const registrationError = state => state.dashboard.registration.error;
+export const registrationUpdated = state => state.dashboard.registration.updated;
+
+export const team = state => state.dashboard.team.data;
+export const teamLoading = state => state.dashboard.team.loading;
+export const teamError = state => state.dashboard.team.error;
+export const teamUpdated = state => state.dashboard.team.updated;
+
+export const project = state => state.dashboard.project.data;
+export const projectLoading = state => state.dashboard.project.loading;
+export const projectError = state => state.dashboard.project.error;
+export const projectUpdated = state => state.dashboard.project.updated;
+
 export const eventStatus = createSelector(event, event => EventHelpers.getEventStatus(event, moment));
 
 export const isRegistrationOpen = createSelector(eventStatus, status => status === EventStatuses.REGISTRATION_OPEN.id);
 export const isSubmissionsUpcoming = createSelector(event, event => EventHelpers.isSubmissionsUpcoming(event, moment));
 export const isSubmissionsPast = createSelector(event, event => EventHelpers.isSubmissionsPast(event, moment));
-
-export const registration = state => state.dashboard.registration.data;
-export const registrationLoading = state => state.dashboard.registration.loading;
-export const registrationError = state => state.dashboard.registration.error;
-export const registrationUpdated = state => state.dashboard.registration.updated;
 
 export const isAcceptancePending = createSelector(registration, registration => {
     return (
@@ -40,10 +50,6 @@ export const appliedAsTeam = createSelector(registration, registration => {
         return registration.answers.teamOptions.applyAsTeam;
     }
 });
-
-export const team = state => state.dashboard.team.data;
-export const teamLoading = state => state.dashboard.team.loading;
-export const teamError = state => state.dashboard.team.error;
 
 export const hasTeam = createSelector(team, team => {
     return !isEmpty(team);

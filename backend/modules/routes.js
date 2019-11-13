@@ -10,6 +10,7 @@ const emailRouter = require('./email-task/routes');
 const devToolsRouter = require('./devtools/routes');
 const filterGroupRouter = require('./filter-group/routes');
 const adminRouter = require('./admin/routes');
+const projectRouter = require('./project/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -27,6 +28,7 @@ module.exports = function(app) {
     app.use('/api/filter-groups', filterGroupRouter);
     app.use('/api/registrations', registrationRouter);
     app.use('/api/teams', teamRouter);
+    app.use('/api/projects', projectRouter);
     app.use('/api/user-profiles', userProfileRouter);
     app.use('/api/recruitment', recruitmentRouter);
 
