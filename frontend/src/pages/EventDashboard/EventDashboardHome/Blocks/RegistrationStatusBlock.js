@@ -1,7 +1,8 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { RegistrationStatuses } from '@hackjunction/shared';
+import { RegistrationStatuses, EventTypes, EventHelpers } from '@hackjunction/shared';
+import moment from 'moment-timezone';
 import { withSnackbar } from 'notistack';
 import {
     Dialog,
@@ -34,6 +35,14 @@ const RegistrationStatusBlock = ({
     const [loading, setLoading] = useState(false);
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
     const { status } = registration;
+
+    const isEventStarted = useMemo(() => {
+        const now = moment().utc();
+        const eventStarts = moment(event.startTime).utc();
+
+        return !now.isBefore(eventStarts);
+    }, [event.startTime]);
+
     const handleConfirm = useCallback(() => {
         setLoading(true);
         confirmRegistration(event.slug)
@@ -67,10 +76,9 @@ const RegistrationStatusBlock = ({
             case RegistrationStatuses.asObject.rejected.id: {
                 return 'error';
             }
-            case RegistrationStatuses.asObject.accepted.id: {
-                return 'theme_turquoise';
-            }
-            case RegistrationStatuses.asObject.confirmed.id: {
+            case RegistrationStatuses.asObject.accepted.id:
+            case RegistrationStatuses.asObject.confirmed.id:
+            case RegistrationStatuses.asObject.checkedIn.id: {
                 return 'theme_turquoise';
             }
             case RegistrationStatuses.asObject.cancelled.id: {
@@ -100,10 +108,18 @@ const RegistrationStatusBlock = ({
             case RegistrationStatuses.asObject.confirmed.id: {
                 return 'Confirmed';
             }
+            case RegistrationStatuses.asObject.checkedIn.id: {
+                switch (event.eventType) {
+                    case EventTypes.physical.id:
+                        return 'Checked in';
+                    default:
+                        return 'Completed';
+                }
+            }
             default:
                 return null;
         }
-    }, [status]);
+    }, [status, event.eventType]);
 
     const body = useMemo(() => {
         switch (status) {
@@ -127,6 +143,11 @@ const RegistrationStatusBlock = ({
             }
             case RegistrationStatuses.asObject.confirmed.id: {
                 return 'Awesome, thanks for confirming your participation! You should probably start making travel and other arrangements as soon as possible. Once you do arrive at the venue, show your Event ID at the registration to gain access to the venue!';
+            }
+            case RegistrationStatuses.asObject.checkedIn.id: {
+                return `Wohoo, you're in! Once the event begins (${moment(event.startTime).format(
+                    'LLLL'
+                )}), you'll be able to access project submissions and all of the other event-related functionality right here on this dashboard.`;
             }
             default:
                 return null;
@@ -195,6 +216,10 @@ const RegistrationStatusBlock = ({
                 return null;
         }
     }, [event, status, editRegistration, handleConfirm, isRegistrationOpen, openEventId]);
+
+    if (isEventStarted) {
+        return null;
+    }
 
     if (!title) {
         return null;
