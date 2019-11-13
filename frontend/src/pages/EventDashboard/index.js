@@ -6,6 +6,7 @@ import { EventTypes } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -15,6 +16,7 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
+import EventDashboardTravelGrant from './EventDashboardTravelGrant'
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -91,7 +93,15 @@ const EventDashboard = ({
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
                         component: EventDashboardId
-                    }
+                    },
+                    {
+                        key: 'travelgrant',
+                        path: '/travel-grant',
+                        exact: true,
+                        icon: <FlightTakeoffIcon />,
+                        label: 'Travel grant',
+                        component: EventDashboardTravelGrant
+                    },
                 ]}
             />
         </PageWrapper>

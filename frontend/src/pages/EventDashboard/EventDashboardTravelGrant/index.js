@@ -4,179 +4,332 @@ import FormControl from 'components/inputs/FormControl';
 import TextInput from 'components/inputs/TextInput';
 import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
+import DateInput from 'components/inputs/DateInput';
+import StreetAddressForm from 'components/inputs/StreetAddressForm';
+
 import * as yup from 'yup';
-
-// const Countries = require("../constants/countries");
-
-const SignupSchema = yup.object().shape({
-    legalName: {
-        firstName: yup.string().required(),
-        middleName: yup.string(),
-        lastName: yup.string().required()
-    },
-    dateOfBirth: yup
-        .date()
-        .min(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120))
-        .max(new Date(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16))
-        .required(),
-    socialSecurityNumber: {
-        issuingCountry: yup.string().required(),
-        number: yup.string().required()
-    },
-    address: {
-        country: yup
-            .string()
-            // .oneOf(Countries.asArrayOfName)
-            .required(),
-        addressLine: yup.string().required(),
-        addressLine2: yup.string(),
-        city: yup.string().required(),
-        postalCode: yup.string().required()
-    },
-    bankDetails: {
-        required: true,
-        accountNumber: yup.string(),
-        swift: yup.string(),
-        bankName: yup.string(),
-        email: yup.string().email()
-    },
-    travelReceipt: {
-        url: yup
-            .string()
-            .url()
-            .required(),
-        publicId: yup.string().required()
-    },
-    sumOfReceipts: yup.number().required()
-});
+import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
 
 export default function index() {
+    // const example = {
+    //     key1: 'value1',
+    //     key2: {
+    //         key3: 'value3',
+    //         key4: {
+    //             key6: 'value6'
+    //         }
+    //     }
+    // };
+    // REKURSIO!!! KUTSUU ITSEÄÄN FUNCTION SISÄLLÄ!
+    // const renderErrors = errors => {
+    //     return Object.keys(errors).map(key => {
+    //         const value = errors[key];
+    //         if (typeof value === 'object') {
+    //             return renderErrors(value);
+    //         } else {
+    //             return <p>{value}</p>;
+    //         }
+    //     });
+    // };
+
     return (
         <Formik
-            initialValues={{}}
+            initialValues={{
+                legalName: {},
+                dateOfBirth: {},
+                socialSecurityNumber: {},
+                address: {},
+                bankDetails: {},
+                travelReceipt: {}
+            }}
             enableReinitialize={true}
-            onSubmit={(values) => console.log(values)}
-            validationSchema={SignupSchema}
+            onSubmit={values => console.log(values)}
+            validationSchema={props => {
+                return yup.lazy(values => {
+                    return yup.object().shape(schema);
+                });
+            }}
         >
             {formikProps => (
                 <React.Fragment>
+                    {console.log(formikProps)}
                     <FastField
-                        name="name"
+                        name="gender"
                         render={({ field, form }) => (
                             <FormControl
-                                label="Event name"
-                                hint="The name of your event"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    name="name"
-                                    placeholder="Big Hackathon 2020"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="name"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Date of birth"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    name="name"
-                                    placeholder="dd.mm.yyyy"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="name"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Event name"
-                                hint="The name of your event"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    name="name"
-                                    placeholder="Big Hackathon 2020"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="name2"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Event name"
-                                hint="The name of your event"
+                                label="Gender"
+                                hint="Required by authorities"
                                 error={form.errors[field.name]}
                                 touched={form.touched[field.name]}
                             >
                                 <Select
-                                    label="terve"
+                                    label="Gender"
+                                    options="gender"
                                     value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                    options={[
-                                        {
-                                            label: "moikku",
-                                            value: "moikku",
-                                        },
-                                        {
-                                            label: "terkku",
-                                            value: "terkku"
-                                        }
-                                    ]}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    <FastField
+                        name="legalName"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Legal name"
+                                hint="Enter your full legal name"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <TextInput
+                                    label="First name"
+                                    value={field.value.firstName}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            firstName: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                                <TextInput
+                                    label="Middle name"
+                                    value={field.value.middleName}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            middleName: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                                <TextInput
+                                    label="Last name"
+                                    value={field.value.lastName}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            lastName: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    <FastField
+                        name="dateOfBirth"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Date of birth"
+                                hint="Enter your birthday"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <DateInput
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    <FastField
+                        name="socialSecurityNumber"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Social security number"
+                                hint="Fill in your social security number and the issuing country"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <Select
+                                    label="Issuing country"
+                                    value={field.value.issuingCountry}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            issuingCountry: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                    options="country"
+                                />
+                                <TextInput
+                                    label="Social security number"
+                                    value={field.value.number}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            number: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
                                 />
                             </FormControl>
                         )}
                     />
                     <Field
-                        name="Birthday2"
+                        name="address"
                         render={({ field, form }) => (
                             <FormControl
-                                label="Birthday"
-                                hint="Enter your birthday"
+                                label="Address"
+                                hint="Fill in address details"
                                 error={form.errors[field.name]}
                                 touched={form.touched[field.name]}
                             >
-                                <Select
-                                    label="day"
+                                <StreetAddressForm
                                     value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                    options="day"
-                                />
-                                <Select
-                                    label="month"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                    options="month"
-                                />
-                                <Select
-                                    label="year"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                    options="year"
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
                                 />
                             </FormControl>
                         )}
                     />
+                    <FastField
+                        name="bankDetails"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Bank details"
+                                hint="Fill in bank details"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <TextInput
+                                    label="Account number"
+                                    value={field.value.accountNumber}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            accountNumber: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                                <TextInput
+                                    label="Swift"
+                                    value={field.value.swift}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            swift: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                                <TextInput
+                                    label="Bank name"
+                                    value={field.value.bankName}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            bankName: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                                <TextInput
+                                    label="Email address"
+                                    value={field.value.email}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            email: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    <FastField
+                        name="travelReceipt"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Travel receipt"
+                                hint="Fill in travel receipt details"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <TextInput
+                                    label="URL"
+                                    value={field.value.url}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            url: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                                <TextInput
+                                    label="Public ID"
+                                    value={field.value.publicId}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, {
+                                            ...field.value,
+                                            publicId: value
+                                        })
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    <FastField
+                        name="sumOfReceipts"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Sum Of receipts"
+                                hint="Enter the total sum of your receipts"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <TextInput
+                                    label="€"
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    {/* {renderErrors(example)} */}
                     <Button
                         color="primary"
                         variant="contained"
@@ -187,5 +340,5 @@ export default function index() {
                 </React.Fragment>
             )}
         </Formik>
-    )
+    );
 }
