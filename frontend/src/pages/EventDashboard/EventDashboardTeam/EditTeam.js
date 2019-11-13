@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     Box,
     Typography,
-    CircularProgress,
     List,
     ListItem,
     ListItemText,
@@ -24,6 +23,7 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'components/generic/Button';
+import StatusBadge from 'components/generic/StatusBadge';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 import * as DashboardActions from 'redux/dashboard/actions';
@@ -43,10 +43,9 @@ const useStyles = makeStyles(theme => ({
 
 const EditTeam = ({
     team,
+    teamLoading,
     idTokenData,
     event,
-    teamMemberProfiles,
-    teamMemberProfilesLoading,
     enqueueSnackbar,
     leaveTeam,
     deleteTeam,
@@ -56,6 +55,7 @@ const EditTeam = ({
     const [loading, setLoading] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const isTeamOwner = team.owner === idTokenData.sub;
+    const allTeamMembers = [team.owner].concat(team.members);
 
     const handleLeave = useCallback(() => {
         setLoading(true);
@@ -115,35 +115,49 @@ const EditTeam = ({
                 Your team
             </Typography>
             <List className={classes.list}>
-                {teamMemberProfiles.map((profile, index) => [
-                    index !== 0 ? <Divider variant="inset" component="li" key={profile.userId + '_divider'} /> : null,
-                    <ListItem key={profile.userId}>
-                        <ListItemAvatar>
-                            <Avatar alt={`${profile.firstName} ${profile.lastName}`} src={profile.avatar} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={
-                                <Typography className={classes.listItemName} variant="subtitle1">{`${
-                                    profile.firstName
-                                } ${profile.lastName} ${team.owner === profile.userId ? '(Owner)' : ''}`}</Typography>
-                            }
-                            secondary={<Typography variant="body2">{profile.email}</Typography>}
-                        />
-                        {isTeamOwner && profile.userId !== idTokenData.sub && (
-                            <ListItemSecondaryAction>
-                                <Tooltip title="Remove from team">
-                                    <IconButton
-                                        onClick={() => handleRemoveMember(profile.userId)}
-                                        edge="end"
-                                        aria-label="delete"
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </ListItemSecondaryAction>
-                        )}
-                    </ListItem>
-                ])}
+                {allTeamMembers.map((userId, index) => {
+                    const { profile, registration } = team.meta[userId];
+
+                    return [
+                        index !== 0 ? (
+                            <Divider variant="inset" component="li" key={profile.userId + '_divider'} />
+                        ) : null,
+                        <ListItem key={profile.userId}>
+                            <ListItemAvatar>
+                                <Avatar alt={`${profile.firstName} ${profile.lastName}`} src={profile.avatar} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={
+                                    <Typography className={classes.listItemName} variant="subtitle1">
+                                        {`${profile.firstName} ${profile.lastName} ${
+                                            team.owner === profile.userId ? '(Owner)' : ''
+                                        }`}
+                                    </Typography>
+                                }
+                                secondary={
+                                    <Box display="flex" flexDirection="column" alignItems="flex-start">
+                                        <Typography variant="body2">{profile.email}</Typography>
+                                        <Box mt={0.5} />
+                                        <StatusBadge status={registration.status} />
+                                    </Box>
+                                }
+                            />
+                            {isTeamOwner && profile.userId !== idTokenData.sub && (
+                                <ListItemSecondaryAction>
+                                    <Tooltip title="Remove from team">
+                                        <IconButton
+                                            onClick={() => handleRemoveMember(profile.userId)}
+                                            edge="end"
+                                            aria-label="delete"
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </ListItemSecondaryAction>
+                            )}
+                        </ListItem>
+                    ];
+                })}
             </List>
             <Box mt={5} />
             <Typography variant="h5" gutterBottom>
@@ -204,10 +218,9 @@ const EditTeam = ({
 
 const mapState = state => ({
     team: DashboardSelectors.team(state),
+    teamLoading: DashboardSelectors.teamLoading(state),
     idTokenData: AuthSelectors.idTokenData(state),
-    event: DashboardSelectors.event(state),
-    teamMemberProfiles: DashboardSelectors.profiles(state),
-    teamMemberProfilesLoading: DashboardSelectors.profilesLoading(state)
+    event: DashboardSelectors.event(state)
 });
 
 const mapDispatch = dispatch => ({
@@ -217,9 +230,4 @@ const mapDispatch = dispatch => ({
     removeMemberFromTeam: (slug, code, userId) => dispatch(DashboardActions.removeMemberFromTeam(slug, code, userId))
 });
 
-export default withSnackbar(
-    connect(
-        mapState,
-        mapDispatch
-    )(EditTeam)
-);
+export default withSnackbar(connect(mapState, mapDispatch)(EditTeam));
