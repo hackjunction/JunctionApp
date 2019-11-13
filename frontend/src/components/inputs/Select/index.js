@@ -391,7 +391,7 @@ export default function IntegrationReactSelect({
     );
 
     const transformedInput = useMemo(() => {
-        if (!value) {
+        if (!value && value !== 0) {
             return '';
         }
         if (isMulti) {

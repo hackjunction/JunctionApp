@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { Typography, Grid } from '@material-ui/core';
-import { RegistrationStatuses } from '@hackjunction/shared';
+import { RegistrationStatuses, EventTypes } from '@hackjunction/shared';
 import GradientBox from 'components/generic/GradientBox';
 import Button from 'components/generic/Button';
 
@@ -12,6 +12,8 @@ const STATUSES = RegistrationStatuses.asObject;
 
 const TravelGrantStatusBlock = ({ event, registration }) => {
     if (!registration || !event) return null;
+    if (!event.travelGrantConfig || !event.eventType !== EventTypes.physical.id || !event.travelGrantConfig.enabled)
+        return null;
     if (registration.answers && !registration.answers.needsTravelGrant) return null;
 
     //TODO: When status is checkedIn, show the travel grant details submission form here

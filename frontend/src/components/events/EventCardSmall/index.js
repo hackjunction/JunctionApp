@@ -78,27 +78,31 @@ const EventCardSmall = ({ eventId, event, push }) => {
     }
   };
 
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <React.Fragment>
-          <Skeleton width="40%" />
-          <Skeleton width="60%" />
-          <Skeleton width="40%" />
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <React.Fragment>
-          <Typography variant="button">
-            {MiscUtils.formatDateInterval(data.startTime, data.endTime)}
-          </Typography>
-          <Typography variant="h6">{data.name}</Typography>
-          <Typography variant="subtitle1">{data.location}</Typography>
-        </React.Fragment>
-      );
-    }
-  };
+    const renderContent = () => {
+        if (loading || !data) {
+            return (
+                <React.Fragment>
+                    <Skeleton width="40%" />
+                    <Skeleton width="60%" />
+                    <Skeleton width="40%" />
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <React.Fragment>
+                    <Typography variant="button">
+                        {MiscUtils.formatDateInterval(data.startTime, data.endTime)}
+                    </Typography>
+                    <Typography variant="h6">{data.name}</Typography>
+                    <Typography variant="subtitle1">
+                        {data.eventType === 'physical'
+                            ? `${data.eventLocation.city}, ${data.eventLocation.country}`
+                            : 'Online'}
+                    </Typography>
+                </React.Fragment>
+            );
+        }
+    };
 
   return (
     <Paper className={classes.paper} onClick={handleClick}>

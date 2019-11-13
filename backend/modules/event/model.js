@@ -4,7 +4,6 @@ const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
 const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig');
 const RegistrationQuestionSchema = require('../../common/schemas/RegistrationQuestion');
 const TravelGrantConfigSchema = require('../../common/schemas/TravelGrantConfig');
-const ParticipantConfigSchema = require('../../common/schemas/ParticipantConfig');
 const DiscordConfigSchema = require('../../common/schemas/DiscordConfig');
 const TracksConfigSchema = require('../../common/schemas/TracksConfig');
 const AddressSchema = require('../../common/schemas/Address');
@@ -32,36 +31,39 @@ const EventSchema = new mongoose.Schema({
     /** Times */
     timezone: {
         type: String,
-        required: false,
         requiredForPublish: true
     },
     registrationStartTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     registrationEndTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     startTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     endTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     submissionsStartTime: {
         type: Date,
-        required: false
+        requiredForPublish: true
     },
     submissionsEndTime: {
         type: Date,
-        required: false
+        requiredForPublish: true
+    },
+    reviewingStartTime: {
+        type: Date,
+        requiredForPublish: true
+    },
+    reviewingEndTime: {
+        type: Date,
+        requiredForPublish: true
     },
     /** Event customisation */
     coverImage: CloudinaryImageSchema,
@@ -71,13 +73,13 @@ const EventSchema = new mongoose.Schema({
         type: String,
         enum: Object.keys(EventTypes),
         required: true,
-        default: EventTypes.physical.id
+        default: EventTypes.online.id
     },
     eventLocation: {
         type: AddressSchema,
         required: [
             function() {
-                return this.eventTypes === EventTypes.physical.id;
+                return this.eventType === EventTypes.physical.id;
             },
             `is required for physical events`
         ]
@@ -85,10 +87,6 @@ const EventSchema = new mongoose.Schema({
     travelGrantConfig: {
         type: TravelGrantConfigSchema,
         default: TravelGrantConfigSchema
-    },
-    participantConfig: {
-        type: ParticipantConfigSchema,
-        default: ParticipantConfigSchema
     },
     tracksConfig: {
         type: TracksConfigSchema,

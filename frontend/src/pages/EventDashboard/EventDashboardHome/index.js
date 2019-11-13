@@ -6,7 +6,6 @@ import { Box, Grid } from '@material-ui/core';
 import PageHeader from 'components/generic/PageHeader';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
-import QuickLinks from './QuickLinks';
 import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock';
 import TeamStatusBlock from './Blocks/TeamStatusBlock';
 import VisaInvitationBlock from './Blocks/VisaInvitationBlock';
