@@ -23,14 +23,12 @@ const EventDashboardSubmission = ({ event }) => {
         sourcePublic: true
     };
 
-    console.log('EVENT', event);
-
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={props => {
                 return yup.lazy(values => {
-                    return yup.object().shape(ProjectSchema);
+                    return yup.object().shape(ProjectSchema(event));
                 });
             }}
             onSubmit={(values, actions) => {
@@ -39,6 +37,7 @@ const EventDashboardSubmission = ({ event }) => {
         >
             {formikProps => (
                 <React.Fragment>
+                    {console.log(formikProps)}
                     <PageHeader heading="Your project" subheading="Submit your project here before Sunday 10:00AM" />
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -240,7 +239,12 @@ const EventDashboardSubmission = ({ event }) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Box margin="0 auto" width="100%" maxWidth="300px">
-                                <Button fullWidth color="theme_turquoise" variant="contained">
+                                <Button
+                                    onClick={formikProps.submitForm}
+                                    fullWidth
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                >
                                     Save changes
                                 </Button>
                             </Box>
