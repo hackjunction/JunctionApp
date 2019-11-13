@@ -44,4 +44,27 @@ const ProjectSchema = {
     location: yup.string().label('Table location')
 };
 
-module.exports = ProjectSchema;
+const buildProjectSchema = event => {
+    const schema = { ...ProjectSchema };
+
+    if (event.tracksEnabled) {
+        schema.track = yup
+            .string()
+            .oneOf(event.tracks.map(track => track.slug))
+            .required()
+            .label('Track');
+    }
+
+    if (event.challengesEnabled) {
+        schema.challenges = yup
+            .array()
+            .of(yup.string().oneOf(event.challenges.map(challenge => challenge.slug)))
+            .max(5)
+            .ensure()
+            .label('Challenges');
+    }
+
+    return schema;
+};
+
+module.exports = buildProjectSchema;
