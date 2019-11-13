@@ -51,6 +51,7 @@ const RegistrationSchema = new mongoose.Schema({
     }
 });
 
+/* Only allow a single registration per event per user */
 RegistrationSchema.index(
     {
         event: 1,
@@ -109,9 +110,11 @@ RegistrationSchema.post('save', function(doc, next) {
         EmailTaskController.createTravelGrantAcceptedTask(doc, true);
     }
 
-    UserProfileController.updateUserProfile(
-        doc.answers, doc.user, {registration: doc._id, event: doc.event, status: doc.status});
-
+    UserProfileController.updateUserProfile(doc.answers, doc.user, {
+        registration: doc._id,
+        event: doc.event,
+        status: doc.status
+    });
 
     next();
 });

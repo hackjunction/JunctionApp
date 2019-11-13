@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
-import { EventTypes, RegistrationStatuses } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
@@ -31,7 +30,9 @@ const EventDashboard = ({
     team,
     eventLoading,
     registrationLoading,
-    registration
+    registration,
+    showEventID,
+    showSubmission
 }) => {
     const { slug } = match.params;
 
@@ -50,28 +51,6 @@ const EventDashboard = ({
         updateTeam(slug);
     }, [slug, updateTeam]);
 
-    const showEventID = useMemo(() => {
-        // If the event is not a physical event, hide event ID
-        if (event.eventType !== EventTypes.physical.id) {
-            return false;
-        }
-        // If the participant has not confirmed their participation (or checked in), hide event ID
-        const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
-        if (!registration || validStatuses.indexOf(registration.status) === -1) {
-            return false;
-        }
-
-        return true;
-    }, [event, registration]);
-
-    const showSubmission = useMemo(() => {
-        if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
-            return false;
-        }
-
-        return true;
-    }, [registration]);
-
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
             <SidebarLayout
@@ -81,7 +60,7 @@ const EventDashboard = ({
                     <div className={styles.sidebarTop}>
                         <Image
                             className={styles.sidebarLogo}
-                            publicId={event.logo ? event.logo.publicId : ''}
+                            publicId={event && event.logo ? event.logo.publicId : ''}
                             transformation={{
                                 width: 200
                             }}
@@ -137,7 +116,9 @@ const mapStateToProps = state => ({
     eventError: DashboardSelectors.eventError(state),
     team: DashboardSelectors.team(state),
     registrationLoading: DashboardSelectors.registrationLoading(state),
-    registration: DashboardSelectors.registration(state)
+    registration: DashboardSelectors.registration(state),
+    showEventId: DashboardSelectors.showEventID(state),
+    showSubmission: DashboardSelectors.showSubmission(state)
 });
 
 const mapDispatchToProps = dispatch => ({

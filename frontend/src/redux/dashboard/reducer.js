@@ -3,19 +3,19 @@ import { buildHandler, buildUpdatePath } from '../utils';
 
 const initialState = {
     event: {
-        data: {},
+        data: null,
         loading: true,
         error: false,
         updated: 0
     },
     registration: {
-        data: {},
+        data: null,
         loading: true,
         error: false,
         updated: 0
     },
     team: {
-        data: {},
+        data: null,
         loading: true,
         error: false,
         updated: 0

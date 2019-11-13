@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from 'lodash-es';
 import moment from 'moment';
-import { EventHelpers, EventStatuses, RegistrationStatuses } from '@hackjunction/shared';
+import { EventHelpers, EventStatuses, EventTypes, RegistrationStatuses } from '@hackjunction/shared';
 
 export const event = state => state.dashboard.event.data;
 export const eventLoading = state => state.dashboard.event.loading;
@@ -11,6 +11,8 @@ export const eventUpdated = state => state.dashboard.event.updated;
 export const eventStatus = createSelector(event, event => EventHelpers.getEventStatus(event, moment));
 
 export const isRegistrationOpen = createSelector(eventStatus, status => status === EventStatuses.REGISTRATION_OPEN.id);
+export const isSubmissionsUpcoming = createSelector(event, event => EventHelpers.isSubmissionsUpcoming(event, moment));
+export const isSubmissionsPast = createSelector(event, event => EventHelpers.isSubmissionsPast(event, moment));
 
 export const registration = state => state.dashboard.registration.data;
 export const registrationLoading = state => state.dashboard.registration.loading;
@@ -53,4 +55,41 @@ export const isTeamComplete = createSelector(team, team => {
     } else {
         return team.complete;
     }
+});
+
+export const isTeamValid = createSelector(team, team => {
+    if (!team) return false;
+    return (
+        [team.owner]
+            .concat(team.members)
+            .map(userId => {
+                return team.meta[userId];
+            })
+            .filter(member => {
+                if (member.registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
+                    return true;
+                }
+                return false;
+            }).length === 0
+    );
+});
+
+export const showEventID = createSelector(event, registration, (event, registration) => {
+    if (!event) return false;
+    if (event.eventType !== EventTypes.physical.id) return false;
+
+    const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
+    if (!registration || validStatuses.indexOf(registration.status) === -1) {
+        return false;
+    }
+
+    return true;
+});
+
+export const showSubmission = createSelector(registration, registration => {
+    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
+        return false;
+    }
+
+    return true;
 });
