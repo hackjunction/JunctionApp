@@ -7,6 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+import StarRateIcon from '@material-ui/icons/StarRate';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -17,6 +18,7 @@ import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
 import EventDashboardSubmission from './EventDashboardSubmission';
+import EventDashboardReviewing from './EventDashboardReviewing';
 import Hackerpack from './Hackerpack';
 
 import * as AuthSelectors from 'redux/auth/selectors';
@@ -114,6 +116,16 @@ const EventDashboard = ({
                         icon: <AssignmentOutlinedIcon />,
                         label: 'Project submission',
                         component: EventDashboardSubmission
+                    },
+                    {
+                        key: 'reviewing',
+                        path: '/reviewing',
+                        exact: true,
+                        locked: true,
+                        lockedDescription: 'Reviewing not open',
+                        icon: <StarRateIcon />,
+                        label: 'Reviewing',
+                        component: EventDashboardReviewing
                     },
                     {
                         key: 'hackerpack',
