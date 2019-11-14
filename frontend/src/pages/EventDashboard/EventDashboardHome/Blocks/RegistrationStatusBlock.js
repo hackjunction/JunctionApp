@@ -280,9 +280,4 @@ const mapDispatch = dispatch => ({
     openEventId: slug => dispatch(push(`/dashboard/${slug}/event-id`))
 });
 
-export default withSnackbar(
-    connect(
-        mapState,
-        mapDispatch
-    )(RegistrationStatusBlock)
-);
+export default withSnackbar(connect(mapState, mapDispatch)(RegistrationStatusBlock));

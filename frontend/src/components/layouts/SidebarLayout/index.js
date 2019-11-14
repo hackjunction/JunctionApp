@@ -86,130 +86,146 @@ const propTypes = {
     location: PropTypes.object.isRequired
 };
 
-const SidebarLayout = React.memo(({ topContent, sidebarTopContent, baseRoute, location, routes, pushRoute }) => {
-    const classes = useStyles();
+const SidebarLayout = React.memo(
+    ({ topContent, sidebarTopContent, baseRoute, location, routes: _routes, pushRoute }) => {
+        const classes = useStyles();
+        const routes = _routes.filter(route => !route.hidden);
 
-    const activeIndex = useMemo(() => {
-        const relativePath = location.pathname.replace(baseRoute, '');
-        const idx = findIndex(routes, item => {
-            if (item.exact) {
-                return relativePath === item.path;
-            } else {
-                return relativePath.indexOf(item.path) !== -1;
+        const activeIndex = useMemo(() => {
+            const relativePath = location.pathname.replace(baseRoute, '');
+            const idx = findIndex(routes, item => {
+                if (item.exact) {
+                    return relativePath === item.path;
+                } else {
+                    return relativePath.indexOf(item.path) !== -1;
+                }
+            });
+
+            return idx;
+        }, [baseRoute, location.pathname, routes]);
+
+        useEffect(() => {
+            if (activeIndex === -1) {
+                pushRoute(routes[0].path);
             }
-        });
+        }, [routes, activeIndex, pushRoute]);
 
-        return idx;
-    }, [baseRoute, location.pathname, routes]);
+        useEffect(() => {
+            setMobileOpen(false);
+        }, [activeIndex]);
 
-    useEffect(() => {
-        if (activeIndex === -1) {
-            pushRoute(routes[0].path);
-        }
-    }, [routes, activeIndex, pushRoute]);
+        const safeIndex = activeIndex === -1 ? 0 : activeIndex;
 
-    const safeIndex = activeIndex === -1 ? 0 : activeIndex;
+        const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+        const handleDrawerToggle = () => {
+            setMobileOpen(!mobileOpen);
+        };
 
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
-    const drawerContent = (
-        <React.Fragment>
-            <Box p={2}>{sidebarTopContent}</Box>
-            <List>
-                {routes
-                    .filter(route => !route.hidden)
-                    .map((route, index) => {
-                        return (
-                            <ListItem
-                                disabled={route.locked}
-                                button
-                                key={route.path}
-                                selected={index === safeIndex}
-                                classes={{
-                                    root: classes.listItem,
-                                    selected: classes.listItemSelected
-                                }}
-                                onClick={() => pushRoute(route.path)}
-                            >
-                                <ListItemIcon className={classes.listItemIcon}>
-                                    {route.locked ? <LockIcon /> : route.icon}
-                                </ListItemIcon>
-                                <ListItemText
+        const drawerContent = (
+            <React.Fragment>
+                <Box p={2}>{sidebarTopContent}</Box>
+                <List>
+                    {routes
+                        .filter(route => !route.hidden)
+                        .map((route, index) => {
+                            return (
+                                <ListItem
+                                    disabled={route.locked}
+                                    button
+                                    key={route.path}
+                                    selected={index === safeIndex}
                                     classes={{
-                                        primary: classes.listItemTextPrimary,
-                                        secondary: classes.listItemTextSecondary
+                                        root: classes.listItem,
+                                        selected: classes.listItemSelected
                                     }}
-                                    primary={route.label}
-                                    secondary={route.locked ? route.lockedDescription : ''}
-                                />
-                            </ListItem>
-                        );
-                    })}
-            </List>
-        </React.Fragment>
-    );
-
-    return (
-        <div className={classes.root}>
-            <Hidden mdUp implementation="css">
-                <IconButton onClick={handleDrawerToggle} className={classes.drawerToggle} aria-label="toggle drawer">
-                    <MenuIcon />
-                </IconButton>
-            </Hidden>
-            <nav className={classes.drawer}>
-                <Hidden mdUp implementation="css">
-                    <Drawer
-                        variant="temporary"
-                        anchor="left"
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper
-                        }}
-                        ModalProps={{
-                            keepMounted: true // Better open performance on mobile.
-                        }}
-                    >
-                        {drawerContent}
-                    </Drawer>
-                </Hidden>
-                <Hidden smDown implementation="css">
-                    <Drawer
-                        classes={{
-                            paper: classes.drawerPaper
-                        }}
-                        variant="permanent"
-                        anchor="left"
-                        open
-                    >
-                        {drawerContent}
-                    </Drawer>
-                </Hidden>
-            </nav>
-            <main className={classes.content}>
-                {topContent}
-                <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
-                    <Switch>
-                        {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
-                            if (hidden || locked) {
-                                return null;
-                            } else {
-                                return (
-                                    <Route key={key} exact={exact} path={`${baseRoute}${path}`} component={component} />
-                                );
-                            }
+                                    onClick={() => pushRoute(route.path)}
+                                >
+                                    <ListItemIcon className={classes.listItemIcon}>
+                                        {route.locked ? <LockIcon /> : route.icon}
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        classes={{
+                                            primary: classes.listItemTextPrimary,
+                                            secondary: classes.listItemTextSecondary
+                                        }}
+                                        primary={route.label}
+                                        secondary={route.locked ? route.lockedDescription : ''}
+                                    />
+                                </ListItem>
+                            );
                         })}
-                        <Redirect to={baseRoute} />
-                    </Switch>
-                </CenteredContainer>
-            </main>
-        </div>
-    );
-});
+                </List>
+            </React.Fragment>
+        );
+
+        return (
+            <div className={classes.root}>
+                <Hidden mdUp implementation="css">
+                    <IconButton
+                        onClick={handleDrawerToggle}
+                        className={classes.drawerToggle}
+                        aria-label="toggle drawer"
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </Hidden>
+                <nav className={classes.drawer}>
+                    <Hidden mdUp implementation="css">
+                        <Drawer
+                            variant="temporary"
+                            anchor="left"
+                            open={mobileOpen}
+                            onClose={handleDrawerToggle}
+                            classes={{
+                                paper: classes.drawerPaper
+                            }}
+                            ModalProps={{
+                                keepMounted: true // Better open performance on mobile.
+                            }}
+                        >
+                            {drawerContent}
+                        </Drawer>
+                    </Hidden>
+                    <Hidden smDown implementation="css">
+                        <Drawer
+                            classes={{
+                                paper: classes.drawerPaper
+                            }}
+                            variant="permanent"
+                            anchor="left"
+                            open
+                        >
+                            {drawerContent}
+                        </Drawer>
+                    </Hidden>
+                </nav>
+                <main className={classes.content}>
+                    {topContent}
+                    <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
+                        <Switch>
+                            {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
+                                if (hidden || locked) {
+                                    return null;
+                                } else {
+                                    return (
+                                        <Route
+                                            key={key}
+                                            exact={exact}
+                                            path={`${baseRoute}${path}`}
+                                            component={component}
+                                        />
+                                    );
+                                }
+                            })}
+                            <Redirect to={baseRoute} />
+                        </Switch>
+                    </CenteredContainer>
+                </main>
+            </div>
+        );
+    }
+);
 
 SidebarLayout.propTypes = propTypes;
 
@@ -217,7 +233,4 @@ const mapDispatch = (dispatch, ownProps) => ({
     pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
 });
 
-export default connect(
-    null,
-    mapDispatch
-)(SidebarLayout);
+export default connect(null, mapDispatch)(SidebarLayout);

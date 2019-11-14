@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Upload from 'antd/es/upload';
 import { connect } from 'react-redux';
@@ -81,33 +81,51 @@ const ImageUpload = ({ value, onChange, uploadUrl, resizeMode = 'contain', enque
         throw new Error('ImageUpload component must be supplied an upload url');
     }
 
-    const beforeUpload = file => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            enqueueSnackbar('Please upload a .jpg or .png file');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            enqueueSnackbar('Upload size cannot be more than 2MB');
-        }
-        return isJpgOrPng && isLt2M;
-    };
+    const beforeUpload = useCallback(
+        file => {
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            if (!isJpgOrPng) {
+                enqueueSnackbar('Please upload a .jpg or .png file');
+            }
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+                enqueueSnackbar('Upload size cannot be more than 2MB');
+            }
+            return isJpgOrPng && isLt2M;
+        },
+        [enqueueSnackbar]
+    );
 
-    const handleChange = info => {
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-            return;
-        }
-        if (info.file.status === 'done') {
-            onChange(info.file.response);
-            setLoading(false);
-        }
-    };
+    const handleChange = useCallback(
+        info => {
+            if (info.file.status === 'uploading') {
+                setLoading(true);
+                return;
+            }
+            if (info.file.status === 'done') {
+                onChange(info.file.response);
+                setLoading(false);
+            }
 
-    const handleRemove = e => {
-        e.stopPropagation();
-        onChange();
-    };
+            if (info.file.status === 'error') {
+                if (info.file.response && info.file.response.message) {
+                    enqueueSnackbar(info.file.response.message, { variant: 'error' });
+                } else {
+                    enqueueSnackbar('Something went wrong... Please try again', { variant: 'error' });
+                }
+                setLoading(false);
+            }
+        },
+        [onChange, enqueueSnackbar]
+    );
+
+    const handleRemove = useCallback(
+        e => {
+            e.stopPropagation();
+            onChange();
+        },
+        [onChange]
+    );
 
     const renderLoading = () => {
         return (
