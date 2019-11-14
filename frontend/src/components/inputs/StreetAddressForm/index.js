@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import Select from 'components/inputs/Select';
 import TextInput from 'components/inputs/TextInput';
 
-const StreetAddressInput = ({ value = {}, onChange, showVenueName = false }) => {
+const StreetAddressInput = ({ value = {}, onChange, onBlur, showVenueName = false }) => {
     const { country, addressLine, addressLine2, city, postalCode, venueName } = value;
 
     const handleChange = useCallback(
@@ -25,6 +25,7 @@ const StreetAddressInput = ({ value = {}, onChange, showVenueName = false }) => 
                     options="country"
                     value={country}
                     onChange={value => handleChange('country', value)}
+                    onBlur={onBlur}
                 />
             </Grid>
             <Grid item xs={9}>
@@ -32,6 +33,7 @@ const StreetAddressInput = ({ value = {}, onChange, showVenueName = false }) => 
                     label="Street address"
                     value={addressLine}
                     onChange={value => handleChange('addressLine', value)}
+                    onBlur={onBlur}
                 />
             </Grid>
             <Grid item xs={3}>
@@ -39,6 +41,7 @@ const StreetAddressInput = ({ value = {}, onChange, showVenueName = false }) => 
                     label="Apartment/Unit/Other"
                     value={addressLine2}
                     onChange={value => handleChange('addressLine2', value)}
+                    onBlur={onBlur}
                 />
             </Grid>
             <Grid item xs={8}>
@@ -49,6 +52,7 @@ const StreetAddressInput = ({ value = {}, onChange, showVenueName = false }) => 
                     label="Postal code"
                     value={postalCode}
                     onChange={value => handleChange('postalCode', value)}
+                    onBlur={onBlur}
                 />
             </Grid>
             {showVenueName && (
@@ -57,6 +61,7 @@ const StreetAddressInput = ({ value = {}, onChange, showVenueName = false }) => 
                         label="Venue name"
                         value={venueName}
                         onChange={value => handleChange('venueName', value)}
+                        onBlur={onBlur}
                     />
                 </Grid>
             )}

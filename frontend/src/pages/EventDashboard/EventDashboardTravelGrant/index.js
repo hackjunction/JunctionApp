@@ -66,12 +66,8 @@ export default function index() {
                                     label="Gender"
                                     options="gender"
                                     value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onChange={value => form.setFieldValue(field.name, value)}
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -94,9 +90,7 @@ export default function index() {
                                             firstName: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                                 <TextInput
                                     label="Middle name"
@@ -107,9 +101,7 @@ export default function index() {
                                             middleName: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                                 <TextInput
                                     label="Last name"
@@ -120,9 +112,7 @@ export default function index() {
                                             lastName: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -138,12 +128,8 @@ export default function index() {
                             >
                                 <DateInput
                                     value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onChange={value => form.setFieldValue(field.name, value)}
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -166,9 +152,7 @@ export default function index() {
                                             issuingCountry: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                     options="country"
                                 />
                                 <TextInput
@@ -180,9 +164,7 @@ export default function index() {
                                             number: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -198,9 +180,8 @@ export default function index() {
                             >
                                 <StreetAddressForm
                                     value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
+                                    onChange={value => form.setFieldValue(field.name, value)}
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -223,9 +204,7 @@ export default function index() {
                                             accountNumber: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                                 <TextInput
                                     label="Swift"
@@ -236,9 +215,7 @@ export default function index() {
                                             swift: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                                 <TextInput
                                     label="Bank name"
@@ -249,9 +226,7 @@ export default function index() {
                                             bankName: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                                 <TextInput
                                     label="Email address"
@@ -262,9 +237,7 @@ export default function index() {
                                             email: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -287,9 +260,7 @@ export default function index() {
                                             url: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                                 <TextInput
                                     label="Public ID"
@@ -300,9 +271,7 @@ export default function index() {
                                             publicId: value
                                         })
                                     }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
@@ -319,22 +288,14 @@ export default function index() {
                                 <TextInput
                                     label="€"
                                     value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
+                                    onChange={value => form.setFieldValue(field.name, value)}
+                                    onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </FormControl>
                         )}
                     />
                     {/* {renderErrors(example)} */}
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={formikProps.submitForm}
-                    >
+                    <Button color="primary" variant="contained" onClick={formikProps.submitForm}>
                         Submit
                     </Button>
                 </React.Fragment>
