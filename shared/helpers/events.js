@@ -1,13 +1,48 @@
 const EventStatuses = require('../constants/event-statuses');
 
+const nowIsBefore = (time, moment) => {
+    if (!time) {
+        console.log('No time supplied to nowIsBefore');
+    }
+
+    const now = moment().utc();
+    const timeMoment = moment(time).utc();
+
+    return now.isBefore(timeMoment);
+};
+
+const nowIsBetween = (startTime, endTime, moment) => {
+    if (!startTime) {
+        console.log('No startTime supplied to nowIsBetween');
+        return false;
+    }
+    if (!endTime) {
+        console.log('No endTime supplied to nowIsBetween');
+        return false;
+    }
+    const now = moment().utc();
+    const startMoment = moment(startTime).utc();
+    const endMoment = moment(endTime).utc();
+
+    return now.isBetween(startMoment, endMoment);
+};
+
 const EventHelpers = {
     isRegistrationOpen: (event, moment) => {
         if (!event) return false;
-        const now = moment().utc();
-        const registrationStarts = moment(event.registrationStartTime).utc();
-        const registrationEnds = moment(event.registrationEndTime).utc();
-
-        return now.isBetween(registrationStarts, registrationEnds);
+        return nowIsBetween(event.registrationStartTime, event.registrationEndTime, moment);
+    },
+    isSubmissionsOpen: (event, moment) => {
+        if (!event) return false;
+        return nowIsBetween(event.submissionsStartTime, event.submissionsEndTime, moment);
+    },
+    isSubmissionsUpcoming: (event, moment) => {
+        if (!event) return false;
+        return nowIsBefore(event.submissionsStartTime, moment);
+    },
+    isSubmissionsPast: (event, moment) => {
+        if (!event) return false;
+        return !nowIsBefore(event.submissionsEndTime, moment);
     },
     getEventStatus: (event, moment) => {
         if (!event) return null;

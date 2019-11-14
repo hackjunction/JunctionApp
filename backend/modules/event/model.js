@@ -5,8 +5,9 @@ const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig'
 const RegistrationQuestionSchema = require('../../common/schemas/RegistrationQuestion');
 const TravelGrantConfigSchema = require('../../common/schemas/TravelGrantConfig');
 const DiscordConfigSchema = require('../../common/schemas/DiscordConfig');
-const TracksConfigSchema = require('../../common/schemas/TracksConfig');
 const AddressSchema = require('../../common/schemas/Address');
+const TrackSchema = require('../../common/schemas/TrackSchema');
+const ChallengeSchema = require('../../common/schemas/ChallengeSchema');
 const allowPublishPlugin = require('../../common/plugins/allowPublish');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const uploadHelper = require('../../modules/upload/helper');
@@ -84,13 +85,49 @@ const EventSchema = new mongoose.Schema({
             `is required for physical events`
         ]
     },
+    tracksEnabled: false,
+    tracks: {
+        type: [TrackSchema],
+        default: [],
+        validate: [
+            function(val) {
+                if (this.tracksEnabled) {
+                    return val.length > 0;
+                }
+                return true;
+            },
+            'must have at least one item if tracks are enabled'
+        ],
+        required: [
+            function() {
+                return this.tracksEnabled;
+            },
+            'is required if tracks are enabled'
+        ]
+    },
+    challengesEnabled: false,
+    challenges: {
+        type: [ChallengeSchema],
+        default: [],
+        validate: [
+            function(val) {
+                if (this.challengesEnabled) {
+                    return val.length > 0;
+                }
+                return true;
+            },
+            'must have at least one item if challenges are enabled'
+        ],
+        required: [
+            function() {
+                return this.challengesEnabled;
+            },
+            'is required if challenges are enabled'
+        ]
+    },
     travelGrantConfig: {
         type: TravelGrantConfigSchema,
         default: TravelGrantConfigSchema
-    },
-    tracksConfig: {
-        type: TracksConfigSchema,
-        default: TracksConfigSchema
     },
     discordConfig: {
         type: DiscordConfigSchema,

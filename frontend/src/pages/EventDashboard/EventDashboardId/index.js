@@ -3,7 +3,7 @@ import React from 'react';
 import QRCode from 'qrcode.react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Avatar, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
 import PageHeader from 'components/generic/PageHeader';
 

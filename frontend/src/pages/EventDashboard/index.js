@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
-import { EventTypes, RegistrationStatuses } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -15,6 +16,8 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
+import EventDashboardSubmission from './EventDashboardSubmission';
+import Hackerpack from './Hackerpack';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -26,12 +29,15 @@ const EventDashboard = ({
     updateEvent,
     updateRegistration,
     updateTeam,
-    updateProfiles,
+    updateProject,
     event,
     team,
     eventLoading,
     registrationLoading,
-    registration
+    registration,
+    showEventID,
+    showSubmission,
+    isSubmissionsLocked
 }) => {
     const { slug } = match.params;
 
@@ -50,15 +56,10 @@ const EventDashboard = ({
         updateTeam(slug);
     }, [slug, updateTeam]);
 
-    const showEventID = useMemo(() => {
-        if (event.eventType !== EventTypes.physical.id) return false;
-        const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
-        if (!registration || validStatuses.indexOf(registration.status) === -1) {
-            return false;
-        }
-
-        return true;
-    }, [event, registration]);
+    /** Update project if slug changes */
+    useEffect(() => {
+        updateProject(slug);
+    }, [slug, team, updateProject]);
 
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
@@ -69,7 +70,7 @@ const EventDashboard = ({
                     <div className={styles.sidebarTop}>
                         <Image
                             className={styles.sidebarLogo}
-                            publicId={event.logo ? event.logo.publicId : ''}
+                            publicId={event && event.logo ? event.logo.publicId : ''}
                             transformation={{
                                 width: 200
                             }}
@@ -102,6 +103,25 @@ const EventDashboard = ({
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
                         component: EventDashboardId
+                    },
+                    {
+                        key: 'project',
+                        path: '/project',
+                        exact: true,
+                        locked: isSubmissionsLocked,
+                        lockedDescription: 'Submissions not open',
+                        hidden: !showSubmission,
+                        icon: <AssignmentOutlinedIcon />,
+                        label: 'Project submission',
+                        component: EventDashboardSubmission
+                    },
+                    {
+                        key: 'hackerpack',
+                        path: '/hackerpack',
+                        exact: true,
+                        icon: <AmpStoriesIcon />,
+                        label: 'Hackerpack',
+                        component: Hackerpack
                     }
                 ]}
             />
@@ -116,17 +136,17 @@ const mapStateToProps = state => ({
     eventError: DashboardSelectors.eventError(state),
     team: DashboardSelectors.team(state),
     registrationLoading: DashboardSelectors.registrationLoading(state),
-    registration: DashboardSelectors.registration(state)
+    registration: DashboardSelectors.registration(state),
+    showEventID: DashboardSelectors.showEventID(state),
+    showSubmission: DashboardSelectors.showSubmission(state),
+    isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state)
 });
 
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(DashboardActions.updateEvent(slug)),
     updateRegistration: slug => dispatch(DashboardActions.updateRegistration(slug)),
     updateTeam: slug => dispatch(DashboardActions.updateTeam(slug)),
-    updateProfiles: team => dispatch(DashboardActions.updateProfiles(team))
+    updateProject: slug => dispatch(DashboardActions.updateProject(slug))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(EventDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard);

@@ -11,7 +11,10 @@ const { hasPermission } = require('../../common/middleware/permissions');
 const { hasRegisteredToEvent, isEventOrganiser, isBefore } = require('../../common/middleware/events');
 
 const createTeam = asyncHandler(async (req, res) => {
-    const team = await TeamController.createTeam(req.event._id, req.user.sub);
+    let team = await TeamController.createTeam(req.event._id, req.user.sub);
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team);
+    }
     return res.status(200).json(team);
 });
 
@@ -26,7 +29,10 @@ const editTeam = asyncHandler(async (req, res) => {
 });
 
 const joinTeam = asyncHandler(async (req, res) => {
-    const team = await TeamController.joinTeam(req.event._id, req.user.sub, req.params.code);
+    let team = await TeamController.joinTeam(req.event._id, req.user.sub, req.params.code);
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team);
+    }
     return res.status(200).json(team);
 });
 
@@ -41,7 +47,10 @@ const removeMember = asyncHandler(async (req, res) => {
 });
 
 const getTeam = asyncHandler(async (req, res) => {
-    const team = await TeamController.getTeam(req.event._id, req.user.sub);
+    let team = await TeamController.getTeam(req.event._id.toString(), req.user.sub);
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team);
+    }
     return res.status(200).json(team);
 });
 
