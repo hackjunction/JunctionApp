@@ -107,9 +107,15 @@ controller.submitVote = async (event, userId, winningProjectId) => {
 
     loser.mu = updated_mu_loser;
     loser.sigma_sq = updated_sigma_sq_loser;
+    if (loser._id === annotator.next) {
+        loser.viewedBy.push(annotator._id);
+    }
 
     winner.mu = updated_mu_winner;
     winner.sigma_sq = updated_sigma_sq_winner;
+    if (winner._id === annotator.next) {
+        winner.viewedBy.push(annotator._id);
+    }
 
     const decision = new GavelDecision({
         annotator: annotator._id,

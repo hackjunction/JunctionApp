@@ -1,4 +1,3 @@
-'use strict';
 const mongoose = require('mongoose');
 const Settings = require('./settings');
 
@@ -45,6 +44,14 @@ const GavelProjectSchema = new mongoose.Schema({
         required: true
     }
 });
+
+GavelProjectSchema.methods.setSkippedBy = async function(annotatorId) {
+    if (this.skippedBy.indexOf(annotatorId) === -1) {
+        this.skippedBy.push(annotatorId);
+        return this.save();
+    }
+    return Promise.resolve();
+};
 
 GavelProjectSchema.set('timestamps', true);
 
