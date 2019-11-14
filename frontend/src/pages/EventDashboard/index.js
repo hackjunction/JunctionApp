@@ -6,6 +6,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -35,7 +36,8 @@ const EventDashboard = ({
     registrationLoading,
     registration,
     showEventID,
-    showSubmission
+    showSubmission,
+    isSubmissionsLocked
 }) => {
     const { slug } = match.params;
 
@@ -106,8 +108,10 @@ const EventDashboard = ({
                         key: 'project',
                         path: '/project',
                         exact: true,
+                        locked: isSubmissionsLocked,
+                        lockedDescription: 'Submissions not open',
                         hidden: !showSubmission,
-                        icon: <FingerprintIcon />,
+                        icon: <AssignmentOutlinedIcon />,
                         label: 'Project submission',
                         component: EventDashboardSubmission
                     },
@@ -134,7 +138,8 @@ const mapStateToProps = state => ({
     registrationLoading: DashboardSelectors.registrationLoading(state),
     registration: DashboardSelectors.registration(state),
     showEventId: DashboardSelectors.showEventID(state),
-    showSubmission: DashboardSelectors.showSubmission(state)
+    showSubmission: DashboardSelectors.showSubmission(state),
+    isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state)
 });
 
 const mapDispatchToProps = dispatch => ({
