@@ -1,17 +1,18 @@
 //Should be equivalent to scipy.special.psi
-const digamma = require('../../node_modules/@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/digamma');
+const digamma = require('@stdlib/math/base/special/digamma');
 
 //Should be equivalent to scipy.special.betaln
-const betaln = require('../../node_modules/@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/betaln');
+const betaln = require('@stdlib/math/base/special/betaln');
 
 //Should be equivalent to numpy.exp
-const exp = require('../../node_modules/@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/exp');
+const exp = require('@stdlib/math/base/special/exp');
 
 //Should be equivalent to numpy.log
-const log = require('../../node_modules/@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/ln');
+const log = require('@stdlib/math/base/special/ln');
 
-const { MATH } = require('../settings');
+const { KAPPA, GAMMA } = require('./settings');
 
+// Ok here we go :DD
 const Maths = {
     divergenceGaussian: (mu_1, sigma_sq_1, mu_2, sigma_sq_2) => {
         const ratio = sigma_sq_1 / sigma_sq_2;
@@ -85,11 +86,11 @@ const Maths = {
             prob_a_ranked_above *
                 (Maths.divergenceGaussian(mu_a_1, sigma_sq_a_1, mu_a, sigma_sq_a) +
                     Maths.divergenceGaussian(mu_b_1, sigma_sq_b_1, mu_b, sigma_sq_b) +
-                    MATH.GAMMA * Maths.divergenceBeta(alpha_1, beta_1, alpha, beta)) +
+                    GAMMA * Maths.divergenceBeta(alpha_1, beta_1, alpha, beta)) +
             (1 - prob_a_ranked_above) *
                 (Maths.divergenceGaussian(mu_a_2, sigma_sq_a_2, mu_a, sigma_sq_a) +
                     Maths.divergenceGaussian(mu_b_2, sigma_sq_b_2, mu_b, sigma_sq_b) +
-                    MATH.GAMMA * Maths.divergenceBeta(alpha_2, beta_2, alpha, beta))
+                    GAMMA * Maths.divergenceBeta(alpha_2, beta_2, alpha, beta))
         );
     },
 
@@ -113,8 +114,8 @@ const Maths = {
                 Math.pow(alpha * exp(mu_winner) + beta * exp(mu_loser), 2) -
             (exp(mu_winner) * exp(mu_loser)) / Math.pow(exp(mu_winner) + exp(mu_loser), 2);
 
-        const updated_sigma_sq_winner = sigma_sq_winner * Math.max(1 + sigma_sq_winner * mult, MATH.KAPPA);
-        const updated_sigma_sq_loser = sigma_sq_loser * Math.max(1 + sigma_sq_loser * mult, MATH.KAPPA);
+        const updated_sigma_sq_winner = sigma_sq_winner * Math.max(1 + sigma_sq_winner * mult, KAPPA);
+        const updated_sigma_sq_loser = sigma_sq_loser * Math.max(1 + sigma_sq_loser * mult, KAPPA);
 
         return {
             updated_sigma_sq_winner,
