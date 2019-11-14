@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const { ReviewingMethods } = require('@hackjunction/shared');
 const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
-const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
+const GavelController = require('../reviewing/gavel/controller');
 
 const ProjectSchema = new mongoose.Schema({
     event: {
@@ -68,6 +69,26 @@ ProjectSchema.index(
 ProjectSchema.index({
     track: 1,
     event: 1
+});
+
+ProjectSchema.post('save', async function(doc, next) {
+    mongoose
+        .model('Event')
+        .findById(this.event)
+        .then(event => {
+            switch (event.reviewMethod) {
+                /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
+                case ReviewingMethods.gavelPeerReview.id: {
+                    GavelController.ensureGavelProject(doc);
+                    break;
+                }
+                default: {
+                    /** By default, no action needed */
+                }
+            }
+        });
+
+    next();
 });
 
 const Project = mongoose.model('Project', ProjectSchema);
