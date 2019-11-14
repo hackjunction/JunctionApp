@@ -88,8 +88,7 @@ const EditRegistrationActions = ({ registration, event, organisers, organisersMa
                     helperText="Enter 0 to reject travel grant. If the participant previously had no travel grant value, entering a value will trigger an email notification."
                     type="number"
                     value={travelGrant.value}
-                    onChange={travelGrant.onChange}
-                    rawOnChange
+                    onChange={travelGrant.setValue}
                 />
             </Grid>
             <Grid item xs={12}>
