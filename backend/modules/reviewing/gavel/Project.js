@@ -36,11 +36,13 @@ const GavelProjectSchema = new mongoose.Schema({
     ],
     mu: {
         type: Number,
-        default: Settings.MATH.MU_PRIOR
+        default: Settings.MATH.MU_PRIOR,
+        required: true
     },
     sigma_sq: {
         type: Number,
-        default: Settings.MATH.SIGMA_SQ_PRIOR
+        default: Settings.MATH.SIGMA_SQ_PRIOR,
+        required: true
     }
 });
 

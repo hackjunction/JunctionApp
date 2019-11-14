@@ -10,6 +10,22 @@ const Maths = require('./maths');
 
 const controller = {};
 
+controller.ensureGavelProject = async project => {
+    const existing = GavelProject.findOne({ project: project._id, event: project.event });
+    if (existing) {
+        /** Make sure the track is updated, should it change */
+        existing.track = project.track;
+        return existing.save();
+    } else {
+        const gavelproject = new GavelProject({
+            project: project._id,
+            event: project.event,
+            track: project.track
+        });
+        return gavelproject.save();
+    }
+};
+
 controller.initAnnotator = async (event, userId) => {
     const team = await TeamController.getTeam(event._id, userId).catch(() => null);
     const [projects, annotators] = await Promise.all([
