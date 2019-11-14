@@ -183,7 +183,7 @@ GavelAnnotatorSchema.methods.getNextProject = async function() {
     });
 };
 
-GavelAnnotatorSchema.assignNextProject = async function() {
+GavelAnnotatorSchema.methods.assignNextProject = async function() {
     const nextProject = await this.getNextProject();
 
     if (!this.next) {
@@ -197,7 +197,11 @@ GavelAnnotatorSchema.assignNextProject = async function() {
     return this.save();
 };
 
-GavelAnnotatorSchema.skipCurrentProject = async function() {
+GavelAnnotatorSchema.methods.skipCurrentProject = async function() {
+    mongoose
+        .model('GavelProject')
+        .findById(this.next)
+        .setSkippedBy(this._id);
     const nextProject = await this.getNextProject();
     if (!this.next) {
         return Promise.reject(new ForbiddenError('Cannot skip current project when there is no project assigned'));
