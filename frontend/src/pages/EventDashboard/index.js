@@ -137,7 +137,7 @@ const mapStateToProps = state => ({
     team: DashboardSelectors.team(state),
     registrationLoading: DashboardSelectors.registrationLoading(state),
     registration: DashboardSelectors.registration(state),
-    showEventId: DashboardSelectors.showEventID(state),
+    showEventID: DashboardSelectors.showEventID(state),
     showSubmission: DashboardSelectors.showSubmission(state),
     isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state)
 });
