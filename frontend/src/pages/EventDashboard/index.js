@@ -59,7 +59,7 @@ const EventDashboard = ({
     /** Update project if slug changes */
     useEffect(() => {
         updateProject(slug);
-    }, [slug, updateProject]);
+    }, [slug, team, updateProject]);
 
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>

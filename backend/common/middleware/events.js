@@ -116,32 +116,44 @@ const EventMiddleware = {
     isEventOrganiser: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
         const error = isOrganiser(req.user, event);
-        if (error) return next(error);
-        req.event = event;
-        next();
+        if (error) {
+            next(error);
+        } else {
+            req.event = event;
+            next();
+        }
     },
     isEventOwner: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
         const error = isOwner(req.user, event);
-        if (error) return next(error);
-        req.event = event;
-        next();
+        if (error) {
+            next(error);
+        } else {
+            req.event = event;
+            next();
+        }
     },
     canRegisterToEvent: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
         const error = canRegister(req.user, event);
-        if (error) return next(error);
-        req.event = event;
-        next();
+        if (error) {
+            next(error);
+        } else {
+            req.event = event;
+            next();
+        }
     },
     hasRegisteredToEvent: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
         const registration = await getRegistration(req.user, event);
         const error = hasRegistered(event, registration);
-        if (error) return next(error);
-        req.event = event;
-        req.registration = registration;
-        next();
+        if (error) {
+            next(error);
+        } else {
+            req.event = event;
+            req.registration = registration;
+            next();
+        }
     },
     canSubmitProject: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
@@ -150,11 +162,14 @@ const EventMiddleware = {
             getTeamWithMeta(req.user, event)
         ]);
         const error = canSubmitProject(event, registration, team);
-        if (error) return next(error);
-        req.event = event;
-        req.registration = registration;
-        req.team = team;
-        next();
+        if (error) {
+            next(error);
+        } else {
+            req.event = event;
+            req.registration = registration;
+            req.team = team;
+            next();
+        }
     },
     /** Can only be called after req.event has been set by other middleware */
     isBefore: {

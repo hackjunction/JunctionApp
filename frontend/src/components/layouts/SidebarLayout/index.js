@@ -110,6 +110,10 @@ const SidebarLayout = React.memo(
             }
         }, [routes, activeIndex, pushRoute]);
 
+        useEffect(() => {
+            setMobileOpen(false);
+        }, [activeIndex]);
+
         const safeIndex = activeIndex === -1 ? 0 : activeIndex;
 
         const [mobileOpen, setMobileOpen] = React.useState(false);

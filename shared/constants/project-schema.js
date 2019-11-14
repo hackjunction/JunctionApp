@@ -1,5 +1,5 @@
 const yup = require('yup');
-const { EventTypes } = require('@hackjunction/shared');
+const EventTypes = require('./event-types');
 
 /** The user editable fields and their validation rules for a Project */
 //TODO: Add tracks and challenges

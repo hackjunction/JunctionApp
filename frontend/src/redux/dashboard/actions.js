@@ -184,7 +184,7 @@ export const lockTeam = (slug, code) => async (dispatch, getState) => {
 export const updateProject = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
-    return dispatch({
+    dispatch({
         type: ActionTypes.UPDATE_PROJECT,
         promise: ProjectsService.getProjectForEventAndTeam(idToken, slug),
         meta: {
