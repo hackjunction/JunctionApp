@@ -103,7 +103,12 @@ const ProjectBlock = ({
                 </Typography>
                 <Typography variant="h4">Project submissions are open!</Typography>
                 <Typography variant="h6" gutterBottom>
-                    The submission deadline is in 06:07:54
+                    The submission deadline is in{' '}
+                    <Countdown
+                        daysInHours
+                        date={event.submissionsEndTime}
+                        renderer={({ formatted }) => `${formatted.hours}:${formatted.minutes}:${formatted.seconds}`}
+                    />
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                     Great, you've already made a submission! You can make edits to it until the final submission
