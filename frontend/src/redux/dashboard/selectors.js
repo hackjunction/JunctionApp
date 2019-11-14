@@ -99,3 +99,7 @@ export const showSubmission = createSelector(registration, registration => {
 
     return true;
 });
+
+export const isSubmissionsLocked = createSelector(event, event => {
+    return !EventHelpers.isSubmissionsOpen(event, moment);
+});

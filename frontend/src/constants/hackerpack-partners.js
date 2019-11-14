@@ -8,7 +8,7 @@ const Partners = [
     },
     {
         name: 'SUSE',
-        description: `We offer free downloads of SUSE Linux Enterprise Server with extensions and a 1 year developer license. The product can be used on x86 and ARM hardware, including the Raspberry Pi 3B+. We also offer the SUSE Container as a Service Platform for running Kubernetes clusters. Beside that we will have an early trial access for SUSE Cloud Application Platform, which allows cloud native application development with ease.`,
+        description: `We offer free downloads of SUSE Linux Enterprise Server with extensions and a 1 year developer license. The product can be used on x86 and ARM hardware, including the Raspberry Pi 3B+. We also offer the SUSE Container as a Service Platform for running Kubernetes clusters.`,
         icon:
             'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1573592302/Suse_logo_transparent.png',
         link: 'https://bit.ly/suse-hackerpack2019'

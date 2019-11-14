@@ -1,4 +1,5 @@
 const yup = require('yup');
+const { EventTypes } = require('@hackjunction/shared');
 
 /** The user editable fields and their validation rules for a Project */
 //TODO: Add tracks and challenges
@@ -41,8 +42,7 @@ const ProjectSchema = {
         )
         .max(4)
         .ensure()
-        .label('Images'),
-    location: yup.string().label('Table location')
+        .label('Images')
 };
 
 const buildProjectSchema = event => {
@@ -65,7 +65,13 @@ const buildProjectSchema = event => {
             .label('Challenges');
     }
 
-    return schema;
+    if (event.eventType === EventTypes.physical.id) {
+        schema.location = yup
+            .string()
+            .max(100)
+            .required()
+            .label('Table location');
+    }
 };
 
 module.exports = buildProjectSchema;

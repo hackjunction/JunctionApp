@@ -7,6 +7,7 @@ import PageHeader from 'components/generic/PageHeader';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
 import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock';
+import ProjectBlock from './Blocks/ProjectBlock';
 import TeamStatusBlock from './Blocks/TeamStatusBlock';
 import VisaInvitationBlock from './Blocks/VisaInvitationBlock';
 import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock';
@@ -26,6 +27,7 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             {/* <QuickLinks /> */}
             <Grid container spacing={5}>
                 <RegistrationStatusBlock />
+                <ProjectBlock />
                 <TravelGrantStatusBlock />
                 <TeamStatusBlock />
                 <VisaInvitationBlock />
