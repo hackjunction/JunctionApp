@@ -11,7 +11,8 @@ const Maths = require('./maths');
 const controller = {};
 
 controller.ensureGavelProject = async project => {
-    const existing = GavelProject.findOne({ project: project._id, event: project.event });
+    const existing = await GavelProject.findOne({ project: project._id, event: project.event });
+
     if (existing) {
         /** Make sure the track is updated, should it change */
         existing.track = project.track;
@@ -133,3 +134,5 @@ controller.submitVote = async (event, userId, winningProjectId) => {
 
     return updatedAnnotator;
 };
+
+module.exports = controller;

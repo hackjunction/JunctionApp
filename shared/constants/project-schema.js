@@ -72,6 +72,8 @@ const buildProjectSchema = event => {
             .required()
             .label('Table location');
     }
+
+    return schema;
 };
 
 module.exports = buildProjectSchema;

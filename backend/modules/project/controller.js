@@ -22,6 +22,8 @@ controller.getProjectByEventAndTeam = (eventId, teamId) => {
 controller.createProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event));
     const validatedData = await schema.validate(data, { stripUnknown: true });
+    console.log('ORIGINAL', data);
+    console.log('VALIDATED', validatedData);
     const project = new Project({
         event: event._id,
         team: team._id,

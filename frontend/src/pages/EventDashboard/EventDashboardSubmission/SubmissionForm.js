@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import * as yup from 'yup';
 import { connect } from 'react-redux';
 import { Formik, FastField } from 'formik';
-import { ProjectSchema } from '@hackjunction/shared';
+import { ProjectSchema, EventTypes } from '@hackjunction/shared';
 import { Grid, Box, Typography } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 
@@ -25,6 +25,26 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
         sourcePublic: true,
         ...project
     };
+
+    const trackOptions = useMemo(() => {
+        if (!event.tracksEnabled || !event.tracks) return null;
+        return event.tracks.map(track => ({
+            label: track.name,
+            value: track.slug
+        }));
+    }, [event]);
+
+    const challengeOptions = useMemo(() => {
+        if (!event.challengesEnabled || !event.challenges) return null;
+        return event.challenges.map(challenge => ({
+            label: challenge.name,
+            value: challenge.slug
+        }));
+    }, [event]);
+
+    const locationEnabled = useMemo(() => {
+        return event.eventType === EventTypes.physical.id;
+    }, [event]);
 
     const renderErrors = errors => {
         return Object.keys(errors).map(key => {
@@ -134,7 +154,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                             )}
                         />
                     </Grid>
-                    {event.tracksEnabled && (
+                    {trackOptions && (
                         <Grid item xs={12}>
                             <FastField
                                 name="track"
@@ -147,6 +167,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                     >
                                         <Select
                                             label="Track"
+                                            options={trackOptions}
                                             value={field.value}
                                             onChange={value => form.setFieldValue(field.name, value)}
                                             onBlur={() => form.setFieldTouched(field.name)}
@@ -156,7 +177,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                             />
                         </Grid>
                     )}
-                    {event.challengesEnabled && (
+                    {challengeOptions && (
                         <Grid item xs={12}>
                             <FastField
                                 name="challenges"
@@ -169,6 +190,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                     >
                                         <Select
                                             label="Challenges"
+                                            options={challengeOptions}
                                             value={field.value}
                                             onChange={value => form.setFieldValue(field.name, value)}
                                             onBlur={() => form.setFieldTouched(field.name)}
@@ -235,25 +257,29 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 </FormControl>
                             )}
                         />
-                        <FastField
-                            name="location"
-                            render={({ field, form }) => (
-                                <FormControl
-                                    label="Table location"
-                                    hint="Where can judges find your project? Make sure this is always correct and up-to-date!"
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
-                                        placeholder="E.g. A3"
-                                    />
-                                </FormControl>
-                            )}
-                        />
                     </Grid>
+                    {locationEnabled && (
+                        <Grid item xs={12}>
+                            <FastField
+                                name="location"
+                                render={({ field, form }) => (
+                                    <FormControl
+                                        label="Table location"
+                                        hint="Where can judges find your project? Make sure this is always correct and up-to-date!"
+                                        touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                        error={form.errors[field.name]}
+                                    >
+                                        <TextInput
+                                            value={field.value}
+                                            onChange={value => form.setFieldValue(field.name, value)}
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            placeholder="E.g. A3"
+                                        />
+                                    </FormControl>
+                                )}
+                            />
+                        </Grid>
+                    )}
                     {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <Typography color="error" variant="h6">

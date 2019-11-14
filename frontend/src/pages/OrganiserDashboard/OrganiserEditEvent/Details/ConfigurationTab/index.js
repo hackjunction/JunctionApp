@@ -185,7 +185,7 @@ const ConfigurationTab = () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="reviewConfig"
+                    name="reviewMethod"
                     render={({ field, form }) => (
                         <FormControl
                             label="Reviewing method"
