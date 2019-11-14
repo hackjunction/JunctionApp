@@ -17,4 +17,5 @@ const Settings = {
     /** How many views must a project have to no longer be automatically prioritised? */
     ITEM_MIN_VIEWS: 5
 };
+
 module.exports = Settings;

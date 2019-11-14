@@ -57,3 +57,5 @@ router
             return res.status(200).json(annotator);
         })
     );
+
+module.exports = router;
