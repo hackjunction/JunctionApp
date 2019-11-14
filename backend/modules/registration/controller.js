@@ -225,12 +225,11 @@ controller.getFullRegistration = (eventId, registrationId) => {
 
 controller.editRegistration = (registrationId, event, data, user) => {
     return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
-        registration.status = data.status;
-        registration.rating = data.rating;
-        registration.ratedBy = user.sub;
-        registration.tags = data.tags;
-        registration.assignedTo = data.assignedTo;
-        registration.travelGrant = data.travelGrant;
+        const d = _.pick(data, ['status', 'rating', 'tags', 'assignedTo', 'travelGrant']);
+        registration.set(d);
+        if (d.rating) {
+            registration.ratedBy = user.sub;
+        }
         return registration.save();
     });
 };
