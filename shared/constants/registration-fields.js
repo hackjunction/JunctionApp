@@ -728,7 +728,7 @@ const Fields = {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
-                .max(10)
+                .max(100)
                 .label(FieldProps.firstName.label);
 
             return required ? base.required() : base;

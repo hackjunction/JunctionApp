@@ -57,6 +57,8 @@ controller.queryProfiles = (query = {}, user) => {
         }
     };
 
+    console.log(JSON.stringify(userQuery));
+
     //Set default filters (consent & recruiter scope)
     if (userQuery['$and']) {
         userQuery['$and'] = userQuery['$and'].concat([consentFilter, eventFilter]);
