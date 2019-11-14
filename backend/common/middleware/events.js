@@ -108,8 +108,12 @@ async function getRegistration(user, event) {
 }
 
 async function getTeamWithMeta(user, event) {
-    const team = await TeamController.getTeam(event._id, user.sub);
-    return TeamController.attachMeta(team);
+    try {
+        const team = await TeamController.getTeam(event._id, user.sub);
+        return TeamController.attachMeta(team);
+    } catch (err) {
+        return null;
+    }
 }
 
 const EventMiddleware = {
