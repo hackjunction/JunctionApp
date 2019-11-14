@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const { Auth, RegistrationStatuses } = require('@hackjunction/shared');
 const RegistrationController = require('./controller');
 const EventController = require('../event/controller');
+const UserProfileController = require('../user-profile/controller');
 
 const { hasToken } = require('../../common/middleware/token');
 const { hasPermission } = require('../../common/middleware/permissions');
@@ -27,6 +28,8 @@ const createRegistration = asyncHandler(async (req, res) => {
 
 const updateRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.updateRegistration(req.user, req.event, req.body);
+    /** Mirror the changes to the user's profile here */
+    UserProfileController.updateUserProfile(registration.answers, req.user.sub);
     return res.status(200).json(registration);
 });
 

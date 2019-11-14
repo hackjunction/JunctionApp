@@ -52,23 +52,32 @@ controller.createUserProfile = (data, userId) => {
     return userProfile.save();
 };
 
-controller.updateUserProfile = async (data, userId, updatedRegistration = {}) => {
+controller.updateUserProfile = async (data, userId) => {
     const validatedData = await UserProfileHelpers.validate(data);
     return controller.getUserProfile(userId).then(userProfile => {
-        if (updatedRegistration !== null) {
-            userProfile.registrations = (userProfile.registrations ? userProfile.registrations : []).map(r => {
-                if (r.registration === updatedRegistration.registration) {
-                    return updatedRegistration;
+        return UserProfile.updateAllowed(userProfile, validatedData);
+    });
+};
+
+controller.syncRegistration = async registration => {
+    const data = {
+        registration: registration._id,
+        event: registration.event,
+        status: registration.status
+    };
+    return controller.getUserProfile(registration.user).then(profile => {
+        if (profile.registrations.length === 0) {
+            profile.registrations = [data];
+        } else {
+            profile.registrations = profile.toJSON().registrations.map(r => {
+                if (r.event.toString() === data.event.toString()) {
+                    return data;
                 }
                 return r;
             });
-            if (userProfile.registrations.length === 0) {
-                userProfile.registrations.push(updatedRegistration);
-            }
-            validatedData.registrations = userProfile.registrations;
         }
 
-        return UserProfile.updateAllowed(userProfile, validatedData);
+        return profile.save();
     });
 };
 
