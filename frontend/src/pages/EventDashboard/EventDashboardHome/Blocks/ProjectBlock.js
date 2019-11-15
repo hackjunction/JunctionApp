@@ -132,7 +132,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-    openSubmission: slug => push(`/dashboard/${slug}/project`)
+    openSubmission: slug => dispatch(push(`/dashboard/${slug}/project`))
 });
 
 export default connect(mapState, mapDispatch)(ProjectBlock);
