@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from 'lodash-es';
 import moment from 'moment';
-import { EventHelpers, EventStatuses, EventTypes, RegistrationStatuses } from '@hackjunction/shared';
+import { EventHelpers, EventStatuses, EventTypes, RegistrationStatuses, ReviewingMethods } from '@hackjunction/shared';
 
 export const event = state => state.dashboard.event.data;
 export const eventLoading = state => state.dashboard.event.loading;
@@ -102,4 +102,13 @@ export const showSubmission = createSelector(registration, registration => {
 
 export const isSubmissionsLocked = createSelector(event, event => {
     return !EventHelpers.isSubmissionsOpen(event, moment);
+});
+
+export const showReviewing = createSelector(event, event => {
+    if (!event || event.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return false;
+    return true;
+});
+
+export const isReviewingLocked = createSelector(event, event => {
+    return EventHelpers.isVotingPast(event, moment);
 });
