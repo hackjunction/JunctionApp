@@ -25,7 +25,12 @@ const ConfigurationTab = () => {
                             hint="Once published, this event will be visible to the public"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
-                        />
+                        >
+                            <BooleanInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
+                        </FormControl>
                     )}
                 />
             </Grid>
