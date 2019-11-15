@@ -29,12 +29,12 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             {/* <QuickLinks /> */}
             <Grid container spacing={5}>
                 <RegistrationStatusBlock />
+                <TravelGrantStatusBlock />
+                <VisaInvitationBlock />
                 <ProjectBlock />
+                <TeamStatusBlock />
                 <GavelReviewingBlock />
                 <PartnerReviewingBlock />
-                <TravelGrantStatusBlock />
-                <TeamStatusBlock />
-                <VisaInvitationBlock />
             </Grid>
         </Box>
     );

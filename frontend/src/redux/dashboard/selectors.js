@@ -104,7 +104,8 @@ export const isSubmissionsLocked = createSelector(event, event => {
     return !EventHelpers.isSubmissionsOpen(event, moment);
 });
 
-export const showReviewing = createSelector(event, event => {
+export const showReviewing = createSelector(event, registration, (event, registration) => {
+    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return false;
     if (!event || event.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return false;
     return true;
 });
