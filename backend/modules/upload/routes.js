@@ -4,10 +4,10 @@ const { Auth } = require('@hackjunction/shared');
 const helper = require('./helper');
 
 const { hasPermission } = require('../../common/middleware/permissions');
-
 const { hasToken } = require('../../common/middleware/token');
+const { ForbiddenError } = require('../../common/errors/errors');
 
-const { isEventOrganiser, canSubmitProject } = require('../../common/middleware/events');
+const { isEventOrganiser, canSubmitProject, hasRegisteredToEvent } = require('../../common/middleware/events');
 
 /**
  * Upload a new avatar for a user
@@ -15,7 +15,11 @@ const { isEventOrganiser, canSubmitProject } = require('../../common/middleware/
 router.post('/users/avatar', hasToken, (req, res, next) => {
     helper.uploadUserAvatar(req.user.sub)(req, res, function(err) {
         if (err) {
-            next(err);
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                next(new ForbiddenError(err.message));
+            } else {
+                next(err);
+            }
         } else {
             res.status(200).json({
                 url: req.file.secure_url || req.file.url,
@@ -36,7 +40,11 @@ router.post(
     (req, res, next) => {
         helper.uploadEventCoverImage(req.event.slug)(req, res, function(err) {
             if (err) {
-                next(err);
+                if (err.code === 'LIMIT_FILE_SIZE') {
+                    next(new ForbiddenError(err.message));
+                } else {
+                    next(err);
+                }
             } else {
                 res.status(200).json({
                     url: req.file.secure_url || req.file.url,
@@ -58,7 +66,11 @@ router.post(
     (req, res, next) => {
         helper.uploadEventLogo(req.event.slug)(req, res, function(err) {
             if (err) {
-                next(err);
+                if (err.code === 'LIMIT_FILE_SIZE') {
+                    next(new ForbiddenError(err.message));
+                } else {
+                    next(err);
+                }
             } else {
                 res.status(200).json({
                     url: req.file.secure_url || req.file.url,
@@ -72,10 +84,14 @@ router.post(
 /**
  * Upload a travel reimbursement document for an event
  */
-router.post('/registrations/:slug/travel-grant-receipt', hasToken, (req, res, next) => {
+router.post('/:slug/travel-grant-receipts', hasToken, hasRegisteredToEvent, (req, res, next) => {
     helper.uploadTravelGrantReceipt(req.event.slug, req.user.sub)(req, res, function(err) {
         if (err) {
-            next(err);
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                next(new ForbiddenError(err.message));
+            } else {
+                next(err);
+            }
         } else {
             res.status(200).json({
                 url: req.file.secure_url || req.file.url,
@@ -96,7 +112,11 @@ router.post(
     (req, res, next) => {
         helper.uploadProjectImage(req.event.slug, req.team.code)(req, res, function(err) {
             if (err) {
-                next(err);
+                if (err.code === 'LIMIT_FILE_SIZE') {
+                    next(new ForbiddenError(err.message));
+                } else {
+                    next(err);
+                }
             } else {
                 res.status(200).json({
                     url: req.file.secure_url || req.file.url,

@@ -118,7 +118,7 @@ const EventDashboard = ({
                         exact: true,
                         icon: <FlightTakeoffIcon />,
                         //hidden: !showTravelGrant,
-                        hidden: true,
+                        hidden: false,
                         label: 'Travel grant',
                         component: EventDashboardTravelGrant
                     },
