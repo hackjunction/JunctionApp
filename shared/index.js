@@ -21,6 +21,7 @@ module.exports = {
     TravelGrantDetailsValidationSchema: require('./constants/travel-grant-details-validation-schema'),
     ReviewingMethods: require('./constants/reviewing-methods'),
     Roles: require('./constants/roles'),
+    ProjectSchema: require('./constants/project-schema.js'),
     Skills: require('./constants/skills'),
     SelectOptions: require('./constants/select-options'),
     Themes: require('./constants/themes'),

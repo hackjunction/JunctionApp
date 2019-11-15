@@ -26,7 +26,11 @@ const EventHighlight = ({ event, push }) => {
             <div className={styles.right}>
                 <Typography variant="button">{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</Typography>
                 <Typography variant="h4">{event.name}</Typography>
-                <Typography variant="subtitle1">{event.location}</Typography>
+                <Typography variant="subtitle1">
+                    {event.eventType === 'physical'
+                        ? `${event.eventLocation.city}, ${event.eventLocation.country}`
+                        : 'Online'}
+                </Typography>
                 <div className={styles.buttons}>
                     <Button color="theme_lightgray" variant="outlined" onClick={() => push('/events/' + event.slug)}>
                         See more

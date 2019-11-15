@@ -1,7 +1,13 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
-const { RegistrationStatuses, RegistrationFields, FieldTypes, RegistrationTravelGrantStatuses } = require('@hackjunction/shared');
+const {
+    RegistrationStatuses,
+    RegistrationFields,
+    FieldTypes,
+    RegistrationTravelGrantStatuses,
+    EventTypes
+} = require('@hackjunction/shared');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const RegistrationHelpers = require('./helpers');
@@ -23,6 +29,13 @@ controller.createRegistration = async (user, event, data) => {
         user: user.sub,
         answers
     });
+    if (event.eventType === EventTypes.physical.id) {
+        registration.status = RegistrationStatuses.asObject.pending.id;
+    }
+    if (event.eventType === EventTypes.online.id) {
+        registration.status = RegistrationStatuses.asObject.checkedIn.id;
+    }
+
     return registration.save();
 };
 
@@ -69,22 +82,23 @@ controller.cancelRegistration = (user, event) => {
 
 controller.setTravelGrantDetailsForRegistration = (user, event, travelGrantDetails) => {
     return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status !== STATUSES.checkedIn.id){
+        if (registration.status !== STATUSES.checkedIn.id) {
             throw new ForbiddenError('Only those can receive reimbursement who have checked-in at the event!');
         }
-        if (registration.travelGrant <= 0){
+        if (registration.travelGrant <= 0) {
             throw new ForbiddenError('This registration has no travel grant given.');
         }
-        if (registration.travelGrantStatus && (registration.travelGrantStatus !== TRAVEL_GRANT_STATUSES.pending.id || 
-            registration.travelGrantStatus !== TRAVEL_GRANT_STATUSES.not_submitted.id)){
+        if (
+            registration.travelGrantStatus &&
+            (registration.travelGrantStatus !== TRAVEL_GRANT_STATUSES.pending.id ||
+                registration.travelGrantStatus !== TRAVEL_GRANT_STATUSES.not_submitted.id)
+        ) {
             throw new ForbiddenError('Only new or pending travel reimbursement forms can be updated.');
         }
-        
+
         registration.travelGrantDetails = travelGrantDetails;
         registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
         return registration.save();
-        
-
     });
 };
 
@@ -93,8 +107,7 @@ controller.updateTravelGrantStatus = (user, event, status) => {
         registration.travelGrantStatus = status;
         return registration.save();
     });
-
-}
+};
 
 controller.getRegistrationsForEvent = eventId => {
     return Registration.find({
@@ -248,12 +261,11 @@ controller.getFullRegistration = (eventId, registrationId) => {
 
 controller.editRegistration = (registrationId, event, data, user) => {
     return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
-        registration.status = data.status;
-        registration.rating = data.rating;
-        registration.ratedBy = user.sub;
-        registration.tags = data.tags;
-        registration.assignedTo = data.assignedTo;
-        registration.travelGrant = data.travelGrant;
+        const d = _.pick(data, ['status', 'rating', 'tags', 'assignedTo', 'travelGrant']);
+        registration.set(d);
+        if (d.rating) {
+            registration.ratedBy = user.sub;
+        }
         return registration.save();
     });
 };

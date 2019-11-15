@@ -23,7 +23,11 @@ const EventsGridItem = ({ event, buttons = [] }) => {
             <div className={styles.bottom}>
                 <Typography variant="button">{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</Typography>
                 <Typography variant="h6">{event.name}</Typography>
-                <Typography variant="body1">{event.location}</Typography>
+                <Typography variant="body1">
+                    {event.eventType === 'physical'
+                        ? `${event.eventLocation.city}, ${event.eventLocation.country}`
+                        : 'Online'}
+                </Typography>
                 <Box mt={1} />
                 <Grid container spacing={1}>
                     {buttons.map(btn => (

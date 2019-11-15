@@ -37,7 +37,7 @@ const MarkdownInput = ({ name, value, placeholder, onChange, onBlur }) => {
                 {isPreview ? (
                     <Markdown source={value} className={styles.preview} />
                 ) : (
-                    <TextAreaInput placeholder={placeholder} value={value} onChange={onChange} />
+                    <TextAreaInput placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} />
                 )}
             </Box>
         </Box>

@@ -100,7 +100,7 @@ router.get('/organisers/:slug', hasToken, hasPermission(Auth.Permissions.MANAGE_
 /** Add or remove organisers from event */
 router
     .route('/organisers/:slug/:organiserId')
-    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOwner, addOrganiser)
-    .delete(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOwner, removeOrganiser);
+    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, addOrganiser)
+    .delete(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, removeOrganiser);
 
 module.exports = router;

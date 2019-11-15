@@ -6,11 +6,13 @@ import { Box, Grid } from '@material-ui/core';
 import PageHeader from 'components/generic/PageHeader';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
-import QuickLinks from './QuickLinks';
 import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock';
+import ProjectBlock from './Blocks/ProjectBlock';
 import TeamStatusBlock from './Blocks/TeamStatusBlock';
 import VisaInvitationBlock from './Blocks/VisaInvitationBlock';
 import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock';
+import GavelReviewingBlock from './Blocks/GavelReviewingBlock';
+import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock';
 
 // const useStyles = makeStyles(theme => ({
 //     stepper: {
@@ -27,6 +29,9 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             {/* <QuickLinks /> */}
             <Grid container spacing={5}>
                 <RegistrationStatusBlock />
+                <ProjectBlock />
+                <GavelReviewingBlock />
+                <PartnerReviewingBlock />
                 <TravelGrantStatusBlock />
                 <TeamStatusBlock />
                 <VisaInvitationBlock />

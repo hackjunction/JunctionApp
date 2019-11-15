@@ -4,10 +4,10 @@ const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
 const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig');
 const RegistrationQuestionSchema = require('../../common/schemas/RegistrationQuestion');
 const TravelGrantConfigSchema = require('../../common/schemas/TravelGrantConfig');
-const ParticipantConfigSchema = require('../../common/schemas/ParticipantConfig');
 const DiscordConfigSchema = require('../../common/schemas/DiscordConfig');
-const TracksConfigSchema = require('../../common/schemas/TracksConfig');
 const AddressSchema = require('../../common/schemas/Address');
+const TrackSchema = require('../../common/schemas/TrackSchema');
+const ChallengeSchema = require('../../common/schemas/ChallengeSchema');
 const allowPublishPlugin = require('../../common/plugins/allowPublish');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const uploadHelper = require('../../modules/upload/helper');
@@ -32,36 +32,39 @@ const EventSchema = new mongoose.Schema({
     /** Times */
     timezone: {
         type: String,
-        required: false,
         requiredForPublish: true
     },
     registrationStartTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     registrationEndTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     startTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     endTime: {
         type: Date,
-        required: false,
         requiredForPublish: true
     },
     submissionsStartTime: {
         type: Date,
-        required: false
+        requiredForPublish: true
     },
     submissionsEndTime: {
         type: Date,
-        required: false
+        requiredForPublish: true
+    },
+    reviewingStartTime: {
+        type: Date,
+        requiredForPublish: true
+    },
+    reviewingEndTime: {
+        type: Date,
+        requiredForPublish: true
     },
     /** Event customisation */
     coverImage: CloudinaryImageSchema,
@@ -71,28 +74,60 @@ const EventSchema = new mongoose.Schema({
         type: String,
         enum: Object.keys(EventTypes),
         required: true,
-        default: EventTypes.physical.id
+        default: EventTypes.online.id
     },
     eventLocation: {
         type: AddressSchema,
         required: [
             function() {
-                return this.eventTypes === EventTypes.physical.id;
+                return this.eventType === EventTypes.physical.id;
             },
             `is required for physical events`
+        ]
+    },
+    tracksEnabled: false,
+    tracks: {
+        type: [TrackSchema],
+        default: [],
+        validate: [
+            function(val) {
+                if (this.tracksEnabled) {
+                    return val.length > 0;
+                }
+                return true;
+            },
+            'must have at least one item if tracks are enabled'
+        ],
+        required: [
+            function() {
+                return this.tracksEnabled;
+            },
+            'is required if tracks are enabled'
+        ]
+    },
+    challengesEnabled: false,
+    challenges: {
+        type: [ChallengeSchema],
+        default: [],
+        validate: [
+            function(val) {
+                if (this.challengesEnabled) {
+                    return val.length > 0;
+                }
+                return true;
+            },
+            'must have at least one item if challenges are enabled'
+        ],
+        required: [
+            function() {
+                return this.challengesEnabled;
+            },
+            'is required if challenges are enabled'
         ]
     },
     travelGrantConfig: {
         type: TravelGrantConfigSchema,
         default: TravelGrantConfigSchema
-    },
-    participantConfig: {
-        type: ParticipantConfigSchema,
-        default: ParticipantConfigSchema
-    },
-    tracksConfig: {
-        type: TracksConfigSchema,
-        default: TracksConfigSchema
     },
     discordConfig: {
         type: DiscordConfigSchema,

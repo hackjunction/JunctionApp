@@ -87,7 +87,9 @@ const EventHeroImage = ({ event, goBack }) => {
                             {event.name}
                         </Typography>
                         <Typography className={classes.overline} variant="button">
-                            {event.location}
+                            {event.eventType === 'physical'
+                                ? `${event.eventLocation.city}, ${event.eventLocation.country}`
+                                : 'Online'}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
