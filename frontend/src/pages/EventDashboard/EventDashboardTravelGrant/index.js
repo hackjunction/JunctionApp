@@ -11,27 +11,6 @@ import * as yup from 'yup';
 import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
 
 export default function index() {
-    // const example = {
-    //     key1: 'value1',
-    //     key2: {
-    //         key3: 'value3',
-    //         key4: {
-    //             key6: 'value6'
-    //         }
-    //     }
-    // };
-    // REKURSIO!!! KUTSUU ITSEÄÄN FUNCTION SISÄLLÄ!
-    // const renderErrors = errors => {
-    //     return Object.keys(errors).map(key => {
-    //         const value = errors[key];
-    //         if (typeof value === 'object') {
-    //             return renderErrors(value);
-    //         } else {
-    //             return <p>{value}</p>;
-    //         }
-    //     });
-    // };
-
     return (
         <Formik
             initialValues={{
