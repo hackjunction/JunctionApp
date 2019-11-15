@@ -9,12 +9,14 @@ import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
 import DateInput from 'components/inputs/DateInput';
 import BooleanInput from 'components/inputs/BooleanInput';
+import PdfUpload from 'components/inputs/PdfUpload';
 import StreetAddressForm from 'components/inputs/StreetAddressForm';
 
 import * as UserSelectors from 'redux/user/selectors';
+import * as DashboardSelectors from 'redux/dashboard/selectors';
 import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
 
-const EventDashboardTravelGrant = ({ userProfile }) => {
+const EventDashboardTravelGrant = ({ userProfile, event }) => {
     return (
         <Formik
             initialValues={{
@@ -285,7 +287,7 @@ const EventDashboardTravelGrant = ({ userProfile }) => {
                                             </Grid>
                                             <Grid item xs={12} md={6}>
                                                 <TextInput
-                                                    label="Swift / BIC"
+                                                    label="SWIFT/BIC"
                                                     value={field.value.swift}
                                                     onChange={value =>
                                                         form.setFieldValue(field.name, {
@@ -324,7 +326,13 @@ const EventDashboardTravelGrant = ({ userProfile }) => {
                                     hint="Upload a .pdf file containing your travel receipts. If you have multiple travel receipts you wish to upload, first combine them into a single .pdf file and then upload the receipts here. Maximum file size: 10mb"
                                     error={form.errors[field.name]}
                                     touched={form.touched[field.name]}
-                                ></FormControl>
+                                >
+                                    <PdfUpload
+                                        uploadUrl={`/api/upload/${event.slug}/travel-grant-receipts`}
+                                        value={field.value}
+                                        onChange={value => form.setFieldValue}
+                                    />
+                                </FormControl>
                             )}
                         />
                     </Grid>
@@ -360,7 +368,8 @@ const EventDashboardTravelGrant = ({ userProfile }) => {
 };
 
 const mapState = state => ({
-    userProfile: UserSelectors.userProfile(state)
+    userProfile: UserSelectors.userProfile(state),
+    event: DashboardSelectors.event(state)
 });
 
 export default connect(mapState)(EventDashboardTravelGrant);

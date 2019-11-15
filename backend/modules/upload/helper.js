@@ -72,7 +72,7 @@ const UploadHelper = {
                 tag: UploadHelper.generateUserTag(userId)
             }
         );
-        return multer({ storage }).single('image');
+        return multer({ storage, limits: { fileSize: 2 * 1024 * 1024 } }).single('image');
     },
 
     uploadEventCoverImage: slug => {
@@ -87,7 +87,7 @@ const UploadHelper = {
                 tag: UploadHelper.generateEventTag(slug)
             }
         );
-        return multer({ storage }).single('image');
+        return multer({ storage, limits: { fileSize: 2 * 1024 * 1024 } }).single('image');
     },
 
     uploadEventLogo: slug => {
@@ -102,7 +102,7 @@ const UploadHelper = {
                 tag: UploadHelper.generateEventTag(slug)
             }
         );
-        return multer({ storage }).single('image');
+        return multer({ storage, limits: { fileSize: 2 * 1024 * 1024 } }).single('image');
     },
 
     uploadTravelGrantReceipt: (slug, userId) => {
@@ -113,21 +113,21 @@ const UploadHelper = {
                 tag: UploadHelper.generateTravelGrantTag(slug, userId)
             }
         );
-        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }).single('receipt');
+        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }).single('pdf');
     },
     uploadProjectImage: (slug, teamCode) => {
         const storage = createStorageWithPath(
             `projects/${slug}/${teamCode}`,
             {
-                width: 1200,
-                height: 600,
+                width: 1920,
+                height: 960,
                 crop: 'fill'
             },
             {
                 tag: UploadHelper.generateProjectTag(slug, teamCode)
             }
         );
-        return multer({ storage }).single('image');
+        return multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }).single('image');
     },
 
     removeEventImages: slug => {
