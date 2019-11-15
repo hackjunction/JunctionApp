@@ -2,6 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { Grid, Typography, Box } from '@material-ui/core';
+import { RegistrationStatuses } from '@hackjunction/shared';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
@@ -11,6 +12,7 @@ import GradientBox from 'components/generic/GradientBox';
 const PartnerReviewingBlock = ({ event, registration }) => {
     if (!event || !registration) return null;
     if (!event.challengesEnabled || !event.challenges) return null;
+    if (!registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
 
     return (
         <Grid item xs={12} lg={6}>

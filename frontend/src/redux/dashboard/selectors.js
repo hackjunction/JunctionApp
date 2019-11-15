@@ -104,11 +104,24 @@ export const isSubmissionsLocked = createSelector(event, event => {
     return !EventHelpers.isSubmissionsOpen(event, moment);
 });
 
-export const showReviewing = createSelector(event, event => {
+export const showReviewing = createSelector(event, registration, (event, registration) => {
+    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return false;
     if (!event || event.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return false;
     return true;
 });
 
 export const isReviewingLocked = createSelector(event, event => {
     return EventHelpers.isVotingPast(event, moment);
+});
+
+export const showTravelGrant = createSelector(event, registration, (event, registration) => {
+    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return false;
+    if (!registration.travelGrant || registration.travelGrant === 0) return false;
+    return true;
+});
+
+export const showHackerPack = createSelector(event, registration, (event, registration) => {
+    if (!registration || ['checkedIn', 'confirmed'].indexOf(registration.status) === -1) return false;
+    if (!event) return false;
+    return true;
 });
