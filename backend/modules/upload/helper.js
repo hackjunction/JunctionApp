@@ -22,6 +22,18 @@ const createStorageWithPath = (path, transformation, options) => {
     });
 };
 
+const createDocumentStorageWithPath = (path, transformation, options) => {
+    return cloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            tags: [options.tag],
+            folder: `${cloudinaryRootPath}/${path}`,
+            allowed_formats: ['pdf'],
+            transformation
+        }
+    });
+};
+
 const UploadHelper = {
     generateEventTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}`;
@@ -31,6 +43,10 @@ const UploadHelper = {
     },
     generateProjectTag: (slug, teamCode) => {
         return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`;
+    },
+
+    generateTravelGrantTag: (slug, userId) => {
+        return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`;
     },
 
     deleteWithTag: tag => {
@@ -89,6 +105,16 @@ const UploadHelper = {
         return multer({ storage }).single('image');
     },
 
+    uploadTravelGrantReceipt: (slug, userId) => {
+        const storage = createDocumentStorageWithPath(
+            `events/travel-grant-receipts/`,
+            {},
+            {
+                tag: UploadHelper.generateTravelGrantTag(slug, userId)
+            }
+        );
+        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }).single('receipt');
+    },
     uploadProjectImage: (slug, teamCode) => {
         const storage = createStorageWithPath(
             `projects/${slug}/${teamCode}`,

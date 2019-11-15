@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const { RegistrationStatuses } = require('@hackjunction/shared');
+const { RegistrationStatuses, RegistrationTravelGrantStatuses } = require('@hackjunction/shared');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const EmailTaskController = require('../email-task/controller');
 const UserProfileController = require('../user-profile/controller');
+const TravelGrantDetailsSchema = require('../../common/schemas/TravelGrantDetails')
 
 const RegistrationSchema = new mongoose.Schema({
     event: {
@@ -48,6 +49,14 @@ const RegistrationSchema = new mongoose.Schema({
             this._previousGrant = this.travelGrant;
             return amount;
         }
+    }, 
+    travelGrantStatus: {
+        type: String,
+        enum: RegistrationTravelGrantStatuses.ids,
+        default: RegistrationTravelGrantStatuses.asObject.not_submitted.id
+    },
+    travelGrantDetails: {
+        type: TravelGrantDetailsSchema     
     }
 });
 

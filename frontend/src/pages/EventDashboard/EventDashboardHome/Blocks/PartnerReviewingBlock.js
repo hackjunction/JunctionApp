@@ -10,8 +10,9 @@ import Button from 'components/generic/Button';
 import GradientBox from 'components/generic/GradientBox';
 
 const PartnerReviewingBlock = ({ event, registration }) => {
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
-    if (!event || !event.challengesEnabled || !event.challenges) return null;
+    if (!event || !registration) return null;
+    if (!event.challengesEnabled || !event.challenges) return null;
+    if (registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
 
     return (
         <Grid item xs={12} lg={6}>

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import StarRateIcon from '@material-ui/icons/StarRate';
@@ -17,6 +18,7 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
+import EventDashboardTravelGrant from './EventDashboardTravelGrant';
 import EventDashboardSubmission from './EventDashboardSubmission';
 import EventDashboardReviewing from './EventDashboardReviewing';
 import Hackerpack from './Hackerpack';
@@ -40,6 +42,8 @@ const EventDashboard = ({
     showEventID,
     showSubmission,
     showReviewing,
+    showTravelGrant,
+    showHackerPack,
     isSubmissionsLocked,
     isReviewingLocked
 }) => {
@@ -109,6 +113,16 @@ const EventDashboard = ({
                         component: EventDashboardId
                     },
                     {
+                        key: 'travelgrant',
+                        path: '/travel-grant',
+                        exact: true,
+                        icon: <FlightTakeoffIcon />,
+                        // hidden: !showTravelGrant,
+                        hidden: true,
+                        label: 'Travel grant',
+                        component: EventDashboardTravelGrant
+                    },
+                    {
                         key: 'project',
                         path: '/project',
                         exact: true,
@@ -135,6 +149,7 @@ const EventDashboard = ({
                         path: '/hackerpack',
                         exact: true,
                         icon: <AmpStoriesIcon />,
+                        hidden: !showHackerPack,
                         label: 'Hackerpack',
                         component: Hackerpack
                     }
@@ -155,6 +170,8 @@ const mapStateToProps = state => ({
     showEventID: DashboardSelectors.showEventID(state),
     showSubmission: DashboardSelectors.showSubmission(state),
     showReviewing: DashboardSelectors.showReviewing(state),
+    showTravelGrant: DashboardSelectors.showTravelGrant(state),
+    showHackerPack: DashboardSelectors.showHackerPack(state),
     isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
     isReviewingLocked: DashboardSelectors.isReviewingLocked(state)
 });
