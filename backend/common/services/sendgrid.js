@@ -1,5 +1,6 @@
 const sgMail = require('@sendgrid/mail');
 const sgClient = require('@sendgrid/client');
+const { EventTypes } = require('@hackjunction/shared');
 const _ = require('lodash');
 const moment = require('moment');
 sgMail.setApiKey(global.gConfig.SENDGRID_API_KEY);
@@ -51,20 +52,34 @@ const SendgridService = {
         return SendgridService.send(msg);
     },
     sendRegisteredEmail: (event, user) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            header_image: event.coverImage.url,
-            subject: `Thanks for registering to ${event.name}!`,
-            subtitle: 'Awesome! Now just sit back and relax.',
-            body: `The application period ends <b>${moment(event.registrationEndTime).format(
-                'MMMM Do'
-            )}</b>, and we'll process all applications by <b>${moment(event.registrationEndTime)
-                .add(5, 'days')
-                .format(
+        let msg;
+        if (event.eventType === EventTypes.physical.id) {
+            msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+                header_image: event.coverImage.url,
+                subject: `Thanks for registering to ${event.name}!`,
+                subtitle: 'Awesome! Now just sit back and relax.',
+                body: `The application period ends <b>${moment(event.registrationEndTime).format(
                     'MMMM Do'
-                )}</b>. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
-            cta_text: 'Event dashboard',
-            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
-        });
+                )}</b>, and we'll process all applications by <b>${moment(event.registrationEndTime)
+                    .add(5, 'days')
+                    .format(
+                        'MMMM Do'
+                    )}</b>. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
+                cta_text: 'Event dashboard',
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
+            });
+        } else {
+            msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+                header_image: event.coverImage.url,
+                subject: `Thanks for registering to ${event.name}!`,
+                subtitle: 'Time to get to work!',
+                body: `The final project submission deadline is <b>${moment(event.submissionsEndTime).format(
+                    'LLLL'
+                )}</b>, so make sure you submit something before then! You'll find all of the necessary information on the Event Dashboard, which you can access with the below link. Have fun!`,
+                cta_text: 'Event dashboard',
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
+            });
+        }
 
         return SendgridService.send(msg);
     },
