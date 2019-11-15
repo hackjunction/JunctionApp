@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import styles from './EventDashboard.module.scss';
 
 import { connect } from 'react-redux';
-import { EventTypes } from '@hackjunction/shared';
 import GroupIcon from '@material-ui/icons/Group';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+import StarRateIcon from '@material-ui/icons/StarRate';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -16,7 +18,10 @@ import PageWrapper from 'components/layouts/PageWrapper';
 import EventDashboardHome from './EventDashboardHome';
 import EventDashboardTeam from './EventDashboardTeam';
 import EventDashboardId from './EventDashboardId';
-import EventDashboardTravelGrant from './EventDashboardTravelGrant'
+import EventDashboardTravelGrant from './EventDashboardTravelGrant';
+import EventDashboardSubmission from './EventDashboardSubmission';
+import EventDashboardReviewing from './EventDashboardReviewing';
+import Hackerpack from './Hackerpack';
 
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -28,11 +33,17 @@ const EventDashboard = ({
     updateEvent,
     updateRegistration,
     updateTeam,
-    updateProfiles,
+    updateProject,
     event,
     team,
     eventLoading,
-    registrationLoading
+    registrationLoading,
+    registration,
+    showEventID,
+    showSubmission,
+    showReviewing,
+    isSubmissionsLocked,
+    isReviewingLocked
 }) => {
     const { slug } = match.params;
 
@@ -51,6 +62,11 @@ const EventDashboard = ({
         updateTeam(slug);
     }, [slug, updateTeam]);
 
+    /** Update project if slug changes */
+    useEffect(() => {
+        updateProject(slug);
+    }, [slug, team, updateProject]);
+
     return (
         <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
             <SidebarLayout
@@ -60,7 +76,7 @@ const EventDashboard = ({
                     <div className={styles.sidebarTop}>
                         <Image
                             className={styles.sidebarLogo}
-                            publicId={event.logo ? event.logo.publicId : ''}
+                            publicId={event && event.logo ? event.logo.publicId : ''}
                             transformation={{
                                 width: 200
                             }}
@@ -89,7 +105,7 @@ const EventDashboard = ({
                         key: 'eventid',
                         path: '/event-id',
                         exact: true,
-                        hidden: event.eventType !== EventTypes.physical.id,
+                        hidden: !showEventID,
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
                         component: EventDashboardId
@@ -102,6 +118,36 @@ const EventDashboard = ({
                         label: 'Travel grant',
                         component: EventDashboardTravelGrant
                     },
+                    {
+                        key: 'project',
+                        path: '/project',
+                        exact: true,
+                        locked: isSubmissionsLocked,
+                        lockedDescription: 'Submissions not open',
+                        hidden: false,
+                        icon: <AssignmentOutlinedIcon />,
+                        label: 'Project submission',
+                        component: EventDashboardSubmission
+                    },
+                    {
+                        key: 'reviewing',
+                        path: '/reviewing',
+                        exact: true,
+                        hidden: !showReviewing,
+                        locked: isReviewingLocked,
+                        lockedDescription: 'Reviewing closed',
+                        icon: <StarRateIcon />,
+                        label: 'Reviewing',
+                        component: EventDashboardReviewing
+                    },
+                    {
+                        key: 'hackerpack',
+                        path: '/hackerpack',
+                        exact: true,
+                        icon: <AmpStoriesIcon />,
+                        label: 'Hackerpack',
+                        component: Hackerpack
+                    }
                 ]}
             />
         </PageWrapper>
@@ -114,17 +160,20 @@ const mapStateToProps = state => ({
     eventLoading: DashboardSelectors.eventLoading(state),
     eventError: DashboardSelectors.eventError(state),
     team: DashboardSelectors.team(state),
-    registrationLoading: DashboardSelectors.registrationLoading(state)
+    registrationLoading: DashboardSelectors.registrationLoading(state),
+    registration: DashboardSelectors.registration(state),
+    showEventID: DashboardSelectors.showEventID(state),
+    showSubmission: DashboardSelectors.showSubmission(state),
+    showReviewing: DashboardSelectors.showReviewing(state),
+    isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
+    isReviewingLocked: DashboardSelectors.isReviewingLocked(state)
 });
 
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(DashboardActions.updateEvent(slug)),
     updateRegistration: slug => dispatch(DashboardActions.updateRegistration(slug)),
     updateTeam: slug => dispatch(DashboardActions.updateTeam(slug)),
-    updateProfiles: team => dispatch(DashboardActions.updateProfiles(team))
+    updateProject: slug => dispatch(DashboardActions.updateProject(slug))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(EventDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard);

@@ -41,8 +41,11 @@ const UploadHelper = {
     generateUserTag: userId => {
         return `${cloudinaryRootPath}-user-${userId}`;
     },
+    generateProjectTag: (slug, teamCode) => {
+        return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`;
+    },
 
-    generateReimbursementDetailsTag: (slug, userId) => {
+    generateTravelGrantTag: (slug, userId) => {
         return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`;
     },
 
@@ -102,15 +105,29 @@ const UploadHelper = {
         return multer({ storage }).single('image');
     },
 
-    uploadReimbursementReceipt: (slug, userId) => {
+    uploadTravelGrantReceipt: (slug, userId) => {
         const storage = createDocumentStorageWithPath(
-            `events/reimbursements-receipts/`,
+            `events/travel-grant-receipts/`,
             {},
             {
-                tag: UploadHelper.generateReimbursementDetailsTag(slug, userId)
+                tag: UploadHelper.generateTravelGrantTag(slug, userId)
             }
         );
-        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024} }).single('receipt');
+        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }).single('receipt');
+    },
+    uploadProjectImage: (slug, teamCode) => {
+        const storage = createStorageWithPath(
+            `projects/${slug}/${teamCode}`,
+            {
+                width: 1200,
+                height: 600,
+                crop: 'fill'
+            },
+            {
+                tag: UploadHelper.generateProjectTag(slug, teamCode)
+            }
+        );
+        return multer({ storage }).single('image');
     },
 
     removeEventImages: slug => {

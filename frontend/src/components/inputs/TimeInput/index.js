@@ -39,20 +39,22 @@ const DEFAULT_VALUE = {
 const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
     const handleHoursChange = useCallback(
         hours => {
-            onChange({
+            const newValue = {
                 ...value,
                 hours
-            });
+            };
+            onChange(newValue);
         },
         [onChange, value]
     );
 
     const handleMinutesChange = useCallback(
         minutes => {
-            onChange({
+            const newValue = {
                 ...value,
                 minutes
-            });
+            };
+            onChange(newValue);
         },
         [onChange, value]
     );

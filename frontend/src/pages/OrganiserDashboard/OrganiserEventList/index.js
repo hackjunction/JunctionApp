@@ -78,7 +78,7 @@ const OrganiserEventList = ({ editEvent, idToken, enqueueSnackbar }) => {
             render={() => (
                 <CenteredContainer className={styles.content}>
                     <Divider size={2} />
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} alignItems="flex-end">
                         <Grid item xs={9}>
                             <TextInput
                                 label="Event name"
@@ -93,7 +93,7 @@ const OrganiserEventList = ({ editEvent, idToken, enqueueSnackbar }) => {
                                 color="primary"
                                 variant="contained"
                                 onClick={handleCreate}
-                                disabled
+                                disabled={!inputValue.length}
                             >
                                 Create event
                             </Button>

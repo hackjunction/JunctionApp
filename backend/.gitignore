@@ -1,3 +1,4 @@
 /shared
 /build
 .env
+.ignored

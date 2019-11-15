@@ -60,6 +60,7 @@ const RegistrationSchema = new mongoose.Schema({
     }
 });
 
+/* Only allow a single registration per event per user */
 RegistrationSchema.index(
     {
         event: 1,
@@ -100,6 +101,11 @@ RegistrationSchema.post('save', function(doc, next) {
         EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
     }
 
+    /** If a registration has its status changed, update the user profile */
+    if (this._previousStatus !== this.status) {
+        UserProfileController.syncRegistration(doc);
+    }
+
     /** If a registration is accepted, create an email notification about it */
     if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {
         EmailTaskController.createAcceptedTask(doc.user, doc.event, true);
@@ -117,10 +123,6 @@ RegistrationSchema.post('save', function(doc, next) {
     if (!this._previousGrant && this.travelGrant > 0) {
         EmailTaskController.createTravelGrantAcceptedTask(doc, true);
     }
-
-    UserProfileController.updateUserProfile(
-        doc.answers, doc.user, {registration: doc._id, event: doc.event, status: doc.status});
-
 
     next();
 });

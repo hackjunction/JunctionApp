@@ -7,7 +7,7 @@ const { hasPermission } = require('../../common/middleware/permissions');
 
 const { hasToken } = require('../../common/middleware/token');
 
-const { isEventOrganiser } = require('../../common/middleware/events');
+const { isEventOrganiser, canSubmitProject } = require('../../common/middleware/events');
 
 /**
  * Upload a new avatar for a user
@@ -72,11 +72,29 @@ router.post(
 /**
  * Upload a travel reimbursement document for an event
  */
+router.post('/registrations/:slug/travel-grant-receipt', hasToken, (req, res, next) => {
+    helper.uploadTravelGrantReceipt(req.event.slug, req.user.sub)(req, res, function(err) {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).json({
+                url: req.file.secure_url || req.file.url,
+                publicId: req.file.public_id
+            });
+        }
+    });
+});
+
+/**
+ * Upload images for a project
+ */
 router.post(
-    '/registrations/:slug/reimbursementReceipt',
+    '/events/:slug/projects',
     hasToken,
+    canSubmitProject,
+    //TODO: Is participant in project,
     (req, res, next) => {
-        helper.uploadReimbursementReceipt(req.event.slug, req.user.sub)(req, res, function(err) {
+        helper.uploadProjectImage(req.event.slug, req.team.code)(req, res, function(err) {
             if (err) {
                 next(err);
             } else {
