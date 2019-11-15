@@ -6,13 +6,13 @@ const Partners = [
             'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1573592302/Microsoft-logo_rgb_c-gray.png',
         link: 'https://bit.ly/azure-hackerpack2019'
     },
-    // {
-    //     name: 'SUSE',
-    //     description: `We offer free downloads of SUSE Linux Enterprise Server with extensions and a 1 year developer license. The product can be used on x86 and ARM hardware, including the Raspberry Pi 3B+. We also offer the SUSE Container as a Service Platform for running Kubernetes clusters.`,
-    //     icon:
-    //         'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1573592302/Suse_logo_transparent.png',
-    //     link: 'https://bit.ly/suse-hackerpack2019'
-    // },
+    {
+        name: 'SUSE',
+        description: `We offer free downloads of SUSE Linux Enterprise Server with extensions and a 1 year developer license. The product can be used on x86 and ARM hardware, including the Raspberry Pi 3B+. We also offer the SUSE Container as a Service Platform for running Kubernetes clusters.`,
+        icon:
+            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1573592302/Suse_logo_transparent.png',
+        link: 'https://bit.ly/suse-hackerpack2019'
+    },
     {
         name: 'Aiven',
         description: `Aiven enables you to accelerate application innovation through a modern, fully-managed data infrastructure. From Aiven platform you can deploy any and all of our 8 open-source services, Apache Kafka and Cassandra, Elasticsearch, PostgreSQL, MySQL, Redis, InfluxDB, and Grafana in the cloud and region of your choice. All of this can be accomplished with a few button clicks. Launch your first service and get back to focusing on your project, not managing its underlying data infrastructure.`,
