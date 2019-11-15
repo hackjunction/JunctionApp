@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
-const { Auth, RegistrationStatuses } = require('@hackjunction/shared');
+const { Auth } = require('@hackjunction/shared');
 const RegistrationController = require('./controller');
 const EventController = require('../event/controller');
 const UserProfileController = require('../user-profile/controller');
@@ -40,6 +40,18 @@ const confirmRegistration = asyncHandler(async (req, res) => {
 
 const cancelRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.cancelRegistration(req.user, req.event);
+    return res.status(200).json(registration);
+});
+
+const setTravelGrantDetails = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController
+        .setTravelGrantDetailsForRegistration(req.user, req.event, req.travelGrantDetails);
+    return res.status(200).json(registration);
+});
+
+const updateTravelGrantStatus = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController
+        .updateTravelGrantStatus(req.user, req.event, req.status);
     return res.status(200).json(registration);
 });
 
@@ -127,6 +139,8 @@ router.route('/:slug/confirm').patch(hasToken, hasRegisteredToEvent, confirmRegi
 
 router.route('/:slug/cancel').patch(hasToken, hasRegisteredToEvent, cancelRegistration);
 
+router.route('/:slug/travelGrantDetails').patch(hasToken, hasRegisteredToEvent, setTravelGrantDetails);
+
 /** Get all registration as organiser */
 router.get(
     '/:slug/all',
@@ -158,7 +172,11 @@ router
     .route('/:slug/bulk/reject')
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectRegistrations);
 
-/** Get or edit single registration as an organiser. Also works with the user's Auth0 userId */
+router
+    .route('/:slug/travelGrantStatus')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelGrantStatus);
+
+/** Get or edit single registration as an organiser */
 router
     .route('/:slug/:registrationId')
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getFullRegistration)

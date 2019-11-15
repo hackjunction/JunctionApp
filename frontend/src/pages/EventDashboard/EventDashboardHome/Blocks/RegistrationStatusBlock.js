@@ -32,6 +32,7 @@ const RegistrationStatusBlock = ({
     enqueueSnackbar,
     openEventId
 }) => {
+    console.log(registration);
     const [loading, setLoading] = useState(false);
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
     const { status } = registration;
@@ -216,10 +217,6 @@ const RegistrationStatusBlock = ({
                 return null;
         }
     }, [event, status, editRegistration, handleConfirm, isRegistrationOpen, openEventId]);
-
-    if (isEventStarted) {
-        return null;
-    }
 
     if (!title) {
         return null;

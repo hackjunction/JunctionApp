@@ -17,6 +17,8 @@ module.exports = {
     RegistrationFieldsCustom: require('./constants/registration-fields-custom'),
     RegistrationFieldsHelpers: require('./helpers/registration-fields'),
     RegistrationStatuses: require('./constants/registration-statuses'),
+    RegistrationTravelGrantStatuses: require('./constants/registration-travel-grant-statuses'),
+    TravelGrantDetailsValidationSchema: require('./constants/travel-grant-details-validation-schema'),
     ReviewingMethods: require('./constants/reviewing-methods'),
     Roles: require('./constants/roles'),
     ProjectSchema: require('./constants/project-schema.js'),

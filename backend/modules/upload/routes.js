@@ -70,6 +70,22 @@ router.post(
 );
 
 /**
+ * Upload a travel reimbursement document for an event
+ */
+router.post('/registrations/:slug/travel-grant-receipt', hasToken, (req, res, next) => {
+    helper.uploadTravelGrantReceipt(req.event.slug, req.user.sub)(req, res, function(err) {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).json({
+                url: req.file.secure_url || req.file.url,
+                publicId: req.file.public_id
+            });
+        }
+    });
+});
+
+/**
  * Upload images for a project
  */
 router.post(
