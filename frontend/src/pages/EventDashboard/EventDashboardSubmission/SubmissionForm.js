@@ -37,7 +37,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
     const challengeOptions = useMemo(() => {
         if (!event.challengesEnabled || !event.challenges) return null;
         return event.challenges.map(challenge => ({
-            label: challenge.name,
+            label: `${challenge.name} (${challenge.partner})`,
             value: challenge.slug
         }));
     }, [event]);
@@ -194,6 +194,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                             value={field.value}
                                             onChange={value => form.setFieldValue(field.name, value)}
                                             onBlur={() => form.setFieldTouched(field.name)}
+                                            isMulti
                                         />
                                     </FormControl>
                                 )}
