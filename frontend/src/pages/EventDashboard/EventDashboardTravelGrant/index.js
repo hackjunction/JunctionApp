@@ -1,25 +1,37 @@
 import React from 'react';
 import { Formik, FastField, Field } from 'formik';
+import { Grid, Typography } from '@material-ui/core';
+import { connect } from 'react-redux';
+import * as yup from 'yup';
 import FormControl from 'components/inputs/FormControl';
 import TextInput from 'components/inputs/TextInput';
 import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
 import DateInput from 'components/inputs/DateInput';
+import BooleanInput from 'components/inputs/BooleanInput';
 import StreetAddressForm from 'components/inputs/StreetAddressForm';
 
-import * as yup from 'yup';
+import * as UserSelectors from 'redux/user/selectors';
 import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
 
-export default function index() {
+const EventDashboardTravelGrant = ({ userProfile }) => {
     return (
         <Formik
             initialValues={{
-                legalName: {},
-                dateOfBirth: {},
-                socialSecurityNumber: {},
+                legalName: {
+                    firstName: userProfile.firstName,
+                    middleName: '',
+                    lastName: userProfile.lastName
+                },
+                email: userProfile.email,
+                dateOfBirth: userProfile.dateOfBirth,
                 address: {},
-                bankDetails: {},
-                travelReceipt: {}
+                hasSSN: false,
+                SSN: '',
+                hasIBAN: true,
+                IBAN: {},
+                receiptsPdf: {},
+                receiptsSum: 0
             }}
             enableReinitialize={true}
             onSubmit={values => console.log(values)}
@@ -30,255 +42,325 @@ export default function index() {
             }}
         >
             {formikProps => (
-                <React.Fragment>
-                    {console.log(formikProps)}
-                    <FastField
-                        name="gender"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Gender"
-                                hint="Required by authorities"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <Select
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="legalName"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Legal name"
+                                    hint="Enter your full legal name, including any middle names"
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} md={6}>
+                                            <TextInput
+                                                label="First name(s)"
+                                                value={field.value.firstName}
+                                                onChange={value =>
+                                                    form.setFieldValue(field.name, {
+                                                        ...field.value,
+                                                        firstName: value
+                                                    })
+                                                }
+                                                onBlur={() => form.setFieldTouched(field.name)}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <TextInput
+                                                label="Middle name(s)"
+                                                value={field.value.middleName}
+                                                onChange={value =>
+                                                    form.setFieldValue(field.name, {
+                                                        ...field.value,
+                                                        middleName: value
+                                                    })
+                                                }
+                                                onBlur={() => form.setFieldTouched(field.name)}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextInput
+                                                label="Last name"
+                                                value={field.value.lastName}
+                                                onChange={value =>
+                                                    form.setFieldValue(field.name, {
+                                                        ...field.value,
+                                                        lastName: value
+                                                    })
+                                                }
+                                                onBlur={() => form.setFieldTouched(field.name)}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="email"
+                            render={({ field, form }) => {
+                                return (
+                                    <FormControl
+                                        label="Email address"
+                                        hint="For communication related to receiving your travel grant payment"
+                                        error={form.errors[field.name]}
+                                        touched={form.touched[field.name]}
+                                    >
+                                        <TextInput
+                                            label="Email address"
+                                            value={field.value}
+                                            onChange={value => form.setFieldValue(field.name, value)}
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </FormControl>
+                                );
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="gender"
+                            render={({ field, form }) => (
+                                <FormControl
                                     label="Gender"
-                                    options="gender"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="legalName"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Legal name"
-                                hint="Enter your full legal name"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    label="First name"
-                                    value={field.value.firstName}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            firstName: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                                <TextInput
-                                    label="Middle name"
-                                    value={field.value.middleName}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            middleName: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                                <TextInput
-                                    label="Last name"
-                                    value={field.value.lastName}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            lastName: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="dateOfBirth"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Date of birth"
-                                hint="Enter your birthday"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <DateInput
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="socialSecurityNumber"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Social security number"
-                                hint="Fill in your social security number and the issuing country"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <Select
-                                    label="Issuing country"
-                                    value={field.value.issuingCountry}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            issuingCountry: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                    options="country"
-                                />
-                                <TextInput
-                                    label="Social security number"
-                                    value={field.value.number}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            number: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <Field
-                        name="address"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Address"
-                                hint="Fill in address details"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <StreetAddressForm
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="bankDetails"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Bank details"
-                                hint="Fill in bank details"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    label="Account number"
-                                    value={field.value.accountNumber}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            accountNumber: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                                <TextInput
-                                    label="Swift"
-                                    value={field.value.swift}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            swift: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                                <TextInput
-                                    label="Bank name"
-                                    value={field.value.bankName}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            bankName: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                                <TextInput
-                                    label="Email address"
-                                    value={field.value.email}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            email: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="travelReceipt"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Travel receipt"
-                                hint="Fill in travel receipt details"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    label="URL"
-                                    value={field.value.url}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            url: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                                <TextInput
-                                    label="Public ID"
-                                    value={field.value.publicId}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, {
-                                            ...field.value,
-                                            publicId: value
-                                        })
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <FastField
-                        name="sumOfReceipts"
-                        render={({ field, form }) => (
-                            <FormControl
-                                label="Sum Of receipts"
-                                hint="Enter the total sum of your receipts"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <TextInput
-                                    label="€"
-                                    value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    {/* {renderErrors(example)} */}
-                    <Button color="primary" variant="contained" onClick={formikProps.submitForm}>
-                        Submit
-                    </Button>
-                </React.Fragment>
+                                    hint="Please select your legal gender, either male or female. This information is required by tax authorities."
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <Select
+                                        label="Gender"
+                                        options={[
+                                            {
+                                                label: 'Male',
+                                                value: 'Male'
+                                            },
+                                            {
+                                                label: 'Female',
+                                                value: 'Female'
+                                            }
+                                        ]}
+                                        value={field.value}
+                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onBlur={() => form.setFieldTouched(field.name)}
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="dateOfBirth"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Date of birth"
+                                    hint="Enter your birthdate"
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <DateInput
+                                        value={field.value}
+                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onBlur={() => form.setFieldTouched(field.name)}
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="hasSSN"
+                            render={({ field, form }) => (
+                                <FormControl label="Do you have a Finnish social security number?">
+                                    <BooleanInput
+                                        value={field.value}
+                                        onChange={value => form.setFieldValue(field.name, value)}
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Field
+                            name="SSN"
+                            render={({ field, form }) => {
+                                if (form.values.hasSSN) {
+                                    return (
+                                        <FormControl
+                                            label="Social security number (Hetu)"
+                                            hint="Fill in your social security number - this makes receiving your travel grant payments easier."
+                                            error={form.errors[field.name]}
+                                            touched={form.touched[field.name]}
+                                        >
+                                            <TextInput
+                                                label="Social security number"
+                                                placeholder="000000-000X"
+                                                value={field.value.number}
+                                                onChange={value =>
+                                                    form.setFieldValue(field.name, {
+                                                        ...field.value,
+                                                        number: value
+                                                    })
+                                                }
+                                                onBlur={() => form.setFieldTouched(field.name)}
+                                            />
+                                        </FormControl>
+                                    );
+                                }
+                                return null;
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Field
+                            name="address"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Home address"
+                                    hint="Enter your home address in your current country of residence"
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <StreetAddressForm
+                                        value={field.value}
+                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onBlur={() => form.setFieldTouched(field.name)}
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="hasIBAN"
+                            render={({ field, form }) => {
+                                return (
+                                    <FormControl
+                                        label="Do you have an IBAN bank account?"
+                                        hint="...or a possibility to get one"
+                                    >
+                                        <BooleanInput
+                                            value={field.value}
+                                            onChange={value => form.setFieldValue(field.name, value)}
+                                        />
+                                    </FormControl>
+                                );
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Field
+                            name="IBAN"
+                            render={({ field, form }) => {
+                                if (!form.values.hasIBAN) {
+                                    return (
+                                        <Typography variant="subtitle1">
+                                            If you don't have an IBAN account, you will later need to fill in your bank
+                                            details in a separate service.
+                                        </Typography>
+                                    );
+                                }
+                                return (
+                                    <FormControl
+                                        label="IBAN account details"
+                                        hint="Fill in your IBAN account details"
+                                        error={form.errors[field.name]}
+                                        touched={form.touched[field.name]}
+                                    >
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={12}>
+                                                <TextInput
+                                                    label="Account number"
+                                                    value={field.value.accountNumber}
+                                                    onChange={value =>
+                                                        form.setFieldValue(field.name, {
+                                                            ...field.value,
+                                                            accountNumber: value
+                                                        })
+                                                    }
+                                                    onBlur={() => form.setFieldTouched(field.name)}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <TextInput
+                                                    label="Swift / BIC"
+                                                    value={field.value.swift}
+                                                    onChange={value =>
+                                                        form.setFieldValue(field.name, {
+                                                            ...field.value,
+                                                            swift: value
+                                                        })
+                                                    }
+                                                    onBlur={() => form.setFieldTouched(field.name)}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <TextInput
+                                                    label="Bank name"
+                                                    value={field.value.bankName}
+                                                    onChange={value =>
+                                                        form.setFieldValue(field.name, {
+                                                            ...field.value,
+                                                            bankName: value
+                                                        })
+                                                    }
+                                                    onBlur={() => form.setFieldTouched(field.name)}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </FormControl>
+                                );
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="travelReceipt"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Travel receipt"
+                                    hint="Upload a .pdf file containing your travel receipts. If you have multiple travel receipts you wish to upload, first combine them into a single .pdf file and then upload the receipts here. Maximum file size: 10mb"
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                ></FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="receiptsSum"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Sum of receipts"
+                                    hint="Enter the total sum of your receipts, in Euros"
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <TextInput
+                                        label="€"
+                                        value={field.value}
+                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onBlur={() => form.setFieldTouched(field.name)}
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button color="primary" variant="contained" onClick={formikProps.submitForm}>
+                            Submit
+                        </Button>
+                    </Grid>
+                </Grid>
             )}
         </Formik>
     );
-}
+};
+
+const mapState = state => ({
+    userProfile: UserSelectors.userProfile(state)
+});
+
+export default connect(mapState)(EventDashboardTravelGrant);
