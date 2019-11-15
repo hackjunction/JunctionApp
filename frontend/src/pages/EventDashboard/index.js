@@ -42,6 +42,8 @@ const EventDashboard = ({
     showEventID,
     showSubmission,
     showReviewing,
+    showTravelGrant,
+    showHackerPack,
     isSubmissionsLocked,
     isReviewingLocked
 }) => {
@@ -115,6 +117,7 @@ const EventDashboard = ({
                         path: '/travel-grant',
                         exact: true,
                         icon: <FlightTakeoffIcon />,
+                        hidden: !showTravelGrant,
                         label: 'Travel grant',
                         component: EventDashboardTravelGrant
                     },
@@ -124,7 +127,7 @@ const EventDashboard = ({
                         exact: true,
                         locked: isSubmissionsLocked,
                         lockedDescription: 'Submissions not open',
-                        hidden: false,
+                        hidden: !showSubmission,
                         icon: <AssignmentOutlinedIcon />,
                         label: 'Project submission',
                         component: EventDashboardSubmission
@@ -145,6 +148,7 @@ const EventDashboard = ({
                         path: '/hackerpack',
                         exact: true,
                         icon: <AmpStoriesIcon />,
+                        hidden: !showHackerPack,
                         label: 'Hackerpack',
                         component: Hackerpack
                     }
@@ -165,6 +169,8 @@ const mapStateToProps = state => ({
     showEventID: DashboardSelectors.showEventID(state),
     showSubmission: DashboardSelectors.showSubmission(state),
     showReviewing: DashboardSelectors.showReviewing(state),
+    showTravelGrant: DashboardSelectors.showTravelGrant(state),
+    showHackerPack: DashboardSelectors.showHackerPack(state),
     isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
     isReviewingLocked: DashboardSelectors.isReviewingLocked(state)
 });
