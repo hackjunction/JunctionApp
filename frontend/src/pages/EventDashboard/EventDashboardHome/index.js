@@ -11,6 +11,8 @@ import ProjectBlock from './Blocks/ProjectBlock';
 import TeamStatusBlock from './Blocks/TeamStatusBlock';
 import VisaInvitationBlock from './Blocks/VisaInvitationBlock';
 import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock';
+import GavelReviewingBlock from './Blocks/GavelReviewingBlock';
+import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock';
 
 // const useStyles = makeStyles(theme => ({
 //     stepper: {
@@ -28,6 +30,8 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             <Grid container spacing={5}>
                 <RegistrationStatusBlock />
                 <ProjectBlock />
+                <GavelReviewingBlock />
+                <PartnerReviewingBlock />
                 <TravelGrantStatusBlock />
                 <TeamStatusBlock />
                 <VisaInvitationBlock />

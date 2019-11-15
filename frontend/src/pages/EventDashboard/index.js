@@ -39,7 +39,9 @@ const EventDashboard = ({
     registration,
     showEventID,
     showSubmission,
-    isSubmissionsLocked
+    showReviewing,
+    isSubmissionsLocked,
+    isReviewingLocked
 }) => {
     const { slug } = match.params;
 
@@ -121,8 +123,9 @@ const EventDashboard = ({
                         key: 'reviewing',
                         path: '/reviewing',
                         exact: true,
-                        locked: true,
-                        lockedDescription: 'Reviewing not open',
+                        hidden: !showReviewing,
+                        locked: isReviewingLocked,
+                        lockedDescription: 'Reviewing closed',
                         icon: <StarRateIcon />,
                         label: 'Reviewing',
                         component: EventDashboardReviewing
@@ -151,7 +154,9 @@ const mapStateToProps = state => ({
     registration: DashboardSelectors.registration(state),
     showEventID: DashboardSelectors.showEventID(state),
     showSubmission: DashboardSelectors.showSubmission(state),
-    isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state)
+    showReviewing: DashboardSelectors.showReviewing(state),
+    isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
+    isReviewingLocked: DashboardSelectors.isReviewingLocked(state)
 });
 
 const mapDispatchToProps = dispatch => ({

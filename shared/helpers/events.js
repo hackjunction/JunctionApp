@@ -48,6 +48,10 @@ const EventHelpers = {
         if (!event) return false;
         return nowIsBetween(event.reviewingStartTime, event.reviewingEndTime, moment);
     },
+    isVotingPast: (event, moment) => {
+        if (!event) return true;
+        return !nowIsBefore(event.reviewingEndTime, moment);
+    },
     getEventStatus: (event, moment) => {
         if (!event) return null;
         const now = moment().utc();

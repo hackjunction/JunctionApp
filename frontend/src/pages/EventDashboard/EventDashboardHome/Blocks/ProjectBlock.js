@@ -35,11 +35,11 @@ const ProjectBlock = ({
                         Project submissions not yet open
                     </Typography>
                     <Typography variant="body1">
-                        Project submissions begin {moment(event.submissionsStartTime).format('LLL')}, and you'll be able
-                        to submit your project here. As soon as you have a general idea of what you're building, you
-                        should make the first version of your project submission, so that organisers and partners have a
-                        general idea of what everyone is working on. You can always edit your project submission until
-                        the final submission deadline, {moment(event.submissionsEndTime).format('LLL')}
+                        Project submissions begin {moment(event.submissionsStartTime).format('LLLL')}, and you'll be
+                        able to submit your project here. As soon as you have a general idea of what you're building,
+                        you should make the first version of your project submission, so that organisers and partners
+                        have a general idea of what everyone is working on. You can always edit your project submission
+                        until the final submission deadline, {moment(event.submissionsEndTime).format('LLLL')}
                     </Typography>
                 </GradientBox>
             </Grid>
