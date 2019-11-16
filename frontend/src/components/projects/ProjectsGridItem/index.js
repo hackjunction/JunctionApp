@@ -30,11 +30,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ProjectsGridItem = ({ project, event, onClickMore }) => {
+const ProjectsGridItem = ({ project, event, showTableLocation, onClickMore }) => {
     const classes = useStyles();
 
     const previewImage = project.images.length > 0 ? project.images[0].publicId : '';
-    const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
 
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
@@ -53,7 +52,7 @@ const ProjectsGridItem = ({ project, event, onClickMore }) => {
                         {MiscUtils.ellipsize(project.punchline, 160)}
                     </Typography>
                 </Box>
-                {isOngoingEvent && project.location && (
+                {showTableLocation && project.location && (
                     <Box pt={2} pl={2} pr={2}>
                         <Typography style={{ fontWeight: 'bold' }} variant="body1">
                             Table location

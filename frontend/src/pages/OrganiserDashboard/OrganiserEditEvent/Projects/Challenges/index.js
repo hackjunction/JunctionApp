@@ -5,7 +5,7 @@ import { withSnackbar } from 'notistack';
 
 import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
-import MaterialTable from 'components/generic/MaterialTable';
+import ProjectsTable from 'components/tables/ProjectsTable';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -41,7 +41,7 @@ const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnack
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12} style={{ position: 'relative', zIndex: 10000 }}>
+            <Grid item xs={12} style={{ position: 'relative', zIndex: 500 }}>
                 <Select
                     label="Choose challenge"
                     options={event.challenges.map(challenge => ({
@@ -53,65 +53,7 @@ const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnack
                 />
             </Grid>
             <Grid item xs={12}>
-                <MaterialTable
-                    title="Projects"
-                    showCount
-                    isLoading={projectsLoading}
-                    data={filtered}
-                    // onRowClick={(e, row) => setEditing(row.user)}
-                    // onSelectionChange={rows => setSelected(rows.map(r => r.user))}
-                    // actions={
-                    //     !minimal
-                    //         ? [
-                    //               {
-                    //                   icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
-                    //                   tooltip: 'Email selected',
-                    //                   onClick: toggleBulkEmail
-                    //               },
-                    //               {
-                    //                   icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
-                    //                   tooltip: 'Edit selected',
-                    //                   onClick: toggleBulkEdit
-                    //               }
-                    //           ]
-                    //         : []
-                    // }
-                    options={{
-                        exportButton: true,
-                        selection: false,
-                        showSelectAllCheckbox: false,
-                        pageSizeOptions: [5, 25, 50],
-                        debounceInterval: 500,
-                        search: false,
-                        paging: true
-                    }}
-                    localization={{
-                        toolbar: {
-                            searchPlaceholder: 'Search by name/email',
-                            nRowsSelected: '{0} selected'
-                        }
-                    }}
-                    components={{
-                        Container: forwardRef((props, ref) => <Paper {...props} ref={ref} />)
-                    }}
-                    columns={[
-                        {
-                            title: 'Name',
-                            field: 'name',
-                            searchable: true
-                        },
-                        {
-                            title: 'Location',
-                            field: 'location',
-                            searchable: true
-                        },
-                        {
-                            title: 'Punchline',
-                            field: 'punchline',
-                            searchable: true
-                        }
-                    ]}
-                />
+                <ProjectsTable projects={projects} event={event} loading={projectsLoading} />
             </Grid>
             <Grid item xs={12}>
                 {link && link.link ? (

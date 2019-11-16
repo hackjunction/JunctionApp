@@ -113,7 +113,7 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
                     <Box mt={5} mb={5}>
                         <Markdown source={project.description} />
                     </Box>
-                    {showTableLocation && (
+                    {showTableLocation && project.location && (
                         <Box mb={3}>
                             <Typography variant="h6" className={classes.sectionTitle}>
                                 Location
