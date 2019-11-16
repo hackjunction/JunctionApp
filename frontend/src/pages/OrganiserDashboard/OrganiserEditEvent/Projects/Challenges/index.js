@@ -53,7 +53,7 @@ const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnack
                 />
             </Grid>
             <Grid item xs={12}>
-                <ProjectsTable projects={projects} event={event} loading={projectsLoading} />
+                <ProjectsTable projects={filtered} event={event} loading={projectsLoading} />
             </Grid>
             <Grid item xs={12}>
                 {link && link.link ? (
