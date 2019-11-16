@@ -22,4 +22,16 @@ ProjectsService.updateProjectForEventAndTeam = (idToken, eventSlug, data) => {
     return _axios.patch(`/projects/${eventSlug}/team`, { data }, config(idToken));
 };
 
+ProjectsService.getAllProjectsAsOrganiser = (idToken, eventSlug) => {
+    return _axios.get(`/projects/${eventSlug}/admin`, config(idToken));
+};
+
+ProjectsService.generateChallengeLink = (idToken, eventSlug, challengeSlug) => {
+    return _axios.get(`/projects/${eventSlug}/admin/${challengeSlug}/link`, config(idToken));
+};
+
+ProjectsService.getProjectsWithToken = (eventSlug, token) => {
+    return _axios.get(`/projects/${eventSlug}/token/${token}`);
+};
+
 export default ProjectsService;

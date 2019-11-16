@@ -1,7 +1,7 @@
 const Partners = [
     {
         name: 'Microsoft Azure',
-        description: `Microsoft Azure is a flexible, scalable, and full-featured cloud platform. If you can imagine it, you can build it on Azure, using the tools, languages and frameworks you're already familiar with. Python, JavaScript, Java, .NET - you can run them all on Azure. Using Azure you can run serverless code using Azure Functions, host web applications and databases, take advantage of artificial intelligence (AI) through Cognitive Services, and create your own machine learning models through Azure Notebooks or powerful Data Science Virtual Machines (DSVM)`,
+        description: `Microsoft Azure is a flexible, scalable, and full-featured cloud platform. If you can imagine it, you can build it on Azure, using the tools, languages and frameworks you're already familiar with. Python, JavaScript, Java, .NET - you can run them all on Azure. Using Azure you can run serverless code using Azure Functions, host web applications and databases, take advantage of artificial intelligence (AI) through Cognitive Services, and create your own machine learning models through Azure Notebooks or powerful Data Science Virtual Machines (DSVM). NOTE: If you are not currently a student, visit Microsoft's booth at the Data Economics track (H) on the 2nd floor to get your Azure credits.`,
         icon:
             'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1573592302/Microsoft-logo_rgb_c-gray.png',
         link: 'https://bit.ly/azure-hackerpack2019'
