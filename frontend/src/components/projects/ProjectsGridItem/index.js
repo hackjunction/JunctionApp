@@ -21,7 +21,14 @@ const useStyles = makeStyles(theme => ({
     image: {
         height: '140px',
         width: '100%',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        background: 'black'
+    },
+    placeholderImage: {
+        height: '140px',
+        width: '100%',
+        objectFit: 'contain',
+        background: 'black'
     },
     content: {
         padding: theme.spacing(2),
@@ -39,9 +46,9 @@ const ProjectsGridItem = ({ project, event, showTableLocation, onClickMore }) =>
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Box className={classes.wrapper}>
                 <Image
-                    className={classes.image}
+                    className={previewImage ? classes.image : classes.placeholderImage}
                     publicId={previewImage}
-                    defaultImage={require('assets/images/default_thumbnail.png')}
+                    defaultImage={event.logo.url}
                     transformation={{
                         width: 600
                     }}
