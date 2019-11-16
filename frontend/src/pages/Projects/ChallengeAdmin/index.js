@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
+import ProjectsGrid from 'components/projects/ProjectsGrid';
 
 import ProjectsService from 'services/projects';
 
@@ -34,6 +35,7 @@ const ProjectsChallengeAdmin = ({ match }) => {
             render={() => (
                 <CenteredContainer>
                     <PageHeader heading={data.challenge.name} subheading={data.projects.length + ' projects'} />
+                    <ProjectsGrid projects={data.projects} />
                 </CenteredContainer>
             )}
         ></PageWrapper>
