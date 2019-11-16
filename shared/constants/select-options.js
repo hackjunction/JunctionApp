@@ -54,6 +54,10 @@ const SelectOptions = {
         label: skill,
         value: skill
     })),
+    SKILLS_NO_ABSTRACT: Skills.itemsWithoutAbstract.map(skill => ({
+        label: skill,
+        value: skill
+    })),
     THEMES: Themes.themes.map(theme => ({
         label: theme,
         value: theme

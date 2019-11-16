@@ -61,6 +61,12 @@ Skills.items = categories.reduce((res, category) => {
     res = res.concat(category.items);
     return res;
 }, []);
+Skills.itemsWithoutAbstract = categories.reduce((res, category) => {
+    if (category.id !== 'abstract-skills') {
+        res = res.concat(category.items);
+    }
+    return res;
+}, []);
 Skills.skillLevelArray = Object.keys(skillLevels).map(idx => ({ value: idx, ...skillLevels[idx] }));
 Skills.skillLevelLabelsArray = Object.keys(skillLevels).map(idx => skillLevels[idx].label);
 Skills.getLabelForSkillLevel = level => (skillLevels.hasOwnProperty(level) ? skillLevels[level].label : '');

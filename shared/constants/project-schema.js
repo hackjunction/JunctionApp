@@ -28,6 +28,10 @@ const ProjectSchema = {
         .boolean()
         .default(true)
         .label('Source code public'),
+    technologies: yup
+        .array()
+        .of(yup.string())
+        .label('Technologies'),
     demo: yup
         .string()
         .url()
