@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, FastField, Field } from 'formik';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import { connect } from 'react-redux';
 import * as yup from 'yup';
 import FormControl from 'components/inputs/FormControl';
@@ -11,6 +11,7 @@ import DateInput from 'components/inputs/DateInput';
 import BooleanInput from 'components/inputs/BooleanInput';
 import PdfUpload from 'components/inputs/PdfUpload';
 import StreetAddressForm from 'components/inputs/StreetAddressForm';
+import ErrorsBox from 'components/generic/ErrorsBox';
 
 import * as UserSelectors from 'redux/user/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -319,10 +320,10 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <FastField
-                            name="travelReceipt"
+                            name="receiptsPdf"
                             render={({ field, form }) => (
                                 <FormControl
-                                    label="Travel receipt"
+                                    label="Travel receipts"
                                     hint="Upload a .pdf file containing your travel receipts. If you have multiple travel receipts you wish to upload, first combine them into a single .pdf file and then upload the receipts here. Maximum file size: 10mb"
                                     error={form.errors[field.name]}
                                     touched={form.touched[field.name]}
@@ -330,7 +331,7 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
                                     <PdfUpload
                                         uploadUrl={`/api/upload/${event.slug}/travel-grant-receipts`}
                                         value={field.value}
-                                        onChange={value => form.setFieldValue}
+                                        onChange={value => form.setFieldValue(field.name, value)}
                                     />
                                 </FormControl>
                             )}
@@ -356,11 +357,26 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button color="primary" variant="contained" onClick={formikProps.submitForm}>
-                            Submit
-                        </Button>
-                    </Grid>
+                    {Object.keys(formikProps.errors).length > 0 ? (
+                        <Grid item xs={12}>
+                            <ErrorsBox errors={formikProps.errors} />
+                        </Grid>
+                    ) : (
+                        <Grid item xs={12}>
+                            <Box display="flex" flexDirection="column" alignItems="center">
+                                <Box width="100%" maxWidth="300px">
+                                    <Button
+                                        fullWidth
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={formikProps.submitForm}
+                                    >
+                                        Submit
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Grid>
+                    )}
                 </Grid>
             )}
         </Formik>
