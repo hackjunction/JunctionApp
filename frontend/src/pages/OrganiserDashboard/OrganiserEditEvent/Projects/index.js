@@ -9,6 +9,7 @@ import PageHeader from 'components/generic/PageHeader';
 
 import SearchTab from './Search';
 import ChallengesTab from './Challenges';
+import TracksTab from './Tracks';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -16,7 +17,7 @@ import * as OrganiserActions from 'redux/organiser/actions';
 const Projects = ({ event, projectsLoading, updateProjects, location, match }) => {
     useEffect(() => {
         updateProjects(event.slug);
-    }, [event]);
+    }, [event, updateProjects]);
 
     if (!event || projectsLoading) return <PageWrapper loading />;
 
@@ -35,6 +36,15 @@ const Projects = ({ event, projectsLoading, updateProjects, location, match }) =
             key: 'by-challenge',
             label: 'By challenge',
             content: <ChallengesTab />
+        });
+    }
+
+    if (event.tracksEnabled && event.tracks.length > 0) {
+        tabs.push({
+            path: '/by-track',
+            key: 'by-track',
+            label: 'By track',
+            content: <TracksTab />
         });
     }
 
