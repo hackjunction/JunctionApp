@@ -37,6 +37,11 @@ export const filterGroupsLoading = state => state.organiser.filterGroups.loading
 export const filterGroupsError = state => state.organiser.filterGroups.error;
 export const filterGroupsUpdated = state => state.organiser.filterGroups.updated;
 
+export const projects = state => state.organiser.projects.data;
+export const projectsLoading = state => state.organiser.projects.loading;
+export const projectsError = state => state.organisers.projects.error;
+export const projectsUpdated = state => state.organiser.projects.updated;
+
 export const registrationsAssigned = createSelector(
     AuthSelectors.idTokenData,
     registrations,
@@ -47,154 +52,104 @@ export const registrationsAssigned = createSelector(
     }
 );
 
-export const registrationsReviewed = createSelector(
-    registrations,
-    registrations => {
-        return registrations.filter(registration => {
-            return !!registration.rating;
-        });
-    }
+export const registrationsReviewed = createSelector(registrations, registrations => {
+    return registrations.filter(registration => {
+        return !!registration.rating;
+    });
+});
+
+export const registrationsConfirmed = createSelector(registrations, registrations => {
+    const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
+    return registrations.filter(registration => {
+        return validStatuses.indexOf(registration.status) !== -1;
+    });
+});
+
+export const registrationsEligibleForTravelGrant = createSelector(registrationsConfirmed, registrations =>
+    registrations.filter(r => {
+        return !r.travelGrant && r.travelGrant !== 0 && r.answers.needsTravelGrant;
+    })
 );
 
-export const registrationsConfirmed = createSelector(
-    registrations,
-    registrations => {
-        const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
-        return registrations.filter(registration => {
-            return validStatuses.indexOf(registration.status) !== -1;
-        });
-    }
+export const registrationsWithTravelGrant = createSelector(registrationsConfirmed, registrations =>
+    registrations.filter(r => {
+        return r.travelGrant && r.travelGrant !== 0;
+    })
 );
 
-export const registrationsEligibleForTravelGrant = createSelector(
-    registrationsConfirmed,
-    registrations =>
-        registrations.filter(r => {
-            return !r.travelGrant && r.travelGrant !== 0 && r.answers.needsTravelGrant;
-        })
-);
+export const travelGrantSpend = createSelector(registrationsWithTravelGrant, registrations => {
+    return sumBy(registrations, r => {
+        return r.travelGrant || 0;
+    });
+});
 
-export const registrationsWithTravelGrant = createSelector(
-    registrationsConfirmed,
-    registrations =>
-        registrations.filter(r => {
-            return r.travelGrant && r.travelGrant !== 0;
-        })
-);
-
-export const travelGrantSpend = createSelector(
-    registrationsWithTravelGrant,
-    registrations => {
-        return sumBy(registrations, r => {
-            return r.travelGrant || 0;
-        });
-    }
-);
-
-export const travelGrantCount = createSelector(
-    registrationsWithTravelGrant,
-    registrations => registrations.length
-);
+export const travelGrantCount = createSelector(registrationsWithTravelGrant, registrations => registrations.length);
 
 export const travelGrantRejectedCount = createSelector(
     registrationsConfirmed,
     registrations => registrations.filter(r => r.travelGrant === 0).length
 );
 
-export const teamsPopulated = createSelector(
-    registrationsMap,
-    teams,
-    (map, teams) => {
-        return teams.map(team => {
-            team.members = team.members.map(member => {
-                return map[member];
-            });
-            return team;
+export const teamsPopulated = createSelector(registrationsMap, teams, (map, teams) => {
+    return teams.map(team => {
+        team.members = team.members.map(member => {
+            return map[member];
         });
-    }
-);
+        return team;
+    });
+});
 
 /** Stats selectors */
-export const registrationsCount = createSelector(
-    registrations,
-    registrations => registrations.length
-);
+export const registrationsCount = createSelector(registrations, registrations => registrations.length);
 
-export const teamsCount = createSelector(
-    teams,
-    teams => teams.length
-);
+export const teamsCount = createSelector(teams, teams => teams.length);
 
-export const percentReviewed = createSelector(
-    registrations,
-    registrations => {
-        const { reviewed, total } = registrations.reduce(
-            (res, registration) => {
-                res.total += 1;
-                if (registration.rating) {
-                    res.reviewed += 1;
-                }
-                return res;
-            },
-            {
-                reviewed: 0,
-                total: 0
+export const percentReviewed = createSelector(registrations, registrations => {
+    const { reviewed, total } = registrations.reduce(
+        (res, registration) => {
+            res.total += 1;
+            if (registration.rating) {
+                res.reviewed += 1;
             }
-        );
-        return (reviewed * 100) / total;
-    }
-);
+            return res;
+        },
+        {
+            reviewed: 0,
+            total: 0
+        }
+    );
+    return (reviewed * 100) / total;
+});
 
-export const averageRating = createSelector(
-    registrationsReviewed,
-    registrations => {
+export const averageRating = createSelector(registrationsReviewed, registrations => {
+    return meanBy(registrations, 'rating');
+});
+
+export const registrationsLast24h = createSelector(registrations, registrations => {
+    return registrations.filter(registration => {
+        return registration.createdAt > Date.now() - 1000 * 60 * 60 * 24;
+    }).length;
+});
+
+export const registrationsByDay = createSelector(registrations, registrations => {
+    return countBy(registrations, r => moment(r.createdAt).format('YYYY-MM-DD'));
+});
+
+export const registrationsByRating = createSelector(registrationsReviewed, registrations => {
+    return countBy(registrations, 'rating');
+});
+
+export const registrationsByReviewer = createSelector(registrationsReviewed, registrations => {
+    return countBy(registrations, 'ratedBy');
+});
+
+export const registrationsBySecretCode = createSelector(registrations, registrations => {
+    return countBy(registrations, 'answers.secretCode');
+});
+
+export const reviewAverageByReviewer = createSelector(registrationsReviewed, registrations => {
+    const grouped = groupBy(registrations, 'ratedBy');
+    return mapValues(grouped, registrations => {
         return meanBy(registrations, 'rating');
-    }
-);
-
-export const registrationsLast24h = createSelector(
-    registrations,
-    registrations => {
-        return registrations.filter(registration => {
-            return registration.createdAt > Date.now() - 1000 * 60 * 60 * 24;
-        }).length;
-    }
-);
-
-export const registrationsByDay = createSelector(
-    registrations,
-    registrations => {
-        return countBy(registrations, r => moment(r.createdAt).format('YYYY-MM-DD'));
-    }
-);
-
-export const registrationsByRating = createSelector(
-    registrationsReviewed,
-    registrations => {
-        return countBy(registrations, 'rating');
-    }
-);
-
-export const registrationsByReviewer = createSelector(
-    registrationsReviewed,
-    registrations => {
-        return countBy(registrations, 'ratedBy');
-    }
-);
-
-export const registrationsBySecretCode = createSelector(
-    registrations,
-    registrations => {
-        return countBy(registrations, 'answers.secretCode');
-    }
-);
-
-export const reviewAverageByReviewer = createSelector(
-    registrationsReviewed,
-    registrations => {
-        const grouped = groupBy(registrations, 'ratedBy');
-        return mapValues(grouped, registrations => {
-            return meanBy(registrations, 'rating');
-        });
-    }
-);
+    });
+});

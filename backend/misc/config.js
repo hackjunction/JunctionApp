@@ -91,6 +91,10 @@ const settings = {
     ADMIN_TOKEN: {
         value: process.env.ADMIN_TOKEN,
         required: true
+    },
+    HASH_SALT: {
+        value: process.env.HASH_SALT,
+        required: true
     }
 };
 
