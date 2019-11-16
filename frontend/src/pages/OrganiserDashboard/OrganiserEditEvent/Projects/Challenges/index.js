@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, forwardRef } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, forwardRef } from 'react';
 import { connect } from 'react-redux';
 import { Paper, Grid } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
@@ -15,7 +15,7 @@ import ProjectsService from 'services/projects';
 
 const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnackbar }) => {
     const [challenge, setChallenge] = useState(event.challenges[0].slug);
-    const [link, setLink] = useState('');
+    const [link, setLink] = useState();
     const [linkLoading, setLinkLoading] = useState(false);
 
     const filtered = useMemo(() => {
@@ -23,6 +23,10 @@ const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnack
             return project.challenges && project.challenges.indexOf(challenge) !== -1;
         });
     }, [projects, challenge]);
+
+    useEffect(() => {
+        setLink();
+    }, [challenge]);
 
     const handleGenerateLink = useCallback(async () => {
         setLinkLoading(true);
@@ -34,8 +38,6 @@ const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnack
         }
         setLinkLoading(false);
     }, [idToken, event, challenge, enqueueSnackbar]);
-
-    console.log('DA LINK', link);
 
     return (
         <Grid container spacing={3}>

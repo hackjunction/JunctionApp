@@ -34,6 +34,13 @@ const MiscUtils = {
         });
     },
 
+    ellipsize: (string, maxLength) => {
+        if (string.length > maxLength) {
+            return string.slice(0, maxLength) + '...';
+        }
+        return string;
+    },
+
     isHexaColor: value => {
         return typeof value === 'string' && value.length === 6 && !isNaN(parseInt(value, 16));
     }
