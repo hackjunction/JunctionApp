@@ -117,8 +117,7 @@ const EventDashboard = ({
                         path: '/travel-grant',
                         exact: true,
                         icon: <FlightTakeoffIcon />,
-                        //hidden: !showTravelGrant,
-                        hidden: true,
+                        hidden: !showTravelGrant,
                         label: 'Travel grant',
                         component: EventDashboardTravelGrant
                     },

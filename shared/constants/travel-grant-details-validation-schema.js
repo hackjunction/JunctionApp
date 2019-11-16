@@ -23,6 +23,7 @@ const schema = {
         .email()
         .required()
         .label('Email'),
+    dateOfBirth: yup.date().required(),
     gender: yup
         .string()
         .oneOf(['Male', 'Female'])

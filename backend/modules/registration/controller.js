@@ -6,8 +6,10 @@ const {
     RegistrationFields,
     FieldTypes,
     RegistrationTravelGrantStatuses,
-    EventTypes
+    EventTypes,
+    TravelGrantDetailsValidationSchema
 } = require('@hackjunction/shared');
+const yup = require('yup');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const RegistrationHelpers = require('./helpers');
@@ -80,26 +82,24 @@ controller.cancelRegistration = (user, event) => {
     });
 };
 
-controller.setTravelGrantDetailsForRegistration = (user, event, travelGrantDetails) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status !== STATUSES.checkedIn.id) {
-            throw new ForbiddenError('Only those can receive reimbursement who have checked-in at the event!');
-        }
-        if (registration.travelGrant <= 0) {
-            throw new ForbiddenError('This registration has no travel grant given.');
-        }
-        if (
-            registration.travelGrantStatus &&
-            (registration.travelGrantStatus !== TRAVEL_GRANT_STATUSES.pending.id ||
-                registration.travelGrantStatus !== TRAVEL_GRANT_STATUSES.not_submitted.id)
-        ) {
-            throw new ForbiddenError('Only new or pending travel reimbursement forms can be updated.');
-        }
+controller.setTravelGrantDetailsForRegistration = async (user, event, travelGrantDetails) => {
+    const schema = yup.object().shape(TravelGrantDetailsValidationSchema);
+    const validated = await schema.validate(travelGrantDetails, { stripUnknown: true });
+    const registration = await controller.getRegistration(user.sub, event._id);
 
-        registration.travelGrantDetails = travelGrantDetails;
-        registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
-        return registration.save();
-    });
+    if (registration.status !== STATUSES.checkedIn.id) {
+        throw new ForbiddenError('Only those can receive reimbursement who have checked-in at the event!');
+    }
+    if (registration.travelGrant <= 0) {
+        throw new ForbiddenError('This registration has no travel grant given.');
+    }
+    if (registration.travelGrantStatus && registration.travelGrantStatus === TRAVEL_GRANT_STATUSES.accepted.id) {
+        throw new ForbiddenError('Accepted travel grants cannot be edited');
+    }
+
+    registration.travelGrantDetails = validated;
+    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
+    return registration.save();
 };
 
 controller.updateTravelGrantStatus = (user, event, status) => {
