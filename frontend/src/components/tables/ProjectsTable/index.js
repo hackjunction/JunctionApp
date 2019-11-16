@@ -47,14 +47,15 @@ const ProjectsTable = ({ event, projects, loading }) => {
                     exportButton: true,
                     selection: false,
                     showSelectAllCheckbox: false,
-                    pageSizeOptions: [5, 25, 50],
+                    pageSizeOptions: [5, 10, 25, 50],
                     debounceInterval: 500,
                     search: true,
-                    paging: true
+                    paging: true,
+                    pageSize: 10
                 }}
                 localization={{
                     toolbar: {
-                        searchPlaceholder: 'Search by name/email',
+                        searchPlaceholder: 'Search projects',
                         nRowsSelected: '{0} selected'
                     }
                 }}
@@ -76,6 +77,10 @@ const ProjectsTable = ({ event, projects, loading }) => {
                         title: 'Punchline',
                         field: 'punchline',
                         searchable: true
+                    },
+                    {
+                        title: 'Location',
+                        field: 'location'
                     }
                 ]}
             />
