@@ -37,6 +37,12 @@ const initialState = {
         data: [],
         map: {}
     },
+    projects: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: []
+    },
     filterGroups: {
         loading: false,
         error: false,
@@ -52,6 +58,7 @@ const organisersHandler = buildHandler('organisers', 'userId');
 const registrationsHandler = buildHandler('registrations', 'user');
 const filterGroupsHandler = buildHandler('filterGroups');
 const teamsHandler = buildHandler('teams');
+const projectsHandler = buildHandler('projects');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
 
@@ -92,6 +99,9 @@ export default function reducer(state = initialState, action) {
             } else {
                 return newState;
             }
+        }
+        case ActionTypes.UPDATE_PROJECTS: {
+            return projectsHandler(state, action);
         }
         case ActionTypes.UPDATE_FILTER_GROUPS: {
             return filterGroupsHandler(state, action);

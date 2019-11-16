@@ -8,6 +8,7 @@ import ErrorPage from './pages/Error';
 import LogoutPage from './pages/Logout';
 import LoginPage from './pages/Login';
 import LoginWelcomePage from './pages/LoginWelcome';
+import ProjectsChallengeAdminPage from './pages/Projects/ChallengeAdmin';
 
 import EventDetailRouter from './pages/EventDetail/EventDetailRouter';
 import RequiresPermission from './hocs/RequiresPermission';
@@ -82,6 +83,11 @@ const routes = [
     {
         path: '/recruitment',
         component: RequiresPermission(RecruitmentPage, [AuthConstants.Permissions.ACCESS_RECRUITMENT]),
+        exact: false
+    },
+    {
+        path: '/projects/:slug/challenge/:token',
+        component: ProjectsChallengeAdminPage,
         exact: false
     }
 ];

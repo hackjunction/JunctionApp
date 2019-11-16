@@ -117,6 +117,11 @@ async function getTeamWithMeta(user, event) {
 }
 
 const EventMiddleware = {
+    getEventFromParams: async (req, res, next) => {
+        const event = await getEventFromParams(req.params);
+        req.event = event;
+        next();
+    },
     isEventOrganiser: async (req, res, next) => {
         const event = await getEventFromParams(req.params);
         const error = isOrganiser(req.user, event);
