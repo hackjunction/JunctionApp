@@ -356,6 +356,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.ROLES;
                 case 'skill':
                     return SelectOptions.SKILLS;
+                case 'technology':
+                    return SelectOptions.SKILLS_NO_ABSTRACT;
                 case 'theme':
                     return SelectOptions.THEMES;
                 case 't-shirt-size':

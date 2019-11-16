@@ -26,6 +26,7 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    technologies: [String],
     source: {
         type: String,
         required: true
