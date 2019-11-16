@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from 'react';
 
+import moment from 'moment-timezone';
 import { Grid, Dialog } from '@material-ui/core';
+import { EventHelpers } from '@hackjunction/shared';
 import ProjectsGridItem from '../ProjectsGridItem';
 import ProjectDetail from '../ProjectDetail';
 
-const ProjectsGrid = ({ projects }) => {
+const ProjectsGrid = ({ projects, event }) => {
     const [selected, setSelected] = useState();
     const handleSelect = useCallback(project => {
         setSelected(project);
@@ -14,17 +16,27 @@ const ProjectsGrid = ({ projects }) => {
         setSelected();
     }, []);
 
+    const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
+
     return (
-        <React.Fragment>
-            <Grid container spacing={3} direction="row" alignItems="stretch">
-                {projects.map(project => (
-                    <ProjectsGridItem project={project} onClickMore={() => handleSelect(project)} />
-                ))}
-            </Grid>
-            <Dialog scroll="body" fullScreen open={Boolean(selected)} onClose={handleClose}>
-                <ProjectDetail project={selected} onBack={handleClose} />
+        <Grid container spacing={3} direction="row" alignItems="stretch">
+            <Dialog transitionDuration={0} fullScreen open={Boolean(selected)} onClose={handleClose}>
+                <ProjectDetail
+                    project={selected}
+                    event={event}
+                    onBack={handleClose}
+                    showTableLocation={isOngoingEvent}
+                />
             </Dialog>
-        </React.Fragment>
+            {projects.map(project => (
+                <ProjectsGridItem
+                    project={project}
+                    event={event}
+                    showTableLocation={isOngoingEvent}
+                    onClickMore={() => handleSelect(project)}
+                />
+            ))}
+        </Grid>
     );
 };
 

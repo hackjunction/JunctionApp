@@ -85,6 +85,17 @@ controller.getTeam = (eventId, userId) => {
         });
 };
 
+controller.getTeamMembers = teamId => {
+    return Team.findOne({
+        _id: teamId
+    }).then(team => {
+        if (!team) {
+            throw new NotFoundError('No team found with id ' + teamId);
+        }
+        return [team.owner].concat(team.members);
+    });
+};
+
 controller.attachMeta = async team => {
     const userIds = [team.owner].concat(team.members);
     const [registrations, userProfiles] = await Promise.all([

@@ -52,6 +52,10 @@ const EventHelpers = {
         if (!event) return true;
         return !nowIsBefore(event.reviewingEndTime, moment);
     },
+    isEventOngoing: (event, moment) => {
+        if (!event) return false;
+        return nowIsBetween(event.startTime, event.endTime, moment);
+    },
     getEventStatus: (event, moment) => {
         if (!event) return null;
         const now = moment().utc();
