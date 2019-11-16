@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
 const AddressSchema = require('../../common/schemas/Address');
-const { TravelGrantDetailsValidationSchema } = require('@hackjunction/shared');
-const yup = require('yup');
 
 const TravelGrantSchema = new mongoose.Schema({
     legalName: {
@@ -19,6 +17,14 @@ const TravelGrantSchema = new mongoose.Schema({
             type: String
         }
     },
+    email: {
+        type: String,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
     dateOfBirth: {
         required: true,
         type: Date
@@ -32,8 +38,7 @@ const TravelGrantSchema = new mongoose.Schema({
         required: true
     },
     SSN: {
-        type: String,
-        required: true
+        type: String
     },
     hasIBAN: {
         type: Boolean,
@@ -58,17 +63,6 @@ const TravelGrantSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-});
-TravelGrantSchema.pre('save', function(next) {
-    const schema = yup.object().shape(TravelGrantDetailsValidationSchema);
-    schema
-        .validate(this, { stripUknown: true })
-        .then(() => {
-            next();
-        })
-        .catch(error => {
-            throw `${error.name}: ${error.errors.toString()}`;
-        });
 });
 
 module.exports = TravelGrantSchema;

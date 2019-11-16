@@ -69,11 +69,6 @@ const ProjectsTable = ({ event, projects, loading }) => {
                         searchable: true
                     },
                     {
-                        title: 'Location',
-                        field: 'location',
-                        searchable: true
-                    },
-                    {
                         title: 'Punchline',
                         field: 'punchline',
                         searchable: true

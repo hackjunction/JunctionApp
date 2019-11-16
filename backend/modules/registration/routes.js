@@ -44,14 +44,16 @@ const cancelRegistration = asyncHandler(async (req, res) => {
 });
 
 const setTravelGrantDetails = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController
-        .setTravelGrantDetailsForRegistration(req.user, req.event, req.travelGrantDetails);
+    const registration = await RegistrationController.setTravelGrantDetailsForRegistration(
+        req.user,
+        req.event,
+        req.body.data
+    );
     return res.status(200).json(registration);
 });
 
 const updateTravelGrantStatus = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController
-        .updateTravelGrantStatus(req.user, req.event, req.status);
+    const registration = await RegistrationController.updateTravelGrantStatus(req.user, req.event, req.status);
     return res.status(200).json(registration);
 });
 
@@ -139,7 +141,7 @@ router.route('/:slug/confirm').patch(hasToken, hasRegisteredToEvent, confirmRegi
 
 router.route('/:slug/cancel').patch(hasToken, hasRegisteredToEvent, cancelRegistration);
 
-router.route('/:slug/travelGrantDetails').patch(hasToken, hasRegisteredToEvent, setTravelGrantDetails);
+router.route('/:slug/travel-grant-details').patch(hasToken, hasRegisteredToEvent, setTravelGrantDetails);
 
 /** Get all registration as organiser */
 router.get(

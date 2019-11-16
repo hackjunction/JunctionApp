@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Formik, FastField, Field } from 'formik';
 import { Grid, Typography, Box } from '@material-ui/core';
 import { connect } from 'react-redux';
 import * as yup from 'yup';
+import { withSnackbar, enqueueSnackbar } from 'notistack';
 import FormControl from 'components/inputs/FormControl';
 import TextInput from 'components/inputs/TextInput';
 import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
+import PageHeader from 'components/generic/PageHeader';
 import DateInput from 'components/inputs/DateInput';
 import BooleanInput from 'components/inputs/BooleanInput';
 import PdfUpload from 'components/inputs/PdfUpload';
@@ -15,12 +17,17 @@ import ErrorsBox from 'components/generic/ErrorsBox';
 
 import * as UserSelectors from 'redux/user/selectors';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as DashboardActions from 'redux/dashboard/actions';
 import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
 
-const EventDashboardTravelGrant = ({ userProfile, event }) => {
-    return (
-        <Formik
-            initialValues={{
+const EventDashboardTravelGrant = ({ userProfile, registration, event, updateGrantDetails, enqueueSnackbar }) => {
+    console.log('STATUS', registration);
+
+    const initialValues = useMemo(() => {
+        if (registration.travelGrantDetails) {
+            return registration.travelGrantDetails;
+        } else {
+            return {
                 legalName: {
                     firstName: userProfile.firstName,
                     middleName: '',
@@ -35,9 +42,24 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
                 IBAN: {},
                 receiptsPdf: {},
                 receiptsSum: 0
-            }}
+            };
+        }
+    }, [registration, userProfile]);
+
+    return (
+        <Formik
+            initialValues={initialValues}
             enableReinitialize={true}
-            onSubmit={values => console.log(values)}
+            onSubmit={async (values, actions) => {
+                actions.setSubmitting(true);
+                const error = await updateGrantDetails(event.slug, values);
+                if (error) {
+                    enqueueSnackbar('Oops, something went wrong...', { variant: 'error' });
+                } else {
+                    enqueueSnackbar('Success!', { variant: 'success' });
+                }
+                actions.setSubmitting(false);
+            }}
             validationSchema={props => {
                 return yup.lazy(values => {
                     return yup.object().shape(schema);
@@ -46,6 +68,18 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
         >
             {formikProps => (
                 <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <PageHeader
+                            heading="Your travel grant"
+                            subheading={`You're eligible for a travel grant of up to ${registration.travelGrant}€. To receive your travel grant, fill your travel and payment details in this form before Sunday November 24th.`}
+                        />
+                        {registration.travelGrantStatus === 'pending' && (
+                            <Typography variant="subtitle1" color="primary">
+                                Your details have been submitted! Please double-check that everything is correct, and
+                                feel free to make edits in case you notice any errors.
+                            </Typography>
+                        )}
+                    </Grid>
                     <Grid item xs={12}>
                         <FastField
                             name="legalName"
@@ -366,6 +400,7 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
                             <Box display="flex" flexDirection="column" alignItems="center">
                                 <Box width="100%" maxWidth="300px">
                                     <Button
+                                        loading={formikProps.isSubmitting}
                                         fullWidth
                                         color="primary"
                                         variant="contained"
@@ -385,7 +420,12 @@ const EventDashboardTravelGrant = ({ userProfile, event }) => {
 
 const mapState = state => ({
     userProfile: UserSelectors.userProfile(state),
+    registration: DashboardSelectors.registration(state),
     event: DashboardSelectors.event(state)
 });
 
-export default connect(mapState)(EventDashboardTravelGrant);
+const mapDispatch = dispatch => ({
+    updateGrantDetails: (slug, data) => dispatch(DashboardActions.updateRegistrationGrantDetails(slug, data))
+});
+
+export default withSnackbar(connect(mapState, mapDispatch)(EventDashboardTravelGrant));

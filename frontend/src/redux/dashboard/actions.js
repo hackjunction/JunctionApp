@@ -30,6 +30,22 @@ export const updateRegistration = slug => (dispatch, getState) => {
     });
 };
 
+export const updateRegistrationGrantDetails = (slug, data) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    try {
+        const registration = await RegistrationsService.updateTravelGrantDetails(idToken, slug, data);
+
+        dispatch({
+            type: ActionTypes.EDIT_REGISTRATION,
+            payload: registration
+        });
+        return;
+    } catch (err) {
+        return err;
+    }
+};
+
 export const confirmRegistration = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 
