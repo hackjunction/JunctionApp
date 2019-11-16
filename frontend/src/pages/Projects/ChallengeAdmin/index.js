@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { Box } from '@material-ui/core';
 import PageWrapper from 'components/layouts/PageWrapper';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
@@ -27,7 +28,7 @@ const ProjectsChallengeAdmin = ({ match }) => {
     useEffect(() => {
         fetchProjects();
     }, [fetchProjects]);
-    console.log('PROJECTS', data);
+
     return (
         <PageWrapper
             loading={loading || !data}
@@ -35,7 +36,8 @@ const ProjectsChallengeAdmin = ({ match }) => {
             render={() => (
                 <CenteredContainer>
                     <PageHeader heading={data.challenge.name} subheading={data.projects.length + ' projects'} />
-                    <ProjectsGrid projects={data.projects} />
+                    <ProjectsGrid projects={data.projects} event={data.event} />
+                    <Box height={200} />
                 </CenteredContainer>
             )}
         ></PageWrapper>

@@ -18,6 +18,10 @@ UserProfilesService.getPublicUserProfiles = userIds => {
     });
 };
 
+UserProfilesService.getPublicUserProfilesByTeam = teamId => {
+    return _axios.get('/user-profiles/public/team/' + teamId);
+};
+
 UserProfilesService.getUserProfile = idToken => {
     return _axios.get('/user-profiles/', config(idToken));
 };

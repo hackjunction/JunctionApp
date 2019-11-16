@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const UserProfileController = require('./controller');
+const TeamController = require('../team/controller');
 const { Auth } = require('@hackjunction/shared');
 
 const { hasToken } = require('../../common/middleware/token');
@@ -14,6 +15,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const getUserProfilesPublic = asyncHandler(async (req, res) => {
     const userProfiles = await UserProfileController.getUserProfilesPublic(req.query.userIds);
+    return res.status(200).json(userProfiles);
+});
+
+const getUserProfilesByTeamPublic = asyncHandler(async (req, res) => {
+    const teamMembers = await TeamController.getTeamMembers(req.params.teamId);
+    const userProfiles = await UserProfileController.getUserProfilesPublic(teamMembers);
     return res.status(200).json(userProfiles);
 });
 
@@ -53,6 +60,7 @@ router
     .patch(hasToken, updateUserProfile);
 
 router.route('/public').get(getUserProfilesPublic);
+router.route('/public/team/:teamId').get(getUserProfilesByTeamPublic);
 
 router.get('/search/:terms', hasToken, searchUsers);
 
