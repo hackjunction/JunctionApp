@@ -32,6 +32,17 @@ const useStyles = makeStyles(theme => ({
         background: 'black',
         objectFit: 'cover'
     },
+    placeholderTop: {
+        background: 'black',
+        padding: theme.spacing(2),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    placeholderImage: {
+        width: '100%',
+        maxWidth: '600px'
+    },
     content: {
         marginTop: theme.spacing(5)
     },
@@ -94,10 +105,11 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
                         </Box>
                     ))
                 ) : (
-                    <Box className={classes.top}>
+                    <Box className={classes.placeholderTop}>
                         <Image
-                            className={classes.image}
-                            defaultImage={require('assets/images/default_cover_image.png')}
+                            className={classes.placeholderImage}
+                            publicId={event.logo.publicId}
+                            // defaultImage={require('assets/images/default_cover_image.png')}
                         />
                     </Box>
                 )}
