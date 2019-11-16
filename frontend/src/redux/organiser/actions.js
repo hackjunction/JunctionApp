@@ -5,6 +5,7 @@ import EventsService from 'services/events';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
 import FilterGroupsService from 'services/filterGroups';
+import ProjectsService from 'services/projects';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -181,4 +182,16 @@ export const deleteFilterGroup = (slug, label) => async (dispatch, getState) => 
     });
 
     return filterGroup;
+};
+
+export const updateProjects = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.UPDATE_PROJECTS,
+        promise: ProjectsService.getAllProjectsAsOrganiser(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error getting projects', e)
+        }
+    });
 };

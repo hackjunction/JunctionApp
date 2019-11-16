@@ -8,6 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import PeopleIcon from '@material-ui/icons/People';
 import CropFreeIcon from '@material-ui/icons/CropFree';
+import CodeIcon from '@material-ui/icons/Code';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -19,7 +20,8 @@ import DetailsPage from './Details';
 import StatsPage from './Stats';
 import ParticipantsPage from './Participants';
 import ManagePage from './Manage';
-import CheckIn from './CheckIn';
+import CheckInPage from './CheckIn';
+import ProjectsPage from './Projects';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({
@@ -104,6 +106,13 @@ const OrganiserEditEvent = ({
                         component: ParticipantsPage
                     },
                     {
+                        key: 'projects',
+                        path: '/projects',
+                        icon: <CodeIcon />,
+                        label: 'Projects',
+                        component: ProjectsPage
+                    },
+                    {
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
@@ -111,7 +120,7 @@ const OrganiserEditEvent = ({
                         lockedDescription: 'Only for physical events',
                         icon: <CropFreeIcon />,
                         label: 'Check-in',
-                        component: CheckIn
+                        component: CheckInPage
                     },
                     {
                         key: 'manage',
@@ -143,7 +152,4 @@ const mapDispatchToProps = dispatch => ({
     updateFilterGroups: slug => dispatch(OrganiserActions.updateFilterGroups(slug))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OrganiserEditEvent);
+export default connect(mapStateToProps, mapDispatchToProps)(OrganiserEditEvent);
