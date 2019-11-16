@@ -24,6 +24,16 @@ const MiscUtils = {
         }
     },
 
+    parseFormikErrors: errors => {
+        return Object.keys(errors).flatMap(key => {
+            if (typeof errors[key] === 'object') {
+                return MiscUtils.parseFormikErrors(errors[key]);
+            } else {
+                return errors[key];
+            }
+        });
+    },
+
     isHexaColor: value => {
         return typeof value === 'string' && value.length === 6 && !isNaN(parseInt(value, 16));
     }

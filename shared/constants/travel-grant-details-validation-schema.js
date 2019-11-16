@@ -2,39 +2,32 @@ const yup = require('yup');
 const Countries = require('../constants/countries');
 
 const schema = {
-    gender: yup
-        .string()
-        .required()
-        .label('Gender'),
     legalName: yup.object().shape({
         firstName: yup
             .string()
-            .max(12)
             .required()
+            .max(100)
             .label('First name'),
-        middleName: yup.string().max(12),
+        middleName: yup
+            .string()
+            .max(100)
+            .label('Middle name'),
         lastName: yup
             .string()
-            .max(12)
             .required()
+            .max(100)
             .label('Last name')
     }),
-    dateOfBirth: yup
-        .date()
-        .min(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120))
-        .max(new Date(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16))
+    email: yup
+        .string()
+        .email()
         .required()
-        .label('Date of birth'),
-    socialSecurityNumber: yup.object().shape({
-        issuingCountry: yup
-            .string()
-            .required()
-            .label('Issuing country'),
-        number: yup
-            .string()
-            .required()
-            .label('Social security number')
-    }),
+        .label('Email'),
+    gender: yup
+        .string()
+        .oneOf(['Male', 'Female'])
+        .required()
+        .label('Gender'),
     address: yup.object().shape({
         country: yup
             .string()
@@ -44,7 +37,7 @@ const schema = {
         addressLine: yup
             .string()
             .required()
-            .label('Street adress'),
+            .label('Street address'),
         addressLine2: yup.string(),
         city: yup
             .string()
@@ -55,40 +48,49 @@ const schema = {
             .required()
             .label('Postal code')
     }),
-    bankDetails: yup.object().shape({
-        // required: true,
+    hasSSN: yup
+        .boolean()
+        .required()
+        .label('Has social security number'),
+    SSN: yup
+        .string()
+        .max(100)
+        .label('Social security number'),
+    hasIBAN: yup
+        .boolean()
+        .required()
+        .label('Has IBAN account'),
+    IBAN: yup.object().shape({
         accountNumber: yup
             .string()
-            .required()
-            .label('Account number'),
+            .max(100)
+            .label('Account Number'),
         swift: yup
             .string()
-            .required()
-            .label('Swift'),
+            .max(100)
+            .label('SWIFT/BIC'),
         bankName: yup
             .string()
-            .required()
-            .label('Bank name'),
-        email: yup
-            .string()
-            .email()
-            .required()
-            .label('Email')
+            .max(100)
+            .label('Bank name')
     }),
-    travelReceipt: yup.object().shape({
+    receiptsPdf: yup.object().shape({
         url: yup
             .string()
             .url()
             .required()
-            .label('Travel receipt URL'),
+            .label('Travel receipts'),
         publicId: yup
             .string()
-            .required()
-            .label('Public ID')
+            .max(200)
+            .label('PublicId')
     }),
-    sumOfReceipts: yup
+    receiptsSum: yup
         .number()
+        .min(1)
+        .max(10000)
         .required()
         .label('Sum of receipts')
 };
+
 module.exports = schema;

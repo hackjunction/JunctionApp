@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { connect } from 'react-redux';
 import { Formik, FastField } from 'formik';
 import { ProjectSchema, EventTypes } from '@hackjunction/shared';
-import { Grid, Box, Typography } from '@material-ui/core';
+import { Grid, Box } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 
 import FormControl from 'components/inputs/FormControl';
@@ -15,6 +15,7 @@ import BooleanInput from 'components/inputs/BooleanInput';
 import Select from 'components/inputs/Select';
 import Button from 'components/generic/Button';
 import PageWrapper from 'components/layouts/PageWrapper';
+import ErrorsBox from 'components/generic/ErrorsBox';
 import ProjectImages from './ProjectImages';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
@@ -45,22 +46,6 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id;
     }, [event]);
-
-    const renderErrors = errors => {
-        return Object.keys(errors).map(key => {
-            const error = errors[key];
-
-            if (typeof error === 'object') {
-                return renderErrors(error);
-            } else {
-                return (
-                    <Typography variant="body1" color="error">
-                        - {error}
-                    </Typography>
-                );
-            }
-        });
-    };
 
     const renderForm = formikProps => {
         if (projectLoading) {
@@ -283,10 +268,7 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                     )}
                     {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
-                            <Typography color="error" variant="h6">
-                                Please fix the following errors in your submission
-                            </Typography>
-                            {renderErrors(formikProps.errors)}
+                            <ErrorsBox errors={formikProps.errors} />
                         </Grid>
                     )}
                     <Grid item xs={12}>
