@@ -71,4 +71,11 @@ controller.deleteEventBySlug = slug => {
     });
 };
 
+controller.updateWinners = (eventId, winners) => {
+    return Event.findById(eventId).then(event => {
+        event.winners = winners;
+        return event.save();
+    });
+};
+
 module.exports = controller;

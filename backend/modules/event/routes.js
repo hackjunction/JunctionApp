@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+const mongoose = require('mongoose');
 const { Auth } = require('@hackjunction/shared');
 const asyncHandler = require('express-async-handler');
 const EventController = require('./controller.js');
@@ -9,7 +10,7 @@ const RegistrationController = require('../registration/controller');
 const TeamController = require('../team/controller');
 
 const { hasPermission } = require('../../common/middleware/permissions');
-const { isEventOwner, isEventOrganiser } = require('../../common/middleware/events');
+const { isEventOwner, isEventOrganiser, hasRegisteredToEvent } = require('../../common/middleware/events');
 const { hasToken } = require('../../common/middleware/token');
 
 const router = express.Router();
@@ -72,6 +73,20 @@ const removeOrganiser = asyncHandler(async (req, res) => {
     return res.status(200).json(event.organisers);
 });
 
+const updateWinners = asyncHandler(async (req, res) => {
+    const event = await EventController.updateWinners(req.event._id, req.body.winners);
+    return res.status(200).json(event);
+});
+
+const getWinnerProjects = asyncHandler(async (req, res) => {
+    const projectIds = Object.keys(req.event.winners.trackWinners).map(track => {
+        return req.event.winners.trackWinners[track];
+    });
+
+    const projects = await mongoose.model('Project').find({ _id: { $in: projectIds } });
+    return res.status(200).json(projects);
+});
+
 /** Create event, get events by logged in user */
 router
     .route('/')
@@ -93,6 +108,11 @@ router
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getEventAsOrganiser)
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateEvent)
     .delete(hasToken, hasPermission(Auth.Permissions.DELETE_EVENT), isEventOwner, deleteEvent);
+
+router
+    .route('/:slug/winners')
+    .get(hasToken, hasRegisteredToEvent, getWinnerProjects)
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateWinners);
 
 /** Get organisers for single event */
 router.get('/organisers/:slug', hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOwner, getOrganisers);

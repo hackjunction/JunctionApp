@@ -56,4 +56,12 @@ EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
     return _axios.delete(`/events/organisers/${slug}/${userId}`, config(idToken));
 };
 
+EventsService.updateWinners = (idToken, slug, winners) => {
+    return _axios.patch(`${BASE_ROUTE}/${slug}/winners`, { winners }, config(idToken));
+};
+
+EventsService.getWinnerProjects = (idToken, slug) => {
+    return _axios.get(`${BASE_ROUTE}/${slug}/winners`, config(idToken));
+};
+
 export default EventsService;

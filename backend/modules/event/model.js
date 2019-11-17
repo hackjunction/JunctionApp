@@ -188,6 +188,10 @@ const EventSchema = new mongoose.Schema({
         slug: 'name',
         unique: true,
         slugPaddingSize: 2
+    },
+    winners: {
+        type: mongoose.Mixed,
+        default: {}
     }
 });
 
