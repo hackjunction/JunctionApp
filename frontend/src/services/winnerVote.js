@@ -18,4 +18,8 @@ WinnerVoteService.getVote = (idToken, slug) => {
     return _axios.get(`/winner-votes/${slug}`, config(idToken));
 };
 
+WinnerVoteService.getResults = (idToken, slug) => {
+    return _axios.get(`/winner-votes/${slug}/results`, config(idToken));
+};
+
 export default WinnerVoteService;
