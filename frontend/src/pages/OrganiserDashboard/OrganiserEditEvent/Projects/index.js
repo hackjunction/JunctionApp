@@ -12,6 +12,7 @@ import ChallengesTab from './Challenges';
 import TracksTab from './Tracks';
 import GavelTab from './Gavel';
 import AnnotatorsTab from './Annotators';
+import WinnersTab from './Winners';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -62,6 +63,13 @@ const Projects = ({ event, projectsLoading, updateProjects, location, match }) =
         key: 'annotators',
         label: 'Gavel annotators',
         content: <AnnotatorsTab />
+    });
+
+    tabs.push({
+        path: '/winners',
+        key: 'winners',
+        label: 'Winners',
+        content: <WinnersTab />
     });
 
     return (

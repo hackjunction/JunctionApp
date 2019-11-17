@@ -36,13 +36,6 @@ const RegistrationStatusBlock = ({
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
     const { status } = registration;
 
-    const isEventStarted = useMemo(() => {
-        const now = moment().utc();
-        const eventStarts = moment(event.startTime).utc();
-
-        return !now.isBefore(eventStarts);
-    }, [event.startTime]);
-
     const handleConfirm = useCallback(() => {
         setLoading(true);
         confirmRegistration(event.slug)
@@ -119,7 +112,7 @@ const RegistrationStatusBlock = ({
             default:
                 return null;
         }
-    }, [status, event.eventType]);
+    }, [status]);
 
     const body = useMemo(() => {
         switch (status) {
@@ -155,6 +148,7 @@ const RegistrationStatusBlock = ({
     }, [event, status, isRegistrationOpen]);
 
     const action = useMemo(() => {
+        if (!event) return null;
         switch (status) {
             case RegistrationStatuses.asObject.pending.id:
             case RegistrationStatuses.asObject.softAccepted.id:

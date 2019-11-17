@@ -30,6 +30,13 @@ export const editEvent = (slug, data) => async (dispatch, getState) => {
     return event;
 };
 
+export const updateWinners = (slug, winners) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+    const event = await EventsService.updateWinners(idToken, slug, winners);
+    dispatch({ type: ActionTypes.EDIT_EVENT, payload: event });
+    return event;
+};
+
 /** Update event stats with loading/error data */
 export const updateEventStats = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());

@@ -9,6 +9,7 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import StarRateIcon from '@material-ui/icons/StarRate';
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
 
 import SidebarLayout from 'components/layouts/SidebarLayout';
 import Image from 'components/generic/Image';
@@ -21,6 +22,7 @@ import EventDashboardId from './EventDashboardId';
 import EventDashboardTravelGrant from './EventDashboardTravelGrant';
 import EventDashboardSubmission from './EventDashboardSubmission';
 import EventDashboardReviewing from './EventDashboardReviewing';
+import EventDashboardFinals from './EventDashboardFinals';
 import Hackerpack from './Hackerpack';
 
 import * as AuthSelectors from 'redux/auth/selectors';
@@ -95,6 +97,16 @@ const EventDashboard = ({
                         icon: <DashboardIcon />,
                         label: 'Dashboard',
                         component: EventDashboardHome
+                    },
+                    {
+                        key: 'finals',
+                        path: '/finalist-voting',
+                        exact: true,
+                        locked: !event || !event.winners || !event.winners.votingOpen,
+                        lockedDescription: 'Finalist voting closed',
+                        icon: <HowToVoteIcon />,
+                        label: 'Finalist voting',
+                        component: EventDashboardFinals
                     },
                     {
                         key: 'team',
