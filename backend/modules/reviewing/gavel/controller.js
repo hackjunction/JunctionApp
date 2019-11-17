@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 const GavelAnnotator = require('./Annotator');
 const GavelDecision = require('./Decision');
 const GavelProject = require('./Project');
@@ -131,7 +132,7 @@ controller.submitVote = async (event, userId, winningProjectId) => {
     // Throws error if annotator can't vote, handled globally
     await annotator.canVote();
 
-    const losingProjectId = winningProjectId === annotator.next ? annotator.prev : annotator.next;
+    const losingProjectId = winningProjectId === annotator.next.toString() ? annotator.prev : annotator.next;
 
     const [loser, winner] = await Promise.all([
         GavelProject.findById(losingProjectId),
@@ -152,14 +153,13 @@ controller.submitVote = async (event, userId, winningProjectId) => {
 
     loser.mu = updated_mu_loser;
     loser.sigma_sq = updated_sigma_sq_loser;
-    if (loser._id === annotator.next) {
-        loser.viewedBy.push(annotator._id);
+    if (loser._id.toString() === annotator.next.toString()) {
+        loser.viewedBy.push(annotator._id.toString());
     }
-
     winner.mu = updated_mu_winner;
     winner.sigma_sq = updated_sigma_sq_winner;
-    if (winner._id === annotator.next) {
-        winner.viewedBy.push(annotator._id);
+    if (winner._id.toString() === annotator.next.toString()) {
+        winner.viewedBy.push(annotator._id.toString());
     }
 
     const decision = new GavelDecision({
@@ -169,12 +169,8 @@ controller.submitVote = async (event, userId, winningProjectId) => {
         loser: loser._id
     });
 
-    const [updatedAnnotator] = await Promise.all([
-        annotator.assignNextProject(),
-        loser.save(),
-        winner.save(),
-        decision.save()
-    ]);
+    await Promise.all([loser.save(), winner.save(), decision.save()]);
+    const updatedAnnotator = await annotator.assignNextProject();
 
     return updatedAnnotator;
 };

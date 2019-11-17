@@ -49,12 +49,31 @@ const CompareProjects = ({
     }, [fetchProjects]);
 
     const handlePrevVote = useCallback(() => {
-        submitVote(event.slug, prevId);
-    }, [event.slug, prevId, submitVote]);
+        setLoading(true);
+        try {
+            submitVote(event.slug, prevId);
+        } catch (err) {
+            enqueueSnackbar('Something went wrong... Please try again');
+        }
+    }, [event.slug, prevId, submitVote, enqueueSnackbar]);
 
     const handleNextVote = useCallback(() => {
-        submitVote(event.slug, nextId);
-    }, [event.slug, nextId, submitVote]);
+        setLoading(true);
+        try {
+            submitVote(event.slug, nextId);
+        } catch (err) {
+            enqueueSnackbar('Something went wrong... Please try again');
+        }
+    }, [event.slug, nextId, submitVote, enqueueSnackbar]);
+
+    const handleSkip = useCallback(() => {
+        setLoading(true);
+        try {
+            skipProject(event.slug);
+        } catch (err) {
+            enqueueSnackbar('Something went wrong... Please try again');
+        }
+    });
 
     const renderTop = () => {
         if (isFirstChoice) {
@@ -65,7 +84,7 @@ const CompareProjects = ({
                     </Typography>
                     <Typography align="center" variant="body1">
                         Now that you've seen your first project, you should go and see the next one. Find the project
-                        under NEXT, listen to their demo, and make a decision. Which one was better in your opinion -
+                        under CURRENT, listen to their demo, and make a decision. Which one was better in your opinion -
                         the first project or the one you just saw?
                     </Typography>
                 </Box>
@@ -76,7 +95,10 @@ const CompareProjects = ({
                     <Typography align="center" variant="h4" gutterBottom>
                         Next decision
                     </Typography>
-                    <Typography align="center" variant="body1">
+                    <Typography align="center" variant="body1" style={{ fontWeight: 'bold' }} gutterBottom>
+                        Your votes: {annotator.ignore.length - annotator.skipped.length - 1}
+                    </Typography>
+                    <Typography align="center" variant="body1" gutterBottom>
                         Make your way to the next project, and after you've seen it, make a decision. Remember: you are
                         always comparing your current project to the one you saw immediately before it - regardless of
                         who won the previous comparison!
@@ -118,7 +140,7 @@ const CompareProjects = ({
                     project={projects.next.project}
                     event={event}
                     showTableLocation={true}
-                    label="Next"
+                    label="Current"
                     labelBackground="theme_success"
                 />
                 <Grid item xs={12} md={8}>
@@ -152,7 +174,7 @@ const CompareProjects = ({
                     open={confirmOpen}
                     onClose={() => setConfirmOpen(false)}
                     onCancel={() => {}}
-                    onOk={() => skipProject(event.slug)}
+                    onOk={handleSkip}
                     title="Are you sure?"
                     message="Have you looked around carefully for the project? Try to check nearby tables if you can find the team there. If you really can't find them, you can skip the project."
                     cancelText="Cancel"

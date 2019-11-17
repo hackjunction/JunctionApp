@@ -28,6 +28,15 @@ const FirstProject = ({ projectId, event, enqueueSnackbar, idToken, onDone }) =>
         setLoading(false);
     }, [idToken, projectId, enqueueSnackbar]);
 
+    const handleDone = useCallback(() => {
+        setLoading(true);
+        try {
+            onDone(event.slug);
+        } catch (err) {
+            enqueueSnackbar('Something went wrong... Please try again.');
+        }
+    }, [onDone, event.slug, enqueueSnackbar]);
+
     useEffect(() => {
         fetchProject();
     }, [fetchProject]);
@@ -55,7 +64,7 @@ const FirstProject = ({ projectId, event, enqueueSnackbar, idToken, onDone }) =>
             <Grid container spacing={3} direction="column" alignItems="center">
                 <ProjectsGridItem project={project.project} event={event} showTableLocation={true} />
                 <Grid item xs={12}>
-                    <Button onClick={() => onDone(event.slug)} color="theme_turquoise" variant="contained">
+                    <Button onClick={handleDone} color="theme_turquoise" variant="contained">
                         Done
                     </Button>
                 </Grid>

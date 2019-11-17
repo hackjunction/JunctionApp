@@ -28,6 +28,11 @@ export const annotatorLoading = state => state.dashboard.annotator.loading;
 export const annotatorError = state => state.dashboard.annotator.error;
 export const annotatorUpdated = state => state.dashboard.annotator.updated;
 
+export const annotatorVoteCount = createSelector(annotator, annotator => {
+    if (!annotator) return 0;
+    return Math.max(annotator.ignore.length - annotator.skipped.length - 1, 0);
+});
+
 export const eventStatus = createSelector(event, event => EventHelpers.getEventStatus(event, moment));
 
 export const isRegistrationOpen = createSelector(eventStatus, status => status === EventStatuses.REGISTRATION_OPEN.id);

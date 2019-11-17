@@ -67,8 +67,7 @@ const ReviewingInstructions = ({ event, beginVoting, enqueueSnackbar }) => {
                 to go and review. Your team's quota will be calculated when the submission period ends, and will be
                 clearly visible here, along with your progress towards meeting the quota.{' '}
                 <strong>If your team fails to meet this quota, your score will be adjusted with a small penalty</strong>
-                . But don't worry, the quota is very easy to reach, and will scale by team size so small teams can just
-                focus on demoing their own project.
+                .
             </Typography>
             <Typography variant="h6">To recap: </Typography>
             <ul>

@@ -11,8 +11,6 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
         updateGavelProjects(event.slug);
     }, [event.slug, updateGavelProjects]);
 
-    console.log(gavelProjects);
-
     if (!event || !event.tracks) return null;
     return event.tracks.map(track => {
         const trackProjects = gavelProjects.filter(project => {
@@ -74,11 +72,25 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
                         },
                         {
                             title: 'Mu',
-                            field: 'mu'
+                            field: 'mu',
+                            type: 'numeric',
+                            render: row => row.mu.toPrecision(4)
                         },
                         {
                             title: 'Sigma Sq.',
-                            field: 'sigma_sq'
+                            field: 'sigma_sq',
+                            type: 'numeric',
+                            render: row => row.sigma_sq.toPrecision(4)
+                        },
+                        {
+                            title: 'Skipped by',
+                            field: 'skippedBy',
+                            render: row => row.skippedBy.length
+                        },
+                        {
+                            title: 'Viewed by',
+                            field: 'viewedBy',
+                            render: row => row.viewedBy.length
                         },
                         {
                             title: 'Active',
