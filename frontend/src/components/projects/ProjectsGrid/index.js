@@ -1,12 +1,13 @@
 import React, { useState, useCallback } from 'react';
 
+import { sortBy } from 'lodash-es';
 import moment from 'moment-timezone';
 import { Grid, Dialog } from '@material-ui/core';
 import { EventHelpers } from '@hackjunction/shared';
 import ProjectsGridItem from '../ProjectsGridItem';
 import ProjectDetail from '../ProjectDetail';
 
-const ProjectsGrid = ({ projects, event }) => {
+const ProjectsGrid = ({ projects, event, sortField = 'location' }) => {
     const [selected, setSelected] = useState();
     const handleSelect = useCallback(project => {
         setSelected(project);
@@ -18,6 +19,8 @@ const ProjectsGrid = ({ projects, event }) => {
 
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
 
+    const sorted = sortBy(projects, p => p[sortField]);
+
     return (
         <Grid container spacing={3} direction="row" alignItems="stretch">
             <Dialog transitionDuration={0} fullScreen open={Boolean(selected)} onClose={handleClose}>
@@ -28,7 +31,7 @@ const ProjectsGrid = ({ projects, event }) => {
                     showTableLocation={isOngoingEvent}
                 />
             </Dialog>
-            {projects.map(project => (
+            {sorted.map(project => (
                 <ProjectsGridItem
                     project={project}
                     event={event}
