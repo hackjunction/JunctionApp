@@ -4,14 +4,15 @@ import { find, filter } from 'lodash-es';
 import { Box, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
 import Image from 'components/generic/Image';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import Markdown from 'components/generic/Markdown';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-import UserProfilesService from 'services/userProfiles';
-
 import ProjectTeam from './ProjectTeam';
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles(theme => ({
     top: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '50%',
         position: 'relative',
         overflow: 'hidden',
+        background: 'black',
         [theme.breakpoints.up('lg')]: {
             paddingTop: theme.breakpoints.values.lg / 2
         }
@@ -50,15 +52,29 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         top: 0,
         left: 0,
-        zIndex: 100
+        zIndex: 100,
+        background: 'rgba(0,0,0,0.5)'
     },
     sectionTitle: {
         textTransform: 'uppercase'
+    },
+    pagination: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        background: 'rgba(0,0,0,0.4)',
+        zIndex: 100,
+        color: 'white',
+        padding: theme.spacing(2)
+    },
+    paginationText: {
+        color: 'white'
     }
 }));
 
 const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
     const classes = useStyles();
+    const [index, setIndex] = useState(0);
 
     if (!project) return null;
 
@@ -87,13 +103,20 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
 
     return (
         <Box width="100%">
-            <Box p={2} className={classes.backButton}>
+            <Box p={1} className={classes.backButton}>
                 <Button onClick={onBack} style={{ color: 'white' }}>
                     <ArrowBackIosIcon />
                     Back
                 </Button>
             </Box>
-            <SwipeableViews enableMouseEvents>
+            {project.images.length > 0 && (
+                <Box className={classes.pagination}>
+                    <Typography variant="button">
+                        image {index + 1}/{project.images.length}
+                    </Typography>
+                </Box>
+            )}
+            <AutoPlaySwipeableViews enableMouseEvents index={index} onChangeIndex={setIndex}>
                 {project.images.length > 0 ? (
                     project.images.map(image => (
                         <Box key={image.publicId} className={classes.top}>
@@ -113,7 +136,7 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
                         />
                     </Box>
                 )}
-            </SwipeableViews>
+            </AutoPlaySwipeableViews>
             <CenteredContainer>
                 <Box className={classes.content}>
                     <Typography variant="h4" gutterBottom>

@@ -84,7 +84,7 @@ UserProfileSchema.plugin(updateAllowedPlugin, {
 });
 
 UserProfileSchema.plugin(publicFieldsPlugin, {
-    fields: ['userId', 'avatar', 'firstName', 'lastName', 'email']
+    fields: ['userId', 'avatar', 'firstName', 'lastName', 'email', 'phoneNumber']
 });
 
 const UserProfile = mongoose.model('UserProfile', UserProfileSchema);
