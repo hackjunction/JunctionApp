@@ -12,6 +12,7 @@ const filterGroupRouter = require('./filter-group/routes');
 const adminRouter = require('./admin/routes');
 const projectRouter = require('./project/routes');
 const gavelRouter = require('./reviewing/gavel/routes');
+const winnerVoteRouter = require('./winner-votes/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -23,6 +24,7 @@ module.exports = function(app) {
     app.use('/api/email', emailRouter);
     app.use('/api/newsletter', newsletterRouter);
     app.use('/api/upload', uploadRouter);
+    app.use('/api/winner-votes', winnerVoteRouter);
 
     /** Model related routes */
     app.use('/api/events', eventRouter);
