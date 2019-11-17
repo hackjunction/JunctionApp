@@ -149,21 +149,21 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
     /** If an annotator has been assigned to a project before this time, consider the project free for review */
     const cutoff = moment().subtract(Settings.ANNOTATOR_TIMEOUT_MINS, 'minutes');
 
-    /** Get all projects that are not currently being reviewed by someone, by the above definition */
-    const nonBusyProjects = availableProjects.filter(project => {
-        const assignedAnnotator = _.find(activeAnnotators, annotator => {
-            return annotator.next === project._id;
-        });
+    // /** Get all projects that are not currently being reviewed by someone, by the above definition */
+    // const nonBusyProjects = availableProjects.filter(project => {
+    //     const assignedAnnotator = _.find(activeAnnotators, annotator => {
+    //         return annotator.next === project._id;
+    //     });
 
-        return !assignedAnnotator || moment(assignedAnnotator.updatedAt).isBefore(cutoff);
-    });
+    //     return !assignedAnnotator || moment(assignedAnnotator.updatedAt).isBefore(cutoff);
+    // });
 
     /** Prioritize the projects which are not busy, if there are any */
-    const preferredProjects = nonBusyProjects.length > 0 ? nonBusyProjects : availableProjects;
+    const preferredProjects = availableProjects;
 
     /** Prioritize the projects which have not received enough views yet */
     const lessSeenProjects = preferredProjects.filter(project => {
-        return project.viewedBy.length < Settings.ITEM_MIN_VIEWS;
+        return project.viewedBy.length < 5;
     });
 
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects;
