@@ -22,7 +22,13 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
                     title={track.name}
                     showCount
                     isLoading={loading}
-                    data={trackProjects}
+                    data={trackProjects.map(project => {
+                        return {
+                            ...project,
+                            skippedByCount: project.skippedBy.length,
+                            viewedByCount: project.viewedBy.length
+                        };
+                    })}
                     // onRowClick={(e, row) => handleSelect(row)}
                     // onSelectionChange={rows => setSelected(rows.map(r => r.user))}
                     // actions={
@@ -49,7 +55,7 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
                         debounceInterval: 500,
                         search: true,
                         paging: true,
-                        pageSize: 10
+                        pageSize: 50
                     }}
                     localization={{
                         toolbar: {
@@ -84,13 +90,13 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
                         },
                         {
                             title: 'Skipped by',
-                            field: 'skippedBy',
-                            render: row => row.skippedBy.length
+                            field: 'skippedByCount',
+                            type: 'numeric'
                         },
                         {
                             title: 'Viewed by',
-                            field: 'viewedBy',
-                            render: row => row.viewedBy.length
+                            field: 'viewedByCount',
+                            type: 'numeric'
                         },
                         {
                             title: 'Active',
