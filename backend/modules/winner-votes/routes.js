@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const _ = require('lodash');
 const asyncHandler = require('express-async-handler');
 
 const WinnerVote = require('./model');
 
 const { hasToken } = require('../../common/middleware/token');
-const { hasRegisteredToEvent } = require('../../common/middleware/events');
+const { hasRegisteredToEvent, isEventOrganiser } = require('../../common/middleware/events');
 
 router
     .route('/:slug')
@@ -45,5 +46,19 @@ router
             }
         })
     );
+
+router.route('/:slug/results').get(
+    hasToken,
+    isEventOrganiser,
+    asyncHandler(async (req, res) => {
+        const votes = await WinnerVote.find({
+            event: req.event._id
+        });
+
+        const grouped = _.groupBy(votes, 'project');
+
+        return res.status(200).json(grouped);
+    })
+);
 
 module.exports = router;
