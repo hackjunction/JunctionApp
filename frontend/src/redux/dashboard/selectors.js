@@ -119,6 +119,10 @@ export const isReviewingLocked = createSelector(event, event => {
     return EventHelpers.isVotingPast(event, moment);
 });
 
+export const isTeamPageLocked = createSelector(event, event => {
+    return EventHelpers.isSubmissionsPast(event, moment);
+});
+
 export const showTravelGrant = createSelector(event, registration, (event, registration) => {
     if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return false;
     if (!registration.travelGrant || registration.travelGrant === 0) return false;

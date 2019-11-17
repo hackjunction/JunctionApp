@@ -18,7 +18,6 @@ const EventDashboardReviewing = ({ event, annotator, updateAnnotator, annotatorL
     }, [event.slug, updateAnnotator]);
 
     const renderContent = () => {
-        console.log('Annotator', annotator);
         if (!annotator) {
             return <Instructions />;
         }

@@ -41,7 +41,20 @@ const initialState = {
         loading: false,
         error: false,
         updated: 0,
-        data: []
+        data: [],
+        map: {}
+    },
+    gavelProjects: {
+        data: [],
+        loading: false,
+        error: false,
+        updated: 0
+    },
+    gavelAnnotators: {
+        data: [],
+        loading: false,
+        error: false,
+        updated: 0
     },
     filterGroups: {
         loading: false,
@@ -58,7 +71,9 @@ const organisersHandler = buildHandler('organisers', 'userId');
 const registrationsHandler = buildHandler('registrations', 'user');
 const filterGroupsHandler = buildHandler('filterGroups');
 const teamsHandler = buildHandler('teams');
-const projectsHandler = buildHandler('projects');
+const projectsHandler = buildHandler('projects', '_id');
+const gavelProjectsHandler = buildHandler('gavelProjects');
+const gavelAnnotatorsHandler = buildHandler('gavelAnnotators');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
 
@@ -105,6 +120,40 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_FILTER_GROUPS: {
             return filterGroupsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_GAVEL_PROJECTS: {
+            return gavelProjectsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_GAVEL_ANNOTATORS: {
+            return gavelAnnotatorsHandler(state, action);
+        }
+        case ActionTypes.EDIT_GAVEL_PROJECT: {
+            return {
+                ...state,
+                gavelProjects: {
+                    ...state.gavelProjects,
+                    data: state.gavelProjects.data.map(item => {
+                        if (item._id === action.payload._id) {
+                            return action.payload;
+                        }
+                        return item;
+                    })
+                }
+            };
+        }
+        case ActionTypes.EDIT_GAVEL_ANNOTATOR: {
+            return {
+                ...state,
+                gavelAnnotators: {
+                    ...state.gavelAnnotators,
+                    data: state.gavelAnnotators.data.map(item => {
+                        if (item._id === action.payload._id) {
+                            return action.payload;
+                        }
+                        return item;
+                    })
+                }
+            };
         }
         case ActionTypes.CREATE_FILTER_GROUP: {
             return {

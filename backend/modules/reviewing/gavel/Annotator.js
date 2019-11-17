@@ -32,7 +32,7 @@ const GavelAnnotatorSchema = new mongoose.Schema({
     onboarded: {
         type: Boolean,
         required: true,
-        default: false
+        default: true
     },
     viewedAll: {
         type: Boolean,
@@ -62,6 +62,12 @@ const GavelAnnotatorSchema = new mongoose.Schema({
         default: Settings.BETA_PRIOR,
         required: true
     }
+});
+
+GavelAnnotatorSchema.virtual('userDetails', {
+    ref: 'UserProfile',
+    localField: 'user',
+    foreignField: 'userId'
 });
 
 /** Check if the annotator can vote */

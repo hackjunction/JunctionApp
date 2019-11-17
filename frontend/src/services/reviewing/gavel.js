@@ -12,8 +12,24 @@ function config(idToken) {
 
 const BASE_ROUTE = '/reviewing/gavel';
 
+GavelService.getAllProjects = (idToken, eventSlug) => {
+    return _axios.get(`${BASE_ROUTE}/${eventSlug}/projects`, config(idToken));
+};
+
+GavelService.getAllAnnotators = (idToken, eventSlug) => {
+    return _axios.get(`${BASE_ROUTE}/${eventSlug}/annotators`, config(idToken));
+};
+
 GavelService.getProjectDetails = (idToken, projectId) => {
     return _axios.get(`${BASE_ROUTE}/projects/${projectId}`, config(idToken));
+};
+
+GavelService.editProject = (idToken, eventSlug, projectId, edits) => {
+    return _axios.patch(`${BASE_ROUTE}/${eventSlug}/projects/${projectId}`, { edits }, config(idToken));
+};
+
+GavelService.editAnnotator = (idToken, eventSlug, annotatorId, edits) => {
+    return _axios.patch(`${BASE_ROUTE}/${eventSlug}/annotators/${annotatorId}`, { edits }, config(idToken));
 };
 
 GavelService.getAnnotator = (idToken, slug) => {
