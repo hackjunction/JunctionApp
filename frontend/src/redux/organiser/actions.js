@@ -6,6 +6,7 @@ import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
 import FilterGroupsService from 'services/filterGroups';
 import ProjectsService from 'services/projects';
+import GavelService from 'services/reviewing/gavel';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -194,4 +195,54 @@ export const updateProjects = slug => async (dispatch, getState) => {
             onFailure: e => console.log('Error getting projects', e)
         }
     });
+};
+
+export const updateGavelProjects = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.UPDATE_GAVEL_PROJECTS,
+        promise: GavelService.getAllProjects(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error getting gavel projects', e)
+        }
+    });
+};
+
+export const editGavelProject = (slug, projectId, edits) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const project = await GavelService.editProject(idToken, slug, projectId, edits);
+
+    dispatch({
+        type: ActionTypes.EDIT_GAVEL_PROJECT,
+        payload: project
+    });
+
+    return;
+};
+
+export const updateGavelAnnotators = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.UPDATE_GAVEL_ANNOTATORS,
+        promise: GavelService.getAllAnnotators(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error getting gavel annotators')
+        }
+    });
+};
+
+export const editGavelAnnotator = (slug, annotatorId, edits) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const annotator = await GavelService.editAnnotator(idToken, slug, annotatorId, edits);
+
+    dispatch({
+        type: ActionTypes.EDIT_GAVEL_ANNOTATOR,
+        payload: annotator
+    });
+
+    return;
 };

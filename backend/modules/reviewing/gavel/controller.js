@@ -5,7 +5,7 @@ const GavelDecision = require('./Decision');
 const GavelProject = require('./Project');
 
 const TeamController = require('../../team/controller');
-const { ForbiddenError } = require('../../../common/errors/errors');
+const { ForbiddenError, NotFoundError } = require('../../../common/errors/errors');
 const Maths = require('./maths');
 
 const controller = {};
@@ -31,8 +31,44 @@ controller.getProject = async projectId => {
     return GavelProject.findById(projectId).populate('project');
 };
 
+controller.editProject = async (projectId, data) => {
+    return GavelProject.findById(projectId).then(project => {
+        if (!project) {
+            throw new NotFoundError('No project found with id ' + projectId);
+        }
+        if (data.hasOwnProperty('active')) {
+            project.active = data.active;
+        }
+        return project.save();
+    });
+};
+
+controller.getProjectsForEvent = async eventId => {
+    return GavelProject.find({ event: eventId });
+};
+
+controller.getAnnotatorsForEvent = async eventId => {
+    return GavelAnnotator.find({ event: eventId });
+};
+
 controller.getAnnotator = async (event, userId) => {
     return GavelAnnotator.findOne({ event: event._id, user: userId });
+};
+
+controller.editAnnotator = async (annotatorId, data) => {
+    return GavelAnnotator.findById(annotatorId).then(annotator => {
+        if (!annotator) {
+            throw new NotFoundError('No annotator found with id ' + annotatorId);
+        }
+
+        if (data.hasOwnProperty('active')) {
+            annotator.active = data.active;
+        }
+        if (data.hasOwnProperty('track')) {
+            annotator.track = data.track;
+        }
+        return annotator.save();
+    });
 };
 
 controller.initAnnotator = async (event, userId) => {

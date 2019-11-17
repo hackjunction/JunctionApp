@@ -10,6 +10,8 @@ import PageHeader from 'components/generic/PageHeader';
 import SearchTab from './Search';
 import ChallengesTab from './Challenges';
 import TracksTab from './Tracks';
+import GavelTab from './Gavel';
+import AnnotatorsTab from './Annotators';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -47,6 +49,20 @@ const Projects = ({ event, projectsLoading, updateProjects, location, match }) =
             content: <TracksTab />
         });
     }
+
+    tabs.push({
+        path: '/gavel',
+        key: 'gavel',
+        label: 'Gavel voting',
+        content: <GavelTab />
+    });
+
+    tabs.push({
+        path: '/annotators',
+        key: 'annotators',
+        label: 'Gavel annotators',
+        content: <AnnotatorsTab />
+    });
 
     return (
         <PageWrapper>

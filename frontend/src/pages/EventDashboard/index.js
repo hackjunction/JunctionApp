@@ -45,6 +45,7 @@ const EventDashboard = ({
     showTravelGrant,
     showHackerPack,
     isSubmissionsLocked,
+    isTeamPageLocked,
     isReviewingLocked
 }) => {
     const { slug } = match.params;
@@ -101,25 +102,9 @@ const EventDashboard = ({
                         exact: true,
                         icon: <GroupIcon />,
                         label: 'Team',
+                        locked: isTeamPageLocked,
+                        lockedDescription: 'Team editing not open',
                         component: EventDashboardTeam
-                    },
-                    {
-                        key: 'eventid',
-                        path: '/event-id',
-                        exact: true,
-                        hidden: !showEventID,
-                        icon: <FingerprintIcon />,
-                        label: 'Event ID',
-                        component: EventDashboardId
-                    },
-                    {
-                        key: 'travelgrant',
-                        path: '/travel-grant',
-                        exact: true,
-                        icon: <FlightTakeoffIcon />,
-                        hidden: !showTravelGrant,
-                        label: 'Travel grant',
-                        component: EventDashboardTravelGrant
                     },
                     {
                         key: 'project',
@@ -142,6 +127,24 @@ const EventDashboard = ({
                         icon: <StarRateIcon />,
                         label: 'Reviewing',
                         component: EventDashboardReviewing
+                    },
+                    {
+                        key: 'eventid',
+                        path: '/event-id',
+                        exact: true,
+                        hidden: !showEventID,
+                        icon: <FingerprintIcon />,
+                        label: 'Event ID',
+                        component: EventDashboardId
+                    },
+                    {
+                        key: 'travelgrant',
+                        path: '/travel-grant',
+                        exact: true,
+                        icon: <FlightTakeoffIcon />,
+                        hidden: !showTravelGrant,
+                        label: 'Travel grant',
+                        component: EventDashboardTravelGrant
                     },
                     {
                         key: 'hackerpack',
@@ -172,7 +175,8 @@ const mapStateToProps = state => ({
     showTravelGrant: DashboardSelectors.showTravelGrant(state),
     showHackerPack: DashboardSelectors.showHackerPack(state),
     isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
-    isReviewingLocked: DashboardSelectors.isReviewingLocked(state)
+    isReviewingLocked: DashboardSelectors.isReviewingLocked(state),
+    isTeamPageLocked: DashboardSelectors.isTeamPageLocked(state)
 });
 
 const mapDispatchToProps = dispatch => ({

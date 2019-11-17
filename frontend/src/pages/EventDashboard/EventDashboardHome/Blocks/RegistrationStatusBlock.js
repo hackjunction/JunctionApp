@@ -32,7 +32,6 @@ const RegistrationStatusBlock = ({
     enqueueSnackbar,
     openEventId
 }) => {
-    console.log(registration);
     const [loading, setLoading] = useState(false);
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
     const { status } = registration;
@@ -109,14 +108,14 @@ const RegistrationStatusBlock = ({
             case RegistrationStatuses.asObject.confirmed.id: {
                 return 'Confirmed';
             }
-            case RegistrationStatuses.asObject.checkedIn.id: {
-                switch (event.eventType) {
-                    case EventTypes.physical.id:
-                        return 'Checked in';
-                    default:
-                        return 'Completed';
-                }
-            }
+            // case RegistrationStatuses.asObject.checkedIn.id: {
+            //     switch (event.eventType) {
+            //         case EventTypes.physical.id:
+            //             return 'Checked in';
+            //         default:
+            //             return 'Completed';
+            //     }
+            // }
             default:
                 return null;
         }

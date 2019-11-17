@@ -38,9 +38,29 @@ export const filterGroupsError = state => state.organiser.filterGroups.error;
 export const filterGroupsUpdated = state => state.organiser.filterGroups.updated;
 
 export const projects = state => state.organiser.projects.data;
+export const projectsMap = state => state.organiser.projects.map;
 export const projectsLoading = state => state.organiser.projects.loading;
 export const projectsError = state => state.organisers.projects.error;
 export const projectsUpdated = state => state.organiser.projects.updated;
+
+export const gavelProjects = state => state.organiser.gavelProjects.data;
+export const gavelProjectsLoading = state => state.organiser.gavelProjects.loading;
+export const gavelProjectsError = state => state.organiser.gavelProjects.error;
+export const gavelProjectsUpdated = state => state.organiser.gavelProjects.updated;
+
+export const gavelAnnotators = state => state.organiser.gavelAnnotators.data;
+export const gavelAnnotatorsLoading = state => state.organiser.gavelAnnotators.loading;
+export const gavelAnnotatorsError = state => state.organiser.gavelAnnotators.error;
+export const gavelAnnotatorsUpdated = state => state.organiser.gavelAnnotators.updated;
+
+export const gavelProjectsPopulated = createSelector(projectsMap, gavelProjects, (projectsMap, gavelProjects) => {
+    return gavelProjects.map(project => {
+        if (projectsMap[project.project]) {
+            project.project = projectsMap[project.project];
+        }
+        return project;
+    });
+});
 
 export const registrationsAssigned = createSelector(
     AuthSelectors.idTokenData,
