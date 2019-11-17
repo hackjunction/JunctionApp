@@ -46,15 +46,26 @@ const Winners = ({ event, projects, updateWinners, idToken }) => {
 
     if (!event || !event.tracks) return null;
 
+    const resultsMapped = results
+        ? Object.keys(results).map(projectId => {
+              const voteCount = results[projectId].length;
+              const project = find(projects, p => p._id === projectId);
+
+              return {
+                  project,
+                  voteCount
+              };
+          })
+        : null;
+
+    const resultsSorted = resultsMapped ? sortBy(resultsMapped, 'voteCount') : null;
+
     return (
         <React.Fragment>
-            {results && (
+            {resultsSorted && (
                 <Box mt={3}>
                     <Typography variant="h6">Finalist results:</Typography>
-                    {Object.keys(results).map(projectId => {
-                        const voteCount = results[projectId].length;
-                        const project = find(projects, p => p._id === projectId);
-
+                    {resultsSorted.map(({ project, voteCount }) => {
                         return (
                             <Typography>
                                 {project.name}: {voteCount}
