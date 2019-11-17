@@ -1,10 +1,10 @@
 const _ = require('lodash');
+const mongoose = require('mongoose');
 const GavelAnnotator = require('./Annotator');
 const GavelDecision = require('./Decision');
 const GavelProject = require('./Project');
 
 const TeamController = require('../../team/controller');
-const ProjectController = require('../../project/controller');
 const { ForbiddenError } = require('../../../common/errors/errors');
 const Maths = require('./maths');
 
@@ -27,10 +27,18 @@ controller.ensureGavelProject = async project => {
     }
 };
 
+controller.getProject = async projectId => {
+    return GavelProject.findById(projectId).populate('project');
+};
+
+controller.getAnnotator = async (event, userId) => {
+    return GavelAnnotator.findOne({ event: event._id, user: userId });
+};
+
 controller.initAnnotator = async (event, userId) => {
     const team = await TeamController.getTeam(event._id, userId).catch(() => null);
     const [projects, annotators] = await Promise.all([
-        ProjectController.getAllProjectsForEvent(event._id),
+        mongoose.model('Project').find({ event: event._id }),
         GavelAnnotator.find({ event: event._id })
     ]);
     const ownProject = team ? _.find(projects, project => project.team === team._id) : null;
@@ -70,7 +78,7 @@ controller.initAnnotator = async (event, userId) => {
         track: assignedTrack
     });
 
-    const savedAnnotator = await annotator.assign();
+    const savedAnnotator = await annotator.save();
     return savedAnnotator.assignNextProject();
 };
 
@@ -78,7 +86,7 @@ controller.submitVote = async (event, userId, winningProjectId) => {
     // Get the annotator profile for a user
     const annotator = await GavelAnnotator.findOne({ event: event._id, user: userId });
 
-    if (winningProjectId !== annotator.next && winningProjectId !== annotator.prev) {
+    if (winningProjectId !== annotator.next.toString() && winningProjectId !== annotator.prev.toString()) {
         throw new ForbiddenError(
             `Invalid choice for winning project, must be one of: ${annotator.prev}, ${annotator.next}`
         );

@@ -10,8 +10,13 @@ const { InsufficientPrivilegesError, ForbiddenError, NotFoundError } = require('
 
 const controller = {};
 
-controller.getAllProjectsForEvent = () => {
-    /*TODO: */
+controller.getPublicProjectById = projectId => {
+    return Project.findById(projectId).then(project => {
+        if (!project.sourcePublic) {
+            delete project.source;
+        }
+        return project;
+    });
 };
 
 controller.getAllProjectsByEvent = eventId => {

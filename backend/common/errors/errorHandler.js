@@ -41,7 +41,7 @@ const errorHandler = (error, request, response, next) => {
             }
         }
     }
-    console.log('UNHANDLED ERROR', error.message);
+    console.log('UNHANDLED ERROR', error);
 
     return response.status(500).json({
         message: 'Unexpected error',
