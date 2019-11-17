@@ -163,7 +163,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
 
     /** Prioritize the projects which have not received enough views yet */
     const lessSeenProjects = preferredProjects.filter(project => {
-        return project.viewedBy.length < 5;
+        return project.viewedBy.length < 3;
     });
 
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects;
