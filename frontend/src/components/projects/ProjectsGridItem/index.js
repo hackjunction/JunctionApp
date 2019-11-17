@@ -64,7 +64,7 @@ const ProjectsGridItem = ({ project, event, showTableLocation, onClickMore, labe
                 <Box className={classes.content}>
                     <Typography variant="h6">{project.name}</Typography>
                     <Typography variant="body1" paragraph>
-                        {MiscUtils.ellipsize(project.punchline, 160)}
+                        {project.punchline}
                     </Typography>
                 </Box>
                 {showTableLocation && project.location && (

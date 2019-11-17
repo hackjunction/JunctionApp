@@ -65,11 +65,15 @@ const Annotators = ({ event, annotators, annotatorsLoading, updateAnnotators, ed
                 },
                 {
                     title: 'Alpha',
-                    field: 'alpha'
+                    field: 'alpha',
+                    type: 'numeric',
+                    render: row => row.alpha.toPrecision(4)
                 },
                 {
                     title: 'Beta',
-                    field: 'beta'
+                    field: 'beta',
+                    type: 'numeric',
+                    render: row => row.beta.toPrecision(4)
                 },
                 {
                     title: 'Seen',
@@ -77,9 +81,14 @@ const Annotators = ({ event, annotators, annotatorsLoading, updateAnnotators, ed
                     render: row => row.ignore.length
                 },
                 {
+                    title: 'Skipped',
+                    field: 'skipped',
+                    render: row => row.skipped.length
+                },
+                {
                     title: 'Updated',
                     field: 'updatedAt',
-                    render: row => moment(row.updatedAt).fromNow()
+                    type: 'date'
                 },
                 {
                     title: 'Active',

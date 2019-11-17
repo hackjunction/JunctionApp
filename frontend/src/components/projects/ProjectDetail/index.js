@@ -133,6 +133,40 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
                             <Typography variant="subtitle1">{project.location}</Typography>
                         </Box>
                     )}
+                    {project.demo ? (
+                        <Box mb={3}>
+                            <Typography variant="h6" className={classes.sectionTitle}>
+                                Demo
+                            </Typography>
+                            <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                                {project.demo}
+                            </a>
+                        </Box>
+                    ) : (
+                        <Box mb={3}>
+                            <Typography variant="h6" className={classes.sectionTitle}>
+                                Demo
+                            </Typography>
+                            <Typography variant="subtitle1">No demo available</Typography>
+                        </Box>
+                    )}
+                    {project.sourceCodePublic ? (
+                        <Box mb={3}>
+                            <Typography variant="h6" className={classes.sectionTitle}>
+                                Source code
+                            </Typography>
+                            <Typography variant="subtitle1">Source code not public</Typography>
+                        </Box>
+                    ) : (
+                        <Box mb={3}>
+                            <Typography variant="h6" className={classes.sectionTitle}>
+                                Source code
+                            </Typography>
+                            <a href={project.source} target="_blank" rel="noopener noreferrer">
+                                {project.source}
+                            </a>
+                        </Box>
+                    )}
                     {event && project.track && (
                         <Box mb={3}>
                             <Typography variant="h6" className={classes.sectionTitle}>

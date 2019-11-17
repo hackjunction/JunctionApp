@@ -44,7 +44,7 @@ const ProjectSchema = {
                 url: yup.string().url()
             })
         )
-        .max(4)
+        .max(5)
         .ensure()
         .label('Images')
 };

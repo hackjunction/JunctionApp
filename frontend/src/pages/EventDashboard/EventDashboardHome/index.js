@@ -13,6 +13,7 @@ import VisaInvitationBlock from './Blocks/VisaInvitationBlock';
 import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock';
 import GavelReviewingBlock from './Blocks/GavelReviewingBlock';
 import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock';
+import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock';
 
 // const useStyles = makeStyles(theme => ({
 //     stepper: {
@@ -28,6 +29,7 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             <Box mt={2} />
             {/* <QuickLinks /> */}
             <Grid container spacing={5}>
+                <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />
                 <VisaInvitationBlock />

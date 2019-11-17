@@ -52,6 +52,12 @@ const GavelAnnotatorSchema = new mongoose.Schema({
             ref: 'GavelProject'
         }
     ],
+    skipped: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'GavelProject'
+        }
+    ],
     alpha: {
         type: Number,
         default: Settings.ALPHA_PRIOR,
@@ -221,6 +227,7 @@ GavelAnnotatorSchema.methods.skipCurrentProject = async function() {
         return Promise.reject(new ForbiddenError('Cannot skip current project when there is no project assigned'));
     } else {
         this.ignore.push(this.next);
+        this.skipped.push(this.next);
         this.next = nextProject._id;
     }
 
