@@ -9,6 +9,9 @@ function config(idToken) {
         }
     };
 }
+ProjectsService.getPublicProjectById = projectId => {
+    return _axios.get(`/projects/id/${projectId}`);
+};
 
 ProjectsService.getProjectForEventAndTeam = (idToken, eventSlug) => {
     return _axios.get(`/projects/${eventSlug}/team`, config(idToken));

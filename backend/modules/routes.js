@@ -11,6 +11,7 @@ const devToolsRouter = require('./devtools/routes');
 const filterGroupRouter = require('./filter-group/routes');
 const adminRouter = require('./admin/routes');
 const projectRouter = require('./project/routes');
+const gavelRouter = require('./reviewing/gavel/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -31,6 +32,9 @@ module.exports = function(app) {
     app.use('/api/projects', projectRouter);
     app.use('/api/user-profiles', userProfileRouter);
     app.use('/api/recruitment', recruitmentRouter);
+
+    /** Reviewing methods */
+    app.use('/api/reviewing/gavel', gavelRouter);
 
     /** Admin tools */
     app.use('/api/admin', adminRouter);

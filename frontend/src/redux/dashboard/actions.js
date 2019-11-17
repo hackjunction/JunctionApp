@@ -8,6 +8,8 @@ import ProjectsService from 'services/projects';
 import RegistrationsService from 'services/registrations';
 import TeamsService from 'services/teams';
 
+import GavelService from 'services/reviewing/gavel';
+
 export const updateEvent = slug => dispatch => {
     dispatch({
         type: ActionTypes.UPDATE_EVENT,
@@ -231,4 +233,81 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
             onFailure: e => console.log('Error editing dashboard project', e)
         }
     });
+};
+
+export const updateAnnotator = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const { error } = await dispatch({
+        type: ActionTypes.UPDATE_ANNOTATOR,
+        promise: GavelService.getAnnotator(idToken, slug), //,
+        meta: {
+            onFailure: e => console.log('Error updating annotator', e)
+        }
+    });
+
+    return error;
+};
+
+export const beginVoting = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    try {
+        const annotator = await GavelService.beginVoting(idToken, slug);
+        dispatch({
+            type: ActionTypes.EDIT_ANNOTATOR,
+            payload: annotator
+        });
+        return;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+};
+
+export const skipProject = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    try {
+        const annotator = await GavelService.skipProject(idToken, slug);
+        dispatch({
+            type: ActionTypes.EDIT_ANNOTATOR,
+            payload: annotator
+        });
+        return;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+};
+
+export const setFirstProjectSeen = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    try {
+        const annotator = await GavelService.setFirstProjectSeen(idToken, slug);
+        dispatch({
+            type: ActionTypes.EDIT_ANNOTATOR,
+            payload: annotator
+        });
+        return;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+};
+
+export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    try {
+        const annotator = await GavelService.submitVote(idToken, slug, winnerId);
+        dispatch({
+            type: ActionTypes.EDIT_ANNOTATOR,
+            payload: annotator
+        });
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
 };

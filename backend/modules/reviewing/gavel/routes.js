@@ -3,19 +3,45 @@ const router = express.Router();
 const asyncHandler = require('express-async-handler');
 
 const { hasToken } = require('../../../common/middleware/token');
+const { hasRegisteredToEvent } = require('../../../common/middleware/events');
 
 const GavelAnnotator = require('./Annotator');
 const GavelController = require('./controller');
 
 router
-    .route('/:slug/init')
-    /** Begin voting as an annotator. Should fail if the annotator already exists for this event */
-    /** TODO: Middleware validation here, */
+    .route('/projects/:id')
+    /** Get a gavel project and details by it's ID */
     .get(
         hasToken,
         asyncHandler(async (req, res) => {
-            const annotator = await GavelController.initAnnotator(req.event, req.user.sub);
+            const project = await GavelController.getProject(req.params.id);
+            return res.status(200).json(project);
+        })
+    );
+
+router
+    .route('/:slug/annotator')
+    /** Get a user's annotator for an event */
+    .get(
+        hasToken,
+        hasRegisteredToEvent,
+        asyncHandler(async (req, res) => {
+            const annotator = await GavelController.getAnnotator(req.event, req.user.sub);
             return res.status(200).json(annotator);
+        })
+    )
+    /** Create (initialize) an annotator for an event */
+    .post(
+        hasToken,
+        hasRegisteredToEvent,
+        asyncHandler(async (req, res) => {
+            try {
+                const annotator = await GavelController.initAnnotator(req.event, req.user.sub);
+                return res.status(200).json(annotator);
+            } catch (err) {
+                console.log(err);
+                return res.status(200).json(null);
+            }
         })
     );
 
@@ -24,12 +50,15 @@ router
     /** Skip current project as an annotator */
     .post(
         hasToken,
+        hasRegisteredToEvent,
         asyncHandler(async (req, res) => {
             const annotator = await GavelAnnotator.findOne({
                 user: req.user.sub,
                 event: req.event._id
-            }).skipCurrentProject();
-            return res.status(200).json(annotator);
+            });
+
+            const result = await annotator.skipCurrentProject();
+            return res.status(200).json(result);
         })
     );
 
@@ -38,12 +67,16 @@ router
     /** Set the annotator's first project as seen */
     .post(
         hasToken,
+        hasRegisteredToEvent,
         asyncHandler(async (req, res) => {
             const annotator = await GavelAnnotator.findOne({
                 user: req.user.sub,
                 event: req.event._id
-            }).assignNextProject();
-            return res.status(200).json(annotator);
+            });
+
+            const result = await annotator.assignNextProject();
+
+            return res.status(200).json(result);
         })
     );
 
@@ -52,6 +85,7 @@ router
     /** Submit a vote as an annotator */
     .post(
         hasToken,
+        hasRegisteredToEvent,
         asyncHandler(async (req, res) => {
             const annotator = await GavelController.submitVote(req.event, req.user.sub, req.params.winnerId);
             return res.status(200).json(annotator);

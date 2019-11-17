@@ -13,6 +13,14 @@ const {
     getEventFromParams
 } = require('../../common/middleware/events');
 
+router.route('/id/:projectId').get(
+    asyncHandler(async (req, res) => {
+        console.log('req', req.params);
+        const project = await ProjectController.getPublicProjectById(req.params.projectId);
+        return res.status(200).json(project);
+    })
+);
+
 router
     .route('/:slug')
     /** Get all projects for an event */

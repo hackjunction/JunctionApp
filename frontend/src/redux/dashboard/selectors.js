@@ -23,6 +23,11 @@ export const projectLoading = state => state.dashboard.project.loading;
 export const projectError = state => state.dashboard.project.error;
 export const projectUpdated = state => state.dashboard.project.updated;
 
+export const annotator = state => state.dashboard.annotator.data;
+export const annotatorLoading = state => state.dashboard.annotator.loading;
+export const annotatorError = state => state.dashboard.annotator.error;
+export const annotatorUpdated = state => state.dashboard.annotator.updated;
+
 export const eventStatus = createSelector(event, event => EventHelpers.getEventStatus(event, moment));
 
 export const isRegistrationOpen = createSelector(eventStatus, status => status === EventStatuses.REGISTRATION_OPEN.id);
