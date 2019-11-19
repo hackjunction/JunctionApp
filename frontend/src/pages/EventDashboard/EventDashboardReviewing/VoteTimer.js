@@ -13,8 +13,7 @@ const VoteTimer = ({ annotator, children }) => {
                 if (!completed) {
                     return (
                         <Typography variant="subtitle1" align="center">
-                            You can submit a vote in {minutes}min {seconds} seconds. In the meantime try to find your
-                            next project!
+                            You can submit a vote in {minutes}min {seconds} seconds.
                         </Typography>
                     );
                 } else {

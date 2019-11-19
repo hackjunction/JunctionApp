@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Grid, Typography, CircularProgress, Box } from '@material-ui/core';
+import { Grid, Typography, CircularProgress, Box, Dialog } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
@@ -9,7 +9,14 @@ import * as DashboardActions from 'redux/dashboard/actions';
 import ProjectsGridItem from 'components/projects/ProjectsGridItem';
 import Button from 'components/generic/Button';
 import ConfirmDialog from 'components/generic/ConfirmDialog';
+import Markdown from 'components/generic/Markdown';
+import ProjectDetail from 'components/projects/ProjectDetail';
 import VoteTimer from './VoteTimer';
+
+import instructionsPhysical from './compareprojects-physical.md';
+import instructionsPhysical2 from './compareprojects-physical-2.md';
+import instructionsOnline from './compareprojects-online.md';
+import instructionsOnline2 from './compareprojects-online-2.md';
 
 import GavelService from 'services/reviewing/gavel';
 
@@ -28,6 +35,22 @@ const CompareProjects = ({
     const [error, setError] = useState(false);
     const [projects, setProjects] = useState();
     const [confirmOpen, setConfirmOpen] = useState(false);
+    const [selected, setSelected] = useState(false);
+    const [instructions, setInstructions] = useState('');
+
+    useEffect(() => {
+        if (isFirstChoice) {
+            const path = event.eventType === 'physical' ? instructionsPhysical : instructionsOnline;
+            fetch(path)
+                .then(response => response.text())
+                .then(setInstructions);
+        } else {
+            const path = event.eventType === 'physical' ? instructionsPhysical2 : instructionsOnline2;
+            fetch(path)
+                .then(response => response.text())
+                .then(setInstructions);
+        }
+    }, [event.eventType, isFirstChoice]);
 
     const fetchProjects = useCallback(async () => {
         setLoading(true);
@@ -73,7 +96,7 @@ const CompareProjects = ({
         } catch (err) {
             enqueueSnackbar('Something went wrong... Please try again');
         }
-    });
+    }, [event.slug, skipProject, enqueueSnackbar]);
 
     const renderTop = () => {
         if (isFirstChoice) {
@@ -82,11 +105,7 @@ const CompareProjects = ({
                     <Typography align="center" variant="h4" gutterBottom>
                         Okay, time to vote!
                     </Typography>
-                    <Typography align="center" variant="body1">
-                        Now that you've seen your first project, you should go and see the next one. Find the project
-                        under CURRENT, listen to their demo, and make a decision. Which one was better in your opinion -
-                        the first project or the one you just saw?
-                    </Typography>
+                    <Markdown source={instructions} />
                 </Box>
             );
         } else {
@@ -98,11 +117,7 @@ const CompareProjects = ({
                     <Typography align="center" variant="body1" style={{ fontWeight: 'bold' }} gutterBottom>
                         Your votes: {annotator.ignore.length - annotator.skipped.length - 1}
                     </Typography>
-                    <Typography align="center" variant="body1" gutterBottom>
-                        Make your way to the next project, and after you've seen it, make a decision. Remember: you are
-                        always comparing your current project to the one you saw immediately before it - regardless of
-                        who won the previous comparison!
-                    </Typography>
+                    <Markdown source={instructions} />
                 </Box>
             );
         }
@@ -135,6 +150,7 @@ const CompareProjects = ({
                     showTableLocation={true}
                     label="Previous"
                     labelBackground="theme_turquoise"
+                    onClickMore={() => setSelected(projects.prev.project)}
                 />
                 <ProjectsGridItem
                     project={projects.next.project}
@@ -142,6 +158,7 @@ const CompareProjects = ({
                     showTableLocation={true}
                     label="Current"
                     labelBackground="theme_success"
+                    onClickMore={() => setSelected(projects.next.project)}
                 />
                 <Grid item xs={12} md={8}>
                     <VoteTimer annotator={annotator}>
@@ -156,17 +173,19 @@ const CompareProjects = ({
                                     Current
                                 </Button>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Box display="flex" flexDirection="column" textAlign="center">
-                                    <Button
-                                        onClick={() => setConfirmOpen(true)}
-                                        color="theme_lightgray"
-                                        variant="outlined"
-                                    >
-                                        I can't find {projects.next.project.name}
-                                    </Button>
-                                </Box>
-                            </Grid>
+                            {event.eventType === 'physical' && (
+                                <Grid item xs={12}>
+                                    <Box display="flex" flexDirection="column" textAlign="center">
+                                        <Button
+                                            onClick={() => setConfirmOpen(true)}
+                                            color="theme_lightgray"
+                                            variant="outlined"
+                                        >
+                                            I can't find {projects.next.project.name}
+                                        </Button>
+                                    </Box>
+                                </Grid>
+                            )}
                         </Grid>
                     </VoteTimer>
                 </Grid>
@@ -180,6 +199,14 @@ const CompareProjects = ({
                     cancelText="Cancel"
                     okText="OK"
                 />
+                <Dialog transitionDuration={0} fullScreen open={Boolean(selected)} onClose={() => setSelected()}>
+                    <ProjectDetail
+                        project={selected}
+                        event={event}
+                        onBack={() => setSelected()}
+                        showTableLocation={false}
+                    />
+                </Dialog>
             </Grid>
         );
     };

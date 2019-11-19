@@ -43,9 +43,9 @@ const ProjectTeam = React.memo(({ teamId }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={`${member.firstName} ${member.lastName}`}
-                        secondary={`${member.email} // ${member.phoneNumber ? member.phoneNumber.country_code : ''} ${
-                            member.phoneNumber ? member.phoneNumber.number : ''
-                        }`}
+                        // secondary={`${member.email} // ${member.phoneNumber ? member.phoneNumber.country_code : ''} ${
+                        //     member.phoneNumber ? member.phoneNumber.number : ''
+                        // }`}
                     />
                 </ListItem>
             ))}

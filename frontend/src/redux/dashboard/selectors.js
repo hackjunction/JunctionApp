@@ -139,3 +139,14 @@ export const showHackerPack = createSelector(event, registration, (event, regist
     if (!event) return false;
     return true;
 });
+
+export const showFinalistVoting = createSelector(event, registration, (event, registration) => {
+    if (!registration || registration.status !== 'checkedIn') return false;
+    if (!event || !event.tracksEnabled || event.tracks.length === 0) return false;
+    return true;
+});
+
+export const isFinalistVotingLocked = createSelector(event, event => {
+    if (!event || !event.winners || !event.winners.votingOpen) return true;
+    return false;
+});

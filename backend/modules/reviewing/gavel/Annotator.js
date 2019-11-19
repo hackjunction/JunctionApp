@@ -150,20 +150,20 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
     const cutoff = moment().subtract(Settings.ANNOTATOR_TIMEOUT_MINS, 'minutes');
 
     // /** Get all projects that are not currently being reviewed by someone, by the above definition */
-    // const nonBusyProjects = availableProjects.filter(project => {
-    //     const assignedAnnotator = _.find(activeAnnotators, annotator => {
-    //         return annotator.next === project._id;
-    //     });
+    const nonBusyProjects = availableProjects.filter(project => {
+        const assignedAnnotator = _.find(activeAnnotators, annotator => {
+            return annotator.next === project._id;
+        });
 
-    //     return !assignedAnnotator || moment(assignedAnnotator.updatedAt).isBefore(cutoff);
-    // });
+        return !assignedAnnotator || moment(assignedAnnotator.updatedAt).isBefore(cutoff);
+    });
 
     /** Prioritize the projects which are not busy, if there are any */
-    const preferredProjects = availableProjects;
+    const preferredProjects = nonBusyProjects.length > 0 ? nonBusyProjects : availableProjects;
 
     /** Prioritize the projects which have not received enough views yet */
     const lessSeenProjects = preferredProjects.filter(project => {
-        return project.viewedBy.length < 3;
+        return project.viewedBy.length < Settings.ITEM_MIN_VIEWS;
     });
 
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects;
@@ -204,7 +204,11 @@ GavelAnnotatorSchema.methods.assignNextProject = async function() {
     const nextProject = await this.getNextProject();
 
     if (!this.next) {
-        this.next = nextProject._id;
+        if (nextProject) {
+            this.next = nextProject._id;
+        } else {
+            this.next = null;
+        }
     } else {
         this.prev = this.next;
         this.ignore.push(this.next);
