@@ -1,20 +1,35 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { Grid, Typography, CircularProgress, Box } from '@material-ui/core';
+import { Grid, Typography, CircularProgress, Box, Dialog } from '@material-ui/core';
 import { withSnackbar } from 'notistack';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as DashboardActions from 'redux/dashboard/actions';
 import ProjectsGridItem from 'components/projects/ProjectsGridItem';
 import Button from 'components/generic/Button';
+import Markdown from 'components/generic/Markdown';
+import ProjectDetail from 'components/projects/ProjectDetail';
 
 import GavelService from 'services/reviewing/gavel';
+import instructionsPhysical from './firstproject-physical.md';
+import instructionsOnline from './firstproject-online.md';
 
 const FirstProject = ({ projectId, event, enqueueSnackbar, idToken, onDone }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [project, setProject] = useState();
+    const [selected, setSelected] = useState();
+    const [instructions, setInstructions] = useState('');
+
+    useEffect(() => {
+        const path = event.eventType === 'physical' ? instructionsPhysical : instructionsOnline;
+        fetch(path)
+            .then(response => response.text())
+            .then(text => {
+                setInstructions(text);
+            });
+    }, [event.eventType]);
 
     const fetchProject = useCallback(async () => {
         setLoading(true);
@@ -62,7 +77,12 @@ const FirstProject = ({ projectId, event, enqueueSnackbar, idToken, onDone }) =>
 
         return (
             <Grid container spacing={3} direction="column" alignItems="center">
-                <ProjectsGridItem project={project.project} event={event} showTableLocation={true} />
+                <ProjectsGridItem
+                    project={project.project}
+                    event={event}
+                    showTableLocation={true}
+                    onClickMore={() => setSelected(project.project)}
+                />
                 <Grid item xs={12}>
                     <Button onClick={handleDone} color="theme_turquoise" variant="contained">
                         Done
@@ -79,17 +99,20 @@ const FirstProject = ({ projectId, event, enqueueSnackbar, idToken, onDone }) =>
                     <Typography align="center" variant="h4" gutterBottom>
                         Your first project
                     </Typography>
-                    <Typography align="center" variant="body1">
-                        Alright! Time to see your first project! Make your way to the location indicated on the below
-                        card. Once you're there and you've found the right team, let them know you've come to review
-                        their project. Give them 3 minutes time to demo, and ask any questions you may have - when you
-                        think you've seen enough, click DONE.
-                    </Typography>
+                    <Markdown source={instructions} />
                 </Box>
             </Grid>
             <Grid item xs={12}>
                 {renderCard()}
             </Grid>
+            <Dialog transitionDuration={0} fullScreen open={Boolean(selected)} onClose={() => setSelected()}>
+                <ProjectDetail
+                    project={selected}
+                    event={event}
+                    onBack={() => setSelected()}
+                    showTableLocation={false}
+                />
+            </Dialog>
         </Grid>
     );
 };

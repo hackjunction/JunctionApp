@@ -46,9 +46,11 @@ const EventDashboard = ({
     showReviewing,
     showTravelGrant,
     showHackerPack,
+    showFinalistVoting,
     isSubmissionsLocked,
     isTeamPageLocked,
-    isReviewingLocked
+    isReviewingLocked,
+    isFinalistVotingLocked
 }) => {
     const { slug } = match.params;
 
@@ -102,7 +104,8 @@ const EventDashboard = ({
                         key: 'finals',
                         path: '/finalist-voting',
                         exact: true,
-                        locked: !event || !event.winners || !event.winners.votingOpen,
+                        hidden: !showFinalistVoting,
+                        locked: isFinalistVotingLocked,
                         lockedDescription: 'Finalist voting closed',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
@@ -186,9 +189,11 @@ const mapStateToProps = state => ({
     showReviewing: DashboardSelectors.showReviewing(state),
     showTravelGrant: DashboardSelectors.showTravelGrant(state),
     showHackerPack: DashboardSelectors.showHackerPack(state),
+    showFinalistVoting: DashboardSelectors.showFinalistVoting(state),
     isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
     isReviewingLocked: DashboardSelectors.isReviewingLocked(state),
-    isTeamPageLocked: DashboardSelectors.isTeamPageLocked(state)
+    isTeamPageLocked: DashboardSelectors.isTeamPageLocked(state),
+    isFinalistVotingLocked: DashboardSelectors.isFinalistVotingLocked(state)
 });
 
 const mapDispatchToProps = dispatch => ({

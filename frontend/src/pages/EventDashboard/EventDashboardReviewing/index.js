@@ -40,7 +40,7 @@ const EventDashboardReviewing = ({ team, event, annotator, updateAnnotator, anno
             return <Disabled />;
         }
 
-        if (!annotator.prev) {
+        if (!annotator.prev && annotator.next) {
             return <FirstProject projectId={annotator.next} />;
         }
 

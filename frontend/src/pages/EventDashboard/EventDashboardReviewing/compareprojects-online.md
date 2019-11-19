@@ -1,0 +1,1 @@
+Now that you've seen your first project, you should look at the next one. Open up the project under CURRENT, read the description and look at their demo - and make a decision. Which one was better in your opinion - the first project or the one you just saw?
