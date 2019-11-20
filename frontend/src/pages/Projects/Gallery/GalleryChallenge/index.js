@@ -13,7 +13,7 @@ import ProjectsGrid from 'components/projects/ProjectsGrid';
 const GalleryChallenge = ({ event, projects, match, onProjectSelected }) => {
     const challenge = useMemo(() => {
         if (!event || !event.challenges) return null;
-        return find(event.challenges, track => {
+        return find(event.challenges, challenge => {
             return challenge.slug === match.params.challenge;
         });
     }, [match, event]);
@@ -27,13 +27,9 @@ const GalleryChallenge = ({ event, projects, match, onProjectSelected }) => {
 
     return (
         <React.Fragment>
-            <EventHeroImage event={event} />
+            <EventHeroImage event={event} overline={event.name} title={challenge.partner} subheading={challenge.name} />
             <CenteredContainer>
                 <Box mt={3} />
-                <PageHeader
-                    heading={`Challenge: ${challenge.name}`}
-                    subheading={`By ${challenge.partner}, ${filtered.length} projects`}
-                />
                 <ProjectsGrid projects={filtered} event={event} onSelect={onProjectSelected} />
                 <Box mt={5} />
             </CenteredContainer>

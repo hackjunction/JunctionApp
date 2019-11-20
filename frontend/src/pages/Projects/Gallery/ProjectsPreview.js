@@ -5,19 +5,25 @@ import { Box, Typography, Button as MuiButton } from '@material-ui/core';
 import ProjectsGrid from 'components/projects/ProjectsGrid';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
-const ProjectsPreview = ({ projects = [], event, label, onClickMore, onProjectSelected }) => {
+const ProjectsPreview = ({ projects = [], count, event, label, subheading, onClickMore, onProjectSelected }) => {
     return (
         <Box mb={3} display="flex" flexDirection="column">
             <Box p={3} display="flex" flexDirection="column" alignItems="center">
                 <Typography align="center" variant="h4">
                     {label}
                 </Typography>
+                {subheading && (
+                    <Typography align="center" variant="button">
+                        {subheading}
+                    </Typography>
+                )}
             </Box>
             <ProjectsGrid projects={projects} event={event} onSelect={onProjectSelected} />
             {onClickMore && (
                 <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end">
                     <MuiButton onClick={onClickMore}>
-                        See all <ArrowForwardIosIcon />
+                        See all {count} projects
+                        <ArrowForwardIosIcon />
                     </MuiButton>
                 </Box>
             )}
