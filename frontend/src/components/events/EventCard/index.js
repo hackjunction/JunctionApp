@@ -8,6 +8,7 @@ import MiscUtils from 'utils/misc';
 
 const EventsGridItem = ({ event, buttons = [] }) => {
     if (!event) return null;
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.top}>
@@ -29,13 +30,13 @@ const EventsGridItem = ({ event, buttons = [] }) => {
                         : 'Online'}
                 </Typography>
                 <Box mt={1} />
-                <Grid container spacing={1}>
-                    {buttons.map(btn => (
-                        <Grid item xs={12}>
+                <Box display="flex" flexDirection="row" flexWrap="wrap">
+                    {buttons.map((btn, index) => (
+                        <Box key={index} mr={1} mb={1}>
                             {btn}
-                        </Grid>
+                        </Box>
                     ))}
-                </Grid>
+                </Box>
             </div>
         </div>
     );

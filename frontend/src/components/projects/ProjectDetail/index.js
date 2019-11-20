@@ -11,10 +11,15 @@ import Markdown from 'components/generic/Markdown';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import ProjectTeam from './ProjectTeam';
+import Pagination from './Pagination';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles(theme => ({
+    wrapper: {
+        width: '100%',
+        position: 'relative'
+    },
     top: {
         width: '100%',
         paddingTop: '50%',
@@ -32,7 +37,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         background: 'black',
-        objectFit: 'cover'
+        objectFit: 'contain'
     },
     placeholderTop: {
         background: 'black',
@@ -48,12 +53,11 @@ const useStyles = makeStyles(theme => ({
     content: {
         marginTop: theme.spacing(5)
     },
-    backButton: {
+    backButtonWrapper: {
+        background: 'black',
         position: 'absolute',
         top: 0,
-        left: 0,
-        zIndex: 100,
-        background: 'rgba(0,0,0,0.5)'
+        left: 0
     },
     sectionTitle: {
         textTransform: 'uppercase'
@@ -102,42 +106,38 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
     };
 
     return (
-        <Box width="100%">
-            <Box p={1} className={classes.backButton}>
-                <Button onClick={onBack} style={{ color: 'white' }}>
-                    <ArrowBackIosIcon />
-                    Back
-                </Button>
-            </Box>
-            {project.images.length > 0 && (
-                <Box className={classes.pagination}>
-                    <Typography variant="button">
-                        image {index + 1}/{project.images.length}
-                    </Typography>
-                </Box>
-            )}
-            <AutoPlaySwipeableViews enableMouseEvents index={index} onChangeIndex={setIndex}>
-                {project.images.length > 0 ? (
-                    project.images.map(image => (
-                        <Box key={image.publicId} className={classes.top}>
+        <Box className={classes.wrapper}>
+            <Box style={{ position: 'relative' }}>
+                <AutoPlaySwipeableViews enableMouseEvents index={index} onChangeIndex={setIndex}>
+                    {project.images.length > 0 ? (
+                        project.images.map(image => (
+                            <Box key={image.publicId} className={classes.top}>
+                                <Image
+                                    className={classes.image}
+                                    publicId={image.publicId}
+                                    defaultImage={require('assets/images/default_cover_image.png')}
+                                />
+                            </Box>
+                        ))
+                    ) : (
+                        <Box className={classes.placeholderTop}>
                             <Image
-                                className={classes.image}
-                                publicId={image.publicId}
-                                defaultImage={require('assets/images/default_cover_image.png')}
+                                className={classes.placeholderImage}
+                                publicId={event.logo.publicId}
+                                // defaultImage={require('assets/images/default_cover_image.png')}
                             />
                         </Box>
-                    ))
-                ) : (
-                    <Box className={classes.placeholderTop}>
-                        <Image
-                            className={classes.placeholderImage}
-                            publicId={event.logo.publicId}
-                            // defaultImage={require('assets/images/default_cover_image.png')}
-                        />
-                    </Box>
-                )}
-            </AutoPlaySwipeableViews>
+                    )}
+                </AutoPlaySwipeableViews>
+                <Box className={classes.backButtonWrapper}>
+                    <Button onClick={onBack} style={{ color: 'white' }}>
+                        <ArrowBackIosIcon style={{ fontSize: '14px' }} />
+                        Back
+                    </Button>
+                </Box>
+            </Box>
             <CenteredContainer>
+                <Pagination pages={project.images.length} active={index} onChange={setIndex} />
                 <Box className={classes.content}>
                     <Typography variant="h4" gutterBottom>
                         {project.name}

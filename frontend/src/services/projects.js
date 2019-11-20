@@ -9,6 +9,10 @@ function config(idToken) {
         }
     };
 }
+ProjectsService.getProjectsByEvent = eventSlug => {
+    return _axios.get(`/projects/${eventSlug}`);
+};
+
 ProjectsService.getPublicProjectById = projectId => {
     return _axios.get(`/projects/id/${projectId}`);
 };

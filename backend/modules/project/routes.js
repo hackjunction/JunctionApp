@@ -23,46 +23,11 @@ router.route('/id/:projectId').get(
 
 router
     .route('/:slug')
-    /** Get all projects for an event */
-    .get(
-        asyncHandler(async (req, res) => {
-            // TODO: Get all projects for an event
-            const projects = await new Promise(resolve => resolve([]));
-            return res.status(200).json(projects);
-        })
-    );
-
-router
-    .route('/:slug/admin')
-    /** As an event admin, get all projects for an event */
-    .get(
-        hasToken,
-        isEventOrganiser,
-        asyncHandler(async (req, res) => {
-            const projects = await ProjectController.getAllProjectsByEvent(req.event._id);
-            return res.status(200).json(projects);
-        })
-    );
-
-router
-    .route('/:slug/admin/:challengeSlug/link')
-    /** Generate the unique link with which partners can access their projects */
-    .get(
-        hasToken,
-        isEventOrganiser,
-        asyncHandler(async (req, res) => {
-            const data = await ProjectController.generateChallengeLink(req.event, req.params.challengeSlug);
-            return res.status(200).json(data);
-        })
-    );
-
-router
-    .route('/:slug/token/:token')
-    /** Get the projects for a challenge with an admin token */
+    /** Get all projects for an event (limited fields) */
     .get(
         getEventFromParams,
         asyncHandler(async (req, res) => {
-            const projects = await ProjectController.getProjectsWithToken(req.event, req.params.token);
+            const projects = await ProjectController.getProjectPreviewsByEvent(req.event._id);
             return res.status(200).json(projects);
         })
     );
@@ -98,6 +63,41 @@ router
         asyncHandler(async (req, res) => {
             const project = await ProjectController.updateProjectForEventAndTeam(req.event, req.team, req.body.data);
             return res.status(200).json(project);
+        })
+    );
+
+router
+    .route('/:slug/admin')
+    /** As an event admin, get all projects for an event */
+    .get(
+        hasToken,
+        isEventOrganiser,
+        asyncHandler(async (req, res) => {
+            const projects = await ProjectController.getAllProjectsByEvent(req.event._id);
+            return res.status(200).json(projects);
+        })
+    );
+
+router
+    .route('/:slug/admin/:challengeSlug/link')
+    /** Generate the unique link with which partners can access their projects */
+    .get(
+        hasToken,
+        isEventOrganiser,
+        asyncHandler(async (req, res) => {
+            const data = await ProjectController.generateChallengeLink(req.event, req.params.challengeSlug);
+            return res.status(200).json(data);
+        })
+    );
+
+router
+    .route('/:slug/token/:token')
+    /** Get the projects for a challenge with an admin token */
+    .get(
+        getEventFromParams,
+        asyncHandler(async (req, res) => {
+            const projects = await ProjectController.getProjectsWithToken(req.event, req.params.token);
+            return res.status(200).json(projects);
         })
     );
 

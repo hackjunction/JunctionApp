@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { Grid, Typography } from '@material-ui/core';
 
-import * as EventsSelectors from 'redux/events/selectors';
-
 import CenteredContainer from 'components/generic/CenteredContainer';
 import EventCard from 'components/events/EventCard';
 import Button from 'components/generic/Button';
 import PageWrapper from 'components/layouts/PageWrapper';
 
-const EventsGrid = ({ events, loading, push }) => {
+const EventsGrid = ({ events, loading, push, title }) => {
     function renderEvents() {
         return events.map(event => {
             return (
@@ -25,12 +23,25 @@ const EventsGrid = ({ events, loading, push }) => {
                                 onClick={() => push('/events/' + event.slug)}
                             >
                                 See more
-                            </Button>
+                            </Button>,
+                            true && (
+                                <Button
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                    onClick={() => push('/projects/' + event.slug)}
+                                >
+                                    View projects
+                                </Button>
+                            )
                         ]}
                     />
                 </Grid>
             );
         });
+    }
+
+    if (!events || events.length === 0) {
+        return null;
     }
 
     return (
@@ -40,7 +51,7 @@ const EventsGrid = ({ events, loading, push }) => {
                 <CenteredContainer>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <Typography variant="h6">Upcoming events</Typography>
+                            <Typography variant="h6">{title}</Typography>
                         </Grid>
                         {renderEvents()}
                     </Grid>
@@ -50,12 +61,4 @@ const EventsGrid = ({ events, loading, push }) => {
     );
 };
 
-const mapStateToProps = state => ({
-    events: EventsSelectors.events(state),
-    loading: EventsSelectors.eventsLoading(state)
-});
-
-export default connect(
-    mapStateToProps,
-    { push }
-)(EventsGrid);
+export default connect(null, { push })(EventsGrid);

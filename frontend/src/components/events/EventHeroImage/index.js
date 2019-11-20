@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
+import { goBack } from 'connected-react-router';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const EventHeroImage = ({ event, goBack }) => {
+const EventHeroImage = ({ event, title, overline, subheading, goBack }) => {
     const classes = useStyles();
     return (
         <Box className={classes.wrapper}>
@@ -81,15 +81,13 @@ const EventHeroImage = ({ event, goBack }) => {
                 <FadeInWrapper enterDelay={0.3} verticalOffset={50}>
                     <Box p={3} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                         <Typography className={classes.overline} variant="button">
-                            {MiscUtils.formatDateInterval(event.startTime, event.endTime)}
+                            {overline}
                         </Typography>
                         <Typography className={classes.title} variant="h3">
-                            {event.name}
+                            {title}
                         </Typography>
                         <Typography className={classes.overline} variant="button">
-                            {event.eventType === 'physical'
-                                ? `${event.eventLocation.city}, ${event.eventLocation.country}`
-                                : 'Online'}
+                            {subheading}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
@@ -106,11 +104,18 @@ const EventHeroImage = ({ event, goBack }) => {
     );
 };
 
-const mapDispatch = dispatch => ({
-    goBack: () => dispatch(push('/'))
+const mapState = (state, ownProps) => ({
+    title: ownProps.title || ownProps.event.name,
+    overline: ownProps.overline || MiscUtils.formatDateInterval(ownProps.event.startTime, ownProps.event.endTime),
+    subheading:
+        ownProps.subheading ||
+        (ownProps.event.eventType === 'physical'
+            ? `${ownProps.event.eventLocation.city}, ${ownProps.event.eventLocation.country}`
+            : 'Online')
 });
 
-export default connect(
-    null,
-    mapDispatch
-)(EventHeroImage);
+const mapDispatch = dispatch => ({
+    goBack: () => dispatch(goBack())
+});
+
+export default connect(mapState, mapDispatch)(EventHeroImage);
