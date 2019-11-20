@@ -18,6 +18,7 @@ const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/O
 const AdminPage = lazy(() => import('./pages/Admin'));
 const AccountPage = lazy(() => import('./pages/Account'));
 const RecruitmentPage = lazy(() => import('./pages/Recruitment'));
+const ProjectsRouter = lazy(() => import('./pages/Projects'));
 
 const routes = [
     {
@@ -86,8 +87,8 @@ const routes = [
         exact: false
     },
     {
-        path: '/projects/:slug/challenge/:token',
-        component: ProjectsChallengeAdminPage,
+        path: '/projects',
+        component: ProjectsRouter,
         exact: false
     }
 ];

@@ -3,6 +3,7 @@ import styles from './DefaultPage.module.scss';
 
 import { connect } from 'react-redux';
 import * as EventActions from 'redux/events/actions';
+import * as EventSelectors from 'redux/events/selectors';
 
 import Divider from 'components/generic/Divider';
 import LineDivider from 'components/generic/LineDivider/';
@@ -15,7 +16,7 @@ import EventsGrid from './EventsGrid';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import GlobalNavBar from 'components/navbars/GlobalNavBar';
 
-const DefaultPage = ({ updateEvents }) => {
+const DefaultPage = ({ updateEvents, upcomingEvents, pastEvents }) => {
     useEffect(() => {
         updateEvents();
     }, [updateEvents]);
@@ -30,7 +31,8 @@ const DefaultPage = ({ updateEvents }) => {
                     <EventHighlight />
                     <Divider size={2} />
                     <CenteredContainer>
-                        <EventsGrid />
+                        <EventsGrid title="Upcoming / ongoing events" events={upcomingEvents} />
+                        <EventsGrid title="Past events" events={pastEvents} />
                     </CenteredContainer>
                     <Divider size={2} />
                     <CenteredContainer>
@@ -49,11 +51,13 @@ const DefaultPage = ({ updateEvents }) => {
     );
 };
 
+const mapStateToProps = state => ({
+    upcomingEvents: EventSelectors.upcomingEvents(state),
+    pastEvents: EventSelectors.pastEvents(state)
+});
+
 const mapDispatchToProps = dispatch => ({
     updateEvents: () => dispatch(EventActions.updateEvents())
 });
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(DefaultPage);
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultPage);

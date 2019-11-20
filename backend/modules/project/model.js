@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const _ = require('lodash');
 const { ReviewingMethods } = require('@hackjunction/shared');
 const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
 const GavelController = require('../reviewing/gavel/controller');
@@ -71,6 +72,10 @@ ProjectSchema.index({
     track: 1,
     event: 1
 });
+
+ProjectSchema.methods.getPreview = function() {
+    return _.omit(this, ['description']);
+};
 
 ProjectSchema.post('save', async function(doc, next) {
     mongoose

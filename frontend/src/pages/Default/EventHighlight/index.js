@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './EventHighlight.module.scss';
 
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
@@ -32,9 +32,24 @@ const EventHighlight = ({ event, push }) => {
                         : 'Online'}
                 </Typography>
                 <div className={styles.buttons}>
-                    <Button color="theme_lightgray" variant="outlined" onClick={() => push('/events/' + event.slug)}>
-                        See more
-                    </Button>
+                    <Box mr={1} mb={1}>
+                        <Button
+                            color="theme_lightgray"
+                            variant="outlined"
+                            onClick={() => push('/events/' + event.slug)}
+                        >
+                            See more
+                        </Button>
+                    </Box>
+                    <Box mr={1} mb={1}>
+                        <Button
+                            color="theme_turquoise"
+                            variant="contained"
+                            onClick={() => push('/events/' + event.slug)}
+                        >
+                            View projects
+                        </Button>
+                    </Box>
                 </div>
             </div>
         </div>
@@ -45,7 +60,4 @@ const mapStateToProps = state => ({
     event: EventsSelectors.highlightedEvent(state)
 });
 
-export default connect(
-    mapStateToProps,
-    { push }
-)(EventHighlight);
+export default connect(mapStateToProps, { push })(EventHighlight);

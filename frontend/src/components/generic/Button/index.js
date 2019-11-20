@@ -7,6 +7,7 @@ const baseStyles = (theme, props, variant) => {
     return {
         borderRadius: '13px',
         padding: '0.35rem 1.5rem',
+        boxSizing: 'border-box',
         fontSize: '16px',
         letterSpacing: '0.02em',
         lineHeight: '22px',
@@ -27,6 +28,7 @@ const variantStyles = (theme, props) => {
             return {
                 backgroundColor: color.main,
                 color: color.contrastText,
+                border: `2px solid ${color.main}`,
                 '&:hover': {
                     backgroundColor: color.main
                 },

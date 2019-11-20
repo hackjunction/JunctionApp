@@ -19,6 +19,16 @@ controller.getPublicProjectById = projectId => {
     });
 };
 
+controller.getProjectPreviewsByEvent = eventId => {
+    return Project.find({
+        event: eventId
+    }).then(projects => {
+        return projects.map(project => {
+            return project.getPreview();
+        });
+    });
+};
+
 controller.getAllProjectsByEvent = eventId => {
     return Project.find({
         event: eventId
