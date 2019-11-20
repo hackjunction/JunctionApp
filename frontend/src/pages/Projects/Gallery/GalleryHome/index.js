@@ -49,6 +49,7 @@ const GalleryHome = ({ event, projects }) => {
                 <ProjectsPreview
                     key={track.slug}
                     projects={items.slice(0, 3)}
+                    count={items.length}
                     event={event}
                     label={track.name}
                     moreLink={`/projects/${event.slug}/by-track/${track.slug}`}
@@ -67,8 +68,10 @@ const GalleryHome = ({ event, projects }) => {
                 <ProjectsPreview
                     key={challenge.slug}
                     projects={items.slice(0, 3)}
+                    count={items.length}
                     event={event}
                     label={challenge.name}
+                    subheading={`By ${challenge.partner}`}
                     moreLink={`/projects/${event.slug}/by-challenge/${challenge.slug}`}
                 />
             );
