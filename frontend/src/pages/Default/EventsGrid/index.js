@@ -24,7 +24,7 @@ const EventsGrid = ({ events, loading, push, title }) => {
                             >
                                 See more
                             </Button>,
-                            true && (
+                            event.galleryOpen && (
                                 <Button
                                     color="theme_turquoise"
                                     variant="contained"

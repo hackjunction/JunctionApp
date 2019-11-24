@@ -22,7 +22,7 @@ const ConfigurationTab = () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Published"
-                            hint="Once published, this event will be visible to the public"
+                            hint="Is this event visible to the public?"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
@@ -33,6 +33,24 @@ const ConfigurationTab = () => {
                         </FormControl>
                     )}
                 />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="galleryOpen"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Project Gallery open"
+                            hint="Are the projects submitted to this event visible to the public?"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <BooleanInput
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                            />
+                        </FormControl>
+                    )}
+                ></FastField>
             </Grid>
             <Grid item xs={12}>
                 <FastField

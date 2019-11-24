@@ -33,7 +33,7 @@ const ProjectGallery = ({ match, push }) => {
                 EventsService.getPublicEventBySlug(slug),
                 ProjectsService.getProjectsByEvent(slug)
             ]);
-            if (!event) {
+            if (!event || !event.galleryOpen) {
                 push('/');
             }
             setEvent(event);

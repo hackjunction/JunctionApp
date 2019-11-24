@@ -12,13 +12,12 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center'
     },
     dotWrapper: {
-        padding: '12px 6px',
+        padding: '20px 6px',
         cursor: 'pointer'
     },
     dot: {
-        width: '16px',
-        height: '16px',
-        borderRadius: '8px',
+        width: '20px',
+        height: '6px',
         background: 'rgba(0,0,0,0.4)',
         transition: 'all 0.2s ease'
     },

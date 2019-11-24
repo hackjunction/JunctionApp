@@ -175,6 +175,20 @@ const EventSchema = new mongoose.Schema({
         default: false,
         required: true
     },
+    galleryOpen: {
+        type: Boolean,
+        default: false,
+        required: true,
+        validate: [
+            function(v) {
+                if (v === true) {
+                    return this.published;
+                }
+                return true;
+            },
+            `must be published before the project gallery can be opened`
+        ]
+    },
     owner: {
         type: String,
         required: true
