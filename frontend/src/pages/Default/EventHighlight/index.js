@@ -41,15 +41,17 @@ const EventHighlight = ({ event, push }) => {
                             See more
                         </Button>
                     </Box>
-                    <Box mr={1} mb={1}>
-                        <Button
-                            color="theme_turquoise"
-                            variant="contained"
-                            onClick={() => push('/events/' + event.slug)}
-                        >
-                            View projects
-                        </Button>
-                    </Box>
+                    {event.galleryOpen && (
+                        <Box mr={1} mb={1}>
+                            <Button
+                                color="theme_turquoise"
+                                variant="contained"
+                                onClick={() => push('/projects/' + event.slug)}
+                            >
+                                View projects
+                            </Button>
+                        </Box>
+                    )}
                 </div>
             </div>
         </div>
