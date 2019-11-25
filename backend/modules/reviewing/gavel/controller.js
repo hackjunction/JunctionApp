@@ -175,4 +175,6 @@ controller.submitVote = async (event, userId, winningProjectId) => {
     return updatedAnnotator;
 };
 
+controller.generateAchievements = async event => {};
+
 module.exports = controller;

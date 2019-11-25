@@ -143,22 +143,24 @@ const EventSchema = new mongoose.Schema({
         type: UserDetailsConfigSchema,
         default: UserDetailsConfigSchema
     },
-    customQuestions: [
-        {
-            label: {
-                type: String,
-                required: true
-            },
-            name: {
-                type: String,
-                required: true,
-                unique: true
-            },
-            description: String,
-            conditional: String,
-            questions: [RegistrationQuestionSchema]
-        }
-    ],
+    customQuestions: {
+        type: [
+            {
+                label: {
+                    type: String,
+                    required: true
+                },
+                name: {
+                    type: String,
+                    required: true
+                },
+                description: String,
+                conditional: String,
+                questions: [RegistrationQuestionSchema]
+            }
+        ],
+        default: []
+    },
     tags: {
         type: [
             {
@@ -243,5 +245,7 @@ EventSchema.post('remove', async function(doc) {
 });
 
 const Event = mongoose.model('Event', EventSchema);
+
+Event.syncIndexes();
 
 module.exports = Event;

@@ -1,4 +1,5 @@
 module.exports = {
+    AchievementTypes: require('./constants/achievement-types'),
     Auth: require('./constants/auth'),
     Countries: require('./constants/countries'),
     Currencies: require('./constants/currencies'),

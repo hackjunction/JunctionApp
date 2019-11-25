@@ -1,12 +1,9 @@
-const _ = require('lodash');
 const yup = require('yup');
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
 const Project = require('./model');
-const Registration = require('../registration/model');
-const UserProfileController = require('../user-profile/controller');
 const { ProjectSchema } = require('@hackjunction/shared');
-const { InsufficientPrivilegesError, ForbiddenError, NotFoundError } = require('../../common/errors/errors');
+const { ForbiddenError } = require('../../common/errors/errors');
 
 const controller = {};
 

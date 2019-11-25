@@ -14,6 +14,9 @@ import {
 } from '@material-ui/core';
 import getSlug from 'speakingurl';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
+import CloseIcon from '@material-ui/icons/Close';
 import TextInput from 'components/inputs/TextInput';
 import Button from 'components/generic/Button';
 
@@ -21,6 +24,9 @@ const ChallengesForm = ({ value, onChange }) => {
     const [inputValue, setInputValue] = useState();
     const [slugValue, setSlugValue] = useState();
     const [partnerValue, setPartnerValue] = useState();
+    const [editIndex, setEditIndex] = useState(-1);
+    const [editName, setEditName] = useState();
+    const [editPartner, setEditPartner] = useState();
 
     const handleNameChange = useCallback(name => {
         setInputValue(name);
@@ -51,6 +57,37 @@ const ChallengesForm = ({ value, onChange }) => {
         [value, onChange]
     );
 
+    const handleEditStart = useCallback(
+        index => {
+            setEditIndex(index);
+            setEditName(value[index].name);
+            setEditPartner(value[index].partner);
+        },
+        [value]
+    );
+
+    const handleEditCancel = useCallback(() => {
+        setEditIndex(-1);
+        setEditName();
+        setEditPartner();
+    }, []);
+
+    const handleEditDone = useCallback(() => {
+        onChange(
+            value.map((item, index) => {
+                if (index === editIndex) {
+                    return {
+                        ...item,
+                        name: editName,
+                        partner: editPartner
+                    };
+                }
+                return item;
+            })
+        );
+        handleEditCancel();
+    }, [value, editIndex, editName, editPartner, onChange, handleEditCancel]);
+
     const isValid = useMemo(() => {
         return (
             partnerValue &&
@@ -61,6 +98,50 @@ const ChallengesForm = ({ value, onChange }) => {
             }).length === 0
         );
     }, [value, partnerValue, inputValue, slugValue]);
+
+    const renderListItem = (challenge, index) => {
+        if (index === editIndex) {
+            return (
+                <ListItem key={challenge.slug || challenge.name} divider>
+                    <Box flex="1" display="flex" flexDirection="column">
+                        <TextInput label="Challenge name" value={editName} onChange={setEditName} />
+                        <Box mt={1} />
+                        <TextInput label="Challenge partner" value={editPartner} onChange={setEditPartner} />
+                    </Box>
+                    <Box pl={1}>
+                        <Tooltip title="Cancel">
+                            <IconButton onClick={handleEditCancel}>
+                                <CloseIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Save edits">
+                            <IconButton onClick={handleEditDone}>
+                                <SaveIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </ListItem>
+            );
+        }
+
+        return (
+            <ListItem key={challenge.slug || challenge.name} divider>
+                <ListItemText primary={`${challenge.name} by ${challenge.partner}`} secondary={challenge.slug} />
+                <ListItemSecondaryAction>
+                    <Tooltip title="Edit challenge">
+                        <IconButton onClick={() => handleEditStart(index)}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Remove challenge">
+                        <IconButton onClick={() => handleRemove(index)}>
+                            <HighlightOffIcon />
+                        </IconButton>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            </ListItem>
+        );
+    };
 
     return (
         <Paper>
@@ -89,23 +170,7 @@ const ChallengesForm = ({ value, onChange }) => {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <List>
-                            {value.map((challenge, index) => (
-                                <ListItem key={challenge.slug || challenge.name} divider>
-                                    <ListItemText
-                                        primary={`${challenge.name} by ${challenge.partner}`}
-                                        secondary={challenge.slug}
-                                    />
-                                    <ListItemSecondaryAction>
-                                        <Tooltip title="Remove challenge">
-                                            <IconButton onClick={() => handleRemove(index)}>
-                                                <HighlightOffIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            ))}
-                        </List>
+                        <List>{value.map(renderListItem)}</List>
                     </Grid>
                 </Grid>
             </Box>

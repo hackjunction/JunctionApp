@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const { ReviewingMethods } = require('@hackjunction/shared');
 const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
+const AchievementSchema = require('../../common/schemas/Achievement');
 const GavelController = require('../reviewing/gavel/controller');
 
 const ProjectSchema = new mongoose.Schema({
@@ -51,7 +52,8 @@ const ProjectSchema = new mongoose.Schema({
     },
     location: {
         type: String
-    }
+    },
+    achievements: [AchievementSchema]
 });
 
 ProjectSchema.set('timestamps', true);

@@ -87,6 +87,17 @@ const getWinnerProjects = asyncHandler(async (req, res) => {
     return res.status(200).json(projects);
 });
 
+/** Generate achievements for projects submitted in this event */
+const generateAchievements = asyncHandler(async (req, res) => {
+    const result = await EventController.generateAchievements(req.event);
+    return res.status(200).json(result);
+});
+
+const clearAchievements = asyncHandler(async (req, res) => {
+    const result = await EventController.clearAchivements(req.event);
+    return res.status(200).json(result);
+});
+
 /** Create event, get events by logged in user */
 router
     .route('/')
@@ -108,6 +119,11 @@ router
     .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getEventAsOrganiser)
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateEvent)
     .delete(hasToken, hasPermission(Auth.Permissions.DELETE_EVENT), isEventOwner, deleteEvent);
+
+router
+    .route('/:slug/achievements')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, generateAchievements)
+    .delete(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, clearAchievements);
 
 router
     .route('/:slug/winners')
