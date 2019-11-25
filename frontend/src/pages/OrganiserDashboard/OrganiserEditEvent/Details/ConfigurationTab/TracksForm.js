@@ -14,12 +14,17 @@ import {
 } from '@material-ui/core';
 import getSlug from 'speakingurl';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
+import CloseIcon from '@material-ui/icons/Close';
 import TextInput from 'components/inputs/TextInput';
 import Button from 'components/generic/Button';
 
 const TracksForm = ({ value, onChange }) => {
     const [inputValue, setInputValue] = useState();
     const [slugValue, setSlugValue] = useState();
+    const [editIndex, setEditIndex] = useState(-1);
+    const [editValue, setEditValue] = useState();
 
     const handleNameChange = useCallback(name => {
         setInputValue(name);
@@ -48,6 +53,34 @@ const TracksForm = ({ value, onChange }) => {
         [value, onChange]
     );
 
+    const handleEditStart = useCallback(
+        index => {
+            setEditIndex(index);
+            setEditValue(value[index].name);
+        },
+        [value]
+    );
+
+    const handleEditCancel = useCallback(() => {
+        setEditIndex(-1);
+        setEditValue();
+    }, []);
+
+    const handleEditSave = useCallback(() => {
+        onChange(
+            value.map((item, index) => {
+                if (index === editIndex) {
+                    return {
+                        ...item,
+                        name: editValue
+                    };
+                }
+                return item;
+            })
+        );
+        handleEditCancel();
+    }, [value, editIndex, editValue, onChange, handleEditCancel]);
+
     const isValid = useMemo(() => {
         return (
             inputValue &&
@@ -57,6 +90,44 @@ const TracksForm = ({ value, onChange }) => {
             }).length === 0
         );
     }, [value, inputValue, slugValue]);
+
+    const renderListItem = (track, index) => {
+        if (index === editIndex) {
+            return (
+                <ListItem key={track.slug || track.name} divider>
+                    <TextInput value={editValue} onChange={setEditValue} label={'Edit ' + track.name} />
+                    <Tooltip title="Cancel">
+                        <IconButton onClick={handleEditCancel}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Save">
+                        <IconButton disabled={!editValue || editValue.length === 0} onClick={handleEditSave}>
+                            <SaveIcon />
+                        </IconButton>
+                    </Tooltip>
+                </ListItem>
+            );
+        }
+
+        return (
+            <ListItem key={track.slug || track.name} divider>
+                <ListItemText primary={track.name} secondary={track.slug} />
+                <ListItemSecondaryAction>
+                    <Tooltip title="Edit track name">
+                        <IconButton onClick={() => handleEditStart(index)}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Remove track">
+                        <IconButton onClick={() => handleRemove(index)}>
+                            <HighlightOffIcon />
+                        </IconButton>
+                    </Tooltip>
+                </ListItemSecondaryAction>
+            </ListItem>
+        );
+    };
 
     return (
         <Paper>
@@ -80,20 +151,7 @@ const TracksForm = ({ value, onChange }) => {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <List>
-                            {value.map((track, index) => (
-                                <ListItem key={track.slug || track.name} divider>
-                                    <ListItemText primary={track.name} secondary={track.slug} />
-                                    <ListItemSecondaryAction>
-                                        <Tooltip title="Remove track">
-                                            <IconButton onClick={() => handleRemove(index)}>
-                                                <HighlightOffIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            ))}
-                        </List>
+                        <List>{value.map(renderListItem)}</List>
                     </Grid>
                 </Grid>
             </Box>
