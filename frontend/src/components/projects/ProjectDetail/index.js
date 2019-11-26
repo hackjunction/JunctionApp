@@ -173,7 +173,7 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
                             <Typography variant="subtitle1">No demo available</Typography>
                         </Box>
                     )}
-                    {project.sourceCodePublic ? (
+                    {!project.sourcePublic ? (
                         <Box mb={3}>
                             <Typography variant="h6" className={classes.sectionTitle}>
                                 Source code
