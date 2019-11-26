@@ -9,6 +9,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import PeopleIcon from '@material-ui/icons/People';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import CodeIcon from '@material-ui/icons/Code';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -22,6 +23,7 @@ import ParticipantsPage from './Participants';
 import ManagePage from './Manage';
 import CheckInPage from './CheckIn';
 import ProjectsPage from './Projects';
+import TravelGrantsPage from './TravelGrants';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({
@@ -121,6 +123,14 @@ const OrganiserEditEvent = ({
                         icon: <CropFreeIcon />,
                         label: 'Check-in',
                         component: CheckInPage
+                    },
+                    {
+                        key: 'travel-grants',
+                        path: '/travel-grants',
+                        exact: true,
+                        icon: <FlightTakeoffIcon />,
+                        label: 'Travel grants',
+                        component: TravelGrantsPage
                     },
                     {
                         key: 'manage',
