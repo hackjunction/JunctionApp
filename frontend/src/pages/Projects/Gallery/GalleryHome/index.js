@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
+import { sortBy } from 'lodash-es';
 import { Box } from '@material-ui/core';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import EventHeroImage from 'components/events/EventHeroImage';
@@ -45,10 +46,13 @@ const GalleryHome = ({ event, projects }) => {
         return event.tracks.map(track => {
             const items = byTrack[track.slug];
             if (!items) return null;
+            const sorted = sortBy(items, item => {
+                return -1 * item.description.length;
+            });
             return (
                 <ProjectsPreview
                     key={track.slug}
-                    projects={items.slice(0, 3)}
+                    projects={sorted.slice(0, 3)}
                     count={items.length}
                     event={event}
                     label={track.name}
@@ -64,10 +68,13 @@ const GalleryHome = ({ event, projects }) => {
         return event.challenges.map(challenge => {
             const items = byChallenge[challenge.slug];
             if (!items) return null;
+            const sorted = sortBy(items, item => {
+                return -1 * item.description.length;
+            });
             return (
                 <ProjectsPreview
                     key={challenge.slug}
-                    projects={items.slice(0, 3)}
+                    projects={sorted.slice(0, 3)}
                     count={items.length}
                     event={event}
                     label={challenge.name}

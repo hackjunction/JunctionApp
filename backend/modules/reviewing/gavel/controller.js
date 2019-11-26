@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Types.ObjectId;
 const GavelAnnotator = require('./Annotator');
 const GavelDecision = require('./Decision');
 const GavelProject = require('./Project');
@@ -174,7 +173,5 @@ controller.submitVote = async (event, userId, winningProjectId) => {
 
     return updatedAnnotator;
 };
-
-controller.generateAchievements = async event => {};
 
 module.exports = controller;

@@ -12,6 +12,7 @@ import * as OrganiserActions from 'redux/organiser/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 
 import WinnerVoteService from 'services/winnerVote';
+import EventsService from 'services/events';
 
 const Winners = ({ event, projects, updateWinners, idToken }) => {
     const sorted = sortBy(projects, p => p.name);
@@ -39,6 +40,12 @@ const Winners = ({ event, projects, updateWinners, idToken }) => {
             window.alert('Oops! something went wrong. Try again.');
         }
     };
+
+    const handleGenerateAchievements = useCallback(() => {
+        EventsService.generateAchievements(idToken, event.slug).then(data => {
+            console.log('DATA', data);
+        });
+    }, [idToken, event]);
 
     const initialValues = {
         trackWinners: event.winners ? event.winners.trackWinners || {} : {}
@@ -74,6 +81,9 @@ const Winners = ({ event, projects, updateWinners, idToken }) => {
                     })}
                 </Box>
             )}
+            <Button color="primary" variant="contained" onClick={handleGenerateAchievements}>
+                Generate achievements
+            </Button>
             <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={onSubmit}>
                 {formikProps => (
                     <Grid container spacing={3}>
