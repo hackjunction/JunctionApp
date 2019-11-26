@@ -8,7 +8,7 @@ import ProjectsGridItem from '../ProjectsGridItem';
 
 const ProjectsGrid = ({ projects, event, onSelect, sortField = 'location' }) => {
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
-    const sorted = sortBy(projects, p => p[sortField]);
+    const sorted = sortField ? sortBy(projects, p => p[sortField]) : projects;
 
     return (
         <Grid container spacing={3} direction="row" alignItems="stretch" justify="center">

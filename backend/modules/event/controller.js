@@ -1,6 +1,8 @@
 const _ = require('lodash');
+const { ReviewingMethods } = require('@hackjunction/shared');
 const Event = require('./model');
 const { NotFoundError } = require('../../common/errors/errors');
+const GavelHelper = require('../reviewing/gavel/helper');
 
 const controller = {};
 
@@ -35,14 +37,10 @@ controller.getEventById = id => {
 };
 
 controller.createEvent = (eventData, user) => {
-    console.log('EVENT DATA', eventData);
-    console.log('USER', user);
     const event = new Event({
         name: eventData.name,
         owner: user.sub
     });
-
-    console.log('EVENT', event);
 
     return event.save();
 };
@@ -79,6 +77,15 @@ controller.updateWinners = (eventId, winners) => {
         event.winners = winners;
         return event.save();
     });
+};
+
+controller.generateAchievements = async event => {
+    let result = [];
+    if (event.reviewMethod === ReviewingMethods.gavelPeerReview.id) {
+        const trackAchievements = await GavelHelper.generateTrackPlacementAchievements(event);
+        result = result.concat(trackAchievements);
+    }
+    return result;
 };
 
 module.exports = controller;

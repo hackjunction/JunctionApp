@@ -64,4 +64,8 @@ EventsService.getWinnerProjects = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/winners`, config(idToken));
 };
 
+EventsService.generateAchievements = (idToken, slug) => {
+    return _axios.patch(`${BASE_ROUTE}/${slug}/achievements`, {}, config(idToken));
+};
+
 export default EventsService;
