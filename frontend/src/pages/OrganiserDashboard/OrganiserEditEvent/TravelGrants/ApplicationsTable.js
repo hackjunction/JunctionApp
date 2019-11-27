@@ -55,6 +55,13 @@ const ApplicationsTable = React.memo(
                             options: {}
                         },
                         {
+                            label: 'Confirmed amount',
+                            name: 'travelGrantAmount',
+                            options: {
+                                filter: false
+                            }
+                        },
+                        {
                             label: 'Grant status',
                             name: 'travelGrantStatus',
                             options: {
