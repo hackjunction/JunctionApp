@@ -102,6 +102,21 @@ controller.setTravelGrantDetailsForRegistration = async (user, event, travelGran
     return registration.save();
 };
 
+controller.updateTravelGrantDetails = (registrationId, event, data) => {
+    return Registration.findById(registrationId).then(registration => {
+        if (data.hasOwnProperty('status')) {
+            registration.travelGrantStatus = data.status;
+        }
+        if (data.hasOwnProperty('amount')) {
+            registration.travelGrant = data.amount;
+        }
+        if (data.hasOwnProperty('comment')) {
+            registration.travelGrantComment = data.comment;
+        }
+        return registration.save();
+    });
+};
+
 controller.updateTravelGrantStatus = (user, event, status) => {
     return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
         registration.travelGrantStatus = status;

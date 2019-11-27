@@ -52,8 +52,12 @@ const setTravelGrantDetails = asyncHandler(async (req, res) => {
     return res.status(200).json(registration);
 });
 
-const updateTravelGrantStatus = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.updateTravelGrantStatus(req.user, req.event, req.status);
+const updateTravelGrantDetails = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController.updateTravelGrantDetails(
+        req.body.registrationId,
+        req.event,
+        req.body.data
+    );
     return res.status(200).json(registration);
 });
 
@@ -175,8 +179,8 @@ router
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, bulkRejectRegistrations);
 
 router
-    .route('/:slug/travelGrantStatus')
-    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelGrantStatus);
+    .route('/:slug/admin/travel-grant-details/')
+    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelGrantDetails);
 
 /** Get or edit single registration as an organiser */
 router
