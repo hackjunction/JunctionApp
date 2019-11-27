@@ -21,8 +21,6 @@ import * as DashboardActions from 'redux/dashboard/actions';
 import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
 
 const EventDashboardTravelGrant = ({ userProfile, registration, event, updateGrantDetails, enqueueSnackbar }) => {
-    console.log('STATUS', registration);
-
     const initialValues = useMemo(() => {
         if (registration.travelGrantDetails) {
             return registration.travelGrantDetails;
