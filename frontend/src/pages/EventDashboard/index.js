@@ -105,7 +105,7 @@ const EventDashboard = ({
                         path: '/finalist-voting',
                         exact: true,
                         hidden: !showFinalistVoting,
-                        locked: isFinalistVotingLocked,
+                        locked: true,
                         lockedDescription: 'Finalist voting closed',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
@@ -157,6 +157,8 @@ const EventDashboard = ({
                         path: '/travel-grant',
                         exact: true,
                         icon: <FlightTakeoffIcon />,
+                        locked: true,
+                        lockedDescription: 'Grant deadline has passed',
                         hidden: !showTravelGrant,
                         label: 'Travel grant',
                         component: EventDashboardTravelGrant
