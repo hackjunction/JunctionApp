@@ -114,6 +114,19 @@ export const editRegistration = (registrationId, data, slug) => async (dispatch,
     return registration;
 };
 
+export const updateRegistrationTravelGrant = (registrationId, data, slug) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    const registration = await RegistrationsService.adminUpdateTravelGrantDetails(idToken, slug, registrationId, data);
+
+    dispatch({
+        type: ActionTypes.EDIT_REGISTRATION,
+        payload: registration
+    });
+
+    return registration;
+};
+
 export const bulkEditRegistrations = (registrationIds, edits, slug) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState());
 

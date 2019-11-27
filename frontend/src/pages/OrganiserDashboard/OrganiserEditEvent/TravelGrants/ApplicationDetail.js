@@ -1,12 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import moment from 'moment-timezone';
-
+import { connect } from 'react-redux';
+import { RegistrationTravelGrantStatuses as Statuses } from '@hackjunction/shared';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Box, Button } from '@material-ui/core';
+import { Typography, Box, Button, Grid } from '@material-ui/core';
 
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
+import TextInput from 'components/inputs/TextInput';
+import Select from 'components/inputs/Select';
+
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+import { updateRegistrationTravelGrant } from 'redux/organiser/actions';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -39,10 +45,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ApplicationDetail = ({ data }) => {
+const ApplicationDetail = ({ data, event, updateRegistrationTravelGrant }) => {
     const classes = useStyles();
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages, setNumPages] = useState(0);
+
+    const [amount, setAmount] = useState(data ? data.travelGrant : undefined);
+    const [status, setStatus] = useState(data ? data.travelGrantStatus : undefined);
+    const [comment, setComment] = useState(data ? data.travelGrantComment : undefined);
 
     const setNextPage = useCallback(() => {
         if (pageNumber < numPages) {
@@ -59,6 +69,19 @@ const ApplicationDetail = ({ data }) => {
     const onLoaded = useCallback(({ numPages }) => {
         setNumPages(numPages);
     }, []);
+
+    const handleSubmit = useCallback(() => {
+        updateRegistrationTravelGrant(
+            data._id,
+            {
+                amount,
+                status,
+                comment
+            },
+            event.slug
+        );
+    }, [data, event, amount, status, comment, updateRegistrationTravelGrant]);
+
     if (!data) return null;
 
     if (!data.travelGrantDetails) {
@@ -133,11 +156,11 @@ const ApplicationDetail = ({ data }) => {
                         No IBAN account
                     </Typography>
                 )}
-                <Typography variant="h6">Travel grant amount (EUR)</Typography>
+                <Typography variant="h6">Travel grant amount</Typography>
                 <Typography variant="body1" paragraph>
-                    {data.travelGrant}
+                    {data.travelGrant} EUR
                 </Typography>
-                <Typography variant="h6">Sum of receipts (EUR)</Typography>
+                <Typography variant="h6">Sum of receipts</Typography>
                 <Typography variant="body1" paragraph>
                     {data.travelGrantDetails.receiptsSum} EUR
                 </Typography>
@@ -166,9 +189,54 @@ const ApplicationDetail = ({ data }) => {
                     <Page pageNumber={pageNumber} />
                 </Document>
             </Box>
+            <Typography variant="h6" gutterBottom>
+                Edit
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Select
+                        label="Status"
+                        value={status}
+                        onChange={setStatus}
+                        options={[
+                            {
+                                label: Statuses.asObject.pending.label,
+                                value: Statuses.asObject.pending.id
+                            },
+                            {
+                                label: Statuses.asObject.accepted.label,
+                                value: Statuses.asObject.accepted.id
+                            },
+                            {
+                                label: Statuses.asObject.rejected.label,
+                                value: Statuses.asObject.rejected.id
+                            }
+                        ]}
+                    />
+                </Grid>
+                {status === Statuses.asObject.accepted.id && (
+                    <Grid item xs={12}>
+                        <TextInput label="Confirmed amount" type="number" value={amount} onChange={setAmount} />
+                    </Grid>
+                )}
+                {status === Statuses.asObject.rejected.id && (
+                    <Grid item xs={12}>
+                        <TextInput label="Reason for rejection" value={comment} onChange={setComment} />
+                    </Grid>
+                )}
+                <Grid item xs={12}>
+                    <Button onClick={handleSubmit} color="primary" variant="contained">
+                        Save changes
+                    </Button>
+                </Grid>
+            </Grid>
             <Box height="200px" />
         </CenteredContainer>
     );
 };
 
-export default ApplicationDetail;
+const mapState = state => ({
+    event: OrganiserSelectors.event(state)
+});
+
+export default connect(mapState, { updateRegistrationTravelGrant })(ApplicationDetail);

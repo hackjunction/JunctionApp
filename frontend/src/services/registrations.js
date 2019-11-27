@@ -125,4 +125,8 @@ RegistrationsService.updateTravelGrantDetails = (idToken, slug, data) => {
     return _axios.patch(`${BASE_ROUTE}/${slug}/travel-grant-details`, { data }, config(idToken));
 };
 
+RegistrationsService.adminUpdateTravelGrantDetails = (idToken, slug, registrationId, data) => {
+    return _axios.patch(`${BASE_ROUTE}/${slug}/admin/travel-grant-details`, { registrationId, data }, config(idToken));
+};
+
 export default RegistrationsService;
