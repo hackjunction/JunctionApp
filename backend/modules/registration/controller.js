@@ -108,20 +108,20 @@ controller.updateTravelGrantDetails = (registrationId, event, data) => {
             switch (data.status) {
                 case 'pending': {
                     registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
+                    registration.travelGrantComment = undefined;
+                    registration.travelGrantAmount = undefined;
                     break;
                 }
                 case 'accepted': {
                     registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.accepted.id;
-                    if (data.amount) {
-                        registration.travelGrant = data.amount;
-                    }
+                    registration.travelGrantAmount = data.amount;
+                    registration.travelGrantComment = undefined;
                     break;
                 }
                 case 'rejected': {
                     registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.rejected.id;
-                    if (data.comment) {
-                        registration.travelGrantComment = data.comment;
-                    }
+                    registration.travelGrantComment = data.comment;
+                    registration.travelGrantAmount = undefined;
                     break;
                 }
                 default:

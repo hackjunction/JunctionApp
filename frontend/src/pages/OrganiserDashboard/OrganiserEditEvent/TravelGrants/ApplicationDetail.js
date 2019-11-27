@@ -53,7 +53,7 @@ const ApplicationDetail = ({ data, event, updateRegistrationTravelGrant, enqueue
     const [numPages, setNumPages] = useState(0);
 
     const [loading, setLoading] = useState(false);
-    const [amount, setAmount] = useState(data ? data.travelGrant : undefined);
+    const [amount, setAmount] = useState(data ? data.travelGrantAmount : undefined);
     const [status, setStatus] = useState(data ? data.travelGrantStatus : undefined);
     const [comment, setComment] = useState(data ? data.travelGrantComment : undefined);
 
