@@ -111,138 +111,149 @@ const ApplicationDetail = ({ data, event, updateRegistrationTravelGrant, enqueue
         <PageWrapper loading={loading}>
             <CenteredContainer>
                 <PageHeader heading={`${data.answers.firstName} ${data.answers.lastName}`} />
-                <Box display="flex" flexDirection="column">
-                    <Typography variant="h6">Full legal name</Typography>
-                    <Typography variant="body1">
-                        {data.travelGrantDetails.legalName.firstName} {data.travelGrantDetails.legalName.middleName}{' '}
-                        {data.travelGrantDetails.legalName.lastName}{' '}
-                    </Typography>
-                    <Typography variant="h6">Date of Birth</Typography>
-                    <Typography variant="body1">
-                        {moment(data.travelGrantDetails.dateOfBirth).format('DD.MM.YYYY')}
-                    </Typography>
-                    <Typography variant="h6">Email</Typography>
-                    <Typography variant="body1" paragraph>
-                        {data.travelGrantDetails.email}
-                    </Typography>
-                    <Typography variant="h6">Gender</Typography>
-                    <Typography variant="body1" paragraph>
-                        {data.travelGrantDetails.gender}
-                    </Typography>
-                    <Typography variant="h6">Country of travel</Typography>
-                    <Typography variant="body1" paragraph>
-                        {data.answers.countryOfTravel}
-                    </Typography>
-                    <Typography variant="h6">Address</Typography>
-                    <Typography variant="body1" paragraph>
-                        {data.travelGrantDetails.address.addressLine}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                        {data.travelGrantDetails.address.addressLine2}
-                    </Typography>
-                    <Typography variant="body1" paragraphy>
-                        {data.travelGrantDetails.address.postalCode} {data.travelGrantDetails.address.city},{' '}
-                        {data.travelGrantDetails.address.country}
-                    </Typography>
-                    <Typography variant="h6">Social Security Number</Typography>
-                    {data.travelGrantDetails.hasSSN ? (
-                        <Typography variant="body1" paragraph>
-                            {data.travelGrantDetails.SSN}
-                        </Typography>
-                    ) : (
-                        <Typography variant="body1" paragraph>
-                            No Finnish SSN
-                        </Typography>
-                    )}
-                    <Typography variant="h6">IBAN account details</Typography>
-                    {data.travelGrantDetails.hasIBAN ? (
-                        <>
-                            <Typography variant="body1">{data.travelGrantDetails.IBAN.accountNumber}</Typography>
-                            <Typography variant="body1">{data.travelGrantDetails.IBAN.swift}</Typography>
-                            <Typography variant="body1" gutterBottom>
-                                {data.travelGrantDetails.IBAN.bankName}
-                            </Typography>
-                        </>
-                    ) : (
-                        <Typography variant="body1" paragraph>
-                            No IBAN account
-                        </Typography>
-                    )}
-                    <Typography variant="h6">Travel grant amount</Typography>
-                    <Typography variant="body1" paragraph>
-                        {data.travelGrant} EUR
-                    </Typography>
-                    <Typography variant="h6">Sum of receipts</Typography>
-                    <Typography variant="body1" paragraph>
-                        {data.travelGrantDetails.receiptsSum} EUR
-                    </Typography>
-                </Box>
-                <Typography variant="h6">Receipts PDF</Typography>
-                <Box className={classes.pdfActions}>
-                    <Button onClick={setPrevPage} disabled={pageNumber <= 1}>
-                        Prev page
-                    </Button>
-                    <Button onClick={() => window.open(data.travelGrantDetails.receiptsPdf.url, '_blank')}>
-                        Show original
-                    </Button>
-                    <Button onClick={setNextPage} disabled={pageNumber >= numPages}>
-                        Next page
-                    </Button>
-                </Box>
-                <Box className={classes.pdfWrapper}>
-                    <Typography variant="body1" className={classes.pageText}>
-                        Page {pageNumber} of {numPages}
-                    </Typography>
-                    <Document
-                        style={{ background: 'black' }}
-                        file={data.travelGrantDetails.receiptsPdf.url}
-                        onLoadSuccess={onLoaded}
-                    >
-                        <Page pageNumber={pageNumber} />
-                    </Document>
-                </Box>
-                <Typography variant="h6" gutterBottom>
-                    Edit
-                </Typography>
                 <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Select
-                            label="Status"
-                            value={status}
-                            onChange={setStatus}
-                            options={[
-                                {
-                                    label: Statuses.asObject.pending.label,
-                                    value: Statuses.asObject.pending.id
-                                },
-                                {
-                                    label: Statuses.asObject.accepted.label,
-                                    value: Statuses.asObject.accepted.id
-                                },
-                                {
-                                    label: Statuses.asObject.rejected.label,
-                                    value: Statuses.asObject.rejected.id
-                                }
-                            ]}
-                        />
+                    <Grid item xs={12} lg={6}>
+                        <Box display="flex" flexDirection="column">
+                            <Typography variant="h6">Full legal name</Typography>
+                            <Typography variant="body1">
+                                {data.travelGrantDetails.legalName.firstName}{' '}
+                                {data.travelGrantDetails.legalName.middleName}{' '}
+                                {data.travelGrantDetails.legalName.lastName}{' '}
+                            </Typography>
+                            <Typography variant="h6">Date of Birth</Typography>
+                            <Typography variant="body1">
+                                {moment(data.travelGrantDetails.dateOfBirth).format('DD.MM.YYYY')}
+                            </Typography>
+                            <Typography variant="h6">Email</Typography>
+                            <Typography variant="body1" paragraph>
+                                {data.travelGrantDetails.email}
+                            </Typography>
+                            <Typography variant="h6">Gender</Typography>
+                            <Typography variant="body1" paragraph>
+                                {data.travelGrantDetails.gender}
+                            </Typography>
+                            <Typography variant="h6">Country of travel</Typography>
+                            <Typography variant="body1" paragraph>
+                                {data.answers.countryOfTravel}
+                            </Typography>
+                            <Typography variant="h6">Address</Typography>
+                            <Typography variant="body1" paragraph>
+                                {data.travelGrantDetails.address.addressLine}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                {data.travelGrantDetails.address.addressLine2}
+                            </Typography>
+                            <Typography variant="body1" paragraphy>
+                                {data.travelGrantDetails.address.postalCode} {data.travelGrantDetails.address.city},{' '}
+                                {data.travelGrantDetails.address.country}
+                            </Typography>
+                            <Typography variant="h6">Social Security Number</Typography>
+                            {data.travelGrantDetails.hasSSN ? (
+                                <Typography variant="body1" paragraph>
+                                    {data.travelGrantDetails.SSN}
+                                </Typography>
+                            ) : (
+                                <Typography variant="body1" paragraph>
+                                    No Finnish SSN
+                                </Typography>
+                            )}
+                            <Typography variant="h6">IBAN account details</Typography>
+                            {data.travelGrantDetails.hasIBAN ? (
+                                <>
+                                    <Typography variant="body1">
+                                        {data.travelGrantDetails.IBAN.accountNumber}
+                                    </Typography>
+                                    <Typography variant="body1">{data.travelGrantDetails.IBAN.swift}</Typography>
+                                    <Typography variant="body1" gutterBottom>
+                                        {data.travelGrantDetails.IBAN.bankName}
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Typography variant="body1" paragraph>
+                                    No IBAN account
+                                </Typography>
+                            )}
+                            <Typography variant="h6">Travel grant amount</Typography>
+                            <Typography variant="body1" paragraph>
+                                {data.travelGrant} EUR
+                            </Typography>
+                            <Typography variant="h6">Sum of receipts</Typography>
+                            <Typography variant="body1" paragraph>
+                                {data.travelGrantDetails.receiptsSum} EUR
+                            </Typography>
+                        </Box>
                     </Grid>
-                    {status === Statuses.asObject.accepted.id && (
-                        <Grid item xs={12}>
-                            <TextInput label="Confirmed amount" type="number" value={amount} onChange={setAmount} />
-                        </Grid>
-                    )}
-                    {status === Statuses.asObject.rejected.id && (
-                        <Grid item xs={12}>
-                            <TextInput label="Reason for rejection" value={comment} onChange={setComment} />
-                        </Grid>
-                    )}
-                    <Grid item xs={12}>
-                        <Button onClick={handleSubmit} color="primary" variant="contained">
-                            Save changes
-                        </Button>
+                    <Grid item xs={12} lg={6}>
+                        <Typography variant="h6">Receipts PDF</Typography>
+                        <Box className={classes.pdfActions}>
+                            <Button onClick={setPrevPage} disabled={pageNumber <= 1}>
+                                Prev page
+                            </Button>
+                            <Button onClick={() => window.open(data.travelGrantDetails.receiptsPdf.url, '_blank')}>
+                                Show original
+                            </Button>
+                            <Button onClick={setNextPage} disabled={pageNumber >= numPages}>
+                                Next page
+                            </Button>
+                        </Box>
+                        <Box className={classes.pdfWrapper}>
+                            <Typography variant="body1" className={classes.pageText}>
+                                Page {pageNumber} of {numPages}
+                            </Typography>
+                            <Document
+                                style={{ background: 'black' }}
+                                file={data.travelGrantDetails.receiptsPdf.url}
+                                onLoadSuccess={onLoaded}
+                            >
+                                <Page pageNumber={pageNumber} />
+                            </Document>
+                        </Box>
                     </Grid>
                 </Grid>
-                <Box height="200px" />
+                <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>
+                        Edit
+                    </Typography>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Select
+                                label="Status"
+                                value={status}
+                                onChange={setStatus}
+                                options={[
+                                    {
+                                        label: Statuses.asObject.pending.label,
+                                        value: Statuses.asObject.pending.id
+                                    },
+                                    {
+                                        label: Statuses.asObject.accepted.label,
+                                        value: Statuses.asObject.accepted.id
+                                    },
+                                    {
+                                        label: Statuses.asObject.rejected.label,
+                                        value: Statuses.asObject.rejected.id
+                                    }
+                                ]}
+                            />
+                        </Grid>
+                        {status === Statuses.asObject.accepted.id && (
+                            <Grid item xs={12}>
+                                <TextInput label="Confirmed amount" type="number" value={amount} onChange={setAmount} />
+                            </Grid>
+                        )}
+                        {status === Statuses.asObject.rejected.id && (
+                            <Grid item xs={12}>
+                                <TextInput label="Reason for rejection" value={comment} onChange={setComment} />
+                            </Grid>
+                        )}
+                        <Grid item xs={12}>
+                            <Button onClick={handleSubmit} color="primary" variant="contained">
+                                Save changes
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Box height="200px" />
+                </Grid>
             </CenteredContainer>
         </PageWrapper>
     );
