@@ -105,13 +105,28 @@ controller.setTravelGrantDetailsForRegistration = async (user, event, travelGran
 controller.updateTravelGrantDetails = (registrationId, event, data) => {
     return Registration.findById(registrationId).then(registration => {
         if (data.hasOwnProperty('status')) {
-            registration.travelGrantStatus = data.status;
-        }
-        if (data.hasOwnProperty('amount')) {
-            registration.travelGrant = data.amount;
-        }
-        if (data.hasOwnProperty('comment')) {
-            registration.travelGrantComment = data.comment;
+            switch (data.status) {
+                case 'pending': {
+                    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
+                    break;
+                }
+                case 'accepted': {
+                    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.accepted.id;
+                    if (data.amount) {
+                        registration.travelGrant = data.amount;
+                    }
+                    break;
+                }
+                case 'rejected': {
+                    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.rejected.id;
+                    if (data.comment) {
+                        registration.travelGrantComment = data.comment;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
         }
         return registration.save();
     });

@@ -57,6 +57,9 @@ const RegistrationSchema = new mongoose.Schema({
     },
     travelGrantDetails: {
         type: TravelGrantDetailsSchema
+    },
+    travelGrantComment: {
+        type: String
     }
 });
 
