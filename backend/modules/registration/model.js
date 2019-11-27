@@ -60,6 +60,9 @@ const RegistrationSchema = new mongoose.Schema({
     },
     travelGrantComment: {
         type: String
+    },
+    travelGrantAmount: {
+        type: Number
     }
 });
 
