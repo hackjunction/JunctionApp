@@ -157,8 +157,6 @@ const EventDashboard = ({
                         path: '/travel-grant',
                         exact: true,
                         icon: <FlightTakeoffIcon />,
-                        locked: true,
-                        lockedDescription: 'Grant deadline has passed',
                         hidden: !showTravelGrant,
                         label: 'Travel grant',
                         component: EventDashboardTravelGrant
