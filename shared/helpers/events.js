@@ -56,6 +56,15 @@ const EventHelpers = {
         if (!event) return false;
         return nowIsBetween(event.startTime, event.endTime, moment);
     },
+    isGrantDeadlinePast: (event, moment) => {
+        if (!event) return true;
+        return !nowIsBefore(
+            moment(event.endTime)
+                .add(7, 'days')
+                .format(),
+            moment
+        );
+    },
     getEventStatus: (event, moment) => {
         if (!event) return null;
         const now = moment().utc();

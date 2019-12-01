@@ -1,7 +1,14 @@
 import { createSelector } from 'reselect';
 import { isEmpty } from 'lodash-es';
 import moment from 'moment';
-import { EventHelpers, EventStatuses, EventTypes, RegistrationStatuses, ReviewingMethods } from '@hackjunction/shared';
+import {
+    EventHelpers,
+    EventStatuses,
+    EventTypes,
+    RegistrationStatuses,
+    ReviewingMethods,
+    RegistrationTravelGrantStatuses as TravelGrantStatuses
+} from '@hackjunction/shared';
 
 export const event = state => state.dashboard.event.data;
 export const eventLoading = state => state.dashboard.event.loading;
