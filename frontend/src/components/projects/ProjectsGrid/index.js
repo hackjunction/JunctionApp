@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core';
 import { EventHelpers } from '@hackjunction/shared';
 import ProjectsGridItem from '../ProjectsGridItem';
 
-const ProjectsGrid = ({ projects, event, onSelect, sortField = 'location' }) => {
+const ProjectsGrid = ({ projects, event, onSelect, sortField = 'location', showFullTeam = false }) => {
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
     const sorted = sortField ? sortBy(projects, p => p[sortField]) : projects;
 
@@ -17,6 +17,7 @@ const ProjectsGrid = ({ projects, event, onSelect, sortField = 'location' }) => 
                     project={project}
                     event={event}
                     showTableLocation={isOngoingEvent}
+                    showFullTeam={showFullTeam}
                     onClickMore={() => onSelect(project)}
                 />
             ))}

@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
+const ProjectDetail = ({ project, event, onBack, showTableLocation, showFullTeam }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(0);
 
@@ -209,7 +209,7 @@ const ProjectDetail = ({ project, event, onBack, showTableLocation }) => {
                     <Typography variant="h6" className={classes.sectionTitle}>
                         Team
                     </Typography>
-                    <ProjectTeam teamId={project.team} />
+                    <ProjectTeam teamId={project.team} showFullTeam={showFullTeam} />
                 </Box>
                 <Box height={200} />
             </CenteredContainer>

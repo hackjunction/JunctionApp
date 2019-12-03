@@ -4,7 +4,7 @@ import { CircularProgress, Box, List, ListItem, ListItemAvatar, ListItemText, Av
 
 import UserProfilesService from 'services/userProfiles';
 
-const ProjectTeam = React.memo(({ teamId }) => {
+const ProjectTeam = React.memo(({ teamId, showFullTeam }) => {
     const [teamMembers, setTeamMembers] = useState();
     const [loading, setLoading] = useState(false);
 
@@ -34,6 +34,13 @@ const ProjectTeam = React.memo(({ teamId }) => {
         return null;
     }
 
+    const secondaryText = member => {
+        if (!showFullTeam) return null;
+        return `${member.email} // ${member.phoneNumber ? member.phoneNumber.country_code : ''} ${
+            member.phoneNumber ? member.phoneNumber.number : ''
+        }`;
+    };
+
     return (
         <List>
             {teamMembers.map(member => (
@@ -43,9 +50,7 @@ const ProjectTeam = React.memo(({ teamId }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={`${member.firstName} ${member.lastName}`}
-                        // secondary={`${member.email} // ${member.phoneNumber ? member.phoneNumber.country_code : ''} ${
-                        //     member.phoneNumber ? member.phoneNumber.number : ''
-                        // }`}
+                        secondary={secondaryText(member)}
                     />
                 </ListItem>
             ))}
