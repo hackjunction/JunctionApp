@@ -184,8 +184,8 @@ const SendgridService = {
                 <br />
                 <br />
                 Please update your travel grant details as soon as possible on the Event Dashboard (link below), so that
-                we can confirm your final travel grant amount. If you don't do this, we will not be able to pay your travel
-                grant.
+                we can confirm your final travel grant amount. <strong>The deadline for this is this Friday, December 6th 11:55PM.</strong> 
+                If you don't do this, we will not be able to pay your travel grant.
                 <br />
                 <br />
                 Please refer to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
