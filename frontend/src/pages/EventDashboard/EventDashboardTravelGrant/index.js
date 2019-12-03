@@ -113,6 +113,12 @@ const EventDashboardTravelGrant = ({ registration, event }) => {
                             provided, up to the amount of your travel grant allowance. Don't hesitate to reach out to us
                             at finance@hackjunction.com if you have any questions!
                         </Typography>
+                        <Typography variant="body1" paragraph>
+                            In case we still need to clarify some of your details (e.g. your submitted legal name
+                            differs from the name on your account, or your country is not in the list of countries
+                            supported by Transferwise), we'll react out to you personally via email before initiating
+                            the payments.
+                        </Typography>
                     </GradientBox>
                 );
             default:

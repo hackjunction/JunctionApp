@@ -57,6 +57,8 @@ const ApplicationDetail = ({ data, event, updateRegistrationTravelGrant, enqueue
     const [status, setStatus] = useState(data ? data.travelGrantStatus : undefined);
     const [comment, setComment] = useState(data ? data.travelGrantComment : undefined);
 
+    console.log('DATA', data);
+
     const setNextPage = useCallback(() => {
         if (pageNumber < numPages) {
             setPageNumber(pageNumber + 1);
@@ -158,7 +160,7 @@ const ApplicationDetail = ({ data, event, updateRegistrationTravelGrant, enqueue
                                 </Typography>
                             )}
                             <Typography variant="h6">IBAN account details</Typography>
-                            {data.travelGrantDetails.hasIBAN ? (
+                            {data.travelGrantDetails.hasIBAN && data.travelGrantDetails.IBAN ? (
                                 <>
                                     <Typography variant="body1">
                                         {data.travelGrantDetails.IBAN.accountNumber}
