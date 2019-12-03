@@ -129,4 +129,12 @@ RegistrationsService.adminUpdateTravelGrantDetails = (idToken, slug, registratio
     return _axios.patch(`${BASE_ROUTE}/${slug}/admin/travel-grant-details`, { registrationId, data }, config(idToken));
 };
 
+RegistrationsService.adminNotifyRejectedTravelGrants = (idToken, slug) => {
+    return _axios.post(`${BASE_ROUTE}/${slug}/admin/travel-grant-details/notify-rejected`, {}, config(idToken));
+};
+
+RegistrationsService.adminNotifyAcceptedTravelGrants = (idToken, slug) => {
+    return _axios.post(`${BASE_ROUTE}/${slug}/admin/travel-grant-details/notify-accepted`, {}, config(idToken));
+};
+
 export default RegistrationsService;

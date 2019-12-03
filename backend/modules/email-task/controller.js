@@ -74,6 +74,36 @@ controller.createTravelGrantRejectedTask = async (registration, deliverNow = fal
     return task;
 };
 
+controller.createTravelGrantDetailsRejectedTask = async (registration, deliverNow = false) => {
+    const task = await controller.createTask(
+        registration.user,
+        registration.event,
+        EmailTypes.travelGrantDetailsRejected,
+        {
+            comment: registration.travelGrantComment
+        }
+    );
+    if (task && deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
+controller.createTravelGrantDetailsAcceptedTask = async (registration, deliverNow = false) => {
+    const task = await controller.createTask(
+        registration.user,
+        registration.event,
+        EmailTypes.travelGrantDetailsAccepted,
+        {
+            amount: registration.travelGrantAmount
+        }
+    );
+    if (task && deliverNow) {
+        return controller.deliverEmailTask(task);
+    }
+    return task;
+};
+
 controller.createRecruiterMessageTask = async recruiterAction => {
     const [user, recruiter] = await Promise.all([
         UserController.getUserProfile(recruiterAction.user),
@@ -123,6 +153,14 @@ controller.deliverEmailTask = async task => {
         }
         case EmailTypes.travelGrantRejected: {
             await SendgridService.sendTravelGrantRejectedEmail(event, user, task.params);
+            break;
+        }
+        case EmailTypes.travelGrantDetailsAccepted: {
+            await SendgridService.sendTravelGrantDetailsAcceptedEmail(event, user, task.params);
+            break;
+        }
+        case EmailTypes.travelGrantDetailsRejected: {
+            await SendgridService.sendTravelGrantDetailsRejectedEmail(event, user, task.params);
             break;
         }
         default: {

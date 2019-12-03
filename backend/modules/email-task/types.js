@@ -4,6 +4,8 @@ const EmailTypes = {
     registrationReceived: 'registration-received',
     travelGrantRejected: 'travelgrant-rejected',
     travelGrantAccepted: 'travelgrant-accepted',
+    travelGrantDetailsRejected: 'travelgrant-details-rejected',
+    travelGrantDetailsAccepted: 'travelgrant-details-accepted',
     recruiterMessage: 'recruiter-message'
 };
 

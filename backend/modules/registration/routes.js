@@ -61,6 +61,16 @@ const updateTravelGrantDetails = asyncHandler(async (req, res) => {
     return res.status(200).json(registration);
 });
 
+const notifyTravelGrantDetailsRejected = asyncHandler(async (req, res) => {
+    const count = await RegistrationController.notifyRejectedTravelGrants(req.event);
+    return res.status(200).json({ count });
+});
+
+const notifyTravelGrantDetailsAccepted = asyncHandler(async (req, res) => {
+    const count = await RegistrationController.notifyAcceptedTravelGrants(req.event);
+    return res.status(200).json({ count });
+});
+
 const editRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.editRegistration(
         req.params.registrationId,
@@ -181,6 +191,14 @@ router
 router
     .route('/:slug/admin/travel-grant-details/')
     .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, updateTravelGrantDetails);
+
+router
+    .route('/:slug/admin/travel-grant-details/notify-rejected')
+    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, notifyTravelGrantDetailsRejected);
+
+router
+    .route('/:slug/admin/travel-grant-details/notify-accepted')
+    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, notifyTravelGrantDetailsAccepted);
 
 /** Get or edit single registration as an organiser */
 router

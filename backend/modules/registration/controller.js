@@ -13,6 +13,7 @@ const yup = require('yup');
 const Registration = require('./model');
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
 const RegistrationHelpers = require('./helpers');
+const EmailTaskController = require('../email-task/controller');
 
 const STATUSES = RegistrationStatuses.asObject;
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject;
@@ -130,6 +131,41 @@ controller.updateTravelGrantDetails = (registrationId, event, data) => {
         }
         return registration.save();
     });
+};
+
+controller.notifyAcceptedTravelGrants = async event => {
+    const registrations = await Registration.find({
+        event: event._id,
+        travelGrantStatus: TRAVEL_GRANT_STATUSES.accepted.id
+    });
+    Promise.map(
+        registrations,
+        registration => {
+            return EmailTaskController.createTravelGrantDetailsAcceptedTask(registration, true);
+        },
+        {
+            concurrency: 10
+        }
+    );
+    return registrations.length;
+};
+
+controller.notifyRejectedTravelGrants = async event => {
+    const registrations = await Registration.find({
+        event: event._id,
+        travelGrantStatus: TRAVEL_GRANT_STATUSES.rejected.id
+    });
+    Promise.map(
+        registrations,
+        registration => {
+            return EmailTaskController.createTravelGrantDetailsRejectedTask(registration, true);
+        },
+        {
+            concurrency: 10
+        }
+    );
+
+    return registrations.length;
 };
 
 controller.updateTravelGrantStatus = (user, event, status) => {

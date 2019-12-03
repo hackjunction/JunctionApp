@@ -110,7 +110,7 @@ const EventDashboardTravelGrant = ({ registration, event }) => {
                             Awesome, your travel grant application has been accepted! You'll receive a payment of{' '}
                             {registration.travelGrantAmount}€ when we start issuing the payments in the near future.
                             This amount is the total sum of your eligible travel costs according to the receipts you
-                            provided, up to the amount of your travel grant allowance. Don't hesitate to react out to us
+                            provided, up to the amount of your travel grant allowance. Don't hesitate to reach out to us
                             at finance@hackjunction.com if you have any questions!
                         </Typography>
                     </GradientBox>
