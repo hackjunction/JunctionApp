@@ -147,6 +147,56 @@ const SendgridService = {
 
         return SendgridService.send(msg);
     },
+    sendTravelGrantDetailsAcceptedEmail: (event, user, params) => {
+        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+            header_image: event.coverImage.url,
+            subject: `Your travel grant status for ${event.name} has been updated`,
+            subtitle: 'Your travel grant receipts have been processed',
+            body: `
+                This email is to update you on the progress of your travel grant. We have reviewed the receipts you have 
+                submitted via the travel grant form. Your travel grant receipts have been accepted, and you will receive
+                a payment of ${params.amount}€.
+                <br/>
+                <br/>
+                Now the processing moves on to the next step, confirming your payment information. There is no more action
+                required from you, and we are currently on track to be able to initiate the transactions on 15 December. 
+                Please reach out to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
+            `
+        });
+
+        return SendgridService.send(msg);
+    },
+    sendTravelGrantDetailsRejectedEmail: (event, user, params) => {
+        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
+            header_image: event.coverImage.url,
+            subject: `Your travel grant status for ${event.name} has been updated`,
+            subtitle: 'Action required regarding your travel grant receipts',
+            body: `
+                This email is to update you on the progress of your travel grant. We have reviewed the receipts and other
+                information you have submitted via the travel grant form, but there was something wrong with the information
+                provided and we weren't yet able to accept your travel grant. Please see below for more details on what 
+                needs to be corrected:
+                <br />
+                <br />
+                <div style="padding: 1rem; background: lightgray;">
+                ${params.comment}
+                </div>
+                <br />
+                <br />
+                Please update your travel grant details as soon as possible on the Event Dashboard (link below), so that
+                we can confirm your final travel grant amount. If you don't do this, we will not be able to pay your travel
+                grant.
+                <br />
+                <br />
+                Please refer to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
+            `,
+            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}/travel-grant`,
+            cta_text: 'Edit your details',
+            reply_to: 'finance@hackjunction.com'
+        });
+
+        return SendgridService.send(msg);
+    },
     sendRecruiterMessageEmail: (recruiter, user, organization, message) => {
         const params = {
             header_image:
