@@ -11,42 +11,20 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
         updateGavelProjects(event.slug);
     }, [event.slug, updateGavelProjects]);
 
-    if (!event || !event.tracks) return null;
-    return event.tracks.map(track => {
-        const trackProjects = gavelProjects.filter(project => {
-            return project.project && project.project.track === track.slug;
-        });
+    const renderTable = (title, projects) => {
         return (
             <Box mb={2}>
                 <MaterialTable
-                    title={track.name}
+                    title={title}
                     showCount
                     isLoading={loading}
-                    data={trackProjects.map(project => {
+                    data={projects.map(project => {
                         return {
                             ...project,
                             skippedByCount: project.skippedBy.length,
                             viewedByCount: project.viewedBy.length
                         };
                     })}
-                    // onRowClick={(e, row) => handleSelect(row)}
-                    // onSelectionChange={rows => setSelected(rows.map(r => r.user))}
-                    // actions={
-                    //     !minimal
-                    //         ? [
-                    //               {
-                    //                   icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
-                    //                   tooltip: 'Email selected',
-                    //                   onClick: toggleBulkEmail
-                    //               },
-                    //               {
-                    //                   icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
-                    //                   tooltip: 'Edit selected',
-                    //                   onClick: toggleBulkEdit
-                    //               }
-                    //           ]
-                    //         : []
-                    // }
                     options={{
                         exportButton: true,
                         selection: false,
@@ -118,7 +96,20 @@ const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProjec
                 />
             </Box>
         );
-    });
+    };
+
+    if (!event) return null;
+
+    if (!event.tracks || !event.tracksEnabled) {
+        return renderTable('All projects', gavelProjects);
+    } else {
+        return event.tracks.map(track => {
+            const trackProjects = gavelProjects.filter(project => {
+                return project.project && project.project.track === track.slug;
+            });
+            return renderTable(track.name, trackProjects);
+        });
+    }
 };
 
 const mapState = state => ({
