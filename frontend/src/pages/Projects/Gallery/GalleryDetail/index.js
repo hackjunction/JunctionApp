@@ -6,7 +6,7 @@ import ProjectDetail from 'components/projects/ProjectDetail';
 
 import ProjectsService from 'services/projects';
 
-const GalleryDetail = ({ event, match, goBack }) => {
+const GalleryDetail = ({ event, match, goBack, showFullTeam }) => {
     const { projectId } = match.params;
     const [project, setProject] = useState();
     const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ const GalleryDetail = ({ event, match, goBack }) => {
 
     return (
         <PageWrapper loading={loading} error={error}>
-            <ProjectDetail project={project} event={event} onBack={goBack} />
+            <ProjectDetail project={project} event={event} onBack={goBack} showFullTeam={showFullTeam} />
         </PageWrapper>
     );
 };
