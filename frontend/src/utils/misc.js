@@ -16,11 +16,15 @@ const MiscUtils = {
 
         if (mom1.month() === mom2.month()) {
             if (mom1.date() === mom2.date()) {
-                return mom1.format('MMMM D');
+                return mom1.format('MMMM D, YYYY');
             }
-            return mom1.format('MMMM D') + '-' + mom2.format('D');
+            return mom1.format('MMMM D') + '-' + mom2.format('D, YYYY');
         } else {
-            return mom1.format('MMMM D') + ' - ' + mom2.format('MMMM D');
+            if (mom1.year() === mom2.year()) {
+                return mom1.format('MMMM D') + ' - ' + mom2.format('MMMM D, YYYY');
+            } else {
+                return mom1.format('MMMM D, YYYY') + ' - ' + mom2.format('MMMM D, YYYY');
+            }
         }
     },
 

@@ -5,7 +5,7 @@ import Countdown from 'react-countdown-now';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { Grid, Typography } from '@material-ui/core';
-import { RegistrationStatuses } from '@hackjunction/shared';
+import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
@@ -22,6 +22,7 @@ const ProjectBlock = ({
     openSubmission
 }) => {
     if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
+    if (!event || EventHelpers.isEventOver(event, moment)) return null;
     if (projectLoading) return null;
 
     if (isSubmissionsUpcoming) {

@@ -56,6 +56,10 @@ const EventHelpers = {
         if (!event) return false;
         return nowIsBetween(event.startTime, event.endTime, moment);
     },
+    isEventOver: (event, moment) => {
+        if (!event) return false;
+        return !nowIsBefore(event.endTime, moment);
+    },
     isGrantDeadlinePast: (event, moment) => {
         if (!event) return true;
         return !nowIsBefore(
