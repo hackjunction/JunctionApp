@@ -82,8 +82,7 @@ controller.updateWinners = (eventId, winners) => {
 controller.generateAchievements = async event => {
     let result = [];
     if (event.reviewMethod === ReviewingMethods.gavelPeerReview.id) {
-        const trackAchievements = await GavelHelper.generateTrackPlacementAchievements(event);
-        result = result.concat(trackAchievements);
+        GavelHelper.generateTrackPlacementAchievements(event);
     }
     return result;
 };
