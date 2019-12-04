@@ -1,8 +1,9 @@
 import React from 'react';
 
+import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 import { Grid, Typography, Box } from '@material-ui/core';
-import { RegistrationStatuses } from '@hackjunction/shared';
+import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
@@ -12,6 +13,7 @@ import GradientBox from 'components/generic/GradientBox';
 const PartnerReviewingBlock = ({ event, registration }) => {
     if (!event || !registration) return null;
     if (!event.challengesEnabled || !event.challenges) return null;
+    if (EventHelpers.isEventOver(event, moment)) return null;
     if (registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
 
     return (

@@ -15,6 +15,7 @@ import GavelReviewingBlock from './Blocks/GavelReviewingBlock';
 import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock';
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock';
 import CertificateBlock from './Blocks/CertificateBlock';
+import EventOverBlock from './Blocks/EventOverBlock';
 
 // const useStyles = makeStyles(theme => ({
 //     stepper: {
@@ -30,6 +31,7 @@ const EventDashboardHome = ({ event, registration, loading }) => {
             <Box mt={2} />
             {/* <QuickLinks /> */}
             <Grid container spacing={5}>
+                <EventOverBlock />
                 <CertificateBlock />
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />

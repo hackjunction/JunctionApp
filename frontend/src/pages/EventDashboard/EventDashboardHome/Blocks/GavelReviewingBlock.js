@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Grid, Typography, Box } from '@material-ui/core';
 import { push } from 'connected-react-router';
 import moment from 'moment-timezone';
-import { RegistrationStatuses, ReviewingMethods } from '@hackjunction/shared';
+import { RegistrationStatuses, ReviewingMethods, EventHelpers } from '@hackjunction/shared';
 
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
@@ -13,6 +13,7 @@ import GradientBox from 'components/generic/GradientBox';
 
 const GavelReviewingBlock = ({ event, registration, goToReviewing }) => {
     if (!event || event.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return null;
+    if (EventHelpers.isEventOver(event, moment)) return null;
     if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
 
     return (
