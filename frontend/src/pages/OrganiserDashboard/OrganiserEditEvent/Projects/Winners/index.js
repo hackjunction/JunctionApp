@@ -14,6 +14,9 @@ import * as AuthSelectors from 'redux/auth/selectors';
 import WinnerVoteService from 'services/winnerVote';
 import EventsService from 'services/events';
 
+import OverallPlacements from './OverallPlacements';
+import TrackPlacements from './TrackPlacements';
+
 const Winners = ({ event, projects, updateWinners, idToken }) => {
     const sorted = sortBy(projects, p => p.name);
     const [results, setResults] = useState();
@@ -69,79 +72,86 @@ const Winners = ({ event, projects, updateWinners, idToken }) => {
 
     return (
         <React.Fragment>
-            {resultsSorted && (
-                <Box mt={3}>
-                    <Typography variant="h6">Finalist results:</Typography>
-                    {resultsSorted.map(({ project, voteCount }) => {
-                        return (
-                            <Typography>
-                                {project.name}: {voteCount}
-                            </Typography>
-                        );
-                    })}
-                </Box>
-            )}
-            <Button color="primary" variant="contained" onClick={handleGenerateAchievements}>
-                Generate achievements
-            </Button>
-            <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={onSubmit}>
-                {formikProps => (
-                    <Grid container spacing={3}>
-                        {console.log(formikProps.values)}
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Track winners</Typography>
-                        </Grid>
-                        <FastField
-                            name="trackWinners"
-                            render={({ field, form }) =>
-                                event.tracks.map(track => {
-                                    return (
-                                        <Grid item xs={12} key={track.slug}>
-                                            <Select
-                                                label={track.name}
-                                                value={field.value[track.slug]}
-                                                onChange={value => {
-                                                    form.setFieldValue(field.name, {
-                                                        ...field.value,
-                                                        [track.slug]: value
-                                                    });
-                                                }}
-                                                options={sorted
-                                                    .filter(project => {
-                                                        return project.track === track.slug;
-                                                    })
-                                                    .map(project => ({
-                                                        value: project._id,
-                                                        label: project.name
-                                                    }))}
-                                            />
-                                        </Grid>
-                                    );
-                                })
-                            }
-                        />
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Finalist voting open?</Typography>
-                            <FastField
-                                name="votingOpen"
-                                render={({ field, form }) => (
-                                    <BooleanInput
-                                        value={field.value || false}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button color="primary" variant="contained" fullWidth onClick={formikProps.submitForm}>
-                                Save
-                            </Button>
-                        </Grid>
-                    </Grid>
-                )}
-            </Formik>
+            <OverallPlacements />
+            <TrackPlacements />
         </React.Fragment>
     );
+
+    // return (
+    //     <React.Fragment>
+    //         {resultsSorted && (
+    //             <Box mt={3}>
+    //                 <Typography variant="h6">Finalist results:</Typography>
+    //                 {resultsSorted.map(({ project, voteCount }) => {
+    //                     return (
+    //                         <Typography>
+    //                             {project.name}: {voteCount}
+    //                         </Typography>
+    //                     );
+    //                 })}
+    //             </Box>
+    //         )}
+    //         <Button color="primary" variant="contained" onClick={handleGenerateAchievements}>
+    //             Generate achievements
+    //         </Button>
+    //         <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={onSubmit}>
+    //             {formikProps => (
+    //                 <Grid container spacing={3}>
+    //                     {console.log(formikProps.values)}
+    //                     <Grid item xs={12}>
+    //                         <Typography variant="h6">Track winners</Typography>
+    //                     </Grid>
+    //                     <FastField
+    //                         name="trackWinners"
+    //                         render={({ field, form }) =>
+    //                             event.tracks.map(track => {
+    //                                 return (
+    //                                     <Grid item xs={12} key={track.slug}>
+    //                                         <Select
+    //                                             label={track.name}
+    //                                             value={field.value[track.slug]}
+    //                                             onChange={value => {
+    //                                                 form.setFieldValue(field.name, {
+    //                                                     ...field.value,
+    //                                                     [track.slug]: value
+    //                                                 });
+    //                                             }}
+    //                                             options={sorted
+    //                                                 .filter(project => {
+    //                                                     return project.track === track.slug;
+    //                                                 })
+    //                                                 .map(project => ({
+    //                                                     value: project._id,
+    //                                                     label: project.name
+    //                                                 }))}
+    //                                         />
+    //                                     </Grid>
+    //                                 );
+    //                             })
+    //                         }
+    //                     />
+    //                     <Grid item xs={12}>
+    //                         <Typography variant="h6">Finalist voting open?</Typography>
+    //                         <FastField
+    //                             name="votingOpen"
+    //                             render={({ field, form }) => (
+    //                                 <BooleanInput
+    //                                     value={field.value || false}
+    //                                     onChange={value => form.setFieldValue(field.name, value)}
+    //                                 />
+    //                             )}
+    //                         />
+    //                     </Grid>
+    //                     <Grid item xs={12}>
+    //                         <Button color="primary" variant="contained" fullWidth onClick={formikProps.submitForm}>
+    //                             Save
+    //                         </Button>
+    //                     </Grid>
+    //                 </Grid>
+    //             )}
+    //         </Formik>
+    //     </React.Fragment>
+    // );
 };
 
 const mapState = state => ({

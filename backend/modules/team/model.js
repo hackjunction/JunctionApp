@@ -35,6 +35,13 @@ TeamSchema.plugin(updateAllowedPlugin, {
     blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'code', 'event', 'owner', 'members']
 });
 
+TeamSchema.statics.getMembers = function(teamId) {
+    return Team.findById(teamId).then(team => {
+        if (!team) return [];
+        return [team.owner].concat(team.members);
+    });
+};
+
 const Team = mongoose.model('Team', TeamSchema);
 
 module.exports = Team;
