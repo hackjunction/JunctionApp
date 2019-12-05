@@ -9,8 +9,7 @@ Font.register({
 });
 Font.register({
     family: 'Lato',
-    src: 'https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh7USSwiPHA3q5d0.ttf',
-    fontWeight: 'light'
+    src: 'https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh7USSwiPHA3q5d0.ttf'
 });
 
 Font.registerHyphenationCallback(word => [word]);
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '20pt 50pt',
+        padding: '20px 50px',
         position: 'relative'
     },
     title: {
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     preName: {
-        marginTop: '80pt',
+        marginTop: '80px',
         textAlign: 'center',
         fontFamily: 'Lato'
     },
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     postName: {
-        marginTop: '10pt',
+        marginTop: '10px',
         textAlign: 'center',
         fontFamily: 'Lato'
     },
