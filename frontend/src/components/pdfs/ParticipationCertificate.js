@@ -4,12 +4,12 @@ import MiscUtils from 'utils/misc';
 
 Font.register({
     family: 'Montserrat',
-    src: 'http://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-_x3rCs.ttf',
+    src: 'https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-_x3rCs.ttf',
     fontWeight: 'bold'
 });
 Font.register({
     family: 'Lato',
-    src: 'http://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh7USSwiPHA3q5d0.ttf',
+    src: 'https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh7USSwiPHA3q5d0.ttf',
     fontWeight: 'light'
 });
 
