@@ -16,8 +16,8 @@ import Button from 'components/generic/Button';
 import ParticipationCertificate from 'components/pdfs/ParticipationCertificate';
 
 const CertificateBlock = ({ event, userProfile, registration, project, loading }) => {
-    if (!event || !EventHelpers.isEventOver(event, moment)) return null;
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id);
+    if (!EventHelpers.isEventOver(event, moment)) return null;
+    if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id);
 
     return (
         <Grid item xs={12}>
