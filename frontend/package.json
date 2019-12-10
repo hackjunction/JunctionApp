@@ -45,7 +45,7 @@
         "react-qr-reader": "^2.2.1",
         "react-redux": "^6.0.0",
         "react-router-dom": "^5.1.0",
-        "react-scripts": "3.0.1",
+        "react-scripts": "3.3.0",
         "react-select": "^3.0.8",
         "react-swipeable-views": "^0.13.3",
         "react-swipeable-views-utils": "^0.13.3",
