@@ -12,9 +12,9 @@ import Button from 'components/generic/Button';
 import GradientBox from 'components/generic/GradientBox';
 
 const GavelReviewingBlock = ({ event, registration, goToReviewing }) => {
-    if (!event || event.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return null;
+    if (event?.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return null;
     if (EventHelpers.isEventOver(event, moment)) return null;
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
+    if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
 
     return (
         <Grid item xs={12} lg={6}>
