@@ -228,6 +228,17 @@ const ConfigurationTab = () => {
                     )}
                 />
             </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="finalistVoting"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Finalist voting"
+                            hint="Is there a second round of voting to determine the overall winner?"
+                        ></FormControl>
+                    )}
+                />
+            </Grid>
         </Grid>
     );
 };

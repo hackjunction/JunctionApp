@@ -1,38 +1,38 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Grid } from '@material-ui/core';
-
-import Select from 'components/inputs/Select';
-import ProjectsTable from 'components/tables/ProjectsTable';
+import { Box, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ListItemText } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
-const TracksTab = ({ event, projects, projectsLoading }) => {
-    const [track, setTrack] = useState(event.tracks[0].slug);
+import ProjectsTable from '../ProjectsTable';
 
-    const filtered = useMemo(() => {
-        return projects.filter(project => {
-            return project.track && project.track === track;
-        });
-    }, [projects, track]);
+const TracksTab = ({ event, projects, projectsLoading }) => {
+    const getProjectsForTrack = slug => {
+        return projects.filter(project => project.track === slug);
+    };
 
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} style={{ position: 'relative', zIndex: 500 }}>
-                <Select
-                    label="Choose track"
-                    options={event.tracks.map(track => ({
-                        label: track.name,
-                        value: track.slug
-                    }))}
-                    value={track}
-                    onChange={setTrack}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <ProjectsTable projects={filtered} event={event} loading={projectsLoading} />
-            </Grid>
-        </Grid>
+        <Box>
+            {event.tracks.map(track => {
+                const projects = getProjectsForTrack(track.slug);
+
+                return (
+                    <ExpansionPanel key={track.slug}>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <ListItemText primary={track.name} secondary={`${projects.length} projects`}></ListItemText>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <ProjectsTable projects={projects} />
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                );
+            })}
+        </Box>
     );
 };
 
