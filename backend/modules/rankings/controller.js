@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Rankings = require('./model');
 
 const { ForbiddenError } = require('../../common/errors/errors');
@@ -14,7 +13,7 @@ controller.getTrackResults = (event, track) => {
 
 controller.updateTrackResults = (event, track, rankings) => {
     if (!event.tracksEnabled) {
-        throw new ForbiddenError(`Can't update track results for event with no tracks`);
+        throw new ForbiddenError(`Can't update track results for event with tracks disabled`);
     }
     if (!event.tracks.indexOf(track) === -1) {
         throw new ForbiddenError(`${track} is not a valid track for event ${event.name}`);
@@ -42,7 +41,7 @@ controller.getChallengeResults = (event, challenge) => {
 
 controller.updateChallengeResults = (event, challenge, rankings) => {
     if (!event.challengesEnabled) {
-        throw new ForbiddenError(`Can't update challenge results for event with no challenges`);
+        throw new ForbiddenError(`Can't update challenge results for event with challenges disabled`);
     }
     if (event.challenges.indexOf(challenge) === -1) {
         throw new ForbiddenError(`${challenge} is not a valid challenge for event ${event.name}`);
