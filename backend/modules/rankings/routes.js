@@ -5,6 +5,8 @@ const asyncHandler = require('express-async-handler');
 const { hasPermission } = require('../../common/middleware/permissions');
 const { hasToken } = require('../../common/middleware/token');
 
+const RankingsController = require('./controller');
+
 const router = express.Router();
 
 router
@@ -34,7 +36,8 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         asyncHandler(async (req, res) => {
-            //TODO: Get track results
+            const rankings = await RankingsController.getTrackResults(req.event, req.params.track);
+            return res.status(200).json(rankings);
         })
     )
     /** Update results for a track, as event organiser */
@@ -42,7 +45,12 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         asyncHandler(async (req, res) => {
-            //TODO: Update overall results
+            const rankings = await RankingsController.updateTrackResults(
+                req.event,
+                req.params.track,
+                req.body.rankings
+            );
+            return res.status(200).json(rankings);
         })
     );
 
@@ -53,7 +61,8 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         asyncHandler(async (req, res) => {
-            //TODO: Get results for a challenge
+            const rankings = await RankingsController.getChallengeResults(req.event, req.params.challenge);
+            return res.status(200).json(rankings);
         })
     )
     /** Update results for a challenge, as event organiser */
@@ -61,7 +70,12 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         asyncHandler(async (req, res) => {
-            //TODO: Update results for a challenge
+            const rankings = await RankingsController.updateChallengeResults(
+                req.event,
+                req.params.challenge,
+                req.body.rankings
+            );
+            return res.status(200).json(rankings);
         })
     );
 
@@ -72,7 +86,8 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         asyncHandler(async (req, res) => {
-            //TODO: Get overall results for an event
+            const rankings = await RankingsController.getOverallResults(req.event);
+            return res.status(200).json(rankings);
         })
     )
     /** Update overall results for an event, as event organiser */
@@ -80,7 +95,8 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         asyncHandler(async (req, res) => {
-            //TODO: Update overall results for an event
+            const rankings = await RankingsController.updateOverallResults(req.event, req.body.rankings);
+            return res.status(200).json(rankings);
         })
     );
 
