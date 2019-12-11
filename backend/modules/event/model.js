@@ -139,6 +139,10 @@ const EventSchema = new mongoose.Schema({
         required: true,
         default: ReviewingMethods.gavelPeerReview.id
     },
+    finalistVoting: {
+        type: Boolean,
+        default: false
+    },
     userDetailsConfig: {
         type: UserDetailsConfigSchema,
         default: UserDetailsConfigSchema
