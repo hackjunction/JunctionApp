@@ -12,7 +12,7 @@ const allowPublishPlugin = require('../../common/plugins/allowPublish');
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
 const uploadHelper = require('../../modules/upload/helper');
 
-const { EventTypes, ReviewingMethods } = require('@hackjunction/shared');
+const { EventTypes, ReviewingMethods, OverallReviewingMethods } = require('@hackjunction/shared');
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -139,9 +139,15 @@ const EventSchema = new mongoose.Schema({
         required: true,
         default: ReviewingMethods.gavelPeerReview.id
     },
-    finalistVoting: {
-        type: Boolean,
-        default: false
+    overallReviewMethod: {
+        type: String,
+        enum: Object.keys(OverallReviewingMethods),
+        required: [
+            function() {
+                return this.tracksEnabled;
+            },
+            'is required if tracks are enabled'
+        ]
     },
     userDetailsConfig: {
         type: UserDetailsConfigSchema,

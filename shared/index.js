@@ -10,6 +10,7 @@ module.exports = {
     Industries: require('./constants/industries'),
     Languages: require('./constants/languages'),
     Misc: require('./constants/misc'),
+    OverallReviewingMethods: require('./constants/overall-reviewing-methods'),
     FieldTypes: require('./constants/field-types'),
     FilterTypes: require('./constants/filter-types'),
     FilterValues: require('./constants/filter-values'),
