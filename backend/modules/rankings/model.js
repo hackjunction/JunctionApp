@@ -9,7 +9,7 @@ const RankingsSchema = new mongoose.Schema({
     },
     tag: {
         type: String,
-        enum: ['overall-winners', 'finalists']
+        enum: ['overall-ranking', 'finalists']
     },
     track: {
         type: String
