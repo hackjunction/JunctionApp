@@ -2,6 +2,7 @@ const express = require('express');
 const { Auth } = require('@hackjunction/shared');
 const asyncHandler = require('express-async-handler');
 
+const { isEventOrganiser } = require('../../common/middleware/events');
 const { hasPermission } = require('../../common/middleware/permissions');
 const { hasToken } = require('../../common/middleware/token');
 
@@ -24,6 +25,7 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             //TODO: Get full results
         })
@@ -35,6 +37,7 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getTrackResults(req.event, req.params.track);
             return res.status(200).json(rankings);
@@ -44,6 +47,7 @@ router
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.updateTrackResults(
                 req.event,
@@ -60,6 +64,7 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getChallengeResults(req.event, req.params.challenge);
             return res.status(200).json(rankings);
@@ -69,6 +74,7 @@ router
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.updateChallengeResults(
                 req.event,
@@ -85,6 +91,7 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getOverallResults(req.event);
             return res.status(200).json(rankings);
@@ -94,6 +101,7 @@ router
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.updateOverallResults(req.event, req.body.rankings);
             return res.status(200).json(rankings);
