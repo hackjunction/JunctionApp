@@ -7,7 +7,7 @@ import FormControl from 'components/inputs/FormControl';
 import MaterialTable from 'components/generic/MaterialTable';
 import Shared from '@hackjunction/shared';
 
-const OrganiserEditEventRegistration = props => {
+const OrganiserEditEventRegistration = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -61,7 +61,7 @@ const OrganiserEditEventRegistration = props => {
                                                         disabled={!row.editable}
                                                         checked={row.enable}
                                                         onChange={(e, enable) => {
-                                                            props.setFieldValue(field.name, {
+                                                            form.setFieldValue(field.name, {
                                                                 ...fieldValue,
                                                                 [row.key]: {
                                                                     ...fieldValue[row.key],
@@ -84,7 +84,7 @@ const OrganiserEditEventRegistration = props => {
                                                         disabled={!row.editable || !row.enable}
                                                         checked={require}
                                                         onChange={(e, require) => {
-                                                            props.setFieldValue(field.name, {
+                                                            form.setFieldValue(field.name, {
                                                                 ...fieldValue,
                                                                 [row.key]: {
                                                                     ...fieldValue[row.key],

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -15,62 +15,60 @@ import AnnotatorsTab from './Annotators';
 import WinnersTab from './Winners';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
 
-const Projects = ({ event, projectsLoading, updateProjects, location, match }) => {
-    useEffect(() => {
-        updateProjects(event.slug);
-    }, [event, updateProjects]);
+const Projects = ({ event, projectsLoading, location, match }) => {
+    const tabs = useMemo(() => {
+        const data = [
+            {
+                path: '',
+                key: 'all-projects',
+                label: 'All projects',
+                component: SearchTab
+            }
+        ];
+        if (event?.challengesEnabled && event?.challenges?.length > 0) {
+            data.push({
+                path: '/by-challenge',
+                key: 'by-challenge',
+                label: 'By challenge',
+                component: ChallengesTab
+            });
+        }
+
+        if (event?.tracksEnabled && event?.tracks?.length > 0) {
+            data.push({
+                path: '/by-track',
+                key: 'by-track',
+                label: 'By track',
+                component: TracksTab
+            });
+        }
+
+        data.push({
+            path: '/gavel',
+            key: 'gavel',
+            label: 'Gavel voting',
+            content: GavelTab
+        });
+
+        data.push({
+            path: '/annotators',
+            key: 'annotators',
+            label: 'Gavel annotators',
+            content: AnnotatorsTab
+        });
+
+        data.push({
+            path: '/winners',
+            key: 'winners',
+            label: 'Winners',
+            content: WinnersTab
+        });
+
+        return data;
+    }, [event]);
 
     if (!event || projectsLoading) return <PageWrapper loading />;
-
-    const tabs = [
-        {
-            path: '',
-            key: 'all-projects',
-            label: 'All projects',
-            content: <SearchTab />
-        }
-    ];
-
-    if (event.challengesEnabled && event.challenges.length > 0) {
-        tabs.push({
-            path: '/by-challenge',
-            key: 'by-challenge',
-            label: 'By challenge',
-            content: <ChallengesTab />
-        });
-    }
-
-    if (event.tracksEnabled && event.tracks.length > 0) {
-        tabs.push({
-            path: '/by-track',
-            key: 'by-track',
-            label: 'By track',
-            content: <TracksTab />
-        });
-    }
-
-    tabs.push({
-        path: '/gavel',
-        key: 'gavel',
-        label: 'Gavel voting',
-        content: <GavelTab />
-    });
-
-    tabs.push({
-        path: '/annotators',
-        key: 'annotators',
-        label: 'Gavel annotators',
-        content: <AnnotatorsTab />
-    });
-
-    tabs.push({
-        path: '/winners',
-        key: 'winners',
-        label: 'Winners',
-        content: <WinnersTab />
-    });
 
     return (
         <PageWrapper>
@@ -85,8 +83,4 @@ const mapState = state => ({
     projectsLoading: OrganiserSelectors.projectsLoading(state)
 });
 
-const mapDispatch = dispatch => ({
-    updateProjects: slug => dispatch(OrganiserActions.updateProjects(slug))
-});
-
-export default withRouter(connect(mapState, mapDispatch)(Projects));
+export default withRouter(connect(mapState)(Projects));

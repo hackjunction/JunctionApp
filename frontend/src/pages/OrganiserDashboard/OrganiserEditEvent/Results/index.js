@@ -18,25 +18,25 @@ const ResultsPage = ({ event, projectsLoading, updateProjects, location, match }
                 path: '',
                 key: 'overview',
                 label: 'Overview',
-                content: <OverviewTab />
+                component: OverviewTab
             },
             {
                 path: '/overall',
                 key: 'overall',
                 label: 'Overall',
-                content: <OverallTab />
+                component: OverallTab
             },
             {
                 path: '/tracks',
                 key: 'tracks',
                 label: 'Tracks',
-                content: <TracksTab />
+                component: TracksTab
             },
             {
                 path: '/challenges',
                 key: 'challenges',
                 label: 'Challenges',
-                content: <ChallengesTab />
+                component: ChallengesTab
             }
         ];
     }, []);

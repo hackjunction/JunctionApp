@@ -20,13 +20,13 @@ const AccountPage = ({ match, location }) => {
                         label: 'Dashboard',
                         key: 'dashboard',
                         path: '',
-                        content: <AccountDashboard />
+                        component: AccountDashboard
                     },
                     {
                         label: 'Profile',
                         key: 'profile',
                         path: '/profile',
-                        content: <AccountEditProfile />
+                        content: AccountEditProfile
                     }
                 ]}
                 baseRoute={match.url}
