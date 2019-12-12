@@ -24,31 +24,31 @@ const OrganiserEditEventReview = ({ match, location }) => {
                         label: 'Participants',
                         path: '',
                         key: 'participants',
-                        content: <SearchAttendeesPage />
+                        component: SearchAttendeesPage
                     },
                     {
                         path: '/teams',
                         key: 'teams',
                         label: 'Teams',
-                        content: <TeamsPage />
+                        component: TeamsPage
                     },
                     {
                         path: '/assigned',
                         key: 'assigned',
                         label: 'Assigned to you',
-                        content: <AssignAttendeesPage />
+                        component: AssignAttendeesPage
                     },
                     {
                         path: '/travel',
                         key: 'travel',
                         label: 'Travel',
-                        content: <TravelGrantsPage />
+                        component: TravelGrantsPage
                     },
                     {
                         path: '/admin',
                         key: 'admin',
                         label: 'Admin & Tools',
-                        content: <AdminPage />
+                        component: AdminPage
                     }
                 ]}
             />
