@@ -27,7 +27,8 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         asyncHandler(async (req, res) => {
-            //TODO: Get full results
+            const rankings = await RankingsController.getAllResultsForEvent(req.event);
+            return res.status(200).json(rankings);
         })
     );
 
@@ -104,6 +105,19 @@ router
         isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.updateOverallResults(req.event, req.body.rankings);
+            return res.status(200).json(rankings);
+        })
+    );
+
+router
+    .route('/:slug/admin/generate-results')
+    /** Generate results for an event */
+    .patch(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        asyncHandler(async (req, res) => {
+            const rankings = await RankingsController.generateAllResults(req.event);
             return res.status(200).json(rankings);
         })
     );

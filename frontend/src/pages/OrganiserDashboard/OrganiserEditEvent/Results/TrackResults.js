@@ -1,6 +1,20 @@
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
+
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import TuneIcon from '@material-ui/icons/Tune';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import { connect } from 'react-redux';
-import { Grid, Paper, Typography, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
+import {
+    Paper,
+    Box,
+    List,
+    ListSubheader,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    ListItemAvatar,
+    Avatar
+} from '@material-ui/core';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 
@@ -27,11 +41,30 @@ const getAvatarStyle = index => {
     }
 };
 
-const OverallTab = ({ event, rankingsOverall, allProjects, allProjectsMap }) => {
+const TrackResults = ({ event, track, rankingsByTrack, allProjects, allProjectsMap }) => {
+    const slug = track?.slug;
+
+    const rankedProjects = rankingsByTrack?.[slug]?.rankings ?? [];
+
+    const trackProjects = useMemo(() => {
+        return allProjects.filter(project => project.track === slug);
+    }, [allProjects, slug]);
+
+    const unrankedProjects = useMemo(() => {
+        return trackProjects.filter(project => rankedProjects.indexOf(project._id) === -1);
+    }, [trackProjects, rankedProjects]);
+
     const [dragDropState, setDragDropState] = useState({
-        top: rankingsOverall?.rankings ?? [],
+        top: [],
         bottom: []
     });
+
+    useEffect(() => {
+        setDragDropState({
+            top: rankedProjects,
+            bottom: unrankedProjects
+        });
+    }, [rankedProjects, unrankedProjects]);
 
     const renderRankedItem = useCallback(
         (id, index) => {
@@ -66,32 +99,22 @@ const OverallTab = ({ event, rankingsOverall, allProjects, allProjectsMap }) => 
     );
 
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <Typography variant="subtitle1">
-                    Set the overall results for the event here. If you are using tracks, you should essentially list
-                    only the winner / Top 3 / Top 10 projects here.
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Paper elevation={0}>
-                    <DragDropList
-                        value={dragDropState}
-                        onChange={setDragDropState}
-                        topTitle="Ranked projects"
-                        renderTopItem={renderRankedItem}
-                        bottomTitle="Unranked projects"
-                        renderBottomItem={renderUnrankedItem}
-                    />
-                </Paper>
-            </Grid>
-        </Grid>
+        <Paper elevation={0}>
+            <DragDropList
+                value={dragDropState}
+                onChange={setDragDropState}
+                topTitle="Ranked projects"
+                renderTopItem={renderRankedItem}
+                bottomTitle="Unranked projects"
+                renderBottomItem={renderUnrankedItem}
+            />
+        </Paper>
     );
 };
 
 const mapState = state => ({
-    rankingsOverall: OrganiserSelectors.rankingsOverall(state),
+    rankingsByTrack: OrganiserSelectors.rankingsByTrack(state),
     allProjects: OrganiserSelectors.projects(state),
     allProjectsMap: OrganiserSelectors.projectsMap(state)
 });
-export default connect(mapState)(OverallTab);
+export default connect(mapState)(TrackResults);

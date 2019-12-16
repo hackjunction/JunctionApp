@@ -53,6 +53,23 @@ export const gavelAnnotatorsLoading = state => state.organiser.gavelAnnotators.l
 export const gavelAnnotatorsError = state => state.organiser.gavelAnnotators.error;
 export const gavelAnnotatorsUpdated = state => state.organiser.gavelAnnotators.updated;
 
+export const rankings = state => state.organiser.rankings.data;
+export const rankingsLoading = state => state.organiser.rankings.loading;
+export const rankingsError = state => state.organiser.rankings.error;
+export const rankingsUpdated = state => state.organiser.rankings.updated;
+
+export const rankingsOverall = createSelector(rankings, rankings => {
+    return rankings?.overall;
+});
+
+export const rankingsByTrack = createSelector(rankings, rankings => {
+    return rankings?.tracks;
+});
+
+export const rankingsByChallenge = createSelector(rankings, rankings => {
+    return rankings?.challenges;
+});
+
 export const gavelProjectsPopulated = createSelector(projectsMap, gavelProjects, (projectsMap, gavelProjects) => {
     return gavelProjects.map(project => {
         if (projectsMap[project.project]) {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Box, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ListItemText } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -8,11 +8,7 @@ import * as OrganiserActions from 'redux/organiser/actions';
 
 import GavelTable from './GavelTable';
 
-const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProject }) => {
-    useEffect(() => {
-        updateGavelProjects(event.slug);
-    }, [event.slug, updateGavelProjects]);
-
+const GavelAdmin = ({ event, gavelProjects, editGavelProject }) => {
     const renderTable = (title, projects) => {
         return (
             <ExpansionPanel key={title}>
@@ -52,7 +48,6 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-    updateGavelProjects: slug => dispatch(OrganiserActions.updateGavelProjects(slug)),
     editGavelProject: (slug, projectId, edits) => dispatch(OrganiserActions.editGavelProject(slug, projectId, edits))
 });
 

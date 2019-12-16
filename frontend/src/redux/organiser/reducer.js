@@ -61,6 +61,12 @@ const initialState = {
         error: false,
         updated: 0,
         data: []
+    },
+    rankings: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: {}
     }
 };
 
@@ -74,6 +80,7 @@ const teamsHandler = buildHandler('teams');
 const projectsHandler = buildHandler('projects', '_id');
 const gavelProjectsHandler = buildHandler('gavelProjects');
 const gavelAnnotatorsHandler = buildHandler('gavelAnnotators');
+const rankingsHandler = buildHandler('rankings');
 const editEvent = buildUpdatePath('event.data');
 const editEventOrganisers = buildUpdatePath('event.data.organisers');
 
@@ -126,6 +133,9 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_GAVEL_ANNOTATORS: {
             return gavelAnnotatorsHandler(state, action);
+        }
+        case ActionTypes.UPDATE_RANKINGS: {
+            return rankingsHandler(state, action);
         }
         case ActionTypes.EDIT_GAVEL_PROJECT: {
             return {
