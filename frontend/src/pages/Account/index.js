@@ -6,10 +6,10 @@ import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
 import * as AuthSelectors from 'redux/auth/selectors';
 import AccountNavBar from 'components/navbars/AccountNavBar';
 import CenteredContainer from 'components/generic/CenteredContainer';
-import AccountDashboard from './AccountDashboard';
-import AccountEditProfile from './AccountEditProfile';
+import Dashboard from './dashboard';
+import Profile from './profile';
 
-const AccountPage = ({ match, location }) => {
+const Account = ({ match, location }) => {
     return (
         <CenteredContainer>
             <AccountNavBar />
@@ -20,13 +20,13 @@ const AccountPage = ({ match, location }) => {
                         label: 'Dashboard',
                         key: 'dashboard',
                         path: '',
-                        component: AccountDashboard
+                        component: Dashboard
                     },
                     {
                         label: 'Profile',
                         key: 'profile',
                         path: '/profile',
-                        content: AccountEditProfile
+                        content: Profile
                     }
                 ]}
                 baseRoute={match.url}
@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
     session: AuthSelectors.getSession(state)
 });
 
-export default connect(mapStateToProps)(AccountPage);
+export default connect(mapStateToProps)(Account);

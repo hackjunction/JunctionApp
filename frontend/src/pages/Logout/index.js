@@ -1,30 +1,18 @@
-import React, { Component } from 'react';
-import './style.scss';
+import React, { useEffect } from 'react';
 
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 import * as AuthActions from 'redux/auth/actions';
 
 import LoadingOverlay from 'components/loaders/LoadingOverlay';
 
-class LogoutPage extends Component {
-    componentDidMount() {
-        this.props.clearSession();
-        this.props.push('/');
-    }
+export default () => {
+    const dispatch = useDispatch();
 
-    render() {
-        return <LoadingOverlay text="Logging out" />;
-    }
-}
+    useEffect(() => {
+        dispatch(AuthActions.clearSession());
+        dispatch(push('/'));
+    }, [dispatch]);
 
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({
-    clearSession: () => dispatch(AuthActions.clearSession()),
-    push: params => dispatch(push(params))
-});
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LogoutPage);
+    return <LoadingOverlay text="Logging out" />;
+};

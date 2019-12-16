@@ -1,39 +1,17 @@
-import React, { Component } from 'react';
-import './style.scss';
+import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { useRouteMatch } from 'react-router';
 
-import { connect } from 'react-redux';
-import * as AuthSelectors from 'redux/auth/selectors';
-import * as AuthActions from 'redux/auth/actions';
+import LoginDefault from './default';
+import LoginWelcome from './welcome';
 
-import LoadingOverlay from 'components/loaders/LoadingOverlay';
-import MiscUtils from 'utils/misc';
-
-class LoginPage extends Component {
-    async componentDidMount() {
-        const { state } = this.props.location;
-        const nextRoute = state ? state.nextRoute : '/';
-        await MiscUtils.sleep(1000);
-        if (this.props.isAuthenticated) {
-            this.props.login({}, nextRoute);
-        } else {
-            this.props.login({ prompt: 'login' }, nextRoute);
-        }
-    }
-
-    render() {
-        return <LoadingOverlay text="Authenticating" />;
-    }
-}
-
-const mapStateToProps = state => ({
-    isAuthenticated: AuthSelectors.isAuthenticated(state)
-});
-
-const mapDispatchToProps = dispatch => ({
-    login: (params, nextRoute) => dispatch(AuthActions.login(params, nextRoute))
-});
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoginPage);
+export default () => {
+    const match = useRouteMatch();
+    return (
+        <Switch>
+            <Route exact path={`${match.url}`} component={LoginDefault} />
+            <Route exact path={`${match.url}/welcome`} component={LoginWelcome} />
+            <Redirect to={`${match.url}`} />
+        </Switch>
+    );
+};
