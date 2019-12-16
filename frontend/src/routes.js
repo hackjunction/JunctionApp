@@ -2,23 +2,20 @@ import { lazy } from 'react';
 
 import { Auth as AuthConstants } from '@hackjunction/shared';
 
-import DefaultPage from './pages/Default';
-import CallbackPage from './pages/Callback';
-import ErrorPage from './pages/Error';
-import LogoutPage from './pages/Logout';
-import LoginPage from './pages/Login';
-import LoginWelcomePage from './pages/LoginWelcome';
-import ProjectsChallengeAdminPage from './pages/Projects/ChallengeAdmin';
+import DefaultPage from './pages/index';
+import CallbackPage from './pages/callback';
+import ErrorPage from './pages/error';
+import LogoutPage from './pages/logout';
+import LoginPage from './pages/login';
 
-import EventDetailRouter from './pages/EventDetail/EventDetailRouter';
+import EventsRouter from './pages/events';
 import RequiresPermission from './hocs/RequiresPermission';
 
 const EventDashboardPage = lazy(() => import('./pages/EventDashboard'));
 const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/OrganiserDashboardRouter'));
-const AdminPage = lazy(() => import('./pages/Admin'));
-const AccountPage = lazy(() => import('./pages/Account'));
+const AccountPage = lazy(() => import('./pages/account'));
 const RecruitmentPage = lazy(() => import('./pages/Recruitment'));
-const ProjectsRouter = lazy(() => import('./pages/Projects'));
+const ProjectsRouter = lazy(() => import('./pages/projects'));
 
 const routes = [
     {
@@ -27,19 +24,14 @@ const routes = [
         exact: true
     },
     {
-        path: '/events/:slug',
-        component: EventDetailRouter,
+        path: '/events',
+        component: EventsRouter,
         exact: false
     },
     {
         path: '/login',
         component: LoginPage,
-        exact: true
-    },
-    {
-        path: '/login/welcome',
-        component: LoginWelcomePage,
-        exact: true
+        exact: false
     },
     {
         path: '/error',
@@ -56,11 +48,6 @@ const routes = [
         component: LogoutPage,
         exact: false
     },
-    // {
-    //     path: '/demo',
-    //     component: RequiresPermission(DemoPage, [AuthConstants.Permissions.MANAGE_EVENT]),
-    //     exact: true
-    // },
     {
         path: '/organise',
         component: RequiresPermission(OrganiserDashboardRouter, [AuthConstants.Permissions.MANAGE_EVENT]),
@@ -74,11 +61,6 @@ const routes = [
     {
         path: '/account',
         component: RequiresPermission(AccountPage),
-        exact: false
-    },
-    {
-        path: '/admin',
-        component: RequiresPermission(AdminPage, ['access:admin' /**This does not even exist yet */]),
         exact: false
     },
     {

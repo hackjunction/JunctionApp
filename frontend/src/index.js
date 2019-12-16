@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { CloudinaryContext } from 'cloudinary-react';
 import { SnackbarProvider } from 'notistack';
 import WebFont from 'webfontloader';
+import Notifier from './notifier';
 
 import configureStore, { history } from 'redux/configureStore';
 import config from 'constants/config';
@@ -44,6 +45,7 @@ ReactDOM.render(
                             horizontal: 'right'
                         }}
                     >
+                        <Notifier />
                         <CssBaseline />
                         <App history={history} />
                     </SnackbarProvider>
