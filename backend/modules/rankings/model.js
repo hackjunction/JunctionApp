@@ -9,7 +9,7 @@ const RankingsSchema = new mongoose.Schema({
     },
     tag: {
         type: String,
-        enum: ['overall-ranking', 'finalists']
+        enum: ['overall', 'finalists']
     },
     track: {
         type: String
@@ -19,15 +19,9 @@ const RankingsSchema = new mongoose.Schema({
     },
     rankings: [
         {
-            project: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Project',
-                required: true
-            },
-            rank: {
-                type: Number,
-                required: true
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project',
+            required: true
         }
     ]
 });
@@ -36,30 +30,8 @@ const RankingsSchema = new mongoose.Schema({
 RankingsSchema.index(
     {
         event: 1,
-        track: 1
-    },
-    {
-        unique: true,
-        sparse: true
-    }
-);
-
-/** Only allow a single rankings document per event/challenge combination */
-RankingsSchema.index(
-    {
-        event: 1,
-        challenge: 1
-    },
-    {
-        unique: true,
-        sparse: true
-    }
-);
-
-/** Only allow a single rankings document per event/tag combination, e.g. overall winners */
-RankingsSchema.index(
-    {
-        event: 1,
+        track: 1,
+        challenge: 1,
         tag: 1
     },
     {
@@ -67,6 +39,8 @@ RankingsSchema.index(
         sparse: true
     }
 );
+
+RankingsSchema.set('timestamps', true);
 
 const Rankings = mongoose.model('Rankings', RankingsSchema);
 

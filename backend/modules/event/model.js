@@ -256,6 +256,4 @@ EventSchema.post('remove', async function(doc) {
 
 const Event = mongoose.model('Event', EventSchema);
 
-Event.syncIndexes();
-
 module.exports = Event;

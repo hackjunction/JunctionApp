@@ -1,6 +1,13 @@
+const Promise = require('bluebird');
+const _ = require('lodash');
+
 const Rankings = require('./model');
 
+const WinnerVoteController = require('../winner-votes/controller');
+const GavelController = require('../reviewing/gavel/controller');
+
 const { ForbiddenError } = require('../../common/errors/errors');
+const { ReviewingMethods, OverallReviewingMethods } = require('@hackjunction/shared');
 
 const controller = {};
 
@@ -82,10 +89,128 @@ controller.updateOverallResults = (event, rankings) => {
     );
 };
 
-controller.getAllResultsForEvent = event => {
-    return Rankings.find({
-        event: event._id
+controller.getAllResultsForEvent = async event => {
+    const raw = await Rankings.find({ event: event._id });
+    const result = {
+        overall: null,
+        challenges: {},
+        tracks: {}
+    };
+
+    raw.forEach(rankingsObj => {
+        if (rankingsObj.tag === 'overall') {
+            result.overall = rankingsObj;
+        }
+        if (rankingsObj.challenge) {
+            result.challenges[rankingsObj.challenge] = rankingsObj;
+        }
+
+        if (rankingsObj.track) {
+            result.tracks[rankingsObj.track] = rankingsObj;
+        }
     });
+
+    return result;
+};
+
+controller.resetAllResults = async event => {
+    const results = await controller.generateAllResults(event);
+
+    if (results.overall) {
+        await controller.updateOverallResults(event, results.overall);
+    }
+
+    if (results.tracks) {
+        const tracks = Object.keys(results.tracks);
+        await Promise.each(tracks, track => {
+            return controller.updateTrackResults(event, track, results.tracks[track]);
+        });
+    }
+};
+
+/** Generate all results types for the event */
+controller.generateAllResults = async event => {
+    /** Generate all results */
+    const [tracks, overall] = await Promise.all([
+        controller.generateTrackResultsAll(event),
+        controller.generateOverallResults(event)
+    ]);
+    return {
+        tracks,
+        overall
+    };
+};
+
+/** Generate overall results for the event */
+controller.generateOverallResults = async event => {
+    if (event.tracksEnabled) {
+        /** Generate results based on finalist review method */
+        switch (event.overallReviewMethod) {
+            case OverallReviewingMethods.finalsPublicVoting.id: {
+                const voteTotals = await WinnerVoteController.getVotesForEvent(event);
+                return voteTotals.map(({ project }) => project);
+            }
+            case OverallReviewingMethods.finalsManualSelection.id: {
+                /** Generate arbitrary results based on selected finalists, should be manually edited */
+                console.log('Generating results based on finalists');
+                return [];
+            }
+            case OverallReviewingMethods.noOverallWinner.id: {
+                /** The event has no overall winner, skip this */
+                console.log('Event has no overall winner');
+                return [];
+            }
+            default: {
+                /** No overall reviewing method defined, skip this */
+                console.log('No overall reviewing method defined');
+                return [];
+            }
+        }
+    } else {
+        /** Generate overall results based on selected reviewing method */
+        switch (event.reviewMethod) {
+            case ReviewingMethods.gavelPeerReview.id: {
+                const gavelResults = await GavelController.getResults(event._id);
+                return gavelResults.map(({ project }) => project);
+            }
+            case ReviewingMethods.manualReview.id: {
+                /** Skip generating results, no reviewing method defined */
+                console.log('Manual reviewing selected, cannot automatically generate results');
+                return [];
+            }
+        }
+    }
+};
+
+/** Generate the results for a single track */
+controller.generateTrackResults = async (event, trackSlug) => {
+    const track = _.find(event.tracks || [], t => t.slug === trackSlug);
+    if (!track) {
+        console.log(`Event ${event.name} has no track with the slug ${trackSlug}`);
+        return [];
+    } else {
+        const gavelResults = await GavelController.getResults(event._id, trackSlug);
+        return gavelResults.map(({ project }) => project);
+    }
+};
+
+/** Generate the results for all tracks */
+
+controller.generateTrackResultsAll = async event => {
+    if (!event.tracksEnabled || !event.tracks.length === 0) {
+        console.log('No tracks enabled, skipping track results generation');
+        return null;
+    } else {
+        return Promise.reduce(
+            event.tracks,
+            async (results, track) => {
+                const trackResults = await controller.generateTrackResults(event, track.slug);
+                results[track.slug] = trackResults;
+                return results;
+            },
+            {}
+        );
+    }
 };
 
 module.exports = controller;

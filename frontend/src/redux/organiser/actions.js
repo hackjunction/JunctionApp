@@ -7,6 +7,7 @@ import TeamsService from 'services/teams';
 import FilterGroupsService from 'services/filterGroups';
 import ProjectsService from 'services/projects';
 import GavelService from 'services/reviewing/gavel';
+import RankingsService from 'services/rankings';
 
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
@@ -265,4 +266,16 @@ export const editGavelAnnotator = (slug, annotatorId, edits) => async (dispatch,
     });
 
     return;
+};
+
+export const updateRankings = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState());
+
+    dispatch({
+        type: ActionTypes.UPDATE_RANKINGS,
+        promise: RankingsService.getFullResults(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error getting rankings', e)
+        }
+    });
 };
