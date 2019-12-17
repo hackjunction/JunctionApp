@@ -10,6 +10,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import CodeIcon from '@material-ui/icons/Code';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
@@ -24,6 +25,7 @@ import ManagePage from './Manage';
 import CheckInPage from './CheckIn';
 import ProjectsPage from './Projects';
 import TravelGrantsPage from './TravelGrants';
+import ResultsPage from './Results';
 import SidebarLayout from 'components/layouts/SidebarLayout';
 
 const OrganiserEditEvent = ({
@@ -32,6 +34,9 @@ const OrganiserEditEvent = ({
     updateRegistrations,
     updateTeams,
     updateFilterGroups,
+    updateProjects,
+    updateGavelProjects,
+    updateRankings,
     loading,
     error,
     event,
@@ -50,6 +55,9 @@ const OrganiserEditEvent = ({
             updateRegistrations(slug);
             updateTeams(slug);
             updateFilterGroups(slug);
+            updateProjects(slug);
+            updateGavelProjects(slug);
+            updateRankings(slug);
         }
     }, [
         slug,
@@ -58,7 +66,10 @@ const OrganiserEditEvent = ({
         updateTeams,
         updateRegistrations,
         updateOrganiserProfiles,
-        updateFilterGroups
+        updateFilterGroups,
+        updateProjects,
+        updateGavelProjects,
+        updateRankings
     ]);
 
     useEffect(() => {
@@ -115,6 +126,13 @@ const OrganiserEditEvent = ({
                         component: ProjectsPage
                     },
                     {
+                        key: 'results',
+                        path: '/results',
+                        icon: <AssessmentIcon />,
+                        label: 'Results',
+                        component: ResultsPage
+                    },
+                    {
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
@@ -145,7 +163,6 @@ const OrganiserEditEvent = ({
         </PageWrapper>
     );
 };
-//asd
 
 const mapStateToProps = state => ({
     event: OrganiserSelectors.event(state),
@@ -159,7 +176,10 @@ const mapDispatchToProps = dispatch => ({
         dispatch(OrganiserActions.updateOrganisersForEvent(owner, organisers)),
     updateRegistrations: slug => dispatch(OrganiserActions.updateRegistrationsForEvent(slug)),
     updateTeams: slug => dispatch(OrganiserActions.updateTeamsForEvent(slug)),
-    updateFilterGroups: slug => dispatch(OrganiserActions.updateFilterGroups(slug))
+    updateFilterGroups: slug => dispatch(OrganiserActions.updateFilterGroups(slug)),
+    updateProjects: slug => dispatch(OrganiserActions.updateProjects(slug)),
+    updateGavelProjects: slug => dispatch(OrganiserActions.updateGavelProjects(slug)),
+    updateRankings: slug => dispatch(OrganiserActions.updateRankings(slug))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrganiserEditEvent);

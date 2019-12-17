@@ -21,8 +21,8 @@ const ProjectBlock = ({
     isSubmissionsPast,
     openSubmission
 }) => {
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
-    if (!event || EventHelpers.isEventOver(event, moment)) return null;
+    if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id) return null;
+    if (EventHelpers.isEventOver(event, moment)) return null;
     if (projectLoading) return null;
 
     if (isSubmissionsUpcoming) {

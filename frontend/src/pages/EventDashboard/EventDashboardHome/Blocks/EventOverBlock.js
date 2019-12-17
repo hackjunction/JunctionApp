@@ -11,7 +11,7 @@ import Button from 'components/generic/Button';
 import * as DashboardSelectors from 'redux/dashboard/selectors';
 
 const EventOverBlock = ({ event, openProjectGallery }) => {
-    if (!event || !EventHelpers.isEventOver(event, moment)) return null;
+    if (!EventHelpers.isEventOver(event, moment)) return null;
     return (
         <Grid item xs={12}>
             <GradientBox p={3} color="theme_purple">

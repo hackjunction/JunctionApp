@@ -5,7 +5,7 @@ import { FastField } from 'formik';
 import FormControl from 'components/inputs/FormControl';
 import EventTagsForm from './EventTagsForm';
 
-const OrganiserEditEventMisc = props => {
+const OrganiserEditEventMisc = () => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>

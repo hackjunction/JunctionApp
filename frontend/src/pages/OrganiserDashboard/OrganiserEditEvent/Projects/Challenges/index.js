@@ -1,85 +1,60 @@
-import React, { useState, useMemo, useCallback, useEffect, forwardRef } from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
-import { Paper, Grid } from '@material-ui/core';
-import { withSnackbar } from 'notistack';
+import { sortBy } from 'lodash-es';
+import { Box, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ListItemText } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import Select from 'components/inputs/Select';
-import Button from 'components/generic/Button';
-import ProjectsTable from 'components/tables/ProjectsTable';
+import ProjectsTable from '../ProjectsTable';
+import ChallengeLink from './ChallengeLink';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
-import * as AuthSelectors from 'redux/auth/selectors';
 
-import ProjectsService from 'services/projects';
-
-const ChallengesTab = ({ event, projects, projectsLoading, idToken, enqueueSnackbar }) => {
-    const [challenge, setChallenge] = useState(event.challenges[0].slug);
-    const [link, setLink] = useState();
-    const [linkLoading, setLinkLoading] = useState(false);
-
-    const filtered = useMemo(() => {
+const ChallengesTab = ({ event, projects, projectsLoading }) => {
+    const getProjectsForChallenge = slug => {
         return projects.filter(project => {
-            return project.challenges && project.challenges.indexOf(challenge) !== -1;
+            return project.challenges && project.challenges.indexOf(slug) !== -1;
         });
-    }, [projects, challenge]);
+    };
 
-    useEffect(() => {
-        setLink();
-    }, [challenge]);
-
-    const handleGenerateLink = useCallback(async () => {
-        setLinkLoading(true);
-        try {
-            const link = await ProjectsService.generateChallengeLink(idToken, event.slug, challenge);
-            setLink(link);
-        } catch (err) {
-            enqueueSnackbar('Oops, something went wrong...', { variant: 'error' });
-        }
-        setLinkLoading(false);
-    }, [idToken, event, challenge, enqueueSnackbar]);
+    const challenges = useMemo(() => {
+        return sortBy(event.challenges, 'name');
+    }, [event.challenges]);
 
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} style={{ position: 'relative', zIndex: 500 }}>
-                <Select
-                    label="Choose challenge"
-                    options={event.challenges.map(challenge => ({
-                        label: `${challenge.name} (${challenge.partner})`,
-                        value: challenge.slug
-                    }))}
-                    value={challenge}
-                    onChange={setChallenge}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <ProjectsTable projects={filtered} event={event} loading={projectsLoading} />
-            </Grid>
-            <Grid item xs={12}>
-                {link && link.link ? (
-                    <a href={link.link} target="_blank" rel="noopener noreferrer">
-                        {link.link}
-                    </a>
-                ) : (
-                    <Button
-                        onClick={handleGenerateLink}
-                        loading={linkLoading}
-                        color="theme_turquoise"
-                        variant="contained"
-                    >
-                        Generate partner link
-                    </Button>
-                )}
-            </Grid>
-        </Grid>
+        <Box>
+            {challenges.map(challenge => {
+                const projects = getProjectsForChallenge(challenge.slug);
+                return (
+                    <ExpansionPanel key={challenge.slug}>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <ListItemText
+                                primary={challenge.name}
+                                secondary={`${challenge.partner} // ${projects.length} projects`}
+                            ></ListItemText>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <Box display="flex" flexDirection="column">
+                                <Box p={1}>
+                                    <ChallengeLink challenge={challenge.slug} />
+                                </Box>
+                                <ProjectsTable projects={projects} />
+                            </Box>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                );
+            })}
+        </Box>
     );
 };
 
 const mapState = state => ({
     event: OrganiserSelectors.event(state),
     projects: OrganiserSelectors.projects(state),
-    projectsLoading: OrganiserSelectors.projectsLoading(state),
-    idToken: AuthSelectors.getIdToken(state)
+    projectsLoading: OrganiserSelectors.projectsLoading(state)
 });
 
-export default withSnackbar(connect(mapState)(ChallengesTab));
+export default connect(mapState)(ChallengesTab);

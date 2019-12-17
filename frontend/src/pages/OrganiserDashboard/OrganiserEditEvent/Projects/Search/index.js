@@ -1,15 +1,12 @@
-import React, { useEffect, forwardRef } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Paper } from '@material-ui/core';
-
-import MaterialTable from 'components/generic/MaterialTable';
-import ProjectsTable from 'components/tables/ProjectsTable';
 
 import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
+
+import ProjectsTable from '../ProjectsTable';
 
 const SearchTab = ({ event, projects, projectsLoading }) => {
-    return <ProjectsTable projects={projects} event={event} loading={projectsLoading} />;
+    return <ProjectsTable projects={projects} />;
 };
 
 const mapState = state => ({

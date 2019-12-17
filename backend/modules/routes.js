@@ -13,6 +13,7 @@ const adminRouter = require('./admin/routes');
 const projectRouter = require('./project/routes');
 const gavelRouter = require('./reviewing/gavel/routes');
 const winnerVoteRouter = require('./winner-votes/routes');
+const rankingsRouter = require('./rankings/routes');
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -27,6 +28,7 @@ module.exports = function(app) {
     app.use('/api/winner-votes', winnerVoteRouter);
 
     /** Model related routes */
+    app.use('/api/rankings', rankingsRouter);
     app.use('/api/events', eventRouter);
     app.use('/api/filter-groups', filterGroupRouter);
     app.use('/api/registrations', registrationRouter);

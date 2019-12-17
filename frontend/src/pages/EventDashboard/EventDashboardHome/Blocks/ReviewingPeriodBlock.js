@@ -18,7 +18,7 @@ const ReviewingPeriodBlock = ({ event, voteCount, updateAnnotator, openReviewing
         }
     }, [event, updateAnnotator]);
 
-    if (!event || !EventHelpers.isVotingOpen(event, moment)) return null;
+    if (!EventHelpers.isVotingOpen(event, moment)) return null;
 
     return (
         <Grid item xs={12}>

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ReviewingMethods, EventTypes } from '@hackjunction/shared';
-import { Grid } from '@material-ui/core';
+import { ReviewingMethods, OverallReviewingMethods, EventTypes } from '@hackjunction/shared';
+import { Grid, Box } from '@material-ui/core';
 import { FastField, Field } from 'formik';
 
 import FormControl from 'components/inputs/FormControl';
@@ -207,12 +207,16 @@ const ConfigurationTab = () => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <FastField
+                <Field
                     name="reviewMethod"
                     render={({ field, form }) => (
                         <FormControl
                             label="Reviewing method"
-                            hint="Which reviewing method should be used?"
+                            hint={
+                                form.values.tracksEnabled
+                                    ? 'Which method should be used to determine the ranking of projects within tracks?'
+                                    : 'Which method should be used to determine the ranking of projects?'
+                            }
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
@@ -227,6 +231,31 @@ const ConfigurationTab = () => {
                         </FormControl>
                     )}
                 />
+            </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name="overallReviewMethod"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Overall winner method"
+                            hint="This event is using tracks - which method should be used to determine the overall winner?"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <Select
+                                value={field.value}
+                                onChange={value => form.setFieldValue(field.name, value)}
+                                options={Object.keys(OverallReviewingMethods).map(key => ({
+                                    label: OverallReviewingMethods[key].label,
+                                    value: key
+                                }))}
+                            />
+                        </FormControl>
+                    )}
+                ></Field>
+            </Grid>
+            <Grid item xs={12}>
+                <Box height="300px" />
             </Grid>
         </Grid>
     );

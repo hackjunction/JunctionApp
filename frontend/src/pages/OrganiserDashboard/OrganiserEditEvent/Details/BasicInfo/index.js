@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
 import { Grid, Box } from '@material-ui/core';
 import { FastField } from 'formik';
 
@@ -8,7 +9,9 @@ import FormControl from 'components/inputs/FormControl';
 import TextInput from 'components/inputs/TextInput';
 import ImageUpload from 'components/inputs/ImageUpload';
 
-const OrganiserEditEventInfo = props => {
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+
+const OrganiserEditEventInfo = ({ event }) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -28,7 +31,7 @@ const OrganiserEditEventInfo = props => {
                                         form.setFieldValue(field.name, value);
                                         form.setFieldTouched(field.name);
                                     }}
-                                    uploadUrl={`/api/upload/events/${props.values.slug}/cover-image`}
+                                    uploadUrl={`/api/upload/events/${event.slug}/cover-image`}
                                     resizeMode="cover"
                                 />
                             </Box>
@@ -53,7 +56,7 @@ const OrganiserEditEventInfo = props => {
                                         form.setFieldValue(field.name, value);
                                         form.setFieldTouched(field.name);
                                     }}
-                                    uploadUrl={`/api/upload/events/${props.values.slug}/logo`}
+                                    uploadUrl={`/api/upload/events/${event.slug}/logo`}
                                     resizeMode="contain"
                                 />
                             </Box>
@@ -105,4 +108,8 @@ const OrganiserEditEventInfo = props => {
     );
 };
 
-export default OrganiserEditEventInfo;
+const mapState = state => ({
+    event: OrganiserSelectors.event(state)
+});
+
+export default connect(mapState)(OrganiserEditEventInfo);

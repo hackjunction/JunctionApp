@@ -11,6 +11,7 @@ import events from './events/reducer';
 import organiser from './organiser/reducer';
 import recruitment from './recruitment/reducer';
 import user from './user/reducer';
+import snackbar from './snackbar/reducer';
 
 export default history =>
     combineReducers({
@@ -23,5 +24,6 @@ export default history =>
         events,
         organiser,
         recruitment,
+        snackbar,
         user
     });
