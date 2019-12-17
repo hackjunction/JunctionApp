@@ -2,21 +2,21 @@ import { lazy } from 'react';
 
 import { Auth as AuthConstants } from '@hackjunction/shared';
 
-import DefaultPage from './pages/index';
-import CallbackPage from './pages/callback';
-import ErrorPage from './pages/error';
-import LogoutPage from './pages/logout';
-import LoginPage from './pages/login';
+import DefaultPage from './pages/_index/index';
+import CallbackPage from './pages/_callback';
+import ErrorPage from './pages/_error';
+import LogoutPage from './pages/_logout';
+import LoginPage from './pages/_login';
 
-import EventsRouter from './pages/events';
+import EventsRouter from './pages/_events';
 import RequiresPermission from './hocs/RequiresPermission';
 
 /** Lazy-load the access-restricted pages */
 const EventDashboardPage = lazy(() => import('./pages/EventDashboard'));
 const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/OrganiserDashboardRouter'));
-const AccountPage = lazy(() => import('./pages/account'));
-const RecruitmentPage = lazy(() => import('./pages/recruitment'));
-const ProjectsRouter = lazy(() => import('./pages/projects'));
+const AccountPage = lazy(() => import('./pages/_account'));
+const RecruitmentPage = lazy(() => import('./pages/_recruitment'));
+const ProjectsRouter = lazy(() => import('./pages/_projects'));
 
 const routes = [
     {
