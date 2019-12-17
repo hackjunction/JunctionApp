@@ -31,3 +31,6 @@ To be able to run the project, you'll need to set up some environment variables.
 
 ### Run the project in development mode
 
+Running the project in development mode requires running the React dev server and the Node.js backend concurrently. For convenience, there exists a `dev` script in the root level package.json which does that for you. So, to spin up both servers just run:
+
+`npm run dev`
