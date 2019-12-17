@@ -1,100 +1,30 @@
-import React, { forwardRef, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Box, Paper, Switch } from '@material-ui/core';
-import MaterialTable from 'components/generic/MaterialTable';
+import { Box, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ListItemText } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import * as OrganiserSelectors from 'redux/organiser/selectors';
 import * as OrganiserActions from 'redux/organiser/actions';
 
-const GavelAdmin = ({ event, gavelProjects, updateGavelProjects, editGavelProject }) => {
-    const loading = false;
-    useEffect(() => {
-        updateGavelProjects(event.slug);
-    }, [event.slug, updateGavelProjects]);
+import GavelTable from './GavelTable';
 
+const GavelAdmin = ({ event, gavelProjects, editGavelProject }) => {
     const renderTable = (title, projects) => {
         return (
-            <Box mb={2}>
-                <MaterialTable
-                    title={title}
-                    showCount
-                    isLoading={loading}
-                    data={projects.map(project => {
-                        return {
-                            ...project,
-                            skippedByCount: project.skippedBy.length,
-                            viewedByCount: project.viewedBy.length
-                        };
-                    })}
-                    options={{
-                        exportButton: true,
-                        selection: false,
-                        showSelectAllCheckbox: false,
-                        pageSizeOptions: [10, 25, 50],
-                        debounceInterval: 500,
-                        search: true,
-                        paging: true,
-                        pageSize: 50
-                    }}
-                    localization={{
-                        toolbar: {
-                            searchPlaceholder: 'Search projects',
-                            nRowsSelected: '{0} selected'
-                        }
-                    }}
-                    components={{
-                        Container: forwardRef((props, ref) => <Paper {...props} ref={ref} />)
-                    }}
-                    columns={[
-                        {
-                            title: 'Name',
-                            field: 'project.name',
-                            searchable: true
-                        },
-                        {
-                            title: 'Location',
-                            field: 'project.location'
-                        },
-                        {
-                            title: 'Mu',
-                            field: 'mu',
-                            type: 'numeric',
-                            render: row => row.mu.toPrecision(4)
-                        },
-                        {
-                            title: 'Sigma Sq.',
-                            field: 'sigma_sq',
-                            type: 'numeric',
-                            render: row => row.sigma_sq.toPrecision(4)
-                        },
-                        {
-                            title: 'Skipped by',
-                            field: 'skippedByCount',
-                            type: 'numeric'
-                        },
-                        {
-                            title: 'Viewed by',
-                            field: 'viewedByCount',
-                            type: 'numeric'
-                        },
-                        {
-                            title: 'Active',
-                            field: 'active',
-                            render: data => {
-                                return (
-                                    <Switch
-                                        checked={data.active}
-                                        onChange={(e, value) =>
-                                            editGavelProject(event.slug, data._id, { active: value })
-                                        }
-                                        value="active"
-                                        inputProps={{ 'aria-label': 'primary checkbox' }}
-                                    />
-                                );
-                            }
-                        }
-                    ]}
-                />
-            </Box>
+            <ExpansionPanel key={title}>
+                <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <ListItemText primary={title} secondary={`${projects.length} projects`} />
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <Box width="100%" display="flex" flexDirection="column" alignItems="stretch">
+                        <GavelTable gavelProjects={projects} />
+                    </Box>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
         );
     };
 
@@ -118,7 +48,6 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-    updateGavelProjects: slug => dispatch(OrganiserActions.updateGavelProjects(slug)),
     editGavelProject: (slug, projectId, edits) => dispatch(OrganiserActions.editGavelProject(slug, projectId, edits))
 });
 

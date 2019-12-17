@@ -1,82 +1,59 @@
-import React, { Component } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
+import { useLocation } from 'react-router';
 
 import * as AuthActions from 'redux/auth/actions';
 import * as AuthSelectors from 'redux/auth/selectors';
 import * as UserActions from 'redux/user/actions';
 
 import LoadingOverlay from 'components/loaders/LoadingOverlay';
-import MiscUtils from 'utils/misc';
 import AnalyticsService from 'services/analytics';
 
-class CallbackPage extends Component {
-    constructor(props) {
-        super(props);
+export default () => {
+    const location = useLocation();
+    const dispatch = useDispatch();
 
-        this.state = {
-            failed: false
-        };
-    }
+    const idToken = useSelector(AuthSelectors.getIdToken);
 
-    async componentDidMount() {
-        const { location, handleAuthentication, pushError } = this.props;
-
-        await MiscUtils.sleep(1000);
-
-        if (/access_token|id_token|error/.test(location.hash)) {
-            handleAuthentication()
-                .then(idToken => {
-                    AnalyticsService.events.LOG_IN();
-                    this.getOrCreateProfile(idToken);
-                })
-                .catch(err => {
-                    pushError({ error: err.message });
-                });
-        } else {
-            pushError();
-        }
-    }
-
-    getOrCreateProfile(idToken) {
-        this.props
-            .updateUserProfile(idToken)
-            .then(userProfile => {
+    const getOrCreateProfile = useCallback(async () => {
+        if (idToken) {
+            try {
+                const userProfile = await dispatch(UserActions.updateUserProfile(idToken));
                 if (!userProfile) {
-                    this.props.pushAccountCreate();
+                    dispatch(push('/login/welcome'));
                 } else {
-                    this.props.pushNextRoute();
+                    dispatch(AuthActions.pushNextRoute());
                 }
-            })
-            .catch(err => {
+            } catch (err) {
                 if (err.response.status === 404) {
-                    this.props.pushAccountCreate();
+                    dispatch(push('/login/welcome'));
                 } else {
-                    this.props.pushError({ error: 'Login failed' });
+                    dispatch(push('/error', { error: 'Login failed' }));
                 }
-            });
-    }
+            }
+        }
+    }, [idToken, dispatch]);
 
-    render() {
-        return <LoadingOverlay text="Signing in" />;
-    }
-}
+    const handleAuthentication = useCallback(async () => {
+        if (/access_token|id_token|error/.test(location.hash)) {
+            try {
+                await dispatch(AuthActions.handleAuthentication());
+                AnalyticsService.events.LOG_IN();
+            } catch (err) {
+                dispatch(push('/error', { error: err.message }));
+            }
+        }
+    }, [dispatch, location]);
 
-const mapStateToProps = state => ({
-    session: AuthSelectors.getSession(state),
-    idToken: AuthSelectors.getIdToken(state)
-});
+    useEffect(() => {
+        handleAuthentication();
+    }, []);
 
-const mapDispatchToProps = dispatch => ({
-    handleAuthentication: () => dispatch(AuthActions.handleAuthentication()),
-    pushError: state => dispatch(push('/error', state)),
-    pushNextRoute: () => dispatch(AuthActions.pushNextRoute()),
-    pushAccountCreate: () => dispatch(push('/login/welcome')),
-    updateUserProfile: idToken => dispatch(UserActions.updateUserProfile(idToken))
-});
+    useEffect(() => {
+        getOrCreateProfile();
+    }, [getOrCreateProfile]);
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CallbackPage);
+    return <LoadingOverlay text="Signing in" />;
+};

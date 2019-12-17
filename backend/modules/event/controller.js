@@ -79,12 +79,50 @@ controller.updateWinners = (eventId, winners) => {
     });
 };
 
-controller.generateAchievements = async event => {
-    let result = [];
-    if (event.reviewMethod === ReviewingMethods.gavelPeerReview.id) {
-        GavelHelper.generateTrackPlacementAchievements(event);
+controller.generateTrackPlacementAchievements = async event => {
+    // If the event is not using tracks, get outta here
+    if (!event.tracksEnabled) {
+        return;
     }
-    return result;
+    console.log(event);
+    //TODO: Regenerate achievements for track placements
+    // - Depends on which reviewing method is used
+    switch (event.reviewMethod) {
+        case ReviewingMethods.gavelPeerReview.id: {
+            return 'foo';
+        }
+        default:
+            return;
+    }
+};
+
+controller.generateChallengeAchievements = async event => {
+    // If the event is not using challenges, get outta here
+    if (!event.challengesEnabled) {
+        return;
+    }
+    //TODO: Regenerate achievements for challenge placements
+    console.log(event);
+    return;
+};
+
+controller.generateOverallPlacementAchievements = async event => {
+    //TODO: Regenerate overall placement achievements
+    // - Depends on which reviewing method is used
+    // - Depends on if the event is using tracks or not
+    // - Depends on if there is a finalist round or not
+    console.log(event);
+    return;
+};
+
+controller.generateAchievements = async event => {
+    // Generate these achievements in the background, and just return the response
+    Promise.each([
+        controller.generateTrackPlacementAchievements(event),
+        controller.generateChallengeAchievements(event),
+        controller.generateOverallPlacementAchievements(event)
+    ]);
+    return;
 };
 
 module.exports = controller;

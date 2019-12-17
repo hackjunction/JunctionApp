@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const { errors } = require('celebrate');
 const path = require('path');
 const sslRedirect = require('heroku-ssl-redirect');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
 /* Force SSL Redirect in production */
 app.use(sslRedirect(['production'], 301));
@@ -49,8 +51,26 @@ app.use(require('./common/errors/errorHandler'));
 /* Database */
 require('./misc/db').connect();
 
-/* Start server */
-const PORT = process.env.PORT || 2222;
-app.listen(PORT, () => {
-    console.log('Junction App listening on port: ' + PORT);
-});
+const cron = require('./modules/cron/index');
+
+/* Start server cluster */
+if (cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`);
+    console.log(`${numCPUs} CPUs available`);
+
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('exit', (worker, code, signal) => {
+        console.log(`worker ${worker.process.pid} died`);
+    });
+
+    /** Run cron jobs here for now, migrate to cron-cluster later */
+    cron.utils.startAll();
+} else {
+    const PORT = process.env.PORT || 2222;
+    app.listen(PORT, () => {
+        console.log(`Worker ${process.pid} started, listening on port ${PORT}`);
+    });
+}

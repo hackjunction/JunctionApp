@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { withRouter } from 'react-router';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { findIndex } from 'lodash-es';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Tabs, Tab, Typography, Box, useMediaQuery } from '@material-ui/core';
@@ -105,12 +105,23 @@ const MaterialTabsLayout = ({ tabs, location, baseRoute, transparent = false, pu
                 ))}
             </Tabs>
             <Box mt={3} p={2}>
-                {tabs.map((tab, index) => (
-                    <TabPanel key={tab.label} value={safeIndex} index={index}>
-                        {tab.content}
-                    </TabPanel>
-                ))}
+                <Switch>
+                    {tabs.map(({ key, path, component }, index) => {
+                        return <Route key={key} exact={true} path={`${baseRoute}${path}`} component={component} />;
+                    })}
+                    <Redirect to={baseRoute} />
+                </Switch>
             </Box>
+            {/* <Switch>
+                {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
+                    if (hidden || locked) {
+                        return null;
+                    } else {
+                        return <Route key={key} exact={exact} path={`${baseRoute}${path}`} component={component} />;
+                    }
+                })}
+                <Redirect to={baseRoute} />
+            </Switch> */}
         </div>
     );
 };
@@ -121,7 +132,4 @@ const mapDispatch = (dispatch, ownProps) => ({
     pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
 });
 
-export default connect(
-    null,
-    mapDispatch
-)(MaterialTabsLayout);
+export default connect(null, mapDispatch)(MaterialTabsLayout);

@@ -174,4 +174,16 @@ controller.submitVote = async (event, userId, winningProjectId) => {
     return updatedAnnotator;
 };
 
+controller.getResults = async (eventId, track = null) => {
+    const projects = await GavelProject.find({ event: eventId, track: track }).lean();
+    const sorted = _.sortBy(projects, p => -1 * p.mu);
+    const results = sorted.map(gavelProject => {
+        return {
+            project: gavelProject.project,
+            score: gavelProject.mu
+        };
+    });
+    return results;
+};
+
 module.exports = controller;

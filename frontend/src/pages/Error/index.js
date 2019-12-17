@@ -1,34 +1,64 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './style.scss';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
+import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+import Button from 'components/generic/Button';
 
 import * as AuthActions from 'redux/auth/actions';
 
-class ErrorPage extends Component {
-    componentDidMount() {
-        this.props.clearSession();
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: theme.spacing(3),
+        background: 'black',
+        color: 'white'
+    },
+    logo: {
+        width: '200px',
+        height: '200px'
+    },
+    title: {
+        color: 'white',
+        textTransform: 'uppercase'
+    },
+    error: {
+        color: 'white'
     }
+}));
 
-    render() {
-        const error = this.props.location.state ? this.props.location.state.error : null;
-        return (
-            <div className="ErrorPage">
-                <img className="ErrorPage_Logo" src={require('../../assets/logos/emblem_white.png')} alt="logo" />
-                <h3 className="ErrorPage_Title">Oh-oh, something went wrong</h3>
-                {error ? <p className="ErrorPage_Detail">{error}</p> : null}
-                <p className="ErrorPage_Desc">Please log in again and you should be good to go!</p>
-                <a href="/">Back to home page</a>
-            </div>
-        );
-    }
-}
+export default () => {
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    useEffect(() => {
+        dispatch(AuthActions.clearSession());
+    }, [dispatch]);
 
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({
-    clearSession: () => dispatch(AuthActions.clearSession())
-});
+    const error = this.props.location.state ? this.props.location.state.error : null;
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ErrorPage);
+    return (
+        <div className={classes.wrapper}>
+            <img className={classes.logo} src={require('../../assets/logos/emblem_white.png')} alt="logo" />
+            <Typography variant="button" className={classes.title}>
+                Oh-oh, something went wrong
+            </Typography>
+
+            {error ? (
+                <Typography variant="subtitle1" className={classes.error}>
+                    {error}
+                </Typography>
+            ) : null}
+            <Typography variant="subtitle2" className={classes.error}>
+                Please log in again and you should be good to go!
+            </Typography>
+            <Button variant="contained" color="primary" onClick={() => dispatch(push('/'))}>
+                Back to home page
+            </Button>
+        </div>
+    );
+};

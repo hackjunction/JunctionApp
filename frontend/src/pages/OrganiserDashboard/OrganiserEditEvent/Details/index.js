@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
@@ -85,31 +85,31 @@ const OrganiserEditEventDetails = ({ event, loading, editEvent, enqueueSnackbar,
                                     path: '',
                                     key: 'basic-details',
                                     label: 'Basic Details',
-                                    content: <BasicInfoTab {...formikProps} />
+                                    component: BasicInfoTab
                                 },
                                 {
                                     path: '/configuration',
                                     key: 'configuration',
                                     label: 'Configuration',
-                                    content: <ConfigurationTab {...formikProps} />
+                                    component: ConfigurationTab
                                 },
                                 {
                                     path: '/schedule',
                                     key: 'schedule',
                                     label: 'Schedule',
-                                    content: <ScheduleTab {...formikProps} />
+                                    component: ScheduleTab
                                 },
                                 {
                                     path: '/questions',
                                     key: 'questions',
                                     label: 'Questions',
-                                    content: <QuestionsTab {...formikProps} />
+                                    component: QuestionsTab
                                 },
                                 {
                                     path: '/other',
                                     key: 'other',
                                     label: 'Miscellaneous',
-                                    content: <MiscellaneousTab {...formikProps} />
+                                    component: MiscellaneousTab
                                 }
                             ]}
                             location={location}
@@ -138,11 +138,4 @@ const mapDispatchToProps = dispatch => ({
     editEvent: (slug, data) => dispatch(OrganiserActions.editEvent(slug, data))
 });
 
-export default withRouter(
-    withSnackbar(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps
-        )(OrganiserEditEventDetails)
-    )
-);
+export default withRouter(withSnackbar(connect(mapStateToProps, mapDispatchToProps)(OrganiserEditEventDetails)));

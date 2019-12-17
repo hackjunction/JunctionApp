@@ -6,6 +6,7 @@ export const UPDATE_REGISTRATIONS = 'organiser/UPDATE_REGISTRATIONS';
 export const UPDATE_PROJECTS = 'organiser/UPDATE_PROJECTS';
 export const UPDATE_GAVEL_PROJECTS = 'organiser/UPDATE_GAVEL_PROJECTS';
 export const UPDATE_GAVEL_ANNOTATORS = 'organiser/UPDATE_GAVEL_ANNOTATORS';
+export const UPDATE_RANKINGS = 'organiser/UPDATE_RANKINGS';
 
 export const REMOVE_ORGANISER = 'organiser/REMOVE_ORGANISER';
 

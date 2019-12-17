@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { connect } from 'react-redux';
 import { Auth } from '@hackjunction/shared';
 import { Typography, Dialog } from '@material-ui/core';
 import RequiresPermission from 'hocs/RequiresPermission';
@@ -8,15 +7,12 @@ import RequiresPermission from 'hocs/RequiresPermission';
 import CenteredContainer from 'components/generic/CenteredContainer';
 import PageHeader from 'components/generic/PageHeader';
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors';
-import * as RecruitmentActions from 'redux/recruitment/actions';
-
 import SearchBox from './SearchBox';
 import RecruitersList from './RecruitersList';
 import RevokeAccessDialog from './RevokeAccessDialog';
 import GrantAccessDialog from './GrantAccessDialog';
 
-const RecruitmentAdminPage = () => {
+export default RequiresPermission(() => {
     const [grantingUser, setGrantingUser] = useState();
     const [revokingUser, setRevokingUser] = useState();
 
@@ -33,22 +29,4 @@ const RecruitmentAdminPage = () => {
             </CenteredContainer>
         </Dialog>
     );
-};
-
-const mapState = state => ({
-    searchResults: RecruitmentSelectors.adminSearchResults(state),
-    recruiters: RecruitmentSelectors.adminRecruiters(state)
-});
-
-const mapDispatch = dispatch => ({
-    updateSearchResults: query => dispatch(RecruitmentActions.updateAdminSearchResults(query)),
-    updateRecruiters: () => dispatch(RecruitmentActions.updateAdminRecruiters())
-});
-
-export default RequiresPermission(
-    connect(
-        mapState,
-        mapDispatch
-    )(RecruitmentAdminPage),
-    [Auth.Permissions.MANAGE_RECRUITMENT]
-);
+}, [Auth.Permissions.MANAGE_RECRUITMENT]);
