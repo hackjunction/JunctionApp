@@ -23,8 +23,6 @@ REACT_APP_IS_DEBUG=true
 Put these environment variables in `./backend/.env` - you'll need to create the file as it is ignored from Git.
 
 ```
-## ./backend/.env
-
 PORT=2222
 AUTH0_DOMAIN=hackjunction-dev.eu.auth0.com
 AUTH0_CLIENT_ID=guhUjo6BjSW8J5jCuNvLFqzKfcgrOse4

@@ -67,7 +67,7 @@ if (cluster.isMaster) {
     });
 
     /** Run cron jobs here for now, migrate to cron-cluster later */
-    cron.utils.startAll();
+    //cron.utils.startAll();
 } else {
     const PORT = process.env.PORT || 2222;
     app.listen(PORT, () => {

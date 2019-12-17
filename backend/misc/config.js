@@ -114,8 +114,6 @@ const buildConfig = () => {
         }
     });
 
-    console.log('Running app with config', config);
-
     return config;
 };
 
