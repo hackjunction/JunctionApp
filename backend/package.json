@@ -7,7 +7,8 @@
         "dev": "nodemon index.js",
         "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "precommit": "echo \"Backend: running pre-commit checks\""
+        "sync-env": "sync-dotenv",
+        "precommit": "echo \"Backend: running pre-commit checks\" && npm run sync-env"
     },
     "author": "",
     "license": "ISC",
