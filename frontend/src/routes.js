@@ -11,10 +11,11 @@ import LoginPage from './pages/login';
 import EventsRouter from './pages/events';
 import RequiresPermission from './hocs/RequiresPermission';
 
+/** Lazy-load the access-restricted pages */
 const EventDashboardPage = lazy(() => import('./pages/EventDashboard'));
 const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/OrganiserDashboardRouter'));
 const AccountPage = lazy(() => import('./pages/account'));
-const RecruitmentPage = lazy(() => import('./pages/Recruitment'));
+const RecruitmentPage = lazy(() => import('./pages/recruitment'));
 const ProjectsRouter = lazy(() => import('./pages/projects'));
 
 const routes = [

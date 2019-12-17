@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { connect } from 'react-redux';
-
-import { withSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouteMatch } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Dialog, Box, Chip } from '@material-ui/core';
 import { Roles, Misc } from '@hackjunction/shared';
@@ -11,18 +10,18 @@ import PageWrapper from 'components/layouts/PageWrapper';
 
 import CenteredContainer from 'components/generic/CenteredContainer';
 
-import * as AuthSelectors from 'redux/auth/selectors';
-
 import UserProfilesService from 'services/userProfiles';
 
+import * as AuthSelectors from 'redux/auth/selectors';
 import * as RecruitmentActions from 'redux/recruitment/actions';
+import * as SnackbarActions from 'redux/snackbar/actions';
 
 import { useFormField } from 'hooks/formHooks';
 
 import DetailTop from './DetailTop';
 import DetailSection from './DetailSection';
 import MessageHistory from './MessageHistory';
-import SkillRating from '../Search/SearchResults/SkillRating';
+import SkillRating from '../default/SearchResults/SkillRating';
 import TextAreaInput from 'components/inputs/TextAreaInput';
 import FormControl from 'components/inputs/FormControl';
 import Button from 'components/generic/Button';
@@ -53,8 +52,19 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
+export default () => {
     const classes = useStyles();
+    const idToken = useSelector(AuthSelectors.getIdToken);
+    const dispatch = useDispatch();
+    const match = useRouteMatch();
+
+    const sendMessage = useCallback(
+        (message, userId) => {
+            dispatch(RecruitmentActions.sendMessage(message, userId));
+        },
+        [dispatch]
+    );
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [user, setUser] = useState();
@@ -101,15 +111,13 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
         const res = await sendMessage(formatted, user.userId);
 
         if (res.error) {
-            enqueueSnackbar('Something went wrong... Please try again.', {
-                variant: 'error'
-            });
+            dispatch(SnackbarActions.error('Something went wrong... Please try again.'));
         } else {
             message.reset();
-            enqueueSnackbar('Message sent!', { variant: 'success' });
+            dispatch(SnackbarActions.success('Message sent!'));
         }
         setLoading(false);
-    }, [message, sendMessage, user, enqueueSnackbar]);
+    }, [message, sendMessage, user, dispatch]);
 
     const renderRecruitmentStatus = () => {
         switch (user.recruitmentOptions.status) {
@@ -341,19 +349,3 @@ const DetailPage = ({ idToken, match, enqueueSnackbar, sendMessage }) => {
         </Dialog>
     );
 };
-
-const mapState = state => {
-    return {
-        idToken: AuthSelectors.getIdToken(state)
-    };
-};
-const mapDispatch = dispatch => ({
-    sendMessage: (message, userId) => dispatch(RecruitmentActions.sendMessage(message, userId))
-});
-
-export default withSnackbar(
-    connect(
-        mapState,
-        mapDispatch
-    )(DetailPage)
-);

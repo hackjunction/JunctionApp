@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import SearchResults from './SearchResults';
 import Filters from './Filters';
@@ -23,8 +23,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SearchPage = ({ idTokenData, favorites }) => {
+export default () => {
     const classes = useStyles();
+    const idTokenData = useSelector(AuthSelectors.idTokenData);
+    const favorites = useSelector(RecruitmentSelectors.favorites);
 
     const [showFavorites, toggleFavorites] = useToggle(false);
 
@@ -64,10 +66,3 @@ const SearchPage = ({ idTokenData, favorites }) => {
         </div>
     );
 };
-
-const mapState = state => ({
-    favorites: RecruitmentSelectors.favorites(state),
-    idTokenData: AuthSelectors.idTokenData(state)
-});
-
-export default connect(mapState)(SearchPage);
