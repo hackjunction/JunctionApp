@@ -36,3 +36,7 @@ Running the project in development mode requires running the React dev server an
 `npm run dev`
 
 The app will automatically reload when you make changes to the code. Note: starting up the React development server will take some time on first startup, depending on the machine your working on, so be patient with it. Consequent code changes should reload the app quickly.
+
+### Notes
+
+The development version of Auth0 will automatically grant all permissions to users who sign up. When you create a new user in the app, you should by default have access to e.g. create new events on the organiser dashboard under /organise.
