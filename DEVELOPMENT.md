@@ -16,7 +16,7 @@ git clone https://github.com/hackjunction/hackplatform.git
 cd hackplatform
 ```
 
-### Install dependencies 
+### Install dependencies
 
 This is a monorepo consisting of a `backend`, `frontend` and `shared` folder, which all need to be installed separately. For convenience, there exists a `setup` script in the root-level package.json, which does that for you. To set up the project, just run (in the root folder):
 
