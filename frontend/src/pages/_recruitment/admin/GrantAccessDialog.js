@@ -1,51 +1,75 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
-import { Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
+import {
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { useSelector, useDispatch } from 'react-redux'
 
-import TextInput from 'components/inputs/TextInput';
-import Select from 'components/inputs/Select';
-import Button from 'components/generic/Button';
+import TextInput from 'components/inputs/TextInput'
+import Select from 'components/inputs/Select'
+import Button from 'components/generic/Button'
 
-import * as RecruitmentActions from 'redux/recruitment/actions';
-import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'redux/recruitment/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
         padding: theme.spacing(2),
-        background: 'white'
+        background: 'white',
     },
     dialogContent: {
-        minHeight: '300px'
-    }
-}));
+        minHeight: '300px',
+    },
+}))
 
-const GrantAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar, events }) => {
-    const classes = useStyles();
-    const [loading, setLoading] = useState();
-    const [selectedEvents, setSelectedEvents] = useState();
-    const [organisation, setOrganisation] = useState();
+export default ({ userId, onClose }) => {
+    const dispatch = useDispatch()
+    const events = useSelector(RecruitmentSelectors.events)
+
+    const classes = useStyles()
+    const [loading, setLoading] = useState()
+    const [selectedEvents, setSelectedEvents] = useState()
+    const [organisation, setOrganisation] = useState()
 
     const handleGrantAccess = useCallback(async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-            await onSubmit(userId, selectedEvents, organisation.trim());
-            enqueueSnackbar('Success!', { variant: 'success' });
-            onClose();
+            await dispatch(
+                RecruitmentActions.adminGrantRecruiterAccess(
+                    userId,
+                    events,
+                    organisation.trim()
+                )
+            )
+            dispatch(SnackbarActions.success('Success!'))
+            onClose()
         } catch (e) {
-            enqueueSnackbar('Something went wrong...', { variant: 'error' });
+            dispatch(SnackbarActions.error('Something went wrong...'))
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    }, [userId, selectedEvents, organisation, enqueueSnackbar, onSubmit, onClose]);
+    }, [dispatch, userId, events, organisation, onClose])
 
     return (
-        <Dialog open={typeof userId !== 'undefined'} onClose={onClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Grant access to recruitment</DialogTitle>
+        <Dialog
+            open={typeof userId !== 'undefined'}
+            onClose={onClose}
+            aria-labelledby="form-dialog-title"
+        >
+            <DialogTitle id="form-dialog-title">
+                Grant access to recruitment
+            </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <DialogContentText>Which events should this recruiter have access to?</DialogContentText>
+                <DialogContentText>
+                    Which events should this recruiter have access to?
+                </DialogContentText>
                 <Select
                     label="Choose events"
                     value={selectedEvents}
@@ -53,11 +77,13 @@ const GrantAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar, events 
                     isMulti={true}
                     options={events.map(event => ({
                         value: event._id,
-                        label: event.name
+                        label: event.name,
                     }))}
                 />
                 <Box mt={3} />
-                <DialogContentText>Which organisation does this recruiter belong to?</DialogContentText>
+                <DialogContentText>
+                    Which organisation does this recruiter belong to?
+                </DialogContentText>
                 <TextInput
                     value={organisation}
                     onChange={setOrganisation}
@@ -66,12 +92,19 @@ const GrantAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar, events 
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} strong color="theme_white" variant="contained">
+                <Button
+                    onClick={onClose}
+                    strong
+                    color="theme_white"
+                    variant="contained"
+                >
                     Cancel
                 </Button>
                 <Box p={1} />
                 <Button
-                    disabled={loading || !organisation || selectedEvents.length === 0}
+                    disabled={
+                        loading || !organisation || selectedEvents.length === 0
+                    }
                     strong
                     onClick={handleGrantAccess}
                     color="primary"
@@ -80,21 +113,5 @@ const GrantAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar, events 
                 </Button>
             </DialogActions>
         </Dialog>
-    );
-};
-
-const mapState = state => ({
-    events: RecruitmentSelectors.events(state)
-});
-
-const mapDispatch = dispatch => ({
-    onSubmit: (userId, events, organisation) =>
-        dispatch(RecruitmentActions.adminGrantRecruiterAccess(userId, events, organisation))
-});
-
-export default withSnackbar(
-    connect(
-        mapState,
-        mapDispatch
-    )(GrantAccessDialog)
-);
+    )
+}

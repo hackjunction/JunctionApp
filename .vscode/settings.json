@@ -4,5 +4,9 @@
             "changeProcessCWD": true,
             "directory": "./frontend"
         }
-    ]
+    ],
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }

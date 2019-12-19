@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Box, Typography, CircularProgress } from '@material-ui/core';
-import { withSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Box, Typography } from '@material-ui/core'
 
-import TextInput from 'components/inputs/TextInput';
-import Button from 'components/generic/Button';
+import TextInput from 'components/inputs/TextInput'
+import Button from 'components/generic/Button'
 
-import * as DashboardActions from 'redux/dashboard/actions';
-import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
     box: {
@@ -19,52 +19,68 @@ const useStyles = makeStyles(theme => ({
         boxShadow: '4px 6px 20px #F3F3F3',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
-    }
-}));
+        alignItems: 'center',
+    },
+}))
 
-const JoinTeam = ({ enqueueSnackbar, createTeam, joinTeam, event }) => {
-    const classes = useStyles();
-    const [code, setCode] = useState('');
-    const [loading, setLoading] = useState('');
+export default () => {
+    const dispatch = useDispatch()
+    const event = useSelector(DashboardSelectors.event)
+    const classes = useStyles()
+    const [code, setCode] = useState('')
+    const [loading, setLoading] = useState('')
 
     const handleCreate = useCallback(() => {
-        setLoading(true);
-        createTeam(event.slug)
+        setLoading(true)
+        dispatch(DashboardActions.createTeam(event.slug))
             .then(() => {
-                enqueueSnackbar('Created new team');
+                dispatch(SnackbarActions.success('Created new team'))
             })
             .catch(err => {
-                enqueueSnackbar('Something went wrong... please try again.', { variant: 'error' });
-            });
-    }, [createTeam, event.slug, enqueueSnackbar]);
+                dispatch(
+                    SnackbarActions.error(
+                        'Something went wrong... please try again.'
+                    )
+                )
+            })
+    }, [dispatch, event.slug])
 
     const handleJoin = useCallback(() => {
-        setLoading(true);
-        joinTeam(event.slug, code)
+        setLoading(true)
+        dispatch(DashboardActions.joinTeam(event.slug, code))
             .then(() => {
-                enqueueSnackbar('Joined team ' + code, { variant: 'success' });
+                dispatch(SnackbarActions.success('Joined team ' + code))
             })
             .catch(err => {
                 if (err.response && err.response.status === 404) {
-                    enqueueSnackbar('No team found with code ' + code, { variant: 'error' });
+                    dispatch(
+                        SnackbarActions.error('No team found with code ' + code)
+                    )
                 } else if (err.response && err.response.status === 403) {
-                    enqueueSnackbar('Unable to join team: ' + (err.response.data ? err.response.data.message : ''), {
-                        variant: 'error'
-                    });
+                    dispatch(
+                        SnackbarActions.error(
+                            'Unable to join team: ' +
+                                err?.response?.data?.message
+                        )
+                    )
                 } else {
-                    enqueueSnackbar('Something went wrong... please try again.', { variant: 'error' });
+                    dispatch(
+                        SnackbarActions.error(
+                            'Something went wrong... please try again.'
+                        )
+                    )
                 }
             })
             .finally(() => {
-                setLoading(false);
-            });
-    }, [code, event.slug, joinTeam, enqueueSnackbar]);
+                setLoading(false)
+            })
+    }, [code, dispatch, event.slug])
 
     return (
         <Box>
             <Typography variant="body1">
-                It seems like you don’t have a team yet. Here you can create a new team or join already existing one.
+                It seems like you don’t have a team yet. Here you can create a
+                new team or join already existing one.
             </Typography>
             <Box mt={2} />
             <Grid container spacing={3}>
@@ -74,8 +90,9 @@ const JoinTeam = ({ enqueueSnackbar, createTeam, joinTeam, event }) => {
                             Join an existing team
                         </Typography>
                         <Typography variant="body1" align="center" gutterBottom>
-                            If one of your team members has already created a team, all you need to do is fill in the
-                            team code here.
+                            If one of your team members has already created a
+                            team, all you need to do is fill in the team code
+                            here.
                         </Typography>
                         <Box
                             mt={2}
@@ -85,7 +102,11 @@ const JoinTeam = ({ enqueueSnackbar, createTeam, joinTeam, event }) => {
                             alignItems="center"
                             justifyContent="center"
                         >
-                            <TextInput value={code} onChange={setCode} label="Your team code here" />
+                            <TextInput
+                                value={code}
+                                onChange={setCode}
+                                label="Your team code here"
+                            />
                             <Box p={1} />
                             <Button
                                 loading={loading}
@@ -106,10 +127,17 @@ const JoinTeam = ({ enqueueSnackbar, createTeam, joinTeam, event }) => {
                             Create a new team
                         </Typography>
                         <Typography variant="body1" align="center" gutterBottom>
-                            You can also create a new team, and you'll be given a unique team code. You can then share
-                            this code with people you want to invite to your team.
+                            You can also create a new team, and you'll be given
+                            a unique team code. You can then share this code
+                            with people you want to invite to your team.
                         </Typography>
-                        <Box mt={2} width="200px" display="flex" alignItems="center" justifyContent="center">
+                        <Box
+                            mt={2}
+                            width="200px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
                             <Button
                                 loading={loading}
                                 onClick={handleCreate}
@@ -124,21 +152,5 @@ const JoinTeam = ({ enqueueSnackbar, createTeam, joinTeam, event }) => {
                 </Grid>
             </Grid>
         </Box>
-    );
-};
-
-const mapState = state => ({
-    event: DashboardSelectors.event(state)
-});
-
-const mapDispatch = dispatch => ({
-    createTeam: slug => dispatch(DashboardActions.createTeam(slug)),
-    joinTeam: (slug, code) => dispatch(DashboardActions.joinTeam(slug, code))
-});
-
-export default withSnackbar(
-    connect(
-        mapState,
-        mapDispatch
-    )(JoinTeam)
-);
+    )
+}

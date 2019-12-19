@@ -1,33 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import GroupIcon from '@material-ui/icons/Group';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
-import AmpStoriesIcon from '@material-ui/icons/AmpStories';
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
-import StarRateIcon from '@material-ui/icons/StarRate';
-import HowToVoteIcon from '@material-ui/icons/HowToVote';
+import { useRouteMatch, useLocation } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import GroupIcon from '@material-ui/icons/Group'
+import DashboardIcon from '@material-ui/icons/Dashboard'
+import FingerprintIcon from '@material-ui/icons/Fingerprint'
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff'
+import AmpStoriesIcon from '@material-ui/icons/AmpStories'
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
+import StarRateIcon from '@material-ui/icons/StarRate'
+import HowToVoteIcon from '@material-ui/icons/HowToVote'
 
-import SidebarLayout from 'components/layouts/SidebarLayout';
-import Image from 'components/generic/Image';
-import BasicNavBar from 'components/navbars/BasicNavBar';
-import PageWrapper from 'components/layouts/PageWrapper';
+import SidebarLayout from 'components/layouts/SidebarLayout'
+import Image from 'components/generic/Image'
+import BasicNavBar from 'components/navbars/BasicNavBar'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-import DefaultPage from './default';
-import FinalistVotingPage from './finalist-voting';
-import TeamPage from './team';
-import ProjectPage from './project';
-import ReviewingPage from './reviewing';
-import TravelGrantPage from './travel-grant';
-import EventIDPage from './event-id';
-import HackerpackPage from './hackerpack';
+import DefaultPage from './default'
+import FinalistVotingPage from './finalist-voting'
+import TeamPage from './team'
+import ProjectPage from './project'
+import ReviewingPage from './reviewing'
+import TravelGrantPage from './travel-grant'
+import EventIDPage from './event-id'
+import HackerpackPage from './hackerpack'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as DashboardActions from 'redux/dashboard/actions';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -36,43 +36,48 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     sidebarLogo: {
         width: '100%',
-        objectFit: 'contain'
-    }
-}));
+        objectFit: 'contain',
+    },
+}))
 
 export default () => {
-    const classes = useStyles();
-    const match = useRouteMatch();
-    const location = useLocation();
-    const dispatch = useDispatch();
+    const classes = useStyles()
+    const match = useRouteMatch()
+    const location = useLocation()
+    const dispatch = useDispatch()
 
-    const event = useSelector(DashboardSelectors.event);
-    const eventLoading = useSelector(DashboardSelectors.eventLoading);
-    const registrationLoading = useSelector(DashboardSelectors.registrationLoading);
-    const team = useSelector(DashboardSelectors.team);
-    const lockedPages = useSelector(DashboardSelectors.lockedPages);
-    const shownPages = useSelector(DashboardSelectors.shownPages);
+    const event = useSelector(DashboardSelectors.event)
+    const eventLoading = useSelector(DashboardSelectors.eventLoading)
+    const registrationLoading = useSelector(
+        DashboardSelectors.registrationLoading
+    )
+    const team = useSelector(DashboardSelectors.team)
+    const lockedPages = useSelector(DashboardSelectors.lockedPages)
+    const shownPages = useSelector(DashboardSelectors.shownPages)
 
-    const { slug } = match.params;
+    const { slug } = match.params
 
     /** Update when slug changes */
     useEffect(() => {
-        dispatch(DashboardActions.updateEvent(slug));
-        dispatch(DashboardActions.updateRegistration(slug));
-        dispatch(DashboardActions.updateTeam(slug));
-    }, [slug, dispatch]);
+        dispatch(DashboardActions.updateEvent(slug))
+        dispatch(DashboardActions.updateRegistration(slug))
+        dispatch(DashboardActions.updateTeam(slug))
+    }, [slug, dispatch])
 
     /** Update project when team changes */
     useEffect(() => {
-        dispatch(DashboardActions.updateProject(slug));
-    }, [slug, team, dispatch]);
+        dispatch(DashboardActions.updateProject(slug))
+    }, [slug, team, dispatch])
 
     return (
-        <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
+        <PageWrapper
+            loading={eventLoading || registrationLoading}
+            wrapContent={false}
+        >
             <SidebarLayout
                 baseRoute={match.url}
                 location={location}
@@ -80,9 +85,11 @@ export default () => {
                     <div className={classes.sidebarTop}>
                         <Image
                             className={classes.sidebarLogo}
-                            publicId={event && event.logo ? event.logo.publicId : ''}
+                            publicId={
+                                event && event.logo ? event.logo.publicId : ''
+                            }
                             transformation={{
-                                width: 200
+                                width: 200,
                             }}
                         />
                     </div>
@@ -95,7 +102,7 @@ export default () => {
                         exact: true,
                         icon: <DashboardIcon />,
                         label: 'Dashboard',
-                        component: DefaultPage
+                        component: DefaultPage,
                     },
                     {
                         key: 'finals',
@@ -106,7 +113,7 @@ export default () => {
                         lockedDescription: 'Finalist voting closed',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
-                        component: FinalistVotingPage
+                        component: FinalistVotingPage,
                     },
                     {
                         key: 'team',
@@ -116,7 +123,7 @@ export default () => {
                         label: 'Team',
                         locked: lockedPages.team,
                         lockedDescription: 'Team editing not open',
-                        component: TeamPage
+                        component: TeamPage,
                     },
                     {
                         key: 'project',
@@ -127,7 +134,7 @@ export default () => {
                         hidden: !shownPages.submissions,
                         icon: <AssignmentOutlinedIcon />,
                         label: 'Project submission',
-                        component: ProjectPage
+                        component: ProjectPage,
                     },
                     {
                         key: 'reviewing',
@@ -138,7 +145,7 @@ export default () => {
                         lockedDescription: 'Reviewing closed',
                         icon: <StarRateIcon />,
                         label: 'Reviewing',
-                        component: ReviewingPage
+                        component: ReviewingPage,
                     },
                     {
                         key: 'eventid',
@@ -147,7 +154,7 @@ export default () => {
                         hidden: !shownPages.eventID,
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
-                        component: EventIDPage
+                        component: EventIDPage,
                     },
                     {
                         key: 'travelgrant',
@@ -156,7 +163,7 @@ export default () => {
                         icon: <FlightTakeoffIcon />,
                         hidden: !shownPages.travelGrant,
                         label: 'Travel grant',
-                        component: TravelGrantPage
+                        component: TravelGrantPage,
                     },
                     {
                         key: 'hackerpack',
@@ -165,10 +172,10 @@ export default () => {
                         icon: <AmpStoriesIcon />,
                         hidden: !shownPages.hackerPack,
                         label: 'Hackerpack',
-                        component: HackerpackPage
-                    }
+                        component: HackerpackPage,
+                    },
                 ]}
             />
         </PageWrapper>
-    );
-};
+    )
+}

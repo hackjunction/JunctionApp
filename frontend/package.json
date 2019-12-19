@@ -69,12 +69,40 @@
         "eject": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/eject.js",
         "lint": "eslint ./src",
         "depcheck": "depcheck .",
+        "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
         "sync-env": "sync-dotenv",
         "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint && npm run sync-env"
     },
     "eslintConfig": {
-        "extends": "react-app",
+        "env": {
+            "browser": true,
+            "es6": true
+        },
+        "extends": [
+            "react-app",
+            "prettier"
+        ],
+        "plugins": [
+            "react",
+            "prettier"
+        ],
+        "parserOptions": {
+            "ecmaVersion": 2018
+        },
         "rules": {
+            "prettier/prettier": [
+                "error",
+                {
+                    "printWidth": 80,
+                    "trailingComma": "es5",
+                    "semi": false,
+                    "jsxSingleQuote": false,
+                    "singleQuote": true,
+                    "useTabs": false,
+                    "tabWidth": 4,
+                    "bracketSpacing": true
+                }
+            ],
             "no-console": 0,
             "jsx-a11y/img-redundant-alt": 0
         }
@@ -93,8 +121,12 @@
     "devDependencies": {
         "depcheck": "^0.8.3",
         "eslint": "^6.7.2",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-config-react-app": "^5.1.0",
         "eslint-plugin-import": "^2.19.1",
         "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-prettier": "^3.1.2",
+        "prettier": "^1.19.1",
         "sync-dotenv": "^2.2.1"
     }
 }

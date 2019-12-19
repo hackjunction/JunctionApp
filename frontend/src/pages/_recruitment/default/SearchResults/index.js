@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import Empty from 'components/generic/Empty';
-import { push } from 'connected-react-router';
-import ResultCard from './ResultCard';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react'
+import Empty from 'components/generic/Empty'
+import ResultCard from './ResultCard'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@material-ui/core';
+import { Grid, Box, Typography } from '@material-ui/core'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors';
-import * as RecruitmentActions from 'redux/recruitment/actions';
+import * as RecruitmentSelectors from 'redux/recruitment/selectors'
+import * as RecruitmentActions from 'redux/recruitment/actions'
 
-import Pagination from './Pagination';
-import LoadingCard from './LoadingCard';
+import Pagination from './Pagination'
+import LoadingCard from './LoadingCard'
 
-const SearchResults = ({
-    searchResults,
-    searchResultsCount,
-    updateSearchResults,
-    filters,
-    pageSize,
-    page,
-    pageCount,
-    setNextPage,
-    setPrevPage,
-    loading,
-    paginationEnabled,
-    isFavorited
-}) => {
+export default ({ items }) => {
+    const dispatch = useDispatch()
+    const searchResults =
+        items ?? useSelector(RecruitmentSelectors.searchResults)
+    const searchResultsCount = useSelector(
+        RecruitmentSelectors.searchResultsCount
+    )
+    const loading = useSelector(RecruitmentSelectors.searchResultsLoading)
+    const filters = useSelector(RecruitmentSelectors.filters)
+    const pageSize = useSelector(RecruitmentSelectors.pageSize)
+    const page = useSelector(RecruitmentSelectors.page)
+    const pageCount = useSelector(RecruitmentSelectors.pageCount)
+    const paginationEnabled = !items
+    const isFavorited = !!items
+
     useEffect(() => {
-        updateSearchResults();
-    }, [pageSize, page, filters, updateSearchResults]); //eslint-disable-line
+        dispatch(RecruitmentActions.updateSearchResults())
+    }, [pageSize, page, filters, dispatch])
 
     const renderLoading = () => {
-        if (!loading) return null;
+        if (!loading) return null
         if (searchResults.length === 0) {
             return (
                 <Grid container spacing={2}>
@@ -51,21 +51,34 @@ const SearchResults = ({
                         </Grid>
                     ))}
                 </Grid>
-            );
+            )
         }
-        return null;
-    };
+        return null
+    }
 
     const renderResults = () => {
         if (searchResults.length === 0 && !loading) {
             if (isFavorited) {
-                return <Empty isEmpty emptyText="You haven't added any favorites" />;
+                return (
+                    <Empty
+                        isEmpty
+                        emptyText="You haven't added any favorites"
+                    />
+                )
             } else if (filters.textSearch) {
                 return (
-                    <Empty isEmpty emptyText="No results / too many results. Please try specifying your search term." />
-                );
+                    <Empty
+                        isEmpty
+                        emptyText="No results / too many results. Please try specifying your search term."
+                    />
+                )
             } else {
-                return <Empty isEmpty emptyText="No results with the selected filters." />;
+                return (
+                    <Empty
+                        isEmpty
+                        emptyText="No results with the selected filters."
+                    />
+                )
             }
         }
         return (
@@ -86,16 +99,29 @@ const SearchResults = ({
                     </Grid>
                 ))}
             </Grid>
-        );
-    };
+        )
+    }
 
     return (
         <React.Fragment>
             {paginationEnabled && (
-                <Box p={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="subtitle1">{searchResultsCount} results</Typography>
+                <Box
+                    p={2}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Typography variant="subtitle1">
+                        {searchResultsCount} results
+                    </Typography>
 
-                    <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                    <Box
+                        p={2}
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="flex-end"
+                    >
                         <Pagination />
                     </Box>
                 </Box>
@@ -103,33 +129,15 @@ const SearchResults = ({
             {renderLoading()}
             {renderResults()}
             {paginationEnabled && (
-                <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                <Box
+                    p={2}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                >
                     <Pagination />
                 </Box>
             )}
         </React.Fragment>
-    );
-};
-
-const mapState = (state, ownProps) => ({
-    searchResults: ownProps.items || RecruitmentSelectors.searchResults(state),
-    searchResultsCount: RecruitmentSelectors.searchResultsCount(state),
-    loading: RecruitmentSelectors.searchResultsLoading(state),
-    filters: RecruitmentSelectors.filters(state),
-    pageSize: RecruitmentSelectors.pageSize(state),
-    page: RecruitmentSelectors.page(state),
-    pageCount: RecruitmentSelectors.pageCount(state),
-    paginationEnabled: !ownProps.items,
-    isFavorited: !!ownProps.items
-});
-
-const mapDispatch = (dispatch, ownProps) => ({
-    updateSearchResults: ownProps.items ? () => {} : () => dispatch(RecruitmentActions.updateSearchResults()),
-    setPrevPage: () => dispatch(RecruitmentActions.setPrevPage()),
-    setNextPage: () => dispatch(RecruitmentActions.setNextPage())
-});
-
-export default connect(
-    mapState,
-    mapDispatch
-)(SearchResults);
+    )
+}
