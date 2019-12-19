@@ -12,10 +12,10 @@ import EventsRouter from './pages/_events';
 import RequiresPermission from './hocs/RequiresPermission';
 
 /** Lazy-load the access-restricted pages */
-const EventDashboardPage = lazy(() => import('./pages/EventDashboard'));
-const OrganiserDashboardRouter = lazy(() => import('./pages/OrganiserDashboard/OrganiserDashboardRouter'));
-const AccountPage = lazy(() => import('./pages/_account'));
-const RecruitmentPage = lazy(() => import('./pages/_recruitment'));
+const DashboardRouter = lazy(() => import('./pages/_dashboard'));
+const OrganiserRouter = lazy(() => import('./pages/_organise'));
+const AccountRouter = lazy(() => import('./pages/_account'));
+const RecruitmentRouter = lazy(() => import('./pages/_recruitment'));
 const ProjectsRouter = lazy(() => import('./pages/_projects'));
 
 const routes = [
@@ -51,22 +51,22 @@ const routes = [
     },
     {
         path: '/organise',
-        component: RequiresPermission(OrganiserDashboardRouter, [AuthConstants.Permissions.MANAGE_EVENT]),
+        component: RequiresPermission(OrganiserRouter, [AuthConstants.Permissions.MANAGE_EVENT]),
         exact: false
     },
     {
-        path: '/dashboard/:slug',
-        component: RequiresPermission(EventDashboardPage),
+        path: '/dashboard',
+        component: RequiresPermission(DashboardRouter),
         exact: false
     },
     {
         path: '/account',
-        component: RequiresPermission(AccountPage),
+        component: RequiresPermission(AccountRouter),
         exact: false
     },
     {
         path: '/recruitment',
-        component: RequiresPermission(RecruitmentPage, [AuthConstants.Permissions.ACCESS_RECRUITMENT]),
+        component: RequiresPermission(RecruitmentRouter, [AuthConstants.Permissions.ACCESS_RECRUITMENT]),
         exact: false
     },
     {
