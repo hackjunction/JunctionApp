@@ -6,8 +6,8 @@ import {
     EventStatuses,
     EventTypes,
     RegistrationStatuses,
-    ReviewingMethods,
-    RegistrationTravelGrantStatuses as TravelGrantStatuses
+    ReviewingMethods
+    // RegistrationTravelGrantStatuses as TravelGrantStatuses
 } from '@hackjunction/shared';
 
 export const event = state => state.dashboard.event.data;
@@ -97,63 +97,29 @@ export const isTeamValid = createSelector(team, team => {
     );
 });
 
-export const showEventID = createSelector(event, registration, (event, registration) => {
-    if (!event) return false;
-    if (event.eventType !== EventTypes.physical.id) return false;
-
-    const validStatuses = [RegistrationStatuses.asObject.confirmed.id, RegistrationStatuses.asObject.checkedIn.id];
-    if (!registration || validStatuses.indexOf(registration.status) === -1) {
-        return false;
-    }
-
-    return true;
+export const lockedPages = createSelector(event, event => {
+    return {
+        submissions: !EventHelpers.isSubmissionsOpen(event, moment),
+        reviewing: EventHelpers.isVotingPast(event, moment),
+        team: EventHelpers.isSubmissionsPast(event, moment),
+        finalistVoting: event?.winners?.votingOpen ?? false
+    };
 });
 
-export const showSubmission = createSelector(registration, registration => {
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
-        return false;
-    }
+export const shownPages = createSelector(event, registration, (event, registration) => {
+    const STATUSES = RegistrationStatuses.asObject;
 
-    return true;
-});
-
-export const isSubmissionsLocked = createSelector(event, event => {
-    return !EventHelpers.isSubmissionsOpen(event, moment);
-});
-
-export const showReviewing = createSelector(event, registration, (event, registration) => {
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return false;
-    if (!event || event.reviewMethod !== ReviewingMethods.gavelPeerReview.id) return false;
-    return true;
-});
-
-export const isReviewingLocked = createSelector(event, event => {
-    return EventHelpers.isVotingPast(event, moment);
-});
-
-export const isTeamPageLocked = createSelector(event, event => {
-    return EventHelpers.isSubmissionsPast(event, moment);
-});
-
-export const showTravelGrant = createSelector(event, registration, (event, registration) => {
-    if (!registration || registration.status !== RegistrationStatuses.asObject.checkedIn.id) return false;
-    if (!registration.travelGrant || registration.travelGrant === 0) return false;
-    return true;
-});
-
-export const showHackerPack = createSelector(event, registration, (event, registration) => {
-    if (!registration || ['checkedIn', 'confirmed'].indexOf(registration.status) === -1) return false;
-    if (!event) return false;
-    return true;
-});
-
-export const showFinalistVoting = createSelector(event, registration, (event, registration) => {
-    if (!registration || registration.status !== 'checkedIn') return false;
-    if (!event || !event.tracksEnabled || event.tracks.length === 0) return false;
-    return true;
-});
-
-export const isFinalistVotingLocked = createSelector(event, event => {
-    if (!event || !event.winners || !event.winners.votingOpen) return true;
-    return false;
+    return {
+        submissions: registration?.status === STATUSES.checkedIn.id,
+        eventID:
+            event?.eventType === EventTypes.physical.id &&
+            [STATUSES.confirmed.id, STATUSES.checkedIn.id].indexOf(registration?.status) !== -1,
+        reviewing:
+            registration?.status === STATUSES.checkedIn.id &&
+            event?.reviewMethod === ReviewingMethods.gavelPeerReview.id,
+        travelGrant: registration?.status === STATUSES.checkedIn.id && (registration?.travelGrant ?? 0) > 0,
+        finalistVoting:
+            registration?.status === STATUSES.checkedIn.id && event?.tracksEnabled && (event?.tracks?.length ?? 0) > 0,
+        hackerPack: [STATUSES.checkedIn.id, STATUSES.confirmed.id].indexOf(registration?.status) !== -1
+    };
 });
