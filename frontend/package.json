@@ -75,7 +75,7 @@
     "eslintConfig": {
         "extends": "react-app",
         "rules": {
-            "no-console": 1,
+            "no-console": 0,
             "jsx-a11y/img-redundant-alt": 0
         }
     },
