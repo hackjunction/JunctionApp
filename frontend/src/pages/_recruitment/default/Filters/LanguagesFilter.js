@@ -1,26 +1,34 @@
-import React, { useState, useCallback } from 'react';
-import { connect } from 'react-redux';
-import { Box } from '@material-ui/core';
+import React, { useState, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Box } from '@material-ui/core'
 
-import FilterItem from './FilterItem';
-import Select from 'components/inputs/Select';
+import FilterItem from './FilterItem'
+import Select from 'components/inputs/Select'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors';
-import * as RecruitmentActions from 'redux/recruitment/actions';
+import * as RecruitmentSelectors from 'redux/recruitment/selectors'
+import * as RecruitmentActions from 'redux/recruitment/actions'
 
-const LanguagesFilter = ({ filters, setFilters }) => {
-    const [draft, setDraft] = useState(filters);
+export default () => {
+    const dispatch = useDispatch()
+    const filters =
+        useSelector(RecruitmentSelectors.filters)?.spokenLanguages ?? []
+    const [draft, setDraft] = useState(filters)
 
     const handleSubmit = useCallback(() => {
-        setFilters(draft);
-    }, [draft, setFilters]);
+        dispatch(RecruitmentActions.setFiltersField('spokenLanguages', draft))
+    }, [dispatch, draft])
 
     const handleReset = useCallback(() => {
-        setDraft(filters);
-    }, [filters]);
+        setDraft(filters)
+    }, [filters])
 
     return (
-        <FilterItem label="Spoken languages" active={filters.length > 0} onSubmit={handleSubmit} onClose={handleReset}>
+        <FilterItem
+            label="Spoken languages"
+            active={filters.length > 0}
+            onSubmit={handleSubmit}
+            onClose={handleReset}
+        >
             <Box width="300px" height="300px" overflow="hidden">
                 <Select
                     label="Choose languages (must have all)"
@@ -32,18 +40,5 @@ const LanguagesFilter = ({ filters, setFilters }) => {
                 />
             </Box>
         </FilterItem>
-    );
-};
-
-const mapState = state => ({
-    filters: RecruitmentSelectors.filters(state).spokenLanguages || []
-});
-
-const mapDispatch = dispatch => ({
-    setFilters: value => dispatch(RecruitmentActions.setFiltersField('spokenLanguages', value))
-});
-
-export default connect(
-    mapState,
-    mapDispatch
-)(LanguagesFilter);
+    )
+}

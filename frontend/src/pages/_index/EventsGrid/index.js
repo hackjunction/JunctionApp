@@ -1,15 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
-import { Grid, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
+import { Grid, Typography } from '@material-ui/core'
 
-import CenteredContainer from 'components/generic/CenteredContainer';
-import EventCard from 'components/events/EventCard';
-import Button from 'components/generic/Button';
-import PageWrapper from 'components/layouts/PageWrapper';
+import CenteredContainer from 'components/generic/CenteredContainer'
+import EventCard from 'components/events/EventCard'
+import Button from 'components/generic/Button'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-const EventsGrid = ({ events, loading, push, title }) => {
+export default ({ events, loading, title }) => {
+    const dispatch = useDispatch()
     function renderEvents() {
         return events.map(event => {
             return (
@@ -20,7 +21,9 @@ const EventsGrid = ({ events, loading, push, title }) => {
                             <Button
                                 color="theme_lightgray"
                                 variant="outlined"
-                                onClick={() => push('/events/' + event.slug)}
+                                onClick={() =>
+                                    dispatch(push('/events/' + event.slug))
+                                }
                             >
                                 See more
                             </Button>,
@@ -28,20 +31,24 @@ const EventsGrid = ({ events, loading, push, title }) => {
                                 <Button
                                     color="theme_turquoise"
                                     variant="contained"
-                                    onClick={() => push('/projects/' + event.slug)}
+                                    onClick={() =>
+                                        dispatch(
+                                            push('/projects/' + event.slug)
+                                        )
+                                    }
                                 >
                                     View projects
                                 </Button>
-                            )
+                            ),
                         ]}
                     />
                 </Grid>
-            );
-        });
+            )
+        })
     }
 
     if (!events || events.length === 0) {
-        return null;
+        return null
     }
 
     return (
@@ -49,7 +56,12 @@ const EventsGrid = ({ events, loading, push, title }) => {
             loading={loading}
             render={() => (
                 <CenteredContainer>
-                    <Grid container spacing={3} direction="row" alignItems="stretch">
+                    <Grid
+                        container
+                        spacing={3}
+                        direction="row"
+                        alignItems="stretch"
+                    >
                         <Grid item xs={12}>
                             <Typography variant="h6">{title}</Typography>
                         </Grid>
@@ -58,7 +70,5 @@ const EventsGrid = ({ events, loading, push, title }) => {
                 </CenteredContainer>
             )}
         />
-    );
-};
-
-export default connect(null, { push })(EventsGrid);
+    )
+}

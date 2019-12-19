@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import { connect } from 'react-redux';
-import { Grid, Box, Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux'
+import { Grid, Box, Typography } from '@material-ui/core'
 
-import * as AccountSelectors from 'redux/account/selectors';
-import * as AccountActions from 'redux/account/actions';
+import * as AccountSelectors from 'redux/account/selectors'
+import * as AccountActions from 'redux/account/actions'
 
-import EventCardSmall from 'components/events/EventCardSmall';
+import EventCardSmall from 'components/events/EventCardSmall'
 
-const AccountDashboard = ({ registrations, updateRegistrations }) => {
+export default () => {
+    const dispatch = useDispatch()
+    const registrations = useSelector(AccountSelectors.registrations)
     useEffect(() => {
-        updateRegistrations();
-    }, [updateRegistrations]);
+        dispatch(AccountActions.updateRegistrations())
+    }, [dispatch])
 
     return (
         <Box p={2}>
@@ -28,15 +30,5 @@ const AccountDashboard = ({ registrations, updateRegistrations }) => {
                 ))}
             </Grid>
         </Box>
-    );
-};
-
-const mapStateToProps = state => ({
-    registrations: AccountSelectors.registrations(state)
-});
-
-const mapDispatchToProps = dispatch => ({
-    updateRegistrations: () => dispatch(AccountActions.updateRegistrations())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountDashboard);
+    )
+}

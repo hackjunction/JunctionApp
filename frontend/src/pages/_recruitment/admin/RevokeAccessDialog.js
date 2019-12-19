@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
 import {
     Box,
@@ -7,38 +7,48 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
-    CircularProgress
-} from '@material-ui/core';
+    CircularProgress,
+} from '@material-ui/core'
 
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux'
 
-import Button from 'components/generic/Button';
+import Button from 'components/generic/Button'
 
-import * as RecruitmentActions from 'redux/recruitment/actions';
+import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
-const RevokeAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar }) => {
-    const [loading, setLoading] = useState(false);
+export default ({ userId, onClose }) => {
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState(false)
 
     const handleRevokeAccess = useCallback(async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-            await onSubmit(userId);
-            enqueueSnackbar('Success!', { variant: 'success' });
-            onClose();
+            await dispatch(
+                RecruitmentActions.adminRevokeRecruiterAccess(userId)
+            )
+            dispatch(SnackbarActions.success('Success!'))
+            onClose()
         } catch (e) {
-            enqueueSnackbar('Something went wrong...', { variant: 'error' });
+            dispatch(SnackbarActions.error('Something went wrong...'))
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    }, [onSubmit, onClose, userId, enqueueSnackbar]);
+    }, [dispatch, userId, onClose])
 
     return (
-        <Dialog open={typeof userId !== 'undefined'} onClose={onClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Revoke access to recruitment</DialogTitle>
+        <Dialog
+            open={typeof userId !== 'undefined'}
+            onClose={onClose}
+            aria-labelledby="form-dialog-title"
+        >
+            <DialogTitle id="form-dialog-title">
+                Revoke access to recruitment
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    This means the selected user will no longer be able to access the recruitment dashboard
+                    This means the selected user will no longer be able to
+                    access the recruitment dashboard
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -48,26 +58,24 @@ const RevokeAccessDialog = ({ userId, onClose, onSubmit, enqueueSnackbar }) => {
                     </Box>
                 ) : (
                     <React.Fragment>
-                        <Button strong onClick={onClose} color="theme_white" variant="contained">
+                        <Button
+                            strong
+                            onClick={onClose}
+                            color="theme_white"
+                            variant="contained"
+                        >
                             Cancel
                         </Button>
-                        <Button strong onClick={handleRevokeAccess} color="secondary">
+                        <Button
+                            strong
+                            onClick={handleRevokeAccess}
+                            color="secondary"
+                        >
                             Revoke access
                         </Button>
                     </React.Fragment>
                 )}
             </DialogActions>
         </Dialog>
-    );
-};
-
-const mapDispatch = dispatch => ({
-    onSubmit: userId => dispatch(RecruitmentActions.adminRevokeRecruiterAccess(userId))
-});
-
-export default withSnackbar(
-    connect(
-        null,
-        mapDispatch
-    )(RevokeAccessDialog)
-);
+    )
+}

@@ -1,23 +1,31 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
-import moment from 'moment-timezone';
-import { Grid, Box, CircularProgress } from '@material-ui/core';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { useSelector } from 'react-redux'
+import moment from 'moment-timezone'
+import { Grid, CircularProgress } from '@material-ui/core'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 
-import GradientBox from 'components/generic/GradientBox';
-import { Typography } from '@material-ui/core';
-import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared';
+import GradientBox from 'components/generic/GradientBox'
+import { Typography } from '@material-ui/core'
+import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as UserSelectors from 'redux/user/selectors';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as UserSelectors from 'redux/user/selectors'
 
-import Button from 'components/generic/Button';
-import ParticipationCertificate from 'components/pdfs/ParticipationCertificate';
+import Button from 'components/generic/Button'
+import ParticipationCertificate from 'components/pdfs/ParticipationCertificate'
 
-const CertificateBlock = ({ event, userProfile, registration, project, loading }) => {
-    if (!EventHelpers.isEventOver(event, moment)) return null;
-    if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id);
+export default () => {
+    const event = useSelector(DashboardSelectors.event)
+    const registration = useSelector(DashboardSelectors.registration)
+    const userProfile = useSelector(UserSelectors.userProfile)
+    const project = useSelector(DashboardSelectors.project)
+    const eventLoading = useSelector(DashboardSelectors.eventLoading)
+    const projectLoading = useSelector(DashboardSelectors.projectLoading)
+
+    if (!EventHelpers.isEventOver(event, moment)) return null
+    if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id)
+        return null
 
     return (
         <Grid item xs={12}>
@@ -26,15 +34,21 @@ const CertificateBlock = ({ event, userProfile, registration, project, loading }
                     Participation certificate
                 </Typography>
                 <Typography variant="body1" paragraph>
-                    Thanks for being a part of {event.name}! While waiting for the next Junction event to take part in,
-                    go ahead and download your personal certificate of participation by clicking the button below!
+                    Thanks for being a part of {event.name}! While waiting for
+                    the next Junction event to take part in, go ahead and
+                    download your personal certificate of participation by
+                    clicking the button below!
                 </Typography>
-                {loading ? (
+                {eventLoading || projectLoading ? (
                     <CircularProgress size={24} />
                 ) : (
                     <PDFDownloadLink
                         document={
-                            <ParticipationCertificate event={event} project={project} userProfile={userProfile} />
+                            <ParticipationCertificate
+                                event={event}
+                                project={project}
+                                userProfile={userProfile}
+                            />
                         }
                         fileName={`certificate_${userProfile.firstName}_${userProfile.lastName}`}
                     >
@@ -45,14 +59,5 @@ const CertificateBlock = ({ event, userProfile, registration, project, loading }
                 )}
             </GradientBox>
         </Grid>
-    );
-};
-
-const mapState = state => ({
-    event: DashboardSelectors.event(state),
-    userProfile: UserSelectors.userProfile(state),
-    project: DashboardSelectors.project(state),
-    loading: DashboardSelectors.eventLoading(state) || DashboardSelectors.projectLoading(state)
-});
-
-export default connect(mapState)(CertificateBlock);
+    )
+}

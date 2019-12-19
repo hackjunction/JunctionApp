@@ -1,34 +1,48 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import moment from 'moment';
-import { Typography, List, ListItem, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import moment from 'moment'
+import { useSelector } from 'react-redux'
+import {
+    Typography,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemAvatar,
+    Avatar,
+} from '@material-ui/core'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors';
+import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: '100%'
-    }
-}));
+        width: '100%',
+    },
+}))
 
-const MessageHistory = ({ messages, user }) => {
-    const classes = useStyles();
+export default ({ user }) => {
+    const actionHistoryByUser = useSelector(
+        RecruitmentSelectors.actionHistoryByUser
+    )
+    const userHistory = actionHistoryByUser[user.userId] || []
+    const messages = userHistory.filter(action => action.type === 'message')
+
+    const classes = useStyles()
     if (messages.length === 0) {
         return (
             <Typography variant="body2">
-                No previous messages with {user.profile.firstName}. When anyone from your organisation sends them a
-                message, it'll show up here!
+                No previous messages with {user.profile.firstName}. When anyone
+                from your organisation sends them a message, it'll show up here!
             </Typography>
-        );
+        )
     }
 
     return (
         <React.Fragment>
             <Typography variant="body2">
-                Here's your message history with {user.profile.firstName}. You'll also see messages sent from other
-                people in your organisation, so that you don't accidentally send duplicates!
+                Here's your message history with {user.profile.firstName}.
+                You'll also see messages sent from other people in your
+                organisation, so that you don't accidentally send duplicates!
             </Typography>
             <List className={classes.root}>
                 {messages.map(message => (
@@ -52,7 +66,10 @@ const MessageHistory = ({ messages, user }) => {
                                         {`From ${message._recruiter.firstName} ${message._recruiter.lastName}`}
                                     </Typography>
                                     {' — '}
-                                    {message.data.message.replace(/<br>/g, '\n')}
+                                    {message.data.message.replace(
+                                        /<br>/g,
+                                        '\n'
+                                    )}
                                 </React.Fragment>
                             }
                         />
@@ -60,16 +77,5 @@ const MessageHistory = ({ messages, user }) => {
                 ))}
             </List>
         </React.Fragment>
-    );
-};
-
-const mapState = (state, ownProps) => {
-    const actionHistoryByUser = RecruitmentSelectors.actionHistoryByUser(state);
-    const userHistory = actionHistoryByUser[ownProps.user.userId] || [];
-    const messages = userHistory.filter(action => action.type === 'message');
-    return {
-        messages
-    };
-};
-
-export default connect(mapState)(MessageHistory);
+    )
+}

@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import { connect } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
-import PageWrapper from 'components/layouts/PageWrapper';
-import * as RecruitmentActions from 'redux/recruitment/actions';
-import CenteredContainer from 'components/generic/CenteredContainer';
-import BasicNavBar from 'components/navbars/BasicNavBar';
+import PageWrapper from 'components/layouts/PageWrapper'
+import * as RecruitmentActions from 'redux/recruitment/actions'
+import CenteredContainer from 'components/generic/CenteredContainer'
+import BasicNavBar from 'components/navbars/BasicNavBar'
 
-import SearchPage from './default';
-import AdminPage from './admin';
-import DetailPage from './:id';
+import SearchPage from './default'
+import AdminPage from './admin'
+import DetailPage from './:id'
 
-const RecruitmentPage = ({ location, match, updateEvents, updateActionHistory }) => {
+export default () => {
+    const dispatch = useDispatch()
     useEffect(() => {
-        updateEvents();
-        updateActionHistory();
-    }, []);
+        dispatch(RecruitmentActions.updateEvents())
+        dispatch(RecruitmentActions.updateActionHistory())
+    }, [dispatch])
 
     return (
         <PageWrapper wrapContent={false} showErrorMessage>
@@ -30,12 +31,5 @@ const RecruitmentPage = ({ location, match, updateEvents, updateActionHistory })
                 <Redirect to="/recruitment" />
             </Switch>
         </PageWrapper>
-    );
-};
-
-const mapDispatch = dispatch => ({
-    updateEvents: () => dispatch(RecruitmentActions.updateEvents()),
-    updateActionHistory: () => dispatch(RecruitmentActions.updateActionHistory())
-});
-
-export default connect(null, mapDispatch)(RecruitmentPage);
+    )
+}

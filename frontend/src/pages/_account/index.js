@@ -1,15 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
+import { useRouteMatch, useLocation } from 'react-router'
 
-import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
-import * as AuthSelectors from 'redux/auth/selectors';
-import AccountNavBar from 'components/navbars/AccountNavBar';
-import CenteredContainer from 'components/generic/CenteredContainer';
-import Dashboard from './dashboard';
-import Profile from './profile';
+import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
+import AccountNavBar from 'components/navbars/AccountNavBar'
+import CenteredContainer from 'components/generic/CenteredContainer'
+import Dashboard from './dashboard'
+import Profile from './profile'
 
-const Account = ({ match, location }) => {
+export default () => {
+    const match = useRouteMatch()
+    const location = useLocation()
     return (
         <CenteredContainer>
             <AccountNavBar />
@@ -20,24 +21,18 @@ const Account = ({ match, location }) => {
                         label: 'Dashboard',
                         key: 'dashboard',
                         path: '',
-                        component: Dashboard
+                        component: Dashboard,
                     },
                     {
                         label: 'Profile',
                         key: 'profile',
                         path: '/profile',
-                        content: Profile
-                    }
+                        content: Profile,
+                    },
                 ]}
                 baseRoute={match.url}
                 location={location}
             />
         </CenteredContainer>
-    );
-};
-
-const mapStateToProps = state => ({
-    session: AuthSelectors.getSession(state)
-});
-
-export default connect(mapStateToProps)(Account);
+    )
+}
