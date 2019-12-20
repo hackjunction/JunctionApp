@@ -1,43 +1,47 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react'
 
-import { ConnectedRouter } from 'connected-react-router';
-import { connect } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom'
 
-import routeConfig from './routes';
+import routeConfig from './routes'
 
-import * as AuthSelectors from 'redux/auth/selectors';
-import { renewSession } from 'redux/auth/actions';
-import AnalyticsService from 'services/analytics';
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthActions from 'redux/auth/actions'
+import AnalyticsService from 'services/analytics'
 
-const App = ({ isAuthenticated, isSessionExpired, renewSession, history, location }) => {
-    const [loading, setLoading] = useState(true);
+export default ({ history, location }) => {
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
+    const isSessionExpired = useSelector(AuthSelectors.isSessionExpired)
+
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        AnalyticsService.init();
-        AnalyticsService.pageView(window.location);
-        const unlisten = history.listen(AnalyticsService.pageView);
+        AnalyticsService.init()
+        AnalyticsService.pageView(window.location)
+        const unlisten = history.listen(AnalyticsService.pageView)
 
         return () => {
-            unlisten();
-        };
-    }, [location, history]);
+            unlisten()
+        }
+    }, [location, history])
 
     useEffect(() => {
         if (isAuthenticated) {
             if (isSessionExpired) {
-                setLoading(true);
-                renewSession().then(() => {
-                    setLoading(false);
-                });
+                setLoading(true)
+                dispatch(AuthActions.renewSession()).then(() => {
+                    setLoading(false)
+                })
             } else {
-                setLoading(false);
+                setLoading(false)
             }
         } else {
-            setLoading(false);
+            setLoading(false)
         }
-    }, [isAuthenticated, isSessionExpired, renewSession]);
+    }, [dispatch, isAuthenticated, isSessionExpired])
 
     return (
         <ConnectedRouter history={history}>
@@ -56,15 +60,5 @@ const App = ({ isAuthenticated, isSessionExpired, renewSession, history, locatio
                 )}
             </Suspense>
         </ConnectedRouter>
-    );
-};
-
-const mapStateToProps = state => ({
-    isSessionExpired: AuthSelectors.isSessionExpired(state),
-    isAuthenticated: AuthSelectors.isAuthenticated(state)
-});
-
-export default connect(
-    mapStateToProps,
-    { renewSession }
-)(App);
+    )
+}

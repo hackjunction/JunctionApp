@@ -1,14 +1,14 @@
-import React, { useMemo, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { findIndex } from 'lodash-es';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Tabs, Tab, Typography, Box, useMediaQuery } from '@material-ui/core';
+import React, { useMemo, useEffect, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { findIndex } from 'lodash-es'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { Tabs, Tab, Typography, Box, useMediaQuery } from '@material-ui/core'
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props
 
     return (
         <Typography
@@ -21,67 +21,66 @@ function TabPanel(props) {
         >
             <Box>{children}</Box>
         </Typography>
-    );
+    )
 }
 
 TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired
-};
+    value: PropTypes.any.isRequired,
+}
 
 function a11yProps(index) {
     return {
         id: `scrollable-auto-tab-${index}`,
-        'aria-controls': `scrollable-auto-tabpanel-${index}`
-    };
+        'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    }
 }
 
 const useStyles = makeStyles(theme => ({
     root: ({ transparent }) => ({
         flexGrow: 1,
         width: '100%',
-        backgroundColor: transparent ? 'transparent' : theme.palette.background.paper
+        backgroundColor: transparent
+            ? 'transparent'
+            : theme.palette.background.paper,
     }),
     wrapper: {
         textAlign: 'left',
-        alignItems: 'flex-start'
-    }
-}));
+        alignItems: 'flex-start',
+    },
+}))
 
-const propTypes = {
-    tabs: PropTypes.arrayOf(
-        PropTypes.shape({
-            label: PropTypes.string,
-            content: PropTypes.node,
-            path: PropTypes.string.isRequired,
-            key: PropTypes.string.isRequired
-        })
+export default ({ tabs, location, baseRoute, transparent = false }) => {
+    const dispatch = useDispatch()
+    const classes = useStyles({ transparent })
+
+    const pushRoute = useCallback(
+        path => {
+            dispatch(push(`${baseRoute}${path}`))
+        },
+        [baseRoute, dispatch]
     )
-};
-
-const MaterialTabsLayout = ({ tabs, location, baseRoute, transparent = false, pushRoute }) => {
-    const classes = useStyles({ transparent });
 
     const handleChange = (event, newValue) => {
-        pushRoute(tabs[newValue].path);
-    };
+        pushRoute(tabs[newValue].path)
+    }
 
     const activeIndex = useMemo(() => {
-        const relativePath = location.pathname.replace(baseRoute, '');
-        const idx = findIndex(tabs, item => item.path === relativePath);
-        return idx;
-    }, [baseRoute, location.pathname, tabs]);
+        const relativePath = location.pathname.replace(baseRoute, '')
+        const idx = findIndex(tabs, item => item.path === relativePath)
+        return idx
+    }, [baseRoute, location.pathname, tabs])
 
     useEffect(() => {
         if (activeIndex === -1) {
-            pushRoute(tabs[0].path);
+            pushRoute(tabs[0].path)
         }
-    }, [tabs, activeIndex, pushRoute]);
+    }, [tabs, activeIndex, pushRoute])
 
-    const safeIndex = activeIndex !== -1 ? activeIndex : 0;
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const safeIndex = activeIndex !== -1 ? activeIndex : 0
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
         <div className={classes.root}>
@@ -107,29 +106,18 @@ const MaterialTabsLayout = ({ tabs, location, baseRoute, transparent = false, pu
             <Box mt={3} p={2}>
                 <Switch>
                     {tabs.map(({ key, path, component }, index) => {
-                        return <Route key={key} exact={true} path={`${baseRoute}${path}`} component={component} />;
+                        return (
+                            <Route
+                                key={key}
+                                exact={true}
+                                path={`${baseRoute}${path}`}
+                                component={component}
+                            />
+                        )
                     })}
                     <Redirect to={baseRoute} />
                 </Switch>
             </Box>
-            {/* <Switch>
-                {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
-                    if (hidden || locked) {
-                        return null;
-                    } else {
-                        return <Route key={key} exact={exact} path={`${baseRoute}${path}`} component={component} />;
-                    }
-                })}
-                <Redirect to={baseRoute} />
-            </Switch> */}
         </div>
-    );
-};
-
-MaterialTabsLayout.propTypes = propTypes;
-
-const mapDispatch = (dispatch, ownProps) => ({
-    pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
-});
-
-export default connect(null, mapDispatch)(MaterialTabsLayout);
+    )
+}

@@ -1,50 +1,51 @@
-import React, { useState, useCallback, useMemo, forwardRef } from 'react';
-import moment from 'moment';
-import { connect } from 'react-redux';
+import React, { useState, useCallback, useMemo, forwardRef } from 'react'
+import moment from 'moment'
+import { useSelector } from 'react-redux'
 
-import EmailIcon from '@material-ui/icons/Email';
-import EditIcon from '@material-ui/icons/Edit';
-import { Box, Paper } from '@material-ui/core';
-import MaterialTable from 'components/generic/MaterialTable';
-import StatusBadge from 'components/generic/StatusBadge';
-import Tag from 'components/generic/Tag';
+import EmailIcon from '@material-ui/icons/Email'
+import EditIcon from '@material-ui/icons/Edit'
+import { Box, Paper } from '@material-ui/core'
+import MaterialTable from 'components/generic/MaterialTable'
+import StatusBadge from 'components/generic/StatusBadge'
+import Tag from 'components/generic/Tag'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
-import EditRegistrationModal from 'components/modals/EditRegistrationModal';
-import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal';
-import BulkEmailModal from 'components/modals/BulkEmailModal';
-import Empty from 'components/generic/Empty';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import EditRegistrationModal from 'components/modals/EditRegistrationModal'
+import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
+import BulkEmailModal from 'components/modals/BulkEmailModal'
+import Empty from 'components/generic/Empty'
 
-const AttendeeTable = ({
-    organiserProfilesMap,
+export default ({
     emptyRenderer,
-    event,
     loading,
     attendees = [],
     footer = null,
     title = 'Participants',
-    minimal = false
+    minimal = false,
 }) => {
-    const [editing, setEditing] = useState();
-    const [selected, setSelected] = useState([]);
-    const [bulkEdit, setBulkEdit] = useState(false);
-    const [bulkEmail, setBulkEmail] = useState(false);
+    const organiserProfilesMap = useSelector(OrganiserSelectors.organisersMap)
+    const event = useSelector(OrganiserSelectors.event)
+
+    const [editing, setEditing] = useState()
+    const [selected, setSelected] = useState([])
+    const [bulkEdit, setBulkEdit] = useState(false)
+    const [bulkEmail, setBulkEmail] = useState(false)
 
     const toggleBulkEdit = useCallback(() => {
-        setBulkEdit(!bulkEdit);
-    }, [bulkEdit]);
+        setBulkEdit(!bulkEdit)
+    }, [bulkEdit])
 
     const toggleBulkEmail = useCallback(() => {
-        setBulkEmail(!bulkEmail);
-    }, [bulkEmail]);
+        setBulkEmail(!bulkEmail)
+    }, [bulkEmail])
 
     const handleEditClose = useCallback(() => {
-        setEditing();
-    }, []);
+        setEditing()
+    }, [])
 
     const table = useMemo(() => {
         if (!loading) {
-            if (!Array.isArray(attendees) || attendees.length === 0) return null;
+            if (!Array.isArray(attendees) || attendees.length === 0) return null
         }
 
         return (
@@ -59,15 +60,19 @@ const AttendeeTable = ({
                     !minimal
                         ? [
                               {
-                                  icon: forwardRef((props, ref) => <EmailIcon {...props} ref={ref} />),
+                                  icon: forwardRef((props, ref) => (
+                                      <EmailIcon {...props} ref={ref} />
+                                  )),
                                   tooltip: 'Email selected',
-                                  onClick: toggleBulkEmail
+                                  onClick: toggleBulkEmail,
                               },
                               {
-                                  icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
+                                  icon: forwardRef((props, ref) => (
+                                      <EditIcon {...props} ref={ref} />
+                                  )),
                                   tooltip: 'Edit selected',
-                                  onClick: toggleBulkEdit
-                              }
+                                  onClick: toggleBulkEdit,
+                              },
                           ]
                         : []
                 }
@@ -78,114 +83,142 @@ const AttendeeTable = ({
                     pageSizeOptions: [5, 25, 50],
                     debounceInterval: 500,
                     search: !minimal,
-                    paging: !minimal
+                    paging: !minimal,
                 }}
                 localization={{
                     toolbar: {
                         searchPlaceholder: 'Search by name/email',
-                        nRowsSelected: '{0} selected'
-                    }
+                        nRowsSelected: '{0} selected',
+                    },
                 }}
                 components={{
                     Container: forwardRef((props, ref) =>
-                        minimal ? <Box {...props} ref={ref} /> : <Paper {...props} ref={ref} />
-                    )
+                        minimal ? (
+                            <Box {...props} ref={ref} />
+                        ) : (
+                            <Paper {...props} ref={ref} />
+                        )
+                    ),
                 }}
                 columns={[
                     {
                         title: 'First name',
                         field: 'answers.firstName',
-                        searchable: true
+                        searchable: true,
                     },
                     {
                         title: 'Last name',
                         field: 'answers.lastName',
-                        searchable: true
+                        searchable: true,
                     },
                     {
                         title: 'Email',
                         field: 'answers.email',
                         searchable: true,
-                        hidden: minimal
+                        hidden: minimal,
                     },
                     {
                         title: 'Rating',
-                        field: 'rating'
+                        field: 'rating',
                     },
                     {
                         title: 'Status',
                         field: 'status',
                         render: row => {
-                            return <StatusBadge status={row.status} />;
-                        }
+                            return <StatusBadge status={row.status} />
+                        },
                     },
                     {
                         title: 'Tags',
                         field: 'tags',
                         render: row => {
-                            const { tags } = row;
+                            const { tags } = row
                             if (!tags || !tags.length) {
-                                return '-';
+                                return '-'
                             } else {
                                 return event.tags
                                     .filter(tag => {
-                                        return tags.indexOf(tag.label) !== -1;
+                                        return tags.indexOf(tag.label) !== -1
                                     })
-                                    .map(({ color, label }) => <Tag key={label} color={color} label={label} />);
+                                    .map(({ color, label }) => (
+                                        <Tag
+                                            key={label}
+                                            color={color}
+                                            label={label}
+                                        />
+                                    ))
                             }
-                        }
+                        },
                     },
                     {
                         title: 'Submitted',
                         field: 'createdAt',
-                        render: row => moment(row.createdAt).format('MMM Do YYYY HH:mm:ss'),
+                        render: row =>
+                            moment(row.createdAt).format(
+                                'MMM Do YYYY HH:mm:ss'
+                            ),
                         sorting: true,
-                        type: 'datetime'
+                        type: 'datetime',
                     },
                     {
                         title: 'Assigned to',
                         field: 'assignedTo',
                         hidden: minimal,
                         render: row => {
-                            const userId = row.assignedTo;
-                            let text;
+                            const userId = row.assignedTo
+                            let text
                             if (!userId) {
-                                text = '-';
-                            } else if (organiserProfilesMap.hasOwnProperty(userId)) {
-                                const user = organiserProfilesMap[userId];
-                                text = `${user.firstName} ${user.lastName}`;
+                                text = '-'
+                            } else if (
+                                organiserProfilesMap.hasOwnProperty(userId)
+                            ) {
+                                const user = organiserProfilesMap[userId]
+                                text = `${user.firstName} ${user.lastName}`
                             } else {
-                                text = '???';
+                                text = '???'
                             }
-                            return text;
-                        }
-                    }
+                            return text
+                        },
+                    },
                 ]}
             />
-        );
-    }, [attendees, event.tags, loading, minimal, organiserProfilesMap, title, toggleBulkEmail, toggleBulkEdit]);
+        )
+    }, [
+        attendees,
+        event.tags,
+        loading,
+        minimal,
+        organiserProfilesMap,
+        title,
+        toggleBulkEmail,
+        toggleBulkEdit,
+    ])
 
     const renderEmpty = () => {
-        if (loading) return null;
-        if (!Array.isArray(attendees) || attendees.length !== 0) return null;
-        if (typeof emptyRenderer === 'function') return emptyRenderer();
-        return <Empty isEmpty />;
-    };
+        if (loading) return null
+        if (!Array.isArray(attendees) || attendees.length !== 0) return null
+        if (typeof emptyRenderer === 'function') return emptyRenderer()
+        return <Empty isEmpty />
+    }
 
     return (
         <React.Fragment>
-            <EditRegistrationModal registrationId={editing} onClose={handleEditClose} />
-            <BulkEditRegistrationModal visible={bulkEdit} onClose={toggleBulkEdit} registrationIds={selected} />
-            <BulkEmailModal visible={bulkEmail} onClose={toggleBulkEmail} registrationIds={selected} />
+            <EditRegistrationModal
+                registrationId={editing}
+                onClose={handleEditClose}
+            />
+            <BulkEditRegistrationModal
+                visible={bulkEdit}
+                onClose={toggleBulkEdit}
+                registrationIds={selected}
+            />
+            <BulkEmailModal
+                visible={bulkEmail}
+                onClose={toggleBulkEmail}
+                registrationIds={selected}
+            />
             {table}
             {renderEmpty()}
         </React.Fragment>
-    );
-};
-
-const mapStateToProps = state => ({
-    organiserProfilesMap: OrganiserSelectors.organisersMap(state),
-    event: OrganiserSelectors.event(state)
-});
-
-export default connect(mapStateToProps)(AttendeeTable);
+    )
+}

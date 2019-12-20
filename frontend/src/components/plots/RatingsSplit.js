@@ -1,24 +1,34 @@
-import React, { useMemo } from 'react';
-import { sortBy } from 'lodash-es';
-import { connect } from 'react-redux';
+import React, { useMemo } from 'react'
+import { sortBy } from 'lodash-es'
+import { useSelector } from 'react-redux'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Bar } from 'recharts';
+import {
+    ResponsiveContainer,
+    BarChart,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    CartesianGrid,
+    Bar,
+} from 'recharts'
 
-const RatingsSplit = ({ data }) => {
+export default () => {
+    const data = useSelector(OrganiserSelectors.registrationsByRating)
     const formattedData = useMemo(() => {
-        const result = [];
+        const result = []
 
         Object.keys(data).forEach(rating => {
             result.push({
                 rating: rating,
-                applications: data[rating]
-            });
-        });
+                applications: data[rating],
+            })
+        })
 
-        return sortBy(result, 'rating');
-    }, [data]);
+        return sortBy(result, 'rating')
+    }, [data])
 
     return (
         <ResponsiveContainer width="100%" height={400}>
@@ -28,7 +38,7 @@ const RatingsSplit = ({ data }) => {
                     top: 5,
                     right: 30,
                     left: 20,
-                    bottom: 5
+                    bottom: 5,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -39,11 +49,5 @@ const RatingsSplit = ({ data }) => {
                 <Bar dataKey="applications" fill="orange" />
             </BarChart>
         </ResponsiveContainer>
-    );
-};
-
-const mapState = state => ({
-    data: OrganiserSelectors.registrationsByRating(state)
-});
-
-export default connect(mapState)(RatingsSplit);
+    )
+}
