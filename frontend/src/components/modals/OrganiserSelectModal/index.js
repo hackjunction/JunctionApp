@@ -1,36 +1,51 @@
-import React, { useState, useCallback } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 
-import { Box, List, Button } from '@material-ui/core';
+import { Box, List, Button } from '@material-ui/core'
 
-import Modal from 'components/generic/Modal';
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import Modal from 'components/generic/Modal'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
-import UserListItem from 'components/generic/UserListItem';
+import UserListItem from 'components/generic/UserListItem'
 
-const OrganiserSelectModal = ({ open, onClose, onClear, onSelect, organisers }) => {
-    const [selected, setSelected] = useState();
+export default ({ open, onClose, onClear, onSelect }) => {
+    const organisers = useSelector(OrganiserSelectors.organisers)
+    const [selected, setSelected] = useState()
     const handleClear = useCallback(() => {
-        onClose();
-        onClear();
-    }, [onClose, onClear]);
+        onClose()
+        onClear()
+    }, [onClose, onClear])
     const handleSubmit = useCallback(() => {
-        onClose();
-        onSelect(selected);
-    }, [selected, onClose, onSelect]);
+        onClose()
+        onSelect(selected)
+    }, [selected, onClose, onSelect])
     return (
         <Modal
             isOpen={open}
             handleClose={onClose}
             title="Select a user"
             footer={
-                <Box p={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                <Box
+                    p={1}
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                >
                     <Button fullWidth onClick={handleClear}>
                         Clear selection
                     </Button>
                     <Box mt={1} />
-                    <Button onClick={handleSubmit} disabled={!selected} fullWidth variant="contained" color="primary">
-                        {selected ? `${selected.firstName} ${selected.lastName}` : 'Select a user'}
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={!selected}
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                    >
+                        {selected
+                            ? `${selected.firstName} ${selected.lastName}`
+                            : 'Select a user'}
                     </Button>
                 </Box>
             }
@@ -40,17 +55,14 @@ const OrganiserSelectModal = ({ open, onClose, onClear, onSelect, organisers }) 
                     <UserListItem
                         selectable
                         onSelect={() => setSelected(organiser)}
-                        selected={selected && selected.userId === organiser.userId}
+                        selected={
+                            selected && selected.userId === organiser.userId
+                        }
                         key={organiser.userId}
                         user={organiser}
                     />
                 ))}
             </List>
         </Modal>
-    );
-};
-
-const mapState = state => ({
-    organisers: OrganiserSelectors.organisers(state)
-});
-export default connect(mapState)(OrganiserSelectModal);
+    )
+}

@@ -1,71 +1,80 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { sortBy } from 'lodash-es';
-import { List, ListItem, ListItemText, Menu, MenuItem, Paper, Box, Divider } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import { useSelector } from 'react-redux'
+import { sortBy } from 'lodash-es'
+import {
+    List,
+    ListItem,
+    ListItemText,
+    Menu,
+    MenuItem,
+    Paper,
+    Box,
+    Divider,
+} from '@material-ui/core'
 
-import FilterForm from './FilterForm';
-import FilterList from './FilterList';
-import FilterSaveForm from './FilterSaveForm';
+import FilterForm from './FilterForm'
+import FilterList from './FilterList'
+import FilterSaveForm from './FilterSaveForm'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 const useStyles = makeStyles(theme => ({
-    root: {}
-}));
+    root: {},
+}))
 
-const FilterGroupMenu = ({
+export default ({
     onChange = () => {},
     onSelectedChange = () => {},
-    event,
-    filterGroups,
-    showEdit = true
+    showEdit = true,
 }) => {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const filterGroups = useSelector(OrganiserSelectors.filterGroups)
 
-    const [selected, setSelected] = useState();
-    const [filters, setFilters] = useState([]);
+    const classes = useStyles()
+    const [anchorEl, setAnchorEl] = React.useState(null)
+
+    const [selected, setSelected] = useState()
+    const [filters, setFilters] = useState([])
 
     useEffect(() => {
         if (selected) {
-            setFilters(selected.filters);
+            setFilters(selected.filters)
         } else {
-            setFilters([]);
+            setFilters([])
         }
-    }, [selected]);
+    }, [selected])
 
     useEffect(() => {
-        onSelectedChange(selected);
-    }, [selected, onSelectedChange]);
+        onSelectedChange(selected)
+    }, [selected, onSelectedChange])
 
     useEffect(() => {
-        onChange(filters);
-    }, [filters, onChange]);
+        onChange(filters)
+    }, [filters, onChange])
 
     const handleFilterAdd = useCallback(
         filter => {
-            setFilters(filters.concat(filter));
+            setFilters(filters.concat(filter))
         },
         [filters]
-    );
+    )
 
     const handleClickListItem = event => {
-        setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
 
     const handleMenuItemClick = option => {
         if (option.isDefault) {
-            setSelected();
+            setSelected()
         } else {
-            setSelected(option);
+            setSelected(option)
         }
-        setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
     const handleClose = () => {
-        setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
 
     const options = useMemo(() => {
         let items = [
@@ -73,26 +82,26 @@ const FilterGroupMenu = ({
                 label: 'All participants',
                 description: 'No filters',
                 filters: [],
-                isDefault: true
-            }
-        ];
+                isDefault: true,
+            },
+        ]
 
         if (showEdit) {
             items.push({
                 label: 'New filters',
                 description: 'Apply a set of custom filters',
                 filters: [],
-                isAdd: true
-            });
+                isAdd: true,
+            })
         }
 
-        items = items.concat(sortBy(filterGroups, 'label'));
+        items = items.concat(sortBy(filterGroups, 'label'))
 
-        return items;
-    }, [filterGroups, showEdit]);
+        return items
+    }, [filterGroups, showEdit])
 
-    const activeItem = selected || options[0];
-    const reservedLabels = options.map(option => option.label);
+    const activeItem = selected || options[0]
+    const reservedLabels = options.map(option => option.label)
 
     return (
         <Paper className={classes.root}>
@@ -104,14 +113,23 @@ const FilterGroupMenu = ({
                     aria-label="when device is locked"
                     onClick={handleClickListItem}
                 >
-                    <ListItemText primary={activeItem.label} secondary={activeItem.description} />
+                    <ListItemText
+                        primary={activeItem.label}
+                        secondary={activeItem.description}
+                    />
                 </ListItem>
             </List>
-            <Menu id="lock-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+            <Menu
+                id="lock-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
                 {options.map((option, index) => {
-                    let items = [];
+                    let items = []
                     if (index !== 0) {
-                        items.push(<Divider key={option.label + 'divider'} />);
+                        items.push(<Divider key={option.label + 'divider'} />)
                     }
                     items.push(
                         <MenuItem
@@ -121,11 +139,15 @@ const FilterGroupMenu = ({
                         >
                             <ListItemText
                                 primary={option.label}
-                                secondary={option.isAdd || option.isDefault ? option.description : ''}
+                                secondary={
+                                    option.isAdd || option.isDefault
+                                        ? option.description
+                                        : ''
+                                }
                             />
                         </MenuItem>
-                    );
-                    return items;
+                    )
+                    return items
                 })}
             </Menu>
             {showEdit && !activeItem.isDefault && (
@@ -146,12 +168,5 @@ const FilterGroupMenu = ({
                 </Box>
             )}
         </Paper>
-    );
-};
-
-const mapState = state => ({
-    filterGroups: OrganiserSelectors.filterGroups(state),
-    event: OrganiserSelectors.event(state)
-});
-
-export default connect(mapState)(FilterGroupMenu);
+    )
+}

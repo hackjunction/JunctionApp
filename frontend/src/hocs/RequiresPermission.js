@@ -1,86 +1,56 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
-import { difference } from 'lodash-es';
-import moment from 'moment';
+import React, { useEffect, useCallback, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
+import { push } from 'connected-react-router'
+import { difference } from 'lodash-es'
 
-import { isAuthenticated, isSessionExpired, getPermissions } from 'redux/auth/selectors';
-import * as AuthActions from 'redux/auth/actions';
-import * as UserSelectors from 'redux/user/selectors';
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthActions from 'redux/auth/actions'
+import * as UserSelectors from 'redux/user/selectors'
 
 /** Hide a component if the user doesn't have a given permission, and also redirect to login/error */
 
-export default function(ComposedComponent, requiredPermissions = []) {
-    class RequiresPermission extends React.Component {
-        static propTypes = {
-            isAuthenticated: PropTypes.bool,
-            hasProfile: PropTypes.bool,
-            permissions: PropTypes.array.isRequired,
-            pushLogin: PropTypes.func.isRequired,
-            pushError: PropTypes.func.isRequired
-        };
+export default (ComposedComponent, requiredPermissions = []) => {
+    return props => {
+        const location = useLocation()
+        const dispatch = useDispatch()
+        const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
+        const isSessionExpired = useSelector(AuthSelectors.isSessionExpired)
+        const permissions = useSelector(AuthSelectors.getPermissions)
+        const hasProfile = useSelector(UserSelectors.hasProfile)
 
-        componentDidMount() {
-            this._checkAndRedirect();
-        }
+        const hasRequiredPermissions = useMemo(() => {
+            return difference(requiredPermissions, permissions).length === 0
+        }, [permissions])
 
-        componentDidUpdate() {
-            this._checkAndRedirect();
-        }
-
-        _checkAndRedirect() {
-            const { pushLogin, pushError, location, renewSession, isSessionExpired } = this.props;
-
-            if (!this.hasProfile()) {
-                pushLogin(location ? location.pathname : '/');
+        const checkAndRedirect = useCallback(() => {
+            if (!hasProfile || !isAuthenticated) {
+                const nextRoute = location?.pathname ?? '/'
+                dispatch(push('/login', { nextRoute }))
             } else if (isSessionExpired) {
-                renewSession();
-            } else if (!this.hasRequiredPermissions()) {
-                pushError('Access Denied');
+                dispatch(AuthActions.renewSession())
+            } else if (!hasRequiredPermissions) {
+                const error = 'Access denied'
+                dispatch(push('/error', { error }))
             }
-        }
+        }, [
+            dispatch,
+            hasProfile,
+            hasRequiredPermissions,
+            isAuthenticated,
+            isSessionExpired,
+            location,
+        ])
 
-        sessionExpired() {
-            return moment().isAfter(this.props.sessionExpiresAt);
-        }
+        useEffect(() => {
+            checkAndRedirect()
+        }, [checkAndRedirect])
 
-        hasProfile() {
-            const { isAuthenticated, hasProfile } = this.props;
-            return isAuthenticated && hasProfile;
-        }
+        if (!isAuthenticated) return null
+        if (!hasProfile) return null
+        if (!hasRequiredPermissions) return null
+        if (!isSessionExpired) return null
 
-        hasRequiredPermissions() {
-            const { permissions } = this.props;
-            return difference(requiredPermissions, permissions).length === 0;
-        }
-
-        render() {
-            if (!this.hasProfile()) return null;
-            if (!this.hasRequiredPermissions()) return null;
-            if (this.sessionExpired()) return null;
-
-            return <ComposedComponent {...this.props} />;
-        }
+        return <ComposedComponent {...props} />
     }
-
-    const mapStateToProps = state => {
-        return {
-            isAuthenticated: isAuthenticated(state),
-            isSessionExpired: isSessionExpired(state),
-            permissions: getPermissions(state),
-            hasProfile: UserSelectors.hasProfile(state)
-        };
-    };
-
-    const mapDispatchToProps = dispatch => ({
-        pushLogin: nextRoute => dispatch(push('/login', { nextRoute })),
-        pushError: error => dispatch(push('/error', { error })),
-        renewSession: () => dispatch(AuthActions.renewSession())
-    });
-
-    return connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(RequiresPermission);
 }

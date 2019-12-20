@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
-import Upload from 'antd/es/upload';
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, CircularProgress } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import Upload from 'antd/es/upload'
+import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, CircularProgress } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 
-import * as AuthSelectors from 'redux/auth/selectors';
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         width: '100%',
         height: '100%',
-        background: 'gray'
+        background: 'gray',
     },
     emptyWrapper: {
         position: 'absolute',
@@ -29,12 +29,12 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     emptyWrapperText: {
         textAlign: 'center',
         color: 'white',
-        userSelect: 'none'
+        userSelect: 'none',
     },
     image: ({ resizeMode }) => ({
         position: 'absolute',
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         width: '100%',
         height: '100%',
-        objectFit: resizeMode || 'contain'
+        objectFit: resizeMode || 'contain',
     }),
     imageOverlay: {
         position: 'absolute',
@@ -58,9 +58,9 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         transition: 'opacity 0.2s ease',
         '&:hover': {
-            opacity: 1
+            opacity: 1,
         },
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     imageOverlayButton: {
         padding: theme.spacing(1),
@@ -68,104 +68,124 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'row',
         alignItems: 'center',
         '&:hover': {
-            background: 'rgba(255,255,255,0.2)'
-        }
-    }
-}));
+            background: 'rgba(255,255,255,0.2)',
+        },
+    },
+}))
 
-const ImageUpload = ({ value, onChange, uploadUrl, resizeMode = 'contain', enqueueSnackbar, idToken }) => {
-    const classes = useStyles({ resizeMode });
-    const [loading, setLoading] = useState(false);
+export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
+    const dispatch = useDispatch()
+    const idToken = useSelector(AuthSelectors.getIdToken)
+    const classes = useStyles({ resizeMode })
+    const [loading, setLoading] = useState(false)
 
     if (!uploadUrl) {
-        throw new Error('ImageUpload component must be supplied an upload url');
+        throw new Error('ImageUpload component must be supplied an upload url')
     }
 
     const beforeUpload = useCallback(
         file => {
-            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            const isJpgOrPng =
+                file.type === 'image/jpeg' || file.type === 'image/png'
             if (!isJpgOrPng) {
-                enqueueSnackbar('Please upload a .jpg or .png file');
+                dispatch(
+                    SnackbarActions.error('Please upload a .jpg or .png file')
+                )
             }
-            const isLt2M = file.size / 1024 / 1024 < 2;
+            const isLt2M = file.size / 1024 / 1024 < 2
             if (!isLt2M) {
-                enqueueSnackbar('Upload size cannot be more than 2MB');
+                dispatch(
+                    SnackbarActions.error('Upload size cannot be more than 2MB')
+                )
             }
-            return isJpgOrPng && isLt2M;
+            return isJpgOrPng && isLt2M
         },
-        [enqueueSnackbar]
-    );
+        [dispatch]
+    )
 
     const handleChange = useCallback(
         info => {
             if (info.file.status === 'uploading') {
-                setLoading(true);
-                return;
+                setLoading(true)
+                return
             }
             if (info.file.status === 'done') {
-                onChange(info.file.response);
-                setLoading(false);
+                onChange(info.file.response)
+                setLoading(false)
             }
 
             if (info.file.status === 'error') {
-                if (info.file.response && info.file.response.message) {
-                    enqueueSnackbar(info.file.response.message, { variant: 'error' });
-                } else {
-                    enqueueSnackbar('Something went wrong... Please try again', { variant: 'error' });
-                }
-                setLoading(false);
+                const message =
+                    info?.file?.response?.message ??
+                    'Something went wrong... Please try again'
+                dispatch(SnackbarActions.error(message))
+                setLoading(false)
             }
         },
-        [onChange, enqueueSnackbar]
-    );
+        [dispatch, onChange]
+    )
 
     const handleRemove = useCallback(
         e => {
-            e.stopPropagation();
-            onChange();
+            e.stopPropagation()
+            onChange()
         },
         [onChange]
-    );
+    )
 
     const renderLoading = () => {
         return (
             <Box className={classes.emptyWrapper}>
                 <CircularProgress size={24} style={{ color: 'white' }} />
             </Box>
-        );
-    };
+        )
+    }
 
     const renderImage = () => {
         return (
             <Box className={classes.imageWrapper}>
                 <img className={classes.image} src={value.url} alt="upload" />
                 <Box className={classes.imageOverlay}>
-                    <Box className={classes.imageOverlayButton} onClick={handleRemove}>
+                    <Box
+                        className={classes.imageOverlayButton}
+                        onClick={handleRemove}
+                    >
                         <DeleteIcon style={{ color: 'white' }} />
                         <Box p={1} />
-                        <Typography variant="button" style={{ color: 'white', userSelect: 'none' }}>
+                        <Typography
+                            variant="button"
+                            style={{ color: 'white', userSelect: 'none' }}
+                        >
                             Remove image
                         </Typography>
                     </Box>
-                    <Box className={classes.imageOverlayButton} onClick={() => window.open(value.url, '_blank')}>
+                    <Box
+                        className={classes.imageOverlayButton}
+                        onClick={() => window.open(value.url, '_blank')}
+                    >
                         <VisibilityIcon style={{ color: 'white' }} />
                         <Box p={1} />
-                        <Typography variant="button" style={{ color: 'white', userSelect: 'none' }}>
+                        <Typography
+                            variant="button"
+                            style={{ color: 'white', userSelect: 'none' }}
+                        >
                             View original
                         </Typography>
                     </Box>
                 </Box>
             </Box>
-        );
-    };
+        )
+    }
 
     const renderEmpty = () => {
         return (
             <Box className={classes.emptyWrapper}>
-                <Typography className={classes.emptyWrapperText}>Click or drag a file to upload</Typography>
+                <Typography className={classes.emptyWrapperText}>
+                    Click or drag a file to upload
+                </Typography>
             </Box>
-        );
-    };
+        )
+    }
 
     return (
         <Box className={classes.wrapper}>
@@ -176,7 +196,7 @@ const ImageUpload = ({ value, onChange, uploadUrl, resizeMode = 'contain', enque
                 showUploadList={false}
                 action={uploadUrl}
                 headers={{
-                    Authorization: `Bearer ${idToken}`
+                    Authorization: `Bearer ${idToken}`,
                 }}
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
@@ -186,11 +206,5 @@ const ImageUpload = ({ value, onChange, uploadUrl, resizeMode = 'contain', enque
                 {!loading && !value && renderEmpty()}
             </Upload>
         </Box>
-    );
-};
-
-const mapState = state => ({
-    idToken: AuthSelectors.getIdToken(state)
-});
-
-export default withSnackbar(connect(mapState)(ImageUpload));
+    )
+}

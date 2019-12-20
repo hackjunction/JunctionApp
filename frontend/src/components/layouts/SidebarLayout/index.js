@@ -1,16 +1,25 @@
-import React, { useMemo, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { findIndex } from 'lodash-es';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import CenteredContainer from 'components/generic/CenteredContainer/index';
-import MenuIcon from '@material-ui/icons/Menu';
-import LockIcon from '@material-ui/icons/Lock';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Hidden, IconButton, Box } from '@material-ui/core';
-import { push } from 'connected-react-router';
+import React, { useMemo, useEffect, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch } from 'react-redux'
+import { findIndex } from 'lodash-es'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import CenteredContainer from 'components/generic/CenteredContainer/index'
+import MenuIcon from '@material-ui/icons/Menu'
+import LockIcon from '@material-ui/icons/Lock'
+import {
+    Drawer,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Hidden,
+    IconButton,
+    Box,
+} from '@material-ui/core'
+import { push } from 'connected-react-router'
 
-const SIDEBAR_WIDTH = 300;
+const SIDEBAR_WIDTH = 300
 
 const useStyles = makeStyles(theme => ({
     drawer: {
@@ -19,8 +28,8 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         [theme.breakpoints.up('md')]: {
             width: SIDEBAR_WIDTH,
-            flexShrink: 0
-        }
+            flexShrink: 0,
+        },
     },
     drawerToggle: {
         padding: '10px',
@@ -28,99 +37,96 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(1),
         left: theme.spacing(1),
         background: '#fbfbfb',
-        zIndex: 100
+        zIndex: 100,
     },
     content: {
         flexGrow: 1,
         position: 'relative',
         [theme.breakpoints.up('md')]: {
-            marginLeft: SIDEBAR_WIDTH
-        }
+            marginLeft: SIDEBAR_WIDTH,
+        },
     },
     drawerPaper: {
         width: SIDEBAR_WIDTH,
         maxWidth: '80%',
-        background: 'black'
+        background: 'black',
     },
 
     listItem: {
-        color: 'rgba(255,255,255,0.6)'
+        color: 'rgba(255,255,255,0.6)',
     },
     listItemSelected: {
-        color: 'white'
+        color: 'white',
     },
     listItemTextPrimary: {
-        color: 'inherit'
+        color: 'inherit',
     },
     listItemTextSecondary: {
-        color: 'inherit'
+        color: 'inherit',
     },
     listItemIcon: {
-        color: 'inherit'
+        color: 'inherit',
     },
     pageWrapper: {
         padding: 0,
         [theme.breakpoints.up('md')]: {
-            padding: theme.spacing(2)
-        }
+            padding: theme.spacing(2),
+        },
     },
     pageWrapperInner: {
-        padding: theme.spacing(2)
-    }
-}));
+        padding: theme.spacing(2),
+    },
+}))
 
-const propTypes = {
-    topContent: PropTypes.node,
-    sidebarTopContent: PropTypes.node,
-    baseRoute: PropTypes.string.isRequired,
-    routes: PropTypes.arrayOf(
-        PropTypes.shape({
-            key: PropTypes.string.isRequired,
-            path: PropTypes.string.isRequired,
-            icon: PropTypes.node.isRequired,
-            label: PropTypes.string.isRequired,
-            component: PropTypes.node.isRequired,
-            hidden: PropTypes.bool
-        })
-    ),
-    location: PropTypes.object.isRequired
-};
-
-const SidebarLayout = React.memo(
-    ({ topContent, sidebarTopContent, baseRoute, location, routes: _routes, pushRoute }) => {
-        const classes = useStyles();
-        const routes = _routes.filter(route => !route.hidden);
+export default React.memo(
+    ({
+        topContent,
+        sidebarTopContent,
+        baseRoute,
+        location,
+        routes: _routes,
+    }) => {
+        const dispatch = useDispatch()
+        const classes = useStyles()
+        const routes = _routes.filter(route => !route.hidden)
 
         const activeIndex = useMemo(() => {
-            const relativePath = location.pathname.replace(baseRoute, '');
+            const relativePath = location.pathname.replace(baseRoute, '')
             const idx = findIndex(routes, item => {
                 if (item.exact) {
-                    return relativePath === item.path;
+                    return relativePath === item.path
                 } else {
-                    return relativePath.indexOf(item.path) !== -1;
+                    return relativePath.indexOf(item.path) !== -1
                 }
-            });
+            })
 
-            return idx;
-        }, [baseRoute, location.pathname, routes]);
+            return idx
+        }, [baseRoute, location.pathname, routes])
+
+        const pushRoute = useCallback(
+            path => {
+                dispatch(push(`${baseRoute}${path}`))
+            },
+            [baseRoute, dispatch]
+        )
 
         useEffect(() => {
             if (activeIndex === -1) {
-                pushRoute(routes[0].path);
+                pushRoute(routes[0].path)
             }
-        }, [routes, activeIndex, pushRoute]);
+        }, [routes, activeIndex, pushRoute])
 
         useEffect(() => {
-            setMobileOpen(false);
-        }, [activeIndex]);
+            setMobileOpen(false)
+        }, [activeIndex])
 
-        const safeIndex = activeIndex === -1 ? 0 : activeIndex;
+        const safeIndex = activeIndex === -1 ? 0 : activeIndex
 
-        const [mobileOpen, setMobileOpen] = React.useState(false);
+        const [mobileOpen, setMobileOpen] = React.useState(false)
 
         const handleDrawerToggle = () => {
-            setMobileOpen(!mobileOpen);
-        };
+            setMobileOpen(!mobileOpen)
+        }
 
         const drawerContent = (
             <React.Fragment>
@@ -137,27 +143,39 @@ const SidebarLayout = React.memo(
                                     selected={index === safeIndex}
                                     classes={{
                                         root: classes.listItem,
-                                        selected: classes.listItemSelected
+                                        selected: classes.listItemSelected,
                                     }}
                                     onClick={() => pushRoute(route.path)}
                                 >
-                                    <ListItemIcon className={classes.listItemIcon}>
-                                        {route.locked ? <LockIcon /> : route.icon}
+                                    <ListItemIcon
+                                        className={classes.listItemIcon}
+                                    >
+                                        {route.locked ? (
+                                            <LockIcon />
+                                        ) : (
+                                            route.icon
+                                        )}
                                     </ListItemIcon>
                                     <ListItemText
                                         classes={{
-                                            primary: classes.listItemTextPrimary,
-                                            secondary: classes.listItemTextSecondary
+                                            primary:
+                                                classes.listItemTextPrimary,
+                                            secondary:
+                                                classes.listItemTextSecondary,
                                         }}
                                         primary={route.label}
-                                        secondary={route.locked ? route.lockedDescription : ''}
+                                        secondary={
+                                            route.locked
+                                                ? route.lockedDescription
+                                                : ''
+                                        }
                                     />
                                 </ListItem>
-                            );
+                            )
                         })}
                 </List>
             </React.Fragment>
-        );
+        )
 
         return (
             <div className={classes.root}>
@@ -178,10 +196,10 @@ const SidebarLayout = React.memo(
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
                             classes={{
-                                paper: classes.drawerPaper
+                                paper: classes.drawerPaper,
                             }}
                             ModalProps={{
-                                keepMounted: true // Better open performance on mobile.
+                                keepMounted: true, // Better open performance on mobile.
                             }}
                         >
                             {drawerContent}
@@ -190,7 +208,7 @@ const SidebarLayout = React.memo(
                     <Hidden smDown implementation="css">
                         <Drawer
                             classes={{
-                                paper: classes.drawerPaper
+                                paper: classes.drawerPaper,
                             }}
                             variant="permanent"
                             anchor="left"
@@ -202,35 +220,42 @@ const SidebarLayout = React.memo(
                 </nav>
                 <main className={classes.content}>
                     {topContent}
-                    <CenteredContainer className={classes.pageWrapperInner} wrapperClass={classes.pageWrapper}>
+                    <CenteredContainer
+                        className={classes.pageWrapperInner}
+                        wrapperClass={classes.pageWrapper}
+                    >
                         <Switch>
-                            {routes.map(({ key, path, hidden, component, exact = false, locked }, index) => {
-                                if (hidden || locked) {
-                                    return null;
-                                } else {
-                                    return (
-                                        <Route
-                                            key={key}
-                                            exact={exact}
-                                            path={`${baseRoute}${path}`}
-                                            component={component}
-                                        />
-                                    );
+                            {routes.map(
+                                (
+                                    {
+                                        key,
+                                        path,
+                                        hidden,
+                                        component,
+                                        exact = false,
+                                        locked,
+                                    },
+                                    index
+                                ) => {
+                                    if (hidden || locked) {
+                                        return null
+                                    } else {
+                                        return (
+                                            <Route
+                                                key={key}
+                                                exact={exact}
+                                                path={`${baseRoute}${path}`}
+                                                component={component}
+                                            />
+                                        )
+                                    }
                                 }
-                            })}
+                            )}
                             <Redirect to={baseRoute} />
                         </Switch>
                     </CenteredContainer>
                 </main>
             </div>
-        );
+        )
     }
-);
-
-SidebarLayout.propTypes = propTypes;
-
-const mapDispatch = (dispatch, ownProps) => ({
-    pushRoute: path => dispatch(push(`${ownProps.baseRoute}${path}`))
-});
-
-export default connect(null, mapDispatch)(SidebarLayout);
+)

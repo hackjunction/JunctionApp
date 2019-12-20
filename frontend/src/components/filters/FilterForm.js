@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react'
 
-import { connect } from 'react-redux';
-import { RegistrationFields, FilterTypes } from '@hackjunction/shared';
-import { makeStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { useSelector } from 'react-redux'
+import { RegistrationFields, FilterTypes } from '@hackjunction/shared'
+import { makeStyles } from '@material-ui/core/styles'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {
     Grid,
     Button,
@@ -11,94 +11,99 @@ import {
     ExpansionPanelSummary,
     ExpansionPanelDetails,
     ExpansionPanelActions,
-    Typography
-} from '@material-ui/core';
+    Typography,
+} from '@material-ui/core'
 
-import Select from 'components/inputs/SelectOld';
-import FilterValueInput from './FilterValueInput';
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import Select from 'components/inputs/SelectOld'
+import FilterValueInput from './FilterValueInput'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
     },
     headingItem: {
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
     },
     body: {
-        padding: theme.spacing(3)
-    }
-}));
+        padding: theme.spacing(3),
+    },
+}))
 
-const FilterForm = ({ onSubmit, event }) => {
-    const classes = useStyles();
-    const [expanded, setExpanded] = useState(false);
-    const [filter, setFilter] = useState();
-    const [filterType, setFilterType] = useState();
-    const [filterValue, setFilterValue] = useState();
-
-    useEffect(() => {
-        setFilterType(undefined);
-    }, [filter]);
+export default ({ onSubmit }) => {
+    const event = useSelector(OrganiserSelectors.event)
+    const classes = useStyles()
+    const [expanded, setExpanded] = useState(false)
+    const [filter, setFilter] = useState()
+    const [filterType, setFilterType] = useState()
+    const [filterValue, setFilterValue] = useState()
 
     useEffect(() => {
-        setFilterValue(undefined);
-    }, [filterType]);
+        setFilterType(undefined)
+    }, [filter])
+
+    useEffect(() => {
+        setFilterValue(undefined)
+    }, [filterType])
 
     const toggleExpanded = useCallback(() => {
-        setExpanded(!expanded);
-    }, [expanded]);
+        setExpanded(!expanded)
+    }, [expanded])
 
     const handleClear = useCallback(() => {
-        setExpanded(false);
-        setFilter(undefined);
-        setFilterType(undefined);
-        setFilterValue(undefined);
-    }, []);
+        setExpanded(false)
+        setFilter(undefined)
+        setFilterType(undefined)
+        setFilterValue(undefined)
+    }, [])
 
     const filterParams = useMemo(() => {
-        return filter ? JSON.parse(filter) : null;
-    }, [filter]);
+        return filter ? JSON.parse(filter) : null
+    }, [filter])
 
     const submitValue = useMemo(() => {
-        if (!filterParams) return null;
-        if (!filterType) return null;
+        if (!filterParams) return null
+        if (!filterType) return null
 
         return {
             label: filterParams.label,
             path: filterParams.path,
             type: filterType,
-            value: filterValue
-        };
-    }, [filterParams, filterType, filterValue]);
+            value: filterValue,
+        }
+    }, [filterParams, filterType, filterValue])
 
     const handleSubmit = useCallback(() => {
-        onSubmit(submitValue);
-        handleClear();
-    }, [submitValue, onSubmit, handleClear]);
+        onSubmit(submitValue)
+        handleClear()
+    }, [submitValue, onSubmit, handleClear])
 
     const filterOptions = useMemo(() => {
         return RegistrationFields.filters.map(filter => ({
             value: JSON.stringify(filter),
-            label: filter.label
-        }));
-    }, []);
+            label: filter.label,
+        }))
+    }, [])
 
     const filterTypeOptions = useMemo(() => {
-        if (!filterParams) return [];
-        const options = FilterTypes.filterTypesForType[filterParams.type];
-        if (!options) return [];
+        if (!filterParams) return []
+        const options = FilterTypes.filterTypesForType[filterParams.type]
+        if (!options) return []
 
         return options.map(option => ({
             value: option,
             label: FilterTypes.filterTypes[option].label,
-            helper: FilterTypes.filterTypes[option].helper
-        }));
-    }, [filterParams]);
+            helper: FilterTypes.filterTypes[option].helper,
+        }))
+    }, [filterParams])
 
     return (
         <ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1c-content" id="panel1c-header">
+            <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1c-content"
+                id="panel1c-header"
+            >
                 <div className={classes.headingItem}>
                     <Typography color="textPrimary">Add a filter</Typography>
                 </div>
@@ -129,7 +134,9 @@ const FilterForm = ({ onSubmit, event }) => {
                     <Grid item xs={12}>
                         <FilterValueInput
                             filterType={filterType}
-                            valueType={filterParams ? filterParams.valueType : null}
+                            valueType={
+                                filterParams ? filterParams.valueType : null
+                            }
                             value={filterValue}
                             onChange={setFilterValue}
                             event={event}
@@ -139,16 +146,15 @@ const FilterForm = ({ onSubmit, event }) => {
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
                 <Button onClick={handleClear}>Cancel</Button>
-                <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!submitValue}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    disabled={!submitValue}
+                >
                     Add
                 </Button>
             </ExpansionPanelActions>
         </ExpansionPanel>
-    );
-};
-
-const mapState = state => ({
-    event: OrganiserSelectors.event(state)
-});
-
-export default connect(mapState)(FilterForm);
+    )
+}

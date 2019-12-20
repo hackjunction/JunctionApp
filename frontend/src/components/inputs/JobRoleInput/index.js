@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef } from 'react'
 import {
     Grid,
     Typography,
@@ -11,58 +11,61 @@ import {
     ListItem,
     ListItemText,
     ListItemSecondaryAction,
-    Divider
-} from '@material-ui/core';
-import { Roles } from '@hackjunction/shared';
-import { find } from 'lodash-es';
-import { withSnackbar } from 'notistack';
-import { makeStyles } from '@material-ui/core/styles';
-import Select from 'components/inputs/Select';
+    Divider,
+} from '@material-ui/core'
+import { Roles } from '@hackjunction/shared'
+import { find } from 'lodash-es'
+import { useDispatch } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import Select from 'components/inputs/Select'
+
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
     radioGroup: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'wrap'
-    }
-}));
+        flexWrap: 'wrap',
+    },
+}))
 
-const JobRoleInput = ({ enqueueSnackbar, autoFocus, value = [], onChange }) => {
-    const classes = useStyles();
-    const selectEl = useRef();
-    const [years, setYears] = useState();
-    const [role, setRole] = useState();
+export default ({ value = [], onChange, autoFocus }) => {
+    const dispatch = useDispatch()
+    const classes = useStyles()
+    const selectEl = useRef()
+    const [years, setYears] = useState()
+    const [role, setRole] = useState()
 
     const handleYearsChange = useCallback(event => {
-        setYears(event.target.value);
-    }, []);
+        setYears(event.target.value)
+    }, [])
 
     const handleAdd = useCallback(() => {
-        const item = { role, years };
+        const item = { role, years }
 
         if (find(value, item => item.role === role)) {
-            enqueueSnackbar(`You've already added ${role}`, { variant: 'warning' });
-            return;
+            dispatch(SnackbarActions.error(`You've already added ${role}`))
+            return
         }
 
-        onChange(value.concat(item));
-        setRole();
-        setYears();
-        selectEl.current.focus();
-    }, [role, years, value, enqueueSnackbar, onChange]);
+        onChange(value.concat(item))
+        setRole()
+        setYears()
+        selectEl.current.focus()
+    }, [role, years, value, onChange, dispatch])
 
     const handleRemove = useCallback(
         index => {
             onChange(
                 value.filter((item, idx) => {
-                    return index !== idx;
+                    return index !== idx
                 })
-            );
+            )
         },
         [value, onChange]
-    );
+    )
 
-    const buttonDisabled = !years || !role;
+    const buttonDisabled = !years || !role
 
     return (
         <Grid container spacing={3}>
@@ -99,8 +102,17 @@ const JobRoleInput = ({ enqueueSnackbar, autoFocus, value = [], onChange }) => {
                 </RadioGroup>
             </Grid>
             <Grid item xs={12}>
-                <Box display="flex" flexDirection="row" justifyContent="flex-end">
-                    <Button onClick={handleAdd} disabled={buttonDisabled} color="primary" variant="contained">
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                >
+                    <Button
+                        onClick={handleAdd}
+                        disabled={buttonDisabled}
+                        color="primary"
+                        variant="contained"
+                    >
                         Add
                     </Button>
                 </Box>
@@ -110,18 +122,24 @@ const JobRoleInput = ({ enqueueSnackbar, autoFocus, value = [], onChange }) => {
                     {value.map(({ role, years }, index) => [
                         <Divider key={role + '-divider'} />,
                         <ListItem key={role}>
-                            <ListItemText primary={role} secondary={Roles.getLabelForExperienceLevel(years)} />
+                            <ListItemText
+                                primary={role}
+                                secondary={Roles.getLabelForExperienceLevel(
+                                    years
+                                )}
+                            />
                             <ListItemSecondaryAction>
-                                <Button onClick={() => handleRemove(index)} color="error">
+                                <Button
+                                    onClick={() => handleRemove(index)}
+                                    color="error"
+                                >
                                     Remove
                                 </Button>
                             </ListItemSecondaryAction>
-                        </ListItem>
+                        </ListItem>,
                     ])}
                 </List>
             </Grid>
         </Grid>
-    );
-};
-
-export default withSnackbar(JobRoleInput);
+    )
+}

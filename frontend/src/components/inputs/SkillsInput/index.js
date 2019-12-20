@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef } from 'react'
 import {
     Grid,
     Typography,
@@ -11,57 +11,60 @@ import {
     ListItem,
     ListItemText,
     ListItemSecondaryAction,
-    Divider
-} from '@material-ui/core';
-import { Skills } from '@hackjunction/shared';
-import { find } from 'lodash-es';
-import { withSnackbar } from 'notistack';
-import { makeStyles } from '@material-ui/core/styles';
-import Select from 'components/inputs/Select';
+    Divider,
+} from '@material-ui/core'
+import { Skills } from '@hackjunction/shared'
+import { find } from 'lodash-es'
+import { useDispatch } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import Select from 'components/inputs/Select'
+
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
     radioGroup: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'wrap'
-    }
-}));
+        flexWrap: 'wrap',
+    },
+}))
 
-const SkillsInput = React.memo(({ value = [], onChange, onBlur, autoFocus, enqueueSnackbar }) => {
-    const classes = useStyles();
-    const selectEl = useRef(null);
-    const [level, setLevel] = useState();
-    const [skill, setSkill] = useState();
+export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
+    const dispatch = useDispatch()
+    const classes = useStyles()
+    const selectEl = useRef(null)
+    const [level, setLevel] = useState()
+    const [skill, setSkill] = useState()
 
     const handleLevelChange = useCallback(event => {
-        setLevel(event.target.value);
-    }, []);
+        setLevel(event.target.value)
+    }, [])
 
     const handleAdd = useCallback(() => {
-        const item = { skill, level };
+        const item = { skill, level }
 
         if (find(value, item => item.skill === skill)) {
-            enqueueSnackbar(`You've already added ${skill}`, { variant: 'warning' });
-            return;
+            dispatch(SnackbarActions.show(`You've already added ${skill}`))
+            return
         }
-        onChange(value.concat(item));
-        setLevel(undefined);
-        setSkill(undefined);
-        selectEl.current.focus();
-    }, [skill, level, value, onChange, enqueueSnackbar]);
+        onChange(value.concat(item))
+        setLevel(undefined)
+        setSkill(undefined)
+        selectEl.current.focus()
+    }, [skill, level, value, onChange, dispatch])
 
     const handleRemove = useCallback(
         index => {
             onChange(
                 value.filter((item, idx) => {
-                    return index !== idx;
+                    return index !== idx
                 })
-            );
+            )
         },
         [value, onChange]
-    );
+    )
 
-    const buttonDisabled = !level || !skill;
+    const buttonDisabled = !level || !skill
 
     return (
         <Grid container spacing={3}>
@@ -99,8 +102,17 @@ const SkillsInput = React.memo(({ value = [], onChange, onBlur, autoFocus, enque
                 </RadioGroup>
             </Grid>
             <Grid item xs={12}>
-                <Box display="flex" flexDirection="row" justifyContent="flex-end">
-                    <Button onClick={handleAdd} disabled={buttonDisabled} color="primary" variant="contained">
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                >
+                    <Button
+                        onClick={handleAdd}
+                        disabled={buttonDisabled}
+                        color="primary"
+                        variant="contained"
+                    >
                         Add
                     </Button>
                 </Box>
@@ -113,26 +125,33 @@ const SkillsInput = React.memo(({ value = [], onChange, onBlur, autoFocus, enque
                             <ListItemText
                                 primary={
                                     <Typography>
-                                        {skill} ({Skills.getLabelForSkillLevel(level)})
+                                        {skill} (
+                                        {Skills.getLabelForSkillLevel(level)})
                                     </Typography>
                                 }
                                 secondary={
-                                    <Typography color="textSecondary" style={{ marginRight: '50px' }}>
-                                        {Skills.getDescriptionForSkillLevel(level)}
+                                    <Typography
+                                        color="textSecondary"
+                                        style={{ marginRight: '50px' }}
+                                    >
+                                        {Skills.getDescriptionForSkillLevel(
+                                            level
+                                        )}
                                     </Typography>
                                 }
                             />
                             <ListItemSecondaryAction>
-                                <Button onClick={() => handleRemove(index)} color="error">
+                                <Button
+                                    onClick={() => handleRemove(index)}
+                                    color="error"
+                                >
                                     Remove
                                 </Button>
                             </ListItemSecondaryAction>
-                        </ListItem>
+                        </ListItem>,
                     ])}
                 </List>
             </Grid>
         </Grid>
-    );
-});
-
-export default withSnackbar(SkillsInput);
+    )
+})
