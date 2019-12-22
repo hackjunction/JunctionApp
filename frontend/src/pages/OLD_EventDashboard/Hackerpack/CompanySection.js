@@ -1,21 +1,21 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, Grid } from '@material-ui/core';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid } from '@material-ui/core'
 
-import Markdown from 'components/generic/Markdown';
+import Markdown from 'components/generic/Markdown'
 
-import Button from 'components/generic/Button';
+import Button from 'components/generic/Button'
 
-import { OutboundLink } from 'react-ga';
+import { OutboundLink } from 'react-ga'
 
 const useStyles = makeStyles(theme => ({
     companyLogo: {
-        width: '200px'
+        width: '200px',
     },
     outboundLink: {
         '& a': {
-            textDecoration: 'none !important'
-        }
+            textDecoration: 'none !important',
+        },
     },
     wrapper: {
         display: 'flex',
@@ -23,13 +23,13 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
-            alignItems: 'flex-start'
-        }
-    }
-}));
+            alignItems: 'flex-start',
+        },
+    },
+}))
 
 const CompanySection = ({ name, icon, description, link }) => {
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
         <Box className={classes.wrapper}>
@@ -42,7 +42,11 @@ const CompanySection = ({ name, icon, description, link }) => {
                     <Markdown source={description} />
                 </Typography>
                 <Box className={classes.outboundLink}>
-                    <OutboundLink eventLabel="myLabel" to={link} target="_blank">
+                    <OutboundLink
+                        eventLabel="myLabel"
+                        to={link}
+                        target="_blank"
+                    >
                         <Button color="theme_turquoise" variant="contained">
                             Redeem
                         </Button>
@@ -50,7 +54,7 @@ const CompanySection = ({ name, icon, description, link }) => {
                 </Box>
             </Box>
         </Box>
-    );
-};
+    )
+}
 
-export default CompanySection;
+export default CompanySection

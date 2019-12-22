@@ -1,25 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { connect } from 'react-redux';
-import { Grid, Paper, List, ListItem, ListSubheader, ListItemText, Typography } from '@material-ui/core';
+import { connect } from 'react-redux'
+import {
+    Grid,
+    Paper,
+    List,
+    ListItem,
+    ListSubheader,
+    ListItemText,
+    Typography,
+} from '@material-ui/core'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
-import ChallengeResults from './ChallengeResults';
+import ChallengeResults from './ChallengeResults'
 
 const ChallengesTab = ({ event }) => {
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState()
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Typography variant="subtitle1" gutterBottom>
-                    Set the final, public results for each challenge here. These are the results which will be visible
-                    in the project gallery, provided that you have set it as public. You can drag and rearrange projects
-                    within the "ranked" section of each challenge to determine a rank for them. All projects within the
-                    ranked section will have their exact rank displayed in the project gallery - as a rule of thumb each
-                    challenge should have 1-3 ranked projects, and all other projects should be left in the unranked
-                    section.
+                    Set the final, public results for each challenge here. These
+                    are the results which will be visible in the project
+                    gallery, provided that you have set it as public. You can
+                    drag and rearrange projects within the "ranked" section of
+                    each challenge to determine a rank for them. All projects
+                    within the ranked section will have their exact rank
+                    displayed in the project gallery - as a rule of thumb each
+                    challenge should have 1-3 ranked projects, and all other
+                    projects should be left in the unranked section.
                 </Typography>
             </Grid>
             <Grid item xs={12} lg={3}>
@@ -28,7 +39,11 @@ const ChallengesTab = ({ event }) => {
                         style={{ maxHeight: '500px', overflow: 'scroll' }}
                         component="nav"
                         subheader={
-                            <ListSubheader style={{ background: 'white' }} component="div" id="nested-list-subheader">
+                            <ListSubheader
+                                style={{ background: 'white' }}
+                                component="div"
+                                id="nested-list-subheader"
+                            >
                                 Choose a challenge
                             </ListSubheader>
                         }
@@ -36,15 +51,19 @@ const ChallengesTab = ({ event }) => {
                         {event.challenges.map((challenge, index) => {
                             return (
                                 <ListItem
-                                    divider={index !== event.challenges.length - 1}
+                                    divider={
+                                        index !== event.challenges.length - 1
+                                    }
                                     selected={selected?.slug === challenge.slug}
                                     button
                                     key={challenge.slug}
                                     onClick={() => setSelected(challenge)}
                                 >
-                                    <ListItemText>{challenge.name}</ListItemText>
+                                    <ListItemText>
+                                        {challenge.name}
+                                    </ListItemText>
                                 </ListItem>
-                            );
+                            )
                         })}
                     </List>
                 </Paper>
@@ -57,11 +76,11 @@ const ChallengesTab = ({ event }) => {
                 )}
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
 const mapState = state => ({
-    event: OrganiserSelectors.event(state)
-});
+    event: OrganiserSelectors.event(state),
+})
 
-export default connect(mapState)(ChallengesTab);
+export default connect(mapState)(ChallengesTab)

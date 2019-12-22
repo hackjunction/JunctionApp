@@ -1,6 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Button,
+} from '@material-ui/core'
 
 const ConfirmDialog = ({
     open,
@@ -10,23 +17,29 @@ const ConfirmDialog = ({
     title,
     message,
     cancelText = 'Cancel',
-    okText = 'OK'
+    okText = 'OK',
 }) => {
     const handleCancel = useCallback(() => {
-        onClose();
-        onCancel();
-    }, [onClose, onCancel]);
+        onClose()
+        onCancel()
+    }, [onClose, onCancel])
 
     const handleOk = useCallback(() => {
-        onClose();
-        onOk();
-    }, [onClose, onOk]);
+        onClose()
+        onOk()
+    }, [onClose, onOk])
 
     return (
-        <Dialog open={open} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <Dialog
+            open={open}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
             <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
+                <DialogContentText id="alert-dialog-description">
+                    {message}
+                </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleCancel}>{cancelText}</Button>
@@ -35,7 +48,7 @@ const ConfirmDialog = ({
                 </Button>
             </DialogActions>
         </Dialog>
-    );
-};
+    )
+}
 
-export default ConfirmDialog;
+export default ConfirmDialog

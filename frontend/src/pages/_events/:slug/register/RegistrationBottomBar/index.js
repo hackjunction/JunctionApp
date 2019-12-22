@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { Box, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 
-import ErrorDisplay from './ErrorDisplay';
-import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty';
+import ErrorDisplay from './ErrorDisplay'
+import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -20,44 +20,51 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
         background: '#000000',
         padding: theme.spacing(2),
-        zIndex: 2000
+        zIndex: 2000,
     },
     right: {
         flex: 1,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     nextButton: {
         '&.Mui-disabled': {
             background: theme.palette.primary.main,
-            opacity: 0.6
-        }
+            opacity: 0.6,
+        },
     },
     prevButton: {
-        color: 'white'
+        color: 'white',
     },
     buttonLabel: {
         [theme.breakpoints.down('sm')]: {
-            display: 'none'
-        }
+            display: 'none',
+        },
     },
     buttonIcon: {
         marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1)
-    }
-}));
+        marginRight: theme.spacing(1),
+    },
+}))
 
-const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors, dirty }) => {
-    const classes = useStyles();
-    const [enabled, setEnabled] = useState(false);
+const RegistrationBottomBar = ({
+    prevLabel,
+    onPrev,
+    nextLabel,
+    onNext,
+    errors,
+    dirty,
+}) => {
+    const classes = useStyles()
+    const [enabled, setEnabled] = useState(false)
 
     useEffect(() => {
         setTimeout(function() {
-            setEnabled(true);
-        }, 1000);
-    }, []);
+            setEnabled(true)
+        }, 1000)
+    }, [])
     return (
         <Box className={classes.wrapper}>
             {prevLabel && onPrev && (
@@ -75,13 +82,14 @@ const RegistrationBottomBar = ({ prevLabel, onPrev, nextLabel, onNext, errors, d
                     variant="contained"
                     onClick={onNext}
                 >
-                    Next <span className={classes.buttonLabel}>: {nextLabel}</span>{' '}
+                    Next{' '}
+                    <span className={classes.buttonLabel}>: {nextLabel}</span>{' '}
                     <ArrowForwardIcon className={classes.buttonIcon} />
                 </Button>
             </Box>
             <BlockExitIfDirty dirty={dirty} />
         </Box>
-    );
-};
+    )
+}
 
-export default RegistrationBottomBar;
+export default RegistrationBottomBar

@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 import {
     Box,
     Typography,
@@ -11,12 +11,12 @@ import {
     Divider,
     ListItemText,
     ListItem,
-    List
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+    List,
+} from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import Button from 'components/generic/Button';
-import AddQuestionModal from '../AddQuestionModal';
+import Button from 'components/generic/Button'
+import AddQuestionModal from '../AddQuestionModal'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -24,85 +24,94 @@ const useStyles = makeStyles(theme => ({
         background: 'white',
         boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
         borderRadius: '7px',
-        marginBottom: theme.spacing(2)
-    }
-}));
+        marginBottom: theme.spacing(2),
+    },
+}))
 
-const CustomSectionListItem = ({ section, onChange, onRemove, onEdit, onMoveDown, onMoveUp, isFirst, isLast }) => {
-    const classes = useStyles();
-    const [modalOpen, setModalOpen] = useState(false);
-    const [editing, setEditing] = useState(undefined);
-    const questions = section.questions || [];
-    const reservedNames = questions.map(q => q.name);
+const CustomSectionListItem = ({
+    section,
+    onChange,
+    onRemove,
+    onEdit,
+    onMoveDown,
+    onMoveUp,
+    isFirst,
+    isLast,
+}) => {
+    const classes = useStyles()
+    const [modalOpen, setModalOpen] = useState(false)
+    const [editing, setEditing] = useState(undefined)
+    const questions = section.questions || []
+    const reservedNames = questions.map(q => q.name)
 
     const handleAdd = useCallback(
         question => {
-            const newQuestions = questions.concat(question);
+            const newQuestions = questions.concat(question)
             onChange({
                 ...section,
-                questions: newQuestions
-            });
+                questions: newQuestions,
+            })
         },
         [onChange, questions, section]
-    );
+    )
 
     const handleEdit = useCallback(
         question => {
             const newQuestions = questions.map(q => {
                 if (q.name === question.name) {
-                    return question;
+                    return question
                 }
-                return q;
-            });
+                return q
+            })
 
             onChange({
                 ...section,
-                questions: newQuestions
-            });
-            setEditing(undefined);
+                questions: newQuestions,
+            })
+            setEditing(undefined)
         },
         [onChange, questions, section]
-    );
+    )
 
     const handleQuestionUp = useCallback(
         (question, index) => {
-            if (index === 0) return;
-            const newItems = questions.slice();
-            newItems[index] = newItems[index - 1];
-            newItems[index - 1] = question;
+            if (index === 0) return
+            const newItems = questions.slice()
+            newItems[index] = newItems[index - 1]
+            newItems[index - 1] = question
             onChange({
                 ...section,
-                questions: newItems
-            });
+                questions: newItems,
+            })
         },
         [onChange, questions, section]
-    );
+    )
 
     const handleQuestionDown = useCallback(
         (question, index) => {
-            if (index === questions.length - 1) return;
-            const newItems = questions.slice();
-            newItems[index] = newItems[index + 1];
-            newItems[index + 1] = question;
+            if (index === questions.length - 1) return
+            const newItems = questions.slice()
+            newItems[index] = newItems[index + 1]
+            newItems[index + 1] = question
             onChange({
                 ...section,
-                questions: newItems
-            });
+                questions: newItems,
+            })
         },
         [onChange, questions, section]
-    );
+    )
 
     const handleQuestionRemove = useCallback(
         (question, index) => {
-            const newItems = questions.slice();
-            newItems.splice(index, 1);
+            const newItems = questions.slice()
+            newItems.splice(index, 1)
             onChange({
                 ...section,
-                questions: newItems
-            });
+                questions: newItems,
+            })
         },
         [onChange, questions, section]
-    );
+    )
 
     return (
         <React.Fragment>
@@ -110,12 +119,19 @@ const CustomSectionListItem = ({ section, onChange, onRemove, onEdit, onMoveDown
                 <Typography variant="h6">{section.label}</Typography>
                 <List>
                     <ListItem>
-                        <ListItemText primary="Description" secondary={section.description} />
+                        <ListItemText
+                            primary="Description"
+                            secondary={section.description}
+                        />
                     </ListItem>
                     <ListItem>
                         <ListItemText
                             primary="Always shown?"
-                            secondary={!section.conditional ? `Yes` : `No (${section.conditional})`}
+                            secondary={
+                                !section.conditional
+                                    ? `Yes`
+                                    : `No (${section.conditional})`
+                            }
                         />
                     </ListItem>
                 </List>
@@ -127,36 +143,63 @@ const CustomSectionListItem = ({ section, onChange, onRemove, onEdit, onMoveDown
                                 aria-controls="panel1c-content"
                                 id="panel1c-header"
                             >
-                                <ListItemText primary={question.label} secondary={question.fieldType} />
+                                <ListItemText
+                                    primary={question.label}
+                                    secondary={question.fieldType}
+                                />
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails className={classes.details}>
                                 <List>
                                     <ListItem>
-                                        <ListItemText primary="Field type" secondary={question.fieldType} />
+                                        <ListItemText
+                                            primary="Field type"
+                                            secondary={question.fieldType}
+                                        />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary="Machine name" secondary={question.name} />
+                                        <ListItemText
+                                            primary="Machine name"
+                                            secondary={question.name}
+                                        />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary="Placeholder" secondary={question.placeholder} />
+                                        <ListItemText
+                                            primary="Placeholder"
+                                            secondary={question.placeholder}
+                                        />
                                     </ListItem>
                                     <ListItem>
                                         <ListItemText
                                             primary="Settings"
                                             secondary={
                                                 <ul>
-                                                    {question.settings.default && (
+                                                    {question.settings
+                                                        .default && (
                                                         <li>
-                                                            <strong>Default: </strong>
-                                                            {question.settings.default}
+                                                            <strong>
+                                                                Default:{' '}
+                                                            </strong>
+                                                            {
+                                                                question
+                                                                    .settings
+                                                                    .default
+                                                            }
                                                         </li>
                                                     )}
-                                                    {question.settings.options && question.settings.options.length > 0 && (
-                                                        <li>
-                                                            <strong>Options: </strong>
-                                                            {question.settings.options.join(', ')}
-                                                        </li>
-                                                    )}
+                                                    {question.settings
+                                                        .options &&
+                                                        question.settings
+                                                            .options.length >
+                                                            0 && (
+                                                            <li>
+                                                                <strong>
+                                                                    Options:{' '}
+                                                                </strong>
+                                                                {question.settings.options.join(
+                                                                    ', '
+                                                                )}
+                                                            </li>
+                                                        )}
                                                 </ul>
                                             }
                                         />
@@ -165,23 +208,35 @@ const CustomSectionListItem = ({ section, onChange, onRemove, onEdit, onMoveDown
                             </ExpansionPanelDetails>
                             <Divider />
                             <ExpansionPanelActions>
-                                <Button color="error" onClick={() => handleQuestionRemove(question, index)}>
+                                <Button
+                                    color="error"
+                                    onClick={() =>
+                                        handleQuestionRemove(question, index)
+                                    }
+                                >
                                     Remove question
                                 </Button>
-                                <Button color="theme_turquoise" onClick={() => setEditing(question)}>
+                                <Button
+                                    color="theme_turquoise"
+                                    onClick={() => setEditing(question)}
+                                >
                                     Edit question
                                 </Button>
                                 <Button
                                     color="theme_turquoise"
                                     disabled={index === 0}
-                                    onClick={() => handleQuestionUp(question, index)}
+                                    onClick={() =>
+                                        handleQuestionUp(question, index)
+                                    }
                                 >
                                     Move up
                                 </Button>
                                 <Button
                                     color="theme_turquoise"
                                     disabled={index === questions.length - 1}
-                                    onClick={() => handleQuestionDown(question, index)}
+                                    onClick={() =>
+                                        handleQuestionDown(question, index)
+                                    }
                                 >
                                     Move down
                                 </Button>
@@ -189,9 +244,18 @@ const CustomSectionListItem = ({ section, onChange, onRemove, onEdit, onMoveDown
                         </ExpansionPanel>
                     ))}
                 </Box>
-                <Box p={1} display="flex" flexDirection="row" flexWrap="wrap" justifyContent="flex-end">
+                <Box
+                    p={1}
+                    display="flex"
+                    flexDirection="row"
+                    flexWrap="wrap"
+                    justifyContent="flex-end"
+                >
                     <Button color="error">Remove section</Button>
-                    <Button color="theme_turquoise" onClick={() => setModalOpen(true)}>
+                    <Button
+                        color="theme_turquoise"
+                        onClick={() => setModalOpen(true)}
+                    >
                         Add a question
                     </Button>
                     <Button color="theme_turquoise" onClick={onEdit}>
@@ -287,7 +351,7 @@ const CustomSectionListItem = ({ section, onChange, onRemove, onEdit, onMoveDown
                 </div>
             </Box> */}
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default CustomSectionListItem;
+export default CustomSectionListItem

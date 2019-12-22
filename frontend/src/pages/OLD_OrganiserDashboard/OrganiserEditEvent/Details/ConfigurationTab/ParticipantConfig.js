@@ -1,21 +1,21 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import FormControl from 'components/inputs/FormControl';
-import BooleanInput from 'components/inputs/BooleanInput';
-import TextInput from 'components/inputs/TextInput';
+import FormControl from 'components/inputs/FormControl'
+import BooleanInput from 'components/inputs/BooleanInput'
+import TextInput from 'components/inputs/TextInput'
 
 const ParticipantConfig = ({ value = {}, onChange }) => {
-    const { limit, reviewEnabled } = value;
+    const { limit, reviewEnabled } = value
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({
                 ...value,
-                [fieldName]: fieldValue
-            });
+                [fieldName]: fieldValue,
+            })
         },
         [value, onChange]
-    );
+    )
 
     return (
         <React.Fragment>
@@ -23,7 +23,10 @@ const ParticipantConfig = ({ value = {}, onChange }) => {
                 label="Participants"
                 hint="Do you want to review registrations before allowing participants in? If not, all applicants will be automatically accepted."
             >
-                <BooleanInput value={reviewEnabled || false} onChange={value => handleChange('reviewEnabled', value)} />
+                <BooleanInput
+                    value={reviewEnabled || false}
+                    onChange={value => handleChange('reviewEnabled', value)}
+                />
             </FormControl>
             {!reviewEnabled && (
                 <FormControl hint="What is the maximum amount of participants?">
@@ -36,7 +39,7 @@ const ParticipantConfig = ({ value = {}, onChange }) => {
                 </FormControl>
             )}
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default ParticipantConfig;
+export default ParticipantConfig

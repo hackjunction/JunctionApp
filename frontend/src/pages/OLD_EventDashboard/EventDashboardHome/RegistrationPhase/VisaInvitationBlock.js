@@ -1,22 +1,24 @@
-import React, { Suspense } from 'react';
+import React, { Suspense } from 'react'
 
-import { connect } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
+import { connect } from 'react-redux'
+import { CircularProgress } from '@material-ui/core'
 
-import { RegistrationStatuses } from '@hackjunction/shared';
-import NotificationBlock from 'components/generic/NotificationBlock';
+import { RegistrationStatuses } from '@hackjunction/shared'
+import NotificationBlock from 'components/generic/NotificationBlock'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
-const VisaInvitationDrawer = React.lazy(() => import('components/modals/VisaInvitationDrawer'));
+const VisaInvitationDrawer = React.lazy(() =>
+    import('components/modals/VisaInvitationDrawer')
+)
 
-const STATUSES = RegistrationStatuses.asObject;
+const STATUSES = RegistrationStatuses.asObject
 
 const VisaInvitationBlock = ({ event, registration }) => {
-    if (!registration || !event) return null;
+    if (!registration || !event) return null
     // if (registration.answers && !registration.answers.needsTravelGrant) return null;
 
-    const statuses = [STATUSES.accepted.id, STATUSES.confirmed.id];
+    const statuses = [STATUSES.accepted.id, STATUSES.confirmed.id]
 
     if (statuses.indexOf(registration.status) !== -1) {
         return (
@@ -30,15 +32,15 @@ const VisaInvitationBlock = ({ event, registration }) => {
                     </Suspense>
                 }
             />
-        );
+        )
     }
 
-    return null;
-};
+    return null
+}
 
 const mapState = state => ({
     event: DashboardSelectors.event(state),
-    registration: DashboardSelectors.registration(state)
-});
+    registration: DashboardSelectors.registration(state),
+})
 
-export default connect(mapState)(VisaInvitationBlock);
+export default connect(mapState)(VisaInvitationBlock)

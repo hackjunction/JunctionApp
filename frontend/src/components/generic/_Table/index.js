@@ -1,8 +1,8 @@
-import Table from './Table';
-import * as SortTypes from './sortTypes';
-import SingleSelectFilter from './filters/SingleSelectFilter';
-import MultipleSelectFilter from './filters/MultipleSelectFilter';
-import ContainsSearchFilter from './filters/ContainsSearch';
+import Table from './Table'
+import * as SortTypes from './sortTypes'
+import SingleSelectFilter from './filters/SingleSelectFilter'
+import MultipleSelectFilter from './filters/MultipleSelectFilter'
+import ContainsSearchFilter from './filters/ContainsSearch'
 
 const Filters = {
     SingleSelect: SingleSelectFilter,
@@ -11,12 +11,12 @@ const Filters = {
     Disabled: {
         Filter: () => null,
         filter: null,
-        canFilter: false
-    }
-};
+        canFilter: false,
+    },
+}
 
 const Sorters = {
-    Numeric: SortTypes.SORT_NUMERIC
-};
+    Numeric: SortTypes.SORT_NUMERIC,
+}
 
-export { Table, Filters, Sorters };
+export { Table, Filters, Sorters }

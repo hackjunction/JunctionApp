@@ -1,27 +1,27 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Stepper, Step, StepLabel, StepContent } from '@material-ui/core';
+import { Stepper, Step, StepLabel, StepContent } from '@material-ui/core'
 
-import StepButtons from 'components/buttons/StepButtons';
+import StepButtons from 'components/buttons/StepButtons'
 
 const _Stepper = ({
     steps = [],
     activeStep = 0,
     onStepChange,
     onFinish,
-    stepperProps = { orientation: 'vertical' }
+    stepperProps = { orientation: 'vertical' },
 }) => {
     const handleNext = useCallback(() => {
-        onStepChange(activeStep + 1);
-    }, [onStepChange, activeStep]);
+        onStepChange(activeStep + 1)
+    }, [onStepChange, activeStep])
 
     const handleBack = useCallback(() => {
-        onStepChange(activeStep - 1);
-    }, [onStepChange, activeStep]);
+        onStepChange(activeStep - 1)
+    }, [onStepChange, activeStep])
 
     const handleDone = useCallback(() => {
-        onFinish();
-    }, [onFinish]);
+        onFinish()
+    }, [onFinish])
 
     return (
         <Stepper activeStep={activeStep} {...stepperProps}>
@@ -41,7 +41,7 @@ const _Stepper = ({
                 </Step>
             ))}
         </Stepper>
-    );
-};
+    )
+}
 
-export default _Stepper;
+export default _Stepper

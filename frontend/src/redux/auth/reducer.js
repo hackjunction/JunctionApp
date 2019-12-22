@@ -1,35 +1,35 @@
-import * as ActionTypes from './actionTypes';
+import * as ActionTypes from './actionTypes'
 
 const initialState = {
     session: {},
-    nextRoute: '/'
-};
+    nextRoute: '/',
+}
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.SET_SESSION: {
             return {
                 ...state,
-                session: action.payload
-            };
+                session: action.payload,
+            }
         }
         case ActionTypes.SET_NEXT_ROUTE: {
             return {
                 ...state,
-                nextRoute: action.payload
-            };
+                nextRoute: action.payload,
+            }
         }
         case ActionTypes.RESET_NEXT_ROUTE: {
             return {
                 ...state,
-                nextRoute: initialState.nextRoute
-            };
+                nextRoute: initialState.nextRoute,
+            }
         }
         case ActionTypes.CLEAR_SESSION: {
-            return initialState;
+            return initialState
         }
 
         default:
-            return state;
+            return state
     }
 }

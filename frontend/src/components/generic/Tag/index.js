@@ -1,29 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Chip, Avatar } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import { Chip, Avatar } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     label: ({ color }) => ({
-        ...theme.typography.overline
+        ...theme.typography.overline,
     }),
     avatar: ({ color }) => ({
-        backgroundColor: color
-    })
-}));
+        backgroundColor: color,
+    }),
+}))
 
 const propTypes = {
     color: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired
-};
+    label: PropTypes.string.isRequired,
+}
 
 const defaultProps = {
-    color: 'lightgrey'
-};
+    color: 'lightgrey',
+}
 
 const Tag = ({ color, label }) => {
-    const classes = useStyles({ color });
+    const classes = useStyles({ color })
     return (
         <Chip
             avatar={<Avatar classes={{ root: classes.avatar }}></Avatar>}
@@ -31,10 +31,10 @@ const Tag = ({ color, label }) => {
             size="small"
             label={label}
         />
-    );
-};
+    )
+}
 
-Tag.propTypes = propTypes;
-Tag.defaultProps = defaultProps;
+Tag.propTypes = propTypes
+Tag.defaultProps = defaultProps
 
-export default Tag;
+export default Tag

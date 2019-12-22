@@ -1,55 +1,62 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'
 
-import * as yup from 'yup';
-import { connect } from 'react-redux';
-import { Formik, FastField } from 'formik';
-import { ProjectSchema, EventTypes } from '@hackjunction/shared';
-import { Grid, Box } from '@material-ui/core';
-import { withSnackbar } from 'notistack';
+import * as yup from 'yup'
+import { connect } from 'react-redux'
+import { Formik, FastField } from 'formik'
+import { ProjectSchema, EventTypes } from '@hackjunction/shared'
+import { Grid, Box } from '@material-ui/core'
+import { withSnackbar } from 'notistack'
 
-import FormControl from 'components/inputs/FormControl';
-import TextInput from 'components/inputs/TextInput';
-import TextAreaInput from 'components/inputs/TextAreaInput';
-import MarkdownInput from 'components/inputs/MarkdownInput';
-import BooleanInput from 'components/inputs/BooleanInput';
-import Select from 'components/inputs/Select';
-import Button from 'components/generic/Button';
-import PageWrapper from 'components/layouts/PageWrapper';
-import ErrorsBox from 'components/generic/ErrorsBox';
-import ProjectImages from './ProjectImages';
+import FormControl from 'components/inputs/FormControl'
+import TextInput from 'components/inputs/TextInput'
+import TextAreaInput from 'components/inputs/TextAreaInput'
+import MarkdownInput from 'components/inputs/MarkdownInput'
+import BooleanInput from 'components/inputs/BooleanInput'
+import Select from 'components/inputs/Select'
+import Button from 'components/generic/Button'
+import PageWrapper from 'components/layouts/PageWrapper'
+import ErrorsBox from 'components/generic/ErrorsBox'
+import ProjectImages from './ProjectImages'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as DashboardActions from 'redux/dashboard/actions';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
 
-const SubmissionForm = ({ event, project, projectLoading, createProject, editProject, enqueueSnackbar }) => {
+const SubmissionForm = ({
+    event,
+    project,
+    projectLoading,
+    createProject,
+    editProject,
+    enqueueSnackbar,
+}) => {
     const initialValues = {
         sourcePublic: true,
-        ...project
-    };
+        ...project,
+    }
 
     const trackOptions = useMemo(() => {
-        if (!event.tracksEnabled || !event.tracks) return null;
+        if (!event.tracksEnabled || !event.tracks) return null
         return event.tracks.map(track => ({
             label: track.name,
-            value: track.slug
-        }));
-    }, [event]);
+            value: track.slug,
+        }))
+    }, [event])
 
     const challengeOptions = useMemo(() => {
-        if (!event.challengesEnabled || !event.challenges) return null;
+        if (!event.challengesEnabled || !event.challenges) return null
         return event.challenges.map(challenge => ({
             label: `${challenge.name} (${challenge.partner})`,
-            value: challenge.slug
-        }));
-    }, [event]);
+            value: challenge.slug,
+        }))
+    }, [event])
 
     const locationEnabled = useMemo(() => {
-        return event.eventType === EventTypes.physical.id;
-    }, [event]);
+        return event.eventType === EventTypes.physical.id
+    }, [event])
 
     const renderForm = formikProps => {
         if (projectLoading) {
-            return <PageWrapper loading />;
+            return <PageWrapper loading />
         }
         return (
             <React.Fragment>
@@ -61,14 +68,24 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 <FormControl
                                     label="Name"
                                     hint="A catchy name for your project"
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
                                     error={form.errors[field.name]}
                                 >
                                     <TextInput
                                         placeholder="Awesome-o 3000"
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -86,7 +103,12 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 >
                                     <ProjectImages
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -99,14 +121,24 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 <FormControl
                                     label="Punchline"
                                     hint="A short and sweet description of what your project is about. Max 300 characters."
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
                                     error={form.errors[field.name]}
                                 >
                                     <TextAreaInput
                                         placeholder="What problem does your project solve? How would you describe it in two sentences?"
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -119,13 +151,23 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 <FormControl
                                     label="Description"
                                     hint="All the juicy details about what you've made. Max 3000 characters."
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
                                     error={form.errors[field.name]}
                                 >
                                     <MarkdownInput
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                         placeholder={
                                             "Here's a few ideas:\n\n" +
                                             '- Describe the problem it solves\n' +
@@ -147,15 +189,25 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                     <FormControl
                                         label="Track"
                                         hint="Choose the track you are participating on. If you've completed multiple challenges from different tracks, choose the one that best matches your project."
-                                        touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                        touched={
+                                            form.touched[field.name] ||
+                                            formikProps.submitCount > 0
+                                        }
                                         error={form.errors[field.name]}
                                     >
                                         <Select
                                             label="Track"
                                             options={trackOptions}
                                             value={field.value}
-                                            onChange={value => form.setFieldValue(field.name, value)}
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
+                                            }
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                     </FormControl>
                                 )}
@@ -170,15 +222,25 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                     <FormControl
                                         label="Challenges"
                                         hint="Which partner challenges do you want to submit your project in? You can choose up to 5."
-                                        touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                        touched={
+                                            form.touched[field.name] ||
+                                            formikProps.submitCount > 0
+                                        }
                                         error={form.errors[field.name]}
                                     >
                                         <Select
                                             label="Challenges"
                                             options={challengeOptions}
                                             value={field.value}
-                                            onChange={value => form.setFieldValue(field.name, value)}
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
+                                            }
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                             isMulti
                                         />
                                     </FormControl>
@@ -193,15 +255,25 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 <FormControl
                                     label="Technologies & Tools"
                                     hint="Add up to 5 technologies or tools you used to build this project"
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
                                     error={form.errors[field.name]}
                                 >
                                     <Select
                                         label="Technologies & Tools"
                                         options="technology"
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                         isMulti
                                     />
                                 </FormControl>
@@ -215,13 +287,23 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 <FormControl
                                     label="Demo"
                                     hint="Have a demo to show of your project? Link it here! This can be a live version of your project running somewhere on the web, a video of it in action, or something else living on the public internet"
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
                                     error={form.errors[field.name]}
                                 >
                                     <TextInput
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                         placeholder="https://..."
                                     />
                                 </FormControl>
@@ -235,13 +317,23 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 <FormControl
                                     label="Source code"
                                     hint="A link to the repository containing your source code"
-                                    touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
                                     error={form.errors[field.name]}
                                 >
                                     <TextInput
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                         placeholder="https://..."
                                     />
                                 </FormControl>
@@ -260,7 +352,12 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                 >
                                     <BooleanInput
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -274,13 +371,23 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                                     <FormControl
                                         label="Table location"
                                         hint="Where can judges find your project? Make sure this is always correct and up-to-date!"
-                                        touched={form.touched[field.name] || formikProps.submitCount > 0}
+                                        touched={
+                                            form.touched[field.name] ||
+                                            formikProps.submitCount > 0
+                                        }
                                         error={form.errors[field.name]}
                                     >
                                         <TextInput
                                             value={field.value}
-                                            onChange={value => form.setFieldValue(field.name, value)}
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
+                                            }
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                             placeholder="E.g. A3"
                                         />
                                     </FormControl>
@@ -298,7 +405,9 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                             <Button
                                 onClick={formikProps.submitForm}
                                 fullWidth
-                                disabled={Object.keys(formikProps.errors).length > 0}
+                                disabled={
+                                    Object.keys(formikProps.errors).length > 0
+                                }
                                 color="theme_turquoise"
                                 variant="contained"
                             >
@@ -308,8 +417,8 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
                     </Grid>
                 </Grid>
             </React.Fragment>
-        );
-    };
+        )
+    }
 
     return (
         <Formik
@@ -317,47 +426,58 @@ const SubmissionForm = ({ event, project, projectLoading, createProject, editPro
             initialValues={initialValues}
             validationSchema={props => {
                 return yup.lazy(values => {
-                    return yup.object().shape(ProjectSchema(event));
-                });
+                    return yup.object().shape(ProjectSchema(event))
+                })
             }}
             onSubmit={async (values, actions) => {
-                actions.setSubmitting(true);
-                let res;
+                actions.setSubmitting(true)
+                let res
                 if (project) {
-                    res = await editProject(event.slug, values);
+                    res = await editProject(event.slug, values)
                 } else {
-                    res = await createProject(event.slug, values);
+                    res = await createProject(event.slug, values)
                 }
 
                 if (res.error) {
-                    if (res.payload && res.payload.response && res.payload.response.data) {
+                    if (
+                        res.payload &&
+                        res.payload.response &&
+                        res.payload.response.data
+                    ) {
                         enqueueSnackbar(res.payload.response.data.message, {
                             variant: 'error',
-                            autoHideDuration: 3000
-                        });
+                            autoHideDuration: 3000,
+                        })
                     } else {
-                        enqueueSnackbar('Oops, something went wrong...', { variant: 'error', autoHideDuration: 3000 });
+                        enqueueSnackbar('Oops, something went wrong...', {
+                            variant: 'error',
+                            autoHideDuration: 3000,
+                        })
                     }
                 } else {
-                    enqueueSnackbar('Success! Project submission updated', { variant: 'success' });
+                    enqueueSnackbar('Success! Project submission updated', {
+                        variant: 'success',
+                    })
                 }
-                actions.setSubmitting(false);
+                actions.setSubmitting(false)
             }}
         >
             {renderForm}
         </Formik>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     event: DashboardSelectors.event(state),
     project: DashboardSelectors.project(state),
-    projectLoading: DashboardSelectors.projectLoading(state)
-});
+    projectLoading: DashboardSelectors.projectLoading(state),
+})
 
 const mapDispatch = dispatch => ({
-    createProject: (slug, data) => dispatch(DashboardActions.createProject(slug, data)),
-    editProject: (slug, data) => dispatch(DashboardActions.editProject(slug, data))
-});
+    createProject: (slug, data) =>
+        dispatch(DashboardActions.createProject(slug, data)),
+    editProject: (slug, data) =>
+        dispatch(DashboardActions.editProject(slug, data)),
+})
 
-export default withSnackbar(connect(mapState, mapDispatch)(SubmissionForm));
+export default withSnackbar(connect(mapState, mapDispatch)(SubmissionForm))

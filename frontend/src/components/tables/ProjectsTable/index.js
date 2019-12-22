@@ -1,23 +1,23 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react'
 
-import moment from 'moment-timezone';
-import MaterialTable from 'components/generic/MaterialTable';
-import ProjectDetail from 'components/projects/ProjectDetail';
-import { Paper, Dialog } from '@material-ui/core';
-import { EventHelpers } from '@hackjunction/shared';
+import moment from 'moment-timezone'
+import MaterialTable from 'components/generic/MaterialTable'
+import ProjectDetail from 'components/projects/ProjectDetail'
+import { Paper, Dialog } from '@material-ui/core'
+import { EventHelpers } from '@hackjunction/shared'
 
 const ProjectsTable = ({ event, projects, loading }) => {
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState()
 
     const handleSelect = useCallback(project => {
-        setSelected(project);
-    }, []);
+        setSelected(project)
+    }, [])
 
     const handleClose = useCallback(() => {
-        setSelected();
-    }, []);
+        setSelected()
+    }, [])
 
-    const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
+    const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     return (
         <React.Fragment>
             <MaterialTable
@@ -51,35 +51,42 @@ const ProjectsTable = ({ event, projects, loading }) => {
                     debounceInterval: 500,
                     search: true,
                     paging: true,
-                    pageSize: 10
+                    pageSize: 10,
                 }}
                 localization={{
                     toolbar: {
                         searchPlaceholder: 'Search projects',
-                        nRowsSelected: '{0} selected'
-                    }
+                        nRowsSelected: '{0} selected',
+                    },
                 }}
                 components={{
-                    Container: forwardRef((props, ref) => <Paper {...props} ref={ref} />)
+                    Container: forwardRef((props, ref) => (
+                        <Paper {...props} ref={ref} />
+                    )),
                 }}
                 columns={[
                     {
                         title: 'Name',
                         field: 'name',
-                        searchable: true
+                        searchable: true,
                     },
                     {
                         title: 'Punchline',
                         field: 'punchline',
-                        searchable: true
+                        searchable: true,
                     },
                     {
                         title: 'Location',
-                        field: 'location'
-                    }
+                        field: 'location',
+                    },
                 ]}
             />
-            <Dialog transitionDuration={0} fullScreen open={Boolean(selected)} onClose={handleClose}>
+            <Dialog
+                transitionDuration={0}
+                fullScreen
+                open={Boolean(selected)}
+                onClose={handleClose}
+            >
                 <ProjectDetail
                     project={selected}
                     event={event}
@@ -88,7 +95,7 @@ const ProjectsTable = ({ event, projects, loading }) => {
                 />
             </Dialog>
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default ProjectsTable;
+export default ProjectsTable

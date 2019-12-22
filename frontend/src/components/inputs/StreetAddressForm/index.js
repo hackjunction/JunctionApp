@@ -1,21 +1,33 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Grid } from '@material-ui/core';
-import Select from 'components/inputs/Select';
-import TextInput from 'components/inputs/TextInput';
+import { Grid } from '@material-ui/core'
+import Select from 'components/inputs/Select'
+import TextInput from 'components/inputs/TextInput'
 
-const StreetAddressInput = ({ value = {}, onChange, onBlur, showVenueName = false }) => {
-    const { country, addressLine, addressLine2, city, postalCode, venueName } = value;
+const StreetAddressInput = ({
+    value = {},
+    onChange,
+    onBlur,
+    showVenueName = false,
+}) => {
+    const {
+        country,
+        addressLine,
+        addressLine2,
+        city,
+        postalCode,
+        venueName,
+    } = value
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({
                 ...value,
-                [fieldName]: fieldValue
-            });
+                [fieldName]: fieldValue,
+            })
         },
         [value, onChange]
-    );
+    )
 
     return (
         <Grid container spacing={3}>
@@ -45,7 +57,11 @@ const StreetAddressInput = ({ value = {}, onChange, onBlur, showVenueName = fals
                 />
             </Grid>
             <Grid item xs={8}>
-                <TextInput label="City" value={city} onChange={value => handleChange('city', value)} />
+                <TextInput
+                    label="City"
+                    value={city}
+                    onChange={value => handleChange('city', value)}
+                />
             </Grid>
             <Grid item xs={4}>
                 <TextInput
@@ -66,7 +82,7 @@ const StreetAddressInput = ({ value = {}, onChange, onBlur, showVenueName = fals
                 </Grid>
             )}
         </Grid>
-    );
-};
+    )
+}
 
-export default StreetAddressInput;
+export default StreetAddressInput

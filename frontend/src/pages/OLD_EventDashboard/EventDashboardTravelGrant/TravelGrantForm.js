@@ -1,34 +1,40 @@
-import React, { useMemo } from 'react';
-import { Formik, FastField, Field } from 'formik';
-import { Grid, Typography, Box } from '@material-ui/core';
-import { connect } from 'react-redux';
-import * as yup from 'yup';
-import { withSnackbar } from 'notistack';
-import FormControl from 'components/inputs/FormControl';
-import TextInput from 'components/inputs/TextInput';
-import Select from 'components/inputs/Select';
-import Button from 'components/generic/Button';
-import DateInput from 'components/inputs/DateInput';
-import BooleanInput from 'components/inputs/BooleanInput';
-import PdfUpload from 'components/inputs/PdfUpload';
-import StreetAddressForm from 'components/inputs/StreetAddressForm';
-import ErrorsBox from 'components/generic/ErrorsBox';
+import React, { useMemo } from 'react'
+import { Formik, FastField, Field } from 'formik'
+import { Grid, Typography, Box } from '@material-ui/core'
+import { connect } from 'react-redux'
+import * as yup from 'yup'
+import { withSnackbar } from 'notistack'
+import FormControl from 'components/inputs/FormControl'
+import TextInput from 'components/inputs/TextInput'
+import Select from 'components/inputs/Select'
+import Button from 'components/generic/Button'
+import DateInput from 'components/inputs/DateInput'
+import BooleanInput from 'components/inputs/BooleanInput'
+import PdfUpload from 'components/inputs/PdfUpload'
+import StreetAddressForm from 'components/inputs/StreetAddressForm'
+import ErrorsBox from 'components/generic/ErrorsBox'
 
-import * as UserSelectors from 'redux/user/selectors';
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as DashboardActions from 'redux/dashboard/actions';
-import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared';
+import * as UserSelectors from 'redux/user/selectors'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
+import { TravelGrantDetailsValidationSchema as schema } from '@hackjunction/shared'
 
-const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails, enqueueSnackbar }) => {
+const TravelGrantForm = ({
+    userProfile,
+    registration,
+    event,
+    updateGrantDetails,
+    enqueueSnackbar,
+}) => {
     const initialValues = useMemo(() => {
         if (registration.travelGrantDetails) {
-            return registration.travelGrantDetails;
+            return registration.travelGrantDetails
         } else {
             return {
                 legalName: {
                     firstName: userProfile.firstName,
                     middleName: '',
-                    lastName: userProfile.lastName
+                    lastName: userProfile.lastName,
                 },
                 email: userProfile.email,
                 dateOfBirth: userProfile.dateOfBirth,
@@ -38,29 +44,31 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                 hasIBAN: true,
                 IBAN: {},
                 receiptsPdf: {},
-                receiptsSum: 0
-            };
+                receiptsSum: 0,
+            }
         }
-    }, [registration, userProfile]);
+    }, [registration, userProfile])
 
     return (
         <Formik
             initialValues={initialValues}
             enableReinitialize={true}
             onSubmit={async (values, actions) => {
-                actions.setSubmitting(true);
-                const error = await updateGrantDetails(event.slug, values);
+                actions.setSubmitting(true)
+                const error = await updateGrantDetails(event.slug, values)
                 if (error) {
-                    enqueueSnackbar('Oops, something went wrong...', { variant: 'error' });
+                    enqueueSnackbar('Oops, something went wrong...', {
+                        variant: 'error',
+                    })
                 } else {
-                    enqueueSnackbar('Success!', { variant: 'success' });
+                    enqueueSnackbar('Success!', { variant: 'success' })
                 }
-                actions.setSubmitting(false);
+                actions.setSubmitting(false)
             }}
             validationSchema={props => {
                 return yup.lazy(values => {
-                    return yup.object().shape(schema);
-                });
+                    return yup.object().shape(schema)
+                })
             }}
         >
             {formikProps => (
@@ -81,12 +89,19 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                                 label="First name(s)"
                                                 value={field.value.firstName}
                                                 onChange={value =>
-                                                    form.setFieldValue(field.name, {
-                                                        ...field.value,
-                                                        firstName: value
-                                                    })
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        {
+                                                            ...field.value,
+                                                            firstName: value,
+                                                        }
+                                                    )
                                                 }
-                                                onBlur={() => form.setFieldTouched(field.name)}
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
@@ -94,12 +109,19 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                                 label="Middle name(s)"
                                                 value={field.value.middleName}
                                                 onChange={value =>
-                                                    form.setFieldValue(field.name, {
-                                                        ...field.value,
-                                                        middleName: value
-                                                    })
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        {
+                                                            ...field.value,
+                                                            middleName: value,
+                                                        }
+                                                    )
                                                 }
-                                                onBlur={() => form.setFieldTouched(field.name)}
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -107,12 +129,19 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                                 label="Last name"
                                                 value={field.value.lastName}
                                                 onChange={value =>
-                                                    form.setFieldValue(field.name, {
-                                                        ...field.value,
-                                                        lastName: value
-                                                    })
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        {
+                                                            ...field.value,
+                                                            lastName: value,
+                                                        }
+                                                    )
                                                 }
-                                                onBlur={() => form.setFieldTouched(field.name)}
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
                                             />
                                         </Grid>
                                     </Grid>
@@ -134,11 +163,18 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                         <TextInput
                                             label="Email address"
                                             value={field.value}
-                                            onChange={value => form.setFieldValue(field.name, value)}
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
+                                            }
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                     </FormControl>
-                                );
+                                )
                             }}
                         />
                     </Grid>
@@ -157,16 +193,23 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                         options={[
                                             {
                                                 label: 'Male',
-                                                value: 'Male'
+                                                value: 'Male',
                                             },
                                             {
                                                 label: 'Female',
-                                                value: 'Female'
-                                            }
+                                                value: 'Female',
+                                            },
                                         ]}
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -184,8 +227,15 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                 >
                                     <DateInput
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -198,7 +248,12 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                 <FormControl label="Do you have a Finnish social security number?">
                                     <BooleanInput
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -220,13 +275,22 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                                 label="Social security number"
                                                 placeholder="000000-000X"
                                                 value={field.value}
-                                                onChange={value => form.setFieldValue(field.name, value)}
-                                                onBlur={() => form.setFieldTouched(field.name)}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
                                             />
                                         </FormControl>
-                                    );
+                                    )
                                 }
-                                return null;
+                                return null
                             }}
                         />
                     </Grid>
@@ -242,8 +306,15 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                 >
                                     <StreetAddressForm
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -260,10 +331,15 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                     >
                                         <BooleanInput
                                             value={field.value}
-                                            onChange={value => form.setFieldValue(field.name, value)}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
+                                            }
                                         />
                                     </FormControl>
-                                );
+                                )
                             }}
                         />
                     </Grid>
@@ -274,10 +350,11 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                 if (!form.values.hasIBAN) {
                                     return (
                                         <Typography variant="subtitle1">
-                                            If you don't have an IBAN account, you will later need to fill in your bank
-                                            details in a separate service.
+                                            If you don't have an IBAN account,
+                                            you will later need to fill in your
+                                            bank details in a separate service.
                                         </Typography>
-                                    );
+                                    )
                                 }
                                 return (
                                     <FormControl
@@ -290,14 +367,24 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                             <Grid item xs={12}>
                                                 <TextInput
                                                     label="Account number"
-                                                    value={field.value.accountNumber}
-                                                    onChange={value =>
-                                                        form.setFieldValue(field.name, {
-                                                            ...field.value,
-                                                            accountNumber: value
-                                                        })
+                                                    value={
+                                                        field.value
+                                                            .accountNumber
                                                     }
-                                                    onBlur={() => form.setFieldTouched(field.name)}
+                                                    onChange={value =>
+                                                        form.setFieldValue(
+                                                            field.name,
+                                                            {
+                                                                ...field.value,
+                                                                accountNumber: value,
+                                                            }
+                                                        )
+                                                    }
+                                                    onBlur={() =>
+                                                        form.setFieldTouched(
+                                                            field.name
+                                                        )
+                                                    }
                                                 />
                                             </Grid>
                                             <Grid item xs={12} md={6}>
@@ -305,12 +392,19 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                                     label="SWIFT/BIC"
                                                     value={field.value.swift}
                                                     onChange={value =>
-                                                        form.setFieldValue(field.name, {
-                                                            ...field.value,
-                                                            swift: value
-                                                        })
+                                                        form.setFieldValue(
+                                                            field.name,
+                                                            {
+                                                                ...field.value,
+                                                                swift: value,
+                                                            }
+                                                        )
                                                     }
-                                                    onBlur={() => form.setFieldTouched(field.name)}
+                                                    onBlur={() =>
+                                                        form.setFieldTouched(
+                                                            field.name
+                                                        )
+                                                    }
                                                 />
                                             </Grid>
                                             <Grid item xs={12} md={6}>
@@ -318,17 +412,24 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                                     label="Bank name"
                                                     value={field.value.bankName}
                                                     onChange={value =>
-                                                        form.setFieldValue(field.name, {
-                                                            ...field.value,
-                                                            bankName: value
-                                                        })
+                                                        form.setFieldValue(
+                                                            field.name,
+                                                            {
+                                                                ...field.value,
+                                                                bankName: value,
+                                                            }
+                                                        )
                                                     }
-                                                    onBlur={() => form.setFieldTouched(field.name)}
+                                                    onBlur={() =>
+                                                        form.setFieldTouched(
+                                                            field.name
+                                                        )
+                                                    }
                                                 />
                                             </Grid>
                                         </Grid>
                                     </FormControl>
-                                );
+                                )
                             }}
                         />
                     </Grid>
@@ -345,7 +446,12 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                     <PdfUpload
                                         uploadUrl={`/api/upload/${event.slug}/travel-grant-receipts`}
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -364,8 +470,15 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                                     <TextInput
                                         label="€"
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
-                                        onBlur={() => form.setFieldTouched(field.name)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
                                     />
                                 </FormControl>
                             )}
@@ -377,7 +490,11 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                         </Grid>
                     ) : (
                         <Grid item xs={12}>
-                            <Box display="flex" flexDirection="column" alignItems="center">
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                            >
                                 <Box width="100%" maxWidth="300px">
                                     <Button
                                         loading={formikProps.isSubmitting}
@@ -395,17 +512,18 @@ const TravelGrantForm = ({ userProfile, registration, event, updateGrantDetails,
                 </Grid>
             )}
         </Formik>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     userProfile: UserSelectors.userProfile(state),
     registration: DashboardSelectors.registration(state),
-    event: DashboardSelectors.event(state)
-});
+    event: DashboardSelectors.event(state),
+})
 
 const mapDispatch = dispatch => ({
-    updateGrantDetails: (slug, data) => dispatch(DashboardActions.updateRegistrationGrantDetails(slug, data))
-});
+    updateGrantDetails: (slug, data) =>
+        dispatch(DashboardActions.updateRegistrationGrantDetails(slug, data)),
+})
 
-export default withSnackbar(connect(mapState, mapDispatch)(TravelGrantForm));
+export default withSnackbar(connect(mapState, mapDispatch)(TravelGrantForm))

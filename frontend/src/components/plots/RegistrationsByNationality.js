@@ -1,19 +1,27 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'
 
-import { Box, Typography } from '@material-ui/core';
-import { groupBy, sortBy } from 'lodash-es';
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
+import { Box, Typography } from '@material-ui/core'
+import { groupBy, sortBy } from 'lodash-es'
+import {
+    ResponsiveContainer,
+    BarChart,
+    XAxis,
+    YAxis,
+    Tooltip,
+    CartesianGrid,
+    Bar,
+} from 'recharts'
 
 const RegistrationsByNationality = ({ registrations }) => {
     const formattedData = useMemo(() => {
-        const byNationality = groupBy(registrations, 'answers.nationality');
+        const byNationality = groupBy(registrations, 'answers.nationality')
         const mapped = Object.keys(byNationality).map(nationality => ({
             nationality,
-            count: byNationality[nationality].length
-        }));
+            count: byNationality[nationality].length,
+        }))
 
-        return sortBy(mapped, item => -1 * item.count);
-    }, [registrations]);
+        return sortBy(mapped, item => -1 * item.count)
+    }, [registrations])
 
     return (
         <Box p={2}>
@@ -30,7 +38,7 @@ const RegistrationsByNationality = ({ registrations }) => {
                         top: 5,
                         right: 30,
                         left: 20,
-                        bottom: 5
+                        bottom: 5,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
@@ -41,7 +49,7 @@ const RegistrationsByNationality = ({ registrations }) => {
                 </BarChart>
             </ResponsiveContainer>
         </Box>
-    );
-};
+    )
+}
 
-export default RegistrationsByNationality;
+export default RegistrationsByNationality

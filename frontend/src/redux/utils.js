@@ -1,5 +1,5 @@
-import { handle } from 'redux-pack';
-import { reduce, cloneDeep, set } from 'lodash-es';
+import { handle } from 'redux-pack'
+import { reduce, cloneDeep, set } from 'lodash-es'
 
 /**
  * Custom redux-pack handler for reducers. If you want to produce this kind of state:
@@ -38,49 +38,52 @@ import { reduce, cloneDeep, set } from 'lodash-es';
  * like _id.
  */
 
-export const buildHandler = (field, mapByField, mapIsArray) => (state, action) =>
+export const buildHandler = (field, mapByField, mapIsArray) => (
+    state,
+    action
+) =>
     handle(state, action, {
         start: prevState => ({
             ...prevState,
             [field]: {
                 ...prevState[field],
                 loading: true,
-                error: false
-            }
+                error: false,
+            },
         }),
         finish: prevState => ({
             ...prevState,
             [field]: {
                 ...prevState[field],
-                loading: false
-            }
+                loading: false,
+            },
         }),
         failure: prevState => ({
             ...prevState,
             [field]: {
                 ...prevState[field],
-                error: true
-            }
+                error: true,
+            },
         }),
         success: prevState => {
             if (mapByField) {
                 const map = reduce(
                     action.payload,
                     (res, object) => {
-                        const key = object[mapByField];
+                        const key = object[mapByField]
                         if (mapIsArray) {
                             if (res.hasOwnProperty(key)) {
-                                res[key] = res[key].concat(object);
+                                res[key] = res[key].concat(object)
                             } else {
-                                res[key] = [object];
+                                res[key] = [object]
                             }
                         } else {
-                            res[key] = object;
+                            res[key] = object
                         }
-                        return res;
+                        return res
                     },
                     {}
-                );
+                )
 
                 return {
                     ...prevState,
@@ -88,9 +91,9 @@ export const buildHandler = (field, mapByField, mapIsArray) => (state, action) =
                         ...prevState[field],
                         data: action.payload,
                         map,
-                        updated: Date.now()
-                    }
-                };
+                        updated: Date.now(),
+                    },
+                }
             }
 
             return {
@@ -98,11 +101,11 @@ export const buildHandler = (field, mapByField, mapIsArray) => (state, action) =
                 [field]: {
                     ...prevState[field],
                     data: action.payload,
-                    updated: Date.now()
-                }
-            };
-        }
-    });
+                    updated: Date.now(),
+                },
+            }
+        },
+    })
 
 /** Simple function for reducing this boilerplate:
  *
@@ -123,7 +126,7 @@ export const buildHandler = (field, mapByField, mapIsArray) => (state, action) =
  */
 
 export const buildUpdatePath = path => (state, data) => {
-    const newState = cloneDeep(state);
-    set(newState, path, data);
-    return newState;
-};
+    const newState = cloneDeep(state)
+    set(newState, path, data)
+    return newState
+}

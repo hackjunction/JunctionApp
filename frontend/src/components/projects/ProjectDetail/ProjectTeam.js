@@ -1,45 +1,55 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'
 
-import { CircularProgress, Box, List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
+import {
+    CircularProgress,
+    Box,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Avatar,
+} from '@material-ui/core'
 
-import UserProfilesService from 'services/userProfiles';
+import UserProfilesService from 'services/userProfiles'
 
 const ProjectTeam = React.memo(({ teamId, showFullTeam }) => {
-    const [teamMembers, setTeamMembers] = useState();
-    const [loading, setLoading] = useState(false);
+    const [teamMembers, setTeamMembers] = useState()
+    const [loading, setLoading] = useState(false)
 
     const fetchTeamMembers = useCallback(async () => {
-        if (!teamId) return;
-        setLoading(true);
+        if (!teamId) return
+        setLoading(true)
         try {
-            const data = await UserProfilesService.getPublicUserProfilesByTeam(teamId);
-            setTeamMembers(data);
+            const data = await UserProfilesService.getPublicUserProfilesByTeam(
+                teamId
+            )
+            setTeamMembers(data)
         } catch (err) {}
-        setLoading(false);
-    }, [teamId]);
+        setLoading(false)
+    }, [teamId])
 
     useEffect(() => {
-        fetchTeamMembers();
-    }, [fetchTeamMembers]);
+        fetchTeamMembers()
+    }, [fetchTeamMembers])
 
     if (loading) {
         return (
             <Box p={2}>
                 <CircularProgress />
             </Box>
-        );
+        )
     }
 
     if (!teamMembers) {
-        return null;
+        return null
     }
 
     const secondaryText = member => {
-        if (!showFullTeam) return null;
-        return `${member.email} // ${member.phoneNumber ? member.phoneNumber.country_code : ''} ${
-            member.phoneNumber ? member.phoneNumber.number : ''
-        }`;
-    };
+        if (!showFullTeam) return null
+        return `${member.email} // ${
+            member.phoneNumber ? member.phoneNumber.country_code : ''
+        } ${member.phoneNumber ? member.phoneNumber.number : ''}`
+    }
 
     return (
         <List>
@@ -55,7 +65,7 @@ const ProjectTeam = React.memo(({ teamId, showFullTeam }) => {
                 </ListItem>
             ))}
         </List>
-    );
-});
+    )
+})
 
-export default ProjectTeam;
+export default ProjectTeam

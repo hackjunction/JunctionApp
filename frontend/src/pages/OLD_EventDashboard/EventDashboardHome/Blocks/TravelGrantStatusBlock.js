@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
-import { Typography, Grid } from '@material-ui/core';
-import { RegistrationStatuses, EventTypes } from '@hackjunction/shared';
-import GradientBox from 'components/generic/GradientBox';
-import Button from 'components/generic/Button';
+import { connect } from 'react-redux'
+import { Typography, Grid } from '@material-ui/core'
+import { RegistrationStatuses, EventTypes } from '@hackjunction/shared'
+import GradientBox from 'components/generic/GradientBox'
+import Button from 'components/generic/Button'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
-const STATUSES = RegistrationStatuses.asObject;
+const STATUSES = RegistrationStatuses.asObject
 
 const TravelGrantStatusBlock = ({ event, registration }) => {
-    if (event?.eventType !== EventTypes.physical.id) return null;
-    if (!registration?.answers?.needsTravelGrant) return null;
+    if (event?.eventType !== EventTypes.physical.id) return null
+    if (!registration?.answers?.needsTravelGrant) return null
 
     //TODO: When status is checkedIn, show the travel grant details submission form here
 
@@ -25,12 +25,14 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                         Pending
                     </Typography>
                     <Typography variant="body1" paragraph>
-                        After you've confirmed your participation, we'll be able to confirm your travel grant. The
-                        earlier you confirm your participation, the more likely you are to receive a travel grant!
+                        After you've confirmed your participation, we'll be able
+                        to confirm your travel grant. The earlier you confirm
+                        your participation, the more likely you are to receive a
+                        travel grant!
                     </Typography>
                 </GradientBox>
             </Grid>
-        );
+        )
     }
 
     if (registration.status === STATUSES.confirmed.id) {
@@ -43,12 +45,14 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                             No grant
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            Unfortunately we weren't able to give you a travel grant this time. But don't worry - at the
-                            event we'll provide food, snacks, accommodation and much more, at no cost to you!
+                            Unfortunately we weren't able to give you a travel
+                            grant this time. But don't worry - at the event
+                            we'll provide food, snacks, accommodation and much
+                            more, at no cost to you!
                         </Typography>
                     </GradientBox>
                 </Grid>
-            );
+            )
         }
 
         if (!registration.travelGrant) {
@@ -60,20 +64,27 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                             Pending
                         </Typography>
                         <Typography variant="body1" paragraph>
-                            Thanks for confirming your participation! We'll let you know about your eligibility for a
-                            travel grant as soon as possible! Please consult the FAQ on our website for details on the
-                            travel grant amounts available for the country you're travelling from.
+                            Thanks for confirming your participation! We'll let
+                            you know about your eligibility for a travel grant
+                            as soon as possible! Please consult the FAQ on our
+                            website for details on the travel grant amounts
+                            available for the country you're travelling from.
                         </Typography>
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={() => window.open('https://2019.hackjunction.com/info#faq', '_blank')}
+                            onClick={() =>
+                                window.open(
+                                    'https://2019.hackjunction.com/info#faq',
+                                    '_blank'
+                                )
+                            }
                         >
                             Frequently asked questions
                         </Button>
                     </GradientBox>
                 </Grid>
-            );
+            )
         } else {
             return (
                 <Grid item xs={12} md={6}>
@@ -87,16 +98,16 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                         </Typography>
                     </GradientBox>
                 </Grid>
-            );
+            )
         }
     }
 
-    return null;
-};
+    return null
+}
 
 const mapState = state => ({
     event: DashboardSelectors.event(state),
-    registration: DashboardSelectors.registration(state)
-});
+    registration: DashboardSelectors.registration(state),
+})
 
-export default connect(mapState)(TravelGrantStatusBlock);
+export default connect(mapState)(TravelGrantStatusBlock)

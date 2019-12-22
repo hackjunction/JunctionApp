@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
-import OrganiserEventList from 'pages/OLD_OrganiserDashboard/OrganiserEventList';
-import OrganiserEditEvent from 'pages/OLD_OrganiserDashboard/OrganiserEditEvent';
+import OrganiserEventList from 'pages/OLD_OrganiserDashboard/OrganiserEventList'
+import OrganiserEditEvent from 'pages/OLD_OrganiserDashboard/OrganiserEditEvent'
 
 class OrganiserRouter extends Component {
     static propTypes = {
-        match: PropTypes.any.isRequired
-    };
+        match: PropTypes.any.isRequired,
+    }
 
     render() {
         return (
@@ -20,7 +20,7 @@ class OrganiserRouter extends Component {
                     <Redirect to="/organise" />
                 </Switch>
             </React.Fragment>
-        );
+        )
     }
 }
 
@@ -28,13 +28,13 @@ const routes = [
     {
         exact: true,
         path: '/organise',
-        component: OrganiserEventList
+        component: OrganiserEventList,
     },
     {
         exact: false,
         path: '/organise/:slug',
-        component: OrganiserEditEvent
-    }
-];
+        component: OrganiserEditEvent,
+    },
+]
 
-export default OrganiserRouter;
+export default OrganiserRouter

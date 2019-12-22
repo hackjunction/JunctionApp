@@ -1,24 +1,45 @@
-import React from 'react';
+import React from 'react'
 
-import { Card, CardMedia, CardContent, CardActions, Typography, CircularProgress, Box } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { SuccessHeader, ErrorHeader, InfoHeader, WarningHeader } from './IconHeader';
+import {
+    Card,
+    CardMedia,
+    CardContent,
+    CardActions,
+    Typography,
+    CircularProgress,
+    Box,
+} from '@material-ui/core'
+import Skeleton from '@material-ui/lab/Skeleton'
+import {
+    SuccessHeader,
+    ErrorHeader,
+    InfoHeader,
+    WarningHeader,
+} from './IconHeader'
 
-const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, type, loading }) => {
+const NotificationBlock = ({
+    title,
+    titleExtra,
+    body,
+    bottom,
+    bottomLoading,
+    type,
+    loading,
+}) => {
     const headerComponent = () => {
         switch (type) {
             case 'success':
-                return <SuccessHeader />;
+                return <SuccessHeader />
             case 'error':
-                return <ErrorHeader />;
+                return <ErrorHeader />
             case 'warning':
-                return <WarningHeader />;
+                return <WarningHeader />
             case 'info':
-                return <InfoHeader />;
+                return <InfoHeader />
             default:
-                return <InfoHeader />;
+                return <InfoHeader />
         }
-    };
+    }
 
     if (loading) {
         return (
@@ -31,7 +52,7 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, typ
                     <Skeleton variant="rect" width="100%" height="200px" />
                 </CardContent>
             </Card>
-        );
+        )
     }
 
     return (
@@ -60,7 +81,7 @@ const NotificationBlock = ({ title, titleExtra, body, bottom, bottomLoading, typ
                 </Box>
             </CardActions>
         </Card>
-    );
-};
+    )
+}
 
-export default NotificationBlock;
+export default NotificationBlock

@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import { Grid } from '@material-ui/core';
-import { FastField } from 'formik';
-import FormControl from 'components/inputs/FormControl';
-import EventTagsForm from './EventTagsForm';
+import { Grid } from '@material-ui/core'
+import { FastField } from 'formik'
+import FormControl from 'components/inputs/FormControl'
+import EventTagsForm from './EventTagsForm'
 
 const OrganiserEditEventMisc = () => {
     return (
@@ -12,7 +12,10 @@ const OrganiserEditEventMisc = () => {
                 <FastField
                     name="tags"
                     render={({ field, form }) => (
-                        <FormControl label="Tags" hint="Add tags with which you can mark registrations">
+                        <FormControl
+                            label="Tags"
+                            hint="Add tags with which you can mark registrations"
+                        >
                             <EventTagsForm
                                 value={field.value}
                                 fieldName={field.name}
@@ -23,7 +26,7 @@ const OrganiserEditEventMisc = () => {
                 />
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
-export default OrganiserEditEventMisc;
+export default OrganiserEditEventMisc

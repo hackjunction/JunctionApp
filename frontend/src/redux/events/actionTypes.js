@@ -1,1 +1,1 @@
-export const UPDATE_EVENTS = 'events/UPDATE';
+export const UPDATE_EVENTS = 'events/UPDATE'

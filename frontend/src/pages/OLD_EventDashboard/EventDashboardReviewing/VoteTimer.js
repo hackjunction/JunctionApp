@@ -1,7 +1,7 @@
-import React from 'react';
-import moment from 'moment-timezone';
-import Countdown from 'react-countdown-now';
-import { Typography } from '@material-ui/core';
+import React from 'react'
+import moment from 'moment-timezone'
+import Countdown from 'react-countdown-now'
+import { Typography } from '@material-ui/core'
 
 const VoteTimer = ({ annotator, children }) => {
     return (
@@ -13,15 +13,16 @@ const VoteTimer = ({ annotator, children }) => {
                 if (!completed) {
                     return (
                         <Typography variant="subtitle1" align="center">
-                            You can submit a vote in {minutes}min {seconds} seconds.
+                            You can submit a vote in {minutes}min {seconds}{' '}
+                            seconds.
                         </Typography>
-                    );
+                    )
                 } else {
-                    return children;
+                    return children
                 }
             }}
         />
-    );
-};
+    )
+}
 
-export default VoteTimer;
+export default VoteTimer

@@ -1,29 +1,35 @@
-import React, { useMemo } from 'react';
-import { connect } from 'react-redux';
-import { sortBy } from 'lodash-es';
-import { Box, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, ListItemText } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React, { useMemo } from 'react'
+import { connect } from 'react-redux'
+import { sortBy } from 'lodash-es'
+import {
+    Box,
+    ExpansionPanel,
+    ExpansionPanelSummary,
+    ExpansionPanelDetails,
+    ListItemText,
+} from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import ProjectsTable from '../ProjectsTable';
-import ChallengeLink from './ChallengeLink';
+import ProjectsTable from '../ProjectsTable'
+import ChallengeLink from './ChallengeLink'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 const ChallengesTab = ({ event, projects, projectsLoading }) => {
     const getProjectsForChallenge = slug => {
         return projects.filter(project => {
-            return project.challenges && project.challenges.indexOf(slug) !== -1;
-        });
-    };
+            return project.challenges && project.challenges.indexOf(slug) !== -1
+        })
+    }
 
     const challenges = useMemo(() => {
-        return sortBy(event.challenges, 'name');
-    }, [event.challenges]);
+        return sortBy(event.challenges, 'name')
+    }, [event.challenges])
 
     return (
         <Box>
             {challenges.map(challenge => {
-                const projects = getProjectsForChallenge(challenge.slug);
+                const projects = getProjectsForChallenge(challenge.slug)
                 return (
                     <ExpansionPanel key={challenge.slug}>
                         <ExpansionPanelSummary
@@ -45,16 +51,16 @@ const ChallengesTab = ({ event, projects, projectsLoading }) => {
                             </Box>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                );
+                )
             })}
         </Box>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     event: OrganiserSelectors.event(state),
     projects: OrganiserSelectors.projects(state),
-    projectsLoading: OrganiserSelectors.projectsLoading(state)
-});
+    projectsLoading: OrganiserSelectors.projectsLoading(state),
+})
 
-export default connect(mapState)(ChallengesTab);
+export default connect(mapState)(ChallengesTab)

@@ -1,28 +1,35 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react'
 
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import {
+    Box,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+} from '@material-ui/core'
 
-import Select from 'components/inputs/Select';
-import BooleanInput from 'components/inputs/BooleanInput';
-import TextInput from 'components/inputs/TextInput';
-import Button from 'components/generic/Button';
+import Select from 'components/inputs/Select'
+import BooleanInput from 'components/inputs/BooleanInput'
+import TextInput from 'components/inputs/TextInput'
+import Button from 'components/generic/Button'
 
 const initialData = {
     label: '',
     hint: '',
     settings: {},
     fieldRequired: false,
-    fieldType: 'text'
-};
+    fieldType: 'text',
+}
 
 const useStyles = makeStyles(theme => ({
     label: {
-        fontWeight: 'bold'
-    }
-}));
+        fontWeight: 'bold',
+    },
+}))
 
 export default ({
     initialValue = initialData,
@@ -33,81 +40,81 @@ export default ({
     onSubmit,
     onEditDone,
     onEditCancel,
-    editing
+    editing,
 }) => {
-    const classes = useStyles();
-    const [data, setData] = useState(initialValue);
+    const classes = useStyles()
+    const [data, setData] = useState(initialValue)
 
     useEffect(() => {
         if (editing) {
-            setData(editing);
+            setData(editing)
         }
-    }, [editing]);
+    }, [editing])
 
     const reset = () => {
-        setData(initialData);
-    };
+        setData(initialData)
+    }
 
     const validate = () => {
         if (isEmpty(data.label)) {
-            return 'Label is required';
+            return 'Label is required'
         }
 
         if (data.label.length > 100) {
-            return 'Label can be at most 100 characters';
+            return 'Label can be at most 100 characters'
         }
 
         if (isEmpty(data.fieldType)) {
-            return 'Please choose a question type';
+            return 'Please choose a question type'
         }
 
         if (!editing) {
             if (reservedNames.indexOf(data.name) !== -1) {
-                return `This section already contains a question with the machine name ${data.name}, please use something else`;
+                return `This section already contains a question with the machine name ${data.name}, please use something else`
             }
         }
 
-        return;
-    };
+        return
+    }
 
     const handleAdd = () => {
-        const error = validate();
+        const error = validate()
         if (error) {
-            window.alert(error);
+            window.alert(error)
         } else {
-            onSubmit(data);
-            onVisibleChange(false);
+            onSubmit(data)
+            onVisibleChange(false)
         }
-        reset();
-    };
+        reset()
+    }
 
     const handleEdit = () => {
-        const error = validate();
+        const error = validate()
         if (error) {
-            window.alert(error);
+            window.alert(error)
         } else {
-            onEditDone(data);
+            onEditDone(data)
         }
-    };
+    }
 
     const handleCancel = () => {
         if (editing) {
-            onEditCancel();
+            onEditCancel()
         } else {
-            onVisibleChange(false);
+            onVisibleChange(false)
         }
-        reset();
-    };
+        reset()
+    }
 
     const handleChange = useCallback(
         (field, value) => {
             setData({
                 ...data,
-                [field]: value
-            });
+                [field]: value,
+            })
         },
         [data]
-    );
+    )
 
     const renderPlaceholderInput = () => {
         return (
@@ -124,8 +131,8 @@ export default ({
                     Text to show in the field if it's empty
                 </Typography>
             </React.Fragment>
-        );
-    };
+        )
+    }
 
     const renderFieldTypeOptions = () => {
         switch (data.fieldType) {
@@ -138,11 +145,17 @@ export default ({
                         </Typography>
                         <TextInput
                             placeholder="Zebra,Hippopotamus,Giraffe"
-                            value={data.settings.options ? data.settings.options.join(',') : ''}
+                            value={
+                                data.settings.options
+                                    ? data.settings.options.join(',')
+                                    : ''
+                            }
                             onChange={value =>
                                 handleChange('settings', {
                                     ...data.settings,
-                                    options: value.split(',').map(item => item.trim())
+                                    options: value
+                                        .split(',')
+                                        .map(item => item.trim()),
                                 })
                             }
                         />
@@ -151,7 +164,7 @@ export default ({
                         </Typography>
                         {renderPlaceholderInput()}
                     </React.Fragment>
-                );
+                )
             }
             case 'checkbox':
             case 'boolean': {
@@ -165,7 +178,7 @@ export default ({
                             onChange={value =>
                                 handleChange('settings', {
                                     ...data.settings,
-                                    default: value
+                                    default: value,
                                 })
                             }
                         />
@@ -173,12 +186,12 @@ export default ({
                             Is this field checked/yes by default?
                         </Typography>
                     </React.Fragment>
-                );
+                )
             }
             default:
-                return renderPlaceholderInput();
+                return renderPlaceholderInput()
         }
-    };
+    }
 
     return (
         <Dialog
@@ -189,7 +202,9 @@ export default ({
             aria-labelledby="form-dialog-title"
         >
             <DialogTitle id="form-dialog-title">
-                {editing ? `Edit ${data.label}` : `Add a new question under ${sectionName}`}
+                {editing
+                    ? `Edit ${data.label}`
+                    : `Add a new question under ${sectionName}`}
             </DialogTitle>
             <DialogContent>
                 <Typography variant="body1" className={classes.label}>
@@ -213,8 +228,9 @@ export default ({
                     onChange={value => handleChange('name', value)}
                 />
                 <Typography variant="caption" paragraph>
-                    A unique machine-readable name. This should be only letters, and be written in camelCase: e.g.
-                    letterOfMotivation. This field will not be visible to the end-user.
+                    A unique machine-readable name. This should be only letters,
+                    and be written in camelCase: e.g. letterOfMotivation. This
+                    field will not be visible to the end-user.
                 </Typography>
                 <Typography variant="body1" className={classes.label}>
                     Question type
@@ -226,29 +242,29 @@ export default ({
                     options={[
                         {
                             value: 'text',
-                            label: 'Short text'
+                            label: 'Short text',
                         },
                         {
                             value: 'textarea',
-                            label: 'Long text'
+                            label: 'Long text',
                         },
                         {
                             value: 'boolean',
-                            label: 'Yes / No'
+                            label: 'Yes / No',
                         },
                         {
                             value: 'single-choice',
-                            label: 'Single choice'
+                            label: 'Single choice',
                         },
                         {
                             value: 'multiple-choice',
-                            label: 'Multiple choice'
-                        }
+                            label: 'Multiple choice',
+                        },
                     ]}
                 />
                 <Typography variant="caption" paragraph>
-                    Which kind of answer do you want? Choose a type and you will be presented with any available
-                    additional options
+                    Which kind of answer do you want? Choose a type and you will
+                    be presented with any available additional options
                 </Typography>
                 {renderFieldTypeOptions()}
                 <Typography variant="body1" className={classes.label}>
@@ -260,26 +276,38 @@ export default ({
                     onChange={value => handleChange('hint', value)}
                 />
                 <Typography variant="caption" paragraph>
-                    Add an optional help text to show under the question label - just like the one you're reading right
-                    now
+                    Add an optional help text to show under the question label -
+                    just like the one you're reading right now
                 </Typography>
                 <Typography variant="body1" className={classes.label}>
                     Is this question required?
                 </Typography>
-                <BooleanInput value={data.fieldRequired} onChange={value => handleChange('fieldRequired', value)} />
+                <BooleanInput
+                    value={data.fieldRequired}
+                    onChange={value => handleChange('fieldRequired', value)}
+                />
                 <Typography variant="caption" paragraph>
-                    Users will not be able to submit the form without answering this question, if it is required.
+                    Users will not be able to submit the form without answering
+                    this question, if it is required.
                 </Typography>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCancel} color="theme_lightgray" variant="contained">
+                <Button
+                    onClick={handleCancel}
+                    color="theme_lightgray"
+                    variant="contained"
+                >
                     Cancel
                 </Button>
                 <Box p={1} />
-                <Button onClick={editing ? handleEdit : handleAdd} color="primary" variant="contained">
+                <Button
+                    onClick={editing ? handleEdit : handleAdd}
+                    color="primary"
+                    variant="contained"
+                >
                     {editing ? 'Save edits' : 'Add question'}
                 </Button>
             </DialogActions>
         </Dialog>
-    );
-};
+    )
+}

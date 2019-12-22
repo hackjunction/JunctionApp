@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, Typography, Divider } from '@material-ui/core';
+import React from 'react'
+import { Box, Typography, Divider } from '@material-ui/core'
 
-import CompanySection from './CompanySection';
+import CompanySection from './CompanySection'
 
-import PageHeader from 'components/generic/PageHeader';
-import PageWrapper from 'components/layouts/PageWrapper';
+import PageHeader from 'components/generic/PageHeader'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-import Partners from 'constants/hackerpack-partners.js';
+import Partners from 'constants/hackerpack-partners.js'
 
 const Hackerpack = () => {
     return (
@@ -32,13 +32,14 @@ const Hackerpack = () => {
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">
-                        Anything you would like to see here in the future? Contact us at partnerships@hackjunction.com
-                        with your suggestion.
+                        Anything you would like to see here in the future?
+                        Contact us at partnerships@hackjunction.com with your
+                        suggestion.
                     </Typography>
                 </Box>
             </PageWrapper>
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default Hackerpack;
+export default Hackerpack

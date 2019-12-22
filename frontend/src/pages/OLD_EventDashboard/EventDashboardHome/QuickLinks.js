@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import { Box, Typography } from '@material-ui/core';
-import GradientBox from 'components/generic/GradientBox';
+import { Box, Typography } from '@material-ui/core'
+import GradientBox from 'components/generic/GradientBox'
 
 const LinkBox = ({ text, color }) => {
     return (
@@ -20,13 +20,17 @@ const LinkBox = ({ text, color }) => {
             <Typography
                 variant="button"
                 textAlign="right"
-                style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.1rem' }}
+                style={{
+                    textAlign: 'right',
+                    fontWeight: 'bold',
+                    fontSize: '1.1rem',
+                }}
             >
                 {text}
             </Typography>
         </GradientBox>
-    );
-};
+    )
+}
 
 const QuickLinks = () => {
     return (
@@ -37,7 +41,7 @@ const QuickLinks = () => {
             <LinkBox text="Live website" color="theme_orange" />
             <LinkBox text="Your event ID" color="theme_purple" />
         </Box>
-    );
-};
+    )
+}
 
-export default QuickLinks;
+export default QuickLinks

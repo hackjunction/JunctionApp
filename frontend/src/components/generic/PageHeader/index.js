@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     subheading: {
         marginTop: theme.spacing(1),
         marginLeft: theme.spacing(0.5),
-        fontFamily: 'Lato'
-    }
-}));
+        fontFamily: 'Lato',
+    },
+}))
 
 const PageHeader = ({ heading, subheading }) => {
-    const classes = useStyles();
+    const classes = useStyles()
     return (
         <Box pb={2} pt={2}>
             <Typography variant="h3">{heading}</Typography>
@@ -22,7 +22,7 @@ const PageHeader = ({ heading, subheading }) => {
                 </Typography>
             )}
         </Box>
-    );
-};
+    )
+}
 
-export default PageHeader;
+export default PageHeader

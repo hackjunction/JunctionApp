@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Box } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
+import { makeStyles } from '@material-ui/core/styles'
+import { Typography, Box } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { push } from 'connected-react-router'
 
-import Image from 'components/generic/Image';
-import Button from 'components/generic/Button';
-import MiscUtils from 'utils/misc';
+import Image from 'components/generic/Image'
+import Button from 'components/generic/Button'
+import MiscUtils from 'utils/misc'
 
-import * as EventsSelectors from 'redux/events/selectors';
+import * as EventsSelectors from 'redux/events/selectors'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
             flexDirection: 'row',
             alignItems: 'stretch',
             height: '324px',
-            padding: 0
-        }
+            padding: 0,
+        },
     },
     left: {
         height: '148px',
@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flex: 1,
-            height: '100%'
-        }
+            height: '100%',
+        },
     },
     leftImage: {
         background: theme.palette.theme_lightgray.main,
@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
         objectFit: 'cover',
         borderRadius: '12px 12px 0 0',
         [theme.breakpoints.up('md')]: {
-            borderRadius: '0 12px 12px 0'
-        }
+            borderRadius: '0 12px 12px 0',
+        },
     },
     right: {
         background: 'white',
@@ -57,16 +57,16 @@ const useStyles = makeStyles(theme => ({
             flex: 1,
             background: 'transparent',
             justifyContent: 'center',
-            padding: theme.spacing(2, 4)
-        }
-    }
-}));
+            padding: theme.spacing(2, 4),
+        },
+    },
+}))
 
 export default () => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const event = useSelector(EventsSelectors.highlightedEvent);
-    if (!event) return null;
+    const classes = useStyles()
+    const dispatch = useDispatch()
+    const event = useSelector(EventsSelectors.highlightedEvent)
+    if (!event) return null
     return (
         <div className={classes.wrapper}>
             <div className={classes.left}>
@@ -80,7 +80,12 @@ export default () => {
                 <Typography variant="h6" color="primary">
                     Highlight
                 </Typography>
-                <Typography variant="button">{MiscUtils.formatDateInterval(event.startTime, event.endTime)}</Typography>
+                <Typography variant="button">
+                    {MiscUtils.formatDateInterval(
+                        event.startTime,
+                        event.endTime
+                    )}
+                </Typography>
                 <Typography variant="h4">{event.name}</Typography>
                 <Typography variant="subtitle1">
                     {event.eventType === 'physical'
@@ -92,7 +97,9 @@ export default () => {
                         <Button
                             color="theme_lightgray"
                             variant="outlined"
-                            onClick={() => dispatch(push('/events/' + event.slug))}
+                            onClick={() =>
+                                dispatch(push('/events/' + event.slug))
+                            }
                         >
                             See more
                         </Button>
@@ -102,7 +109,9 @@ export default () => {
                             <Button
                                 color="theme_turquoise"
                                 variant="contained"
-                                onClick={() => dispatch(push('/projects/' + event.slug))}
+                                onClick={() =>
+                                    dispatch(push('/projects/' + event.slug))
+                                }
                             >
                                 View projects
                             </Button>
@@ -111,5 +120,5 @@ export default () => {
                 </Box>
             </div>
         </div>
-    );
-};
+    )
+}

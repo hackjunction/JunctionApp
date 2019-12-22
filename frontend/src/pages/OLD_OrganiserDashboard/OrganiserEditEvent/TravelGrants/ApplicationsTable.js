@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import MUIDataTable from 'mui-datatables';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { RegistrationTravelGrantStatuses as Statuses } from '@hackjunction/shared';
+import MUIDataTable from 'mui-datatables'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+import { RegistrationTravelGrantStatuses as Statuses } from '@hackjunction/shared'
 
 const getMuiTheme = () =>
     createMuiTheme({
@@ -10,16 +10,16 @@ const getMuiTheme = () =>
             MUIDataTableToolbar: {
                 filterPaper: {
                     width: '100% !important',
-                    maxWidth: '500px'
-                }
+                    maxWidth: '500px',
+                },
             },
             MuiGridListTile: {
                 root: {
-                    minWidth: '100%'
-                }
-            }
-        }
-    });
+                    minWidth: '100%',
+                },
+            },
+        },
+    })
 
 const ApplicationsTable = React.memo(
     ({ data, onRowClick }) => {
@@ -31,60 +31,63 @@ const ApplicationsTable = React.memo(
                     options={{
                         selectableRows: 'none',
                         responsive: 'scrollFullHeight',
-                        onRowClick: onRowClick
+                        onRowClick: onRowClick,
                     }}
                     columns={[
                         {
                             label: 'Name',
                             name: 'answers',
                             options: {
-                                customBodyRender: value => `${value.firstName} ${value.lastName}`,
-                                filter: false
-                            }
+                                customBodyRender: value =>
+                                    `${value.firstName} ${value.lastName}`,
+                                filter: false,
+                            },
                         },
                         {
                             label: 'Country of travel',
                             name: 'answers.countryOfTravel',
                             options: {
-                                filter: true
-                            }
+                                filter: true,
+                            },
                         },
                         {
                             label: 'Grant amount',
                             name: 'travelGrant',
-                            options: {}
+                            options: {},
                         },
                         {
                             label: 'Confirmed amount',
                             name: 'travelGrantAmount',
                             options: {
-                                filter: false
-                            }
+                                filter: false,
+                            },
                         },
                         {
                             label: 'Grant status',
                             name: 'travelGrantStatus',
                             options: {
                                 customBodyRender: value => {
-                                    if (Statuses.asObject.hasOwnProperty(value)) {
-                                        return Statuses.asObject[value].label;
+                                    if (
+                                        Statuses.asObject.hasOwnProperty(value)
+                                    ) {
+                                        return Statuses.asObject[value].label
                                     }
-                                    return value;
+                                    return value
                                 },
-                                filter: true
-                            }
-                        }
+                                filter: true,
+                            },
+                        },
                     ]}
                 />
             </MuiThemeProvider>
-        );
+        )
     },
     (prevProps, nextProps) => {
         if (prevProps.data !== nextProps.data) {
-            return false;
+            return false
         }
-        return true;
+        return true
     }
-);
+)
 
-export default ApplicationsTable;
+export default ApplicationsTable

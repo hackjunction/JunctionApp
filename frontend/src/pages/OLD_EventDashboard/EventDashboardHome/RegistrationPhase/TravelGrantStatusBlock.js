@@ -1,17 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
-import { RegistrationStatuses } from '@hackjunction/shared';
-import NotificationBlock from 'components/generic/NotificationBlock';
+import { RegistrationStatuses } from '@hackjunction/shared'
+import NotificationBlock from 'components/generic/NotificationBlock'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
-const STATUSES = RegistrationStatuses.asObject;
+const STATUSES = RegistrationStatuses.asObject
 
 const TravelGrantStatusBlock = ({ event, registration }) => {
-    if (!registration || !event) return null;
-    if (registration.answers && !registration.answers.needsTravelGrant) return null;
+    if (!registration || !event) return null
+    if (registration.answers && !registration.answers.needsTravelGrant)
+        return null
 
     if (registration.status === STATUSES.accepted.id) {
         return (
@@ -21,7 +22,7 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                 titleExtra="Pending"
                 body={`After you've confirmed your participation, we'll be able to confirm your travel grant. The earlier you confirm your participation, the more likely you are to receive a travel grant!`}
             />
-        );
+        )
     }
 
     if (registration.status === STATUSES.confirmed.id) {
@@ -33,7 +34,7 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                     titleExtra="No grant"
                     body={`Unfortunately we weren't able to give you a travel grant this time. But don't worry - at the event we'll provide food, snacks, accommodation and much more, at no cost to you!`}
                 />
-            );
+            )
         }
 
         if (!registration.travelGrant) {
@@ -46,15 +47,20 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                     bottom={
                         <p style={{ fontSize: '16px', textAlign: 'center' }}>
                             Please consult the{' '}
-                            <a href="https://2019.hackjunction.com/info" target="_blank" rel="noopener noreferrer">
+                            <a
+                                href="https://2019.hackjunction.com/info"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 FAQ section
                             </a>{' '}
-                            of our website for details on the travel grant amounts available for the country you're
-                            travelling from.
+                            of our website for details on the travel grant
+                            amounts available for the country you're travelling
+                            from.
                         </p>
                     }
                 />
-            );
+            )
         }
 
         if (registration.travelGrant > 0) {
@@ -65,16 +71,16 @@ const TravelGrantStatusBlock = ({ event, registration }) => {
                     titleExtra={`Up to ${registration.travelGrant}€`}
                     body={`Yay! You're eligible for a travel grant of up to ${registration.travelGrant}€. To be eligible for this travel grant, please make sure you keep hold of all receipts related to your travel to the event. You'll be able to submit your travel receipts and other information required for payment here once you have checked in to the event.`}
                 />
-            );
+            )
         }
     }
 
-    return null;
-};
+    return null
+}
 
 const mapState = state => ({
     event: DashboardSelectors.event(state),
-    registration: DashboardSelectors.registration(state)
-});
+    registration: DashboardSelectors.registration(state),
+})
 
-export default connect(mapState)(TravelGrantStatusBlock);
+export default connect(mapState)(TravelGrantStatusBlock)

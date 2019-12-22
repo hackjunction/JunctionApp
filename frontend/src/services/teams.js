@@ -1,45 +1,62 @@
-import _axios from 'services/axios';
+import _axios from 'services/axios'
 
-const TeamsService = {};
+const TeamsService = {}
 
 function config(idToken) {
     return {
         headers: {
-            Authorization: `Bearer ${idToken}`
-        }
-    };
+            Authorization: `Bearer ${idToken}`,
+        },
+    }
 }
 
 TeamsService.getTeamsForEvent = (idToken, eventSlug) => {
-    return _axios.get(`/teams/organiser/${eventSlug}`, config(idToken));
-};
+    return _axios.get(`/teams/organiser/${eventSlug}`, config(idToken))
+}
 
 TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
-    return _axios.post(`/teams/${eventSlug}?populate=${populate}`, {}, config(idToken));
-};
+    return _axios.post(
+        `/teams/${eventSlug}?populate=${populate}`,
+        {},
+        config(idToken)
+    )
+}
 
 TeamsService.deleteTeamForEvent = (idToken, eventSlug) => {
-    return _axios.delete(`/teams/${eventSlug}`, config(idToken));
-};
+    return _axios.delete(`/teams/${eventSlug}`, config(idToken))
+}
 
 TeamsService.editTeamForEvent = (idToken, eventSlug, edits) => {
-    return _axios.patch(`/teams/${eventSlug}`, edits, config(idToken));
-};
+    return _axios.patch(`/teams/${eventSlug}`, edits, config(idToken))
+}
 
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode, populate) => {
-    return _axios.post(`/teams/${eventSlug}/${teamCode}/members?populate=${populate}`, {}, config(idToken));
-};
+    return _axios.post(
+        `/teams/${eventSlug}/${teamCode}/members?populate=${populate}`,
+        {},
+        config(idToken)
+    )
+}
 
 TeamsService.leaveTeamForEvent = (idToken, eventSlug, teamCode) => {
-    return _axios.delete(`/teams/${eventSlug}/${teamCode}/members`, config(idToken));
-};
+    return _axios.delete(
+        `/teams/${eventSlug}/${teamCode}/members`,
+        config(idToken)
+    )
+}
 
 TeamsService.removeMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
-    return _axios.delete(`/teams/${eventSlug}/${teamCode}/members/${userId}`, config(idToken));
-};
+    return _axios.delete(
+        `/teams/${eventSlug}/${teamCode}/members/${userId}`,
+        config(idToken)
+    )
+}
 
 TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
-    return _axios.get(`/teams/${eventSlug}?populate=${populate}`, config(idToken));
-};
+    return _axios.get(
+        `/teams/${eventSlug}?populate=${populate}`,
+        config(idToken)
+    )
+}
 
-export default TeamsService;
+export default TeamsService

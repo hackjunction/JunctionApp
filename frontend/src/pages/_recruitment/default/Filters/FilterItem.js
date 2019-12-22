@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Box, Typography, ButtonBase, Popover } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { Box, Typography, ButtonBase, Popover } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 
-import Button from 'components/generic/Button';
+import Button from 'components/generic/Button'
 
 const useStyles = makeStyles(theme => ({
     root: {
         marginRight: '1rem',
-        marginBottom: '1rem'
+        marginBottom: '1rem',
     },
     toggleButton: ({ active }) => ({
         background: '#ffffff',
@@ -21,40 +21,46 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     }),
     buttonLabel: ({ active }) => ({
         fontSize: '14px',
         marginLeft: '1rem',
-        color: active ? '#000000' : theme.palette.text.secondary
+        color: active ? '#000000' : theme.palette.text.secondary,
     }),
     buttonIcon: {
         marginLeft: '0.5rem',
         marginRight: '0.5rem',
-        fontSize: '22px'
-    }
-}));
+        fontSize: '22px',
+    },
+}))
 
-const FilterItem = ({ label, active, children, onClose = () => {}, onSubmit = () => {} }) => {
-    const classes = useStyles({ active });
-    const [anchorEl, setAnchorEl] = React.useState(null);
+const FilterItem = ({
+    label,
+    active,
+    children,
+    onClose = () => {},
+    onSubmit = () => {},
+}) => {
+    const classes = useStyles({ active })
+    const [anchorEl, setAnchorEl] = React.useState(null)
 
     const handleClick = event => {
-        setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
 
     const handleClose = useCallback(() => {
-        setAnchorEl(null);
-        onClose();
-    }, [onClose]);
+        setAnchorEl(null)
+        onClose()
+    }, [onClose])
 
     const handleSubmit = useCallback(() => {
-        setAnchorEl(null);
-        onSubmit();
-    }, [onSubmit]);
+        setAnchorEl(null)
+        onSubmit()
+    }, [onSubmit])
 
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const open = Boolean(anchorEl)
+    const id = open ? 'simple-popover' : undefined
     return (
         <div className={classes.root}>
             <ButtonBase
@@ -75,26 +81,39 @@ const FilterItem = ({ label, active, children, onClose = () => {}, onSubmit = ()
                 onClose={handleClose}
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left'
+                    horizontal: 'left',
                 }}
                 transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'left'
+                    horizontal: 'left',
                 }}
             >
                 <Box p={1}>{children}</Box>
-                <Box p={1} display="flex" flexDirection="row" justifyContent="flex-end">
-                    <Button color="theme_white" variant="contained" onClick={handleClose}>
+                <Box
+                    p={1}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                >
+                    <Button
+                        color="theme_white"
+                        variant="contained"
+                        onClick={handleClose}
+                    >
                         Cancel
                     </Button>
                     <Box p={1}></Box>
-                    <Button color="theme_orange" variant="contained" onClick={handleSubmit}>
+                    <Button
+                        color="theme_orange"
+                        variant="contained"
+                        onClick={handleSubmit}
+                    >
                         Save filters
                     </Button>
                 </Box>
             </Popover>
         </div>
-    );
-};
+    )
+}
 
-export default FilterItem;
+export default FilterItem

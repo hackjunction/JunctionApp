@@ -3,29 +3,29 @@ const EventConstants = {
         Published: {
             id: 'Published',
             label: 'Published',
-            index: 0
+            index: 0,
         },
         Registration: {
             id: 'Registration',
             label: 'Registration in progress',
-            index: 1
+            index: 1,
         },
         Confirmation: {
             id: 'Confirmation',
             label: 'Confirm participation',
-            index: 2
+            index: 2,
         },
         InProgress: {
             id: 'InProgress',
             label: 'InProgress',
-            index: 3
+            index: 3,
         },
         Finished: {
             id: 'Finished',
             label: 'Finished',
-            index: 4
-        }
-    }
-};
+            index: 4,
+        },
+    },
+}
 
-export default EventConstants;
+export default EventConstants

@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useCallback } from 'react'
+import { TextField } from '@material-ui/core'
 
-import * as FilterTypes from '../filterTypes';
+import * as FilterTypes from '../filterTypes'
 
 const Component = ({ column }) => {
-    const { filterValue, setFilter } = column;
+    const { filterValue, setFilter } = column
     const handleChange = useCallback(
         e => {
-            setFilter(e.target.value);
+            setFilter(e.target.value)
         },
         [setFilter]
-    );
+    )
 
     return (
         <TextField
@@ -21,12 +21,12 @@ const Component = ({ column }) => {
             margin="dense"
             variant="filled"
         />
-    );
-};
+    )
+}
 
 const ContainsSearchFilter = {
     Filter: Component,
-    filter: FilterTypes.CONTAINS_SEARCH
-};
+    filter: FilterTypes.CONTAINS_SEARCH,
+}
 
-export default ContainsSearchFilter;
+export default ContainsSearchFilter

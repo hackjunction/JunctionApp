@@ -1,17 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import { ReviewingMethods, OverallReviewingMethods, EventTypes } from '@hackjunction/shared';
-import { Grid, Box } from '@material-ui/core';
-import { FastField, Field } from 'formik';
+import {
+    ReviewingMethods,
+    OverallReviewingMethods,
+    EventTypes,
+} from '@hackjunction/shared'
+import { Grid, Box } from '@material-ui/core'
+import { FastField, Field } from 'formik'
 
-import FormControl from 'components/inputs/FormControl';
-import Select from 'components/inputs/Select';
-import BooleanInput from 'components/inputs/BooleanInput';
-import StreetAddressForm from 'components/inputs/StreetAddressForm';
+import FormControl from 'components/inputs/FormControl'
+import Select from 'components/inputs/Select'
+import BooleanInput from 'components/inputs/BooleanInput'
+import StreetAddressForm from 'components/inputs/StreetAddressForm'
 
-import TravelGrantConfig from './TravelGrantConfig';
-import TracksForm from './TracksForm';
-import ChallengesForm from './ChallengesForm';
+import TravelGrantConfig from './TravelGrantConfig'
+import TracksForm from './TracksForm'
+import ChallengesForm from './ChallengesForm'
 
 export default () => {
     return (
@@ -28,7 +32,9 @@ export default () => {
                         >
                             <BooleanInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                             />
                         </FormControl>
                     )}
@@ -46,7 +52,9 @@ export default () => {
                         >
                             <BooleanInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                             />
                         </FormControl>
                     )}
@@ -64,10 +72,12 @@ export default () => {
                         >
                             <Select
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 options={Object.keys(EventTypes).map(key => ({
                                     label: EventTypes[key].label,
-                                    value: key
+                                    value: key,
                                 }))}
                             />
                         </FormControl>
@@ -80,16 +90,24 @@ export default () => {
                     render={({ field, form }) => {
                         if (form.values.eventType === 'physical') {
                             return (
-                                <FormControl label="Event location" hint="Where does this event take place?">
+                                <FormControl
+                                    label="Event location"
+                                    hint="Where does this event take place?"
+                                >
                                     <StreetAddressForm
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                         showVenueName
                                     />
                                 </FormControl>
-                            );
+                            )
                         }
-                        return null;
+                        return null
                     }}
                 />
             </Grid>
@@ -101,11 +119,13 @@ export default () => {
                             return (
                                 <TravelGrantConfig
                                     value={field.value}
-                                    onChange={value => form.setFieldValue(field.name, value)}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
                                 />
-                            );
+                            )
                         }
-                        return null;
+                        return null
                     }}
                 />
             </Grid>
@@ -130,7 +150,9 @@ export default () => {
                         >
                             <BooleanInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                             />
                         </FormControl>
                     )}
@@ -150,12 +172,17 @@ export default () => {
                                 >
                                     <TracksForm
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                     />
                                 </FormControl>
-                            );
+                            )
                         }
-                        return null;
+                        return null
                     }}
                 />
             </Grid>
@@ -177,7 +204,9 @@ export default () => {
                         >
                             <BooleanInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                             />
                         </FormControl>
                     )}
@@ -197,12 +226,17 @@ export default () => {
                                 >
                                     <ChallengesForm
                                         value={field.value}
-                                        onChange={value => form.setFieldValue(field.name, value)}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value
+                                            )
+                                        }
                                     />
                                 </FormControl>
-                            );
+                            )
                         }
-                        return null;
+                        return null
                     }}
                 />
             </Grid>
@@ -222,11 +256,15 @@ export default () => {
                         >
                             <Select
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
-                                options={Object.keys(ReviewingMethods).map(key => ({
-                                    label: ReviewingMethods[key].label,
-                                    value: key
-                                }))}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                options={Object.keys(ReviewingMethods).map(
+                                    key => ({
+                                        label: ReviewingMethods[key].label,
+                                        value: key,
+                                    })
+                                )}
                             />
                         </FormControl>
                     )}
@@ -244,10 +282,14 @@ export default () => {
                         >
                             <Select
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
-                                options={Object.keys(OverallReviewingMethods).map(key => ({
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                options={Object.keys(
+                                    OverallReviewingMethods
+                                ).map(key => ({
                                     label: OverallReviewingMethods[key].label,
-                                    value: key
+                                    value: key,
                                 }))}
                             />
                         </FormControl>
@@ -258,5 +300,5 @@ export default () => {
                 <Box height="300px" />
             </Grid>
         </Grid>
-    );
-};
+    )
+}

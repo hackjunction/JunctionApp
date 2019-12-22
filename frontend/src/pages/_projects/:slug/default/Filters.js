@@ -1,7 +1,7 @@
-import React from 'react';
-import clsx from 'clsx';
-import { Grid, Box, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import clsx from 'clsx'
+import { Grid, Box, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
     filterItem: {
@@ -18,8 +18,8 @@ const useStyles = makeStyles(theme => ({
         MozUserSelect: 'none',
         transition: 'all 0.2s ease',
         '&:hover': {
-            color: theme.palette.primary.main
-        }
+            color: theme.palette.primary.main,
+        },
     },
     filterItemActive: {
         backgroundColor: theme.palette.primary.main,
@@ -27,27 +27,32 @@ const useStyles = makeStyles(theme => ({
         opacity: 1,
         '&:hover': {
             opacity: 1,
-            color: 'black'
-        }
+            color: 'black',
+        },
     },
     filterItemText: {
         fontWeight: 'bold',
         textAlign: 'center',
-        color: 'inherit'
-    }
-}));
+        color: 'inherit',
+    },
+}))
 
 const Filters = ({ event, active = 'by-track', onChange }) => {
-    const classes = useStyles();
+    const classes = useStyles()
     return (
         <Grid container spacing={1}>
             {event.tracksEnabled && event.tracks && (
                 <Grid item xs={12} md={6}>
                     <Box
                         onClick={() => onChange('by-track')}
-                        className={clsx(classes.filterItem, { [classes.filterItemActive]: active === 'by-track' })}
+                        className={clsx(classes.filterItem, {
+                            [classes.filterItemActive]: active === 'by-track',
+                        })}
                     >
-                        <Typography className={classes.filterItemText} variant="button">
+                        <Typography
+                            className={classes.filterItemText}
+                            variant="button"
+                        >
                             By track
                         </Typography>
                     </Box>
@@ -57,9 +62,15 @@ const Filters = ({ event, active = 'by-track', onChange }) => {
                 <Grid item xs={12} md={6}>
                     <Box
                         onClick={() => onChange('by-challenge')}
-                        className={clsx(classes.filterItem, { [classes.filterItemActive]: active === 'by-challenge' })}
+                        className={clsx(classes.filterItem, {
+                            [classes.filterItemActive]:
+                                active === 'by-challenge',
+                        })}
                     >
-                        <Typography className={classes.filterItemText} variant="button">
+                        <Typography
+                            className={classes.filterItemText}
+                            variant="button"
+                        >
                             By challenge
                         </Typography>
                     </Box>
@@ -76,7 +87,7 @@ const Filters = ({ event, active = 'by-track', onChange }) => {
                 </Box>
             </Grid> */}
         </Grid>
-    );
-};
+    )
+}
 
-export default Filters;
+export default Filters

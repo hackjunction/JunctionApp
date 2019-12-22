@@ -1,89 +1,94 @@
-import React, { useRef, useState, useMemo, useCallback } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react'
 
-import { Universities, Countries } from '@hackjunction/shared';
-import { Grid } from '@material-ui/core';
+import { Universities, Countries } from '@hackjunction/shared'
+import { Grid } from '@material-ui/core'
 
-import TextInput from 'components/inputs/TextInput';
-import Select from 'components/inputs/Select';
+import TextInput from 'components/inputs/TextInput'
+import Select from 'components/inputs/Select'
 
 const LEVEL_OPTIONS = [
     {
         value: 'Lower Secondary',
-        label: 'Lower Secondary Education'
+        label: 'Lower Secondary Education',
     },
     {
         value: 'Upper Secondary',
-        label: 'Upper Secondary Education'
+        label: 'Upper Secondary Education',
     },
     {
         value: 'Bachelor',
-        label: 'Bachelor or Equivalent'
+        label: 'Bachelor or Equivalent',
     },
     {
         value: 'Master',
-        label: 'Master or Equivalent'
+        label: 'Master or Equivalent',
     },
     {
         value: 'Doctoral',
-        label: 'Doctoral or Equivalent'
+        label: 'Doctoral or Equivalent',
     },
     {
         value: 'Other Post-secondary',
-        label: 'Other post-secondary education'
+        label: 'Other post-secondary education',
     },
     {
         value: 'None of the above',
-        label: 'None of the above'
-    }
-];
+        label: 'None of the above',
+    },
+]
 
-const UNIVERSITY_LEVELS = ['Doctoral', 'Bachelor', 'Master'];
+const UNIVERSITY_LEVELS = ['Doctoral', 'Bachelor', 'Master']
 
 const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
-    const selectEl = useRef(null);
-    const [country, setCountry] = useState();
+    const selectEl = useRef(null)
+    const [country, setCountry] = useState()
 
-    const fieldsDisabled = UNIVERSITY_LEVELS.indexOf(value.level) === -1;
+    const fieldsDisabled = UNIVERSITY_LEVELS.indexOf(value.level) === -1
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
-            if (fieldName === 'level' && UNIVERSITY_LEVELS.indexOf(fieldValue) === -1) {
+            if (
+                fieldName === 'level' &&
+                UNIVERSITY_LEVELS.indexOf(fieldValue) === -1
+            ) {
                 onChange({
-                    level: fieldValue
-                });
+                    level: fieldValue,
+                })
             } else {
                 onChange({
                     ...value,
-                    [fieldName]: fieldValue
-                });
+                    [fieldName]: fieldValue,
+                })
             }
         },
         [value, onChange]
-    );
+    )
 
     const universityOptions = useMemo(() => {
         const baseOptions = value.university
             ? [
                   {
                       label: value.university,
-                      value: value.university
-                  }
+                      value: value.university,
+                  },
               ]
-            : [];
-        const countryOptions = Universities.getByAlpha2Code(Countries.alpha2CodeFromName(country))
+            : []
+        const countryOptions = Universities.getByAlpha2Code(
+            Countries.alpha2CodeFromName(country)
+        )
             .map(uni => ({
                 label: uni.name,
-                value: uni.name
+                value: uni.name,
             }))
             .filter(uni => {
                 if (uni.name === value.university) {
-                    return false;
+                    return false
                 }
-                return true;
-            });
+                return true
+            })
 
-        return baseOptions.concat(countryOptions);
-    }, [country, value]);
+        return baseOptions.concat(countryOptions)
+    }, [country, value])
 
     return (
         <Grid container spacing={3}>
@@ -112,10 +117,14 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                 <Select
                     disabled={fieldsDisabled}
                     label="University"
-                    placeholder={country ? 'Choose university' : 'Choose a country first'}
+                    placeholder={
+                        country ? 'Choose university' : 'Choose a country first'
+                    }
                     options={universityOptions}
                     value={value.university}
-                    onChange={university => handleChange('university', university)}
+                    onChange={university =>
+                        handleChange('university', university)
+                    }
                     allowCreate
                 />
             </Grid>
@@ -135,11 +144,13 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                     placeholder="Year of graduation (or expected year of graduation)"
                     options="year-future"
                     value={value.graduationYear}
-                    onChange={graduationYear => handleChange('graduationYear', graduationYear)}
+                    onChange={graduationYear =>
+                        handleChange('graduationYear', graduationYear)
+                    }
                 />
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
-export default EducationInput;
+export default EducationInput

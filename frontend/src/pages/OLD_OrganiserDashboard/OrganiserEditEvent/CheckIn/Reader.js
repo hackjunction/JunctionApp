@@ -1,32 +1,32 @@
-import React, { useRef, useCallback, useState } from 'react';
-import QrReader from 'react-qr-reader';
-import { withSnackbar } from 'notistack';
+import React, { useRef, useCallback, useState } from 'react'
+import QrReader from 'react-qr-reader'
+import { withSnackbar } from 'notistack'
 
-import { Box, Typography } from '@material-ui/core';
-import Button from 'components/generic/Button';
+import { Box, Typography } from '@material-ui/core'
+import Button from 'components/generic/Button'
 
 const Reader = ({ onResult, onError, enqueueSnackbar }) => {
-    const reader = useRef(null);
-    const [legacyMode, setLegacyMode] = useState(false);
+    const reader = useRef(null)
+    const [legacyMode, setLegacyMode] = useState(false)
 
     const handleScan = useCallback(
         data => {
             if (legacyMode && !data) {
-                enqueueSnackbar('QR code not found', { variant: 'error' });
+                enqueueSnackbar('QR code not found', { variant: 'error' })
             }
             if (data) {
-                onResult(data);
+                onResult(data)
             }
         },
         [onResult, enqueueSnackbar, legacyMode]
-    );
+    )
 
     const handleError = useCallback(
         err => {
-            onError();
+            onError()
         },
         [onError]
-    );
+    )
 
     return (
         <React.Fragment>
@@ -41,9 +41,12 @@ const Reader = ({ onResult, onError, enqueueSnackbar }) => {
             />
             {legacyMode ? (
                 <Box p={2}>
-                    <Typography variant="subtitle1">Using legacy mode</Typography>
+                    <Typography variant="subtitle1">
+                        Using legacy mode
+                    </Typography>
                     <Typography variant="body2">
-                        Take a picture of the QR code with your device camera and upload it here
+                        Take a picture of the QR code with your device camera
+                        and upload it here
                     </Typography>
                     <Box mt={1} />
                     <Button
@@ -54,21 +57,31 @@ const Reader = ({ onResult, onError, enqueueSnackbar }) => {
                         Take/upload image
                     </Button>
                     <Box mt={1} />
-                    <Button color="theme_orange" variant="contained" onClick={() => setLegacyMode(false)}>
+                    <Button
+                        color="theme_orange"
+                        variant="contained"
+                        onClick={() => setLegacyMode(false)}
+                    >
                         Use scan mode
                     </Button>
                 </Box>
             ) : (
                 <Box p={2}>
-                    <Typography variant="subtitle1">Scanner not working?</Typography>
+                    <Typography variant="subtitle1">
+                        Scanner not working?
+                    </Typography>
                     <Box mt={1} />
-                    <Button color="theme_turquoise" variant="contained" onClick={() => setLegacyMode(true)}>
+                    <Button
+                        color="theme_turquoise"
+                        variant="contained"
+                        onClick={() => setLegacyMode(true)}
+                    >
                         Use legacy mode (Take a picture)
                     </Button>
                 </Box>
             )}
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default withSnackbar(Reader);
+export default withSnackbar(Reader)

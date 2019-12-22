@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
-import ExternalLink from 'components/generic/ExternalLink';
-import Divider from 'components/generic/Divider';
+import ExternalLink from 'components/generic/ExternalLink'
+import Divider from 'components/generic/Divider'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
         background: theme.palette.theme_white.main,
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
     },
     inner: {
         width: '100%',
@@ -18,15 +18,15 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         [theme.breakpoints.up('md')]: {
-            flexDirection: 'row-reverse'
-        }
+            flexDirection: 'row-reverse',
+        },
     },
     copyright: {
         flex: 1,
         textAlign: 'center',
         [theme.breakpoints.up('md')]: {
-            textAlign: 'left'
-        }
+            textAlign: 'left',
+        },
     },
     links: {
         flex: 1,
@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         [theme.breakpoints.up('md')]: {
             alignItems: 'flex-end',
-            textAlign: 'right'
-        }
+            textAlign: 'right',
+        },
     },
     logos: {
         display: 'flex',
@@ -45,22 +45,28 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         [theme.breakpoints.up('md')]: {
-            justifyContent: 'flex-start'
-        }
-    }
-}));
+            justifyContent: 'flex-start',
+        },
+    },
+}))
 
 const Footer = () => {
-    const classes = useStyles();
+    const classes = useStyles()
     return (
         <div className={classes.wrapper}>
             <div className={classes.inner}>
                 <div className={classes.links}>
                     <Divider size={1} />
-                    <ExternalLink theme="dark" href="https://hackjunction.com/terms">
+                    <ExternalLink
+                        theme="dark"
+                        href="https://hackjunction.com/terms"
+                    >
                         Terms And Conditions
                     </ExternalLink>
-                    <ExternalLink theme="dark" href="https://hackjunction.com/privacy">
+                    <ExternalLink
+                        theme="dark"
+                        href="https://hackjunction.com/privacy"
+                    >
                         Privacy Policy
                     </ExternalLink>
                     <ExternalLink theme="dark" href="https://hackjunction.com">
@@ -71,7 +77,8 @@ const Footer = () => {
                 <div className={classes.copyright}>
                     <Divider size={1} />
                     <span className={classes.copyright}>
-                        Designed and developed with love and coffee by the Junction team, with the help of:
+                        Designed and developed with love and coffee by the
+                        Junction team, with the help of:
                     </span>
                     <Divider size={1} />
                     <div className={classes.logos}>
@@ -107,7 +114,7 @@ const Footer = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Footer;
+export default Footer

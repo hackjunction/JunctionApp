@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         flex: 1,
         padding: 0,
-        background: 'black'
+        background: 'black',
     },
     backgroundImage: {
         zIndex: 2,
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         width: '100%',
         height: '100%',
-        filter: 'blur(5px)'
+        filter: 'blur(5px)',
     },
     inner: {
         position: 'absolute',
@@ -35,17 +35,23 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         overflowY: 'scroll',
         [theme.breakpoints.up('md')]: {
-            padding: theme.spacing(5)
-        }
-    }
-}));
+            padding: theme.spacing(5),
+        },
+    },
+}))
 
 export default ({ background, children }) => {
-    const classes = useStyles();
+    const classes = useStyles()
     return (
         <div className={classes.wrapper}>
-            {background && <img className={classes.backgroundImage} src={background} alt="Background" />}
+            {background && (
+                <img
+                    className={classes.backgroundImage}
+                    src={background}
+                    alt="Background"
+                />
+            )}
             <div className={classes.inner}>{children}</div>
         </div>
-    );
-};
+    )
+}

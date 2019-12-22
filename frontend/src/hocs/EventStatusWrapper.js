@@ -1,8 +1,13 @@
-const EventStatusWrapper = ({ eventStatus, statuses = [], children, render }) => {
+const EventStatusWrapper = ({
+    eventStatus,
+    statuses = [],
+    children,
+    render,
+}) => {
     if (statuses.indexOf(eventStatus) !== -1) {
-        return typeof render === 'function' ? render() : children;
+        return typeof render === 'function' ? render() : children
     }
-    return null;
-};
+    return null
+}
 
-export default EventStatusWrapper;
+export default EventStatusWrapper

@@ -1,22 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Box, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import * as yup from 'yup';
+import { useFormik } from 'formik'
+import { useSelector, useDispatch } from 'react-redux'
+import { Typography, Box, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import * as yup from 'yup'
 
-import * as AuthSelectors from 'redux/auth/selectors';
-import * as UserActions from 'redux/user/actions';
-import * as AuthActions from 'redux/auth/actions';
-import * as SnackbarActions from 'redux/snackbar/actions';
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserActions from 'redux/user/actions'
+import * as AuthActions from 'redux/auth/actions'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
-import Button from 'components/generic/Button';
-import UserProfilesService from 'services/userProfiles';
+import Button from 'components/generic/Button'
+import UserProfilesService from 'services/userProfiles'
 
-import FixedLayout from 'components/layouts/FixedLayout';
-import LightTextField from './LightTextField';
-import LightCheckbox from './LightCheckbox';
+import FixedLayout from 'components/layouts/FixedLayout'
+import LightTextField from './LightTextField'
+import LightCheckbox from './LightCheckbox'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -28,20 +28,20 @@ const useStyles = makeStyles(theme => ({
         padding: 0,
         display: 'flex',
         background: 'black',
-        overflowY: 'scroll'
+        overflowY: 'scroll',
     },
     whiteCentered: {
         color: theme.palette.theme_white.main,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     label: {
-        color: theme.palette.theme_white.main
+        color: theme.palette.theme_white.main,
     },
     error: {
-        color: theme.palette.error.main
+        color: theme.palette.error.main,
     },
     link: {
-        color: theme.palette.primary.main
+        color: theme.palette.primary.main,
     },
     content: {
         display: 'flex',
@@ -51,8 +51,8 @@ const useStyles = makeStyles(theme => ({
         zIndex: 10,
         minHeight: '900px',
         [theme.breakpoints.up('lg')]: {
-            flexDirection: 'row'
-        }
+            flexDirection: 'row',
+        },
     },
     contentLeft: {
         zIndex: 15,
@@ -66,8 +66,8 @@ const useStyles = makeStyles(theme => ({
         minHeight: '300px',
         position: 'relative',
         [theme.breakpoints.up('lg')]: {
-            maxHeight: 'none'
-        }
+            maxHeight: 'none',
+        },
     },
     contentLeftBackground: {
         position: 'absolute',
@@ -76,14 +76,14 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
-        opacity: 0.4
+        opacity: 0.4,
     },
     contentLeftLogo: {
         width: '100%',
         maxWidth: '500px',
         objectFit: 'contain',
         position: 'relative',
-        zIndex: 10
+        zIndex: 10,
     },
     contentRight: {
         background: 'linear-gradient(152deg, #111, #111 15%, #343434)',
@@ -95,33 +95,40 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'flex-start',
         [theme.breakpoints.up('lg')]: {
             padding: theme.spacing(0, 3),
-            justifyContent: 'center'
-        }
-    }
-}));
+            justifyContent: 'center',
+        },
+    },
+}))
 
 export default () => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
+    const classes = useStyles()
+    const dispatch = useDispatch()
 
-    const idToken = useSelector(AuthSelectors.getIdToken);
-    const idTokenData = useSelector(AuthSelectors.idTokenData);
+    const idToken = useSelector(AuthSelectors.getIdToken)
+    const idTokenData = useSelector(AuthSelectors.idTokenData)
 
     const handleSubmit = useCallback(
         async (data, actions) => {
-            actions.setSubmitting(true);
+            actions.setSubmitting(true)
             try {
-                const profile = await UserProfilesService.createUserProfile(data, idToken);
-                dispatch(UserActions.setUserProfile(profile));
-                dispatch(AuthActions.pushNextRoute());
+                const profile = await UserProfilesService.createUserProfile(
+                    data,
+                    idToken
+                )
+                dispatch(UserActions.setUserProfile(profile))
+                dispatch(AuthActions.pushNextRoute())
             } catch (err) {
-                dispatch(SnackbarActions.error('Something went wrong... Please try again'));
+                dispatch(
+                    SnackbarActions.error(
+                        'Something went wrong... Please try again'
+                    )
+                )
             }
-            actions.setSubmitting(false);
-            return;
+            actions.setSubmitting(false)
+            return
         },
         [dispatch, idToken]
-    );
+    )
 
     const formik = useFormik({
         initialValues: {
@@ -129,7 +136,7 @@ export default () => {
             lastName: idTokenData?.family_name ?? '',
             email: idTokenData?.email ?? '',
             avatar: idTokenData.picture,
-            accepted: false
+            accepted: false,
         },
         onSubmit: handleSubmit,
         validationSchema: yup.object().shape({
@@ -150,12 +157,14 @@ export default () => {
                 .email()
                 .required()
                 .label('Email'),
-            accepted: yup.bool().oneOf([true])
-        })
-    });
+            accepted: yup.bool().oneOf([true]),
+        }),
+    })
 
     return (
-        <FixedLayout background={require('assets/images/default_cover_image.png')}>
+        <FixedLayout
+            background={require('assets/images/default_cover_image.png')}
+        >
             <div className={classes.content}>
                 <div className={classes.contentLeft}>
                     <img
@@ -173,11 +182,19 @@ export default () => {
                     <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <Typography variant="h4" paragraph className={classes.whiteCentered}>
+                                <Typography
+                                    variant="h4"
+                                    paragraph
+                                    className={classes.whiteCentered}
+                                >
                                     Welcome
                                 </Typography>
-                                <Typography variant="body1" className={classes.whiteCentered}>
-                                    Looks like you're new here! Let's make sure we have your basic information correct
+                                <Typography
+                                    variant="body1"
+                                    className={classes.whiteCentered}
+                                >
+                                    Looks like you're new here! Let's make sure
+                                    we have your basic information correct
                                     before moving on.
                                 </Typography>
                             </Grid>
@@ -191,7 +208,9 @@ export default () => {
                                     label="First name"
                                     placeholder="Herbert"
                                     InputProps={{
-                                        error: formik.errors.hasOwnProperty('firstName')
+                                        error: formik.errors.hasOwnProperty(
+                                            'firstName'
+                                        ),
                                     }}
                                 />
                                 <Typography variant="caption" color="error">
@@ -208,7 +227,9 @@ export default () => {
                                     label="Last name"
                                     placeholder="Hacker"
                                     InputProps={{
-                                        error: formik.errors.hasOwnProperty('lastName')
+                                        error: formik.errors.hasOwnProperty(
+                                            'lastName'
+                                        ),
                                     }}
                                 />
                                 <Typography variant="caption" color="error">
@@ -225,7 +246,9 @@ export default () => {
                                     label="Email address"
                                     placeholder="herbert.hacker@bighackathon.com"
                                     InputProps={{
-                                        error: formik.errors.hasOwnProperty('email')
+                                        error: formik.errors.hasOwnProperty(
+                                            'email'
+                                        ),
                                     }}
                                 />
                                 <Typography variant="caption" color="error">
@@ -234,19 +257,30 @@ export default () => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                            <Box mt={3} display="flex" flexDirection="row" alignItems="center">
+                            <Box
+                                mt={3}
+                                display="flex"
+                                flexDirection="row"
+                                alignItems="center"
+                            >
                                 <LightCheckbox
                                     name="accepted"
                                     checked={formik.values.accepted}
-                                    onChange={(e, value) => formik.setFieldValue('accepted', value)}
+                                    onChange={(e, value) =>
+                                        formik.setFieldValue('accepted', value)
+                                    }
                                     value="accepted"
                                     inputProps={{
-                                        'aria-label': 'checkbox'
+                                        'aria-label': 'checkbox',
                                     }}
                                 />
                                 <Box p={1}>
-                                    <Typography variant="subtitle2" className={classes.label}>
-                                        I confirm that I am at least 16 years of age, and I have read and agree to the
+                                    <Typography
+                                        variant="subtitle2"
+                                        className={classes.label}
+                                    >
+                                        I confirm that I am at least 16 years of
+                                        age, and I have read and agree to the
                                         Junction{' '}
                                         <a
                                             href="https://hackjunction.com/terms"
@@ -269,7 +303,11 @@ export default () => {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Box display="flex" alignItems="center" justifyContent="center">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
                             <Box width="240px">
                                 <Button
                                     onClick={formik.submitForm}
@@ -287,5 +325,5 @@ export default () => {
                 </div>
             </div>
         </FixedLayout>
-    );
-};
+    )
+}

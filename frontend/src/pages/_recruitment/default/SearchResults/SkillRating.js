@@ -1,9 +1,9 @@
-import React from 'react';
-import Rating from '@material-ui/lab/Rating';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Typography, Tooltip } from '@material-ui/core/';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import PropTypes from 'prop-types';
+import React from 'react'
+import Rating from '@material-ui/lab/Rating'
+import { withStyles, makeStyles } from '@material-ui/core/styles'
+import { Typography, Tooltip } from '@material-ui/core/'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
+import PropTypes from 'prop-types'
 import { Skills } from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({
@@ -12,39 +12,37 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '0.2rem'
+        marginBottom: '0.2rem',
     },
     label: {
-        lineHeight: 1.1
-    }
-}));
-
+        lineHeight: 1.1,
+    },
+}))
 
 const IconContainer = ({ value, ...other }) => {
     return (
         <div>
             <Tooltip title={Skills.getLabelForSkillLevel(value)}>
                 <div {...other} />
-            </Tooltip >
+            </Tooltip>
         </div>
-    );
+    )
 }
 IconContainer.propTypes = {
     value: PropTypes.number.isRequired,
-};
+}
 
 const SkillRating = ({ data, small = false, showTooltip }) => {
-    const classes = useStyles();
-
+    const classes = useStyles()
 
     const StyledRating = withStyles({
         iconFilled: {
-            color: '#F38100'
+            color: '#F38100',
         },
         iconHover: {
-            color: '#F38100'
-        }
-    })(Rating);
+            color: '#F38100',
+        },
+    })(Rating)
 
     return (
         <div className={classes.inline}>
@@ -64,7 +62,7 @@ const SkillRating = ({ data, small = false, showTooltip }) => {
                 readOnly={showTooltip ? false : true}
             />
         </div>
-    );
-};
+    )
+}
 
-export default SkillRating;
+export default SkillRating

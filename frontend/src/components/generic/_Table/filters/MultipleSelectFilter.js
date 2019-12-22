@@ -1,38 +1,38 @@
-import React, { useCallback, useMemo } from 'react';
-import { groupBy } from 'lodash-es';
-import { TextField } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useCallback, useMemo } from 'react'
+import { groupBy } from 'lodash-es'
+import { TextField } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
-import * as FilterTypes from '../filterTypes';
+import * as FilterTypes from '../filterTypes'
 
 const useStyles = makeStyles(theme => ({
     option: {
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
     },
     optionSelected: {
         padding: theme.spacing(1),
-        background: theme.palette.theme_lightgray.main
-    }
-}));
+        background: theme.palette.theme_lightgray.main,
+    },
+}))
 
 const Component = ({ column }) => {
-    const classes = useStyles();
-    const { filterValue, preFilteredRows, setFilter, id } = column;
-    const selectedValues = filterValue || [];
+    const classes = useStyles()
+    const { filterValue, preFilteredRows, setFilter, id } = column
+    const selectedValues = filterValue || []
     const handleChange = useCallback(
         e => {
-            setFilter(e.target.value);
+            setFilter(e.target.value)
         },
         [setFilter]
-    );
+    )
 
     const options = useMemo(() => {
-        const grouped = groupBy(preFilteredRows, row => row.values[id]);
+        const grouped = groupBy(preFilteredRows, row => row.values[id])
         return Object.keys(grouped).map(value => ({
             value,
-            label: `${value} (${grouped[value].length})`
-        }));
-    }, [preFilteredRows, id]);
+            label: `${value} (${grouped[value].length})`,
+        }))
+    }, [preFilteredRows, id])
 
     return (
         <TextField
@@ -42,13 +42,17 @@ const Component = ({ column }) => {
             value={selectedValues}
             onChange={handleChange}
             SelectProps={{
-                multiple: true
+                multiple: true,
             }}
             variant="filled"
         >
             {options.map(({ value, label }) => (
                 <option
-                    className={selectedValues.indexOf(value) !== -1 ? classes.optionSelected : classes.option}
+                    className={
+                        selectedValues.indexOf(value) !== -1
+                            ? classes.optionSelected
+                            : classes.option
+                    }
                     key={value}
                     value={value}
                 >
@@ -56,12 +60,12 @@ const Component = ({ column }) => {
                 </option>
             ))}
         </TextField>
-    );
-};
+    )
+}
 
 const MultipleSelectFilter = {
     Filter: Component,
-    filter: FilterTypes.MULTIPLE_SELECT
-};
+    filter: FilterTypes.MULTIPLE_SELECT,
+}
 
-export default MultipleSelectFilter;
+export default MultipleSelectFilter

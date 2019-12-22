@@ -1,13 +1,13 @@
-import _axios from 'services/axios';
+import _axios from 'services/axios'
 
-const RecruitmentService = {};
+const RecruitmentService = {}
 
 function config(idToken) {
     return {
         headers: {
-            Authorization: `Bearer ${idToken}`
-        }
-    };
+            Authorization: `Bearer ${idToken}`,
+        },
+    }
 }
 
 RecruitmentService.search = (idToken, filters, page, page_size) => {
@@ -17,15 +17,15 @@ RecruitmentService.search = (idToken, filters, page, page_size) => {
             filters,
             pagination: {
                 page_size,
-                page
-            }
+                page,
+            },
         },
         config(idToken)
-    );
-};
+    )
+}
 RecruitmentService.getUserProfile = (idToken, userId) => {
-    return _axios.get(`/recruitment/profile/${userId}`, config(idToken));
-};
+    return _axios.get(`/recruitment/profile/${userId}`, config(idToken))
+}
 
 RecruitmentService.submitAction = (type, idToken, userId, message) => {
     return _axios.post(
@@ -33,14 +33,14 @@ RecruitmentService.submitAction = (type, idToken, userId, message) => {
         {
             type,
             user: userId,
-            data: { message: message }
+            data: { message: message },
         },
         config(idToken)
-    );
-};
+    )
+}
 
 RecruitmentService.getActionHistory = idToken => {
-    return _axios.get('/recruitment/action', config(idToken));
-};
+    return _axios.get('/recruitment/action', config(idToken))
+}
 
-export default RecruitmentService;
+export default RecruitmentService

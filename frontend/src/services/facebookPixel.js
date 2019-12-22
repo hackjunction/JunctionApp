@@ -1,31 +1,31 @@
-import ReactPixel from 'react-facebook-pixel';
-import config from 'constants/config';
+import ReactPixel from 'react-facebook-pixel'
+import config from 'constants/config'
 
-const advancedMatching = {};
+const advancedMatching = {}
 const options = {
     autoConfig: true,
-    debug: false
-};
+    debug: false,
+}
 
-ReactPixel.init(config.FACEBOOK_PIXEL_ID, advancedMatching, options);
+ReactPixel.init(config.FACEBOOK_PIXEL_ID, advancedMatching, options)
 
 const FacebookPixel = {
     pageView: () => {
-        ReactPixel.pageView();
+        ReactPixel.pageView()
     },
     viewEvent: slug => {
         ReactPixel.track('ViewContent', {
             value: 0.1,
             currency: 'EUR',
             content_ids: slug,
-            content_type: 'product'
-        });
+            content_type: 'product',
+        })
     },
     loggedIn: () => {
         ReactPixel.track('CompleteRegistration', {
             value: 0.1,
-            currency: 'EUR'
-        });
+            currency: 'EUR',
+        })
     },
     beginRegistration: slug => {
         ReactPixel.track('AddToCart', {
@@ -34,11 +34,11 @@ const FacebookPixel = {
             contents: [
                 {
                     id: slug,
-                    quantity: 1
-                }
+                    quantity: 1,
+                },
             ],
-            content_ids: slug
-        });
+            content_ids: slug,
+        })
     },
     completeRegistration: slug => {
         ReactPixel.track('Purchase', {
@@ -47,12 +47,12 @@ const FacebookPixel = {
             contents: [
                 {
                     id: slug,
-                    quantity: 1
-                }
+                    quantity: 1,
+                },
             ],
-            content_ids: slug
-        });
-    }
-};
+            content_ids: slug,
+        })
+    },
+}
 
-export default FacebookPixel;
+export default FacebookPixel

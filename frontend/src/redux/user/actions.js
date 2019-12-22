@@ -1,46 +1,46 @@
-import * as ActionTypes from './actionTypes';
-import * as AuthSelectors from 'redux/auth/selectors';
+import * as ActionTypes from './actionTypes'
+import * as AuthSelectors from 'redux/auth/selectors'
 
-import UserProfilesService from 'services/userProfiles';
+import UserProfilesService from 'services/userProfiles'
 
 export const setUserProfile = profile => dispatch => {
     dispatch({
         type: ActionTypes.SET_PROFILE,
-        payload: profile
-    });
-};
+        payload: profile,
+    })
+}
 
 export const updateUserProfile = idToken => async dispatch => {
-    const userProfile = await UserProfilesService.getUserProfile(idToken);
+    const userProfile = await UserProfilesService.getUserProfile(idToken)
 
     if (userProfile) {
-        dispatch(setUserProfile(userProfile));
+        dispatch(setUserProfile(userProfile))
     } else {
-        dispatch(setUserProfile(null));
+        dispatch(setUserProfile(null))
     }
 
-    return userProfile;
-};
+    return userProfile
+}
 
 export const editUserProfile = data => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState());
+    const idToken = AuthSelectors.getIdToken(getState())
 
-    const userProfile = await UserProfilesService.editUserProfile(idToken, data);
+    const userProfile = await UserProfilesService.editUserProfile(idToken, data)
 
-    dispatch(setUserProfile(userProfile));
+    dispatch(setUserProfile(userProfile))
 
-    return userProfile;
-};
+    return userProfile
+}
 
 export const setRegistration = (registration, eventId) => dispatch => {
     dispatch({
         type: ActionTypes.SET_REGISTRATION,
         payload: {
             registration,
-            eventId
-        }
-    });
-};
+            eventId,
+        },
+    })
+}
 
 // export const getUserProfile = () => (dispatch, getState) => {
 //     const state = getState();
