@@ -12,7 +12,6 @@
         "auth0-js": "^9.10.0",
         "axios": "^0.18.0",
         "babel-plugin-import": "^1.12.2",
-        "classnames": "^2.2.6",
         "cloudinary-react": "^1.1.1",
         "connected-react-router": "^6.3.0",
         "formik": "^2.0.8",
