@@ -3,6 +3,10 @@
         {
             "changeProcessCWD": true,
             "directory": "./frontend"
+        },
+        {
+            "changeProcessCWD": true,
+            "directory": "./backend",
         }
     ],
     "editor.formatOnSave": false,
