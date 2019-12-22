@@ -1,19 +1,15 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import './style.scss';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 
-class Divider extends PureComponent {
-    static propTypes = {
-        size: PropTypes.any
-    };
+const useStyles = makeStyles(theme => ({
+    root: ({ size }) => ({
+        width: theme.spacing(size),
+        height: theme.spacing(size),
+    }),
+}))
 
-    static defaultProps = {
-        size: 1
-    };
+export default ({ size = 1 }) => {
+    const classes = useStyles({ size })
 
-    render() {
-        return <div className={`Divider Divider-${this.props.size}`} />;
-    }
+    return <div className={classes.root} />
 }
-
-export default Divider;

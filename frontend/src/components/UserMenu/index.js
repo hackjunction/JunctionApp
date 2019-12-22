@@ -58,7 +58,7 @@ export default () => {
                     color="theme_white"
                     variant="outlined"
                     strong
-                    onClick={() => push('/login')}
+                    onClick={() => dispatch(push('/login'))}
                 >
                     Sign in
                 </Button>
@@ -78,14 +78,14 @@ export default () => {
         if (hasOrganiserAccess) {
             items.push({
                 label: 'Organiser dashboard',
-                onClick: () => push('/organise'),
+                onClick: () => dispatch(push('/organise')),
             })
         }
 
         if (hasRecruiterAccess) {
             items.push({
                 label: 'Recruitment dashboard',
-                onClick: () => push('/recruitment'),
+                onClick: () => dispatch(push('/recruitment')),
             })
         }
 
