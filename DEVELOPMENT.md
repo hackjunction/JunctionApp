@@ -9,6 +9,8 @@ Before you begin, make sure you have the following installed on your system:
 - Node.js 12.x (Recommended: use Nvm for managing Node versions)
 - MongoDB 3.6.x
 
+Regarding your development environment: *I highly recommend you to use VSCode with the Prettier and EsLint plugins installed. This way your code can be automatically fixed on save, according to the eslint/prettier configuration defined in the project.* The project will not allow commits that do not pass the linter.
+
 ### Clone the repository
 
 ```
