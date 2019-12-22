@@ -44,10 +44,44 @@
         "shortid": "^2.2.14",
         "yup": "^0.27.0"
     },
+    "eslintConfig": {
+        "extends": [
+            "airbnb-base",
+            "prettier"
+        ],
+        "plugins": [
+            "prettier"
+        ],
+        "parserOptions": {
+            "ecmaVersion": 2018
+        },
+        "rules": {
+            "no-param-reassign": 0,
+            
+            "prettier/prettier": [
+                "error",
+                {
+                    "printWidth": 80,
+                    "trailingComma": "es5",
+                    "semi": false,
+                    "jsxSingleQuote": false,
+                    "singleQuote": true,
+                    "useTabs": false,
+                    "tabWidth": 4,
+                    "bracketSpacing": true
+                }
+            ]
+        }
+    },
     "devDependencies": {
-        "eslint": "^5.16.0",
+        "eslint": "^6.7.2",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-prettier": "^3.1.2",
         "kill-port": "^1.4.0",
         "nodemon": "^1.18.10",
+        "prettier": "^1.19.1",
         "sync-dotenv": "^2.2.1"
     },
     "engines": {
