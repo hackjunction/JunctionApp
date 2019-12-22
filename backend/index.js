@@ -5,7 +5,11 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const { errors } = require('celebrate')
 const path = require('path')
+const helmet = require('helmet')
 const sslRedirect = require('heroku-ssl-redirect')
+
+/** Use helmet for some basic security measures */
+app.use(helmet())
 
 /* Force SSL Redirect in production */
 app.use(sslRedirect(['production'], 301))
