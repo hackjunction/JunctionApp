@@ -1,5 +1,3 @@
 node_modules
 .DS_Store
-scripts/sync-production-to-local.sh
-scripts/sync-production-to-dev.sh
-scripts/sync-production-to-staging.sh
+scripts/
