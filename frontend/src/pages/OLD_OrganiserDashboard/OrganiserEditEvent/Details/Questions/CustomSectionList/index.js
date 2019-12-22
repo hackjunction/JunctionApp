@@ -1,97 +1,102 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react'
 
-import { RegistrationFields } from '@hackjunction/shared';
-import { Box } from '@material-ui/core';
+import { RegistrationFields } from '@hackjunction/shared'
+import { Box } from '@material-ui/core'
 
-import Empty from 'components/generic/Empty';
-import Button from 'components/generic/Button';
-import AddSectionModal from '../AddSectionModal';
-import CustomSectionListItem from '../CustomSectionListItem';
+import Empty from 'components/generic/Empty'
+import Button from 'components/generic/Button'
+import AddSectionModal from '../AddSectionModal'
+import CustomSectionListItem from '../CustomSectionListItem'
 
 const CustomSectionList = ({ sections = [], onChange }) => {
-    const [modalOpen, setModalOpen] = useState(false);
-    const [editing, setEditing] = useState();
+    const [modalOpen, setModalOpen] = useState(false)
+    const [editing, setEditing] = useState()
     const reservedNames = useMemo(() => {
-        const sectionNames = sections.map(s => s.name);
-        const questionNames = Object.keys(RegistrationFields.getFields());
-        return sectionNames.concat(questionNames);
-    }, [sections]);
+        const sectionNames = sections.map(s => s.name)
+        const questionNames = Object.keys(RegistrationFields.getFields())
+        return sectionNames.concat(questionNames)
+    }, [sections])
 
     const handleAdd = useCallback(
         section => {
-            const newValue = sections.concat(section);
-            onChange(newValue);
+            const newValue = sections.concat(section)
+            onChange(newValue)
         },
         [onChange, sections]
-    );
+    )
 
     const handleChange = useCallback(
         (updatedSection, updatedIndex) => {
             const newValue = sections.map((section, index) => {
                 if (updatedIndex === index) {
-                    return updatedSection;
+                    return updatedSection
                 }
-                return section;
-            });
-            onChange(newValue);
+                return section
+            })
+            onChange(newValue)
         },
         [onChange, sections]
-    );
+    )
 
     const handleRemove = useCallback(
         (section, index) => {
-            const newValue = sections.slice();
-            newValue.splice(index, 1);
-            onChange(newValue);
+            const newValue = sections.slice()
+            newValue.splice(index, 1)
+            onChange(newValue)
         },
         [onChange, sections]
-    );
+    )
 
     const handleMoveUp = useCallback(
         (section, index) => {
-            if (index === 0) return;
-            const newValue = sections.slice();
-            newValue[index] = newValue[index - 1];
-            newValue[index - 1] = section;
-            onChange(newValue);
+            if (index === 0) return
+            const newValue = sections.slice()
+            newValue[index] = newValue[index - 1]
+            newValue[index - 1] = section
+            onChange(newValue)
         },
         [onChange, sections]
-    );
+    )
 
     const handleMoveDown = useCallback(
         (section, index) => {
-            if (index === sections.length - 1) return;
-            const newValue = sections.slice();
-            newValue[index] = newValue[index + 1];
-            newValue[index + 1] = section;
-            onChange(newValue);
+            if (index === sections.length - 1) return
+            const newValue = sections.slice()
+            newValue[index] = newValue[index + 1]
+            newValue[index + 1] = section
+            onChange(newValue)
         },
         [onChange, sections]
-    );
+    )
 
     const handleEditDone = useCallback(
         section => {
             const newValue = sections.map(s => {
                 if (s.name === section.name) {
-                    return section;
+                    return section
                 }
-                return s;
-            });
-            onChange(newValue);
-            setEditing(undefined);
+                return s
+            })
+            onChange(newValue)
+            setEditing(undefined)
         },
         [onChange, sections]
-    );
+    )
 
     const renderAdd = () => (
-        <Button onClick={() => setModalOpen(true)} fullWidth color="primary" variant="contained">
+        <Button
+            onClick={() => setModalOpen(true)}
+            fullWidth
+            color="primary"
+            variant="contained"
+        >
             Add section
         </Button>
-    );
+    )
 
     const renderEmpty = () => {
-        return <Empty isEmpty emptyText="No custom questions" />;
-    };
+        return <Empty isEmpty emptyText="No custom questions" />
+    }
 
     const renderList = () => {
         return sections.map((section, index) => (
@@ -106,8 +111,8 @@ const CustomSectionList = ({ sections = [], onChange }) => {
                 isFirst={index === 0}
                 isLast={index === sections.length - 1}
             />
-        ));
-    };
+        ))
+    }
 
     return (
         <React.Fragment>
@@ -134,7 +139,7 @@ const CustomSectionList = ({ sections = [], onChange }) => {
                 {renderAdd()}
             </Box>
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default CustomSectionList;
+export default CustomSectionList

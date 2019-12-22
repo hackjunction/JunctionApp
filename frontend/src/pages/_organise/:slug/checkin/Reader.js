@@ -1,34 +1,34 @@
-import React, { useRef, useCallback, useState } from 'react';
-import QrReader from 'react-qr-reader';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useCallback, useState } from 'react'
+import QrReader from 'react-qr-reader'
+import { useDispatch } from 'react-redux'
 
-import { Box, Typography } from '@material-ui/core';
-import Button from 'components/generic/Button';
+import { Box, Typography } from '@material-ui/core'
+import Button from 'components/generic/Button'
 
-import * as SnackbarActions from 'redux/snackbar/actions';
+import * as SnackbarActions from 'redux/snackbar/actions'
 export default ({ onResult, onError }) => {
-    const reader = useRef(null);
-    const dispatch = useDispatch();
-    const [legacyMode, setLegacyMode] = useState(false);
+    const reader = useRef(null)
+    const dispatch = useDispatch()
+    const [legacyMode, setLegacyMode] = useState(false)
 
     const handleScan = useCallback(
         data => {
             if (legacyMode && !data) {
-                dispatch(SnackbarActions.error('QR code not found'));
+                dispatch(SnackbarActions.error('QR code not found'))
             }
             if (data) {
-                onResult(data);
+                onResult(data)
             }
         },
         [onResult, legacyMode, dispatch]
-    );
+    )
 
     const handleError = useCallback(
         err => {
-            onError();
+            onError()
         },
         [onError]
-    );
+    )
 
     return (
         <React.Fragment>
@@ -43,9 +43,12 @@ export default ({ onResult, onError }) => {
             />
             {legacyMode ? (
                 <Box p={2}>
-                    <Typography variant="subtitle1">Using legacy mode</Typography>
+                    <Typography variant="subtitle1">
+                        Using legacy mode
+                    </Typography>
                     <Typography variant="body2">
-                        Take a picture of the QR code with your device camera and upload it here
+                        Take a picture of the QR code with your device camera
+                        and upload it here
                     </Typography>
                     <Box mt={1} />
                     <Button
@@ -56,19 +59,29 @@ export default ({ onResult, onError }) => {
                         Take/upload image
                     </Button>
                     <Box mt={1} />
-                    <Button color="theme_orange" variant="contained" onClick={() => setLegacyMode(false)}>
+                    <Button
+                        color="theme_orange"
+                        variant="contained"
+                        onClick={() => setLegacyMode(false)}
+                    >
                         Use scan mode
                     </Button>
                 </Box>
             ) : (
                 <Box p={2}>
-                    <Typography variant="subtitle1">Scanner not working?</Typography>
+                    <Typography variant="subtitle1">
+                        Scanner not working?
+                    </Typography>
                     <Box mt={1} />
-                    <Button color="theme_turquoise" variant="contained" onClick={() => setLegacyMode(true)}>
+                    <Button
+                        color="theme_turquoise"
+                        variant="contained"
+                        onClick={() => setLegacyMode(true)}
+                    >
                         Use legacy mode (Take a picture)
                     </Button>
                 </Box>
             )}
         </React.Fragment>
-    );
-};
+    )
+}

@@ -1,25 +1,25 @@
-import React, { useCallback, useMemo } from 'react';
-import { groupBy } from 'lodash-es';
-import { TextField } from '@material-ui/core';
+import React, { useCallback, useMemo } from 'react'
+import { groupBy } from 'lodash-es'
+import { TextField } from '@material-ui/core'
 
-import * as FilterTypes from '../filterTypes';
+import * as FilterTypes from '../filterTypes'
 
 const Component = ({ column }) => {
-    const { filterValue, preFilteredRows, setFilter, id } = column;
+    const { filterValue, preFilteredRows, setFilter, id } = column
     const handleChange = useCallback(
         e => {
-            setFilter(e.target.value);
+            setFilter(e.target.value)
         },
         [setFilter]
-    );
+    )
 
     const options = useMemo(() => {
-        const grouped = groupBy(preFilteredRows, row => row.values[id]);
+        const grouped = groupBy(preFilteredRows, row => row.values[id])
         return Object.keys(grouped).map(value => ({
             value,
-            label: `${value} (${grouped[value].length})`
-        }));
-    }, [preFilteredRows, id]);
+            label: `${value} (${grouped[value].length})`,
+        }))
+    }, [preFilteredRows, id])
 
     return (
         <TextField
@@ -30,7 +30,7 @@ const Component = ({ column }) => {
             onChange={handleChange}
             margin="dense"
             SelectProps={{
-                native: true
+                native: true,
             }}
             variant="filled"
         >
@@ -40,12 +40,12 @@ const Component = ({ column }) => {
                 </option>
             ))}
         </TextField>
-    );
-};
+    )
+}
 
 const SingleSelectFilter = {
     Filter: Component,
-    filter: FilterTypes.SINGLE_SELECT
-};
+    filter: FilterTypes.SINGLE_SELECT,
+}
 
-export default SingleSelectFilter;
+export default SingleSelectFilter

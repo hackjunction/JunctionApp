@@ -1,24 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import { Typography, Grid, Box } from '@material-ui/core';
-import { push } from 'connected-react-router';
-import moment from 'moment-timezone';
-import { connect } from 'react-redux';
-import { EventHelpers } from '@hackjunction/shared';
+import { Typography, Grid, Box } from '@material-ui/core'
+import { push } from 'connected-react-router'
+import moment from 'moment-timezone'
+import { connect } from 'react-redux'
+import { EventHelpers } from '@hackjunction/shared'
 
-import Button from 'components/generic/Button';
-import GradientBox from 'components/generic/GradientBox';
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as DashboardActions from 'redux/dashboard/actions';
+import Button from 'components/generic/Button'
+import GradientBox from 'components/generic/GradientBox'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
 
-const ReviewingPeriodBlock = ({ event, voteCount, updateAnnotator, openReviewing }) => {
+const ReviewingPeriodBlock = ({
+    event,
+    voteCount,
+    updateAnnotator,
+    openReviewing,
+}) => {
     useEffect(() => {
         if (event) {
-            updateAnnotator(event.slug);
+            updateAnnotator(event.slug)
         }
-    }, [event, updateAnnotator]);
+    }, [event, updateAnnotator])
 
-    if (!EventHelpers.isVotingOpen(event, moment)) return null;
+    if (!EventHelpers.isVotingOpen(event, moment)) return null
 
     return (
         <Grid item xs={12}>
@@ -34,22 +39,26 @@ const ReviewingPeriodBlock = ({ event, voteCount, updateAnnotator, openReviewing
                         : `You've submitted ${voteCount} votes. Head over to the reviewing page to continue reviewing other projects!`}
                 </Typography>
                 <Box mt={2}></Box>
-                <Button onClick={() => openReviewing(event.slug)} color="theme_white" variant="contained">
+                <Button
+                    onClick={() => openReviewing(event.slug)}
+                    color="theme_white"
+                    variant="contained"
+                >
                     To reviewing
                 </Button>
             </GradientBox>
         </Grid>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     event: DashboardSelectors.event(state),
-    voteCount: DashboardSelectors.annotatorVoteCount(state)
-});
+    voteCount: DashboardSelectors.annotatorVoteCount(state),
+})
 
 const mapDispatch = dispatch => ({
     updateAnnotator: slug => dispatch(DashboardActions.updateAnnotator(slug)),
-    openReviewing: slug => dispatch(push(`/dashboard/${slug}/reviewing`))
-});
+    openReviewing: slug => dispatch(push(`/dashboard/${slug}/reviewing`)),
+})
 
-export default connect(mapState, mapDispatch)(ReviewingPeriodBlock);
+export default connect(mapState, mapDispatch)(ReviewingPeriodBlock)

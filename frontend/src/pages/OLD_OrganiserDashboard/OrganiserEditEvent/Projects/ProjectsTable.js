@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'
 
-import { Table, Filters, Sorters } from 'components/generic/_Table';
+import { Table, Filters, Sorters } from 'components/generic/_Table'
 
 const ProjectsTable = ({ projects }) => {
     const columns = useMemo(() => {
@@ -8,30 +8,30 @@ const ProjectsTable = ({ projects }) => {
             {
                 Header: '#',
                 accessor: (row, index) => {
-                    return index + 1;
+                    return index + 1
                 },
                 id: 'index',
-                sortType: Sorters.Numeric
+                sortType: Sorters.Numeric,
             },
             {
                 Header: 'Name',
                 accessor: 'name',
-                ...Filters.ContainsSearch
+                ...Filters.ContainsSearch,
             },
             {
                 Header: 'Punchline',
                 accessor: 'punchline',
-                ...Filters.ContainsSearch
+                ...Filters.ContainsSearch,
             },
             {
                 Header: 'Location',
                 accessor: 'location',
-                ...Filters.ContainsSearch
-            }
-        ];
-    }, []);
+                ...Filters.ContainsSearch,
+            },
+        ]
+    }, [])
 
-    return <Table data={projects} columns={columns} />;
-};
+    return <Table data={projects} columns={columns} />
+}
 
-export default ProjectsTable;
+export default ProjectsTable

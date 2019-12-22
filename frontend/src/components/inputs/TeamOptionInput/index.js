@@ -1,29 +1,29 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Typography } from '@material-ui/core'
 
-import BooleanInput from 'components/inputs/BooleanInput';
+import BooleanInput from 'components/inputs/BooleanInput'
 
 const useStyles = makeStyles(theme => ({
     label: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
-    hint: {}
-}));
+    hint: {},
+}))
 
 const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
-    const classes = useStyles();
+    const classes = useStyles()
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({
                 ...value,
-                [fieldName]: fieldValue
-            });
+                [fieldName]: fieldValue,
+            })
         },
         [value, onChange]
-    );
+    )
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -31,14 +31,18 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
                     Do you want to apply as a team?
                 </Typography>
                 <Typography className={classes.hint} variant="subtitle2">
-                    Please note: if you do apply as a team, you must form the team on the event dashboard, which you
-                    will be able to access after completing this form. If you choose to apply as a team, and you do not
-                    form a team, we will not review your registration.
+                    Please note: if you do apply as a team, you must form the
+                    team on the event dashboard, which you will be able to
+                    access after completing this form. If you choose to apply as
+                    a team, and you do not form a team, we will not review your
+                    registration.
                 </Typography>
                 <BooleanInput
                     autoFocus={autoFocus}
                     value={value.applyAsTeam}
-                    onChange={applyAsTeam => handleChange('applyAsTeam', applyAsTeam)}
+                    onChange={applyAsTeam =>
+                        handleChange('applyAsTeam', applyAsTeam)
+                    }
                     onBlur={onBlur}
                 />
             </Grid>
@@ -48,16 +52,19 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
                         Do you want to apply also alone?
                     </Typography>
                     <Typography className={classes.hint} variant="subtitle2">
-                        If your entire team isn't accepted as a whole, do you want to also apply alone?
+                        If your entire team isn't accepted as a whole, do you
+                        want to also apply alone?
                     </Typography>
                     <BooleanInput
                         value={value.applyAlone}
-                        onChange={applyAlone => handleChange('applyAlone', applyAlone)}
+                        onChange={applyAlone =>
+                            handleChange('applyAlone', applyAlone)
+                        }
                     />
                 </Grid>
             )}
         </Grid>
-    );
-};
+    )
+}
 
-export default TeamOptionInput;
+export default TeamOptionInput

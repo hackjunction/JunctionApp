@@ -1,38 +1,38 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Grid, Box, Typography } from '@material-ui/core';
-import moment from 'moment';
-import Select from 'components/inputs/Select';
+import { Grid, Box, Typography } from '@material-ui/core'
+import moment from 'moment'
+import Select from 'components/inputs/Select'
 
 const DateInput = ({ label, value, onChange, onBlur }) => {
-    const momentValue = value ? moment(value) : null;
+    const momentValue = value ? moment(value) : null
 
     const handleDateChange = useCallback(
         date => {
-            const newValue = moment(value);
-            newValue.date(date);
-            onChange(newValue.startOf('day').format());
+            const newValue = moment(value)
+            newValue.date(date)
+            onChange(newValue.startOf('day').format())
         },
         [value, onChange]
-    );
+    )
 
     const handleMonthChange = useCallback(
         month => {
-            const newValue = moment(value);
-            newValue.month(month - 1);
-            onChange(newValue.startOf('day').format());
+            const newValue = moment(value)
+            newValue.month(month - 1)
+            onChange(newValue.startOf('day').format())
         },
         [value, onChange]
-    );
+    )
 
     const handleYearChange = useCallback(
         year => {
-            const newValue = moment(value);
-            newValue.year(year);
-            onChange(newValue.startOf('day').format());
+            const newValue = moment(value)
+            newValue.year(year)
+            onChange(newValue.startOf('day').format())
         },
         [value, onChange]
-    );
+    )
 
     return (
         <Box>
@@ -65,7 +65,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
                 </Grid>
             </Grid>
         </Box>
-    );
-};
+    )
+}
 
-export default DateInput;
+export default DateInput

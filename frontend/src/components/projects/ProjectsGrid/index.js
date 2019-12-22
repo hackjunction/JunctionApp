@@ -1,17 +1,29 @@
-import React from 'react';
+import React from 'react'
 
-import { sortBy } from 'lodash-es';
-import moment from 'moment-timezone';
-import { Grid } from '@material-ui/core';
-import { EventHelpers } from '@hackjunction/shared';
-import ProjectsGridItem from '../ProjectsGridItem';
+import { sortBy } from 'lodash-es'
+import moment from 'moment-timezone'
+import { Grid } from '@material-ui/core'
+import { EventHelpers } from '@hackjunction/shared'
+import ProjectsGridItem from '../ProjectsGridItem'
 
-const ProjectsGrid = ({ projects, event, onSelect, sortField = 'location', showFullTeam = false }) => {
-    const isOngoingEvent = EventHelpers.isEventOngoing(event, moment);
-    const sorted = sortField ? sortBy(projects, p => p[sortField]) : projects;
+const ProjectsGrid = ({
+    projects,
+    event,
+    onSelect,
+    sortField = 'location',
+    showFullTeam = false,
+}) => {
+    const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
+    const sorted = sortField ? sortBy(projects, p => p[sortField]) : projects
 
     return (
-        <Grid container spacing={3} direction="row" alignItems="stretch" justify="center">
+        <Grid
+            container
+            spacing={3}
+            direction="row"
+            alignItems="stretch"
+            justify="center"
+        >
             {sorted.map(project => (
                 <ProjectsGridItem
                     project={project}
@@ -22,7 +34,7 @@ const ProjectsGrid = ({ projects, event, onSelect, sortField = 'location', showF
                 />
             ))}
         </Grid>
-    );
-};
+    )
+}
 
-export default ProjectsGrid;
+export default ProjectsGrid

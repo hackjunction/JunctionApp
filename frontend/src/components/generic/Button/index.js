@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import { Button as MuiButton, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button as MuiButton, CircularProgress } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 const baseStyles = (theme, props, variant) => {
     return {
@@ -12,17 +12,19 @@ const baseStyles = (theme, props, variant) => {
         letterSpacing: '0.02em',
         lineHeight: '22px',
         boxShadow: 'none',
-        fontFamily: props.strong ? theme.typography.h1.fontFamily : theme.typography.body1.fontFamily,
+        fontFamily: props.strong
+            ? theme.typography.h1.fontFamily
+            : theme.typography.body1.fontFamily,
         fontWeight: 'bold',
         textTransform: props.strong ? 'uppercase' : 'none',
         '&:focus': {
-            boxShadow: 'none'
-        }
-    };
-};
+            boxShadow: 'none',
+        },
+    }
+}
 
 const variantStyles = (theme, props) => {
-    const color = theme.palette[props.color];
+    const color = theme.palette[props.color]
     switch (props.variant) {
         case 'contained': {
             return {
@@ -30,30 +32,30 @@ const variantStyles = (theme, props) => {
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
                 '&:hover': {
-                    backgroundColor: color.main
+                    backgroundColor: color.main,
                 },
                 '&.Mui-disabled': {
                     backgroundColor: color.dark,
                     color: color.contrastText,
-                    opacity: 0.5
-                }
-            };
+                    opacity: 0.5,
+                },
+            }
         }
         case 'outlined': {
             return {
                 backgroundColor: 'transparent',
                 color: color.contrastText,
-                border: `2px solid ${color.dark}`
-            };
+                border: `2px solid ${color.dark}`,
+            }
         }
         default: {
             return {
                 borderRadius: 0,
-                color: color.main
-            };
+                color: color.main,
+            }
         }
     }
-};
+}
 
 const useStyles = makeStyles(theme => ({
     root: props => {
@@ -61,14 +63,14 @@ const useStyles = makeStyles(theme => ({
             ...baseStyles(theme, props),
             ...variantStyles(theme, props),
             '&:focus': {
-                boxShadow: 'none'
-            }
-        };
-    }
-}));
+                boxShadow: 'none',
+            },
+        }
+    },
+}))
 
 const Button = ({ color = 'primary', strong, loading, ...props }) => {
-    const classes = useStyles({ color, strong, variant: props.variant });
+    const classes = useStyles({ color, strong, variant: props.variant })
 
     return (
         <MuiButton
@@ -77,7 +79,7 @@ const Button = ({ color = 'primary', strong, loading, ...props }) => {
             disabled={loading || props.disabled}
             children={loading ? <CircularProgress size={20} /> : props.children}
         />
-    );
-};
+    )
+}
 
-export default Button;
+export default Button

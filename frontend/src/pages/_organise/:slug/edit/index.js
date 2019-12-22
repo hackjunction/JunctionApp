@@ -1,63 +1,74 @@
-import React from 'react';
+import React from 'react'
 
-import { Formik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
-import { forOwn } from 'lodash-es';
-import { useRouteMatch, useLocation } from 'react-router';
-import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
-import * as SnackbarActions from 'redux/snackbar/actions';
-import PageHeader from 'components/generic/PageHeader';
-import PageWrapper from 'components/layouts/PageWrapper';
-import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
-import BottomBar from 'components/inputs/BottomBar';
+import { Formik } from 'formik'
+import { useSelector, useDispatch } from 'react-redux'
+import { forOwn } from 'lodash-es'
+import { useRouteMatch, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserActions from 'redux/organiser/actions'
+import * as SnackbarActions from 'redux/snackbar/actions'
+import PageHeader from 'components/generic/PageHeader'
+import PageWrapper from 'components/layouts/PageWrapper'
+import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
+import BottomBar from 'components/inputs/BottomBar'
 
-import DefaultTab from './default';
-import ConfigurationTab from './configuration';
-import ScheduleTab from './schedule';
-import QuestionsTab from './questions';
-import OtherTab from './other';
+import DefaultTab from './default'
+import ConfigurationTab from './configuration'
+import ScheduleTab from './schedule'
+import QuestionsTab from './questions'
+import OtherTab from './other'
 
 export default () => {
-    const dispatch = useDispatch();
-    const match = useRouteMatch();
-    const location = useLocation();
+    const dispatch = useDispatch()
+    const match = useRouteMatch()
+    const location = useLocation()
 
-    const event = useSelector(OrganiserSelectors.event);
-    const loading = useSelector(OrganiserSelectors.eventLoading);
-    const { slug } = event;
+    const event = useSelector(OrganiserSelectors.event)
+    const loading = useSelector(OrganiserSelectors.eventLoading)
+    const { slug } = event
 
     function onSubmit(values, actions) {
-        const changed = {};
+        const changed = {}
         forOwn(values, (value, field) => {
             if (event[field] !== value) {
-                changed[field] = value;
+                changed[field] = value
             }
-        });
+        })
         dispatch(OrganiserActions.editEvent(slug, changed))
             .then(() => {
-                dispatch(SnackbarActions.success('Your changes were saved successfully'));
-                actions.setSubmitting(false);
+                dispatch(
+                    SnackbarActions.success(
+                        'Your changes were saved successfully'
+                    )
+                )
+                actions.setSubmitting(false)
             })
             .catch(err => {
-                const { message, errors } = err.response.data;
+                const { message, errors } = err.response.data
 
                 if (errors) {
-                    dispatch(SnackbarActions.error('Unable to save changes'));
+                    dispatch(SnackbarActions.error('Unable to save changes'))
                     //TODO: const errorMessages = Object.keys(errors).map(key => `${key}: ${errors[key].message}`);
                 } else {
-                    dispatch(SnackbarActions.error('Unable to save changes'));
+                    dispatch(SnackbarActions.error('Unable to save changes'))
                 }
             })
             .finally(() => {
-                actions.setSubmitting(false);
-            });
+                actions.setSubmitting(false)
+            })
     }
 
     return (
         <PageWrapper loading={loading}>
-            <PageHeader heading="Edit event" subheading="Configure event information, schedule and other settings" />
-            <Formik initialValues={event} enableReinitialize={true} onSubmit={onSubmit}>
+            <PageHeader
+                heading="Edit event"
+                subheading="Configure event information, schedule and other settings"
+            />
+            <Formik
+                initialValues={event}
+                enableReinitialize={true}
+                onSubmit={onSubmit}
+            >
                 {formikProps => (
                     <React.Fragment>
                         <MaterialTabsLayout
@@ -67,32 +78,32 @@ export default () => {
                                     path: '',
                                     key: 'basic-details',
                                     label: 'Basic Details',
-                                    component: DefaultTab
+                                    component: DefaultTab,
                                 },
                                 {
                                     path: '/configuration',
                                     key: 'configuration',
                                     label: 'Configuration',
-                                    component: ConfigurationTab
+                                    component: ConfigurationTab,
                                 },
                                 {
                                     path: '/schedule',
                                     key: 'schedule',
                                     label: 'Schedule',
-                                    component: ScheduleTab
+                                    component: ScheduleTab,
                                 },
                                 {
                                     path: '/questions',
                                     key: 'questions',
                                     label: 'Questions',
-                                    component: QuestionsTab
+                                    component: QuestionsTab,
                                 },
                                 {
                                     path: '/other',
                                     key: 'other',
                                     label: 'Miscellaneous',
-                                    component: OtherTab
-                                }
+                                    component: OtherTab,
+                                },
                             ]}
                             location={location}
                             baseRoute={match.url}
@@ -108,5 +119,5 @@ export default () => {
                 )}
             </Formik>
         </PageWrapper>
-    );
-};
+    )
+}

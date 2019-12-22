@@ -1,20 +1,24 @@
-import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
+import React from 'react'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { useRouteMatch } from 'react-router'
 
-import GlobalNavBar from 'components/navbars/GlobalNavBar';
-import ProjectGallery from './:slug/index.js';
+import GlobalNavBar from 'components/navbars/GlobalNavBar'
+import ProjectGallery from './:slug/index.js'
 
 export default () => {
-    const match = useRouteMatch();
+    const match = useRouteMatch()
 
     return (
         <>
             <GlobalNavBar />
             <Switch>
-                <Route exact={false} path={`${match.url}/:slug`} component={ProjectGallery} />
+                <Route
+                    exact={false}
+                    path={`${match.url}/:slug`}
+                    component={ProjectGallery}
+                />
                 <Redirect to="/" />
             </Switch>
         </>
-    );
-};
+    )
+}

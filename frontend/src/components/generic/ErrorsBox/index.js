@@ -1,21 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import { Box, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import MiscUtils from 'utils/misc';
+import { Box, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import MiscUtils from 'utils/misc'
 
 const useStyles = makeStyles(theme => ({
     title: {
         color: theme.palette.error.main,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     error: {
-        color: theme.palette.error.main
-    }
-}));
+        color: theme.palette.error.main,
+    },
+}))
 
 const ErrorsBox = ({ title = 'Please correct the following', errors }) => {
-    const classes = useStyles();
+    const classes = useStyles()
     return (
         <Box>
             <Typography className={classes.title} variant="subtitle1">
@@ -29,7 +29,7 @@ const ErrorsBox = ({ title = 'Please correct the following', errors }) => {
                 ))}
             </Box>
         </Box>
-    );
-};
+    )
+}
 
-export default ErrorsBox;
+export default ErrorsBox

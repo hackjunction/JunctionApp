@@ -1,33 +1,50 @@
-import React from 'react';
+import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, Typography } from '@material-ui/core';
-import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone';
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Button, Typography } from '@material-ui/core'
+import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: '#efefef'
-    }
-}));
+        backgroundColor: '#efefef',
+    },
+}))
 
-const Empty = ({ isEmpty, emptyText = 'No data', button, hideIfNotEmpty = false }) => {
-    const classes = useStyles();
+const Empty = ({
+    isEmpty,
+    emptyText = 'No data',
+    button,
+    hideIfNotEmpty = false,
+}) => {
+    const classes = useStyles()
 
     const renderButton = () => {
-        if (!button) return null;
+        if (!button) return null
         return (
-            <Button variant="contained" color="primary" onClick={button.onClick}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={button.onClick}
+            >
                 {button.text}
             </Button>
-        );
-    };
+        )
+    }
 
     if (!isEmpty && !hideIfNotEmpty) {
         return (
-            <Box pr={2} pb={2} pt={2} pl={2} display="flex" flexDirection="row" justifyContent="flex-end">
+            <Box
+                pr={2}
+                pb={2}
+                pt={2}
+                pl={2}
+                display="flex"
+                flexDirection="row"
+                justifyContent="flex-end"
+            >
                 {renderButton()}
             </Box>
-        );
+        )
     }
 
     return (
@@ -48,7 +65,7 @@ const Empty = ({ isEmpty, emptyText = 'No data', button, hideIfNotEmpty = false 
             </Box>
             {button && <Box mt={2}>{renderButton()}</Box>}
         </Box>
-    );
-};
+    )
+}
 
-export default Empty;
+export default Empty

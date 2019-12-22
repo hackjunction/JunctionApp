@@ -1,9 +1,19 @@
-import React from 'react';
-import { ListItem, ListItemAvatar, ListItemText, Avatar } from '@material-ui/core';
+import React from 'react'
+import {
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Avatar,
+} from '@material-ui/core'
 
-const UserListItem = ({ user, selectable = false, selected = false, onSelect = () => {} }) => {
-    const userName = user ? `${user.firstName} ${user.lastName}` : '';
-    const userEmail = user ? user.email : '';
+const UserListItem = ({
+    user,
+    selectable = false,
+    selected = false,
+    onSelect = () => {},
+}) => {
+    const userName = user ? `${user.firstName} ${user.lastName}` : ''
+    const userEmail = user ? user.email : ''
 
     return (
         <ListItem button={selectable} onClick={onSelect} selected={selected}>
@@ -18,7 +28,7 @@ const UserListItem = ({ user, selectable = false, selected = false, onSelect = (
                 <ListItemText primary="No one" />
             )}
         </ListItem>
-    );
-};
+    )
+}
 
-export default UserListItem;
+export default UserListItem

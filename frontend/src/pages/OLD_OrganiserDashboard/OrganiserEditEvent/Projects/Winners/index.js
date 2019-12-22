@@ -1,81 +1,83 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react'
 
-import { sortBy, find } from 'lodash-es';
-import { connect } from 'react-redux';
-import { Formik, FastField } from 'formik';
-import { Box, Typography, Grid, Button } from '@material-ui/core';
-import Select from 'components/inputs/Select';
-import BooleanInput from 'components/inputs/BooleanInput';
+import { sortBy, find } from 'lodash-es'
+import { connect } from 'react-redux'
+import { Formik, FastField } from 'formik'
+import { Box, Typography, Grid, Button } from '@material-ui/core'
+import Select from 'components/inputs/Select'
+import BooleanInput from 'components/inputs/BooleanInput'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as OrganiserActions from 'redux/organiser/actions';
-import * as AuthSelectors from 'redux/auth/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserActions from 'redux/organiser/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
-import WinnerVoteService from 'services/winnerVote';
-import EventsService from 'services/events';
+import WinnerVoteService from 'services/winnerVote'
+import EventsService from 'services/events'
 
-import OverallPlacements from './OverallPlacements';
-import TrackPlacements from './TrackPlacements';
+import OverallPlacements from './OverallPlacements'
+import TrackPlacements from './TrackPlacements'
 
 const Winners = ({ event, projects, updateWinners, idToken }) => {
-    const sorted = sortBy(projects, p => p.name);
-    const [results, setResults] = useState();
+    const sorted = sortBy(projects, p => p.name)
+    const [results, setResults] = useState()
     const getResults = useCallback(() => {
-        if (!event || !event.tracks) return;
+        if (!event || !event.tracks) return
         WinnerVoteService.getResults(idToken, event.slug).then(data => {
-            setResults(data);
-        });
-    }, [idToken, event]);
+            setResults(data)
+        })
+    }, [idToken, event])
 
     useEffect(() => {
-        getResults();
-    }, [getResults]);
+        getResults()
+    }, [getResults])
 
     useEffect(() => {
-        getResults();
-    }, [getResults]);
+        getResults()
+    }, [getResults])
 
     const onSubmit = async values => {
         try {
-            await updateWinners(event.slug, values);
+            await updateWinners(event.slug, values)
         } catch (err) {
-            console.log('ERR', err);
-            window.alert('Oops! something went wrong. Try again.');
+            console.log('ERR', err)
+            window.alert('Oops! something went wrong. Try again.')
         }
-    };
+    }
 
     const handleGenerateAchievements = useCallback(() => {
         EventsService.generateAchievements(idToken, event.slug).then(data => {
-            console.log('DATA', data);
-        });
-    }, [idToken, event]);
+            console.log('DATA', data)
+        })
+    }, [idToken, event])
 
     const initialValues = {
-        trackWinners: event.winners ? event.winners.trackWinners || {} : {}
-    };
+        trackWinners: event.winners ? event.winners.trackWinners || {} : {},
+    }
 
-    if (!event || !event.tracks) return null;
+    if (!event || !event.tracks) return null
 
     const resultsMapped = results
         ? Object.keys(results).map(projectId => {
-              const voteCount = results[projectId].length;
-              const project = find(projects, p => p._id === projectId);
+              const voteCount = results[projectId].length
+              const project = find(projects, p => p._id === projectId)
 
               return {
                   project,
-                  voteCount
-              };
+                  voteCount,
+              }
           })
-        : null;
+        : null
 
-    const resultsSorted = resultsMapped ? sortBy(resultsMapped, 'voteCount') : null;
+    const resultsSorted = resultsMapped
+        ? sortBy(resultsMapped, 'voteCount')
+        : null
 
     return (
         <React.Fragment>
             <OverallPlacements />
             <TrackPlacements />
         </React.Fragment>
-    );
+    )
 
     // return (
     //     <React.Fragment>
@@ -152,15 +154,16 @@ const Winners = ({ event, projects, updateWinners, idToken }) => {
     //         </Formik>
     //     </React.Fragment>
     // );
-};
+}
 
 const mapState = state => ({
     event: OrganiserSelectors.event(state),
     projects: OrganiserSelectors.projects(state),
-    idToken: AuthSelectors.getIdToken(state)
-});
+    idToken: AuthSelectors.getIdToken(state),
+})
 
 const mapDispatch = dispatch => ({
-    updateWinners: (slug, winners) => dispatch(OrganiserActions.updateWinners(slug, winners))
-});
-export default connect(mapState, mapDispatch)(Winners);
+    updateWinners: (slug, winners) =>
+        dispatch(OrganiserActions.updateWinners(slug, winners)),
+})
+export default connect(mapState, mapDispatch)(Winners)

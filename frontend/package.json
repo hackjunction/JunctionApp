@@ -67,6 +67,7 @@
         "test": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/test.js",
         "eject": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/eject.js",
         "lint": "eslint ./src",
+        "lint-fix": "eslint ./src --fix",
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
         "sync-env": "sync-dotenv",

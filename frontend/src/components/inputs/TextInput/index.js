@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core'
 
 const TextInput = React.memo(
     ({
@@ -12,14 +12,14 @@ const TextInput = React.memo(
         required = false,
         value = '',
         autoFocus,
-        type = 'text'
+        type = 'text',
     }) => {
         const handleChange = useCallback(
             e => {
-                onChange(e.target.value);
+                onChange(e.target.value)
             },
             [onChange]
-        );
+        )
 
         return (
             <TextField
@@ -34,8 +34,8 @@ const TextInput = React.memo(
                 value={value}
                 type={type}
             />
-        );
+        )
     }
-);
+)
 
-export default TextInput;
+export default TextInput

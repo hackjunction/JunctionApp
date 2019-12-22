@@ -1,27 +1,34 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, Button, Box, CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import {
+    Card,
+    CardContent,
+    Typography,
+    Button,
+    Box,
+    CircularProgress,
+} from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     value: {
-        textAlign: 'left'
+        textAlign: 'left',
     },
     suffix: {
         marginLeft: theme.spacing(1),
-        display: 'inline-block'
-    }
-}));
+        display: 'inline-block',
+    },
+}))
 
 const Statistic = ({ label, value, suffix, action, actionText }) => {
-    const [actionLoading, setActionLoading] = useState();
+    const [actionLoading, setActionLoading] = useState()
 
     const handleAction = useCallback(async () => {
-        setActionLoading(true);
-        await action();
-        setActionLoading(false);
-    }, [action]);
-    const classes = useStyles();
+        setActionLoading(true)
+        await action()
+        setActionLoading(false)
+    }, [action])
+    const classes = useStyles()
     return (
         <Card>
             <CardContent className={classes.root}>
@@ -41,14 +48,18 @@ const Statistic = ({ label, value, suffix, action, actionText }) => {
                 {action && actionText && (
                     <Box mt={2}>
                         {actionLoading && <CircularProgress size={24} />}
-                        <Button disabled={actionLoading} color="secondary" onClick={handleAction}>
+                        <Button
+                            disabled={actionLoading}
+                            color="secondary"
+                            onClick={handleAction}
+                        >
                             {actionText}
                         </Button>
                     </Box>
                 )}
             </CardContent>
         </Card>
-    );
-};
+    )
+}
 
-export default Statistic;
+export default Statistic

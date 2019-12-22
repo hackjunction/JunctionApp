@@ -1,19 +1,23 @@
-import React from 'react';
+import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import { Button, Box } from '@material-ui/core'
 
 const useButtonStyles = makeStyles(theme => ({
     button: {
-        marginLeft: theme.spacing(2)
-    }
-}));
+        marginLeft: theme.spacing(2),
+    },
+}))
 
 const StepButtons = ({ numSteps, activeStep, onBack, onNext, onFinish }) => {
-    const classes = useButtonStyles();
+    const classes = useButtonStyles()
     return (
         <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
-            <Button className={classes.button} disabled={activeStep === 0} onClick={onBack}>
+            <Button
+                className={classes.button}
+                disabled={activeStep === 0}
+                onClick={onBack}
+            >
                 Back
             </Button>
             <Button
@@ -25,7 +29,7 @@ const StepButtons = ({ numSteps, activeStep, onBack, onNext, onFinish }) => {
                 {activeStep === numSteps - 1 ? 'Finish' : 'Next'}
             </Button>
         </Box>
-    );
-};
+    )
+}
 
-export default StepButtons;
+export default StepButtons

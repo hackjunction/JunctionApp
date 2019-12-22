@@ -1,48 +1,56 @@
-import auth0 from 'auth0-js';
-import config from 'constants/config';
+import auth0 from 'auth0-js'
+import config from 'constants/config'
 
 const Auth0 = new auth0.WebAuth({
     domain: config.AUTH0_DOMAIN,
     clientID: config.AUTH0_CLIENT_ID,
     redirectUri: `${config.BASE_URL}/callback`,
     responseType: 'token id_token',
-    scope: 'openid profile'
-});
+    scope: 'openid profile',
+})
 
 const Auth0Service = {
     authorize: params => {
         Auth0.authorize({
             ...params,
-            redirectUri: `${config.BASE_URL}/callback`
-        });
+            redirectUri: `${config.BASE_URL}/callback`,
+        })
     },
     logout: () => {
         Auth0.logout({
-            returnTo: `${config.BASE_URL}/logout`
-        });
+            returnTo: `${config.BASE_URL}/logout`,
+        })
     },
     checkSession: () => {
         return new Promise((resolve, reject) => {
             Auth0.checkSession({}, (err, authResult) => {
-                if (authResult && authResult.accessToken && authResult.idToken) {
-                    resolve(authResult);
+                if (
+                    authResult &&
+                    authResult.accessToken &&
+                    authResult.idToken
+                ) {
+                    resolve(authResult)
                 } else if (err) {
-                    reject(err);
+                    reject(err)
                 }
-            });
-        });
+            })
+        })
     },
     parseHash: () => {
         return new Promise((resolve, reject) => {
             Auth0.parseHash((err, authResult) => {
-                if (authResult && authResult.accessToken && authResult.idToken) {
-                    resolve(authResult);
+                if (
+                    authResult &&
+                    authResult.accessToken &&
+                    authResult.idToken
+                ) {
+                    resolve(authResult)
                 } else if (err) {
-                    reject(err);
+                    reject(err)
                 }
-            });
-        });
-    }
-};
+            })
+        })
+    },
+}
 
-export default Auth0Service;
+export default Auth0Service

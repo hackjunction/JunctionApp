@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Box, Typography, IconButton, TextField } from '@material-ui/core';
+import { Box, Typography, IconButton, TextField } from '@material-ui/core'
 
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext'
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
 
 const Pagination = ({
     canPreviousPage,
@@ -16,17 +16,23 @@ const Pagination = ({
     setPageSize,
     pageSize,
     pageIndex,
-    items
+    items,
 }) => {
     const handlePageSizeChange = useCallback(
         e => {
-            setPageSize(Number(e.target.value));
+            setPageSize(Number(e.target.value))
         },
         [setPageSize]
-    );
+    )
 
     return (
-        <Box display="flex" flexDirection="row" justifyContent="space-between" flexWrap="wrap" alignItems="center">
+        <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            alignItems="center"
+        >
             <Box>
                 <TextField
                     style={{ width: '100px' }}
@@ -36,7 +42,7 @@ const Pagination = ({
                     onChange={handlePageSizeChange}
                     margin="dense"
                     SelectProps={{
-                        native: true
+                        native: true,
                     }}
                     variant="filled"
                 >
@@ -61,7 +67,7 @@ const Pagination = ({
                 </IconButton>
             </Box>
         </Box>
-    );
-};
+    )
+}
 
-export default Pagination;
+export default Pagination

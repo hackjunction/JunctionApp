@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Checkbox, Typography, Button, CircularProgress } from '@material-ui/core';
-import ExternalLink from 'components/generic/ExternalLink';
+import { makeStyles } from '@material-ui/core/styles'
+import {
+    Box,
+    Checkbox,
+    Typography,
+    Button,
+    CircularProgress,
+} from '@material-ui/core'
+import ExternalLink from 'components/generic/ExternalLink'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -13,23 +19,23 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '600px',
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     button: {
         '&.Mui-disabled': {
             backgroundColor: theme.palette.primary.main,
-            opacity: 0.6
-        }
-    }
-}));
+            opacity: 0.6,
+        },
+    },
+}))
 
 const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
-    const classes = useStyles();
-    const [confirmed1, setConfirmed1] = useState(false);
-    const [confirmed2, setConfirmed2] = useState(false);
-    const [confirmed3, setConfirmed3] = useState(false);
+    const classes = useStyles()
+    const [confirmed1, setConfirmed1] = useState(false)
+    const [confirmed2, setConfirmed2] = useState(false)
+    const [confirmed3, setConfirmed3] = useState(false)
 
-    const confirmed = confirmed1 && confirmed2 && confirmed3;
+    const confirmed = confirmed1 && confirmed2 && confirmed3
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
@@ -41,8 +47,11 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     onChange={e => setConfirmed1(e.target.checked)}
                 />
                 <Typography variant="subtitle1" className={classes.label}>
-                    I've read and consent to the processing of my data in accordance to the{' '}
-                    <ExternalLink href="https://hackjunction.com/policy">Junction Privacy Policy</ExternalLink>
+                    I've read and consent to the processing of my data in
+                    accordance to the{' '}
+                    <ExternalLink href="https://hackjunction.com/policy">
+                        Junction Privacy Policy
+                    </ExternalLink>
                 </Typography>
             </Box>
             <Box className={classes.wrapper}>
@@ -54,7 +63,9 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                 />
                 <Typography variant="subtitle1" className={classes.label}>
                     I've read and agree to the{' '}
-                    <ExternalLink href="https://hackjunction.com/terms">Junction Terms & Conditions</ExternalLink>
+                    <ExternalLink href="https://hackjunction.com/terms">
+                        Junction Terms & Conditions
+                    </ExternalLink>
                 </Typography>
             </Box>
             <Box className={classes.wrapper}>
@@ -65,7 +76,8 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     onChange={e => setConfirmed3(e.target.checked)}
                 />
                 <Typography variant="subtitle1" className={classes.label}>
-                    I confirm that the information entered in this form is truthful and accurate
+                    I confirm that the information entered in this form is
+                    truthful and accurate
                 </Typography>
             </Box>
             <Box
@@ -93,7 +105,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                 )}
             </Box>
         </Box>
-    );
-};
+    )
+}
 
-export default SubmitButton;
+export default SubmitButton

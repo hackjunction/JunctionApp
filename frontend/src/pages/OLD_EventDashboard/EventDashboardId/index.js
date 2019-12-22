@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 
-import QRCode from 'qrcode.react';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import QRCode from 'qrcode.react'
+import { connect } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@material-ui/core'
 
-import PageHeader from 'components/generic/PageHeader';
+import PageHeader from 'components/generic/PageHeader'
 
-import * as UserSelectors from 'redux/user/selectors';
-import * as DashboardSelectors from 'redux/dashboard/selectors';
+import * as UserSelectors from 'redux/user/selectors'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 const useStyles = makeStyles(theme => ({
     qrCodeWrapper: {
@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         [theme.breakpoints.up('lg')]: {
             flexDirection: 'row',
-            alignItems: 'flex-start'
-        }
+            alignItems: 'flex-start',
+        },
     },
     textWrapper: {
         marginTop: theme.spacing(2),
@@ -26,13 +26,13 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('lg')]: {
             textAlign: 'left',
             marginLeft: theme.spacing(2),
-            marginTop: 0
-        }
-    }
-}));
+            marginTop: 0,
+        },
+    },
+}))
 
 const EventDashboardId = ({ userProfile, event }) => {
-    const classes = useStyles();
+    const classes = useStyles()
     return (
         <Box>
             <PageHeader
@@ -46,17 +46,21 @@ const EventDashboardId = ({ userProfile, event }) => {
                     <Typography variant="h6">
                         {userProfile.firstName} {userProfile.lastName}
                     </Typography>
-                    <Typography variant="subtitle1">{userProfile.email}</Typography>
-                    <Typography variant="subtitle1">{userProfile.userId}</Typography>
+                    <Typography variant="subtitle1">
+                        {userProfile.email}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                        {userProfile.userId}
+                    </Typography>
                 </Box>
             </Box>
         </Box>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     userProfile: UserSelectors.userProfile(state),
-    event: DashboardSelectors.event(state)
-});
+    event: DashboardSelectors.event(state),
+})
 
-export default connect(mapState)(EventDashboardId);
+export default connect(mapState)(EventDashboardId)

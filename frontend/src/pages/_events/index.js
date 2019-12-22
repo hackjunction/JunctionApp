@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { useRouteMatch } from 'react-router'
 
-import EventDetailRouter from './:slug/';
+import EventDetailRouter from './:slug/'
 
 export default () => {
-    const match = useRouteMatch();
+    const match = useRouteMatch()
 
     return (
         <Switch>
@@ -14,5 +14,5 @@ export default () => {
             {/** TODO: Consider adding a generic list of events at /events */}
             <Redirect to="/" />
         </Switch>
-    );
-};
+    )
+}

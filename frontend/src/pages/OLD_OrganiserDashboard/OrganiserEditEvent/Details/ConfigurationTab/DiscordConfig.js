@@ -1,21 +1,21 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import FormControl from 'components/inputs/FormControl';
-import BooleanInput from 'components/inputs/BooleanInput';
-import TextInput from 'components/inputs/TextInput';
+import FormControl from 'components/inputs/FormControl'
+import BooleanInput from 'components/inputs/BooleanInput'
+import TextInput from 'components/inputs/TextInput'
 
 const DiscordConfig = ({ value = {}, onChange }) => {
-    const { enabled, inviteLink } = value;
+    const { enabled, inviteLink } = value
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({
                 ...value,
-                [fieldName]: fieldValue
-            });
+                [fieldName]: fieldValue,
+            })
         },
         [value, onChange]
-    );
+    )
 
     return (
         <React.Fragment>
@@ -23,7 +23,10 @@ const DiscordConfig = ({ value = {}, onChange }) => {
                 label="Discord"
                 hint="Are you using the Junction Discord server for communication at this event?"
             >
-                <BooleanInput value={enabled || false} onChange={value => handleChange('enabled', value)} />
+                <BooleanInput
+                    value={enabled || false}
+                    onChange={value => handleChange('enabled', value)}
+                />
             </FormControl>
             {enabled && (
                 <FormControl hint="Participant invite link">
@@ -35,7 +38,7 @@ const DiscordConfig = ({ value = {}, onChange }) => {
                 </FormControl>
             )}
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default DiscordConfig;
+export default DiscordConfig

@@ -1,18 +1,26 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'
 
-import { RegistrationStatuses } from '@hackjunction/shared';
-import { Box, Typography } from '@material-ui/core';
-import { groupBy } from 'lodash-es';
-import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, CartesianGrid, Bar } from 'recharts';
+import { RegistrationStatuses } from '@hackjunction/shared'
+import { Box, Typography } from '@material-ui/core'
+import { groupBy } from 'lodash-es'
+import {
+    ResponsiveContainer,
+    BarChart,
+    XAxis,
+    YAxis,
+    Tooltip,
+    CartesianGrid,
+    Bar,
+} from 'recharts'
 
 const RegistrationsByStatus = ({ registrations }) => {
     const formattedData = useMemo(() => {
-        const byStatus = groupBy(registrations, 'status');
+        const byStatus = groupBy(registrations, 'status')
         return Object.keys(byStatus).map(status => ({
             status: RegistrationStatuses.asObject[status].label,
-            count: byStatus[status].length
-        }));
-    }, [registrations]);
+            count: byStatus[status].length,
+        }))
+    }, [registrations])
 
     return (
         <Box p={2}>
@@ -26,7 +34,7 @@ const RegistrationsByStatus = ({ registrations }) => {
                         top: 5,
                         right: 30,
                         left: 20,
-                        bottom: 5
+                        bottom: 5,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
@@ -37,7 +45,7 @@ const RegistrationsByStatus = ({ registrations }) => {
                 </BarChart>
             </ResponsiveContainer>
         </Box>
-    );
-};
+    )
+}
 
-export default RegistrationsByStatus;
+export default RegistrationsByStatus

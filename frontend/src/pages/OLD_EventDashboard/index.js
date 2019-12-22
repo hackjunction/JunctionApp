@@ -1,33 +1,33 @@
-import React, { useEffect } from 'react';
-import styles from './EventDashboard.module.scss';
+import React, { useEffect } from 'react'
+import styles from './EventDashboard.module.scss'
 
-import { connect } from 'react-redux';
-import GroupIcon from '@material-ui/icons/Group';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
-import AmpStoriesIcon from '@material-ui/icons/AmpStories';
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
-import StarRateIcon from '@material-ui/icons/StarRate';
-import HowToVoteIcon from '@material-ui/icons/HowToVote';
+import { connect } from 'react-redux'
+import GroupIcon from '@material-ui/icons/Group'
+import DashboardIcon from '@material-ui/icons/Dashboard'
+import FingerprintIcon from '@material-ui/icons/Fingerprint'
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff'
+import AmpStoriesIcon from '@material-ui/icons/AmpStories'
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
+import StarRateIcon from '@material-ui/icons/StarRate'
+import HowToVoteIcon from '@material-ui/icons/HowToVote'
 
-import SidebarLayout from 'components/layouts/SidebarLayout';
-import Image from 'components/generic/Image';
-import BasicNavBar from 'components/navbars/BasicNavBar';
-import PageWrapper from 'components/layouts/PageWrapper';
+import SidebarLayout from 'components/layouts/SidebarLayout'
+import Image from 'components/generic/Image'
+import BasicNavBar from 'components/navbars/BasicNavBar'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-import EventDashboardHome from './EventDashboardHome';
-import EventDashboardTeam from './EventDashboardTeam';
-import EventDashboardId from './EventDashboardId';
-import EventDashboardTravelGrant from './EventDashboardTravelGrant';
-import EventDashboardSubmission from './EventDashboardSubmission';
-import EventDashboardReviewing from './EventDashboardReviewing';
-import EventDashboardFinals from './EventDashboardFinals';
-import Hackerpack from './Hackerpack';
+import EventDashboardHome from './EventDashboardHome'
+import EventDashboardTeam from './EventDashboardTeam'
+import EventDashboardId from './EventDashboardId'
+import EventDashboardTravelGrant from './EventDashboardTravelGrant'
+import EventDashboardSubmission from './EventDashboardSubmission'
+import EventDashboardReviewing from './EventDashboardReviewing'
+import EventDashboardFinals from './EventDashboardFinals'
+import Hackerpack from './Hackerpack'
 
-import * as AuthSelectors from 'redux/auth/selectors';
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as DashboardActions from 'redux/dashboard/actions';
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
 
 const EventDashboard = ({
     match,
@@ -50,32 +50,35 @@ const EventDashboard = ({
     isSubmissionsLocked,
     isTeamPageLocked,
     isReviewingLocked,
-    isFinalistVotingLocked
+    isFinalistVotingLocked,
 }) => {
-    const { slug } = match.params;
+    const { slug } = match.params
 
     /** Update event if slug changes */
     useEffect(() => {
-        updateEvent(slug);
-    }, [slug, updateEvent]);
+        updateEvent(slug)
+    }, [slug, updateEvent])
 
     /** Update registration if slug changes */
     useEffect(() => {
-        updateRegistration(slug);
-    }, [slug, updateRegistration]);
+        updateRegistration(slug)
+    }, [slug, updateRegistration])
 
     /** Update team if slug changes */
     useEffect(() => {
-        updateTeam(slug);
-    }, [slug, updateTeam]);
+        updateTeam(slug)
+    }, [slug, updateTeam])
 
     /** Update project if slug changes */
     useEffect(() => {
-        updateProject(slug);
-    }, [slug, team, updateProject]);
+        updateProject(slug)
+    }, [slug, team, updateProject])
 
     return (
-        <PageWrapper loading={eventLoading || registrationLoading} wrapContent={false}>
+        <PageWrapper
+            loading={eventLoading || registrationLoading}
+            wrapContent={false}
+        >
             <SidebarLayout
                 baseRoute={match.url}
                 location={location}
@@ -83,9 +86,11 @@ const EventDashboard = ({
                     <div className={styles.sidebarTop}>
                         <Image
                             className={styles.sidebarLogo}
-                            publicId={event && event.logo ? event.logo.publicId : ''}
+                            publicId={
+                                event && event.logo ? event.logo.publicId : ''
+                            }
                             transformation={{
-                                width: 200
+                                width: 200,
                             }}
                         />
                     </div>
@@ -98,7 +103,7 @@ const EventDashboard = ({
                         exact: true,
                         icon: <DashboardIcon />,
                         label: 'Dashboard',
-                        component: EventDashboardHome
+                        component: EventDashboardHome,
                     },
                     {
                         key: 'finals',
@@ -109,7 +114,7 @@ const EventDashboard = ({
                         lockedDescription: 'Finalist voting closed',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
-                        component: EventDashboardFinals
+                        component: EventDashboardFinals,
                     },
                     {
                         key: 'team',
@@ -119,7 +124,7 @@ const EventDashboard = ({
                         label: 'Team',
                         locked: isTeamPageLocked,
                         lockedDescription: 'Team editing not open',
-                        component: EventDashboardTeam
+                        component: EventDashboardTeam,
                     },
                     {
                         key: 'project',
@@ -130,7 +135,7 @@ const EventDashboard = ({
                         hidden: !showSubmission,
                         icon: <AssignmentOutlinedIcon />,
                         label: 'Project submission',
-                        component: EventDashboardSubmission
+                        component: EventDashboardSubmission,
                     },
                     {
                         key: 'reviewing',
@@ -141,7 +146,7 @@ const EventDashboard = ({
                         lockedDescription: 'Reviewing closed',
                         icon: <StarRateIcon />,
                         label: 'Reviewing',
-                        component: EventDashboardReviewing
+                        component: EventDashboardReviewing,
                     },
                     {
                         key: 'eventid',
@@ -150,7 +155,7 @@ const EventDashboard = ({
                         hidden: !showEventID,
                         icon: <FingerprintIcon />,
                         label: 'Event ID',
-                        component: EventDashboardId
+                        component: EventDashboardId,
                     },
                     {
                         key: 'travelgrant',
@@ -159,7 +164,7 @@ const EventDashboard = ({
                         icon: <FlightTakeoffIcon />,
                         hidden: !showTravelGrant,
                         label: 'Travel grant',
-                        component: EventDashboardTravelGrant
+                        component: EventDashboardTravelGrant,
                     },
                     {
                         key: 'hackerpack',
@@ -168,13 +173,13 @@ const EventDashboard = ({
                         icon: <AmpStoriesIcon />,
                         hidden: !showHackerPack,
                         label: 'Hackerpack',
-                        component: Hackerpack
-                    }
+                        component: Hackerpack,
+                    },
                 ]}
             />
         </PageWrapper>
-    );
-};
+    )
+}
 
 const mapStateToProps = state => ({
     idToken: AuthSelectors.getIdToken(state),
@@ -193,14 +198,15 @@ const mapStateToProps = state => ({
     isSubmissionsLocked: DashboardSelectors.isSubmissionsLocked(state),
     isReviewingLocked: DashboardSelectors.isReviewingLocked(state),
     isTeamPageLocked: DashboardSelectors.isTeamPageLocked(state),
-    isFinalistVotingLocked: DashboardSelectors.isFinalistVotingLocked(state)
-});
+    isFinalistVotingLocked: DashboardSelectors.isFinalistVotingLocked(state),
+})
 
 const mapDispatchToProps = dispatch => ({
     updateEvent: slug => dispatch(DashboardActions.updateEvent(slug)),
-    updateRegistration: slug => dispatch(DashboardActions.updateRegistration(slug)),
+    updateRegistration: slug =>
+        dispatch(DashboardActions.updateRegistration(slug)),
     updateTeam: slug => dispatch(DashboardActions.updateTeam(slug)),
-    updateProject: slug => dispatch(DashboardActions.updateProject(slug))
-});
+    updateProject: slug => dispatch(DashboardActions.updateProject(slug)),
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDashboard)

@@ -1,29 +1,35 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core'
 
-import BooleanInput from 'components/inputs/BooleanInput';
-import TextInput from 'components/inputs/TextInput';
-import FormControl from 'components/inputs/FormControl';
-import Select from 'components/inputs/Select';
+import BooleanInput from 'components/inputs/BooleanInput'
+import TextInput from 'components/inputs/TextInput'
+import FormControl from 'components/inputs/FormControl'
+import Select from 'components/inputs/Select'
 
 export default ({ value = {}, onChange }) => {
-    const { enabled, budget, currency } = value;
+    const { enabled, budget, currency } = value
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({
                 ...value,
-                [fieldName]: fieldValue
-            });
+                [fieldName]: fieldValue,
+            })
         },
         [value, onChange]
-    );
+    )
 
     return (
         <React.Fragment>
-            <FormControl label="Travel grants" hint="Will you be offering travel grants for participants?">
-                <BooleanInput value={enabled || false} onChange={value => handleChange('enabled', value)} />
+            <FormControl
+                label="Travel grants"
+                hint="Will you be offering travel grants for participants?"
+            >
+                <BooleanInput
+                    value={enabled || false}
+                    onChange={value => handleChange('enabled', value)}
+                />
             </FormControl>
             {enabled && (
                 <FormControl hint="What's your total travel grant budget?">
@@ -33,7 +39,9 @@ export default ({ value = {}, onChange }) => {
                                 label="Amount"
                                 value={budget}
                                 type="number"
-                                onChange={value => handleChange('budget', value)}
+                                onChange={value =>
+                                    handleChange('budget', value)
+                                }
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -41,12 +49,14 @@ export default ({ value = {}, onChange }) => {
                                 options="currency"
                                 label="Currency"
                                 value={currency}
-                                onChange={value => handleChange('currency', value)}
+                                onChange={value =>
+                                    handleChange('currency', value)
+                                }
                             />
                         </Grid>
                     </Grid>
                 </FormControl>
             )}
         </React.Fragment>
-    );
-};
+    )
+}

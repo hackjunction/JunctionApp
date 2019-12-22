@@ -1,64 +1,68 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react'
 
-import { push } from 'connected-react-router';
-import { useSelector, useDispatch } from 'react-redux';
-import { Grid, Box, Typography } from '@material-ui/core';
+import { push } from 'connected-react-router'
+import { useSelector, useDispatch } from 'react-redux'
+import { Grid, Box, Typography } from '@material-ui/core'
 
-import TextInput from 'components/inputs/TextInput';
-import Button from 'components/generic/Button';
+import TextInput from 'components/inputs/TextInput'
+import Button from 'components/generic/Button'
 
-import EventsService from 'services/events';
+import EventsService from 'services/events'
 
-import * as AuthSelectors from 'redux/auth/selectors';
-import * as SnackbarActions from 'redux/snackbar/actions';
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default () => {
-    const [name, setName] = useState('');
-    const [error, setError] = useState();
-    const [loading, setLoading] = useState(false);
-    const hasError = Boolean(error);
+    const [name, setName] = useState('')
+    const [error, setError] = useState()
+    const [loading, setLoading] = useState(false)
+    const hasError = Boolean(error)
 
-    const dispatch = useDispatch();
-    const idToken = useSelector(AuthSelectors.getIdToken);
+    const dispatch = useDispatch()
+    const idToken = useSelector(AuthSelectors.getIdToken)
 
     useEffect(() => {
         if (hasError) {
             if (name.length < 5) {
-                setError('Name must be at least 5 characters');
+                setError('Name must be at least 5 characters')
             } else if (name.length >= 50) {
-                setError('Name must be under 50 characters');
+                setError('Name must be under 50 characters')
             } else {
-                setError();
+                setError()
             }
         }
-    }, [name, hasError]);
+    }, [name, hasError])
 
     const checkName = useCallback(() => {
         if (name.length < 5) {
-            setError('Name must be at least 5 characters');
-            return false;
+            setError('Name must be at least 5 characters')
+            return false
         } else if (name.length >= 50) {
-            setError('Name must be under 50 characters');
-            return false;
+            setError('Name must be under 50 characters')
+            return false
         }
-        return true;
-    }, [name]);
+        return true
+    }, [name])
 
     const handleCreate = useCallback(() => {
-        if (!checkName()) return;
-        setLoading(true);
+        if (!checkName()) return
+        setLoading(true)
         EventsService.createEvent(idToken, { name })
             .then(data => {
-                dispatch(push(`/organise/${data.slug}`));
-                dispatch(SnackbarActions.success(`Created ${data.name}`));
+                dispatch(push(`/organise/${data.slug}`))
+                dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {
-                dispatch(SnackbarActions.error('Something went wrong... Unable to create event'));
+                dispatch(
+                    SnackbarActions.error(
+                        'Something went wrong... Unable to create event'
+                    )
+                )
             })
             .finally(() => {
-                setLoading(false);
-            });
-    }, [checkName, name, idToken, dispatch]);
+                setLoading(false)
+            })
+    }, [checkName, name, idToken, dispatch])
 
     return (
         <Box mt={3}>
@@ -94,5 +98,5 @@ export default () => {
                 </Grid>
             </Grid>
         </Box>
-    );
-};
+    )
+}

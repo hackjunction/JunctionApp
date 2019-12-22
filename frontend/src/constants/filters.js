@@ -1,72 +1,72 @@
 const FilterOptions = [
     {
         id: 'status-equals',
-        label: 'Status is one of'
+        label: 'Status is one of',
     },
     {
         id: 'status-nequals',
-        label: 'Status is not one of'
+        label: 'Status is not one of',
     },
     {
         id: 'rating-exists',
-        label: 'Rating exists'
+        label: 'Rating exists',
     },
     {
         id: 'rating-nexists',
-        label: 'Rating does not exist'
+        label: 'Rating does not exist',
     },
     {
         id: 'rating-lte',
-        label: 'Rating less than or equal to'
+        label: 'Rating less than or equal to',
     },
     {
         id: 'rating-gte',
-        label: 'Rating more than or equal to'
+        label: 'Rating more than or equal to',
     },
     {
         id: 'has-tags',
-        label: 'Tags not empty'
+        label: 'Tags not empty',
     },
     {
         id: 'tags-contain',
-        label: 'Tags contain'
+        label: 'Tags contain',
     },
     {
         id: 'tags-not-contain',
-        label: 'Tags do not contain'
+        label: 'Tags do not contain',
     },
     {
         id: 'apply-as-team',
-        label: 'Applying as team'
+        label: 'Applying as team',
     },
     {
         id: 'not-apply-as-team',
-        label: 'Not applying as team'
+        label: 'Not applying as team',
     },
     {
         id: 'field-equals',
-        label: 'Field equals'
+        label: 'Field equals',
     },
     {
         id: 'field-nequals',
-        label: 'Field does not equal'
+        label: 'Field does not equal',
     },
     {
         id: 'field-contains',
-        label: 'Field contains'
+        label: 'Field contains',
     },
     {
         id: 'field-not-contains',
-        label: 'Field does not contain'
+        label: 'Field does not contain',
     },
     {
         id: 'field-empty',
-        label: 'Field is empty'
+        label: 'Field is empty',
     },
     {
         id: 'field-not-empty',
-        label: 'Field is not empty'
-    }
-];
+        label: 'Field is not empty',
+    },
+]
 
-export default FilterOptions;
+export default FilterOptions

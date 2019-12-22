@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import { connect } from 'react-redux';
-import { Grid, Box } from '@material-ui/core';
-import { FastField } from 'formik';
+import { connect } from 'react-redux'
+import { Grid, Box } from '@material-ui/core'
+import { FastField } from 'formik'
 
-import MarkdownInput from 'components/inputs/MarkdownInput';
-import FormControl from 'components/inputs/FormControl';
-import TextInput from 'components/inputs/TextInput';
-import ImageUpload from 'components/inputs/ImageUpload';
+import MarkdownInput from 'components/inputs/MarkdownInput'
+import FormControl from 'components/inputs/FormControl'
+import TextInput from 'components/inputs/TextInput'
+import ImageUpload from 'components/inputs/ImageUpload'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 const OrganiserEditEventInfo = ({ event }) => {
     return (
@@ -28,8 +28,8 @@ const OrganiserEditEventInfo = ({ event }) => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={value => {
-                                        form.setFieldValue(field.name, value);
-                                        form.setFieldTouched(field.name);
+                                        form.setFieldValue(field.name, value)
+                                        form.setFieldTouched(field.name)
                                     }}
                                     uploadUrl={`/api/upload/events/${event.slug}/cover-image`}
                                     resizeMode="cover"
@@ -53,8 +53,8 @@ const OrganiserEditEventInfo = ({ event }) => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={value => {
-                                        form.setFieldValue(field.name, value);
-                                        form.setFieldTouched(field.name);
+                                        form.setFieldValue(field.name, value)
+                                        form.setFieldTouched(field.name)
                                     }}
                                     uploadUrl={`/api/upload/events/${event.slug}/logo`}
                                     resizeMode="contain"
@@ -78,7 +78,9 @@ const OrganiserEditEventInfo = ({ event }) => {
                                 name="name"
                                 placeholder="Big Hackathon 2020"
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 onBlur={() => form.setFieldTouched(field.name)}
                             />
                         </FormControl>
@@ -97,7 +99,9 @@ const OrganiserEditEventInfo = ({ event }) => {
                         >
                             <MarkdownInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 placeholder="Description goes here"
                             />
                         </FormControl>
@@ -105,11 +109,11 @@ const OrganiserEditEventInfo = ({ event }) => {
                 />
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
 const mapState = state => ({
-    event: OrganiserSelectors.event(state)
-});
+    event: OrganiserSelectors.event(state),
+})
 
-export default connect(mapState)(OrganiserEditEventInfo);
+export default connect(mapState)(OrganiserEditEventInfo)

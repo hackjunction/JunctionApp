@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
-import { Grid, Box, Typography } from '@material-ui/core';
-import EventCard from 'components/events/EventCard';
-import Button from 'components/generic/Button';
+import { push } from 'connected-react-router'
+import { useDispatch } from 'react-redux'
+import { Grid, Box, Typography } from '@material-ui/core'
+import EventCard from 'components/events/EventCard'
+import Button from 'components/generic/Button'
 
 export default ({ events }) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     return (
         <Box mt={3}>
@@ -23,15 +23,19 @@ export default ({ events }) => {
                                 <Button
                                     color="primary"
                                     variant="contained"
-                                    onClick={() => dispatch(push(`/organise/${event.slug}`))}
+                                    onClick={() =>
+                                        dispatch(
+                                            push(`/organise/${event.slug}`)
+                                        )
+                                    }
                                 >
                                     Manage
-                                </Button>
+                                </Button>,
                             ]}
                         />
                     </Grid>
                 ))}
             </Grid>
         </Box>
-    );
-};
+    )
+}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from 'react'
+import { motion } from 'framer-motion'
 
 const StaggeredList = props => {
     const variants = {
@@ -8,15 +8,15 @@ const StaggeredList = props => {
             transition: {
                 delay: props.enterDelay || 0,
                 when: 'beforeChildren',
-                staggerChildren: props.staggerDelay || 0.1
-            }
+                staggerChildren: props.staggerDelay || 0.1,
+            },
         },
         hidden: {
             opacity: 0,
             transition: {
                 when: 'afterChildren',
-                staggerChildren: 0.05
-            }
+                staggerChildren: 0.05,
+            },
         },
         collapsed: {
             opacity: 0,
@@ -24,10 +24,10 @@ const StaggeredList = props => {
             overflow: 'hidden',
             transition: {
                 when: 'afterChildren',
-                staggerChildren: 0.05
-            }
-        }
-    };
+                staggerChildren: 0.05,
+            },
+        },
+    }
     return (
         <motion.div
             {...props}
@@ -36,7 +36,7 @@ const StaggeredList = props => {
             exit="hidden"
             variants={variants}
         />
-    );
-};
+    )
+}
 
-export default StaggeredList;
+export default StaggeredList

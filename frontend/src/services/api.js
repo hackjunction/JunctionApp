@@ -1,26 +1,26 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const ApiService = {
     test: idToken => {
         return axios
             .get('/admin', {
                 headers: {
-                    Authorization: `Bearer ${idToken}`
-                }
+                    Authorization: `Bearer ${idToken}`,
+                },
             })
             .then(res => {
-                return res;
-            });
+                return res
+            })
     },
     getUserProfile: idToken => {
         return axios
             .get('/api/users', {
                 headers: {
-                    Authorization: `Bearer ${idToken}`
-                }
+                    Authorization: `Bearer ${idToken}`,
+                },
             })
-            .then(res => res.data);
-    }
-};
+            .then(res => res.data)
+    },
+}
 
-export default ApiService;
+export default ApiService

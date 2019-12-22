@@ -1,1 +1,1 @@
-export const notifications = state => state.snackbar.notifications;
+export const notifications = state => state.snackbar.notifications

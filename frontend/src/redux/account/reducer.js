@@ -1,18 +1,18 @@
-import * as ActionTypes from './actionTypes';
+import * as ActionTypes from './actionTypes'
 
 const initialState = {
-    registrations: []
-};
+    registrations: [],
+}
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.UPDATE_REGISTRATIONS: {
             return {
                 ...state,
-                registrations: action.payload
-            };
+                registrations: action.payload,
+            }
         }
         default:
-            return state;
+            return state
     }
 }

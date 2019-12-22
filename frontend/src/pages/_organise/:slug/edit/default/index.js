@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import { useSelector } from 'react-redux';
-import { Grid, Box } from '@material-ui/core';
-import { FastField } from 'formik';
+import { useSelector } from 'react-redux'
+import { Grid, Box } from '@material-ui/core'
+import { FastField } from 'formik'
 
-import MarkdownInput from 'components/inputs/MarkdownInput';
-import FormControl from 'components/inputs/FormControl';
-import TextInput from 'components/inputs/TextInput';
-import ImageUpload from 'components/inputs/ImageUpload';
+import MarkdownInput from 'components/inputs/MarkdownInput'
+import FormControl from 'components/inputs/FormControl'
+import TextInput from 'components/inputs/TextInput'
+import ImageUpload from 'components/inputs/ImageUpload'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors';
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 export default () => {
-    const event = useSelector(OrganiserSelectors.event);
+    const event = useSelector(OrganiserSelectors.event)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -29,8 +29,8 @@ export default () => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={value => {
-                                        form.setFieldValue(field.name, value);
-                                        form.setFieldTouched(field.name);
+                                        form.setFieldValue(field.name, value)
+                                        form.setFieldTouched(field.name)
                                     }}
                                     uploadUrl={`/api/upload/events/${event.slug}/cover-image`}
                                     resizeMode="cover"
@@ -54,8 +54,8 @@ export default () => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={value => {
-                                        form.setFieldValue(field.name, value);
-                                        form.setFieldTouched(field.name);
+                                        form.setFieldValue(field.name, value)
+                                        form.setFieldTouched(field.name)
                                     }}
                                     uploadUrl={`/api/upload/events/${event.slug}/logo`}
                                     resizeMode="contain"
@@ -79,7 +79,9 @@ export default () => {
                                 name="name"
                                 placeholder="Big Hackathon 2020"
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 onBlur={() => form.setFieldTouched(field.name)}
                             />
                         </FormControl>
@@ -98,7 +100,9 @@ export default () => {
                         >
                             <MarkdownInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 placeholder="Description goes here"
                             />
                         </FormControl>
@@ -106,5 +110,5 @@ export default () => {
                 />
             </Grid>
         </Grid>
-    );
-};
+    )
+}

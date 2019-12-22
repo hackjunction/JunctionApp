@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 
-import { findIndex } from 'lodash-es';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { findIndex } from 'lodash-es'
+import DeleteIcon from '@material-ui/icons/Delete'
 import {
     List,
     ListItem,
@@ -11,94 +11,113 @@ import {
     Box,
     Divider,
     Grid,
-    Typography
-} from '@material-ui/core';
+    Typography,
+} from '@material-ui/core'
 
-import Select from 'components/inputs/Select';
-import TextInput from 'components/inputs/TextInput';
-import Tag from 'components/generic/Tag';
-import Button from 'components/generic/Button';
+import Select from 'components/inputs/Select'
+import TextInput from 'components/inputs/TextInput'
+import Tag from 'components/generic/Tag'
+import Button from 'components/generic/Button'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { useFormField } from 'hooks/formHooks';
+import { makeStyles } from '@material-ui/core/styles'
+import { useFormField } from 'hooks/formHooks'
 
-const COLORS = ['magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'];
+const COLORS = [
+    'magenta',
+    'red',
+    'volcano',
+    'orange',
+    'gold',
+    'lime',
+    'green',
+    'cyan',
+    'blue',
+    'geekblue',
+    'purple',
+]
 
 const useStyles = makeStyles(theme => ({
     errorMessage: {
-        color: theme.palette.error.main
-    }
-}));
+        color: theme.palette.error.main,
+    },
+}))
 
 const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
-    const classes = useStyles();
+    const classes = useStyles()
     const label = useFormField('', value => {
         if (!value || value.length === 0) {
-            return 'Tag name is required';
+            return 'Tag name is required'
         }
         if (value.length > 30) {
-            return 'Tag name can be at most 30 characters';
+            return 'Tag name can be at most 30 characters'
         }
         if (findIndex(value, tag => tag.label === value) !== -1) {
-            return `A tag with the name ${value} already exists`;
+            return `A tag with the name ${value} already exists`
         }
 
-        return;
-    });
+        return
+    })
     const color = useFormField(undefined, value => {
         if (!value || value.length === 0) {
-            return 'Tag color is required';
+            return 'Tag color is required'
         }
 
-        return;
-    });
+        return
+    })
     const description = useFormField('', value => {
         if (!value || value.length === 0) {
-            return 'Please give a short description for your tag';
+            return 'Please give a short description for your tag'
         }
 
         if (value.length > 200) {
-            return 'Tag description must be under 200 characters';
+            return 'Tag description must be under 200 characters'
         }
-    });
+    })
 
     const resetForm = useCallback(() => {
-        label.reset();
-        color.reset();
-        description.reset();
-    }, [label, color, description]);
+        label.reset()
+        color.reset()
+        description.reset()
+    }, [label, color, description])
 
     const handleAdd = useCallback(() => {
-        const items = [label, color, description];
-        let passing = true;
+        const items = [label, color, description]
+        let passing = true
         items.forEach(item => {
-            const err = item.validate(item.value);
+            const err = item.validate(item.value)
             if (err) {
-                item.setError(err);
-                passing = false;
+                item.setError(err)
+                passing = false
             }
-        });
+        })
 
         if (!passing) {
-            return;
+            return
         } else {
             setFieldValue(
                 fieldName,
-                value.concat({ label: label.value, color: color.value, description: description.value })
-            );
-            resetForm();
+                value.concat({
+                    label: label.value,
+                    color: color.value,
+                    description: description.value,
+                })
+            )
+            resetForm()
         }
-    }, [value, fieldName, color, label, description, resetForm, setFieldValue]);
+    }, [value, fieldName, color, label, description, resetForm, setFieldValue])
 
     const handleDelete = useCallback(
         label => {
-            setFieldValue(fieldName, value.filter(tag => tag.label !== label));
+            setFieldValue(
+                fieldName,
+                value.filter(tag => tag.label !== label)
+            )
         },
         [setFieldValue, fieldName, value]
-    );
+    )
 
     const renderRows = () => {
-        if (!value) return null;
+        if (!value) return null
         return value.map((item, index) => [
             index !== 0 ? <Divider /> : null,
             <ListItem>
@@ -111,18 +130,26 @@ const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
                     secondary={item.description}
                 />
                 <ListItemSecondaryAction>
-                    <IconButton onClick={() => handleDelete(item.label)} edge="end" aria-label="comments">
+                    <IconButton
+                        onClick={() => handleDelete(item.label)}
+                        edge="end"
+                        aria-label="comments"
+                    >
                         <DeleteIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
-            </ListItem>
-        ]);
-    };
+            </ListItem>,
+        ])
+    }
 
     return (
         <Grid container spacing={3} alignItems="flex-end">
             <Grid item xs={12} md={6}>
-                <TextInput label="Tag name" value={label.value} onChange={label.setValue} />
+                <TextInput
+                    label="Tag name"
+                    value={label.value}
+                    onChange={label.setValue}
+                />
                 <Typography variant="caption" className={classes.errorMessage}>
                     {label.error}
                 </Typography>
@@ -135,7 +162,7 @@ const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
                     onChange={color.setValue}
                     options={COLORS.map(color => ({
                         label: color,
-                        value: color
+                        value: color,
                     }))}
                 />
                 <Typography variant="caption" className={classes.errorMessage}>
@@ -143,13 +170,22 @@ const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
                 </Typography>
             </Grid>
             <Grid item xs={12} md={9}>
-                <TextInput label="Tag description" value={description.value} onChange={description.setValue} />
+                <TextInput
+                    label="Tag description"
+                    value={description.value}
+                    onChange={description.setValue}
+                />
                 <Typography variant="caption" className={classes.errorMessage}>
                     {description.error}
                 </Typography>
             </Grid>
             <Grid item xs={12} md={3}>
-                <Button fullWidth variant="contained" color="primary" onClick={handleAdd}>
+                <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAdd}
+                >
                     Add
                 </Button>
             </Grid>
@@ -157,7 +193,7 @@ const EventTagsForm = ({ value = [], fieldName, setFieldValue }) => {
                 <List>{renderRows()}</List>
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
-export default EventTagsForm;
+export default EventTagsForm

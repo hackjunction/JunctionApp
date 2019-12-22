@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-import { Grid } from '@material-ui/core';
-import { FastField, Field } from 'formik';
-import Select from 'components/inputs/Select';
-import FormControl from 'components/inputs/FormControl';
-import DateTimeInput from 'components/inputs/DateTimeInput';
+import { Grid } from '@material-ui/core'
+import { FastField, Field } from 'formik'
+import Select from 'components/inputs/Select'
+import FormControl from 'components/inputs/FormControl'
+import DateTimeInput from 'components/inputs/DateTimeInput'
 
 export default () => {
     return (
@@ -23,7 +23,9 @@ export default () => {
                                 placeholder="Choose a timezone"
                                 value={field.value}
                                 options="timezone"
-                                onChange={timezone => form.setFieldValue(field.name, timezone)}
+                                onChange={timezone =>
+                                    form.setFieldValue(field.name, timezone)
+                                }
                                 onBlur={() => form.setFieldTouched}
                             />
                         </FormControl>
@@ -42,7 +44,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -60,7 +64,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -78,7 +84,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -96,7 +104,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -114,7 +124,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -132,7 +144,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -150,7 +164,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -168,7 +184,9 @@ export default () => {
                         >
                             <DateTimeInput
                                 value={field.value}
-                                onChange={value => form.setFieldValue(field.name, value)}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
                                 timezone={form.values.timezone}
                             />
                         </FormControl>
@@ -176,5 +194,5 @@ export default () => {
                 />
             </Grid>
         </Grid>
-    );
-};
+    )
+}

@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react'
 
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
-import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux'
+import { withSnackbar } from 'notistack'
+import { makeStyles } from '@material-ui/core/styles'
 import {
     Box,
     Typography,
@@ -19,27 +19,27 @@ import {
     DialogTitle,
     DialogContent,
     DialogContentText,
-    DialogActions
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Button from 'components/generic/Button';
-import StatusBadge from 'components/generic/StatusBadge';
+    DialogActions,
+} from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import Button from 'components/generic/Button'
+import StatusBadge from 'components/generic/StatusBadge'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors';
-import * as DashboardActions from 'redux/dashboard/actions';
-import * as AuthSelectors from 'redux/auth/selectors';
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 const useStyles = makeStyles(theme => ({
     textHighlight: {
-        color: theme.palette.primary.main
+        color: theme.palette.primary.main,
     },
     list: {
-        backgroundColor: theme.palette.theme_white.main
+        backgroundColor: theme.palette.theme_white.main,
     },
     listItemName: {
-        fontWeight: 'bold'
-    }
-}));
+        fontWeight: 'bold',
+    },
+}))
 
 const EditTeam = ({
     team,
@@ -49,66 +49,81 @@ const EditTeam = ({
     enqueueSnackbar,
     leaveTeam,
     deleteTeam,
-    removeMemberFromTeam
+    removeMemberFromTeam,
 }) => {
-    const classes = useStyles();
-    const [loading, setLoading] = useState(false);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const isTeamOwner = team.owner === idTokenData.sub;
-    const allTeamMembers = [team.owner].concat(team.members);
+    const classes = useStyles()
+    const [loading, setLoading] = useState(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const isTeamOwner = team.owner === idTokenData.sub
+    const allTeamMembers = [team.owner].concat(team.members)
 
     const handleLeave = useCallback(() => {
-        setLoading(true);
+        setLoading(true)
         leaveTeam(event.slug, team.code)
             .then(() => {
-                enqueueSnackbar('Left team ' + team.code, { variant: 'success' });
+                enqueueSnackbar('Left team ' + team.code, {
+                    variant: 'success',
+                })
             })
             .catch(() => {
-                enqueueSnackbar('Something went wrong... please try again.', { variant: 'error' });
+                enqueueSnackbar('Something went wrong... please try again.', {
+                    variant: 'error',
+                })
             })
             .finally(() => {
-                setLoading(false);
-            });
-    }, [event.slug, leaveTeam, team.code, enqueueSnackbar]);
+                setLoading(false)
+            })
+    }, [event.slug, leaveTeam, team.code, enqueueSnackbar])
 
     const handleDelete = useCallback(() => {
-        setLoading(true);
+        setLoading(true)
         deleteTeam(event.slug)
             .then(() => {
-                enqueueSnackbar('Deleted team ' + team.code, { variant: 'success' });
+                enqueueSnackbar('Deleted team ' + team.code, {
+                    variant: 'success',
+                })
             })
             .catch(err => {
-                enqueueSnackbar('Something went wrong... please try again.', { variant: 'error' });
+                enqueueSnackbar('Something went wrong... please try again.', {
+                    variant: 'error',
+                })
             })
             .finally(() => {
-                setLoading(false);
-            });
-    }, [deleteTeam, event.slug, team.code, enqueueSnackbar]);
+                setLoading(false)
+            })
+    }, [deleteTeam, event.slug, team.code, enqueueSnackbar])
 
     const handleRemoveMember = useCallback(
         userId => {
-            setLoading(true);
+            setLoading(true)
             removeMemberFromTeam(event.slug, team.code, userId)
                 .then(() => {
-                    enqueueSnackbar('Removed team member', { variant: 'success' });
+                    enqueueSnackbar('Removed team member', {
+                        variant: 'success',
+                    })
                 })
                 .catch(() => {
-                    enqueueSnackbar('Something went wrong... please try again.', { variant: 'error' });
+                    enqueueSnackbar(
+                        'Something went wrong... please try again.',
+                        { variant: 'error' }
+                    )
                 })
                 .finally(() => {
-                    setLoading(false);
-                });
+                    setLoading(false)
+                })
         },
         [event.slug, removeMemberFromTeam, team.code, enqueueSnackbar]
-    );
+    )
 
     return (
         <Box>
             <Typography variant="h5">
-                Your team code is <span className={classes.textHighlight}>{team.code}</span>
+                Your team code is{' '}
+                <span className={classes.textHighlight}>{team.code}</span>
             </Typography>
             <Typography variant="body1">
-                Share this code with people you want to invite, and they'll be able to join your team.
+                Share this code with people you want to invite, and they'll be
+                able to join your team.
             </Typography>
             <Box mt={5} />
             <Typography variant="h5" gutterBottom>
@@ -116,29 +131,51 @@ const EditTeam = ({
             </Typography>
             <List className={classes.list}>
                 {allTeamMembers.map((userId, index) => {
-                    const { profile, registration } = team.meta[userId];
+                    const { profile, registration } = team.meta[userId]
 
                     return [
                         index !== 0 ? (
-                            <Divider variant="inset" component="li" key={profile.userId + '_divider'} />
+                            <Divider
+                                variant="inset"
+                                component="li"
+                                key={profile.userId + '_divider'}
+                            />
                         ) : null,
                         <ListItem key={profile.userId}>
                             <ListItemAvatar>
-                                <Avatar alt={`${profile.firstName} ${profile.lastName}`} src={profile.avatar} />
+                                <Avatar
+                                    alt={`${profile.firstName} ${profile.lastName}`}
+                                    src={profile.avatar}
+                                />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={
-                                    <Typography className={classes.listItemName} variant="subtitle1">
-                                        {`${profile.firstName} ${profile.lastName} ${
-                                            team.owner === profile.userId ? '(Owner)' : ''
+                                    <Typography
+                                        className={classes.listItemName}
+                                        variant="subtitle1"
+                                    >
+                                        {`${profile.firstName} ${
+                                            profile.lastName
+                                        } ${
+                                            team.owner === profile.userId
+                                                ? '(Owner)'
+                                                : ''
                                         }`}
                                     </Typography>
                                 }
                                 secondary={
-                                    <Box display="flex" flexDirection="column" alignItems="flex-start">
-                                        <Typography variant="body2">{profile.email}</Typography>
+                                    <Box
+                                        display="flex"
+                                        flexDirection="column"
+                                        alignItems="flex-start"
+                                    >
+                                        <Typography variant="body2">
+                                            {profile.email}
+                                        </Typography>
                                         <Box mt={0.5} />
-                                        <StatusBadge status={registration.status} />
+                                        <StatusBadge
+                                            status={registration.status}
+                                        />
                                     </Box>
                                 }
                             />
@@ -146,7 +183,11 @@ const EditTeam = ({
                                 <ListItemSecondaryAction>
                                     <Tooltip title="Remove from team">
                                         <IconButton
-                                            onClick={() => handleRemoveMember(profile.userId)}
+                                            onClick={() =>
+                                                handleRemoveMember(
+                                                    profile.userId
+                                                )
+                                            }
                                             edge="end"
                                             aria-label="delete"
                                         >
@@ -155,8 +196,8 @@ const EditTeam = ({
                                     </Tooltip>
                                 </ListItemSecondaryAction>
                             )}
-                        </ListItem>
-                    ];
+                        </ListItem>,
+                    ]
                 })}
             </List>
             <Box mt={5} />
@@ -189,16 +230,27 @@ const EditTeam = ({
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                            <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">
+                                Are you sure?
+                            </DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
-                                    You won't be able to recover this team after deleting it (but you can always create
-                                    a new one).
+                                    You won't be able to recover this team after
+                                    deleting it (but you can always create a new
+                                    one).
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={() => setDeleteDialogOpen(false)}>I've changed my mind</Button>
-                                <Button onClick={handleDelete} color="error" autoFocus>
+                                <Button
+                                    onClick={() => setDeleteDialogOpen(false)}
+                                >
+                                    I've changed my mind
+                                </Button>
+                                <Button
+                                    onClick={handleDelete}
+                                    color="error"
+                                    autoFocus
+                                >
                                     Yes, delete it
                                 </Button>
                             </DialogActions>
@@ -206,28 +258,35 @@ const EditTeam = ({
                     </Box>
                 ) : (
                     <Box mr={1} mb={1}>
-                        <Button loading={loading} onClick={handleLeave} color="error" variant="contained">
+                        <Button
+                            loading={loading}
+                            onClick={handleLeave}
+                            color="error"
+                            variant="contained"
+                        >
                             Leave team
                         </Button>
                     </Box>
                 )}
             </Box>
         </Box>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     team: DashboardSelectors.team(state),
     teamLoading: DashboardSelectors.teamLoading(state),
     idTokenData: AuthSelectors.idTokenData(state),
-    event: DashboardSelectors.event(state)
-});
+    event: DashboardSelectors.event(state),
+})
 
 const mapDispatch = dispatch => ({
-    deleteTeam: (slug, code) => dispatch(DashboardActions.deleteTeam(slug, code)),
+    deleteTeam: (slug, code) =>
+        dispatch(DashboardActions.deleteTeam(slug, code)),
     lockTeam: (slug, code) => dispatch(DashboardActions.lockTeam(slug, code)),
     leaveTeam: (slug, code) => dispatch(DashboardActions.leaveTeam(slug, code)),
-    removeMemberFromTeam: (slug, code, userId) => dispatch(DashboardActions.removeMemberFromTeam(slug, code, userId))
-});
+    removeMemberFromTeam: (slug, code, userId) =>
+        dispatch(DashboardActions.removeMemberFromTeam(slug, code, userId)),
+})
 
-export default withSnackbar(connect(mapState, mapDispatch)(EditTeam));
+export default withSnackbar(connect(mapState, mapDispatch)(EditTeam))

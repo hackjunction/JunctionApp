@@ -1,1 +1,1 @@
-export const registrations = state => state.account.registrations;
+export const registrations = state => state.account.registrations

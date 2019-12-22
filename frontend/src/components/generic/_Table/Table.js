@@ -1,48 +1,57 @@
-import React, { useMemo } from 'react';
-import { useTable, usePagination, useSortBy, useFilters } from 'react-table';
+import React, { useMemo } from 'react'
+import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, TableFooter, TableSortLabel } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+import {
+    Box,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableFooter,
+    TableSortLabel,
+} from '@material-ui/core'
 
-import Pagination from './Pagination';
-import ActionBar from './ActionBar';
-import FilterFunctions from './filterFunctions';
-import SortFunctions from './sortFunctions';
-import { Filters } from './index';
+import Pagination from './Pagination'
+import ActionBar from './ActionBar'
+import FilterFunctions from './filterFunctions'
+import SortFunctions from './sortFunctions'
+import { Filters } from './index'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
         width: '100%',
-        overflowX: 'scroll'
+        overflowX: 'scroll',
     },
     table: {
-        background: theme.palette.background.paper
+        background: theme.palette.background.paper,
     },
     tableRow: {},
     tableHead: {
-        background: '#000000'
+        background: '#000000',
     },
     tableHeadCell: {
         color: '#ffffff !important',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     tableHeadSortIcon: {
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
     tableCell: {},
-    tableFooter: {}
-}));
+    tableFooter: {},
+}))
 
 const _Table = ({ columns, data, config }) => {
-    const classes = useStyles();
+    const classes = useStyles()
 
     const defaultColumn = React.useMemo(
         () => ({
             // Let's set up our default Filter UI
-            ...Filters.Disabled
+            ...Filters.Disabled,
         }),
         []
-    );
+    )
 
     const {
         getTableProps,
@@ -60,7 +69,7 @@ const _Table = ({ columns, data, config }) => {
         setPageSize,
         pageSize,
         pageIndex,
-        flatHeaders
+        flatHeaders,
     } = useTable(
         {
             columns,
@@ -68,12 +77,12 @@ const _Table = ({ columns, data, config }) => {
             filterTypes: FilterFunctions,
             sortTypes: SortFunctions,
             defaultColumn,
-            defaultCanFilter: false
+            defaultCanFilter: false,
         },
         useFilters,
         useSortBy,
         usePagination
-    );
+    )
 
     return (
         <Box className={classes.wrapper}>
@@ -85,19 +94,26 @@ const _Table = ({ columns, data, config }) => {
                 </TableRow>
                 <TableHead className={classes.tableHead}>
                     {headerGroups.map(headerGroup => (
-                        <TableRow {...headerGroup.getHeaderGroupProps()} className={classes.tableRow}>
+                        <TableRow
+                            {...headerGroup.getHeaderGroupProps()}
+                            className={classes.tableRow}
+                        >
                             {headerGroup.headers.map(column => (
                                 <TableCell
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                                    {...column.getHeaderProps(
+                                        column.getSortByToggleProps()
+                                    )}
                                     className={classes.tableHeadCell}
                                 >
                                     <TableSortLabel
                                         active={column.isSorted}
-                                        direction={column.isSortedDesc ? 'desc' : 'asc'}
+                                        direction={
+                                            column.isSortedDesc ? 'desc' : 'asc'
+                                        }
                                         classes={{
                                             root: classes.tableHeadCell,
                                             active: classes.tableHeadCellActive,
-                                            icon: classes.tableHeadSortIcon
+                                            icon: classes.tableHeadSortIcon,
                                         }}
                                     >
                                         {column.render('Header')}
@@ -109,14 +125,18 @@ const _Table = ({ columns, data, config }) => {
                 </TableHead>
                 <TableBody {...getTableBodyProps()}>
                     {page.map((row, i) => {
-                        prepareRow(row);
+                        prepareRow(row)
                         return (
                             <TableRow {...row.getRowProps()}>
                                 {row.cells.map(cell => {
-                                    return <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>;
+                                    return (
+                                        <TableCell {...cell.getCellProps()}>
+                                            {cell.render('Cell')}
+                                        </TableCell>
+                                    )
                                 })}
                             </TableRow>
-                        );
+                        )
                     })}
                 </TableBody>
                 <TableFooter>
@@ -140,7 +160,7 @@ const _Table = ({ columns, data, config }) => {
                 </TableFooter>
             </Table>
         </Box>
-    );
-};
+    )
+}
 
-export default _Table;
+export default _Table

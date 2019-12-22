@@ -1,8 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-import Select from 'components/inputs/Select';
+import Select from 'components/inputs/Select'
 
-const EventTagsSelect = ({ value, onChange, tags = [], placeholder = 'Select tags' }) => {
+const EventTagsSelect = ({
+    value,
+    onChange,
+    tags = [],
+    placeholder = 'Select tags',
+}) => {
     return (
         <Select
             placeholder={placeholder}
@@ -11,10 +16,10 @@ const EventTagsSelect = ({ value, onChange, tags = [], placeholder = 'Select tag
             isMulti
             options={tags.map(tag => ({
                 value: tag.label,
-                label: tag.label
+                label: tag.label,
             }))}
         />
-    );
-};
+    )
+}
 
-export default EventTagsSelect;
+export default EventTagsSelect

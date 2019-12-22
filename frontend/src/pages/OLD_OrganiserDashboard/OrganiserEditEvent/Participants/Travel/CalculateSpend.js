@@ -1,31 +1,44 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react'
 
-import { FilterHelpers } from '@hackjunction/shared';
-import { connect } from 'react-redux';
-import { sortBy, sumBy, difference } from 'lodash-es';
-import { Grid, Typography, Button, Box } from '@material-ui/core';
-import { withSnackbar } from 'notistack';
+import { FilterHelpers } from '@hackjunction/shared'
+import { connect } from 'react-redux'
+import { sortBy, sumBy, difference } from 'lodash-es'
+import { Grid, Typography, Button, Box } from '@material-ui/core'
+import { withSnackbar } from 'notistack'
 
-import TextField from 'components/inputs/TextInput';
-import Table from 'components/generic/Table';
-import * as OrganiserSelectors from 'redux/organiser/selectors';
-import * as AuthSelectors from 'redux/auth/selectors';
-import RegistrationsService from 'services/registrations';
+import TextField from 'components/inputs/TextInput'
+import Table from 'components/generic/Table'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as AuthSelectors from 'redux/auth/selectors'
+import RegistrationsService from 'services/registrations'
 
-const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligibleRegistrations, enqueueSnackbar }) => {
-    const [calculations, setCalculations] = useState();
-    const [maxSpend, setMaxSpend] = useState(0);
-    const { slug } = event;
+const CalculateSpend = ({
+    idToken,
+    event,
+    amountsByGroup,
+    filterGroups,
+    eligibleRegistrations,
+    enqueueSnackbar,
+}) => {
+    const [calculations, setCalculations] = useState()
+    const [maxSpend, setMaxSpend] = useState(0)
+    const { slug } = event
 
     const makeCalculations = useCallback(() => {
-        const groupsSorted = sortBy(filterGroups, group => amountsByGroup[group.label] * -1);
+        const groupsSorted = sortBy(
+            filterGroups,
+            group => amountsByGroup[group.label] * -1
+        )
         const registrationsMapped = groupsSorted.reduce(
             ({ registrations, res }, group) => {
-                const filtered = FilterHelpers.applyFilters(registrations, group.filters);
-                const amount = parseInt(amountsByGroup[group.label]);
+                const filtered = FilterHelpers.applyFilters(
+                    registrations,
+                    group.filters
+                )
+                const amount = parseInt(amountsByGroup[group.label])
 
                 if (amount === 0) {
-                    return { registrations, res };
+                    return { registrations, res }
                 }
 
                 return {
@@ -34,69 +47,73 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
                             id: reg._id,
                             group: group.label,
                             amount,
-                            createdAt: reg.createdAt
+                            createdAt: reg.createdAt,
                         }))
                     ),
-                    registrations: difference(registrations, filtered)
-                };
+                    registrations: difference(registrations, filtered),
+                }
             },
             {
                 registrations: eligibleRegistrations,
-                res: []
+                res: [],
             }
-        ).res;
-        const registrationsSorted = sortBy(registrationsMapped, 'createdAt');
+        ).res
+        const registrationsSorted = sortBy(registrationsMapped, 'createdAt')
 
-        const registrationsGranted = [];
-        let currentSpend = 0;
+        const registrationsGranted = []
+        let currentSpend = 0
         for (let item of registrationsSorted) {
             if (currentSpend + item.amount <= maxSpend) {
-                currentSpend += item.amount;
-                registrationsGranted.push(item);
+                currentSpend += item.amount
+                registrationsGranted.push(item)
             }
         }
 
         const byGroup = filterGroups.map(group => {
-            const amount = amountsByGroup[group.label];
-            const granted = registrationsGranted.filter(r => r.group === group.label);
-            const total = registrationsSorted.filter(r => r.group === group.label);
+            const amount = amountsByGroup[group.label]
+            const granted = registrationsGranted.filter(
+                r => r.group === group.label
+            )
+            const total = registrationsSorted.filter(
+                r => r.group === group.label
+            )
 
             return {
                 group: group.label,
                 amount,
                 registrationsGranted: granted,
                 registrationsTotal: total,
-                totalSpend: sumBy(granted, 'amount')
-            };
-        });
+                totalSpend: sumBy(granted, 'amount'),
+            }
+        })
 
-        const byGroupSorted = sortBy(byGroup, 'totalSpend');
+        const byGroupSorted = sortBy(byGroup, 'totalSpend')
 
         setCalculations({
             granted: registrationsGranted,
             total: registrationsSorted,
             spend: currentSpend,
-            byGroup: byGroupSorted
-        });
-    }, [filterGroups, eligibleRegistrations, maxSpend, amountsByGroup]);
+            byGroup: byGroupSorted,
+        })
+    }, [filterGroups, eligibleRegistrations, maxSpend, amountsByGroup])
 
     const handleSubmit = useCallback(() => {
         const data = calculations.granted.map(item => ({
             _id: item.id,
-            amount: item.amount
-        }));
+            amount: item.amount,
+        }))
 
         RegistrationsService.bulkAssignTravelGrantsForEvent(idToken, slug, data)
             .then(() => {
-                enqueueSnackbar('Success!', { variant: 'success' });
+                enqueueSnackbar('Success!', { variant: 'success' })
             })
             .catch(err => {
-                enqueueSnackbar('Something went wrong...', { variant: 'error' });
-                console.log(err);
-            });
-    }, [idToken, slug, calculations, enqueueSnackbar]);
+                enqueueSnackbar('Something went wrong...', { variant: 'error' })
+                console.log(err)
+            })
+    }, [idToken, slug, calculations, enqueueSnackbar])
 
-    const canSubmit = calculations && calculations.granted.length > 0;
+    const canSubmit = calculations && calculations.granted.length > 0
 
     return (
         <Grid container spacing={3}>
@@ -110,7 +127,11 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
                             label="How much more money do you wish to allocate? (EUR)"
                         />
                     </Box>
-                    <Button variant="contained" color="primary" onClick={makeCalculations}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={makeCalculations}
+                    >
                         Calculate
                     </Button>
                 </Box>
@@ -120,7 +141,8 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
                     <React.Fragment>
                         <Box p={2}>
                             <Typography>
-                                This would result in a total spend of {calculations.spend} and give travel grants to{' '}
+                                This would result in a total spend of{' '}
+                                {calculations.spend} and give travel grants to{' '}
                                 {calculations.granted.length} participants
                             </Typography>
                         </Box>
@@ -135,25 +157,25 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
                                 {
                                     key: 'group',
                                     label: 'Group',
-                                    path: 'group'
+                                    path: 'group',
                                 },
                                 {
                                     key: 'amount',
                                     label: 'Amount',
-                                    path: 'amount'
+                                    path: 'amount',
                                 },
                                 {
                                     key: 'granted',
                                     label: 'Granted to',
                                     path: 'registrationsGranted',
                                     render: (granted, { registrationsTotal }) =>
-                                        `${granted.length}/${registrationsTotal.length}`
+                                        `${granted.length}/${registrationsTotal.length}`,
                                 },
                                 {
                                     key: 'spend',
                                     label: 'Spend (EUR)',
-                                    path: 'totalSpend'
-                                }
+                                    path: 'totalSpend',
+                                },
                             ]}
                         />
                     </React.Fragment>
@@ -161,20 +183,27 @@ const CalculateSpend = ({ idToken, event, amountsByGroup, filterGroups, eligible
             </Grid>
             <Grid item xs={12}>
                 <Box display="flex" alignItems="center" justifyContent="center">
-                    <Button disabled={!canSubmit} variant="contained" color="primary" onClick={handleSubmit}>
+                    <Button
+                        disabled={!canSubmit}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                    >
                         Assign travel grants
                     </Button>
                 </Box>
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
 const mapState = state => ({
     idToken: AuthSelectors.getIdToken(state),
     event: OrganiserSelectors.event(state),
     filterGroups: OrganiserSelectors.filterGroups(state),
-    eligibleRegistrations: OrganiserSelectors.registrationsEligibleForTravelGrant(state)
-});
+    eligibleRegistrations: OrganiserSelectors.registrationsEligibleForTravelGrant(
+        state
+    ),
+})
 
-export default withSnackbar(connect(mapState)(CalculateSpend));
+export default withSnackbar(connect(mapState)(CalculateSpend))

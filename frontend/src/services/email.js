@@ -1,33 +1,33 @@
-import _axios from 'services/axios';
+import _axios from 'services/axios'
 
-const EmailService = {};
+const EmailService = {}
 
 function config(idToken) {
     return {
         headers: {
-            Authorization: `Bearer ${idToken}`
-        }
-    };
+            Authorization: `Bearer ${idToken}`,
+        },
+    }
 }
 
-const BASE_ROUTE = '/email';
+const BASE_ROUTE = '/email'
 
 EmailService.sendPreviewEmail = (idToken, slug, to, params) => {
     const data = {
         to,
-        params
-    };
-    return _axios.post(`${BASE_ROUTE}/${slug}/preview`, data, config(idToken));
-};
+        params,
+    }
+    return _axios.post(`${BASE_ROUTE}/${slug}/preview`, data, config(idToken))
+}
 
 EmailService.sendBulkEmail = (idToken, slug, recipients, params, uniqueId) => {
     const data = {
         recipients,
         params,
-        uniqueId
-    };
+        uniqueId,
+    }
 
-    return _axios.post(`${BASE_ROUTE}/${slug}/send`, data, config(idToken));
-};
+    return _axios.post(`${BASE_ROUTE}/${slug}/send`, data, config(idToken))
+}
 
-export default EmailService;
+export default EmailService

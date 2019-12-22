@@ -1,72 +1,78 @@
-import React, { useMemo, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
-import { SelectOptions } from '@hackjunction/shared';
-import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/Cancel';
+import React, { useMemo, useCallback } from 'react'
+import PropTypes from 'prop-types'
+import clsx from 'clsx'
+import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable'
+import { SelectOptions } from '@hackjunction/shared'
+import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
+import Paper from '@material-ui/core/Paper'
+import Chip from '@material-ui/core/Chip'
+import MenuItem from '@material-ui/core/MenuItem'
+import CancelIcon from '@material-ui/icons/Cancel'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     input: {
         display: 'flex',
         padding: 0,
-        height: 'auto'
+        height: 'auto',
     },
     valueContainer: {
         display: 'flex',
         flexWrap: 'wrap',
         flex: 1,
         alignItems: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     chip: {
-        margin: theme.spacing(0.5, 0.25)
+        margin: theme.spacing(0.5, 0.25),
     },
     chipFocused: {
         backgroundColor: emphasize(
-            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            theme.palette.type === 'light'
+                ? theme.palette.grey[300]
+                : theme.palette.grey[700],
             0.08
-        )
+        ),
     },
     noOptionsMessage: {
-        padding: theme.spacing(1, 2)
+        padding: theme.spacing(1, 2),
     },
     singleValue: {
-        fontSize: 16
+        fontSize: 16,
     },
     placeholder: {
         position: 'absolute',
         left: 2,
         bottom: 6,
-        fontSize: 16
+        fontSize: 16,
     },
     paper: {
         position: 'absolute',
         zIndex: 1,
         marginTop: theme.spacing(1),
         left: 0,
-        right: 0
+        right: 0,
     },
     divider: {
-        height: theme.spacing(2)
-    }
-}));
+        height: theme.spacing(2),
+    },
+}))
 
 function NoOptionsMessage(props) {
     return (
-        <Typography color="textSecondary" className={props.selectProps.classes.noOptionsMessage} {...props.innerProps}>
+        <Typography
+            color="textSecondary"
+            className={props.selectProps.classes.noOptionsMessage}
+            {...props.innerProps}
+        >
             {props.children}
         </Typography>
-    );
+    )
 }
 
 NoOptionsMessage.propTypes = {
@@ -78,29 +84,29 @@ NoOptionsMessage.propTypes = {
      * Props to be passed on to the wrapper.
      */
     innerProps: PropTypes.object.isRequired,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 function inputComponent({ inputRef, ...props }) {
-    return <div ref={inputRef} {...props} />;
+    return <div ref={inputRef} {...props} />
 }
 
 inputComponent.propTypes = {
     inputRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({
-            current: PropTypes.any.isRequired
-        })
-    ])
-};
+            current: PropTypes.any.isRequired,
+        }),
+    ]),
+}
 
 function Control(props) {
     const {
         children,
         innerProps,
         innerRef,
-        selectProps: { classes, TextFieldProps }
-    } = props;
+        selectProps: { classes, TextFieldProps },
+    } = props
 
     return (
         <TextField
@@ -111,12 +117,12 @@ function Control(props) {
                     className: classes.input,
                     ref: innerRef,
                     children,
-                    ...innerProps
-                }
+                    ...innerProps,
+                },
             }}
             {...TextFieldProps}
         />
-    );
+    )
 }
 
 Control.propTypes = {
@@ -128,17 +134,17 @@ Control.propTypes = {
      * The mouse down event and the innerRef to pass down to the controller element.
      */
     innerProps: PropTypes.shape({
-        onMouseDown: PropTypes.func.isRequired
+        onMouseDown: PropTypes.func.isRequired,
     }).isRequired,
     innerRef: PropTypes.oneOfType([
         PropTypes.oneOf([null]),
         PropTypes.func,
         PropTypes.shape({
-            current: PropTypes.any.isRequired
-        })
+            current: PropTypes.any.isRequired,
+        }),
     ]).isRequired,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 function Option(props) {
     return (
@@ -147,13 +153,13 @@ function Option(props) {
             selected={props.isFocused}
             component="div"
             style={{
-                fontWeight: props.isSelected ? 500 : 400
+                fontWeight: props.isSelected ? 500 : 400,
             }}
             {...props.innerProps}
         >
             {props.children}
         </MenuItem>
-    );
+    )
 }
 
 Option.propTypes = {
@@ -170,7 +176,7 @@ Option.propTypes = {
         onClick: PropTypes.func.isRequired,
         onMouseMove: PropTypes.func.isRequired,
         onMouseOver: PropTypes.func.isRequired,
-        tabIndex: PropTypes.number.isRequired
+        tabIndex: PropTypes.number.isRequired,
     }).isRequired,
     /**
      * Inner ref to DOM Node
@@ -179,8 +185,8 @@ Option.propTypes = {
         PropTypes.oneOf([null]),
         PropTypes.func,
         PropTypes.shape({
-            current: PropTypes.any.isRequired
-        })
+            current: PropTypes.any.isRequired,
+        }),
     ]).isRequired,
     /**
      * Whether the option is focused.
@@ -189,16 +195,20 @@ Option.propTypes = {
     /**
      * Whether the option is selected.
      */
-    isSelected: PropTypes.bool.isRequired
-};
+    isSelected: PropTypes.bool.isRequired,
+}
 
 function Placeholder(props) {
-    const { selectProps, innerProps = {}, children } = props;
+    const { selectProps, innerProps = {}, children } = props
     return (
-        <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+        <Typography
+            color="textSecondary"
+            className={selectProps.classes.placeholder}
+            {...innerProps}
+        >
             {children}
         </Typography>
-    );
+    )
 }
 
 Placeholder.propTypes = {
@@ -210,15 +220,18 @@ Placeholder.propTypes = {
      * props passed to the wrapping element for the group.
      */
     innerProps: PropTypes.object,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 function SingleValue(props) {
     return (
-        <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+        <Typography
+            className={props.selectProps.classes.singleValue}
+            {...props.innerProps}
+        >
             {props.children}
         </Typography>
-    );
+    )
 }
 
 SingleValue.propTypes = {
@@ -230,11 +243,15 @@ SingleValue.propTypes = {
      * Props passed to the wrapping element for the group.
      */
     innerProps: PropTypes.any.isRequired,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 function ValueContainer(props) {
-    return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+    return (
+        <div className={props.selectProps.classes.valueContainer}>
+            {props.children}
+        </div>
+    )
 }
 
 ValueContainer.propTypes = {
@@ -242,8 +259,8 @@ ValueContainer.propTypes = {
      * The children to be rendered.
      */
     children: PropTypes.node,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 function MultiValue(props) {
     return (
@@ -251,12 +268,12 @@ function MultiValue(props) {
             tabIndex={-1}
             label={props.children}
             className={clsx(props.selectProps.classes.chip, {
-                [props.selectProps.classes.chipFocused]: props.isFocused
+                [props.selectProps.classes.chipFocused]: props.isFocused,
             })}
             onDelete={props.removeProps.onClick}
             deleteIcon={<CancelIcon {...props.removeProps} />}
         />
-    );
+    )
 }
 
 MultiValue.propTypes = {
@@ -265,17 +282,21 @@ MultiValue.propTypes = {
     removeProps: PropTypes.shape({
         onClick: PropTypes.func.isRequired,
         onMouseDown: PropTypes.func.isRequired,
-        onTouchEnd: PropTypes.func.isRequired
+        onTouchEnd: PropTypes.func.isRequired,
     }).isRequired,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 function Menu(props) {
     return (
-        <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+        <Paper
+            square
+            className={props.selectProps.classes.paper}
+            {...props.innerProps}
+        >
             {props.children}
         </Paper>
-    );
+    )
 }
 
 Menu.propTypes = {
@@ -287,8 +308,8 @@ Menu.propTypes = {
      * Props to be passed to the menu wrapper.
      */
     innerProps: PropTypes.object.isRequired,
-    selectProps: PropTypes.object.isRequired
-};
+    selectProps: PropTypes.object.isRequired,
+}
 
 const components = {
     Control,
@@ -298,8 +319,8 @@ const components = {
     Option,
     Placeholder,
     SingleValue,
-    ValueContainer
-};
+    ValueContainer,
+}
 
 export default function IntegrationReactSelect({
     autoFocus,
@@ -313,106 +334,106 @@ export default function IntegrationReactSelect({
     options = [],
     placeholder,
     value,
-    allowCreate = false
+    allowCreate = false,
 }) {
-    const classes = useStyles();
-    const theme = useTheme();
-    const inputId = 'select-' + name;
+    const classes = useStyles()
+    const theme = useTheme()
+    const inputId = 'select-' + name
 
     const selectStyles = {
         input: base => ({
             ...base,
             color: theme.palette.text.primary,
             '& input': {
-                font: 'inherit'
-            }
-        })
-    };
+                font: 'inherit',
+            },
+        }),
+    }
 
     const _options = useMemo(() => {
         if (Array.isArray(options)) {
-            return options;
+            return options
         } else {
             switch (options) {
                 case 'country':
-                    return SelectOptions.COUNTRIES;
+                    return SelectOptions.COUNTRIES
                 case 'countryCode':
-                    return SelectOptions.COUNTRY_CODES;
+                    return SelectOptions.COUNTRY_CODES
                 case 'currency':
-                    return SelectOptions.CURRENCIES;
+                    return SelectOptions.CURRENCIES
                 case 'nationality':
-                    return SelectOptions.NATIONALITIES;
+                    return SelectOptions.NATIONALITIES
                 case 'dietary-restriction':
-                    return SelectOptions.DIETARY_RESTRICTIONS;
+                    return SelectOptions.DIETARY_RESTRICTIONS
                 case 'num-hackathons':
-                    return SelectOptions.NUM_HACKATHONS;
+                    return SelectOptions.NUM_HACKATHONS
                 case 'gender':
-                    return SelectOptions.GENDERS;
+                    return SelectOptions.GENDERS
                 case 'industry':
-                    return SelectOptions.INDUSTRIES;
+                    return SelectOptions.INDUSTRIES
                 case 'language':
-                    return SelectOptions.LANGUAGES;
+                    return SelectOptions.LANGUAGES
                 case 'role':
-                    return SelectOptions.ROLES;
+                    return SelectOptions.ROLES
                 case 'skill':
-                    return SelectOptions.SKILLS;
+                    return SelectOptions.SKILLS
                 case 'technology':
-                    return SelectOptions.SKILLS_NO_ABSTRACT;
+                    return SelectOptions.SKILLS_NO_ABSTRACT
                 case 'theme':
-                    return SelectOptions.THEMES;
+                    return SelectOptions.THEMES
                 case 't-shirt-size':
-                    return SelectOptions.T_SHIRT_SIZES;
+                    return SelectOptions.T_SHIRT_SIZES
                 case 'timezone':
-                    return SelectOptions.TIMEZONES;
+                    return SelectOptions.TIMEZONES
                 case 'status':
-                    return SelectOptions.STATUSES;
+                    return SelectOptions.STATUSES
                 case 'day':
-                    return SelectOptions.DAYS;
+                    return SelectOptions.DAYS
                 case 'month':
-                    return SelectOptions.MONTHS;
+                    return SelectOptions.MONTHS
                 case 'year':
-                    return SelectOptions.YEARS;
+                    return SelectOptions.YEARS
                 case 'year-future':
-                    return SelectOptions.YEARS_FUTURE;
+                    return SelectOptions.YEARS_FUTURE
                 default:
-                    return [];
+                    return []
             }
         }
-    }, [options]);
+    }, [options])
 
     const transformedOutput = useCallback(
         output => {
-            if (!output) return output;
+            if (!output) return output
             if (isMulti) {
-                return output.map(item => item.value);
+                return output.map(item => item.value)
             } else {
-                return output.value;
+                return output.value
             }
         },
         [isMulti]
-    );
+    )
 
     const transformedInput = useMemo(() => {
         if (!value && value !== 0) {
-            return '';
+            return ''
         }
         if (isMulti) {
             return value
                 .map(item => {
-                    return _options.find(o => o.value === item);
+                    return _options.find(o => o.value === item)
                 })
-                .filter(item => !!item);
+                .filter(item => !!item)
         } else {
-            return _options.find(o => o.value === value);
+            return _options.find(o => o.value === value)
         }
-    }, [_options, isMulti, value]);
+    }, [_options, isMulti, value])
 
     const handleChange = useCallback(
         value => {
-            onChange(transformedOutput(value));
+            onChange(transformedOutput(value))
         },
         [onChange, transformedOutput]
-    );
+    )
 
     const SelectProps = {
         isDisabled: disabled,
@@ -424,8 +445,8 @@ export default function IntegrationReactSelect({
             label,
             InputLabelProps: {
                 htmlFor: inputId,
-                shrink: true
-            }
+                shrink: true,
+            },
         },
         placeholder,
         options: _options,
@@ -434,12 +455,16 @@ export default function IntegrationReactSelect({
         onChange: handleChange,
         onBlur,
         isMulti,
-        ref: innerRef
-    };
+        ref: innerRef,
+    }
 
     return (
         <div className={classes.root}>
-            {allowCreate ? <CreatableSelect {...SelectProps} /> : <Select {...SelectProps} />}
+            {allowCreate ? (
+                <CreatableSelect {...SelectProps} />
+            ) : (
+                <Select {...SelectProps} />
+            )}
         </div>
-    );
+    )
 }

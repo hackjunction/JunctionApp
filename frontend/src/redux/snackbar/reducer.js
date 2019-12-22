@@ -1,8 +1,8 @@
-import * as ActionTypes from './actionTypes';
+import * as ActionTypes from './actionTypes'
 
 const defaultState = {
-    notifications: []
-};
+    notifications: [],
+}
 
 export default (state = defaultState, action) => {
     switch (action.type) {
@@ -13,10 +13,10 @@ export default (state = defaultState, action) => {
                     ...state.notifications,
                     {
                         key: action.key,
-                        ...action.notification
-                    }
-                ]
-            };
+                        ...action.notification,
+                    },
+                ],
+            }
 
         case ActionTypes.CLOSE_SNACKBAR:
             return {
@@ -25,16 +25,18 @@ export default (state = defaultState, action) => {
                     action.dismissAll || notification.key === action.key
                         ? { ...notification, dismissed: true }
                         : { ...notification }
-                )
-            };
+                ),
+            }
 
         case ActionTypes.REMOVE_SNACKBAR:
             return {
                 ...state,
-                notifications: state.notifications.filter(notification => notification.key !== action.key)
-            };
+                notifications: state.notifications.filter(
+                    notification => notification.key !== action.key
+                ),
+            }
 
         default:
-            return state;
+            return state
     }
-};
+}

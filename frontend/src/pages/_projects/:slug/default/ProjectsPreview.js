@@ -1,26 +1,38 @@
-import React, { useCallback } from 'react';
-import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
-import { Box, Typography, Button as MuiButton } from '@material-ui/core';
-import ProjectsGrid from 'components/projects/ProjectsGrid';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import React, { useCallback } from 'react'
+import { push } from 'connected-react-router'
+import { useDispatch } from 'react-redux'
+import { Box, Typography, Button as MuiButton } from '@material-ui/core'
+import ProjectsGrid from 'components/projects/ProjectsGrid'
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
-export default ({ projects = [], count, event, label, subheading, moreLink }) => {
-    const dispatch = useDispatch();
+export default ({
+    projects = [],
+    count,
+    event,
+    label,
+    subheading,
+    moreLink,
+}) => {
+    const dispatch = useDispatch()
     const handleClickMore = useCallback(() => {
-        dispatch(push(moreLink));
-    }, [dispatch, moreLink]);
+        dispatch(push(moreLink))
+    }, [dispatch, moreLink])
 
     const handleSelected = useCallback(
         project => {
-            dispatch(push(`/projects/${event.slug}/view/${project._id}`));
+            dispatch(push(`/projects/${event.slug}/view/${project._id}`))
         },
         [event.slug, dispatch]
-    );
+    )
 
     return (
         <Box mb={3} display="flex" flexDirection="column">
-            <Box p={3} display="flex" flexDirection="column" alignItems="center">
+            <Box
+                p={3}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+            >
                 <Typography align="center" variant="h4">
                     {label}
                 </Typography>
@@ -30,9 +42,18 @@ export default ({ projects = [], count, event, label, subheading, moreLink }) =>
                     </Typography>
                 )}
             </Box>
-            <ProjectsGrid projects={projects} event={event} onSelect={handleSelected} />
+            <ProjectsGrid
+                projects={projects}
+                event={event}
+                onSelect={handleSelected}
+            />
             {moreLink && (
-                <Box mt={2} display="flex" flexDirection="row" justifyContent="flex-end">
+                <Box
+                    mt={2}
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                >
                     <MuiButton onClick={handleClickMore}>
                         See all {count} projects
                         <ArrowForwardIosIcon />
@@ -40,5 +61,5 @@ export default ({ projects = [], count, event, label, subheading, moreLink }) =>
                 </Box>
             )}
         </Box>
-    );
-};
+    )
+}
