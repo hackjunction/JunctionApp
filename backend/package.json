@@ -31,6 +31,7 @@
         "express": "^4.16.4",
         "express-async-handler": "^1.1.4",
         "express-jwt": "^5.3.1",
+        "helmet": "^3.21.2",
         "heroku-ssl-redirect": "0.0.4",
         "joi": "^14.3.1",
         "jwks-rsa": "^1.4.0",
