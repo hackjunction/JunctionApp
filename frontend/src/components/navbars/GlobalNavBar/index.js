@@ -1,23 +1,41 @@
-import React, { Component } from 'react';
-import styles from './GlobalNavBar.module.scss';
+import React from 'react'
 
-import UserMenu from 'components/UserMenu';
+import { makeStyles } from '@material-ui/core/styles'
+import UserMenu from 'components/UserMenu'
 
-class GlobalNavBar extends Component {
-    render() {
-        return (
-            <div className={styles.wrapper}>
-                <div className={styles.inner}>
-                    <img
-                        src={require('assets/logos/wordmark_black.png')}
-                        className={styles.wordmark}
-                        alt="Junction wordmark"
-                    />
-                    <UserMenu />
-                </div>
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        width: '100%',
+        height: '78px',
+        background: 'white',
+        padding: theme.spacing(0, 2),
+    },
+    inner: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        maxWidth: '1120px',
+        margin: '0 auto',
+        height: '100%',
+    },
+    wordmark: {
+        height: '50px',
+    },
+}))
+
+export default () => {
+    const classes = useStyles()
+    return (
+        <div className={classes.wrapper}>
+            <div className={classes.inner}>
+                <img
+                    src={require('assets/logos/wordmark_black.png')}
+                    className={classes.wordmark}
+                    alt="Junction wordmark"
+                />
+                <UserMenu />
             </div>
-        );
-    }
+        </div>
+    )
 }
-
-export default GlobalNavBar;

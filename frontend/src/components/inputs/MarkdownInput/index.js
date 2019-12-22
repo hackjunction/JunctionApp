@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
-import styles from './MarkdownInput.module.scss';
+import React, { useState } from 'react'
 
-import { Typography, Box, FormControlLabel, Switch } from '@material-ui/core';
-import Markdown from 'components/generic/Markdown';
-import TextAreaInput from 'components/inputs/TextAreaInput';
+import { makeStyles } from '@material-ui/core/styles'
+import { Typography, Box, FormControlLabel, Switch } from '@material-ui/core'
+import Markdown from 'components/generic/Markdown'
+import TextAreaInput from 'components/inputs/TextAreaInput'
 
-const MarkdownInput = ({ name, value, placeholder, onChange, onBlur }) => {
-    const [isPreview, setIsPreview] = useState(false);
+const useStyles = makeStyles(theme => ({
+    top: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginBottom: theme.spacing(2),
+    },
+    preview: {
+        minHeight: '100%',
+        background: '#f8f8f8',
+        padding: theme.spacing(2),
+    },
+}))
+
+export default ({ name, value, placeholder, onChange, onBlur }) => {
+    const classes = useStyles()
+    const [isPreview, setIsPreview] = useState(false)
 
     return (
         <Box>
-            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Box className={classes.top}>
                 <Typography variant="body1">
                     This field supports{' '}
                     <a
@@ -35,13 +51,16 @@ const MarkdownInput = ({ name, value, placeholder, onChange, onBlur }) => {
             </Box>
             <Box mt={2}>
                 {isPreview ? (
-                    <Markdown source={value} className={styles.preview} />
+                    <Markdown source={value} className={classes.preview} />
                 ) : (
-                    <TextAreaInput placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} />
+                    <TextAreaInput
+                        placeholder={placeholder}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                    />
                 )}
             </Box>
         </Box>
-    );
-};
-
-export default MarkdownInput;
+    )
+}

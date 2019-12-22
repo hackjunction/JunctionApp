@@ -1,27 +1,60 @@
-import React from 'react';
-import './style.scss';
+import React from 'react'
+import clsx from 'clsx'
+import { makeStyles } from '@material-ui/core/styles'
+import { Image as CloudinaryImage, Transformation } from 'cloudinary-react'
 
-import { Image as CloudinaryImage, Transformation } from 'cloudinary-react';
+const useStyles = makeStyles(theme => ({
+    root: {
+        maxWidth: '100%',
+        position: 'relative',
+        overflow: 'hidden',
+        "&[src='']::after": {
+            content: '',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'black',
+            zIndex: 100,
+        },
+    },
+}))
 
-const Image = ({ className, publicId, transformation = {}, alt, url, defaultImage }) => {
+const Image = ({
+    className,
+    publicId,
+    transformation = {},
+    alt,
+    url,
+    defaultImage,
+}) => {
+    const classes = useStyles()
     if (publicId) {
         return (
-            <CloudinaryImage className={'Image ' + className} publicId={publicId}>
-                <Transformation crop="fill" format="auto" quality="auto" {...transformation} />
+            <CloudinaryImage
+                className={clsx(classes.root, className)}
+                publicId={publicId}
+            >
+                <Transformation
+                    crop="fill"
+                    format="auto"
+                    quality="auto"
+                    {...transformation}
+                />
             </CloudinaryImage>
-        );
+        )
     }
 
     return (
         <img
-            src={url || (defaultImage ? defaultImage : '')}
+            src={url ?? defaultImage ?? ''}
             alt={alt}
-            className={'Image ' + className}
+            className={clsx(classes.root, className)}
             width={transformation.width}
             height={transformation.height}
-            // onLoad={this.setLoaded}
         />
-    );
-};
+    )
+}
 
-export default Image;
+export default Image
