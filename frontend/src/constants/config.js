@@ -22,7 +22,11 @@ const settings = {
         required: false,
     },
     GOOGLE_ANALYTICS_ID: {
-        value: process.env.GOOGLE_ANALYTICS_ID,
+        value: process.env.REACT_APP_GOOGLE_ANALYTICS_ID,
+        required: false,
+    },
+    LOGROCKET_ID: {
+        value: process.env.REACT_APP_LOGROCKET_ID,
         required: false,
     },
     IS_DEBUG: {

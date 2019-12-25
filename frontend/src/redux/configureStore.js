@@ -7,6 +7,7 @@ import { createBrowserHistory } from 'history'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { middleware as reduxPackMiddleware } from 'redux-pack'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
+import LogRocket from 'logrocket'
 
 import createRootReducer from './rootReducer'
 
@@ -32,7 +33,8 @@ export default preloadedState => {
             applyMiddleware(
                 routerMiddleware(history), // for dispatching history actions
                 thunk,
-                reduxPackMiddleware
+                reduxPackMiddleware,
+                LogRocket.reduxMiddleware()
                 // ... other middlewares ...
             )
         )
