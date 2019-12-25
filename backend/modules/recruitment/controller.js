@@ -1,86 +1,94 @@
-const Promise = require('bluebird');
-const { RecruitmentAction } = require('./model');
-const MongoUtils = require('../../common/utils/mongoUtils');
-const UserController = require('../user-profile/controller');
-const Registration = require('../registration/model');
-const EmailTaskController = require('../email-task/controller');
+const Promise = require('bluebird')
+const { RecruitmentAction } = require('./model')
+const MongoUtils = require('../../common/utils/mongoUtils')
+const UserController = require('../user-profile/controller')
+const Registration = require('../registration/model')
+const EmailTaskController = require('../email-task/controller')
 
-const controller = {};
+const controller = {}
 
 controller.getRecruitmentProfile = (userId, recruiterId) => {
     return UserController.getUserProfile(userId).then(userProfile => {
-        return controller.createRecruitmentProfile(userProfile, true, recruiterId);
-    });
-};
+        return controller.createRecruitmentProfile(
+            userProfile,
+            true,
+            recruiterId
+        )
+    })
+}
 
 controller.queryProfiles = (query = {}, user) => {
-    let userQuery = {};
-    let pagination = {};
+    let userQuery = {}
+    let pagination = {}
     if (typeof query.filters === 'string') {
         userQuery = {
             $and: [
                 {
                     $text: {
-                        $search: query.filters
-                    }
-                }
-            ]
-        };
+                        $search: query.filters,
+                    },
+                },
+            ],
+        }
     } else if (query.filters && query.filters.length) {
         const whereFields = query.filters.map(filter => {
-            const formatted = MongoUtils.ensureObjectId(filter.value);
+            const formatted = MongoUtils.ensureObjectId(filter.value)
             return {
                 [filter.field]: {
-                    [MongoUtils.filterOperatorToMongoOperator(filter.operator)]: formatted
-                }
-            };
-        });
+                    [MongoUtils.filterOperatorToMongoOperator(
+                        filter.operator
+                    )]: formatted,
+                },
+            }
+        })
 
-        userQuery = { $and: whereFields };
+        userQuery = { $and: whereFields }
     }
     if (query.pagination) {
         pagination = {
             skip: query.pagination.page_size * query.pagination.page,
-            limit: query.pagination.page_size
-        };
+            limit: query.pagination.page_size,
+        }
     }
 
     // Set event filters based on recruiter scope
-    const consentFilter = { 'recruitmentOptions.consent': true };
+    const consentFilter = { 'recruitmentOptions.consent': true }
     const eventFilter = {
         registrations: {
             $elemMatch: {
                 event: {
-                    $in: MongoUtils.ensureObjectId(user.recruiter_events)
-                }
-            }
-        }
-    };
+                    $in: MongoUtils.ensureObjectId(user.recruiter_events),
+                },
+            },
+        },
+    }
 
-    console.log(JSON.stringify(userQuery));
-
-    //Set default filters (consent & recruiter scope)
-    if (userQuery['$and']) {
-        userQuery['$and'] = userQuery['$and'].concat([consentFilter, eventFilter]);
+    // Set default filters (consent & recruiter scope)
+    if (userQuery.$and) {
+        userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
-        userQuery['$and'] = [consentFilter, eventFilter];
+        userQuery.$and = [consentFilter, eventFilter]
     }
 
     return UserController.queryProfiles({
         query: userQuery,
-        pagination: pagination
+        pagination,
     }).then(results => {
         return Promise.all(
             results.found.map(profile => {
-                return controller.createRecruitmentProfile(profile, false);
+                return controller.createRecruitmentProfile(profile, false)
             })
         ).then(profiles => {
-            return { data: profiles, count: results.count };
-        });
-    });
-};
+            return { data: profiles, count: results.count }
+        })
+    })
+}
 
-controller.createRecruitmentProfile = async (userProfile, eager = false, recruiterId = null) => {
+controller.createRecruitmentProfile = async (
+    userProfile,
+    eager = false,
+    recruiterId = null
+) => {
     const profile = {
         userId: userProfile.userId,
         profile: {
@@ -93,7 +101,7 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
             spokenLanguages: userProfile.spokenLanguages,
             profilePicture: userProfile.avatar || null,
             headline: userProfile.headline,
-            biography: userProfile.biography
+            biography: userProfile.biography,
         },
         skills: userProfile.skills,
         roles: userProfile.roles,
@@ -103,22 +111,22 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
         social: {
             github: userProfile.github,
             linkedin: userProfile.linkedin,
-            portfolio: userProfile.portfolio
+            portfolio: userProfile.portfolio,
         },
         recruitmentOptions: userProfile.recruitmentOptions,
-        registrations: userProfile.registrations
-    };
+        registrations: userProfile.registrations,
+    }
 
     if (eager) {
         profile.previousEvents = await Registration.find({
-            user: userProfile.userId
+            user: userProfile.userId,
         })
             .populate('event')
             .then(registrations => {
                 return registrations.map(reg => {
-                    return { id: reg.event._id, name: reg.event.name };
-                });
-            });
+                    return { id: reg.event._id, name: reg.event.name }
+                })
+            })
 
         // profile.recruitmentActionHistory = await RecruitmentAction.find({
         //     user: profile.userId,
@@ -128,48 +136,50 @@ controller.createRecruitmentProfile = async (userProfile, eager = false, recruit
 
     // TODO get profile picture from social
 
-    return profile;
-};
+    return profile
+}
 
 controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     const action = new RecruitmentAction({
         recruiter: recruiter.sub,
         organisation: recruiter.recruiter_organisation,
-        ...actionToSave
-    });
+        ...actionToSave,
+    })
 
     if (action.type === 'favorite') {
         // Nothing todo, just save the action
-        await action.save();
+        await action.save()
     }
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
         await RecruitmentAction.deleteMany({
             organisation: recruiter.recruiter_organisation,
             user: action.user,
-            type: 'favorite'
-        });
+            type: 'favorite',
+        })
     }
     if (action.type === 'message') {
-        await EmailTaskController.createRecruiterMessageTask(action);
-        await action.save();
+        await EmailTaskController.createRecruiterMessageTask(action)
+        await action.save()
     }
 
-    return controller.getRecruiterActions(recruiter);
-};
+    return controller.getRecruiterActions(recruiter)
+}
 
 controller.getRecruiterActions = async recruiter => {
     return RecruitmentAction.find({
-        organisation: recruiter.recruiter_organisation
+        organisation: recruiter.recruiter_organisation,
     })
         .populate('_user _recruiter')
         .lean()
         .then(actions => {
             return Promise.map(actions, async action => {
-                action._user = await controller.createRecruitmentProfile(action._user);
-                return action;
-            });
-        });
-};
+                action._user = await controller.createRecruitmentProfile(
+                    action._user
+                )
+                return action
+            })
+        })
+}
 
-module.exports = controller;
+module.exports = controller

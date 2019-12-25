@@ -1,44 +1,44 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const EmailTaskSchema = new mongoose.Schema({
     params: {
         type: mongoose.Schema.Types.Mixed,
-        default: null
+        default: null,
     },
     schedule: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     deliveredAt: {
         type: Date,
-        default: null
+        default: null,
     },
     event: {
         type: String,
-        required: true
+        required: true,
     },
     user: {
         type: String,
-        required: true
+        required: true,
     },
     type: {
         type: String,
-        required: true
-    }
-});
+        required: true,
+    },
+})
 
-EmailTaskSchema.set('timestamps', true);
+EmailTaskSchema.set('timestamps', true)
 EmailTaskSchema.index(
     {
         event: 1,
         user: 1,
-        type: 1
+        type: 1,
     },
     {
-        unique: true
+        unique: true,
     }
-);
+)
 
-const EmailTask = mongoose.model('EmailTask', EmailTaskSchema);
+const EmailTask = mongoose.model('EmailTask', EmailTaskSchema)
 
-module.exports = EmailTask;
+module.exports = EmailTask

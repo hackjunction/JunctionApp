@@ -6,7 +6,7 @@ const EmailTypes = {
     travelGrantAccepted: 'travelgrant-accepted',
     travelGrantDetailsRejected: 'travelgrant-details-rejected',
     travelGrantDetailsAccepted: 'travelgrant-details-accepted',
-    recruiterMessage: 'recruiter-message'
-};
+    recruiterMessage: 'recruiter-message',
+}
 
-module.exports = EmailTypes;
+module.exports = EmailTypes
