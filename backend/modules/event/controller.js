@@ -85,7 +85,6 @@ controller.generateTrackPlacementAchievements = async event => {
     if (!event.tracksEnabled) {
         return
     }
-    console.log(event)
     // TODO: Regenerate achievements for track placements
     // - Depends on which reviewing method is used
     switch (event.reviewMethod) {
@@ -100,10 +99,8 @@ controller.generateTrackPlacementAchievements = async event => {
 controller.generateChallengeAchievements = async event => {
     // If the event is not using challenges, get outta here
     if (!event.challengesEnabled) {
-        return
     }
     // TODO: Regenerate achievements for challenge placements
-    console.log(event)
 }
 
 controller.generateOverallPlacementAchievements = async event => {
@@ -111,7 +108,6 @@ controller.generateOverallPlacementAchievements = async event => {
     // - Depends on which reviewing method is used
     // - Depends on if the event is using tracks or not
     // - Depends on if there is a finalist round or not
-    console.log(event)
 }
 
 controller.generateAchievements = async event => {

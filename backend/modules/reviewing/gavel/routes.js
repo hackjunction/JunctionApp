@@ -1,12 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const asyncHandler = require('express-async-handler');
+const express = require('express')
 
-const { hasToken } = require('../../../common/middleware/token');
-const { hasRegisteredToEvent, isEventOrganiser } = require('../../../common/middleware/events');
+const router = express.Router()
+const asyncHandler = require('express-async-handler')
 
-const GavelAnnotator = require('./Annotator');
-const GavelController = require('./controller');
+const { hasToken } = require('../../../common/middleware/token')
+const {
+    hasRegisteredToEvent,
+    isEventOrganiser,
+} = require('../../../common/middleware/events')
+
+const GavelAnnotator = require('./Annotator')
+const GavelController = require('./controller')
 
 router
     .route('/projects/:id')
@@ -14,45 +18,55 @@ router
     .get(
         hasToken,
         asyncHandler(async (req, res) => {
-            const project = await GavelController.getProject(req.params.id);
-            return res.status(200).json(project);
+            const project = await GavelController.getProject(req.params.id)
+            return res.status(200).json(project)
         })
-    );
+    )
 router.route('/:slug/projects').get(
     hasToken,
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const projects = await GavelController.getProjectsForEvent(req.event._id);
-        return res.status(200).json(projects);
+        const projects = await GavelController.getProjectsForEvent(
+            req.event._id
+        )
+        return res.status(200).json(projects)
     })
-);
+)
 
 router.route('/:slug/annotators').get(
     hasToken,
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const annotators = await GavelController.getAnnotatorsForEvent(req.event._id);
-        return res.status(200).json(annotators);
+        const annotators = await GavelController.getAnnotatorsForEvent(
+            req.event._id
+        )
+        return res.status(200).json(annotators)
     })
-);
+)
 
 router.route('/:slug/projects/:id').patch(
     hasToken,
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const project = await GavelController.editProject(req.params.id, req.body.edits);
-        return res.status(200).json(project);
+        const project = await GavelController.editProject(
+            req.params.id,
+            req.body.edits
+        )
+        return res.status(200).json(project)
     })
-);
+)
 
 router.route('/:slug/annotators/:id').patch(
     hasToken,
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const annotator = await GavelController.editAnnotator(req.params.id, req.body.edits);
-        return res.status(200).json(annotator);
+        const annotator = await GavelController.editAnnotator(
+            req.params.id,
+            req.body.edits
+        )
+        return res.status(200).json(annotator)
     })
-);
+)
 
 router
     .route('/:slug/annotator')
@@ -61,8 +75,11 @@ router
         hasToken,
         hasRegisteredToEvent,
         asyncHandler(async (req, res) => {
-            const annotator = await GavelController.getAnnotator(req.event, req.user.sub);
-            return res.status(200).json(annotator);
+            const annotator = await GavelController.getAnnotator(
+                req.event,
+                req.user.sub
+            )
+            return res.status(200).json(annotator)
         })
     )
     /** Create (initialize) an annotator for an event */
@@ -71,14 +88,16 @@ router
         hasRegisteredToEvent,
         asyncHandler(async (req, res) => {
             try {
-                const annotator = await GavelController.initAnnotator(req.event, req.user.sub);
-                return res.status(200).json(annotator);
+                const annotator = await GavelController.initAnnotator(
+                    req.event,
+                    req.user.sub
+                )
+                return res.status(200).json(annotator)
             } catch (err) {
-                console.log(err);
-                return res.status(200).json(null);
+                return res.status(200).json(null)
             }
         })
-    );
+    )
 
 router
     .route('/:slug/skip')
@@ -89,13 +108,13 @@ router
         asyncHandler(async (req, res) => {
             const annotator = await GavelAnnotator.findOne({
                 user: req.user.sub,
-                event: req.event._id
-            });
+                event: req.event._id,
+            })
 
-            const result = await annotator.skipCurrentProject();
-            return res.status(200).json(result);
+            const result = await annotator.skipCurrentProject()
+            return res.status(200).json(result)
         })
-    );
+    )
 
 router
     .route('/:slug/done')
@@ -106,14 +125,14 @@ router
         asyncHandler(async (req, res) => {
             const annotator = await GavelAnnotator.findOne({
                 user: req.user.sub,
-                event: req.event._id
-            });
+                event: req.event._id,
+            })
 
-            const result = await annotator.assignNextProject();
+            const result = await annotator.assignNextProject()
 
-            return res.status(200).json(result);
+            return res.status(200).json(result)
         })
-    );
+    )
 
 router
     .route('/:slug/vote/:winnerId')
@@ -122,9 +141,13 @@ router
         hasToken,
         hasRegisteredToEvent,
         asyncHandler(async (req, res) => {
-            const annotator = await GavelController.submitVote(req.event, req.user.sub, req.params.winnerId);
-            return res.status(200).json(annotator);
+            const annotator = await GavelController.submitVote(
+                req.event,
+                req.user.sub,
+                req.params.winnerId
+            )
+            return res.status(200).json(annotator)
         })
-    );
+    )
 
-module.exports = router;
+module.exports = router

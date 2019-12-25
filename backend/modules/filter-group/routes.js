@@ -1,60 +1,94 @@
-const express = require('express');
-const router = express.Router();
-const asyncHandler = require('express-async-handler');
+const express = require('express')
 
-const { Auth } = require('@hackjunction/shared');
+const router = express.Router()
+const asyncHandler = require('express-async-handler')
 
-const FilterGroupController = require('./controller');
+const { Auth } = require('@hackjunction/shared')
 
-const { hasToken } = require('../../common/middleware/token');
-const { hasPermission } = require('../../common/middleware/permissions');
-const { isEventOrganiser } = require('../../common/middleware/events');
+const FilterGroupController = require('./controller')
+
+const { hasToken } = require('../../common/middleware/token')
+const { hasPermission } = require('../../common/middleware/permissions')
+const { isEventOrganiser } = require('../../common/middleware/events')
 
 const createFilterGroup = asyncHandler(async (req, res) => {
-    console.log('CREATING FILTER GROUP');
+    const { label, description, filters } = req.body
+    const { sub } = req.user
+    const { _id } = req.event
 
-    const { label, description, filters } = req.body;
-    const { sub } = req.user;
-    const { _id } = req.event;
-    console.log('CREATING FILTER GROUP');
+    const filterGroup = await FilterGroupController.createFilterGroup(
+        label,
+        description,
+        sub,
+        _id.toString(),
+        filters
+    )
 
-    const filterGroup = await FilterGroupController.createFilterGroup(label, description, sub, _id.toString(), filters);
-    console.log('CREATING FILTER GROUP');
-
-    return res.status(200).json(filterGroup);
-});
+    return res.status(200).json(filterGroup)
+})
 
 const editFilterGroup = asyncHandler(async (req, res) => {
-    const { label, description, filters } = req.body;
-    const { sub } = req.user;
-    const { _id } = req.event;
+    const { label, description, filters } = req.body
+    const { sub } = req.user
+    const { _id } = req.event
 
-    const filterGroup = await FilterGroupController.editFilterGroup(label, description, sub, _id.toString(), filters);
-    return res.status(200).json(filterGroup);
-});
+    const filterGroup = await FilterGroupController.editFilterGroup(
+        label,
+        description,
+        sub,
+        _id.toString(),
+        filters
+    )
+    return res.status(200).json(filterGroup)
+})
 
 const deleteFilterGroup = asyncHandler(async (req, res) => {
-    const { label } = req.body;
-    const { _id } = req.event;
+    const { label } = req.body
+    const { _id } = req.event
 
-    const filterGroup = await FilterGroupController.deleteFilterGroup(label, _id.toString());
+    const filterGroup = await FilterGroupController.deleteFilterGroup(
+        label,
+        _id.toString()
+    )
 
-    return res.status(200).json(filterGroup);
-});
+    return res.status(200).json(filterGroup)
+})
 
 const getFilterGroupsForEvent = asyncHandler(async (req, res) => {
-    const { _id } = req.event;
+    const { _id } = req.event
 
-    const filterGroups = await FilterGroupController.getFilterGroupsForEvent(_id.toString());
+    const filterGroups = await FilterGroupController.getFilterGroupsForEvent(
+        _id.toString()
+    )
 
-    return res.status(200).json(filterGroups);
-});
+    return res.status(200).json(filterGroups)
+})
 
 router
     .route('/:slug')
-    .get(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, getFilterGroupsForEvent)
-    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, createFilterGroup)
-    .patch(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, editFilterGroup)
-    .delete(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), isEventOrganiser, deleteFilterGroup);
+    .get(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        getFilterGroupsForEvent
+    )
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        createFilterGroup
+    )
+    .patch(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        editFilterGroup
+    )
+    .delete(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        deleteFilterGroup
+    )
 
-module.exports = router;
+module.exports = router

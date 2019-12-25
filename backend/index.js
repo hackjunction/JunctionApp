@@ -1,30 +1,29 @@
 const express = require('express')
-
-const app = express()
 const bodyParser = require('body-parser')
-const morgan = require('morgan')
 const { errors } = require('celebrate')
 const path = require('path')
 const helmet = require('helmet')
 const sslRedirect = require('heroku-ssl-redirect')
+const throng = require('throng')
+const expressPino = require('express-pino-logger')
+
+/** Create Express application */
+const app = express()
+
+/* Prepare config */
+require('./misc/config')
+
+/** Set up logging */
+const logger = require('./misc/logger')
+
+// Enable route logging by uncommenting this line
+app.use(expressPino({ logger }))
 
 /** Use helmet for some basic security measures */
 app.use(helmet())
 
 /* Force SSL Redirect in production */
 app.use(sslRedirect(['production'], 301))
-
-/* Custom logging */
-morgan.token('postbody', function(req) {
-    return JSON.stringify(req.body)
-})
-if (process.env.NODE_ENV !== 'production') {
-    app.use(
-        morgan(
-            ':method :url :status :res[content-length] - :response-time ms :postbody'
-        )
-    )
-}
 
 /* Enable body-parser */
 app.use(bodyParser.json())
@@ -33,9 +32,6 @@ app.use(
         extended: true,
     })
 )
-
-/* Prepare config */
-require('./misc/config')
 
 /* Register API routes */
 require('./modules/routes')(app)
@@ -58,8 +54,7 @@ app.use(require('./common/errors/errorHandler'))
 /* Database */
 require('./misc/db').connect()
 
-const throng = require('throng')
-const cron = require('./modules/cron/index')
+// const cron = require('./modules/cron/index')
 
 /** Use throng to take advantage of all available CPU resources */
 throng({
@@ -68,7 +63,7 @@ throng({
     lifetime: Infinity,
     /** Start the master process (1) */
     master: () => {
-        console.log(`Master ${process.pid} started`)
+        logger.info(`Master ${process.pid} started`)
         /** Run cron jobs here for now, migrate to cron-cluster later */
         // cron.utils.startAll();
     },
@@ -76,7 +71,7 @@ throng({
     start: () => {
         const PORT = process.env.PORT || 2222
         app.listen(PORT, () => {
-            console.log(
+            logger.info(
                 `Worker ${process.pid} started, listening on port ${PORT}`
             )
         })
