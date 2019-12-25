@@ -1,15 +1,9 @@
 const pino = require('pino')
 
-// const opts =
-//     process.env.NODE_ENV === 'production'
-//         ? {}
-//         : {
-//               prettyPrint: { colorize: true },
-//               redact: ['res.headers', 'req.headers'],
-//           }
+const prod = process.env.NODE_ENV === 'production'
 
 const opts = {
-    // prettyPrint: { colorize: true },
+    prettyPrint: prod ? undefined : { colorize: true },
     redact: ['res.headers', 'req.headers.authorization'],
 }
 
