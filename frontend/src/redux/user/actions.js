@@ -1,3 +1,5 @@
+import LogRocket from 'logrocket'
+
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from 'redux/auth/selectors'
 
@@ -8,6 +10,16 @@ export const setUserProfile = profile => dispatch => {
         type: ActionTypes.SET_PROFILE,
         payload: profile,
     })
+
+    /** To connect logs and crash reports with the user */
+    if (profile?.userId) {
+        LogRocket.identify(profile.userId, {
+            email: profile.email,
+            name: `${profile.firstName} ${profile.lastName}`,
+        })
+    } else {
+        LogRocket.identify(null)
+    }
 }
 
 export const updateUserProfile = idToken => async dispatch => {
