@@ -1,95 +1,122 @@
-const sgMail = require('@sendgrid/mail');
-const sgClient = require('@sendgrid/client');
-const { EventTypes } = require('@hackjunction/shared');
-const _ = require('lodash');
-const moment = require('moment');
-sgMail.setApiKey(global.gConfig.SENDGRID_API_KEY);
-sgClient.setApiKey(global.gConfig.SENDGRID_API_KEY);
+const sgMail = require('@sendgrid/mail')
+const sgClient = require('@sendgrid/client')
+const { EventTypes } = require('@hackjunction/shared')
+const _ = require('lodash')
+const moment = require('moment-timezone')
+const logger = require('../../misc/logger')
+
+sgMail.setApiKey(global.gConfig.SENDGRID_API_KEY)
+sgClient.setApiKey(global.gConfig.SENDGRID_API_KEY)
 
 const sendgridAddRecipients = (email, country) => {
     const request = {
         body: [
             {
                 email,
-                country
-            }
+                country,
+            },
         ],
         method: 'POST',
-        url: '/v3/contactdb/recipients'
-    };
+        url: '/v3/contactdb/recipients',
+    }
 
     return sgClient.request(request).then(([response, body]) => {
-        return body.persisted_recipients;
-    });
-};
+        return body.persisted_recipients
+    })
+}
 
 const sendgridAddRecipientsToList = (list_id, recipient_ids) => {
     const request = {
         data: recipient_ids,
         method: 'POST',
-        url: `/v3/contactdb/lists/${list_id}/recipients/${recipient_ids}`
-    };
+        url: `/v3/contactdb/lists/${list_id}/recipients/${recipient_ids}`,
+    }
 
     return sgClient.request(request).then(([response, body]) => {
-        return body;
-    });
-};
+        return body
+    })
+}
 
 const SendgridService = {
     sendAcceptanceEmail: (event, user) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_ACCEPTED_TEMPLATE, {
-            event_name: event.name,
-            first_name: user.firstName,
-            dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
-        });
-        return SendgridService.send(msg);
+        const msg = SendgridService.buildTemplateMessage(
+            user.email,
+            global.gConfig.SENDGRID_ACCEPTED_TEMPLATE,
+            {
+                event_name: event.name,
+                first_name: user.firstName,
+                dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+            }
+        )
+        return SendgridService.send(msg)
     },
     sendRejectionEmail: (event, user) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_REJECTED_TEMPLATE, {
-            event_name: event.name,
-            first_name: user.firstName
-        });
-        return SendgridService.send(msg);
+        const msg = SendgridService.buildTemplateMessage(
+            user.email,
+            global.gConfig.SENDGRID_REJECTED_TEMPLATE,
+            {
+                event_name: event.name,
+                first_name: user.firstName,
+            }
+        )
+        return SendgridService.send(msg)
     },
     sendRegisteredEmail: (event, user) => {
-        let msg;
+        let msg
         if (event.eventType === EventTypes.physical.id) {
-            msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-                header_image: event.coverImage.url,
-                subject: `Thanks for registering to ${event.name}!`,
-                subtitle: 'Awesome! Now just sit back and relax.',
-                body: `The application period ends <b>${moment(event.registrationEndTime).format(
-                    'MMMM Do'
-                )}</b>, and we'll process all applications by <b>${moment(event.registrationEndTime)
-                    .add(5, 'days')
-                    .format(
+            msg = SendgridService.buildTemplateMessage(
+                user.email,
+                global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+                {
+                    header_image: event.coverImage.url,
+                    subject: `Thanks for registering to ${event.name}!`,
+                    subtitle: 'Awesome! Now just sit back and relax.',
+                    body: `The application period ends <b>${moment(
+                        event.registrationEndTime
+                    ).format(
                         'MMMM Do'
-                    )}</b>. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
-                cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
-            });
+                    )}</b>, and we'll process all applications by <b>${moment(
+                        event.registrationEndTime
+                    )
+                        .add(5, 'days')
+                        .format(
+                            'MMMM Do'
+                        )}</b>. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
+                    cta_text: 'Event dashboard',
+                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                }
+            )
         } else {
-            msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-                header_image: event.coverImage.url,
-                subject: `Thanks for registering to ${event.name}!`,
-                subtitle: 'Time to get to work!',
-                body: `The final project submission deadline is <b>${moment(event.submissionsEndTime).format(
-                    'LLLL'
-                )}</b>, so make sure you submit something before then! You'll find all of the necessary information on the Event Dashboard, which you can access with the below link. Have fun!`,
-                cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
-            });
+            msg = SendgridService.buildTemplateMessage(
+                user.email,
+                global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+                {
+                    header_image: event.coverImage.url,
+                    subject: `Thanks for registering to ${event.name}!`,
+                    subtitle: 'Time to get to work!',
+                    body: `The final project submission deadline is <b>${moment(
+                        event.submissionsEndTime
+                    ).format(
+                        'LLLL'
+                    )}</b>, so make sure you submit something before then! You'll find all of the necessary information on the Event Dashboard, which you can access with the below link. Have fun!`,
+                    cta_text: 'Event dashboard',
+                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                }
+            )
         }
 
-        return SendgridService.send(msg);
+        return SendgridService.send(msg)
     },
 
     sendTravelGrantAcceptedEmail: (event, user, params) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            header_image: event.coverImage.url,
-            subject: `Your travel grant for ${event.name} has been confirmed`,
-            subtitle: `You have been granted a travel grant of up to ${params.amount}€`,
-            body: `This means that we will assist you with your travel costs to Junction 2019, up to the amount above. Please note that the following conditions apply:
+        const msg = SendgridService.buildTemplateMessage(
+            user.email,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+            {
+                header_image: event.coverImage.url,
+                subject: `Your travel grant for ${event.name} has been confirmed`,
+                subtitle: `You have been granted a travel grant of up to ${params.amount}€`,
+                body: `This means that we will assist you with your travel costs to Junction 2019, up to the amount above. Please note that the following conditions apply:
                 <ul>
                     <li>
                         The travel grant is valid for travel from ${params.countryOfTravel} to ${event.name}. If you are travelling from somewhere else, 
@@ -110,18 +137,22 @@ const SendgridService = {
 
                 Psst, please note that the transaction will be made in Euros, so please make sure you have a bank account able to receive Euro payments available.
             `,
-            cta_text: 'Event dashboard',
-            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
-        });
+                cta_text: 'Event dashboard',
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+            }
+        )
 
-        return SendgridService.send(msg);
+        return SendgridService.send(msg)
     },
     sendTravelGrantRejectedEmail: (event, user) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            header_image: event.coverImage.url,
-            subject: `Your travel grant status for ${event.name}`,
-            subtitle: `Unfortunately we we're unable to give you a travel grant this time...`,
-            body: `
+        const msg = SendgridService.buildTemplateMessage(
+            user.email,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+            {
+                header_image: event.coverImage.url,
+                subject: `Your travel grant status for ${event.name}`,
+                subtitle: `Unfortunately we we're unable to give you a travel grant this time...`,
+                body: `
                 We would have loved to give everyone a travel grant, but unfortunately we have a limited budget and you 
                 didn't quite make the cut this time.
                 <br/>
@@ -141,18 +172,22 @@ const SendgridService = {
                 it for some other reason, please be so kind and cancel your registration via the Event Dashboard so we can 
                 accept someone from the waitlist.
             `,
-            cta_text: 'Event dashboard',
-            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`
-        });
+                cta_text: 'Event dashboard',
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+            }
+        )
 
-        return SendgridService.send(msg);
+        return SendgridService.send(msg)
     },
     sendTravelGrantDetailsAcceptedEmail: (event, user, params) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            header_image: event.coverImage.url,
-            subject: `Your travel grant status for ${event.name} has been updated`,
-            subtitle: 'Your travel grant receipts have been processed',
-            body: `
+        const msg = SendgridService.buildTemplateMessage(
+            user.email,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+            {
+                header_image: event.coverImage.url,
+                subject: `Your travel grant status for ${event.name} has been updated`,
+                subtitle: 'Your travel grant receipts have been processed',
+                body: `
                 This email is to update you on the progress of your travel grant. We have reviewed the receipts you have 
                 submitted via the travel grant form. Your travel grant receipts have been accepted, and you will receive
                 a payment of ${params.amount}€.
@@ -161,17 +196,22 @@ const SendgridService = {
                 Now the processing moves on to the next step, confirming your payment information. There is no more action
                 required from you, and we are currently on track to be able to initiate the transactions on 15 December. 
                 Please reach out to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
-            `
-        });
+            `,
+            }
+        )
 
-        return SendgridService.send(msg);
+        return SendgridService.send(msg)
     },
     sendTravelGrantDetailsRejectedEmail: (event, user, params) => {
-        const msg = SendgridService.buildTemplateMessage(user.email, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            header_image: event.coverImage.url,
-            subject: `Your travel grant status for ${event.name} has been updated`,
-            subtitle: 'Action required regarding your travel grant receipts',
-            body: `
+        const msg = SendgridService.buildTemplateMessage(
+            user.email,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+            {
+                header_image: event.coverImage.url,
+                subject: `Your travel grant status for ${event.name} has been updated`,
+                subtitle:
+                    'Action required regarding your travel grant receipts',
+                body: `
                 This email is to update you on the progress of your travel grant. We have reviewed the receipts and other
                 information you have submitted via the travel grant form, but there was something wrong with the information
                 provided and we weren't yet able to accept your travel grant. Please see below for more details on what 
@@ -190,12 +230,13 @@ const SendgridService = {
                 <br />
                 Please refer to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
             `,
-            cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}/travel-grant`,
-            cta_text: 'Edit your details',
-            reply_to: 'finance@hackjunction.com'
-        });
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}/travel-grant`,
+                cta_text: 'Edit your details',
+                reply_to: 'finance@hackjunction.com',
+            }
+        )
 
-        return SendgridService.send(msg);
+        return SendgridService.send(msg)
     },
     sendRecruiterMessageEmail: (recruiter, user, organization, message) => {
         const params = {
@@ -215,55 +256,79 @@ const SendgridService = {
                 <br/>
                 Just reply to this email to communicate directly with the recruiter. Good luck on your (potential) new job!
             `,
-            reply_to: recruiter.email
-        };
-        return SendgridService.sendGenericEmail(user.email, params);
+            reply_to: recruiter.email,
+        }
+        return SendgridService.sendGenericEmail(user.email, params)
     },
     sendGenericEmail: (to, params) => {
-        const msg = SendgridService.buildTemplateMessage(to, global.gConfig.SENDGRID_GENERIC_TEMPLATE, {
-            subject: params.subject,
-            subtitle: params.subtitle,
-            header_image: params.header_image,
-            body: params.body,
-            cta_text: params.cta_text,
-            cta_link: params.cta_link,
-            reply_to: params.reply_to
-        });
+        const msg = SendgridService.buildTemplateMessage(
+            to,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
+            {
+                subject: params.subject,
+                subtitle: params.subtitle,
+                header_image: params.header_image,
+                body: params.body,
+                cta_text: params.cta_text,
+                cta_link: params.cta_link,
+                reply_to: params.reply_to,
+            }
+        )
 
-        return SendgridService.send(msg);
+        return SendgridService.send(msg)
     },
     buildTemplateMessage: (to, templateId, data) => {
         return {
             to,
             from: {
                 name: global.gConfig.SENDGRID_FROM_NAME,
-                email: global.gConfig.SENDGRID_FROM_EMAIL
+                email: global.gConfig.SENDGRID_FROM_EMAIL,
             },
             replyTo: data.reply_to,
             templateId,
-            dynamic_template_data: data
-        };
+            dynamic_template_data: data,
+        }
     },
     send: msg => {
-        const originalMsg = _.cloneDeep(msg);
+        const originalMsg = _.cloneDeep(msg)
         return sgMail.send(msg).catch(err => {
-            console.log('ERROR SENDING EMAIL', err);
-            return Promise.reject(originalMsg);
-        });
+            logger.error({
+                message: 'Error sending email',
+                data: originalMsg,
+                error: {
+                    message: err.message,
+                    stack: err.stack,
+                },
+            })
+            return Promise.reject(originalMsg)
+        })
     },
     subscribeToMailingList: async (email, country, mailingListId) => {
-        if (!email) return;
+        if (!email) return
 
         try {
-            const addedRecipients = await sendgridAddRecipients(email, country);
+            const addedRecipients = await sendgridAddRecipients(email, country)
             if (mailingListId) {
-                await sendgridAddRecipientsToList(mailingListId, addedRecipients);
+                await sendgridAddRecipientsToList(
+                    mailingListId,
+                    addedRecipients
+                )
             }
         } catch (e) {
-            console.log('ERROR SUBBING TO EMAIL LIST', e);
+            logger.error({
+                message: 'Error subscribing to email list',
+                data: {
+                    email,
+                    country,
+                    mailingListId,
+                },
+                error: {
+                    message: e.message,
+                    stack: e.stack,
+                },
+            })
         }
-        return;
-    }
-};
+    },
+}
 
-module.exports = SendgridService;
+module.exports = SendgridService

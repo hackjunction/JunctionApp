@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
+const logger = require('./logger')
+
 mongoose.Promise = Promise
 
 const connect = () => {
@@ -11,10 +13,18 @@ const connect = () => {
 
     const db = mongoose.connection
     db.on('error', err => {
-        console.log('Mongoose error: ', err)
+        logger.error({
+            message: 'Mongoose connection error',
+            error: {
+                message: err.message,
+                stack: err.stack,
+            },
+        })
     })
     db.once('open', () => {
-        console.log('Mongoose connected to: ', global.gConfig.MONGODB_URI)
+        logger.info({
+            message: `Mongoose connected to ${global.gConfig.MONGODB_URI}`,
+        })
     })
 }
 
