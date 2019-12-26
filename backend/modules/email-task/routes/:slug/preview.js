@@ -10,73 +10,64 @@ const { hasPermission } = require('../../../../common/middleware/permissions')
 const { isEventOrganiser } = require('../../../../common/middleware/events')
 const EmailTaskController = require('../../controller')
 
-swagger.common.addModel({
-    name: JsonSchemas.EmailParameters.id,
-    type: 'object',
-    properties: JsonSchemas.EmailParameters.properties,
-})
+module.exports = async (fastify, options, next) => {
+    fastify.addSchema(JsonSchemas.EmailParameters)
 
-const bodySchema = {
-    type: 'object',
-    properties: {
-        to: {
-            type: 'string',
-            description: 'The email address to send the preview to',
-            format: 'email',
-        },
-        params: {
-            $ref: JsonSchemas.EmailParameters.id,
-        },
-    },
-    required: ['to', 'params'],
-    additionalProperties: false,
-}
-
-swagger.common.parameters.addBody(
-    {
-        name: 'hello',
-        description: 'Parameters to be sent in the response body',
-        required: true,
-        schema: bodySchema,
-    },
-    {
-        deleteNameFromCommon: true,
-    }
-)
-
-module.exports = (router, path) => {
-    router
-        .post(
-            path,
-            validate(
-                {
-                    body: bodySchema,
-                },
-                [JsonSchemas.EmailParameters]
-            ),
-            hasToken,
-            hasPermission(Auth.Permissions.MANAGE_EVENT),
-            isEventOrganiser,
-            asyncHandler(async (req, res) => {
-                const { to, params } = req.body
-                await EmailTaskController.sendPreviewEmail(to, params)
-                return res.status(status.OK).json({ message: 'success' })
-            })
-        )
-        .describe({
-            summary: 'Send a preview email',
-            description:
-                'Send a preview email to a given email address (for testing purposes), before sending it in bulk to actual recipients.',
-            common: {
-                parameters: {
-                    body: ['body'],
+    fastify.route({
+        method: 'POST',
+        url: '/',
+        schema: {
+            body: {
+                type: 'object',
+                required: ['to', 'params'],
+                properties: {
+                    to: {
+                        type: 'string',
+                        description: 'The email address to send the preview to',
+                        format: 'email',
+                    },
+                    params: {
+                        $ref: JsonSchemas.EmailParameters.$id,
+                    },
                 },
             },
-            responses: {
+            response: {
                 [status.OK]: {
-                    description:
-                        'Returns a message indicating a successful operation',
+                    type: 'object',
+                    properties: {
+                        status: {
+                            type: 'string',
+                            enum: ['success', 'error'],
+                        },
+                        message: {
+                            type: 'string',
+                            description: 'A description of the error',
+                        },
+                    },
                 },
             },
-        })
+        },
+        async handler(request, reply) {
+            const { to, params } = request.body
+            await EmailTaskController.sendPreviewEmail(to, params)
+            reply.send({ message: 'success' })
+        },
+    })
+
+    next()
 }
+
+// module.exports = (router, path) => {
+//     router
+//         .post(
+//             path,
+//             hasToken,
+//             hasPermission(Auth.Permissions.MANAGE_EVENT),
+//             isEventOrganiser,
+//             asyncHandler(async (req, res) => {
+//                 const { to, params } = req.body
+//                 await EmailTaskController.sendPreviewEmail(to, params)
+//                 return res.status(status.OK).json({ message: 'success' })
+//             })
+//         )
+// }

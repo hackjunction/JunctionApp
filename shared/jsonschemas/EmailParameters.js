@@ -1,5 +1,5 @@
 const EmailParameters = {
-    id: '/EmailParameters',
+    $id: '/EmailParameters',
     title: 'Email Parameters',
     description: 'Parameters that can be supplied to a custom email',
     type: 'object',

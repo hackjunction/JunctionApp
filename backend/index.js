@@ -1,81 +1,56 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const { errors } = require('celebrate')
 const path = require('path')
-const helmet = require('helmet')
-const sslRedirect = require('heroku-ssl-redirect')
 const throng = require('throng')
-const expressPino = require('express-pino-logger')
-const swagger = require('swagger-spec-express')
-const swaggerUi = require('swagger-ui-express')
-
-const packageJson = require('./package.json')
+const helmet = require('fastify-helmet')
+const _fastify = require('fastify')
 
 /* Prepare config */
 require('./misc/config')
 
-/** Create Express application */
-const app = express()
-
 /** Set up logging */
 const logger = require('./misc/logger')
 
+/** Create Fastify application */
+const fastify = _fastify({
+    logger,
+})
+
 // Enable route logging by uncommenting this line
-app.use(expressPino({ logger }))
 
 /** Use helmet for some basic security measures */
-app.use(helmet())
-
-/* Force SSL Redirect in production */
-app.use(sslRedirect(['production'], 301))
-
-/* Enable body-parser */
-app.use(bodyParser.json())
-app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
+fastify.register(
+    helmet,
+    // Example of passing an option to x-powered-by middleware
+    { hidePoweredBy: { setTo: 'PHP 4.2.0' } }
 )
 
+/* Force SSL Redirect in production */
+// TODO: See how this can be done with fastify
+// app.use(sslRedirect(['production'], 301))
+
+// TODO:  Make sure missing this isn't a problem
+// app.use(
+//     bodyParser.urlencoded({
+//         extended: true,
+//     })
+// )
+
 /* Register API routes */
-require('./modules/routes')(app)
-
-/** Set up Swagger documentation */
-
-swagger.initialise(app, {
-    title: packageJson.title,
-    version: packageJson.version,
+fastify.register(require('./modules/routes'), {
+    prefix: '/api',
 })
 
-app.get('/docs/swagger.json', function(err, res) {
-    res.status(200).json(swagger.json())
-}).describe({
-    responses: {
-        200: {
-            description: 'Returns the swagger.json document',
-        },
-    },
+/** Serve frontend at all other routes */
+fastify.register(require('fastify-static'), {
+    root: path.join(__dirname, 'build'),
 })
 
-swagger.compile()
-
-/** Serve the Swagger UI */
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger.json()))
-
-/* Serve frontend at all other routes */
-if (process.env.NODE_ENV === 'production') {
-    const root = path.join(__dirname, 'build')
-    app.use(express.static(root))
-    app.get('*', (req, res) => {
-        res.sendFile('index.html', { root })
-    })
-}
-
-/* Handle Joi validation errors */
-app.use(errors())
+fastify.get('*', function(req, reply) {
+    reply.sendFile('index.html')
+})
 
 /* Global error handler */
-app.use(require('./common/errors/errorHandler'))
+// TODO: Figure out how to replace this
+// app.use(require('./common/errors/errorHandler'))
 
 /* Database */
 require('./misc/db').connect()
@@ -94,12 +69,16 @@ throng({
         // cron.utils.startAll();
     },
     /** Start the slave processes (1-n) */
-    start: () => {
+    start: async () => {
         const PORT = process.env.PORT || 2222
-        app.listen(PORT, () => {
+        try {
+            await fastify.listen(PORT)
             logger.info(
                 `Worker ${process.pid} started, listening on port ${PORT}`
             )
-        })
+        } catch (err) {
+            fastify.log.error(err)
+            process.exit(1)
+        }
     },
 })
