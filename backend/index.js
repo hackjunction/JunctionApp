@@ -6,12 +6,16 @@ const helmet = require('helmet')
 const sslRedirect = require('heroku-ssl-redirect')
 const throng = require('throng')
 const expressPino = require('express-pino-logger')
+const swagger = require('swagger-spec-express')
+const swaggerUi = require('swagger-ui-express')
 
-/** Create Express application */
-const app = express()
+const packageJson = require('./package.json')
 
 /* Prepare config */
 require('./misc/config')
+
+/** Create Express application */
+const app = express()
 
 /** Set up logging */
 const logger = require('./misc/logger')
@@ -35,6 +39,28 @@ app.use(
 
 /* Register API routes */
 require('./modules/routes')(app)
+
+/** Set up Swagger documentation */
+
+swagger.initialise(app, {
+    title: packageJson.title,
+    version: packageJson.version,
+})
+
+app.get('/docs/swagger.json', function(err, res) {
+    res.status(200).json(swagger.json())
+}).describe({
+    responses: {
+        200: {
+            description: 'Returns the swagger.json document',
+        },
+    },
+})
+
+swagger.compile()
+
+/** Serve the Swagger UI */
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger.json()))
 
 /* Serve frontend at all other routes */
 if (process.env.NODE_ENV === 'production') {
