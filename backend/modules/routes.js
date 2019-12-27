@@ -16,6 +16,29 @@ const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
 
 module.exports = async (fastify, options, next) => {
+    fastify.register(require('fastify-swagger'), {
+        routePrefix: '/docs',
+        exposeRoute: true,
+        swagger: {
+            info: {
+                title: 'Junction App',
+                description: 'API Documentation for the Junction App',
+                version: '0.1.0',
+            },
+            host: 'localhost',
+            schemes: ['http'],
+            consumes: ['application/json'],
+            produces: ['application/json'],
+            securityDefinitions: {
+                apiKey: {
+                    type: 'apiKey',
+                    name: 'apiKey',
+                    in: 'header',
+                },
+            },
+        },
+    })
+
     fastify.get('/hello', (request, reply) => {
         reply.send({
             message: 'Hello',
@@ -23,7 +46,13 @@ module.exports = async (fastify, options, next) => {
     })
 
     fastify.register(emailRouter, {
-        prefix: `${options.prefix}/email`,
+        prefix: `/email`,
+    })
+
+    fastify.ready(err => {
+        if (err) throw err
+        console.log('READYYY')
+        fastify.swagger()
     })
 
     next()

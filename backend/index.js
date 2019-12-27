@@ -34,6 +34,12 @@ fastify.register(
 //     })
 // )
 
+/* Register decorators */
+fastify.register(require('./decorators'))
+
+/* Register plugins */
+fastify.register(require('./plugins'))
+
 /* Register API routes */
 fastify.register(require('./modules/routes'), {
     prefix: '/api',

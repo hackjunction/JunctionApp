@@ -4,13 +4,13 @@ const {
     NotFoundError,
     ForbiddenError,
     InsufficientPrivilegesError,
-} = require('../errors/errors')
+} = require('../common/errors/errors')
 
 const { EventHelpers, RegistrationStatuses } = Shared
 
-const EventController = require('../../modules/event/controller')
-const RegistrationController = require('../../modules/registration/controller')
-const TeamController = require('../../modules/team/controller')
+const EventController = require('../modules/event/controller')
+const RegistrationController = require('../modules/registration/controller')
+const TeamController = require('../modules/team/controller')
 
 const getEventFromRequest = request => {
     // TODO: Get the event here, throw if not found
