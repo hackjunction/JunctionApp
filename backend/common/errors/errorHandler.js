@@ -1,61 +1,35 @@
-const logger = require('../../misc/logger')
+const status = require('http-status')
+const { ValidationError } = require('./errors')
 
-const errorHandler = (error, request, response, next) => {
+module.exports = async (error, request, reply) => { //eslint-disable-line
+    /** Check if the error is s subclass of CustomError (purposefully thrown) */
+    if (error.httpStatus) {
+        return reply.code(error.httpStatus).send(error.toJSON())
+    }
+
+    /** Check if the error is one of the known types */
     switch (error.name) {
-        case 'UnauthorizedError': {
-            return response.status(401).json({
-                message: 'Unauthorized',
-                status: 401,
-            })
-        }
-        case 'InsufficientPrivilegesError': {
-            return response.status(401).json({
-                message: 'Insufficient privileges',
-                status: 401,
-            })
-        }
-        case 'ForbiddenError': {
-            return response.status(403).json({
-                message: error.message || 'Forbidden',
-                status: 403,
-            })
-        }
-        case 'NotFoundError': {
-            return response.status(404).json({
-                message: error.message || 'Not found',
-                status: 404,
-            })
-        }
-        case 'ValidationError': {
-            return response.status(400).json({
-                message: error.message,
-                errors: error.errors,
-                status: 400,
-            })
-        }
         case 'MongoError': {
             if (error.code === 11000) {
-                return response.status(400).json({
-                    type: 'unique-violation',
-                    status: 400,
-                })
+                const err = new ValidationError('Unique validation')
+                return reply.code(err.httpStatus).send(error.toJSON())
             }
             break
         }
-        default:
-            logger.error({
+        default: {
+            request.log.error({
                 message: 'Unhandled error',
                 error: {
+                    name: error.name,
                     message: error.message,
                     stack: error.stack,
                 },
             })
 
-            return response.status(500).json({
+            return reply.code(status.INTERNAL_SERVER_ERROR).send({
                 message: 'Unexpected error',
                 status: 500,
             })
+        }
     }
 }
-
-module.exports = errorHandler

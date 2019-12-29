@@ -1,47 +1,58 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const RegistrationQuestionSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     label: {
         type: String,
-        required: true
+        required: true,
     },
     hint: {
         type: String,
-        default: ''
+        default: '',
     },
     placeholder: {
         type: String,
-        default: ''
+        default: '',
     },
     fieldType: {
         type: String,
-        enum: ['text', 'textarea', 'boolean', 'single-choice', 'multiple-choice', 'checkbox'],
-        required: true
+        enum: [
+            'text',
+            'textarea',
+            'boolean',
+            'single-choice',
+            'multiple-choice',
+            'checkbox',
+        ],
+        required: true,
     },
     fieldRequired: {
         type: Boolean,
-        default: false
+        default: false,
     },
     settings: {
         options: {
             type: [String],
             default: [],
-            required: function() {
-                return ['single-choice', 'multiple-choice'].indexOf(this.fieldType) !== -1;
-            }
+            required() {
+                return (
+                    ['single-choice', 'multiple-choice'].indexOf(
+                        this.fieldType
+                    ) !== -1
+                )
+            },
         },
         default: {
             type: Boolean,
             default: false,
-            required: function() {
-                return ['boolean', 'checkbox'].indexOf(this.fieldType) !== -1;
-            }
-        }
-    }
-});
+            required() {
+                return ['boolean', 'checkbox'].indexOf(this.fieldType) !== -1
+            },
+        },
+    },
+})
 
-module.exports = RegistrationQuestionSchema;
+module.exports = RegistrationQuestionSchema

@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const TrackSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     slug: {
         type: String,
-        required: true
+        required: true,
     },
     winner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project'
-    }
-});
+        ref: 'Project',
+    },
+})
 
-module.exports = TrackSchema;
+module.exports = TrackSchema

@@ -1,21 +1,26 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const AchievementSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['challenge-placement', 'track-placement', 'overall-placement', 'finalist']
+        enum: [
+            'challenge-placement',
+            'track-placement',
+            'overall-placement',
+            'finalist',
+        ],
     },
     label: {
-        type: String
+        type: String,
     },
     value: {
-        type: String
+        type: String,
     },
     rank: {
         type: Number,
-        min: 1
-    }
-});
+        min: 1,
+    },
+})
 
-module.exports = AchievementSchema;
+module.exports = AchievementSchema

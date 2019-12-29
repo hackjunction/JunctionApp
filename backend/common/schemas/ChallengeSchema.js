@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ChallengeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     partner: {
         type: String,
-        required: true
+        required: true,
     },
     slug: {
         type: String,
-        required: true
-    }
-});
+        required: true,
+    },
+})
 
-module.exports = ChallengeSchema;
+module.exports = ChallengeSchema

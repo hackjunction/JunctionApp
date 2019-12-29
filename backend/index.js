@@ -34,11 +34,11 @@ fastify.register(
 //     })
 // )
 
+/* Register validators */
+fastify.register(require('./validators'))
+
 /* Register decorators */
 fastify.register(require('./decorators'))
-
-/* Register plugins */
-fastify.register(require('./plugins'))
 
 /* Register API routes */
 fastify.register(require('./modules/routes'), {
@@ -55,8 +55,7 @@ fastify.get('*', function(req, reply) {
 })
 
 /* Global error handler */
-// TODO: Figure out how to replace this
-// app.use(require('./common/errors/errorHandler'))
+fastify.setErrorHandler(require('./common/errors/errorHandler'))
 
 /* Database */
 require('./misc/db').connect()

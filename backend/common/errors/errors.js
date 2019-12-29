@@ -1,14 +1,18 @@
+const status = require('http-status')
+
 class CustomError extends Error {
-    constructor(message, name, code, details = {}) {
+    constructor(message, name, code, httpStatus, details = {}) {
         super(message)
         this.name = name
         this.message = message
         this.code = code
+        this.httpStatus = httpStatus
         this.details = details
     }
 
     toJSON() {
         return {
+            status: this.httpStatus,
             code: this.code,
             name: this.name,
             message: this.message,
@@ -20,23 +24,17 @@ class CustomError extends Error {
 class NotFoundError extends CustomError {
     constructor(message) {
         const name = 'NotFoundError'
-        const code = 1
+        const code = 'ERR_NOT_FOUND'
+        const httpStatus = status.NOT_FOUND
         super(message, name, code)
     }
 }
 
-class InsufficientPrivilegesError extends CustomError {
+class UnauthorizedError extends CustomError {
     constructor(message) {
-        const name = 'InsufficientPrivilegesError'
-        const code = 2
-        super(message, name, code)
-    }
-}
-
-class EmailVerificationError extends CustomError {
-    constructor(message) {
-        const name = 'EmailVerificationError'
-        const code = 3
+        const name = 'UnauthorizedError'
+        const code = 'ERR_UNAUTHORIZED'
+        const httpStatus = status.UNAUTHORIZED
         super(message, name, code)
     }
 }
@@ -44,7 +42,8 @@ class EmailVerificationError extends CustomError {
 class ValidationError extends CustomError {
     constructor(message, details) {
         const name = 'ValidationError'
-        const code = 4
+        const code = 'ERR_VALIDATION_FAILED'
+        const httpStatus = status.BAD_REQUEST
         super(message, name, code, details)
     }
 }
@@ -52,14 +51,14 @@ class ValidationError extends CustomError {
 class ForbiddenError extends CustomError {
     constructor(message) {
         const name = 'ForbiddenError'
-        const code = 5
+        const code = 'ERR_FORBIDDEN'
+        const httpStatus = status.FORBIDDEN
         super(message, name, code)
     }
 }
 
 module.exports = {
     InsufficientPrivilegesError,
-    EmailVerificationError,
     NotFoundError,
     ValidationError,
     ForbiddenError,

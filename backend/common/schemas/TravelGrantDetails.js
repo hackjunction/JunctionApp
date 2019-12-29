@@ -1,68 +1,68 @@
-const mongoose = require('mongoose');
-const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
-const AddressSchema = require('../../common/schemas/Address');
+const mongoose = require('mongoose')
+const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage')
+const AddressSchema = require('../../common/schemas/Address')
 
 const TravelGrantSchema = new mongoose.Schema({
     legalName: {
         firstName: {
             required: true,
-            type: String
+            type: String,
         },
         middleName: {
             required: false,
-            type: String
+            type: String,
         },
         lastName: {
             required: true,
-            type: String
-        }
+            type: String,
+        },
     },
     email: {
         type: String,
-        required: true
+        required: true,
     },
     gender: {
         type: String,
-        required: true
+        required: true,
     },
     dateOfBirth: {
         required: true,
-        type: Date
+        type: Date,
     },
     address: {
         required: true,
-        type: AddressSchema
+        type: AddressSchema,
     },
     hasSSN: {
         type: Boolean,
-        required: true
+        required: true,
     },
     SSN: {
-        type: String
+        type: String,
     },
     hasIBAN: {
         type: Boolean,
-        required: true
+        required: true,
     },
     IBAN: {
         accountNumber: {
-            type: String
+            type: String,
         },
         bankName: {
-            type: String
+            type: String,
         },
         swift: {
-            type: String
-        }
+            type: String,
+        },
     },
     receiptsPdf: {
         required: true,
-        type: CloudinaryImageSchema
+        type: CloudinaryImageSchema,
     },
     receiptsSum: {
         type: Number,
-        required: true
-    }
-});
+        required: true,
+    },
+})
 
-module.exports = TravelGrantSchema;
+module.exports = TravelGrantSchema

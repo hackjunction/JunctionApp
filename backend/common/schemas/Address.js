@@ -1,31 +1,31 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const { Countries } = require('@hackjunction/shared');
+const { Countries } = require('@hackjunction/shared')
 
 const AddressSchema = new mongoose.Schema({
     country: {
         type: String,
         enum: Countries.asArrayOfName,
-        required: true
+        required: true,
     },
     addressLine: {
         type: String,
-        required: true
+        required: true,
     },
     addressLine2: {
-        type: String
+        type: String,
     },
     city: {
         type: String,
-        required: true
+        required: true,
     },
     postalCode: {
         type: String,
-        required: true
+        required: true,
     },
     venueName: {
-        type: String
-    }
-});
+        type: String,
+    },
+})
 
-module.exports = AddressSchema;
+module.exports = AddressSchema
