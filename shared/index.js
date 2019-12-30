@@ -29,5 +29,5 @@ module.exports = {
     Themes: require('./constants/themes'),
     Universities: require('./constants/universities'),
     Utils: require('./helpers/utils'),
-    JsonSchemas: require('./jsonschemas/index')
+    JsonSchemas: require('./jsonschemas')
 };

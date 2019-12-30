@@ -1,5 +1,8 @@
-const EmailParameters = require('./EmailParameters');
-
 module.exports = {
-    EmailParameters
-};
+    Event: require('./Event'),
+    EventTrack: require('./EventTrack'),
+    EventChallenge: require('./EventChallenge'),
+    StreetAddress: require('./StreetAddress'),
+    EmailParameters: require('./EmailParameters'),
+    CloudinaryImage: require('./CloudinaryImage'),
+}

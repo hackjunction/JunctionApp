@@ -35,7 +35,7 @@ fastify.register(
 // )
 
 /* Register validators */
-fastify.register(require('./validators'))
+require('./validators')(fastify)
 
 /* Register decorators */
 fastify.register(require('./decorators'))

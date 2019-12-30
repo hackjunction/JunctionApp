@@ -2,7 +2,8 @@ const status = require('http-status')
 
 const asyncHandler = require('express-async-handler')
 const { validate } = require('express-jsonschema')
-const { Auth, JsonSchemas } = require('@hackjunction/shared')
+const { Auth } = require('@hackjunction/shared')
+const { JsonSchemas } = require('@hackjunction/shared')
 const swagger = require('swagger-spec-express')
 
 const { hasToken } = require('../../../../common/middleware/token')
@@ -11,12 +12,14 @@ const { isEventOrganiser } = require('../../../../common/middleware/events')
 const EmailTaskController = require('../../controller')
 
 module.exports = async (fastify, options, next) => {
-    fastify.addSchema(JsonSchemas.EmailParameters)
-
     fastify.route({
         method: 'POST',
         url: '/',
         schema: {
+            summary: 'Send a preview email',
+            description:
+                'Send a test/preview email to a given address, such as your own.',
+            tags: ['Email'],
             body: {
                 type: 'object',
                 required: ['to', 'params'],
@@ -26,9 +29,7 @@ module.exports = async (fastify, options, next) => {
                         description: 'The email address to send the preview to',
                         format: 'email',
                     },
-                    params: {
-                        $ref: JsonSchemas.EmailParameters.$id,
-                    },
+                    params: `${JsonSchemas.EmailParameters.$id}#`,
                 },
             },
             response: {

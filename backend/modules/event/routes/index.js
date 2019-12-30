@@ -1,15 +1,28 @@
-const previewEmail = require('./:slug/preview.js')
-const sendEmail = require('./:slug/send')
+const rootRoute = require('./root')
 
-module.exports = async (fastify, options, next) => {
-    fastify.register(previewEmail, {
-        prefix: '/:slug/preview',
-    })
-    fastify.register(sendEmail, {
-        prefix: `/:slug/send`,
-    })
+module.exports = async (fastify, options) => {
+    // router
+    //     .route('/')
+    //     .get(
+    //         hasToken,
+    //         hasPermission(Auth.Permissions.MANAGE_EVENT),
+    //         getEventsAsOrganiser
+    //     )
+    //     .post(
+    //         hasToken,
+    //         hasPermission(Auth.Permissions.MANAGE_EVENT),
+    //         createEvent
+    //     )
 
-    next()
+    /** Get all public events */
+    fastify.register(rootRoute)
+
+    // fastify.register(previewEmail, {
+    //     prefix: '/:slug/preview',
+    // })
+    // fastify.register(sendEmail, {
+    //     prefix: `/:slug/send`,
+    // })
 }
 
 // const express = require('express')

@@ -4,7 +4,9 @@ const status = require('http-status')
 const router = express.Router()
 const asyncHandler = require('express-async-handler')
 const { validate } = require('express-jsonschema')
-const { Auth, JsonSchemas } = require('@hackjunction/shared')
+const { Auth } = require('@hackjunction/shared')
+
+const { JsonSchemas } = require('@hackjunction/shared')
 
 const { hasToken } = require('../../../../common/middleware/token')
 const { hasPermission } = require('../../../../common/middleware/permissions')
@@ -12,12 +14,13 @@ const { isEventOrganiser } = require('../../../../common/middleware/events')
 const EmailTaskController = require('../../controller')
 
 module.exports = async (fastify, options, next) => {
-    fastify.addSchema(JsonSchemas.EmailParameters)
-
     fastify.route({
         method: 'POST',
         url: '/',
         schema: {
+            summary: 'Send bulk email',
+            description: 'Send an email to many recipients',
+            tags: ['Email'],
             body: {
                 type: 'object',
                 required: ['recipients', 'params'],
@@ -29,9 +32,7 @@ module.exports = async (fastify, options, next) => {
                             format: 'email',
                         },
                     },
-                    params: {
-                        $ref: JsonSchemas.EmailParameters.$id,
-                    },
+                    params: `${JsonSchemas.EmailParameters.$id}#`,
                     uniqueId: {
                         type: 'string',
                     },

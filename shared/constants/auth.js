@@ -10,7 +10,8 @@ const Permissions = {
     MANAGE_EVENT: 'manage:event',
     DELETE_EVENT: 'delete:event',
     ACCESS_RECRUITMENT: 'access:recruitment',
-    MANAGE_RECRUITMENT: 'manage:recruitment'
+    MANAGE_RECRUITMENT: 'manage:recruitment',
+    ACCESS_DOCS: 'access:docs',
 };
 
 module.exports = {

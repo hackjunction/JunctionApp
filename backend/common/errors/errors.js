@@ -58,8 +58,8 @@ class ForbiddenError extends CustomError {
 }
 
 module.exports = {
-    InsufficientPrivilegesError,
     NotFoundError,
     ValidationError,
     ForbiddenError,
+    UnauthorizedError,
 }

@@ -1,12 +1,12 @@
+const { JsonSchemas } = require('@hackjunction/shared')
+
 const authRouter = require('./auth/routes')
-const eventRouter = require('./event/routes')
 const uploadRouter = require('./upload/routes')
 const userProfileRouter = require('./user-profile/routes')
 const recruitmentRouter = require('./recruitment/routes')
 const registrationRouter = require('./registration/routes')
 const newsletterRouter = require('./newsletter/routes')
 const teamRouter = require('./team/routes')
-const emailRouter = require('./email-task/routes')
 const devToolsRouter = require('./devtools/routes')
 const filterGroupRouter = require('./filter-group/routes')
 const adminRouter = require('./admin/routes')
@@ -15,7 +15,15 @@ const gavelRouter = require('./reviewing/gavel/routes')
 const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
 
+const emailRouter = require('./email-task/routes')
+const eventRouter = require('./event/routes')
+
 module.exports = async (fastify, options, next) => {
+    /** Register JSON schemas */
+    Object.keys(JsonSchemas).forEach(key => {
+        fastify.addSchema(JsonSchemas[key])
+    })
+
     fastify.register(require('fastify-swagger'), {
         routePrefix: '/docs',
         exposeRoute: true,
@@ -49,9 +57,12 @@ module.exports = async (fastify, options, next) => {
         prefix: `/email`,
     })
 
+    fastify.register(eventRouter, {
+        prefix: `/events`,
+    })
+
     fastify.ready(err => {
         if (err) throw err
-        console.log('READYYY')
         fastify.swagger()
     })
 

@@ -97,7 +97,7 @@ const hasTeam = routeName => async request => {
     request.team = teamPopulated
 }
 
-module.exports = async (fastify, options) => {
+module.exports = async fastify => {
     /** Check that the user is an owner of the event */
     fastify.decorate('events_isOwner', async (request, reply) => {
         await hasUser('fastify.events_isOwner')(request)

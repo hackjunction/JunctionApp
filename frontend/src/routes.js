@@ -17,6 +17,7 @@ const OrganiserRouter = lazy(() => import('./pages/_organise'))
 const AccountRouter = lazy(() => import('./pages/_account'))
 const RecruitmentRouter = lazy(() => import('./pages/_recruitment'))
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
+const DocsPage = lazy(() => import('./pages/_docs'))
 
 const routes = [
     {
@@ -42,6 +43,13 @@ const routes = [
     {
         path: '/callback',
         component: CallbackPage,
+        exact: false,
+    },
+    {
+        path: '/docs',
+        component: RequiresPermission(DocsPage, [
+            AuthConstants.Permissions.ACCESS_DOCS,
+        ]),
         exact: false,
     },
     {

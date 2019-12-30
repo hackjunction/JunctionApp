@@ -88,7 +88,10 @@ const EventSchema = new mongoose.Schema({
             `is required for physical events`,
         ],
     },
-    tracksEnabled: false,
+    tracksEnabled: {
+        type: Boolean,
+        default: false,
+    },
     tracks: {
         type: [TrackSchema],
         default: [],

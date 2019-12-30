@@ -120,10 +120,10 @@ const buildConfig = () => {
 
 const config = buildConfig()
 
-logger.info({
-    message: 'Running app with config',
-    data: config,
-})
+// logger.info({
+//     message: 'Running app with config',
+//     data: config,
+// })
 
 global.gConfig = config
 

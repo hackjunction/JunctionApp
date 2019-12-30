@@ -1,4 +1,4 @@
-const EmailParameters = {
+module.exports = {
     $id: '/EmailParameters',
     title: 'Email Parameters',
     description: 'Parameters that can be supplied to a custom email',
@@ -41,4 +41,3 @@ const EmailParameters = {
     required: ['subject', 'body']
 };
 
-module.exports = EmailParameters;
