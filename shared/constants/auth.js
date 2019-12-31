@@ -2,7 +2,9 @@ const Roles = {
     SUPER_ADMIN: 'SuperAdmin',
     ORGANISER: 'Organiser',
     ASSISTANT_ORGANISER: 'AssistantOrganiser',
-    RECRUITER: 'Recruiter'
+    RECRUITER: 'Recruiter',
+    RECRUITER_ADMIN: 'RecruiterAdmin',
+    DEVELOPER: 'Developer',
 };
 
 const Permissions = {

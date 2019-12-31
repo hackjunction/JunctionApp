@@ -1,28 +1,10 @@
-const rootRoute = require('./root')
-
 module.exports = async (fastify, options) => {
-    // router
-    //     .route('/')
-    //     .get(
-    //         hasToken,
-    //         hasPermission(Auth.Permissions.MANAGE_EVENT),
-    //         getEventsAsOrganiser
-    //     )
-    //     .post(
-    //         hasToken,
-    //         hasPermission(Auth.Permissions.MANAGE_EVENT),
-    //         createEvent
-    //     )
-
     /** Get all public events */
-    fastify.register(rootRoute)
+    fastify.register(require('./root'))
 
-    // fastify.register(previewEmail, {
-    //     prefix: '/:slug/preview',
-    // })
-    // fastify.register(sendEmail, {
-    //     prefix: `/:slug/send`,
-    // })
+    fastify.register(require('./public'), {
+        prefix: '/public',
+    })
 }
 
 // const express = require('express')

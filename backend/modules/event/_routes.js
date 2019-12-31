@@ -113,15 +113,15 @@ const clearAchievements = asyncHandler(async (req, res) => {
     return res.status(200).json(result)
 })
 
-/** Create event, get events by logged in user */
-router
-    .route('/')
-    .get(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        getEventsAsOrganiser
-    )
-    .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), createEvent)
+// /** Create event, get events by logged in user */
+// router
+//     .route('/')
+//     .get(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         getEventsAsOrganiser
+//     )
+//     .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), createEvent)
 
 /** Get all public events */
 router.get('/public', getPublicEvents)

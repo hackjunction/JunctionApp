@@ -47,9 +47,7 @@ const routes = [
     },
     {
         path: '/docs',
-        component: RequiresPermission(DocsPage, [
-            AuthConstants.Permissions.ACCESS_DOCS,
-        ]),
+        component: DocsPage,
         exact: false,
     },
     {

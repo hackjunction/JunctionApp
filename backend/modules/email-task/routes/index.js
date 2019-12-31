@@ -1,15 +1,11 @@
-const previewEmail = require('./:slug/preview.js')
-const sendEmail = require('./:slug/send')
-
-module.exports = async (fastify, options, next) => {
-    fastify.register(previewEmail, {
+module.exports = async fastify => {
+    fastify.register(require('./:slug/preview'), {
         prefix: '/:slug/preview',
     })
-    fastify.register(sendEmail, {
-        prefix: `/:slug/send`,
-    })
 
-    next()
+    fastify.register(require('./:slug/send'), {
+        prefix: '/:slug/send',
+    })
 }
 
 // const express = require('express')

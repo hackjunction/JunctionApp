@@ -17,41 +17,11 @@ const rankingsRouter = require('./rankings/routes')
 
 const emailRouter = require('./email-task/routes')
 const eventRouter = require('./event/routes')
+const docs = require('./docs')
 
-module.exports = async (fastify, options, next) => {
-    /** Register JSON schemas */
-    Object.keys(JsonSchemas).forEach(key => {
-        fastify.addSchema(JsonSchemas[key])
-    })
-
-    fastify.register(require('fastify-swagger'), {
-        routePrefix: '/docs',
-        exposeRoute: true,
-        swagger: {
-            info: {
-                title: 'Junction App',
-                description: 'API Documentation for the Junction App',
-                version: '0.1.0',
-            },
-            host: 'localhost',
-            schemes: ['http'],
-            consumes: ['application/json'],
-            produces: ['application/json'],
-            securityDefinitions: {
-                apiKey: {
-                    type: 'apiKey',
-                    name: 'apiKey',
-                    in: 'header',
-                },
-            },
-        },
-    })
-
-    fastify.get('/hello', (request, reply) => {
-        reply.send({
-            message: 'Hello',
-        })
-    })
+module.exports = async fastify => {
+    /** Set up docs and Swagger JSON endpoint */
+    fastify.register(docs)
 
     fastify.register(emailRouter, {
         prefix: `/email`,
@@ -60,13 +30,6 @@ module.exports = async (fastify, options, next) => {
     fastify.register(eventRouter, {
         prefix: `/events`,
     })
-
-    fastify.ready(err => {
-        if (err) throw err
-        fastify.swagger()
-    })
-
-    next()
 }
 
 // module.exports = function(app) {

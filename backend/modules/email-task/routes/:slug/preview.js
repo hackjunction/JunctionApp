@@ -1,61 +1,47 @@
 const status = require('http-status')
-
-const asyncHandler = require('express-async-handler')
-const { validate } = require('express-jsonschema')
 const { Auth } = require('@hackjunction/shared')
-const { JsonSchemas } = require('@hackjunction/shared')
-const swagger = require('swagger-spec-express')
-
-const { hasToken } = require('../../../../common/middleware/token')
-const { hasPermission } = require('../../../../common/middleware/permissions')
-const { isEventOrganiser } = require('../../../../common/middleware/events')
 const EmailTaskController = require('../../controller')
 
-module.exports = async (fastify, options, next) => {
-    fastify.route({
+module.exports = async fastify => {
+    fastify.authenticatedRoute([Auth.Permissions.MANAGE_EVENT], {
         method: 'POST',
         url: '/',
+        preValidation: [fastify.events_isOrganiser],
+        handler: async (request, reply) => {
+            const { to, params } = request.body
+            await EmailTaskController.sendPreviewEmail(to, params)
+            reply.code(status.OK).send()
+        },
         schema: {
             summary: 'Send a preview email',
             description:
                 'Send a test/preview email to a given address, such as your own.',
             tags: ['Email'],
-            body: {
-                type: 'object',
-                required: ['to', 'params'],
-                properties: {
+            params: fastify.requestParams(
+                {
+                    slug: {
+                        type: 'string',
+                        description: 'A valid slug for an event',
+                    },
+                },
+                ['slug']
+            ),
+            body: fastify.requestParams(
+                {
                     to: {
                         type: 'string',
                         description: 'The email address to send the preview to',
                         format: 'email',
                     },
-                    params: `${JsonSchemas.EmailParameters.$id}#`,
+                    params: fastify.refs.EmailParameters,
                 },
-            },
+                ['to', 'params']
+            ),
             response: {
-                [status.OK]: {
-                    type: 'object',
-                    properties: {
-                        status: {
-                            type: 'string',
-                            enum: ['success', 'error'],
-                        },
-                        message: {
-                            type: 'string',
-                            description: 'A description of the error',
-                        },
-                    },
-                },
+                [status.OK]: fastify.responseEmpty(status.OK),
             },
-        },
-        async handler(request, reply) {
-            const { to, params } = request.body
-            await EmailTaskController.sendPreviewEmail(to, params)
-            reply.send({ message: 'success' })
         },
     })
-
-    next()
 }
 
 // module.exports = (router, path) => {

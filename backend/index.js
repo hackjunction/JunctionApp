@@ -38,7 +38,7 @@ fastify.register(
 require('./validators')(fastify)
 
 /* Register decorators */
-fastify.register(require('./decorators'))
+require('./decorators')(fastify)
 
 /* Register API routes */
 fastify.register(require('./modules/routes'), {
@@ -50,8 +50,16 @@ fastify.register(require('fastify-static'), {
     root: path.join(__dirname, 'build'),
 })
 
-fastify.get('*', function(req, reply) {
-    reply.sendFile('index.html')
+fastify.route({
+    method: 'GET',
+    url: '*',
+    schema: {
+        summary: 'Get React bundle',
+        tags: ['Miscellaneous'],
+    },
+    handler: async (request, reply) => {
+        reply.sendFile('index.html')
+    },
 })
 
 /* Global error handler */
