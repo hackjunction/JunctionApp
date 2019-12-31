@@ -17,7 +17,10 @@ module.exports = async fastify => {
             description: 'Get all events which you are organising',
             tags: ['Events'],
             response: {
-                [status.OK]: fastify.responseEmpty(status.OK),
+                [status.OK]: fastify.responseArray(
+                    status.OK,
+                    fastify.refs.Event
+                ),
             },
         },
     })
