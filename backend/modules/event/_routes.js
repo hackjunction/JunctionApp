@@ -124,13 +124,13 @@ const clearAchievements = asyncHandler(async (req, res) => {
 //     .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), createEvent)
 
 /** Get all public events */
-router.get('/public', getPublicEvents)
+// router.get('/public', getPublicEvents)
 
-/** Get public event by slug */
-router.get('/public/:slug', getPublicEventBySlug)
+// /** Get public event by slug */
+// router.get('/public/:slug', getPublicEventBySlug)
 
-/** Get public event by id */
-router.get('/public/id/:id', getPublicEventById)
+// /** Get public event by id */
+// router.get('/public/id/:id', getPublicEventById)
 
 /** Get, patch or delete a single event */
 router

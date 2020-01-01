@@ -52,20 +52,13 @@ module.exports = async fastify => {
     }
 
     function responseArray(statusCode, schemaOrProperties) {
-        const items =
-            typeof schemaOrProperties === 'string'
-                ? schemaOrProperties
-                : {
-                      type: 'object',
-                      properties: schemaOrProperties,
-                  }
         return {
             ...this.responses[statusCode],
             type: 'object',
             properties: {
                 data: {
                     type: 'array',
-                    items,
+                    items: schemaOrProperties,
                 },
             },
         }

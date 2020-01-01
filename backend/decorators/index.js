@@ -2,4 +2,5 @@
 
 module.exports = async fastify => {
     require('./route-helpers')(fastify)
+    require('./reply')(fastify)
 }
