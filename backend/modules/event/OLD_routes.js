@@ -133,26 +133,26 @@ const clearAchievements = asyncHandler(async (req, res) => {
 // router.get('/public/id/:id', getPublicEventById)
 
 /** Get, patch or delete a single event */
-router
-    .route('/:slug')
-    .get(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        getEventAsOrganiser
-    )
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        updateEvent
-    )
-    .delete(
-        hasToken,
-        hasPermission(Auth.Permissions.DELETE_EVENT),
-        isEventOwner,
-        deleteEvent
-    )
+// router
+//     .route('/:slug')
+//     .get(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         getEventAsOrganiser
+//     )
+//     .patch(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         updateEvent
+//     )
+//     .delete(
+//         hasToken,
+//         hasPermission(Auth.Permissions.DELETE_EVENT),
+//         isEventOwner,
+//         deleteEvent
+//     )
 
 router
     .route('/:slug/achievements')

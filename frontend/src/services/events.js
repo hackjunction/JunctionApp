@@ -1,86 +1,83 @@
-import _axios from 'services/axios'
+import client from 'services/_client'
 
 const EventsService = {}
 
-function config(idToken) {
-    return {
-        headers: {
-            Authorization: `Bearer ${idToken}`,
-        },
-    }
-}
-
-const BASE_ROUTE = '/events'
-
 EventsService.createEvent = (idToken, data) => {
-    return _axios.post(`${BASE_ROUTE}`, data, config(idToken))
+    const url = `/api/events`
+    return client.get(idToken)(url, data)
 }
 
 EventsService.getEventsByOrganiser = idToken => {
-    return _axios.get(`${BASE_ROUTE}`, config(idToken))
-}
-
-EventsService.getPublicEvents = () => {
-    return _axios.get(`${BASE_ROUTE}/public`)
-}
-
-EventsService.getPublicEventBySlug = slug => {
-    return _axios.get(`${BASE_ROUTE}/public/${slug}`)
-}
-
-EventsService.getPublicEventById = id => {
-    return _axios.get(`${BASE_ROUTE}/public/id/${id}`)
+    const url = `/api/events`
+    return client.get(idToken)(url)
 }
 
 EventsService.updateEventBySlug = (idToken, slug, data) => {
-    return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken))
+    const url = `/api/events/${slug}`
+    return client.patch(idToken)(url, data)
 }
 
 EventsService.getEventBySlugAsOrganiser = (idToken, slug) => {
-    return _axios.get(`${BASE_ROUTE}/${slug}`, config(idToken))
+    const url = `/api/events/${slug}`
+    return client.get(idToken)(url)
 }
 
 EventsService.deleteEventBySlugAsOrganiser = (idToken, slug) => {
-    return _axios.delete(`${BASE_ROUTE}/${slug}`, config(idToken))
+    const url = `/api/events/${slug}`
+    return client.delete(idToken)(url)
+}
+
+EventsService.getPublicEvents = () => {
+    const url = `/api/events/public`
+    return client.get()(url)
+}
+
+EventsService.getPublicEventBySlug = slug => {
+    const url = `/api/events/public/${slug}`
+    return client.get()(url)
+}
+
+EventsService.getPublicEventById = id => {
+    const url = `/api/events/public/id/${id}`
+    return client.get()(url)
 }
 
 EventsService.getOrganisers = (idToken, slug) => {
-    return _axios.get(`/events/organisers/${slug}`, config(idToken))
+    const url = `/api/events/organisers/${slug}`
+    return client.get(idToken)(url)
 }
 
 EventsService.addOrganiserToEvent = (idToken, slug, userId) => {
-    return _axios.post(
-        `/events/organisers/${slug}/${userId}`,
-        {},
-        config(idToken)
-    )
+    const url = `/api/events/organisers/${slug}/${userId}`
+    return client.post(idToken)(url, {})
 }
 
 EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
-    return _axios.delete(
-        `/events/organisers/${slug}/${userId}`,
-        config(idToken)
-    )
+    const url = `/api/events/organisers/${slug}/${userId}`
+    return client.delete(idToken)(url)
 }
 
 EventsService.updateWinners = (idToken, slug, winners) => {
-    return _axios.patch(
-        `${BASE_ROUTE}/${slug}/winners`,
-        { winners },
-        config(idToken)
-    )
+    throw new Error('TODO: Refactor this route')
+    // return _axios.patch(
+    //     `${BASE_ROUTE}/${slug}/winners`,
+    //     { winners },
+    //     config(idToken)
+    // )
 }
 
 EventsService.getWinnerProjects = (idToken, slug) => {
-    return _axios.get(`${BASE_ROUTE}/${slug}/winners`, config(idToken))
+    throw new Error('TODO: Refactor this route')
+    //return _axios.get(`${BASE_ROUTE}/${slug}/winners`, config(idToken))
 }
 
 EventsService.generateAchievements = (idToken, slug) => {
-    return _axios.patch(
-        `${BASE_ROUTE}/${slug}/achievements`,
-        {},
-        config(idToken)
-    )
+    throw new Error('TODO: Refactor this route')
+    // return _axios.patch(
+    //     `${BASE_ROUTE}/${slug}/achievements`,
+    //     {},
+    //     config(idToken)
+    // )
 }
 
 export default EventsService

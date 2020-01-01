@@ -1,4 +1,4 @@
-module.exports = async (fastify, options) => {
+module.exports = async fastify => {
     fastify.register(require('./get-own-events'))
     fastify.register(require('./create-event'))
 
@@ -22,6 +22,10 @@ module.exports = async (fastify, options) => {
 
     fastify.register(require('./get-public-event-by-id'), {
         prefix: '/public/id/:id',
+    })
+
+    fastify.register(require('./get-organisers'), {
+        prefix: '/organisers/:slug',
     })
 
     fastify.register(require('./add-organiser'), {
