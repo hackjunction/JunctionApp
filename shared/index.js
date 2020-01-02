@@ -15,6 +15,7 @@ module.exports = {
     FilterTypes: require('./constants/filter-types'),
     FilterValues: require('./constants/filter-values'),
     FilterHelpers: require('./helpers/filterHelpers'),
+    RegistrationFieldsNew: require('./constants/RegistrationFields'),
     RegistrationFields: require('./constants/registration-fields'),
     RegistrationFieldsCustom: require('./constants/registration-fields-custom'),
     RegistrationFieldsHelpers: require('./helpers/registration-fields'),
@@ -29,5 +30,5 @@ module.exports = {
     Themes: require('./constants/themes'),
     Universities: require('./constants/universities'),
     Utils: require('./helpers/utils'),
-    JsonSchemas: require('./jsonschemas')
-};
+    JsonSchemas: require('./jsonschemas'),
+}

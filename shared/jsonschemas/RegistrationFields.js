@@ -1,33 +1,29 @@
-const yup = require('yup');
-const Genders = require('../constants/genders');
-const Countries = require('../constants/countries');
-const Languages = require('../constants/languages');
-const Industries = require('../constants/industries');
-const Themes = require('../constants/themes');
-const Roles = require('../constants/roles');
-const Skills = require('../constants/skills');
-const Misc = require('../constants/misc');
-const FieldTypes = require('./field-types');
-const FilterTypes = require('./filter-types');
-const FilterValues = require('./filter-values');
+const Genders = require('../constants/genders')
+const Countries = require('../constants/countries')
+const Languages = require('../constants/languages')
+const Industries = require('../constants/industries')
+const Themes = require('../constants/themes')
+const Roles = require('../constants/roles')
+const Skills = require('../constants/skills')
+const Misc = require('../constants/misc')
 
 module.exports = {
     firstName: {
         description: 'First name',
         type: 'string',
         minLength: 1,
-        maxLength: 100
+        maxLength: 100,
     },
     lastName: {
         description: 'Last name',
         type: 'string',
         minLength: 1,
-        maxLength: 100
+        maxLength: 100,
     },
     email: {
         description: 'Email address',
         type: 'string',
-        format: 'email'
+        format: 'email',
     },
     phoneNumber: {
         description: 'Phone number',
@@ -36,14 +32,14 @@ module.exports = {
             country_code: {
                 description: 'Country code',
                 type: 'string',
-                enum: Countries.asArrayOfPhoneCodes
+                enum: Countries.asArrayOfPhoneCodes,
             },
             number: {
                 description: 'Number',
                 type: 'string',
-                pattern: '/^[0-9]{7,14}$/'
-            }
-        }
+                pattern: '/^[0-9]{7,14}$/',
+            },
+        },
     },
     dateOfBirth: {
         description: 'Date of birth',
@@ -59,7 +55,7 @@ module.exports = {
         description: 'Nationality',
         type: 'string',
         enum: Countries.asArrayOfNationalities,
-    },    
+    },
     spokenLanguages: {
         description: 'Spoken languages',
         type: 'array',
@@ -67,12 +63,12 @@ module.exports = {
             description: 'Language',
             type: 'string',
             enum: Languages.asArrayOfNames,
-        }
+        },
     },
     countryOfResidence: {
         description: 'Country of residence',
         type: 'string',
-        enum: Countries.asArrayOfName
+        enum: Countries.asArrayOfName,
     },
     cityOfResidence: {
         description: 'City of residence',
@@ -92,7 +88,7 @@ module.exports = {
             description: 'Dietary restriction',
             type: 'string',
             enum: Misc.dietaryRestrictions,
-        }
+        },
     },
     headline: {
         description: 'Headline',
@@ -104,13 +100,13 @@ module.exports = {
         description: 'Biography',
         type: 'string',
         minLength: 1,
-        maxLength: 1000
+        maxLength: 1000,
     },
     roles: {
         description: 'Professional roles',
         type: 'array',
         minItems: 1,
-        maxItems: 5
+        maxItems: 5,
         items: {
             description: 'Professional role',
             type: 'object',
@@ -118,16 +114,16 @@ module.exports = {
                 role: {
                     description: 'Role',
                     type: 'string',
-                    enum: Roles.items
+                    enum: Roles.items,
                 },
                 years: {
                     description: 'Years of experience',
                     type: 'integer',
                     minimum: 1,
-                    maximum: 5
-                }
+                    maximum: 5,
+                },
             },
-            required: ['role', 'years']
+            required: ['role', 'years'],
         },
     },
     skills: {
@@ -140,7 +136,7 @@ module.exports = {
             type: 'object',
             properties: {
                 skill: {
-                    description: 'Skill'
+                    description: 'Skill',
                     type: 'string',
                     enum: Skills.items,
                 },
@@ -149,10 +145,10 @@ module.exports = {
                     type: 'integer',
                     minimum: 1,
                     maximum: 5,
-                }
+                },
             },
-            required: ['skill', 'level']
-        }
+            required: ['skill', 'level'],
+        },
     },
     motivation: {
         description: 'Letter of motivation',
@@ -168,8 +164,8 @@ module.exports = {
         items: {
             description: 'Industry',
             type: 'string',
-            enum: Industries.industries
-        }
+            enum: Industries.industries,
+        },
     },
     themesOfInterest: {
         description: 'Themes of interest',
@@ -180,13 +176,13 @@ module.exports = {
             description: 'Theme',
             type: 'string',
             enum: Themes.themes,
-        }
+        },
     },
     numHackathons: {
         description: 'Number of hackathons attended',
         type: 'integer',
         minimum: 0,
-        maximum: 5
+        maximum: 5,
     },
     education: {
         description: 'Most recent education',
@@ -208,10 +204,10 @@ module.exports = {
                 description: 'Graduation year',
                 type: 'integer',
                 minimum: 1900,
-                maximum: 2100
-            }
+                maximum: 2100,
+            },
         },
-        required: ['level']
+        required: ['level'],
     },
     portfolio: {
         description: 'Link to portfolio',
@@ -226,18 +222,18 @@ module.exports = {
     linkedin: {
         description: 'Link to LinkedIn (or similar)',
         type: 'string',
-        format: 'uri'
+        format: 'uri',
     },
     countryOfTravel: {
         description: 'Country of travel',
         type: 'string',
-        enum: Countries.asArrayOfName
+        enum: Countries.asArrayOfName,
     },
     cityOfTravel: {
         description: 'City of travel',
         type: 'string',
         minLength: 1,
-        maxLength: 100
+        maxLength: 100,
     },
     needsVisa: {
         description: 'Do you need a visa?',
@@ -261,21 +257,21 @@ module.exports = {
             applyAsTeam: {
                 description: 'Applying as a team?',
                 type: 'boolean',
-                default: false
+                default: false,
             },
             applyAlone: {
                 description: 'Applying also alone?',
                 type: 'boolean',
                 default: false,
-            }
+            },
         },
-        required: ['applyAsTeam', 'applyAlone']
+        required: ['applyAsTeam', 'applyAlone'],
     },
     secretCode: {
         description: 'Secret code',
         type: 'string',
         minLength: 1,
-        maxLength: 200
+        maxLength: 200,
     },
     recruitmentOptions: {
         description: 'Job opportunities',
@@ -284,7 +280,7 @@ module.exports = {
             status: {
                 description: 'Interested in recruitment?',
                 type: 'string',
-                enum: Object.keys(Misc.recruitmentStatuses)
+                enum: Object.keys(Misc.recruitmentStatuses),
             },
             consent: {
                 description: 'Consent to data-sharing',
@@ -296,6 +292,6 @@ module.exports = {
                 type: 'string',
                 enum: Object.keys(Misc.relocationOptions),
             },
-        }
+        },
     },
-};
+}

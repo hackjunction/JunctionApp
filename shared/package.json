@@ -15,7 +15,56 @@
         "yup": "^0.27.0"
     },
     "devDependencies": {
-        "mocha": "^6.2.0"
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "mocha": "^6.2.0",
+        "prettier": "^1.19.1"
+    },
+    "eslintConfig": {
+        "extends": [
+            "airbnb-base",
+            "prettier"
+        ],
+        "plugins": [
+            "prettier"
+        ],
+        "parserOptions": {
+            "ecmaVersion": 2018
+        },
+        "rules": {
+            "no-param-reassign": 0,
+            "no-underscore-dangle": 0,
+            "global-require": 0,
+            "prefer-destructuring": [
+                "error",
+                {
+                    "VariableDeclarator": {
+                        "array": false,
+                        "object": true
+                    },
+                    "AssignmentExpression": {
+                        "array": false,
+                        "object": true
+                    }
+                }
+            ],
+            "prettier/prettier": [
+                "error",
+                {
+                    "printWidth": 80,
+                    "trailingComma": "es5",
+                    "semi": false,
+                    "jsxSingleQuote": false,
+                    "singleQuote": true,
+                    "useTabs": false,
+                    "tabWidth": 4,
+                    "bracketSpacing": true
+                }
+            ]
+        }
     },
     "engines": {
         "node": "12.3.1",

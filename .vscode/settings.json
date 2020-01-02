@@ -7,6 +7,10 @@
         {
             "changeProcessCWD": true,
             "directory": "./backend",
+        },
+        {
+            "changeProcessCWD": true,
+            "directory": "./shared",
         }
     ],
     "editor.formatOnSave": false,
