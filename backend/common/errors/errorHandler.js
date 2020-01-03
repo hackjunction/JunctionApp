@@ -2,14 +2,11 @@ const status = require('http-status')
 const { ValidationError } = require('./errors')
 
 module.exports = async (error, request, reply) => { //eslint-disable-line
-    console.log('WTf', error.toJSON())
+    console.log('WTf', error)
     /** Check if the error is s subclass of CustomError (purposefully thrown) */
     if (error.httpStatus) {
-        console.log('MIT VIT', error.toJSON())
         return reply.code(error.httpStatus).send(error.toJSON())
     }
-
-    console.log('WE FOUND AN ERROR', error.toJSON())
 
     /** Check if the error is one of the known types */
     switch (error.name) {

@@ -2,9 +2,7 @@ import ky from 'ky'
 
 /** Wrap our api client so we can easily substitute it if need be */
 const attachToken = idToken => request => {
-    console.log('attachToken')
     if (idToken) {
-        console.log('SETTING ID TOKEN', idToken)
         request.headers.set('Authorization', `Bearer ${idToken}`)
     }
 }

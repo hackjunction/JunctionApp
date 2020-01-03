@@ -6,7 +6,7 @@ module.exports = async fastify => {
         method: 'GET',
         url: '/',
         handler: async (request, reply) => {
-            const userProfile = UserProfileController.getUserProfile(
+            const userProfile = await UserProfileController.getUserProfile(
                 request.user.sub
             )
             return reply.code(status.OK).sendData(userProfile)

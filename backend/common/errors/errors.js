@@ -26,7 +26,7 @@ class BadRequestError extends CustomError {
         const name = 'BadRequestError'
         const code = 'ERR_BAD_REQUEST'
         const httpStatus = status.BAD_REQUEST
-        super(message, name, code)
+        super(message, name, code, httpStatus)
     }
 }
 
@@ -35,7 +35,7 @@ class NotFoundError extends CustomError {
         const name = 'NotFoundError'
         const code = 'ERR_NOT_FOUND'
         const httpStatus = status.NOT_FOUND
-        super(message, name, code)
+        super(message, name, code, httpStatus)
     }
 }
 
@@ -44,7 +44,7 @@ class UnauthorizedError extends CustomError {
         const name = 'UnauthorizedError'
         const code = 'ERR_UNAUTHORIZED'
         const httpStatus = status.UNAUTHORIZED
-        super(message, name, code)
+        super(message, name, code, httpStatus)
     }
 }
 
@@ -53,7 +53,7 @@ class ValidationError extends CustomError {
         const name = 'ValidationError'
         const code = 'ERR_VALIDATION_FAILED'
         const httpStatus = status.BAD_REQUEST
-        super(message, name, code, details)
+        super(message, name, code, httpStatus, details)
     }
 }
 
