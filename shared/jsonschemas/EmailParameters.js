@@ -11,11 +11,12 @@ module.exports = {
         },
         header_image: {
             type: 'string',
-            description: 'A URL to a header image for the email'
+            description: 'A URL to a header image for the email',
         },
         subtitle: {
             type: 'string',
-            description: 'The main title of the email, above the body and below the header image',
+            description:
+                'The main title of the email, above the body and below the header image',
             maxLength: 200,
         },
         body: {
@@ -24,7 +25,8 @@ module.exports = {
         },
         cta_text: {
             type: 'string',
-            description: 'The text to show as a call-to-action at the bottom of the email',
+            description:
+                'The text to show as a call-to-action at the bottom of the email',
             maxLength: 100,
         },
         cta_link: {
@@ -35,9 +37,8 @@ module.exports = {
         reply_to: {
             type: 'string',
             format: 'email',
-            description: 'The reply-to address of the email'
-        }
+            description: 'The reply-to address of the email',
+        },
     },
-    required: ['subject', 'body']
-};
-
+    required: ['subject', 'body'],
+}

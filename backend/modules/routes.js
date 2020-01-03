@@ -15,20 +15,17 @@ const gavelRouter = require('./reviewing/gavel/routes')
 const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
 
-const emailRouter = require('./email-task/routes')
-const eventRouter = require('./event/routes')
-const docs = require('./docs')
-
 module.exports = async fastify => {
     /** Set up docs and Swagger JSON endpoint */
-    fastify.register(docs)
-
-    fastify.register(emailRouter, {
+    fastify.register(require('./docs'))
+    fastify.register(require('./email-task/routes'), {
         prefix: `/email`,
     })
-
-    fastify.register(eventRouter, {
+    fastify.register(require('./event/routes'), {
         prefix: `/events`,
+    })
+    fastify.register(require('./user-profile/routes'), {
+        prefix: `/user-profiles`,
     })
 }
 

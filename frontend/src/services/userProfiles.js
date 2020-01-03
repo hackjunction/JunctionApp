@@ -1,56 +1,43 @@
-import _axios from 'services/axios'
+import client from 'services/_client'
 
 const UserProfilesService = {}
 
-function config(idToken) {
-    return {
-        headers: {
-            Authorization: `Bearer ${idToken}`,
-        },
-    }
-}
-
-UserProfilesService.getPublicUserProfiles = userIds => {
-    return _axios.get('/user-profiles/public/', {
-        params: {
-            userIds,
-        },
-    })
-}
-
-UserProfilesService.getPublicUserProfilesByTeam = teamId => {
-    return _axios.get('/user-profiles/public/team/' + teamId)
-}
-
 UserProfilesService.getUserProfile = idToken => {
-    return _axios.get('/user-profiles/', config(idToken))
+    const url = `/api/user-profiles`
+    return client.get(idToken)(url)
 }
 
 UserProfilesService.createUserProfile = (data, idToken) => {
-    return _axios.post('/user-profiles/', data, config(idToken))
+    const url = `/api/user-profiles`
+    return client.post(idToken)(url, data)
 }
 
 UserProfilesService.editUserProfile = (idToken, data) => {
-    return _axios.patch('/user-profiles/', data, config(idToken))
+    const url = `/api/user-profiles`
+    return client.patch(idToken)(url, data)
 }
 
-// UserProfilesService.getUsersByEmail = (email, idToken) => {
-//     return _axios.get('/user-profiles/search', {
-//         params: { email },
-//         ...config(idToken)
-//     });
-// };
+UserProfilesService.getPublicUserProfiles = userIds => {
+    const url = `/api/user-profiles/public`
+    const searchParams = { userIds }
+    return client.get()(url, { searchParams })
+}
+
+UserProfilesService.getPublicUserProfilesByTeam = teamId => {
+    const url = `/api/user-profiles/public`
+    const searchParams = { teamId }
+    return client.get()(url, { searchParams })
+}
 
 UserProfilesService.queryUsers = (idToken, terms) => {
-    return _axios.get(`/user-profiles/search/${terms}`, config(idToken))
-}
-
-UserProfilesService.getUserProfileRecruitment = (userId, idToken) => {
-    return _axios.get(`/recruitment/profile/${userId}`, config(idToken))
+    const url = `/api/user-profiles/search`
+    const searchParams = { terms }
+    return client.get(idToken)(url, { searchParams })
 }
 
 UserProfilesService.getRecruiters = idToken => {
-    return _axios.get('/user-profiles/recruiters', config(idToken))
+    const url = `/api/user-profiles/recruiters`
+    return client.get(idToken)(url)
 }
 
 UserProfilesService.updateRecruiter = (
@@ -59,8 +46,14 @@ UserProfilesService.updateRecruiter = (
     events,
     organisation
 ) => {
+    const url = `/api/user-profiles/recruiters`
     const data = { recruiterId, events, organisation }
-    return _axios.patch('/user-profiles/recruiters', data, config(idToken))
+    return client.patch(idToken)(url, data)
+}
+
+UserProfilesService.getUserProfileRecruitment = (userId, idToken) => {
+    throw new Error('Not implemented!!')
+    //return _axios.get(`/recruitment/profile/${userId}`, config(idToken))
 }
 
 export default UserProfilesService

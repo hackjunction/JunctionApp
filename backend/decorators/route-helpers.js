@@ -1,10 +1,11 @@
+const fp = require('fastify-plugin')
 const status = require('http-status')
 const assert = require('assert')
 const { JsonSchemas } = require('@hackjunction/shared')
 
 /** Register some useful helpers for building route definitions */
 
-module.exports = async fastify => {
+module.exports = fp(async fastify => {
     /** Register JSON schemas */
     const schemas = {}
     const refs = {}
@@ -110,4 +111,4 @@ module.exports = async fastify => {
         })
     }
     fastify.decorate('authenticatedRoute', authenticatedRoute)
-}
+})

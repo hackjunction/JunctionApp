@@ -1,49 +1,53 @@
-const mongoose = require('mongoose');
-const _ = require('lodash');
-const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
-const publicFieldsPlugin = require('../../common/plugins/publicFields');
-const Shared = require('@hackjunction/shared');
-const AuthController = require('../auth/controller');
-const { RegistrationFields } = Shared;
+const mongoose = require('mongoose')
+const _ = require('lodash')
+const Shared = require('@hackjunction/shared')
+const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const publicFieldsPlugin = require('../../common/plugins/publicFields')
+const AuthController = require('../auth/controller')
+
+const { RegistrationFieldsNew } = Shared
 
 const UserProfileSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     avatar: {
-        type: String
+        type: String,
     },
     registrations: {
         type: Array,
         required: false,
-        default: []
+        default: [],
     },
     recruiterEvents: {
         type: Array,
         required: false,
         default: [],
-        set: function(recruiterEvents) {
-            this._previousRecruiterEvents = this.recruiterEvents;
-            return recruiterEvents;
-        }
+        set(recruiterEvents) {
+            this._previousRecruiterEvents = this.recruiterEvents
+            return recruiterEvents
+        },
     },
     recruiterOrganisation: {
         type: String,
-        required: false
-    }
-});
+        required: false,
+    },
+})
 
-/** Build user profile fields based on possible registration questions */
-const fields = {};
-_.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
-    if (value.hasOwnProperty('userProfileConfig')) {
-        fields[fieldName] = value.userProfileConfig;
+/** Add additional fields based on possible registration questions */
+_.forOwn(RegistrationFieldsNew.Fields, (value, fieldName) => {
+    if (
+        value.config &&
+        value.config.userProfile &&
+        value.config.userProfile.field
+    ) {
+        UserProfileSchema.add({
+            [value.config.userProfile.field]: value.config.userProfile.schema,
+        })
     }
-});
-
-UserProfileSchema.add(fields);
+})
 
 /* // Virtual field to fetch registrations if required
 UserProfileSchema.virtual('registrations', {
@@ -53,43 +57,52 @@ UserProfileSchema.virtual('registrations', {
   }); */
 
 UserProfileSchema.post('save', function(doc, next) {
-    if (_.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0) {
+    if (
+        _.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0
+    ) {
         if (this.recruiterEvents.length === 0) {
-            AuthController.revokeRecruiterPermission(this.userId);
+            AuthController.revokeRecruiterPermission(this.userId)
         } else {
-            AuthController.grantRecruiterPermission(this.userId);
+            AuthController.grantRecruiterPermission(this.userId)
         }
         AuthController.updateMetadata(this.userId, {
             recruiterEvents: this.recruiterEvents,
-            recruiterOrganisation: this.recruiterOrganisation
-        });
+            recruiterOrganisation: this.recruiterOrganisation,
+        })
     }
-    next();
-});
+    next()
+})
 
-UserProfileSchema.set('timestamps', true);
+UserProfileSchema.set('timestamps', true)
 
 UserProfileSchema.index({
-    userId: 1
-});
+    userId: 1,
+})
 
 UserProfileSchema.index({
     firstName: 'text',
     lastName: 'text',
-    email: 'text'
-});
+    email: 'text',
+})
 
 UserProfileSchema.plugin(updateAllowedPlugin, {
-    blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'userId']
-});
+    blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'userId'],
+})
 
 UserProfileSchema.plugin(publicFieldsPlugin, {
-    fields: ['userId', 'avatar', 'firstName', 'lastName', 'email', 'phoneNumber']
-});
+    fields: [
+        'userId',
+        'avatar',
+        'firstName',
+        'lastName',
+        'email',
+        'phoneNumber',
+    ],
+})
 
-const UserProfile = mongoose.model('UserProfile', UserProfileSchema);
+const UserProfile = mongoose.model('UserProfile', UserProfileSchema)
 
 module.exports = {
     UserProfile,
-    UserProfileSchema
-};
+    UserProfileSchema,
+}

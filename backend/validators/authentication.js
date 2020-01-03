@@ -1,7 +1,8 @@
+const fp = require('fastify-plugin')
 const _ = require('lodash')
 const { UnauthorizedError } = require('../common/errors/errors')
 
-module.exports = async fastify => {
+module.exports = fp(async fastify => {
     fastify.register(require('fastify-auth0-verify'), {
         domain: global.gConfig.AUTH0_DOMAIN,
         audience: true,
@@ -39,7 +40,7 @@ module.exports = async fastify => {
             throw new UnauthorizedError('Invalid admin credentials')
         }
     })
-}
+})
 
 // const isAuthenticated = jwt({
 //     secret: jwkRsa.expressJwtSecret({

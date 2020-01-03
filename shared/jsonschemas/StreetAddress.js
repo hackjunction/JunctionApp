@@ -3,7 +3,7 @@ module.exports = {
     type: 'object',
     properties: {
         todo: {
-            type: 'string'
-        }
-    }
+            type: 'string',
+        },
+    },
 }

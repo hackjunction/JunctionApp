@@ -21,6 +21,15 @@ class CustomError extends Error {
     }
 }
 
+class BadRequestError extends CustomError {
+    constructor(message) {
+        const name = 'BadRequestError'
+        const code = 'ERR_BAD_REQUEST'
+        const httpStatus = status.BAD_REQUEST
+        super(message, name, code)
+    }
+}
+
 class NotFoundError extends CustomError {
     constructor(message) {
         const name = 'NotFoundError'
@@ -62,4 +71,5 @@ module.exports = {
     ValidationError,
     ForbiddenError,
     UnauthorizedError,
+    BadRequestError,
 }

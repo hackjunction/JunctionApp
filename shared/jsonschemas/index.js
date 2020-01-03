@@ -1,9 +1,10 @@
 module.exports = {
-    Event: require('./Event'),
-    EventTrack: require('./EventTrack'),
-    EventChallenge: require('./EventChallenge'),
-    StreetAddress: require('./StreetAddress'),
-    EmailParameters: require('./EmailParameters'),
+    ApiResponses: require('./ApiResponses'),
     CloudinaryImage: require('./CloudinaryImage'),
-    ApiResponses: require('./ApiResponses')
-};
+    EmailParameters: require('./EmailParameters'),
+    Event: require('./Event'),
+    EventChallenge: require('./EventChallenge'),
+    EventTrack: require('./EventTrack'),
+    StreetAddress: require('./StreetAddress'),
+    UserProfile: require('./UserProfile'),
+}

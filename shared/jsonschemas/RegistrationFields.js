@@ -3,11 +3,13 @@ const Countries = require('../constants/countries')
 const Languages = require('../constants/languages')
 const Industries = require('../constants/industries')
 const Themes = require('../constants/themes')
-const Roles = require('../constants/roles')
-const Skills = require('../constants/skills')
+// Fastify.addSchema breaks due to items containing '#' such as 'C#', TODO: find solution
+// https://github.com/fastify/fastify/issues/2021
+// const Roles = require('../constants/roles')
+// const Skills = require('../constants/skills')
 const Misc = require('../constants/misc')
 
-module.exports = {
+module.exports = Object.freeze({
     firstName: {
         description: 'First name',
         type: 'string',
@@ -114,7 +116,6 @@ module.exports = {
                 role: {
                     description: 'Role',
                     type: 'string',
-                    enum: Roles.items,
                 },
                 years: {
                     description: 'Years of experience',
@@ -138,11 +139,10 @@ module.exports = {
                 skill: {
                     description: 'Skill',
                     type: 'string',
-                    enum: Skills.items,
                 },
                 level: {
                     description: 'Level of experience',
-                    type: 'integer',
+                    type: 'number',
                     minimum: 1,
                     maximum: 5,
                 },
@@ -180,7 +180,7 @@ module.exports = {
     },
     numHackathons: {
         description: 'Number of hackathons attended',
-        type: 'integer',
+        type: 'number',
         minimum: 0,
         maximum: 5,
     },
@@ -202,7 +202,7 @@ module.exports = {
             },
             graduationYear: {
                 description: 'Graduation year',
-                type: 'integer',
+                type: 'number',
                 minimum: 1900,
                 maximum: 2100,
             },
@@ -294,4 +294,4 @@ module.exports = {
             },
         },
     },
-}
+})

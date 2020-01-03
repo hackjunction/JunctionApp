@@ -35,10 +35,10 @@ fastify.register(
 // )
 
 /* Register validators */
-require('./validators')(fastify)
+fastify.register(require('./validators'))
 
 /* Register decorators */
-require('./decorators')(fastify)
+fastify.register(require('./decorators'))
 
 /* Register API routes */
 fastify.register(require('./modules/routes'), {
