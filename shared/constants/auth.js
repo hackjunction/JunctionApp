@@ -5,7 +5,7 @@ const Roles = {
     RECRUITER: 'Recruiter',
     RECRUITER_ADMIN: 'RecruiterAdmin',
     DEVELOPER: 'Developer',
-};
+}
 
 const Permissions = {
     CREATE_EVENT: 'create:event',
@@ -14,9 +14,9 @@ const Permissions = {
     ACCESS_RECRUITMENT: 'access:recruitment',
     MANAGE_RECRUITMENT: 'manage:recruitment',
     ACCESS_DOCS: 'access:docs',
-};
+}
 
 module.exports = {
     Roles,
-    Permissions
-};
+    Permissions,
+}

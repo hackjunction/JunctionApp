@@ -6,7 +6,7 @@ module.exports = async fastify => {
     fastify.route({
         method: 'GET',
         url: '/',
-        handler: async (request, reply) => {
+        async handler(request, reply) {
             const events = await EventController.getPublicEvents()
             return reply.code(status.OK).sendData(events)
         },

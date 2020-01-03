@@ -34,6 +34,9 @@ fastify.register(
 //     })
 // )
 
+/* Register global error handler */
+fastify.setErrorHandler(require('./common/errors/errorHandler'))
+
 /* Register validators */
 fastify.register(require('./validators'))
 
@@ -63,7 +66,11 @@ fastify.route({
 })
 
 /* Global error handler */
-fastify.setErrorHandler(require('./common/errors/errorHandler'))
+// fastify.setErrorHandler(function(error, request, reply) {
+//     // Send error response
+//     console.log('WTF')
+// })
+// fastify.setErrorHandler(require('./common/errors/errorHandler'))
 
 /* Database */
 require('./misc/db').connect()

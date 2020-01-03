@@ -5,7 +5,7 @@ const { UnauthorizedError } = require('../common/errors/errors')
 module.exports = fp(async fastify => {
     fastify.register(require('fastify-auth0-verify'), {
         domain: global.gConfig.AUTH0_DOMAIN,
-        audience: true,
+        audience: false,
         secret: global.gConfig.AUTH0_CLIENT_SECRET,
         complete: false,
     })
