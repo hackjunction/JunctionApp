@@ -4,6 +4,7 @@ const CloudinaryImage = require('./CloudinaryImage')
 const StreetAddress = require('./StreetAddress')
 const EventTrack = require('./EventTrack')
 const EventChallenge = require('./EventChallenge')
+const UserId = require('./UserId')
 
 module.exports = {
     $id: '/Event',
@@ -25,9 +26,8 @@ module.exports = {
             maxLength: 5000,
         },
         slug: {
-            title: 'Slug',
-            description:
-                'A unique slug for the event, to be used in e.g. URLs related to this event',
+            title: 'Event slug',
+            description: 'A unique slug for this event',
             type: 'string',
         },
         published: {
@@ -195,18 +195,14 @@ module.exports = {
         },
         owner: {
             type: 'string',
-            description: 'The userId of the owner of the event',
+            description: 'The owner of this event',
+            $ref: UserId.$id,
         },
         organisers: {
             type: 'array',
-            description: `An array of the userId's of organisers of the event`,
+            description: `The organisers of this event`,
             items: {
-                type: 'object',
-                properties: {
-                    todo: {
-                        type: 'string',
-                    },
-                },
+                $ref: UserId.$id,
             },
         },
         winners: {

@@ -11,7 +11,7 @@ module.exports = async fastify => {
                 request.body,
                 request.user
             )
-            return reply.code(status.CREATED).send(event)
+            return reply.code(status.CREATED).sendData(event)
         },
         schema: {
             summary: 'Create a new event',

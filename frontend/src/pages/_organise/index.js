@@ -1,12 +1,13 @@
 import React from 'react'
 import { useRouteMatch } from 'react-router'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DefaultPage from './default'
 import SlugPage from './:slug'
 
 export default () => {
     const match = useRouteMatch()
+
     return (
         <Switch>
             <Route exact={true} path={`${match.url}`} component={DefaultPage} />
@@ -15,6 +16,7 @@ export default () => {
                 path={`${match.url}/:slug`}
                 component={SlugPage}
             />
+            <Redirect to="/" />
         </Switch>
     )
 }

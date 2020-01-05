@@ -12,7 +12,7 @@ module.exports = async fastify => {
                 request.event,
                 request.body
             )
-            return reply.code(200).send(updatedEvent)
+            return reply.code(200).sendData(updatedEvent)
         },
         schema: {
             summary: 'Edit event by slug',

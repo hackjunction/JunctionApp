@@ -27,8 +27,8 @@ module.exports = async fastify => {
                     status.OK,
                     fastify.refs.Event
                 ),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponse: [status.NOT_FOUND],
         },
     })
 }

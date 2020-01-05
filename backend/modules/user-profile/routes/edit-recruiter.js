@@ -50,8 +50,8 @@ module.exports = async fastify => {
                     status.OK,
                     fastify.refs.UserProfile
                 ),
-                [status.BAD_REQUEST]: fastify.responseEmpty(status.BAD_REQUEST),
             },
+            errorResponses: [status.BAD_REQUEST],
         },
     })
 }

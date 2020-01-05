@@ -13,7 +13,7 @@ module.exports = async fastify => {
                 const userProfiles = await UserProfileController.getUserProfilesPublic(
                     request.query.userIds
                 )
-                return reply.code(status.OK).send(userProfiles)
+                return reply.code(status.OK).sendData(userProfiles)
             }
             if (request.query.teamId) {
                 const teamMembers = await TeamController.getTeamMembers(
@@ -50,9 +50,8 @@ module.exports = async fastify => {
                     status.OK,
                     fastify.refs.UserProfile
                 ),
-                [status.BAD_REQUEST]: fastify.responseEmpty(status.BAD_REQUEST),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponses: [status.BAD_REQUEST, status.NOT_FOUND],
         },
     })
 }

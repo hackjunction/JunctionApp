@@ -10,7 +10,7 @@ module.exports = async fastify => {
             const events = await EventController.getEventsByOrganiser(
                 request.user
             )
-            return reply.code(status.OK).send(events)
+            return reply.code(status.OK).sendData(events)
         },
         schema: {
             summary: 'Get own events',

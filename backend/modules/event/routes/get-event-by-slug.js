@@ -11,7 +11,7 @@ module.exports = async fastify => {
              *  the event to the request for us, so we can just return that.
              *  It will also throw a 404 for us if the event is not found.
              * */
-            return reply.code(200).send(request.event)
+            return reply.code(200).sendData(request.event)
         },
         schema: {
             summary: 'Get event by slug',
@@ -32,8 +32,8 @@ module.exports = async fastify => {
                     status.OK,
                     fastify.refs.Event
                 ),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponses: [status.NOT_FOUND],
         },
     })
 }

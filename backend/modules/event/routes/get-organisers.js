@@ -41,8 +41,8 @@ module.exports = async fastify => {
                         },
                     },
                 }),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponses: [status.NOT_FOUND],
         },
     })
 }

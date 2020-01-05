@@ -40,8 +40,8 @@ module.exports = async fastify => {
                     type: 'string',
                     description: 'The userId of an organiser',
                 }),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponses: [status.NOT_FOUND],
         },
     })
 }

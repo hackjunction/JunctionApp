@@ -18,9 +18,13 @@ module.exports = fp(async fastify => {
                     '`fastify.hasPermission` cannot be called before `fastify.authenticate`'
                 )
             }
+
+            const permissions =
+                request.user[`${global.gConfig.ID_TOKEN_NAMESPACE}permissions`]
+
             const missingPermissions = _.difference(
                 requiredPermissions,
-                request.user.permissions
+                permissions
             )
             if (missingPermissions.length > 0) {
                 throw new UnauthorizedError(

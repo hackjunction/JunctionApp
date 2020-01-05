@@ -16,5 +16,5 @@ module.exports = {
             type: 'string',
         },
     },
-    required: ['url', 'publicId']
-};
+    required: ['url', 'publicId'],
+}

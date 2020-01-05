@@ -20,8 +20,8 @@ module.exports = async fastify => {
                     status.OK,
                     fastify.refs.UserProfile
                 ),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponses: [status.NOT_FOUND],
         },
     })
 }

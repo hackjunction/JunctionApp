@@ -11,11 +11,8 @@ const logRequest = request => {
     console.info(`${request.method}: ${request.url}`, request)
 }
 
-const logResponse = (_request, _options, response) => {
-    console.info(
-        `${response.status} ${response.statusText}: ${_request.url}`,
-        response
-    )
+const logResponse = async (response, url) => {
+    console.info(url, response)
 }
 
 export default {
@@ -25,10 +22,10 @@ export default {
                 ...options,
                 hooks: {
                     beforeRequest: [attachToken(idToken), logRequest],
-                    afterResponse: [logResponse],
                 },
             })
             .json()
+        logResponse(response, url)
         return response.data
     },
     post: idToken => async (url, body, options) => {
@@ -38,11 +35,10 @@ export default {
                 json: body,
                 hooks: {
                     beforeRequest: [attachToken(idToken), logRequest],
-                    afterResponse: [logResponse],
                 },
             })
             .json()
-
+        logResponse(response, url)
         return response.data
     },
     patch: idToken => async (url, body, options) => {
@@ -52,10 +48,10 @@ export default {
                 json: body,
                 hooks: {
                     beforeRequest: [attachToken(idToken), logRequest],
-                    afterResponse: [logResponse],
                 },
             })
             .json()
+        logResponse(response, url)
 
         return response.data
     },
@@ -66,11 +62,10 @@ export default {
                 json: body,
                 hooks: {
                     beforeRequest: [attachToken(idToken), logRequest],
-                    afterResponse: [logResponse],
                 },
             })
             .json()
-
+        logResponse(response, url)
         return response.data
     },
     delete: idToken => async (url, options) => {
@@ -79,10 +74,10 @@ export default {
                 ...options,
                 hooks: {
                     beforeRequest: [attachToken(idToken), logRequest],
-                    afterResponse: [logResponse],
                 },
             })
             .json()
+        logResponse(response, url)
         return response.data
     },
     head: idToken => async (url, options) => {
@@ -90,10 +85,9 @@ export default {
             ...options,
             hooks: {
                 beforeRequest: [attachToken(idToken), logRequest],
-                afterResponse: [logResponse],
             },
         })
-
+        logResponse(response, url)
         return response
     },
 }

@@ -8,7 +8,7 @@ module.exports = async fastify => {
         handler: async (request, reply) => {
             const { id } = request.params
             const event = await EventController.getPublicEventById(id)
-            return reply.code(status.OK).send(event)
+            return reply.code(status.OK).sendData(event)
         },
         schema: {
             summary: 'Get public event by id',
@@ -27,8 +27,8 @@ module.exports = async fastify => {
                     status.OK,
                     fastify.refs.Event
                 ),
-                [status.NOT_FOUND]: fastify.responseEmpty(status.NOT_FOUND),
             },
+            errorResponses: [status.NOT_FOUND],
         },
     })
 }
