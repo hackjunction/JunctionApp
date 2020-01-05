@@ -27,6 +27,9 @@ module.exports = async fastify => {
     fastify.register(require('./user-profile/routes'), {
         prefix: `/user-profiles`,
     })
+    fastify.register(require('./registration/routes'), {
+        prefix: `/registrations`,
+    })
 }
 
 // module.exports = function(app) {

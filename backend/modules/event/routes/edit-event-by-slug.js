@@ -28,6 +28,7 @@ module.exports = async fastify => {
                 },
                 ['slug']
             ),
+            body: fastify.refs.Event,
             response: {
                 [status.OK]: fastify.responseObject(
                     status.OK,

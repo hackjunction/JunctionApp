@@ -99,6 +99,13 @@ const hasTeam = routeName => async request => {
 }
 
 module.exports = fp(async fastify => {
+    /** Check that the url parameters supplied correspond to an event,
+     * and attach it to the request without performing any additional validation
+     */
+    fastify.decorate('events_attachEvent', async (request, reply) => {
+        await hasEvent('fastify.events_attachEvent')(request)
+    })
+
     /** Check that the user is an owner of the event */
     fastify.decorate('events_isOwner', async (request, reply) => {
         await hasUser('fastify.events_isOwner')(request)
@@ -124,6 +131,20 @@ module.exports = fp(async fastify => {
             throw new UnauthorizedError(
                 `${user.sub} must be the owner or an organiser of this event`
             )
+        }
+    })
+
+    fastify.decorate('events_canRegister', async (request, reply) => {
+        await hasUser('fastify.events_canRegister')(request)
+        await hasEvent('fastify.events_canRegister')(request)
+        const { event } = request
+
+        if (!event) {
+            throw new NotFoundError('Event does not exist')
+        }
+
+        if (!EventHelpers.isRegistrationOpen(event, moment)) {
+            return new ForbiddenError('Event registration is not open')
         }
     })
 

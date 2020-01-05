@@ -3,10 +3,11 @@ const RegistrationAnswers = require('./RegistrationAnswers')
 const RegistrationStatuses = require('../constants/registration-statuses')
 const RegistrationTravelGrantStatuses = require('../constants/registration-travel-grant-statuses')
 
-const schema = Object.freeze({
-    $id: '/UserProfile',
-    title: 'User Profile',
-    description: 'A user profile with all properties available',
+const schema = {
+    $id: '/Registration',
+    title: 'Registration',
+    description:
+        'A registration to a given event with all properties available',
     type: 'object',
     properties: {
         event: {
@@ -47,7 +48,7 @@ const schema = Object.freeze({
             description: `The answers submitted in the registration form`,
             type: 'object',
             properties: {
-                $ref: RegistrationAnswers.$id,
+                ...RegistrationAnswers.properties,
             },
         },
         travelGrant: {
@@ -64,7 +65,7 @@ const schema = Object.freeze({
             description: 'The travel grant application',
             type: 'object',
             properties: {
-                $ref: TravelGrantDetails.$id,
+                ...TravelGrantDetails.properties,
             },
         },
         travelGrantComment: {
@@ -77,6 +78,6 @@ const schema = Object.freeze({
             type: 'number',
         },
     },
-})
+}
 
 module.exports = schema

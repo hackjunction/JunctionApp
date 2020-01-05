@@ -279,11 +279,9 @@ controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
         })
 }
 
-controller.assignRegistrationForEvent = data => {
-    if (!data.userId)
-        throw new Error('Must pass userId when assigning reviewer')
-    return Registration.findByIdAndUpdate(data.registrationId, {
-        assignedTo: data.userId,
+controller.assignRegistrationForEvent = (registrationId, userId) => {
+    return Registration.findByIdAndUpdate(registrationId, {
+        assignedTo: userId,
     })
 }
 
@@ -410,6 +408,7 @@ controller.getFullRegistrationsForEvent = eventId => {
     })
 }
 
+// TODO: Refactor the return value of this
 controller.acceptSoftAccepted = async eventId => {
     const users = await Registration.find({
         event: eventId,
@@ -419,9 +418,9 @@ controller.acceptSoftAccepted = async eventId => {
         user.status = RegistrationStatuses.asObject.accepted.id
         user.save()
     })
-    return accepted
 }
 
+// TODO: Refactor the return value of this
 controller.rejectSoftRejected = async eventId => {
     const users = await Registration.find({
         event: eventId,

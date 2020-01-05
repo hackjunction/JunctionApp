@@ -179,59 +179,59 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
     return res.status(200).json(rejected)
 })
 
-router.route('/').get(hasToken, getUserRegistrations)
+// router.route('/').get(hasToken, getUserRegistrations)
 
-/** Get, create or update a registration */
-router
-    .route('/:slug')
-    .get(hasToken, getRegistration)
-    .post(hasToken, canRegisterToEvent, createRegistration)
-    .patch(hasToken, canRegisterToEvent, updateRegistration)
+// /** Get, create or update a registration */
+// router
+//     .route('/:slug')
+//     .get(hasToken, getRegistration)
+//     .post(hasToken, canRegisterToEvent, createRegistration)
+//     .patch(hasToken, canRegisterToEvent, updateRegistration)
 
-router
-    .route('/:slug/confirm')
-    .patch(hasToken, hasRegisteredToEvent, confirmRegistration)
+// router
+//     .route('/:slug/confirm')
+//     .patch(hasToken, hasRegisteredToEvent, confirmRegistration)
 
-router
-    .route('/:slug/cancel')
-    .patch(hasToken, hasRegisteredToEvent, cancelRegistration)
+// router
+//     .route('/:slug/cancel')
+//     .patch(hasToken, hasRegisteredToEvent, cancelRegistration)
 
 router
     .route('/:slug/travel-grant-details')
     .patch(hasToken, hasRegisteredToEvent, setTravelGrantDetails)
 
-/** Get all registration as organiser */
-router.get(
-    '/:slug/all',
-    hasToken,
-    hasPermission(Auth.Permissions.MANAGE_EVENT),
-    isEventOrganiser,
-    getRegistrationsForEvent
-)
+// /** Get all registration as organiser */
+// router.get(
+//     '/:slug/all',
+//     hasToken,
+//     hasPermission(Auth.Permissions.MANAGE_EVENT),
+//     isEventOrganiser,
+//     getRegistrationsForEvent
+// )
 
-router
-    .route('/:slug/assign')
-    .get(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        selfAssignRegistrationsForEvent
-    )
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        assignRegistrationForEvent
-    )
+// router
+//     .route('/:slug/assign')
+//     .get(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         selfAssignRegistrationsForEvent
+//     )
+//     .patch(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         assignRegistrationForEvent
+//     )
 
-router
-    .route('/:slug/bulk')
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        bulkEditRegistrations
-    )
+// router
+//     .route('/:slug/bulk')
+//     .patch(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         bulkEditRegistrations
+//     )
 
 router
     .route('/:slug/bulk/grants')
@@ -248,23 +248,23 @@ router
         bulkRejectTravelGrants
     )
 
-router
-    .route('/:slug/bulk/accept')
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        bulkAcceptRegistrations
-    )
+// router
+//     .route('/:slug/bulk/accept')
+//     .patch(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         bulkAcceptRegistrations
+//     )
 
-router
-    .route('/:slug/bulk/reject')
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        bulkRejectRegistrations
-    )
+// router
+//     .route('/:slug/bulk/reject')
+//     .patch(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         bulkRejectRegistrations
+//     )
 
 router
     .route('/:slug/admin/travel-grant-details/')
@@ -293,20 +293,20 @@ router
         notifyTravelGrantDetailsAccepted
     )
 
-/** Get or edit single registration as an organiser */
-router
-    .route('/:slug/:registrationId')
-    .get(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        getFullRegistration
-    )
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        editRegistration
-    )
+// /** Get or edit single registration as an organiser */
+// router
+//     .route('/:slug/:registrationId')
+//     .get(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         getFullRegistration
+//     )
+//     .patch(
+//         hasToken,
+//         hasPermission(Auth.Permissions.MANAGE_EVENT),
+//         isEventOrganiser,
+//         editRegistration
+//     )
 
-module.exports = router
+// module.exports = router

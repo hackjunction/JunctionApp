@@ -45,7 +45,7 @@ module.exports = {
             description: `The user's home address`,
             type: 'object',
             properties: {
-                $ref: StreetAddress.$id,
+                ...StreetAddress.properties,
             },
         },
         hasSSN: {
@@ -65,14 +65,14 @@ module.exports = {
             description: `The user's IBAN bank account number`,
             type: 'object',
             properties: {
-                $ref: IbanAccount.$id,
+                ...IbanAccount.properties,
             },
         },
         receiptsPdf: {
             description: `A PDF upload containing the user's travel receipts`,
             type: 'object',
             properties: {
-                $ref: CloudinaryImage.$id,
+                ...CloudinaryImage.properties,
             },
         },
         receiptsSum: {

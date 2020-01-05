@@ -83,6 +83,14 @@ module.exports = fp(async fastify => {
         const response = schema.response || {}
         const security = schema.security || []
 
+        const errorResponses = {}
+        if (schema.errorResponses) {
+            schema.errorResponses.forEach(statusCode => {
+                errorResponses[statusCode] = fastify.responseEmpty(statusCode)
+            })
+            delete schema.errorResponses
+        }
+
         this.route({
             ...routeConfig,
             /** Add the auth & permissions checks here before other preValidation */
@@ -98,6 +106,7 @@ module.exports = fp(async fastify => {
                     [status.UNAUTHORIZED]: {
                         ...this.responses[status.UNAUTHORIZED],
                     },
+                    ...errorResponses,
                     ...response,
                 },
                 security: [

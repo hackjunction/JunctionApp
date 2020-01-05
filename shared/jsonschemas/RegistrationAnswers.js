@@ -6,6 +6,6 @@ module.exports = {
     description: 'The answers a user has submitted in their registration',
     type: 'object',
     properties: {
-        ...RegistrationFields.properties,
+        ...RegistrationFields,
     },
 }

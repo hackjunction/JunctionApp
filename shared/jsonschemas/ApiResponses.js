@@ -21,7 +21,7 @@ const errorProperties = {
     },
 }
 
-module.exports = {
+module.exports = Object.freeze({
     200: {
         description: 'Success',
         type: 'null',
@@ -40,9 +40,14 @@ module.exports = {
         type: 'object',
         properties: errorProperties,
     },
+    403: {
+        description: 'Forbidden',
+        type: 'object',
+        properties: errorProperties,
+    },
     404: {
         description: 'Not Found',
         type: 'object',
         properties: errorProperties,
     },
-}
+})
