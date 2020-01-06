@@ -203,7 +203,7 @@ const Fields = {
                 field: 'nationality',
                 schema: {
                     type: String,
-                    enum: Countries.asArrayOfName,
+                    enum: Countries.asArrayOfNationalities,
                 },
             },
             defaultEnabled: false,

@@ -39,14 +39,14 @@ module.exports = Object.freeze({
             number: {
                 description: 'Number',
                 type: 'string',
-                pattern: '/^[0-9]{7,14}$/',
+                pattern: '^[0-9]{7,14}$',
             },
         },
     },
     dateOfBirth: {
         description: 'Date of birth',
         type: 'string',
-        format: 'date',
+        format: 'date-time',
     },
     gender: {
         description: 'Gender',

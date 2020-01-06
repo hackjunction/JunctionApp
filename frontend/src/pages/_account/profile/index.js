@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    console.log('RENDER PROFILE')
     const dispatch = useDispatch()
     const userProfile = useSelector(UserSelectors.userProfile)
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
