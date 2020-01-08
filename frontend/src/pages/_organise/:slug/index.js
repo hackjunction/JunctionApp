@@ -143,6 +143,8 @@ export default () => {
                         key: 'travel-grants',
                         path: '/travel-grants',
                         exact: true,
+                        locked: event?.travelGrantConfig?.enabled ?? true,
+                        lockedDescription: 'Travel grants disabled',
                         icon: <FlightTakeoffIcon />,
                         label: 'Travel grants',
                         component: TravelGrantsPage,

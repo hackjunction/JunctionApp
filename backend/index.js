@@ -17,8 +17,6 @@ require('./misc/config')
 const logger = require('./misc/logger')
 
 // Enable route logging by uncommenting this line
-app.use(expressPino({ logger }))
-
 /** Use helmet for some basic security measures */
 app.use(helmet())
 

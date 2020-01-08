@@ -61,10 +61,10 @@ export default ({
     const participantSubheading = useMemo(() => {
         if (!registration) return ''
         const team = teamsMap[registration.user]
-        const countryText = registration.answers.countryOfResidence
-        const teamText = team ? team.code : 'No team'
+        const countryText = registration?.answers?.countryOfResidence
+        const teamText = `Team: ${team?.code ?? 'No team'}`
 
-        return `${countryText} // ${teamText} `
+        return [countryText, teamText].filter(value => !!value).join(' // ')
     }, [registration, teamsMap])
 
     const handleEdit = useCallback(
