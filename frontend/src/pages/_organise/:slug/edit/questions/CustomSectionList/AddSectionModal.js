@@ -151,7 +151,7 @@ export default ({
                 </Typography>
                 <MarkdownInput
                     value={data.description}
-                    onChange={e => handleChange('description', e.target.value)}
+                    onChange={value => handleChange('description', value)}
                 />
                 <Box p={1} />
                 <Typography variant="body1" className={classes.label}>
