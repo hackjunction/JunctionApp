@@ -17,3 +17,7 @@ Read DEVELOPMENT.md for instructions on how to set up your local development env
 # Contributing
 
 To contribute to the development of this app, please fork the repository and make a pull request to `master`. For further details and guidance, please reach out to the Junction tech team at dev@hackjunction.com or on the Junction Slack channel.
+
+### Reporting bugs
+
+If you come across a bug / improvement idea / feature request for the platform, please create an issue describing the problem or request in this repository, with as much detail as you're able to provide. 
