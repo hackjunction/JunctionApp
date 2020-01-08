@@ -258,7 +258,9 @@ export default ({
                     flexWrap="wrap"
                     justifyContent="flex-end"
                 >
-                    <Button color="error">Remove section</Button>
+                    <Button color="error" onClick={onRemove}>
+                        Remove section
+                    </Button>
                     <Button
                         color="theme_turquoise"
                         onClick={() => setModalOpen(true)}
