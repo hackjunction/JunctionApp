@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Button } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
@@ -8,6 +8,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 
 import ErrorDisplay from './ErrorDisplay'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty'
+import Button from 'components/generic/Button'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
