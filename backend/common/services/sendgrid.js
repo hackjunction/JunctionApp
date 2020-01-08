@@ -75,13 +75,7 @@ const SendgridService = {
                         event.registrationEndTime
                     ).format(
                         'MMMM Do'
-                    )}</b>, and we'll process all applications by <b>${moment(
-                        event.registrationEndTime
-                    )
-                        .add(5, 'days')
-                        .format(
-                            'MMMM Do'
-                        )}</b>. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
+                    )}</b>, and we'll be able to process all of the applications shortly after that. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
                     cta_text: 'Event dashboard',
                     cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
                 }
