@@ -49,7 +49,7 @@ export default (ComposedComponent, requiredPermissions = []) => {
         if (!isAuthenticated) return null
         if (!hasProfile) return null
         if (!hasRequiredPermissions) return null
-        if (!isSessionExpired) return null
+        if (isSessionExpired) return null
 
         return <ComposedComponent {...props} />
     }

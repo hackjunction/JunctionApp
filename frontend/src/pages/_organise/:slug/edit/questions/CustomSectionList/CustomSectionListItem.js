@@ -16,6 +16,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import Button from 'components/generic/Button'
+import Markdown from 'components/generic/Markdown'
 import AddQuestionModal from './AddQuestionModal'
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +26,9 @@ const useStyles = makeStyles(theme => ({
         boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
         borderRadius: '7px',
         marginBottom: theme.spacing(2),
+    },
+    descriptionWrapper: {
+        marginTop: theme.spacing(2),
     },
 }))
 
@@ -120,8 +124,11 @@ export default ({
                 <List>
                     <ListItem>
                         <ListItemText
-                            primary="Description"
-                            secondary={section.description}
+                            secondary={
+                                <Box className={classes.descriptionWrapper}>
+                                    <Markdown source={section.description} />
+                                </Box>
+                            }
                         />
                     </ListItem>
                     <ListItem>

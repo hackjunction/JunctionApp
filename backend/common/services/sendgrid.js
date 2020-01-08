@@ -41,11 +41,30 @@ const SendgridService = {
     sendAcceptanceEmail: (event, user) => {
         const msg = SendgridService.buildTemplateMessage(
             user.email,
-            global.gConfig.SENDGRID_ACCEPTED_TEMPLATE,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                event_name: event.name,
-                first_name: user.firstName,
-                dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                header_image: event.coverImage.url,
+                subject: `Congratulations! ${event.name}!`,
+                subtitle: `You've been accepted to ${event.name}!`,
+                body: `
+                    <p>
+                        After your celebratory dance, please remember to confirm your spot <strong>A.S.A.P</strong> so that
+                        we know you're coming. You can do this by logging into the Event Dashboard (link below) with the same 
+                        account you used when filling the registration form. Please note: you'll need to use the same login
+                        method as last time, which in your case was <strong>${
+                            user.userId.split('|')[0]
+                        }</strong>
+                    </p>
+                    <p>
+                        If something has come up, and you won't be able to join the event, please go ahead and
+                        cancel your spot in the Event Dashboard so that we can give it to the next hacker in line. 
+                    </p>
+                `,
+                cta_text: 'Event dashboard',
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                // event_name: event.name,
+                // first_name: user.firstName,
+                // dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
             }
         )
         return SendgridService.send(msg)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RegistrationFields } from '@hackjunction/shared'
-import { groupBy, find } from 'lodash-es'
+import { groupBy, sortBy, find } from 'lodash-es'
 import {
     ExpansionPanel,
     ExpansionPanelSummary,
@@ -20,7 +20,10 @@ export default React.memo(({ registration }) => {
     const grouped = groupBy(fields, field =>
         RegistrationFields.getCategory(field)
     )
-    const categoryNames = Object.keys(grouped).filter(key => key !== '')
+    const sorted = sortBy(Object.keys(grouped), label =>
+        RegistrationFields.getCategoryOrderByLabel(label)
+    )
+    const categoryNames = sorted.filter(key => key !== '')
 
     return (
         <React.Fragment>

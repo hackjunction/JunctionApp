@@ -72,9 +72,28 @@ export default ({ registration, onSubmit, onCancel }) => {
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="subtitle1">Assigned to</Typography>
-                <Typography variant="subtitle2">
-                    {renderAssignedTo()}
-                </Typography>
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    flexWrap="wrap"
+                >
+                    <Box
+                        pt={0.5}
+                        pb={0.5}
+                        pr={2}
+                        pl={2}
+                        mr={2}
+                        style={{ backgroundColor: 'lightgray' }}
+                    >
+                        <Typography variant="subtitle2">
+                            {renderAssignedTo()}
+                        </Typography>
+                    </Box>
+                    <Button onClick={() => setOrganiserModalOpen(true)}>
+                        Change
+                    </Button>
+                </Box>
                 <OrganiserSelectModal
                     open={organiserModalOpen}
                     onClose={() => setOrganiserModalOpen(false)}
@@ -98,7 +117,7 @@ export default ({ registration, onSubmit, onCancel }) => {
                     onChange={status.setValue}
                 />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <TextInput
                     label="Travel grant amount (EUR)"
                     helperText="Enter 0 to reject travel grant. If the participant previously had no travel grant value, entering a value will trigger an email notification."
@@ -106,7 +125,7 @@ export default ({ registration, onSubmit, onCancel }) => {
                     value={travelGrant.value}
                     onChange={travelGrant.setValue}
                 />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <Box
                     display="flex"

@@ -81,7 +81,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                 value: uni.name,
             }))
             .filter(uni => {
-                if (uni.name === value.university) {
+                if (uni.label === value.university) {
                     return false
                 }
                 return true
@@ -103,52 +103,57 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                     onChange={level => handleChange('level', level)}
                 />
             </Grid>
-            <Grid item xs={6}>
-                <Select
-                    disabled={fieldsDisabled}
-                    label="Country of study"
-                    placeholder="Choose country"
-                    options="country"
-                    value={country}
-                    onChange={setCountry}
-                />
-            </Grid>
-            <Grid item xs={6}>
-                <Select
-                    disabled={fieldsDisabled}
-                    label="University"
-                    placeholder={
-                        country ? 'Choose university' : 'Choose a country first'
-                    }
-                    options={universityOptions}
-                    value={value.university}
-                    onChange={university =>
-                        handleChange('university', university)
-                    }
-                    allowCreate
-                />
-            </Grid>
-            <Grid item xs={6}>
-                <TextInput
-                    disabled={fieldsDisabled}
-                    label="Field of study"
-                    helperText="E.g. Computer Science"
-                    value={value.degree}
-                    onChange={degree => handleChange('degree', degree)}
-                />
-            </Grid>
-            <Grid item xs={6}>
-                <Select
-                    disabled={fieldsDisabled}
-                    label="Graduation year"
-                    placeholder="Year of graduation (or expected year of graduation)"
-                    options="year-future"
-                    value={value.graduationYear}
-                    onChange={graduationYear =>
-                        handleChange('graduationYear', graduationYear)
-                    }
-                />
-            </Grid>
+            {!fieldsDisabled && (
+                <React.Fragment>
+                    <Grid item xs={6}>
+                        <Select
+                            label="Country of study"
+                            placeholder="Choose country"
+                            options="country"
+                            value={country}
+                            onChange={setCountry}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                            disabled={fieldsDisabled}
+                            label="University"
+                            placeholder={
+                                country
+                                    ? 'Search for universities'
+                                    : 'Choose a country first'
+                            }
+                            options={universityOptions}
+                            value={value.university}
+                            onChange={university =>
+                                handleChange('university', university)
+                            }
+                            allowCreate
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextInput
+                            disabled={fieldsDisabled}
+                            label="Field of study"
+                            helperText="E.g. Computer Science"
+                            value={value.degree}
+                            onChange={degree => handleChange('degree', degree)}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                            disabled={fieldsDisabled}
+                            label="Graduation year"
+                            placeholder="Year of graduation (or expected year of graduation)"
+                            options="year-future"
+                            value={value.graduationYear}
+                            onChange={graduationYear =>
+                                handleChange('graduationYear', graduationYear)
+                            }
+                        />
+                    </Grid>
+                </React.Fragment>
+            )}
         </Grid>
     )
 }
