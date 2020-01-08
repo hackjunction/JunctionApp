@@ -44,7 +44,7 @@ const SendgridService = {
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
                 header_image: event.coverImage.url,
-                subject: `Congratulations! ${event.name}!`,
+                subject: `Congratulations!`,
                 subtitle: `You've been accepted to ${event.name}!`,
                 body: `
                     <p>
@@ -72,10 +72,30 @@ const SendgridService = {
     sendRejectionEmail: (event, user) => {
         const msg = SendgridService.buildTemplateMessage(
             user.email,
-            global.gConfig.SENDGRID_REJECTED_TEMPLATE,
+            global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                event_name: event.name,
-                first_name: user.firstName,
+                header_image: event.coverImage.url,
+                subject: `Oh-oh, bad news...`,
+                subtitle: `We couldn't give you a spot at ${event.name}.`,
+                body: `
+                    <p>
+                        Thank you very much for applying to ${event.name}, but we're sad to inform you
+                        that we weren't able to accept you this time. We'd love to be able to accept all
+                        of our applicants, but unfortunately that's not usually possible. We received a great number of 
+                        high-quality applications, so the final decisions were very difficult to make.
+                    </p>
+                    <p>
+                        One thing to note if you applied as a team: team members had the opportunity to also apply
+                        as an individual should their team as a whole not get accepted. So, it is possible that some
+                        members of your team have been accepted, but this just means that they we're accepted separately,
+                        as individuals.
+                    </p>
+                    <p>
+                        As a final note, don't feel discouraged and make sure to apply to one of our many other events.
+                        We host tons of events around the year and around the globe and it would be amazing to see you at
+                        one of them. Check out the full event calendar here <a href="https://hackjunction.com/calendar">here</a>.
+                    </p>
+                `,
             }
         )
         return SendgridService.send(msg)
