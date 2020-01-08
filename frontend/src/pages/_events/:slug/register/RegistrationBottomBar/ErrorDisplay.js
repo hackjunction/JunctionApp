@@ -5,6 +5,8 @@ import { IconButton, Popper, Paper, Typography, Box } from '@material-ui/core'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CloseIcon from '@material-ui/icons/Close'
 
+import MiscUtils from 'utils/misc'
+
 const useStyles = makeStyles(theme => ({
     errorButton: ({ hasErrors }) => ({
         transition: 'all 0.2s ease',
@@ -45,10 +47,8 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto',
     },
     popper: {
-        zIndex: 3000,
-        position: 'fixed',
-        right: theme.spacing(2),
-        bottom: '50px',
+        zIndex: 1000,
+        padding: theme.spacing(2),
     },
 }))
 
@@ -56,14 +56,12 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ hasErrors })
     const [popperOpen, setPopperOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(null)
 
-    useEffect(() => {
-        if (hasErrors) {
-            setPopperOpen(true)
-        } else {
-            setPopperOpen(false)
-        }
-    }, [hasErrors])
+    const handleOpen = event => {
+        setAnchorEl(event.currentTarget)
+        setPopperOpen(true)
+    }
 
     return (
         <React.Fragment>
@@ -71,11 +69,29 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
                 aria-label="errors"
                 className={classes.errorButton}
                 size="small"
-                onClick={() => setPopperOpen(true)}
+                onClick={handleOpen}
             >
                 <ErrorOutlineIcon className={classes.errorIcon} />
             </IconButton>
-            <Popper className={classes.popper} open={popperOpen}>
+            <Popper
+                className={classes.popper}
+                open={popperOpen}
+                placement="top"
+                disablePortal={false}
+                anchorEl={anchorEl}
+                modifiers={{
+                    flip: {
+                        enabled: false,
+                    },
+                    preventOverflow: {
+                        enabled: false,
+                        boundariesElement: 'scrollParent',
+                    },
+                    arrow: {
+                        enabled: true,
+                    },
+                }}
+            >
                 <Paper className={classes.errorsBox}>
                     <Box className={classes.errorsBoxTop}>
                         <Typography
@@ -93,9 +109,10 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
                         </IconButton>
                     </Box>
                     <Box className={classes.errorsBoxContent} p={1}>
+                        {console.log(errors)}
                         <ul>
-                            {Object.keys(errors).map(key => (
-                                <li>{JSON.stringify(errors[key])}</li>
+                            {MiscUtils.parseFormikErrors(errors).map(error => (
+                                <li key={error}>{error}</li>
                             ))}
                         </ul>
                     </Box>
