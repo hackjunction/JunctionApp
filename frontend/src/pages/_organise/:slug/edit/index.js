@@ -44,11 +44,17 @@ export default () => {
                 actions.setSubmitting(false)
             })
             .catch(err => {
-                const { message, errors } = err.response.data
+                const errors = err?.response?.data?.errors
 
                 if (errors) {
-                    dispatch(SnackbarActions.error('Unable to save changes'))
-                    //TODO: const errorMessages = Object.keys(errors).map(key => `${key}: ${errors[key].message}`);
+                    dispatch(
+                        SnackbarActions.error('Unable to save changes', {
+                            errorMessages: Object.keys(errors).map(
+                                key => `${key}: ${errors[key].message}`
+                            ),
+                            persist: true,
+                        })
+                    )
                 } else {
                     dispatch(SnackbarActions.error('Unable to save changes'))
                 }
