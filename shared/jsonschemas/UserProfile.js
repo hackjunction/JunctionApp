@@ -74,7 +74,7 @@ const schema = Object.freeze({
     description: 'A user profile with all properties available',
     type: 'object',
     properties,
-    required: ['userId'],
+    required: ['userId', ...requiredFields],
 })
 
 module.exports = schema

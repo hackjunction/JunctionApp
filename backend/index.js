@@ -12,6 +12,14 @@ const logger = require('./misc/logger')
 /** Create Fastify application */
 const fastify = _fastify({
     logger,
+    ajv: {
+        customOptions: {
+            allErrors: true,
+            jsonPointers: true,
+            verbose: true,
+        },
+        plugins: [require('ajv-errors')],
+    },
 })
 
 // Enable route logging by uncommenting this line

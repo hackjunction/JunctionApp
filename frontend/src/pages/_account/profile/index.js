@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Formik, FastField, Field } from 'formik'
-import { RegistrationFields } from '@hackjunction/shared'
-import * as yup from 'yup'
+import { RegistrationFields, JsonSchemas } from '@hackjunction/shared'
+import { buildYup } from 'json-schema-to-yup'
+// import * as yup from 'yup'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import ImageUpload from 'components/inputs/ImageUpload'
@@ -51,7 +52,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    console.log('RENDER PROFILE')
     const dispatch = useDispatch()
     const userProfile = useSelector(UserSelectors.userProfile)
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
@@ -60,24 +60,42 @@ export default () => {
 
     const classes = useStyles()
 
-    const validationSchema = useCallback(data => {
-        const validations = {}
-        Object.keys(data).forEach(field => {
-            const fieldConfig = RegistrationFields.getField(field)
-            if (fieldConfig) {
-                const required =
-                    ['email', 'firstName', 'lastName'].indexOf(field) !== -1
-                validations[field] = fieldConfig.validationSchema(required)
-            }
-        })
-
-        validations['avatar'] = yup
-            .string()
-            .url()
-            .nullable()
-
-        return validations
+    const validationSchema = useMemo(() => {
+        const config = {
+            errMessages: {
+                firstName: {
+                    required: 'First name is a required field',
+                },
+                lastName: {
+                    required: 'Last name is a required field',
+                },
+            },
+        }
+        return buildYup(JsonSchemas.UserProfile, config)
     }, [])
+
+    console.log('YUP SCHEMA', validationSchema)
+
+    // const validationSchema = useCallback(data => {
+    //     const config = {}
+    //     return buildYup(JsonSchemas.UserProfile, config)
+    //     // const validations = {}
+    //     // Object.keys(data).forEach(field => {
+    //     //     const fieldConfig = RegistrationFields.getField(field)
+    //     //     if (fieldConfig) {
+    //     //         const required =
+    //     //             ['email', 'firstName', 'lastName'].indexOf(field) !== -1
+    //     //         validations[field] = fieldConfig.validationSchema(required)
+    //     //     }
+    //     // })
+
+    //     // validations['avatar'] = yup
+    //     //     .string()
+    //     //     .url()
+    //     //     .nullable()
+
+    //     // return validations
+    // }, [])
 
     const handleSubmit = useCallback(
         (values, formikBag) => {
@@ -103,17 +121,14 @@ export default () => {
     return (
         <PageWrapper loading={loading}>
             <Formik
-                validationSchema={props => {
-                    return yup.lazy(values => {
-                        return yup.object().shape(validationSchema(values))
-                    })
-                }}
+                validationSchema={null}
                 enableReinitialize
                 initialValues={userProfile}
                 onSubmit={handleSubmit}
             >
                 {formikProps => (
                     <React.Fragment>
+                        {console.log('ERRORS', formikProps.errors)}
                         <Box className={classes.topWrapper}>
                             <Box width="300px" height="300px" margin={3}>
                                 <FastField

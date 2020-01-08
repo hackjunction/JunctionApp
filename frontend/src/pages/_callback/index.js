@@ -32,7 +32,8 @@ export default () => {
                 if (err.response.status === 404) {
                     dispatch(push('/login/welcome'))
                 } else {
-                    dispatch(push('/error', { error: 'Login failed' }))
+                    console.log('ERR', err)
+                    //dispatch(push('/error', { error: 'Login failed' }))
                 }
             }
         }
@@ -44,7 +45,8 @@ export default () => {
                 await dispatch(AuthActions.handleAuthentication())
                 AnalyticsService.events.LOG_IN()
             } catch (err) {
-                dispatch(push('/error', { error: err.message }))
+                console.log('ERR', err)
+                //dispatch(push('/error', { error: err.message }))
             }
         }
     }, [dispatch, location])

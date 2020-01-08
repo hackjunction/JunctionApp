@@ -38,6 +38,7 @@
             "no-param-reassign": 0,
             "no-underscore-dangle": 0,
             "global-require": 0,
+            "no-template-curly-in-string": 0,
             "prefer-destructuring": [
                 "error",
                 {

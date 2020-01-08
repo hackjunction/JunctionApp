@@ -2,10 +2,19 @@ const status = require('http-status')
 const { ValidationError } = require('./errors')
 
 module.exports = async (error, request, reply) => { //eslint-disable-line
-    console.log('WTf', error)
     /** Check if the error is s subclass of CustomError (purposefully thrown) */
     if (error.httpStatus) {
         return reply.code(error.httpStatus).send(error.toJSON())
+    }
+
+    /** Check if the error is a fastify validation error */
+    console.log('ERROR', error.validation)
+    if (Array.isArray(error.validation) && error.validation.length > 0) {
+        return reply.code(status.BAD_REQUEST).send({
+            message: 'Validation failed',
+            status: status.BAD_REQUEST,
+            details: error.validation,
+        })
     }
 
     /** Check if the error is one of the known types */

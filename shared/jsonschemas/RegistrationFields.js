@@ -11,21 +11,25 @@ const Misc = require('../constants/misc')
 
 module.exports = Object.freeze({
     firstName: {
+        title: 'First name',
         description: 'First name',
         type: 'string',
         minLength: 1,
         maxLength: 100,
+        errorMessage: 'must be between 1 and 100 characters',
     },
     lastName: {
         description: 'Last name',
         type: 'string',
         minLength: 1,
         maxLength: 100,
+        errorMessage: 'must be between 1 and 100 characters',
     },
     email: {
         description: 'Email address',
         type: 'string',
         format: 'email',
+        errorMessage: 'must be a valid email address',
     },
     phoneNumber: {
         description: 'Phone number',
@@ -35,28 +39,35 @@ module.exports = Object.freeze({
                 description: 'Country code',
                 type: 'string',
                 enum: Countries.asArrayOfPhoneCodes,
+                errorMessage: 'must be a valid country code',
             },
             number: {
                 description: 'Number',
                 type: 'string',
                 pattern: '^[0-9]{7,14}$',
+                errorMessage:
+                    'must be a valid phone number (7-14 characters), without the leading country code',
             },
         },
+        required: ['country_code', 'number'],
     },
     dateOfBirth: {
         description: 'Date of birth',
         type: 'string',
         format: 'date-time',
+        errorMessage: 'must be a valid date',
     },
     gender: {
         description: 'Gender',
         type: 'string',
         enum: Genders,
+        errorMessage: `must be one of ${Genders.join(', ')}`,
     },
     nationality: {
         description: 'Nationality',
         type: 'string',
         enum: Countries.asArrayOfNationalities,
+        errorMessage: 'must be a valid nationality',
     },
     spokenLanguages: {
         description: 'Spoken languages',
@@ -65,23 +76,27 @@ module.exports = Object.freeze({
             description: 'Language',
             type: 'string',
             enum: Languages.asArrayOfNames,
+            errorMessage: 'must be a valid language',
         },
     },
     countryOfResidence: {
         description: 'Country of residence',
         type: 'string',
         enum: Countries.asArrayOfName,
+        errorMessage: 'must be a valid country',
     },
     cityOfResidence: {
         description: 'City of residence',
         type: 'string',
         minLength: 1,
         maxLength: 200,
+        errorMessage: 'must be between 1 and 200 characters',
     },
     tShirtSize: {
         description: 'T-shirt size',
         type: 'string',
         enum: Misc.tShirtSizes,
+        errorMessage: `must be one of ${Misc.tShirtSizes.join(',')}`,
     },
     dietaryRestrictions: {
         description: 'Dietary restrictions',
