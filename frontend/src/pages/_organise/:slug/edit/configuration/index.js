@@ -273,27 +273,30 @@ export default () => {
             <Grid item xs={12}>
                 <Field
                     name="overallReviewMethod"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Overall winner method"
-                            hint="This event is using tracks - which method should be used to determine the overall winner?"
-                            error={form.errors[field.name]}
-                            touched={form.touched[field.name]}
-                        >
-                            <Select
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                                options={Object.keys(
-                                    OverallReviewingMethods
-                                ).map(key => ({
-                                    label: OverallReviewingMethods[key].label,
-                                    value: key,
-                                }))}
-                            />
-                        </FormControl>
-                    )}
+                    render={({ field, form }) =>
+                        form.values.tracksEnabled && (
+                            <FormControl
+                                label="Overall winner method"
+                                hint="This event is using tracks - which method should be used to determine the overall winner?"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <Select
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    options={Object.keys(
+                                        OverallReviewingMethods
+                                    ).map(key => ({
+                                        label:
+                                            OverallReviewingMethods[key].label,
+                                        value: key,
+                                    }))}
+                                />
+                            </FormControl>
+                        )
+                    }
                 ></Field>
             </Grid>
             <Grid item xs={12}>
