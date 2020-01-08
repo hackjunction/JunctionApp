@@ -16,7 +16,6 @@ export default ({ event }) => {
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params
-    console.log('HELLO', match)
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -35,6 +34,10 @@ export default ({ event }) => {
     useEffect(() => {
         fetchProjects()
     }, [fetchProjects])
+
+    if (!data) {
+        return null
+    }
 
     return (
         <PageWrapper

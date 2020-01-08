@@ -1,83 +1,83 @@
-const mongoose = require('mongoose');
-const _ = require('lodash');
-const { ReviewingMethods } = require('@hackjunction/shared');
-const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage');
-const AchievementSchema = require('../../common/schemas/Achievement');
-const GavelController = require('../reviewing/gavel/controller');
+const mongoose = require('mongoose')
+const _ = require('lodash')
+const { ReviewingMethods } = require('@hackjunction/shared')
+const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage')
+const AchievementSchema = require('../../common/schemas/Achievement')
+const GavelController = require('../reviewing/gavel/controller')
 
 const ProjectSchema = new mongoose.Schema({
     event: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event',
-        required: true
+        required: true,
     },
     team: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
-        required: true
+        required: true,
     },
     name: {
         type: String,
-        required: true
+        required: true,
     },
     punchline: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     technologies: [String],
     source: {
         type: String,
-        required: true
+        required: true,
     },
     sourcePublic: {
         type: Boolean,
         required: true,
-        default: true
+        default: true,
     },
     demo: {
-        type: String
+        type: String,
     },
     images: {
-        type: [CloudinaryImageSchema]
+        type: [CloudinaryImageSchema],
     },
     challenges: {
-        type: [String]
+        type: [String],
     },
     track: {
-        type: String
+        type: String,
     },
     location: {
-        type: String
+        type: String,
     },
-    achievements: [AchievementSchema]
-});
+    achievements: [AchievementSchema],
+})
 
-ProjectSchema.set('timestamps', true);
+ProjectSchema.set('timestamps', true)
 
 /* Only allow a single project per team per event */
 ProjectSchema.index(
     {
         event: 1,
-        team: 1
+        team: 1,
     },
     {
-        unique: true
+        unique: true,
     }
-);
+)
 
 /* We'll commonly query projects by track and event, so create a compound index for that */
 ProjectSchema.index({
     track: 1,
-    event: 1
-});
+    event: 1,
+})
 
 ProjectSchema.methods.getPreview = function() {
-    return _.omit(this, ['description']);
-};
+    return _.omit(this, ['description'])
+}
 
 ProjectSchema.post('save', async function(doc, next) {
     mongoose
@@ -87,18 +87,18 @@ ProjectSchema.post('save', async function(doc, next) {
             switch (event.reviewMethod) {
                 /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
                 case ReviewingMethods.gavelPeerReview.id: {
-                    GavelController.ensureGavelProject(doc);
-                    break;
+                    GavelController.ensureGavelProject(doc)
+                    break
                 }
                 default: {
                     /** By default, no action needed */
                 }
             }
-        });
+        })
 
-    next();
-});
+    next()
+})
 
-const Project = mongoose.model('Project', ProjectSchema);
+const Project = mongoose.model('Project', ProjectSchema)
 
-module.exports = Project;
+module.exports = Project
