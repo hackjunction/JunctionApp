@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import { makeStyles, lighten } from '@material-ui/core/styles'
@@ -21,10 +21,26 @@ const useStyles = makeStyles(theme => ({
 
 const propTypes = {
     status: PropTypes.oneOf(RegistrationStatuses.ids).isRequired,
+    hideSoftStatuses: PropTypes.bool,
 }
 
-const StatusBadge = ({ status }) => {
-    const params = RegistrationStatuses.asObject[status]
+const defaultProps = {
+    hideSoftStatuses: false,
+}
+
+const StatusBadge = ({ status, hideSoftStatuses }) => {
+    const params = useMemo(() => {
+        if (hideSoftStatuses) {
+            switch (status) {
+                case RegistrationStatuses.asObject.softAccepted.id:
+                case RegistrationStatuses.asObject.softRejected.id:
+                    return RegistrationStatuses.asObject.pending
+                default:
+                    break
+            }
+        }
+        return RegistrationStatuses.asObject[status]
+    }, [hideSoftStatuses, status])
     const classes = useStyles(params)
     if (!params) return <Chip size="small" label="???" />
     return (
@@ -38,5 +54,6 @@ const StatusBadge = ({ status }) => {
 }
 
 StatusBadge.propTypes = propTypes
+StatusBadge.defaultProps = defaultProps
 
 export default StatusBadge
