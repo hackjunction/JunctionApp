@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withSnackbar } from 'notistack'
+import { Button } from '@material-ui/core'
 import { removeSnackbar } from 'redux/snackbar/actions'
 import * as SnackbarSelectors from 'redux/snackbar/selectors'
 
@@ -17,6 +18,31 @@ class Notifier extends Component {
         this.displayed = this.displayed.filter(key => id !== key)
     }
 
+    buildMessage = (message, options, key) => {
+        if (options?.errorMessages?.length > 0) {
+            return (
+                <div>
+                    <p>{message}</p>
+                    <ul>
+                        {options.errorMessages.map(message => {
+                            return <li key={message}>{message}</li>
+                        })}
+                    </ul>
+                    <Button
+                        style={{ color: '#fff' }}
+                        onClick={() => {
+                            this.props.closeSnackbar(key)
+                        }}
+                    >
+                        OK
+                    </Button>
+                </div>
+            )
+        } else {
+            return message
+        }
+    }
+
     componentDidUpdate() {
         const { notifications = [] } = this.props
 
@@ -29,9 +55,17 @@ class Notifier extends Component {
                 // Do nothing if snackbar is already displayed
                 if (this.displayed.includes(key)) return
                 // Display snackbar using notistack
-                this.props.enqueueSnackbar(message, {
+
+                const formattedMessage = this.buildMessage(
+                    message,
+                    options,
+                    key
+                )
+                this.props.enqueueSnackbar(formattedMessage, {
                     key,
                     ...options,
+                    persist:
+                        options.persist ?? options?.errorMessages?.length > 0,
                     onClose: (event, reason, key) => {
                         if (options.onClose) {
                             options.onClose(event, reason, key)
