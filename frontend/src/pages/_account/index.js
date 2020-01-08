@@ -27,7 +27,7 @@ export default () => {
                         label: 'Profile',
                         key: 'profile',
                         path: '/profile',
-                        content: Profile,
+                        component: Profile,
                     },
                 ]}
                 baseRoute={match.url}

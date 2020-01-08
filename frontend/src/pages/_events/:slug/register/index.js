@@ -306,7 +306,7 @@ export default RequiresPermission(() => {
                             variant="h2"
                             className={classes.topTitleExtra}
                         >
-                            Junction 2019
+                            {event.name}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
