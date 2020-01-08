@@ -28,7 +28,7 @@ export default () => {
                 EventsService.getPublicEventBySlug(slug),
                 ProjectsService.getProjectsByEvent(slug),
             ])
-            if (!event || !event.galleryOpen) {
+            if (!event) {
                 dispatch(push('/'))
             }
             setEvent(event)
@@ -38,7 +38,7 @@ export default () => {
         } finally {
             setLoading(false)
         }
-    }, [slug, dispatch])
+    }, [dispatch, slug])
 
     useEffect(() => {
         fetchData()
@@ -48,25 +48,9 @@ export default () => {
         <PageWrapper loading={loading} error={error}>
             <Switch>
                 <Route
-                    path={`${match.url}/view/:projectId`}
+                    path={`${match.url}/challenge/:token`}
                     component={({ match }) => (
-                        <GalleryDetail event={event} match={match} />
-                    )}
-                />
-                <Route
-                    path={`${match.url}/by-track/:track`}
-                    component={({ match }) => (
-                        <GalleryTrack
-                            projects={projects}
-                            event={event}
-                            match={match}
-                        />
-                    )}
-                />
-                <Route
-                    path={`${match.url}/by-challenge/:challenge`}
-                    component={({ match }) => (
-                        <GalleryChallenge
+                        <GalleryChallengeAdmin
                             projects={projects}
                             event={event}
                             match={match}
@@ -83,22 +67,46 @@ export default () => {
                         />
                     )}
                 />
-                <Route
-                    path={`${match.url}/challenge/:token`}
-                    component={({ match }) => (
-                        <GalleryChallengeAdmin
-                            projects={projects}
-                            event={event}
-                            match={match}
+                {/** Hide the rest of these routes if the gallery isn't open */}
+                {event?.galleryOpen && (
+                    <React.Fragment>
+                        <Route
+                            path={`${match.url}/view/:projectId`}
+                            component={({ match }) => (
+                                <GalleryDetail event={event} match={match} />
+                            )}
                         />
-                    )}
-                />
-                <Route
-                    path={match.url}
-                    component={() => (
-                        <GalleryHome projects={projects} event={event} />
-                    )}
-                />
+                        <Route
+                            path={`${match.url}/by-track/:track`}
+                            component={({ match }) => (
+                                <GalleryTrack
+                                    projects={projects}
+                                    event={event}
+                                    match={match}
+                                />
+                            )}
+                        />
+                        <Route
+                            path={`${match.url}/by-challenge/:challenge`}
+                            component={({ match }) => (
+                                <GalleryChallenge
+                                    projects={projects}
+                                    event={event}
+                                    match={match}
+                                />
+                            )}
+                        />
+                        <Route
+                            path={match.url}
+                            component={() => (
+                                <GalleryHome
+                                    projects={projects}
+                                    event={event}
+                                />
+                            )}
+                        />
+                    </React.Fragment>
+                )}
                 <Redirect to="/" />
             </Switch>
         </PageWrapper>
