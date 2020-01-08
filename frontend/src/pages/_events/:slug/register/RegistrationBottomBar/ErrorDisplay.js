@@ -109,7 +109,6 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
                         </IconButton>
                     </Box>
                     <Box className={classes.errorsBoxContent} p={1}>
-                        {console.log(errors)}
                         <ul>
                             {MiscUtils.parseFormikErrors(errors).map(error => (
                                 <li key={error}>{error}</li>
