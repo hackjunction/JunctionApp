@@ -176,6 +176,7 @@ export default () => {
                                         <Box mt={0.5} />
                                         <StatusBadge
                                             status={registration.status}
+                                            hideSoftStatuses
                                         />
                                     </Box>
                                 }
