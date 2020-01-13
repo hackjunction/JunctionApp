@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,6 +12,8 @@ import {
     TableFooter,
     TableSortLabel,
 } from '@material-ui/core'
+
+import Empty from 'components/generic/Empty'
 
 import Pagination from './Pagination'
 import ActionBar from './ActionBar'
@@ -84,81 +86,90 @@ const _Table = ({ columns, data, config }) => {
         usePagination
     )
 
+    const isEmpty = !data || data.length === 0
+
     return (
         <Box className={classes.wrapper}>
-            <Table {...getTableProps()} className={classes.table}>
-                <TableRow>
-                    <TableCell colSpan={columns.length}>
-                        <ActionBar columns={flatHeaders} />
-                    </TableCell>
-                </TableRow>
-                <TableHead className={classes.tableHead}>
-                    {headerGroups.map(headerGroup => (
-                        <TableRow
-                            {...headerGroup.getHeaderGroupProps()}
-                            className={classes.tableRow}
-                        >
-                            {headerGroup.headers.map(column => (
-                                <TableCell
-                                    {...column.getHeaderProps(
-                                        column.getSortByToggleProps()
-                                    )}
-                                    className={classes.tableHeadCell}
-                                >
-                                    <TableSortLabel
-                                        active={column.isSorted}
-                                        direction={
-                                            column.isSortedDesc ? 'desc' : 'asc'
-                                        }
-                                        classes={{
-                                            root: classes.tableHeadCell,
-                                            active: classes.tableHeadCellActive,
-                                            icon: classes.tableHeadSortIcon,
-                                        }}
-                                    >
-                                        {column.render('Header')}
-                                    </TableSortLabel>
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableHead>
-                <TableBody {...getTableBodyProps()}>
-                    {page.map((row, i) => {
-                        prepareRow(row)
-                        return (
-                            <TableRow {...row.getRowProps()}>
-                                {row.cells.map(cell => {
-                                    return (
-                                        <TableCell {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
-                                        </TableCell>
-                                    )
-                                })}
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-                <TableFooter>
+            {isEmpty ? (
+                <Empty isEmpty />
+            ) : (
+                <Table {...getTableProps()} className={classes.table}>
                     <TableRow>
                         <TableCell colSpan={columns.length}>
-                            <Pagination
-                                canPreviousPage={canPreviousPage}
-                                canNextPage={canNextPage}
-                                pageCount={pageCount}
-                                gotoPage={gotoPage}
-                                nextPage={nextPage}
-                                previousPage={previousPage}
-                                setPageSize={setPageSize}
-                                pageOptions={pageOptions}
-                                pageSize={pageSize}
-                                pageIndex={pageIndex}
-                                items={data.length}
-                            />
+                            <ActionBar columns={flatHeaders} />
                         </TableCell>
                     </TableRow>
-                </TableFooter>
-            </Table>
+                    <TableHead className={classes.tableHead}>
+                        {headerGroups.map(headerGroup => (
+                            <TableRow
+                                {...headerGroup.getHeaderGroupProps()}
+                                className={classes.tableRow}
+                            >
+                                {headerGroup.headers.map(column => (
+                                    <TableCell
+                                        {...column.getHeaderProps(
+                                            column.getSortByToggleProps()
+                                        )}
+                                        className={classes.tableHeadCell}
+                                    >
+                                        <TableSortLabel
+                                            active={column.isSorted}
+                                            direction={
+                                                column.isSortedDesc
+                                                    ? 'desc'
+                                                    : 'asc'
+                                            }
+                                            classes={{
+                                                root: classes.tableHeadCell,
+                                                active:
+                                                    classes.tableHeadCellActive,
+                                                icon: classes.tableHeadSortIcon,
+                                            }}
+                                        >
+                                            {column.render('Header')}
+                                        </TableSortLabel>
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableHead>
+                    <TableBody {...getTableBodyProps()}>
+                        {page.map((row, i) => {
+                            prepareRow(row)
+                            return (
+                                <TableRow {...row.getRowProps()}>
+                                    {row.cells.map(cell => {
+                                        return (
+                                            <TableCell {...cell.getCellProps()}>
+                                                {cell.render('Cell')}
+                                            </TableCell>
+                                        )
+                                    })}
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={columns.length}>
+                                <Pagination
+                                    canPreviousPage={canPreviousPage}
+                                    canNextPage={canNextPage}
+                                    pageCount={pageCount}
+                                    gotoPage={gotoPage}
+                                    nextPage={nextPage}
+                                    previousPage={previousPage}
+                                    setPageSize={setPageSize}
+                                    pageOptions={pageOptions}
+                                    pageSize={pageSize}
+                                    pageIndex={pageIndex}
+                                    items={data.length}
+                                />
+                            </TableCell>
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            )}
         </Box>
     )
 }
