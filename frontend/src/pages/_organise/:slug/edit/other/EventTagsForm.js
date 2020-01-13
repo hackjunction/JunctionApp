@@ -33,7 +33,7 @@ const COLORS = [
     'greenyellow',
     'lightseagreen',
     'green',
-    'aquamarine',
+    'powderblue',
     'cyan',
     'blue',
     'royalblue',
