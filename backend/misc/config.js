@@ -59,14 +59,6 @@ const settings = {
         value: process.env.SENDGRID_FROM_NAME || 'Junction',
         required: true,
     },
-    SENDGRID_ACCEPTED_TEMPLATE: {
-        value: process.env.SENDGRID_ACCEPTED_TEMPLATE,
-        required: true,
-    },
-    SENDGRID_REJECTED_TEMPLATE: {
-        value: process.env.SENDGRID_REJECTED_TEMPLATE,
-        required: true,
-    },
     SENDGRID_GENERIC_TEMPLATE: {
         value: process.env.SENDGRID_GENERIC_TEMPLATE,
         required: true,
