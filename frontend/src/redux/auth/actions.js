@@ -63,6 +63,7 @@ export const handleAuthentication = () => async dispatch => {
             return authResult.idToken
         })
         .catch(err => {
+            console.log('Authentication failed', err)
             return Promise.reject('Authentication failed')
         })
 }

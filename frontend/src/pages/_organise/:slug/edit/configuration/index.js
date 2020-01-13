@@ -274,7 +274,7 @@ export default () => {
                 <Field
                     name="overallReviewMethod"
                     render={({ field, form }) =>
-                        form.values.tracksEnabled && (
+                        form.values.tracksEnabled ? (
                             <FormControl
                                 label="Overall winner method"
                                 hint="This event is using tracks - which method should be used to determine the overall winner?"
@@ -295,7 +295,7 @@ export default () => {
                                     }))}
                                 />
                             </FormControl>
-                        )
+                        ) : null
                     }
                 ></Field>
             </Grid>
