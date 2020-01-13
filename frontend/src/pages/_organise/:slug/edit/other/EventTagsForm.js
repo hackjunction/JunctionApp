@@ -40,6 +40,23 @@ const COLORS = [
     'purple',
 ]
 
+const ColorPreview = prop => {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span
+                style={{
+                    height: '10px',
+                    width: '10px',
+                    borderRadius: '50%',
+                    background: prop,
+                    marginRight: '10px',
+                }}
+            />
+            {prop}
+        </div>
+    )
+}
+
 const useStyles = makeStyles(theme => ({
     errorMessage: {
         color: theme.palette.error.main,
@@ -165,7 +182,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={color.value}
                     onChange={color.setValue}
                     options={COLORS.map(color => ({
-                        label: color,
+                        label: ColorPreview(color),
                         value: color,
                     }))}
                 />
