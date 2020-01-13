@@ -98,7 +98,7 @@ export default () => {
                                                             !row.editable ||
                                                             !row.enable
                                                         }
-                                                        checked={require}
+                                                        checked={row.require}
                                                         onChange={(
                                                             e,
                                                             require
