@@ -27,6 +27,7 @@ const Pagination = ({
 
     return (
         <Box
+            p={1}
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
@@ -34,38 +35,28 @@ const Pagination = ({
             alignItems="center"
         >
             <Box>
-                <TextField
-                    style={{ width: '100px' }}
-                    select
-                    helperText="Items per page"
-                    value={pageSize}
-                    onChange={handlePageSizeChange}
-                    margin="dense"
-                    SelectProps={{
-                        native: true,
-                    }}
-                    variant="filled"
-                >
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                    <option value={100000}>All</option>
-                </TextField>
+                <Typography variant="caption">
+                    {items === 1 ? '1 result' : `${items} results`}
+                </Typography>
             </Box>
-            <Box display="flex" flexDirection="row" alignItems="center">
-                <IconButton disabled={!canPreviousPage} onClick={previousPage}>
-                    <NavigateBeforeIcon />
-                </IconButton>
-                <Box p={1}>
-                    <Typography variant="subtitle2">
-                        Page {pageIndex + 1} of {pageCount}
-                    </Typography>
+            {pageIndex && (
+                <Box display="flex" flexDirection="row" alignItems="center">
+                    <IconButton
+                        disabled={!canPreviousPage}
+                        onClick={previousPage}
+                    >
+                        <NavigateBeforeIcon />
+                    </IconButton>
+                    <Box p={1}>
+                        <Typography variant="subtitle2">
+                            Page {pageIndex + 1} of {pageCount}
+                        </Typography>
+                    </Box>
+                    <IconButton disabled={!canNextPage} onClick={nextPage}>
+                        <NavigateNextIcon />
+                    </IconButton>
                 </Box>
-                <IconButton disabled={!canNextPage} onClick={nextPage}>
-                    <NavigateNextIcon />
-                </IconButton>
-            </Box>
+            )}
         </Box>
     )
 }
