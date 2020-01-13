@@ -23,16 +23,20 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
 
 const COLORS = [
+    'hotpink',
     'magenta',
     'red',
-    'volcano',
+    'salmon',
     'orange',
     'gold',
     'lime',
+    'greenyellow',
+    'lightseagreen',
     'green',
+    'aquamarine',
     'cyan',
     'blue',
-    'geekblue',
+    'royalblue',
     'purple',
 ]
 
