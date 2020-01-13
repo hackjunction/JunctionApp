@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import EmailIcon from '@material-ui/icons/Email'
 import EditIcon from '@material-ui/icons/Edit'
 import { Box, Paper } from '@material-ui/core'
+import Rating from '@material-ui/lab/Rating'
 import MaterialTable from 'components/generic/MaterialTable'
 import StatusBadge from 'components/generic/StatusBadge'
 import Tag from 'components/generic/Tag'
@@ -14,6 +15,8 @@ import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
 import Empty from 'components/generic/Empty'
+
+import { Table, Filters, Sorters } from 'components/generic/_Table'
 
 export default ({
     emptyRenderer,
@@ -42,6 +45,88 @@ export default ({
     const handleEditClose = useCallback(() => {
         setEditing()
     }, [])
+
+    const columns = useMemo(() => {
+        return [
+            {
+                Header: '#',
+                accessor: (row, index) => {
+                    return index + 1
+                },
+                id: 'index',
+                sortType: Sorters.Numeric,
+            },
+            {
+                Header: 'First name',
+                accessor: 'answers.firstName',
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Last name',
+                accessor: 'answers.lastName',
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Email',
+                accessor: 'answers.email',
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Status',
+                accessor: 'status',
+                ...Filters.MultipleSelect,
+                Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
+            },
+            {
+                Header: 'Rating',
+                accessor: 'rating',
+                ...Filters.MultipleSelect,
+                sortType: Sorters.Numeric,
+                Cell: ({ cell: { value } }) =>
+                    value ? <Rating size="small" value={value} /> : 'N/A',
+            },
+            {
+                Header: 'Tags',
+                accessor: 'tags',
+                ...Filters.Disabled,
+                Cell: ({ cell: { value } }) => {
+                    if (!value || !value.length) {
+                        return 'N/A'
+                    } else {
+                        return event.tags
+                            .filter(tag => {
+                                return value.indexOf(tag.label) !== -1
+                            })
+                            .map(({ color, label }) => (
+                                <Tag key={label} color={color} label={label} />
+                            ))
+                    }
+                },
+            },
+            {
+                Header: 'Created at',
+                accessor: 'createdAt',
+                Cell: ({ cell: { value } }) =>
+                    moment(value).format('MMM Do YYYY HH:mm:ss'),
+            },
+            {
+                Header: 'Assigned to',
+                accessor: 'assignedTo',
+                Cell: ({ cell: { value } }) => {
+                    let text
+                    if (!value) {
+                        text = 'N/A'
+                    } else if (organiserProfilesMap.hasOwnProperty(value)) {
+                        const user = organiserProfilesMap[value]
+                        text = `${user.firstName} ${user.lastName}`
+                    } else {
+                        text = '???'
+                    }
+                    return text
+                },
+            },
+        ]
+    }, [event.tags, organiserProfilesMap])
 
     const table = useMemo(() => {
         if (!loading) {
@@ -217,7 +302,21 @@ export default ({
                 onClose={toggleBulkEmail}
                 registrationIds={selected}
             />
-            {table}
+            <h4>TODOs:</h4>
+            <ul>
+                <li>Row selection features with new table</li>
+                <li>Filtering with table filters rather than Filter Groups</li>
+                <li>
+                    Make sure filters work properly (render cells the same way
+                    as the table)
+                </li>
+            </ul>
+            <Table
+                data={attendees}
+                columns={columns}
+                onRowClick={data => setEditing(data.original.user)}
+            />
+            {/* {table} */}
             {renderEmpty()}
         </React.Fragment>
     )
