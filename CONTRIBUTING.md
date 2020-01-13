@@ -10,3 +10,14 @@ To contribute to the development of this app, you should follow these steps:
 
 
 For further details and guidance, please reach out to the Junction tech team at dev@hackjunction.com or on the Junction Slack channel.
+
+
+### Branch structure / CI
+
+We have the following branch structure for this project: 
+
+| Branch name | Purpose                                                                                                                                                                             | CI                                                    | Other notes                                                                                   |   |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------------------------------------------|---|
+| `dev`       | Represents the latest stage of development for the app. All pull requests are merged here.                                                                                          | Automatically deploys to dev.app.hackjunction.com     | This branch can be used to experiment with new features and can contain broken/crashing code. |   |
+| `master`    | Contains the production code of the app. All changes to `master` should be introduced in the form of Pull Requests from `dev`, and have been tested in the development environment. | Automatically deploys to staging.app.hackjunction.com | This branch should only contain production-ready code, which has been sufficiently tested.    |   |
+|             |                             
