@@ -116,22 +116,24 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                                 alignCenter
                             />
                         </Box>
-                        <Box
-                            maxWidth="600px"
-                            className={classes.radioGroupWrapper}
-                        >
-                            <Typography
-                                style={{ textAlign: 'center' }}
-                                variant="subtitle1"
+                        {section.conditional && (
+                            <Box
+                                maxWidth="600px"
+                                className={classes.radioGroupWrapper}
                             >
-                                {section.conditional}
-                            </Typography>
-                            <BooleanInput
-                                alignCenter
-                                value={visible}
-                                onChange={setVisible}
-                            />
-                        </Box>
+                                <Typography
+                                    style={{ textAlign: 'center' }}
+                                    variant="subtitle1"
+                                >
+                                    {section.conditional}
+                                </Typography>
+                                <BooleanInput
+                                    alignCenter
+                                    value={visible}
+                                    onChange={setVisible}
+                                />
+                            </Box>
+                        )}
                     </Box>
                     {visible && (
                         <Box p={2} className={classes.wrapper}>
