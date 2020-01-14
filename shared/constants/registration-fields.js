@@ -564,7 +564,7 @@ const FieldProps = {
     countryOfTravel: {
         label: 'Country of Travel',
         hint:
-            "Where would you be travelling to the event from? If you're travelling from far away, make sure you apply for a travel grant - we would love to cover a part of your travel costs.",
+            "Where would you be travelling to the event from?",
         hintMarkdown: false,
         fieldType: FieldTypes.COUNTRY,
         schemaConfig: {
