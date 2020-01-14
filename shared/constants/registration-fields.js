@@ -490,6 +490,30 @@ const FieldProps = {
             }
         ]
     },
+    curriculumVitae: {
+        label: 'CV',
+        hint:
+            "Do you have curriculum vitae for us to look over the studies and experiences that you find most relevant when reviewing your application?",
+        hintMarkdown: false,
+        fieldType: FieldTypes.URL,
+        userProfileConfig: {
+            type: String,
+            trim: true
+        },
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to CV',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
+    },
     github: {
         label: 'Link to Github',
         hint:
@@ -1068,6 +1092,19 @@ const Fields = {
                 .string()
                 .url()
                 .label(FieldProps.portfolio.label);
+
+            return required ? base.required() : base;
+        }
+    },
+    curriculumVitae: {
+        ...FieldProps.curriculumVitae,
+        category: Categories.links,
+        default: (userProfile, idToken) => userProfile.curriculumVitae || undefined,
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .url()
+                .label(FieldProps.curriculumVitae.label);
 
             return required ? base.required() : base;
         }
