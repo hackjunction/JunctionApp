@@ -603,7 +603,7 @@ const FieldProps = {
     needsVisa: {
         label: 'Do you need a visa?',
         hint:
-            'Do you need a visa to travel to the event? If you do, we will provide you with an invitation letter to make sure you get one. You can check e.g. [here](https://www.passportindex.org/comparebyPassport.php) if you need a visa to travel to the event.',
+            'Do you need a visa to travel to the event? If you do, we will provide you with an invitation letter to make sure you get one. You can check e.g. here if you need a visa to travel to the event https://www.passportindex.org/comparebyPassport.php',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         schemaConfig: {
