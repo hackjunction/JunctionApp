@@ -23,18 +23,39 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
 
 const COLORS = [
+    'hotpink',
     'magenta',
     'red',
-    'volcano',
+    'salmon',
     'orange',
     'gold',
     'lime',
+    'greenyellow',
+    'lightseagreen',
     'green',
+    'powderblue',
     'cyan',
     'blue',
-    'geekblue',
+    'royalblue',
     'purple',
 ]
+
+const ColorPreview = prop => {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span
+                style={{
+                    height: '10px',
+                    width: '10px',
+                    borderRadius: '50%',
+                    background: prop,
+                    marginRight: '10px',
+                }}
+            />
+            {prop}
+        </div>
+    )
+}
 
 const useStyles = makeStyles(theme => ({
     errorMessage: {
@@ -161,7 +182,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={color.value}
                     onChange={color.setValue}
                     options={COLORS.map(color => ({
-                        label: color,
+                        label: ColorPreview(color),
                         value: color,
                     }))}
                 />
