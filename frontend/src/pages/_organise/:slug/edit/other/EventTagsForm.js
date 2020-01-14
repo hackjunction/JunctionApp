@@ -40,7 +40,7 @@ const COLORS = [
     'purple',
 ]
 
-const ColorPreview = prop => {
+const ColorPreview = ({ color }) => {
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <span
@@ -48,11 +48,11 @@ const ColorPreview = prop => {
                     height: '10px',
                     width: '10px',
                     borderRadius: '50%',
-                    background: prop,
+                    background: color,
                     marginRight: '10px',
                 }}
             />
-            {prop}
+            {color}
         </div>
     )
 }
@@ -182,7 +182,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={color.value}
                     onChange={color.setValue}
                     options={COLORS.map(color => ({
-                        label: ColorPreview(color),
+                        label: <ColorPreview color={color} />,
                         value: color,
                     }))}
                 />

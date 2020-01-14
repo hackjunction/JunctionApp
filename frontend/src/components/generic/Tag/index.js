@@ -26,7 +26,7 @@ const Tag = ({ color, label }) => {
     const classes = useStyles({ color })
     return (
         <Chip
-            avatar={<Avatar classes={{ root: classes.avatar }}></Avatar>}
+            avatar={<Avatar classes={{ root: classes.avatar }}>{''}</Avatar>}
             classes={classes}
             size="small"
             label={label}
