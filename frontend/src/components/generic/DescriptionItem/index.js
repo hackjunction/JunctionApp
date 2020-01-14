@@ -130,6 +130,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
             case 'portfolio':
             case 'github':
             case 'linkedin':
+            case 'curriculumVitae':
                 return (
                     <a href={content} target="_blank" rel="noopener noreferrer">
                         {content}
