@@ -24,6 +24,17 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         background: 'white',
     },
+    titleWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    title: {
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+    },
+    subtitle: {
+        lineHeight: 1.5,
+    },
     search: {
         flex: 1,
     },
@@ -71,8 +82,7 @@ const ActionBar = ({ columns }) => {
                     }
                 />
             </Box>
-            <Box className={classes.actions}>
-                {/* <Popover
+            {/* <Popover
                     id={filtersId}
                     open={filtersOpen}
                     anchorEl={filterAnchor}
@@ -107,20 +117,6 @@ const ActionBar = ({ columns }) => {
                         })}
                     </Box>
                 </Popover> */}
-                <Box>
-                    <IconButton
-                        size="small"
-                        className={classes.button}
-                        onClick={handleFiltersOpen}
-                        aria-describedby={filtersId}
-                    >
-                        <FilterListIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton size="small" className={classes.button}>
-                        <GetAppIcon fontSize="small" />
-                    </IconButton>
-                </Box>
-            </Box>
         </Box>
     )
 }

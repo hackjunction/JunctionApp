@@ -1,5 +1,11 @@
 import React from 'react'
-import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
+import {
+    useTable,
+    usePagination,
+    useSortBy,
+    useFilters,
+    useRowSelect,
+} from 'react-table'
 
 import { makeStyles, darken } from '@material-ui/core/styles'
 import {
@@ -12,6 +18,7 @@ import {
     TableFooter,
     Typography,
     TableSortLabel,
+    Checkbox,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -21,6 +28,7 @@ import Pagination from './Pagination'
 import ActionBar from './ActionBar'
 import FilterFunctions from './filterFunctions'
 import SortFunctions from './sortFunctions'
+import TableTitle from './TableTitle'
 import { Filters } from './index'
 
 const useStyles = makeStyles(theme => ({
@@ -74,7 +82,6 @@ const useStyles = makeStyles(theme => ({
 
 const _Table = ({ columns, data, onRowClick }) => {
     const classes = useStyles({ onRowClick })
-
     const defaultColumn = React.useMemo(
         () => ({
             // Let's set up our default Filter UI
@@ -100,6 +107,8 @@ const _Table = ({ columns, data, onRowClick }) => {
         pageSize,
         pageIndex,
         flatHeaders,
+        selectedFlatRows,
+        state: { selectedRowIds },
     } = useTable(
         {
             columns,
@@ -111,7 +120,37 @@ const _Table = ({ columns, data, onRowClick }) => {
         },
         useFilters,
         useSortBy,
-        usePagination
+        usePagination,
+        useRowSelect,
+        hooks => {
+            hooks.flatColumns.push(columns => [
+                // Let's make a column for selection
+                {
+                    id: 'selection',
+                    // The header can use the table's getToggleAllRowsSelectedProps method
+                    // to render a checkbox
+                    Header: ({ getToggleAllRowsSelectedProps }) => (
+                        <div>
+                            <Checkbox
+                                color="primary"
+                                {...getToggleAllRowsSelectedProps()}
+                            />
+                        </div>
+                    ),
+                    // The cell can use the individual row's getToggleRowSelectedProps method
+                    // to the render a checkbox
+                    Cell: ({ row }) => (
+                        <div onClick={e => e.stopPropagation()}>
+                            <Checkbox
+                                color="primary"
+                                {...row.getToggleRowSelectedProps()}
+                            />
+                        </div>
+                    ),
+                },
+                ...columns,
+            ])
+        }
     )
 
     const isEmpty = !data || data.length === 0
@@ -121,7 +160,12 @@ const _Table = ({ columns, data, onRowClick }) => {
     } else {
         return (
             <React.Fragment>
-                <ActionBar columns={flatHeaders} />
+                <TableTitle
+                    pageIndex={pageIndex}
+                    pageSize={pageSize}
+                    totalItems={data.length}
+                />
+                <ActionBar columns={flatHeaders} selected={selectedRowIds} />
                 <Box className={classes.wrapper}>
                     <Table {...getTableProps()} className={classes.table}>
                         <TableHead className={classes.tableHead}>
