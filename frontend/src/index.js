@@ -24,7 +24,6 @@ function noop() {}
 if (!config.IS_DEBUG) {
     console.log = noop
     console.warn = noop
-    console.error = noop
 }
 
 WebFont.load({
