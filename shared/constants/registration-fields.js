@@ -1332,46 +1332,7 @@ function buildFiltersArray() {
         return res.concat(filters);
     }, []);
 
-    const extraFilters = [
-        {
-            label: 'Terminal',
-            path: 'answers.terminal',
-            type: FilterTypes.OBJECT,
-            valueType: FilterValues.BOOLEAN
-        },
-        {
-            label: 'Terminal > Motivation',
-            path: 'answers.terminal.motivation',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > Most fascinating project',
-            path: 'answers.terminal.mostFascinatingProject',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > Ideal work environment',
-            path: 'answers.terminal.idealWorkEnvironment',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > What makes you awesome',
-            path: 'answers.terminal.whatMakesYouAwesome',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > Accomodation',
-            path: 'answers.terminal.accomodation',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        }
-    ];
-
-    return baseFilters.concat(answerFilters).concat(extraFilters);
+    return baseFilters.concat(answerFilters)
 }
 
 const Helpers = {
