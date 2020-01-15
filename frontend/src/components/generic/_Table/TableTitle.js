@@ -12,9 +12,9 @@ export default ({ pageIndex, pageSize, totalItems }) => {
             alignItems="flex-end"
             flexWrap="wrap"
             p={1}
+            style={{ backgroundColor: 'white' }}
         >
-            <Typography variant="h6">Participants</Typography>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle1">
                 Showing {pageIndex * pageSize} to{' '}
                 {Math.min((pageIndex + 1) * pageSize, totalItems)} of{' '}
                 {totalItems}

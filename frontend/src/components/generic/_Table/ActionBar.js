@@ -7,117 +7,78 @@ import {
     Popover,
     Paper,
     InputBase,
+    Button,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { motion } from 'framer-motion'
 
 import SearchIcon from '@material-ui/icons/Search'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import FilterListIcon from '@material-ui/icons/FilterList'
 
 const useStyles = makeStyles(theme => ({
-    wrapper: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        padding: theme.spacing(1, 2),
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        background: 'white',
+    selectionActions: {
+        height: 0,
+        background: theme.palette.primary.main,
+        overflow: 'hidden',
+        boxSizing: 'border-box',
     },
-    titleWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    title: {
-        fontSize: '1.5rem',
+    selectionTitle: {
+        color: 'white',
         fontWeight: 'bold',
-    },
-    subtitle: {
-        lineHeight: 1.5,
-    },
-    search: {
-        flex: 1,
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    filtersWrapper: {
-        width: '100%',
-        maxWidth: '600px',
-    },
-    filtersInner: {
-        padding: theme.spacing(2),
-        width: '100%',
-        overflow: 'scroll',
-        minHeight: '300px',
-        maxHeight: '600px',
     },
 }))
 
-const ActionBar = ({ columns }) => {
+const ActionBar = ({ selected }) => {
     const classes = useStyles()
-    const [filterAnchor, setFilterAnchor] = useState(null)
-
-    const handleFiltersOpen = useCallback(e => {
-        setFilterAnchor(e.currentTarget)
-    }, [])
-
-    const handleFiltersClose = useCallback(() => {
-        setFilterAnchor(null)
-    }, [])
-
-    const filtersOpen = Boolean(filterAnchor)
-    const filtersId = filtersOpen ? 'filters-popover' : undefined
+    const selectionActive = selected.length > 0
 
     return (
-        <Box className={classes.wrapper}>
-            <Box className={classes.search}>
-                <InputBase
-                    placeholder="Search results"
-                    startAdornment={
-                        <SearchIcon
-                            fontSize="small"
-                            style={{ marginRight: '0.5rem' }}
-                        />
-                    }
-                />
+        <motion.div
+            className={classes.selectionActions}
+            variants={{
+                visible: {
+                    height: 'auto',
+                },
+                hidden: {
+                    height: 0,
+                },
+            }}
+            animate={selectionActive ? 'visible' : 'hidden'}
+        >
+            <Box
+                p={1}
+                pt={0}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                flexWrap="wrap"
+            >
+                <Box width="100%" mt={1}>
+                    <Typography
+                        variant="subtitle2"
+                        className={classes.selectionTitle}
+                    >
+                        {selected.length} selected
+                    </Typography>
+                </Box>
+                <Box mr={1} mt={1}>
+                    <Button size="small" variant="outlined">
+                        Email all
+                    </Button>
+                </Box>
+                <Box mr={1} mt={1}>
+                    <Button size="small" variant="outlined">
+                        Edit all
+                    </Button>
+                </Box>
+                <Box mr={1} mt={1}>
+                    <Button size="small" variant="outlined">
+                        Export as CSV
+                    </Button>
+                </Box>
             </Box>
-            {/* <Popover
-                    id={filtersId}
-                    open={filtersOpen}
-                    anchorEl={filterAnchor}
-                    onClose={handleFiltersClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    classes={{
-                        paper: classes.filtersWrapper,
-                    }}
-                >
-                    <Box className={classes.filtersInner}>
-                        {columns.map(column => {
-                            if (!column.canFilter || !column.filter) return null
-                            const filter = column.render('Filter')
-                            return (
-                                <React.Fragment key={column.id}>
-                                    <Typography
-                                        variant="subtitle2"
-                                        gutterBottom
-                                    >
-                                        {column.Header}
-                                    </Typography>
-                                    <Box>{filter}</Box>
-                                </React.Fragment>
-                            )
-                        })}
-                    </Box>
-                </Popover> */}
-        </Box>
+        </motion.div>
     )
 }
 

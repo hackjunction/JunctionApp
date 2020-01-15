@@ -37,7 +37,7 @@ const Pagination = props => {
             alignItems="center"
         >
             <Box>
-                <Typography variant="caption">
+                <Typography variant="subtitle2">
                     {items === 1 ? '1 result' : `${items} results`}
                 </Typography>
             </Box>

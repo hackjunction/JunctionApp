@@ -54,11 +54,11 @@ export default ({
                     return index + 1
                 },
                 id: 'index',
-                sortType: Sorters.Numeric,
             },
             {
                 Header: 'First name',
-                accessor: 'answers.firstName',
+                accessor: row => row.answers.firstName,
+                id: 'firstNAMEEE',
                 ...Filters.ContainsSearch,
             },
             {
@@ -81,7 +81,6 @@ export default ({
                 Header: 'Rating',
                 accessor: 'rating',
                 ...Filters.MultipleSelect,
-                sortType: Sorters.Numeric,
                 Cell: ({ cell: { value } }) =>
                     value ? (
                         <Rating size="small" value={value} readOnly />
@@ -92,7 +91,6 @@ export default ({
             {
                 Header: 'Tags',
                 accessor: 'tags',
-                ...Filters.Disabled,
                 Cell: ({ cell: { value } }) => {
                     if (!value || !value.length) {
                         return 'No tags'
