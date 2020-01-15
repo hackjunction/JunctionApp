@@ -597,6 +597,153 @@ export default () => {
                                 )}
                             />
                         </Box>
+                        <Box className={classes.box} mt={3}>
+                            <Typography variant="h6">
+                                Additional Links
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                You can link additional links related to you in
+                                here.
+                            </Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12}>
+                                    <FastField
+                                        name="curriculumVitae"
+                                        render={({ field, form }) => (
+                                            <TextInput
+                                                label={
+                                                    RegistrationFields.getFields()[
+                                                        'curriculumVitae'
+                                                    ].label
+                                                }
+                                                placeholder="myhomepage.com/cv"
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                    <Typography variant="caption">
+                                        {
+                                            RegistrationFields.getFields()[
+                                                'curriculumVitae'
+                                            ].hint
+                                        }
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FastField
+                                        name="portfolio"
+                                        render={({ field, form }) => (
+                                            <TextInput
+                                                label={
+                                                    RegistrationFields.getFields()[
+                                                        'portfolio'
+                                                    ].label
+                                                }
+                                                placeholder="myhomepage.com/portfolio"
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                    <Typography variant="caption">
+                                        {
+                                            RegistrationFields.getFields()[
+                                                'portfolio'
+                                            ].hint
+                                        }
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FastField
+                                        name="github"
+                                        render={({ field, form }) => (
+                                            <TextInput
+                                                label={
+                                                    RegistrationFields.getFields()[
+                                                        'github'
+                                                    ].label
+                                                }
+                                                placeholder="github.com/myusername"
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                    <Typography variant="caption">
+                                        {
+                                            RegistrationFields.getFields()[
+                                                'github'
+                                            ].hint
+                                        }
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FastField
+                                        name="linkedin"
+                                        render={({ field, form }) => (
+                                            <TextInput
+                                                label={
+                                                    RegistrationFields.getFields()[
+                                                        'linkedin'
+                                                    ].label
+                                                }
+                                                placeholder="linkedin.com/in/myname"
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                    <Typography variant="caption">
+                                        {
+                                            RegistrationFields.getFields()[
+                                                'linkedin'
+                                            ].hint
+                                        }
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Box>
                         <Box height="300px" />
                         <BottomBar
                             onSubmit={formikProps.handleSubmit}

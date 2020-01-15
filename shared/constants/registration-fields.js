@@ -490,6 +490,30 @@ const FieldProps = {
             }
         ]
     },
+    curriculumVitae: {
+        label: 'CV',
+        hint:
+            "Do you have curriculum vitae for us to look over the studies and experiences that you find most relevant when reviewing your application?",
+        hintMarkdown: false,
+        fieldType: FieldTypes.URL,
+        userProfileConfig: {
+            type: String,
+            trim: true
+        },
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Link to CV',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING
+            }
+        ]
+    },
     github: {
         label: 'Link to Github',
         hint:
@@ -540,7 +564,7 @@ const FieldProps = {
     countryOfTravel: {
         label: 'Country of Travel',
         hint:
-            "Where would you be travelling to the event from? If you're travelling from far away, make sure you apply for a travel grant - we would love to cover a part of your travel costs.",
+            "Where would you be travelling to the event from?",
         hintMarkdown: false,
         fieldType: FieldTypes.COUNTRY,
         schemaConfig: {
@@ -579,7 +603,7 @@ const FieldProps = {
     needsVisa: {
         label: 'Do you need a visa?',
         hint:
-            'Do you need a visa to travel to the event? If you do, we will provide you with an invitation letter to make sure you get one. You can check e.g. [here](https://www.passportindex.org/comparebyPassport.php) if you need a visa to travel to the event.',
+            'Do you need a visa to travel to the event? If you do, we will provide you with an invitation letter to make sure you get one. You can check e.g. here if you need a visa to travel to the event https://www.passportindex.org/comparebyPassport.php',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         schemaConfig: {
@@ -1072,6 +1096,19 @@ const Fields = {
             return required ? base.required() : base;
         }
     },
+    curriculumVitae: {
+        ...FieldProps.curriculumVitae,
+        category: Categories.links,
+        default: (userProfile, idToken) => userProfile.curriculumVitae || undefined,
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .url()
+                .label(FieldProps.curriculumVitae.label);
+
+            return required ? base.required() : base;
+        }
+    },
     github: {
         ...FieldProps.github,
         category: Categories.links,
@@ -1295,46 +1332,7 @@ function buildFiltersArray() {
         return res.concat(filters);
     }, []);
 
-    const extraFilters = [
-        {
-            label: 'Terminal',
-            path: 'answers.terminal',
-            type: FilterTypes.OBJECT,
-            valueType: FilterValues.BOOLEAN
-        },
-        {
-            label: 'Terminal > Motivation',
-            path: 'answers.terminal.motivation',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > Most fascinating project',
-            path: 'answers.terminal.mostFascinatingProject',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > Ideal work environment',
-            path: 'answers.terminal.idealWorkEnvironment',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > What makes you awesome',
-            path: 'answers.terminal.whatMakesYouAwesome',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        },
-        {
-            label: 'Terminal > Accomodation',
-            path: 'answers.terminal.accomodation',
-            type: FilterTypes.STRING,
-            valueType: FilterValues.STRING
-        }
-    ];
-
-    return baseFilters.concat(answerFilters).concat(extraFilters);
+    return baseFilters.concat(answerFilters)
 }
 
 const Helpers = {
