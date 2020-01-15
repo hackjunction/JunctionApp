@@ -7,6 +7,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import CenteredContainer from 'components/generic/CenteredContainer/index'
 import MenuIcon from '@material-ui/icons/Menu'
 import LockIcon from '@material-ui/icons/Lock'
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import {
     Drawer,
     List,
@@ -39,11 +40,22 @@ const useStyles = makeStyles(theme => ({
         background: '#fbfbfb',
         zIndex: 100,
     },
+    drawerToggleDesktop: {
+        padding: '10px',
+        position: 'fixed',
+        top: theme.spacing(1),
+        left: ({ desktopOpen }) =>
+            desktopOpen ? SIDEBAR_WIDTH + theme.spacing(1) : theme.spacing(1),
+        background: '#fbfbfb',
+        zIndex: 100,
+        transition: 'left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+    },
     content: {
         flexGrow: 1,
         position: 'relative',
+        transition: 'margin-left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
         [theme.breakpoints.up('md')]: {
-            marginLeft: SIDEBAR_WIDTH,
+            marginLeft: ({ desktopOpen }) => (desktopOpen ? SIDEBAR_WIDTH : 0),
         },
     },
     drawerPaper: {
@@ -87,7 +99,6 @@ export default React.memo(
         routes: _routes,
     }) => {
         const dispatch = useDispatch()
-        const classes = useStyles()
         const routes = _routes.filter(route => !route.hidden)
 
         const activeIndex = useMemo(() => {
@@ -123,9 +134,16 @@ export default React.memo(
         const safeIndex = activeIndex === -1 ? 0 : activeIndex
 
         const [mobileOpen, setMobileOpen] = React.useState(false)
+        const [desktopOpen, setDesktopOpen] = React.useState(false)
+
+        const classes = useStyles({ desktopOpen })
 
         const handleDrawerToggle = () => {
             setMobileOpen(!mobileOpen)
+        }
+
+        const handleDrawerToggleDesktop = () => {
+            setDesktopOpen(!desktopOpen)
         }
 
         const drawerContent = (
@@ -188,8 +206,17 @@ export default React.memo(
                         <MenuIcon />
                     </IconButton>
                 </Hidden>
-                <nav className={classes.drawer}>
-                    <Hidden mdUp implementation="css">
+                <Hidden smDown implementation="css">
+                    <IconButton
+                        onClick={handleDrawerToggleDesktop}
+                        className={classes.drawerToggleDesktop}
+                        aria-label="toggle drawer desktop"
+                    >
+                        {desktopOpen ? <KeyboardBackspaceIcon /> : <MenuIcon />}
+                    </IconButton>
+                </Hidden>
+                <Hidden mdUp implementation="css">
+                    <nav className={classes.drawer}>
                         <Drawer
                             variant="temporary"
                             anchor="left"
@@ -204,20 +231,23 @@ export default React.memo(
                         >
                             {drawerContent}
                         </Drawer>
-                    </Hidden>
-                    <Hidden smDown implementation="css">
+                    </nav>
+                </Hidden>
+                <Hidden smDown implementation="css">
+                    <nav className={classes.drawerDesktop}>
                         <Drawer
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
-                            variant="permanent"
+                            variant="persistent"
                             anchor="left"
-                            open
+                            open={desktopOpen}
+                            onClose={handleDrawerToggleDesktop}
                         >
                             {drawerContent}
                         </Drawer>
-                    </Hidden>
-                </nav>
+                    </nav>
+                </Hidden>
                 <main className={classes.content}>
                     {topContent}
                     <CenteredContainer
