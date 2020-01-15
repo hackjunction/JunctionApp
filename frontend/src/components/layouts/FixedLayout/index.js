@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         padding: 0,
         background: 'black',
     },
-    backgroundImage: {
+    backgroundImage: ({ backgroundOpacity }) => ({
         zIndex: 2,
         position: 'absolute',
         objectFit: 'cover',
@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         filter: 'blur(5px)',
-    },
+        opacity: backgroundOpacity,
+    }),
     inner: {
         position: 'absolute',
         zIndex: 3,
@@ -40,8 +41,8 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ background, children }) => {
-    const classes = useStyles()
+export default ({ background, backgroundOpacity = 1, children }) => {
+    const classes = useStyles({ backgroundOpacity })
     return (
         <div className={classes.wrapper}>
             {background && (
