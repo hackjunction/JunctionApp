@@ -38,7 +38,7 @@ const EventsGridItem = ({ event, buttons }) => {
                 <Image
                     className={classes.image}
                     defaultImage={require('assets/images/default_cover_image.png')}
-                    publicId={event?.coverImage?.publidId}
+                    publicId={event?.coverImage?.publicId}
                     transformation={{
                         width: 400,
                     }}

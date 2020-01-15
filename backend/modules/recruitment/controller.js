@@ -112,6 +112,7 @@ controller.createRecruitmentProfile = async (
             github: userProfile.github,
             linkedin: userProfile.linkedin,
             portfolio: userProfile.portfolio,
+            curriculumVitae: userProfile.curriculumVitae,
         },
         recruitmentOptions: userProfile.recruitmentOptions,
         registrations: userProfile.registrations,
