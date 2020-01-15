@@ -5,7 +5,9 @@ import { push } from 'connected-react-router'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { Box } from '@material-ui/core'
 import Button from 'components/generic/Button'
+import FixedLayout from 'components/layouts/FixedLayout'
 
 import * as AuthActions from 'redux/auth/actions'
 
@@ -27,9 +29,19 @@ const useStyles = makeStyles(theme => ({
     title: {
         color: 'white',
         textTransform: 'uppercase',
+        textAlign: 'center',
+    },
+    subtitle: {
+        color: 'white',
+        textAlign: 'center',
     },
     error: {
-        color: 'white',
+        color: theme.palette.error.main,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(0.5, 1),
     },
 }))
 
@@ -44,31 +56,42 @@ export default () => {
     const error = location?.state?.error
 
     return (
-        <div className={classes.wrapper}>
-            <img
-                className={classes.logo}
-                src={require('../../assets/logos/emblem_white.png')}
-                alt="logo"
-            />
-            <Typography variant="button" className={classes.title}>
-                Oh-oh, something went wrong
-            </Typography>
-
-            {error ? (
-                <Typography variant="subtitle1" className={classes.error}>
-                    {error}
-                </Typography>
-            ) : null}
-            <Typography variant="subtitle2" className={classes.error}>
-                Please log in again and you should be good to go!
-            </Typography>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => dispatch(push('/'))}
+        <FixedLayout
+            background={require('assets/images/default_cover_image.png')}
+            backgroundOpacity={0.2}
+        >
+            <Box
+                width="100%"
+                maxWidth="600px"
+                margin="0 auto"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
             >
-                Back to home page
-            </Button>
-        </div>
+                <img
+                    className={classes.logo}
+                    src={require('../../assets/logos/emblem_white.png')}
+                    alt="logo"
+                />
+                <Typography variant="h6" className={classes.title}>
+                    Oh-oh, something went wrong
+                </Typography>
+                {error ? (
+                    <Typography variant="body1" className={classes.error}>
+                        {error}
+                    </Typography>
+                ) : null}
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                    If this problem persists, it might be a problem on our end.
+                    In this case, please reach out to us via email at
+                    dev@hackjunction.com for further support.
+                </Typography>
+                <Box mt={2}>
+                    <Button color="primary" onClick={() => dispatch(push('/'))}>
+                        Back to home page
+                    </Button>
+                </Box>
+            </Box>
+        </FixedLayout>
     )
 }
