@@ -34,7 +34,7 @@ export const getHasPermission = state => {
 
 export const idTokenData = createSelector(getIdTokenPayload, data => {
     if (!data) {
-        return null
+        return
     }
     return reduce(
         Object.keys(data),

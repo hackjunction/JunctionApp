@@ -44,6 +44,7 @@ export default () => {
                 await dispatch(AuthActions.handleAuthentication())
                 AnalyticsService.events.LOG_IN()
             } catch (err) {
+                console.error('Login error', err)
                 dispatch(push('/error', { error: err.message }))
             }
         }
