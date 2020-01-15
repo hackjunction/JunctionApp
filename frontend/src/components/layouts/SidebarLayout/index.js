@@ -87,6 +87,7 @@ const useStyles = makeStyles(theme => ({
     },
     pageWrapperInner: {
         padding: theme.spacing(2),
+        maxWidth: '1400px',
     },
 }))
 

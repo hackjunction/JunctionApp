@@ -83,7 +83,11 @@ export default ({
                 ...Filters.MultipleSelect,
                 sortType: Sorters.Numeric,
                 Cell: ({ cell: { value } }) =>
-                    value ? <Rating size="small" value={value} /> : 'N/A',
+                    value ? (
+                        <Rating size="small" value={value} readOnly />
+                    ) : (
+                        'Not rated'
+                    ),
             },
             {
                 Header: 'Tags',
@@ -91,14 +95,16 @@ export default ({
                 ...Filters.Disabled,
                 Cell: ({ cell: { value } }) => {
                     if (!value || !value.length) {
-                        return 'N/A'
+                        return 'No tags'
                     } else {
                         return event.tags
                             .filter(tag => {
                                 return value.indexOf(tag.label) !== -1
                             })
                             .map(({ color, label }) => (
-                                <Tag key={label} color={color} label={label} />
+                                <Box key={label} ml="3px" mt="3px">
+                                    <Tag color={color} label={label} />
+                                </Box>
                             ))
                     }
                 },
@@ -115,7 +121,7 @@ export default ({
                 Cell: ({ cell: { value } }) => {
                     let text
                     if (!value) {
-                        text = 'N/A'
+                        text = 'No one'
                     } else if (organiserProfilesMap.hasOwnProperty(value)) {
                         const user = organiserProfilesMap[value]
                         text = `${user.firstName} ${user.lastName}`
