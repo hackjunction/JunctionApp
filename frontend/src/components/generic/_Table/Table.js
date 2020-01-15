@@ -29,7 +29,7 @@ import ActionBar from './ActionBar'
 import FilterFunctions from './filterFunctions'
 import SortFunctions from './sortFunctions'
 import TableTitle from './TableTitle'
-import { Filters } from './index'
+import { Filters, Sorters } from './index'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -86,6 +86,7 @@ const _Table = ({ columns, data, onRowClick }) => {
         () => ({
             // Let's set up our default Filter UI
             ...Filters.Disabled,
+            ...Sorters.Disabled,
         }),
         []
     )
@@ -104,9 +105,8 @@ const _Table = ({ columns, data, onRowClick }) => {
         nextPage,
         previousPage,
         setPageSize,
-        flatHeaders,
         selectedFlatRows,
-        state: { selectedRowIds, pageSize, pageIndex },
+        state: { pageSize, pageIndex },
     } = useTable(
         {
             columns,
@@ -160,12 +160,20 @@ const _Table = ({ columns, data, onRowClick }) => {
     } else {
         return (
             <React.Fragment>
-                <TableTitle
-                    pageIndex={pageIndex}
+                <Pagination
+                    canPreviousPage={canPreviousPage}
+                    canNextPage={canNextPage}
+                    pageCount={pageCount}
+                    gotoPage={gotoPage}
+                    nextPage={nextPage}
+                    previousPage={previousPage}
+                    setPageSize={setPageSize}
+                    pageOptions={pageOptions}
                     pageSize={pageSize}
-                    totalItems={data.length}
+                    pageIndex={pageIndex}
+                    items={data.length}
                 />
-                <ActionBar columns={flatHeaders} selected={selectedRowIds} />
+                <ActionBar selected={selectedFlatRows} />
                 <Box className={classes.wrapper}>
                     <Table {...getTableProps()} className={classes.table}>
                         <TableHead className={classes.tableHead}>
@@ -181,7 +189,10 @@ const _Table = ({ columns, data, onRowClick }) => {
                                             )}
                                         >
                                             <TableSortLabel
-                                                active={column.isSorted}
+                                                active={
+                                                    column.canSort &&
+                                                    column.isSorted
+                                                }
                                                 direction={
                                                     column.isSortedDesc
                                                         ? 'desc'
@@ -195,6 +206,7 @@ const _Table = ({ columns, data, onRowClick }) => {
                                                         classes.tableHeadSortIcon,
                                                 }}
                                                 IconComponent={ExpandMoreIcon}
+                                                hideSortIcon
                                             >
                                                 <Typography variant="overline">
                                                     {column.render('Header')}
@@ -218,6 +230,14 @@ const _Table = ({ columns, data, onRowClick }) => {
                                             return (
                                                 <TableCell
                                                     {...cell.getCellProps()}
+                                                    onClick={e => {
+                                                        if (
+                                                            cell.column.id ===
+                                                            'selection'
+                                                        ) {
+                                                            e.stopPropagation()
+                                                        }
+                                                    }}
                                                 >
                                                     {cell.render('Cell')}
                                                 </TableCell>
@@ -229,19 +249,6 @@ const _Table = ({ columns, data, onRowClick }) => {
                         </TableBody>
                     </Table>
                 </Box>
-                <Pagination
-                    canPreviousPage={canPreviousPage}
-                    canNextPage={canNextPage}
-                    pageCount={pageCount}
-                    gotoPage={gotoPage}
-                    nextPage={nextPage}
-                    previousPage={previousPage}
-                    setPageSize={setPageSize}
-                    pageOptions={pageOptions}
-                    pageSize={pageSize}
-                    pageIndex={pageIndex}
-                    items={data.length}
-                />
             </React.Fragment>
         )
     }
