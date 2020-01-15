@@ -5,25 +5,27 @@ import { Box, Typography, IconButton, TextField } from '@material-ui/core'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
 
-const Pagination = ({
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    pageSize,
-    pageIndex,
-    items,
-}) => {
-    const handlePageSizeChange = useCallback(
-        e => {
-            setPageSize(Number(e.target.value))
-        },
-        [setPageSize]
-    )
+const Pagination = props => {
+    const {
+        canPreviousPage,
+        canNextPage,
+        pageOptions,
+        pageCount,
+        gotoPage,
+        nextPage,
+        previousPage,
+        setPageSize,
+        pageSize,
+        pageIndex,
+        items,
+    } = props
+
+    // const handlePageSizeChange = useCallback(
+    //     e => {
+    //         setPageSize(Number(e.target.value))
+    //     },
+    //     [setPageSize]
+    // )
 
     return (
         <Box
@@ -39,7 +41,7 @@ const Pagination = ({
                     {items === 1 ? '1 result' : `${items} results`}
                 </Typography>
             </Box>
-            {pageIndex && (
+            {pageOptions.length > 0 && (
                 <Box display="flex" flexDirection="row" alignItems="center">
                     <IconButton
                         disabled={!canPreviousPage}

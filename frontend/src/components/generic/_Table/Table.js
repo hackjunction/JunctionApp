@@ -104,15 +104,15 @@ const _Table = ({ columns, data, onRowClick }) => {
         nextPage,
         previousPage,
         setPageSize,
-        pageSize,
-        pageIndex,
         flatHeaders,
         selectedFlatRows,
-        state: { selectedRowIds },
+        state: { selectedRowIds, pageSize, pageIndex },
     } = useTable(
         {
             columns,
             data,
+            pageIndex: 0,
+            pageSize: 10,
             filterTypes: FilterFunctions,
             sortTypes: SortFunctions,
             defaultColumn,
@@ -227,25 +227,6 @@ const _Table = ({ columns, data, onRowClick }) => {
                                 )
                             })}
                         </TableBody>
-                        {/* <TableFooter>
-                            <TableRow>
-                                <TableCell colSpan={columns.length}>
-                                    <Pagination
-                                        canPreviousPage={canPreviousPage}
-                                        canNextPage={canNextPage}
-                                        pageCount={pageCount}
-                                        gotoPage={gotoPage}
-                                        nextPage={nextPage}
-                                        previousPage={previousPage}
-                                        setPageSize={setPageSize}
-                                        pageOptions={pageOptions}
-                                        pageSize={pageSize}
-                                        pageIndex={pageIndex}
-                                        items={data.length}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        </TableFooter> */}
                     </Table>
                 </Box>
                 <Pagination
