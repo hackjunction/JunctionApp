@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useFormik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { Typography, Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import * as yup from 'yup'
@@ -135,7 +136,7 @@ export default () => {
             firstName: idTokenData?.given_name ?? '',
             lastName: idTokenData?.family_name ?? '',
             email: idTokenData?.email ?? '',
-            avatar: idTokenData.picture,
+            avatar: idTokenData?.picture ?? '',
             accepted: false,
         },
         onSubmit: handleSubmit,
@@ -160,6 +161,10 @@ export default () => {
             accepted: yup.bool().oneOf([true]),
         }),
     })
+
+    if (!idToken) {
+        return <Redirect to="/login" />
+    }
 
     return (
         <FixedLayout
