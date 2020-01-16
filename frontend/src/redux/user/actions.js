@@ -2,6 +2,7 @@ import LogRocket from 'logrocket'
 
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from 'redux/auth/selectors'
+import config from 'constants/config'
 
 import UserProfilesService from 'services/userProfiles'
 
@@ -12,13 +13,12 @@ export const setUserProfile = profile => dispatch => {
     })
 
     /** To connect logs and crash reports with the user */
-    if (profile?.userId) {
+    if (profile?.userId && config.LOGROCKET_ID) {
+        LogRocket.init(config.LOGROCKET_ID)
         LogRocket.identify(profile.userId, {
             email: profile.email,
             name: `${profile.firstName} ${profile.lastName}`,
         })
-    } else {
-        LogRocket.identify(null)
     }
 }
 

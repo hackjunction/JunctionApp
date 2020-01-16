@@ -10,7 +10,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { CloudinaryContext } from 'cloudinary-react'
 import { SnackbarProvider } from 'notistack'
 import WebFont from 'webfontloader'
-import LogRocket from 'logrocket'
 import Notifier from './notifier'
 
 import configureStore, { history } from 'redux/configureStore'
@@ -31,10 +30,6 @@ WebFont.load({
         families: ['Montserrat:400,400i,700,700i', 'Lato:400,400i,700,700i'],
     },
 })
-
-if (config.LOGROCKET_ID) {
-    LogRocket.init(config.LOGROCKET_ID)
-}
 
 ReactDOM.render(
     <Provider store={store}>
