@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
     tableFooter: {},
 }))
 
-const _Table = ({ columns, data, onRowClick }) => {
+const _Table = ({ columns, data, onRowClick, bulkActions }) => {
     const classes = useStyles({ onRowClick })
     const defaultColumn = React.useMemo(
         () => ({
@@ -173,7 +173,7 @@ const _Table = ({ columns, data, onRowClick }) => {
                     pageIndex={pageIndex}
                     items={data.length}
                 />
-                <ActionBar selected={selectedFlatRows} />
+                <ActionBar selected={selectedFlatRows} actions={bulkActions} />
                 <Box className={classes.wrapper}>
                     <Table {...getTableProps()} className={classes.table}>
                         <TableHead className={classes.tableHead}>
@@ -249,6 +249,7 @@ const _Table = ({ columns, data, onRowClick }) => {
                         </TableBody>
                     </Table>
                 </Box>
+                <h1>Results per page selection here</h1>
             </React.Fragment>
         )
     }
@@ -258,6 +259,7 @@ _Table.defaultProps = {
     data: [],
     columns: [],
     onRowClick: () => {},
+    bulkActions: [],
 }
 
 export default _Table
