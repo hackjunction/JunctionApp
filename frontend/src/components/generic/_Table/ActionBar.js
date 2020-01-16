@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const ActionBar = ({ selected }) => {
+const ActionBar = ({ selected, actions = [] }) => {
     const classes = useStyles()
     const selectionActive = selected.length > 0
 
@@ -62,21 +62,21 @@ const ActionBar = ({ selected }) => {
                         {selected.length} selected
                     </Typography>
                 </Box>
-                <Box mr={1} mt={1}>
-                    <Button size="small" variant="outlined">
-                        Email all
-                    </Button>
-                </Box>
-                <Box mr={1} mt={1}>
-                    <Button size="small" variant="outlined">
-                        Edit all
-                    </Button>
-                </Box>
-                <Box mr={1} mt={1}>
-                    <Button size="small" variant="outlined">
-                        Export as CSV
-                    </Button>
-                </Box>
+                {actions.length && (
+                    <React.Fragment>
+                        {actions.map(action => (
+                            <Box key={action.key} mr={1} mt={1}>
+                                <Button
+                                    onClick={action.action.bind(null, selected)}
+                                    size="small"
+                                    variant="outlined"
+                                >
+                                    {action.label}
+                                </Button>
+                            </Box>
+                        ))}
+                    </React.Fragment>
+                )}
             </Box>
         </motion.div>
     )
