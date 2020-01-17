@@ -4,11 +4,8 @@ import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
-import EmailIcon from '@material-ui/icons/Email'
-import EditIcon from '@material-ui/icons/Edit'
-import { Box, Paper } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
-import MaterialTable from 'components/generic/MaterialTable'
 import StatusBadge from 'components/generic/StatusBadge'
 import Tag from 'components/generic/Tag'
 
@@ -16,7 +13,6 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
-import Empty from 'components/generic/Empty'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 

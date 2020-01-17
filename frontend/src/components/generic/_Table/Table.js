@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
     useTable,
     usePagination,
@@ -89,6 +89,8 @@ const _Table = ({
     data,
     onRowClick,
     bulkActions,
+    enablePagination,
+    enableSelection,
     enableExport,
     renderExpanded,
 }) => {
@@ -101,7 +103,6 @@ const _Table = ({
         }),
         []
     )
-
     const {
         getTableProps,
         getTableBodyProps,
@@ -123,11 +124,13 @@ const _Table = ({
         {
             columns,
             data,
-            pageIndex: 0,
-            pageSize: 10,
             filterTypes: FilterFunctions,
             defaultColumn,
             defaultCanFilter: false,
+            initialState: {
+                pageIndex: 0,
+                pageSize: enablePagination ? 10 : 100000,
+            },
         },
         useFilters,
         useSortBy,
@@ -135,33 +138,35 @@ const _Table = ({
         usePagination,
         useRowSelect,
         hooks => {
-            hooks.flatColumns.push(columns => [
-                // Let's make a column for selection
-                {
-                    id: 'selection',
-                    // The header can use the table's getToggleAllRowsSelectedProps method
-                    // to render a checkbox
-                    Header: ({ getToggleAllRowsSelectedProps }) => (
-                        <div>
-                            <Checkbox
-                                color="primary"
-                                {...getToggleAllRowsSelectedProps()}
-                            />
-                        </div>
-                    ),
-                    // The cell can use the individual row's getToggleRowSelectedProps method
-                    // to the render a checkbox
-                    Cell: ({ row }) => (
-                        <div onClick={e => e.stopPropagation()}>
-                            <Checkbox
-                                color="primary"
-                                {...row.getToggleRowSelectedProps()}
-                            />
-                        </div>
-                    ),
-                },
-                ...columns,
-            ])
+            if (enableSelection) {
+                hooks.flatColumns.push(columns => [
+                    // Let's make a column for selection
+                    {
+                        id: 'selection',
+                        // The header can use the table's getToggleAllRowsSelectedProps method
+                        // to render a checkbox
+                        Header: ({ getToggleAllRowsSelectedProps }) => (
+                            <div>
+                                <Checkbox
+                                    color="primary"
+                                    {...getToggleAllRowsSelectedProps()}
+                                />
+                            </div>
+                        ),
+                        // The cell can use the individual row's getToggleRowSelectedProps method
+                        // to the render a checkbox
+                        Cell: ({ row }) => (
+                            <div onClick={e => e.stopPropagation()}>
+                                <Checkbox
+                                    color="primary"
+                                    {...row.getToggleRowSelectedProps()}
+                                />
+                            </div>
+                        ),
+                    },
+                    ...columns,
+                ])
+            }
         }
     )
 
@@ -178,7 +183,7 @@ const _Table = ({
         [onRowClick, renderExpanded]
     )
 
-    const pagination = (
+    const pagination = enablePagination && data.length > 10 && (
         <Pagination
             canPreviousPage={canPreviousPage}
             canNextPage={canNextPage}
@@ -195,20 +200,30 @@ const _Table = ({
     )
 
     const isEmpty = !data || data.length === 0
-    const columnCount = columns.length + 1
+
+    const columnCount = useMemo(() => {
+        let result = columns.length
+        if (enableSelection) {
+            result += 1
+        }
+
+        return result
+    }, [columns.length, enableSelection])
 
     if (isEmpty) {
         return <Empty isEmpty />
     } else {
         return (
             <React.Fragment>
-                {data.length > 10 && pagination}
-                <ActionBar
-                    selected={selectedFlatRows}
-                    actions={bulkActions}
-                    enableExport={enableExport}
-                    flatHeaders={flatHeaders}
-                />
+                {pagination}
+                {enableSelection && (
+                    <ActionBar
+                        selected={selectedFlatRows}
+                        actions={bulkActions}
+                        enableExport={enableExport}
+                        flatHeaders={flatHeaders}
+                    />
+                )}
                 <Box className={classes.wrapper}>
                     <Table {...getTableProps()} className={classes.table}>
                         <TableHead className={classes.tableHead}>
@@ -297,7 +312,7 @@ const _Table = ({
                         </TableBody>
                     </Table>
                 </Box>
-                {data.length > 10 && pagination}
+                {pagination}
             </React.Fragment>
         )
     }
@@ -309,6 +324,8 @@ _Table.defaultProps = {
     onRowClick: () => {},
     bulkActions: [],
     enableExport: true,
+    enablePagination: true,
+    enableSelection: true,
 }
 
 export default _Table

@@ -1,13 +1,74 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { Grid, Switch } from '@material-ui/core'
 import { FastField } from 'formik'
 import CustomSectionList from './CustomSectionList'
 import FormControl from 'components/inputs/FormControl'
-import MaterialTable from 'components/generic/MaterialTable'
 import Shared from '@hackjunction/shared'
 
+import { Table } from 'components/generic/_Table'
+
 export default () => {
+    const buildColumns = useCallback((form, field, fieldValue) => {
+        return [
+            {
+                Header: 'Name',
+                accessor: 'label',
+            },
+            {
+                Header: 'Category',
+                accessor: 'category',
+            },
+            {
+                Header: 'Enabled?',
+                accessor: 'enabled',
+                Cell: props => {
+                    const row = props.row.original
+                    return (
+                        <Switch
+                            color="primary"
+                            disabled={!row.editable}
+                            checked={row.enable}
+                            onChange={(e, enable) => {
+                                form.setFieldValue(field.name, {
+                                    ...fieldValue,
+                                    [row.key]: {
+                                        ...fieldValue[row.key],
+                                        enable,
+                                        require: !enable ? false : row.require,
+                                    },
+                                })
+                            }}
+                        />
+                    )
+                },
+            },
+            {
+                Header: 'Required?',
+                accessor: 'require',
+                Cell: props => {
+                    const row = props.row.original
+                    return (
+                        <Switch
+                            color="primary"
+                            disabled={!row.editable || !row.enable}
+                            checked={row.require}
+                            onChange={(e, require) => {
+                                form.setFieldValue(field.name, {
+                                    ...fieldValue,
+                                    [row.key]: {
+                                        ...fieldValue[row.key],
+                                        require,
+                                    },
+                                })
+                            }}
+                        />
+                    )
+                },
+            },
+        ]
+    }, [])
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -27,101 +88,19 @@ export default () => {
                             editable: fieldValue[field].editable,
                         }))
 
+                        const columns = buildColumns(form, field, fieldValue)
+
                         return (
                             <FormControl
                                 label="Registration questions"
                                 hint="Choose the questions you want to ask in the registration form for this event"
                             >
-                                <MaterialTable
-                                    title="Questions"
+                                <Table
+                                    columns={columns}
                                     data={dataSource}
-                                    options={{
-                                        exportButton: false,
-                                        selection: false,
-                                        showSelectAllCheckbox: false,
-                                        pageSizeOptions: [5, 25, 50],
-                                        debounceInterval: 500,
-                                        search: false,
-                                        paging: false,
-                                    }}
-                                    columns={[
-                                        {
-                                            title: 'Name',
-                                            field: 'label',
-                                        },
-                                        {
-                                            title: 'Category',
-                                            field: 'category',
-                                        },
-                                        {
-                                            title: 'Enabled',
-                                            field: 'enabled',
-                                            render: row => {
-                                                return (
-                                                    <Switch
-                                                        color="primary"
-                                                        disabled={!row.editable}
-                                                        checked={row.enable}
-                                                        onChange={(
-                                                            e,
-                                                            enable
-                                                        ) => {
-                                                            form.setFieldValue(
-                                                                field.name,
-                                                                {
-                                                                    ...fieldValue,
-                                                                    [row.key]: {
-                                                                        ...fieldValue[
-                                                                            row
-                                                                                .key
-                                                                        ],
-                                                                        enable,
-                                                                        require: !enable
-                                                                            ? false
-                                                                            : row.require,
-                                                                    },
-                                                                }
-                                                            )
-                                                        }}
-                                                    />
-                                                )
-                                            },
-                                        },
-                                        {
-                                            title: 'Required',
-                                            field: 'require',
-                                            render: row => {
-                                                return (
-                                                    <Switch
-                                                        color="primary"
-                                                        disabled={
-                                                            !row.editable ||
-                                                            !row.enable
-                                                        }
-                                                        checked={row.require}
-                                                        onChange={(
-                                                            e,
-                                                            require
-                                                        ) => {
-                                                            form.setFieldValue(
-                                                                field.name,
-                                                                {
-                                                                    ...fieldValue,
-                                                                    [row.key]: {
-                                                                        ...fieldValue[
-                                                                            row
-                                                                                .key
-                                                                        ],
-                                                                        require,
-                                                                    },
-                                                                }
-                                                            )
-                                                        }}
-                                                    />
-                                                )
-                                            },
-                                        },
-                                    ]}
+                                    enablePagination={false}
+                                    enableExport={false}
+                                    enableSelection={false}
                                 />
                             </FormControl>
                         )
