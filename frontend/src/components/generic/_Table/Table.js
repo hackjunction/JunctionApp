@@ -173,7 +173,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
     } else {
         return (
             <React.Fragment>
-                {pagination}
+                {data.length > 10 && pagination}
                 <ActionBar
                     selected={selectedFlatRows}
                     actions={bulkActions}
@@ -255,7 +255,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
                         </TableBody>
                     </Table>
                 </Box>
-                {pagination}
+                {data.length > 10 && pagination}
             </React.Fragment>
         )
     }
