@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
     tableFooter: {},
 }))
 
-const _Table = ({ columns, data, onRowClick, bulkActions }) => {
+const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
     const classes = useStyles({ onRowClick })
     const defaultColumn = React.useMemo(
         () => ({
@@ -103,6 +103,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
         previousPage,
         setPageSize,
         selectedFlatRows,
+        flatHeaders,
         state: { pageSize, pageIndex },
     } = useTable(
         {
@@ -173,7 +174,12 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
         return (
             <React.Fragment>
                 {pagination}
-                <ActionBar selected={selectedFlatRows} actions={bulkActions} />
+                <ActionBar
+                    selected={selectedFlatRows}
+                    actions={bulkActions}
+                    enableExport={enableExport}
+                    flatHeaders={flatHeaders}
+                />
                 <Box className={classes.wrapper}>
                     <Table {...getTableProps()} className={classes.table}>
                         <TableHead className={classes.tableHead}>
@@ -260,6 +266,7 @@ _Table.defaultProps = {
     columns: [],
     onRowClick: () => {},
     bulkActions: [],
+    enableExport: true,
 }
 
 export default _Table
