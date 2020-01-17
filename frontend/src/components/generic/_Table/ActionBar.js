@@ -1,20 +1,9 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 
-import {
-    Box,
-    Typography,
-    IconButton,
-    Popover,
-    Paper,
-    InputBase,
-    Button,
-} from '@material-ui/core'
+import { Box, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { motion } from 'framer-motion'
-
-import SearchIcon from '@material-ui/icons/Search'
-import GetAppIcon from '@material-ui/icons/GetApp'
-import FilterListIcon from '@material-ui/icons/FilterList'
+import { CSVLink } from 'react-csv'
 
 const useStyles = makeStyles(theme => ({
     selectionActions: {
@@ -29,9 +18,53 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const ActionBar = ({ selected, actions = [] }) => {
+const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
     const classes = useStyles()
     const selectionActive = selected.length > 0
+
+    const headers = flatHeaders
+        .map(header => {
+            if (typeof header.Header === 'string') {
+                return {
+                    label: header.Header,
+                    key: header.id,
+                }
+            }
+        })
+        .filter(item => item)
+
+    console.log('HEADERS', headers)
+    console.log('SELECTED', selected)
+
+    const _actions = useMemo(() => {
+        let base = [...actions]
+        if (enableExport) {
+            base = base.concat({
+                key: 'export',
+                label: (
+                    <CSVLink
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                        data={selected.map(item => item.values)}
+                        filename="export.csv"
+                        headers={flatHeaders
+                            .map(header => {
+                                if (typeof header.Header === 'string') {
+                                    return {
+                                        label: header.Header,
+                                        key: header.id,
+                                    }
+                                }
+                            })
+                            .filter(item => item)}
+                    >
+                        Export selected
+                    </CSVLink>
+                ),
+                action: () => {},
+            })
+        }
+        return base
+    }, [actions, enableExport, flatHeaders, selected])
 
     return (
         <motion.div
@@ -62,21 +95,19 @@ const ActionBar = ({ selected, actions = [] }) => {
                         {selected.length} selected
                     </Typography>
                 </Box>
-                {actions.length && (
-                    <React.Fragment>
-                        {actions.map(action => (
-                            <Box key={action.key} mr={1} mt={1}>
-                                <Button
-                                    onClick={action.action.bind(null, selected)}
-                                    size="small"
-                                    variant="outlined"
-                                >
-                                    {action.label}
-                                </Button>
-                            </Box>
-                        ))}
-                    </React.Fragment>
-                )}
+                <React.Fragment>
+                    {_actions.map(action => (
+                        <Box key={action.key} mr={1} mt={1}>
+                            <Button
+                                onClick={action.action.bind(null, selected)}
+                                size="small"
+                                variant="outlined"
+                            >
+                                {action.label}
+                            </Button>
+                        </Box>
+                    ))}
+                </React.Fragment>
             </Box>
         </motion.div>
     )
