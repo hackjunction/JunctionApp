@@ -20,7 +20,7 @@ export default ({
             </IconButton>
             <Box p={1}>
                 <Typography variant="subtitle2">
-                    Page {pageIndex + 1} of {pageSize !== -1 ? pageCount : 1}
+                    Page {pageIndex + 1} of {pageCount}
                 </Typography>
             </Box>
             <IconButton disabled={!canNextPage} onClick={nextPage}>
