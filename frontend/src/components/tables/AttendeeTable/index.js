@@ -206,14 +206,6 @@ export default ({
                 onClose={resetSearch}
                 registrationIds={selected}
             />
-            <h4>TODOs:</h4>
-            <ul>
-                <li>Filtering with table filters rather than Filter Groups</li>
-                <li>
-                    Make sure filters work properly (render cells the same way
-                    as the table)
-                </li>
-            </ul>
             <Table
                 data={attendees}
                 columns={columns}
@@ -231,7 +223,6 @@ export default ({
                     },
                 ]}
             />
-            {/* {table} */}
             {renderEmpty()}
         </React.Fragment>
     )

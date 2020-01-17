@@ -28,7 +28,7 @@ import Pagination from './Pagination'
 import ActionBar from './ActionBar'
 import FilterFunctions from './filterFunctions'
 import SortFunctions from './sortFunctions'
-import TableTitle from './TableTitle'
+import PageSizeSelect from './PageSizeSelect'
 import { Filters, Sorters } from './index'
 
 const useStyles = makeStyles(theme => ({
@@ -249,7 +249,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
                         </TableBody>
                     </Table>
                 </Box>
-                <h1>Results per page selection here</h1>
+                <PageSizeSelect pageSize={pageSize} setPageSize={setPageSize} />
             </React.Fragment>
         )
     }
