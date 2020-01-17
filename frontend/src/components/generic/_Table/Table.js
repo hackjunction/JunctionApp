@@ -15,7 +15,6 @@ import {
     TableCell,
     TableHead,
     TableRow,
-    TableFooter,
     Typography,
     TableSortLabel,
     Checkbox,
@@ -27,7 +26,6 @@ import Empty from 'components/generic/Empty'
 import Pagination from './Pagination'
 import ActionBar from './ActionBar'
 import FilterFunctions from './filterFunctions'
-import SortFunctions from './sortFunctions'
 import PageSizeSelect from './PageSizeSelect'
 import { Filters, Sorters } from './index'
 
@@ -114,7 +112,6 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
             pageIndex: 0,
             pageSize: 10,
             filterTypes: FilterFunctions,
-            sortTypes: SortFunctions,
             defaultColumn,
             defaultCanFilter: false,
         },
