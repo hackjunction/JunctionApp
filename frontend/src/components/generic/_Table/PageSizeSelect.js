@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import { Box, Typography, Button, ButtonGroup } from '@material-ui/core'
+import { Box, Button, ButtonGroup } from '@material-ui/core'
 
-export default ({ pageSize, setPageSize }) => {
+export default ({ gotoPage, pageSize, setPageSize }) => {
     const opts = [
         [10, 10],
         [25, 25],
@@ -10,19 +10,21 @@ export default ({ pageSize, setPageSize }) => {
         [100, 100],
         ['All', -1],
     ]
+
+    const _setPageSize = useCallback(
+        size => {
+            setPageSize(size)
+            gotoPage(0)
+        },
+        [setPageSize, gotoPage]
+    )
+
     return (
-        <Box p={1} display="flex" flexDirection="column" alignItems="center">
-            <Typography
-                variant="subtitle1"
-                style={{ textAlign: 'center' }}
-                gutterBottom
-            >
-                Results per page
-            </Typography>
+        <Box p={1}>
             <ButtonGroup size="small" aria-label="small outlined button group">
                 {opts.map(([label, value]) => (
                     <Button
-                        onClick={setPageSize.bind(null, value)}
+                        onClick={_setPageSize.bind(null, value)}
                         color={pageSize === value ? 'primary' : undefined}
                         key={value}
                     >

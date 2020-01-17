@@ -102,6 +102,7 @@ export default ({
                 accessor: (row, index) => {
                     return index + 1
                 },
+                ...Sorters.Numeric,
                 id: 'index',
             },
             {
