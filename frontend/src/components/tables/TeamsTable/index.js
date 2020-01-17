@@ -9,6 +9,7 @@ import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationMod
 import BulkEmailModal from 'components/modals/BulkEmailModal'
 
 import { Table, Sorters } from 'components/generic/_Table'
+import AttendeeTable from '../AttendeeTable'
 
 export default ({ loading, teams = [] }) => {
     const registrationsMap = useSelector(OrganiserSelectors.registrationsMap)
@@ -17,6 +18,7 @@ export default ({ loading, teams = [] }) => {
     const [ratingRange, setRatingRange] = useState([0, 5])
     const [bulkEdit, setBulkEdit] = useState(false)
     const [bulkEmail, setBulkEmail] = useState(false)
+    const [expandedRows, setExpandedRows] = useState({ 1: true })
 
     const handleRatingRangeChange = useCallback((e, value) => {
         setRatingRange(value)
@@ -221,7 +223,13 @@ export default ({ loading, teams = [] }) => {
                 </Paper>
             </Grid>
             <Grid item xs={12}>
-                <Table data={teamsFiltered} columns={columns} />
+                <Table
+                    data={teamsFiltered}
+                    columns={columns}
+                    renderExpanded={row => (
+                        <AttendeeTable attendees={row.original.members} />
+                    )}
+                />
                 {/* <MaterialTable
                     title="Teams"
                     showCount

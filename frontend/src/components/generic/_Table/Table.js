@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
     useTable,
     usePagination,
     useSortBy,
     useFilters,
     useRowSelect,
+    useExpanded,
 } from 'react-table'
 
 import { makeStyles, darken } from '@material-ui/core/styles'
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     table: {
         background: theme.palette.background.paper,
     },
-    tableRow: ({ onRowClick }) => {
+    tableRow: ({ onRowClick, renderExpanded }) => {
         const baseStyles = {}
         const clickableStyles = {
             cursor: 'pointer',
@@ -46,7 +47,10 @@ const useStyles = makeStyles(theme => ({
                 transition: 'all 0.2s ease',
             },
         }
-        if (typeof onRowClick === 'function') {
+        if (
+            typeof onRowClick === 'function' ||
+            typeof renderExpanded === 'function'
+        ) {
             return {
                 ...baseStyles,
                 ...clickableStyles,
@@ -75,9 +79,19 @@ const useStyles = makeStyles(theme => ({
     },
     tableCell: {},
     tableFooter: {},
+    expandedRow: {
+        background: 'rgba(0,0,0,0.10)',
+    },
 }))
 
-const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
+const _Table = ({
+    columns,
+    data,
+    onRowClick,
+    bulkActions,
+    enableExport,
+    renderExpanded,
+}) => {
     const classes = useStyles({ onRowClick })
     const defaultColumn = React.useMemo(
         () => ({
@@ -117,6 +131,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
         },
         useFilters,
         useSortBy,
+        useExpanded,
         usePagination,
         useRowSelect,
         hooks => {
@@ -150,6 +165,19 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
         }
     )
 
+    const handleRowClick = useCallback(
+        row => {
+            if (typeof renderExpanded === 'function') {
+                row.toggleExpanded(!row.isExpanded)
+            }
+
+            if (typeof onRowClick === 'function') {
+                onRowClick(row)
+            }
+        },
+        [onRowClick, renderExpanded]
+    )
+
     const pagination = (
         <Pagination
             canPreviousPage={canPreviousPage}
@@ -167,6 +195,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
     )
 
     const isEmpty = !data || data.length === 0
+    const columnCount = columns.length + 1
 
     if (isEmpty) {
         return <Empty isEmpty />
@@ -226,11 +255,11 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
                         <TableBody {...getTableBodyProps()}>
                             {page.map((row, i) => {
                                 prepareRow(row)
-                                return (
+                                return [
                                     <TableRow
                                         {...row.getRowProps()}
                                         className={classes.tableRow}
-                                        onClick={() => onRowClick(row)}
+                                        onClick={handleRowClick.bind(null, row)}
                                     >
                                         {row.cells.map(cell => {
                                             return (
@@ -249,8 +278,21 @@ const _Table = ({ columns, data, onRowClick, bulkActions, enableExport }) => {
                                                 </TableCell>
                                             )
                                         })}
-                                    </TableRow>
-                                )
+                                    </TableRow>,
+                                    row.isExpanded && (
+                                        <TableRow
+                                            className={classes.expandedRow}
+                                            key={
+                                                row.getRowProps()?.key +
+                                                '_expanded'
+                                            }
+                                        >
+                                            <TableCell colSpan={columnCount}>
+                                                {renderExpanded(row)}
+                                            </TableCell>
+                                        </TableRow>
+                                    ),
+                                ]
                             })}
                         </TableBody>
                     </Table>
