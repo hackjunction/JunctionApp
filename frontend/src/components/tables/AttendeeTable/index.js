@@ -181,13 +181,6 @@ export default ({
         ]
     }, [event.tags, organiserProfilesMap])
 
-    const renderEmpty = () => {
-        if (loading) return null
-        if (!Array.isArray(attendees) || attendees.length !== 0) return null
-        if (typeof emptyRenderer === 'function') return emptyRenderer()
-        return <Empty isEmpty />
-    }
-
     return (
         <React.Fragment>
             <EditRegistrationModal
@@ -223,7 +216,6 @@ export default ({
                     },
                 ]}
             />
-            {renderEmpty()}
         </React.Fragment>
     )
 }
