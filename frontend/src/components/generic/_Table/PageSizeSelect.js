@@ -8,7 +8,7 @@ export default ({ gotoPage, pageSize, setPageSize }) => {
         [25, 25],
         [50, 50],
         [100, 100],
-        ['All', -1],
+        ['All', 100000],
     ]
 
     const _setPageSize = useCallback(
