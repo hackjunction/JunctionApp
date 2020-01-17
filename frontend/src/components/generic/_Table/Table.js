@@ -26,7 +26,6 @@ import Empty from 'components/generic/Empty'
 import Pagination from './Pagination'
 import ActionBar from './ActionBar'
 import FilterFunctions from './filterFunctions'
-import PageSizeSelect from './PageSizeSelect'
 import { Filters, Sorters } from './index'
 
 const useStyles = makeStyles(theme => ({
@@ -150,6 +149,22 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
         }
     )
 
+    const pagination = (
+        <Pagination
+            canPreviousPage={canPreviousPage}
+            canNextPage={canNextPage}
+            pageCount={pageCount}
+            gotoPage={gotoPage}
+            nextPage={nextPage}
+            previousPage={previousPage}
+            setPageSize={setPageSize}
+            pageOptions={pageOptions}
+            pageSize={pageSize}
+            pageIndex={pageIndex}
+            items={data.length}
+        />
+    )
+
     const isEmpty = !data || data.length === 0
 
     if (isEmpty) {
@@ -157,19 +172,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
     } else {
         return (
             <React.Fragment>
-                <Pagination
-                    canPreviousPage={canPreviousPage}
-                    canNextPage={canNextPage}
-                    pageCount={pageCount}
-                    gotoPage={gotoPage}
-                    nextPage={nextPage}
-                    previousPage={previousPage}
-                    setPageSize={setPageSize}
-                    pageOptions={pageOptions}
-                    pageSize={pageSize}
-                    pageIndex={pageIndex}
-                    items={data.length}
-                />
+                {pagination}
                 <ActionBar selected={selectedFlatRows} actions={bulkActions} />
                 <Box className={classes.wrapper}>
                     <Table {...getTableProps()} className={classes.table}>
@@ -246,7 +249,7 @@ const _Table = ({ columns, data, onRowClick, bulkActions }) => {
                         </TableBody>
                     </Table>
                 </Box>
-                <PageSizeSelect pageSize={pageSize} setPageSize={setPageSize} />
+                {pagination}
             </React.Fragment>
         )
     }

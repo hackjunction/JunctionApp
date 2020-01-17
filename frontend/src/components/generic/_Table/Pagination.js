@@ -1,15 +1,29 @@
 import React, { useCallback } from 'react'
 
-import { Box, Typography, IconButton, TextField } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Box } from '@material-ui/core'
 
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
+import PageSizeSelect from './PageSizeSelect'
+import PageSelect from './PageSelect'
+
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        [theme.breakpoints.up('md')]: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+        },
+    },
+}))
 
 const Pagination = props => {
+    const classes = useStyles()
     const {
         canPreviousPage,
         canNextPage,
-        pageOptions,
         pageCount,
         gotoPage,
         nextPage,
@@ -17,48 +31,24 @@ const Pagination = props => {
         setPageSize,
         pageSize,
         pageIndex,
-        items,
     } = props
 
-    // const handlePageSizeChange = useCallback(
-    //     e => {
-    //         setPageSize(Number(e.target.value))
-    //     },
-    //     [setPageSize]
-    // )
-
     return (
-        <Box
-            p={1}
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-            flexWrap="wrap"
-            alignItems="center"
-        >
-            <Box>
-                <Typography variant="subtitle2">
-                    {items === 1 ? '1 result' : `${items} results`}
-                </Typography>
-            </Box>
-            {pageOptions.length > 0 && (
-                <Box display="flex" flexDirection="row" alignItems="center">
-                    <IconButton
-                        disabled={!canPreviousPage}
-                        onClick={previousPage}
-                    >
-                        <NavigateBeforeIcon />
-                    </IconButton>
-                    <Box p={1}>
-                        <Typography variant="subtitle2">
-                            Page {pageIndex + 1} of {pageCount}
-                        </Typography>
-                    </Box>
-                    <IconButton disabled={!canNextPage} onClick={nextPage}>
-                        <NavigateNextIcon />
-                    </IconButton>
-                </Box>
-            )}
+        <Box className={classes.wrapper}>
+            <PageSizeSelect
+                gotoPage={gotoPage}
+                pageSize={pageSize}
+                setPageSize={setPageSize}
+            />
+            <PageSelect
+                pageSize={pageSize}
+                pageIndex={pageIndex}
+                pageCount={pageCount}
+                canPreviousPage={canPreviousPage}
+                previousPage={previousPage}
+                canNextPage={canNextPage}
+                nextPage={nextPage}
+            />
         </Box>
     )
 }
