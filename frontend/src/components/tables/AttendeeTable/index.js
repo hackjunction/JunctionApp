@@ -106,30 +106,34 @@ export default ({
             },
             {
                 Header: 'First name',
-                accessor: row => row.answers.firstName,
-                id: 'firstNAMEEE',
+                accessor: 'answers.firstName',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Last name',
                 accessor: 'answers.lastName',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Email',
                 accessor: 'answers.email',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Status',
                 accessor: 'status',
                 ...Filters.MultipleSelect,
+                ...Sorters.Alphabetic,
                 Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
             },
             {
                 Header: 'Rating',
                 accessor: 'rating',
                 ...Filters.MultipleSelect,
+                ...Sorters.Numeric,
                 Cell: ({ cell: { value } }) =>
                     value ? (
                         <Rating size="small" value={value} readOnly />
@@ -140,6 +144,7 @@ export default ({
             {
                 Header: 'Tags',
                 accessor: 'tags',
+                ...Sorters.ArrayLength,
                 Cell: ({ cell: { value } }) => {
                     if (!value || !value.length) {
                         return 'No tags'
@@ -159,12 +164,14 @@ export default ({
             {
                 Header: 'Created at',
                 accessor: 'createdAt',
+                ...Sorters.DateTime,
                 Cell: ({ cell: { value } }) =>
                     moment(value).format('MMM Do YYYY HH:mm:ss'),
             },
             {
                 Header: 'Assigned to',
                 accessor: 'assignedTo',
+                ...Sorters.Alphabetic,
                 Cell: ({ cell: { value } }) => {
                     let text
                     if (!value) {

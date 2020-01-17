@@ -1,6 +1,5 @@
 import Table from './Table'
-import * as SortTypes from './sortTypes'
-import SortFunctions from './sortFunctions'
+import * as SortFunctions from './sortFunctions'
 import SingleSelectFilter from './filters/SingleSelectFilter'
 import MultipleSelectFilter from './filters/MultipleSelectFilter'
 import ContainsSearchFilter from './filters/ContainsSearch'
@@ -18,22 +17,26 @@ const Filters = {
 
 const Sorters = {
     Numeric: {
-        sortType: SortTypes.SORT_NUMERIC,
+        sortType: SortFunctions.Numeric,
         disableSortBy: false,
     },
     Alphabetic: {
-        sortType: SortTypes.SORT_ALPHABETIC,
+        sortType: SortFunctions.Alphabetic,
         disableSortBy: false,
     },
-    Default: {
+    DateTime: {
+        sortType: SortFunctions.DateTime,
         disableSortBy: false,
     },
-    Datetime: {
-        sortType: 'datetime',
+    ArrayLength: {
+        sortType: SortFunctions.ArrayLength,
         disableSortBy: false,
     },
     Disabled: {
         disableSortBy: true,
+    },
+    Default: {
+        disableSortBy: false,
     },
 }
 
