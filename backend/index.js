@@ -5,7 +5,6 @@ const path = require('path')
 const helmet = require('helmet')
 const sslRedirect = require('heroku-ssl-redirect')
 const throng = require('throng')
-const expressPino = require('express-pino-logger')
 
 /** Create Express application */
 const app = express()
@@ -33,6 +32,9 @@ app.use(
 
 /* Register API routes */
 require('./modules/routes')(app)
+
+/* Register GraphQL server */
+require('./modules/graphql')(app)
 
 /* Serve frontend at all other routes */
 if (process.env.NODE_ENV === 'production') {
