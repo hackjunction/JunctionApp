@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useMemo, forwardRef } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import moment from 'moment'
-import { useSelector } from 'react-redux'
+import { push } from 'connected-react-router'
+import { useSelector, useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
-import EmailIcon from '@material-ui/icons/Email'
-import EditIcon from '@material-ui/icons/Edit'
-import { Box, Paper } from '@material-ui/core'
-import MaterialTable from 'components/generic/MaterialTable'
+import { Box } from '@material-ui/core'
+import Rating from '@material-ui/lab/Rating'
 import StatusBadge from 'components/generic/StatusBadge'
 import Tag from 'components/generic/Tag'
 
@@ -13,7 +13,8 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
-import Empty from 'components/generic/Empty'
+
+import { Table, Filters, Sorters } from 'components/generic/_Table'
 
 export default ({
     emptyRenderer,
@@ -23,202 +24,202 @@ export default ({
     title = 'Participants',
     minimal = false,
 }) => {
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search)
     const organiserProfilesMap = useSelector(OrganiserSelectors.organisersMap)
     const event = useSelector(OrganiserSelectors.event)
 
-    const [editing, setEditing] = useState()
+    const query = new URLSearchParams(location.search)
+    const hasModal = query.has('modal')
+    const activeModal = query.get('modal')
     const [selected, setSelected] = useState([])
-    const [bulkEdit, setBulkEdit] = useState(false)
-    const [bulkEmail, setBulkEmail] = useState(false)
 
-    const toggleBulkEdit = useCallback(() => {
-        setBulkEdit(!bulkEdit)
-    }, [bulkEdit])
+    const openSingleEdit = useCallback(
+        row => {
+            const search = `?${new URLSearchParams({
+                modal: 'edit',
+                id: row.original.user,
+            }).toString()}`
+            dispatch(push({ search }))
+        },
+        [dispatch]
+    )
 
-    const toggleBulkEmail = useCallback(() => {
-        setBulkEmail(!bulkEmail)
-    }, [bulkEmail])
+    const openBulkEmail = useCallback(
+        selectedRows => {
+            setSelected(selectedRows)
+            const search = `?${new URLSearchParams({
+                modal: 'bulkEmail',
+            })}`
+            dispatch(push({ search }))
+        },
+        [dispatch]
+    )
 
-    const handleEditClose = useCallback(() => {
-        setEditing()
-    }, [])
+    const openBulkEdit = useCallback(
+        selectedRows => {
+            setSelected(selectedRows)
+            const search = `?${new URLSearchParams({
+                modal: 'bulkEdit',
+            })}`
+            dispatch(push({ search }))
+        },
+        [dispatch]
+    )
 
-    const table = useMemo(() => {
-        if (!loading) {
-            if (!Array.isArray(attendees) || attendees.length === 0) return null
-        }
+    const resetSearch = useCallback(() => {
+        dispatch(push({ search: '' }))
+    }, [dispatch])
 
-        return (
-            <MaterialTable
-                title={title}
-                showCount
-                isLoading={loading}
-                data={attendees}
-                onRowClick={(e, row) => setEditing(row.user)}
-                onSelectionChange={rows => setSelected(rows.map(r => r.user))}
-                actions={
-                    !minimal
-                        ? [
-                              {
-                                  icon: forwardRef((props, ref) => (
-                                      <EmailIcon {...props} ref={ref} />
-                                  )),
-                                  tooltip: 'Email selected',
-                                  onClick: toggleBulkEmail,
-                              },
-                              {
-                                  icon: forwardRef((props, ref) => (
-                                      <EditIcon {...props} ref={ref} />
-                                  )),
-                                  tooltip: 'Edit selected',
-                                  onClick: toggleBulkEdit,
-                              },
-                          ]
-                        : []
+    useEffect(() => {
+        //Verify the query parameters
+        switch (activeModal) {
+            case 'bulkEmail':
+            case 'bulkEdit':
+                if (selected.length === 0) {
+                    resetSearch()
                 }
-                options={{
-                    exportButton: !minimal,
-                    selection: !minimal,
-                    showSelectAllCheckbox: !minimal,
-                    pageSizeOptions: [5, 25, 50],
-                    debounceInterval: 500,
-                    search: !minimal,
-                    paging: !minimal,
-                }}
-                localization={{
-                    toolbar: {
-                        searchPlaceholder: 'Search by name/email',
-                        nRowsSelected: '{0} selected',
-                    },
-                }}
-                components={{
-                    Container: forwardRef((props, ref) =>
-                        minimal ? (
-                            <Box {...props} ref={ref} />
-                        ) : (
-                            <Paper {...props} ref={ref} />
-                        )
-                    ),
-                }}
-                columns={[
-                    {
-                        title: 'First name',
-                        field: 'answers.firstName',
-                        searchable: true,
-                    },
-                    {
-                        title: 'Last name',
-                        field: 'answers.lastName',
-                        searchable: true,
-                    },
-                    {
-                        title: 'Email',
-                        field: 'answers.email',
-                        searchable: true,
-                        hidden: minimal,
-                    },
-                    {
-                        title: 'Rating',
-                        field: 'rating',
-                    },
-                    {
-                        title: 'Status',
-                        field: 'status',
-                        render: row => {
-                            return <StatusBadge status={row.status} />
-                        },
-                    },
-                    {
-                        title: 'Tags',
-                        field: 'tags',
-                        render: row => {
-                            const { tags } = row
-                            if (!tags || !tags.length) {
-                                return '-'
-                            } else {
-                                return event.tags
-                                    .filter(tag => {
-                                        return tags.indexOf(tag.label) !== -1
-                                    })
-                                    .map(({ color, label }) => (
-                                        <Tag
-                                            key={label}
-                                            color={color}
-                                            label={label}
-                                        />
-                                    ))
-                            }
-                        },
-                    },
-                    {
-                        title: 'Submitted',
-                        field: 'createdAt',
-                        render: row =>
-                            moment(row.createdAt).format(
-                                'MMM Do YYYY HH:mm:ss'
-                            ),
-                        sorting: true,
-                        type: 'datetime',
-                    },
-                    {
-                        title: 'Assigned to',
-                        field: 'assignedTo',
-                        hidden: minimal,
-                        render: row => {
-                            const userId = row.assignedTo
-                            let text
-                            if (!userId) {
-                                text = '-'
-                            } else if (
-                                organiserProfilesMap.hasOwnProperty(userId)
-                            ) {
-                                const user = organiserProfilesMap[userId]
-                                text = `${user.firstName} ${user.lastName}`
-                            } else {
-                                text = '???'
-                            }
-                            return text
-                        },
-                    },
-                ]}
-            />
-        )
-    }, [
-        attendees,
-        event.tags,
-        loading,
-        minimal,
-        organiserProfilesMap,
-        title,
-        toggleBulkEmail,
-        toggleBulkEdit,
-    ])
+                break
+            case 'edit':
+                if (!query.has('id')) {
+                    resetSearch()
+                }
+                break
+            default:
+                break
+        }
+    }, [activeModal, resetSearch, hasModal, query, selected.length])
 
-    const renderEmpty = () => {
-        if (loading) return null
-        if (!Array.isArray(attendees) || attendees.length !== 0) return null
-        if (typeof emptyRenderer === 'function') return emptyRenderer()
-        return <Empty isEmpty />
-    }
+    const columns = useMemo(() => {
+        return [
+            {
+                Header: '#',
+                accessor: (row, index) => {
+                    return index + 1
+                },
+                ...Sorters.Numeric,
+                id: 'index',
+            },
+            {
+                Header: 'First name',
+                accessor: 'answers.firstName',
+                ...Sorters.Alphabetic,
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Last name',
+                accessor: 'answers.lastName',
+                ...Sorters.Alphabetic,
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Email',
+                accessor: 'answers.email',
+                ...Sorters.Alphabetic,
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Status',
+                accessor: 'status',
+                ...Filters.MultipleSelect,
+                ...Sorters.Alphabetic,
+                Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
+            },
+            {
+                Header: 'Rating',
+                accessor: 'rating',
+                ...Filters.MultipleSelect,
+                ...Sorters.Numeric,
+                Cell: ({ cell: { value } }) =>
+                    value ? (
+                        <Rating size="small" value={value} readOnly />
+                    ) : (
+                        'Not rated'
+                    ),
+            },
+            {
+                Header: 'Tags',
+                accessor: 'tags',
+                ...Sorters.ArrayLength,
+                Cell: ({ cell: { value } }) => {
+                    if (!value || !value.length) {
+                        return 'No tags'
+                    } else {
+                        return event.tags
+                            .filter(tag => {
+                                return value.indexOf(tag.label) !== -1
+                            })
+                            .map(({ color, label }) => (
+                                <Box key={label} ml="3px" mt="3px">
+                                    <Tag color={color} label={label} />
+                                </Box>
+                            ))
+                    }
+                },
+            },
+            {
+                Header: 'Created at',
+                accessor: 'createdAt',
+                ...Sorters.DateTime,
+                Cell: ({ cell: { value } }) =>
+                    moment(value).format('MMM Do YYYY HH:mm:ss'),
+            },
+            {
+                Header: 'Assigned to',
+                accessor: 'assignedTo',
+                ...Sorters.Alphabetic,
+                Cell: ({ cell: { value } }) => {
+                    let text
+                    if (!value) {
+                        text = 'No one'
+                    } else if (organiserProfilesMap.hasOwnProperty(value)) {
+                        const user = organiserProfilesMap[value]
+                        text = `${user.firstName} ${user.lastName}`
+                    } else {
+                        text = '???'
+                    }
+                    return text
+                },
+            },
+        ]
+    }, [event.tags, organiserProfilesMap])
 
     return (
         <React.Fragment>
             <EditRegistrationModal
-                registrationId={editing}
-                onClose={handleEditClose}
+                registrationId={
+                    activeModal === 'edit' ? searchParams.get('id') : undefined
+                }
+                onClose={resetSearch}
             />
             <BulkEditRegistrationModal
-                visible={bulkEdit}
-                onClose={toggleBulkEdit}
+                visible={activeModal === 'bulkEdit'}
+                onClose={resetSearch}
                 registrationIds={selected}
             />
             <BulkEmailModal
-                visible={bulkEmail}
-                onClose={toggleBulkEmail}
+                visible={activeModal === 'bulkEmail'}
+                onClose={resetSearch}
                 registrationIds={selected}
             />
-            {table}
-            {renderEmpty()}
+            <Table
+                data={attendees}
+                columns={columns}
+                onRowClick={openSingleEdit}
+                bulkActions={[
+                    {
+                        key: 'bulk-email',
+                        label: 'Email all',
+                        action: openBulkEmail,
+                    },
+                    {
+                        key: 'bulk-edit',
+                        label: 'Edit all',
+                        action: openBulkEdit,
+                    },
+                ]}
+            />
         </React.Fragment>
     )
 }
