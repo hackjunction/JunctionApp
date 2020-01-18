@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
-import ProjectsTable from '../ProjectsTable'
+import ProjectsTable from 'components/tables/ProjectsTable'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
