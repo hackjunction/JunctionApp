@@ -7,7 +7,6 @@ const opts = {
     redact: ['res.headers', 'req.headers.authorization'],
 }
 
-/** Send production logs to Sentry, use console in development */
 const stream = pino.destination(1)
 const logger = pino(opts, stream)
 

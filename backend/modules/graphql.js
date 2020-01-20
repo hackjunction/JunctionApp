@@ -37,6 +37,7 @@ module.exports = app => {
     const server = new ApolloServer({
         schema,
         playground: true,
+        context: ({ req, res }) => ({ req, res }),
     })
 
     server.applyMiddleware({ app })
