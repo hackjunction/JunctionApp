@@ -30,6 +30,12 @@ app.use(
     })
 )
 
+/* JWT-middleware from all requests */
+const { verifyToken, parseToken } = require('./misc/jwt')
+
+app.use(verifyToken)
+app.use(parseToken)
+
 /* Register API routes */
 require('./modules/routes')(app)
 
