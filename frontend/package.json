@@ -9,7 +9,7 @@
         "@material-ui/lab": "^4.0.0-alpha.31",
         "@react-pdf/renderer": "^1.6.4",
         "antd": "^3.18.2",
-        "auth0-js": "^9.10.0",
+        "auth0-js": "^9.12.2",
         "axios": "^0.18.0",
         "babel-plugin-import": "^1.12.2",
         "cloudinary-react": "^1.1.1",
