@@ -1,27 +1,76 @@
-const { gql } = require('apollo-server-express')
+const {
+    GraphQLObjectType,
+    GraphQLID,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLList,
+    GraphQLSchema,
+    printSchema,
+} = require('graphql')
+const {
+    makeExecutableSchema,
+    addSchemaLevelResolveFunction,
+} = require('graphql-tools')
+const { applyMiddleware } = require('graphql-middleware')
+
 const UserProfileController = require('./graphql-controller')
 
-const typeDefs = gql`
-    type UserProfile {
-        id: ID!
-        userId: ID!
-        avatar: String
-        firstName: String
-        lastName: String
-        email: String
-    }
+const UserProfileType = new GraphQLObjectType({
+    name: 'UserProfile',
+    fields: {
+        firstName: {
+            type: GraphQLString,
+        },
+        lastName: {
+            type: GraphQLString,
+        },
+        email: {
+            type: GraphQLString,
+        },
+    },
+})
 
-    extend type Query {
-        userProfileById(userId: ID!): UserProfile
-    }
-`
+const QueryType = new GraphQLObjectType({
+    name: 'Query',
+    fields: {
+        userProfileById: {
+            type: UserProfileType,
+            arguments: {
+                userId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        userProfiles: {
+            type: GraphQLNonNull(GraphQLList(UserProfileType)),
+        },
+    },
+})
 
 const resolvers = {
     Query: {
-        userProfileById: async (_, args) => {
-            return UserProfileController.getById(args.userId)
+        userProfileById: (parent, args, { req }) => {
+            const controller = new UserProfileController(req.user)
+            return controller.getByUserId(args.userId)
+        },
+        userProfiles: (parent, args, { req }) => {
+            const controller = new UserProfileController(req.user)
+            return controller.getAll()
         },
     },
 }
 
-module.exports = { typeDefs, resolvers }
+const rawSchema = new GraphQLSchema({
+    query: QueryType,
+})
+
+const stringSchema = printSchema(rawSchema)
+const UserProfileSchema = makeExecutableSchema({
+    typeDefs: stringSchema,
+    resolvers,
+})
+
+module.exports = {
+    UserProfileSchema,
+    UserProfileType,
+}

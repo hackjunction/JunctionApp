@@ -1,59 +1,107 @@
-const { gql } = require('apollo-server-express')
-const RegistrationController = require('./graphql-controller')
+const {
+    GraphQLObjectType,
+    GraphQLID,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLList,
+    GraphQLSchema,
+    printSchema,
+} = require('graphql')
+const { makeExecutableSchema } = require('graphql-tools')
+
 const UserProfileController = require('../user-profile/graphql-controller')
-const EventController = require('../event/graphql-controller')
+const { UserProfileType } = require('../user-profile/graphql')
+const RegistrationController = require('./graphql-controller')
 
-const typeDefs = gql`
-    type Registration {
-        id: ID!
-        user: String
-        _user: UserProfile!
-        event: String
-        _event: Event!
-        status: String! # TODO: This should be an enum
-        assignedTo: ID
-        rating: Int
-        ratedBy: ID
-        tags: [String!]
-        # answers: TODO: {Custom object shape}
-        travelGrant: Int
-        travelGrantStatus: String
-        travelGrantDetails: String
-        travelGrantComment: String
-        travelGrantAmount: Int
-    }
+const RegistrationType = new GraphQLObjectType({
+    name: 'Registration',
+    fields: () => ({
+        user: {
+            type: GraphQLID,
+        },
+        _user: {
+            type: UserProfileType,
+        },
+        event: {
+            type: GraphQLID,
+        },
+        status: {
+            type: GraphQLString,
+        },
+    }),
+})
 
-    extend type Query {
-        registrationById(registrationId: String!): Registration
-        registrations: [Registration!]!
-        registrationsByEvent(eventId: String!): [Registration!]!
-        registrationsByUser(userId: String!): [Registration!]!
-    }
-`
+const QueryType = new GraphQLObjectType({
+    name: 'Query',
+    fields: {
+        registrationById: {
+            type: RegistrationType,
+            args: {
+                _id: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        registrations: {
+            type: GraphQLList(RegistrationType),
+        },
+        registrationsByEvent: {
+            type: GraphQLList(RegistrationType),
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLString),
+                },
+            },
+        },
+        registrationsByUser: {
+            type: GraphQLList(RegistrationType),
+            args: {
+                userId: {
+                    type: GraphQLNonNull(GraphQLString),
+                },
+            },
+        },
+    },
+})
 
 const resolvers = {
     Query: {
-        registrationById: async (_, args) => {
-            return RegistrationController.getById(args.registrationId)
+        registrationById: (parent, args, { req }) => {
+            const controller = new RegistrationController(req.user)
+            return controller.getById(args._id)
         },
-        registrations: async () => {
-            return RegistrationController.getAll()
+        registrations: (parent, args, { req }) => {
+            const controller = new RegistrationController(req.user)
+            return controller.getAll()
         },
-        registrationsByEvent: async (_, args) => {
-            return RegistrationController.getByEventId(args.eventId)
+        registrationsByEvent: (parent, args, { req }) => {
+            const controller = new RegistrationController(req.user)
+            return controller.getByEventId(args.eventId)
         },
-        registrationsByUser: async (_, args) => {
-            return RegistrationController.getByUserId(args.userId)
+        registrationsByUser: (parent, args, { req }) => {
+            const controller = new RegistrationController(req.user)
+            return controller.getByUserId(args.userId)
         },
     },
     Registration: {
-        _user: async _ => {
-            return UserProfileController.getById(_.user)
-        },
-        _event: async _ => {
-            return EventController.getById(_.event)
+        _user: (parent, args, { req }) => {
+            const controller = new UserProfileController(req.user)
+            return controller.getByUserId(parent.user)
         },
     },
 }
 
-module.exports = { typeDefs, resolvers }
+const rawSchema = new GraphQLSchema({
+    query: QueryType,
+})
+
+const stringSchema = printSchema(rawSchema)
+const RegistrationSchema = makeExecutableSchema({
+    typeDefs: stringSchema,
+    resolvers,
+})
+
+module.exports = {
+    RegistrationSchema,
+    RegistrationType,
+}

@@ -5,14 +5,13 @@ const {
     ReviewingMethods,
     OverallReviewingMethods,
 } = require('@hackjunction/shared')
-const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage')
+const AddressSchema = require('@hackjunction/shared/schemas/Address')
+const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
+const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
+const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
+const TrackSchema = require('@hackjunction/shared/schemas/Track')
+const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
 const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig')
-const RegistrationQuestionSchema = require('../../common/schemas/RegistrationQuestion')
-const TravelGrantConfigSchema = require('../../common/schemas/TravelGrantConfig')
-const DiscordConfigSchema = require('../../common/schemas/DiscordConfig')
-const AddressSchema = require('../../common/schemas/Address')
-const TrackSchema = require('../../common/schemas/TrackSchema')
-const ChallengeSchema = require('../../common/schemas/ChallengeSchema')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../../modules/upload/helper')
@@ -70,17 +69,25 @@ const EventSchema = new mongoose.Schema({
         requiredForPublish: true,
     },
     /** Event customisation */
-    coverImage: CloudinaryImageSchema,
-    logo: CloudinaryImageSchema,
+    coverImage: CloudinaryImageSchema.mongoose,
+    logo: CloudinaryImageSchema.mongoose,
     /** Event configuration */
     eventType: {
         type: String,
-        enum: Object.keys(EventTypes),
+        validate: {
+            validator(v) {
+                return v in EventTypes
+            },
+            message: () =>
+                `Event type must be one of ${Object.keys(EventTypes).join(
+                    ','
+                )}`,
+        },
         required: true,
         default: EventTypes.online.id,
     },
     eventLocation: {
-        type: AddressSchema,
+        type: AddressSchema.mongoose,
         required: [
             function() {
                 return this.eventType === EventTypes.physical.id
@@ -90,7 +97,7 @@ const EventSchema = new mongoose.Schema({
     },
     tracksEnabled: false,
     tracks: {
-        type: [TrackSchema],
+        type: [TrackSchema.mongoose],
         default: [],
         validate: [
             function(val) {
@@ -110,7 +117,7 @@ const EventSchema = new mongoose.Schema({
     },
     challengesEnabled: false,
     challenges: {
-        type: [ChallengeSchema],
+        type: [ChallengeSchema.mongoose],
         default: [],
         validate: [
             function(val) {
@@ -129,22 +136,34 @@ const EventSchema = new mongoose.Schema({
         ],
     },
     travelGrantConfig: {
-        type: TravelGrantConfigSchema,
-        default: TravelGrantConfigSchema,
-    },
-    discordConfig: {
-        type: DiscordConfigSchema,
-        default: DiscordConfigSchema,
+        type: TravelGrantConfigSchema.mongoose,
+        default: TravelGrantConfigSchema.mongoose,
     },
     reviewMethod: {
         type: String,
-        enum: Object.keys(ReviewingMethods),
         required: true,
         default: ReviewingMethods.gavelPeerReview.id,
+        validate: {
+            validator(v) {
+                return v in ReviewingMethods
+            },
+            message: () =>
+                `Reviewing method must be one of ${Object.keys(
+                    ReviewingMethods
+                ).join(',')}`,
+        },
     },
     overallReviewMethod: {
         type: String,
-        enum: Object.keys(OverallReviewingMethods),
+        validate: {
+            validator(v) {
+                return v in OverallReviewingMethods
+            },
+            message: () =>
+                `Overall reviewing method must be one of ${Object.keys(
+                    OverallReviewingMethods
+                ).join(',')}`,
+        },
         required: [
             function() {
                 return this.tracksEnabled
@@ -157,22 +176,7 @@ const EventSchema = new mongoose.Schema({
         default: UserDetailsConfigSchema,
     },
     customQuestions: {
-        type: [
-            {
-                label: {
-                    type: String,
-                    required: true,
-                },
-                name: {
-                    type: String,
-                    required: true,
-                },
-                description: String,
-                conditional: String,
-                questions: [RegistrationQuestionSchema],
-            },
-        ],
-        default: [],
+        type: [RegistrationSectionSchema.mongoose],
     },
     tags: {
         type: [
