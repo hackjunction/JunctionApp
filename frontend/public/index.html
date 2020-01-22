@@ -65,10 +65,15 @@
         }
 
         body {
+            position: absolute;
+            left: -17px;
+            right: -17px;
+            padding-top: 0;
+            padding-right: 17px !important;
+            padding-left: 17px;
+            padding-bottom: 0px;
             overflow-x: hidden;
-            overflow-y: scroll;
-            padding-right: 0 !important;
-            min-height: 100%;
+            overflow-y: auto !important;  //Remove the !important if you want the scroll bar to disappear
         }
     </style>
   </head>
