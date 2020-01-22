@@ -9,9 +9,10 @@ const {
 } = require('graphql')
 const {
     makeExecutableSchema,
-    addSchemaLevelResolveFunction,
+    // addSchemaLevelResolveFunction,
+    // TODO: This could still be used to be able to define the controller class instance just once,
+    // but we'll see about that later
 } = require('graphql-tools')
-const { applyMiddleware } = require('graphql-middleware')
 
 const UserProfileController = require('./graphql-controller')
 
