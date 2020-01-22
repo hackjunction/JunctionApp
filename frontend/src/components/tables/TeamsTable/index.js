@@ -1,43 +1,24 @@
-import React, { useMemo, useState, useCallback, forwardRef } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 
 import { useSelector } from 'react-redux'
 import { sumBy } from 'lodash-es'
-import { makeStyles } from '@material-ui/core/styles'
 import { Typography, Grid, Box, Slider, Paper } from '@material-ui/core'
-import EmailIcon from '@material-ui/icons/Email'
-import EditIcon from '@material-ui/icons/Edit'
-
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import MaterialTable from 'components/generic/MaterialTable'
-import AttendeeTable from 'components/tables/AttendeeTable'
 import Select from 'components/inputs/SelectOld'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
 
-const useStyles = makeStyles(theme => ({
-    detailPanel: {
-        padding: theme.spacing(2),
-        backgroundColor: '#fafafa',
-    },
-}))
+import { Table, Sorters } from 'components/generic/_Table'
+import AttendeeTable from '../AttendeeTable'
 
 export default ({ loading, teams = [] }) => {
     const registrationsMap = useSelector(OrganiserSelectors.registrationsMap)
-    const classes = useStyles()
     const [reviewStatus, setReviewStatus] = useState('any')
     const [completedStatus, setCompletedStatus] = useState('any')
     const [ratingRange, setRatingRange] = useState([0, 5])
     const [bulkEdit, setBulkEdit] = useState(false)
     const [bulkEmail, setBulkEmail] = useState(false)
-    const [searchActive, setSearchActive] = useState(false)
-
-    const handleSearchChange = useCallback(val => {
-        if (val && val.length > 0) {
-            setSearchActive(true)
-        } else {
-            setSearchActive(false)
-        }
-    }, [])
+    const [expandedRows, setExpandedRows] = useState({ 1: true })
 
     const handleRatingRangeChange = useCallback((e, value) => {
         setRatingRange(value)
@@ -100,6 +81,60 @@ export default ({ loading, teams = [] }) => {
             return res.concat(team.members.map(reg => reg.user))
         }, [])
     }, [teamsFiltered])
+
+    const columns = useMemo(() => {
+        return [
+            {
+                Header: '#',
+                accessor: (row, index) => {
+                    return index + 1
+                },
+                id: 'index',
+                sortType: Sorters.Numeric,
+            },
+            {
+                Header: 'Owner',
+                accessor: row => {
+                    const { owner } = row
+                    if (!owner || !owner.answers) return '???'
+                    return `${owner.answers.firstName} ${owner.answers.lastName}`
+                },
+                id: 'owner',
+                ...Sorters.Alphabetic,
+            },
+            {
+                Header: 'Code',
+                accessor: 'code',
+                ...Sorters.Alphabetic,
+            },
+            {
+                Header: 'Members',
+                accessor: row => row.members.length,
+                id: 'members',
+                ...Sorters.Numeric,
+            },
+            {
+                Header: 'Avg. Rating',
+                accessor: 'avgRating',
+                ...Sorters.Numeric,
+            },
+            {
+                Header: '% Reviewed',
+                accessor: 'reviewedPercent',
+                ...Sorters.Numeric,
+                Cell: ({ cell: { value } }) => {
+                    return (
+                        <Typography
+                            variant="button"
+                            color={value === 100 ? 'primary' : 'secondary'}
+                        >
+                            {value}%
+                        </Typography>
+                    )
+                },
+            },
+        ]
+    }, [])
 
     return (
         <Grid container spacing={2}>
@@ -188,7 +223,14 @@ export default ({ loading, teams = [] }) => {
                 </Paper>
             </Grid>
             <Grid item xs={12}>
-                <MaterialTable
+                <Table
+                    data={teamsFiltered}
+                    columns={columns}
+                    renderExpanded={row => (
+                        <AttendeeTable attendees={row.original.members} />
+                    )}
+                />
+                {/* <MaterialTable
                     title="Teams"
                     showCount
                     isLoading={loading}
@@ -239,90 +281,7 @@ export default ({ loading, teams = [] }) => {
                             </Box>
                         )
                     }}
-                    columns={[
-                        {
-                            title: 'Owner',
-                            field: 'owner',
-                            searchable: true,
-                            customFilterAndSearch: (
-                                keyword,
-                                row,
-                                { render }
-                            ) => {
-                                return render(row).indexOf(keyword) !== -1
-                            },
-                            render: row => {
-                                const { owner } = row
-                                if (!owner || !owner.answers) return '???'
-                                return `${owner.answers.firstName} ${owner.answers.lastName}`
-                            },
-                        },
-                        {
-                            title: 'Code',
-                            field: 'code',
-                            searchable: true,
-                        },
-                        {
-                            title: 'Members',
-                            field: 'members',
-                            render: row => row.members.length,
-                        },
-                        {
-                            title: 'Avg. Rating',
-                            field: 'avgRating',
-                        },
-                        {
-                            title: '% Reviewed',
-                            field: 'reviewedPercent',
-                            render: row => {
-                                if (row.reviewedPercent === 100) {
-                                    return (
-                                        <Typography
-                                            variant="button"
-                                            color="primary"
-                                        >
-                                            100%
-                                        </Typography>
-                                    )
-                                } else {
-                                    return (
-                                        <Typography
-                                            variant="button"
-                                            color="secondary"
-                                        >
-                                            {row.reviewedPercent}%
-                                        </Typography>
-                                    )
-                                }
-                            },
-                        },
-                        {
-                            title: 'Completed',
-                            field: 'complete',
-                            render: row => {
-                                if (row.complete) {
-                                    return (
-                                        <Typography
-                                            variant="button"
-                                            color="primary"
-                                        >
-                                            Yes
-                                        </Typography>
-                                    )
-                                } else {
-                                    return (
-                                        <Typography
-                                            variant="button"
-                                            color="secondary"
-                                        >
-                                            No
-                                        </Typography>
-                                    )
-                                }
-                            },
-                        },
-                    ]}
-                />
+                /> */}
             </Grid>
         </Grid>
     )
