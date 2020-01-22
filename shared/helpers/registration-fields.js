@@ -1,18 +1,18 @@
-const RegistrationFields = require('../constants/registration-fields');
+const RegistrationFields = require('../constants/registration-fields')
 
 const RegistrationFieldsHelpers = {
     buildValidationSchema: (yup, fields) => {
-        const schema = {};
+        const schema = {}
 
         fields.forEach(({ fieldName, require }) => {
-            const fieldParams = RegistrationFields.getField(fieldName);
+            const fieldParams = RegistrationFields.getField(fieldName)
             if (fieldParams) {
-                schema[fieldName] = fieldParams.validationSchema(yup, require);
+                schema[fieldName] = fieldParams.validationSchema(yup, require)
             }
-        });
+        })
 
-        return schema;
-    }
-};
+        return schema
+    },
+}
 
-module.exports = RegistrationFieldsHelpers;
+module.exports = RegistrationFieldsHelpers

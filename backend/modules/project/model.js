@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const _ = require('lodash')
 const { ReviewingMethods } = require('@hackjunction/shared')
-const CloudinaryImageSchema = require('../../common/schemas/CloudinaryImage')
+const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const AchievementSchema = require('../../common/schemas/Achievement')
 const GavelController = require('../reviewing/gavel/controller')
 
@@ -42,7 +42,7 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
     },
     images: {
-        type: [CloudinaryImageSchema],
+        type: [CloudinaryImageSchema.mongoose],
     },
     challenges: {
         type: [String],

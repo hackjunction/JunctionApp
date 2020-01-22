@@ -1,37 +1,12 @@
-const {
-    ApolloServer,
-    gql,
-    makeExecutableSchema,
-} = require('apollo-server-express')
-const _ = require('lodash')
+const { ApolloServer } = require('apollo-server-express')
+const { mergeSchemas } = require('graphql-tools')
 
-const registration = require('./registration/graphql')
-const userProfile = require('./user-profile/graphql')
-const event = require('./event/graphql')
+const { UserProfileSchema } = require('./user-profile/graphql')
+const { RegistrationSchema } = require('./registration/graphql')
 
 module.exports = app => {
-    const Query = gql`
-        type Query {
-            _empty: String
-        }
-
-        type Mutation {
-            _empty: String
-        }
-    `
-
-    const schema = makeExecutableSchema({
-        typeDefs: [
-            Query,
-            registration.typeDefs,
-            userProfile.typeDefs,
-            event.typeDefs,
-        ],
-        resolvers: _.merge(
-            registration.resolvers,
-            userProfile.resolvers,
-            event.resolvers
-        ),
+    const schema = mergeSchemas({
+        schemas: [UserProfileSchema, RegistrationSchema],
     })
 
     const server = new ApolloServer({
@@ -39,6 +14,5 @@ module.exports = app => {
         playground: true,
         context: ({ req, res }) => ({ req, res }),
     })
-
     server.applyMiddleware({ app })
 }

@@ -11,7 +11,6 @@ import { CloudinaryContext } from 'cloudinary-react'
 import { SnackbarProvider } from 'notistack'
 import WebFont from 'webfontloader'
 import Notifier from './notifier'
-
 import configureStore, { history } from 'redux/configureStore'
 import config from 'constants/config'
 import theme from './material-ui-theme'

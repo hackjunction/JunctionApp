@@ -1,29 +1,44 @@
-const { gql } = require('apollo-server-express')
-const EventController = require('./graphql-controller')
+// const { gql } = require('apollo-server-express')
+const { schemaComposer } = require('graphql-compose')
+const { composeWithMongoose } = require('graphql-compose-mongoose')
+const Event = require('./model')
+// const EventController = require('./graphql-controller')
+const dateUtils = require('../../common/utils/dateUtils')
 
-const typeDefs = gql`
-    type Event {
-        id: ID!
-        name: String
-        description: String
-        timezone: String
-    }
+/** Generate the base GraphQL typeDef from the corresponding mongoose model */
+const customizationOptions = {}
+const EventTC = composeWithMongoose(Event, customizationOptions)
 
-    extend type Query {
-        eventById(eventId: ID!): Event
-        events: [Event!]!
-    }
-`
-
-const resolvers = {
-    Query: {
-        eventById: async (_, args) => {
-            return EventController.getById(args.eventId)
-        },
-        events: async () => {
-            return EventController.getAll()
+/** Add some extra fields for convenience */
+EventTC.addFields({
+    eventLocationFormatted: {
+        type: 'String',
+        description: 'A formatted location description for the event',
+        resolve: parent => {
+            if (parent.eventType === 'physical') {
+                return `${parent.eventLocation.city}, ${parent.eventLocation.country}`
+            }
+            return 'Online'
         },
     },
-}
+    eventTimeFormatted: {
+        type: 'String',
+        description: 'A formatted time description for the event',
+        resolve: parent => {
+            return dateUtils.formatDateInterval(
+                parent.startTime,
+                parent.endTime
+            )
+        },
+    },
+})
 
-module.exports = { typeDefs, resolvers }
+/** Add the queries we want to expose
+ * TODO: Authorization for these
+ */
+schemaComposer.Query.addFields({
+    eventById: EventTC.getResolver('findById'),
+    events: EventTC.getResolver('findMany'),
+})
+
+module.exports = EventTC

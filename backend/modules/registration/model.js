@@ -4,10 +4,11 @@ const {
     RegistrationStatuses,
     RegistrationTravelGrantStatuses,
 } = require('@hackjunction/shared')
+const AnswersSchema = require('@hackjunction/shared/schemas/Answers')
+const TravelGrantDetailsSchema = require('@hackjunction/shared/schemas/TravelGrantDetails')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const EmailTaskController = require('../email-task/controller')
 const UserProfileController = require('../user-profile/controller')
-const TravelGrantDetailsSchema = require('../../common/schemas/TravelGrantDetails')
 
 const RegistrationSchema = new mongoose.Schema({
     event: {
@@ -19,11 +20,17 @@ const RegistrationSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: RegistrationStatuses.ids,
         default: RegistrationStatuses.asObject.pending.id,
         set(status) {
             this._previousStatus = this.status
             return status
+        },
+        validate: {
+            validator(v) {
+                return RegistrationStatuses.ids.indexOf(v) !== -1
+            },
+            message: () =>
+                `Status must be one of ${RegistrationStatuses.ids.join(',')}`,
         },
     },
     assignedTo: {
@@ -43,7 +50,7 @@ const RegistrationSchema = new mongoose.Schema({
         default: [],
     },
     answers: {
-        type: mongoose.Mixed,
+        type: AnswersSchema.mongoose,
         default: {},
     },
     travelGrant: {
@@ -55,11 +62,19 @@ const RegistrationSchema = new mongoose.Schema({
     },
     travelGrantStatus: {
         type: String,
-        enum: RegistrationTravelGrantStatuses.ids,
         default: RegistrationTravelGrantStatuses.asObject.not_submitted.id,
+        validate: {
+            validator(v) {
+                return RegistrationTravelGrantStatuses.ids.indexOf(v) !== -1
+            },
+            message: () =>
+                `Travel grant status must be one of ${RegistrationTravelGrantStatuses.ids.join(
+                    ','
+                )}`,
+        },
     },
     travelGrantDetails: {
-        type: TravelGrantDetailsSchema,
+        type: TravelGrantDetailsSchema.mongoose,
     },
     travelGrantComment: {
         type: String,
