@@ -13,6 +13,10 @@ const settings = {
         value: process.env.REACT_APP_AUTH0_CLIENT_ID,
         required: true,
     },
+    ID_TOKEN_NAMESPACE: {
+        value: process.env.REACT_APP_ID_TOKEN_NAMESPACE,
+        required: true,
+    },
     BASE_URL: {
         value: process.env.REACT_APP_BASE_URL,
         required: true,
