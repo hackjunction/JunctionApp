@@ -1,44 +1,101 @@
-// const { gql } = require('apollo-server-express')
-const { schemaComposer } = require('graphql-compose')
-const { composeWithMongoose } = require('graphql-compose-mongoose')
-const Event = require('./model')
-// const EventController = require('./graphql-controller')
+const {
+    GraphQLObjectType,
+    GraphQLID,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLList,
+    GraphQLSchema,
+    printSchema,
+    buildSchema,
+} = require('graphql')
+const { makeExecutableSchema } = require('graphql-tools')
+
+const { SharedGraphQLTypes } = require('@hackjunction/shared/schemas')
+const EventController = require('./graphql-controller')
 const dateUtils = require('../../common/utils/dateUtils')
 
-/** Generate the base GraphQL typeDef from the corresponding mongoose model */
-const customizationOptions = {}
-const EventTC = composeWithMongoose(Event, customizationOptions)
+const SharedSchema = buildSchema(SharedGraphQLTypes)
+const { CloudinaryImage } = SharedSchema._typeMap
 
-/** Add some extra fields for convenience */
-EventTC.addFields({
-    eventLocationFormatted: {
-        type: 'String',
-        description: 'A formatted location description for the event',
-        resolve: parent => {
+const EventType = new GraphQLObjectType({
+    name: 'Event',
+    fields: () => ({
+        name: {
+            type: GraphQLString,
+        },
+        timezone: {
+            type: GraphQLString,
+        },
+        coverImage: {
+            type: CloudinaryImage,
+        },
+        logo: {
+            type: CloudinaryImage,
+        },
+        eventLocationFormatted: {
+            type: GraphQLString,
+        },
+        eventTimeFormatted: {
+            type: GraphQLString,
+        },
+    }),
+})
+
+const QueryType = new GraphQLObjectType({
+    name: 'Query',
+    fields: {
+        eventById: {
+            type: EventType,
+            args: {
+                _id: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        events: {
+            type: GraphQLList(EventType),
+        },
+    },
+})
+
+const resolvers = {
+    Query: {
+        eventById: (parent, args, { req }) => {
+            const controller = new EventController(req.user)
+            controller.getById(args._id)
+        },
+        events: (parent, args, { req }) => {
+            const controller = new EventController(req.user)
+            controller.getAll()
+        },
+    },
+    Event: {
+        eventLocationFormatted: parent => {
             if (parent.eventType === 'physical') {
                 return `${parent.eventLocation.city}, ${parent.eventLocation.country}`
             }
             return 'Online'
         },
-    },
-    eventTimeFormatted: {
-        type: 'String',
-        description: 'A formatted time description for the event',
-        resolve: parent => {
+        eventTimeFormatted: parent => {
             return dateUtils.formatDateInterval(
                 parent.startTime,
                 parent.endTime
             )
         },
     },
+}
+
+const rawSchema = new GraphQLSchema({
+    query: QueryType,
 })
 
-/** Add the queries we want to expose
- * TODO: Authorization for these
- */
-schemaComposer.Query.addFields({
-    eventById: EventTC.getResolver('findById'),
-    events: EventTC.getResolver('findMany'),
+const stringSchema = printSchema(rawSchema)
+const EventSchema = makeExecutableSchema({
+    typeDefs: stringSchema,
+    resolvers,
 })
 
-module.exports = EventTC
+module.exports = {
+    EventSchema,
+    EventType,
+}
