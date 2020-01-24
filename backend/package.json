@@ -29,6 +29,7 @@
         "celebrate": "^9.0.2",
         "cloudinary": "^1.14.0",
         "cron": "^1.7.2",
+        "dataloader": "^2.0.0",
         "discord.js": "^11.5.1",
         "dotenv": "^6.2.0",
         "express": "^4.16.4",
