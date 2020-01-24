@@ -14,14 +14,17 @@ const { UserProfileType } = require('../user-profile/graphql')
 const RegistrationType = new GraphQLObjectType({
     name: 'Registration',
     fields: () => ({
+        _id: {
+            type: GraphQLNonNull(GraphQLID),
+        },
         user: {
-            type: GraphQLID,
+            type: GraphQLNonNull(GraphQLID),
         },
         _user: {
             type: UserProfileType,
         },
         event: {
-            type: GraphQLID,
+            type: GraphQLNonNull(GraphQLID),
         },
         status: {
             type: GraphQLString,

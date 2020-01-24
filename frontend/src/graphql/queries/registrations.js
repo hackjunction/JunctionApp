@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks'
 export const GET_REGISTRATIONS_BY_USER = gql`
     query Registration($userId: ID!) {
         registrationsByUser(userId: $userId) {
-            id
+            _id
             event
         }
     }
