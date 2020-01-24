@@ -13,7 +13,7 @@
         "apollo-boost": "^0.4.7",
         "apollo-link-context": "^1.0.19",
         "apollo-link-error": "^1.1.12",
-        "auth0-js": "^9.10.0",
+        "auth0-js": "^9.12.2",
         "axios": "^0.18.0",
         "babel-plugin-import": "^1.12.2",
         "cloudinary-react": "^1.1.1",
