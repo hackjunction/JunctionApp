@@ -9,7 +9,7 @@ async function batchGetRegistrationsById(ids) {
             $in: ids,
         },
     })
-    const resultsMap = results.reduce(({ map, current }) => {
+    const resultsMap = results.reduce((map, current) => {
         map[current._id] = current
         return map
     }, {})

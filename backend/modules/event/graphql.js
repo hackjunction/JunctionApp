@@ -5,6 +5,8 @@ const {
     GraphQLNonNull,
     GraphQLList,
     GraphQLSchema,
+    GraphQLInt,
+    GraphQLBoolean,
     printSchema,
     buildSchema,
 } = require('graphql')
@@ -25,6 +27,9 @@ const EventType = new GraphQLObjectType({
         name: {
             type: GraphQLString,
         },
+        slug: {
+            type: GraphQLString,
+        },
         timezone: {
             type: GraphQLString,
         },
@@ -33,6 +38,9 @@ const EventType = new GraphQLObjectType({
         },
         logo: {
             type: CloudinaryImage,
+        },
+        eventType: {
+            type: GraphQLString,
         },
         eventLocationFormatted: {
             type: GraphQLString,
@@ -57,16 +65,70 @@ const QueryType = new GraphQLObjectType({
         events: {
             type: GraphQLList(EventType),
         },
+        myEvents: {
+            type: GraphQLList(EventType),
+        },
+        highlightedEvents: {
+            type: GraphQLList(EventType),
+            args: {
+                limit: {
+                    type: GraphQLInt,
+                },
+            },
+        },
+        activeEvents: {
+            type: GraphQLList(EventType),
+            args: {
+                limit: {
+                    type: GraphQLInt,
+                },
+            },
+        },
+        pastEvents: {
+            type: GraphQLList(EventType),
+            args: {
+                limit: {
+                    type: GraphQLInt,
+                },
+            },
+        },
     },
 })
 
 const resolvers = {
     Query: {
-        eventById: (parent, args, context) => {
+        myEvents: async (parent, args, context) => {
+            const userId = context.req.user ? context.req.user.sub : null
+            if (!userId) return null
+            return context.controller('Event').getByOrganiser(userId)
+        },
+        eventById: async (parent, args, context) => {
             return context.controller('Event').getById(args._id)
         },
         events: (parent, args, context) => {
             return context.controller('Event').getAll()
+        },
+        highlightedEvents: async (parent, args, context) => {
+            let events = await context.controller('Event').getHighlighted()
+
+            if (args.limit) {
+                events = events.slice(0, args.limit)
+            }
+            return events
+        },
+        activeEvents: async (parent, args, context) => {
+            let events = await context.controller('Event').getActive()
+            if (args.limit) {
+                events = events.slice(0, args.limit)
+            }
+            return events
+        },
+        pastEvents: async (parents, args, context) => {
+            let events = await context.controller('Event').getPast()
+            if (args.limit) {
+                events = events.slice(0, args.limit)
+            }
+            return events
         },
     },
     Event: {

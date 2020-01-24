@@ -24,12 +24,18 @@ const UserProfileType = new GraphQLObjectType({
         email: {
             type: GraphQLString,
         },
+        avatar: {
+            type: GraphQLString,
+        },
     },
 })
 
 const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
+        myProfile: {
+            type: UserProfileType,
+        },
         userProfileById: {
             type: UserProfileType,
             args: {
@@ -46,6 +52,10 @@ const QueryType = new GraphQLObjectType({
 
 const resolvers = {
     Query: {
+        myProfile: async (parent, args, context) => {
+            const userId = context.req.user ? context.req.user.userId : null
+            return context.controller('UserProfile').getByUserId(userId)
+        },
         userProfileById: async (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(args.userId)
         },

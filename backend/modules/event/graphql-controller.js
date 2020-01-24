@@ -1,16 +1,18 @@
+const mongoose = require('mongoose')
 const { Auth } = require('@hackjunction/shared')
 const DataLoader = require('dataloader')
 const Event = require('./model')
 const PermissionUtils = require('../../utils/permissions')
 
 async function batchGetEventsByIds(eventIds) {
+    const objectIds = eventIds.map(id => new mongoose.Types.ObjectId(id))
     const results = await Event.find({
         _id: {
-            $in: eventIds,
+            $in: objectIds,
         },
     })
-    const resultsMap = results.reduce(({ map, current }) => {
-        map[current._id] = current
+    const resultsMap = results.reduce((map, current) => {
+        map[current._id.toString()] = current
         return map
     }, {})
     return eventIds.map(_id => resultsMap[_id] || null)
@@ -22,7 +24,7 @@ async function batchGetEventsBySlugs(eventSlugs) {
             $in: eventSlugs,
         },
     })
-    const resultsMap = results.reduce(({ map, current }) => {
+    const resultsMap = results.reduce((map, current) => {
         map[current.slug] = current
         return map
     }, {})
@@ -50,6 +52,45 @@ class EventController {
 
     getBySlug(eventSlug) {
         return this._clean(this.eventSlugLoader.load(eventSlug))
+    }
+
+    getByOrganiser(userId) {
+        return this._clean(
+            Event.find().or([{ owner: userId }, { organisers: userId }])
+        )
+    }
+
+    getHighlighted() {
+        return this._clean(
+            Event.find({
+                published: true,
+                startTime: {
+                    $gte: new Date(),
+                },
+            }).sort([['startTime', 1]])
+        )
+    }
+
+    getActive() {
+        return this._clean(
+            Event.find({
+                published: true,
+                endTime: {
+                    $gte: new Date(),
+                },
+            }).sort([['startTime', 1]])
+        )
+    }
+
+    getPast() {
+        return this._clean(
+            Event.find({
+                published: true,
+                endTime: {
+                    $lt: new Date(),
+                },
+            }).sort([['endTime', -1]])
+        )
     }
 
     getAll() {
