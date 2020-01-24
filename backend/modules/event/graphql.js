@@ -11,7 +11,6 @@ const {
 const { makeExecutableSchema } = require('graphql-tools')
 
 const { SharedGraphQLTypes } = require('@hackjunction/shared/schemas')
-const EventController = require('./graphql-controller')
 const dateUtils = require('../../common/utils/dateUtils')
 
 const SharedSchema = buildSchema(SharedGraphQLTypes)
@@ -20,6 +19,9 @@ const { CloudinaryImage } = SharedSchema._typeMap
 const EventType = new GraphQLObjectType({
     name: 'Event',
     fields: () => ({
+        _id: {
+            type: GraphQLID,
+        },
         name: {
             type: GraphQLString,
         },
@@ -60,13 +62,11 @@ const QueryType = new GraphQLObjectType({
 
 const resolvers = {
     Query: {
-        eventById: (parent, args, { req }) => {
-            const controller = new EventController(req.user)
-            controller.getById(args._id)
+        eventById: (parent, args, context) => {
+            return context.controller('Event').getById(args._id)
         },
-        events: (parent, args, { req }) => {
-            const controller = new EventController(req.user)
-            controller.getAll()
+        events: (parent, args, context) => {
+            return context.controller('Event').getAll()
         },
     },
     Event: {

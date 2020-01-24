@@ -19,21 +19,21 @@ class RegistrationController {
     }
 
     getById(id) {
-        return this.clean(Registration.findById(id))
+        return this._clean(Registration.findById(id))
     }
 
     getAll() {
         if (!this.isAdmin) return []
-        return this.clean(Registration.find())
+        return this._clean(Registration.find())
     }
 
     getByEventId(eventId) {
         if (!this.isAdmin) return []
-        return this.clean(Registration.find({ event: eventId }))
+        return this._clean(Registration.find({ event: eventId }))
     }
 
     getByUserId(userId) {
-        return this.clean(Registration.find({ user: userId }))
+        return this._clean(Registration.find({ user: userId }))
     }
 
     /** Utilities for enforcing what items & fields are visible to the requestingUser */

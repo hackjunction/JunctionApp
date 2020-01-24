@@ -9,9 +9,7 @@ const {
 } = require('graphql')
 const { makeExecutableSchema } = require('graphql-tools')
 
-const UserProfileController = require('../user-profile/graphql-controller')
 const { UserProfileType } = require('../user-profile/graphql')
-const RegistrationController = require('./graphql-controller')
 
 const RegistrationType = new GraphQLObjectType({
     name: 'Registration',
@@ -66,27 +64,22 @@ const QueryType = new GraphQLObjectType({
 
 const resolvers = {
     Query: {
-        registrationById: (parent, args, { req }) => {
-            const controller = new RegistrationController(req.user)
-            return controller.getById(args._id)
+        registrationById: (parent, args, context) => {
+            return context.controller('Registration').getById(args._id)
         },
-        registrations: (parent, args, { req }) => {
-            const controller = new RegistrationController(req.user)
-            return controller.getAll()
+        registrations: (parent, args, context) => {
+            return context.controller('Registration').getAll()
         },
-        registrationsByEvent: (parent, args, { req }) => {
-            const controller = new RegistrationController(req.user)
-            return controller.getByEventId(args.eventId)
+        registrationsByEvent: (parent, args, context) => {
+            return context.controller('Registration').getByEventId(args.eventId)
         },
-        registrationsByUser: (parent, args, { req }) => {
-            const controller = new RegistrationController(req.user)
-            return controller.getByUserId(args.userId)
+        registrationsByUser: (parent, args, context) => {
+            return context.controller('Registration').getByUserId(args.userId)
         },
     },
     Registration: {
-        _user: (parent, args, { req }) => {
-            const controller = new UserProfileController(req.user)
-            return controller.getByUserId(parent.user)
+        _user: (parent, args, context) => {
+            return context.controller('UserProfile').getByUserId(parent.user)
         },
     },
 }
