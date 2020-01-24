@@ -58,7 +58,7 @@ const QueryType = new GraphQLObjectType({
             type: GraphQLList(RegistrationType),
             args: {
                 userId: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: GraphQLNonNull(GraphQLID),
                 },
             },
         },

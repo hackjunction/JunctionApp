@@ -14,7 +14,7 @@ export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const [registrations = [], loading, error] = useRegistrationsByUser(userId)
     return (
-        <PageWrapper loading={loading} error={error}>
+        <PageWrapper loading={loading} error={Boolean(error)}>
             <Box p={2}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>

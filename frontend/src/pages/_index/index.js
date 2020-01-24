@@ -1,8 +1,4 @@
-import React, { useEffect } from 'react'
-
-import { useSelector, useDispatch } from 'react-redux'
-import * as EventActions from 'redux/events/actions'
-import * as EventSelectors from 'redux/events/selectors'
+import React from 'react'
 
 import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
@@ -15,14 +11,11 @@ import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
-export default () => {
-    const dispatch = useDispatch()
-    const upcomingEvents = useSelector(EventSelectors.upcomingEvents)
-    const pastEvents = useSelector(EventSelectors.pastEvents)
+import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
-    useEffect(() => {
-        dispatch(EventActions.updateEvents())
-    }, [dispatch])
+export default () => {
+    const [activeEvents] = useActiveEvents({ limit: 3 })
+    const [pastEvents] = usePastEvents({ limit: 3 })
 
     return (
         <PageWrapper
@@ -36,7 +29,7 @@ export default () => {
                     <CenteredContainer>
                         <EventsGrid
                             title="Upcoming / ongoing events"
-                            events={upcomingEvents}
+                            events={activeEvents}
                         />
                         <EventsGrid title="Past events" events={pastEvents} />
                     </CenteredContainer>

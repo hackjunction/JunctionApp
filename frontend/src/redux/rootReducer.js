@@ -7,7 +7,7 @@ import admin from './admin/reducer'
 import auth from './auth/reducer'
 import dashboard from './dashboard/reducer'
 import eventdetail from './eventdetail/reducer'
-import events from './events/reducer'
+//import events from './UNUSED_events/reducer'
 import organiser from './organiser/reducer'
 import recruitment from './recruitment/reducer'
 import user from './user/reducer'
@@ -21,7 +21,7 @@ export default history =>
         auth,
         dashboard,
         eventdetail,
-        events,
+        //events,
         organiser,
         recruitment,
         snackbar,

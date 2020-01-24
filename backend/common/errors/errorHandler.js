@@ -1,7 +1,6 @@
 const logger = require('../../misc/logger')
 
 const errorHandler = (error, request, response, next) => {
-    console.log('ERR', error)
     switch (error.name) {
         case 'UnauthorizedError': {
             return response.status(401).json({

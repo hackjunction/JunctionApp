@@ -7,9 +7,9 @@ const { UserProfile } = require('./model')
 
 async function batchUsersByUserId(userIds) {
     const results = await UserProfile.find({ userId: { $in: userIds } })
-    const resultsMap = results.reduce((result, current) => {
-        result[current.userId] = current
-        return result
+    const resultsMap = results.reduce((map, current) => {
+        map[current.userId] = current
+        return map
     }, {})
     return userIds.map(userId => resultsMap[userId] || null)
 }
