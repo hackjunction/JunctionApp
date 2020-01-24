@@ -12,7 +12,7 @@ function buildController(key, context) {
         case 'Event':
             return new EventController(user)
         default: {
-            throw new Error(`Now controller specified for key ${key}`)
+            throw new Error(`No controller specified for key ${key}!`)
         }
     }
 }
@@ -28,7 +28,8 @@ module.exports = function buildGetController() {
         if (store.has(key)) {
             return store.get(key)
         }
-        /** Otherwise create it, and add it to the map for later use */
+        /** Otherwise create it, and add it to the map for later use.
+         * This refers to the context of the graphql query */
         const controller = buildController(key, this)
         store.set(key, controller)
         return controller

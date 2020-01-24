@@ -6,6 +6,7 @@ const logger = require('./logger')
 mongoose.Promise = Promise
 
 const connect = () => {
+    mongoose.set('debug', process.env.NODE_ENV === 'development')
     mongoose.connect(global.gConfig.MONGODB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,

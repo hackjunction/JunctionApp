@@ -7,16 +7,14 @@ const {
     GraphQLSchema,
     printSchema,
 } = require('graphql')
-const {
-    makeExecutableSchema,
-    // addSchemaLevelResolveFunction,
-    // TODO: This could still be used to be able to define the controller class instance just once,
-    // but we'll see about that later
-} = require('graphql-tools')
+const { makeExecutableSchema } = require('graphql-tools')
 
 const UserProfileType = new GraphQLObjectType({
     name: 'UserProfile',
     fields: {
+        userId: {
+            type: GraphQLID,
+        },
         firstName: {
             type: GraphQLString,
         },
@@ -34,7 +32,7 @@ const QueryType = new GraphQLObjectType({
     fields: {
         userProfileById: {
             type: UserProfileType,
-            arguments: {
+            args: {
                 userId: {
                     type: GraphQLNonNull(GraphQLID),
                 },
@@ -48,7 +46,7 @@ const QueryType = new GraphQLObjectType({
 
 const resolvers = {
     Query: {
-        userProfileById: (parent, args, context) => {
+        userProfileById: async (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(args.userId)
         },
         userProfiles: (parent, args, context) => {

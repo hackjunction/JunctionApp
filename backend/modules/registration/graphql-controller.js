@@ -1,6 +1,21 @@
 const { Auth } = require('@hackjunction/shared')
+const DataLoader = require('dataloader')
 const PermissionUtils = require('../../utils/permissions')
 const Registration = require('./model')
+
+async function batchGetRegistrationsById(ids) {
+    const results = await Registration.find({
+        _id: {
+            $in: ids,
+        },
+    })
+    const resultsMap = results.reduce(({ map, current }) => {
+        map[current._id] = current
+        return map
+    }, {})
+
+    return ids.map(id => resultsMap[id] || null)
+}
 
 class RegistrationController {
     constructor(requestingUser, overrideChecks) {
@@ -16,10 +31,12 @@ class RegistrationController {
                 requestingUser,
                 Auth.Permissions.MANAGE_EVENT
             )
+
+        this.registrationIdLoader = new DataLoader(batchGetRegistrationsById)
     }
 
     getById(id) {
-        return this._clean(Registration.findById(id))
+        return this._clean(this.registrationIdLoader.load(id))
     }
 
     getAll() {

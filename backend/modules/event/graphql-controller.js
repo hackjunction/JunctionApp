@@ -1,6 +1,33 @@
 const { Auth } = require('@hackjunction/shared')
+const DataLoader = require('dataloader')
 const Event = require('./model')
 const PermissionUtils = require('../../utils/permissions')
+
+async function batchGetEventsByIds(eventIds) {
+    const results = await Event.find({
+        _id: {
+            $in: eventIds,
+        },
+    })
+    const resultsMap = results.reduce(({ map, current }) => {
+        map[current._id] = current
+        return map
+    }, {})
+    return eventIds.map(_id => resultsMap[_id] || null)
+}
+
+async function batchGetEventsBySlugs(eventSlugs) {
+    const results = await Event.find({
+        slug: {
+            $in: eventSlugs,
+        },
+    })
+    const resultsMap = results.reduce(({ map, current }) => {
+        map[current.slug] = current
+        return map
+    }, {})
+    return eventSlugs.map(slug => resultsMap[slug] || null)
+}
 
 class EventController {
     constructor(requestingUser, overrideChecks) {
@@ -12,10 +39,17 @@ class EventController {
                 requestingUser,
                 Auth.Permissions.MANAGE_EVENT
             )
+
+        this.eventIdLoader = new DataLoader(batchGetEventsByIds)
+        this.eventSlugLoader = new DataLoader(batchGetEventsBySlugs)
     }
 
     getById(eventId) {
-        return this._clean(Event.findById(eventId))
+        return this._clean(this.eventIdLoader.load(eventId))
+    }
+
+    getBySlug(eventSlug) {
+        return this._clean(this.eventSlugLoader.load(eventSlug))
     }
 
     getAll() {
