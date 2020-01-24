@@ -14,8 +14,6 @@ const {
     // but we'll see about that later
 } = require('graphql-tools')
 
-const UserProfileController = require('./graphql-controller')
-
 const UserProfileType = new GraphQLObjectType({
     name: 'UserProfile',
     fields: {
@@ -50,13 +48,11 @@ const QueryType = new GraphQLObjectType({
 
 const resolvers = {
     Query: {
-        userProfileById: (parent, args, { req }) => {
-            const controller = new UserProfileController(req.user)
-            return controller.getByUserId(args.userId)
+        userProfileById: (parent, args, context) => {
+            return context.controller('UserProfile').getByUserId(args.userId)
         },
-        userProfiles: (parent, args, { req }) => {
-            const controller = new UserProfileController(req.user)
-            return controller.getAll()
+        userProfiles: (parent, args, context) => {
+            return context.controller('UserProfile').getAll()
         },
     },
 }

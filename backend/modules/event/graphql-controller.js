@@ -18,6 +18,10 @@ class EventController {
         return this._clean(Event.findById(eventId))
     }
 
+    getAll() {
+        return this._clean(Event.find())
+    }
+
     async _clean(promise) {
         const result = await promise
         if (Array.isArray(result)) {
@@ -38,14 +42,17 @@ class EventController {
             return event
         }
 
+        if (this.isAdmin) {
+            return event
+        }
+
         /** If the user is an organiser or admin, they can see it */
-        const { isAdmin } = this
         const isOwner =
             this.requestingUser && this.requestingUser.sub === event.owner
         const isOrganiser =
             this.requestingUser &&
             event.organisers.indexOf(this.requestingUser.sub) !== -1
-        if (isAdmin || isOwner || isOrganiser) {
+        if (isOwner || isOrganiser) {
             return event
         }
 
