@@ -16,7 +16,7 @@ import {
 import * as AuthSelectors from 'redux/auth/selectors'
 import Button from 'components/generic/Button'
 
-import { useUserAvatar } from 'graphql/queries/userProfile'
+import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
 const useStyles = makeStyles(theme => ({
     menuDot: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
     const userId = idTokenPayload?.sub
-    const [avatar] = useUserAvatar(userId)
+    const [profile] = useMyProfilePreview(userId)
     const dispatch = useDispatch()
     const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess)
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
@@ -125,7 +125,7 @@ export default () => {
             </IconButton>
             <Box p={1} />
             <Avatar
-                src={avatar}
+                src={profile?.avatar}
                 alt="Avatar"
                 style={{ width: '60px', height: '60px' }}
             />

@@ -53,7 +53,7 @@ const QueryType = new GraphQLObjectType({
 const resolvers = {
     Query: {
         myProfile: async (parent, args, context) => {
-            const userId = context.req.user ? context.req.user.userId : null
+            const userId = context.req.user ? context.req.user.sub : null
             return context.controller('UserProfile').getByUserId(userId)
         },
         userProfileById: async (parent, args, context) => {
