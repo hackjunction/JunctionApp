@@ -275,7 +275,7 @@ const SendgridService = {
         const params = {
             header_image:
                 'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_600/v1573050918/wordmark_black.png',
-            subject: `Junction: You have a message from a recruiter!`,
+            subject: `${global.gConfig.PLATFORM_OWNER_NAME}: You have a message from a recruiter!`,
             subtitle: `${recruiter.firstName} ${recruiter.lastName} messaged you on ${global.gConfig.SENDGRID_FROM_NAME} Recruitment.`,
             body: `
                 Look at that, someone is interested in your hacker skills! ${recruiter.firstName} ${recruiter.lastName} from ${organization}
