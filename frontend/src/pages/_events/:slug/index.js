@@ -1,44 +1,72 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
+import { useQuery } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
+
+import { EventStatuses } from '@hackjunction/shared'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch, useLocation } from 'react-router'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
-import * as EventDetailActions from 'redux/eventdetail/actions'
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
 
 import EventDetail from './default'
 import EventRegister from './register'
 
+const eventQuery = gql`
+    query Event($slug: String!) {
+        eventBySlug(slug: $slug) {
+            name
+            description
+            coverImage {
+                url
+                publicId
+            }
+            eventTimeFormatted
+            eventLocationFormatted
+            timezone
+            startTime
+            endTime
+            registrationStartTime
+            registrationEndTime
+            eventStatus
+            myRegistration {
+                _id
+            }
+        }
+    }
+`
+
 export default () => {
-    const dispatch = useDispatch()
     const match = useRouteMatch()
     const location = useLocation()
     const { slug } = match.params
 
-    const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
-    const eventLoading = useSelector(EventDetailSelectors.eventLoading)
-    const eventError = useSelector(EventDetailSelectors.eventError)
-    const isRegistrationOpen = useSelector(
-        EventDetailSelectors.isRegistrationOpen
-    )
+    const { data, loading, error } = useQuery(eventQuery, {
+        variables: {
+            slug,
+        },
+    })
 
-    useEffect(() => {
-        dispatch(EventDetailActions.updateEvent(slug))
-        if (isAuthenticated) {
-            dispatch(EventDetailActions.updateRegistration(slug))
-        }
-    }, [slug, isAuthenticated, dispatch])
+    const event = data?.eventBySlug
+    const registration = event?.myRegistration
+    const isRegistrationOpen =
+        event?.eventStatus === EventStatuses.REGISTRATION_OPEN.id
+
+    // //TODO: Remove this
+    // useEffect(() => {
+    //     dispatch(EventDetailActions.updateEvent(slug))
+    //     if (isAuthenticated) {
+    //         dispatch(EventDetailActions.updateRegistration(slug))
+    //     }
+    // }, [slug, isAuthenticated, dispatch])
 
     return (
         <PageWrapper
-            loading={eventLoading}
-            error={eventError}
+            loading={loading}
+            error={error}
             errorText={`Oops, something went wrong`}
             errorDesc={`Please refresh the page to try again.`}
             header={() => <GlobalNavBar />}
@@ -52,9 +80,10 @@ export default () => {
                                 path={`${match.url}`}
                                 component={() => (
                                     <EventDetail
-                                        slug={slug}
-                                        match={match}
-                                        location={location}
+                                        event={event}
+                                        loading={loading}
+                                        error={error}
+                                        registration={registration}
                                     />
                                 )}
                             />

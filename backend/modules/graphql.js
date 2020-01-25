@@ -20,6 +20,7 @@ module.exports = app => {
         context: ({ req, res }) => ({
             req,
             res,
+            userId: req.user ? req.user.sub : null,
             controller: buildGetController(),
         }),
     })

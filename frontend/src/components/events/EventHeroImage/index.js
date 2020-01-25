@@ -68,15 +68,6 @@ export default ({ event, title, overline, subheading }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
 
-    const _title = title ?? event.name
-    const _overline =
-        overline ?? MiscUtils.formatDateInterval(event.startTime, event.endTime)
-    const _subheading =
-        subheading ??
-        (event.eventType === 'physical'
-            ? `${event.eventLocation.city}, ${event.eventLocation.country}`
-            : 'Online')
-
     return (
         <Box className={classes.wrapper}>
             <Image
@@ -101,16 +92,16 @@ export default ({ event, title, overline, subheading }) => {
                             className={classes.overline}
                             variant="button"
                         >
-                            {_overline}
+                            {event?.eventTimeFormatted}
                         </Typography>
                         <Typography className={classes.title} variant="h3">
-                            {_title}
+                            {title ?? event?.name}
                         </Typography>
                         <Typography
                             className={classes.overline}
                             variant="button"
                         >
-                            {_subheading}
+                            {event?.eventLocationFormatted}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
