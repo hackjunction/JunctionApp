@@ -17,13 +17,26 @@ const TeamOptions = require('./TeamOptions')
 const Track = require('./Track')
 const TravelGrantConfig = require('./TravelGrantConfig')
 const TravelGrantDetails = require('./TravelGrantDetails')
+const UserDetailsConfig = require('./UserDetailsConfig')
+const UserDetailsConfigItem = require('./UserDetailsConfigItem')
+const EventTag = require('./EventTag')
+const RegistrationQuestionSettings = require('./RegistrationQuestionSettings')
 
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
-    types: [CloudinaryImage.graphql],
-    // TODO: Add these as needed
-    // Address.graphql,
+    types: [
+        CloudinaryImage.graphql,
+        Address.graphql,
+        Track.graphql,
+        Challenge.graphql,
+        TravelGrantConfig.graphql,
+        UserDetailsConfigItem.graphql,
+        UserDetailsConfig.graphql,
+        RegistrationSection.graphql,
+        EventTag.graphql,
+        RegistrationQuestionSettings.graphql,
+    ],
     // Answers: Answers.graphql,
     // Challenge: Challenge.graphql,
     // CloudinaryImage: CloudinaryImage.graphql,

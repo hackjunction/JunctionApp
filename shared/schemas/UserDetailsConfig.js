@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const _ = require('lodash')
-const { RegistrationFields } = require('@hackjunction/shared')
+const { GraphQLBoolean, GraphQLObjectType } = require('graphql')
+const UserDetailsConfigItemType = require('./UserDetailsConfigItem').graphql
+const RegistrationFields = require('../constants/registration-fields')
 
 function generateField(defaultRequire, defaultEnable, editable = true) {
     return {
@@ -23,6 +25,7 @@ function generateField(defaultRequire, defaultEnable, editable = true) {
 }
 
 const fields = {}
+const graphQLFields = {}
 const UserDetailsConfigSchema = new mongoose.Schema({}, { strict: true })
 
 _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
@@ -31,6 +34,10 @@ _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
         value.schemaConfig.defaultEnable,
         value.schemaConfig.editable
     )
+
+    graphQLFields[fieldName] = {
+        type: UserDetailsConfigItemType,
+    }
 })
 
 /** Make sure any new fields are added */
@@ -42,7 +49,7 @@ UserDetailsConfigSchema.methods.toJSON = function() {
     const keys = Object.keys(obj)
 
     keys.forEach(key => {
-        if (!fields.hasOwnProperty(key)) {
+        if (!(key in fields)) {
             delete obj[key]
         }
     })
@@ -50,4 +57,12 @@ UserDetailsConfigSchema.methods.toJSON = function() {
     return obj
 }
 
-module.exports = UserDetailsConfigSchema
+const UserDetailsConfigType = new GraphQLObjectType({
+    name: 'UserDetailsConfig',
+    fields: graphQLFields,
+})
+
+module.exports = {
+    mongoose: UserDetailsConfigSchema,
+    graphql: UserDetailsConfigType,
+}

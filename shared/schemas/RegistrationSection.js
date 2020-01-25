@@ -5,6 +5,7 @@ const {
     GraphQLNonNull,
     GraphQLObjectType,
 } = require('graphql')
+
 const RegistrationQuestionSchema = require('./RegistrationQuestion')
 
 const RegistrationSectionSchema = new mongoose.Schema({
