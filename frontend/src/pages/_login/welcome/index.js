@@ -18,6 +18,7 @@ import UserProfilesService from 'services/userProfiles'
 import FixedLayout from 'components/layouts/FixedLayout'
 import LightTextField from './LightTextField'
 import LightCheckbox from './LightCheckbox'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -180,7 +181,7 @@ export default () => {
                     <img
                         className={classes.contentLeftLogo}
                         src={require('assets/logos/wordmark_white.png')}
-                        alt="Junction logo"
+                        alt={config.PLATFORM_OWNER_NAME + ' logo'}
                     />
                 </div>
                 <div className={classes.contentRight}>

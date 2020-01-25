@@ -25,6 +25,7 @@ import GradientBox from 'components/generic/GradientBox'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
+import config from 'constants/config'
 
 const RegistrationStatusBlock = ({
     event,
@@ -190,7 +191,7 @@ const RegistrationStatusBlock = ({
                         color="theme_white"
                         variant="contained"
                     >
-                        Junction event calendar
+                        {config.PLATFORM_OWNER_NAME} event calendar
                     </Button>
                 )
             }

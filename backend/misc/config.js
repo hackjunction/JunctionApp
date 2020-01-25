@@ -89,6 +89,10 @@ const settings = {
         value: process.env.HASH_SALT,
         required: true,
     },
+    PLATFORM_OWNER_NAME: {
+        value: process.env.PLATFORM_OWNER_NAME || 'Junction',
+        required: true,
+    },
 }
 
 const buildConfig = () => {

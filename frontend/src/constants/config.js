@@ -38,6 +38,16 @@ const settings = {
         default: process.env.NODE_ENV === 'development',
         required: true,
     },
+    PLATFORM_OWNER_NAME: {
+        value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'Junction',
+        required: true,
+    },
+    PLATFORM_OWNER_WEBSITE: {
+        value:
+            process.env.REACT_APP_PLATFORM_OWNER_WEBSITE ||
+            'https://hackjunction.com',
+        required: true,
+    },
 }
 
 const buildConfig = () => {

@@ -149,11 +149,11 @@ const SendgridService = {
                 header_image: event.coverImage.url,
                 subject: `Your travel grant for ${event.name} has been confirmed`,
                 subtitle: `You have been granted a travel grant of up to ${params.amount}€`,
-                body: `This means that we will assist you with your travel costs to Junction 2019, up to the amount above. Please note that the following conditions apply:
+                body: `This means that we will assist you with your travel costs to ${event.name}, up to the amount above. Please note that the following conditions apply:
                 <ul>
                     <li>
                         The travel grant is valid for travel from ${params.countryOfTravel} to ${event.name}. If you are travelling from somewhere else, 
-                        Junction reserves the right to change your travel grant class and/or amount.
+                        ${event.name} reserves the right to change your travel grant class and/or amount.
                     </li>
                     <li>
                         Travel grants are only available to participants who have checked in at the venue. 

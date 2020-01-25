@@ -21,6 +21,7 @@ import GradientBox from 'components/generic/GradientBox'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import config from 'constants/config'
 
 export default () => {
     const dispatch = useDispatch()
@@ -182,14 +183,14 @@ export default () => {
                     <Button
                         onClick={() =>
                             window.open(
-                                'https://hackjunction.com/calendar',
+                                config.PLATFORM_OWNER_WEBSITE + '/calendar',
                                 '_blank'
                             )
                         }
                         color="theme_white"
                         variant="contained"
                     >
-                        Junction event calendar
+                        {config.PLATFORM_OWNER_NAME} event calendar
                     </Button>
                 )
             }
