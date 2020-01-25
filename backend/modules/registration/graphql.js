@@ -35,6 +35,14 @@ const RegistrationType = new GraphQLObjectType({
 const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
+        myRegistration: {
+            type: RegistrationType,
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
         registrationById: {
             type: RegistrationType,
             args: {
@@ -67,6 +75,11 @@ const QueryType = new GraphQLObjectType({
 
 const resolvers = {
     Query: {
+        myRegistration: (parent, args, context) => {
+            return context
+                .controller('Registration')
+                .getByIdAndUser(args.eventId, context.userId)
+        },
         registrationById: (parent, args, context) => {
             return context.controller('Registration').getById(args._id)
         },

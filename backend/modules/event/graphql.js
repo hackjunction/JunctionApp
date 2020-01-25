@@ -10,10 +10,14 @@ const {
     printSchema,
     buildSchema,
 } = require('graphql')
+const { GraphQLDateTime } = require('graphql-iso-date')
 const { makeExecutableSchema } = require('graphql-tools')
 
+const moment = require('moment-timezone')
+const { EventHelpers } = require('@hackjunction/shared')
 const { SharedGraphQLTypes } = require('@hackjunction/shared/schemas')
 const dateUtils = require('../../common/utils/dateUtils')
+const { RegistrationType } = require('../registration/graphql')
 
 const SharedSchema = buildSchema(SharedGraphQLTypes)
 
@@ -52,39 +56,33 @@ const EventType = new GraphQLObjectType({
         eventType: {
             type: GraphQLString,
         },
-        eventLocationFormatted: {
-            type: GraphQLString,
-        },
-        eventTimeFormatted: {
-            type: GraphQLString,
-        },
         description: {
             type: GraphQLString,
         },
         /** Times */
         registrationStartTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         registrationEndTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         startTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         endTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         submissionsStartTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         submissionsEndTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         reviewingStartTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         reviewingEndTime: {
-            type: GraphQLString,
+            type: GraphQLDateTime,
         },
         eventLocation: {
             type: Address,
@@ -137,6 +135,18 @@ const EventType = new GraphQLObjectType({
         //     type: mongoose.Mixed,
         //     default: {},
         // },
+        eventLocationFormatted: {
+            type: GraphQLString,
+        },
+        eventTimeFormatted: {
+            type: GraphQLString,
+        },
+        eventStatus: {
+            type: GraphQLString,
+        },
+        myRegistration: {
+            type: RegistrationType,
+        },
     }),
 })
 
@@ -148,6 +158,14 @@ const QueryType = new GraphQLObjectType({
             args: {
                 _id: {
                     type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        eventBySlug: {
+            type: EventType,
+            args: {
+                slug: {
+                    type: GraphQLNonNull(GraphQLString),
                 },
             },
         },
@@ -194,6 +212,9 @@ const resolvers = {
         eventById: async (parent, args, context) => {
             return context.controller('Event').getById(args._id)
         },
+        eventBySlug: async (parent, args, context) => {
+            return context.controller('Event').getBySlug(args.slug)
+        },
         events: (parent, args, context) => {
             return context.controller('Event').getAll()
         },
@@ -232,6 +253,14 @@ const resolvers = {
                 parent.startTime,
                 parent.endTime
             )
+        },
+        eventStatus: parent => {
+            return EventHelpers.getEventStatus(parent, moment)
+        },
+        myRegistration: (parent, args, context) => {
+            return context
+                .controller('Registration')
+                .getByIdAndUser(parent._id, context.userId)
         },
     },
 }

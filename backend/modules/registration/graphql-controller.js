@@ -44,6 +44,15 @@ class RegistrationController {
         return this._clean(Registration.find())
     }
 
+    getByIdAndUser(eventId, userId) {
+        return this._clean(
+            Registration.findOne({
+                event: eventId,
+                user: userId,
+            })
+        )
+    }
+
     getByEventId(eventId) {
         if (!this.isAdmin) return []
         return this._clean(Registration.find({ event: eventId }))

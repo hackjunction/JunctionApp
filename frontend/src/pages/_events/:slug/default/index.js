@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 
 import { Grid, Box } from '@material-ui/core'
-import { useSelector } from 'react-redux'
 import { useRouteMatch, useLocation } from 'react-router'
 
 import EventHeroImage from 'components/events/EventHeroImage'
@@ -11,26 +10,47 @@ import AnalyticsService from 'services/analytics'
 import EventTimeline from './EventTimeline'
 import EventButtons from './EventButtons'
 
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
+import PageWrapper from 'components/layouts/PageWrapper'
 import StaggeredList from 'components/animated/StaggeredList'
 import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
 
-export default () => {
-    const event = useSelector(EventDetailSelectors.event)
+import { useQuery } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 
-    const match = useRouteMatch()
-    const location = useLocation()
+const eventQuery = gql`
+    query Event($slug: String!) {
+        eventBySlug(slug: $slug) {
+            name
+            description
+            coverImage {
+                url
+                publicId
+            }
+            eventTimeFormatted
+            eventLocationFormatted
+            timezone
+            startTime
+            endTime
+            registrationStartTime
+            registrationEndTime
+            eventStatus
+        }
+    }
+`
 
+export default ({ event, loading, error }) => {
     const { slug } = event
 
     useEffect(() => {
-        AnalyticsService.events.VIEW_EVENT(slug)
+        if (slug) {
+            AnalyticsService.events.VIEW_EVENT(slug)
+        }
     }, [slug])
 
     return (
-        <React.Fragment>
+        <PageWrapper loading={loading} error={error}>
             <EventHeroImage event={event} />
             <FadeInWrapper>
                 <CenteredContainer>
@@ -39,17 +59,13 @@ export default () => {
                             <Grid item xs={12} md={8}>
                                 <Box mt={3} />
                                 <StaggeredListItem>
-                                    <Markdown source={event.description} />
+                                    <Markdown source={event?.description} />
                                 </StaggeredListItem>
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <Box mt={3} />
                                 <StaggeredListItem>
-                                    <EventButtons
-                                        slug={slug}
-                                        match={match}
-                                        location={location}
-                                    />
+                                    <EventButtons event={event} />
                                     <Box mt={3} />
                                     <EventTimeline event={event} />
                                 </StaggeredListItem>
@@ -58,6 +74,6 @@ export default () => {
                     </StaggeredList>
                 </CenteredContainer>
             </FadeInWrapper>
-        </React.Fragment>
+        </PageWrapper>
     )
 }

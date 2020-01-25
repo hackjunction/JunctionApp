@@ -2,7 +2,7 @@ import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
 const Fragments = {
-    EventPreview: `
+    EventPreview: gql`
         fragment EventPreview on Event {
             _id
             slug
