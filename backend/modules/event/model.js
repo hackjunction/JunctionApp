@@ -11,7 +11,8 @@ const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryIm
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
-const UserDetailsConfigSchema = require('../../common/schemas/UserDetailsConfig')
+const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
+const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../../modules/upload/helper')
@@ -172,20 +173,14 @@ const EventSchema = new mongoose.Schema({
         ],
     },
     userDetailsConfig: {
-        type: UserDetailsConfigSchema,
-        default: UserDetailsConfigSchema,
+        type: UserDetailsConfigSchema.mongoose,
+        default: UserDetailsConfigSchema.mongoose,
     },
     customQuestions: {
         type: [RegistrationSectionSchema.mongoose],
     },
     tags: {
-        type: [
-            {
-                label: String,
-                color: String,
-                description: String,
-            },
-        ],
+        type: [EventTagSchema.mongoose],
         default: [],
     },
     /** System metadata */

@@ -16,7 +16,17 @@ const { SharedGraphQLTypes } = require('@hackjunction/shared/schemas')
 const dateUtils = require('../../common/utils/dateUtils')
 
 const SharedSchema = buildSchema(SharedGraphQLTypes)
-const { CloudinaryImage } = SharedSchema._typeMap
+
+const {
+    CloudinaryImage,
+    Address,
+    Track,
+    Challenge,
+    TravelGrantConfig,
+    UserDetailsConfig,
+    RegistrationSection,
+    EventTag,
+} = SharedSchema._typeMap
 
 const EventType = new GraphQLObjectType({
     name: 'Event',
@@ -48,6 +58,85 @@ const EventType = new GraphQLObjectType({
         eventTimeFormatted: {
             type: GraphQLString,
         },
+        description: {
+            type: GraphQLString,
+        },
+        /** Times */
+        registrationStartTime: {
+            type: GraphQLString,
+        },
+        registrationEndTime: {
+            type: GraphQLString,
+        },
+        startTime: {
+            type: GraphQLString,
+        },
+        endTime: {
+            type: GraphQLString,
+        },
+        submissionsStartTime: {
+            type: GraphQLString,
+        },
+        submissionsEndTime: {
+            type: GraphQLString,
+        },
+        reviewingStartTime: {
+            type: GraphQLString,
+        },
+        reviewingEndTime: {
+            type: GraphQLString,
+        },
+        eventLocation: {
+            type: Address,
+        },
+        tracksEnabled: {
+            type: GraphQLBoolean,
+        },
+        tracks: {
+            type: GraphQLList(Track),
+        },
+        challengesEnabled: {
+            type: GraphQLBoolean,
+        },
+        challenges: {
+            type: GraphQLList(Challenge),
+        },
+        travelGrantConfig: {
+            type: TravelGrantConfig,
+        },
+        reviewMethod: {
+            type: GraphQLString,
+        },
+        overallReviewMethod: {
+            type: GraphQLString,
+        },
+        userDetailsConfig: {
+            type: UserDetailsConfig,
+        },
+        customQuestions: {
+            type: GraphQLList(RegistrationSection),
+        },
+        tags: {
+            type: EventTag,
+        },
+        /** System metadata */
+        published: {
+            type: GraphQLBoolean,
+        },
+        galleryOpen: {
+            type: GraphQLBoolean,
+        },
+        owner: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        organisers: {
+            type: GraphQLList(GraphQLString),
+        },
+        // TODO: Figure this stuff out
+        // winners: {
+        //     type: mongoose.Mixed,
+        //     default: {},
+        // },
     }),
 })
 

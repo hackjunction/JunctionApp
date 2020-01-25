@@ -6,6 +6,8 @@ const {
     GraphQLNonNull,
     GraphQLList,
 } = require('graphql')
+const RegistrationQuestionSettingsType = require('./RegistrationQuestionSettings')
+    .graphql
 
 const FIELD_TYPES = [
     'text',
@@ -90,17 +92,9 @@ const RegistrationQuestionType = new GraphQLObjectType({
         fieldRequired: {
             type: GraphQLBoolean,
         },
-        settings: new GraphQLObjectType({
-            name: 'RegistrationQuestionSettings',
-            fields: {
-                options: {
-                    type: GraphQLList(GraphQLString),
-                },
-                default: {
-                    type: GraphQLBoolean,
-                },
-            },
-        }),
+        settings: {
+            type: RegistrationQuestionSettingsType,
+        },
     },
 })
 
