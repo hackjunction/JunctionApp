@@ -45,7 +45,7 @@ export default () => {
                     <CenteredContainer>
                         <LineDivider />
                         <Divider size={1} />
-                        <h2>New to Junction?</h2>
+                        <h2>New to {config.PLATFORM_OWNER_NAME}?</h2>
                         <p>
                             More info about {config.PLATFORM_OWNER_NAME} can be
                             found from our website{' '}

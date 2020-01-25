@@ -287,7 +287,7 @@ export default () => {
                                     >
                                         I confirm that I am at least 16 years of
                                         age, and I have read and agree to the
-                                        Junction{' '}
+                                        {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
                                             href="https://hackjunction.com/terms"
                                             target="_blank"
