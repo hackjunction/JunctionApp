@@ -20,7 +20,6 @@ const logger = require('./misc/logger')
 /** Use helmet for some basic security measures */
 app.use(helmet())
 
-
 /* Force SSL Redirect in production */
 // app.use(sslRedirect(['production'], 301))
 
