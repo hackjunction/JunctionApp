@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core'
 
 import ExternalLink from 'components/generic/ExternalLink'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -51,7 +52,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     I've read and consent to the processing of my data in
                     accordance to the{' '}
                     <ExternalLink href="https://hackjunction.com/policy">
-                        Junction Privacy Policy
+                        {config.PLATFORM_OWNER_NAME} Privacy Policy
                     </ExternalLink>
                 </Typography>
             </Box>
@@ -65,7 +66,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                 <Typography variant="subtitle1" className={classes.label}>
                     I've read and agree to the{' '}
                     <ExternalLink href="https://hackjunction.com/terms">
-                        Junction Terms & Conditions
+                        {config.PLATFORM_OWNER_NAME} Terms & Conditions
                     </ExternalLink>
                 </Typography>
             </Box>

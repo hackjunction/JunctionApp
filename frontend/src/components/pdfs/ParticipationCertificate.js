@@ -9,6 +9,7 @@ import {
     Font,
 } from '@react-pdf/renderer'
 import MiscUtils from 'utils/misc'
+import config from 'constants/config'
 
 Font.register({
     family: 'Montserrat',
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
     },
 })
 
+// TODO make this agnostic to PLATFORM_OWNER_CONFIG
 const ParticipationCertificate = ({ event, project, userProfile }) => {
     if (!event) return null
 

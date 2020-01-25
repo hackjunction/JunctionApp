@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import ExternalLink from 'components/generic/ExternalLink'
 import Divider from 'components/generic/Divider'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -59,18 +60,21 @@ const Footer = () => {
                     <Divider size={1} />
                     <ExternalLink
                         theme="dark"
-                        href="https://hackjunction.com/terms"
+                        href={config.PLATFORM_OWNER_WEBSITE + '/terms'}
                     >
                         Terms And Conditions
                     </ExternalLink>
                     <ExternalLink
                         theme="dark"
-                        href="https://hackjunction.com/privacy"
+                        href={config.PLATFORM_OWNER_WEBSITE + '/privacy'}
                     >
                         Privacy Policy
                     </ExternalLink>
-                    <ExternalLink theme="dark" href="https://hackjunction.com">
-                        Junction website
+                    <ExternalLink
+                        theme="dark"
+                        href={config.PLATFORM_OWNER_WEBSITE}
+                    >
+                        {config.PLATFORM_OWNER_NAME} website
                     </ExternalLink>
                     <Divider size={1} />
                 </div>

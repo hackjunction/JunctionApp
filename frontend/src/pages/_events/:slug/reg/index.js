@@ -30,6 +30,7 @@ import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -305,7 +306,7 @@ export default RequiresPermission(() => {
                             variant="h2"
                             className={classes.topTitleExtra}
                         >
-                            Junction 2019
+                            {config.PLATFORM_OWNER_NAME}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
