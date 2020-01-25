@@ -16,7 +16,8 @@
         "db-sync:staging": "sh ./scripts/sync-production-to-staging.sh",
         "pre-commit:frontend": "cd frontend && npm run precommit",
         "pre-commit:backend": "cd backend && npm run precommit",
-        "pre-commit:shared": "cd shared && npm run precommit"
+        "pre-commit:shared": "cd shared && npm run precommit",
+        "gcp-build": "npm run build"
     },
     "betterScripts": {
         "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
@@ -47,7 +48,7 @@
         "yup": "^0.27.0"
     },
     "engines": {
-        "node": "12.3.1",
+        "node": "12.x.x",
         "npm": "6.9.0"
     },
     "type": "module"

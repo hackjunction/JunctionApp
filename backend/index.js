@@ -21,7 +21,7 @@ const logger = require('./misc/logger')
 app.use(helmet())
 
 /* Force SSL Redirect in production */
-app.use(sslRedirect(['production'], 301))
+// app.use(sslRedirect(['production'], 301))
 
 /* Enable body-parser */
 app.use(bodyParser.json())
