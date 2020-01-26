@@ -17,7 +17,6 @@
         "pre-commit:frontend": "cd frontend && npm run precommit",
         "pre-commit:backend": "cd backend && npm run precommit",
         "pre-commit:shared": "cd shared && npm run precommit",
-        "gcp-build": "cd backend && npm install"
     },
     "betterScripts": {
         "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
