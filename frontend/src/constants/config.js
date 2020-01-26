@@ -48,6 +48,22 @@ const settings = {
             'https://hackjunction.com',
         required: true,
     },
+    SEO_PAGE_TITLE: {
+        value: process.env.REACT_APP_SEO_PAGE_TITLE,
+        required: true,
+    },
+    SEO_PAGE_DESCRIPTION: {
+        value: process.env.REACT_APP_SEO_PAGE_DESCRIPTION,
+        required: true,
+    },
+    SEO_IMAGE_URL: {
+        value: process.env.REACT_APP_SEO_IMAGE_URL || '',
+        required: false,
+    },
+    SEO_TWITTER_HANDLE: {
+        value: process.env.REACT_APP_SEO_TWITTER_HANDLE || '',
+        required: false,
+    },
 }
 
 const buildConfig = () => {

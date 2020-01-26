@@ -218,7 +218,7 @@ export default () => {
                                             Your contact email address, where
                                             you want to receive necessary
                                             notifications related to your
-                                            activity on the
+                                            activity on the{' '}
                                             {config.PLATFORM_OWNER_NAME} app.
                                             email address will never be shared
                                             with any 3rd parties.
@@ -305,13 +305,13 @@ export default () => {
                                 Profile details
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                When you register to events on the
+                                When you register to events on the{' '}
                                 {config.PLATFORM_OWNER_NAME} app, the below
                                 details will be pre-filled into your
                                 registrations, and updated from your latest
                                 registration. In case you have opted in for
                                 recruitment functionality, these details will
-                                also be shown to select
+                                also be shown to select{' '}
                                 {config.PLATFORM_OWNER_NAME} partners who are
                                 are looking to hire. Please see our{' '}
                                 <a href="https://www.hackjunction.com/policy">
