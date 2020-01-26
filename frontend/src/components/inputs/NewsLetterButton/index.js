@@ -74,7 +74,7 @@ const NewsLetterButton = ({
             >
                 This is a perfect opportunity to join our mailing list, where we
                 send very occasional (monthly) updates about our upcoming events
-                and other things happening around the
+                and other things happening around the{' '}
                 {config.PLATFORM_OWNER_NAME}
                 community. Care to join?
             </Typography>
