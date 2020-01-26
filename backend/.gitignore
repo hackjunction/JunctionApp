@@ -1,5 +1,4 @@
 /shared
 /build
 .env
-.env.production
 .ignored
