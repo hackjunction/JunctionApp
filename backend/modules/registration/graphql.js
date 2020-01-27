@@ -4,32 +4,71 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLList,
-    GraphQLSchema,
-    printSchema,
+    GraphQLFloat,
+    GraphQLInt,
 } = require('graphql')
-const { makeExecutableSchema } = require('graphql-tools')
 
-const { UserProfileType } = require('../user-profile/graphql')
+const { Answers, TravelGrantDetails } = require('../graphql-shared-types')
 
 const RegistrationType = new GraphQLObjectType({
     name: 'Registration',
-    fields: () => ({
-        _id: {
-            type: GraphQLNonNull(GraphQLID),
-        },
-        user: {
-            type: GraphQLNonNull(GraphQLID),
-        },
-        _user: {
-            type: UserProfileType,
-        },
-        event: {
-            type: GraphQLNonNull(GraphQLID),
-        },
-        status: {
-            type: GraphQLString,
-        },
-    }),
+    fields: () => {
+        const { UserProfileType } = require('../user-profile/graphql').Types //eslint-disable-line
+        const { EventType } = require('../event/graphql').Types //eslint-disable-line
+
+        return {
+            /** Fields from DB model */
+            _id: {
+                type: GraphQLNonNull(GraphQLID),
+            },
+            user: {
+                type: GraphQLNonNull(GraphQLID),
+            },
+            event: {
+                type: GraphQLNonNull(GraphQLID),
+            },
+            status: {
+                type: GraphQLString,
+            },
+            assingedTo: {
+                type: GraphQLString,
+            },
+            rating: {
+                type: GraphQLInt,
+            },
+            ratedBy: {
+                type: GraphQLString,
+            },
+            tags: {
+                type: GraphQLList(GraphQLString),
+            },
+            answers: {
+                type: Answers,
+            },
+            travelGrant: {
+                type: GraphQLInt,
+            },
+            travelGrantStatus: {
+                type: GraphQLString,
+            },
+            travelGrantDetails: {
+                type: TravelGrantDetails,
+            },
+            travelGrantComment: {
+                type: GraphQLString,
+            },
+            travelGrantAmount: {
+                type: GraphQLFloat,
+            },
+            /** Custom fields */
+            _user: {
+                type: UserProfileType,
+            },
+            _event: {
+                type: EventType,
+            },
+        }
+    },
 })
 
 const QueryType = new GraphQLObjectType({
@@ -73,7 +112,7 @@ const QueryType = new GraphQLObjectType({
     },
 })
 
-const resolvers = {
+const Resolvers = {
     Query: {
         myRegistration: (parent, args, context) => {
             return context
@@ -97,20 +136,18 @@ const resolvers = {
         _user: (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(parent.user)
         },
+        // _event: (parent, args, context) => {
+        //     return context.controller('Event').getById(parent.event)
+        // },
     },
 }
 
-const rawSchema = new GraphQLSchema({
-    query: QueryType,
-})
-
-const stringSchema = printSchema(rawSchema)
-const RegistrationSchema = makeExecutableSchema({
-    typeDefs: stringSchema,
-    resolvers,
-})
-
-module.exports = {
-    RegistrationSchema,
-    RegistrationType,
+const RegistrationModule = {
+    QueryType,
+    Resolvers,
+    Types: {
+        RegistrationType,
+    },
 }
+
+module.exports = RegistrationModule

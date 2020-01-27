@@ -46,11 +46,11 @@ const EventsGridItem = ({ event, buttons }) => {
             </div>
             <div className={classes.bottom}>
                 <Typography variant="button">
-                    {event.eventTimeFormatted}
+                    {event?._eventTimeFormatted}
                 </Typography>
                 <Typography variant="h6">{event.name}</Typography>
                 <Typography variant="body1">
-                    {event.eventLocationFormatted}
+                    {event?._eventLocationFormatted}
                 </Typography>
                 <Box mt={1} />
                 <Box display="flex" flexDirection="row" flexWrap="wrap">

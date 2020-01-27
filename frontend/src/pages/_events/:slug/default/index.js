@@ -28,14 +28,15 @@ const eventQuery = gql`
                 url
                 publicId
             }
-            eventTimeFormatted
-            eventLocationFormatted
             timezone
             startTime
             endTime
             registrationStartTime
             registrationEndTime
-            eventStatus
+
+            _eventStatus
+            _eventTimeFormatted
+            _eventLocationFormatted
         }
     }
 `

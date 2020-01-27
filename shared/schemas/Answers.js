@@ -12,7 +12,9 @@ _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
     }
 
     if (value.graphqlSchema) {
-        graphqlFields[fieldName] = value.graphqlSchema
+        graphqlFields[fieldName] = {
+            type: value.graphqlSchema,
+        }
     }
 })
 

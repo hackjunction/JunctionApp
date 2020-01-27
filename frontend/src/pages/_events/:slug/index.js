@@ -24,15 +24,17 @@ const eventQuery = gql`
                 url
                 publicId
             }
-            eventTimeFormatted
-            eventLocationFormatted
             timezone
             startTime
             endTime
             registrationStartTime
             registrationEndTime
-            eventStatus
-            myRegistration {
+
+            _eventStatus
+            _eventTimeFormatted
+            _eventLocationFormatted
+
+            _myRegistration {
                 _id
             }
         }
@@ -51,9 +53,9 @@ export default () => {
     })
 
     const event = data?.eventBySlug
-    const registration = event?.myRegistration
+    const registration = event?._myRegistration
     const isRegistrationOpen =
-        event?.eventStatus === EventStatuses.REGISTRATION_OPEN.id
+        event?._eventStatus === EventStatuses.REGISTRATION_OPEN.id
 
     // //TODO: Remove this
     // useEffect(() => {

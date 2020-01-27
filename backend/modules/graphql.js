@@ -1,17 +1,27 @@
 const { ApolloServer } = require('apollo-server-express')
-const { mergeSchemas } = require('graphql-tools')
-
+const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
+const { GraphQLSchema, printSchema } = require('graphql')
 // const { SharedSchema } = require('@hackjunction/shared/schemas')
 /** Schemas */
-const { UserProfileSchema } = require('./user-profile/graphql')
-const { RegistrationSchema } = require('./registration/graphql')
-const { EventSchema } = require('./event/graphql')
+const UserProfile = require('./user-profile/graphql')
+const Registration = require('./registration/graphql')
+const Event = require('./event/graphql')
 
 const buildGetController = require('./graphql-controller-factory')
 
 module.exports = app => {
+    const modules = [UserProfile, Registration, Event]
+    const executableSchemas = modules.map(({ QueryType, Resolvers }) => {
+        const rawSchema = new GraphQLSchema({
+            query: QueryType,
+        })
+        return makeExecutableSchema({
+            typeDefs: printSchema(rawSchema),
+            resolvers: Resolvers,
+        })
+    })
     const schema = mergeSchemas({
-        schemas: [UserProfileSchema, RegistrationSchema, EventSchema],
+        schemas: executableSchemas,
     })
 
     const server = new ApolloServer({

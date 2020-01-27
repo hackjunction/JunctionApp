@@ -4,10 +4,7 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLList,
-    GraphQLSchema,
-    printSchema,
 } = require('graphql')
-const { makeExecutableSchema } = require('graphql-tools')
 
 const UserProfileType = new GraphQLObjectType({
     name: 'UserProfile',
@@ -50,7 +47,7 @@ const QueryType = new GraphQLObjectType({
     },
 })
 
-const resolvers = {
+const Resolvers = {
     Query: {
         myProfile: async (parent, args, context) => {
             const userId = context.req.user ? context.req.user.sub : null
@@ -65,17 +62,10 @@ const resolvers = {
     },
 }
 
-const rawSchema = new GraphQLSchema({
-    query: QueryType,
-})
-
-const stringSchema = printSchema(rawSchema)
-const UserProfileSchema = makeExecutableSchema({
-    typeDefs: stringSchema,
-    resolvers,
-})
-
 module.exports = {
-    UserProfileSchema,
-    UserProfileType,
+    QueryType,
+    Resolvers,
+    Types: {
+        UserProfileType,
+    },
 }

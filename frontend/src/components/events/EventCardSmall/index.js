@@ -81,11 +81,11 @@ export default ({ eventId }) => {
             return (
                 <React.Fragment>
                     <Typography variant="button">
-                        {event.eventTimeFormatted}
+                        {event?._eventTimeFormatted}
                     </Typography>
                     <Typography variant="h6">{event.name}</Typography>
                     <Typography variant="subtitle1">
-                        {event.eventLocationFormatted}
+                        {event?._eventLocationFormatted}
                     </Typography>
                 </React.Fragment>
             )
