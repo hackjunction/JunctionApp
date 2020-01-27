@@ -5,7 +5,7 @@ const {
     ReviewingMethods,
     OverallReviewingMethods,
 } = require('@hackjunction/shared')
-const AddressSchema = require('@hackjunction/shared/schemas/Address')
+// const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
@@ -87,15 +87,15 @@ const EventSchema = new mongoose.Schema({
         required: true,
         default: EventTypes.online.id,
     },
-    eventLocation: {
-        type: AddressSchema.mongoose,
-        required: [
-            function() {
-                return this.eventType === EventTypes.physical.id
-            },
-            `is required for physical events`,
-        ],
-    },
+    // eventLocation: {
+    //     type: AddressSchema.mongoose,
+    //     required: [
+    //         function() {
+    //             return this.eventType === EventTypes.physical.id
+    //         },
+    //         `is required for physical events`,
+    //     ],
+    // },
     tracksEnabled: false,
     tracks: {
         type: [TrackSchema.mongoose],

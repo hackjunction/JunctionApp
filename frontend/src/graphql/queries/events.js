@@ -11,9 +11,9 @@ const Fragments = {
                 url
                 publicId
             }
-            eventLocationFormatted
-            eventTimeFormatted
             eventType
+            _eventLocationFormatted
+            _eventTimeFormatted
         }
     `,
 }

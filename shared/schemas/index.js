@@ -1,4 +1,4 @@
-const { GraphQLSchema, printSchema, astFromValue } = require('graphql')
+const { GraphQLSchema, printSchema } = require('graphql')
 
 const Address = require('./Address')
 const Answers = require('./Answers')
@@ -36,23 +36,18 @@ const SharedSchema = new GraphQLSchema({
         RegistrationSection.graphql,
         EventTag.graphql,
         RegistrationQuestionSettings.graphql,
+        Answers.graphql,
+        TravelGrantDetails.graphql,
+        Education.graphql,
+        IBANAccount.graphql,
+        LegalName.graphql,
+        PhoneNumber.graphql,
+        RecruitmentOptions.graphql,
+        RegistrationQuestion.graphql,
+        Role.graphql,
+        Skill.graphql,
+        TeamOptions.graphql,
     ],
-    // Answers: Answers.graphql,
-    // Challenge: Challenge.graphql,
-    // CloudinaryImage: CloudinaryImage.graphql,
-    // Education: Education.graphql,
-    // IBANAccount: IBANAccount.graphql,
-    // LegalName: LegalName.graphql,
-    // PhoneNumber: PhoneNumber.graphql,
-    // RecruitmentOptions: RecruitmentOptions.graphql,
-    // RegistrationQuestion: RegistrationQuestion.graphql,
-    // RegistrationSection: RegistrationSection.graphql,
-    // Role: Role.graphql,
-    // Skill: Skill.graphql,
-    // TeamOptions: TeamOptions.graphql,
-    // Track: Track.graphql,
-    // TravelGrantConfig: TravelGrantConfig.graphql,
-    // TravelGrantDetails: TravelGrantDetails.graphql,
 })
 
 module.exports = {

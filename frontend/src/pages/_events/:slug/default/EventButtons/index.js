@@ -14,8 +14,8 @@ export default ({ event }) => {
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
-    const hasRegistration = event?.myRegistration !== null
-    switch (event.eventStatus) {
+    const hasRegistration = event?._myRegistration !== null
+    switch (event?._eventStatus) {
         case EventStatuses.PUBLISHED.id: {
             return (
                 <Typography align="center" variant="subtitle1">

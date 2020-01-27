@@ -4,22 +4,14 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLList,
-    GraphQLSchema,
     GraphQLInt,
     GraphQLBoolean,
-    printSchema,
-    buildSchema,
 } = require('graphql')
 const { GraphQLDateTime } = require('graphql-iso-date')
-const { makeExecutableSchema } = require('graphql-tools')
 
 const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
-const { SharedGraphQLTypes } = require('@hackjunction/shared/schemas')
 const dateUtils = require('../../common/utils/dateUtils')
-const { RegistrationType } = require('../registration/graphql')
-
-const SharedSchema = buildSchema(SharedGraphQLTypes)
 
 const {
     CloudinaryImage,
@@ -30,124 +22,130 @@ const {
     UserDetailsConfig,
     RegistrationSection,
     EventTag,
-} = SharedSchema._typeMap
+} = require('../graphql-shared-types')
 
 const EventType = new GraphQLObjectType({
     name: 'Event',
-    fields: () => ({
-        _id: {
-            type: GraphQLID,
-        },
-        name: {
-            type: GraphQLString,
-        },
-        slug: {
-            type: GraphQLString,
-        },
-        timezone: {
-            type: GraphQLString,
-        },
-        coverImage: {
-            type: CloudinaryImage,
-        },
-        logo: {
-            type: CloudinaryImage,
-        },
-        eventType: {
-            type: GraphQLString,
-        },
-        description: {
-            type: GraphQLString,
-        },
-        /** Times */
-        registrationStartTime: {
-            type: GraphQLDateTime,
-        },
-        registrationEndTime: {
-            type: GraphQLDateTime,
-        },
-        startTime: {
-            type: GraphQLDateTime,
-        },
-        endTime: {
-            type: GraphQLDateTime,
-        },
-        submissionsStartTime: {
-            type: GraphQLDateTime,
-        },
-        submissionsEndTime: {
-            type: GraphQLDateTime,
-        },
-        reviewingStartTime: {
-            type: GraphQLDateTime,
-        },
-        reviewingEndTime: {
-            type: GraphQLDateTime,
-        },
-        eventLocation: {
-            type: Address,
-        },
-        tracksEnabled: {
-            type: GraphQLBoolean,
-        },
-        tracks: {
-            type: GraphQLList(Track),
-        },
-        challengesEnabled: {
-            type: GraphQLBoolean,
-        },
-        challenges: {
-            type: GraphQLList(Challenge),
-        },
-        travelGrantConfig: {
-            type: TravelGrantConfig,
-        },
-        reviewMethod: {
-            type: GraphQLString,
-        },
-        overallReviewMethod: {
-            type: GraphQLString,
-        },
-        userDetailsConfig: {
-            type: UserDetailsConfig,
-        },
-        customQuestions: {
-            type: GraphQLList(RegistrationSection),
-        },
-        tags: {
-            type: EventTag,
-        },
-        /** System metadata */
-        published: {
-            type: GraphQLBoolean,
-        },
-        galleryOpen: {
-            type: GraphQLBoolean,
-        },
-        owner: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        organisers: {
-            type: GraphQLList(GraphQLString),
-        },
-        // TODO: Figure this stuff out
-        // winners: {
-        //     type: mongoose.Mixed,
-        //     default: {},
-        // },
-        eventLocationFormatted: {
-            type: GraphQLString,
-        },
-        eventTimeFormatted: {
-            type: GraphQLString,
-        },
-        eventStatus: {
-            type: GraphQLString,
-        },
-        myRegistration: {
-            type: RegistrationType,
-        },
-    }),
+    fields: () => {
+        const { RegistrationType } = require('../registration/graphql').Types //eslint-disable-line
+        return {
+            /** Fields from DB Model */
+            _id: {
+                type: GraphQLID,
+            },
+            name: {
+                type: GraphQLString,
+            },
+            slug: {
+                type: GraphQLString,
+            },
+            timezone: {
+                type: GraphQLString,
+            },
+            coverImage: {
+                type: CloudinaryImage,
+            },
+            logo: {
+                type: CloudinaryImage,
+            },
+            eventType: {
+                type: GraphQLString,
+            },
+            description: {
+                type: GraphQLString,
+            },
+            /** Times */
+            registrationStartTime: {
+                type: GraphQLDateTime,
+            },
+            registrationEndTime: {
+                type: GraphQLDateTime,
+            },
+            startTime: {
+                type: GraphQLDateTime,
+            },
+            endTime: {
+                type: GraphQLDateTime,
+            },
+            submissionsStartTime: {
+                type: GraphQLDateTime,
+            },
+            submissionsEndTime: {
+                type: GraphQLDateTime,
+            },
+            reviewingStartTime: {
+                type: GraphQLDateTime,
+            },
+            reviewingEndTime: {
+                type: GraphQLDateTime,
+            },
+            eventLocation: {
+                type: Address,
+            },
+            tracksEnabled: {
+                type: GraphQLBoolean,
+            },
+            tracks: {
+                type: GraphQLList(Track),
+            },
+            challengesEnabled: {
+                type: GraphQLBoolean,
+            },
+            challenges: {
+                type: GraphQLList(Challenge),
+            },
+            travelGrantConfig: {
+                type: TravelGrantConfig,
+            },
+            reviewMethod: {
+                type: GraphQLString,
+            },
+            overallReviewMethod: {
+                type: GraphQLString,
+            },
+            userDetailsConfig: {
+                type: UserDetailsConfig,
+            },
+            customQuestions: {
+                type: GraphQLList(RegistrationSection),
+            },
+            tags: {
+                type: EventTag,
+            },
+            /** System metadata */
+            published: {
+                type: GraphQLBoolean,
+            },
+            galleryOpen: {
+                type: GraphQLBoolean,
+            },
+            owner: {
+                type: GraphQLNonNull(GraphQLString),
+            },
+            organisers: {
+                type: GraphQLList(GraphQLString),
+            },
+            // TODO: Figure this stuff out
+            // winners: {
+            //     type: mongoose.Mixed,
+            //     default: {},
+            // },
+
+            /** Custom fields */
+            _eventLocationFormatted: {
+                type: GraphQLString,
+            },
+            _eventTimeFormatted: {
+                type: GraphQLString,
+            },
+            _eventStatus: {
+                type: GraphQLString,
+            },
+            _myRegistration: {
+                type: RegistrationType,
+            },
+        }
+    },
 })
 
 const QueryType = new GraphQLObjectType({
@@ -202,7 +200,7 @@ const QueryType = new GraphQLObjectType({
     },
 })
 
-const resolvers = {
+const Resolvers = {
     Query: {
         myEvents: async (parent, args, context) => {
             const userId = context.req.user ? context.req.user.sub : null
@@ -242,22 +240,22 @@ const resolvers = {
         },
     },
     Event: {
-        eventLocationFormatted: parent => {
+        _eventLocationFormatted: parent => {
             if (parent.eventType === 'physical') {
                 return `${parent.eventLocation.city}, ${parent.eventLocation.country}`
             }
             return 'Online'
         },
-        eventTimeFormatted: parent => {
+        _eventTimeFormatted: parent => {
             return dateUtils.formatDateInterval(
                 parent.startTime,
                 parent.endTime
             )
         },
-        eventStatus: parent => {
+        _eventStatus: parent => {
             return EventHelpers.getEventStatus(parent, moment)
         },
-        myRegistration: (parent, args, context) => {
+        _myRegistration: (parent, args, context) => {
             return context
                 .controller('Registration')
                 .getByIdAndUser(parent._id, context.userId)
@@ -265,17 +263,10 @@ const resolvers = {
     },
 }
 
-const rawSchema = new GraphQLSchema({
-    query: QueryType,
-})
-
-const stringSchema = printSchema(rawSchema)
-const EventSchema = makeExecutableSchema({
-    typeDefs: stringSchema,
-    resolvers,
-})
-
 module.exports = {
-    EventSchema,
-    EventType,
+    QueryType,
+    Resolvers,
+    Types: {
+        EventType,
+    },
 }

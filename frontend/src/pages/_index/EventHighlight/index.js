@@ -85,11 +85,11 @@ export default () => {
                         Highlight
                     </Typography>
                     <Typography variant="button">
-                        {event.eventTimeFormatted}
+                        {event?._eventTimeFormatted}
                     </Typography>
                     <Typography variant="h4">{event.name}</Typography>
                     <Typography variant="subtitle1">
-                        {event.eventLocationFormatted}
+                        {event?._eventLocationFormatted}
                     </Typography>
                     <Box
                         mt={2}

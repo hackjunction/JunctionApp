@@ -92,7 +92,7 @@ export default ({ event, title, overline, subheading }) => {
                             className={classes.overline}
                             variant="button"
                         >
-                            {event?.eventTimeFormatted}
+                            {event?._eventTimeFormatted}
                         </Typography>
                         <Typography className={classes.title} variant="h3">
                             {title ?? event?.name}
@@ -101,7 +101,7 @@ export default ({ event, title, overline, subheading }) => {
                             className={classes.overline}
                             variant="button"
                         >
-                            {event?.eventLocationFormatted}
+                            {event?._eventLocationFormatted}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
