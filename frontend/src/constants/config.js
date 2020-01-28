@@ -49,15 +49,21 @@ const settings = {
         required: true,
     },
     SEO_PAGE_TITLE: {
-        value: process.env.REACT_APP_SEO_PAGE_TITLE || 'Experience Europe’s Leading Hackathon',
+        value:
+            process.env.REACT_APP_SEO_PAGE_TITLE ||
+            'Experience Europe’s Leading Hackathon',
         required: true,
     },
     SEO_PAGE_DESCRIPTION: {
-        value: process.env.REACT_APP_SEO_PAGE_DESCRIPTION || 'Organized in the Helsinki Area, Finland, Junction is a meeting place for thousands of developers, designers, and entrepreneurs. A weekend-long experience, gathering tech enthusiasts from all over the world to create with the latest technology in a unique environment and atmosphere.',
+        value:
+            process.env.REACT_APP_SEO_PAGE_DESCRIPTION ||
+            'Organized in the Helsinki Area, Finland, Junction is a meeting place for thousands of developers, designers, and entrepreneurs. A weekend-long experience, gathering tech enthusiasts from all over the world to create with the latest technology in a unique environment and atmosphere.',
         required: true,
     },
     SEO_IMAGE_URL: {
-        value: process.env.REACT_APP_SEO_IMAGE_URL || 'https://res.cloudinary.com/hackjunction/image/upload/c_fill,g_center,h_630,w_1200/rqn6uonv2nuzmkyanrqj',
+        value:
+            process.env.REACT_APP_SEO_IMAGE_URL ||
+            'https://res.cloudinary.com/hackjunction/image/upload/c_fill,g_center,h_630,w_1200/rqn6uonv2nuzmkyanrqj',
         required: false,
     },
     SEO_TWITTER_HANDLE: {
@@ -65,18 +71,22 @@ const settings = {
         required: false,
     },
     PRIVACY_URL: {
-        value: process.env.REACT_APP_PRIVACY_URL || 'https://hackjunction.com/privacy',
+        value:
+            process.env.REACT_APP_PRIVACY_URL ||
+            'https://hackjunction.com/privacy',
         required: false,
     },
     TERMS_URL: {
-        value: process.env.REACT_APP_TERMS_URL || 'https://hackjunction.com/terms',
+        value:
+            process.env.REACT_APP_TERMS_URL || 'https://hackjunction.com/terms',
         required: false,
     },
     CALENDAR_URL: {
-        value: process.env.REACT_APP_CALENDAR_URL || 'https://hackjunction.com/calendar',
+        value:
+            process.env.REACT_APP_CALENDAR_URL ||
+            'https://hackjunction.com/calendar',
         required: false,
     },
-
 }
 
 const buildConfig = () => {
