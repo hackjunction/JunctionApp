@@ -60,13 +60,13 @@ const Footer = () => {
                     <Divider size={1} />
                     <ExternalLink
                         theme="dark"
-                        href={config.PLATFORM_OWNER_WEBSITE + '/terms'}
+                        href={config.TERMS_URL}
                     >
                         Terms And Conditions
                     </ExternalLink>
                     <ExternalLink
                         theme="dark"
-                        href={config.PLATFORM_OWNER_WEBSITE + '/privacy'}
+                        href={config.PRIVACY_URL}
                     >
                         Privacy Policy
                     </ExternalLink>

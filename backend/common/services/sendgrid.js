@@ -93,7 +93,7 @@ const SendgridService = {
                     <p>
                         As a final note, don't feel discouraged and make sure to apply to one of our many other events.
                         We host tons of events around the year and around the globe and it would be amazing to see you at
-                        one of them. Check out the full event calendar here <a href="https://hackjunction.com/calendar">here</a>.
+                        one of them. Check out the full event calendar here <a href="${global.gConfig.CALENDAR_URL}">here</a>.
                     </p>
                 `,
             }
