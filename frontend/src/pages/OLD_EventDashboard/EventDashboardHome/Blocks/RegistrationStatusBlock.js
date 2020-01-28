@@ -183,10 +183,7 @@ const RegistrationStatusBlock = ({
                 return (
                     <Button
                         onClick={() =>
-                            window.open(
-                                config.CALENDAR_URL,
-                                '_blank'
-                            )
+                            window.open(config.CALENDAR_URL, '_blank')
                         }
                         color="theme_white"
                         variant="contained"
