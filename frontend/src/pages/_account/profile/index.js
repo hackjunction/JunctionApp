@@ -314,9 +314,7 @@ export default () => {
                                 also be shown to select{' '}
                                 {config.PLATFORM_OWNER_NAME} partners who are
                                 are looking to hire. Please see our{' '}
-                                <a href="https://www.hackjunction.com/policy">
-                                    Privacy Policy
-                                </a>{' '}
+                                <a href={config.PRIVACY_URL}>Privacy Policy</a>{' '}
                                 for more details on how your data is used.
                             </Typography>
                             <Grid container spacing={3}>
