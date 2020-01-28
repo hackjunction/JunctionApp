@@ -51,7 +51,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                 <Typography variant="subtitle1" className={classes.label}>
                     I've read and consent to the processing of my data in
                     accordance to the{' '}
-                    <ExternalLink href="https://hackjunction.com/policy">
+                    <ExternalLink href={config.PRIVACY_URL}>
                         {config.PLATFORM_OWNER_NAME} Privacy Policy
                     </ExternalLink>
                 </Typography>
@@ -65,7 +65,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                 />
                 <Typography variant="subtitle1" className={classes.label}>
                     I've read and agree to the{' '}
-                    <ExternalLink href="https://hackjunction.com/terms">
+                    <ExternalLink href={config.TERMS_URL}>
                         {config.PLATFORM_OWNER_NAME} Terms & Conditions
                     </ExternalLink>
                 </Typography>

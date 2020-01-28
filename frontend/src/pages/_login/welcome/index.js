@@ -289,7 +289,7 @@ export default () => {
                                         age, and I have read and agree to the{' '}
                                         {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
-                                            href="https://hackjunction.com/terms"
+                                            href={config.TERMS_URL}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={classes.link}
@@ -298,7 +298,7 @@ export default () => {
                                         </a>{' '}
                                         and{' '}
                                         <a
-                                            href="https://hackjunction.com/policy"
+                                            href={config.PRIVACY_URL}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={classes.link}
