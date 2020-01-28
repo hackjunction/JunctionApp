@@ -183,7 +183,7 @@ export default () => {
                     <Button
                         onClick={() =>
                             window.open(
-                                config.PLATFORM_OWNER_WEBSITE + '/calendar',
+                                config.CALENDAR_URL,
                                 '_blank'
                             )
                         }
