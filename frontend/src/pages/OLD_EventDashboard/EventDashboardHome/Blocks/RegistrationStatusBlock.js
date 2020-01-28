@@ -184,7 +184,7 @@ const RegistrationStatusBlock = ({
                     <Button
                         onClick={() =>
                             window.open(
-                                'https://hackjunction.com/calendar',
+                                config.CALENDAR_URL,
                                 '_blank'
                             )
                         }
