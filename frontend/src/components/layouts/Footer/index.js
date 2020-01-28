@@ -58,16 +58,10 @@ const Footer = () => {
             <div className={classes.inner}>
                 <div className={classes.links}>
                     <Divider size={1} />
-                    <ExternalLink
-                        theme="dark"
-                        href={config.TERMS_URL}
-                    >
+                    <ExternalLink theme="dark" href={config.TERMS_URL}>
                         Terms And Conditions
                     </ExternalLink>
-                    <ExternalLink
-                        theme="dark"
-                        href={config.PRIVACY_URL}
-                    >
+                    <ExternalLink theme="dark" href={config.PRIVACY_URL}>
                         Privacy Policy
                     </ExternalLink>
                     <ExternalLink
