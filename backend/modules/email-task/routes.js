@@ -50,7 +50,7 @@ router.route('/:slug/send').post(
     celebrate({
         body: {
             recipients: Joi.array()
-                .items(Joi.string().email())
+                .items(Joi.string())
                 .min(1)
                 .required(),
             params: messageParams(),
