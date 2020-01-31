@@ -30,6 +30,7 @@ class UserProfileController {
 
     /** Controller functions */
     getByUserId(userId) {
+        if (!userId) return null
         return this._clean(this.userIdLoader.load(userId))
     }
 

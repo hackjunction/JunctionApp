@@ -108,13 +108,12 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default RequiresPermission(() => {
+export default RequiresPermission(({ event, registration }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
 
-    const event = useSelector(EventDetailSelectors.event)
-    const hasRegistration = useSelector(EventDetailSelectors.hasRegistration)
-    const { slug } = event
+    const slug = event?.slug
+    const hasRegistration = typeof registration !== 'undefined'
 
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
@@ -228,7 +227,7 @@ export default RequiresPermission(() => {
             setActiveStep(sections.length + 1)
             setLoading(false)
         }
-    }, [sections, hasRegistration, event.slug, formData, dispatch])
+    }, [hasRegistration, event.slug, dispatch, formData, sections.length])
 
     const renderSteps = () => {
         return sections.map((section, index) => {
