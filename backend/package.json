@@ -54,7 +54,6 @@
         "pino-pretty": "^3.5.0",
         "pino-sentry": "^0.2.2",
         "shortid": "^2.2.14",
-        "throng": "^4.0.0",
         "yup": "^0.27.0"
     },
     "eslintConfig": {
