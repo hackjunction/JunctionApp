@@ -6,6 +6,10 @@ const {
     GraphQLList,
 } = require('graphql')
 
+const { UserProfileFields } = require('../graphql-shared-types')
+
+const extraFields = UserProfileFields.toConfig().fields
+
 const UserProfileType = new GraphQLObjectType({
     name: 'UserProfile',
     fields: {
@@ -24,6 +28,7 @@ const UserProfileType = new GraphQLObjectType({
         avatar: {
             type: GraphQLString,
         },
+        ...extraFields,
     },
 })
 
