@@ -2,9 +2,9 @@
 const Promise = require('bluebird')
 const logger = require('../misc/logger')
 
-const run = async () => {
-    const migrations = [require('./00-registration-questions')] //eslint-disable-line
+const migrations = [require('./00-registration-questions')]
 
+const run = async () => {
     logger.info('Running database migrations before startup...')
 
     return Promise.each(migrations, (migration, index) => {
@@ -38,8 +38,7 @@ const run = async () => {
             )
         }
 
-        logger.info(`Running ${migration.name}`)
-        logger.info(`-> ${migration.description}`)
+        logger.info(`Running ${migration.name} (${migration.description})`)
 
         return migration
             .run()

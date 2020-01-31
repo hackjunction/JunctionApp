@@ -173,8 +173,18 @@ const EventSchema = new mongoose.Schema({
         ],
     },
     userDetailsConfig: {
+        /** Deprecated, removed in migration 00-registration-questions */
         type: UserDetailsConfigSchema.mongoose,
         default: UserDetailsConfigSchema.mongoose,
+    },
+    registrationConfig: {
+        /** Added in migration 00-registration-questions */
+        optionalFields: {
+            type: [String],
+        },
+        requiredFields: {
+            type: [String],
+        },
     },
     customQuestions: {
         type: [RegistrationSectionSchema.mongoose],

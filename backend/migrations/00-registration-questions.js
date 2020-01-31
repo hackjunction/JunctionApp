@@ -34,15 +34,64 @@
  *  event model.
  */
 
+const mongoose = require('mongoose')
+const Promise = require('bluebird')
+const logger = require('../misc/logger')
+
 module.exports = {
     index: 0,
     name: '00-registration-questions',
     description: 'Migrate userDetailsConfig to registrationConfig',
     run: async () => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject(new Error('Something went wrong...'))
-            }, 2000)
+        /** Get all events with the userDetailsConfig field */
+        const events = await mongoose.model('Event').find({
+            userDetailsConfig: {
+                $ne: null,
+            },
         })
+        if (events.length > 0) {
+            return Promise.map(events, event => {
+                const { optionalFields, requiredFields } = Object.keys(
+                    event.toJSON().userDetailsConfig
+                ).reduce(
+                    (result, field) => {
+                        if (
+                            ['firstName', 'lastName', 'email'].indexOf(
+                                field
+                            ) !== -1
+                        ) {
+                            return result
+                        }
+                        const obj = event.userDetailsConfig[field]
+                        if (obj.enable) {
+                            if (obj.require) {
+                                result.requiredFields.push(field)
+                            } else {
+                                result.optionalFields.push(field)
+                            }
+                        }
+                        return result
+                    },
+                    {
+                        optionalFields: [],
+                        requiredFields: [],
+                    }
+                )
+
+                return mongoose.model('Event').findByIdAndUpdate(event._id, {
+                    $set: {
+                        registrationConfig: {
+                            optionalFields,
+                            requiredFields,
+                        },
+                    },
+                    $unset: {
+                        userDetailsConfig: '',
+                    },
+                })
+            })
+        }
+        logger.info(`-> No events to migrate`)
+        return Promise.resolve()
     },
 }

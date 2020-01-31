@@ -4,7 +4,6 @@ const { errors } = require('celebrate')
 const path = require('path')
 const helmet = require('helmet')
 const sslRedirect = require('heroku-ssl-redirect')
-const throng = require('throng')
 
 /** Create Express application */
 const app = express()
@@ -62,39 +61,32 @@ const database = require('./misc/db')
 /* Migrations to run before exposing the server */
 const migrations = require('./migrations/index')
 
-async function start() {
-    /** Make sure these finish successfully before trying to start the server */
-    try {
+const throng = require('./misc/throng')
+
+throng({
+    workers: process.env.WEB_CONCURRENCY || 1,
+    grace: 1000,
+    lifetime: Infinity,
+    master: async () => {
+        logger.info(`Master ${process.pid} started`)
         await database.connect()
         await migrations.run()
-        /** Use throng to take advantage of all available CPU resources */
-        throng({
-            workers: process.env.WEB_CONCURRENCY || 1,
-            grace: 1000,
-            lifetime: Infinity,
-            /** Start the master process (1) */
-            master: async () => {
-                logger.info(`Master ${process.pid} started`)
-                await new Promise(function(resolve, reject) {
-                    setTimeout(function() {
-                        console.log('Timeout done')
-                        resolve()
-                    }, 2000)
-                })
-                /** Run cron jobs here for now, migrate to cron-cluster later */
-                // cron.utils.startAll();
-            },
-            /** Start the slave processes (1-n) */
-            start: () => {
-                const PORT = process.env.PORT || 2222
-                app.listen(PORT, () => {
-                    logger.info(
-                        `Worker ${process.pid} started, listening on port ${PORT}`
-                    )
-                })
-            },
+        /** Run cron jobs here for now, migrate to cron-cluster later */
+        // cron.utils.startAll();
+    },
+    /** Start the slave processes (1-n) */
+    start: () => {
+        const PORT = process.env.PORT || 2222
+        app.listen(PORT, () => {
+            logger.info(
+                `Worker ${process.pid} started, listening on port ${PORT}`
+            )
         })
-    } catch (err) {
+    },
+    /** This is run only if the master function errors out. Workers are automatically
+     * revived on failure.
+     */
+    onError: err => {
         logger.error({
             message: 'Server startup failed',
             error: {
@@ -103,7 +95,5 @@ async function start() {
             },
         })
         process.exit(1)
-    }
-}
-
-start()
+    },
+})
