@@ -5,11 +5,13 @@ const Answers = require('./Answers')
 const Challenge = require('./Challenge')
 const CloudinaryImage = require('./CloudinaryImage')
 const Education = require('./Education')
+const EventTag = require('./EventTag')
 const IBANAccount = require('./IBANAccount')
 const LegalName = require('./LegalName')
 const PhoneNumber = require('./PhoneNumber')
 const RecruitmentOptions = require('./RecruitmentOptions')
 const RegistrationQuestion = require('./RegistrationQuestion')
+const RegistrationQuestionSettings = require('./RegistrationQuestionSettings')
 const RegistrationSection = require('./RegistrationSection')
 const Role = require('./Role')
 const Skill = require('./Skill')
@@ -19,34 +21,34 @@ const TravelGrantConfig = require('./TravelGrantConfig')
 const TravelGrantDetails = require('./TravelGrantDetails')
 const UserDetailsConfig = require('./UserDetailsConfig')
 const UserDetailsConfigItem = require('./UserDetailsConfigItem')
-const EventTag = require('./EventTag')
-const RegistrationQuestionSettings = require('./RegistrationQuestionSettings')
+const UserProfileFields = require('./UserProfileFields')
 
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
     types: [
-        CloudinaryImage.graphql,
         Address.graphql,
-        Track.graphql,
-        Challenge.graphql,
-        TravelGrantConfig.graphql,
-        UserDetailsConfigItem.graphql,
-        UserDetailsConfig.graphql,
-        RegistrationSection.graphql,
-        EventTag.graphql,
-        RegistrationQuestionSettings.graphql,
         Answers.graphql,
-        TravelGrantDetails.graphql,
+        Challenge.graphql,
+        CloudinaryImage.graphql,
         Education.graphql,
+        EventTag.graphql,
         IBANAccount.graphql,
         LegalName.graphql,
         PhoneNumber.graphql,
         RecruitmentOptions.graphql,
         RegistrationQuestion.graphql,
+        RegistrationQuestionSettings.graphql,
+        RegistrationSection.graphql,
         Role.graphql,
         Skill.graphql,
         TeamOptions.graphql,
+        Track.graphql,
+        TravelGrantConfig.graphql,
+        TravelGrantDetails.graphql,
+        UserDetailsConfig.graphql,
+        UserDetailsConfigItem.graphql,
+        UserProfileFields.graphql,
     ],
 })
 
