@@ -94,7 +94,10 @@ export default () => {
                                     exact
                                     path={`${match.url}/register`}
                                     component={() => (
-                                        <EventRegister slug={slug} />
+                                        <EventRegister
+                                            event={event}
+                                            registration={registration}
+                                        />
                                     )}
                                 />
                             )}

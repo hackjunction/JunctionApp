@@ -17,6 +17,9 @@ export default () => {
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
 
+    console.log('ACITVE EVENTS', activeEvents)
+    console.log('PAST EVENTS', pastEvents)
+
     return (
         <PageWrapper
             header={() => <GlobalNavBar />}

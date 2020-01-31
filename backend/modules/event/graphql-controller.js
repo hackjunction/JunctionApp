@@ -10,7 +10,7 @@ async function batchGetEventsByIds(eventIds) {
         _id: {
             $in: objectIds,
         },
-    })
+    }).lean()
     const resultsMap = results.reduce((map, current) => {
         map[current._id.toString()] = current
         return map
@@ -23,7 +23,7 @@ async function batchGetEventsBySlugs(eventSlugs) {
         slug: {
             $in: eventSlugs,
         },
-    })
+    }).lean()
     const resultsMap = results.reduce((map, current) => {
         map[current.slug] = current
         return map
@@ -56,7 +56,9 @@ class EventController {
 
     getByOrganiser(userId) {
         return this._clean(
-            Event.find().or([{ owner: userId }, { organisers: userId }])
+            Event.find()
+                .or([{ owner: userId }, { organisers: userId }])
+                .lean()
         )
     }
 
@@ -67,7 +69,9 @@ class EventController {
                 startTime: {
                     $gte: new Date(),
                 },
-            }).sort([['startTime', 1]])
+            })
+                .sort([['startTime', 1]])
+                .lean()
         )
     }
 
@@ -78,7 +82,9 @@ class EventController {
                 endTime: {
                     $gte: new Date(),
                 },
-            }).sort([['startTime', 1]])
+            })
+                .sort([['startTime', 1]])
+                .lean()
         )
     }
 
@@ -89,7 +95,9 @@ class EventController {
                 endTime: {
                     $lt: new Date(),
                 },
-            }).sort([['endTime', -1]])
+            })
+                .sort([['endTime', -1]])
+                .lean()
         )
     }
 
