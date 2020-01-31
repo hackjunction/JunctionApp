@@ -57,29 +57,53 @@ app.use(errors())
 /* Global error handler */
 app.use(require('./common/errors/errorHandler'))
 
-/* Database */
-require('./misc/db').connect()
+/* Database connection */
+const database = require('./misc/db')
+/* Migrations to run before exposing the server */
+const migrations = require('./migrations/index')
 
-// const cron = require('./modules/cron/index')
-
-/** Use throng to take advantage of all available CPU resources */
-throng({
-    workers: process.env.WEB_CONCURRENCY || 1,
-    grace: 1000,
-    lifetime: Infinity,
-    /** Start the master process (1) */
-    master: () => {
-        logger.info(`Master ${process.pid} started`)
-        /** Run cron jobs here for now, migrate to cron-cluster later */
-        // cron.utils.startAll();
-    },
-    /** Start the slave processes (1-n) */
-    start: () => {
-        const PORT = process.env.PORT || 2222
-        app.listen(PORT, () => {
-            logger.info(
-                `Worker ${process.pid} started, listening on port ${PORT}`
-            )
+async function start() {
+    /** Make sure these finish successfully before trying to start the server */
+    try {
+        await database.connect()
+        await migrations.run()
+        /** Use throng to take advantage of all available CPU resources */
+        throng({
+            workers: process.env.WEB_CONCURRENCY || 1,
+            grace: 1000,
+            lifetime: Infinity,
+            /** Start the master process (1) */
+            master: async () => {
+                logger.info(`Master ${process.pid} started`)
+                await new Promise(function(resolve, reject) {
+                    setTimeout(function() {
+                        console.log('Timeout done')
+                        resolve()
+                    }, 2000)
+                })
+                /** Run cron jobs here for now, migrate to cron-cluster later */
+                // cron.utils.startAll();
+            },
+            /** Start the slave processes (1-n) */
+            start: () => {
+                const PORT = process.env.PORT || 2222
+                app.listen(PORT, () => {
+                    logger.info(
+                        `Worker ${process.pid} started, listening on port ${PORT}`
+                    )
+                })
+            },
         })
-    },
-})
+    } catch (err) {
+        logger.error({
+            message: 'Server startup failed',
+            error: {
+                message: err.message,
+                stack: err.stack,
+            },
+        })
+        process.exit(1)
+    }
+}
+
+start()
