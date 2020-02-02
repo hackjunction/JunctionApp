@@ -8,6 +8,8 @@ import Shared from '@hackjunction/shared'
 
 import { Table } from 'components/generic/_Table'
 
+import QuestionSelect from './QuestionSelect'
+
 export default () => {
     const buildColumns = useCallback((form, field, fieldValue) => {
         return [
@@ -73,6 +75,20 @@ export default () => {
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <FastField
+                    name="registrationConfig"
+                    render={({ field, form }) => (
+                        <QuestionSelect
+                            optionalFields={field?.value?.optionalFields}
+                            requiredFields={field?.value?.requiredFields}
+                            onChange={value =>
+                                form.setFieldValue(field.name, value)
+                            }
+                        />
+                    )}
+                />
+            </Grid>
+            {/* <Grid item xs={12}>
+                <FastField
                     name="userDetailsConfig"
                     render={({ field, form }) => {
                         const fieldValue = field.value || {}
@@ -106,7 +122,7 @@ export default () => {
                         )
                     }}
                 />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <FastField
                     name="customQuestions"

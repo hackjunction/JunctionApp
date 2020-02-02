@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState, useMemo } from 'react'
 
-import { forOwn, sortBy } from 'lodash-es'
+import { forOwn, sortBy, concat } from 'lodash-es'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -140,27 +140,38 @@ export default RequiresPermission(({ event, registration }) => {
     }, [])
 
     const sections = useMemo(() => {
-        const fieldCategories = {}
-        forOwn(event.userDetailsConfig, (config, fieldName) => {
-            if (config.enable) {
-                const fieldConfig = RegistrationFields.getField(fieldName)
-                const category = fieldConfig.category.label
+        const allFields = []
+        event.registrationConfig.requiredFields.forEach(fieldName => {
+            allFields.push({
+                fieldName,
+                required: true,
+            })
+        })
+        event.registrationConfig.optionalFields.forEach(fieldName => {
+            allFields.push({
+                fieldName,
+                required: false,
+            })
+        })
 
-                if (fieldCategories.hasOwnProperty(category)) {
-                    fieldCategories[category].push({
+        const fieldCategories = {}
+        allFields.forEach(({ fieldName, required }) => {
+            const fieldConfig = RegistrationFields.getField(fieldName)
+            const category = fieldConfig.category.label
+            if (fieldCategories.hasOwnProperty(category)) {
+                fieldCategories[category].push({
+                    fieldName,
+                    fieldConfig: RegistrationFields.getField(fieldName),
+                    require: required,
+                })
+            } else {
+                fieldCategories[category] = [
+                    {
                         fieldName,
                         fieldConfig: RegistrationFields.getField(fieldName),
-                        ...config,
-                    })
-                } else {
-                    fieldCategories[category] = [
-                        {
-                            fieldName,
-                            fieldConfig: RegistrationFields.getField(fieldName),
-                            ...config,
-                        },
-                    ]
-                }
+                        require: required,
+                    },
+                ]
             }
         })
         const fieldSections = Object.keys(fieldCategories).map(
@@ -177,7 +188,7 @@ export default RequiresPermission(({ event, registration }) => {
 
         const sorted = sortBy(fieldSections, 'order')
         return sorted.concat(event.customQuestions)
-    }, [event.userDetailsConfig, event.customQuestions])
+    }, [event.registrationConfig, event.customQuestions])
 
     const setNextStep = useCallback(
         (nextStep, values, path) => {
