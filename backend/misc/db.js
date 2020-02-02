@@ -8,7 +8,7 @@ mongoose.Promise = Promise
 const connect = () => {
     logger.info('Establishing database connection...')
     return new Promise((resolve, reject) => {
-        mongoose.set('debug', process.env.NODE_ENV === 'development')
+        // mongoose.set('debug', true)
         mongoose.connect(global.gConfig.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,

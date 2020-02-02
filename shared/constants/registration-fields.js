@@ -1,4 +1,5 @@
 const yup = require('yup')
+const _ = require('lodash')
 const {
     graphql,
     GraphQlSchema,
@@ -31,26 +32,32 @@ const FilterValues = require('./filter-values')
 
 const Categories = {
     basicDetails: {
+        id: 'basicDetails',
         label: 'Basic Details',
         order: 1,
     },
     skillsAndInterests: {
+        id: 'skillsAndInterests',
         label: 'Skills & Interests',
         order: 2,
     },
     links: {
+        id: 'links',
         label: 'Links',
         order: 3,
     },
     travelAndAccommodation: {
+        id: 'travelAndAccommodation',
         label: 'Travel & Accommodation',
         order: 4,
     },
     recruitment: {
+        id: 'recruitment',
         label: 'Opportunities',
         order: 5,
     },
     other: {
+        id: 'other',
         label: 'Other',
         order: 6,
     },
@@ -71,6 +78,7 @@ const FieldProps = {
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
+        alwaysEnabled: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
@@ -99,6 +107,7 @@ const FieldProps = {
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
+        alwaysEnabled: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
@@ -126,6 +135,7 @@ const FieldProps = {
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
+        alwaysEnabled: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
@@ -1444,6 +1454,14 @@ function buildFiltersArray() {
 }
 
 const Helpers = {
+    getCategoriesArray: () => {
+        return _.sortBy(
+            Object.keys(Categories).map(key => {
+                return Categories[key]
+            }),
+            'order'
+        )
+    },
     getLabel: field => {
         if (Fields.hasOwnProperty(field)) {
             return Fields[field].label || field

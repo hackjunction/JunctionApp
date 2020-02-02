@@ -58,7 +58,9 @@ app.use(require('./common/errors/errorHandler'))
 
 /* Database connection */
 const database = require('./misc/db')
-/* Migrations to run before exposing the server */
+
+database.connect()
+// /* Migrations to run before exposing the server */
 const migrations = require('./migrations/index')
 
 const throng = require('./misc/throng')
@@ -69,7 +71,6 @@ throng({
     lifetime: Infinity,
     master: async () => {
         logger.info(`Master ${process.pid} started`)
-        await database.connect()
         await migrations.run()
         /** Run cron jobs here for now, migrate to cron-cluster later */
         // cron.utils.startAll();
@@ -77,6 +78,7 @@ throng({
     /** Start the slave processes (1-n) */
     start: () => {
         const PORT = process.env.PORT || 2222
+
         app.listen(PORT, () => {
             logger.info(
                 `Worker ${process.pid} started, listening on port ${PORT}`
