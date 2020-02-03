@@ -29,6 +29,10 @@ const eventQuery = gql`
             endTime
             registrationStartTime
             registrationEndTime
+            registrationConfig {
+                optionalFields
+                requiredFields
+            }
 
             _eventStatus
             _eventTimeFormatted

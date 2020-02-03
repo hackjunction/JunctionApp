@@ -78,7 +78,7 @@ const FieldProps = {
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
-        alwaysEnabled: true,
+        alwaysRequired: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
@@ -107,7 +107,7 @@ const FieldProps = {
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
-        alwaysEnabled: true,
+        alwaysRequired: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
@@ -135,7 +135,7 @@ const FieldProps = {
             trim: true,
         },
         graphqlSchema: GraphQLNonNull(GraphQLString),
-        alwaysEnabled: true,
+        alwaysRequired: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,

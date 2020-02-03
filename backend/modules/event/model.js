@@ -13,6 +13,7 @@ const TrackSchema = require('@hackjunction/shared/schemas/Track')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
 const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
+const RegistrationConfigSchema = require('@hackjunction/shared/schemas/RegistrationConfig')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../../modules/upload/helper')
@@ -178,13 +179,8 @@ const EventSchema = new mongoose.Schema({
         default: UserDetailsConfigSchema.mongoose,
     },
     registrationConfig: {
-        /** Added in migration 00-registration-questions */
-        optionalFields: {
-            type: [String],
-        },
-        requiredFields: {
-            type: [String],
-        },
+        type: RegistrationConfigSchema.mongoose,
+        default: RegistrationConfigSchema.mongoose,
     },
     customQuestions: {
         type: [RegistrationSectionSchema.mongoose],

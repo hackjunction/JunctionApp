@@ -13,7 +13,7 @@ const RegistrationConfigSchema = new mongoose.Schema({
 const RegistrationConfigType = new GraphQLObjectType({
     name: 'RegistrationConfig',
     fields: {
-        enabledFields: {
+        optionalFields: {
             type: GraphQLList(GraphQLString),
         },
         requiredFields: {

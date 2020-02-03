@@ -6,7 +6,7 @@ const {
     GraphQLInt,
     GraphQLBoolean,
 } = require('graphql')
-const { Currencies } = require('../constants/currencies')
+const Currencies = require('../constants/currencies')
 
 const TravelGrantConfigSchema = new mongoose.Schema({
     enabled: {
