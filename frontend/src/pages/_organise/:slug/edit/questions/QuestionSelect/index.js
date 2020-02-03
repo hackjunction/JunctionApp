@@ -11,7 +11,12 @@ import {
     Checkbox,
     Chip,
     Box,
+    Avatar,
+    Paper,
 } from '@material-ui/core'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
+import NewReleasesIcon from '@material-ui/icons/NewReleases'
 import { makeStyles } from '@material-ui/core/styles'
 
 const fields = RegistrationFields.getFields()
@@ -62,14 +67,17 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
         if (isOptional) {
             return {
                 color: 'primary',
+                icon: <VisibilityIcon />,
             }
         } else if (isRequired) {
             return {
                 color: 'secondary',
+                icon: <VisibilityIcon />,
             }
         } else {
             return {
                 variant: 'outlined',
+                icon: <VisibilityOffIcon />,
             }
         }
     }
@@ -81,21 +89,42 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
             </Typography>
             <Typography variant="body1">
                 Choose the questions you want to ask people in the registration
-                form. First name, last name and email are always asked!
+                form. Click on questions to change their status.{' '}
+                <span style={{ fontWeight: 'bold' }}>
+                    First name, last name and email are always shown and
+                    required!
+                </span>
             </Typography>
+
             <Box pb={2} pt={2} flexDirection="row" flexWrap="wrap">
                 <Typography variant="body1" gutterBottom>
                     Legend:
                 </Typography>
-                <Chip size="small" variant="outlined" label="Not asked" />{' '}
-                <Chip size="small" color="primary" label="Optional" />{' '}
-                <Chip size="small" color="secondary" label="Required" />
+                <Chip
+                    size="small"
+                    variant="outlined"
+                    label="Hidden"
+                    icon={<VisibilityOffIcon />}
+                />{' '}
+                <Chip
+                    size="small"
+                    color="primary"
+                    label="Shown, optional"
+                    icon={<VisibilityIcon />}
+                />{' '}
+                <Chip
+                    size="small"
+                    color="secondary"
+                    label="Shown, required"
+                    icon={<VisibilityIcon />}
+                />
             </Box>
+
             {categories.map(({ id, label }) => (
                 <Box mb={2}>
                     <Typography
                         className={classes.sectionLabel}
-                        variant="subtitle1"
+                        variant="button"
                         gutterBottom
                     >
                         {label}
@@ -114,6 +143,7 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
                                             isRequired
                                         )}
                                         clickable
+                                        size="small"
                                         onClick={() =>
                                             handleChange(
                                                 fieldName,
