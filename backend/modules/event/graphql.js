@@ -22,6 +22,7 @@ const {
     UserDetailsConfig,
     RegistrationSection,
     EventTag,
+    RegistrationConfig,
 } = require('../graphql-shared-types')
 
 const EventType = new GraphQLObjectType({
@@ -124,6 +125,9 @@ const EventType = new GraphQLObjectType({
             },
             organisers: {
                 type: GraphQLList(GraphQLString),
+            },
+            registrationConfig: {
+                type: RegistrationConfig,
             },
             // TODO: Figure this stuff out
             // winners: {

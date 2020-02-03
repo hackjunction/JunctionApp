@@ -10,6 +10,7 @@ const IBANAccount = require('./IBANAccount')
 const LegalName = require('./LegalName')
 const PhoneNumber = require('./PhoneNumber')
 const RecruitmentOptions = require('./RecruitmentOptions')
+const RegistrationConfig = require('./RegistrationConfig')
 const RegistrationQuestion = require('./RegistrationQuestion')
 const RegistrationQuestionSettings = require('./RegistrationQuestionSettings')
 const RegistrationSection = require('./RegistrationSection')
@@ -37,6 +38,7 @@ const SharedSchema = new GraphQLSchema({
         LegalName.graphql,
         PhoneNumber.graphql,
         RecruitmentOptions.graphql,
+        RegistrationConfig.graphql,
         RegistrationQuestion.graphql,
         RegistrationQuestionSettings.graphql,
         RegistrationSection.graphql,

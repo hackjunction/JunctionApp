@@ -140,22 +140,36 @@ export default RequiresPermission(({ event, registration }) => {
     }, [])
 
     const sections = useMemo(() => {
-        const allFields = []
-        event.registrationConfig.requiredFields.forEach(fieldName => {
-            allFields.push({
-                fieldName,
-                required: true,
-            })
-        })
-        event.registrationConfig.optionalFields.forEach(fieldName => {
-            allFields.push({
-                fieldName,
-                required: false,
-            })
-        })
+        const allFields = RegistrationFields.getFields()
+        const enabledFields = Object.keys(allFields).reduce(
+            (result, fieldName) => {
+                const {
+                    optionalFields = [],
+                    requiredFields = [],
+                } = event?.registrationConfig
+                if (
+                    requiredFields.indexOf(fieldName) !== -1 ||
+                    allFields[fieldName].alwaysRequired
+                ) {
+                    result.push({
+                        fieldName,
+                        required: true,
+                    })
+                }
+
+                if (optionalFields.indexOf(fieldName) !== -1) {
+                    result.push({
+                        fieldName,
+                        required: false,
+                    })
+                }
+                return result
+            },
+            []
+        )
 
         const fieldCategories = {}
-        allFields.forEach(({ fieldName, required }) => {
+        enabledFields.forEach(({ fieldName, required }) => {
             const fieldConfig = RegistrationFields.getField(fieldName)
             const category = fieldConfig.category.label
             if (fieldCategories.hasOwnProperty(category)) {
@@ -174,6 +188,7 @@ export default RequiresPermission(({ event, registration }) => {
                 ]
             }
         })
+
         const fieldSections = Object.keys(fieldCategories).map(
             categoryLabel => {
                 return {
@@ -187,8 +202,11 @@ export default RequiresPermission(({ event, registration }) => {
         )
 
         const sorted = sortBy(fieldSections, 'order')
-        return sorted.concat(event.customQuestions)
-    }, [event.registrationConfig, event.customQuestions])
+        if (event.customQuestions) {
+            return sorted.concat(event.customQuestions)
+        }
+        return sorted
+    }, [event])
 
     const setNextStep = useCallback(
         (nextStep, values, path) => {
