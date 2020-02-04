@@ -1,4 +1,10 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react'
+import React, {
+    useEffect,
+    useCallback,
+    useState,
+    useMemo,
+    useContext,
+} from 'react'
 
 import { sortBy } from 'lodash-es'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,6 +36,8 @@ import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
+
+import EventDetailContext from '../context'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -108,13 +116,17 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default RequiresPermission(({ event, registration }) => {
+export default RequiresPermission(() => {
     const classes = useStyles()
     const dispatch = useDispatch()
-
-    const idToken = useSelector(AuthSelectors.getIdToken)
-    const slug = event?.slug
-    const hasRegistration = typeof registration !== 'undefined'
+    const {
+        event,
+        registration,
+        slug,
+        hasRegistration,
+        createRegistration,
+        editRegistration,
+    } = useContext(EventDetailContext)
 
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
@@ -231,32 +243,13 @@ export default RequiresPermission(({ event, registration }) => {
         setActiveStep(activeStep - 1)
     }, [activeStep])
 
-    // RegistrationsService.createRegistration = (idToken, slug, data) => {
-    //     return _axios.post(`${BASE_ROUTE}/${slug}`, data, config(idToken));
-    // };
-
-    // /** Update a registration for an event as the logged in user
-    //  * PATCH /:slug
-    //  */
-    // RegistrationsService.updateRegistration = (idToken, slug, data) => {
-    //     return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken));
-    // };
-
     const handleSubmit = useCallback(async () => {
         setLoading(true)
         try {
             if (hasRegistration) {
-                await RegistrationsService.updateRegistration(
-                    idToken,
-                    slug,
-                    formData
-                )
+                await editRegistration(formData)
             } else {
-                await RegistrationsService.createRegistration(
-                    idToken,
-                    slug,
-                    formData
-                )
+                await createRegistration(formData)
             }
             AnalyticsService.events.COMPLETE_REGISTRATION(event?.slug)
             setActiveStep(sections.length + 1)
@@ -270,13 +263,13 @@ export default RequiresPermission(({ event, registration }) => {
             setLoading(false)
         }
     }, [
+        createRegistration,
         dispatch,
+        editRegistration,
         event,
         formData,
         hasRegistration,
-        idToken,
         sections.length,
-        slug,
     ])
 
     const renderSteps = () => {

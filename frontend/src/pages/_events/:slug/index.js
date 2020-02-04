@@ -1,9 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
-
-import { EventStatuses } from '@hackjunction/shared'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useRouteMatch, useLocation } from 'react-router'
@@ -15,71 +11,14 @@ import Footer from 'components/layouts/Footer'
 import EventDetail from './default'
 import EventRegister from './register'
 
-const eventQuery = gql`
-    query Event($slug: String!) {
-        eventBySlug(slug: $slug) {
-            name
-            slug
-            description
-            coverImage {
-                url
-                publicId
-            }
-            timezone
-            startTime
-            endTime
-            registrationStartTime
-            registrationEndTime
-            registrationConfig {
-                optionalFields
-                requiredFields
-            }
+import EventDetailContext, { EventDetailProvider } from './context'
 
-            _eventStatus
-            _eventTimeFormatted
-            _eventLocationFormatted
-        }
-    }
-`
-
-const registrationQuery = gql`
-    query Registration($eventSlug: String!) {
-        myRegistration(eventSlug: $eventSlug) {
-            status
-            answers: _fullAnswers
-        }
-    }
-`
-
-export default () => {
+const EventDetailRouter = () => {
     const match = useRouteMatch()
     const location = useLocation()
-    const { slug } = match.params
-
-    const {
-        data: eventData,
-        loading: eventLoading,
-        error: eventError,
-    } = useQuery(eventQuery, {
-        variables: {
-            slug,
-        },
-    })
-
-    const {
-        data: registrationData,
-        loading: registrationLoading,
-        error: registrationError,
-    } = useQuery(registrationQuery, {
-        variables: {
-            eventSlug: slug,
-        },
-    })
-
-    const event = eventData?.eventBySlug
-    const registration = registrationData?.myRegistration
-    const isRegistrationOpen =
-        event?._eventStatus === EventStatuses.REGISTRATION_OPEN.id
+    const { eventLoading, eventError, isRegistrationOpen } = useContext(
+        EventDetailContext
+    )
 
     return (
         <PageWrapper
@@ -96,25 +35,13 @@ export default () => {
                             <Route
                                 exact
                                 path={`${match.url}`}
-                                component={() => (
-                                    <EventDetail
-                                        event={event}
-                                        registration={registration}
-                                    />
-                                )}
+                                component={EventDetail}
                             />
                             {isRegistrationOpen && (
                                 <Route
                                     exact
                                     path={`${match.url}/register`}
-                                    component={() => (
-                                        <EventRegister
-                                            event={event}
-                                            registration={registration}
-                                            loading={registrationLoading}
-                                            error={registrationError}
-                                        />
-                                    )}
+                                    component={EventRegister}
                                 />
                             )}
                             <Redirect to={`${match.url}`} />
@@ -123,5 +50,13 @@ export default () => {
                 )
             }}
         />
+    )
+}
+
+export default () => {
+    return (
+        <EventDetailProvider>
+            <EventDetailRouter />
+        </EventDetailProvider>
     )
 }
