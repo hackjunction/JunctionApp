@@ -19,7 +19,6 @@ const {
     Track,
     Challenge,
     TravelGrantConfig,
-    UserDetailsConfig,
     RegistrationSection,
     EventTag,
     RegistrationConfig,
@@ -103,9 +102,6 @@ const EventType = new GraphQLObjectType({
             },
             overallReviewMethod: {
                 type: GraphQLString,
-            },
-            userDetailsConfig: {
-                type: UserDetailsConfig,
             },
             customQuestions: {
                 type: GraphQLList(RegistrationSection),

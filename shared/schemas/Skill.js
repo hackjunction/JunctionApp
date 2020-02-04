@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { GraphQLObjectType, GraphQLString, GraphQLInt } = require('graphql')
-const { Skills } = require('../constants/countries')
+const Skills = require('../constants/skills')
 
 const mongooseSchema = new mongoose.Schema({
     skill: {

@@ -11,15 +11,18 @@ const buildGetController = require('./graphql-controller-factory')
 
 module.exports = app => {
     const modules = [UserProfile, Registration, Event]
-    const executableSchemas = modules.map(({ QueryType, Resolvers }) => {
-        const rawSchema = new GraphQLSchema({
-            query: QueryType,
-        })
-        return makeExecutableSchema({
-            typeDefs: printSchema(rawSchema),
-            resolvers: Resolvers,
-        })
-    })
+    const executableSchemas = modules.map(
+        ({ QueryType, MutationType, Resolvers }) => {
+            const rawSchema = new GraphQLSchema({
+                query: QueryType,
+                mutation: MutationType,
+            })
+            return makeExecutableSchema({
+                typeDefs: printSchema(rawSchema),
+                resolvers: Resolvers,
+            })
+        }
+    )
     const schema = mergeSchemas({
         schemas: executableSchemas,
     })

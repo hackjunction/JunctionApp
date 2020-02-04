@@ -82,7 +82,9 @@ class EventController {
                 endTime: {
                     $gte: new Date(),
                 },
-            }).sort([['startTime', 1]])
+            })
+                .sort([['startTime', 1]])
+                .lean()
         )
     }
 
@@ -93,12 +95,14 @@ class EventController {
                 endTime: {
                     $lt: new Date(),
                 },
-            }).sort([['endTime', -1]])
+            })
+                .sort([['endTime', -1]])
+                .lean()
         )
     }
 
     async getAll() {
-        return this._clean(Event.find())
+        return this._clean(Event.find().lean())
     }
 
     async _clean(promise) {

@@ -19,6 +19,7 @@ const eventQuery = gql`
     query Event($slug: String!) {
         eventBySlug(slug: $slug) {
             name
+            slug
             description
             coverImage {
                 url
@@ -37,10 +38,15 @@ const eventQuery = gql`
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted
+        }
+    }
+`
 
-            _myRegistration {
-                _id
-            }
+const registrationQuery = gql`
+    query Registration($eventSlug: String!) {
+        myRegistration(eventSlug: $eventSlug) {
+            status
+            answers: _fullAnswers
         }
     }
 `
@@ -50,29 +56,35 @@ export default () => {
     const location = useLocation()
     const { slug } = match.params
 
-    const { data, loading, error } = useQuery(eventQuery, {
+    const {
+        data: eventData,
+        loading: eventLoading,
+        error: eventError,
+    } = useQuery(eventQuery, {
         variables: {
             slug,
         },
     })
 
-    const event = data?.eventBySlug
-    const registration = event?._myRegistration
+    const {
+        data: registrationData,
+        loading: registrationLoading,
+        error: registrationError,
+    } = useQuery(registrationQuery, {
+        variables: {
+            eventSlug: slug,
+        },
+    })
+
+    const event = eventData?.eventBySlug
+    const registration = registrationData?.myRegistration
     const isRegistrationOpen =
         event?._eventStatus === EventStatuses.REGISTRATION_OPEN.id
 
-    // //TODO: Remove this
-    // useEffect(() => {
-    //     dispatch(EventDetailActions.updateEvent(slug))
-    //     if (isAuthenticated) {
-    //         dispatch(EventDetailActions.updateRegistration(slug))
-    //     }
-    // }, [slug, isAuthenticated, dispatch])
-
     return (
         <PageWrapper
-            loading={loading}
-            error={error}
+            loading={eventLoading}
+            error={eventError}
             errorText={`Oops, something went wrong`}
             errorDesc={`Please refresh the page to try again.`}
             header={() => <GlobalNavBar />}
@@ -87,8 +99,6 @@ export default () => {
                                 component={() => (
                                     <EventDetail
                                         event={event}
-                                        loading={loading}
-                                        error={error}
                                         registration={registration}
                                     />
                                 )}
@@ -101,6 +111,8 @@ export default () => {
                                         <EventRegister
                                             event={event}
                                             registration={registration}
+                                            loading={registrationLoading}
+                                            error={registrationError}
                                         />
                                     )}
                                 />

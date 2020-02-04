@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 
 import { Grid, Box } from '@material-ui/core'
-import { useRouteMatch, useLocation } from 'react-router'
 
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
@@ -10,38 +9,12 @@ import AnalyticsService from 'services/analytics'
 import EventTimeline from './EventTimeline'
 import EventButtons from './EventButtons'
 
-import PageWrapper from 'components/layouts/PageWrapper'
 import StaggeredList from 'components/animated/StaggeredList'
 import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
 
-import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
-
-const eventQuery = gql`
-    query Event($slug: String!) {
-        eventBySlug(slug: $slug) {
-            name
-            description
-            coverImage {
-                url
-                publicId
-            }
-            timezone
-            startTime
-            endTime
-            registrationStartTime
-            registrationEndTime
-
-            _eventStatus
-            _eventTimeFormatted
-            _eventLocationFormatted
-        }
-    }
-`
-
-export default ({ event, loading, error }) => {
+export default ({ event }) => {
     const { slug } = event
 
     useEffect(() => {
@@ -51,7 +24,7 @@ export default ({ event, loading, error }) => {
     }, [slug])
 
     return (
-        <PageWrapper loading={loading} error={error}>
+        <>
             <EventHeroImage event={event} />
             <FadeInWrapper>
                 <CenteredContainer>
@@ -75,6 +48,6 @@ export default ({ event, loading, error }) => {
                     </StaggeredList>
                 </CenteredContainer>
             </FadeInWrapper>
-        </PageWrapper>
+        </>
     )
 }

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const _ = require('lodash')
-const { GraphQLBoolean, GraphQLObjectType } = require('graphql')
+const { GraphQLObjectType } = require('graphql')
 const UserDetailsConfigItemType = require('./UserDetailsConfigItem').graphql
 const RegistrationFields = require('../constants/registration-fields')
 

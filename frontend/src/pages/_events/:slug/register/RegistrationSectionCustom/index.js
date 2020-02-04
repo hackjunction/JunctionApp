@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import ReactDOM from 'react-dom'
 
-import { useSelector } from 'react-redux'
 import { Formik, FastField } from 'formik'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography } from '@material-ui/core'
@@ -11,7 +10,6 @@ import { RegistrationFieldsCustom } from '@hackjunction/shared'
 import BooleanInput from 'components/inputs/BooleanInput'
 import Markdown from 'components/generic/Markdown'
 
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
 import RegistrationQuestion from '../RegistrationQuestion'
 import RegistrationBottomBar from '../RegistrationBottomBar'
 
@@ -47,8 +45,14 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
-    const registration = useSelector(EventDetailSelectors.registration)
+export default ({
+    section,
+    onNext,
+    nextLabel,
+    onPrev,
+    prevLabel,
+    registration,
+}) => {
     const classes = useStyles()
     const [visible, setVisible] = useState(!section.conditional)
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString, printType } = require('graphql')
+const { GraphQLObjectType, GraphQLString } = require('graphql')
 
 const CloudinaryImageSchema = new mongoose.Schema({
     url: {
@@ -27,5 +27,4 @@ const CloudinaryImageType = new GraphQLObjectType({
 module.exports = {
     mongoose: CloudinaryImageSchema,
     graphql: CloudinaryImageType,
-    AST: printType(CloudinaryImageType),
 }

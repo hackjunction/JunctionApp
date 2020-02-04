@@ -176,9 +176,9 @@ const EventSchema = new mongoose.Schema({
     userDetailsConfig: {
         /** Deprecated, removed in migration 00-registration-questions */
         type: UserDetailsConfigSchema.mongoose,
-        default: UserDetailsConfigSchema.mongoose,
     },
     registrationConfig: {
+        /** Introduced in favor of userDetailsConfig in 00-registration-questions */
         type: RegistrationConfigSchema.mongoose,
         default: RegistrationConfigSchema.mongoose,
     },

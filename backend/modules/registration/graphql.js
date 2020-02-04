@@ -7,6 +7,7 @@ const {
     GraphQLFloat,
     GraphQLInt,
 } = require('graphql')
+const { GraphQLJSONObject } = require('graphql-type-json')
 
 const { Answers, TravelGrantDetails } = require('../graphql-shared-types')
 
@@ -67,6 +68,9 @@ const RegistrationType = new GraphQLObjectType({
             _event: {
                 type: EventType,
             },
+            _fullAnswers: {
+                type: GraphQLJSONObject,
+            },
         }
     },
 })
@@ -78,7 +82,10 @@ const QueryType = new GraphQLObjectType({
             type: RegistrationType,
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: GraphQLID,
+                },
+                eventSlug: {
+                    type: GraphQLString,
                 },
             },
         },
@@ -112,12 +119,42 @@ const QueryType = new GraphQLObjectType({
     },
 })
 
+const MutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        updateRegistrationAnswers: {
+            type: RegistrationType,
+            args: {
+                _id: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+                answers: {
+                    type: GraphQLNonNull(GraphQLJSONObject),
+                },
+            },
+        },
+    },
+})
+
 const Resolvers = {
     Query: {
-        myRegistration: (parent, args, context) => {
-            return context
-                .controller('Registration')
-                .getByIdAndUser(args.eventId, context.userId)
+        myRegistration: async (parent, args, context) => {
+            if (args.eventId) {
+                return context
+                    .controller('Registration')
+                    .getByIdAndUser(args.eventId, context.userId)
+            }
+            if (args.eventSlug) {
+                const event = await context
+                    .controller('Event')
+                    .getBySlug(args.eventSlug)
+                if (event) {
+                    return context
+                        .controller('Registration')
+                        .getByIdAndUser(event._id, context.userId)
+                }
+            }
+            return null
         },
         registrationById: (parent, args, context) => {
             return context.controller('Registration').getById(args._id)
@@ -132,9 +169,17 @@ const Resolvers = {
             return context.controller('Registration').getByUserId(args.userId)
         },
     },
+    Mutation: {
+        updateRegistrationAnswers: (parent, args, context) => {
+            return context.controller('Registration').getById(args._id)
+        },
+    },
     Registration: {
         _user: (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(parent.user)
+        },
+        _fullAnswers: parent => {
+            return parent.answers
         },
         // _event: (parent, args, context) => {
         //     return context.controller('Event').getById(parent.event)
@@ -144,6 +189,7 @@ const Resolvers = {
 
 const RegistrationModule = {
     QueryType,
+    MutationType,
     Resolvers,
     Types: {
         RegistrationType,
