@@ -24,6 +24,11 @@ if (!config.IS_DEBUG) {
     console.warn = noop
 }
 
+if (process.env.NODE_ENV === 'development') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render')
+    whyDidYouRender(React)
+}
+
 WebFont.load({
     google: {
         families: ['Montserrat:400,400i,700,700i', 'Lato:400,400i,700,700i'],

@@ -87,7 +87,7 @@ export const EventDetailProvider = ({ children }) => {
 
     const editRegistration = useCallback(
         formData => {
-            return RegistrationsService.editRegistration(
+            return RegistrationsService.updateRegistration(
                 idToken,
                 slug,
                 formData

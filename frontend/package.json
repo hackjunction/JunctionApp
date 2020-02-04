@@ -9,6 +9,7 @@
         "@material-ui/icons": "^4.5.1",
         "@material-ui/lab": "^4.0.0-alpha.31",
         "@react-pdf/renderer": "^1.6.4",
+        "@welldone-software/why-did-you-render": "^4.0.3",
         "antd": "^3.18.2",
         "apollo-boost": "^0.4.7",
         "apollo-link-context": "^1.0.19",
