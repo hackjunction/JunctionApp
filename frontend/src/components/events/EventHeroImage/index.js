@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ event, title, overline, subheading }) => {
+export default ({ event, title, overline, subheading, onBack }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
 
@@ -107,7 +107,13 @@ export default ({ event, title, overline, subheading }) => {
                 </FadeInWrapper>
             </Box>
             <CenteredContainer wrapperClass={classes.backButtonWrapper}>
-                <Button onClick={() => dispatch(goBack())}>
+                <Button
+                    onClick={
+                        typeof onBack === 'function'
+                            ? onBack
+                            : () => dispatch(goBack())
+                    }
+                >
                     <ArrowBackIosIcon style={{ color: 'white' }} />
                     <Typography variant="button" style={{ color: 'white' }}>
                         Back

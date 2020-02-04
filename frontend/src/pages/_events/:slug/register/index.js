@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 
 import { sortBy } from 'lodash-es'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import {
     Typography,
@@ -21,13 +21,11 @@ import { RegistrationFields } from '@hackjunction/shared'
 import { push } from 'connected-react-router'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
-import * as AuthSelectors from 'redux/auth/selectors'
 
 import CenteredContainer from 'components/generic/CenteredContainer'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import AnalyticsService from 'services/analytics'
-import RegistrationsService from 'services/registrations'
 
 import RequiresPermission from 'hocs/RequiresPermission'
 
@@ -116,12 +114,13 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+const Connector = ({ index, active, completed, disabled }) => <div />
+
 export default RequiresPermission(() => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const {
         event,
-        registration,
         slug,
         hasRegistration,
         createRegistration,
@@ -251,7 +250,7 @@ export default RequiresPermission(() => {
             } else {
                 await createRegistration(formData)
             }
-            AnalyticsService.events.COMPLETE_REGISTRATION(event?.slug)
+            AnalyticsService.events.COMPLETE_REGISTRATION(slug)
             setActiveStep(sections.length + 1)
         } catch (e) {
             dispatch(
@@ -266,10 +265,10 @@ export default RequiresPermission(() => {
         createRegistration,
         dispatch,
         editRegistration,
-        event,
         formData,
         hasRegistration,
         sections.length,
+        slug,
     ])
 
     const renderSteps = () => {
@@ -303,7 +302,6 @@ export default RequiresPermission(() => {
                                     setNextStep(index + 1, values, path)
                                 }
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
-                                registration={registration}
                             />
                         ) : (
                             <RegistrationSection
@@ -317,7 +315,6 @@ export default RequiresPermission(() => {
                                     setNextStep(index + 1, values)
                                 }
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
-                                registration={registration}
                             />
                         )}
                     </StepContent>
@@ -354,7 +351,7 @@ export default RequiresPermission(() => {
                 </FadeInWrapper>
                 <div style={{ height: '100px' }} />
                 <Stepper
-                    connector={<div />}
+                    connector={<Connector />}
                     className={classes.stepper}
                     activeStep={activeStep}
                     orientation="vertical"
@@ -399,9 +396,7 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(
-                                            push(`/dashboard/${event?.slug}`)
-                                        )
+                                        dispatch(push(`/dashboard/${slug}`))
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"
@@ -412,7 +407,7 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '1rem' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(push(`/events/${event?.slug}`))
+                                        dispatch(push(`/events/${slug}`))
                                     }
                                     style={{ width: '300px', color: 'white' }}
                                 >

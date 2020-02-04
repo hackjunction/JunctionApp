@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useRef, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import { RegistrationFields } from '@hackjunction/shared'
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,6 +11,8 @@ import * as UserSelectors from 'redux/user/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import RegistrationQuestion from '../RegistrationQuestion'
 import RegistrationBottomBar from '../RegistrationBottomBar'
+
+import EventDetailContext from '../../context'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -44,9 +46,9 @@ export default props => {
         onPrev,
         data,
         isActive,
-        registration,
     } = props
 
+    const { registration } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
 
@@ -88,7 +90,7 @@ export default props => {
                 initialValues: {},
             }
         )
-    }, [fields, userProfile, idTokenData, data, registration])
+    }, [fields, data, registration, userProfile, idTokenData])
 
     return (
         <Formik
@@ -110,28 +112,30 @@ export default props => {
                 errors,
                 dirty,
             }) => (
-                <Box display="flex" flexDirection="column" ref={mainRef}>
-                    <Box p={2} className={classes.wrapper}>
-                        <Grid container spacing={0}>
-                            {fields.map((field, index) => (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    key={field.fieldName}
-                                    className={classes.question}
-                                >
-                                    <div className={classes.questionInner}>
-                                        <FastField
-                                            autoFocus={index === 0}
-                                            name={field.fieldName}
-                                            component={RegistrationQuestion}
-                                            config={field.fieldConfig}
-                                            required={field.require}
-                                        />
-                                    </div>
-                                </Grid>
-                            ))}
-                        </Grid>
+                <>
+                    <Box display="flex" flexDirection="column" ref={mainRef}>
+                        <Box p={2} className={classes.wrapper}>
+                            <Grid container spacing={0}>
+                                {fields.map((field, index) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        key={field.fieldName}
+                                        className={classes.question}
+                                    >
+                                        <div className={classes.questionInner}>
+                                            <FastField
+                                                autoFocus={index === 0}
+                                                name={field.fieldName}
+                                                component={RegistrationQuestion}
+                                                config={field.fieldConfig}
+                                                required={field.require}
+                                            />
+                                        </div>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
                     </Box>
                     {ReactDOM.createPortal(
                         <RegistrationBottomBar
@@ -144,7 +148,7 @@ export default props => {
                         />,
                         document.body
                     )}
-                </Box>
+                </>
             )}
         </Formik>
     )

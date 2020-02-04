@@ -1,6 +1,8 @@
 import React, { useEffect, useContext } from 'react'
 
 import { Grid, Box } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
@@ -17,6 +19,7 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import EventDetailContext from '../context'
 
 export default () => {
+    const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
 
     useEffect(() => {
@@ -27,7 +30,7 @@ export default () => {
 
     return (
         <>
-            <EventHeroImage event={event} />
+            <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
             <FadeInWrapper>
                 <CenteredContainer>
                     <StaggeredList>

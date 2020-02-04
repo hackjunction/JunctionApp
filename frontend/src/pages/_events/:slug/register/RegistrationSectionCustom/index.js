@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useContext } from 'react'
 import ReactDOM from 'react-dom'
 
 import { Formik, FastField } from 'formik'
@@ -12,6 +12,8 @@ import Markdown from 'components/generic/Markdown'
 
 import RegistrationQuestion from '../RegistrationQuestion'
 import RegistrationBottomBar from '../RegistrationBottomBar'
+
+import EventDetailContext from '../../context'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -45,15 +47,9 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({
-    section,
-    onNext,
-    nextLabel,
-    onPrev,
-    prevLabel,
-    registration,
-}) => {
+export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
     const classes = useStyles()
+    const { registration } = useContext(EventDetailContext)
     const [visible, setVisible] = useState(!section.conditional)
 
     const { initialValues, validationSchema } = useMemo(() => {
