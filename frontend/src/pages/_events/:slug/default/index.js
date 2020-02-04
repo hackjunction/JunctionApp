@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 
 import { Grid, Box } from '@material-ui/core'
 
@@ -14,8 +14,10 @@ import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
 
-export default ({ event }) => {
-    const { slug } = event
+import EventDetailContext from '../context'
+
+export default () => {
+    const { slug, event, registration } = useContext(EventDetailContext)
 
     useEffect(() => {
         if (slug) {
@@ -39,7 +41,10 @@ export default ({ event }) => {
                             <Grid item xs={12} md={4}>
                                 <Box mt={3} />
                                 <StaggeredListItem>
-                                    <EventButtons event={event} />
+                                    <EventButtons
+                                        event={event}
+                                        registration={registration}
+                                    />
                                     <Box mt={3} />
                                     <EventTimeline event={event} />
                                 </StaggeredListItem>

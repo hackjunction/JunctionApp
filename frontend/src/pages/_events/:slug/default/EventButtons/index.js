@@ -10,11 +10,11 @@ import { Typography, Grid } from '@material-ui/core'
 import Button from 'components/generic/Button'
 import * as AuthSelectors from 'redux/auth/selectors'
 
-export default ({ event }) => {
+export default ({ event, registration }) => {
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
-    const hasRegistration = event?._myRegistration !== null
+    const hasRegistration = !!registration
     switch (event?._eventStatus) {
         case EventStatuses.PUBLISHED.id: {
             return (
@@ -69,7 +69,7 @@ export default ({ event }) => {
                             variant="contained"
                             color="theme_turquoise"
                         >
-                            Apply now
+                            Register now
                         </Button>
                     )
                 }
@@ -83,7 +83,7 @@ export default ({ event }) => {
                         variant="contained"
                         color="theme_turquoise"
                     >
-                        Log in to apply
+                        Log in to register
                     </Button>
                 )
             }
