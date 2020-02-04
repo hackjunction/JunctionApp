@@ -11,14 +11,23 @@ const RegistrationHelpers = {
         const validationSchema = {}
 
         // Build validation schema for standard fields
-        Object.keys(event.userDetailsConfig.toObject()).map(fieldName => {
-            const field = event.userDetailsConfig[fieldName]
+        const {
+            optionalFields = [],
+            requiredFields = [],
+        } = event.registrationConfig.toObject()
 
-            if (field.enable) {
-                const required = field.require
-                const params = RegistrationFields.getField(fieldName)
+        const allFields = RegistrationFields.getFields()
 
-                validationSchema[fieldName] = params.validationSchema(required)
+        Object.keys(allFields).forEach(fieldName => {
+            const params = allFields[fieldName]
+            if (params.alwaysRequired) {
+                validationSchema[fieldName] = params.validationSchema(true)
+            }
+            if (requiredFields.indexOf(fieldName) !== -1) {
+                validationSchema[fieldName] = params.validationSchema(true)
+            }
+            if (optionalFields.indexOf(fieldName) !== -1) {
+                validationSchema[fieldName] = params.validationSchema(false)
             }
         })
 

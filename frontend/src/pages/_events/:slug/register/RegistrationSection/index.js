@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 
 import * as UserSelectors from 'redux/user/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
 import RegistrationQuestion from '../RegistrationQuestion'
 import RegistrationBottomBar from '../RegistrationBottomBar'
 
@@ -45,11 +44,11 @@ export default props => {
         onPrev,
         data,
         isActive,
+        registration,
     } = props
 
     const userProfile = useSelector(UserSelectors.userProfile)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-    const registration = useSelector(EventDetailSelectors.registration)
 
     const classes = useStyles({ isActive })
     const mainRef = useRef(null)

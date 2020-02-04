@@ -4,7 +4,6 @@ const {
     GraphQLString,
     GraphQLBoolean,
     GraphQLNonNull,
-    GraphQLList,
 } = require('graphql')
 const RegistrationQuestionSettingsType = require('./RegistrationQuestionSettings')
     .graphql

@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState, useMemo } from 'react'
 
-import { forOwn, sortBy, concat } from 'lodash-es'
+import { sortBy } from 'lodash-es'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -14,14 +14,14 @@ import {
 import { RegistrationFields } from '@hackjunction/shared'
 import { push } from 'connected-react-router'
 
-import * as EventDetailActions from 'redux/eventdetail/actions'
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 import CenteredContainer from 'components/generic/CenteredContainer'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import AnalyticsService from 'services/analytics'
+import RegistrationsService from 'services/registrations'
 
 import RequiresPermission from 'hocs/RequiresPermission'
 
@@ -112,6 +112,7 @@ export default RequiresPermission(({ event, registration }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
 
+    const idToken = useSelector(AuthSelectors.getIdToken)
     const slug = event?.slug
     const hasRegistration = typeof registration !== 'undefined'
 
@@ -202,10 +203,7 @@ export default RequiresPermission(({ event, registration }) => {
         )
 
         const sorted = sortBy(fieldSections, 'order')
-        if (event.customQuestions) {
-            return sorted.concat(event.customQuestions)
-        }
-        return sorted
+        return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
     const setNextStep = useCallback(
@@ -233,19 +231,35 @@ export default RequiresPermission(({ event, registration }) => {
         setActiveStep(activeStep - 1)
     }, [activeStep])
 
+    // RegistrationsService.createRegistration = (idToken, slug, data) => {
+    //     return _axios.post(`${BASE_ROUTE}/${slug}`, data, config(idToken));
+    // };
+
+    // /** Update a registration for an event as the logged in user
+    //  * PATCH /:slug
+    //  */
+    // RegistrationsService.updateRegistration = (idToken, slug, data) => {
+    //     return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken));
+    // };
+
     const handleSubmit = useCallback(async () => {
         setLoading(true)
         try {
             if (hasRegistration) {
-                await dispatch(
-                    EventDetailActions.editRegistration(event.slug, formData)
+                await RegistrationsService.updateRegistration(
+                    idToken,
+                    slug,
+                    formData
                 )
             } else {
-                await dispatch(
-                    EventDetailActions.createRegistration(event.slug, formData)
+                await RegistrationsService.createRegistration(
+                    idToken,
+                    slug,
+                    formData
                 )
             }
-            AnalyticsService.events.COMPLETE_REGISTRATION(event.slug)
+            AnalyticsService.events.COMPLETE_REGISTRATION(event?.slug)
+            setActiveStep(sections.length + 1)
         } catch (e) {
             dispatch(
                 SnackbarActions.error(
@@ -253,10 +267,17 @@ export default RequiresPermission(({ event, registration }) => {
                 )
             )
         } finally {
-            setActiveStep(sections.length + 1)
             setLoading(false)
         }
-    }, [hasRegistration, event.slug, dispatch, formData, sections.length])
+    }, [
+        dispatch,
+        event,
+        formData,
+        hasRegistration,
+        idToken,
+        sections.length,
+        slug,
+    ])
 
     const renderSteps = () => {
         return sections.map((section, index) => {
@@ -289,6 +310,7 @@ export default RequiresPermission(({ event, registration }) => {
                                     setNextStep(index + 1, values, path)
                                 }
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
+                                registration={registration}
                             />
                         ) : (
                             <RegistrationSection
@@ -302,6 +324,7 @@ export default RequiresPermission(({ event, registration }) => {
                                     setNextStep(index + 1, values)
                                 }
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
+                                registration={registration}
                             />
                         )}
                     </StepContent>
@@ -314,9 +337,7 @@ export default RequiresPermission(({ event, registration }) => {
         <FadeInWrapper className={classes.wrapper}>
             <Image
                 className={classes.backgroundImage}
-                publicId={
-                    event && event.coverImage ? event.coverImage.publicId : null
-                }
+                publicId={event?.coverImage?.publicId}
                 default={require('assets/images/default_cover_image.png')}
                 transformation={{
                     width: 1920,
@@ -334,7 +355,7 @@ export default RequiresPermission(({ event, registration }) => {
                             variant="h2"
                             className={classes.topTitleExtra}
                         >
-                            {event.name}
+                            {event?.name}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
@@ -386,7 +407,7 @@ export default RequiresPermission(({ event, registration }) => {
                                 <Button
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/${event.slug}`)
+                                            push(`/dashboard/${event?.slug}`)
                                         )
                                     }
                                     style={{ width: '300px' }}
@@ -398,7 +419,7 @@ export default RequiresPermission(({ event, registration }) => {
                                 <div style={{ height: '1rem' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(push(`/events/${event.slug}`))
+                                        dispatch(push(`/events/${event?.slug}`))
                                     }
                                     style={{ width: '300px', color: 'white' }}
                                 >
