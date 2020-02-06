@@ -184,6 +184,11 @@ const EventSchema = new mongoose.Schema({
         ],
         default: [],
     },
+    junctionCoreEvent: {
+        type: Boolean,
+        default: false,
+        required: true,
+    },
     /** System metadata */
     published: {
         type: Boolean,
