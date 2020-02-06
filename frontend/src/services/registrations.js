@@ -67,12 +67,12 @@ RegistrationsService.getRegistrationsForEvent = (idToken, slug) => {
 RegistrationsService.bulkEditRegistrationsForEvent = (
     idToken,
     slug,
-    registrationIds,
+    userIds,
     edits
 ) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/bulk`,
-        { registrationIds, edits },
+        { userIds, edits },
         config(idToken)
     )
 }
