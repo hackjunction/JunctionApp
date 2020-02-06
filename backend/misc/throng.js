@@ -1,5 +1,6 @@
 /** A clone of the throng library with one edit: await for the master function
- *  to resolve before forking workers.
+ *  to resolve before forking workers. Also adds the onError parameter in case
+ *  said master function errors out.
  */
 
 const cluster = require('cluster')
