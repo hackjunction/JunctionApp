@@ -23,7 +23,7 @@ export default () => {
     const upcomingEvents = useSelector(EventSelectors.upcomingEvents)
     const pastEvents = useSelector(EventSelectors.pastEvents)
 
-    const [isCore, toggleIsCore] = useState(true)
+    const [isCore, toggleIsCore] = useState(false)
 
     useEffect(() => {
         dispatch(EventActions.updateEvents())
@@ -39,10 +39,13 @@ export default () => {
                     <EventHighlight />
                     <Divider size={2} />
                     <CenteredContainer>
-                        <BooleanInput
-                            value={isCore}
-                            onChange={value => toggleIsCore(!isCore)}
-                        />
+                        <p>
+                            Show only events by Junction
+                            <BooleanInput
+                                value={isCore}
+                                onChange={value => toggleIsCore(!isCore)}
+                            />
+                        </p>
                         <EventsGrid
                             title="Upcoming / ongoing events"
                             events={isCore ? upcomingCoreEvent : upcomingEvents}
