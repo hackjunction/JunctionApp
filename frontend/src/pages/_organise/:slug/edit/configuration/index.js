@@ -42,6 +42,26 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
+                    name="junctionCoreEvent"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Junction Core Event"
+                            hint="Is this event organized by Junction?"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <BooleanInput
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
                     name="galleryOpen"
                     render={({ field, form }) => (
                         <FormControl

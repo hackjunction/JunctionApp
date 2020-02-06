@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import * as EventActions from 'redux/events/actions'
 import * as EventSelectors from 'redux/events/selectors'
 
+import BooleanInput from 'components/inputs/BooleanInput'
 import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
 import ExternalLink from 'components/generic/ExternalLink'
@@ -17,8 +18,14 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
 export default () => {
     const dispatch = useDispatch()
+    const upcomingJunctionEvents = useSelector(
+        EventSelectors.upcomingJunctionEvents
+    )
+    const pastJunctionEvents = useSelector(EventSelectors.pastJunctionEvents)
     const upcomingEvents = useSelector(EventSelectors.upcomingEvents)
     const pastEvents = useSelector(EventSelectors.pastEvents)
+
+    const [junctionCore, toggleJunctionCore] = useState(true)
 
     useEffect(() => {
         dispatch(EventActions.updateEvents())
@@ -34,11 +41,26 @@ export default () => {
                     <EventHighlight />
                     <Divider size={2} />
                     <CenteredContainer>
+                        <BooleanInput
+                            value={junctionCore}
+                            onChange={value =>
+                                toggleJunctionCore(!junctionCore)
+                            }
+                        />
                         <EventsGrid
                             title="Upcoming / ongoing events"
-                            events={upcomingEvents}
+                            events={
+                                junctionCore
+                                    ? upcomingJunctionEvents
+                                    : upcomingEvents
+                            }
                         />
-                        <EventsGrid title="Past events" events={pastEvents} />
+                        <EventsGrid
+                            title="Past events"
+                            events={
+                                junctionCore ? pastJunctionEvents : pastEvents
+                            }
+                        />
                     </CenteredContainer>
                     <Divider size={2} />
                     <CenteredContainer>
