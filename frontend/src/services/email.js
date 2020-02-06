@@ -27,8 +27,6 @@ EmailService.sendBulkEmail = (idToken, slug, recipients, params, uniqueId) => {
         uniqueId,
     }
 
-    console.log('DATA', data)
-
     return _axios.post(`${BASE_ROUTE}/${slug}/send`, data, config(idToken))
 }
 
