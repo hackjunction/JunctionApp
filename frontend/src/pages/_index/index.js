@@ -18,14 +18,12 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
 export default () => {
     const dispatch = useDispatch()
-    const upcomingJunctionEvents = useSelector(
-        EventSelectors.upcomingJunctionEvents
-    )
-    const pastJunctionEvents = useSelector(EventSelectors.pastJunctionEvents)
+    const upcomingCoreEvent = useSelector(EventSelectors.upcomingCoreEvent)
+    const pastCoreEvent = useSelector(EventSelectors.pastCoreEvent)
     const upcomingEvents = useSelector(EventSelectors.upcomingEvents)
     const pastEvents = useSelector(EventSelectors.pastEvents)
 
-    const [junctionCore, toggleJunctionCore] = useState(true)
+    const [isCore, toggleIsCore] = useState(true)
 
     useEffect(() => {
         dispatch(EventActions.updateEvents())
@@ -42,24 +40,16 @@ export default () => {
                     <Divider size={2} />
                     <CenteredContainer>
                         <BooleanInput
-                            value={junctionCore}
-                            onChange={value =>
-                                toggleJunctionCore(!junctionCore)
-                            }
+                            value={isCore}
+                            onChange={value => toggleIsCore(!isCore)}
                         />
                         <EventsGrid
                             title="Upcoming / ongoing events"
-                            events={
-                                junctionCore
-                                    ? upcomingJunctionEvents
-                                    : upcomingEvents
-                            }
+                            events={isCore ? upcomingCoreEvent : upcomingEvents}
                         />
                         <EventsGrid
                             title="Past events"
-                            events={
-                                junctionCore ? pastJunctionEvents : pastEvents
-                            }
+                            events={isCore ? pastCoreEvent : pastEvents}
                         />
                     </CenteredContainer>
                     <Divider size={2} />

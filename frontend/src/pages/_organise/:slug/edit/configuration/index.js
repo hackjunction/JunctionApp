@@ -42,7 +42,7 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="junctionCoreEvent"
+                    name="coreEvent"
                     render={({ field, form }) => (
                         <FormControl
                             label="Junction Core Event"

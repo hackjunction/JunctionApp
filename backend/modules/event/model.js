@@ -184,7 +184,7 @@ const EventSchema = new mongoose.Schema({
         ],
         default: [],
     },
-    junctionCoreEvent: {
+    coreEvent: {
         type: Boolean,
         default: false,
         required: true,
