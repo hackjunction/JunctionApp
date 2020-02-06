@@ -1,6 +1,8 @@
 /** A clone of the throng library with one edit: await for the master function
  *  to resolve before forking workers. Also adds the onError parameter in case
  *  said master function errors out.
+ *
+ *  See the commented section of the code below
  */
 
 const cluster = require('cluster')
@@ -70,6 +72,14 @@ module.exports = async (options, startFunction) => {
         process.exit()
     }
 
+    /**
+     * Await the masterFn completion, call onError otherwise. Previously this
+     * was just:
+     *
+     * listen()
+     * masterFn()
+     * fork()
+     */
     listen()
     try {
         await masterFn()
