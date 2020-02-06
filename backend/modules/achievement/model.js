@@ -18,15 +18,7 @@ const AchievementSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        validate: {
-            validator(v) {
-                return v in AchievementTypes
-            },
-            message: () =>
-                `Type must be one of ${Object.keys(AchievementTypes).join(
-                    ','
-                )}`,
-        },
+        enum: Object.keys(AchievementTypes),
         required: true,
     },
     rank: {

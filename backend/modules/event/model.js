@@ -14,6 +14,7 @@ const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGran
 const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
 const RegistrationConfigSchema = require('@hackjunction/shared/schemas/RegistrationConfig')
+const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../../modules/upload/helper')
@@ -76,27 +77,19 @@ const EventSchema = new mongoose.Schema({
     /** Event configuration */
     eventType: {
         type: String,
-        validate: {
-            validator(v) {
-                return v in EventTypes
-            },
-            message: () =>
-                `Event type must be one of ${Object.keys(EventTypes).join(
-                    ','
-                )}`,
-        },
+        enum: Object.keys(EventTypes),
         required: true,
         default: EventTypes.online.id,
     },
-    // eventLocation: {
-    //     type: AddressSchema.mongoose,
-    //     required: [
-    //         function() {
-    //             return this.eventType === EventTypes.physical.id
-    //         },
-    //         `is required for physical events`,
-    //     ],
-    // },
+    eventLocation: {
+        type: AddressSchema.mongoose,
+        required: [
+            function() {
+                return this.eventType === EventTypes.physical.id
+            },
+            `is required for physical events`,
+        ],
+    },
     tracksEnabled: false,
     tracks: {
         type: [TrackSchema.mongoose],
@@ -145,27 +138,11 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: ReviewingMethods.gavelPeerReview.id,
-        validate: {
-            validator(v) {
-                return v in ReviewingMethods
-            },
-            message: () =>
-                `Reviewing method must be one of ${Object.keys(
-                    ReviewingMethods
-                ).join(',')}`,
-        },
+        enum: Object.keys(ReviewingMethods),
     },
     overallReviewMethod: {
         type: String,
-        validate: {
-            validator(v) {
-                return v in OverallReviewingMethods
-            },
-            message: () =>
-                `Overall reviewing method must be one of ${Object.keys(
-                    OverallReviewingMethods
-                ).join(',')}`,
-        },
+        enum: Object.keys(OverallReviewingMethods),
         required: [
             function() {
                 return this.tracksEnabled

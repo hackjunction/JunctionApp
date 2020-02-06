@@ -30,15 +30,7 @@ const FilterGroupSchema = new mongoose.Schema({
             type: {
                 type: String,
                 required: true,
-                validate: {
-                    validator(v) {
-                        return v in FilterTypes.filterTypes
-                    },
-                    message: () =>
-                        `Filter type must be one of ${Object.keys(
-                            FilterTypes.filterTypes
-                        ).join(',')}`,
-                },
+                enum: Object.keys(FilterTypes.filterTypes),
             },
             value: {
                 type: mongoose.Mixed,

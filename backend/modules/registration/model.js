@@ -25,13 +25,7 @@ const RegistrationSchema = new mongoose.Schema({
             this._previousStatus = this.status
             return status
         },
-        validate: {
-            validator(v) {
-                return RegistrationStatuses.ids.indexOf(v) !== -1
-            },
-            message: () =>
-                `Status must be one of ${RegistrationStatuses.ids.join(',')}`,
-        },
+        enum: RegistrationStatuses.ids,
     },
     assignedTo: {
         type: String,
@@ -63,15 +57,7 @@ const RegistrationSchema = new mongoose.Schema({
     travelGrantStatus: {
         type: String,
         default: RegistrationTravelGrantStatuses.asObject.not_submitted.id,
-        validate: {
-            validator(v) {
-                return RegistrationTravelGrantStatuses.ids.indexOf(v) !== -1
-            },
-            message: () =>
-                `Travel grant status must be one of ${RegistrationTravelGrantStatuses.ids.join(
-                    ','
-                )}`,
-        },
+        enum: RegistrationTravelGrantStatuses.ids,
     },
     travelGrantDetails: {
         type: TravelGrantDetailsSchema.mongoose,

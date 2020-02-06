@@ -155,26 +155,6 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
                                     ></Chip>
                                 </Box>
                             )
-                            // return (
-                            //     <FormControlLabel
-                            //         key={fieldName}
-                            //         control={
-                            //             <Checkbox
-                            //                 checked={
-                            //                     optionalFields.indexOf(
-                            //                         fieldName
-                            //                     ) !== -1
-                            //                 }
-                            //                 onChange={(e, checked) =>
-                            //                     handleChange(fieldName, checked)
-                            //                 }
-                            //                 value={fieldName}
-                            //                 color="primary"
-                            //             />
-                            //         }
-                            //         label={label}
-                            //     />
-                            // )
                         })}
                     </FormGroup>
                 </Box>

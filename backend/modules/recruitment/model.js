@@ -19,12 +19,7 @@ const RecruitmentActionSchema = new mongoose.Schema(
         type: {
             type: String,
             required: true,
-            validate: {
-                validator(v) {
-                    return ACTION_TYPES.indexOf(v) !== -1
-                },
-                message: () => `Type must be one of ${ACTION_TYPES.join(',')}`,
-            },
+            enum: ACTION_TYPES,
         },
         data: {
             type: mongoose.Mixed,

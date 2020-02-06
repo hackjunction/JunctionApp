@@ -11,12 +11,7 @@ const RankingsSchema = new mongoose.Schema({
     },
     tag: {
         type: String,
-        validate: {
-            validator(v) {
-                return TAG_TYPES.indexOf(v) !== -1
-            },
-            message: () => `Tag must be one of ${TAG_TYPES.join(',')}`,
-        },
+        enum: TAG_TYPES,
     },
     track: {
         type: String,
