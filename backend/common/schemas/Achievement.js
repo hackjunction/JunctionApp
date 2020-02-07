@@ -1,21 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+
+const TYPES = [
+    'challenge-placement',
+    'track-placement',
+    'overall-placement',
+    'finalist',
+]
 
 const AchievementSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['challenge-placement', 'track-placement', 'overall-placement', 'finalist']
+        validate: {
+            validator(v) {
+                return TYPES.indexOf(v) !== -1
+            },
+            message: () => `Type should be one of ${TYPES.join(', ')}`,
+        },
     },
     label: {
-        type: String
+        type: String,
     },
     value: {
-        type: String
+        type: String,
     },
     rank: {
         type: Number,
-        min: 1
-    }
-});
+        min: 1,
+    },
+})
 
-module.exports = AchievementSchema;
+module.exports = AchievementSchema

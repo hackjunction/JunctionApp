@@ -1,7 +1,13 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react'
+import React, {
+    useEffect,
+    useCallback,
+    useState,
+    useMemo,
+    useContext,
+} from 'react'
 
-import { forOwn, sortBy } from 'lodash-es'
-import { useDispatch, useSelector } from 'react-redux'
+import { sortBy } from 'lodash-es'
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import {
     Typography,
@@ -14,8 +20,6 @@ import {
 import { RegistrationFields } from '@hackjunction/shared'
 import { push } from 'connected-react-router'
 
-import * as EventDetailActions from 'redux/eventdetail/actions'
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import CenteredContainer from 'components/generic/CenteredContainer'
@@ -30,6 +34,8 @@ import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
+
+import EventDetailContext from '../context'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -108,13 +114,18 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+const Connector = ({ index, active, completed, disabled }) => <div />
+
 export default RequiresPermission(() => {
     const classes = useStyles()
     const dispatch = useDispatch()
-
-    const event = useSelector(EventDetailSelectors.event)
-    const hasRegistration = useSelector(EventDetailSelectors.hasRegistration)
-    const { slug } = event
+    const {
+        event,
+        slug,
+        hasRegistration,
+        createRegistration,
+        editRegistration,
+    } = useContext(EventDetailContext)
 
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
@@ -141,29 +152,55 @@ export default RequiresPermission(() => {
     }, [])
 
     const sections = useMemo(() => {
-        const fieldCategories = {}
-        forOwn(event.userDetailsConfig, (config, fieldName) => {
-            if (config.enable) {
-                const fieldConfig = RegistrationFields.getField(fieldName)
-                const category = fieldConfig.category.label
+        const allFields = RegistrationFields.getFields()
+        const enabledFields = Object.keys(allFields).reduce(
+            (result, fieldName) => {
+                const {
+                    optionalFields = [],
+                    requiredFields = [],
+                } = event?.registrationConfig
+                if (
+                    requiredFields.indexOf(fieldName) !== -1 ||
+                    allFields[fieldName].alwaysRequired
+                ) {
+                    result.push({
+                        fieldName,
+                        required: true,
+                    })
+                }
 
-                if (fieldCategories.hasOwnProperty(category)) {
-                    fieldCategories[category].push({
+                if (optionalFields.indexOf(fieldName) !== -1) {
+                    result.push({
+                        fieldName,
+                        required: false,
+                    })
+                }
+                return result
+            },
+            []
+        )
+
+        const fieldCategories = {}
+        enabledFields.forEach(({ fieldName, required }) => {
+            const fieldConfig = RegistrationFields.getField(fieldName)
+            const category = fieldConfig.category.label
+            if (fieldCategories.hasOwnProperty(category)) {
+                fieldCategories[category].push({
+                    fieldName,
+                    fieldConfig: RegistrationFields.getField(fieldName),
+                    require: required,
+                })
+            } else {
+                fieldCategories[category] = [
+                    {
                         fieldName,
                         fieldConfig: RegistrationFields.getField(fieldName),
-                        ...config,
-                    })
-                } else {
-                    fieldCategories[category] = [
-                        {
-                            fieldName,
-                            fieldConfig: RegistrationFields.getField(fieldName),
-                            ...config,
-                        },
-                    ]
-                }
+                        require: required,
+                    },
+                ]
             }
         })
+
         const fieldSections = Object.keys(fieldCategories).map(
             categoryLabel => {
                 return {
@@ -177,8 +214,8 @@ export default RequiresPermission(() => {
         )
 
         const sorted = sortBy(fieldSections, 'order')
-        return sorted.concat(event.customQuestions)
-    }, [event.userDetailsConfig, event.customQuestions])
+        return sorted.concat(event?.customQuestions ?? [])
+    }, [event])
 
     const setNextStep = useCallback(
         (nextStep, values, path) => {
@@ -209,15 +246,12 @@ export default RequiresPermission(() => {
         setLoading(true)
         try {
             if (hasRegistration) {
-                await dispatch(
-                    EventDetailActions.editRegistration(event.slug, formData)
-                )
+                await editRegistration(formData)
             } else {
-                await dispatch(
-                    EventDetailActions.createRegistration(event.slug, formData)
-                )
+                await createRegistration(formData)
             }
-            AnalyticsService.events.COMPLETE_REGISTRATION(event.slug)
+            AnalyticsService.events.COMPLETE_REGISTRATION(slug)
+            setActiveStep(sections.length + 1)
         } catch (e) {
             dispatch(
                 SnackbarActions.error(
@@ -225,10 +259,17 @@ export default RequiresPermission(() => {
                 )
             )
         } finally {
-            setActiveStep(sections.length + 1)
             setLoading(false)
         }
-    }, [sections, hasRegistration, event.slug, formData, dispatch])
+    }, [
+        createRegistration,
+        dispatch,
+        editRegistration,
+        formData,
+        hasRegistration,
+        sections.length,
+        slug,
+    ])
 
     const renderSteps = () => {
         return sections.map((section, index) => {
@@ -286,9 +327,7 @@ export default RequiresPermission(() => {
         <FadeInWrapper className={classes.wrapper}>
             <Image
                 className={classes.backgroundImage}
-                publicId={
-                    event && event.coverImage ? event.coverImage.publicId : null
-                }
+                publicId={event?.coverImage?.publicId}
                 default={require('assets/images/default_cover_image.png')}
                 transformation={{
                     width: 1920,
@@ -306,13 +345,13 @@ export default RequiresPermission(() => {
                             variant="h2"
                             className={classes.topTitleExtra}
                         >
-                            {event.name}
+                            {event?.name}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
                 <div style={{ height: '100px' }} />
                 <Stepper
-                    connector={<div />}
+                    connector={<Connector />}
                     className={classes.stepper}
                     activeStep={activeStep}
                     orientation="vertical"
@@ -357,9 +396,7 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(
-                                            push(`/dashboard/${event.slug}`)
-                                        )
+                                        dispatch(push(`/dashboard/${slug}`))
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"
@@ -370,7 +407,7 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '1rem' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(push(`/events/${event.slug}`))
+                                        dispatch(push(`/events/${slug}`))
                                     }
                                     style={{ width: '300px', color: 'white' }}
                                 >

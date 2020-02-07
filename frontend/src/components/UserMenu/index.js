@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,9 +14,9 @@ import {
     Divider,
 } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
 import Button from 'components/generic/Button'
+
+import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
 const useStyles = makeStyles(theme => ({
     menuDot: {
@@ -29,19 +29,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
+    const userId = idTokenPayload?.sub
+    const [profile] = useMyProfilePreview(userId)
     const dispatch = useDispatch()
-    const userProfile = useSelector(UserSelectors.userProfile)
-    const idToken = useSelector(AuthSelectors.getIdToken)
     const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess)
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null)
-
-    useEffect(() => {
-        if (idToken) {
-            dispatch(UserActions.updateUserProfile(idToken))
-        }
-    }, [dispatch, idToken])
 
     const handleMenuOpen = e => {
         setAnchorEl(e.currentTarget)
@@ -51,7 +46,7 @@ export default () => {
         setAnchorEl(null)
     }
 
-    if (!userProfile) {
+    if (!userId) {
         return (
             <Box display="flex" flexDirection="row" alignItems="center">
                 <Button
@@ -130,7 +125,7 @@ export default () => {
             </IconButton>
             <Box p={1} />
             <Avatar
-                src={userProfile.avatar}
+                src={profile?.avatar}
                 alt="Avatar"
                 style={{ width: '60px', height: '60px' }}
             />

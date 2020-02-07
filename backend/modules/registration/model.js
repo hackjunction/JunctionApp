@@ -1,139 +1,143 @@
-const mongoose = require('mongoose');
-const _ = require('lodash');
-const { RegistrationStatuses, RegistrationTravelGrantStatuses } = require('@hackjunction/shared');
-const updateAllowedPlugin = require('../../common/plugins/updateAllowed');
-const EmailTaskController = require('../email-task/controller');
-const UserProfileController = require('../user-profile/controller');
-const TravelGrantDetailsSchema = require('../../common/schemas/TravelGrantDetails');
+const mongoose = require('mongoose')
+const _ = require('lodash')
+const {
+    RegistrationStatuses,
+    RegistrationTravelGrantStatuses,
+} = require('@hackjunction/shared')
+const AnswersSchema = require('@hackjunction/shared/schemas/Answers')
+const TravelGrantDetailsSchema = require('@hackjunction/shared/schemas/TravelGrantDetails')
+const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const EmailTaskController = require('../email-task/controller')
+const UserProfileController = require('../user-profile/controller')
 
 const RegistrationSchema = new mongoose.Schema({
     event: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event'
+        ref: 'Event',
     },
     user: {
-        type: String
+        type: String,
     },
     status: {
         type: String,
-        enum: RegistrationStatuses.ids,
         default: RegistrationStatuses.asObject.pending.id,
-        set: function(status) {
-            this._previousStatus = this.status;
-            return status;
-        }
+        set(status) {
+            this._previousStatus = this.status
+            return status
+        },
+        enum: RegistrationStatuses.ids,
     },
     assignedTo: {
-        type: String
+        type: String,
     },
     rating: {
-        type: Number
+        type: Number,
     },
     ratedBy: {
         type: String,
-        required: function() {
-            return !_.isEmpty(this.rating);
-        }
+        required() {
+            return !_.isEmpty(this.rating)
+        },
     },
     tags: {
         type: [String],
-        default: []
+        default: [],
     },
     answers: {
-        type: mongoose.Mixed,
-        default: {}
+        type: AnswersSchema.mongoose,
+        default: {},
     },
     travelGrant: {
         type: Number,
-        set: function(amount) {
-            this._previousGrant = this.travelGrant;
-            return amount;
-        }
+        set(amount) {
+            this._previousGrant = this.travelGrant
+            return amount
+        },
     },
     travelGrantStatus: {
         type: String,
+        default: RegistrationTravelGrantStatuses.asObject.not_submitted.id,
         enum: RegistrationTravelGrantStatuses.ids,
-        default: RegistrationTravelGrantStatuses.asObject.not_submitted.id
     },
     travelGrantDetails: {
-        type: TravelGrantDetailsSchema
+        type: TravelGrantDetailsSchema.mongoose,
     },
     travelGrantComment: {
-        type: String
+        type: String,
     },
     travelGrantAmount: {
-        type: Number
-    }
-});
+        type: Number,
+    },
+})
 
 /* Only allow a single registration per event per user */
 RegistrationSchema.index(
     {
         event: 1,
-        user: 1
+        user: 1,
     },
     {
-        unique: true
+        unique: true,
     }
-);
+)
 
 RegistrationSchema.index({
     rating: 1,
-    status: 1
-});
+    status: 1,
+})
 
 RegistrationSchema.index({
-    assignedTo: 1
-});
+    assignedTo: 1,
+})
 
-RegistrationSchema.set('timestamps', true);
+RegistrationSchema.set('timestamps', true)
 RegistrationSchema.plugin(updateAllowedPlugin, {
-    blacklisted: ['__v', '_id', 'event', 'user', 'createdAt', 'updatedAt']
-});
+    blacklisted: ['__v', '_id', 'event', 'user', 'createdAt', 'updatedAt'],
+})
 
 RegistrationSchema.pre('save', function(next) {
-    this._wasNew = this.isNew;
-    next();
-});
+    this._wasNew = this.isNew
+    next()
+})
 
 /** Trigger email sending on status changes etc. */
 RegistrationSchema.post('save', function(doc, next) {
-    const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id;
-    const ACCEPTED = RegistrationStatuses.asObject.accepted.id;
-    const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id;
-    const REJECTED = RegistrationStatuses.asObject.rejected.id;
+    const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id
+    const ACCEPTED = RegistrationStatuses.asObject.accepted.id
+    const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id
+    const REJECTED = RegistrationStatuses.asObject.rejected.id
     /** If a registration was just created, create an email notification about it */
     if (this._wasNew) {
-        EmailTaskController.createRegisteredTask(doc.user, doc.event, true);
+        EmailTaskController.createRegisteredTask(doc.user, doc.event, true)
     }
 
     /** If a registration has its status changed, update the user profile */
     if (this._previousStatus !== this.status) {
-        UserProfileController.syncRegistration(doc);
+        UserProfileController.syncRegistration(doc)
     }
 
     /** If a registration is accepted, create an email notification about it */
     if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {
-        EmailTaskController.createAcceptedTask(doc.user, doc.event, true);
+        EmailTaskController.createAcceptedTask(doc.user, doc.event, true)
     }
 
     /** If a registration is rejected, create an email notification about it */
     if (this._previousStatus === SOFT_REJECTED && this.status === REJECTED) {
-        EmailTaskController.createRejectedTask(doc.user, doc.event, true);
+        EmailTaskController.createRejectedTask(doc.user, doc.event, true)
     }
 
     if (!this._previousGrant && this.travelGrant === 0) {
-        EmailTaskController.createTravelGrantRejectedTask(doc, true);
+        EmailTaskController.createTravelGrantRejectedTask(doc, true)
     }
 
     if (!this._previousGrant && this.travelGrant > 0) {
-        EmailTaskController.createTravelGrantAcceptedTask(doc, true);
+        EmailTaskController.createTravelGrantAcceptedTask(doc, true)
     }
 
-    next();
-});
+    next()
+})
 
-RegistrationSchema.index({ event: 1, user: 1 }, { unique: true });
+RegistrationSchema.index({ event: 1, user: 1 }, { unique: true })
 
-const Registration = mongoose.model('Registration', RegistrationSchema);
-module.exports = Registration;
+const Registration = mongoose.model('Registration', RegistrationSchema)
+module.exports = Registration

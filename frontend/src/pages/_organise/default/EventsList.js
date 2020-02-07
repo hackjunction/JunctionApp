@@ -6,7 +6,7 @@ import { Grid, Box, Typography } from '@material-ui/core'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 
-export default ({ events }) => {
+export default ({ events = [] }) => {
     const dispatch = useDispatch()
 
     return (

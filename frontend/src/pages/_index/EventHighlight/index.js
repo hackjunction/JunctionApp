@@ -2,14 +2,14 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography, Box } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
+import PageWrapper from 'components/layouts/PageWrapper'
 import MiscUtils from 'utils/misc'
-
-import * as EventsSelectors from 'redux/events/selectors'
+import { useHighlightedEvents } from 'graphql/queries/events'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -65,60 +65,67 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const event = useSelector(EventsSelectors.highlightedEvent)
+    const [events, loading] = useHighlightedEvents({ limit: 1 })
+    const event = events?.[0] ?? null
     if (!event) return null
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.left}>
-                <Image
-                    className={classes.leftImage}
-                    publicId={event.coverImage ? event.coverImage.publicId : ''}
-                    defaultImage={require('assets/images/default_cover_image.png')}
-                />
-            </div>
-            <div className={classes.right}>
-                <Typography variant="h6" color="primary">
-                    Highlight
-                </Typography>
-                <Typography variant="button">
-                    {MiscUtils.formatDateInterval(
-                        event.startTime,
-                        event.endTime
-                    )}
-                </Typography>
-                <Typography variant="h4">{event.name}</Typography>
-                <Typography variant="subtitle1">
-                    {event.eventType === 'physical'
-                        ? `${event.eventLocation.city}, ${event.eventLocation.country}`
-                        : 'Online'}
-                </Typography>
-                <Box mt={2} display="flex" flexDirection="row" flexWrap="wrap">
-                    <Box mr={1} mb={1}>
-                        <Button
-                            color="theme_lightgray"
-                            variant="outlined"
-                            onClick={() =>
-                                dispatch(push('/events/' + event.slug))
-                            }
-                        >
-                            See more
-                        </Button>
-                    </Box>
-                    {event.galleryOpen && (
+        <PageWrapper loading={loading}>
+            <div className={classes.wrapper}>
+                <div className={classes.left}>
+                    <Image
+                        className={classes.leftImage}
+                        publicId={
+                            event.coverImage ? event.coverImage.publicId : ''
+                        }
+                        defaultImage={require('assets/images/default_cover_image.png')}
+                    />
+                </div>
+                <div className={classes.right}>
+                    <Typography variant="h6" color="primary">
+                        Highlight
+                    </Typography>
+                    <Typography variant="button">
+                        {event?._eventTimeFormatted}
+                    </Typography>
+                    <Typography variant="h4">{event.name}</Typography>
+                    <Typography variant="subtitle1">
+                        {event?._eventLocationFormatted}
+                    </Typography>
+                    <Box
+                        mt={2}
+                        display="flex"
+                        flexDirection="row"
+                        flexWrap="wrap"
+                    >
                         <Box mr={1} mb={1}>
                             <Button
-                                color="theme_turquoise"
-                                variant="contained"
+                                color="theme_lightgray"
+                                variant="outlined"
                                 onClick={() =>
-                                    dispatch(push('/projects/' + event.slug))
+                                    dispatch(push('/events/' + event.slug))
                                 }
                             >
-                                View projects
+                                See more
                             </Button>
                         </Box>
-                    )}
-                </Box>
+                        {event.galleryOpen && (
+                            <Box mr={1} mb={1}>
+                                <Button
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                    onClick={() =>
+                                        dispatch(
+                                            push('/projects/' + event.slug)
+                                        )
+                                    }
+                                >
+                                    View projects
+                                </Button>
+                            </Box>
+                        )}
+                    </Box>
+                </div>
             </div>
-        </div>
+        </PageWrapper>
     )
 }

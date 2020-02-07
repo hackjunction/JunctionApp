@@ -1,34 +1,40 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Grid, Box, Typography } from '@material-ui/core'
 
-import * as AccountSelectors from 'redux/account/selectors'
-import * as AccountActions from 'redux/account/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 import EventCardSmall from 'components/events/EventCardSmall'
+import PageWrapper from 'components/layouts/PageWrapper'
+
+import { useRegistrationsByUser } from 'graphql/queries/registrations'
 
 export default () => {
-    const dispatch = useDispatch()
-    const registrations = useSelector(AccountSelectors.registrations)
-    useEffect(() => {
-        dispatch(AccountActions.updateRegistrations())
-    }, [dispatch])
-
+    const userId = useSelector(AuthSelectors.getUserId)
+    const [registrations = [], loading, error] = useRegistrationsByUser(userId)
     return (
-        <Box p={2}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Typography variant="h6" paragraph>
-                        Your registrations
-                    </Typography>
-                </Grid>
-                {registrations.map(registration => (
-                    <Grid key={registration._id} item xs={12} md={6}>
-                        <EventCardSmall eventId={registration.event} />
+        <PageWrapper loading={loading} error={Boolean(error)}>
+            <Box p={2}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" gutterBottom>
+                            Your registrations
+                        </Typography>
+                        {registrations.length === 0 && (
+                            <Typography variant="body1">
+                                Looks like you haven't registered to any events
+                                yet!
+                            </Typography>
+                        )}
                     </Grid>
-                ))}
-            </Grid>
-        </Box>
+                    {registrations.map(registration => (
+                        <Grid key={registration.id} item xs={12} md={6}>
+                            <EventCardSmall eventId={registration.event} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+        </PageWrapper>
     )
 }
