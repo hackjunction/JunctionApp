@@ -14,7 +14,7 @@ export default ({ events, loading, title }) => {
     function renderEvents() {
         return events.map(event => {
             return (
-                <Grid item xs={12} md={6} lg={4}>
+                <Grid key={event.slug} item xs={12} md={6} lg={4}>
                     <EventCard
                         event={event}
                         buttons={[

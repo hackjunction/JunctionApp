@@ -1,8 +1,8 @@
-const currencies = require('../data/currencies.json');
+const currencies = require('../data/currencies.json')
 
-const Currencies = {};
+const Currencies = {}
 
-Currencies.asArray = Object.keys(currencies).map(key => currencies[key]);
-Currencies.keys = Object.keys(currencies);
+Currencies.asArray = Object.keys(currencies).map(key => currencies[key])
+Currencies.keys = Object.keys(currencies)
 
-module.exports = Currencies;
+module.exports = Currencies

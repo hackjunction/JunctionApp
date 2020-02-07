@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react'
 
-export const usePromise = (promise, initialLoading = false) => {
+export const usePromise = promise => {
     const [data, setData] = useState()
-    const [loading, setLoading] = useState(initialLoading)
+    const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
 
     const handleDone = useCallback(data => {
@@ -28,5 +28,5 @@ export const usePromise = (promise, initialLoading = false) => {
         [handleDone, handleErr, promise]
     )
 
-    return { fetch, data, loading, error }
+    return { data, loading, error, fetch }
 }

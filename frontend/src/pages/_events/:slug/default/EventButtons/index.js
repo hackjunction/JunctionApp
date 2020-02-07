@@ -8,17 +8,14 @@ import { EventStatuses } from '@hackjunction/shared'
 import { Typography, Grid } from '@material-ui/core'
 
 import Button from 'components/generic/Button'
-import * as EventDetailSelectors from 'redux/eventdetail/selectors'
-import * as UserSelectors from 'redux/user/selectors'
+import * as AuthSelectors from 'redux/auth/selectors'
 
-export default () => {
+export default ({ event, registration }) => {
     const dispatch = useDispatch()
     const match = useRouteMatch()
-    const event = useSelector(EventDetailSelectors.event)
-    const eventStatus = useSelector(EventDetailSelectors.eventStatus)
-    const userProfile = useSelector(UserSelectors.userProfile)
-    const hasRegistration = useSelector(EventDetailSelectors.hasRegistration)
-    switch (eventStatus) {
+    const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
+    const hasRegistration = !!registration
+    switch (event?._eventStatus) {
         case EventStatuses.PUBLISHED.id: {
             return (
                 <Typography align="center" variant="subtitle1">
@@ -30,7 +27,7 @@ export default () => {
             )
         }
         case EventStatuses.REGISTRATION_OPEN.id: {
-            if (userProfile) {
+            if (isAuthenticated) {
                 if (hasRegistration) {
                     return (
                         <Grid container spacing={1}>
@@ -72,7 +69,7 @@ export default () => {
                             variant="contained"
                             color="theme_turquoise"
                         >
-                            Apply now
+                            Register now
                         </Button>
                     )
                 }
@@ -86,13 +83,13 @@ export default () => {
                         variant="contained"
                         color="theme_turquoise"
                     >
-                        Log in to apply
+                        Log in to register
                     </Button>
                 )
             }
         }
         default: {
-            if (userProfile) {
+            if (isAuthenticated) {
                 if (hasRegistration) {
                     return (
                         <Button

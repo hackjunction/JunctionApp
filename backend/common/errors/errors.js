@@ -57,10 +57,19 @@ class ForbiddenError extends CustomError {
     }
 }
 
+class UnauthorizedError extends CustomError {
+    constructor(message) {
+        const name = 'UnauthorizedError'
+        const code = 6
+        super(message, name, code)
+    }
+}
+
 module.exports = {
     InsufficientPrivilegesError,
     EmailVerificationError,
     NotFoundError,
     ValidationError,
     ForbiddenError,
+    UnauthorizedError,
 }

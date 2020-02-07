@@ -13,34 +13,10 @@ import EventsService from 'services/events'
 import NewEventForm from './NewEventForm'
 import EventsList from './EventsList'
 
+import { useMyEvents } from 'graphql/queries/events'
+
 export default () => {
-    const [events, setEvents] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    const dispatch = useDispatch()
-    const idToken = useSelector(AuthSelectors.getIdToken)
-
-    const updateEvents = useCallback(() => {
-        setLoading(true)
-        EventsService.getEventsByOrganiser(idToken)
-            .then(data => {
-                setEvents(data)
-            })
-            .catch(e => {
-                dispatch(
-                    SnackbarActions.error(
-                        'Something went wrong... Unable to get events'
-                    )
-                )
-            })
-            .finally(() => {
-                setLoading(false)
-            })
-    }, [idToken, dispatch])
-
-    useEffect(() => {
-        updateEvents()
-    }, [updateEvents])
+    const [events, loading] = useMyEvents()
 
     return (
         <PageWrapper
@@ -49,7 +25,7 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <CenteredContainer>
-                    <NewEventForm events={events} />
+                    <NewEventForm />
                     <EventsList events={events} />
                 </CenteredContainer>
             )}

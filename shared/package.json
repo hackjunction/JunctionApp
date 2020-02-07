@@ -9,12 +9,62 @@
     },
     "author": "Juuso Lappalainen",
     "license": "ISC",
+    "eslintConfig": {
+        "extends": [
+            "airbnb-base",
+            "prettier"
+        ],
+        "plugins": [
+            "prettier"
+        ],
+        "parserOptions": {
+            "ecmaVersion": 2018
+        },
+        "rules": {
+            "no-param-reassign": 0,
+            "no-underscore-dangle": 0,
+            "prefer-destructuring": [
+                "error",
+                {
+                    "VariableDeclarator": {
+                        "array": false,
+                        "object": true
+                    },
+                    "AssignmentExpression": {
+                        "array": false,
+                        "object": true
+                    }
+                }
+            ],
+            "prettier/prettier": [
+                "error",
+                {
+                    "printWidth": 80,
+                    "trailingComma": "es5",
+                    "semi": false,
+                    "jsxSingleQuote": false,
+                    "singleQuote": true,
+                    "useTabs": false,
+                    "tabWidth": 4,
+                    "bracketSpacing": true
+                }
+            ]
+        }
+    },
     "dependencies": {
+        "graphql": "^14.5.8",
         "lodash": "^4.17.15",
+        "mongoose": "^5.8.9",
         "object-path": "^0.11.4",
         "yup": "^0.27.0"
     },
     "devDependencies": {
+        "eslint": "^6.7.2",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.7.0",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "prettier": "^1.19.1",
         "mocha": "^6.2.0"
     },
     "engines": {

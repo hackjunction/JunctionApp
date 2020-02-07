@@ -7,6 +7,7 @@ export const getAccessToken = state => state.auth.session.accessToken || null
 export const getIdToken = state => state.auth.session.idToken || null
 export const getIdTokenPayload = state =>
     state.auth.session.idTokenPayload || null
+export const getUserId = state => state?.auth?.session?.idTokenPayload?.sub
 export const getSession = state => state.auth.session
 export const getSessionExpiresAt = state =>
     state.auth.session ? state.auth.session.expiresAt : 0
