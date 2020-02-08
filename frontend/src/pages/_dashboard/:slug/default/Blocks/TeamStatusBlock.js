@@ -82,13 +82,8 @@ export default () => {
                                 Incomplete
                             </Typography>
                             <Typography key="body" variant="body1" paragraph>
-                                Since you're applying as a team, you'll need to
-                                mark your team as complete before we'll begin
-                                processing your application. This lets us know
-                                that your team is ready to be reviewed. <br />{' '}
-                                <br />
-                                Only the team owner (person who has created the
-                                team) can do this.
+                                Since you're applying as a team, make sure that
+                                your team contains all memebers it should.
                             </Typography>
                             <Button
                                 color="theme_turquoise"
