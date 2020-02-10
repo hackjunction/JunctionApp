@@ -1,78 +1,78 @@
-const {
-	InsufficientPrivilegesError
-} = require('../errors/errors');
+const { InsufficientPrivilegesError } = require('../errors/errors')
 
 function userHasRole(user, role) {
-	return user && user.roles && user.roles.indexOf(role) !== -1;
+    return user && user.roles && user.roles.indexOf(role) !== -1
 }
 
 function userHasPermission(user, permission) {
-	return user && user.permissions && user.permissions.indexOf(permission) !== -1;
+    return (
+        user && user.permissions && user.permissions.indexOf(permission) !== -1
+    )
 }
 
 const PermissionMiddleware = {
-	hasRole: (role) => {
-		return (req, res, next) => {
-			if (userHasRole(req.user, role)) {
-				next();
-			} else {
-				next(new InsufficientPrivilegesError());
-			}
-		}
-	},
-	hasOneOfRoles: (roles = []) => {
-		return (req, res, next) => {
-			for (let role of roles) {
-				if (userHasRole(req.user, role)) {
-					next();
-					return;
-				}
-			}
-			next(new InsufficientPrivilegesError());
-		}
-	},
-	hasAllOfRoles: (roles = []) => {
-		return (req, res, next) => {
-			for (let role of roles) {
-				if (!userHasRole(req.user, role)) {
-					next(new InsufficientPrivilegesError());
-					return;
-				}
-			}
-			next();
-		}
-	},
-	hasPermission: (permission) => {
-		return (req, res, next) => {
-			if (userHasPermission(req.user, permission)) {
-				next();
-			} else {
-				next(new InsufficientPrivilegesError());
-			}
-		}
-	},
-	hasOneOfPermissions: (permissions = []) => {
-		return (req, res, next) => {
-			for (let permission of permissions) {
-				if (userHasPermission(req.user, permission)) {
-					next();
-					return;
-				}
-			}
-			next(new InsufficientPrivilegesError());
-		}
-	},
-	hasAllOfPermissions: (permissions = []) => {
-		return (req, res, next) => {
-			for (let permission of permissions) {
-				if (!userHasPermission(req.user, permission)) {
-					next(new InsufficientPrivilegesError());
-					return;
-				}
-			}
-			next();
-		}
-	}
+    hasRole: role => {
+        return (req, res, next) => {
+            if (userHasRole(req.user, role)) {
+                next()
+            } else {
+                next(new InsufficientPrivilegesError())
+            }
+        }
+    },
+    hasOneOfRoles: (roles = []) => {
+        return (req, res, next) => {
+            for (let role of roles) {
+                if (userHasRole(req.user, role)) {
+                    next()
+                    return
+                }
+            }
+            next(new InsufficientPrivilegesError())
+        }
+    },
+    hasAllOfRoles: (roles = []) => {
+        return (req, res, next) => {
+            for (let role of roles) {
+                if (!userHasRole(req.user, role)) {
+                    next(new InsufficientPrivilegesError())
+                    return
+                }
+            }
+            next()
+        }
+    },
+    hasPermission: permission => {
+        return (req, res, next) => {
+            if (userHasPermission(req.user, permission)) {
+                next()
+            } else {
+                next(new InsufficientPrivilegesError())
+            }
+        }
+    },
+    hasOneOfPermissions: (permissions = []) => {
+        return (req, res, next) => {
+            for (let permission of permissions) {
+                if (userHasPermission(req.user, permission)) {
+                    next()
+                    return
+                }
+            }
+            next(new InsufficientPrivilegesError())
+        }
+    },
+    hasAllOfPermissions: (permissions = []) => {
+        return (req, res, next) => {
+            for (let permission of permissions) {
+                if (!userHasPermission(req.user, permission)) {
+                    next(new InsufficientPrivilegesError())
+                    return
+                }
+            }
+            next()
+        }
+    },
 }
 
-module.exports = PermissionMiddleware;
+module.exports = PermissionMiddleware
