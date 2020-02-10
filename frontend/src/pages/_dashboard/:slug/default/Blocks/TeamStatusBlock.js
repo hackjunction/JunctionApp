@@ -79,11 +79,11 @@ export default () => {
                                 color="secondary"
                                 paragraph
                             >
-                                Incomplete
+                                Pending
                             </Typography>
                             <Typography key="body" variant="body1" paragraph>
-                                Since you're applying as a team, make sure that
-                                your team contains all memebers it should.
+                                Registering your team prior to event makes it
+                                easier for us to review your application.
                             </Typography>
                             <Button
                                 color="theme_turquoise"
@@ -94,7 +94,7 @@ export default () => {
                                     )
                                 }
                             >
-                                Finalize your team
+                                Edit your team
                             </Button>
                         </GradientBox>
                     </Grid>
