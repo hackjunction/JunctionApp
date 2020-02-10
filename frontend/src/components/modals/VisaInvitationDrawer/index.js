@@ -32,7 +32,7 @@ export default () => {
             lastName.setValue(registration?.answers?.lastName)
             nationality.setValue(registration?.answers?.nationality)
         }
-    }, [registration]); //eslint-disable-line
+    }, [registration]) //eslint-disable-line
 
     const [generated, setGenerated] = useState(false)
 
