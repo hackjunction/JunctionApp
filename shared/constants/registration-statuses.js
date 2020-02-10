@@ -5,7 +5,7 @@ const RegistrationStatuses = {
         description: 'Waiting for acceptance/rejection',
         color: '#555555',
         allowAssign: true,
-        allowEdit: true
+        allowEdit: true,
     },
     softAccepted: {
         id: 'softAccepted',
@@ -13,7 +13,7 @@ const RegistrationStatuses = {
         description: 'Accepted, but has not been notified yet',
         color: '#99d068',
         allowAssign: true,
-        allowEdit: true
+        allowEdit: true,
     },
     softRejected: {
         id: 'softRejected',
@@ -21,7 +21,7 @@ const RegistrationStatuses = {
         description: 'Rejected, but has not been notified yet',
         color: '#CD5C5C',
         allowAssign: true,
-        allowEdit: true
+        allowEdit: true,
     },
     accepted: {
         id: 'accepted',
@@ -29,7 +29,7 @@ const RegistrationStatuses = {
         description: 'Accepted and has been notified about it',
         color: '#33d068',
         allowAssign: false,
-        allowEdit: false
+        allowEdit: false,
     },
     rejected: {
         id: 'rejected',
@@ -37,7 +37,7 @@ const RegistrationStatuses = {
         description: 'Rejected and has been notified about it',
         color: '#e2062c',
         allowAssign: false,
-        allowEdit: false
+        allowEdit: false,
     },
     confirmed: {
         id: 'confirmed',
@@ -45,7 +45,7 @@ const RegistrationStatuses = {
         description: 'Has confirmed their participation',
         color: '#ffc60a',
         allowAssign: false,
-        allowEdit: false
+        allowEdit: false,
     },
     cancelled: {
         id: 'cancelled',
@@ -53,7 +53,7 @@ const RegistrationStatuses = {
         description: 'Has cancelled their participation',
         color: '#ff7c0c',
         allowAssign: false,
-        allowEdit: false
+        allowEdit: false,
     },
     checkedIn: {
         id: 'checkedIn',
@@ -61,7 +61,7 @@ const RegistrationStatuses = {
         description: 'Has arrived at the event',
         color: '#0083f3',
         allowAssign: false,
-        allowEdit: false
+        allowEdit: false,
     },
     noShow: {
         id: 'noShow',
@@ -69,12 +69,14 @@ const RegistrationStatuses = {
         description: 'Did not arrive at the event before it ended',
         color: '#ff7c0c',
         allowAssign: false,
-        allowEdit: false
-    }
-};
+        allowEdit: false,
+    },
+}
 
 module.exports = {
     ids: Object.keys(RegistrationStatuses),
     asObject: RegistrationStatuses,
-    asArray: Object.keys(RegistrationStatuses).map(status => RegistrationStatuses[status])
-};
+    asArray: Object.keys(RegistrationStatuses).map(
+        status => RegistrationStatuses[status]
+    ),
+}

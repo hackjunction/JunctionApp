@@ -1,70 +1,70 @@
 const FieldTypes = {
     SHORT_TEXT: {
-        id: 'SHORT_TEXT'
+        id: 'SHORT_TEXT',
     },
     LONG_TEXT: {
-        id: 'LONG_TEXT'
+        id: 'LONG_TEXT',
     },
     BOOLEAN: {
-        id: 'BOOLEAN'
+        id: 'BOOLEAN',
     },
     EMAIL: {
-        id: 'EMAIL'
+        id: 'EMAIL',
     },
     PHONE_NUMBER: {
-        id: 'PHONE_NUMBER'
+        id: 'PHONE_NUMBER',
     },
     DATE: {
-        id: 'DATE'
+        id: 'DATE',
     },
     GENDER: {
-        id: 'GENDER'
+        id: 'GENDER',
     },
     NATIONALITY: {
-        id: 'NATIONALITY'
+        id: 'NATIONALITY',
     },
     LANGUAGES: {
-        id: 'LANGUAGES'
+        id: 'LANGUAGES',
     },
     COUNTRY: {
-        id: 'COUNTRY'
+        id: 'COUNTRY',
     },
     ROLES: {
-        id: 'ROLES'
+        id: 'ROLES',
     },
     SKILLS: {
-        id: 'SKILLS'
+        id: 'SKILLS',
     },
     INDUSTRIES: {
-        id: 'INDUSTRIES'
+        id: 'INDUSTRIES',
     },
     THEMES: {
-        id: 'THEMES'
+        id: 'THEMES',
     },
     EDUCATION: {
-        id: 'EDUCATION'
+        id: 'EDUCATION',
     },
     SMALL_NUMBER: {
-        id: 'SMALL_NUMBER'
+        id: 'SMALL_NUMBER',
     },
     NUM_HACKATHONS: {
-        id: 'NUM_HACKATHONS'
+        id: 'NUM_HACKATHONS',
     },
     T_SHIRT_SIZE: {
-        id: 'T_SHIRT_SIZE'
+        id: 'T_SHIRT_SIZE',
     },
     URL: {
-        id: 'URL'
+        id: 'URL',
     },
     DIETARY_RESTRICTIONS: {
-        id: 'DIETARY_RESTRICTIONS'
+        id: 'DIETARY_RESTRICTIONS',
     },
     TEAM_OPTIONS: {
-        id: 'TEAM_OPTIONS'
+        id: 'TEAM_OPTIONS',
     },
     RECRUITMENT_OPTIONS: {
-        id: 'RECRUITMENT_OPTIONS'
-    }
-};
+        id: 'RECRUITMENT_OPTIONS',
+    },
+}
 
-module.exports = FieldTypes;
+module.exports = FieldTypes
