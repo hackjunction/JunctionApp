@@ -1,12 +1,12 @@
 const EventTypes = {
     physical: {
         id: 'physical',
-        label: 'Physical event'
+        label: 'Physical event',
     },
     online: {
         id: 'online',
-        label: 'Online event'
-    }
-};
+        label: 'Online event',
+    },
+}
 
-module.exports = EventTypes;
+module.exports = EventTypes
