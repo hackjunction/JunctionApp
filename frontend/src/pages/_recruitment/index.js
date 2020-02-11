@@ -11,6 +11,7 @@ import BasicNavBar from 'components/navbars/BasicNavBar'
 import SearchPage from './default'
 import AdminPage from './admin'
 import DetailPage from './:id'
+import config from 'constants/config'
 
 export default () => {
     const dispatch = useDispatch()
@@ -22,7 +23,9 @@ export default () => {
     return (
         <PageWrapper wrapContent={false} showErrorMessage>
             <CenteredContainer>
-                <BasicNavBar text="Junction Recruitment Tool" />
+                <BasicNavBar
+                    text={config.PLATFORM_OWNER_NAME + ' Recruitment Tool'}
+                />
             </CenteredContainer>
             <Route path="/recruitment" component={SearchPage} />
             <Switch>

@@ -14,6 +14,7 @@ import * as UserSelectors from 'redux/user/selectors'
 
 import Button from 'components/generic/Button'
 import ParticipationCertificate from 'components/pdfs/ParticipationCertificate'
+import config from 'constants/config'
 
 const CertificateBlock = ({
     event,
@@ -33,9 +34,9 @@ const CertificateBlock = ({
                 </Typography>
                 <Typography variant="body1" paragraph>
                     Thanks for being a part of {event.name}! While waiting for
-                    the next Junction event to take part in, go ahead and
-                    download your personal certificate of participation by
-                    clicking the button below!
+                    the next {config.PLATFORM_OWNER_NAME} event to take part in,
+                    go ahead and download your personal certificate of
+                    participation by clicking the button below!
                 </Typography>
                 {loading ? (
                     <CircularProgress size={24} />

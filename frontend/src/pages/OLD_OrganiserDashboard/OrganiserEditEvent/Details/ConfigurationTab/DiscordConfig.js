@@ -3,6 +3,7 @@ import React, { useCallback } from 'react'
 import FormControl from 'components/inputs/FormControl'
 import BooleanInput from 'components/inputs/BooleanInput'
 import TextInput from 'components/inputs/TextInput'
+import config from 'constants/config'
 
 const DiscordConfig = ({ value = {}, onChange }) => {
     const { enabled, inviteLink } = value
@@ -21,7 +22,7 @@ const DiscordConfig = ({ value = {}, onChange }) => {
         <React.Fragment>
             <FormControl
                 label="Discord"
-                hint="Are you using the Junction Discord server for communication at this event?"
+                hint={`Are you using the ${config.PLATFORM_OWNER_NAME} Discord server for communication at this event?`}
             >
                 <BooleanInput
                     value={enabled || false}

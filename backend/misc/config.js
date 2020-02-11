@@ -89,6 +89,18 @@ const settings = {
         value: process.env.HASH_SALT,
         required: true,
     },
+    PLATFORM_OWNER_NAME: {
+        value: process.env.PLATFORM_OWNER_NAME || 'Junction',
+        required: true,
+    },
+    CALENDAR_URL: {
+        value: process.env.CALENDAR_URL || 'https://hackjunction.com/calendar',
+        required: false,
+    },
+    SENDGRID_MAILING_LIST_ID: {
+        value: process.env.SENDGRID_MAILING_LIST_ID || '7150117',
+        required: false,
+    },
 }
 
 const buildConfig = () => {
