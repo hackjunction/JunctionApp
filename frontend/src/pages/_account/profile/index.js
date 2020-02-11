@@ -220,8 +220,8 @@ export default () => {
                                             notifications related to your
                                             activity on the{' '}
                                             {config.PLATFORM_OWNER_NAME} app.
-                                            email address will never be shared
-                                            with any 3rd parties.
+                                            Your email address will never be
+                                            shared with any 3rd parties.
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -313,7 +313,7 @@ export default () => {
                                 recruitment functionality, these details will
                                 also be shown to select{' '}
                                 {config.PLATFORM_OWNER_NAME} partners who are
-                                are looking to hire. Please see our{' '}
+                                looking to hire. Please see our{' '}
                                 <a href={config.PRIVACY_URL}>Privacy Policy</a>{' '}
                                 for more details on how your data is used.
                             </Typography>

@@ -43,7 +43,6 @@ export default () => {
                             More info about {config.PLATFORM_OWNER_NAME} can be
                             found from our website{' '}
                             <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
-                                {' '}
                                 here
                             </ExternalLink>
                         </p>
