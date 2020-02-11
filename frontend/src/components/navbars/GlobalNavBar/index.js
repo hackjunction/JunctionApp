@@ -33,7 +33,7 @@ export default () => {
                 <img
                     src={config.LOGO_DARK_URL}
                     className={classes.wordmark}
-                    alt={config.PLATFORM_OWNER_NAME + ' wordmark'}
+                    alt={config.PLATFORM_OWNER_NAME + ' logo'}
                 />
                 <UserMenu />
             </div>
