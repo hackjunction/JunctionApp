@@ -3,20 +3,20 @@
 const AchievementTypes = {
     trackPlacement: {
         id: 'trackPlacement',
-        label: 'Track Placement'
+        label: 'Track Placement',
     },
     challengePlacement: {
         id: 'challengePlacement',
-        label: 'Challenge Placement'
+        label: 'Challenge Placement',
     },
     overallPlacement: {
         id: 'overallPlacement',
-        label: 'Overall Placement'
+        label: 'Overall Placement',
     },
     finalist: {
         id: 'finalist',
-        label: 'Finalist'
-    }
-};
+        label: 'Finalist',
+    },
+}
 
-module.exports = AchievementTypes;
+module.exports = AchievementTypes

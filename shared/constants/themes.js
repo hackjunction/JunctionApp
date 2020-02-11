@@ -1,7 +1,7 @@
-const themes = require('../data/themes.json');
+const themes = require('../data/themes.json')
 
-const Themes = {};
+const Themes = {}
 
-Themes.themes = themes;
+Themes.themes = themes
 
-module.exports = Themes;
+module.exports = Themes

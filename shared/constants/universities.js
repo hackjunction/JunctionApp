@@ -1,28 +1,28 @@
-const universities = require('../data/universities.json');
+const universities = require('../data/universities.json')
 
-const Universities = {};
+const Universities = {}
 
 const groupByAlpha2Code = () => {
-    const grouped = {};
+    const grouped = {}
 
     universities.forEach(uni => {
-        const alpha2 = uni.alpha_two_code;
+        const alpha2 = uni.alpha_two_code
         if (grouped.hasOwnProperty(uni.alpha_two_code)) {
-            grouped[alpha2].push(uni);
+            grouped[alpha2].push(uni)
         } else {
-            grouped[alpha2] = [uni];
+            grouped[alpha2] = [uni]
         }
-    });
+    })
 
-    return grouped;
-};
+    return grouped
+}
 
-Universities.byAlpha2Code = groupByAlpha2Code();
+Universities.byAlpha2Code = groupByAlpha2Code()
 Universities.getByAlpha2Code = code => {
     if (code && Universities.byAlpha2Code.hasOwnProperty(code)) {
-        return Universities.byAlpha2Code[code];
+        return Universities.byAlpha2Code[code]
     }
-    return [];
-};
+    return []
+}
 
-module.exports = Universities;
+module.exports = Universities
