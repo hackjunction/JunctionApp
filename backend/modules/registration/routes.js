@@ -32,7 +32,6 @@ const getRegistration = asyncHandler(async (req, res) => {
 })
 
 const createRegistration = asyncHandler(async (req, res) => {
-    console.log('CREATING REGISTRATION')
     const registration = await RegistrationController.createRegistration(
         req.user,
         req.event,
@@ -145,7 +144,7 @@ const getFullRegistration = asyncHandler(async (req, res) => {
 const bulkEditRegistrations = asyncHandler(async (req, res) => {
     await RegistrationController.bulkEditRegistrations(
         req.event._id.toString(),
-        req.body.registrationIds,
+        req.body.userIds,
         req.body.edits
     )
     return res.status(200).json([])

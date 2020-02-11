@@ -165,7 +165,7 @@ export const updateRegistrationTravelGrant = (
     return registration
 }
 
-export const bulkEditRegistrations = (registrationIds, edits, slug) => async (
+export const bulkEditRegistrations = (userIds, edits, slug) => async (
     dispatch,
     getState
 ) => {
@@ -174,7 +174,7 @@ export const bulkEditRegistrations = (registrationIds, edits, slug) => async (
     await RegistrationsService.bulkEditRegistrationsForEvent(
         idToken,
         slug,
-        registrationIds,
+        userIds,
         edits
     )
 

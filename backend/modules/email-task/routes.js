@@ -16,14 +16,27 @@ const messageParams = () =>
         subject: Joi.string()
             .max(200)
             .required(),
+        body: Joi.string().required(),
         subtitle: Joi.string()
             .max(200)
-            .required(),
-        header_image: Joi.string().uri(),
-        body: Joi.string(),
-        cta_text: Joi.string().max(100),
-        cta_link: Joi.string().uri(),
-        reply_to: Joi.string().email(),
+            .optional()
+            .allow(''),
+        header_image: Joi.string()
+            .uri()
+            .optional()
+            .allow(''),
+        cta_text: Joi.string()
+            .max(100)
+            .optional()
+            .allow(''),
+        cta_link: Joi.string()
+            .uri()
+            .optional()
+            .allow(''),
+        reply_to: Joi.string()
+            .email()
+            .optional()
+            .allow(''),
     })
 
 router
@@ -50,11 +63,13 @@ router.route('/:slug/send').post(
     celebrate({
         body: {
             recipients: Joi.array()
-                .items(Joi.string().email())
+                .items(Joi.string())
                 .min(1)
                 .required(),
             params: messageParams(),
-            uniqueId: Joi.string(),
+            uniqueId: Joi.string()
+                .optional()
+                .allow(''),
         },
     }),
     hasToken,

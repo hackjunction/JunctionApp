@@ -287,7 +287,7 @@ controller.assignRegistrationForEvent = data => {
     })
 }
 
-controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
+controller.bulkEditRegistrations = (eventId, userIds, edits) => {
     const cleanedEdits = _.pick(edits, [
         'status',
         'tags',
@@ -298,7 +298,7 @@ controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
     return Registration.find({
         event: eventId,
         user: {
-            $in: registrationIds,
+            $in: userIds,
         },
     }).then(registrations => {
         const updates = registrations
