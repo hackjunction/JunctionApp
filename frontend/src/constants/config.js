@@ -14,7 +14,9 @@ const settings = {
         required: true,
     },
     ID_TOKEN_NAMESPACE: {
-        value: process.env.REACT_APP_ID_TOKEN_NAMESPACE,
+        value:
+            process.env.REACT_APP_ID_TOKEN_NAMESPACE ||
+            'https://app.hackjunction.com/',
         required: true,
     },
     BASE_URL: {
