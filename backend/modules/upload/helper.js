@@ -1,14 +1,14 @@
-const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
-const multer = require('multer');
+const cloudinary = require('cloudinary')
+const cloudinaryStorage = require('multer-storage-cloudinary')
+const multer = require('multer')
 
 cloudinary.config({
     cloud_name: global.gConfig.CLOUDINARY_CLOUD_NAME,
     api_key: global.gConfig.CLOUDINARY_API_KEY,
-    api_secret: global.gConfig.CLOUDINARY_API_SECRET
-});
+    api_secret: global.gConfig.CLOUDINARY_API_SECRET,
+})
 
-const cloudinaryRootPath = `${global.gConfig.CLOUDINARY_FOLDER}`;
+const cloudinaryRootPath = `${global.gConfig.CLOUDINARY_FOLDER}`
 
 const createStorageWithPath = (path, transformation, options) => {
     return cloudinaryStorage({
@@ -17,10 +17,10 @@ const createStorageWithPath = (path, transformation, options) => {
             tags: [options.tag],
             folder: `${cloudinaryRootPath}/${path}`,
             allowed_formats: ['jpg', 'png'],
-            transformation
-        }
-    });
-};
+            transformation,
+        },
+    })
+}
 
 const createDocumentStorageWithPath = (path, transformation, options) => {
     return cloudinaryStorage({
@@ -29,35 +29,38 @@ const createDocumentStorageWithPath = (path, transformation, options) => {
             tags: [options.tag],
             folder: `${cloudinaryRootPath}/${path}`,
             allowed_formats: ['pdf'],
-            transformation
-        }
-    });
-};
+            transformation,
+        },
+    })
+}
 
 const UploadHelper = {
     generateEventTag: slug => {
-        return `${cloudinaryRootPath}-event-${slug}`;
+        return `${cloudinaryRootPath}-event-${slug}`
     },
     generateUserTag: userId => {
-        return `${cloudinaryRootPath}-user-${userId}`;
+        return `${cloudinaryRootPath}-user-${userId}`
     },
     generateProjectTag: (slug, teamCode) => {
-        return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`;
+        return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`
     },
 
     generateTravelGrantTag: (slug, userId) => {
-        return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`;
+        return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`
     },
 
     deleteWithTag: tag => {
         return new Promise(function(resolve, reject) {
-            cloudinary.v2.api.delete_resources_by_tag(tag, function(error, result) {
+            cloudinary.v2.api.delete_resources_by_tag(tag, function(
+                error,
+                result
+            ) {
                 if (error) {
-                    console.error('Unable to delete images with tag', tag);
+                    console.error('Unable to delete images with tag', tag)
                 }
-                resolve(result);
-            });
-        });
+                resolve(result)
+            })
+        })
     },
 
     uploadUserAvatar: userId => {
@@ -66,13 +69,16 @@ const UploadHelper = {
             {
                 width: 480,
                 height: 480,
-                crop: 'fill'
+                crop: 'fill',
             },
             {
-                tag: UploadHelper.generateUserTag(userId)
+                tag: UploadHelper.generateUserTag(userId),
             }
-        );
-        return multer({ storage, limits: { fileSize: 2 * 1024 * 1024 } }).single('image');
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 2 * 1024 * 1024 },
+        }).single('image')
     },
 
     uploadEventCoverImage: slug => {
@@ -81,13 +87,16 @@ const UploadHelper = {
             {
                 width: 1920,
                 height: 1080,
-                crop: 'fit'
+                crop: 'fit',
             },
             {
-                tag: UploadHelper.generateEventTag(slug)
+                tag: UploadHelper.generateEventTag(slug),
             }
-        );
-        return multer({ storage, limits: { fileSize: 2 * 1024 * 1024 } }).single('image');
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 2 * 1024 * 1024 },
+        }).single('image')
     },
 
     uploadEventLogo: slug => {
@@ -96,13 +105,16 @@ const UploadHelper = {
             {
                 width: 640,
                 height: 640,
-                crop: 'fit'
+                crop: 'fit',
             },
             {
-                tag: UploadHelper.generateEventTag(slug)
+                tag: UploadHelper.generateEventTag(slug),
             }
-        );
-        return multer({ storage, limits: { fileSize: 2 * 1024 * 1024 } }).single('image');
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 2 * 1024 * 1024 },
+        }).single('image')
     },
 
     uploadTravelGrantReceipt: (slug, userId) => {
@@ -110,10 +122,13 @@ const UploadHelper = {
             `events/travel-grant-receipts/`,
             {},
             {
-                tag: UploadHelper.generateTravelGrantTag(slug, userId)
+                tag: UploadHelper.generateTravelGrantTag(slug, userId),
             }
-        );
-        return multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }).single('pdf');
+        )
+        return multer({
+            storage: storage,
+            limits: { fileSize: 10 * 1024 * 1024 },
+        }).single('pdf')
     },
     uploadProjectImage: (slug, teamCode) => {
         const storage = createStorageWithPath(
@@ -121,18 +136,21 @@ const UploadHelper = {
             {
                 width: 1920,
                 height: 960,
-                crop: 'fill'
+                crop: 'fill',
             },
             {
-                tag: UploadHelper.generateProjectTag(slug, teamCode)
+                tag: UploadHelper.generateProjectTag(slug, teamCode),
             }
-        );
-        return multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }).single('image');
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 5 * 1024 * 1024 },
+        }).single('image')
     },
 
     removeEventImages: slug => {
-        return UploadHelper.deleteWithTag(UploadHelper.generateEventTag(slug));
-    }
-};
+        return UploadHelper.deleteWithTag(UploadHelper.generateEventTag(slug))
+    },
+}
 
-module.exports = UploadHelper;
+module.exports = UploadHelper

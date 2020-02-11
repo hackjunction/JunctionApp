@@ -1,12 +1,12 @@
 const ReviewingMethods = {
     gavelPeerReview: {
         id: 'gavelPeerReview',
-        label: 'Gavel, Peer-reviewing'
+        label: 'Gavel, Peer-reviewing',
     },
     manualReview: {
         id: 'manualReview',
-        label: 'Manual review'
-    }
-};
+        label: 'Manual review',
+    },
+}
 
-module.exports = ReviewingMethods;
+module.exports = ReviewingMethods

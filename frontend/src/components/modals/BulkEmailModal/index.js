@@ -24,7 +24,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import EmailService from 'services/email'
 
-export default ({ visible, registrationIds = [], onClose }) => {
+export default ({ visible, userIds = [], onClose }) => {
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const user = useSelector(UserSelectors.userProfile)
@@ -133,14 +133,14 @@ export default ({ visible, registrationIds = [], onClose }) => {
         EmailService.sendBulkEmail(
             idToken,
             event.slug,
-            registrationIds,
+            userIds,
             params,
             messageId.value
         )
             .then(data => {
                 dispatch(
                     SnackbarActions.success(
-                        `Email sent to ${registrationIds.length} recipients`,
+                        `Email sent to ${userIds.length} recipients`,
                         { autoHideDuration: 5000 }
                     )
                 )
@@ -156,14 +156,14 @@ export default ({ visible, registrationIds = [], onClose }) => {
         validate,
         idToken,
         event.slug,
-        registrationIds,
+        userIds,
         params,
         messageId.value,
         dispatch,
         onClose,
     ])
 
-    if (!registrationIds.length) return null
+    if (!userIds.length) return null
 
     return (
         <Dialog fullScreen open={visible} onClose={onClose}>
@@ -173,15 +173,14 @@ export default ({ visible, registrationIds = [], onClose }) => {
                         <ConfirmDialog
                             open={confirmModalOpen}
                             title="Are you sure?"
-                            message={`This will send an email to ${registrationIds.length} recipient(s). If you haven't yet, please send the email to yourself and make sure it looks like you want.`}
+                            message={`This will send an email to ${userIds.length} recipient(s). If you haven't yet, please send the email to yourself and make sure it looks like you want.`}
                             onClose={setConfirmModalOpen}
                             onOk={handleConfirm}
                         />
                         <PageHeader
                             heading="Bulk email"
                             subheading={
-                                registrationIds.length +
-                                ' selected participants'
+                                userIds.length + ' selected participants'
                             }
                         />
                         <Typography variant="body1" paragraph>
@@ -275,7 +274,7 @@ export default ({ visible, registrationIds = [], onClose }) => {
                     color="primary"
                     onClick={setConfirmModalOpen}
                 >
-                    Send to {registrationIds.length} recipients
+                    Send to {userIds.length} recipients
                 </Button>
             </DialogActions>
         </Dialog>
