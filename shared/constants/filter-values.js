@@ -9,7 +9,7 @@ const FilterValues = {
     COUNTRY: 'COUNTRY',
     LANGUAGE: 'LANGUAGE',
     STATUS: 'STATUS',
-    TAG: 'TAG'
-};
+    TAG: 'TAG',
+}
 
-module.exports = FilterValues;
+module.exports = FilterValues

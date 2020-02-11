@@ -1,5 +1,5 @@
-const yup = require('yup');
-const Countries = require('../constants/countries');
+const yup = require('yup')
+const Countries = require('../constants/countries')
 
 const schema = {
     legalName: yup.object().shape({
@@ -16,7 +16,7 @@ const schema = {
             .string()
             .required()
             .max(100)
-            .label('Last name')
+            .label('Last name'),
     }),
     email: yup
         .string()
@@ -47,7 +47,7 @@ const schema = {
         postalCode: yup
             .string()
             .required()
-            .label('Postal code')
+            .label('Postal code'),
     }),
     hasSSN: yup
         .boolean()
@@ -73,7 +73,7 @@ const schema = {
         bankName: yup
             .string()
             .max(100)
-            .label('Bank name')
+            .label('Bank name'),
     }),
     receiptsPdf: yup.object().shape({
         url: yup
@@ -84,14 +84,14 @@ const schema = {
         publicId: yup
             .string()
             .max(200)
-            .label('PublicId')
+            .label('PublicId'),
     }),
     receiptsSum: yup
         .number()
         .min(1)
         .max(10000)
         .required()
-        .label('Sum of receipts')
-};
+        .label('Sum of receipts'),
+}
 
-module.exports = schema;
+module.exports = schema

@@ -27,7 +27,7 @@ import * as OrganiserActions from 'redux/organiser/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 
-export default ({ visible, registrationIds = [], onClose }) => {
+export default ({ visible, userIds = [], onClose }) => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const [loading, setLoading] = useState(false)
@@ -83,16 +83,12 @@ export default ({ visible, registrationIds = [], onClose }) => {
         const edits = getEdits()
 
         dispatch(
-            OrganiserActions.bulkEditRegistrations(
-                registrationIds,
-                edits,
-                event.slug
-            )
+            OrganiserActions.bulkEditRegistrations(userIds, edits, event.slug)
         )
             .then(() => {
                 dispatch(
                     SnackbarActions.success(
-                        `Edited ${registrationIds.length} registrations`
+                        `Edited ${userIds.length} registrations`
                     )
                 )
             })
@@ -103,9 +99,9 @@ export default ({ visible, registrationIds = [], onClose }) => {
                 setLoading(false)
                 handleClose()
             })
-    }, [getEdits, registrationIds, event.slug, dispatch, handleClose])
+    }, [getEdits, dispatch, userIds, event.slug, handleClose])
 
-    if (!registrationIds.length) return null
+    if (!userIds.length) return null
     return (
         <Dialog fullScreen open={visible} onClose={handleClose}>
             <PageWrapper loading={loading} wrapContent={false}>
@@ -113,7 +109,7 @@ export default ({ visible, registrationIds = [], onClose }) => {
                     <ConfirmDialog
                         open={confirmDialog}
                         title="Are you sure?"
-                        message={`This will apply your configured changes to ${registrationIds.length} registrations, and you won't be able to revert them. Please make sure you are not making any unintended changes.`}
+                        message={`This will apply your configured changes to ${userIds.length} registrations, and you won't be able to revert them. Please make sure you are not making any unintended changes.`}
                         onClose={() => setConfirmDialog(false)}
                         onOk={handleSubmit}
                     />
@@ -121,8 +117,7 @@ export default ({ visible, registrationIds = [], onClose }) => {
                         <PageHeader
                             heading="Bulk edit"
                             subheading={
-                                registrationIds.length +
-                                ' selected participants'
+                                userIds.length + ' selected participants'
                             }
                         />
                         <Typography variant="body1" paragraph>
@@ -327,7 +322,7 @@ export default ({ visible, registrationIds = [], onClose }) => {
                     >
                         {expandedIds.length === 0
                             ? 'Expand panels to make edits'
-                            : ` Apply edits to ${registrationIds.length} registrations`}
+                            : ` Apply edits to ${userIds.length} registrations`}
                     </Button>
                 </DialogActions>
             </PageWrapper>
