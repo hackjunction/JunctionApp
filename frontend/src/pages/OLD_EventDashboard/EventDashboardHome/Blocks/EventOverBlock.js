@@ -9,6 +9,7 @@ import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
+import config from 'constants/config'
 
 const EventOverBlock = ({ event, openProjectGallery }) => {
     if (!EventHelpers.isEventOver(event, moment)) return null
@@ -22,7 +23,7 @@ const EventOverBlock = ({ event, openProjectGallery }) => {
                     {event.name} is now over, thanks for taking part! Check out
                     your project submission and all of the other cool stuff
                     people made in the project gallery, and stay tuned for the
-                    next Junction event near you!
+                    next {config.PLATFORM_OWNER_NAME} event near you!
                 </Typography>
                 {event.galleryOpen ? (
                     <Button

@@ -25,6 +25,7 @@ import GradientBox from 'components/generic/GradientBox'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
+import config from 'constants/config'
 
 const RegistrationStatusBlock = ({
     event,
@@ -182,15 +183,12 @@ const RegistrationStatusBlock = ({
                 return (
                     <Button
                         onClick={() =>
-                            window.open(
-                                'https://hackjunction.com/calendar',
-                                '_blank'
-                            )
+                            window.open(config.CALENDAR_URL, '_blank')
                         }
                         color="theme_white"
                         variant="contained"
                     >
-                        Junction event calendar
+                        {config.PLATFORM_OWNER_NAME} event calendar
                     </Button>
                 )
             }

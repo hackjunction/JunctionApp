@@ -5,6 +5,7 @@ import { Typography, Button, Box } from '@material-ui/core'
 import { motion } from 'framer-motion'
 
 import NewsletterService from 'services/newsletter'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -73,8 +74,9 @@ const NewsLetterButton = ({
             >
                 This is a perfect opportunity to join our mailing list, where we
                 send very occasional (monthly) updates about our upcoming events
-                and other things happening around the Junction community. Care
-                to join?
+                and other things happening around the{' '}
+                {config.PLATFORM_OWNER_NAME}
+                community. Care to join?
             </Typography>
 
             <Button
