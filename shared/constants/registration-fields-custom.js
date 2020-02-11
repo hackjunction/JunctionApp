@@ -1,4 +1,4 @@
-const yup = require('yup');
+const yup = require('yup')
 
 const RegistrationFieldsCustom = {
     text: {
@@ -8,8 +8,8 @@ const RegistrationFieldsCustom = {
                 .string()
                 .min(required ? 1 : 0)
                 .max(200)
-                .label(question.label);
-        }
+                .label(question.label)
+        },
     },
     textarea: {
         id: 'textarea',
@@ -18,8 +18,8 @@ const RegistrationFieldsCustom = {
                 .string()
                 .min(required ? 1 : 0)
                 .max(1500)
-                .label(question.label);
-        }
+                .label(question.label)
+        },
     },
     boolean: {
         id: 'boolean',
@@ -27,11 +27,11 @@ const RegistrationFieldsCustom = {
             return yup
                 .boolean()
                 .transform(value => {
-                    if (!value) return false;
-                    return true;
+                    if (!value) return false
+                    return true
                 })
-                .label(question.label);
-        }
+                .label(question.label)
+        },
     },
     'single-choice': {
         id: 'single-choice',
@@ -39,8 +39,8 @@ const RegistrationFieldsCustom = {
             return yup
                 .string()
                 .oneOf(question.settings.options)
-                .label(question.label);
-        }
+                .label(question.label)
+        },
     },
     'multiple-choice': {
         id: 'multiple-choice',
@@ -53,9 +53,9 @@ const RegistrationFieldsCustom = {
                         .oneOf(question.settings.options)
                         .label(question.label)
                 )
-                .label(question.label);
-        }
-    }
-};
+                .label(question.label)
+        },
+    },
+}
 
-module.exports = RegistrationFieldsCustom;
+module.exports = RegistrationFieldsCustom

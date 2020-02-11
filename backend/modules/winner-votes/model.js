@@ -1,32 +1,32 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const WinnerVoteSchema = new mongoose.Schema({
     event: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event',
-        required: true
+        required: true,
     },
     user: {
-        type: String
+        type: String,
     },
     project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
-        required: true
-    }
-});
+        required: true,
+    },
+})
 
-WinnerVoteSchema.set('timestamps', true);
+WinnerVoteSchema.set('timestamps', true)
 WinnerVoteSchema.index(
     {
         user: 1,
-        event: 1
+        event: 1,
     },
     {
-        unique: true
+        unique: true,
     }
-);
+)
 
-const WinnerVote = mongoose.model('WinnerVote', WinnerVoteSchema);
+const WinnerVote = mongoose.model('WinnerVote', WinnerVoteSchema)
 
-module.exports = WinnerVote;
+module.exports = WinnerVote

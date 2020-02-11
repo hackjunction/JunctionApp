@@ -1,7 +1,7 @@
-const industries = require('../data/industries.json');
+const industries = require('../data/industries.json')
 
-const Industries = {};
+const Industries = {}
 
-Industries.industries = industries;
+Industries.industries = industries
 
-module.exports = Industries;
+module.exports = Industries
