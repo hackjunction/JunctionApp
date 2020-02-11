@@ -142,7 +142,7 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
                     <View style={styles.outer2} wrap={false}>
                         <View style={styles.logoWrapper}>
                             <Image
-                                src={require('assets/logos/wordmark_black.png')}
+                                src={config.LOGO_DARK_URL}
                                 style={styles.logo}
                             />
                         </View>

@@ -31,7 +31,7 @@ export default () => {
         <div className={classes.wrapper}>
             <div className={classes.inner}>
                 <img
-                    src={require('assets/logos/wordmark_black.png')}
+                    src={config.LOGO_DARK_URL}
                     className={classes.wordmark}
                     alt={config.PLATFORM_OWNER_NAME + ' wordmark'}
                 />

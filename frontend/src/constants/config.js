@@ -89,6 +89,14 @@ const settings = {
             'https://hackjunction.com/calendar',
         required: false,
     },
+    LOGO_DARK_URL: {
+        value: process.env.REACT_APP_LOGO_DARK_URL,
+        required: true,
+    },
+    LOGO_LIGHT_URL: {
+        value: process.env.REACT_APP_LOGO_LIGHT_URL,
+        required: true,
+    },
 }
 
 const buildConfig = () => {
