@@ -46,13 +46,13 @@ const settings = {
         required: true,
         value:
             process.env.REACT_APP_LOGO_DARK_URL ||
-            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_200/v1581419636/Junction%20Logos/wordmark_black.png',
+            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419636/Junction%20Logos/wordmark_black.png',
     },
     LOGO_LIGHT_URL: {
         required: true,
         value:
             process.env.REACT_APP_LOGO_LIGHT_URL ||
-            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_200/v1581419635/Junction%20Logos/wordmark_white.png',
+            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419635/Junction%20Logos/wordmark_white.png',
     },
     LOGROCKET_ID: {
         required: false,
