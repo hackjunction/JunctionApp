@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Font,
 } from '@react-pdf/renderer'
+import config from 'constants/config'
 
 Font.register({
     family: 'Montserrat',
@@ -70,10 +71,7 @@ const VisaInvitationPDF = ({
 }) => (
     <Document>
         <Page size="A4" style={styles.body}>
-            <Image
-                style={styles.topLeftLogo}
-                src={require('assets/logos/wordmark_black_small.png')}
-            />
+            <Image style={styles.topLeftLogo} src={config.LOGO_DARK_URL} />
             <Text style={styles.topRightTitle}>{hostName}</Text>
             <Text style={styles.topRightItem}>{hostAddress}</Text>
             <Text style={styles.topRightItem}>{hostAddress2}</Text>
