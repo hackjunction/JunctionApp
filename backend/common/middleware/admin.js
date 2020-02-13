@@ -2,7 +2,8 @@ const { NotFoundError } = require('../errors/errors')
 
 const AdminMiddleware = {
     hasAdminToken: (req, res, next) => {
-        if (req.query.token === global.gConfig.ADMIN_TOKEN) {
+        console.log('CHECKING ADMIN TOKEN', req.query.adminToken)
+        if (req.query.adminToken === global.gConfig.ADMIN_TOKEN) {
             next()
         } else {
             next(new NotFoundError())
