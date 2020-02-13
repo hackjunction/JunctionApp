@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Formik, FastField, Field } from 'formik'
 import { RegistrationFields } from '@hackjunction/shared'
 import * as yup from 'yup'
+import config from 'constants/config'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import ImageUpload from 'components/inputs/ImageUpload'
@@ -217,9 +218,10 @@ export default () => {
                                             Your contact email address, where
                                             you want to receive necessary
                                             notifications related to your
-                                            activity on the Junction app. Your
-                                            email address will never be shared
-                                            with any 3rd parties.
+                                            activity on the{' '}
+                                            {config.PLATFORM_OWNER_NAME} app.
+                                            Your email address will never be
+                                            shared with any 3rd parties.
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -303,16 +305,16 @@ export default () => {
                                 Profile details
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                When you register to events on the Junction app,
-                                the below details will be pre-filled into your
+                                When you register to events on the{' '}
+                                {config.PLATFORM_OWNER_NAME} app, the below
+                                details will be pre-filled into your
                                 registrations, and updated from your latest
                                 registration. In case you have opted in for
                                 recruitment functionality, these details will
-                                also be shown to select Junction partners who
-                                are looking to hire. Please see our{' '}
-                                <a href="https://www.hackjunction.com/policy">
-                                    Privacy Policy
-                                </a>{' '}
+                                also be shown to select{' '}
+                                {config.PLATFORM_OWNER_NAME} partners who are
+                                looking to hire. Please see our{' '}
+                                <a href={config.PRIVACY_URL}>Privacy Policy</a>{' '}
                                 for more details on how your data is used.
                             </Typography>
                             <Grid container spacing={3}>

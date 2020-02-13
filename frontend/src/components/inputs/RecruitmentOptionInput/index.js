@@ -5,6 +5,7 @@ import { Grid, Typography } from '@material-ui/core'
 
 import Select from 'components/inputs/Select'
 import BooleanInput from 'components/inputs/BooleanInput'
+import config from 'constants/config'
 
 const STATUS_OPTIONS = Misc.recruitmentStatuses.asArray.map(
     ({ id, label }) => ({
@@ -71,8 +72,9 @@ const RecruitmentOptionInput = ({
                             This means that relevant recruitment information
                             about you (ex. contact info, education, skills and
                             other cv information) will be visible to select
-                            Junction partners representatives who are looking to
-                            hire. You can also choose to opt out of this later.
+                            {config.PLATFORM_OWNER_NAME} partners
+                            representatives who are looking to hire. You can
+                            also choose to opt out of this later.
                         </Typography>
                         <BooleanInput
                             value={value.consent}

@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect'
 import { reduce, difference } from 'lodash-es'
 import { Auth } from '@hackjunction/shared'
-const namespace = 'https://app.hackjunction.com/'
+import config from 'constants/config'
+
+const namespace = config.ID_TOKEN_NAMESPACE
 
 export const getAccessToken = state => state.auth.session.accessToken || null
 export const getIdToken = state => state.auth.session.idToken || null
