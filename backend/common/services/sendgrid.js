@@ -93,7 +93,7 @@ const SendgridService = {
                     <p>
                         As a final note, don't feel discouraged and make sure to apply to one of our many other events.
                         We host tons of events around the year and around the globe and it would be amazing to see you at
-                        one of them. Check out the full event calendar here <a href="https://hackjunction.com/calendar">here</a>.
+                        one of them. Check out the full event calendar here <a href="${global.gConfig.CALENDAR_URL}">here</a>.
                     </p>
                 `,
             }
@@ -149,11 +149,11 @@ const SendgridService = {
                 header_image: event.coverImage.url,
                 subject: `Your travel grant for ${event.name} has been confirmed`,
                 subtitle: `You have been granted a travel grant of up to ${params.amount}€`,
-                body: `This means that we will assist you with your travel costs to Junction 2019, up to the amount above. Please note that the following conditions apply:
+                body: `This means that we will assist you with your travel costs to ${event.name}, up to the amount above. Please note that the following conditions apply:
                 <ul>
                     <li>
                         The travel grant is valid for travel from ${params.countryOfTravel} to ${event.name}. If you are travelling from somewhere else, 
-                        Junction reserves the right to change your travel grant class and/or amount.
+                        ${event.name} reserves the right to change your travel grant class and/or amount.
                     </li>
                     <li>
                         Travel grants are only available to participants who have checked in at the venue. 
@@ -275,7 +275,7 @@ const SendgridService = {
         const params = {
             header_image:
                 'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_600/v1573050918/wordmark_black.png',
-            subject: `Junction: You have a message from a recruiter!`,
+            subject: `${global.gConfig.PLATFORM_OWNER_NAME}: You have a message from a recruiter!`,
             subtitle: `${recruiter.firstName} ${recruiter.lastName} messaged you on ${global.gConfig.SENDGRID_FROM_NAME} Recruitment.`,
             body: `
                 Look at that, someone is interested in your hacker skills! ${recruiter.firstName} ${recruiter.lastName} from ${organization}

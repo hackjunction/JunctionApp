@@ -10,6 +10,7 @@ import EventHighlight from './EventHighlight'
 import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
+import config from 'constants/config'
 
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
@@ -37,12 +38,11 @@ export default () => {
                     <CenteredContainer>
                         <LineDivider />
                         <Divider size={1} />
-                        <h2>New to Junction?</h2>
+                        <h2>New to {config.PLATFORM_OWNER_NAME}?</h2>
                         <p>
-                            More info about Junction can be found from our
-                            website{' '}
-                            <ExternalLink href="https://hackjunction.com">
-                                {' '}
+                            More info about {config.PLATFORM_OWNER_NAME} can be
+                            found from our website{' '}
+                            <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
                                 here
                             </ExternalLink>
                         </p>
