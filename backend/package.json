@@ -8,8 +8,7 @@
         "start": "node index.js | npm run pipe-logs",
         "pipe-logs": "pino-cloudwatch --aws_access_key_id=$AWS_ACCESS_KEY_ID --aws_secret_access_key=$AWS_SECRET_ACCESS_KEY --aws_region=$AWS_REGION --group=$AWS_CLOUDWATCH_LOG_GROUP",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "sync-env": "sync-dotenv",
-        "precommit": "echo \"Backend: running pre-commit checks\" && npm run sync-env"
+        "precommit": "echo \"Backend: running pre-commit checks\""
     },
     "author": "",
     "license": "ISC",
@@ -105,8 +104,7 @@
         "eslint-plugin-prettier": "^3.1.2",
         "kill-port": "^1.4.0",
         "nodemon": "^1.18.10",
-        "prettier": "^1.19.1",
-        "sync-dotenv": "^2.2.1"
+        "prettier": "^1.19.1"
     },
     "engines": {
         "node": "12.3.1",
