@@ -3,6 +3,8 @@ const axios = require('axios')
 const CLIENT_ID = '77gyr30dlraeob'
 const CLIENT_SECRET = 'jvMviXjTgjluzXN8'
 
+const logger = require('../../misc/logger')
+
 const LinkedInService = {
     getAccessToken: () => {
         return axios
@@ -17,10 +19,10 @@ const LinkedInService = {
                 }
             )
             .then(res => {
-                console.log('getAccessToken', res)
+                logger.info('getAccessToken', res)
             })
             .catch(err => {
-                console.log('getAccessToken err', err)
+                logger.error('getAccessToken err', err)
             })
     },
 }

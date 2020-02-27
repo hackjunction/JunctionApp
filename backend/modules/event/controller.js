@@ -51,11 +51,13 @@ controller.updateEvent = (event, eventData) => {
 }
 
 controller.addOrganiser = (event, organiserId) => {
+    // TODO set the auth0 status
     event.organisers = _.concat(event.organisers, organiserId)
     return event.save()
 }
 
 controller.removeOrganiser = (event, organiserId) => {
+    // TODO set the auth0 status
     event.organisers = _.filter(event.organisers, id => id !== organiserId)
     return event.save()
 }

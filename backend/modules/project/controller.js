@@ -5,6 +5,8 @@ const { ProjectSchema } = require('@hackjunction/shared')
 const Project = require('./model')
 const { ForbiddenError } = require('../../common/errors/errors')
 
+const logger = require('../../misc/logger')
+
 const controller = {}
 
 controller.getPublicProjectById = projectId => {
@@ -83,8 +85,8 @@ controller.getProjectsWithToken = async (event, token) => {
         throw new ForbiddenError('This event has no challenges')
     }
 
-    console.log('EVENT', event)
-    console.log('TOKEN', token)
+    logger.info('Got EVENT', event)
+    logger.info('With TOKEN', token)
 
     const matches = await Promise.filter(event.challenges, challenge => {
         return bcrypt.compare(challenge.slug, token)

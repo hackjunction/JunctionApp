@@ -1,16 +1,18 @@
 const Promise = require('bluebird')
 const _ = require('lodash')
 
+const {
+    ReviewingMethods,
+    OverallReviewingMethods,
+} = require('@hackjunction/shared')
 const Rankings = require('./model')
 
 const WinnerVoteController = require('../winner-votes/controller')
 const GavelController = require('../reviewing/gavel/controller')
 
 const { ForbiddenError } = require('../../common/errors/errors')
-const {
-    ReviewingMethods,
-    OverallReviewingMethods,
-} = require('@hackjunction/shared')
+
+const logger = require('../../misc/logger')
 
 const controller = {}
 
@@ -169,17 +171,17 @@ controller.generateOverallResults = async event => {
             }
             case OverallReviewingMethods.finalsManualSelection.id: {
                 /** Generate arbitrary results based on selected finalists, should be manually edited */
-                console.log('Generating results based on finalists')
+                logger.info('Generating results based on finalists')
                 return []
             }
             case OverallReviewingMethods.noOverallWinner.id: {
                 /** The event has no overall winner, skip this */
-                console.log('Event has no overall winner')
+                logger.info('Event has no overall winner')
                 return []
             }
             default: {
                 /** No overall reviewing method defined, skip this */
-                console.log('No overall reviewing method defined')
+                logger.info('No overall reviewing method defined')
                 return []
             }
         }
@@ -192,8 +194,14 @@ controller.generateOverallResults = async event => {
             }
             case ReviewingMethods.manualReview.id: {
                 /** Skip generating results, no reviewing method defined */
-                console.log(
+                logger.info(
                     'Manual reviewing selected, cannot automatically generate results'
+                )
+                return []
+            }
+            default: {
+                logger.error(
+                    'ERROR, No reviewing method selected, returning [].'
                 )
                 return []
             }
@@ -205,39 +213,34 @@ controller.generateOverallResults = async event => {
 controller.generateTrackResults = async (event, trackSlug) => {
     const track = _.find(event.tracks || [], t => t.slug === trackSlug)
     if (!track) {
-        console.log(
+        logger.error(
             `Event ${event.name} has no track with the slug ${trackSlug}`
         )
         return []
-    } else {
-        const gavelResults = await GavelController.getResults(
-            event._id,
-            trackSlug
-        )
-        return gavelResults.map(({ project }) => project)
     }
+    const gavelResults = await GavelController.getResults(event._id, trackSlug)
+    return gavelResults.map(({ project }) => project)
 }
 
 /** Generate the results for all tracks */
 
 controller.generateTrackResultsAll = async event => {
     if (!event.tracksEnabled || !event.tracks.length === 0) {
-        console.log('No tracks enabled, skipping track results generation')
+        logger.info('No tracks enabled, skipping track results generation')
         return null
-    } else {
-        return Promise.reduce(
-            event.tracks,
-            async (results, track) => {
-                const trackResults = await controller.generateTrackResults(
-                    event,
-                    track.slug
-                )
-                results[track.slug] = trackResults
-                return results
-            },
-            {}
-        )
     }
+    return Promise.reduce(
+        event.tracks,
+        async (results, track) => {
+            const trackResults = await controller.generateTrackResults(
+                event,
+                track.slug
+            )
+            results[track.slug] = trackResults
+            return results
+        },
+        {}
+    )
 }
 
 module.exports = controller

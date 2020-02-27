@@ -3,6 +3,8 @@ const Promise = require('bluebird')
 const Achievement = require('../../achievement/model')
 const GavelProject = require('./Project')
 
+const logger = require('../../misc/logger')
+
 const GavelHelper = {}
 
 /** Generate track placement achievements */
@@ -22,7 +24,7 @@ GavelHelper.generateTrackPlacementAchievements = async event => {
     return Promise.map(
         Object.keys(byTrack),
         slug => {
-            console.log('Generating achievements for track: ', slug)
+            logger.info('Generating achievements for track: ', slug)
             const trackProjects = byTrack[slug]
             const sorted = _.sortBy(trackProjects, p => {
                 if (p.active) {
@@ -30,7 +32,7 @@ GavelHelper.generateTrackPlacementAchievements = async event => {
                 }
                 return Infinity
             })
-            console.log('-> ' + sorted.length + ' projects')
+            logger.info(`-> ${sorted.length} projects`)
             return Promise.map(
                 sorted,
                 (project, index) => {
@@ -46,7 +48,7 @@ GavelHelper.generateTrackPlacementAchievements = async event => {
                 }
             ).then(achievements => {
                 const flat = _.flatten(achievements)
-                console.log('ACHIEVEMENTS', flat.length)
+                logger.info('ACHIEVEMENTS', flat.length)
                 return flat
             })
         },
@@ -61,7 +63,6 @@ GavelHelper.generateTrackPlacementAchievements = async event => {
 GavelHelper.generateOverallPlacementAchievements = async event => {
     await Achievement.clearOverallPlacementAchievements(event)
     if (event.tracksEnabled) {
-        return
     } else {
         const projects = await GavelProject.find({ event: event._id })
         const sorted = _.sortBy(projects, p => {

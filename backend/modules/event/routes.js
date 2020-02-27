@@ -3,6 +3,8 @@ const _ = require('lodash')
 const mongoose = require('mongoose')
 const { Auth } = require('@hackjunction/shared')
 const asyncHandler = require('express-async-handler')
+
+const logger = require('../../misc/logger')
 const EventController = require('./controller.js')
 const AuthController = require('../auth/controller')
 const UserProfileController = require('../user-profile/controller')
@@ -65,6 +67,8 @@ const getOrganisers = asyncHandler(async (req, res) => {
 })
 
 const addOrganiser = asyncHandler(async (req, res) => {
+    logger.info('Granting access to', req.params.organiserId)
+
     await AuthController.grantAssistantOrganiser(req.params.organiserId)
     const event = await EventController.addOrganiser(
         req.event,

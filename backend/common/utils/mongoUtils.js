@@ -2,6 +2,8 @@ const mongodb = require('mongodb')
 const mongoose = require('mongoose')
 const _ = require('lodash')
 
+const logger = require('../../misc/logger')
+
 const MongoUtils = {
     ensureObjectId: value => {
         if (Array.isArray(value)) {
@@ -14,7 +16,7 @@ const MongoUtils = {
                 })
             }
         } else if (value.length === 24 && mongodb.ObjectID.isValid(value)) {
-            console.log('IS VALID MONGO ID', value)
+            logger.info('IS VALID MONGO ID', value)
             return mongoose.Types.ObjectId(value)
         }
         return value

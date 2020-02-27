@@ -63,13 +63,11 @@ export default () => {
 
     const renderEventItems = () => {
         //const items = [];
-        //TODO: Add links to event dashboard here for ongoing events
         return null
     }
 
     const renderOtherItems = () => {
         const items = []
-
         if (hasOrganiserAccess) {
             items.push({
                 label: 'Organiser dashboard',
