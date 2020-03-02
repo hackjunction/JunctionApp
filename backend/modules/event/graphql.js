@@ -16,6 +16,7 @@ const dateUtils = require('../../common/utils/dateUtils')
 const {
     CloudinaryImage,
     Address,
+    Partner,
     Track,
     Challenge,
     TravelGrantConfig,
@@ -81,6 +82,9 @@ const EventType = new GraphQLObjectType({
             },
             eventLocation: {
                 type: Address,
+            },
+            partners: {
+                type: GraphQLList(Partner),
             },
             tracksEnabled: {
                 type: GraphQLBoolean,

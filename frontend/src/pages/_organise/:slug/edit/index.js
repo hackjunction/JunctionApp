@@ -35,6 +35,7 @@ export default () => {
                 changed[field] = value
             }
         })
+        console.log('chnged', changed)
         dispatch(OrganiserActions.editEvent(slug, changed))
             .then(() => {
                 dispatch(

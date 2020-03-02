@@ -16,6 +16,7 @@ import StreetAddressForm from 'components/inputs/StreetAddressForm'
 import TravelGrantConfig from './TravelGrantConfig'
 import TracksForm from './TracksForm'
 import ChallengesForm from './ChallengesForm'
+import PartnersForm from './PartnersForm'
 
 export default () => {
     return (
@@ -146,6 +147,29 @@ export default () => {
                             )
                         }
                         return null
+                    }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name="partners"
+                    render={({ field, form }) => {
+                        console.log('FORMINS', form, field)
+                        return (
+                            <FormControl
+                                label="Partners"
+                                hint="List your partners here"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <PartnersForm
+                                    value={field.value ? field.value : []}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                />
+                            </FormControl>
+                        )
                     }}
                 />
             </Grid>

@@ -7,10 +7,13 @@ export const UPDATE_PROJECTS = 'organiser/UPDATE_PROJECTS'
 export const UPDATE_GAVEL_PROJECTS = 'organiser/UPDATE_GAVEL_PROJECTS'
 export const UPDATE_GAVEL_ANNOTATORS = 'organiser/UPDATE_GAVEL_ANNOTATORS'
 export const UPDATE_RANKINGS = 'organiser/UPDATE_RANKINGS'
+export const UPDATE_PARTNERS = 'organiser/UPDATE_PARTNERS'
 
 export const REMOVE_ORGANISER = 'organiser/REMOVE_ORGANISER'
+export const REMOVE_PARTNER = 'organiser/REMOVE_PARTNER'
 
 export const ADD_ORGANISER = 'organiser/ADD_ORGANISER'
+export const ADD_PARTNER = 'organiser/ADD_PARTNER'
 
 export const EDIT_REGISTRATION = 'organiser/EDIT_REGISTRATION'
 export const EDIT_EVENT = 'organiser/EDIT_EVENT'

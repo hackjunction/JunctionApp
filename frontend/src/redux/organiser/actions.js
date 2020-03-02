@@ -105,6 +105,60 @@ export const addOrganiserToEvent = (slug, userId) => async (
     return organisers
 }
 
+/** Update event partners with loading/error data */
+export const updatePartnersForEvent = (owner, partners) => async (
+    dispatch,
+    getState
+) => {
+    const userIds = [owner].concat(partners)
+
+    dispatch({
+        type: ActionTypes.UPDATE_PARTNERS,
+        promise: UserProfilesService.getPublicUserProfiles(userIds),
+        meta: {
+            onFailure: e => console.log('Error updating event partners', e),
+        },
+    })
+}
+
+export const removePartnerFromEvent = (slug, userId) => async (
+    dispatch,
+    getState
+) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+
+    const partners = await EventsService.removePartnerFromEvent(
+        idToken,
+        slug,
+        userId
+    )
+    dispatch({
+        type: ActionTypes.REMOVE_PARTNER,
+        payload: userId,
+    })
+
+    return partners
+}
+
+export const addPartnerToEvent = (slug, userId) => async (
+    dispatch,
+    getState
+) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+
+    const partners = await EventsService.addPartnerToEvent(
+        idToken,
+        slug,
+        userId
+    )
+    dispatch({
+        type: ActionTypes.ADD_ORGANISER,
+        payload: userId,
+    })
+
+    return partners
+}
+
 /** Update event registrations with loading/error data */
 export const updateRegistrationsForEvent = slug => async (
     dispatch,

@@ -65,6 +65,8 @@ export const rankingsLoading = state => state.organiser.rankings.loading
 export const rankingsError = state => state.organiser.rankings.error
 export const rankingsUpdated = state => state.organiser.rankings.updated
 
+export const partners = state => state.organiser.partners.data
+
 export const rankingsOverall = createSelector(rankings, rankings => {
     return rankings?.overall
 })

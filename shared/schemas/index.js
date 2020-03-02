@@ -8,6 +8,7 @@ const Education = require('./Education')
 const EventTag = require('./EventTag')
 const IBANAccount = require('./IBANAccount')
 const LegalName = require('./LegalName')
+const Partner = require('./Partner')
 const PhoneNumber = require('./PhoneNumber')
 const RecruitmentOptions = require('./RecruitmentOptions')
 const RegistrationConfig = require('./RegistrationConfig')
@@ -36,6 +37,7 @@ const SharedSchema = new GraphQLSchema({
         EventTag.graphql,
         IBANAccount.graphql,
         LegalName.graphql,
+        Partner.graphql,
         PhoneNumber.graphql,
         RecruitmentOptions.graphql,
         RegistrationConfig.graphql,

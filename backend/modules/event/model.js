@@ -10,6 +10,7 @@ const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
+const PartnerSchema = require('@hackjunction/shared/schemas/Partner')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
 const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
@@ -90,6 +91,17 @@ const EventSchema = new mongoose.Schema({
             },
             `is required for physical events`,
         ],
+    },
+    partners: {
+        type: [PartnerSchema.mongoose],
+        default: [],
+        validate: [
+            function(val) {
+                return Array.isArray(val)
+            },
+            'must have at least one item if tracks are enabled',
+        ],
+        required: false,
     },
     tracksEnabled: false,
     tracks: {

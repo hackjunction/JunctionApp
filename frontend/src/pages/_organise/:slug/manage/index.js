@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { concat } from 'lodash-es'
+import { useRouteMatch, useLocation } from 'react-router'
+import { concat, forOwn } from 'lodash-es'
 
 import {
     ListItemSecondaryAction,
@@ -13,13 +14,21 @@ import * as OrganiserActions from 'redux/organiser/actions'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+import { Formik, FastField } from 'formik'
+
 import Button from 'components/generic/Button'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
+import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
+import BottomBar from 'components/inputs/BottomBar'
 
 import AddOrganiserDrawer from './AddOrganiserDrawer'
 
 export default () => {
+    // TODO make use formik
+    const match = useRouteMatch()
+    const location = useLocation()
+
     const dispatch = useDispatch()
 
     const event = useSelector(OrganiserSelectors.event)
@@ -72,6 +81,27 @@ export default () => {
             dispatch(OrganiserActions.addOrganiserToEvent(slug, userId))
                 .then(() => {
                     dispatch(SnackbarActions.success('Added organiser'))
+                })
+                .catch(err => {
+                    dispatch(
+                        SnackbarActions.error(
+                            'Oops, something went wrong... Please try again.'
+                        )
+                    )
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        },
+        [dispatch, slug]
+    )
+
+    const handlePartnerAdded = useCallback(
+        userId => {
+            setLoading(true)
+            dispatch(OrganiserActions.addPartnerToEvent(slug, userId))
+                .then(() => {
+                    dispatch(SnackbarActions.success('Added partner'))
                 })
                 .catch(err => {
                     dispatch(
