@@ -46,6 +46,7 @@ const updateRegistration = asyncHandler(async (req, res) => {
         req.event,
         req.body
     )
+    console.log('reg after update', registration)
     /** Mirror the changes to the user's profile here */
     UserProfileController.updateUserProfile(registration.answers, req.user.sub)
     return res.status(200).json(registration)

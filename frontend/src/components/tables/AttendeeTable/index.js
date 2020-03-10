@@ -68,6 +68,10 @@ export default ({
         [dispatch]
     )
 
+    const exportRegisterations = () => {
+        console.log(event)
+    }
+
     const resetSearch = useCallback(() => {
         dispatch(push({ search: '' }))
     }, [dispatch])
@@ -217,6 +221,11 @@ export default ({
                         key: 'bulk-edit',
                         label: 'Edit all',
                         action: openBulkEdit,
+                    },
+                    {
+                        key: 'export_registrations',
+                        label: 'Export registrations',
+                        action: exportRegisterations,
                     },
                 ]}
             />

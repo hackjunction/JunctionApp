@@ -214,6 +214,7 @@ export default RequiresPermission(() => {
         )
 
         const sorted = sortBy(fieldSections, 'order')
+        console.log('event in here', event)
         return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
@@ -244,6 +245,29 @@ export default RequiresPermission(() => {
 
     const handleSubmit = useCallback(async () => {
         setLoading(true)
+        console.log('TheData', formData)
+        //TODO shape the custom answers here
+        const customSections = sections.filter(sec => {
+            return sec.hasOwnProperty('questions')
+        })
+        if (event.customQuestions) {
+            console.log('customs are', event.customQuestions)
+            formData['CustomAnswers'] = []
+            event.customQuestions.forEach(section => {
+                const sec = section.name
+                section.questions.forEach(question => {
+                    const que = question.name
+                    const value = formData[sec][que]
+                    const custom = {
+                        section: sec,
+                        key: que,
+                        value: value + '',
+                    }
+                    formData['CustomAnswers'].push(custom)
+                })
+            })
+            console.log('formData is', formData)
+        }
         try {
             if (hasRegistration) {
                 await editRegistration(formData)
@@ -265,13 +289,15 @@ export default RequiresPermission(() => {
         createRegistration,
         dispatch,
         editRegistration,
+        event.customQuestions,
         formData,
         hasRegistration,
-        sections.length,
+        sections,
         slug,
     ])
 
     const renderSteps = () => {
+        console.log('sctions', sections)
         return sections.map((section, index) => {
             const isCustomSection = section.hasOwnProperty('name')
             const nextStep =

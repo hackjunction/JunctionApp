@@ -27,7 +27,23 @@ const eventQuery = gql`
                 optionalFields
                 requiredFields
             }
-
+            customQuestions {
+                label
+                name
+                description
+                questions {
+                    settings {
+                        options
+                        default
+                    }
+                    hint
+                    placeholder
+                    fieldRequired
+                    label
+                    fieldType
+                    name
+                }
+            }
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted
@@ -70,9 +86,9 @@ export const EventDetailProvider = ({ children }) => {
             eventSlug: slug,
         },
     })
-
     const createRegistration = useCallback(
         formData => {
+            console.log('formdata in context', formData)
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
@@ -87,6 +103,7 @@ export const EventDetailProvider = ({ children }) => {
 
     const editRegistration = useCallback(
         formData => {
+            console.log('formdata in context', formData)
             return RegistrationsService.updateRegistration(
                 idToken,
                 slug,
