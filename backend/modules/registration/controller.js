@@ -27,6 +27,7 @@ controller.getUserRegistrations = user => {
 
 controller.createRegistration = async (user, event, data) => {
     const answers = await RegistrationHelpers.validateAnswers(data, event)
+    console.log('Adsand after', answers)
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
@@ -64,6 +65,7 @@ controller.updateRegistration = (user, event, data) => {
                 data,
                 event
             )
+            console.log('Adsand after', answers)
             return Registration.updateAllowed(registration, { answers })
         })
 }

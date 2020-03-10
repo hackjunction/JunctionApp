@@ -33,9 +33,9 @@ const _isEqualTo = (value, targetValue) => {
                     value.trim().toLowerCase() ===
                     targetValue.trim().toLowerCase()
                 )
-            } else {
-                return value.trim().toLowerCase() == targetValue
             }
+            return value.trim().toLowerCase() == targetValue
+
         case 'boolean':
             return value === targetValue
         case 'undefined':
@@ -77,7 +77,7 @@ const contains = (object, path, targetValue) => {
 const _containsOneOf = (value, targetValue) => {
     if (!Array.isArray(targetValue)) return false
 
-    for (let item of targetValue) {
+    for (const item of targetValue) {
         if (_contains(value, item)) return true
     }
 
@@ -126,7 +126,7 @@ const isLte = (object, path, targetValue) => {
 const _isOneOf = (value, targetValue) => {
     if (!Array.isArray(targetValue)) return false
 
-    for (let item of targetValue) {
+    for (const item of targetValue) {
         if (_isEqualTo(value, item)) return true
     }
 

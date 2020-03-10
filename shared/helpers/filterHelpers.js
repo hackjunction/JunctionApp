@@ -142,7 +142,7 @@ const applyFilters = (items, filters) => {
     const filtersArray = buildFiltersArray(filters)
 
     return items.filter(item => {
-        for (let filter of filtersArray) {
+        for (const filter of filtersArray) {
             if (!filter(item)) return false
         }
         return true
