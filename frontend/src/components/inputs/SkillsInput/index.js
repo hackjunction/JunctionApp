@@ -96,7 +96,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                             value={`${index + 1}`}
                             control={<Radio color="primary" />}
                             label={label}
-                            labelPlacement="left"
+                            labelPlacement="start"
                         />
                     ))}
                 </RadioGroup>
