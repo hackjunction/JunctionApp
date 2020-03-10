@@ -141,10 +141,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                                 }
                             />
                             <ListItemSecondaryAction>
-                                <Button
-                                    onClick={() => handleRemove(index)}
-                                    color="error"
-                                >
+                                <Button onClick={() => handleRemove(index)}>
                                     Remove
                                 </Button>
                             </ListItemSecondaryAction>
