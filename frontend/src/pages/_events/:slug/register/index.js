@@ -245,13 +245,11 @@ export default RequiresPermission(() => {
 
     const handleSubmit = useCallback(async () => {
         setLoading(true)
-        console.log('TheData', formData)
         //TODO shape the custom answers here
         const customSections = sections.filter(sec => {
             return sec.hasOwnProperty('questions')
         })
         if (event.customQuestions) {
-            console.log('customs are', event.customQuestions)
             formData['CustomAnswers'] = []
             event.customQuestions.forEach(section => {
                 const sec = section.name
@@ -266,7 +264,6 @@ export default RequiresPermission(() => {
                     formData['CustomAnswers'].push(custom)
                 })
             })
-            console.log('formData is', formData)
         }
         try {
             if (hasRegistration) {
@@ -297,7 +294,7 @@ export default RequiresPermission(() => {
     ])
 
     const renderSteps = () => {
-        console.log('sctions', sections)
+        console.log('right now', formData)
         return sections.map((section, index) => {
             const isCustomSection = section.hasOwnProperty('name')
             const nextStep =
