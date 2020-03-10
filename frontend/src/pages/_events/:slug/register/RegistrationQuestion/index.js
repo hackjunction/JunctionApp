@@ -25,7 +25,8 @@ const RegistrationQuestion = ({
     isCustom,
 }) => {
     const renderInput = () => {
-        console.log('doing field', field)
+        console.log('doing field', field, fieldTypes.URL.id)
+
         switch (config.fieldType.id) {
             case fieldTypes.EMAIL.id:
             case fieldTypes.URL.id:

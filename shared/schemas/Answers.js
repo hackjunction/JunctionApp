@@ -21,7 +21,6 @@ _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
             type: value.graphqlSchema,
         }
     }
-    console.log('mogogogogogo', mongooseFields)
 })
 
 const AnswersSchema = new mongoose.Schema(mongooseFields)
