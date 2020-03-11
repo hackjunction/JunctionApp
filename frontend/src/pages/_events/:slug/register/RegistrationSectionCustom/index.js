@@ -51,7 +51,6 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
     const [visible, setVisible] = useState(!section.conditional)
-
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
             (result, question) => {
@@ -64,14 +63,31 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                         question.fieldType
                     ].validationSchema(question.fieldRequired, question)
                 }
-
                 if (
                     registration &&
                     registration.answers &&
-                    registration.answers[section.name]
+                    registration.answers['CustomAnswers']
                 ) {
-                    result.initialValues[question.name] =
-                        registration.answers[section.name][question.name]
+                    registration.answers['CustomAnswers'].forEach(element => {
+                        if (
+                            element.section === section.name &&
+                            element.key === question.name
+                        ) {
+                            if (question.fieldType === 'multiple-choice') {
+                                // TODO fix so that that multiple choice options with , in them don't cause bugs
+                                result.initialValues[
+                                    element.key
+                                ] = element.value.split(',')
+                            } else if (question.fieldType === 'boolean') {
+                                result.initialValues[element.key] =
+                                    element.value === 'true'
+                            } else {
+                                result.initialValues[element.key] =
+                                    element.value
+                            }
+                        }
+                    })
+                    console.log('initial values are', result.initialValues)
                 }
                 return result
             },

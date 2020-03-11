@@ -27,7 +27,23 @@ const eventQuery = gql`
                 optionalFields
                 requiredFields
             }
-
+            customQuestions {
+                label
+                name
+                description
+                questions {
+                    settings {
+                        options
+                        default
+                    }
+                    hint
+                    placeholder
+                    fieldRequired
+                    label
+                    fieldType
+                    name
+                }
+            }
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted
@@ -70,7 +86,6 @@ export const EventDetailProvider = ({ children }) => {
             eventSlug: slug,
         },
     })
-
     const createRegistration = useCallback(
         formData => {
             return RegistrationsService.createRegistration(

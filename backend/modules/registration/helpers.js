@@ -34,7 +34,6 @@ const RegistrationHelpers = {
         // Build validation schema for custom questions
         event.customQuestions.forEach(section => {
             const sectionSchema = {}
-
             section.questions.forEach(question => {
                 sectionSchema[question.name] = RegistrationFieldsCustom[
                     question.fieldType
@@ -43,7 +42,6 @@ const RegistrationHelpers = {
 
             validationSchema[section.name] = yup.object().shape(sectionSchema)
         })
-
         const schema = yup.object().shape(validationSchema)
         return schema.validate(answers, { stripUknown: true })
     },

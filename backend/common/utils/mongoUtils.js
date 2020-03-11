@@ -6,17 +6,16 @@ const MongoUtils = {
     ensureObjectId: value => {
         if (Array.isArray(value)) {
             return value.map(item => MongoUtils.ensureObjectId(item))
-        } else if (typeof value === 'object') {
+        }
+        if (typeof value === 'object') {
             if (Object.keys(value).length > 0) {
                 return _.mapValues(value, field => {
                     return MongoUtils.ensureObjectId(field)
                 })
             }
-        } else {
-            if (value.length === 24 && mongodb.ObjectID.isValid(value)) {
-                console.log('IS VALID MONGO ID', value)
-                return mongoose.Types.ObjectId(value)
-            }
+        } else if (value.length === 24 && mongodb.ObjectID.isValid(value)) {
+            console.log('IS VALID MONGO ID', value)
+            return mongoose.Types.ObjectId(value)
         }
         return value
     },

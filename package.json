@@ -7,6 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "better-npm-run start:prod",
         "dev": "better-npm-run start:dev",
+        "debug": "better-npm-run start:debug",
         "build": "better-npm-run setup && better-npm-run build",
         "setup": "better-npm-run setup",
         "dev:frontend": "cd frontend && npm start",
@@ -25,6 +26,7 @@
         "setup:backend": "cd backend && npm install",
         "setup:shared": "cd shared && npm install",
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
+        "start:debug": "npm-run-all --parallel dev:frontend dev:backend --debug-brk=2222",
         "start:prod": "cd backend && npm start",
         "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
     },

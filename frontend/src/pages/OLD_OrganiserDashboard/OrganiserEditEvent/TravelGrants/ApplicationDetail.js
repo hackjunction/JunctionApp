@@ -67,9 +67,6 @@ const ApplicationDetail = ({
     const [comment, setComment] = useState(
         data ? data.travelGrantComment : undefined
     )
-
-    console.log('DATA', data)
-
     const setNextPage = useCallback(() => {
         if (pageNumber < numPages) {
             setPageNumber(pageNumber + 1)

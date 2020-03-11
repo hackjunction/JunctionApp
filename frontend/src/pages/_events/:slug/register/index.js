@@ -244,6 +244,26 @@ export default RequiresPermission(() => {
 
     const handleSubmit = useCallback(async () => {
         setLoading(true)
+        //TODO shape the custom answers here
+        const customSections = sections.filter(sec => {
+            return sec.hasOwnProperty('questions')
+        })
+        if (event.customQuestions) {
+            formData['CustomAnswers'] = []
+            event.customQuestions.forEach(section => {
+                const sec = section.name
+                section.questions.forEach(question => {
+                    const que = question.name
+                    const value = formData[sec][que]
+                    const custom = {
+                        section: sec,
+                        key: que,
+                        value: value + '',
+                    }
+                    formData['CustomAnswers'].push(custom)
+                })
+            })
+        }
         try {
             if (hasRegistration) {
                 await editRegistration(formData)
@@ -265,13 +285,15 @@ export default RequiresPermission(() => {
         createRegistration,
         dispatch,
         editRegistration,
+        event.customQuestions,
         formData,
         hasRegistration,
-        sections.length,
+        sections,
         slug,
     ])
 
     const renderSteps = () => {
+        console.log('right now', formData, sections)
         return sections.map((section, index) => {
             const isCustomSection = section.hasOwnProperty('name')
             const nextStep =
@@ -298,9 +320,9 @@ export default RequiresPermission(() => {
                                 data={formData}
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
-                                onNext={(values, path) =>
+                                onNext={(values, path) => {
                                     setNextStep(index + 1, values, path)
-                                }
+                                }}
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
                             />
                         ) : (
@@ -311,9 +333,9 @@ export default RequiresPermission(() => {
                                 fields={section.fields}
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
-                                onNext={values =>
+                                onNext={values => {
                                     setNextStep(index + 1, values)
-                                }
+                                }}
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
                             />
                         )}
