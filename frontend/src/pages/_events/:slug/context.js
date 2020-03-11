@@ -88,7 +88,6 @@ export const EventDetailProvider = ({ children }) => {
     })
     const createRegistration = useCallback(
         formData => {
-            console.log('formdata in context', formData)
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
@@ -103,7 +102,6 @@ export const EventDetailProvider = ({ children }) => {
 
     const editRegistration = useCallback(
         formData => {
-            console.log('formdata in context', formData)
             return RegistrationsService.updateRegistration(
                 idToken,
                 slug,
