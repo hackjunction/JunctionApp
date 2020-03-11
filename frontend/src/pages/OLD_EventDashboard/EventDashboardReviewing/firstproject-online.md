@@ -1,1 +1,0 @@
-Alright! Time to see your first project! Open up the details of the project below to see what it's all about. Take your time reviewing the demo and source code of the project, and once you think you have a good idea of what the project is about, return here and click DONE.

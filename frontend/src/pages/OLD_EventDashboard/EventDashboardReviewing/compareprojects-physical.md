@@ -1,1 +1,0 @@
-Now that you've seen your first project, you should go and see the next one. Find the project under CURRENT, listen to their demo, and make a decision. Which one was better in your opinion - the first project or the one you just saw?

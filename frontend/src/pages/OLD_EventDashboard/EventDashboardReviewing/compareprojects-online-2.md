@@ -1,1 +1,0 @@
-Look at the next project, and after you've formed an opinion about it, make a decision. Remember: you are always comparing your current project to the one you looked at immediately before it - regardless of who won the previous comparison!
