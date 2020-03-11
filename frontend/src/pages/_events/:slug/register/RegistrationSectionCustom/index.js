@@ -87,7 +87,6 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                             }
                         }
                     })
-                    console.log('initial values are', result.initialValues)
                 }
                 return result
             },
