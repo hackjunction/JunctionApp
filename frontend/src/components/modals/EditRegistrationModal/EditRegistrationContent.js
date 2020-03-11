@@ -23,8 +23,16 @@ export default React.memo(({ registration }) => {
     const sorted = sortBy(Object.keys(grouped), label =>
         RegistrationFields.getCategoryOrderByLabel(label)
     )
+    const customAnswers = {}
+    if (registration.answers.CustomAnswers) {
+        registration.answers.CustomAnswers.forEach(element => {
+            if (!customAnswers[element.section]) {
+                customAnswers[element.section] = {}
+            }
+            customAnswers[element.section][element.key] = element.value
+        })
+    }
     const categoryNames = sorted.filter(key => key !== '')
-
     return (
         <React.Fragment>
             {categoryNames.map(name => (
@@ -63,7 +71,6 @@ export default React.memo(({ registration }) => {
                 </ExpansionPanel>
             ))}
             {event.customQuestions.map(section => {
-                const sectionAnswers = registration.answers[section.name] || {}
                 return (
                     <ExpansionPanel key={section.name}>
                         <ExpansionPanelSummary
@@ -80,7 +87,9 @@ export default React.memo(({ registration }) => {
                                         <DescriptionItem
                                             title={question.label}
                                             content={
-                                                sectionAnswers[question.name]
+                                                customAnswers[section.name][
+                                                    question.name
+                                                ]
                                             }
                                         />
                                     )

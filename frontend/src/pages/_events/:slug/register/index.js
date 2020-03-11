@@ -322,7 +322,6 @@ export default RequiresPermission(() => {
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
                                 onNext={(values, path) => {
-                                    console.log('val, path', values, path)
                                     setNextStep(index + 1, values, path)
                                 }}
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
@@ -336,7 +335,6 @@ export default RequiresPermission(() => {
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
                                 onNext={values => {
-                                    console.log('val', values)
                                     setNextStep(index + 1, values)
                                 }}
                                 nextLabel={nextStep ? nextStep.label : 'Finish'}
