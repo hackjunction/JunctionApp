@@ -214,7 +214,6 @@ export default RequiresPermission(() => {
         )
 
         const sorted = sortBy(fieldSections, 'order')
-        console.log('event in here', event)
         return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
