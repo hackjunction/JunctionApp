@@ -96,7 +96,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                             value={`${index + 1}`}
                             control={<Radio color="primary" />}
                             label={label}
-                            labelPlacement="left"
+                            labelPlacement="start"
                         />
                     ))}
                 </RadioGroup>
@@ -141,10 +141,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                                 }
                             />
                             <ListItemSecondaryAction>
-                                <Button
-                                    onClick={() => handleRemove(index)}
-                                    color="error"
-                                >
+                                <Button onClick={() => handleRemove(index)}>
                                     Remove
                                 </Button>
                             </ListItemSecondaryAction>

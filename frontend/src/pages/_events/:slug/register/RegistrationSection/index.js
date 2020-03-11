@@ -47,7 +47,6 @@ export default props => {
         data,
         isActive,
     } = props
-
     const { registration } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
