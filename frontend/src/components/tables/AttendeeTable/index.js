@@ -255,7 +255,7 @@ export default ({
                                 )}
                                 filename="export.csv"
                             >
-                                Export selected
+                                Export Registerations
                             </CSVLink>
                         ),
                         action: exportRegisterations,
