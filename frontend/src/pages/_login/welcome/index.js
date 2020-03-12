@@ -18,6 +18,7 @@ import UserProfilesService from 'services/userProfiles'
 import FixedLayout from 'components/layouts/FixedLayout'
 import LightTextField from './LightTextField'
 import LightCheckbox from './LightCheckbox'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -179,8 +180,8 @@ export default () => {
                     />
                     <img
                         className={classes.contentLeftLogo}
-                        src={require('assets/logos/wordmark_white.png')}
-                        alt="Junction logo"
+                        src={config.LOGO_LIGHT_URL}
+                        alt={config.PLATFORM_OWNER_NAME + ' logo'}
                     />
                 </div>
                 <div className={classes.contentRight}>
@@ -285,10 +286,10 @@ export default () => {
                                         className={classes.label}
                                     >
                                         I confirm that I am at least 16 years of
-                                        age, and I have read and agree to the
-                                        Junction{' '}
+                                        age, and I have read and agree to the{' '}
+                                        {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
-                                            href="https://hackjunction.com/terms"
+                                            href={config.TERMS_URL}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={classes.link}
@@ -297,7 +298,7 @@ export default () => {
                                         </a>{' '}
                                         and{' '}
                                         <a
-                                            href="https://hackjunction.com/policy"
+                                            href={config.PRIVACY_URL}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={classes.link}

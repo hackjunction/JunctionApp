@@ -15,7 +15,7 @@ const Settings = {
     /** How long after being assigned a project is an annotator considered inactive? */
     ANNOTATOR_TIMEOUT_MINS: 5,
     /** How many views must a project have to no longer be automatically prioritised? */
-    ITEM_MIN_VIEWS: 5
-};
+    ITEM_MIN_VIEWS: 5,
+}
 
-module.exports = Settings;
+module.exports = Settings

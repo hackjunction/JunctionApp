@@ -2,6 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import UserMenu from 'components/UserMenu'
+import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -30,9 +31,9 @@ export default () => {
         <div className={classes.wrapper}>
             <div className={classes.inner}>
                 <img
-                    src={require('assets/logos/wordmark_black.png')}
+                    src={config.LOGO_DARK_URL}
                     className={classes.wordmark}
-                    alt="Junction wordmark"
+                    alt={config.PLATFORM_OWNER_NAME + ' logo'}
                 />
                 <UserMenu />
             </div>

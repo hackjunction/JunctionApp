@@ -5,7 +5,7 @@ const RegistrationTravelGrantStatuses = {
         description: 'The reimbursement form has not been submitted yet.',
         color: '#555555',
         allowAssign: true,
-        allowEdit: true
+        allowEdit: true,
     },
     pending: {
         id: 'pending',
@@ -13,7 +13,7 @@ const RegistrationTravelGrantStatuses = {
         description: 'Waiting for acceptance/rejection',
         color: '#555555',
         allowAssign: true,
-        allowEdit: true
+        allowEdit: true,
     },
     accepted: {
         id: 'accepted',
@@ -21,7 +21,7 @@ const RegistrationTravelGrantStatuses = {
         description: 'Accepted and has been notified about it',
         color: '#33d068',
         allowAssign: false,
-        allowEdit: false
+        allowEdit: false,
     },
     rejected: {
         id: 'rejected',
@@ -29,13 +29,14 @@ const RegistrationTravelGrantStatuses = {
         description: 'Rejected and has been notified about it',
         color: '#e2062c',
         allowAssign: false,
-        allowEdit: false
-    }
-    
-};
+        allowEdit: false,
+    },
+}
 
 module.exports = {
     ids: Object.keys(RegistrationTravelGrantStatuses),
     asObject: RegistrationTravelGrantStatuses,
-    asArray: Object.keys(RegistrationTravelGrantStatuses).map(status => RegistrationTravelGrantStatuses[status])
-};
+    asArray: Object.keys(RegistrationTravelGrantStatuses).map(
+        status => RegistrationTravelGrantStatuses[status]
+    ),
+}

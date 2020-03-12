@@ -39,8 +39,8 @@ const UserProfileSchema = new mongoose.Schema({
 /** Build user profile fields based on possible registration questions */
 const fields = {}
 _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
-    if (value.hasOwnProperty('userProfileConfig')) {
-        fields[fieldName] = value.userProfileConfig
+    if (value.copyToUserProfile && value.mongooseSchema) {
+        fields[fieldName] = value.mongooseSchema
     }
 })
 

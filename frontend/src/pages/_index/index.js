@@ -1,8 +1,4 @@
-import React, { useEffect } from 'react'
-
-import { useSelector, useDispatch } from 'react-redux'
-import * as EventActions from 'redux/events/actions'
-import * as EventSelectors from 'redux/events/selectors'
+import React from 'react'
 
 import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
@@ -14,15 +10,13 @@ import EventHighlight from './EventHighlight'
 import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
+import config from 'constants/config'
+
+import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 export default () => {
-    const dispatch = useDispatch()
-    const upcomingEvents = useSelector(EventSelectors.upcomingEvents)
-    const pastEvents = useSelector(EventSelectors.pastEvents)
-
-    useEffect(() => {
-        dispatch(EventActions.updateEvents())
-    }, [dispatch])
+    const [activeEvents] = useActiveEvents({ limit: 3 })
+    const [pastEvents] = usePastEvents({ limit: 3 })
 
     return (
         <PageWrapper
@@ -36,7 +30,7 @@ export default () => {
                     <CenteredContainer>
                         <EventsGrid
                             title="Upcoming / ongoing events"
-                            events={upcomingEvents}
+                            events={activeEvents}
                         />
                         <EventsGrid title="Past events" events={pastEvents} />
                     </CenteredContainer>
@@ -44,12 +38,11 @@ export default () => {
                     <CenteredContainer>
                         <LineDivider />
                         <Divider size={1} />
-                        <h2>New to Junction?</h2>
+                        <h2>New to {config.PLATFORM_OWNER_NAME}?</h2>
                         <p>
-                            More info about Junction can be found from our
-                            website{' '}
-                            <ExternalLink href="https://hackjunction.com">
-                                {' '}
+                            More info about {config.PLATFORM_OWNER_NAME} can be
+                            found from our website{' '}
+                            <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
                                 here
                             </ExternalLink>
                         </p>

@@ -1,42 +1,67 @@
-const yup = require('yup');
-const Genders = require('../constants/genders');
-const Countries = require('../constants/countries');
-const Languages = require('../constants/languages');
-const Industries = require('../constants/industries');
-const Themes = require('../constants/themes');
-const Roles = require('../constants/roles');
-const Skills = require('../constants/skills');
-const Misc = require('../constants/misc');
-const FieldTypes = require('./field-types');
-const FilterTypes = require('./filter-types');
-const FilterValues = require('./filter-values');
+const yup = require('yup')
+const _ = require('lodash')
+const {
+    graphql,
+    GraphQlSchema,
+    GraphQlObjectType,
+    GraphQLString,
+    GraphQLList,
+    GraphQLNonNull,
+    GraphQLInt,
+    GraphQLBoolean,
+} = require('graphql')
+
+const PhoneNumberSchema = require('../schemas/PhoneNumber')
+const RoleSchema = require('../schemas/Role')
+const SkillSchema = require('../schemas/Skill')
+const EducationSchema = require('../schemas/Education')
+const RecruitmentOptionsSchema = require('../schemas/RecruitmentOptions')
+const TeamOptionsSchema = require('../schemas/TeamOptions')
+
+const Genders = require('../constants/genders')
+const Countries = require('../constants/countries')
+const Languages = require('../constants/languages')
+const Industries = require('../constants/industries')
+const Themes = require('../constants/themes')
+const Roles = require('../constants/roles')
+const Skills = require('../constants/skills')
+const Misc = require('../constants/misc')
+const FieldTypes = require('./field-types')
+const FilterTypes = require('./filter-types')
+const FilterValues = require('./filter-values')
 
 const Categories = {
     basicDetails: {
+        id: 'basicDetails',
         label: 'Basic Details',
-        order: 1
+        order: 1,
     },
     skillsAndInterests: {
+        id: 'skillsAndInterests',
         label: 'Skills & Interests',
-        order: 2
+        order: 2,
     },
     links: {
+        id: 'links',
         label: 'Links',
-        order: 3
+        order: 3,
     },
     travelAndAccommodation: {
+        id: 'travelAndAccommodation',
         label: 'Travel & Accommodation',
-        order: 4
+        order: 4,
     },
     recruitment: {
+        id: 'recruitment',
         label: 'Opportunities',
-        order: 5
+        order: 5,
     },
     other: {
+        id: 'other',
         label: 'Other',
-        order: 6
-    }
-};
+        order: 6,
+    },
+}
 
 const FieldProps = {
     firstName: {
@@ -46,24 +71,27 @@ const FieldProps = {
         placeholder: 'Herbert',
         fieldType: FieldTypes.SHORT_TEXT,
         colSize: 12,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLNonNull(GraphQLString),
+        alwaysRequired: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
-            editable: false
+            editable: false,
         },
         filters: [
             {
                 path: '',
                 label: 'First name',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     lastName: {
         label: 'Last name',
@@ -72,24 +100,27 @@ const FieldProps = {
         placeholder: 'Hacker',
         colSize: 12,
         fieldType: FieldTypes.SHORT_TEXT,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLNonNull(GraphQLString),
+        alwaysRequired: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
-            editable: false
+            editable: false,
         },
         filters: [
             {
                 path: '',
                 label: 'Last name',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     email: {
         label: 'Email',
@@ -97,159 +128,189 @@ const FieldProps = {
         hintMarkdown: false,
         placeholder: 'herbert.hacker@bighackathon.com',
         fieldType: FieldTypes.EMAIL,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLNonNull(GraphQLString),
+        alwaysRequired: true,
         schemaConfig: {
             defaultEnable: true,
             defaultRequire: true,
-            editable: false
+            editable: false,
         },
         filters: [
             {
                 path: '',
                 label: 'Email',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     phoneNumber: {
         label: 'Phone number',
         hint: '',
         hintMarkdown: false,
         fieldType: FieldTypes.PHONE_NUMBER,
-        userProfileConfig: {
-            country_code: {
-                type: String,
-                enum: Countries.asArrayOfPhoneCodes
-            },
-            number: String
-        },
+        copyToUserProfile: true,
+        mongooseSchema: PhoneNumberSchema.mongoose,
+        graphqlSchema: PhoneNumberSchema.graphql,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     dateOfBirth: {
         label: 'Date of Birth',
-        hint: 'Please note that you must be at least 16 years old to register for this event',
+        hint:
+            'Please note that you must be at least 16 years old to register for this event',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,
-        userProfileConfig: {
-            type: Date
+        copyToUserProfile: true,
+        mongooseSchema: {
+            type: Date,
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Date of birth',
                 type: FilterTypes.DATE,
-                valueType: FilterValues.DATE
-            }
-        ]
+                valueType: FilterValues.DATE,
+            },
+        ],
     },
     gender: {
         label: 'Gender',
         hint: '',
         hintMarkdown: false,
         fieldType: FieldTypes.GENDER,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            enum: Genders
+            validate: {
+                validator(v) {
+                    return Genders.indexOf(v) !== -1
+                },
+                message: () => `Gender must be one of ${Genders.join(',')}`,
+            },
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Gender',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.GENDER
-            }
-        ]
+                valueType: FilterValues.GENDER,
+            },
+        ],
     },
     nationality: {
         label: 'Nationality',
         hint: '',
         hintMarkdown: false,
         fieldType: FieldTypes.NATIONALITY,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            enum: Countries.asArrayOfNationalities
+            validate: {
+                validator(v) {
+                    return Countries.asArrayOfNationalities.indexOf(v) !== -1
+                },
+                message: props => `${props.value} is not a valid nationality`,
+            },
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Nationality',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.NATIONALITY
-            }
-        ]
+                valueType: FilterValues.NATIONALITY,
+            },
+        ],
     },
     spokenLanguages: {
         label: 'Spoken languages',
         hint: 'Select all languages that you speak with working proficiency',
         hintMarkdown: false,
         fieldType: FieldTypes.LANGUAGES,
-        userProfileConfig: [
+        copyToUserProfile: true,
+        mongooseSchema: [
             {
                 type: String,
-                enum: Languages.asArrayOfNames
-            }
+                validate: {
+                    validator(v) {
+                        return Languages.asArrayOfNames.indexOf(v) !== -1
+                    },
+                    message: props => `${props.value} is not a valid language`,
+                },
+            },
         ],
+        grapqlSchema: GraphQLList(GraphQLString),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Spoken languages',
                 type: FilterTypes.ARRAY,
-                valueType: FilterValues.LANGUAGE
-            }
-        ]
+                valueType: FilterValues.LANGUAGE,
+            },
+        ],
     },
     countryOfResidence: {
         label: 'Country of residence',
         hint: 'Which country are you currently living in?',
         hintMarkdown: false,
         fieldType: FieldTypes.COUNTRY,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            enum: Countries.asArrayOfName
+            validate: {
+                validator(v) {
+                    return Countries.asArrayOfName.indexOf(v) !== -1
+                },
+                message: props => `${props.value} is not a valid country`,
+            },
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Country of Residence',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.COUNTRY
-            }
-        ]
+                valueType: FilterValues.COUNTRY,
+            },
+        ],
     },
     cityOfResidence: {
         label: 'City of residence',
@@ -257,30 +318,40 @@ const FieldProps = {
         hintMarkdown: false,
         placeholder: 'Hackerville',
         fieldType: FieldTypes.SHORT_TEXT,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     tShirtSize: {
         label: 'T-shirt size',
         hint: '',
         hintMarkdown: false,
         fieldType: FieldTypes.T_SHIRT_SIZE,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            enum: Misc.tShirtSizes
+            validate: {
+                validator(v) {
+                    return Misc.tShirtSizes.indexOf(v) !== -1
+                },
+                message: () =>
+                    `T-shirt size must be one of ${Misc.tShirtSizes.join(',')}`,
+            },
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     dietaryRestrictions: {
         label: 'Dietary Restrictions',
@@ -288,11 +359,18 @@ const FieldProps = {
             'Please select all dietary restrictions from the below list that apply to you - if none of the available options apply, you can leave this field empty.',
         hintMarkdown: false,
         fieldType: FieldTypes.DIETARY_RESTRICTIONS,
+        copyToUserProfile: false,
+        mongooseSchema: [
+            {
+                type: String,
+            },
+        ],
+        graphqlSchema: GraphQLList(GraphQLString),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     headline: {
         label: 'Headline',
@@ -302,12 +380,14 @@ const FieldProps = {
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
-        userProfileConfig: {
+        graphqlSchema: GraphQLString,
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
-        }
+            trim: true,
+        },
     },
     biography: {
         label: 'Biography',
@@ -318,12 +398,14 @@ const FieldProps = {
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
-        }
+            trim: true,
+        },
+        graphqlSchema: GraphQLString,
     },
     roles: {
         label: 'Roles',
@@ -331,24 +413,14 @@ const FieldProps = {
             'Add up to 5 roles you have working experience in. You can type into the field to search for a specific role, or filter by category by typing "Design", "Dev", "Business" or "Other".',
         hintMarkdown: false,
         fieldType: FieldTypes.ROLES,
-        userProfileConfig: [
-            {
-                role: {
-                    type: String,
-                    enum: Roles.items
-                },
-                years: {
-                    type: Number,
-                    min: 1,
-                    max: 5
-                }
-            }
-        ],
+        copyToUserProfile: true,
+        mongooseSchema: [RoleSchema.mongoose],
+        graphqlSchema: GraphQLList(RoleSchema.graphql),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     skills: {
         label: 'Skills',
@@ -360,58 +432,62 @@ const FieldProps = {
         `,
         hintMarkdown: false,
         fieldType: FieldTypes.SKILLS,
-        userProfileConfig: [
-            {
-                skill: {
-                    type: String,
-                    enum: Skills.items
-                },
-                level: {
-                    type: Number,
-                    min: 1,
-                    max: 5
-                }
-            }
-        ],
+        copyToUserProfile: true,
+        mongooseSchema: [SkillSchema.mongoose],
+        graphqlSchema: GraphQLList(SkillSchema.graphql),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     industriesOfInterest: {
         label: 'Industries of Interest',
         hint: 'Choose up to 3 industries that are the most interesting to you',
         hintMarkdown: false,
         fieldType: FieldTypes.INDUSTRIES,
-        userProfileConfig: [
+        copyToUserProfile: true,
+        mongooseSchema: [
             {
                 type: String,
-                enum: Industries.industries
-            }
+                validate: {
+                    validator(v) {
+                        return Industries.industries.indexOf(v) !== -1
+                    },
+                    message: props => `${props.value} is not a valid industry`,
+                },
+            },
         ],
+        graphqlSchema: GraphQLList(GraphQLString),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     themesOfInterest: {
         label: 'Themes of Interest',
         hint: 'Choose up to 3 themes that are the most interesting to you',
         hintMarkdown: false,
         fieldType: FieldTypes.THEMES,
-        userProfileConfig: [
+        copyToUserProfile: true,
+        mongooseSchema: [
             {
                 type: String,
-                enum: Themes.themes
-            }
+                validate: {
+                    validator(v) {
+                        return Themes.themes.indexOf(v) !== -1
+                    },
+                    message: props => `${props.value} is not a valid theme`,
+                },
+            },
         ],
+        graphqlSchema: GraphQLList(GraphQLString),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     numHackathons: {
         label: 'Number of hackathons attended',
@@ -419,14 +495,16 @@ const FieldProps = {
             "Not your first hackathon? Let us know! But don't worry if it is, we always accept also people who've never attended hackathons before.",
         hintMarkdown: false,
         fieldType: FieldTypes.NUM_HACKATHONS,
-        userProfileConfig: {
-            type: Number
+        copyToUserProfile: true,
+        mongooseSchema: {
+            type: Number,
         },
+        graphqlSchema: GraphQLInt,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     education: {
         label: 'Education',
@@ -434,17 +512,14 @@ const FieldProps = {
             'Select your most recent education, or the one that you currently have in progress and your expected graduation year.',
         hintMarkdown: false,
         fieldType: FieldTypes.EDUCATION,
-        userProfileConfig: {
-            level: String,
-            university: String,
-            degree: String,
-            graduationYear: Number
-        },
+        copyToUserProfile: true,
+        mongooseSchema: EducationSchema.mongoose,
+        graphqlSchema: EducationSchema.graphql,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     motivation: {
         label: 'Motivation',
@@ -452,19 +527,24 @@ const FieldProps = {
             'Why do you want to be accepted to this hackathon, and why should we choose you? **Please note that we regard a well-written letter of motivation very highly when reviewing applications.**',
         hintMarkdown: true,
         fieldType: FieldTypes.LONG_TEXT,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: String,
+        },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequired: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Motivation',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     portfolio: {
         label: 'Link to Portfolio',
@@ -472,47 +552,51 @@ const FieldProps = {
             "Have a portfolio website or some other place where we can see the cool things you've done in the past? Please provide a valid link beginning with https://, or http:// if you must",
         hintMarkdown: false,
         fieldType: FieldTypes.URL,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Link to Portfolio',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     curriculumVitae: {
         label: 'CV',
         hint:
-            "Do you have curriculum vitae for us to look over the studies and experiences that you find most relevant when reviewing your application?",
+            'Do you have curriculum vitae for us to look over the studies and experiences that you find most relevant when reviewing your application?',
         hintMarkdown: false,
         fieldType: FieldTypes.URL,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Link to CV',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     github: {
         label: 'Link to Github',
@@ -520,85 +604,99 @@ const FieldProps = {
             "Do you have a public GitHub/GitLab/BitBucket/other profile you wouldn't mind us taking a look at when reviewing your application?",
         hintMarkdown: false,
         fieldType: FieldTypes.URL,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
+            trim: true,
         },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Link to GitHub',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     linkedin: {
         label: 'LinkedIn Profile',
-        hint: 'Do you have a LinkedIn or similar online profile to showcase your professional experience?',
+        hint:
+            'Do you have a LinkedIn or similar online profile to showcase your professional experience?',
         hintMarkdown: false,
         fieldType: FieldTypes.URL,
-        userProfileConfig: {
+        copyToUserProfile: true,
+        mongooseSchema: {
             type: String,
-            trim: true
+            trim: true,
         },
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
+        graphqlSchema: GraphQLString,
         filters: [
             {
                 path: '',
                 label: 'LinkedIn profile',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     countryOfTravel: {
         label: 'Country of Travel',
-        hint:
-            "Where would you be travelling to the event from?",
+        hint: 'Where would you be travelling to the event from?',
         hintMarkdown: false,
         fieldType: FieldTypes.COUNTRY,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: String,
+        },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Country of Travel',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.COUNTRY
-            }
-        ]
+                valueType: FilterValues.COUNTRY,
+            },
+        ],
     },
     cityOfTravel: {
         label: 'City of Travel',
         hint: 'Which city are you travelling from?',
         hintMarkdown: false,
         fieldType: FieldTypes.SHORT_TEXT,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: String,
+        },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'City of Travel',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     needsVisa: {
         label: 'Do you need a visa?',
@@ -606,19 +704,24 @@ const FieldProps = {
             'Do you need a visa to travel to the event? If you do, we will provide you with an invitation letter to make sure you get one. You can check e.g. here if you need a visa to travel to the event https://www.passportindex.org/comparebyPassport.php',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: Boolean,
+        },
+        graphqlSchema: GraphQLBoolean,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Link to Portfolio',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
@@ -631,19 +734,24 @@ const FieldProps = {
             '- Outside of Europe: 150€',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: Boolean,
+        },
+        graphqlSchema: GraphQLBoolean,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Applied for travel grant',
                 type: FilterTypes.BOOLEAN,
-                valueType: FilterValues.BOOLEAN
-            }
-        ]
+                valueType: FilterValues.BOOLEAN,
+            },
+        ],
     },
     needsAccommodation: {
         label: 'Do you need free accommodation?',
@@ -651,43 +759,37 @@ const FieldProps = {
             'We can provide a warm space and a roof over your head during the event, where you will need your own sleeping bag and matress. Let us know if you need it, or if you will arrange your own accommodation during the event :)',
         hintMarkdown: false,
         fieldType: FieldTypes.BOOLEAN,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: Boolean,
+        },
+        graphqlSchema: GraphQLBoolean,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Needs accommodation',
                 type: FilterTypes.BOOLEAN,
-                valueType: FilterValues.BOOLEAN
-            }
-        ]
+                valueType: FilterValues.BOOLEAN,
+            },
+        ],
     },
     recruitmentOptions: {
         label: 'Job opportunities',
         hint: '',
         fieldType: FieldTypes.RECRUITMENT_OPTIONS,
-        userProfileConfig: {
-            status: {
-                type: String,
-                enum: Object.keys(Misc.recruitmentStatuses.items)
-            },
-            consent: {
-                type: Boolean,
-                default: false
-            },
-            relocation: {
-                type: String,
-                enum: Object.keys(Misc.relocationOptions.items)
-            }
-        },
+        copyToUserProfile: true,
+        mongooseSchema: RecruitmentOptionsSchema.mongoose,
+        graphqlSchema: RecruitmentOptionsSchema.graphql,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
-        }
+            editable: true,
+        },
     },
     teamOptions: {
         label: 'Applying as a team?',
@@ -701,25 +803,28 @@ const FieldProps = {
             'If you do apply as a team, you can also choose to apply individually in the case that your team is not accepted. \n',
         hintMarkdown: true,
         fieldType: FieldTypes.TEAM_OPTIONS,
+        copyToUserProfile: false,
+        mongooseSchema: TeamOptionsSchema.mongoose,
+        graphqlSchema: TeamOptionsSchema.graphql,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: 'applyAsTeam',
                 label: 'Team > Applied as team',
                 type: FilterTypes.BOOLEAN,
-                valueType: FilterValues.BOOLEAN
+                valueType: FilterValues.BOOLEAN,
             },
             {
                 path: 'applyAlone',
                 label: 'Team > Applied also alone',
                 type: FilterTypes.BOOLEAN,
-                valueType: FilterValues.BOOLEAN
-            }
-        ]
+                valueType: FilterValues.BOOLEAN,
+            },
+        ],
     },
     secretCode: {
         label: 'Secret code',
@@ -727,61 +832,69 @@ const FieldProps = {
             "If you've received a secret code for this event, enter it here. Note: this is not the same as your team code, which you will be able to enter after completing your registration.",
         hintMarkdown: false,
         fieldType: FieldTypes.SHORT_TEXT,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: String,
+        },
+        graphqlSchema: GraphQLString,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
-            editable: true
+            editable: true,
         },
         filters: [
             {
                 path: '',
                 label: 'Secret Code',
                 type: FilterTypes.STRING,
-                valueType: FilterValues.STRING
-            }
-        ]
-    }
-};
+                valueType: FilterValues.STRING,
+            },
+        ],
+    },
+}
 
 const Fields = {
     firstName: {
         ...FieldProps.firstName,
         category: Categories.basicDetails,
-        default: (userProfile, idToken) => userProfile.firstName || idToken.given_name || '',
+        default: (userProfile, idToken) =>
+            userProfile.firstName || idToken.given_name || '',
         validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
                 .max(100)
-                .label(FieldProps.firstName.label);
+                .label(FieldProps.firstName.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     lastName: {
         ...FieldProps.lastName,
         category: Categories.basicDetails,
-        default: (userProfile, idToken) => userProfile.lastName || idToken.family_name || '',
+        default: (userProfile, idToken) =>
+            userProfile.lastName || idToken.family_name || '',
         validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
                 .max(200)
-                .label(FieldProps.lastName.label);
-            return required ? base.required() : base;
-        }
+                .label(FieldProps.lastName.label)
+            return required ? base.required() : base
+        },
     },
     email: {
         ...FieldProps.email,
         category: Categories.basicDetails,
-        default: (userProfile, idToken) => userProfile.email || idToken.email || '',
+        default: (userProfile, idToken) =>
+            userProfile.email || idToken.email || '',
         validationSchema: required => {
             const base = yup
                 .string()
                 .email()
-                .label(FieldProps.email.label);
-            return required ? base.required() : base;
-        }
+                .label(FieldProps.email.label)
+            return required ? base.required() : base
+        },
     },
     phoneNumber: {
         ...FieldProps.phoneNumber,
@@ -791,23 +904,23 @@ const Fields = {
             const country_code = yup
                 .string()
                 .oneOf(Countries.asArrayOfPhoneCodes)
-                .label('Country code');
+                .label('Country code')
             const number = yup
                 .string()
                 .matches(/^[0-9]{7,14}$/)
-                .label('Phone number');
+                .label('Phone number')
             const shape = required
                 ? {
                       country_code: country_code.required(),
-                      number: number.required()
+                      number: number.required(),
                   }
                 : {
                       country_code,
-                      number
-                  };
+                      number,
+                  }
 
-            return yup.object(shape).label(FieldProps.phoneNumber.label);
-        }
+            return yup.object(shape).label(FieldProps.phoneNumber.label)
+        },
     },
     dateOfBirth: {
         ...FieldProps.dateOfBirth,
@@ -818,10 +931,10 @@ const Fields = {
                 .date()
                 .min(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120))
                 .max(new Date(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16))
-                .label(FieldProps.dateOfBirth.label);
+                .label(FieldProps.dateOfBirth.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     gender: {
         ...FieldProps.gender,
@@ -831,9 +944,9 @@ const Fields = {
             const base = yup
                 .string()
                 .oneOf(Genders)
-                .label(FieldProps.gender.label);
-            return required ? base.required() : base;
-        }
+                .label(FieldProps.gender.label)
+            return required ? base.required() : base
+        },
     },
     nationality: {
         ...FieldProps.nationality,
@@ -843,10 +956,10 @@ const Fields = {
             const base = yup
                 .string()
                 .oneOf(Countries.asArrayOfNationalities)
-                .label(FieldProps.nationality.label);
+                .label(FieldProps.nationality.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     spokenLanguages: {
         ...FieldProps.spokenLanguages,
@@ -857,36 +970,38 @@ const Fields = {
                 .array()
                 .of(yup.string().oneOf(Languages.asArrayOfNames))
                 .ensure()
-                .label(FieldProps.spokenLanguages.label);
+                .label(FieldProps.spokenLanguages.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     countryOfResidence: {
         ...FieldProps.countryOfResidence,
         category: Categories.basicDetails,
-        default: (userProfile, idToken) => userProfile.countryOfResidence || idToken.country || '',
+        default: (userProfile, idToken) =>
+            userProfile.countryOfResidence || idToken.country || '',
         validationSchema: required => {
             const base = yup
                 .string()
                 .oneOf(Countries.asArrayOfName)
-                .label(FieldProps.countryOfResidence.label);
+                .label(FieldProps.countryOfResidence.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     cityOfResidence: {
         ...FieldProps.cityOfResidence,
         category: Categories.basicDetails,
-        default: (userProfile, idToken) => userProfile.cityOfResidence || idToken.city || '',
+        default: (userProfile, idToken) =>
+            userProfile.cityOfResidence || idToken.city || '',
         validationSchema: required => {
             const base = yup
                 .string()
                 .min(required ? 1 : 0)
                 .max(100)
-                .label(FieldProps.cityOfResidence.label);
-            return required ? base.required() : base;
-        }
+                .label(FieldProps.cityOfResidence.label)
+            return required ? base.required() : base
+        },
     },
     tShirtSize: {
         ...FieldProps.tShirtSize,
@@ -896,10 +1011,10 @@ const Fields = {
             const base = yup
                 .string()
                 .oneOf(Misc.tShirtSizes)
-                .label(FieldProps.tShirtSize.label);
+                .label(FieldProps.tShirtSize.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     dietaryRestrictions: {
         ...FieldProps.dietaryRestrictions,
@@ -910,10 +1025,10 @@ const Fields = {
                 .array()
                 .of(yup.string().oneOf(Misc.dietaryRestrictions))
                 .ensure()
-                .label(FieldProps.dietaryRestrictions.label);
+                .label(FieldProps.dietaryRestrictions.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     headline: {
         ...FieldProps.headline,
@@ -924,9 +1039,9 @@ const Fields = {
                 .string()
                 .min(required ? 1 : 0)
                 .max(100)
-                .label(FieldProps.headline.label);
-            return required ? base.required() : base;
-        }
+                .label(FieldProps.headline.label)
+            return required ? base.required() : base
+        },
     },
     biography: {
         ...FieldProps.biography,
@@ -937,10 +1052,10 @@ const Fields = {
                 .string()
                 .min(required ? 1 : 0)
                 .max(1000)
-                .label(FieldProps.biography.label);
+                .label(FieldProps.biography.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     roles: {
         ...FieldProps.roles,
@@ -961,15 +1076,15 @@ const Fields = {
                             .min(1)
                             .max(5)
                             .required()
-                            .label('Years of experience')
+                            .label('Years of experience'),
                     })
                 )
                 .ensure()
                 .max(5)
-                .label(FieldProps.roles.label);
+                .label(FieldProps.roles.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     skills: {
         ...FieldProps.skills,
@@ -990,15 +1105,15 @@ const Fields = {
                             .min(1)
                             .max(5)
                             .required()
-                            .label('Experience level')
+                            .label('Experience level'),
                     })
                 )
                 .max(10)
                 .ensure()
-                .label(FieldProps.skills.label);
+                .label(FieldProps.skills.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     motivation: {
         ...FieldProps.motivation,
@@ -1009,24 +1124,25 @@ const Fields = {
                 .string()
                 .min(required ? 1 : 0)
                 .max(2000)
-                .label(FieldProps.motivation.label);
+                .label(FieldProps.motivation.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     industriesOfInterest: {
         ...FieldProps.industriesOfInterest,
         category: Categories.skillsAndInterests,
-        default: (userProfile, idToken) => userProfile.industriesOfInterest || [],
+        default: (userProfile, idToken) =>
+            userProfile.industriesOfInterest || [],
         validationSchema: required => {
             const base = yup
                 .array()
                 .of(yup.string().oneOf(Industries.industries))
                 .max(3)
                 .ensure()
-                .label(FieldProps.industriesOfInterest.label);
-            return required ? base.required() : base;
-        }
+                .label(FieldProps.industriesOfInterest.label)
+            return required ? base.required() : base
+        },
     },
     themesOfInterest: {
         ...FieldProps.themesOfInterest,
@@ -1038,24 +1154,25 @@ const Fields = {
                 .of(yup.string().oneOf(Themes.themes))
                 .max(3)
                 .ensure()
-                .label(FieldProps.themesOfInterest.label);
+                .label(FieldProps.themesOfInterest.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     numHackathons: {
         ...FieldProps.numHackathons,
         category: Categories.skillsAndInterests,
-        default: (userProfile, idToken) => userProfile.numHackathons || undefined,
+        default: (userProfile, idToken) =>
+            userProfile.numHackathons || undefined,
         validationSchema: required => {
             const base = yup
                 .number()
                 .min(0)
                 .max(5)
-                .label(FieldProps.numHackathons.label);
+                .label(FieldProps.numHackathons.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     education: {
         ...FieldProps.education,
@@ -1075,13 +1192,13 @@ const Fields = {
                         .number()
                         .min(1900)
                         .max(2100)
-                        .label('Graduation year')
+                        .label('Graduation year'),
                 })
                 .noUnknown()
-                .label(FieldProps.education.label);
+                .label(FieldProps.education.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     portfolio: {
         ...FieldProps.portfolio,
@@ -1091,23 +1208,24 @@ const Fields = {
             const base = yup
                 .string()
                 .url()
-                .label(FieldProps.portfolio.label);
+                .label(FieldProps.portfolio.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     curriculumVitae: {
         ...FieldProps.curriculumVitae,
         category: Categories.links,
-        default: (userProfile, idToken) => userProfile.curriculumVitae || undefined,
+        default: (userProfile, idToken) =>
+            userProfile.curriculumVitae || undefined,
         validationSchema: required => {
             const base = yup
                 .string()
                 .url()
-                .label(FieldProps.curriculumVitae.label);
+                .label(FieldProps.curriculumVitae.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     github: {
         ...FieldProps.github,
@@ -1117,10 +1235,10 @@ const Fields = {
             const base = yup
                 .string()
                 .url()
-                .label(FieldProps.github.label);
+                .label(FieldProps.github.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     linkedin: {
         ...FieldProps.linkedin,
@@ -1130,10 +1248,10 @@ const Fields = {
             const base = yup
                 .string()
                 .url()
-                .label(FieldProps.linkedin.label);
+                .label(FieldProps.linkedin.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     countryOfTravel: {
         ...FieldProps.countryOfTravel,
@@ -1143,10 +1261,10 @@ const Fields = {
             const base = yup
                 .string()
                 .oneOf(Countries.asArrayOfName)
-                .label(FieldProps.countryOfTravel.label);
+                .label(FieldProps.countryOfTravel.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     cityOfTravel: {
         ...FieldProps.cityOfTravel,
@@ -1157,10 +1275,10 @@ const Fields = {
                 .string()
                 .min(required ? 1 : 0)
                 .max(200)
-                .label(FieldProps.cityOfTravel.label);
+                .label(FieldProps.cityOfTravel.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     needsVisa: {
         ...FieldProps.needsVisa,
@@ -1170,13 +1288,13 @@ const Fields = {
             const base = yup
                 .boolean()
                 .transform(value => {
-                    if (!value) return false;
-                    return true;
+                    if (!value) return false
+                    return true
                 })
-                .label(FieldProps.needsVisa.label);
+                .label(FieldProps.needsVisa.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     needsTravelGrant: {
         ...FieldProps.needsTravelGrant,
@@ -1186,13 +1304,13 @@ const Fields = {
             const base = yup
                 .boolean()
                 .transform(value => {
-                    if (!value) return false;
-                    return true;
+                    if (!value) return false
+                    return true
                 })
-                .label(FieldProps.needsTravelGrant.label);
+                .label(FieldProps.needsTravelGrant.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     needsAccommodation: {
         ...FieldProps.needsAccommodation,
@@ -1202,20 +1320,20 @@ const Fields = {
             const base = yup
                 .boolean()
                 .transform(value => {
-                    if (!value) return false;
-                    return true;
+                    if (!value) return false
+                    return true
                 })
-                .label(FieldProps.needsAccommodation.label);
+                .label(FieldProps.needsAccommodation.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     teamOptions: {
         ...FieldProps.teamOptions,
         category: Categories.other,
         default: () => ({
             applyAsTeam: false,
-            applyAlone: false
+            applyAlone: false,
         }),
         validationSchema: required => {
             const base = yup
@@ -1224,23 +1342,23 @@ const Fields = {
                     applyAsTeam: yup
                         .boolean()
                         .transform(value => {
-                            if (!value) return false;
-                            return true;
+                            if (!value) return false
+                            return true
                         })
                         .label('Applying as a team?'),
                     applyAlone: yup
                         .boolean()
                         .transform(value => {
-                            if (!value) return false;
-                            return true;
+                            if (!value) return false
+                            return true
                         })
-                        .label('Applying also alone?')
+                        .label('Applying also alone?'),
                 })
                 .noUnknown()
-                .label(FieldProps.teamOptions.label);
+                .label(FieldProps.teamOptions.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     secretCode: {
         ...FieldProps.secretCode,
@@ -1250,16 +1368,16 @@ const Fields = {
             const base = yup
                 .string()
                 .max(100)
-                .label(FieldProps.secretCode.label);
+                .label(FieldProps.secretCode.label)
 
-            return required ? base.required() : base;
-        }
+            return required ? base.required() : base
+        },
     },
     recruitmentOptions: {
         ...FieldProps.recruitmentOptions,
         category: Categories.recruitment,
         default: () => ({
-            consent: false
+            consent: false,
         }),
         validationSchema: required => {
             const base = yup
@@ -1267,80 +1385,88 @@ const Fields = {
                 .shape({
                     status: yup.string(),
                     consent: yup.boolean().transform(value => {
-                        if (!value) return false;
-                        return true;
+                        if (!value) return false
+                        return true
                     }),
-                    relocation: yup.string()
+                    relocation: yup.string(),
                 })
                 .noUnknown()
-                .label(FieldProps.recruitmentOptions.label);
+                .label(FieldProps.recruitmentOptions.label)
 
-            return required ? base.required() : base;
-        }
-    }
-};
+            return required ? base.required() : base
+        },
+    },
+}
 
 function buildFieldToLabelMap() {
-    const result = {};
+    const result = {}
 
     Object.keys(Fields).forEach(fieldName => {
-        result[fieldName] = Fields[fieldName].label;
-    });
+        result[fieldName] = Fields[fieldName].label
+    })
 
-    return result;
+    return result
 }
 
 function buildFiltersArray() {
-    const fields = Object.keys(Fields);
+    const fields = Object.keys(Fields)
     const baseFilters = [
         {
             path: 'rating',
             label: 'Rating',
             type: FilterTypes.NUMBER,
-            valueType: FilterValues.NUMBER
+            valueType: FilterValues.NUMBER,
         },
         {
             path: 'status',
             label: 'Status',
             type: FilterTypes.STRING,
-            valueType: FilterValues.STATUS
+            valueType: FilterValues.STATUS,
         },
         {
             path: 'tags',
             label: 'Tags',
             type: FilterTypes.ARRAY,
-            valueType: FilterValues.TAG
+            valueType: FilterValues.TAG,
         },
         {
             path: 'travelGrant',
             label: 'Travel Grant',
             type: FilterTypes.NUMBER,
-            valueType: FilterValues.NUMBER
-        }
-    ];
+            valueType: FilterValues.NUMBER,
+        },
+    ]
     const answerFilters = fields.reduce((res, fieldKey) => {
-        const field = Fields[fieldKey];
-        if (!Array.isArray(field.filters) || !field.filters.length) return res;
+        const field = Fields[fieldKey]
+        if (!Array.isArray(field.filters) || !field.filters.length) return res
         const filters = field.filters.map(filter => {
             if (filter.path.length) {
-                filter.path = `answers.${fieldKey}.${filter.path}`;
+                filter.path = `answers.${fieldKey}.${filter.path}`
             } else {
-                filter.path = `answers.${fieldKey}`;
+                filter.path = `answers.${fieldKey}`
             }
-            return filter;
-        });
-        return res.concat(filters);
-    }, []);
+            return filter
+        })
+        return res.concat(filters)
+    }, [])
 
     return baseFilters.concat(answerFilters)
 }
 
 const Helpers = {
+    getCategoriesArray: () => {
+        return _.sortBy(
+            Object.keys(Categories).map(key => {
+                return Categories[key]
+            }),
+            'order'
+        )
+    },
     getLabel: field => {
         if (Fields.hasOwnProperty(field)) {
-            return Fields[field].label || field;
+            return Fields[field].label || field
         }
-        return field;
+        return field
     },
     getFields: () => Fields,
     getField: field => Fields[field],
@@ -1350,56 +1476,65 @@ const Helpers = {
     fieldTypes: FieldTypes,
     getCategory: field => {
         if (Fields.hasOwnProperty(field)) {
-            return Fields[field].category.label;
+            return Fields[field].category.label
         }
-        return '';
+        return ''
     },
     getDefaultValue: (field, userProfile, idToken) => {
         if (Fields.hasOwnProperty(field)) {
-            return Fields[field].default(userProfile, idToken);
+            return Fields[field].default(userProfile, idToken)
         }
-        return null;
+        return null
     },
     getDefaultValueCustom: question => {
         if (['boolean', 'checkbox'].indexOf(question.fieldType) !== -1) {
-            return question.settings.default || false;
+            return question.settings.default || false
         }
     },
-    getDefaultValuesFromConfig: (config, customQuestions, userProfile, idToken) => {
-        const result = {};
+    getDefaultValuesFromConfig: (
+        config,
+        customQuestions,
+        userProfile,
+        idToken
+    ) => {
+        const result = {}
 
         Object.keys(config).forEach(field => {
             if (config[field].enable) {
-                result[field] = Helpers.getDefaultValue(field, userProfile, idToken);
+                result[field] = Helpers.getDefaultValue(
+                    field,
+                    userProfile,
+                    idToken
+                )
             }
-        });
+        })
 
         customQuestions.forEach(customSection => {
             customSection.questions.forEach(question => {
-                result[question.name] = Helpers.getDefaultValueCustom(question);
-            });
-        });
+                result[question.name] = Helpers.getDefaultValueCustom(question)
+            })
+        })
 
-        return result;
+        return result
     },
     getDefaultValuesForFields: (fields, userProfile, idToken) => {
-        const result = {};
+        const result = {}
 
         fields.forEach(field => {
-            result[field] = Helpers.getDefaultValue(field, userProfile, idToken);
-        });
+            result[field] = Helpers.getDefaultValue(field, userProfile, idToken)
+        })
 
-        return result;
+        return result
     },
     getCategoryOrderByLabel: categoryLabel => {
-        for (let categoryId of Object.keys(Categories)) {
-            const category = Categories[categoryId];
+        for (const categoryId of Object.keys(Categories)) {
+            const category = Categories[categoryId]
             if (category.label === categoryLabel) {
-                return category.order;
+                return category.order
             }
         }
-        return 1000;
-    }
-};
+        return 1000
+    },
+}
 
-module.exports = Helpers;
+module.exports = Helpers

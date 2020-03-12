@@ -1,363 +1,439 @@
-const _ = require('lodash');
-const Promise = require('bluebird');
-const mongoose = require('mongoose');
+const _ = require('lodash')
+const Promise = require('bluebird')
+const mongoose = require('mongoose')
 const {
     RegistrationStatuses,
     RegistrationFields,
     FieldTypes,
     RegistrationTravelGrantStatuses,
     EventTypes,
-    TravelGrantDetailsValidationSchema
-} = require('@hackjunction/shared');
-const yup = require('yup');
-const Registration = require('./model');
-const { NotFoundError, ForbiddenError } = require('../../common/errors/errors');
-const RegistrationHelpers = require('./helpers');
-const EmailTaskController = require('../email-task/controller');
+    TravelGrantDetailsValidationSchema,
+} = require('@hackjunction/shared')
+const yup = require('yup')
+const Registration = require('./model')
+const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
+const RegistrationHelpers = require('./helpers')
+const EmailTaskController = require('../email-task/controller')
 
-const STATUSES = RegistrationStatuses.asObject;
-const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject;
-const controller = {};
+const STATUSES = RegistrationStatuses.asObject
+const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
+const controller = {}
 
 controller.getUserRegistrations = user => {
     return Registration.find({
-        user: user.sub
-    });
-};
+        user: user.sub,
+    })
+}
 
 controller.createRegistration = async (user, event, data) => {
-    const answers = await RegistrationHelpers.validateAnswers(data, event);
+    const answers = await RegistrationHelpers.validateAnswers(data, event)
+    console.log('Adsand after', answers)
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
-        answers
-    });
+        answers,
+    })
     if (event.eventType === EventTypes.physical.id) {
-        registration.status = RegistrationStatuses.asObject.pending.id;
+        registration.status = RegistrationStatuses.asObject.pending.id
     }
     if (event.eventType === EventTypes.online.id) {
-        registration.status = RegistrationStatuses.asObject.checkedIn.id;
+        registration.status = RegistrationStatuses.asObject.checkedIn.id
     }
 
-    return registration.save();
-};
+    return registration.save()
+}
 
 controller.getRegistration = (userId, eventId) => {
     return Registration.findOne({
         event: eventId,
-        user: userId
+        user: userId,
     }).then(registration => {
         if (!registration) {
-            throw new NotFoundError(`Registration for event ${eventId} not found for user ${userId}`);
+            throw new NotFoundError(
+                `Registration for event ${eventId} not found for user ${userId}`
+            )
         }
-        return registration;
-    });
-};
+        return registration
+    })
+}
 
 controller.updateRegistration = (user, event, data) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(async registration => {
-        const answers = await RegistrationHelpers.validateAnswers(data, event);
-        return Registration.updateAllowed(registration, { answers });
-    });
-};
+    return controller
+        .getRegistration(user.sub, event._id.toString())
+        .then(async registration => {
+            const answers = await RegistrationHelpers.validateAnswers(
+                data,
+                event
+            )
+            console.log('Adsand after', answers)
+            return Registration.updateAllowed(registration, { answers })
+        })
+}
 
 controller.confirmRegistration = (user, event) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status === STATUSES.accepted.id) {
-            registration.status = STATUSES.confirmed.id;
-            return registration.save();
-        }
+    return controller
+        .getRegistration(user.sub, event._id.toString())
+        .then(registration => {
+            if (registration.status === STATUSES.accepted.id) {
+                registration.status = STATUSES.confirmed.id
+                return registration.save()
+            }
 
-        throw new ForbiddenError('Only accepted registrations can be confirmed');
-    });
-};
+            throw new ForbiddenError(
+                'Only accepted registrations can be confirmed'
+            )
+        })
+}
 
 controller.cancelRegistration = (user, event) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        if (registration.status === STATUSES.confirmed.id || registration.status === STATUSES.accepted.id) {
-            registration.status = STATUSES.cancelled.id;
-            return registration.save();
-        }
+    return controller
+        .getRegistration(user.sub, event._id.toString())
+        .then(registration => {
+            if (
+                registration.status === STATUSES.confirmed.id ||
+                registration.status === STATUSES.accepted.id
+            ) {
+                registration.status = STATUSES.cancelled.id
+                return registration.save()
+            }
 
-        throw new ForbiddenError('Only accepted or confirmed registrations can be cancelled');
-    });
-};
+            throw new ForbiddenError(
+                'Only accepted or confirmed registrations can be cancelled'
+            )
+        })
+}
 
-controller.setTravelGrantDetailsForRegistration = async (user, event, travelGrantDetails) => {
-    const schema = yup.object().shape(TravelGrantDetailsValidationSchema);
-    const validated = await schema.validate(travelGrantDetails, { stripUnknown: true });
-    const registration = await controller.getRegistration(user.sub, event._id);
+controller.setTravelGrantDetailsForRegistration = async (
+    user,
+    event,
+    travelGrantDetails
+) => {
+    const schema = yup.object().shape(TravelGrantDetailsValidationSchema)
+    const validated = await schema.validate(travelGrantDetails, {
+        stripUnknown: true,
+    })
+    const registration = await controller.getRegistration(user.sub, event._id)
 
     if (registration.status !== STATUSES.checkedIn.id) {
-        throw new ForbiddenError('Only those can receive reimbursement who have checked-in at the event!');
+        throw new ForbiddenError(
+            'Only those can receive reimbursement who have checked-in at the event!'
+        )
     }
     if (registration.travelGrant <= 0) {
-        throw new ForbiddenError('This registration has no travel grant given.');
+        throw new ForbiddenError('This registration has no travel grant given.')
     }
-    if (registration.travelGrantStatus && registration.travelGrantStatus === TRAVEL_GRANT_STATUSES.accepted.id) {
-        throw new ForbiddenError('Accepted travel grants cannot be edited');
+    if (
+        registration.travelGrantStatus &&
+        registration.travelGrantStatus === TRAVEL_GRANT_STATUSES.accepted.id
+    ) {
+        throw new ForbiddenError('Accepted travel grants cannot be edited')
     }
 
-    registration.travelGrantDetails = validated;
-    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
-    return registration.save();
-};
+    registration.travelGrantDetails = validated
+    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id
+    return registration.save()
+}
 
 controller.updateTravelGrantDetails = (registrationId, event, data) => {
     return Registration.findById(registrationId).then(registration => {
         if (data.hasOwnProperty('status')) {
             switch (data.status) {
                 case 'pending': {
-                    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id;
-                    registration.travelGrantComment = undefined;
-                    registration.travelGrantAmount = undefined;
-                    break;
+                    registration.travelGrantStatus =
+                        TRAVEL_GRANT_STATUSES.pending.id
+                    registration.travelGrantComment = undefined
+                    registration.travelGrantAmount = undefined
+                    break
                 }
                 case 'accepted': {
-                    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.accepted.id;
-                    registration.travelGrantAmount = data.amount;
-                    registration.travelGrantComment = undefined;
-                    break;
+                    registration.travelGrantStatus =
+                        TRAVEL_GRANT_STATUSES.accepted.id
+                    registration.travelGrantAmount = data.amount
+                    registration.travelGrantComment = undefined
+                    break
                 }
                 case 'rejected': {
-                    registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.rejected.id;
-                    registration.travelGrantComment = data.comment;
-                    registration.travelGrantAmount = undefined;
-                    break;
+                    registration.travelGrantStatus =
+                        TRAVEL_GRANT_STATUSES.rejected.id
+                    registration.travelGrantComment = data.comment
+                    registration.travelGrantAmount = undefined
+                    break
                 }
                 default:
-                    break;
+                    break
             }
         }
-        return registration.save();
-    });
-};
+        return registration.save()
+    })
+}
 
 controller.notifyAcceptedTravelGrants = async event => {
     const registrations = await Registration.find({
         event: event._id,
-        travelGrantStatus: TRAVEL_GRANT_STATUSES.accepted.id
-    });
+        travelGrantStatus: TRAVEL_GRANT_STATUSES.accepted.id,
+    })
     Promise.map(
         registrations,
         registration => {
-            return EmailTaskController.createTravelGrantDetailsAcceptedTask(registration, true);
+            return EmailTaskController.createTravelGrantDetailsAcceptedTask(
+                registration,
+                true
+            )
         },
         {
-            concurrency: 10
+            concurrency: 10,
         }
-    );
-    return registrations.length;
-};
+    )
+    return registrations.length
+}
 
 controller.notifyRejectedTravelGrants = async event => {
     const registrations = await Registration.find({
         event: event._id,
-        travelGrantStatus: TRAVEL_GRANT_STATUSES.rejected.id
-    });
+        travelGrantStatus: TRAVEL_GRANT_STATUSES.rejected.id,
+    })
     Promise.map(
         registrations,
         registration => {
-            return EmailTaskController.createTravelGrantDetailsRejectedTask(registration, true);
+            return EmailTaskController.createTravelGrantDetailsRejectedTask(
+                registration,
+                true
+            )
         },
         {
-            concurrency: 10
+            concurrency: 10,
         }
-    );
+    )
 
-    return registrations.length;
-};
+    return registrations.length
+}
 
 controller.updateTravelGrantStatus = (user, event, status) => {
-    return controller.getRegistration(user.sub, event._id.toString()).then(registration => {
-        registration.travelGrantStatus = status;
-        return registration.save();
-    });
-};
+    return controller
+        .getRegistration(user.sub, event._id.toString())
+        .then(registration => {
+            registration.travelGrantStatus = status
+            return registration.save()
+        })
+}
 
 controller.getRegistrationsForEvent = eventId => {
     return Registration.find({
-        event: eventId
+        event: eventId,
     }).then(registrations => {
         /** Do some minor optimisation here to cut down on size */
         return registrations.map(reg => {
             reg.answers = _.mapValues(reg.answers, (answer, field) => {
-                const fieldType = RegistrationFields.getFieldType(field);
+                const fieldType = RegistrationFields.getFieldType(field)
                 switch (fieldType) {
                     case FieldTypes.LONG_TEXT.id:
                         if (answer && answer.length > 10) {
-                            return answer.slice(0, 10) + '...';
+                            return `${answer.slice(0, 10)}...`
                         }
-                        return answer;
+                        return answer
                     default: {
-                        if (typeof answer === 'object' && !Array.isArray(answer) && Object.keys(answer).length > 0) {
+                        if (
+                            typeof answer === 'object' &&
+                            !Array.isArray(answer) &&
+                            Object.keys(answer).length > 0
+                        ) {
                             return _.mapValues(answer, subAnswer => {
-                                if (typeof subAnswer === 'string' && subAnswer.length > 50) {
-                                    return subAnswer.slice(0, 10);
+                                if (
+                                    typeof subAnswer === 'string' &&
+                                    subAnswer.length > 50
+                                ) {
+                                    return subAnswer.slice(0, 10)
                                 }
-                                return subAnswer;
-                            });
+                                return subAnswer
+                            })
                         }
-                        return answer;
+                        return answer
                     }
                 }
-            });
-            return reg;
-        });
-    });
-};
+            })
+            return reg
+        })
+    })
+}
 
 controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
     return Registration.find({
         rating: null,
-        assignedTo: null
+        assignedTo: null,
     })
         .sort({ createdAt: 'asc' })
         .limit(10)
         .then(registrations => {
-            const registrationIds = registrations.map(r => r._id.toString());
+            const registrationIds = registrations.map(r => r._id.toString())
             return Registration.updateMany(
                 {
                     event: eventId,
                     _id: {
-                        $in: registrationIds
-                    }
+                        $in: registrationIds,
+                    },
                 },
                 {
-                    assignedTo: userId
+                    assignedTo: userId,
                 }
             ).then(data => {
-                return data.nModified;
-            });
-        });
-};
+                return data.nModified
+            })
+        })
+}
 
 controller.assignRegistrationForEvent = data => {
-    if (!data.userId) throw new Error('Must pass userId when assigning reviewer');
+    if (!data.userId)
+        throw new Error('Must pass userId when assigning reviewer')
     return Registration.findByIdAndUpdate(data.registrationId, {
-        assignedTo: data.userId
-    });
-};
+        assignedTo: data.userId,
+    })
+}
 
-controller.bulkEditRegistrations = (eventId, registrationIds, edits) => {
-    const cleanedEdits = _.pick(edits, ['status', 'tags', 'rating', 'assignedTo', 'travelGrant']);
+controller.bulkEditRegistrations = (eventId, userIds, edits) => {
+    const cleanedEdits = _.pick(edits, [
+        'status',
+        'tags',
+        'rating',
+        'assignedTo',
+        'travelGrant',
+    ])
     return Registration.find({
         event: eventId,
         user: {
-            $in: registrationIds
-        }
+            $in: userIds,
+        },
     }).then(registrations => {
         const updates = registrations
             .map(registration => {
-                let edits = _.cloneDeep(cleanedEdits);
+                const edits = _.cloneDeep(cleanedEdits)
                 if (edits.hasOwnProperty('status')) {
-                    const status = RegistrationStatuses.asObject[registration.status];
+                    const status =
+                        RegistrationStatuses.asObject[registration.status]
                     if (status && !status.allowEdit) {
-                        delete edits.status;
+                        delete edits.status
                     }
                 }
 
                 if (edits.hasOwnProperty('tags')) {
-                    edits.tags = _.uniq((registration.tags || []).concat(edits.tags));
+                    edits.tags = _.uniq(
+                        (registration.tags || []).concat(edits.tags)
+                    )
                 }
 
-                if (Object.keys(edits).length === 0) return null;
+                if (Object.keys(edits).length === 0) return null
 
                 return {
                     updateOne: {
                         filter: {
-                            _id: registration._id
+                            _id: registration._id,
                         },
-                        update: edits
-                    }
-                };
+                        update: edits,
+                    },
+                }
             })
-            .filter(edit => edit !== null);
+            .filter(edit => edit !== null)
 
-        return Registration.bulkWrite(updates);
-    });
-};
+        return Registration.bulkWrite(updates)
+    })
+}
 
 controller.bulkAssignTravelGrants = (eventId, grants) => {
     const updates = grants.map(({ _id, amount }) => {
         return Registration.findById(_id).then(reg => {
-            reg.travelGrant = amount;
-            return reg.save();
-        });
-    });
+            reg.travelGrant = amount
+            return reg.save()
+        })
+    })
 
-    return Promise.all(updates);
-};
+    return Promise.all(updates)
+}
 
 controller.rejectPendingTravelGrants = eventId => {
     return Registration.find({
         event: eventId,
         status: {
-            $in: ['confirmed', 'checkedIn']
+            $in: ['confirmed', 'checkedIn'],
         },
         travelGrant: {
-            $exists: false
+            $exists: false,
         },
-        'answers.needsTravelGrant': true
+        'answers.needsTravelGrant': true,
     }).then(registrations => {
         const promises = registrations.map(registration => {
-            registration.travelGrant = 0;
-            return registration.save();
-        });
+            registration.travelGrant = 0
+            return registration.save()
+        })
 
-        return Promise.all(promises);
-    });
-};
+        return Promise.all(promises)
+    })
+}
 
 controller.getFullRegistration = (eventId, registrationId) => {
     const query =
-        mongoose.Types.ObjectId.isValid(registrationId) && registrationId.indexOf('|') === -1
+        mongoose.Types.ObjectId.isValid(registrationId) &&
+        registrationId.indexOf('|') === -1
             ? { _id: registrationId }
-            : { user: registrationId };
+            : { user: registrationId }
     return Registration.findOne(query)
         .and({ event: eventId })
         .then(registration => {
             if (!registration) {
-                throw new NotFoundError(`Registration with id ${registrationId} does not exist`);
+                throw new NotFoundError(
+                    `Registration with id ${registrationId} does not exist`
+                )
             }
 
-            return registration;
-        });
-};
+            return registration
+        })
+}
 
 controller.editRegistration = (registrationId, event, data, user) => {
-    return controller.getFullRegistration(event._id.toString(), registrationId).then(registration => {
-        const d = _.pick(data, ['status', 'rating', 'tags', 'assignedTo', 'travelGrant']);
-        registration.set(d);
-        if (d.rating) {
-            registration.ratedBy = user.sub;
-        }
-        return registration.save();
-    });
-};
+    return controller
+        .getFullRegistration(event._id.toString(), registrationId)
+        .then(registration => {
+            const d = _.pick(data, [
+                'status',
+                'rating',
+                'tags',
+                'assignedTo',
+                'travelGrant',
+            ])
+            registration.set(d)
+            if (d.rating) {
+                registration.ratedBy = user.sub
+            }
+            return registration.save()
+        })
+}
 
 controller.getFullRegistrationsForEvent = eventId => {
     return Registration.find({
-        event: eventId
-    });
-};
+        event: eventId,
+    })
+}
 
 controller.acceptSoftAccepted = async eventId => {
-    const users = await Registration.find({ event: eventId, status: RegistrationStatuses.asObject.softAccepted.id });
+    const users = await Registration.find({
+        event: eventId,
+        status: RegistrationStatuses.asObject.softAccepted.id,
+    })
     const accepted = await Promise.each(users, user => {
-        user.status = RegistrationStatuses.asObject.accepted.id;
-        user.save();
-    });
-    return accepted;
-};
+        user.status = RegistrationStatuses.asObject.accepted.id
+        user.save()
+    })
+    return accepted
+}
 
 controller.rejectSoftRejected = async eventId => {
-    const users = await Registration.find({ event: eventId, status: RegistrationStatuses.asObject.softRejected.id });
+    const users = await Registration.find({
+        event: eventId,
+        status: RegistrationStatuses.asObject.softRejected.id,
+    })
     const rejected = await Promise.each(users, user => {
-        user.status = RegistrationStatuses.asObject.rejected.id;
-        user.save();
-    });
-    return rejected;
-};
+        user.status = RegistrationStatuses.asObject.rejected.id
+        user.save()
+    })
+    return rejected
+}
 
-module.exports = controller;
+module.exports = controller

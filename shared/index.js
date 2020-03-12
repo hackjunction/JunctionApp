@@ -28,5 +28,5 @@ module.exports = {
     SelectOptions: require('./constants/select-options'),
     Themes: require('./constants/themes'),
     Universities: require('./constants/universities'),
-    Utils: require('./helpers/utils')
-};
+    Utils: require('./helpers/utils'),
+}

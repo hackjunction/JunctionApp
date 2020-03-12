@@ -96,7 +96,7 @@ export default ({ value = [], onChange, autoFocus }) => {
                             value={`${index + 1}`}
                             control={<Radio color="primary" />}
                             label={label}
-                            labelPlacement="left"
+                            labelPlacement="start"
                         />
                     ))}
                 </RadioGroup>

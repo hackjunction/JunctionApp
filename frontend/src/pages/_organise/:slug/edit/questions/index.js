@@ -8,6 +8,8 @@ import Shared from '@hackjunction/shared'
 
 import { Table } from 'components/generic/_Table'
 
+import QuestionSelect from './QuestionSelect'
+
 export default () => {
     const buildColumns = useCallback((form, field, fieldValue) => {
         return [
@@ -73,38 +75,16 @@ export default () => {
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <FastField
-                    name="userDetailsConfig"
-                    render={({ field, form }) => {
-                        const fieldValue = field.value || {}
-                        const fieldKeys = Object.keys(fieldValue)
-                        const dataSource = fieldKeys.map(field => ({
-                            key: field,
-                            label: Shared.RegistrationFields.getLabel(field),
-                            category: Shared.RegistrationFields.getCategory(
-                                field
-                            ),
-                            enable: fieldValue[field].enable,
-                            require: fieldValue[field].require,
-                            editable: fieldValue[field].editable,
-                        }))
-
-                        const columns = buildColumns(form, field, fieldValue)
-
-                        return (
-                            <FormControl
-                                label="Registration questions"
-                                hint="Choose the questions you want to ask in the registration form for this event"
-                            >
-                                <Table
-                                    columns={columns}
-                                    data={dataSource}
-                                    enablePagination={false}
-                                    enableExport={false}
-                                    enableSelection={false}
-                                />
-                            </FormControl>
-                        )
-                    }}
+                    name="registrationConfig"
+                    render={({ field, form }) => (
+                        <QuestionSelect
+                            optionalFields={field?.value?.optionalFields}
+                            requiredFields={field?.value?.requiredFields}
+                            onChange={value =>
+                                form.setFieldValue(field.name, value)
+                            }
+                        />
+                    )}
                 />
             </Grid>
             <Grid item xs={12}>

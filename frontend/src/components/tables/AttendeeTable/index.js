@@ -15,6 +15,7 @@ import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationMod
 import BulkEmailModal from 'components/modals/BulkEmailModal'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
+import { CSVLink } from 'react-csv'
 
 export default ({
     emptyRenderer,
@@ -67,6 +68,29 @@ export default ({
         },
         [dispatch]
     )
+    // TODO move somewhere else
+    function flattenObject(ob) {
+        var toReturn = {}
+        for (var i in ob) {
+            if (!ob.hasOwnProperty(i)) continue
+
+            if (typeof ob[i] == 'object' && ob[i] !== null) {
+                var flatObject = flattenObject(ob[i])
+                for (var x in flatObject) {
+                    if (!flatObject.hasOwnProperty(x)) continue
+
+                    toReturn[i + '.' + x] = flatObject[x]
+                }
+            } else {
+                toReturn[i] = ob[i]
+            }
+        }
+        return toReturn
+    }
+
+    const exportRegisterations = selectedRows => {
+        setSelected(selectedRows)
+    }
 
     const resetSearch = useCallback(() => {
         dispatch(push({ search: '' }))
@@ -184,7 +208,6 @@ export default ({
             },
         ]
     }, [event.tags, organiserProfilesMap])
-
     return (
         <React.Fragment>
             <EditRegistrationModal
@@ -196,12 +219,12 @@ export default ({
             <BulkEditRegistrationModal
                 visible={activeModal === 'bulkEdit'}
                 onClose={resetSearch}
-                registrationIds={selected}
+                userIds={selected.map(s => s.original.user)}
             />
             <BulkEmailModal
                 visible={activeModal === 'bulkEmail'}
                 onClose={resetSearch}
-                registrationIds={selected}
+                userIds={selected.map(s => s.original.user)}
             />
             <Table
                 data={attendees}
@@ -217,6 +240,24 @@ export default ({
                         key: 'bulk-edit',
                         label: 'Edit all',
                         action: openBulkEdit,
+                    },
+                    {
+                        key: 'export',
+                        label: (
+                            <CSVLink
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }}
+                                data={selected.map(item =>
+                                    flattenObject(item.original)
+                                )}
+                                filename="export.csv"
+                            >
+                                Export Registerations
+                            </CSVLink>
+                        ),
+                        action: exportRegisterations,
                     },
                 ]}
             />

@@ -34,14 +34,14 @@ const BooleanInput = ({ value = false, onChange, alignCenter = false }) => {
                     value={true}
                     control={<Radio color="primary" />}
                     label={'Yes'}
-                    labelPlacement="left"
+                    labelPlacement="start"
                 />
                 <FormControlLabel
                     key={'no'}
                     value={false}
                     control={<Radio color="primary" />}
                     label={'No'}
-                    labelPlacement="left"
+                    labelPlacement="start"
                 />
             </RadioGroup>
         </Box>
