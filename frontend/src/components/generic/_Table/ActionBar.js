@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
     const classes = useStyles()
     const selectionActive = selected.length > 0
-
     const headers = flatHeaders
         .map(header => {
             if (typeof header.Header === 'string') {
@@ -32,10 +31,6 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
             }
         })
         .filter(item => item)
-
-    console.log('HEADERS', headers)
-    console.log('SELECTED', selected)
-
     const _actions = useMemo(() => {
         let base = [...actions]
         if (enableExport) {
