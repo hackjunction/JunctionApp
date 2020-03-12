@@ -208,7 +208,6 @@ export default ({
             },
         ]
     }, [event.tags, organiserProfilesMap])
-    console.log('attendees', attendees)
     return (
         <React.Fragment>
             <EditRegistrationModal
