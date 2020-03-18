@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch } from 'react-redux'
 import { findIndex } from 'lodash-es'

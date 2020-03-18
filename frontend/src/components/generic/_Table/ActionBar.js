@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useMemo } from 'react'
 
 import { Box, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,16 +21,7 @@ const useStyles = makeStyles(theme => ({
 const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
     const classes = useStyles()
     const selectionActive = selected.length > 0
-    const headers = flatHeaders
-        .map(header => {
-            if (typeof header.Header === 'string') {
-                return {
-                    label: header.Header,
-                    key: header.id,
-                }
-            }
-        })
-        .filter(item => item)
+
     const _actions = useMemo(() => {
         let base = [...actions]
         if (enableExport) {
@@ -49,6 +40,8 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
                                         key: header.id,
                                     }
                                 }
+                                // Not a proper header, filter it out
+                                return false
                             })
                             .filter(item => item)}
                     >

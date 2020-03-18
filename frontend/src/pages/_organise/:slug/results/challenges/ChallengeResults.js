@@ -35,11 +35,15 @@ const getAvatarStyle = index => {
 }
 
 export default ({ challenge }) => {
+    const allProjectsMap = useSelector(OrganiserSelectors.projectsMap)
+
+    // TODO Add challenge results
+    /*
     const rankingsByChallenge = useSelector(
         OrganiserSelectors.rankingsByChallenge
     )
-    const allProjectsMap = useSelector(OrganiserSelectors.projectsMap)
     const rankings = rankingsByChallenge?.[challenge?.slug]
+    */
 
     const [dragDropState, setDragDropState] = useState({
         top: [],

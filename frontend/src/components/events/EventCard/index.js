@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Box, Typography } from '@material-ui/core'
 import Image from 'components/generic/Image'
 
-import MiscUtils from 'utils/misc'
-
 const useStyles = makeStyles(theme => ({
     wrapper: {
         background: 'white',
