@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
 import CenteredContainer from 'components/generic/CenteredContainer'
-import EventsService from 'services/events'
 
 import NewEventForm from './NewEventForm'
 import EventsList from './EventsList'

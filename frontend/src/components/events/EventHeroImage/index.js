@@ -10,7 +10,6 @@ import { Button, Typography } from '@material-ui/core'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
-import MiscUtils from 'utils/misc'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
