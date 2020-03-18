@@ -4,9 +4,6 @@ import { Grid, Switch } from '@material-ui/core'
 import { FastField } from 'formik'
 import CustomSectionList from './CustomSectionList'
 import FormControl from 'components/inputs/FormControl'
-import Shared from '@hackjunction/shared'
-
-import { Table } from 'components/generic/_Table'
 
 import QuestionSelect from './QuestionSelect'
 

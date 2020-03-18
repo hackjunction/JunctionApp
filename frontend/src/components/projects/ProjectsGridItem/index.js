@@ -1,13 +1,10 @@
 import React from 'react'
 
-import moment from 'moment-timezone'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography } from '@material-ui/core'
-import { EventHelpers } from '@hackjunction/shared'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
-import MiscUtils from 'utils/misc'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {

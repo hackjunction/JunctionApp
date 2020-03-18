@@ -22,7 +22,6 @@ export default ({ items }) => {
     const filters = useSelector(RecruitmentSelectors.filters)
     const pageSize = useSelector(RecruitmentSelectors.pageSize)
     const page = useSelector(RecruitmentSelectors.page)
-    const pageCount = useSelector(RecruitmentSelectors.pageCount)
     const paginationEnabled = !items
     const isFavorited = !!items
 
