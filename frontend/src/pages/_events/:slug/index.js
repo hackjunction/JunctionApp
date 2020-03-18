@@ -19,11 +19,11 @@ const EventDetailRouter = () => {
     const { eventLoading, eventError, isRegistrationOpen } = useContext(
         EventDetailContext
     )
-
+    //TODO FIX errortext and desc to be from eventErro
     return (
         <PageWrapper
             loading={eventLoading}
-            error={eventError}
+            error={!!eventError}
             errorText={`Oops, something went wrong`}
             errorDesc={`Please refresh the page to try again.`}
             header={() => <GlobalNavBar />}
