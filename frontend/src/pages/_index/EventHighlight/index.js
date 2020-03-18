@@ -8,7 +8,6 @@ import { push } from 'connected-react-router'
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
-import MiscUtils from 'utils/misc'
 import { useHighlightedEvents } from 'graphql/queries/events'
 
 const useStyles = makeStyles(theme => ({

@@ -3,20 +3,13 @@ import { RegistrationFields } from '@hackjunction/shared'
 import { groupBy } from 'lodash-es'
 import {
     FormControl,
-    FormLabel,
     FormGroup,
-    FormControlLabel,
-    FormHelperText,
     Typography,
-    Checkbox,
     Chip,
     Box,
-    Avatar,
-    Paper,
 } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
-import NewReleasesIcon from '@material-ui/icons/NewReleases'
 import { makeStyles } from '@material-ui/core/styles'
 
 const fields = RegistrationFields.getFields()
