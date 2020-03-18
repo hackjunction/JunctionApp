@@ -64,7 +64,6 @@ export const EventDetailProvider = ({ children }) => {
     const match = useRouteMatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const { slug } = match.params
-
     const {
         data: eventData,
         loading: eventLoading,
@@ -113,7 +112,6 @@ export const EventDetailProvider = ({ children }) => {
         },
         [idToken, refetchRegistration, slug]
     )
-
     const event = eventData?.eventBySlug
     const registration = registrationData?.myRegistration
     const isRegistrationOpen =

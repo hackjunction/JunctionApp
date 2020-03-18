@@ -21,7 +21,6 @@ import EventDetailContext from '../context'
 export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
-
     useEffect(() => {
         if (slug) {
             AnalyticsService.events.VIEW_EVENT(slug)

@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 
 const EventTimeline = ({ event }) => {
     const classes = useStyles()
-
     const timelineItems = useMemo(() => {
         const items = [
             {
