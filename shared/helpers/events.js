@@ -95,13 +95,13 @@ const EventHelpers = {
             if (now.isBefore(event.startTime)) {
                 const eventBegins = moment(event.startTime).utc()
                 if (eventBegins.diff(now, 'days') < 7) {
-                    return EventStatuses.WEEK_OF_EVENT
+                    return EventStatuses.WEEK_OF_EVENT.id
                 }
-                return EventStatuses.REGISTRATION_ENDED
+                return EventStatuses.REGISTRATION_ENDED.id
             }
-            return EventStatuses.IN_PROGRESS
+            return EventStatuses.IN_PROGRESS.id
         }
-        return EventStatuses.FINISHED
+        return EventStatuses.FINISHED.id
     },
 }
 
