@@ -18,7 +18,9 @@ export default () => {
     if (EventHelpers.isEventOver(event, moment)) return null
     if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id)
         return null
-
+    console.log(event.challenge_instructions)
+    // TODO: Make the entire message customizeable (With variable inserts)
+    // Also at travelgrantblock and gavelreviewingblock
     return (
         <Grid item xs={12} lg={6}>
             <GradientBox p={3} color="theme_orange">
@@ -26,40 +28,33 @@ export default () => {
                     Reviewing
                 </Typography>
                 <Typography variant="h4" gutterBottom>
-                    How to win partner challenges?
+                    Which challenge to pick?
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    This event has {event.challenges.length} different partner
+                    This event has {event.challenges.length} different
                     challenges which you can submit your project to. It's a good
                     idea to spend some time investigating the different
                     challenges available and discussing with partners to find
-                    out what kinds of solutions they are interested in seeing.
-                    Try to combine ideas and tools from a few different partner
-                    challenges into a single coherent solution to increase your
-                    chances of winning something!
+                    out which problem they are interested in working around.
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                     When submitting your project, you'll be able to choose up to
-                    5 different partner challenges (from any track) that you
-                    want to submit your project to. After the submission
-                    deadline the partners whose challenges you participated in
-                    will review your project, and decide the winner of their
-                    challenge.
+                    every different challenge that your project applies to.
+                    After the submission deadline the jury will review your
+                    project, and decide the winner of the challenge.
                 </Typography>
                 <Box p={1} />
-                {/** TODO: hardcoded for now, make dynamic later */}
-                <Button
-                    color="theme_white"
-                    variant="contained"
-                    onClick={() =>
-                        window.open(
-                            'https://2019.hackjunction.com/challenges',
-                            '_blank'
-                        )
-                    }
-                >
-                    View all challenges
-                </Button>
+                {event.challenge_instructions ? (
+                    <Button
+                        color="theme_white"
+                        variant="contained"
+                        onClick={() =>
+                            window.open(event.challenge_instructions, '_blank')
+                        }
+                    >
+                        View all challenges
+                    </Button>
+                ) : null}
             </GradientBox>
         </Grid>
     )
