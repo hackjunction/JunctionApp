@@ -204,6 +204,15 @@ const EventSchema = new mongoose.Schema({
         type: mongoose.Mixed,
         default: {},
     },
+    challenge_instructions: {
+        type: String,
+    },
+    faq: {
+        type: String,
+    },
+    demo_instructions: {
+        type: String,
+    },
 })
 
 EventSchema.index(
