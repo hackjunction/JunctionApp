@@ -29,7 +29,7 @@ export default () => {
                     Reviewing
                 </Typography>
                 <Typography variant="h4" gutterBottom>
-                    How to win the main prize?
+                    How are winners decided?
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                     The main winner of this event will be decided via
@@ -57,18 +57,17 @@ export default () => {
                     </Typography>
                 )}
                 <Box p={1} />
-                <Button
-                    color="theme_white"
-                    variant="contained"
-                    onClick={() =>
-                        window.open(
-                            'https://2019.hackjunction.com/demo',
-                            '_blank'
-                        )
-                    }
-                >
-                    More info about reviewing
-                </Button>
+                {event.challenge_instructions ? (
+                    <Button
+                        color="theme_white"
+                        variant="contained"
+                        onClick={() =>
+                            window.open(event.demo_instructions, '_blank')
+                        }
+                    >
+                        More info about reviewing
+                    </Button>
+                ) : null}
             </GradientBox>
         </Grid>
     )
