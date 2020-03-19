@@ -109,6 +109,75 @@ export default () => {
                     )}
                 />
             </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="challenge_instructions"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Link to challenge descriptions"
+                            hint="https://hackjunction.com/challenges"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <TextInput
+                                name="challenge_instructions"
+                                placeholder="https://hackjunction.com/challenges"
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="faq"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="FAQ link"
+                            hint="https://hackjunction.com/faq"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <TextInput
+                                name="faq"
+                                placeholder="https://hackjunction.com/faq"
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="demo_instructions"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Demo instruction link"
+                            hint="https://hackjunction.com/demo"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <TextInput
+                                name="demo_instructions"
+                                placeholder="https://hackjunction.com/demo"
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
         </Grid>
     )
 }
