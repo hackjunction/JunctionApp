@@ -72,18 +72,15 @@ export default () => {
                             website for details on the travel grant amounts
                             available for the country you're travelling from.
                         </Typography>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() =>
-                                window.open(
-                                    'https://2019.hackjunction.com/info#faq',
-                                    '_blank'
-                                )
-                            }
-                        >
-                            Frequently asked questions
-                        </Button>
+                        {event.challenge_instructions ? (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => window.open(event.faq, '_blank')}
+                            >
+                                Frequently asked questions
+                            </Button>
+                        ) : null}
                     </GradientBox>
                 </Grid>
             )
