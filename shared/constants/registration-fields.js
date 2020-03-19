@@ -794,13 +794,7 @@ const FieldProps = {
     teamOptions: {
         label: 'Applying as a team?',
         hint:
-            '' +
-            'If you want to apply as a team, we will review your team as a whole, \n' +
-            "and accept all team members even if some of them wouldn't get accepted on their own.\n\n" +
-            'Please note: \n' +
-            '- If you choose to apply as a team, **we will NOT review your application** before you have configured your team on the Event Dashboard after submitting your registration \n' +
-            '- All team members will have to fill the application form individually, after which you can add the people to your team \n\n' +
-            'If you do apply as a team, you can also choose to apply individually in the case that your team is not accepted. \n',
+            'Do you already have people you want to participate with figured out?',
         hintMarkdown: true,
         fieldType: FieldTypes.TEAM_OPTIONS,
         copyToUserProfile: false,

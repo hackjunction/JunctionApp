@@ -33,9 +33,7 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
                 <Typography className={classes.hint} variant="subtitle2">
                     Please note: if you do apply as a team, you must form the
                     team on the event dashboard, which you will be able to
-                    access after completing this form. If you choose to apply as
-                    a team, and you do not form a team, we will not review your
-                    registration.
+                    access after completing this form.
                 </Typography>
                 <BooleanInput
                     autoFocus={autoFocus}
@@ -52,8 +50,8 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
                         Do you want to apply also alone?
                     </Typography>
                     <Typography className={classes.hint} variant="subtitle2">
-                        If your entire team isn't accepted as a whole, do you
-                        want to also apply alone?
+                        If your entire team can't make it, do you want to also
+                        apply alone?
                     </Typography>
                     <BooleanInput
                         value={value.applyAlone}
