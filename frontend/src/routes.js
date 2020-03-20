@@ -9,6 +9,8 @@ import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
 
 import EventsRouter from './pages/_events'
+import ContactPage from './pages/_contact'
+
 import RequiresPermission from './hocs/RequiresPermission'
 
 /** Lazy-load the access-restricted pages */
@@ -32,6 +34,11 @@ const routes = [
     {
         path: '/login',
         component: LoginPage,
+        exact: false,
+    },
+    {
+        path: '/contact',
+        component: ContactPage,
         exact: false,
     },
     {
