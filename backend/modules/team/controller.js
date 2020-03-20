@@ -43,9 +43,12 @@ controller.editTeam = (eventId, userId, edits) => {
 
 controller.joinTeam = (eventId, userId, code) => {
     return controller.getTeamByCode(eventId, code).then(team => {
+        // TODO HIGH PRIORITY team size defined in event
+        /*
         if (team.members.length >= 4) {
             throw new ForbiddenError('Teams can have at most 5 members')
         }
+        */
         team.members = team.members.concat(userId)
         return team.save()
     })
@@ -73,7 +76,7 @@ controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
 controller.getTeamByCode = (eventId, code) => {
     return Team.findOne({
         event: eventId,
-        code: code,
+        code,
     }).then(team => {
         if (!team) {
             throw new NotFoundError('No team exists for this code and event')
@@ -102,7 +105,7 @@ controller.getTeamMembers = teamId => {
         _id: teamId,
     }).then(team => {
         if (!team) {
-            throw new NotFoundError('No team found with id ' + teamId)
+            throw new NotFoundError(`No team found with id ${teamId}`)
         }
         return [team.owner].concat(team.members)
     })
@@ -129,21 +132,20 @@ controller.attachMeta = async team => {
         if (!registration || !profile) {
             userIdsToRemove.push(userId)
             return res
-        } else {
-            res[userId] = {
-                registration: {
-                    status: registration.status,
-                },
-                profile,
-            }
-            return res
         }
+        res[userId] = {
+            registration: {
+                status: registration.status,
+            },
+            profile,
+        }
+        return res
     }, {})
 
     let result
 
     if (userIdsToRemove.length > 0) {
-        //For whatever reason, some team members no longer exist -> remove missing team members
+        // For whatever reason, some team members no longer exist -> remove missing team members
         team.members = team.toJSON().members.filter(member => {
             if (userIdsToRemove.indexOf(member) !== -1) {
                 return false
@@ -154,13 +156,13 @@ controller.attachMeta = async team => {
         if (userIdsToRemove.indexOf(team.owner) !== -1) {
             // If the owner no longer exists
             if (team.members.length > 0) {
-                //If there are still members left, promote first member to owner
+                // If there are still members left, promote first member to owner
                 team.owner = team.members[0]
                 team.members = team.members.slice(1)
             } else {
-                //If there are no members left either, delete the team
+                // If there are no members left either, delete the team
                 team.remove()
-                //Throw not found error
+                // Throw not found error
                 throw new NotFoundError(
                     'No team exists for this user and event'
                 )
