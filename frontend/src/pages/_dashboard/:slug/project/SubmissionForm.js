@@ -51,7 +51,6 @@ export default () => {
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id
     }, [event])
-
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />

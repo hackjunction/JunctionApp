@@ -2,7 +2,7 @@ const yup = require('yup')
 const EventTypes = require('./event-types')
 
 /** The user editable fields and their validation rules for a Project */
-//TODO: Add tracks and challenges
+// TODO: Add tracks and challenges
 const ProjectSchema = {
     name: yup
         .string()
@@ -22,7 +22,6 @@ const ProjectSchema = {
     source: yup
         .string()
         .url()
-        .required()
         .label('Source code'),
     sourcePublic: yup
         .boolean()
