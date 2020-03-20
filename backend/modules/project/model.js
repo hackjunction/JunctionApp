@@ -31,7 +31,6 @@ const ProjectSchema = new mongoose.Schema({
     technologies: [String],
     source: {
         type: String,
-        required: true,
     },
     sourcePublic: {
         type: Boolean,
