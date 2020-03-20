@@ -74,7 +74,6 @@ export default () => {
     }, [dispatch])
     // TODO there isn't message which tells which field is needed
     const sendEmail = useCallback(() => {
-        console.log(message.length, subject.length)
         if (
             !(message.length > 0 && subject.length > 0) &&
             Shared.Utils.isEmail(email)
