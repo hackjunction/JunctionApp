@@ -39,25 +39,23 @@ const messageParams = () =>
             .allow(''),
     })
 
-router
-    .route('/:slug/preview')
-    /** Send a preview email to a given address */
-    .post(
-        celebrate({
-            body: {
-                to: Joi.string().email(),
-                params: messageParams().required(),
-            },
-        }),
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        asyncHandler(async (req, res) => {
-            const { to, params } = req.body
-            await EmailTaskController.sendPreviewEmail(to, params)
-            return res.status(status.OK).json({ message: 'success' })
-        })
-    )
+/** Send a preview email to a given address */
+router.route('/:slug/preview').post(
+    celebrate({
+        body: {
+            to: Joi.string().email(),
+            params: messageParams().required(),
+        },
+    }),
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    asyncHandler(async (req, res) => {
+        const { to, params } = req.body
+        await EmailTaskController.sendPreviewEmail(to, params)
+        return res.status(status.OK).json({ message: 'success' })
+    })
+)
 
 router.route('/:slug/send').post(
     celebrate({
@@ -79,6 +77,19 @@ router.route('/:slug/send').post(
         const { event } = req
         const { recipients, params, uniqueId } = req.body
         EmailTaskController.sendBulkEmail(recipients, params, event, uniqueId)
+        return res.status(status.OK).json({ message: 'success' })
+    })
+)
+
+router.route('/contact').post(
+    celebrate({
+        body: {
+            params: messageParams().required(),
+        },
+    }),
+    asyncHandler(async (req, res) => {
+        const { params } = req.body
+        await EmailTaskController.sendContactEmail(params)
         return res.status(status.OK).json({ message: 'success' })
     })
 )
