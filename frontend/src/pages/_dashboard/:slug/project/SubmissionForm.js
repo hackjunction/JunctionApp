@@ -21,6 +21,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+//TODO make the form labels and hints customizable
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
@@ -51,7 +52,6 @@ export default () => {
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id
     }, [event])
-
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -284,7 +284,7 @@ export default () => {
                             render={({ field, form }) => (
                                 <FormControl
                                     label="Demo"
-                                    hint="Have a demo to show of your project? Link it here! This can be a live version of your project running somewhere on the web, a video of it in action, or something else living on the public internet"
+                                    hint="Download your presentation video of the project to Vimeo and link it here. Max duration is 2 minutes. (Make sure everyone receiving the link has access to the video.) If you have any materials, such as a presentation deck or a demo, they should be presented in the video."
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
