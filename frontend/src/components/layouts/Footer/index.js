@@ -1,9 +1,15 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 
 import ExternalLink from 'components/generic/ExternalLink'
 import Divider from 'components/generic/Divider'
+import LineDivider from 'components/generic/LineDivider/'
+import CenteredContainer from 'components/generic/CenteredContainer'
+import Button from 'components/generic/Button'
+
 import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
@@ -51,10 +57,32 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Footer = () => {
+const Footer = props => {
     const classes = useStyles()
+    const dispatch = useDispatch()
+
     return (
         <div className={classes.wrapper}>
+            {props.hide_contact ? null : (
+                <CenteredContainer>
+                    <LineDivider />
+                    <Divider size={1} />
+                    <h2>
+                        Want to organize a hackathon with{' '}
+                        {config.PLATFORM_OWNER_NAME}?
+                    </h2>
+                    <Button
+                        color="theme_white"
+                        variant="outlined"
+                        strong
+                        onClick={() => dispatch(push('/contact'))}
+                    >
+                        Contact us
+                    </Button>
+                    <Divider size={5} />
+                </CenteredContainer>
+            )}
+
             <div className={classes.inner}>
                 <div className={classes.links}>
                     <Divider size={1} />
@@ -114,5 +142,7 @@ const Footer = () => {
         </div>
     )
 }
-
+Footer.defaultProps = {
+    hide_contact: false,
+}
 export default Footer
