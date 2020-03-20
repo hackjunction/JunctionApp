@@ -244,6 +244,15 @@ controller.sendPreviewEmail = async (to, msgParams) => {
     return SendgridService.sendGenericEmail(to, msgParams).catch(() => {})
 }
 
+controller.sendContactEmail = async msgParams => {
+    console.log('sending', msgParams)
+    // TODO config in .env
+    return SendgridService.sendGenericEmail(
+        'visa.pollari@gmail.com',
+        msgParams
+    ).catch(() => {})
+}
+
 controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
     return Promise.map(
         recipients,
