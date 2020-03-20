@@ -30,4 +30,11 @@ EmailService.sendBulkEmail = (idToken, slug, recipients, params, uniqueId) => {
     return _axios.post(`${BASE_ROUTE}/${slug}/send`, data, config(idToken))
 }
 
+EmailService.sendContactEmail = params => {
+    const data = {
+        params,
+    }
+    return _axios.post(`${BASE_ROUTE}/contact`, data)
+}
+
 export default EmailService

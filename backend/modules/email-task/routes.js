@@ -88,7 +88,6 @@ router.route('/contact').post(
         },
     }),
     asyncHandler(async (req, res) => {
-        console.log('Gogoogoog')
         const { params } = req.body
         await EmailTaskController.sendContactEmail(params)
         return res.status(status.OK).json({ message: 'success' })

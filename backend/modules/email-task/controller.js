@@ -248,7 +248,7 @@ controller.sendContactEmail = async msgParams => {
     console.log('sending', msgParams)
     // TODO config in .env
     return SendgridService.sendGenericEmail(
-        'visa.pollari@gmail.com',
+        'hello@hackjunction.com',
         msgParams
     ).catch(() => {})
 }

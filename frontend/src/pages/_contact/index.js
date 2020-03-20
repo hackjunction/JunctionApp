@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useLocation } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import { TextField } from '@material-ui/core'
 
 import Divider from 'components/generic/Divider'
-import LineDivider from 'components/generic/LineDivider/'
-import ExternalLink from 'components/generic/ExternalLink'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 
@@ -17,7 +16,11 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthActions from 'redux/auth/actions'
+import EmailService from 'services/email'
+import Shared from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -57,9 +60,51 @@ export default () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const location = useLocation()
+    const idToken = useSelector(AuthSelectors.getIdToken)
+
+    const [loading, setLoading] = useState(false)
+    const [subject, setSubject] = useState('')
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    const [organisation, setOrganisation] = useState('')
+    const [message, setMessage] = useState('')
+
     useEffect(() => {
         dispatch(AuthActions.clearSession())
     }, [dispatch])
+    // TODO there isn't message which tells which field is needed
+    const sendEmail = useCallback(() => {
+        console.log(message.length, subject.length)
+        if (
+            !(message.length > 0 && subject.length > 0) &&
+            Shared.Utils.isEmail(email)
+        ) {
+            return
+        }
+        setLoading(true)
+        const params = {
+            subject: 'App Contact Form: ' + subject,
+            subtitle: name + (organisation ? ' from ' + organisation : ''),
+            body: message,
+            reply_to: email,
+        }
+        EmailService.sendContactEmail(params)
+            .then(() => {
+                dispatch(SnackbarActions.success('Contact mail sent'))
+            })
+            .catch(err => {
+                dispatch(SnackbarActions.error('Something went wrttg...'))
+            })
+            .finally(() => {
+                setLoading(false)
+                setMessage('')
+                setSubject('')
+                setEmail('')
+                setName('')
+                setOrganisation('')
+            })
+        return null
+    }, [dispatch, email, message, name, organisation, subject])
 
     const error = location?.state?.error
 
@@ -81,8 +126,73 @@ export default () => {
                         </Button>
                     </CenteredContainer>
                     <CenteredContainer>
-                        <h2>Contact {config.PLATFORM_OWNER_NAME}?</h2>
+                        <h2>Contact {config.PLATFORM_OWNER_NAME}</h2>
+                        <TextField
+                            style={{ width: '60%' }}
+                            label={'Subject'}
+                            required={true}
+                            value={subject}
+                            onChange={e => setSubject(e.target.value)}
+                            margin="dense"
+                            variant="filled"
+                        />
                     </CenteredContainer>
+                    <CenteredContainer>
+                        <TextField
+                            style={{ width: '60%' }}
+                            label={'Email'}
+                            value={email}
+                            required={true}
+                            onChange={e => setEmail(e.target.value)}
+                            margin="dense"
+                            variant="filled"
+                        />
+                    </CenteredContainer>
+                    <CenteredContainer>
+                        <TextField
+                            style={{ width: '60%' }}
+                            label={'Name'}
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            margin="dense"
+                            variant="filled"
+                        />
+                    </CenteredContainer>
+                    <CenteredContainer>
+                        <TextField
+                            style={{ width: '60%' }}
+                            label={'Organisation'}
+                            value={organisation}
+                            onChange={e => setOrganisation(e.target.value)}
+                            margin="dense"
+                            variant="filled"
+                        />
+                    </CenteredContainer>
+                    <CenteredContainer>
+                        <TextField
+                            style={{ width: '60%' }}
+                            label={'Message'}
+                            required={true}
+                            value={message}
+                            onChange={e => setMessage(e.target.value)}
+                            margin="dense"
+                            variant="filled"
+                            multiline
+                            rows={10}
+                            rowsMax={100}
+                        />
+                    </CenteredContainer>
+                    <CenteredContainer>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            loading={loading}
+                            onClick={sendEmail}
+                        >
+                            Send
+                        </Button>
+                    </CenteredContainer>
+                    <Divider />
                 </>
             )}
         />
