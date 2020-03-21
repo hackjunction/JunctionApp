@@ -30,10 +30,12 @@ export default () => {
     const project = useSelector(DashboardSelectors.project)
     const projectLoading = useSelector(DashboardSelectors.projectLoading)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-
     const initialValues = {
         sourcePublic: true,
         hiddenMembers: [],
+        privacy: !projectLoading
+            ? project.hiddenMembers.includes(idTokenData.sub)
+            : true,
         ...project,
     }
 
@@ -407,7 +409,7 @@ export default () => {
                             }}
                         >
                             <FastField
-                                name="hiddenMembers"
+                                name="privacy"
                                 render={({ field, form }) => (
                                     <FormControl
                                         label="Privacy"
@@ -419,58 +421,19 @@ export default () => {
                                         error={form.errors[field.name]}
                                     >
                                         <BooleanInput
-                                            value={
-                                                field.value
-                                                    ? field.value.includes(
-                                                          idTokenData.sub
-                                                      )
-                                                    : true
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
                                             }
-                                            onChange={value => {
-                                                if (project.hiddenMembers) {
-                                                    if (
-                                                        project.hiddenMembers.includes(
-                                                            idTokenData.sub
-                                                        )
-                                                    ) {
-                                                        const index = project.hiddenMembers.indexOf(
-                                                            idTokenData.sub
-                                                        )
-                                                        if (index !== -1)
-                                                            project.hiddenMembers.splice(
-                                                                index,
-                                                                1
-                                                            )
-                                                    } else {
-                                                        project.hiddenMembers.push(
-                                                            idTokenData.sub
-                                                        )
-                                                    }
-                                                    form.setFieldValue(
-                                                        'hiddenMembers',
-                                                        project.hiddenMembers
-                                                    )
-                                                } else {
-                                                    if (!field.value) {
-                                                        form.setFieldValue(
-                                                            'hiddenMembers',
-                                                            [idTokenData.sub]
-                                                        )
-                                                    } else {
-                                                        form.setFieldValue(
-                                                            'hiddenMembers',
-                                                            []
-                                                        )
-                                                    }
-                                                }
-                                            }}
                                         />
                                     </FormControl>
                                 )}
                             />
                         </Box>
                     </Grid>
-
                     {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <ErrorsBox errors={formikProps.errors} />
@@ -506,6 +469,16 @@ export default () => {
             }}
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
+                console.log('values are!', values)
+                if (values.privacy) {
+                    if (!values.hiddenMembers.includes(idTokenData.sub)) {
+                        values.hiddenMembers.push(idTokenData.sub)
+                    }
+                } else {
+                    const index = values.hiddenMembers.indexOf(idTokenData.sub)
+                    if (index !== -1) values.hiddenMembers.splice(index, 1)
+                }
+                console.log('sending', values)
                 let res
                 if (project) {
                     res = await dispatch(
