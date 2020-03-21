@@ -43,6 +43,7 @@ const ProjectsTable = ({ projects }) => {
             */
         ]
     }, [])
+    // TODO refactor forloops
     const data = projects.map(project => {
         for (const i in teams) {
             const team = teams[i]
