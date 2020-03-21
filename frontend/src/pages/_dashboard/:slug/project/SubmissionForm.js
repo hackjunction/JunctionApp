@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react'
 
 import * as yup from 'yup'
+import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, FastField } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
-import { Grid, Box } from '@material-ui/core'
+import { Grid, Box, Checkbox } from '@material-ui/core'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
@@ -20,6 +21,7 @@ import ProjectImages from './ProjectImages'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 //TODO make the form labels and hints customizable
 export default () => {
@@ -27,9 +29,11 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const project = useSelector(DashboardSelectors.project)
     const projectLoading = useSelector(DashboardSelectors.projectLoading)
+    const idTokenData = useSelector(AuthSelectors.idTokenData)
 
     const initialValues = {
         sourcePublic: true,
+        hiddenMembers: [],
         ...project,
     }
 
@@ -52,6 +56,7 @@ export default () => {
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id
     }, [event])
+
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -393,6 +398,79 @@ export default () => {
                             />
                         </Grid>
                     )}
+                    <Grid item xs={12}>
+                        <Box
+                            style={{
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                alignContent: 'flex-start',
+                            }}
+                        >
+                            <FastField
+                                name="hiddenMembers"
+                                render={({ field, form }) => (
+                                    <FormControl
+                                        label="Privacy"
+                                        hint="I want to be credited for the project."
+                                        touched={
+                                            form.touched[field.name] ||
+                                            formikProps.submitCount > 0
+                                        }
+                                        error={form.errors[field.name]}
+                                    >
+                                        <BooleanInput
+                                            value={
+                                                field.value
+                                                    ? field.value.includes(
+                                                          idTokenData.sub
+                                                      )
+                                                    : true
+                                            }
+                                            onChange={value => {
+                                                if (project.hiddenMembers) {
+                                                    if (
+                                                        project.hiddenMembers.includes(
+                                                            idTokenData.sub
+                                                        )
+                                                    ) {
+                                                        const index = project.hiddenMembers.indexOf(
+                                                            idTokenData.sub
+                                                        )
+                                                        if (index !== -1)
+                                                            project.hiddenMembers.splice(
+                                                                index,
+                                                                1
+                                                            )
+                                                    } else {
+                                                        project.hiddenMembers.push(
+                                                            idTokenData.sub
+                                                        )
+                                                    }
+                                                    form.setFieldValue(
+                                                        'hiddenMembers',
+                                                        project.hiddenMembers
+                                                    )
+                                                } else {
+                                                    if (!field.value) {
+                                                        form.setFieldValue(
+                                                            'hiddenMembers',
+                                                            [idTokenData.sub]
+                                                        )
+                                                    } else {
+                                                        form.setFieldValue(
+                                                            'hiddenMembers',
+                                                            []
+                                                        )
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    </FormControl>
+                                )}
+                            />
+                        </Box>
+                    </Grid>
+
                     {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <ErrorsBox errors={formikProps.errors} />
