@@ -79,16 +79,11 @@ export default () => {
                                 color="secondary"
                                 paragraph
                             >
-                                Incomplete
+                                Pending
                             </Typography>
                             <Typography key="body" variant="body1" paragraph>
-                                Since you're applying as a team, you'll need to
-                                mark your team as complete before we'll begin
-                                processing your application. This lets us know
-                                that your team is ready to be reviewed. <br />{' '}
-                                <br />
-                                Only the team owner (person who has created the
-                                team) can do this.
+                                Registering your team prior to event makes it
+                                easier for us to review your application.
                             </Typography>
                             <Button
                                 color="theme_turquoise"
@@ -99,7 +94,7 @@ export default () => {
                                     )
                                 }
                             >
-                                Finalize your team
+                                Edit your team
                             </Button>
                         </GradientBox>
                     </Grid>

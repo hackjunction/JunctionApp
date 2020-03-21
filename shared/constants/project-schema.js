@@ -1,8 +1,8 @@
-const yup = require('yup');
-const EventTypes = require('./event-types');
+const yup = require('yup')
+const EventTypes = require('./event-types')
 
 /** The user editable fields and their validation rules for a Project */
-//TODO: Add tracks and challenges
+// TODO: Add tracks and challenges
 const ProjectSchema = {
     name: yup
         .string()
@@ -22,7 +22,6 @@ const ProjectSchema = {
     source: yup
         .string()
         .url()
-        .required()
         .label('Source code'),
     sourcePublic: yup
         .boolean()
@@ -41,32 +40,36 @@ const ProjectSchema = {
         .of(
             yup.object().shape({
                 publicId: yup.string(),
-                url: yup.string().url()
+                url: yup.string().url(),
             })
         )
         .max(5)
         .ensure()
-        .label('Images')
-};
+        .label('Images'),
+}
 
 const buildProjectSchema = event => {
-    const schema = { ...ProjectSchema };
+    const schema = { ...ProjectSchema }
 
     if (event.tracksEnabled) {
         schema.track = yup
             .string()
             .oneOf(event.tracks.map(track => track.slug))
             .required()
-            .label('Track');
+            .label('Track')
     }
 
     if (event.challengesEnabled) {
         schema.challenges = yup
             .array()
-            .of(yup.string().oneOf(event.challenges.map(challenge => challenge.slug)))
+            .of(
+                yup
+                    .string()
+                    .oneOf(event.challenges.map(challenge => challenge.slug))
+            )
             .max(5)
             .ensure()
-            .label('Challenges');
+            .label('Challenges')
     }
 
     if (event.eventType === EventTypes.physical.id) {
@@ -74,10 +77,10 @@ const buildProjectSchema = event => {
             .string()
             .max(100)
             .required()
-            .label('Table location');
+            .label('Table location')
     }
 
-    return schema;
-};
+    return schema
+}
 
-module.exports = buildProjectSchema;
+module.exports = buildProjectSchema

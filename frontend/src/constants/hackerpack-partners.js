@@ -27,6 +27,13 @@ const Partners = [
             'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1573592302/46elks-logo-blue.png',
         link: 'https://bit.ly/46elks-hackerpack2019',
     },
+    {
+        name: 'UpCloud',
+        description: `During Hack The Crisis Finland, Upcloud offers $50 of credits, and account that can hold up to 5 servers with 8 Cores and 32GB RAM each.`,
+        icon:
+            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_300/v1584703186/upcloud_logo_black.png',
+        link: 'https://upcloud.com/signup/?promo=hackthecrisis',
+    },
 ]
 
 export default Partners

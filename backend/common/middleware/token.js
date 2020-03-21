@@ -1,49 +1,18 @@
-const _ = require('lodash');
-const jwkRsa = require('jwks-rsa');
-const jwt = require('express-jwt');
+const { UnauthorizedError } = require('../errors/errors')
 
-const idTokenNamespace = global.gConfig.ID_TOKEN_NAMESPACE;
+/** Token parsing logic has moved to misc/jwt.js and is run for every request.
+ * The purpose of this middleware is to throw a 401 error if the JWT does not exist
+ * or is invalid
+ */
 
 /* Verify JWT from client requests */
-const isAuthenticated = jwt({
-    secret: jwkRsa.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: `https://${global.gConfig.AUTH0_DOMAIN}/.well-known/jwks.json`
-    }),
-    getToken: function fromHeaderOrQuerystring(req) {
-        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-            return req.headers.authorization.split(' ')[1];
-        } else if (req.query && req.query.token) {
-            return req.query.token;
-        }
-        return null;
-    },
-    //audience: process.env.AUTH0_DOMAIN,
-    issuer: `https://${global.gConfig.AUTH0_DOMAIN}/`,
-    algorithms: ['RS256']
-});
-
-function parseToken(req, res, next) {
-    if (req.user) {
-        req.user = _.reduce(
-            req.user,
-            (obj, value, key) => {
-                if (key.indexOf(idTokenNamespace) !== -1) {
-                    obj[key.replace(idTokenNamespace, '')] = value;
-                } else {
-                    obj[key] = value;
-                }
-                return obj;
-            },
-            {}
-        );
-    }
-
-    next();
-}
 
 module.exports = {
-    hasToken: [isAuthenticated, parseToken]
-};
+    hasToken: (req, res, next) => {
+        if (!req.user) {
+            throw new UnauthorizedError('Authentication required')
+        } else {
+            next()
+        }
+    },
+}

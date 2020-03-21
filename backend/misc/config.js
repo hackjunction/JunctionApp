@@ -3,103 +3,103 @@ const _ = require('lodash')
 const logger = require('./logger')
 
 const settings = {
-    PORT: {
-        value: process.env.PORT,
+    ADMIN_TOKEN: {
         required: true,
-    },
-    AUTH0_DOMAIN: {
-        value: process.env.AUTH0_DOMAIN,
-        required: true,
-    },
-    AUTH0_CLIENT_ID: {
-        value: process.env.AUTH0_CLIENT_ID,
-        required: true,
-    },
-    AUTH0_CLIENT_SECRET: {
-        value: process.env.AUTH0_CLIENT_SECRET,
-        required: true,
+        value: process.env.ADMIN_TOKEN,
     },
     AUTH0_AUTHORIZATION_EXTENSION_URL: {
+        required: true,
         value: process.env.AUTH0_AUTHORIZATION_EXTENSION_URL,
+    },
+    AUTH0_CLIENT_ID: {
         required: true,
+        value: process.env.AUTH0_CLIENT_ID,
     },
-    ID_TOKEN_NAMESPACE: {
-        value: process.env.ID_TOKEN_NAMESPACE,
+    AUTH0_CLIENT_SECRET: {
         required: true,
+        value: process.env.AUTH0_CLIENT_SECRET,
     },
-    MONGODB_URI: {
-        value: process.env.MONGODB_URI,
+    AUTH0_DOMAIN: {
         required: true,
-    },
-    CLOUDINARY_CLOUD_NAME: {
-        value: process.env.CLOUDINARY_CLOUD_NAME,
-        required: true,
-    },
-    CLOUDINARY_API_KEY: {
-        value: process.env.CLOUDINARY_API_KEY,
-        required: true,
-    },
-    CLOUDINARY_API_SECRET: {
-        value: process.env.CLOUDINARY_API_SECRET,
-        required: true,
-    },
-    CLOUDINARY_FOLDER: {
-        value: process.env.CLOUDINARY_FOLDER,
-        required: true,
-    },
-    SENDGRID_API_KEY: {
-        value: process.env.SENDGRID_API_KEY,
-        required: true,
-    },
-    SENDGRID_FROM_EMAIL: {
-        value: process.env.SENDGRID_FROM_EMAIL || 'noreply@hackjunction.com',
-        required: true,
-    },
-    SENDGRID_FROM_NAME: {
-        value: process.env.SENDGRID_FROM_NAME || 'Junction',
-        required: true,
-    },
-    SENDGRID_GENERIC_TEMPLATE: {
-        value: process.env.SENDGRID_GENERIC_TEMPLATE,
-        required: true,
-    },
-    FRONTEND_URL: {
-        value: process.env.FRONTEND_URL,
-        default: '',
-        required: true,
-    },
-    ENVIRONMENT_TAG: {
-        value: process.env.ENVIRONMENT_TAG,
-        default: 'none',
-    },
-    DEVTOOLS_ENABLED: {
-        value: process.env.DEVTOOLS_ENABLED === 'true',
-        default: false,
-    },
-    DISCORD_BOT_TOKEN: {
-        value: process.env.DISCORD_BOT_TOKEN,
-        required: false,
-        default: 'asdasd',
-    },
-    ADMIN_TOKEN: {
-        value: process.env.ADMIN_TOKEN,
-        required: true,
-    },
-    HASH_SALT: {
-        value: process.env.HASH_SALT,
-        required: true,
-    },
-    PLATFORM_OWNER_NAME: {
-        value: process.env.PLATFORM_OWNER_NAME || 'Junction',
-        required: true,
+        value: process.env.AUTH0_DOMAIN,
     },
     CALENDAR_URL: {
-        value: process.env.CALENDAR_URL || 'https://hackjunction.com/calendar',
         required: false,
+        value: process.env.CALENDAR_URL || 'https://hackjunction.com/calendar',
+    },
+    CLOUDINARY_API_KEY: {
+        required: true,
+        value: process.env.CLOUDINARY_API_KEY,
+    },
+    CLOUDINARY_API_SECRET: {
+        required: true,
+        value: process.env.CLOUDINARY_API_SECRET,
+    },
+    CLOUDINARY_CLOUD_NAME: {
+        required: true,
+        value: process.env.CLOUDINARY_CLOUD_NAME,
+    },
+    CLOUDINARY_FOLDER: {
+        required: true,
+        value: process.env.CLOUDINARY_FOLDER,
+    },
+    DEVTOOLS_ENABLED: {
+        default: false,
+        value: process.env.DEVTOOLS_ENABLED === 'true',
+    },
+    DISCORD_BOT_TOKEN: {
+        default: 'asdasd',
+        required: false,
+        value: process.env.DISCORD_BOT_TOKEN,
+    },
+    ENVIRONMENT_TAG: {
+        default: 'none',
+        value: process.env.ENVIRONMENT_TAG,
+    },
+    FRONTEND_URL: {
+        default: '',
+        required: true,
+        value: process.env.FRONTEND_URL,
+    },
+    HASH_SALT: {
+        required: true,
+        value: process.env.HASH_SALT,
+    },
+    ID_TOKEN_NAMESPACE: {
+        required: true,
+        value: process.env.ID_TOKEN_NAMESPACE,
+    },
+    MONGODB_URI: {
+        required: true,
+        value: process.env.MONGODB_URI,
+    },
+    PLATFORM_OWNER_NAME: {
+        required: true,
+        value: process.env.PLATFORM_OWNER_NAME || 'Junction',
+    },
+    PORT: {
+        required: true,
+        value: process.env.PORT,
+    },
+    SENDGRID_API_KEY: {
+        required: true,
+        value: process.env.SENDGRID_API_KEY,
+    },
+    SENDGRID_FROM_EMAIL: {
+        required: true,
+        value: process.env.SENDGRID_FROM_EMAIL || 'noreply@hackjunction.com',
+    },
+    SENDGRID_FROM_NAME: {
+        required: true,
+        value: process.env.SENDGRID_FROM_NAME || 'Junction',
+    },
+    SENDGRID_GENERIC_TEMPLATE: {
+        required: true,
+        value: process.env.SENDGRID_GENERIC_TEMPLATE,
     },
     SENDGRID_MAILING_LIST_ID: {
-        value: process.env.SENDGRID_MAILING_LIST_ID || '7150117',
         required: false,
+        value: process.env.SENDGRID_MAILING_LIST_ID || '7150117',
     },
 }
 

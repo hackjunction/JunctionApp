@@ -18,7 +18,8 @@ export default ({ loading, teams = [] }) => {
     const [ratingRange, setRatingRange] = useState([0, 5])
     const [bulkEdit, setBulkEdit] = useState(false)
     const [bulkEmail, setBulkEmail] = useState(false)
-    const [expandedRows, setExpandedRows] = useState({ 1: true })
+    // TODO add expansion
+    // const [expandedRows, setExpandedRows] = useState({ 1: true })
 
     const handleRatingRangeChange = useCallback((e, value) => {
         setRatingRange(value)

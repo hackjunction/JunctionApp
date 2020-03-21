@@ -180,7 +180,7 @@ export default () => {
                     />
                     <img
                         className={classes.contentLeftLogo}
-                        src={require('assets/logos/wordmark_white.png')}
+                        src={config.LOGO_LIGHT_URL}
                         alt={config.PLATFORM_OWNER_NAME + ' logo'}
                     />
                 </div>

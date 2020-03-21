@@ -16,35 +16,46 @@ const messageParams = () =>
         subject: Joi.string()
             .max(200)
             .required(),
+        body: Joi.string().required(),
         subtitle: Joi.string()
             .max(200)
-            .required(),
-        header_image: Joi.string().uri(),
-        body: Joi.string(),
-        cta_text: Joi.string().max(100),
-        cta_link: Joi.string().uri(),
-        reply_to: Joi.string().email(),
+            .optional()
+            .allow(''),
+        header_image: Joi.string()
+            .uri()
+            .optional()
+            .allow(''),
+        cta_text: Joi.string()
+            .max(100)
+            .optional()
+            .allow(''),
+        cta_link: Joi.string()
+            .uri()
+            .optional()
+            .allow(''),
+        reply_to: Joi.string()
+            .email()
+            .optional()
+            .allow(''),
     })
 
-router
-    .route('/:slug/preview')
-    /** Send a preview email to a given address */
-    .post(
-        celebrate({
-            body: {
-                to: Joi.string().email(),
-                params: messageParams().required(),
-            },
-        }),
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        asyncHandler(async (req, res) => {
-            const { to, params } = req.body
-            await EmailTaskController.sendPreviewEmail(to, params)
-            return res.status(status.OK).json({ message: 'success' })
-        })
-    )
+/** Send a preview email to a given address */
+router.route('/:slug/preview').post(
+    celebrate({
+        body: {
+            to: Joi.string().email(),
+            params: messageParams().required(),
+        },
+    }),
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    asyncHandler(async (req, res) => {
+        const { to, params } = req.body
+        await EmailTaskController.sendPreviewEmail(to, params)
+        return res.status(status.OK).json({ message: 'success' })
+    })
+)
 
 router.route('/:slug/send').post(
     celebrate({
@@ -54,7 +65,9 @@ router.route('/:slug/send').post(
                 .min(1)
                 .required(),
             params: messageParams(),
-            uniqueId: Joi.string(),
+            uniqueId: Joi.string()
+                .optional()
+                .allow(''),
         },
     }),
     hasToken,
@@ -64,6 +77,19 @@ router.route('/:slug/send').post(
         const { event } = req
         const { recipients, params, uniqueId } = req.body
         EmailTaskController.sendBulkEmail(recipients, params, event, uniqueId)
+        return res.status(status.OK).json({ message: 'success' })
+    })
+)
+
+router.route('/contact').post(
+    celebrate({
+        body: {
+            params: messageParams().required(),
+        },
+    }),
+    asyncHandler(async (req, res) => {
+        const { params } = req.body
+        await EmailTaskController.sendContactEmail(params)
         return res.status(status.OK).json({ message: 'success' })
     })
 )

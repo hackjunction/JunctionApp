@@ -128,4 +128,9 @@ controller.updateMetadata = async (userId, updates) => {
     return updatedUser
 }
 
+controller.deleteUser = async userId => {
+    const deletedUser = await auth0.deleteUser({ id: userId })
+    return deletedUser
+}
+
 module.exports = controller

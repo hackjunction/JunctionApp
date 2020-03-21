@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
 
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
@@ -6,9 +6,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Grid, Box, Typography } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
-import MiscUtils from 'utils/misc'
 import Image from 'components/generic/Image'
-import EventsService from 'services/events'
+
+import { useEventPreview } from 'graphql/queries/events'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -30,26 +30,15 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ eventId, event }) => {
+export default ({ eventId }) => {
+    const [event = {}, loading] = useEventPreview(eventId)
     const dispatch = useDispatch()
     const classes = useStyles()
-    const [remoteEvent, setRemoteEvent] = useState({})
-    const [loading, setLoading] = useState(false)
-    const data = event || remoteEvent
-
-    useEffect(() => {
-        if (!event && eventId) {
-            setLoading(true)
-            EventsService.getPublicEventById(eventId).then(res => {
-                setRemoteEvent(res)
-                setLoading(false)
-            })
-        }
-    }, [event, eventId])
 
     const handleClick = useCallback(() => {
-        dispatch(push(`/dashboard/${data.slug}`))
-    }, [data.slug, dispatch])
+        if (loading) return
+        dispatch(push(`/dashboard/${event.slug}`))
+    }, [dispatch, event.slug, loading])
 
     if (!event && !eventId) {
         return null
@@ -69,7 +58,7 @@ export default ({ eventId, event }) => {
             return (
                 <Image
                     className={classes.image}
-                    publicId={data.coverImage ? data.coverImage.publicId : null}
+                    publicId={event?.coverImage?.publicId}
                     transformation={{
                         width: 400,
                         height: 150,
@@ -80,7 +69,7 @@ export default ({ eventId, event }) => {
     }
 
     const renderContent = () => {
-        if (loading || !data) {
+        if (loading || !event) {
             return (
                 <React.Fragment>
                     <Skeleton width="40%" />
@@ -92,16 +81,11 @@ export default ({ eventId, event }) => {
             return (
                 <React.Fragment>
                     <Typography variant="button">
-                        {MiscUtils.formatDateInterval(
-                            data.startTime,
-                            data.endTime
-                        )}
+                        {event?._eventTimeFormatted}
                     </Typography>
-                    <Typography variant="h6">{data.name}</Typography>
+                    <Typography variant="h6">{event.name}</Typography>
                     <Typography variant="subtitle1">
-                        {data.eventType === 'physical'
-                            ? `${data.eventLocation.city}, ${data.eventLocation.country}`
-                            : 'Online'}
+                        {event?._eventLocationFormatted}
                     </Typography>
                 </React.Fragment>
             )

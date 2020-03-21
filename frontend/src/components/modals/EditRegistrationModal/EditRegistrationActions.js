@@ -4,7 +4,6 @@ import { Grid, Typography, Box } from '@material-ui/core'
 import { Rating } from '@material-ui/lab'
 
 import Button from 'components/generic/Button'
-import TextInput from 'components/inputs/TextInput'
 import EventTagsSelect from 'components/inputs/EventTagsSelect'
 import OrganiserSelectModal from 'components/modals/OrganiserSelectModal'
 import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect'

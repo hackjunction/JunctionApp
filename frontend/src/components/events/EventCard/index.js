@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Box, Typography } from '@material-ui/core'
 import Image from 'components/generic/Image'
 
-import MiscUtils from 'utils/misc'
-
 const useStyles = makeStyles(theme => ({
     wrapper: {
         background: 'white',
@@ -46,16 +44,11 @@ const EventsGridItem = ({ event, buttons }) => {
             </div>
             <div className={classes.bottom}>
                 <Typography variant="button">
-                    {MiscUtils.formatDateInterval(
-                        event?.startTime,
-                        event?.endTime
-                    )}
+                    {event?._eventTimeFormatted}
                 </Typography>
                 <Typography variant="h6">{event.name}</Typography>
                 <Typography variant="body1">
-                    {event?.eventType === 'physical'
-                        ? `${event?.eventLocation?.city}, ${event?.eventLocation?.country}`
-                        : 'Online'}
+                    {event?._eventLocationFormatted}
                 </Typography>
                 <Box mt={1} />
                 <Box display="flex" flexDirection="row" flexWrap="wrap">

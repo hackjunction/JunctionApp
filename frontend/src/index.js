@@ -11,7 +11,6 @@ import { CloudinaryContext } from 'cloudinary-react'
 import { SnackbarProvider } from 'notistack'
 import WebFont from 'webfontloader'
 import Notifier from './notifier'
-
 import configureStore, { history } from 'redux/configureStore'
 import config from 'constants/config'
 import theme from './material-ui-theme'
@@ -23,6 +22,11 @@ function noop() {}
 if (!config.IS_DEBUG) {
     console.log = noop
     console.warn = noop
+}
+
+if (process.env.NODE_ENV === 'development') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render')
+    whyDidYouRender(React)
 }
 
 WebFont.load({

@@ -1,0 +1,64 @@
+/** Run database migrations on start-up, sequentally in order */
+const Promise = require('bluebird')
+const logger = require('../misc/logger')
+
+const migrations = [require('./00-registration-questions')]
+
+const run = async () => {
+    logger.info('Running database migrations before startup...')
+
+    return Promise.each(migrations, (migration, index) => {
+        if (typeof migration.index !== 'number') {
+            throw new Error(
+                `Invalid migration file at index ${index}: migrations must have an index`
+            )
+        }
+
+        if (typeof migration.name !== 'string') {
+            throw new Error(
+                `Invalid migration file at index ${index}: migrations must have a name`
+            )
+        }
+
+        if (typeof migration.description !== 'string') {
+            throw new Error(
+                `Invalid migration file at index ${index}: migrations must have a description`
+            )
+        }
+
+        if (typeof migration.run !== 'function') {
+            throw new Error(
+                `Invalid migration file at index ${index}: migrations must have a property run, which is an async function that runs the migration`
+            )
+        }
+
+        if (index !== migration.index) {
+            throw new Error(
+                `Expected migration with index ${index}, got ${migration.index}. Make sure you are requiring your migrations in the correct order.`
+            )
+        }
+
+        logger.info(`Running ${migration.name} (${migration.description})`)
+
+        return migration
+            .run()
+            .then(() => {
+                logger.info('-> Migration done.')
+            })
+            .catch(err => {
+                logger.error({
+                    message: `-> Migration ${migration.name} failed.`,
+                    error: {
+                        message: err.message,
+                        stack: err.stack,
+                    },
+                })
+
+                throw new Error('Migrations could not complete successfully')
+            })
+    })
+}
+
+module.exports = {
+    run,
+}

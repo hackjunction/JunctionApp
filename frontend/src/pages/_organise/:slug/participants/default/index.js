@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Route, useRouteMatch } from 'react-router-dom'
 import { FilterHelpers } from '@hackjunction/shared'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -15,7 +14,6 @@ export default () => {
         OrganiserSelectors.registrationsLoading
     )
 
-    const match = useRouteMatch()
     const [filters, setFilters] = useState([])
     const filtered = FilterHelpers.applyFilters(registrations, filters)
 

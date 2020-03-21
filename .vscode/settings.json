@@ -7,10 +7,15 @@
         {
             "changeProcessCWD": true,
             "directory": "./backend",
+        },
+        {
+            "changeProcessCWD": true,
+            "directory": "./shared"
         }
     ],
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
-    }
+    },
+    "eslint.enable": true
 }

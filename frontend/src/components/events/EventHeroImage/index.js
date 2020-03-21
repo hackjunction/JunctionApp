@@ -10,7 +10,6 @@ import { Button, Typography } from '@material-ui/core'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
-import MiscUtils from 'utils/misc'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -64,18 +63,9 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ event, title, overline, subheading }) => {
+export default ({ event, title, overline, subheading, onBack }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
-
-    const _title = title ?? event.name
-    const _overline =
-        overline ?? MiscUtils.formatDateInterval(event.startTime, event.endTime)
-    const _subheading =
-        subheading ??
-        (event.eventType === 'physical'
-            ? `${event.eventLocation.city}, ${event.eventLocation.country}`
-            : 'Online')
 
     return (
         <Box className={classes.wrapper}>
@@ -101,22 +91,28 @@ export default ({ event, title, overline, subheading }) => {
                             className={classes.overline}
                             variant="button"
                         >
-                            {_overline}
+                            {event?._eventTimeFormatted}
                         </Typography>
                         <Typography className={classes.title} variant="h3">
-                            {_title}
+                            {title ?? event?.name}
                         </Typography>
                         <Typography
                             className={classes.overline}
                             variant="button"
                         >
-                            {_subheading}
+                            {event?._eventLocationFormatted}
                         </Typography>
                     </Box>
                 </FadeInWrapper>
             </Box>
             <CenteredContainer wrapperClass={classes.backButtonWrapper}>
-                <Button onClick={() => dispatch(goBack())}>
+                <Button
+                    onClick={
+                        typeof onBack === 'function'
+                            ? onBack
+                            : () => dispatch(goBack())
+                    }
+                >
                     <ArrowBackIosIcon style={{ color: 'white' }} />
                     <Typography variant="button" style={{ color: 'white' }}>
                         Back
