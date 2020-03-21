@@ -20,6 +20,7 @@ import ProjectImages from './ProjectImages'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 //TODO make the form labels and hints customizable
 export default () => {
@@ -27,9 +28,14 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const project = useSelector(DashboardSelectors.project)
     const projectLoading = useSelector(DashboardSelectors.projectLoading)
-
+    const idTokenData = useSelector(AuthSelectors.idTokenData)
     const initialValues = {
         sourcePublic: true,
+        hiddenMembers: [],
+        privacy:
+            !projectLoading && project
+                ? !project.hiddenMembers.includes(idTokenData.sub)
+                : true,
         ...project,
     }
 
@@ -52,6 +58,7 @@ export default () => {
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id
     }, [event])
+
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -393,6 +400,40 @@ export default () => {
                             />
                         </Grid>
                     )}
+                    <Grid item xs={12}>
+                        <Box
+                            style={{
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                alignContent: 'flex-start',
+                            }}
+                        >
+                            <FastField
+                                name="privacy"
+                                render={({ field, form }) => (
+                                    <FormControl
+                                        label="Privacy"
+                                        hint="I want to be credited for the project."
+                                        touched={
+                                            form.touched[field.name] ||
+                                            formikProps.submitCount > 0
+                                        }
+                                        error={form.errors[field.name]}
+                                    >
+                                        <BooleanInput
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value
+                                                )
+                                            }
+                                        />
+                                    </FormControl>
+                                )}
+                            />
+                        </Box>
+                    </Grid>
                     {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <ErrorsBox errors={formikProps.errors} />
@@ -428,6 +469,17 @@ export default () => {
             }}
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
+                console.log('values are!', values)
+                //No I don't want to be credited, don't show my name
+                if (!values.privacy) {
+                    if (!values.hiddenMembers.includes(idTokenData.sub)) {
+                        values.hiddenMembers.push(idTokenData.sub)
+                    }
+                } else {
+                    const index = values.hiddenMembers.indexOf(idTokenData.sub)
+                    if (index !== -1) values.hiddenMembers.splice(index, 1)
+                }
+                console.log('sending', values)
                 let res
                 if (project) {
                     res = await dispatch(
