@@ -1,8 +1,14 @@
 import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
+
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
+import JobRoleInput from 'components/inputs/JobRoleInput'
 
 const ProjectsTable = ({ projects }) => {
+    const teams = useSelector(OrganiserSelectors.teams)
+    // TODO config columsn (table only in physical events)
     const columns = useMemo(() => {
         return [
             {
@@ -14,6 +20,11 @@ const ProjectsTable = ({ projects }) => {
                 sortType: Sorters.Numeric,
             },
             {
+                Header: 'Team',
+                accessor: 'teamCode',
+                ...Filters.ContainsSearch,
+            },
+            {
                 Header: 'Name',
                 accessor: 'name',
                 ...Filters.ContainsSearch,
@@ -23,15 +34,27 @@ const ProjectsTable = ({ projects }) => {
                 accessor: 'punchline',
                 ...Filters.ContainsSearch,
             },
+            /*
             {
                 Header: 'Location',
                 accessor: 'location',
                 ...Filters.ContainsSearch,
             },
+            */
         ]
     }, [])
-
-    return <Table data={projects} columns={columns} />
+    // TODO refactor forloops
+    const data = projects.map(project => {
+        for (const i in teams) {
+            const team = teams[i]
+            if (project.team === team._id) {
+                project.teamCode = team.code
+                break
+            }
+        }
+        return project
+    })
+    return <Table data={data} columns={columns} />
 }
 
 export default ProjectsTable

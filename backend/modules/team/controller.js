@@ -73,6 +73,15 @@ controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
     })
 }
 
+controller.getTeamById = teamId => {
+    return Team.findById(teamId).then(team => {
+        if (!team) {
+            throw new NotFoundError('No team exists for this code and event')
+        }
+        return team
+    })
+}
+
 controller.getTeamByCode = (eventId, code) => {
     return Team.findOne({
         event: eventId,
