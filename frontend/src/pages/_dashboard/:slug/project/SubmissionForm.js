@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react'
 
 import * as yup from 'yup'
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, FastField } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
-import { Grid, Box, Checkbox } from '@material-ui/core'
+import { Grid, Box } from '@material-ui/core'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
