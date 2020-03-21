@@ -31,6 +31,10 @@ const ProjectSchema = {
         .array()
         .of(yup.string())
         .label('Technologies'),
+    hiddenMembers: yup
+        .array()
+        .of(yup.string())
+        .label('Hidden members'),
     demo: yup
         .string()
         .url()

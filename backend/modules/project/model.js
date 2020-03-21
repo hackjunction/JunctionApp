@@ -52,6 +52,11 @@ const ProjectSchema = new mongoose.Schema({
     location: {
         type: String,
     },
+    hiddenMembers: {
+        type: [String],
+        default: [],
+    },
+
     achievements: [AchievementSchema],
 })
 
