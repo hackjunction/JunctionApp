@@ -32,9 +32,10 @@ export default () => {
     const initialValues = {
         sourcePublic: true,
         hiddenMembers: [],
-        privacy: !projectLoading
-            ? project.hiddenMembers.includes(idTokenData.sub)
-            : true,
+        privacy:
+            !projectLoading && project
+                ? !project.hiddenMembers.includes(idTokenData.sub)
+                : true,
         ...project,
     }
 
@@ -469,7 +470,8 @@ export default () => {
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
                 console.log('values are!', values)
-                if (values.privacy) {
+                //No I don't want to be credited, don't show my name
+                if (!values.privacy) {
                     if (!values.hiddenMembers.includes(idTokenData.sub)) {
                         values.hiddenMembers.push(idTokenData.sub)
                     }
