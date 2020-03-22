@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
+import { push } from 'connected-react-router'
+import { useDispatch } from 'react-redux'
 
 import { sortBy } from 'lodash-es'
 import { Box } from '@material-ui/core'
@@ -7,8 +9,11 @@ import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsPreview from './ProjectsPreview'
 import Filters from './Filters'
 
+import ProjectsGrid from 'components/projects/ProjectsGrid'
+
 export default ({ event, projects }) => {
     const [activeFilter, setActiveFilter] = useState('by-track')
+    const dispatch = useDispatch()
 
     const { byChallenge, byTrack } = useMemo(() => {
         return projects.reduce(
@@ -42,7 +47,6 @@ export default ({ event, projects }) => {
 
     const renderTrackPreviews = () => {
         if (!event || !event.tracks) return null
-
         return event.tracks.map(track => {
             const items = byTrack[track.slug]
             if (!items) return null
@@ -96,6 +100,13 @@ export default ({ event, projects }) => {
         }
     }
 
+    const onProjectSelected = useCallback(
+        project => {
+            dispatch(push(`/projects/${event.slug}/view/${project._id}`))
+        },
+        [dispatch, event.slug]
+    )
+
     return (
         <React.Fragment>
             <EventHeroImage event={event} subheading="Project gallery" />
@@ -108,6 +119,12 @@ export default ({ event, projects }) => {
                 />
                 {renderContent()}
                 {renderTrackPreviews()}
+                <ProjectsGrid
+                    sortField={null}
+                    projects={projects}
+                    event={event}
+                    onSelect={onProjectSelected}
+                />
             </CenteredContainer>
         </React.Fragment>
     )

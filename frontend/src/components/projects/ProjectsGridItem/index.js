@@ -53,7 +53,6 @@ const ProjectsGridItem = ({
 
     const previewImage =
         project.images.length > 0 ? project.images[0].publicId : ''
-
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Box className={classes.wrapper}>
@@ -65,7 +64,8 @@ const ProjectsGridItem = ({
                         previewImage ? classes.image : classes.placeholderImage
                     }
                     publicId={previewImage}
-                    defaultImage={event.logo.url}
+                    defaultImage={require('assets/images/default_cover_image.png')}
+                    publicId={event?.coverImage?.logo}
                     transformation={{
                         width: 600,
                     }}

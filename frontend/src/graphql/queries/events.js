@@ -7,6 +7,7 @@ const Fragments = {
             _id
             slug
             name
+            galleryOpen
             coverImage {
                 url
                 publicId
