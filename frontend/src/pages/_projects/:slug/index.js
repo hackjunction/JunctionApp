@@ -96,6 +96,7 @@ export default () => {
                             )}
                         />
                         <Route
+                            exact
                             path={match.url}
                             component={() => (
                                 <GalleryHome
