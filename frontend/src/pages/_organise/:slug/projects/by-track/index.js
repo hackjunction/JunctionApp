@@ -39,7 +39,10 @@ export default () => {
                             ></ListItemText>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <ProjectsTable projects={projects} />
+                            <ProjectsTable
+                                baseURL={`/projects/${event.slug}/view/`}
+                                projects={projects}
+                            />
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 )

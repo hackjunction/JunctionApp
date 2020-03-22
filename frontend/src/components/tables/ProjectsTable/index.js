@@ -1,4 +1,7 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
+import { push } from 'connected-react-router'
+import { useDispatch } from 'react-redux'
+
 import { useSelector } from 'react-redux'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -6,8 +9,10 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import JobRoleInput from 'components/inputs/JobRoleInput'
 
-const ProjectsTable = ({ projects }) => {
+const ProjectsTable = ({ projects, baseURL }) => {
     const teams = useSelector(OrganiserSelectors.teams)
+    const dispatch = useDispatch()
+
     // TODO config columsn (table only in physical events)
     const columns = useMemo(() => {
         return [
@@ -43,6 +48,14 @@ const ProjectsTable = ({ projects }) => {
             */
         ]
     }, [])
+
+    const onProjectSelected = useCallback(
+        project => {
+            dispatch(push(`${baseURL}${project.original._id}`))
+        },
+        [baseURL, dispatch]
+    )
+
     // TODO refactor forloops
     const data = projects.map(project => {
         for (const i in teams) {
@@ -54,7 +67,9 @@ const ProjectsTable = ({ projects }) => {
         }
         return project
     })
-    return <Table data={data} columns={columns} />
+    return (
+        <Table data={data} columns={columns} onRowClick={onProjectSelected} />
+    )
 }
 
 export default ProjectsTable
