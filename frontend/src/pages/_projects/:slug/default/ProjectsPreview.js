@@ -24,7 +24,6 @@ export default ({
         },
         [event.slug, dispatch]
     )
-
     return (
         <Box mb={3} display="flex" flexDirection="column">
             <Box

@@ -43,7 +43,6 @@ export default () => {
     useEffect(() => {
         fetchData()
     }, [fetchData])
-
     return (
         <PageWrapper loading={loading} error={error}>
             <Switch>
