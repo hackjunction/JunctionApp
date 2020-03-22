@@ -43,7 +43,6 @@ export default () => {
     useEffect(() => {
         fetchData()
     }, [fetchData])
-
     return (
         <PageWrapper loading={loading} error={error}>
             <Switch>
@@ -97,6 +96,7 @@ export default () => {
                             )}
                         />
                         <Route
+                            exact
                             path={match.url}
                             component={() => (
                                 <GalleryHome

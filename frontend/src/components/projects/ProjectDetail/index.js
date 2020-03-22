@@ -113,7 +113,6 @@ const ProjectDetail = ({
             </Typography>
         ))
     }
-
     return (
         <Box className={classes.wrapper}>
             <Box style={{ position: 'relative' }}>
@@ -136,8 +135,8 @@ const ProjectDetail = ({
                         <Box className={classes.placeholderTop}>
                             <Image
                                 className={classes.placeholderImage}
-                                publicId={event.logo.publicId}
-                                // defaultImage={require('assets/images/default_cover_image.png')}
+                                defaultImage={require('assets/images/default_cover_image.png')}
+                                publicId={event?.coverImage?.logo}
                             />
                         </Box>
                     )}
@@ -265,6 +264,7 @@ const ProjectDetail = ({
                         Team
                     </Typography>
                     <ProjectTeam
+                        hiddenUsers={project.hiddenMembers}
                         teamId={project.team}
                         showFullTeam={showFullTeam}
                     />
