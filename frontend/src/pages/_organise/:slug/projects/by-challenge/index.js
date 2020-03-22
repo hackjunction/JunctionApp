@@ -28,7 +28,6 @@ export default () => {
     const challenges = useMemo(() => {
         return sortBy(event.challenges, 'name')
     }, [event.challenges])
-
     return (
         <Box>
             {challenges.map(challenge => {
@@ -50,7 +49,10 @@ export default () => {
                                 <Box p={1}>
                                     <ChallengeLink challenge={challenge.slug} />
                                 </Box>
-                                <ProjectsTable projects={projects} />
+                                <ProjectsTable
+                                    baseURL={`/projects/${event.slug}/view/`}
+                                    projects={projects}
+                                />
                             </Box>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
