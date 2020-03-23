@@ -140,7 +140,6 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
             </Box>
         )
     }
-
     const renderImage = () => {
         return (
             <Box className={classes.imageWrapper}>

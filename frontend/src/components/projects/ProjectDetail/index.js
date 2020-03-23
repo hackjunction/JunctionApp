@@ -135,8 +135,8 @@ const ProjectDetail = ({
                         <Box className={classes.placeholderTop}>
                             <Image
                                 className={classes.placeholderImage}
-                                defaultImage={require('assets/images/default_cover_image.png')}
                                 publicId={event?.coverImage?.logo}
+                                defaultImage={require('assets/images/default_cover_image.png')}
                             />
                         </Box>
                     )}

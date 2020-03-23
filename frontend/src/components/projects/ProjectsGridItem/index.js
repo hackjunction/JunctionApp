@@ -63,9 +63,16 @@ const ProjectsGridItem = ({
                     className={
                         previewImage ? classes.image : classes.placeholderImage
                     }
-                    publicId={previewImage}
+                    publicId={
+                        previewImage
+                            ? previewImage
+                            : event?.coverImage?.publicId
+                            ? event?.coverImage.publicId
+                            : event?.logo?.publicId
+                            ? event?.logo.publicId
+                            : false
+                    }
                     defaultImage={require('assets/images/default_cover_image.png')}
-                    publicId={event?.coverImage?.logo}
                     transformation={{
                         width: 600,
                     }}
