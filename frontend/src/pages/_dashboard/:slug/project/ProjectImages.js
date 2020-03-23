@@ -62,7 +62,6 @@ export default ({ value = [], onChange, maxImages = 5 }) => {
     const handleBack = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1)
     }
-
     return (
         <Grid container>
             <Grid item xs={12}>
