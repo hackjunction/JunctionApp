@@ -2,6 +2,8 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import UserMenu from 'components/UserMenu'
+import LanguageMenu from 'components/LanguageMenu'
+
 import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
@@ -16,8 +18,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        maxWidth: '1120px',
-        margin: '0 auto',
+        margin: '0',
         height: '100%',
     },
     wordmark: {
@@ -35,7 +36,10 @@ export default () => {
                     className={classes.wordmark}
                     alt={config.PLATFORM_OWNER_NAME + ' logo'}
                 />
-                <UserMenu />
+                <div className={classes.inner}>
+                    <UserMenu />
+                    <LanguageMenu />
+                </div>
             </div>
         </div>
     )
