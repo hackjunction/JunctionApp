@@ -3,9 +3,10 @@ import { initReactI18next } from 'react-i18next'
 
 import Backend from 'i18next-xhr-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
-// not like to use this?
-// have a look at the Quick start guide
-// for passing in lng and translations on init
+
+// translations are already at
+// '../public/locales/en/translation.json'
+// which is the default for the xhr backend to load from
 
 i18n
     // load translation using xhr -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -19,9 +20,11 @@ i18n
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
+        lng: 'en',
         fallbackLng: 'en',
         debug: true,
-
+        saveMissing: true, // send not translated keys to endpoint
+        keySeparator: false, // we do not use keys in form messages.welcome
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
         },

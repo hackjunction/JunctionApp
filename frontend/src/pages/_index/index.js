@@ -13,11 +13,12 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
-
+    const { t, i18n } = useTranslation()
     return (
         <PageWrapper
             header={() => <GlobalNavBar />}
@@ -29,7 +30,7 @@ export default () => {
                     <Divider size={2} />
                     <CenteredContainer>
                         <EventsGrid
-                            title="Upcoming / ongoing events"
+                            title={t('Upcoming / ongoing events')}
                             events={activeEvents}
                         />
                         <EventsGrid title="Past events" events={pastEvents} />

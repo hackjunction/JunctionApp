@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
     const userId = idTokenPayload?.sub
-    const [profile] = useMyProfilePreview(userId)
+    const [profile] = useMyProfilePreview()
     const dispatch = useDispatch()
     const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess)
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
