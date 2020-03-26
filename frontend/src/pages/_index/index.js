@@ -31,26 +31,26 @@ export default () => {
                     <Divider size={2} />
                     <CenteredContainer>
                         <EventsGrid
-                            title={t('Upcoming')}
+                            title={t('Upcoming_')}
                             events={activeEvents}
                         />
-                        <EventsGrid title={t('Past')} events={pastEvents} />
+                        <EventsGrid title={t('Past_')} events={pastEvents} />
                     </CenteredContainer>
                     <Divider size={2} />
                     <CenteredContainer>
                         <LineDivider />
                         <Divider size={1} />
                         <h2>
-                            {t('New to', {
+                            {t('New_to_', {
                                 platform: config.PLATFORM_OWNER_NAME,
                             })}
                         </h2>
                         <p>
-                            {t('More info', {
+                            {t('More_info_', {
                                 owner: config.PLATFORM_OWNER_NAME,
                             })}
                             <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
-                                {t('here')}
+                                {t('More_info_link')}
                             </ExternalLink>
                         </p>
                         <Divider size={5} />

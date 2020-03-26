@@ -1,7 +1,7 @@
 {
-  "Upcoming": "Ongoing & Upcoming events",
-  "Past": "Past events",
-  "New to": "New to {{platform}}?",
-  "More info": "More info about {{owner}} can be found from our website ",
-  "here": "here"
+  "Upcoming_": "Ongoing & Upcoming events",
+  "Past_": "Past events",
+  "New_to_": "New to {{platform}}?",
+  "More_info_": "More info about {{owner}} can be found from our website ",
+  "More_info_link": "here"
 }
