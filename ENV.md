@@ -7,15 +7,30 @@ Here are working environment variables for all of the services we use in the Jun
 Put these environment variables in `./frontend/.env` - you'll need to create the file as it is ignored from Git.
 
 ```
+### Required values
 PORT=3000
-REACT_APP_CLOUDINARY_CLOUD_NAME=hackjunction-dev
+REACT_APP_BASE_URL=http://localhost:3000
+REACT_APP_IS_DEBUG=True
 REACT_APP_AUTH0_DOMAIN=hackjunction-dev.eu.auth0.com
 REACT_APP_AUTH0_CLIENT_ID=cGjPXy4hjLz6qfKQrK0Ot3IbonxUWJVi
-REACT_APP_BASE_URL=http://localhost:3000
-REACT_APP_IS_DEBUG=true
+REACT_APP_CLOUDINARY_CLOUD_NAME=hackjunction-dev
 
-## Not necessary in development
-# REACT_APP_FACEBOOK_PIXEL_ID=your-pixel-id
+### Extra values
+REACT_APP_FACEBOOK_PIXEL_ID=1999365573713460
+REACT_APP_LOGROCKET_ID=ja746e/junction-app-production
+REACT_APP_HOTJAR_ID=1179129
+REACT_APP_HOTJAR_SV=6
+
+### Customization values
+REACT_APP_PAGE_TITLE=LOCAL Junkkari
+REACT_APP_SEO_PAGE_TITLE<=LOCAL Junkkari
+REACT_APP_SEO_PAGE_DESCRIPTION=Junkkari on tällänen
+REACT_APP_SEO_IMAGE_URL=https://images.wisegeek.com/url-address.jpg
+REACT_APP_SEO_TWITTER_HANDLE=@visathebean
+
+### Production values
+REACT_APP_API_BASE_URL=https://cms.www.hackjunction.com
+REACT_APP_MAPBOX_TOKEN=pk.eyJ1IjoiaGFja2p1bmN0aW9uIiwiYSI6ImNqdnFqaGtsMjI1ZWM0Ym9mZGg1cTNrODgifQ.opDfJH_G3cznE63MLRQ9ww
 ```
 
 ### Backend environment variables
@@ -26,22 +41,23 @@ Put these environment variables in `./backend/.env` - you'll need to create the 
 PORT=2222
 AUTH0_DOMAIN=hackjunction-dev.eu.auth0.com
 AUTH0_CLIENT_ID=guhUjo6BjSW8J5jCuNvLFqzKfcgrOse4
-AUTH0_CLIENT_SECRET=4LzX3gGHHwhGAfCdjMAo9JE07q74Xs1I_hvnYUKoqZFmCx8px2FiULii_ieRxBl2
+AUTH0_CLIENT_SECRET=
 AUTH0_AUTHORIZATION_EXTENSION_URL=https://hackjunction-dev.eu8.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api
 ID_TOKEN_NAMESPACE=https://app.hackjunction.com/
 CLOUDINARY_CLOUD_NAME=hackjunction-dev
 CLOUDINARY_API_KEY=922865266434778
-CLOUDINARY_API_SECRET=o8otgoTvdanHx5j4tjMdzylil9g
+CLOUDINARY_API_SECRET=
 CLOUDINARY_FOLDER=junctionapp-dev
-SENDGRID_API_KEY=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
-SENDGRID_FROM_EMAIL=noreply-dev@hackjunction.com
-SENDGRID_FROM_NAME=Junction (Development)
-SENDGRID_ACCEPTED_TEMPLATE=d-03a43d93d2924a8689462b7910421996
-SENDGRID_REJECTED_TEMPLATE=d-56604c4fca0a4c55949ed00bdc377201
-SENDGRID_GENERIC_TEMPLATE=d-7665f66a1aaa48f694f7cbb0bae599ee
-MONGODB_URI=mongodb://localhost/junctionapp
+SENDGRID_API_KEY=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
+SENDGRID_FROM_EMAIL=noreply@hackjunction.com
+SENDGRID_FROM_NAME=Junction (Local)
+SENDGRID_ACCEPTED_TEMPLATE=
+SENDGRID_REJECTED_TEMPLATE=
+SENDGRID_GENERIC_TEMPLATE=d-63c888a5940b4bc59610b64a51e7f816
+MONGODB_URI=mongodb://127.0.0.1:27017
+#mongodb://heroku_681z901z:lahf7aqv8j4r6ut3u80o5gplet@ds127115.mlab.com:27115/heroku_681z901z
 FRONTEND_URL=http://localhost:3000
-DEVTOOLS_ENABLED=true
-ADMIN_TOKEN=foobar
-HASH_SALT=$2a$10$dgX1nE97eY8xym2sBYusDuuB.
+DEVTOOLS_ENABLED=True
+ADMIN_TOKEN=sgHKLAEYmU5LvM9mWZSkyzGeJcwZIu3N
+HASH_SALT=$2b$05$VpRaIJRucWnj0.5m1gKSI.
 ```
