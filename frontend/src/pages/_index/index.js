@@ -19,6 +19,7 @@ export default () => {
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
     const { t, i18n } = useTranslation()
+
     return (
         <PageWrapper
             header={() => <GlobalNavBar />}
@@ -30,21 +31,26 @@ export default () => {
                     <Divider size={2} />
                     <CenteredContainer>
                         <EventsGrid
-                            title={t('Upcoming / ongoing events')}
+                            title={t('Upcoming')}
                             events={activeEvents}
                         />
-                        <EventsGrid title="Past events" events={pastEvents} />
+                        <EventsGrid title={t('Past')} events={pastEvents} />
                     </CenteredContainer>
                     <Divider size={2} />
                     <CenteredContainer>
                         <LineDivider />
                         <Divider size={1} />
-                        <h2>New to {config.PLATFORM_OWNER_NAME}?</h2>
+                        <h2>
+                            {t('New to', {
+                                platform: config.PLATFORM_OWNER_NAME,
+                            })}
+                        </h2>
                         <p>
-                            More info about {config.PLATFORM_OWNER_NAME} can be
-                            found from our website{' '}
+                            {t('More info', {
+                                owner: config.PLATFORM_OWNER_NAME,
+                            })}
                             <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
-                                here
+                                {t('here')}
                             </ExternalLink>
                         </p>
                         <Divider size={5} />
