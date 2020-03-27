@@ -12,6 +12,7 @@ import Select from 'components/inputs/Select'
 
 import FilterItem from './FilterItem'
 import EventsFilterItem from './EventsFilterItem'
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const allEvents = useSelector(RecruitmentSelectors.events)
@@ -76,7 +78,7 @@ export default () => {
         if (!events.length) {
             return (
                 <Typography variant="subtitle1" className={classes.itemsEmpty}>
-                    No events selected
+                    {t('No_events_selected_')}
                 </Typography>
             )
         }
@@ -102,7 +104,7 @@ export default () => {
             <Box className={classes.wrapper}>
                 <Select
                     autoFocus
-                    label="Choose events (must have all)"
+                    label={t('Choose_events_')}
                     options={eventOptions}
                     onChange={handleAdd}
                 />

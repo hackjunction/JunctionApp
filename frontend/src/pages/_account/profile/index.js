@@ -25,6 +25,8 @@ import * as UserSelectors from 'redux/user/selectors'
 import * as UserActions from 'redux/user/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+import { useTranslation } from 'react-i18next';
+    const { t, i18n } = useTranslation();
 const useStyles = makeStyles(theme => ({
     topWrapper: {
         display: 'flex',
@@ -101,661 +103,452 @@ export default () => {
     )
 
     return (
-        <PageWrapper loading={loading}>
-            <Formik
-                validationSchema={props => {
-                    return yup.lazy(values => {
-                        return yup.object().shape(validationSchema(values))
-                    })
-                }}
-                enableReinitialize
-                initialValues={userProfile}
-                onSubmit={handleSubmit}
-            >
-                {formikProps => (
-                    <React.Fragment>
-                        <Box className={classes.topWrapper}>
-                            <Box width="300px" height="300px" margin={3}>
-                                <FastField
-                                    name="avatar"
-                                    render={({ field, form }) => (
-                                        <Box
-                                            width="100%"
-                                            height="100%"
-                                            borderRadius="50%"
-                                            overflow="hidden"
-                                            position="relative"
-                                        >
-                                            <ImageUpload
-                                                value={
-                                                    field.value
-                                                        ? {
-                                                              url: field.value,
-                                                          }
-                                                        : undefined
-                                                }
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value ? value.url : null
-                                                    )
-                                                }
-                                                uploadUrl="/api/upload/users/avatar/"
-                                                resizeMode="cover"
-                                            />
-                                        </Box>
-                                    )}
-                                />
-                            </Box>
-                            <Box flex="1" display="flex" flexDirection="column">
-                                <Grid container spacing={3}>
-                                    <Grid item xs={12} md={6}>
-                                        <FastField
-                                            name="firstName"
-                                            render={({ field, form }) => (
-                                                <TextInput
-                                                    label="First name"
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        <FastField
-                                            name="lastName"
-                                            render={({ field, form }) => (
-                                                <TextInput
-                                                    label="Last name"
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <FastField
-                                            name="email"
-                                            render={({ field, form }) => (
-                                                <TextInput
-                                                    label="Email address"
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                        <Typography variant="caption">
-                                            Your contact email address, where
-                                            you want to receive necessary
-                                            notifications related to your
-                                            activity on the{' '}
-                                            {config.PLATFORM_OWNER_NAME} app.
-                                            Your email address will never be
-                                            shared with any 3rd parties.
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <FastField
-                                            name="phoneNumber"
-                                            render={({ field, form }) => (
-                                                <PhoneNumberInput
-                                                    label="Phone number"
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                        <Typography variant="caption">
-                                            Your phone number will only be used
-                                            to contact you in urgent matters,
-                                            and will never be shared with any
-                                            3rd parties.
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <FastField
-                                            name="dateOfBirth"
-                                            render={({ field, form }) => (
-                                                <DateInput
-                                                    label="Date of Birth"
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <FastField
-                                            name="gender"
-                                            render={({ field, form }) => (
-                                                <Select
-                                                    label="Gender"
-                                                    options="gender"
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                        </Box>
-                        <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">
-                                Profile details
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                When you register to events on the{' '}
-                                {config.PLATFORM_OWNER_NAME} app, the below
-                                details will be pre-filled into your
-                                registrations, and updated from your latest
-                                registration. In case you have opted in for
-                                recruitment functionality, these details will
-                                also be shown to select{' '}
-                                {config.PLATFORM_OWNER_NAME} partners who are
-                                looking to hire. Please see our{' '}
-                                <a href={config.PRIVACY_URL}>Privacy Policy</a>{' '}
-                                for more details on how your data is used.
-                            </Typography>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="headline"
-                                        render={({ field, form }) => (
-                                            <TextInput
-                                                label={
-                                                    RegistrationFields.getFields()[
-                                                        'headline'
-                                                    ].label
-                                                }
-                                                placeholder="Fullstack developer, hackathon enthusiast"
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                    <Typography variant="caption">
-                                        {
-                                            RegistrationFields.getFields()[
-                                                'headline'
-                                            ].hint
-                                        }
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Box>
-                                        <Field
-                                            name="biography"
-                                            render={({ field, form }) => (
-                                                <TextAreaInput
-                                                    label={
-                                                        RegistrationFields.getFields()[
-                                                            'biography'
-                                                        ].label
-                                                    }
-                                                    placeholder={`Hi my name is ${form.values.firstName} and...`}
-                                                    value={field.value}
-                                                    onChange={value =>
-                                                        form.setFieldValue(
-                                                            field.name,
-                                                            value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        form.setFieldTouched(
-                                                            field.name
-                                                        )
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    </Box>
-                                    <Typography variant="caption">
-                                        {
-                                            RegistrationFields.getFields()[
-                                                'biography'
-                                            ].hint
-                                        }
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <FastField
-                                        name="countryOfResidence"
-                                        render={({ field, form }) => (
-                                            <Select
-                                                label="Country of residence"
-                                                value={field.value}
-                                                options="country"
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <FastField
-                                        name="nationality"
-                                        render={({ field, form }) => (
-                                            <Select
-                                                label="Nationality"
-                                                value={field.value}
-                                                options="nationality"
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="spokenLanguages"
-                                        render={({ field, form }) => (
-                                            <Select
-                                                label="Spoken languages"
-                                                value={field.value}
-                                                options="language"
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                                isMulti
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="themesOfInterest"
-                                        render={({ field, form }) => (
-                                            <Select
-                                                label="Themes of interest"
-                                                value={field.value}
-                                                options="theme"
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                                isMulti
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="industriesOfInterest"
-                                        render={({ field, form }) => (
-                                            <Select
-                                                label="Industries of interest"
-                                                value={field.value}
-                                                options="industry"
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                                isMulti
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Box>
-                        <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">Education</Typography>
-                            <Typography variant="body1" gutterBottom>
-                                Your most recent education
-                            </Typography>
-                            <FastField
-                                name="education"
-                                render={({ field, form }) => (
-                                    <EducationInput
-                                        value={
-                                            field.value !== null
-                                                ? field.value
-                                                : {}
-                                        }
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                        </Box>
-                        <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">Skills</Typography>
-                            <Typography variant="body1" gutterBottom>
-                                Enter up to 10 skills you consider yourself
-                                proficient at
-                            </Typography>
-                            <FastField
-                                name="skills"
-                                render={({ field, form }) => (
-                                    <SkillsInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                        </Box>
-                        <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">
-                                Professional roles
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                Enter up to 5 roles you have working experience
-                                in
-                            </Typography>
-                            <FastField
-                                name="roles"
-                                render={({ field, form }) => (
-                                    <JobRoleInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                        </Box>
-                        <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">
-                                Recruitment preferences
-                            </Typography>
-                            <FastField
-                                name="recruitmentOptions"
-                                render={({ field, form }) => (
-                                    <RecruitmentOptionInput
-                                        value={
-                                            field.value !== null
-                                                ? field.value
-                                                : {}
-                                        }
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                        </Box>
-                        <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">
-                                Additional Links
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                You can link additional links related to you in
-                                here.
-                            </Typography>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="curriculumVitae"
-                                        render={({ field, form }) => (
-                                            <TextInput
-                                                label={
-                                                    RegistrationFields.getFields()[
-                                                        'curriculumVitae'
-                                                    ].label
-                                                }
-                                                placeholder="myhomepage.com/cv"
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                    <Typography variant="caption">
-                                        {
-                                            RegistrationFields.getFields()[
-                                                'curriculumVitae'
-                                            ].hint
-                                        }
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="portfolio"
-                                        render={({ field, form }) => (
-                                            <TextInput
-                                                label={
-                                                    RegistrationFields.getFields()[
-                                                        'portfolio'
-                                                    ].label
-                                                }
-                                                placeholder="myhomepage.com/portfolio"
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                    <Typography variant="caption">
-                                        {
-                                            RegistrationFields.getFields()[
-                                                'portfolio'
-                                            ].hint
-                                        }
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="github"
-                                        render={({ field, form }) => (
-                                            <TextInput
-                                                label={
-                                                    RegistrationFields.getFields()[
-                                                        'github'
-                                                    ].label
-                                                }
-                                                placeholder="github.com/myusername"
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                    <Typography variant="caption">
-                                        {
-                                            RegistrationFields.getFields()[
-                                                'github'
-                                            ].hint
-                                        }
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FastField
-                                        name="linkedin"
-                                        render={({ field, form }) => (
-                                            <TextInput
-                                                label={
-                                                    RegistrationFields.getFields()[
-                                                        'linkedin'
-                                                    ].label
-                                                }
-                                                placeholder="linkedin.com/in/myname"
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    />
-                                    <Typography variant="caption">
-                                        {
-                                            RegistrationFields.getFields()[
-                                                'linkedin'
-                                            ].hint
-                                        }
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                        <Box height="300px" />
-                        <BottomBar
-                            onSubmit={formikProps.handleSubmit}
-                            errors={formikProps.errors}
-                            dirty={formikProps.dirty}
-                            loading={formikProps.isSubmitting}
+      <PageWrapper loading={loading}>
+        <Formik
+          validationSchema={props => {
+            return yup.lazy(values => {
+              return yup.object().shape(validationSchema(values));
+            });
+          }}
+          enableReinitialize
+          initialValues={userProfile}
+          onSubmit={handleSubmit}
+        >
+          {formikProps => (
+            <React.Fragment>
+              <Box className={classes.topWrapper}>
+                <Box width='300px' height='300px' margin={3}>
+                  <FastField
+                    name='avatar'
+                    render={({ field, form }) => (
+                      <Box
+                        width='100%'
+                        height='100%'
+                        borderRadius='50%'
+                        overflow='hidden'
+                        position='relative'
+                      >
+                        <ImageUpload
+                          value={
+                            field.value
+                              ? {
+                                  url: field.value,
+                                }
+                              : undefined
+                          }
+                          onChange={value =>
+                            form.setFieldValue(
+                              field.name,
+                              value ? value.url : null
+                            )
+                          }
+                          uploadUrl='/api/upload/users/avatar/'
+                          resizeMode='cover'
                         />
-                    </React.Fragment>
-                )}
-            </Formik>
-        </PageWrapper>
-    )
+                      </Box>
+                    )}
+                  />
+                </Box>
+                <Box flex='1' display='flex' flexDirection='column'>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                      <FastField
+                        name='firstName'
+                        render={({ field, form }) => (
+                          <TextInput
+                            label={t('First_name_')}
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <FastField
+                        name='lastName'
+                        render={({ field, form }) => (
+                          <TextInput
+                            label={t('Last_name_')}
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FastField
+                        name='email'
+                        render={({ field, form }) => (
+                          <TextInput
+                            label={t('Email_')}
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                      <Typography variant='caption'>
+                        {t('Contact_email_', {
+                          platform: config.PLATFORM_OWNER_NAME,
+                        })}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FastField
+                        name='phoneNumber'
+                        render={({ field, form }) => (
+                          <PhoneNumberInput
+                            label={t('Phone_number_')}
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                      <Typography variant='caption'>
+                        {t('Contact_phone_')}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FastField
+                        name='dateOfBirth'
+                        render={({ field, form }) => (
+                          <DateInput
+                            label={t('Date_of_birth_')}
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FastField
+                        name='gender'
+                        render={({ field, form }) => (
+                          <Select
+                            label={t('Gender_')}
+                            options='gender'
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+              <Box className={classes.box} mt={3}>
+                <Typography variant='h6'>{t('Profile_details_')}</Typography>
+                <Typography variant='body1' gutterBottom>
+                  {t('Pre_filled_details_', {
+                    owner: config.PLATFORM_OWNER_NAME,
+                    privacy: config.PRIVACY_URL,
+                  })}
+                </Typography>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='headline'
+                      render={({ field, form }) => (
+                        <TextInput
+                          label={
+                            RegistrationFields.getFields()['headline'].label
+                          }
+                          placeholder='Fullstack developer, hackathon enthusiast'
+                          value={field.value}
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                    <Typography variant='caption'>
+                      {RegistrationFields.getFields()['headline'].hint}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box>
+                      <Field
+                        name='biography'
+                        render={({ field, form }) => (
+                          <TextAreaInput
+                            label={
+                              RegistrationFields.getFields()['biography'].label
+                            }
+                            placeholder={`Hi my name is ${form.values.firstName} and...`}
+                            value={field.value}
+                            onChange={value =>
+                              form.setFieldValue(field.name, value)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                          />
+                        )}
+                      />
+                    </Box>
+                    <Typography variant='caption'>
+                      {RegistrationFields.getFields()['biography'].hint}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <FastField
+                      name='countryOfResidence'
+                      render={({ field, form }) => (
+                        <Select
+                          label={t('Country_of_residence_')}
+                          value={field.value}
+                          options='country'
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <FastField
+                      name='nationality'
+                      render={({ field, form }) => (
+                        <Select
+                          label={t('Nationality_')}
+                          value={field.value}
+                          options='nationality'
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='spokenLanguages'
+                      render={({ field, form }) => (
+                        <Select
+                          label={t('Spoken_languages_')}
+                          value={field.value}
+                          options='language'
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                          isMulti
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='themesOfInterest'
+                      render={({ field, form }) => (
+                        <Select
+                          label={t('Themes_of_interest_')}
+                          value={field.value}
+                          options='theme'
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                          isMulti
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='industriesOfInterest'
+                      render={({ field, form }) => (
+                        <Select
+                          label={t('Industries_of_interest_')}
+                          value={field.value}
+                          options='industry'
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                          isMulti
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box className={classes.box} mt={3}>
+                <Typography variant='h6'>{t('Education_')}</Typography>
+                <Typography variant='body1' gutterBottom>
+                  {t('Most_recent_education_')}
+                </Typography>
+                <FastField
+                  name='education'
+                  render={({ field, form }) => (
+                    <EducationInput
+                      value={field.value !== null ? field.value : {}}
+                      onChange={value => form.setFieldValue(field.name, value)}
+                    />
+                  )}
+                />
+              </Box>
+              <Box className={classes.box} mt={3}>
+                <Typography variant='h6'>{t('Skills_')}</Typography>
+                <Typography variant='body1' gutterBottom>
+                  {t('Enter_skills_')}
+                </Typography>
+                <FastField
+                  name='skills'
+                  render={({ field, form }) => (
+                    <SkillsInput
+                      value={field.value}
+                      onChange={value => form.setFieldValue(field.name, value)}
+                    />
+                  )}
+                />
+              </Box>
+              <Box className={classes.box} mt={3}>
+                <Typography variant='h6'>{t('Pro_roles_')}</Typography>
+                <Typography variant='body1' gutterBottom>
+                  {t('Enter_roles_')}
+                </Typography>
+                <FastField
+                  name='roles'
+                  render={({ field, form }) => (
+                    <JobRoleInput
+                      value={field.value}
+                      onChange={value => form.setFieldValue(field.name, value)}
+                    />
+                  )}
+                />
+              </Box>
+              <Box className={classes.box} mt={3}>
+                <Typography variant='h6'>{t('Recruitment_pref_')}</Typography>
+                <FastField
+                  name='recruitmentOptions'
+                  render={({ field, form }) => (
+                    <RecruitmentOptionInput
+                      value={field.value !== null ? field.value : {}}
+                      onChange={value => form.setFieldValue(field.name, value)}
+                    />
+                  )}
+                />
+              </Box>
+              <Box className={classes.box} mt={3}>
+                <Typography variant='h6'>{t('Additional_links_')}</Typography>
+                <Typography variant='body1' gutterBottom>
+                  {t('You_can_link_')}
+                </Typography>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='curriculumVitae'
+                      render={({ field, form }) => (
+                        <TextInput
+                          label={
+                            RegistrationFields.getFields()['curriculumVitae']
+                              .label
+                          }
+                          placeholder='myhomepage.com/cv'
+                          value={field.value}
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                    <Typography variant='caption'>
+                      {RegistrationFields.getFields()['curriculumVitae'].hint}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='portfolio'
+                      render={({ field, form }) => (
+                        <TextInput
+                          label={
+                            RegistrationFields.getFields()['portfolio'].label
+                          }
+                          placeholder='myhomepage.com/portfolio'
+                          value={field.value}
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                    <Typography variant='caption'>
+                      {RegistrationFields.getFields()['portfolio'].hint}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='github'
+                      render={({ field, form }) => (
+                        <TextInput
+                          label={RegistrationFields.getFields()['github'].label}
+                          placeholder='github.com/myusername'
+                          value={field.value}
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                    <Typography variant='caption'>
+                      {RegistrationFields.getFields()['github'].hint}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FastField
+                      name='linkedin'
+                      render={({ field, form }) => (
+                        <TextInput
+                          label={
+                            RegistrationFields.getFields()['linkedin'].label
+                          }
+                          placeholder='linkedin.com/in/myname'
+                          value={field.value}
+                          onChange={value =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          onBlur={() => form.setFieldTouched(field.name)}
+                        />
+                      )}
+                    />
+                    <Typography variant='caption'>
+                      {RegistrationFields.getFields()['linkedin'].hint}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box height='300px' />
+              <BottomBar
+                onSubmit={formikProps.handleSubmit}
+                errors={formikProps.errors}
+                dirty={formikProps.dirty}
+                loading={formikProps.isSubmitting}
+              />
+            </React.Fragment>
+          )}
+        </Formik>
+      </PageWrapper>
+    );
 }

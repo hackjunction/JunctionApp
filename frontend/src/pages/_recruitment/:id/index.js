@@ -25,6 +25,7 @@ import SkillRating from '../default/SearchResults/SkillRating'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import Button from 'components/generic/Button'
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     iconBlue: {
@@ -57,6 +58,7 @@ export default () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const dispatch = useDispatch()
     const match = useRouteMatch()
+    const { t, i18n } = useTranslation();
 
     const sendMessage = useCallback(
         (message, userId) => {
@@ -72,10 +74,10 @@ export default () => {
         '',
         value => {
             if (value.length < 50) {
-                return 'Your message must be at least 50 characters long'
+                return t('Your_message_length_')
             }
             if (value.length > 1000) {
-                return "Your message can't be more than 1000 characters long"
+                return t('Your_message_long')
             }
 
             return
@@ -113,16 +115,18 @@ export default () => {
         if (res.error) {
             dispatch(
                 SnackbarActions.error(
-                    'Something went wrong... Please try again.'
+                    t('Something_went_wrong_')
                 )
             )
         } else {
             message.reset()
-            dispatch(SnackbarActions.success('Message sent!'))
+            dispatch(SnackbarActions.success(t('Message_sent_')))
         }
         setLoading(false)
     }, [message, sendMessage, user, dispatch])
 
+
+    // TODO A little bit hard to define for translating
     const renderRecruitmentStatus = () => {
         switch (user.recruitmentOptions.status) {
             case Misc.recruitmentStatuses.items['actively-looking'].id:

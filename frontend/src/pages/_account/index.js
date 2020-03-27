@@ -10,9 +10,12 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Dashboard from './dashboard'
 import Profile from './profile'
 
+import { useTranslation } from 'react-i18next'
+
 export default () => {
     const match = useRouteMatch()
     const location = useLocation()
+        const { t, i18n } = useTranslation()
     return (
         <PageWrapper
             header={() => <AccountNavBar />}
@@ -22,13 +25,13 @@ export default () => {
                     transparent
                     tabs={[
                         {
-                            label: 'Dashboard',
+                            label: t('Dashboard_'),
                             key: 'dashboard',
                             path: '',
                             component: Dashboard,
                         },
                         {
-                            label: 'Profile',
+                            label: t('Profile_'),
                             key: 'profile',
                             path: '/profile',
                             component: Profile,

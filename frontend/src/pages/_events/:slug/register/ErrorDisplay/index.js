@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { IconButton, Popper, Paper, Typography, Box } from '@material-ui/core'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CloseIcon from '@material-ui/icons/Close'
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     errorButton: ({ hasErrors }) => ({
@@ -53,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ErrorDisplay = React.memo(({ errors = {} }) => {
+    const { t, i18n } = useTranslation();
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ hasErrors })
     const [popperOpen, setPopperOpen] = useState(false)
@@ -82,7 +84,7 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
                             variant="overline"
                             className={classes.errorsBoxTitle}
                         >
-                            Please check these fields:
+                            {t('Check_fields_')}
                         </Typography>
                         <IconButton
                             aria-label="close-errors"

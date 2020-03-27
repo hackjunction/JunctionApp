@@ -13,7 +13,7 @@ import {
     ExpansionPanelActions,
     Typography,
 } from '@material-ui/core'
-
+import { useTranslation } from 'react-i18next';
 import Select from 'components/inputs/SelectOld'
 import FilterValueInput from './FilterValueInput'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -37,7 +37,7 @@ export default ({ onSubmit }) => {
     const [filter, setFilter] = useState()
     const [filterType, setFilterType] = useState()
     const [filterValue, setFilterValue] = useState()
-
+    const { t, i18n } = useTranslation();
     useEffect(() => {
         setFilterType(undefined)
     }, [filter])
@@ -98,63 +98,61 @@ export default ({ onSubmit }) => {
     }, [filterParams])
 
     return (
-        <ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
-            <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1c-content"
-                id="panel1c-header"
-            >
-                <div className={classes.headingItem}>
-                    <Typography color="textPrimary">Add a filter</Typography>
-                </div>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.body}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Select
-                            label="Choose field"
-                            placeholder="Choose field"
-                            helperText="Choose a field to filter on"
-                            value={filter}
-                            onChange={setFilter}
-                            options={filterOptions}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        {filterTypeOptions.length > 0 && (
-                            <Select
-                                label="How to filter on field"
-                                value={filterType}
-                                onChange={setFilterType}
-                                helperText="Choose how to filter on the field"
-                                options={filterTypeOptions}
-                            />
-                        )}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <FilterValueInput
-                            filterType={filterType}
-                            valueType={
-                                filterParams ? filterParams.valueType : null
-                            }
-                            value={filterValue}
-                            onChange={setFilterValue}
-                            event={event}
-                        />
-                    </Grid>
-                </Grid>
-            </ExpansionPanelDetails>
-            <ExpansionPanelActions>
-                <Button onClick={handleClear}>Cancel</Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    disabled={!submitValue}
-                >
-                    Add
-                </Button>
-            </ExpansionPanelActions>
-        </ExpansionPanel>
-    )
+      <ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls='panel1c-content'
+          id='panel1c-header'
+        >
+          <div className={classes.headingItem}>
+            <Typography color='textPrimary'>Add a filter</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.body}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Select
+                label={t('Choose_field_')}
+                placeholder={t('Choose_field_')}
+                helperText={t('Choose_field_filter_')}
+                value={filter}
+                onChange={setFilter}
+                options={filterOptions}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {filterTypeOptions.length > 0 && (
+                <Select
+                  label={t('How_to_filter_')}
+                  value={filterType}
+                  onChange={setFilterType}
+                  helperText={t('Choose_how_to_filter_')}
+                  options={filterTypeOptions}
+                />
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <FilterValueInput
+                filterType={filterType}
+                valueType={filterParams ? filterParams.valueType : null}
+                value={filterValue}
+                onChange={setFilterValue}
+                event={event}
+              />
+            </Grid>
+          </Grid>
+        </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Button onClick={handleClear}>Cancel</Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleSubmit}
+            disabled={!submitValue}
+          >
+            Add
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+    );
 }

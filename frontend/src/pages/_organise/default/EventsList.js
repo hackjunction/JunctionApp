@@ -5,14 +5,15 @@ import { useDispatch } from 'react-redux'
 import { Grid, Box, Typography } from '@material-ui/core'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
+import { useTranslation } from 'react-i18next';
 
 export default ({ events = [] }) => {
     const dispatch = useDispatch()
-
+    const { t, i18n } = useTranslation();
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>
-                Your events
+                {t('Your_events_')}
             </Typography>
             <Grid container spacing={3}>
                 {events.map(event => (
@@ -29,7 +30,7 @@ export default ({ events = [] }) => {
                                         )
                                     }
                                 >
-                                    Manage
+                                    {t('Manage_')}
                                 </Button>,
                             ]}
                         />
