@@ -24,33 +24,33 @@ export default () => {
     const handleReset = useCallback(() => {
         setDraft(filters)
     }, [filters])
-// TODO Weird to translate
+    // TODO Weird to translate
     return (
-      <FilterItem
-        label='Age'
-        active={filters && filters[1] - filters[0] !== 120}
-        onSubmit={handleSubmit}
-        onClose={handleReset}
-      >
-        <Box
-          padding={2}
-          display='flex'
-          flexDirection='column'
-          justifyContent='space-between'
-          width='300px'
+        <FilterItem
+            label="Age"
+            active={filters && filters[1] - filters[0] !== 120}
+            onSubmit={handleSubmit}
+            onClose={handleReset}
         >
-          <Typography variant='subtitle1' style={{ textAlign: 'center' }}>
-            Between {draft[0]} and {draft[1]}
-          </Typography>
-          <Box height='50px' />
-          <Slider
-            value={draft}
-            onChange={handleChange}
-            valueLabelDisplay='auto'
-            aria-labelledby='range-slider'
-            max={120}
-          />
-        </Box>
-      </FilterItem>
-    );
+            <Box
+                padding={2}
+                display="flex"
+                flexDirection="column"
+                justifyContent="space-between"
+                width="300px"
+            >
+                <Typography variant="subtitle1" style={{ textAlign: 'center' }}>
+                    Between {draft[0]} and {draft[1]}
+                </Typography>
+                <Box height="50px" />
+                <Slider
+                    value={draft}
+                    onChange={handleChange}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-slider"
+                    max={120}
+                />
+            </Box>
+        </FilterItem>
+    )
 }

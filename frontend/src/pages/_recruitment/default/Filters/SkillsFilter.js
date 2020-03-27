@@ -10,7 +10,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 
 import FilterItem from './FilterItem'
 import SkillsFilterItem from './SkillsFilterItem'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ setFilters }) => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.skills ?? []
     const [skills, addSkill, removeSkill, editSkill, setSkills] = useArray(
@@ -82,7 +82,7 @@ export default ({ setFilters }) => {
         >
             <Box className={classes.wrapper}>
                 <Select
-                    label={(t('Add_skill_'))}
+                    label={t('Add_skill_')}
                     options="skill"
                     onChange={handleAdd}
                     autoFocus

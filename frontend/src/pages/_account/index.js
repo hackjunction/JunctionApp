@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 export default () => {
     const match = useRouteMatch()
     const location = useLocation()
-        const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation()
     return (
         <PageWrapper
             header={() => <AccountNavBar />}

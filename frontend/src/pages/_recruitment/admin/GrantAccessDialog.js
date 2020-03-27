@@ -18,7 +18,7 @@ import Button from 'components/generic/Button'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ userId, onClose }) => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const events = useSelector(RecruitmentSelectors.events)
 
@@ -69,9 +69,7 @@ export default ({ userId, onClose }) => {
                 {t('Grant_access_recruitment_')}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <DialogContentText>
-                    {t('Recruiter_events_')}
-                </DialogContentText>
+                <DialogContentText>{t('Recruiter_events_')}</DialogContentText>
                 <Select
                     label="Choose events"
                     value={selectedEvents}
