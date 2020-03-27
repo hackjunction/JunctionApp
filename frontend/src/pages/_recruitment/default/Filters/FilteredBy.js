@@ -3,7 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Typography } from '@material-ui/core'
 import { Misc } from '@hackjunction/shared'
-
+import { useTranslation } from 'react-i18next'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 
 const FilteredByItem = ({ label, text }) => {
@@ -25,6 +25,7 @@ const FilteredByItem = ({ label, text }) => {
 }
 
 export default () => {
+    const { t, i18n } = useTranslation()
     const filters = useSelector(RecruitmentSelectors.filters)
     const eventsMap = useSelector(RecruitmentSelectors.eventsMap)
 
@@ -49,25 +50,25 @@ export default () => {
         >
             {Array.isArray(skills) && skills.length ? (
                 <FilteredByItem
-                    label="Skills"
+                    label={t('Skills_')}
                     text={skills.map(s => s.skill).join(', ')}
                 />
             ) : null}
             {Array.isArray(roles) && roles.length ? (
                 <FilteredByItem
-                    label="Previous roles"
+                    label={t('Previous_roles_')}
                     text={roles.map(r => r.role).join(', ')}
                 />
             ) : null}
             {Array.isArray(events) && events.length ? (
                 <FilteredByItem
-                    label="Events"
+                    label={t('Events_')}
                     text={events.map(e => eventsMap[e.event].name).join(', ')}
                 />
             ) : null}
             {Array.isArray(recruitmentStatus) && recruitmentStatus.length ? (
                 <FilteredByItem
-                    label="Status"
+                    label={t('Status_')}
                     text={recruitmentStatus
                         .map(s => Misc.recruitmentStatuses.getLabelForValue(s))
                         .join(', ')}
@@ -75,7 +76,7 @@ export default () => {
             ) : null}
             {Array.isArray(relocationStatus) && relocationStatus.length ? (
                 <FilteredByItem
-                    label="Relocation"
+                    label={t('Relocation')}
                     text={relocationStatus
                         .map(s => Misc.relocationOptions.getLabelForValue(s))
                         .join(', ')}
@@ -83,16 +84,19 @@ export default () => {
             ) : null}
             {Array.isArray(countryOfResidence) && countryOfResidence.length ? (
                 <FilteredByItem
-                    label="Country"
+                    label={t('Country_')}
                     text={countryOfResidence.join(', ')}
                 />
             ) : null}
             {age && age[1] - age[0] !== 120 ? (
-                <FilteredByItem label="Age" text={`${age[0]} to ${age[1]}`} />
+                <FilteredByItem
+                    label={t('Age_')}
+                    text={`${age[0]} to ${age[1]}`}
+                />
             ) : null}
             {Array.isArray(spokenLanguages) && spokenLanguages.length ? (
                 <FilteredByItem
-                    label="Spoken languages"
+                    label={t('Spoken_languages')}
                     text={spokenLanguages.join(', ')}
                 />
             ) : null}

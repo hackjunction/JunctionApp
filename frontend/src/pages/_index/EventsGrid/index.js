@@ -8,9 +8,11 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
+import { useTranslation } from 'react-i18next'
 
 export default ({ events, loading, title }) => {
     const dispatch = useDispatch()
+    const { t, i18n } = useTranslation()
     function renderEvents() {
         return events.map(event => {
             return (
@@ -25,7 +27,7 @@ export default ({ events, loading, title }) => {
                                     dispatch(push('/events/' + event.slug))
                                 }
                             >
-                                See more
+                                {t('See_more_button_')}
                             </Button>,
                             event.galleryOpen && (
                                 <Button
@@ -37,7 +39,7 @@ export default ({ events, loading, title }) => {
                                         )
                                     }
                                 >
-                                    View projects
+                                    {t('View_projects_')}
                                 </Button>
                             ),
                         ]}

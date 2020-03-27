@@ -19,6 +19,7 @@ import FixedLayout from 'components/layouts/FixedLayout'
 import LightTextField from './LightTextField'
 import LightCheckbox from './LightCheckbox'
 import config from 'constants/config'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -103,6 +104,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
 
@@ -193,15 +195,13 @@ export default () => {
                                     paragraph
                                     className={classes.whiteCentered}
                                 >
-                                    Welcome
+                                    {t('Welcome_')}
                                 </Typography>
                                 <Typography
                                     variant="body1"
                                     className={classes.whiteCentered}
                                 >
-                                    Looks like you're new here! Let's make sure
-                                    we have your basic information correct
-                                    before moving on.
+                                    {t('Looks_like_new_')}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -211,7 +211,7 @@ export default () => {
                                     fullWidth
                                     type="text"
                                     name="firstName"
-                                    label="First name"
+                                    label={t('First_name_')}
                                     placeholder="Herbert"
                                     InputProps={{
                                         error: formik.errors.hasOwnProperty(
@@ -230,7 +230,7 @@ export default () => {
                                     fullWidth
                                     type="text"
                                     name="lastName"
-                                    label="Last name"
+                                    label={t('Last_name_')}
                                     placeholder="Hacker"
                                     InputProps={{
                                         error: formik.errors.hasOwnProperty(
@@ -249,7 +249,7 @@ export default () => {
                                     fullWidth
                                     type="text"
                                     name="email"
-                                    label="Email address"
+                                    label={t('Email_')}
                                     placeholder="herbert.hacker@bighackathon.com"
                                     InputProps={{
                                         error: formik.errors.hasOwnProperty(
@@ -281,6 +281,7 @@ export default () => {
                                     }}
                                 />
                                 <Box p={1}>
+                                    {/* TODO Change this text in locale JSON */}
                                     <Typography
                                         variant="subtitle2"
                                         className={classes.label}
@@ -323,7 +324,7 @@ export default () => {
                                     variant="contained"
                                     fullWidth
                                 >
-                                    Let's go
+                                    {t('Let_go_')}
                                 </Button>
                             </Box>
                         </Box>
