@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, Checkbox } from '@material-ui/core'
 import { Misc } from '@hackjunction/shared'
@@ -13,6 +14,7 @@ const WILLING_TO_RELOCATE = Misc.relocationOptions.items['willing-to-relocate']
 const NOT_CURRENTLY = Misc.relocationOptions.items['not-currently']
 
 export default () => {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch()
     const filters =
         useSelector(RecruitmentSelectors.filters)?.relocationStatus ?? []
@@ -38,7 +40,7 @@ export default () => {
 
     return (
         <FilterItem
-            label="Relocation preferences"
+            label={t('Relocation_pref_')}
             active={filters.length !== 0}
             onSubmit={handleSubmit}
             onClose={handleReset}

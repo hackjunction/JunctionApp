@@ -7,7 +7,7 @@ import { Grid, Box, Typography } from '@material-ui/core'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
-
+import { useTranslation } from 'react-i18next';
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
 
@@ -24,6 +24,7 @@ export default ({ items }) => {
     const page = useSelector(RecruitmentSelectors.page)
     const paginationEnabled = !items
     const isFavorited = !!items
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateSearchResults())
@@ -61,21 +62,21 @@ export default ({ items }) => {
                 return (
                     <Empty
                         isEmpty
-                        emptyText="You haven't added any favorites"
+                        emptyText={t('No_favorites')}
                     />
                 )
             } else if (filters.textSearch) {
                 return (
                     <Empty
                         isEmpty
-                        emptyText="No results / too many results. Please try specifying your search term."
+                        emptyText={t('No_results_')}
                     />
                 )
             } else {
                 return (
                     <Empty
                         isEmpty
-                        emptyText="No results with the selected filters."
+                        emptyText={t('No_results_filter_')}
                     />
                 )
             }

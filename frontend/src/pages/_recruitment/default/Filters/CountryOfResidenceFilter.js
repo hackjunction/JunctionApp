@@ -8,7 +8,10 @@ import Select from 'components/inputs/Select'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 
+import { useTranslation } from 'react-i18next';
+
 export default () => {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch()
     const filters =
         useSelector(RecruitmentSelectors.filters)?.countryOfResidence ?? []
@@ -26,14 +29,14 @@ export default () => {
 
     return (
         <FilterItem
-            label="Country of residence"
+            label={t('Country_of_residence_')}
             active={filters.length > 0}
             onSubmit={handleSubmit}
             onClose={handleReset}
         >
             <Box width="300px" height="300px" overflow="hidden">
                 <Select
-                    label="Choose countries (can be any of)"
+                    label={t('Choose_countries_')}
                     options="country"
                     value={draft}
                     onChange={setDraft}

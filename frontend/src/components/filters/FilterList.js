@@ -13,6 +13,7 @@ import {
     Badge,
 } from '@material-ui/core'
 import FilterListItem from 'components/filters/FilterListItem'
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
     headingItem: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
     },
 }))
-
+const { t, i18n } = useTranslation();
 const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
     const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
@@ -65,7 +66,7 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                     classes={{ badge: classes.badge }}
                     showZero={false}
                 >
-                    <Typography color="textPrimary">Active filters</Typography>
+                    <Typography color="textPrimary">{t('Active_filters_')}</Typography>
                 </Badge>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>

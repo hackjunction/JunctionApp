@@ -15,12 +15,14 @@ import {
     Box,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { useTranslation } from 'react-i18next';
+
 
 const STATUSES = [
     RegistrationStatuses.asObject.confirmed,
     RegistrationStatuses.asObject.checkedIn,
 ]
-
+const { t, i18n } = useTranslation();
 const useStyles = makeStyles(theme => ({
     radios: {
         display: 'flex',
@@ -51,7 +53,7 @@ const EventsFilterItem = React.memo(
 
         const renderSelected = () => {
             if (statuses.length === 0 || statuses.length === 5) {
-                return 'Has applied/registered to event'
+                return t('Has_applied_')
             } else {
                 return statuses
                     .map(
@@ -90,7 +92,7 @@ const EventsFilterItem = React.memo(
                 </ExpansionPanelDetails>
                 <ExpansionPanelActions>
                     <Button size="small" onClick={onRemove}>
-                        Remove
+                        {t('Remove_')}
                     </Button>
                 </ExpansionPanelActions>
             </ExpansionPanel>

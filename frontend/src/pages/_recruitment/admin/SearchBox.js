@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
+import { useTranslation } from 'react-i18next';
 
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
@@ -19,6 +20,7 @@ export default ({ onGrant, onRevoke }) => {
     const dispatch = useDispatch()
     const searchResults = useSelector(RecruitmentSelectors.adminSearchResults)
     const [searchQuery, setSearchQuery] = useState('')
+    const { t, i18n } = useTranslation();
     return (
         <Box>
             <Box
@@ -28,7 +30,7 @@ export default ({ onGrant, onRevoke }) => {
                 mb={1}
             >
                 <TextInput
-                    label="Search users by name or email"
+                    label={t('Search_user_by_')}
                     value={searchQuery}
                     onChange={setSearchQuery}
                 />
@@ -45,7 +47,7 @@ export default ({ onGrant, onRevoke }) => {
                         )
                     }
                 >
-                    Search
+                    {t('Search_')}
                 </Button>
             </Box>
             <List>
@@ -62,14 +64,14 @@ export default ({ onGrant, onRevoke }) => {
                                     color="secondary"
                                     onClick={() => onRevoke(user.userId)}
                                 >
-                                    Revoke access
+                                    {t('Revoke_access_')}
                                 </Button>
                             ) : (
                                 <Button
                                     color="primary"
                                     onClick={() => onGrant(user.userId)}
                                 >
-                                    Grant access
+                                    {t('Grant_access_')}
                                 </Button>
                             )}
                         </ListItemSecondaryAction>
