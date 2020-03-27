@@ -6,16 +6,21 @@
         },
         {
             "changeProcessCWD": true,
-            "directory": "./backend",
+            "directory": "./backend"
         },
         {
             "changeProcessCWD": true,
             "directory": "./shared"
         }
     ],
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "eslint.enable": true
+    "eslint.enable": true,
+    "editor.formatOnType": true,
+    "prettier.tabWidth": 4,
+    "prettier.trailingComma": "all",
+    "javascript.format.semicolons": "remove",
+    "typescript.format.semicolons": "remove"
 }

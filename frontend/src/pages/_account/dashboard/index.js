@@ -9,12 +9,12 @@ import EventCardSmall from 'components/events/EventCardSmall'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const [registrations = [], loading, error] = useRegistrationsByUser(userId)
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     return (
         <PageWrapper loading={loading} error={Boolean(error)}>
             <Box p={2}>

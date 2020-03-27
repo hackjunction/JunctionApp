@@ -37,7 +37,7 @@ import SubmitButton from 'components/inputs/SubmitButton'
 
 import EventDetailContext from '../context'
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -119,7 +119,7 @@ const useStyles = makeStyles(theme => ({
 const Connector = ({ index, active, completed, disabled }) => <div />
 
 export default RequiresPermission(() => {
-    const { t, i18n } = useTranslation();    
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
     const {
@@ -346,91 +346,101 @@ export default RequiresPermission(() => {
     }
 
     return (
-      <FadeInWrapper className={classes.wrapper}>
-        <Image
-          className={classes.backgroundImage}
-          publicId={event?.coverImage?.publicId}
-          default={require('assets/images/default_cover_image.png')}
-          transformation={{
-            width: 1920,
-            height: 1080,
-          }}
-        />
-        <CenteredContainer wrapperClass={classes.content}>
-          <FadeInWrapper enterDelay={0.4}>
-            <Box className={classes.top}>
-              <Typography variant='h1' className={classes.topTitle}>
-                Register
-              </Typography>
-              <Box p={1} />
-              <Typography variant='h2' className={classes.topTitleExtra}>
-                {event?.name}
-              </Typography>
-            </Box>
-          </FadeInWrapper>
-          <div style={{ height: '100px' }} />
-          <Stepper
-            connector={<Connector />}
-            className={classes.stepper}
-            activeStep={activeStep}
-            orientation='vertical'
-          >
-            {renderSteps()}
-            <Step key='finish'>
-              <StepContent
-                classes={{
-                  root: classes.stepContent,
+        <FadeInWrapper className={classes.wrapper}>
+            <Image
+                className={classes.backgroundImage}
+                publicId={event?.coverImage?.publicId}
+                default={require('assets/images/default_cover_image.png')}
+                transformation={{
+                    width: 1920,
+                    height: 1080,
                 }}
-              >
-                <NewsLetterButton
-                  email={formData.email}
-                  country={formData.countryOfResidence}
-                />
-                <Box mt={5} />
-                <SubmitButton
-                  hasErrors={false}
-                  onSubmit={handleSubmit}
-                  loading={loading}
-                />
-              </StepContent>
-            </Step>
-            <Step key='done'>
-              <StepContent
-                classes={{
-                  root: classes.stepContent,
-                }}
-              >
-                <Box
-                  mt={'200px'}
-                  display='flex'
-                  flexDirection='column'
-                  alignItems='center'
+            />
+            <CenteredContainer wrapperClass={classes.content}>
+                <FadeInWrapper enterDelay={0.4}>
+                    <Box className={classes.top}>
+                        <Typography variant="h1" className={classes.topTitle}>
+                            Register
+                        </Typography>
+                        <Box p={1} />
+                        <Typography
+                            variant="h2"
+                            className={classes.topTitleExtra}
+                        >
+                            {event?.name}
+                        </Typography>
+                    </Box>
+                </FadeInWrapper>
+                <div style={{ height: '100px' }} />
+                <Stepper
+                    connector={<Connector />}
+                    className={classes.stepper}
+                    activeStep={activeStep}
+                    orientation="vertical"
                 >
-                  <Typography className={classes.doneTitle} variant='h3'>
-                    {t('Registration_saved_')}
-                  </Typography>
-                  <div style={{ height: '50px' }} />
-                  <Button
-                    onClick={() => dispatch(push(`/dashboard/${slug}`))}
-                    style={{ width: '300px' }}
-                    color='primary'
-                    variant='contained'
-                  >
-                    {t('Event_dashboard_')}
-                  </Button>
-                  <div style={{ height: '1rem' }} />
-                  <Button
-                    onClick={() => dispatch(push(`/events/${slug}`))}
-                    style={{ width: '300px', color: 'white' }}
-                  >
-                    {t('Back_to_event_')}
-                  </Button>
-                </Box>
-              </StepContent>
-            </Step>
-          </Stepper>
-          <div style={{ height: '100px' }} />
-        </CenteredContainer>
-      </FadeInWrapper>
-    );
+                    {renderSteps()}
+                    <Step key="finish">
+                        <StepContent
+                            classes={{
+                                root: classes.stepContent,
+                            }}
+                        >
+                            <NewsLetterButton
+                                email={formData.email}
+                                country={formData.countryOfResidence}
+                            />
+                            <Box mt={5} />
+                            <SubmitButton
+                                hasErrors={false}
+                                onSubmit={handleSubmit}
+                                loading={loading}
+                            />
+                        </StepContent>
+                    </Step>
+                    <Step key="done">
+                        <StepContent
+                            classes={{
+                                root: classes.stepContent,
+                            }}
+                        >
+                            <Box
+                                mt={'200px'}
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                            >
+                                <Typography
+                                    className={classes.doneTitle}
+                                    variant="h3"
+                                >
+                                    {t('Registration_saved_')}
+                                </Typography>
+                                <div style={{ height: '50px' }} />
+                                <Button
+                                    onClick={() =>
+                                        dispatch(push(`/dashboard/${slug}`))
+                                    }
+                                    style={{ width: '300px' }}
+                                    color="primary"
+                                    variant="contained"
+                                >
+                                    {t('Event_dashboard_')}
+                                </Button>
+                                <div style={{ height: '1rem' }} />
+                                <Button
+                                    onClick={() =>
+                                        dispatch(push(`/events/${slug}`))
+                                    }
+                                    style={{ width: '300px', color: 'white' }}
+                                >
+                                    {t('Back_to_event_')}
+                                </Button>
+                            </Box>
+                        </StepContent>
+                    </Step>
+                </Stepper>
+                <div style={{ height: '100px' }} />
+            </CenteredContainer>
+        </FadeInWrapper>
+    )
 })

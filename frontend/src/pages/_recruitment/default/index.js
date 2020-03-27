@@ -12,7 +12,7 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 import ToggleFavorites from './ToggleFavorites'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { useToggle } from 'hooks/customHooks'
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const favorites = useSelector(RecruitmentSelectors.favorites)
@@ -33,21 +33,15 @@ export default () => {
 
     useEffect(() => {
         if (!idTokenData) {
-            throw new Error(
-                t('Invalid_token_')
-            )
+            throw new Error(t('Invalid_token_'))
         }
         if (!idTokenData.recruiter_events) {
-            throw new Error(
-                t('Invalid_access_')
-            )
+            throw new Error(t('Invalid_access_'))
         }
         if (!idTokenData.recruiter_organisation) {
-            throw new Error(
-                t('Invalid_organisation_')
-            )
+            throw new Error(t('Invalid_organisation_'))
         }
-    }, [idTokenData])
+    }, [idTokenData, t])
 
     return (
         <div className={classes.root}>

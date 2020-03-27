@@ -13,13 +13,13 @@ import {
 import { useDispatch } from 'react-redux'
 
 import Button from 'components/generic/Button'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default ({ userId, onClose }) => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
 
