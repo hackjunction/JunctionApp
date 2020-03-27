@@ -19,7 +19,7 @@ import FixedLayout from 'components/layouts/FixedLayout'
 import LightTextField from './LightTextField'
 import LightCheckbox from './LightCheckbox'
 import config from 'constants/config'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -104,7 +104,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
 
@@ -170,151 +170,167 @@ export default () => {
     }
 
     return (
-      <FixedLayout
-        background={require('assets/images/default_cover_image.png')}
-      >
-        <div className={classes.content}>
-          <div className={classes.contentLeft}>
-            <img
-              className={classes.contentLeftBackground}
-              src={require('assets/images/laser_2016.jpg')}
-              alt='illustration'
-            />
-            <img
-              className={classes.contentLeftLogo}
-              src={config.LOGO_LIGHT_URL}
-              alt={config.PLATFORM_OWNER_NAME + ' logo'}
-            />
-          </div>
-          <div className={classes.contentRight}>
-            <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Typography
-                    variant='h4'
-                    paragraph
-                    className={classes.whiteCentered}
-                  >
-                      {t('Welcome_')}
-                  </Typography>
-                  <Typography variant='body1' className={classes.whiteCentered}>
-                    
-                    {t('Looks_like_new_')}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <LightTextField
-                    value={formik.values.firstName}
-                    onChange={formik.handleChange}
-                    fullWidth
-                    type='text'
-                    name='firstName'
-                    label={t('First_name_')}
-                    placeholder='Herbert'
-                    InputProps={{
-                      error: formik.errors.hasOwnProperty('firstName'),
-                    }}
-                  />
-                  <Typography variant='caption' color='error'>
-                    {formik.errors.firstName}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <LightTextField
-                    value={formik.values.lastName}
-                    onChange={formik.handleChange}
-                    fullWidth
-                    type='text'
-                    name='lastName'
-                    label={t('Last_name_')}
-                    placeholder='Hacker'
-                    InputProps={{
-                      error: formik.errors.hasOwnProperty('lastName'),
-                    }}
-                  />
-                  <Typography variant='caption' color='error'>
-                    {formik.errors.lastName}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <LightTextField
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    fullWidth
-                    type='text'
-                    name='email'
-                    label={t('Email_')}
-                    placeholder='herbert.hacker@bighackathon.com'
-                    InputProps={{
-                      error: formik.errors.hasOwnProperty('email'),
-                    }}
-                  />
-                  <Typography variant='caption' color='error'>
-                    {formik.errors.email}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  mt={3}
-                  display='flex'
-                  flexDirection='row'
-                  alignItems='center'
-                >
-                  <LightCheckbox
-                    name='accepted'
-                    checked={formik.values.accepted}
-                    onChange={(e, value) =>
-                      formik.setFieldValue('accepted', value)
-                    }
-                    value='accepted'
-                    inputProps={{
-                      'aria-label': 'checkbox',
-                    }}
-                  />
-                  <Box p={1}>
-                      {/* TODO Change this text in locale JSON */}
-                    <Typography variant='subtitle2' className={classes.label}>
-                      I confirm that I am at least 16 years of age, and I have
-                      read and agree to the {config.PLATFORM_OWNER_NAME}{' '}
-                      <a
-                        href={config.TERMS_URL}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className={classes.link}
-                      >
-                        Terms & Conditions
-                      </a>{' '}
-                      and{' '}
-                      <a
-                        href={config.PRIVACY_URL}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className={classes.link}
-                      >
-                        Privacy Policy
-                      </a>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Grid>
-              <Box display='flex' alignItems='center' justifyContent='center'>
-                <Box width='240px'>
-                  <Button
-                    onClick={formik.submitForm}
-                    disabled={!formik.isValid}
-                    loading={formik.isSubmitting}
-                    color='primary'
-                    variant='contained'
-                    fullWidth
-                  >
-                    {t('Let_go_')}
-                  </Button>
-                </Box>
-              </Box>
-            </form>
-          </div>
-        </div>
-      </FixedLayout>
-    );
+        <FixedLayout
+            background={require('assets/images/default_cover_image.png')}
+        >
+            <div className={classes.content}>
+                <div className={classes.contentLeft}>
+                    <img
+                        className={classes.contentLeftBackground}
+                        src={require('assets/images/laser_2016.jpg')}
+                        alt="illustration"
+                    />
+                    <img
+                        className={classes.contentLeftLogo}
+                        src={config.LOGO_LIGHT_URL}
+                        alt={config.PLATFORM_OWNER_NAME + ' logo'}
+                    />
+                </div>
+                <div className={classes.contentRight}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Typography
+                                    variant="h4"
+                                    paragraph
+                                    className={classes.whiteCentered}
+                                >
+                                    {t('Welcome_')}
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    className={classes.whiteCentered}
+                                >
+                                    {t('Looks_like_new_')}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <LightTextField
+                                    value={formik.values.firstName}
+                                    onChange={formik.handleChange}
+                                    fullWidth
+                                    type="text"
+                                    name="firstName"
+                                    label={t('First_name_')}
+                                    placeholder="Herbert"
+                                    InputProps={{
+                                        error: formik.errors.hasOwnProperty(
+                                            'firstName'
+                                        ),
+                                    }}
+                                />
+                                <Typography variant="caption" color="error">
+                                    {formik.errors.firstName}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <LightTextField
+                                    value={formik.values.lastName}
+                                    onChange={formik.handleChange}
+                                    fullWidth
+                                    type="text"
+                                    name="lastName"
+                                    label={t('Last_name_')}
+                                    placeholder="Hacker"
+                                    InputProps={{
+                                        error: formik.errors.hasOwnProperty(
+                                            'lastName'
+                                        ),
+                                    }}
+                                />
+                                <Typography variant="caption" color="error">
+                                    {formik.errors.lastName}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <LightTextField
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange}
+                                    fullWidth
+                                    type="text"
+                                    name="email"
+                                    label={t('Email_')}
+                                    placeholder="herbert.hacker@bighackathon.com"
+                                    InputProps={{
+                                        error: formik.errors.hasOwnProperty(
+                                            'email'
+                                        ),
+                                    }}
+                                />
+                                <Typography variant="caption" color="error">
+                                    {formik.errors.email}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Box
+                                mt={3}
+                                display="flex"
+                                flexDirection="row"
+                                alignItems="center"
+                            >
+                                <LightCheckbox
+                                    name="accepted"
+                                    checked={formik.values.accepted}
+                                    onChange={(e, value) =>
+                                        formik.setFieldValue('accepted', value)
+                                    }
+                                    value="accepted"
+                                    inputProps={{
+                                        'aria-label': 'checkbox',
+                                    }}
+                                />
+                                <Box p={1}>
+                                    {/* TODO Change this text in locale JSON */}
+                                    <Typography
+                                        variant="subtitle2"
+                                        className={classes.label}
+                                    >
+                                        I confirm that I am at least 16 years of
+                                        age, and I have read and agree to the{' '}
+                                        {config.PLATFORM_OWNER_NAME}{' '}
+                                        <a
+                                            href={config.TERMS_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={classes.link}
+                                        >
+                                            Terms & Conditions
+                                        </a>{' '}
+                                        and{' '}
+                                        <a
+                                            href={config.PRIVACY_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={classes.link}
+                                        >
+                                            Privacy Policy
+                                        </a>
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Grid>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Box width="240px">
+                                <Button
+                                    onClick={formik.submitForm}
+                                    disabled={!formik.isValid}
+                                    loading={formik.isSubmitting}
+                                    color="primary"
+                                    variant="contained"
+                                    fullWidth
+                                >
+                                    {t('Let_go_')}
+                                </Button>
+                            </Box>
+                        </Box>
+                    </form>
+                </div>
+            </div>
+        </FixedLayout>
+    )
 }

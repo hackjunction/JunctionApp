@@ -27,12 +27,12 @@
     "Most_recent_education_": "Your most recent education",
     "Skills_": "Skills",
     "Enter_skills_": "Enter up to 10 skills you consider yourself proficient at",
-    "Pro_roles_":"Professional roles",
+    "Pro_roles_": "Professional roles",
     "Enter_roles_": "Enter up to 5 roles you have working experience in",
     "Recruitment_pref_": "Recruitment preferences",
     "Additional_links_": "Additional links",
     "You_can_link_": "You can link additional links related you in here.",
-    "Profile_":"Profile",
+    "Profile_": "Profile",
     "Dashboard_": "Dashboard",
     "Something_wrong_": "Oh-oh, something went wrong",
     "Problem_persists:_": "If this problem persists, it might be a problem on our end. In this case please reach out to us via email at dev@hackjunction.com for further support.",
@@ -99,17 +99,4 @@
     "No_skills_": "No skills selected",
     "Add_skill_": "Add a skill (must have all)",
     "Any_skill_level_": "Any skill level"
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

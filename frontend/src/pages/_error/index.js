@@ -4,7 +4,7 @@ import { useLocation } from 'react-router'
 import { push } from 'connected-react-router'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { Box } from '@material-ui/core'
 import Button from 'components/generic/Button'
 import FixedLayout from 'components/layouts/FixedLayout'
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-        const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const classes = useStyles()
     const location = useLocation()
@@ -57,40 +57,40 @@ export default () => {
     const error = location?.state?.error
 
     return (
-      <FixedLayout
-        background={require('assets/images/default_cover_image.png')}
-        backgroundOpacity={0.2}
-      >
-        <Box
-          width='100%'
-          maxWidth='600px'
-          margin='0 auto'
-          display='flex'
-          flexDirection='column'
-          alignItems='center'
+        <FixedLayout
+            background={require('assets/images/default_cover_image.png')}
+            backgroundOpacity={0.2}
         >
-          <img
-            className={classes.logo}
-            src={require('../../assets/logos/emblem_white.png')}
-            alt='logo'
-          />
-          <Typography variant='h6' className={classes.title}>
-            {t('Something_wrong_')}
-          </Typography>
-          {error ? (
-            <Typography variant='body1' className={classes.error}>
-              {error}
-            </Typography>
-          ) : null}
-          <Typography variant='subtitle2' className={classes.subtitle}>
-            {t('Problem_persists_')}
-          </Typography>
-          <Box mt={2}>
-            <Button color='primary' onClick={() => dispatch(push('/'))}>
-              {t('Back_to_home_page')}
-            </Button>
-          </Box>
-        </Box>
-      </FixedLayout>
-    );
+            <Box
+                width="100%"
+                maxWidth="600px"
+                margin="0 auto"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+            >
+                <img
+                    className={classes.logo}
+                    src={require('../../assets/logos/emblem_white.png')}
+                    alt="logo"
+                />
+                <Typography variant="h6" className={classes.title}>
+                    {t('Something_wrong_')}
+                </Typography>
+                {error ? (
+                    <Typography variant="body1" className={classes.error}>
+                        {error}
+                    </Typography>
+                ) : null}
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                    {t('Problem_persists_')}
+                </Typography>
+                <Box mt={2}>
+                    <Button color="primary" onClick={() => dispatch(push('/'))}>
+                        {t('Back_to_home_page')}
+                    </Button>
+                </Box>
+            </Box>
+        </FixedLayout>
+    )
 }

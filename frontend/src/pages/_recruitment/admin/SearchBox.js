@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
@@ -20,7 +20,7 @@ export default ({ onGrant, onRevoke }) => {
     const dispatch = useDispatch()
     const searchResults = useSelector(RecruitmentSelectors.adminSearchResults)
     const [searchQuery, setSearchQuery] = useState('')
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     return (
         <Box>
             <Box
