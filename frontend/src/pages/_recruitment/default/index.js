@@ -12,7 +12,7 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 import ToggleFavorites from './ToggleFavorites'
-
+import { useTranslation } from 'react-i18next';
 import { useToggle } from 'hooks/customHooks'
 
 const useStyles = makeStyles(theme => ({
@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t, i18n } = useTranslation();
     const classes = useStyles()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const favorites = useSelector(RecruitmentSelectors.favorites)
@@ -33,17 +34,17 @@ export default () => {
     useEffect(() => {
         if (!idTokenData) {
             throw new Error(
-                'Invalid access token. Please try logging out and logging in again. If the problem persists, please contact support.'
+                t('Invalid_token_')
             )
         }
         if (!idTokenData.recruiter_events) {
             throw new Error(
-                "You don't have access to any events. Please try logging out and logging in again. If the problem persists, please contact support."
+                t('Invalid_access_')
             )
         }
         if (!idTokenData.recruiter_organisation) {
             throw new Error(
-                "You don't belong to any organisation. Please try logging out and logging in again. If the problem persists, please contact support."
+                t('Invalid_organisation_')
             )
         }
     }, [idTokenData])

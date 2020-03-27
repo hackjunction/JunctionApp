@@ -14,7 +14,7 @@ import {
     Box,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
+import { useTranslation } from 'react-i18next';
 import { Skills } from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
     },
 }))
-
+const { t, i18n } = useTranslation();
 const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
     const classes = useStyles()
     const toggleLevel = useCallback(
@@ -46,7 +46,7 @@ const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
 
     const renderSelected = () => {
         if (levels.length === 0 || levels.length === 5) {
-            return 'Any skill level'
+            return t('Any_skill_level_')
         } else {
             return levels
                 .map(level => Skills.getLabelForSkillLevel(level))
@@ -82,7 +82,7 @@ const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
                 <Button size="small" onClick={onRemove}>
-                    Remove
+                    {t('Remove_')}
                 </Button>
             </ExpansionPanelActions>
         </ExpansionPanel>

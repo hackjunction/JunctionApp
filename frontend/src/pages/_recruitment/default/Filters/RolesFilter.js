@@ -12,6 +12,8 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import RolesFilterItem from './RolesFilterItem'
 import FilterItem from './FilterItem'
 
+import { useTranslation } from 'react-i18next';
+
 const useStyles = makeStyles(theme => ({
     wrapper: {
         width: '400px',
@@ -29,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.roles ?? []
     const classes = useStyles()
@@ -56,7 +59,7 @@ export default () => {
         if (!roles.length) {
             return (
                 <Typography variant="subtitle1" className={classes.itemsEmpty}>
-                    No roles selected
+                    {t('No_roles_')}
                 </Typography>
             )
         }
@@ -79,7 +82,7 @@ export default () => {
         >
             <Box className={classes.wrapper}>
                 <Select
-                    label="Add a role (must have all)"
+                    label={t('Add_role_')}
                     options="role"
                     onChange={handleAdd}
                     autoFocus
