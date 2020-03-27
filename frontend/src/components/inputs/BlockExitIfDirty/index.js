@@ -1,12 +1,13 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const BlockExitIfDirty = props => {
     function unloadPage() {
         if (props.dirty) {
-            return 'You have unsaved changes! Are you sure you want to leave this page?'
+            return t('Unsaved_changes_')
         }
     }
-
+const { t, i18n } = useTranslation();
     React.useEffect(() => {
         window.onbeforeunload = unloadPage
         window.onpopstate = unloadPage

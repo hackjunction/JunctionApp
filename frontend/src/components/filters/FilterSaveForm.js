@@ -17,25 +17,26 @@ import { useFormField } from 'hooks/formHooks'
 import * as OrganiserActions from 'redux/organiser/actions'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
-
+import { useTranslation } from 'react-i18next';
 export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const isEdit = !activeItem.isDefault && !activeItem.isAdd
     const [loading, setLoading] = useState(false)
     const [expanded, setExpanded] = useState(false)
+    const { t, i18n } = useTranslation();
     const label = useFormField(isEdit ? activeItem.label : '', value => {
         if (value.length === 0) {
-            return 'Name is required'
+            return t('Name_required_')
         }
 
         if (value.length > 50) {
-            return 'Name must be under 50 characters'
+            return t('Name_under_')
         }
 
         if (!isEdit) {
             if (reservedLabels.indexOf(value) !== -1) {
-                return 'Name is already taken'
+                return t('Name_taken_')
             }
         }
 
@@ -46,7 +47,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
         isEdit ? activeItem.description : '',
         value => {
             if (value.length > 100) {
-                return 'Description must be under 100 characters'
+                return t('Desc_under_')
             }
 
             return
@@ -93,12 +94,12 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                 )
             )
                 .then(item => {
-                    dispatch(SnackbarActions.success('Edits saved!'))
+                    dispatch(SnackbarActions.success(t('Edits_saved_')))
                     toggleExpanded(null, false)
                     onSave(item)
                 })
                 .catch(err => {
-                    dispatch(SnackbarActions.error('Something went wrong...'))
+                    dispatch(SnackbarActions.error(t('Wrong_')))
                 })
                 .finally(() => {
                     setLoading(false)
@@ -119,12 +120,12 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                 )
             )
                 .then(item => {
-                    dispatch(SnackbarActions.success('Filter group deleted'))
+                    dispatch(SnackbarActions.success(t('Filter_deleted_')))
                     toggleExpanded(null, false)
                     onSave(item)
                 })
                 .catch(err => {
-                    dispatch(SnackbarActions.error('Something went wrong...'))
+                    dispatch(SnackbarActions.error(t('Wrong_')))
                 })
                 .finally(() => {
                     setLoading(false)
@@ -137,12 +138,12 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
         setLoading(true)
         dispatch(OrganiserActions.deleteFilterGroup(event.slug, label.value))
             .then(() => {
-                dispatch(SnackbarActions.success('Filter group deleted'))
+                dispatch(SnackbarActions.success(t('Filter_deleted_')))
                 toggleExpanded(null, false)
                 onDelete()
             })
             .catch(err => {
-                dispatch(SnackbarActions.error('Something went wrong'))
+                dispatch(SnackbarActions.error(t('Wrong_')))
             })
             .finally(() => {
                 setLoading(false)
@@ -169,11 +170,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                     {!isEdit && (
                         <Grid item xs={12}>
                             <Typography>
-                                You can save this filter group for later use.
-                                This allows you to easily view stats for the
-                                group, and do things like bulk edit their
-                                applications or send an email to everyone in the
-                                group.
+                                {t('You_can_save_')}
                             </Typography>
                         </Grid>
                     )}
@@ -181,16 +178,16 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                         <TextInput
                             rawOnChange
                             disabled={isEdit}
-                            label="Name"
-                            helperText="Give a descriptive name to the filter group e.g. participants from Finland"
+                            label={t('Name_')}
+                            helperText={t('Descriptive_name_')}
                             {...label}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextInput
                             rawOnChange
-                            label="Description"
-                            helperText="Add a short description, if needed"
+                            label={t('Desc_')}
+                            helperText={t('Add_desc_')}
                             {...description}
                         />
                     </Grid>

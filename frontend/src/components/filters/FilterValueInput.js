@@ -3,14 +3,14 @@ import { FilterTypes, FilterValues } from '@hackjunction/shared'
 
 import TextInput from 'components/inputs/TextInput'
 import Select from 'components/inputs/SelectOld'
-
+import { useTranslation } from 'react-i18next';
 const MULTI_TYPES = [
     FilterTypes.filterTypes.ONE_OF.id,
     FilterTypes.filterTypes.NOT_ONE_OF.id,
     FilterTypes.filterTypes.CONTAINS_ONE_OF.id,
     FilterTypes.filterTypes.NOT_CONTAINS_ONE_OF.id,
 ]
-
+const { t, i18n } = useTranslation();
 const FilterValueInput = ({
     filterType,
     valueType,
@@ -45,7 +45,7 @@ const FilterValueInput = ({
                     if (isMulti) {
                         return (
                             <TextInput
-                                label="Enter values (comma-separated)"
+                                label={t('Enter_values_')}
                                 formatValue={value =>
                                     Array.isArray(value) ? value.join(',') : ''
                                 }
@@ -55,17 +55,17 @@ const FilterValueInput = ({
                         )
                     } else {
                         return (
-                            <TextInput label="Enter value" {...inputParams} />
+                            <TextInput label={t('Enter_value_')} {...inputParams} />
                         )
                     }
                 case FilterValues.BOOLEAN:
-                    return <TextInput label="Boolean field" {...inputParams} />
+                    return <TextInput label={t('Boolean_field_')}{...inputParams} />
                 case FilterValues.DATE:
-                    return <TextInput label="Date field" {...inputParams} />
+                    return <TextInput label={t('Date field')} {...inputParams} />
                 case FilterValues.GENDER:
                     return (
                         <Select
-                            label="Select gender"
+                            label={t('Select_gender_')}
                             type="gender"
                             multiple={isMulti}
                             {...inputParams}
@@ -74,7 +74,7 @@ const FilterValueInput = ({
                 case FilterValues.NATIONALITY:
                     return (
                         <Select
-                            label="Select nationality"
+                            label={t('Select_nationality_')}
                             type="nationality"
                             multiple={isMulti}
                             {...inputParams}
@@ -83,7 +83,7 @@ const FilterValueInput = ({
                 case FilterValues.COUNTRY:
                     return (
                         <Select
-                            label="Select country"
+                            label={t('Select_country_')}
                             type="country"
                             multiple={isMulti}
                             {...inputParams}
@@ -92,7 +92,7 @@ const FilterValueInput = ({
                 case FilterValues.LANGUAGE:
                     return (
                         <Select
-                            label="Select language"
+                            label={t('Select_language_')}
                             type="language"
                             multiple={isMulti}
                             {...inputParams}
@@ -105,7 +105,7 @@ const FilterValueInput = ({
                     }))
                     return (
                         <Select
-                            label="Select tag"
+                            label={t('Select_tag_')}
                             options={options}
                             multiple={isMulti}
                             {...inputParams}
@@ -114,7 +114,7 @@ const FilterValueInput = ({
                 case FilterValues.STATUS:
                     return (
                         <Select
-                            label="Select status"
+                            label={t('Select_status_')}
                             type="status"
                             multiple={isMulti}
                             {...inputParams}
@@ -124,7 +124,7 @@ const FilterValueInput = ({
                     return (
                         <TextInput
                             type="number"
-                            label="Enter a number"
+                            label={t('Enter_num_')}
                             {...inputParams}
                         />
                     )

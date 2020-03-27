@@ -3,10 +3,11 @@ import React, { useCallback } from 'react'
 import { Grid, Box, Typography } from '@material-ui/core'
 import moment from 'moment'
 import Select from 'components/inputs/Select'
+import { useTranslation } from 'react-i18next';
 
 const DateInput = ({ label, value, onChange, onBlur }) => {
     const momentValue = value ? moment(value) : null
-
+    
     const handleDateChange = useCallback(
         date => {
             const newValue = moment(value)
@@ -15,7 +16,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
         },
         [value, onChange]
     )
-
+const { t, i18n } = useTranslation();
     const handleMonthChange = useCallback(
         month => {
             const newValue = moment(value)
@@ -40,7 +41,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             <Grid container spacing={3}>
                 <Grid item xs={4} md={4}>
                     <Select
-                        label="Day"
+                        label={t('Day_')}
                         options="day"
                         value={momentValue ? momentValue.date() : null}
                         onChange={handleDateChange}
@@ -48,7 +49,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
                 </Grid>
                 <Grid item xs={8} md={4}>
                     <Select
-                        label="Month"
+                        label={t('Month_')}
                         options="month"
                         value={momentValue ? momentValue.month() + 1 : null}
                         onChange={handleMonthChange}
@@ -56,7 +57,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <Select
-                        label="Year"
+                        label={t('Year_')}
                         options="year"
                         value={momentValue ? momentValue.year() : null}
                         onChange={handleYearChange}

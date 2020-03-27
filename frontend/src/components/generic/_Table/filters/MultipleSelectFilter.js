@@ -4,6 +4,9 @@ import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as FilterTypes from '../filterTypes'
+import { useTranslation } from 'react-i18next';
+
+const { t, i18n } = useTranslation();
 
 const useStyles = makeStyles(theme => ({
     option: {
@@ -38,7 +41,7 @@ const Component = ({ column }) => {
         <TextField
             style={{ width: '100%' }}
             select
-            helperText={'Choose one or more'}
+            helperText={t('Choose_one_or_more_')}
             value={selectedValues}
             onChange={handleChange}
             SelectProps={{

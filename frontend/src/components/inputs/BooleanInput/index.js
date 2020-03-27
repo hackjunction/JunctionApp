@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, RadioGroup, Radio, FormControlLabel } from '@material-ui/core'
 
@@ -12,9 +12,10 @@ const useStyles = makeStyles(theme => ({
     }),
 }))
 
+
 const BooleanInput = ({ value = false, onChange, alignCenter = false }) => {
     const classes = useStyles({ alignCenter })
-
+const { t, i18n } = useTranslation();
     const handleChange = useCallback(
         e => {
             onChange(!value)
@@ -33,14 +34,14 @@ const BooleanInput = ({ value = false, onChange, alignCenter = false }) => {
                     key={'yes'}
                     value={true}
                     control={<Radio color="primary" />}
-                    label={'Yes'}
+                    label={t('Yes_')}
                     labelPlacement="start"
                 />
                 <FormControlLabel
                     key={'no'}
                     value={false}
                     control={<Radio color="primary" />}
-                    label={'No'}
+                    label={t('No_')}
                     labelPlacement="start"
                 />
             </RadioGroup>

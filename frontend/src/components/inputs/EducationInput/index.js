@@ -5,7 +5,8 @@ import { Grid } from '@material-ui/core'
 
 import TextInput from 'components/inputs/TextInput'
 import Select from 'components/inputs/Select'
-
+import { useTranslation } from 'react-i18next';
+// TODO Level_options how to translate
 const LEVEL_OPTIONS = [
     {
         value: 'Lower Secondary',
@@ -42,7 +43,7 @@ const UNIVERSITY_LEVELS = ['Doctoral', 'Bachelor', 'Master']
 const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
     const selectEl = useRef(null)
     const [country, setCountry] = useState()
-
+    const { t, i18n } = useTranslation();
     const fieldsDisabled = UNIVERSITY_LEVELS.indexOf(value.level) === -1
 
     const handleChange = useCallback(
@@ -96,8 +97,8 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                 <Select
                     autoFocus={autoFocus}
                     innerRef={selectEl}
-                    label="Level of education"
-                    placeholder="Choose one"
+                    label={t('Education_level_')}
+                    placeholder={t('Choose_one_')}
                     options={LEVEL_OPTIONS}
                     value={value.level}
                     onChange={level => handleChange('level', level)}
@@ -107,8 +108,8 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                 <React.Fragment>
                     <Grid item xs={6}>
                         <Select
-                            label="Country of study"
-                            placeholder="Choose country"
+                            label={t('Country_study_')}
+                            placeholder={t('Choose_country_')}
                             options="country"
                             value={country}
                             onChange={setCountry}
@@ -117,11 +118,11 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                     <Grid item xs={6}>
                         <Select
                             disabled={fieldsDisabled}
-                            label="University"
+                            label={t('University_')}
                             placeholder={
                                 country
-                                    ? 'Search for universities'
-                                    : 'Choose a country first'
+                                    ? t('Search_university_')
+                                    : t('Choose_country_first_')
                             }
                             options={universityOptions}
                             value={value.university}
@@ -134,8 +135,8 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                     <Grid item xs={6}>
                         <TextInput
                             disabled={fieldsDisabled}
-                            label="Field of study"
-                            helperText="E.g. Computer Science"
+                            label={t('Field_of_study_')}
+                            helperText={t('Eg_cs_')}
                             value={value.degree}
                             onChange={degree => handleChange('degree', degree)}
                         />
@@ -143,8 +144,8 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                     <Grid item xs={6}>
                         <Select
                             disabled={fieldsDisabled}
-                            label="Graduation year"
-                            placeholder="Year of graduation (or expected year of graduation)"
+                            label={t('Grad_year_')}
+                            placeholder={t('Year_of_grad_')}
                             options="year-future"
                             value={value.graduationYear}
                             onChange={graduationYear =>
