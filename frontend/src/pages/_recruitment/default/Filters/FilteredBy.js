@@ -3,7 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Typography } from '@material-ui/core'
 import { Misc } from '@hackjunction/shared'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 
 const FilteredByItem = ({ label, text }) => {
@@ -25,7 +25,7 @@ const FilteredByItem = ({ label, text }) => {
 }
 
 export default () => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const filters = useSelector(RecruitmentSelectors.filters)
     const eventsMap = useSelector(RecruitmentSelectors.eventsMap)
 
@@ -89,7 +89,10 @@ export default () => {
                 />
             ) : null}
             {age && age[1] - age[0] !== 120 ? (
-                <FilteredByItem label={t('Age_')} text={`${age[0]} to ${age[1]}`} />
+                <FilteredByItem
+                    label={t('Age_')}
+                    text={`${age[0]} to ${age[1]}`}
+                />
             ) : null}
             {Array.isArray(spokenLanguages) && spokenLanguages.length ? (
                 <FilteredByItem

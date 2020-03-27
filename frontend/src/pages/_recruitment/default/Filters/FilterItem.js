@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { Box, Typography, ButtonBase, Popover } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
         fontSize: '22px',
     },
 }))
-const { t, i18n } = useTranslation();
+const { t, i18n } = useTranslation()
 const FilterItem = ({
     label,
     active,

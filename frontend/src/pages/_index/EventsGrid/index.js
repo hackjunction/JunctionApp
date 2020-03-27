@@ -8,40 +8,44 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 export default ({ events, loading, title }) => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     function renderEvents() {
         return events.map(event => {
             return (
-              <Grid key={event.slug} item xs={12} md={6} lg={4}>
-                <EventCard
-                  event={event}
-                  buttons={[
-                    <Button
-                      color='theme_lightgray'
-                      variant='outlined'
-                      onClick={() => dispatch(push('/events/' + event.slug))}
-                    >
-                      {t('See_more_button_')}
-                    </Button>,
-                    event.galleryOpen && (
-                      <Button
-                        color='theme_turquoise'
-                        variant='contained'
-                        onClick={() =>
-                          dispatch(push('/projects/' + event.slug))
-                        }
-                      >
-                        {t('View_projects_')}
-                      </Button>
-                    ),
-                  ]}
-                />
-              </Grid>
-            );
+                <Grid key={event.slug} item xs={12} md={6} lg={4}>
+                    <EventCard
+                        event={event}
+                        buttons={[
+                            <Button
+                                color="theme_lightgray"
+                                variant="outlined"
+                                onClick={() =>
+                                    dispatch(push('/events/' + event.slug))
+                                }
+                            >
+                                {t('See_more_button_')}
+                            </Button>,
+                            event.galleryOpen && (
+                                <Button
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                    onClick={() =>
+                                        dispatch(
+                                            push('/projects/' + event.slug)
+                                        )
+                                    }
+                                >
+                                    {t('View_projects_')}
+                                </Button>
+                            ),
+                        ]}
+                    />
+                </Grid>
+            )
         })
     }
 

@@ -7,10 +7,10 @@ import Select from 'components/inputs/Select'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 export default () => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const filters =
         useSelector(RecruitmentSelectors.filters)?.spokenLanguages ?? []
     const [draft, setDraft] = useState(filters)

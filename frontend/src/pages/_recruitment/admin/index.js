@@ -11,12 +11,12 @@ import SearchBox from './SearchBox'
 import RecruitersList from './RecruitersList'
 import RevokeAccessDialog from './RevokeAccessDialog'
 import GrantAccessDialog from './GrantAccessDialog'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 export default RequiresPermission(() => {
     const [grantingUser, setGrantingUser] = useState()
     const [revokingUser, setRevokingUser] = useState()
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <CenteredContainer>

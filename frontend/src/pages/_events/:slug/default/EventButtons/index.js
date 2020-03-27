@@ -9,10 +9,10 @@ import { Typography, Grid } from '@material-ui/core'
 
 import Button from 'components/generic/Button'
 import * as AuthSelectors from 'redux/auth/selectors'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 export default ({ event, registration }) => {
-        const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
@@ -20,15 +20,14 @@ export default ({ event, registration }) => {
     switch (event?._eventStatus) {
         case EventStatuses.PUBLISHED.id: {
             return (
-              <Typography align='center' variant='subtitle1'>
-                {t('Applications_begins_', {
-                  time: moment(event.registrationStartTime).format(
-                  `LLL [(${event.timezone})]`
-                ),
-                })}
-                
-              </Typography>
-            );
+                <Typography align="center" variant="subtitle1">
+                    {t('Applications_begins_', {
+                        time: moment(event.registrationStartTime).format(
+                            `LLL [(${event.timezone})]`
+                        ),
+                    })}
+                </Typography>
+            )
         }
         case EventStatuses.REGISTRATION_OPEN.id: {
             if (isAuthenticated) {
@@ -44,7 +43,7 @@ export default ({ event, registration }) => {
                                     variant="contained"
                                     color="theme_turquoise"
                                 >
-                                   {t('Edit_registration_')}
+                                    {t('Edit_registration_')}
                                 </Button>
                             </Grid>
                             <Grid item xs={12}>

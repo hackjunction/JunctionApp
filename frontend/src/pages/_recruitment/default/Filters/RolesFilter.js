@@ -12,7 +12,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import RolesFilterItem from './RolesFilterItem'
 import FilterItem from './FilterItem'
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.roles ?? []
     const classes = useStyles()

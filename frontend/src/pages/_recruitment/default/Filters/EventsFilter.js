@@ -12,7 +12,7 @@ import Select from 'components/inputs/Select'
 
 import FilterItem from './FilterItem'
 import EventsFilterItem from './EventsFilterItem'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const allEvents = useSelector(RecruitmentSelectors.events)

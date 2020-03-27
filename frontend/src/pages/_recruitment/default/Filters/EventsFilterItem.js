@@ -15,14 +15,13 @@ import {
     Box,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from 'react-i18next'
 
 const STATUSES = [
     RegistrationStatuses.asObject.confirmed,
     RegistrationStatuses.asObject.checkedIn,
 ]
-const { t, i18n } = useTranslation();
+const { t, i18n } = useTranslation()
 const useStyles = makeStyles(theme => ({
     radios: {
         display: 'flex',

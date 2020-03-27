@@ -11,9 +11,9 @@ import EventsService from 'services/events'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 export default () => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const [name, setName] = useState('')
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)
@@ -32,18 +32,18 @@ export default () => {
                 setError()
             }
         }
-    }, [name, hasError])
+    }, [name, hasError, t])
 
     const checkName = useCallback(() => {
         if (name.length < 5) {
-            setError(t('Name_must_five_'));
+            setError(t('Name_must_five_'))
             return false
         } else if (name.length >= 50) {
-            setError(t('Name_must_under_'));
+            setError(t('Name_must_under_'))
             return false
         }
         return true
-    }, [name])
+    }, [name.length, t])
 
     const handleCreate = useCallback(() => {
         if (!checkName()) return
@@ -54,16 +54,12 @@ export default () => {
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {
-                dispatch(
-                    SnackbarActions.error(
-                        t('Unable_to_create_')
-                    )
-                )
+                dispatch(SnackbarActions.error(t('Unable_to_create_')))
             })
             .finally(() => {
                 setLoading(false)
             })
-    }, [checkName, name, idToken, dispatch])
+    }, [checkName, idToken, name, dispatch, t])
 
     return (
         <Box mt={3}>

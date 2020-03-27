@@ -14,7 +14,7 @@ import {
     Box,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { Skills } from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
     },
 }))
-const { t, i18n } = useTranslation();
+const { t, i18n } = useTranslation()
 const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
     const classes = useStyles()
     const toggleLevel = useCallback(
