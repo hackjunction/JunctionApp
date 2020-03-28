@@ -222,7 +222,8 @@ controller.getRegistrationsForEvent = eventId => {
         event: eventId,
     }).then(registrations => {
         /** Do some minor optimisation here to cut down on size */
-        return registrations.map(reg => {
+        return registrations.map(document => {
+            const reg = document.toObject()
             reg.answers = _.mapValues(reg.answers, (answer, field) => {
                 const fieldType = RegistrationFields.getFieldType(field)
                 switch (fieldType) {
