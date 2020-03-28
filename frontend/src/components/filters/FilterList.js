@@ -27,12 +27,12 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
     },
 }))
-const { t, i18n } = useTranslation()
 const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
     const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
     const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
     const hasFilters = filters.length !== 0
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         setExpanded(false)

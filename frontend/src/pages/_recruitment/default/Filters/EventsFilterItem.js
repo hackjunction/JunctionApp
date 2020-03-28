@@ -21,7 +21,7 @@ const STATUSES = [
     RegistrationStatuses.asObject.confirmed,
     RegistrationStatuses.asObject.checkedIn,
 ]
-const { t, i18n } = useTranslation()
+
 const useStyles = makeStyles(theme => ({
     radios: {
         display: 'flex',
@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const EventsFilterItem = React.memo(
     ({ event, eventName, statuses, onEdit, onRemove }) => {
+        const { t, i18n } = useTranslation()
         const classes = useStyles()
         const toggleStatus = useCallback(
             status => {
