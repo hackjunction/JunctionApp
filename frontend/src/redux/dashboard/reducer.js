@@ -21,7 +21,7 @@ const initialState = {
         updated: 0,
     },
     projects: {
-        data: [],
+        data: null,
         loading: true,
         error: false,
         updated: 0,
