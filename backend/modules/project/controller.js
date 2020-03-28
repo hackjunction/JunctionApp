@@ -54,10 +54,11 @@ controller.createProjectForEventAndTeam = async (event, team, data) => {
 controller.updateProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
     const validatedData = await schema.validate(data, { stripUnknown: true })
-    const project = await controller.getProjectsByEventAndTeam(
+    const projects = await controller.getProjectsByEventAndTeam(
         event._id,
         team._id
     )
+    const project = projects.find(p => p._id.toString() === data._id)
     project.set(validatedData)
 
     return project.save()

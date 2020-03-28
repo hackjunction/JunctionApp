@@ -21,7 +21,7 @@ const initialState = {
         updated: 0,
     },
     projects: {
-        data: null,
+        data: [],
         loading: true,
         error: false,
         updated: 0,
@@ -37,7 +37,7 @@ const initialState = {
 const updateEventHandler = buildHandler('event')
 const updateRegistrationHandler = buildHandler('registration')
 const updateTeamHandler = buildHandler('team')
-const updateProjectsHandler = buildHandler('projects')
+const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
 const editRegistration = buildUpdatePath('registration.data')
 const editTeam = buildUpdatePath('team.data')
