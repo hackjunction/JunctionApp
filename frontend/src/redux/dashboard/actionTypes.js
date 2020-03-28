@@ -1,7 +1,7 @@
 export const UPDATE_EVENT = 'dashboard/UPDATE_EVENT'
 export const UPDATE_REGISTRATION = 'dashboard/UPDATE_REGISTRATION'
 export const UPDATE_TEAM = 'dashboard/UPDATE_TEAM'
-export const UPDATE_PROJECT = 'dashboard/UPDATE_PROJECT'
+export const UPDATE_PROJECTS = 'dashboard/UPDATE_PROJECTS'
 export const UPDATE_ANNOTATOR = 'dashboard/UPDATE_ANNOTATOR'
 
 export const EDIT_REGISTRATION = 'dashboard/EDIT_REGISTRATION'

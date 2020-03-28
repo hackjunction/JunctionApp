@@ -25,10 +25,10 @@ export const teamLoading = state => state.dashboard.team.loading
 export const teamError = state => state.dashboard.team.error
 export const teamUpdated = state => state.dashboard.team.updated
 
-export const project = state => state.dashboard.project.data
-export const projectLoading = state => state.dashboard.project.loading
-export const projectError = state => state.dashboard.project.error
-export const projectUpdated = state => state.dashboard.project.updated
+export const projects = state => state.dashboard.projects.data
+export const projectsLoading = state => state.dashboard.projects.loading
+export const projectsError = state => state.dashboard.projects.error
+export const projectsUpdated = state => state.dashboard.projects.updated
 
 export const annotator = state => state.dashboard.annotator.data
 export const annotatorLoading = state => state.dashboard.annotator.loading

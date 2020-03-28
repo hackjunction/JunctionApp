@@ -26,9 +26,13 @@ import * as AuthSelectors from 'redux/auth/selectors'
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
-    const project = useSelector(DashboardSelectors.project)
-    const projectLoading = useSelector(DashboardSelectors.projectLoading)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
+
+    const projects = useSelector(DashboardSelectors.projects)
+    const projectLoading = useSelector(DashboardSelectors.projectsLoading)
+
+    let project = projects && projects.length ? projects[0] : null || null
+
     const initialValues = {
         sourcePublic: true,
         hiddenMembers: [],

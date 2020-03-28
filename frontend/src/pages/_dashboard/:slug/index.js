@@ -70,7 +70,7 @@ export default () => {
 
     /** Update project when team changes */
     useEffect(() => {
-        dispatch(DashboardActions.updateProject(slug))
+        dispatch(DashboardActions.updateProjects(slug))
     }, [slug, team, dispatch])
 
     return (
