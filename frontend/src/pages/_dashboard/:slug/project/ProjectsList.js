@@ -33,6 +33,21 @@ export default props => {
         setChallengeAndTrackSlugState(challengeAndTrackSlugToNameMap)
     }, [event])
 
+    // Checks whether there are more unique challenges that the competitor has not submitted
+    // a solution to yet.
+    const canAddMoreSubmissions = () => {
+        if (event && event.challenges && projects) {
+            const challengesWithSubmittedProjects = [].concat.apply(
+                [],
+                projects.map(project => project.challenges)
+            )
+            return event.challenges.filter(
+                challenge =>
+                    challengesWithSubmittedProjects.indexOf(challenge.slug) < 0
+            ).length
+        }
+        return false
+    }
     const ProjectCard = props => {
         const project = props.project
         return (
@@ -86,30 +101,36 @@ export default props => {
                 projects.map(project => (
                     <ProjectCard key={project._id} project={project} />
                 ))}
-            <Grid item xs={12} md={6}>
-                <Paper elevation={3}>
-                    <Box
-                        p={4}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
-                    >
-                        <Typography variant="body1" align="center" gutterBottom>
-                            This event allows submissions to multiple
-                            challenges! Add a new one now!
-                        </Typography>
-                        <Box p={1} />
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => projectSelectedCallback(null)}
+            {canAddMoreSubmissions() && (
+                <Grid item xs={12} md={6}>
+                    <Paper elevation={3}>
+                        <Box
+                            p={4}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            flexDirection="column"
                         >
-                            Add submission
-                        </Button>
-                    </Box>
-                </Paper>
-            </Grid>
+                            <Typography
+                                variant="body1"
+                                align="center"
+                                gutterBottom
+                            >
+                                This event allows submissions to multiple
+                                challenges! Add a new one now!
+                            </Typography>
+                            <Box p={1} />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => projectSelectedCallback(null)}
+                            >
+                                Add submission
+                            </Button>
+                        </Box>
+                    </Paper>
+                </Grid>
+            )}
         </Grid>
     )
 }

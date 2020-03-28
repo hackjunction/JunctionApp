@@ -26,18 +26,24 @@ export default () => {
     )
     const projects = useSelector(DashboardSelectors.projects)
 
-    const [selectedProjectId, setSelectedProjectId] = useState(null)
+    const [selectedProjectId, setSelectedProjectId] = useState(undefined)
     const [showSubmissionForm, setShowSubmissionForm] = useState(false)
+    const [showProjectSelector, setShowProjectSelector] = useState(false)
 
     useEffect(() => {
-        if (projects && projects.length === 0) {
-            setShowSubmissionForm(true)
+        if (projects && event) {
+            if (event.allowProjectSubmissionsPerChallenge) {
+                setShowProjectSelector(true)
+            } else {
+                setShowSubmissionForm(true)
+                if (projects.length) handleProjectSelected(projects[0]._id)
+            }
         }
-    }, [projects])
+    }, [projects, event])
 
     const handleProjectSelected = id => {
         setSelectedProjectId(id)
-        setShowSubmissionForm(true)
+        setShowSubmissionForm(id !== undefined)
     }
 
     if (!event || teamLoading) {
@@ -184,14 +190,35 @@ export default () => {
                     />
                 </GradientBox>
                 <Box p={1} />
-                <ProjectsList
-                    projectSelectedCallback={id => handleProjectSelected(id)}
-                />
-                <Box p={1} />
-                <SubmissionForm id={selectedProjectId} />
 
-                {/*  {showSubmissionForm && (
-                )} */}
+                {showProjectSelector && (
+                    <>
+                        {selectedProjectId === undefined && (
+                            <ProjectsList
+                                projectSelectedCallback={id =>
+                                    handleProjectSelected(id)
+                                }
+                            />
+                        )}
+                        {selectedProjectId !== undefined && (
+                            <Box my={2}>
+                                <Button
+                                    color="theme_orange"
+                                    variant="contained"
+                                    onClick={() =>
+                                        handleProjectSelected(undefined)
+                                    }
+                                >
+                                    Back to Projects
+                                </Button>
+                            </Box>
+                        )}
+                    </>
+                )}
+                <Box p={1} />
+                {showSubmissionForm && (
+                    <SubmissionForm id={selectedProjectId} />
+                )}
             </React.Fragment>
         )
     }
