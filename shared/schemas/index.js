@@ -23,7 +23,7 @@ const TravelGrantDetails = require('./TravelGrantDetails')
 const UserDetailsConfig = require('./UserDetailsConfig')
 const UserDetailsConfigItem = require('./UserDetailsConfigItem')
 const UserProfileFields = require('./UserProfileFields')
-
+const Webhook = require('./Webhook')
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
@@ -51,6 +51,7 @@ const SharedSchema = new GraphQLSchema({
         UserDetailsConfig.graphql,
         UserDetailsConfigItem.graphql,
         UserProfileFields.graphql,
+        Webhook.graphql,
     ],
 })
 

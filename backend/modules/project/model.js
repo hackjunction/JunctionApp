@@ -4,6 +4,7 @@ const { ReviewingMethods } = require('@hackjunction/shared')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const AchievementSchema = require('../../common/schemas/Achievement')
 const GavelController = require('../reviewing/gavel/controller')
+const WebhookService = require('../../common/services/webhook')
 
 const ProjectSchema = new mongoose.Schema({
     event: {
@@ -84,22 +85,18 @@ ProjectSchema.methods.getPreview = function() {
 }
 
 ProjectSchema.post('save', async function(doc, next) {
-    mongoose
-        .model('Event')
-        .findById(this.event)
-        .then(event => {
-            switch (event.reviewMethod) {
-                /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
-                case ReviewingMethods.gavelPeerReview.id: {
-                    GavelController.ensureGavelProject(doc)
-                    break
-                }
-                default: {
-                    /** By default, no action needed */
-                }
-            }
-        })
-
+    const event = await mongoose.model('Event').findById(this.event)
+    switch (event.reviewMethod) {
+        /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
+        case ReviewingMethods.gavelPeerReview.id: {
+            GavelController.ensureGavelProject(doc)
+            break
+        }
+        default: {
+            /** By default, no action needed */
+        }
+    }
+    WebhookService.handleProjectWebhook(doc, 'save', event)
     next()
 })
 
