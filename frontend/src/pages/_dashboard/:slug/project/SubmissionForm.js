@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
@@ -23,7 +23,8 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 //TODO make the form labels and hints customizable
-export default () => {
+export default props => {
+    const id = props.id
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
@@ -31,7 +32,16 @@ export default () => {
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
 
-    let project = projects && projects.length ? projects[0] : null || null
+    const [project, setProject] = useState(null)
+
+    useEffect(() => {
+        if (projects && projects.length && id) {
+            const foundProject = projects.find(p => p._id === id)
+            setProject(foundProject)
+        } else {
+            setProject(null)
+        }
+    }, [id, projects])
 
     const initialValues = {
         sourcePublic: true,

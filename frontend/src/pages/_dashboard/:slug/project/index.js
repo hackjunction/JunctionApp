@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import moment from 'moment-timezone'
 import { push } from 'connected-react-router'
@@ -11,6 +11,7 @@ import PageHeader from 'components/generic/PageHeader'
 import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
 import SubmissionForm from './SubmissionForm'
+import ProjectsList from './ProjectsList'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 
@@ -23,6 +24,22 @@ export default () => {
     const isSubmissionsUpcoming = useSelector(
         DashboardSelectors.isSubmissionsUpcoming
     )
+    const projects = useSelector(DashboardSelectors.projects)
+
+    const [selectedProjectId, setSelectedProjectId] = useState(null)
+    const [showSubmissionForm, setShowSubmissionForm] = useState(false)
+
+    useEffect(() => {
+        if (projects && projects.length === 0) {
+            setShowSubmissionForm(true)
+        }
+    }, [projects])
+
+    const handleProjectSelected = id => {
+        setSelectedProjectId(id)
+        setShowSubmissionForm(true)
+    }
+
     if (!event || teamLoading) {
         return <PageWrapper loading />
     }
@@ -167,7 +184,14 @@ export default () => {
                     />
                 </GradientBox>
                 <Box p={1} />
-                <SubmissionForm />
+                <ProjectsList
+                    projectSelectedCallback={id => handleProjectSelected(id)}
+                />
+                <Box p={1} />
+                <SubmissionForm id={selectedProjectId} />
+
+                {/*  {showSubmissionForm && (
+                )} */}
             </React.Fragment>
         )
     }
