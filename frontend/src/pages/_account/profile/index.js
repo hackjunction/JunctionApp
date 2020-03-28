@@ -26,7 +26,6 @@ import * as UserActions from 'redux/user/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
-const { t, i18n } = useTranslation()
 const useStyles = makeStyles(theme => ({
     topWrapper: {
         display: 'flex',
@@ -59,6 +58,7 @@ export default () => {
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
     const hasProfile = useSelector(UserSelectors.hasProfile)
     const loading = userProfileLoading || !hasProfile
+    const { t, i18n } = useTranslation()
 
     const classes = useStyles()
 
