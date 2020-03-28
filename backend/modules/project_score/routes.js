@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler')
 const ProjectScoreController = require('./controller')
 
 const { hasToken } = require('../../common/middleware/token')
-const { hasAdminToken } = require('../../common/middleware/admin')
+const { hasWebhookToken } = require('../../common/middleware/webhook')
 const { canSubmitProject } = require('../../common/middleware/events')
 
 const addProjectScore = asyncHandler(async (req, res) => {
@@ -53,8 +53,8 @@ const getPublicScores = asyncHandler(async (req, res) => {
     return res.status(200).json(scores)
 })
 
-router.post('/', hasAdminToken, addProjectScore)
-router.put('/:id', hasAdminToken, updateProjectScore)
+router.post('/', hasWebhookToken, addProjectScore)
+router.put('/:id', hasWebhookToken, updateProjectScore)
 router.get(
     '/personal/:eventId',
     hasToken,
