@@ -74,7 +74,7 @@ export default () => {
                 </Grid>
                 <Grid item xs={12} sm={9}>
                     <TextInput
-                        label={t('Event_name')}
+                        label={t('Event_name_')}
                         placeholder={t('Enter_event_name_')}
                         value={name}
                         onChange={setName}
