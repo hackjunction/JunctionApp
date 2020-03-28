@@ -25,8 +25,10 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
-    const project = useSelector(DashboardSelectors.project)
-    const projectLoading = useSelector(DashboardSelectors.projectLoading)
+    const projects = useSelector(DashboardSelectors.projects)
+    const projectLoading = useSelector(DashboardSelectors.projectsLoading)
+
+    let project = projects && projects.length ? projects[0] : null || null
 
     const initialValues = {
         sourcePublic: true,
