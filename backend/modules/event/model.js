@@ -130,6 +130,10 @@ const EventSchema = new mongoose.Schema({
             'is required if challenges are enabled',
         ],
     },
+    allowProjectSubmissionsPerChallenge: {
+        type: Boolean,
+        default: false,
+    },
     travelGrantConfig: {
         type: TravelGrantConfigSchema.mongoose,
         default: TravelGrantConfigSchema.mongoose,

@@ -63,7 +63,7 @@ const ProjectSchema = new mongoose.Schema({
 ProjectSchema.set('timestamps', true)
 
 /* Only allow a single project per team per event */
-ProjectSchema.index(
+/* ProjectSchema.index(
     {
         event: 1,
         team: 1,
@@ -71,7 +71,7 @@ ProjectSchema.index(
     {
         unique: true,
     }
-)
+) */
 
 /* We'll commonly query projects by track and event, so create a compound index for that */
 ProjectSchema.index({

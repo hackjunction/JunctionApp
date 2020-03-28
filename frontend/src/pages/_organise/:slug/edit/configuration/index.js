@@ -62,6 +62,26 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
+                    name="allowProjectSubmissionsPerChallenge"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Projects submitted per challenge"
+                            hint="Does this event allow project submissions for each challenge individually?"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <BooleanInput
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                            />
+                        </FormControl>
+                    )}
+                ></FastField>
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
                     name="eventType"
                     render={({ field, form }) => (
                         <FormControl
