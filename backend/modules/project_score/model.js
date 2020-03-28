@@ -33,6 +33,15 @@ const ProjectScoreSchema = new mongoose.Schema(
     },
     { toJSON: { virtuals: true } }
 )
+ProjectScoreSchema.index(
+    {
+        project: 1,
+        event: 1,
+    },
+    {
+        unique: true,
+    }
+)
 
 ProjectScoreSchema.set('timestamps', true)
 
