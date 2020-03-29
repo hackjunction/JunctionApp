@@ -43,6 +43,10 @@ controller.getScoresByEventAndTeamId = (eventId, teamId) => {
         })
 }
 
+controller.getScoreByProjectId = projectId => {
+    return ProjectScore.findOne({ project: projectId })
+}
+
 controller.getPublicScores = async eventId => {
     return ProjectScore.find({ event: eventId })
         .populate({ path: 'event', select: 'name' })

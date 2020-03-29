@@ -6,7 +6,10 @@ const ProjectScoreController = require('./controller')
 
 const { hasToken } = require('../../common/middleware/token')
 const { hasWebhookToken } = require('../../common/middleware/webhook')
-const { canSubmitProject } = require('../../common/middleware/events')
+const {
+    canSubmitProject,
+    isEventOrganiser,
+} = require('../../common/middleware/events')
 
 const addProjectScore = asyncHandler(async (req, res) => {
     try {
@@ -46,6 +49,13 @@ const getScoresByEventAndTeam = asyncHandler(async (req, res) => {
     return res.status(200).json(scores)
 })
 
+const getScoreByProjectId = asyncHandler(async (req, res) => {
+    const score = await ProjectScoreController.getScoreByProjectId(
+        req.params.projectId
+    )
+    return res.status(200).json(score)
+})
+
 const getPublicScores = asyncHandler(async (req, res) => {
     const scores = await ProjectScoreController.getPublicScores(req.params.slug)
     return res.status(200).json(scores)
@@ -60,5 +70,13 @@ router.get(
     getScoresByEventAndTeam
 )
 router.get('/event/:slug', getPublicScores)
+router.get(
+    '/event/:slug/project/:projectId',
+    hasToken,
+    isEventOrganiser,
+    getScoreByProjectId
+)
+router.post('/event/:slug', hasToken, isEventOrganiser, addProjectScore)
+router.put('/event/:slug/:id', hasToken, isEventOrganiser, updateProjectScore)
 
 module.exports = router
