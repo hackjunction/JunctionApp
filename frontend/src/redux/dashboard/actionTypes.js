@@ -3,6 +3,7 @@ export const UPDATE_REGISTRATION = 'dashboard/UPDATE_REGISTRATION'
 export const UPDATE_TEAM = 'dashboard/UPDATE_TEAM'
 export const UPDATE_PROJECTS = 'dashboard/UPDATE_PROJECTS'
 export const UPDATE_ANNOTATOR = 'dashboard/UPDATE_ANNOTATOR'
+export const UPDATE_PROJECT_SCORES = 'dashboard/UPDATE_PROJECT_SCORES'
 
 export const EDIT_REGISTRATION = 'dashboard/EDIT_REGISTRATION'
 export const EDIT_TEAM = 'dashboard/EDIT_TEAM'

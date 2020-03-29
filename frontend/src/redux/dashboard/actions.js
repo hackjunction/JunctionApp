@@ -7,6 +7,7 @@ import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
 import TeamsService from 'services/teams'
+import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
 
@@ -283,6 +284,19 @@ export const updateAnnotator = slug => async (dispatch, getState) => {
     })
 
     return error
+}
+
+export const updateProjectScores = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+
+    return dispatch({
+        type: ActionTypes.UPDATE_PROJECT_SCORES,
+        promise: ProjectScoresService.getScoresByEventAndTeam(idToken, slug),
+        meta: {
+            onFailure: e =>
+                console.log('Error updating dashboard project scores', e),
+        },
+    })
 }
 
 export const beginVoting = slug => async (dispatch, getState) => {

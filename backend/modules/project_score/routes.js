@@ -47,20 +47,18 @@ const getScoresByEventAndTeam = asyncHandler(async (req, res) => {
 })
 
 const getPublicScores = asyncHandler(async (req, res) => {
-    const scores = await ProjectScoreController.getPublicScores(
-        req.params.eventId
-    )
+    const scores = await ProjectScoreController.getPublicScores(req.params.slug)
     return res.status(200).json(scores)
 })
 
 router.post('/', hasWebhookToken, addProjectScore)
 router.put('/:id', hasWebhookToken, updateProjectScore)
 router.get(
-    '/personal/:eventId',
+    '/personal/:slug',
     hasToken,
     canSubmitProject,
     getScoresByEventAndTeam
 )
-router.get('/event/:eventId', getPublicScores)
+router.get('/event/:slug', getPublicScores)
 
 module.exports = router
