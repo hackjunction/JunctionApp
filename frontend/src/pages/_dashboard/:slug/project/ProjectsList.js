@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Paper, Typography, Chip, Box, Grid, Button } from '@material-ui/core'
+import { Paper, Typography, Chip, Box, Grid } from '@material-ui/core'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+import ProjectScoreModal from 'components/modals/ProjectScoreModal'
+import Button from 'components/generic/Button'
+
 export default props => {
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
+    const projectScores = useSelector(DashboardSelectors.projectScores)
 
     const projectSelectedCallback = props.projectSelectedCallback
+
+    const [selectedProjectScore, setSelectedProjectStore] = useState(null)
+    const [projectScoreModalOpen, setProjectScoreModalOpen] = useState(false)
 
     const [
         challengeAndTrackSlugState,
@@ -32,6 +39,22 @@ export default props => {
         }
         setChallengeAndTrackSlugState(challengeAndTrackSlugToNameMap)
     }, [event])
+
+    useEffect(() => {
+        if (projectScoreModalOpen) {
+            setSelectedProjectStore(
+                projectScores.find(s => s._id === selectedProjectScore._id)
+            )
+        }
+    }, [projectScoreModalOpen, projectScores, selectedProjectScore])
+
+    const showProjectScore = project => {
+        const score = projectScores.find(
+            score => score.project._id === project._id
+        )
+        setSelectedProjectStore(score)
+        setProjectScoreModalOpen(true)
+    }
 
     // Checks whether there are more unique challenges that the competitor has not submitted
     // a solution to yet.
@@ -67,7 +90,7 @@ export default props => {
                                             project.track
                                         ]
                                     }
-                                    style={{ marginRight: '6px' }}
+                                    style={{ margin: '3px' }}
                                 ></Chip>
                             )}
                             {project.challenges &&
@@ -78,17 +101,25 @@ export default props => {
                                                 challenge
                                             ]
                                         }
-                                        style={{ marginRight: '6px' }}
+                                        style={{ margin: '3px' }}
                                         key={challenge}
                                     />
                                 ))}
                         </Box>
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="theme_turquoise"
                             onClick={() => projectSelectedCallback(project._id)}
+                            style={{ marginRight: '6px' }}
                         >
-                            Edit submission
+                            Edit Submission
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="theme_orange"
+                            onClick={() => showProjectScore(project)}
+                        >
+                            View Score
                         </Button>
                     </Box>
                 </Paper>
@@ -131,6 +162,12 @@ export default props => {
                     </Paper>
                 </Grid>
             )}
+
+            <ProjectScoreModal
+                score={selectedProjectScore}
+                open={projectScoreModalOpen}
+                onClose={() => setProjectScoreModalOpen(false)}
+            />
         </Grid>
     )
 }

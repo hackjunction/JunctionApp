@@ -27,12 +27,12 @@ controller.updateProjectScore = async (id, updatedProjectScore) => {
     projectScore.message = updatedProjectScore.message
     projectScore.status = updatedProjectScore.status
 
-    await projectScore.update()
+    await projectScore.save()
     return projectScore
 }
 
 controller.getScoresByEventAndTeamId = (eventId, teamId) => {
-    return ProjectScore.find()
+    return ProjectScore.find({ event: eventId })
         .populate({
             path: 'project',
             match: { team: teamId },
@@ -40,7 +40,6 @@ controller.getScoresByEventAndTeamId = (eventId, teamId) => {
         })
         .populate({
             path: 'event',
-            match: { slug: eventId },
         })
 }
 
