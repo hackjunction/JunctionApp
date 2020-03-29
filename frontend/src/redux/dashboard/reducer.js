@@ -33,7 +33,7 @@ const initialState = {
         updated: 0,
     },
     project_scores: {
-        data: null,
+        data: [],
         loading: true,
         error: false,
         updated: 0,
@@ -45,7 +45,7 @@ const updateRegistrationHandler = buildHandler('registration')
 const updateTeamHandler = buildHandler('team')
 const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
-const updateProjectScoresHandler = buildHandler('project_scores', '_id')
+const updateProjectScoresHandler = buildHandler('project_scores')
 
 const editRegistration = buildUpdatePath('registration.data')
 const editTeam = buildUpdatePath('team.data')
