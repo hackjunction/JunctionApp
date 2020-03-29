@@ -35,6 +35,13 @@ export const annotatorLoading = state => state.dashboard.annotator.loading
 export const annotatorError = state => state.dashboard.annotator.error
 export const annotatorUpdated = state => state.dashboard.annotator.updated
 
+export const projectScores = state => state.dashboard.project_scores.data
+export const projectScoresLoading = state =>
+    state.dashboard.project_scores.loading
+export const projectScoresError = state => state.dashboard.project_scores.error
+export const projectScoresUpdated = state =>
+    state.dashboard.project_scores.updated
+
 export const annotatorVoteCount = createSelector(annotator, annotator => {
     if (!annotator) return 0
     return Math.max(annotator.ignore.length - annotator.skipped.length - 1, 0)

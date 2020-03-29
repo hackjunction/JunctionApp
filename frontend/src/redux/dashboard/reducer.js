@@ -32,6 +32,12 @@ const initialState = {
         error: false,
         updated: 0,
     },
+    project_scores: {
+        data: null,
+        loading: true,
+        error: false,
+        updated: 0,
+    },
 }
 
 const updateEventHandler = buildHandler('event')
@@ -39,6 +45,8 @@ const updateRegistrationHandler = buildHandler('registration')
 const updateTeamHandler = buildHandler('team')
 const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
+const updateProjectScoresHandler = buildHandler('project_scores', '_id')
+
 const editRegistration = buildUpdatePath('registration.data')
 const editTeam = buildUpdatePath('team.data')
 const editAnnotator = buildUpdatePath('annotator.data')
@@ -59,6 +67,9 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_ANNOTATOR: {
             return updateAnnotatorHandler(state, action)
+        }
+        case ActionTypes.UPDATE_PROJECT_SCORES: {
+            return updateProjectScoresHandler(state, action)
         }
         case ActionTypes.EDIT_REGISTRATION: {
             return editRegistration(state, action.payload)

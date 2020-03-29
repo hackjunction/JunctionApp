@@ -32,11 +32,16 @@ controller.updateProjectScore = async (id, updatedProjectScore) => {
 }
 
 controller.getScoresByEventAndTeamId = (eventId, teamId) => {
-    return ProjectScore.find({ event: eventId }).populate({
-        path: 'project',
-        match: { team: teamId },
-        select: '_id',
-    })
+    return ProjectScore.find()
+        .populate({
+            path: 'project',
+            match: { team: teamId },
+            select: '_id',
+        })
+        .populate({
+            path: 'event',
+            match: { slug: eventId },
+        })
 }
 
 controller.getPublicScores = async eventId => {
