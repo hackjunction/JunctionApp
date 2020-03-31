@@ -25,6 +25,7 @@ import * as UserSelectors from 'redux/user/selectors'
 import * as UserActions from 'redux/user/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(theme => ({
     topWrapper: {
         display: 'flex',
@@ -57,6 +58,7 @@ export default () => {
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
     const hasProfile = useSelector(UserSelectors.hasProfile)
     const loading = userProfileLoading || !hasProfile
+    const { t, i18n } = useTranslation()
 
     const classes = useStyles()
 
@@ -154,7 +156,7 @@ export default () => {
                                             name="firstName"
                                             render={({ field, form }) => (
                                                 <TextInput
-                                                    label="First name"
+                                                    label={t('First_name_')}
                                                     value={field.value}
                                                     onChange={value =>
                                                         form.setFieldValue(
@@ -176,7 +178,7 @@ export default () => {
                                             name="lastName"
                                             render={({ field, form }) => (
                                                 <TextInput
-                                                    label="Last name"
+                                                    label={t('Last_name_')}
                                                     value={field.value}
                                                     onChange={value =>
                                                         form.setFieldValue(
@@ -198,7 +200,7 @@ export default () => {
                                             name="email"
                                             render={({ field, form }) => (
                                                 <TextInput
-                                                    label="Email address"
+                                                    label={t('Email_')}
                                                     value={field.value}
                                                     onChange={value =>
                                                         form.setFieldValue(
@@ -215,13 +217,10 @@ export default () => {
                                             )}
                                         />
                                         <Typography variant="caption">
-                                            Your contact email address, where
-                                            you want to receive necessary
-                                            notifications related to your
-                                            activity on the{' '}
-                                            {config.PLATFORM_OWNER_NAME} app.
-                                            Your email address will never be
-                                            shared with any 3rd parties.
+                                            {t('Contact_email_', {
+                                                platform:
+                                                    config.PLATFORM_OWNER_NAME,
+                                            })}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -229,7 +228,7 @@ export default () => {
                                             name="phoneNumber"
                                             render={({ field, form }) => (
                                                 <PhoneNumberInput
-                                                    label="Phone number"
+                                                    label={t('Phone_number_')}
                                                     value={field.value}
                                                     onChange={value =>
                                                         form.setFieldValue(
@@ -246,10 +245,7 @@ export default () => {
                                             )}
                                         />
                                         <Typography variant="caption">
-                                            Your phone number will only be used
-                                            to contact you in urgent matters,
-                                            and will never be shared with any
-                                            3rd parties.
+                                            {t('Contact_phone_')}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -257,7 +253,7 @@ export default () => {
                                             name="dateOfBirth"
                                             render={({ field, form }) => (
                                                 <DateInput
-                                                    label="Date of Birth"
+                                                    label={t('Date_of_birth_')}
                                                     value={field.value}
                                                     onChange={value =>
                                                         form.setFieldValue(
@@ -279,7 +275,7 @@ export default () => {
                                             name="gender"
                                             render={({ field, form }) => (
                                                 <Select
-                                                    label="Gender"
+                                                    label={t('Gender_')}
                                                     options="gender"
                                                     value={field.value}
                                                     onChange={value =>
@@ -302,20 +298,13 @@ export default () => {
                         </Box>
                         <Box className={classes.box} mt={3}>
                             <Typography variant="h6">
-                                Profile details
+                                {t('Profile_details_')}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                When you register to events on the{' '}
-                                {config.PLATFORM_OWNER_NAME} app, the below
-                                details will be pre-filled into your
-                                registrations, and updated from your latest
-                                registration. In case you have opted in for
-                                recruitment functionality, these details will
-                                also be shown to select{' '}
-                                {config.PLATFORM_OWNER_NAME} partners who are
-                                looking to hire. Please see our{' '}
-                                <a href={config.PRIVACY_URL}>Privacy Policy</a>{' '}
-                                for more details on how your data is used.
+                                {t('Pre_filled_details_', {
+                                    owner: config.PLATFORM_OWNER_NAME,
+                                    privacy: config.PRIVACY_URL,
+                                })}
                             </Typography>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
@@ -393,7 +382,9 @@ export default () => {
                                         name="countryOfResidence"
                                         render={({ field, form }) => (
                                             <Select
-                                                label="Country of residence"
+                                                label={t(
+                                                    'Country_of_residence_'
+                                                )}
                                                 value={field.value}
                                                 options="country"
                                                 onChange={value =>
@@ -416,7 +407,7 @@ export default () => {
                                         name="nationality"
                                         render={({ field, form }) => (
                                             <Select
-                                                label="Nationality"
+                                                label={t('Nationality_')}
                                                 value={field.value}
                                                 options="nationality"
                                                 onChange={value =>
@@ -439,7 +430,7 @@ export default () => {
                                         name="spokenLanguages"
                                         render={({ field, form }) => (
                                             <Select
-                                                label="Spoken languages"
+                                                label={t('Spoken_languages_')}
                                                 value={field.value}
                                                 options="language"
                                                 onChange={value =>
@@ -463,7 +454,7 @@ export default () => {
                                         name="themesOfInterest"
                                         render={({ field, form }) => (
                                             <Select
-                                                label="Themes of interest"
+                                                label={t('Themes_of_interest_')}
                                                 value={field.value}
                                                 options="theme"
                                                 onChange={value =>
@@ -487,7 +478,9 @@ export default () => {
                                         name="industriesOfInterest"
                                         render={({ field, form }) => (
                                             <Select
-                                                label="Industries of interest"
+                                                label={t(
+                                                    'Industries_of_interest_'
+                                                )}
                                                 value={field.value}
                                                 options="industry"
                                                 onChange={value =>
@@ -509,9 +502,11 @@ export default () => {
                             </Grid>
                         </Box>
                         <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">Education</Typography>
+                            <Typography variant="h6">
+                                {t('Education_')}
+                            </Typography>
                             <Typography variant="body1" gutterBottom>
-                                Your most recent education
+                                {t('Most_recent_education_')}
                             </Typography>
                             <FastField
                                 name="education"
@@ -533,10 +528,9 @@ export default () => {
                             />
                         </Box>
                         <Box className={classes.box} mt={3}>
-                            <Typography variant="h6">Skills</Typography>
+                            <Typography variant="h6">{t('Skills_')}</Typography>
                             <Typography variant="body1" gutterBottom>
-                                Enter up to 10 skills you consider yourself
-                                proficient at
+                                {t('Enter_skills_')}
                             </Typography>
                             <FastField
                                 name="skills"
@@ -555,11 +549,10 @@ export default () => {
                         </Box>
                         <Box className={classes.box} mt={3}>
                             <Typography variant="h6">
-                                Professional roles
+                                {t('Pro_roles_')}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                Enter up to 5 roles you have working experience
-                                in
+                                {t('Enter_roles_')}
                             </Typography>
                             <FastField
                                 name="roles"
@@ -578,7 +571,7 @@ export default () => {
                         </Box>
                         <Box className={classes.box} mt={3}>
                             <Typography variant="h6">
-                                Recruitment preferences
+                                {t('Recruitment_pref_')}
                             </Typography>
                             <FastField
                                 name="recruitmentOptions"
@@ -601,11 +594,10 @@ export default () => {
                         </Box>
                         <Box className={classes.box} mt={3}>
                             <Typography variant="h6">
-                                Additional Links
+                                {t('Additional_links_')}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                You can link additional links related to you in
-                                here.
+                                {t('You_can_link_')}
                             </Typography>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>

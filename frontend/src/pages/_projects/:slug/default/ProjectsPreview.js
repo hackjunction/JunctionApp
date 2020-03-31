@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Box, Typography, Button as MuiButton } from '@material-ui/core'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import { useTranslation } from 'react-i18next'
 
 export default ({
     projects = [],
@@ -18,6 +19,7 @@ export default ({
         dispatch(push(moreLink))
     }, [dispatch, moreLink])
 
+    const { t, i18n } = useTranslation()
     const handleSelected = useCallback(
         project => {
             dispatch(push(`/projects/${event.slug}/view/${project._id}`))
@@ -54,7 +56,9 @@ export default ({
                     justifyContent="flex-end"
                 >
                     <MuiButton onClick={handleClickMore}>
-                        See all {count} projects
+                        {t('See_all_projects_', {
+                            count: count,
+                        })}
                         <ArrowForwardIosIcon />
                     </MuiButton>
                 </Box>

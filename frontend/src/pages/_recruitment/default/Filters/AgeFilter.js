@@ -24,7 +24,7 @@ export default () => {
     const handleReset = useCallback(() => {
         setDraft(filters)
     }, [filters])
-
+    // TODO Weird to translate
     return (
         <FilterItem
             label="Age"

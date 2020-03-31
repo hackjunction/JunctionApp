@@ -11,11 +11,12 @@ import SearchBox from './SearchBox'
 import RecruitersList from './RecruitersList'
 import RevokeAccessDialog from './RevokeAccessDialog'
 import GrantAccessDialog from './GrantAccessDialog'
+import { useTranslation } from 'react-i18next'
 
 export default RequiresPermission(() => {
     const [grantingUser, setGrantingUser] = useState()
     const [revokingUser, setRevokingUser] = useState()
-
+    const { t, i18n } = useTranslation()
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <CenteredContainer>
@@ -23,12 +24,12 @@ export default RequiresPermission(() => {
                     heading="Recruitment admin"
                     subheading="Manage access to recruitment dashboard"
                 />
-                <Typography variant="h6">Add recruiters</Typography>
+                <Typography variant="h6">{t('Add_recruiters_')}</Typography>
                 <SearchBox
                     onGrant={setGrantingUser}
                     onRevoke={setRevokingUser}
                 />
-                <Typography variant="h6">Manage recruiters</Typography>
+                <Typography variant="h6">{t('Manage_recruiters_')}</Typography>
                 <RecruitersList onRevoke={setRevokingUser} />
                 <GrantAccessDialog
                     userId={grantingUser}
