@@ -23,15 +23,18 @@ export default React.memo(({ registration }) => {
     const sorted = sortBy(Object.keys(grouped), label =>
         RegistrationFields.getCategoryOrderByLabel(label)
     )
+    console.log('registration.answers', registration.answers)
     const customAnswers = {}
     if (registration.answers.CustomAnswers) {
         registration.answers.CustomAnswers.forEach(element => {
+            console.log('element', element)
             if (!customAnswers[element.section]) {
                 customAnswers[element.section] = {}
             }
             customAnswers[element.section][element.key] = element.value
         })
     }
+    console.log('custom', customAnswers)
     const categoryNames = sorted.filter(key => key !== '')
     return (
         <React.Fragment>
@@ -87,9 +90,11 @@ export default React.memo(({ registration }) => {
                                         <DescriptionItem
                                             title={question.label}
                                             content={
-                                                customAnswers[section.name][
-                                                    question.name
-                                                ]
+                                                customAnswers[section.name]
+                                                    ? customAnswers[
+                                                          section.name
+                                                      ][question.name]
+                                                    : null
                                             }
                                         />
                                     )

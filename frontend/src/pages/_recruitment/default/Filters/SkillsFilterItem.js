@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 }))
 const { t, i18n } = useTranslation()
 const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const toggleLevel = useCallback(
         level => {

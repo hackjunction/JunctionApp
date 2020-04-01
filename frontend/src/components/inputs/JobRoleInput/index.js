@@ -18,7 +18,7 @@ import { find } from 'lodash-es'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Select from 'components/inputs/Select'
-
+import { useTranslation } from 'react-i18next'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 const useStyles = makeStyles(theme => ({
@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value = [], onChange, autoFocus }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const classes = useStyles()
     const selectEl = useRef()
@@ -44,7 +45,7 @@ export default ({ value = [], onChange, autoFocus }) => {
         const item = { role, years }
 
         if (find(value, item => item.role === role)) {
-            dispatch(SnackbarActions.error(`You've already added ${role}`))
+            dispatch(SnackbarActions.error(t('Added_role_', { role })))
             return
         }
 
@@ -73,15 +74,17 @@ export default ({ value = [], onChange, autoFocus }) => {
                 <Select
                     autoFocus={autoFocus}
                     innerRef={selectEl}
-                    label="Choose a role"
-                    placeholder="Type to search for roles"
+                    label={t('Choose_role_')}
+                    placeholder={t('Type_to_search_')}
                     options="role"
                     value={role}
                     onChange={setRole}
                 />
             </Grid>
             <Grid item xs={4}>
-                <Typography variant="subtitle1">Years of experience</Typography>
+                <Typography variant="subtitle1">
+                    {t('Years_of_experience_')}
+                </Typography>
             </Grid>
             <Grid item xs={8}>
                 <RadioGroup
@@ -113,7 +116,7 @@ export default ({ value = [], onChange, autoFocus }) => {
                         color="primary"
                         variant="contained"
                     >
-                        Add
+                        {t('Add_')}
                     </Button>
                 </Box>
             </Grid>
@@ -133,7 +136,7 @@ export default ({ value = [], onChange, autoFocus }) => {
                                     onClick={() => handleRemove(index)}
                                     color="error"
                                 >
-                                    Remove
+                                    {t('Remove_')}
                                 </Button>
                             </ListItemSecondaryAction>
                         </ListItem>,

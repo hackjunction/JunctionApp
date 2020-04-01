@@ -44,6 +44,7 @@ const FilterItem = ({
 }) => {
     const classes = useStyles({ active })
     const [anchorEl, setAnchorEl] = React.useState(null)
+    const { t, i18n } = useTranslation()
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget)

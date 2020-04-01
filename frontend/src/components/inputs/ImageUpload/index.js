@@ -9,6 +9,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -74,13 +75,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const classes = useStyles({ resizeMode })
     const [loading, setLoading] = useState(false)
 
     if (!uploadUrl) {
-        throw new Error('ImageUpload component must be supplied an upload url')
+        throw new Error(t('Image_upload_comp_'))
     }
 
     const beforeUpload = useCallback(
@@ -88,15 +90,11 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
             const isJpgOrPng =
                 file.type === 'image/jpeg' || file.type === 'image/png'
             if (!isJpgOrPng) {
-                dispatch(
-                    SnackbarActions.error('Please upload a .jpg or .png file')
-                )
+                dispatch(SnackbarActions.error(t('Jpg_png_')))
             }
             const isLt2M = file.size / 1024 / 1024 < 2
             if (!isLt2M) {
-                dispatch(
-                    SnackbarActions.error('Upload size cannot be more than 2MB')
-                )
+                dispatch(SnackbarActions.error(t('Upload_size_')))
             }
             return isJpgOrPng && isLt2M
         },
@@ -116,8 +114,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
 
             if (info.file.status === 'error') {
                 const message =
-                    info?.file?.response?.message ??
-                    'Something went wrong... Please try again'
+                    info?.file?.response?.message ?? t('Something_went_wrong_')
                 dispatch(SnackbarActions.error(message))
                 setLoading(false)
             }
@@ -155,7 +152,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                             variant="button"
                             style={{ color: 'white', userSelect: 'none' }}
                         >
-                            Remove image
+                            {t('Remove_img_')}
                         </Typography>
                     </Box>
                     <Box
@@ -168,7 +165,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                             variant="button"
                             style={{ color: 'white', userSelect: 'none' }}
                         >
-                            View original
+                            {t('View_org_')}
                         </Typography>
                     </Box>
                 </Box>
@@ -180,7 +177,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
         return (
             <Box className={classes.emptyWrapper}>
                 <Typography className={classes.emptyWrapperText}>
-                    Click or drag a file to upload
+                    {t('Click_or_drag_')}
                 </Typography>
             </Box>
         )
