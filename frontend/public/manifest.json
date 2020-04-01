@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Junction App",
+  "name": "Junction App HackPlatform",
+  "default_locale": "en",
   "icons": [
     {
       "src": "favicon.ico",

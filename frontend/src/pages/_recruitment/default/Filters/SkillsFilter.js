@@ -10,6 +10,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 
 import FilterItem from './FilterItem'
 import SkillsFilterItem from './SkillsFilterItem'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ setFilters }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.skills ?? []
     const [skills, addSkill, removeSkill, editSkill, setSkills] = useArray(
@@ -57,7 +59,7 @@ export default ({ setFilters }) => {
         if (!skills.length) {
             return (
                 <Typography variant="subtitle1" className={classes.itemsEmpty}>
-                    No skills selected
+                    {t('No_skills_')}
                 </Typography>
             )
         }
@@ -73,14 +75,14 @@ export default ({ setFilters }) => {
 
     return (
         <FilterItem
-            label="Skills"
+            label={t('Skills_')}
             active={filters.length > 0}
             onSubmit={handleSubmit}
             onClose={handleReset}
         >
             <Box className={classes.wrapper}>
                 <Select
-                    label="Add a skill (must have all)"
+                    label={t('Add_skill_')}
                     options="skill"
                     onChange={handleAdd}
                     autoFocus

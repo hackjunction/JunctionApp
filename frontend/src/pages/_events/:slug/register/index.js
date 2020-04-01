@@ -37,6 +37,8 @@ import SubmitButton from 'components/inputs/SubmitButton'
 
 import EventDetailContext from '../context'
 
+import { useTranslation } from 'react-i18next'
+
 const useStyles = makeStyles(theme => ({
     wrapper: {
         position: 'absolute',
@@ -117,6 +119,7 @@ const useStyles = makeStyles(theme => ({
 const Connector = ({ index, active, completed, disabled }) => <div />
 
 export default RequiresPermission(() => {
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
     const {
@@ -410,7 +413,7 @@ export default RequiresPermission(() => {
                                     className={classes.doneTitle}
                                     variant="h3"
                                 >
-                                    Registration saved!
+                                    {t('Registration_saved_')}
                                 </Typography>
                                 <div style={{ height: '50px' }} />
                                 <Button
@@ -421,7 +424,7 @@ export default RequiresPermission(() => {
                                     color="primary"
                                     variant="contained"
                                 >
-                                    Event dashboard
+                                    {t('Event_dashboard_')}
                                 </Button>
                                 <div style={{ height: '1rem' }} />
                                 <Button
@@ -430,7 +433,7 @@ export default RequiresPermission(() => {
                                     }
                                     style={{ width: '300px', color: 'white' }}
                                 >
-                                    Back to event page
+                                    {t('Back_to_event_')}
                                 </Button>
                             </Box>
                         </StepContent>

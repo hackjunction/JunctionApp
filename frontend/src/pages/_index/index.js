@@ -13,10 +13,12 @@ import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
+    const { t, i18n } = useTranslation()
 
     return (
         <PageWrapper
@@ -29,21 +31,26 @@ export default () => {
                     <Divider size={2} />
                     <CenteredContainer>
                         <EventsGrid
-                            title="Upcoming / ongoing events"
+                            title={t('Upcoming_')}
                             events={activeEvents}
                         />
-                        <EventsGrid title="Past events" events={pastEvents} />
+                        <EventsGrid title={t('Past_')} events={pastEvents} />
                     </CenteredContainer>
                     <Divider size={2} />
                     <CenteredContainer>
                         <LineDivider />
                         <Divider size={1} />
-                        <h2>New to {config.PLATFORM_OWNER_NAME}?</h2>
+                        <h2>
+                            {t('New_to_', {
+                                platform: config.PLATFORM_OWNER_NAME,
+                            })}
+                        </h2>
                         <p>
-                            More info about {config.PLATFORM_OWNER_NAME} can be
-                            found from our website{' '}
+                            {t('More_info_', {
+                                owner: config.PLATFORM_OWNER_NAME,
+                            })}
                             <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
-                                here
+                                {t('More_info_link')}
                             </ExternalLink>
                         </p>
                         <Divider size={5} />

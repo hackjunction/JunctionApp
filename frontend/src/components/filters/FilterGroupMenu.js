@@ -17,7 +17,7 @@ import {
 import FilterForm from './FilterForm'
 import FilterList from './FilterList'
 import FilterSaveForm from './FilterSaveForm'
-
+import { useTranslation } from 'react-i18next'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +30,7 @@ export default ({
     showEdit = true,
 }) => {
     const filterGroups = useSelector(OrganiserSelectors.filterGroups)
-
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = React.useState(null)
 
@@ -79,8 +79,8 @@ export default ({
     const options = useMemo(() => {
         let items = [
             {
-                label: 'All participants',
-                description: 'No filters',
+                label: t('All_participants_'),
+                description: t('No filters'),
                 filters: [],
                 isDefault: true,
             },
@@ -88,8 +88,8 @@ export default ({
 
         if (showEdit) {
             items.push({
-                label: 'New filters',
-                description: 'Apply a set of custom filters',
+                label: t('New_filters_'),
+                description: t('Apply_filter_'),
                 filters: [],
                 isAdd: true,
             })
@@ -98,7 +98,7 @@ export default ({
         items = items.concat(sortBy(filterGroups, 'label'))
 
         return items
-    }, [filterGroups, showEdit])
+    }, [filterGroups, showEdit, t])
 
     const activeItem = selected || options[0]
     const reservedLabels = options.map(option => option.label)

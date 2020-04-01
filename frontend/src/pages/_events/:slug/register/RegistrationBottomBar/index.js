@@ -9,6 +9,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import ErrorDisplay from './ErrorDisplay'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty'
 import Button from 'components/generic/Button'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -60,7 +61,7 @@ const RegistrationBottomBar = ({
 }) => {
     const classes = useStyles()
     const [enabled, setEnabled] = useState(false)
-
+    const { t, i18n } = useTranslation()
     useEffect(() => {
         setTimeout(function() {
             setEnabled(true)
@@ -70,7 +71,8 @@ const RegistrationBottomBar = ({
         <Box className={classes.wrapper}>
             {prevLabel && onPrev && (
                 <Button className={classes.prevButton} onClick={onPrev}>
-                    <ArrowBackIcon className={classes.buttonIcon} /> Back{' '}
+                    <ArrowBackIcon className={classes.buttonIcon} />{' '}
+                    {t('Back_')}
                     <span className={classes.buttonLabel}>: {prevLabel}</span>
                 </Button>
             )}
@@ -83,8 +85,10 @@ const RegistrationBottomBar = ({
                     variant="contained"
                     onClick={onNext}
                 >
-                    Next{' '}
-                    <span className={classes.buttonLabel}>: {nextLabel}</span>{' '}
+                    {t('Next_')}
+                    <span className={classes.buttonLabel}>
+                        : {nextLabel}
+                    </span>{' '}
                     <ArrowForwardIcon className={classes.buttonIcon} />
                 </Button>
             </Box>

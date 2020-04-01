@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { Box, Typography, ButtonBase, Popover } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
-
+import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +34,6 @@ const useStyles = makeStyles(theme => ({
         fontSize: '22px',
     },
 }))
-
 const FilterItem = ({
     label,
     active,
@@ -44,6 +43,7 @@ const FilterItem = ({
 }) => {
     const classes = useStyles({ active })
     const [anchorEl, setAnchorEl] = React.useState(null)
+    const { t, i18n } = useTranslation()
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget)
@@ -100,7 +100,7 @@ const FilterItem = ({
                         variant="contained"
                         onClick={handleClose}
                     >
-                        Cancel
+                        {t('Cancel_')}
                     </Button>
                     <Box p={1}></Box>
                     <Button
@@ -108,7 +108,7 @@ const FilterItem = ({
                         variant="contained"
                         onClick={handleSubmit}
                     >
-                        Save filters
+                        {t('Save_filters_')}
                     </Button>
                 </Box>
             </Popover>

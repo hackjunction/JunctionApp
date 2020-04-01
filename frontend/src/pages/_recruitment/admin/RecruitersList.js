@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'
-
+import { useTranslation } from 'react-i18next'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 
@@ -21,6 +21,7 @@ export default ({ onRevoke }) => {
     const events = useSelector(RecruitmentSelectors.events)
     const recruiters = useSelector(RecruitmentSelectors.adminRecruiters)
     const loading = useSelector(RecruitmentSelectors.adminRecruitersLoading)
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateAdminRecruiters())
@@ -67,7 +68,7 @@ export default ({ onRevoke }) => {
                                 color="secondary"
                                 onClick={() => onRevoke(user.userId)}
                             >
-                                Revoke access
+                                {t('Revoke_access')}
                             </Button>
                         </ListItemSecondaryAction>
                     </ListItem>,
