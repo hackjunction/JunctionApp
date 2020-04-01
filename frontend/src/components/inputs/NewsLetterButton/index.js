@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 
 import NewsletterService from 'services/newsletter'
 import config from 'constants/config'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -34,6 +35,7 @@ const NewsLetterButton = ({
     country,
 }) => {
     const classes = useStyles()
+    const { t, i18n } = useTranslation()
     const [hidden, setHidden] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -65,18 +67,14 @@ const NewsLetterButton = ({
             className={classes.wrapper}
         >
             <Typography className={classes.title} variant="button" paragraph>
-                While you're here
+                {t('While_here_')}
             </Typography>
             <Typography
                 className={classes.description}
                 variant="subtitle1"
                 paragraph
             >
-                This is a perfect opportunity to join our mailing list, where we
-                send very occasional (monthly) updates about our upcoming events
-                and other things happening around the{' '}
-                {config.PLATFORM_OWNER_NAME}
-                community. Care to join?
+                {t('Join_newsletter_', { owner: config.PLATFORM_OWNER_NAME })}
             </Typography>
 
             <Button
@@ -85,7 +83,7 @@ const NewsLetterButton = ({
                 onClick={handleSubscribe}
                 disabled={loading}
             >
-                Sign me up!
+                {t('Sign_me_up_')}
             </Button>
             <Box p={1} />
             <Button
@@ -93,7 +91,7 @@ const NewsLetterButton = ({
                 onClick={() => setHidden(true)}
                 disabled={loading}
             >
-                Not now, thanks
+                {t('Not_now_')}
             </Button>
         </motion.div>
     )
