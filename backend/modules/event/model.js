@@ -15,6 +15,7 @@ const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetail
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
 const RegistrationConfigSchema = require('@hackjunction/shared/schemas/RegistrationConfig')
 const AddressSchema = require('@hackjunction/shared/schemas/Address')
+const WebhookSchema = require('@hackjunction/shared/schemas/Webhook')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../../modules/upload/helper')
@@ -130,6 +131,10 @@ const EventSchema = new mongoose.Schema({
             'is required if challenges are enabled',
         ],
     },
+    allowProjectSubmissionsPerChallenge: {
+        type: Boolean,
+        default: false,
+    },
     travelGrantConfig: {
         type: TravelGrantConfigSchema.mongoose,
         default: TravelGrantConfigSchema.mongoose,
@@ -164,6 +169,10 @@ const EventSchema = new mongoose.Schema({
     },
     tags: {
         type: [EventTagSchema.mongoose],
+        default: [],
+    },
+    webhooks: {
+        type: [WebhookSchema.mongoose],
         default: [],
     },
     /** System metadata */

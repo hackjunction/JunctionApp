@@ -11,7 +11,7 @@ import BulkEmailModal from 'components/modals/BulkEmailModal'
 import { Table, Sorters } from 'components/generic/_Table'
 import AttendeeTable from '../AttendeeTable'
 
-export default ({ loading, teams = [] }) => {
+export default ({ loading, teams = [], simplifiedView = false }) => {
     const registrationsMap = useSelector(OrganiserSelectors.registrationsMap)
     const [reviewStatus, setReviewStatus] = useState('any')
     const [completedStatus, setCompletedStatus] = useState('any')
@@ -149,80 +149,91 @@ export default ({ loading, teams = [] }) => {
                 onClose={setBulkEmail}
                 registrationIds={filteredMemberIds}
             />
-            <Grid item xs={12} md={6}>
-                <Paper p={2}>
-                    <Box p={2}>
-                        <Select
-                            value={completedStatus}
-                            onChange={setCompletedStatus}
-                            label="Completed status"
-                            options={[
-                                {
-                                    value: 'any',
-                                    label: 'Any',
-                                },
-                                {
-                                    value: 'completed',
-                                    label: 'Completed',
-                                },
-                                {
-                                    value: 'not-completed',
-                                    label: 'Not completed',
-                                },
-                            ]}
-                        />
-                    </Box>
-                </Paper>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <Paper>
-                    <Box p={2}>
-                        <Select
-                            value={reviewStatus}
-                            onChange={setReviewStatus}
-                            label="Review status"
-                            options={[
-                                {
-                                    value: 'any',
-                                    label: 'Any',
-                                },
-                                {
-                                    value: 'fully-reviewed',
-                                    label: 'Fully reviewed',
-                                },
-                                {
-                                    value: 'not-reviewed',
-                                    label: 'Not fully reviewed',
-                                },
-                            ]}
-                        />
-                    </Box>
-                </Paper>
-            </Grid>
-            <Grid item xs={12}>
-                <Paper>
-                    <Box padding={2} display="flex" flexDirection="column">
-                        <Typography
-                            variant="subtitle1"
-                            paragraph
-                            align="center"
-                        >
-                            Rating between
-                        </Typography>
-                        <Box paddingLeft={2} paddingRight={2}>
-                            <Slider
-                                defaultValue={ratingRange}
-                                onChangeCommitted={handleRatingRangeChange}
-                                valueLabelDisplay="on"
-                                aria-labelledby="range-slider"
-                                min={0}
-                                max={5}
-                                step={0.1}
-                            />
-                        </Box>
-                    </Box>
-                </Paper>
-            </Grid>
+            {!simplifiedView && (
+                <>
+                    <Grid item xs={12} md={6}>
+                        <Paper p={2}>
+                            <Box p={2}>
+                                <Select
+                                    value={completedStatus}
+                                    onChange={setCompletedStatus}
+                                    label="Completed status"
+                                    options={[
+                                        {
+                                            value: 'any',
+                                            label: 'Any',
+                                        },
+                                        {
+                                            value: 'completed',
+                                            label: 'Completed',
+                                        },
+                                        {
+                                            value: 'not-completed',
+                                            label: 'Not completed',
+                                        },
+                                    ]}
+                                />
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Paper>
+                            <Box p={2}>
+                                <Select
+                                    value={reviewStatus}
+                                    onChange={setReviewStatus}
+                                    label="Review status"
+                                    options={[
+                                        {
+                                            value: 'any',
+                                            label: 'Any',
+                                        },
+                                        {
+                                            value: 'fully-reviewed',
+                                            label: 'Fully reviewed',
+                                        },
+                                        {
+                                            value: 'not-reviewed',
+                                            label: 'Not fully reviewed',
+                                        },
+                                    ]}
+                                />
+                            </Box>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Paper>
+                            <Box
+                                padding={2}
+                                display="flex"
+                                flexDirection="column"
+                            >
+                                <Typography
+                                    variant="subtitle1"
+                                    paragraph
+                                    align="center"
+                                >
+                                    Rating between
+                                </Typography>
+                                <Box paddingLeft={2} paddingRight={2}>
+                                    <Slider
+                                        defaultValue={ratingRange}
+                                        onChangeCommitted={
+                                            handleRatingRangeChange
+                                        }
+                                        valueLabelDisplay="on"
+                                        aria-labelledby="range-slider"
+                                        min={0}
+                                        max={5}
+                                        step={0.1}
+                                    />
+                                </Box>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                </>
+            )}
+
             <Grid item xs={12}>
                 <Table
                     data={teamsFiltered}

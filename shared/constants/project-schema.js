@@ -31,10 +31,7 @@ const ProjectSchema = {
         .array()
         .of(yup.string())
         .label('Technologies'),
-    demo: yup
-        .string()
-        .url()
-        .label('Demo link'),
+    demo: yup.string().label('Demo link or coupon code'),
     images: yup
         .array()
         .of(

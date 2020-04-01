@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core'
 import { FastField } from 'formik'
 import FormControl from 'components/inputs/FormControl'
 import EventTagsForm from './EventTagsForm'
+import WebhooksForm from './WebhooksForm'
 
 export default () => {
     return (
@@ -17,6 +18,23 @@ export default () => {
                             hint="Add tags with which you can mark registrations"
                         >
                             <EventTagsForm
+                                value={field.value}
+                                fieldName={field.name}
+                                setFieldValue={form.setFieldValue}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="webhooks"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Webhooks"
+                            hint="Add webhooks that should fire on different events"
+                        >
+                            <WebhooksForm
                                 value={field.value}
                                 fieldName={field.name}
                                 setFieldValue={form.setFieldValue}
