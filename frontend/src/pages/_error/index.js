@@ -87,7 +87,7 @@ export default () => {
                 </Typography>
                 <Box mt={2}>
                     <Button color="primary" onClick={() => dispatch(push('/'))}>
-                        {t('Back_to_home_page')}
+                        {t('Back_to_home_page_')}
                     </Button>
                 </Box>
             </Box>
