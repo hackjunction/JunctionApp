@@ -23,6 +23,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import EmailService from 'services/email'
+import { useTranslation } from 'react-i18next'
 
 export default ({ visible, userIds = [], onClose }) => {
     const dispatch = useDispatch()
@@ -32,12 +33,13 @@ export default ({ visible, userIds = [], onClose }) => {
     const [loading, setLoading] = useState(false)
     const [confirmModalOpen, setConfirmModalOpen] = useState(false)
     const headerImage = useFormField('')
+    const { t, i18n } = useTranslation()
     const subject = useFormField('', value => {
         if (!value || value.length === 0) {
-            return 'Message subject is required!'
+            return t('Subject_required_')
         }
         if (value.length > 50) {
-            return 'Message subject can be at most 50 characters'
+            return t('Subject_most_chars_')
         }
 
         return
@@ -45,11 +47,11 @@ export default ({ visible, userIds = [], onClose }) => {
     const subtitle = useFormField('')
     const body = useFormField('', value => {
         if (!body || body.length === 0) {
-            return 'Message body is required!'
+            return t('Body_required_')
         }
 
         if (body.length > 1000) {
-            return 'Message body can be at most 1000 characters'
+            return t('Body_most_chars_')
         }
 
         return
@@ -62,10 +64,10 @@ export default ({ visible, userIds = [], onClose }) => {
             value => {
                 if (ctaText.value && ctaText.value.length > 0) {
                     if (!value || value.length === 0) {
-                        return 'Call to action link is required, if call to action title is entered'
+                        return t('Call_to_action_required_')
                     }
                     if (value.indexOf('http') !== 0) {
-                        return 'Call to action link must be a valid url, starting with http...'
+                        return t('Call_to_action_valid_')
                     }
                 }
                 return
@@ -115,11 +117,13 @@ export default ({ visible, userIds = [], onClose }) => {
         EmailService.sendPreviewEmail(idToken, event.slug, user.email, params)
             .then(() => {
                 dispatch(
-                    SnackbarActions.success('Test email sent to ' + user.email)
+                    SnackbarActions.success(
+                        t('Test_email_sent_', { user: user.email })
+                    )
                 )
             })
             .catch(err => {
-                dispatch(SnackbarActions.error('Something went wrong...'))
+                dispatch(SnackbarActions.error(t('Something_wrong_')))
             })
             .finally(() => {
                 setLoading(false)
@@ -139,14 +143,11 @@ export default ({ visible, userIds = [], onClose }) => {
         )
             .then(data => {
                 dispatch(
-                    SnackbarActions.success(
-                        `Email sent to ${userIds.length} recipients`,
-                        { autoHideDuration: 5000 }
-                    )
+                    SnackbarActions.success(t(''), { autoHideDuration: 5000 })
                 )
             })
             .catch(err => {
-                dispatch(SnackbarActions.error('Something went wrong...'))
+                dispatch(SnackbarActions.error(t('Something_wrong_')))
             })
             .finally(() => {
                 setLoading(false)
@@ -172,8 +173,10 @@ export default ({ visible, userIds = [], onClose }) => {
                     <CenteredContainer>
                         <ConfirmDialog
                             open={confirmModalOpen}
-                            title="Are you sure?"
-                            message={`This will send an email to ${userIds.length} recipient(s). If you haven't yet, please send the email to yourself and make sure it looks like you want.`}
+                            title={t('Sure_')}
+                            message={t('Will_send_to_', {
+                                amount: userIds.length,
+                            })}
                             onClose={setConfirmModalOpen}
                             onOk={handleConfirm}
                         />
@@ -184,9 +187,7 @@ export default ({ visible, userIds = [], onClose }) => {
                             }
                         />
                         <Typography variant="body1" paragraph>
-                            Here you can send an email to all selected
-                            participants. Type in your own email address below
-                            to test the email before sending it out to everyone!
+                            {t('Send_email_selected_')}
                         </Typography>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
@@ -195,8 +196,8 @@ export default ({ visible, userIds = [], onClose }) => {
                                     onChange={headerImage.setValue}
                                     error={headerImage.error}
                                     rawOnChange
-                                    label="Header image url"
-                                    helperText="Url to a header image for your email"
+                                    label={t('URL_header_')}
+                                    helperText={t('URL_helper_')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -205,8 +206,8 @@ export default ({ visible, userIds = [], onClose }) => {
                                     onChange={subject.setValue}
                                     error={subject.error}
                                     rawOnChange
-                                    label="Subject"
-                                    helperText="The subject line of your message"
+                                    label={t('Subject_')}
+                                    helperText={t('Subect_helper_')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -215,8 +216,8 @@ export default ({ visible, userIds = [], onClose }) => {
                                     onChange={subtitle.setValue}
                                     error={subtitle.error}
                                     rawOnChange
-                                    label="Subtitle"
-                                    helperText="A subtitle to be shown under the subject (optional)"
+                                    label={t('Subtitle_')}
+                                    helperText={t('Subtitle_helper_')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -225,7 +226,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                     textarea
                                     onChange={body.setValue}
                                     rawOnChange
-                                    label="Message body"
+                                    label={t('Message_body_')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -234,10 +235,8 @@ export default ({ visible, userIds = [], onClose }) => {
                                     onChange={messageId.setValue}
                                     error={messageId.error}
                                     rawOnChange
-                                    label="Unique message id"
-                                    helperText=" If you want, you can enter a unique message id here. Messages with the same id will only be sent
-                                once to a given participant - this is useful if you want to avoid sending out the same message to a
-                                participant who has already received it earlier."
+                                    label={t('Unique_message_id')}
+                                    helperText={t('Enter_unique_')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -246,8 +245,8 @@ export default ({ visible, userIds = [], onClose }) => {
                                     onChange={ctaText.setValue}
                                     error={ctaText.error}
                                     rawOnChange
-                                    label="Call to action title"
-                                    helperText="If your want a Call to Action button in your email, enter the text for the button here."
+                                    label={t('Call_to_action_')}
+                                    helperText={t('Call_to_action_helper_')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -256,7 +255,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                     onChange={ctaLink.setValue}
                                     error={ctaLink.error}
                                     rawOnChange
-                                    label="Call to action link"
+                                    label={t('Call_to_action_link_')}
                                 />
                             </Grid>
                         </Grid>
@@ -266,7 +265,7 @@ export default ({ visible, userIds = [], onClose }) => {
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
                 <Box p={1} />
-                <Button onClick={handleTestEmail}>Send to yourself</Button>
+                <Button onClick={handleTestEmail}>{t('Send_yourself_')}</Button>
                 <Box p={1} />
                 <Button
                     loading={loading}
@@ -274,7 +273,7 @@ export default ({ visible, userIds = [], onClose }) => {
                     color="primary"
                     onClick={setConfirmModalOpen}
                 >
-                    Send to {userIds.length} recipients
+                    {t('Send_to_recipients_', { amount: userIds.length })}
                 </Button>
             </DialogActions>
         </Dialog>

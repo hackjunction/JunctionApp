@@ -26,8 +26,9 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
-
+import { useTranslation } from 'react-i18next'
 export default ({ visible, userIds = [], onClose }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const [loading, setLoading] = useState(false)
@@ -93,7 +94,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 )
             })
             .catch(err => {
-                dispatch(SnackbarActions.error('Something went wrong'))
+                dispatch(SnackbarActions.error(t('Something_wrong_')))
             })
             .finally(() => {
                 setLoading(false)
@@ -121,11 +122,9 @@ export default ({ visible, userIds = [], onClose }) => {
                             }
                         />
                         <Typography variant="body1" paragraph>
-                            Here you can edit all of the selected registrations.
-                            Expand the panels for the fields which you want to
-                            edit - if a panel is left{' '}
-                            <strong>un-expanded</strong>, that field will not be
-                            edited in the registrations.
+                            {t('Edit_selected_registrations_')}
+                            {t('un_expanded_')}
+                            {t('Edit_selected_registration_cont_')}
                         </Typography>
                         <ExpansionPanel
                             expanded={isExpanded('rating')}
@@ -139,7 +138,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                     justifyContent="space-between"
                                 >
                                     <Typography variant="subtitle1">
-                                        Rating
+                                        {t('Rating_')}
                                     </Typography>
                                     {isExpanded('rating') ? (
                                         <Typography
@@ -156,7 +155,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                             variant="button"
                                             color="primary"
                                         >
-                                            Leave unchanged
+                                            {t('Leave_unchanged_')}
                                         </Typography>
                                     )}
                                 </Box>
@@ -180,7 +179,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                     justifyContent="space-between"
                                 >
                                     <Typography variant="subtitle1">
-                                        Assigned to
+                                        {t('Assigned to')}
                                     </Typography>
                                     {isExpanded('assignedTo') ? (
                                         <Typography
@@ -196,7 +195,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                             variant="button"
                                             color="primary"
                                         >
-                                            Leave unchanged
+                                            {t('Leave_unchanged_')}
                                         </Typography>
                                     )}
                                 </Box>
@@ -225,7 +224,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                         color="primary"
                                         onClick={() => setOrganiserModal(true)}
                                     >
-                                        Change
+                                        {t('Change_')}
                                     </Button>
                                 </Box>
                             </ExpansionPanelDetails>
@@ -242,7 +241,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                     justifyContent="space-between"
                                 >
                                     <Typography variant="subtitle1">
-                                        Tags
+                                        {t('Tags_')}
                                     </Typography>
                                     {isExpanded('tags') ? (
                                         <Typography
@@ -259,7 +258,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                             variant="button"
                                             color="primary"
                                         >
-                                            Leave unchanged
+                                            {t('Leave_unchanged_')}
                                         </Typography>
                                     )}
                                 </Box>
@@ -284,21 +283,23 @@ export default ({ visible, userIds = [], onClose }) => {
                                     justifyContent="space-between"
                                 >
                                     <Typography variant="subtitle1">
-                                        Status
+                                        {t('Status_')}
                                     </Typography>
                                     {isExpanded('status') ? (
                                         <Typography
                                             variant="button"
                                             color="secondary"
                                         >
-                                            Set status to {status.value}
+                                            {t('Set_status_', {
+                                                value: status.value,
+                                            })}
                                         </Typography>
                                     ) : (
                                         <Typography
                                             variant="button"
                                             color="primary"
                                         >
-                                            Leave unchanged
+                                            {t('Leave_unchanged_')}
                                         </Typography>
                                     )}
                                 </Box>

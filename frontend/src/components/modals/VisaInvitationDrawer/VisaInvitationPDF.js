@@ -8,7 +8,7 @@ import {
     Font,
 } from '@react-pdf/renderer'
 import config from 'constants/config'
-
+// TODO: Make dynamic
 Font.register({
     family: 'Montserrat',
     src:
