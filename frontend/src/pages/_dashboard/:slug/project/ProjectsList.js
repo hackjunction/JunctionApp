@@ -64,10 +64,14 @@ export default props => {
                 [],
                 projects.map(project => project.challenges)
             )
-            return event.challenges.filter(
-                challenge =>
-                    challengesWithSubmittedProjects.indexOf(challenge.slug) < 0
-            ).length
+            return (
+                event.challenges.filter(
+                    challenge =>
+                        challengesWithSubmittedProjects.indexOf(
+                            challenge.slug
+                        ) < 0
+                ).length > 0
+            )
         }
         return false
     }

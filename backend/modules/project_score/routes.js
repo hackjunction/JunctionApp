@@ -9,6 +9,7 @@ const { hasWebhookToken } = require('../../common/middleware/webhook')
 const {
     canSubmitProject,
     isEventOrganiser,
+    getEventFromParams,
 } = require('../../common/middleware/events')
 
 const addProjectScore = asyncHandler(async (req, res) => {
@@ -57,7 +58,10 @@ const getScoreByProjectId = asyncHandler(async (req, res) => {
 })
 
 const getPublicScores = asyncHandler(async (req, res) => {
-    const scores = await ProjectScoreController.getPublicScores(req.params.slug)
+    if (!req.event) {
+        return res.status(404).json({ message: 'Event not found.' })
+    }
+    const scores = await ProjectScoreController.getPublicScores(req.event.id)
     return res.status(200).json(scores)
 })
 
@@ -69,7 +73,7 @@ router.get(
     canSubmitProject,
     getScoresByEventAndTeam
 )
-router.get('/event/:slug', getPublicScores)
+router.get('/event/:slug', getEventFromParams, getPublicScores)
 router.get(
     '/event/:slug/project/:projectId',
     hasToken,
