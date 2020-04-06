@@ -4,6 +4,7 @@ const { ReviewingMethods } = require('@hackjunction/shared')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const AchievementSchema = require('../../common/schemas/Achievement')
 const GavelController = require('../reviewing/gavel/controller')
+const WebhookService = require('../../common/services/webhook')
 
 const ProjectSchema = new mongoose.Schema({
     event: {
@@ -63,7 +64,7 @@ const ProjectSchema = new mongoose.Schema({
 ProjectSchema.set('timestamps', true)
 
 /* Only allow a single project per team per event */
-ProjectSchema.index(
+/* ProjectSchema.index(
     {
         event: 1,
         team: 1,
@@ -71,7 +72,7 @@ ProjectSchema.index(
     {
         unique: true,
     }
-)
+) */
 
 /* We'll commonly query projects by track and event, so create a compound index for that */
 ProjectSchema.index({
@@ -84,22 +85,18 @@ ProjectSchema.methods.getPreview = function() {
 }
 
 ProjectSchema.post('save', async function(doc, next) {
-    mongoose
-        .model('Event')
-        .findById(this.event)
-        .then(event => {
-            switch (event.reviewMethod) {
-                /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
-                case ReviewingMethods.gavelPeerReview.id: {
-                    GavelController.ensureGavelProject(doc)
-                    break
-                }
-                default: {
-                    /** By default, no action needed */
-                }
-            }
-        })
-
+    const event = await mongoose.model('Event').findById(this.event)
+    switch (event.reviewMethod) {
+        /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
+        case ReviewingMethods.gavelPeerReview.id: {
+            GavelController.ensureGavelProject(doc)
+            break
+        }
+        default: {
+            /** By default, no action needed */
+        }
+    }
+    WebhookService.handleProjectWebhook(doc, 'save', event)
     next()
 })
 

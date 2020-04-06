@@ -25,15 +25,22 @@ export const teamLoading = state => state.dashboard.team.loading
 export const teamError = state => state.dashboard.team.error
 export const teamUpdated = state => state.dashboard.team.updated
 
-export const project = state => state.dashboard.project.data
-export const projectLoading = state => state.dashboard.project.loading
-export const projectError = state => state.dashboard.project.error
-export const projectUpdated = state => state.dashboard.project.updated
+export const projects = state => state.dashboard.projects.data
+export const projectsLoading = state => state.dashboard.projects.loading
+export const projectsError = state => state.dashboard.projects.error
+export const projectsUpdated = state => state.dashboard.projects.updated
 
 export const annotator = state => state.dashboard.annotator.data
 export const annotatorLoading = state => state.dashboard.annotator.loading
 export const annotatorError = state => state.dashboard.annotator.error
 export const annotatorUpdated = state => state.dashboard.annotator.updated
+
+export const projectScores = state => state.dashboard.project_scores.data
+export const projectScoresLoading = state =>
+    state.dashboard.project_scores.loading
+export const projectScoresError = state => state.dashboard.project_scores.error
+export const projectScoresUpdated = state =>
+    state.dashboard.project_scores.updated
 
 export const annotatorVoteCount = createSelector(annotator, annotator => {
     if (!annotator) return 0

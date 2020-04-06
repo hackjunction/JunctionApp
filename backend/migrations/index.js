@@ -2,7 +2,10 @@
 const Promise = require('bluebird')
 const logger = require('../misc/logger')
 
-const migrations = [require('./00-registration-questions')]
+const migrations = [
+    require('./00-registration-questions'),
+    require('./01-remove-project-unique-index'),
+]
 
 const run = async () => {
     logger.info('Running database migrations before startup...')
