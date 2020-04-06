@@ -8,30 +8,20 @@ const logger = require('../../misc/logger')
 sgMail.setApiKey(global.gConfig.SENDGRID_API_KEY)
 sgClient.setApiKey(global.gConfig.SENDGRID_API_KEY)
 
-const sendgridAddRecipients = (email, country) => {
+sendGridAddRecipientsToMarketingList = (list_id, email, country) => {
     const request = {
-        body: [
-            {
+        body: {
+            list_ids: [list_id],
+            contacts: 
+            [{
                 email,
                 country,
             },
-        ],
-        method: 'POST',
-        url: '/v3/contactdb/recipients',
+            ]
+        },
+        method: 'PUT',
+        url: '/v3/marketing/contacts',
     }
-
-    return sgClient.request(request).then(([response, body]) => {
-        return body.persisted_recipients
-    })
-}
-
-const sendgridAddRecipientsToList = (list_id, recipient_ids) => {
-    const request = {
-        data: recipient_ids,
-        method: 'POST',
-        url: `/v3/contactdb/lists/${list_id}/recipients/${recipient_ids}`,
-    }
-
     return sgClient.request(request).then(([response, body]) => {
         return body
     })
@@ -340,11 +330,12 @@ const SendgridService = {
         if (!email) return
 
         try {
-            const addedRecipients = await sendgridAddRecipients(email, country)
+            console.log(mailingListId)
             if (mailingListId) {
-                await sendgridAddRecipientsToList(
+                await sendGridAddRecipientsToMarketingList(
                     mailingListId,
-                    addedRecipients
+                    email,
+                    country
                 )
             }
         } catch (e) {
