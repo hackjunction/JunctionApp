@@ -89,7 +89,7 @@ const Footer = props => {
                                 {/* {t('Platform_organise_hack_', {
                                     owner: config.PLATFORM_OWNER_NAME,
                                 })} */}
-                                Check out our Hackerpack partners!
+                                Sign in to check out our Hackerpack partners!
                             </h2>
                             <Button
                                 color="theme_turquoise"

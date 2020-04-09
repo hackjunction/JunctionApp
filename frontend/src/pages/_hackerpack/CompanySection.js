@@ -48,7 +48,7 @@ export default ({ name, icon, description, link }) => {
                         target="_blank"
                     >
                         <Button color="theme_turquoise" variant="contained">
-                            Redeem
+                            Sign in to redeem!
                         </Button>
                     </OutboundLink>
                 </Box>

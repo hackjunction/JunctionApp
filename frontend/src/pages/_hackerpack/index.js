@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Divider } from '@material-ui/core'
+import { Box, Typography, Divider, Button } from '@material-ui/core'
 
 import CompanySection from './CompanySection'
 
@@ -9,14 +9,41 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import Partners from 'constants/hackerpack-partners.js'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
+import { makeStyles } from '@material-ui/core/styles'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: theme.spacing(3),
+        background: 'black',
+        color: 'white',
+    },
+}))
 
 export default () => {
+    const dispatch = useDispatch()
+    const classes = useStyles()
     return (
         <PageWrapper
             loading={false}
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
         >
+            <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+                <Button onClick={() => dispatch(push('/'))}>
+                    <ArrowBackIosIcon style={{ color: 'black' }} />
+                    <Typography variant="button" style={{ color: 'black' }}>
+                        Back
+                    </Typography>
+                </Button>
+            </CenteredContainer>
             <CenteredContainer>
                 <PageHeader
                     heading="Hackerpack"
