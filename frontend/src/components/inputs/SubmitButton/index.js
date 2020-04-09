@@ -8,7 +8,7 @@ import {
     Button,
     CircularProgress,
 } from '@material-ui/core'
-
+import { useTranslation } from 'react-i18next'
 import ExternalLink from 'components/generic/ExternalLink'
 import config from 'constants/config'
 
@@ -36,7 +36,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
     const [confirmed1, setConfirmed1] = useState(false)
     const [confirmed2, setConfirmed2] = useState(false)
     const [confirmed3, setConfirmed3] = useState(false)
-
+    const { t, i18n } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
 
     return (
@@ -49,10 +49,11 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     onChange={e => setConfirmed1(e.target.checked)}
                 />
                 <Typography variant="subtitle1" className={classes.label}>
-                    I've read and consent to the processing of my data in
-                    accordance to the{' '}
+                    {t('Consent_privacy_')}
                     <ExternalLink href={config.PRIVACY_URL}>
-                        {config.PLATFORM_OWNER_NAME} Privacy Policy
+                        {t('Privacy_policy_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
                     </ExternalLink>
                 </Typography>
             </Box>
@@ -64,9 +65,11 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     onChange={e => setConfirmed2(e.target.checked)}
                 />
                 <Typography variant="subtitle1" className={classes.label}>
-                    I've read and agree to the{' '}
+                    {t('Read_agree_terms_')}
                     <ExternalLink href={config.TERMS_URL}>
-                        {config.PLATFORM_OWNER_NAME} Terms & Conditions
+                        {t('Terms_and_conditions_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
                     </ExternalLink>
                 </Typography>
             </Box>
@@ -78,8 +81,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     onChange={e => setConfirmed3(e.target.checked)}
                 />
                 <Typography variant="subtitle1" className={classes.label}>
-                    I confirm that the information entered in this form is
-                    truthful and accurate
+                    {t('Confirm_info_')}
                 </Typography>
             </Box>
             <Box
@@ -102,7 +104,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                         className={classes.button}
                         disabled={hasErrors || !confirmed || loading}
                     >
-                        Submit
+                        {t('Submit_')}
                     </Button>
                 )}
             </Box>

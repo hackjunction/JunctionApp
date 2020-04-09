@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Upload } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import ClearIcon from '@material-ui/icons/Clear'
-
+import { useTranslation } from 'react-i18next'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [loading, setLoading] = useState(false)
@@ -46,13 +47,11 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
         file => {
             const isPDF = file.type === 'application/pdf'
             if (!isPDF) {
-                dispatch(SnackbarActions.show('Please upload a .pdf file'))
+                dispatch(SnackbarActions.show(t('Upload_pdf_')))
             }
             const isLt10M = file.size / 1024 / 1024 < 10
             if (!isLt10M) {
-                dispatch(
-                    SnackbarActions.show('Upload size cannot be more than 10MB')
-                )
+                dispatch(SnackbarActions.show(t('Upload_size_ten_')))
             }
             return isPDF && isLt10M
         },
@@ -76,8 +75,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
 
             if (info.file.status === 'error') {
                 const message =
-                    info?.file?.response?.message ??
-                    'Something went wrong... Please try again'
+                    info?.file?.response?.message ?? t('Something_went_wrong_')
                 dispatch(SnackbarActions.error(message))
                 setLoading(false)
             }
@@ -123,7 +121,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                             <CircularProgress />
                         ) : (
                             <Typography className={classes.uploadText}>
-                                Click or drag a file to upload
+                                {t('Click_or_drag_')}
                             </Typography>
                         )}
                     </Box>

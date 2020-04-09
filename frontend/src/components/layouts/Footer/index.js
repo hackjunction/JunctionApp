@@ -9,7 +9,7 @@ import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import Button from 'components/generic/Button'
-
+import { useTranslation } from 'react-i18next'
 import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 const Footer = props => {
     const classes = useStyles()
     const dispatch = useDispatch()
-
+    const { t, i18n } = useTranslation()
     return (
         <div className={classes.wrapper}>
             {props.hide_contact ? null : (
@@ -68,8 +68,9 @@ const Footer = props => {
                     <LineDivider />
                     <Divider size={1} />
                     <h2>
-                        Want to organize a hackathon with{' '}
-                        {config.PLATFORM_OWNER_NAME}?
+                        {t('Platform_organise_hack_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
                     </h2>
                     <Button
                         color="theme_white"
@@ -87,24 +88,25 @@ const Footer = props => {
                 <div className={classes.links}>
                     <Divider size={1} />
                     <ExternalLink theme="dark" href={config.TERMS_URL}>
-                        Terms And Conditions
+                        {t('Terms_')}
                     </ExternalLink>
                     <ExternalLink theme="dark" href={config.PRIVACY_URL}>
-                        Privacy Policy
+                        {t('Privacy_')}
                     </ExternalLink>
                     <ExternalLink
                         theme="dark"
                         href={config.PLATFORM_OWNER_WEBSITE}
                     >
-                        {config.PLATFORM_OWNER_NAME} website
+                        {t('Website_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
                     </ExternalLink>
                     <Divider size={1} />
                 </div>
                 <div className={classes.copyright}>
                     <Divider size={1} />
                     <span className={classes.copyright}>
-                        Designed and developed with love and coffee by the
-                        Junction team, with the help of:
+                        {t('Designed_developed_')}
                     </span>
                     <Divider size={1} />
                     <div className={classes.logos}>

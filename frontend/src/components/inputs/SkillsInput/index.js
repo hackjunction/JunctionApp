@@ -20,7 +20,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Select from 'components/inputs/Select'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
-
+import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(theme => ({
     radioGroup: {
         display: 'flex',
@@ -35,7 +35,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
     const selectEl = useRef(null)
     const [level, setLevel] = useState()
     const [skill, setSkill] = useState()
-
+    const { t, i18n } = useTranslation()
     const handleLevelChange = useCallback(event => {
         setLevel(event.target.value)
     }, [])
@@ -81,7 +81,9 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                 />
             </Grid>
             <Grid item xs={4}>
-                <Typography variant="subtitle1">Level of expertise</Typography>
+                <Typography variant="subtitle1">
+                    {t('Level_of_expertise_')}
+                </Typography>
             </Grid>
             <Grid item xs={8}>
                 <RadioGroup
@@ -113,7 +115,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                         color="primary"
                         variant="contained"
                     >
-                        Add
+                        {t('Add_')}
                     </Button>
                 </Box>
             </Grid>
@@ -142,7 +144,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                             />
                             <ListItemSecondaryAction>
                                 <Button onClick={() => handleRemove(index)}>
-                                    Remove
+                                    {t('Remove_')}
                                 </Button>
                             </ListItemSecondaryAction>
                         </ListItem>,
