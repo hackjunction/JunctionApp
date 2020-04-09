@@ -1,19 +1,34 @@
-import React, { useMemo, useCallback } from 'react'
-import { push } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
-
-import { useSelector } from 'react-redux'
+import React, { useMemo, useCallback, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import JobRoleInput from 'components/inputs/JobRoleInput'
+import { push } from 'connected-react-router'
+import { useLocation } from 'react-router-dom'
+import EditProjectModal from 'components/modals/EditProjectModal'
 
 const ProjectsTable = ({ projects, baseURL }) => {
     const teams = useSelector(OrganiserSelectors.teams)
     const dispatch = useDispatch()
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search)
+    const query = new URLSearchParams(location.search)
+    const hasModal = query.has('modal')
+    const activeModal = query.get('modal')
 
+    const [selectedProject, setSelectedProject] = useState(null)
     // TODO config columsn (table only in physical events)
+    const openSingleEdit = useCallback(row => {
+        setSelectedProject(row.original)
+        /* const search = `?${new URLSearchParams({
+                modal: 'edit',
+                id: row.original.user,
+            }).toString()}`
+            dispatch(push({ search })) */
+    }, [])
+
     const columns = useMemo(() => {
         return [
             {
@@ -68,7 +83,13 @@ const ProjectsTable = ({ projects, baseURL }) => {
         return project
     })
     return (
-        <Table data={data} columns={columns} onRowClick={onProjectSelected} />
+        <>
+            <EditProjectModal
+                project={selectedProject}
+                onClose={() => setSelectedProject(null)}
+            />
+            <Table data={data} columns={columns} onRowClick={openSingleEdit} />
+        </>
     )
 }
 

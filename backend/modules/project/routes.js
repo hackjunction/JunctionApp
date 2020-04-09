@@ -38,16 +38,16 @@ router
 
 router
     .route('/:slug/team')
-    /** Get the project submitted by a user's team at a given event */
+    /** Get the projects submitted by a user's team at a given event */
     .get(
         hasToken,
         canSubmitProject,
         asyncHandler(async (req, res) => {
-            const project = await ProjectController.getProjectByEventAndTeam(
+            const projects = await ProjectController.getProjectsByEventAndTeam(
                 req.event._id,
                 req.team._id
             )
-            return res.status(200).json(project)
+            return res.status(200).json(projects)
         })
     )
     /** Submit a project for a user's team at a given event */
