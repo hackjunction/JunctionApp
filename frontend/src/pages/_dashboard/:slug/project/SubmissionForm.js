@@ -251,7 +251,9 @@ export default props => {
                                             onBlur={() =>
                                                 form.setFieldTouched(field.name)
                                             }
-                                            isMulti
+                                            isMulti={
+                                                !event.allowProjectSubmissionsPerChallenge
+                                            }
                                         />
                                     </FormControl>
                                 )}
