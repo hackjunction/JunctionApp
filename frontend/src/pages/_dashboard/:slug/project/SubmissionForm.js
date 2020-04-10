@@ -45,6 +45,17 @@ export default props => {
         ...project,
     }
 
+    // Change challenge type if only one submission allowed
+    if (event && event.allowProjectSubmissionsPerChallenge) {
+        if (
+            initialValues &&
+            initialValues.challenges &&
+            initialValues.challenges.length
+        ) {
+            initialValues.challenges = initialValues.challenges[0]
+        }
+    }
+
     const trackOptions = useMemo(() => {
         if (!event.tracksEnabled || !event.tracks) return null
         return event.tracks.map(track => ({
