@@ -97,14 +97,9 @@ export default () => {
                     </Typography>
                     <Typography variant="body1" gutterBottom>
                         You haven't yet submitted a project! You should go and
-                        submit a draft of your project as soon as you have a
-                        rough idea of what you're making. You're free to edit
-                        your project submission as many times as you wish until
-                        the final submission deadline. By submitting a draft of
-                        your project now, event organisers, partners and mentors
-                        will be able to see what you're working on and offer you
-                        assistance with your project. It'll take you under a
-                        minute, we promise.
+                        submit your project - you're free to edit the submission
+                        as many times as you wish until the final submission
+                        deadline.
                     </Typography>
                     <Button
                         variant="contained"
@@ -142,7 +137,12 @@ export default () => {
                 <Typography variant="body1" gutterBottom>
                     Great, you've already made a submission! You can make edits
                     to it until the final submission deadline, so make sure to
-                    make it as polished as possible!
+                    make it as polished as possible! If you are participating in
+                    Treasure Hunt and Minihack as well, please make sure you are
+                    making two different submissions. If one of your team member
+                    opened a submission for Treasure Hunt you just have to open
+                    the project submission and put your coupon code in the right
+                    field.
                 </Typography>
                 <Button
                     variant="contained"

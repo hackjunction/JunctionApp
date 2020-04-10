@@ -233,7 +233,9 @@ export default () => {
                     event.submissionsEndTime
                 ).format(
                     'LLLL'
-                )}. All of the members in your team can edit your team's project submission.`}
+                )}. All of the members in your team can edit your team's project submission. 
+                Don't forget, that you have to make different submissions for Treasure Hunt an Minihack as well! 
+                For Treasure Hunt you have to put the coupon code - what you received after you solved the game- in the right field.`}
             />
             {renderContent()}
         </Box>

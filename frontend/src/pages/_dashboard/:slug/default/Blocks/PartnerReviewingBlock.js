@@ -32,16 +32,17 @@ export default () => {
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                     This event has {event.challenges.length} different
-                    challenges which you can submit your project to. It's a good
-                    idea to spend some time investigating the different
-                    challenges available and discussing with partners to find
-                    out which problem they are interested in working around.
+                    challenges which you can submit your project to. If you are
+                    submitting Treasure Hunt you have to write the coupon code
+                    in the right field. When you are making your submission for
+                    Minihack be sure you are uploading the source code, demo
+                    URL.
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    When submitting your project, you'll be able to choose up to
-                    every different challenge that your project applies to.
-                    After the submission deadline the jury will review your
-                    project, and decide the winner of the challenge.
+                    When submitting your project, you'll be able to choose the
+                    challenge that your project applies to. After the submission
+                    deadline the jury will review your project, and decide the
+                    winner of the challenge.
                 </Typography>
                 <Box p={1} />
                 {event.challenge_instructions ? (

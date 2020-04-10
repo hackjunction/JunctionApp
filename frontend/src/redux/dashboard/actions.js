@@ -262,6 +262,10 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
 export const editProject = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
+    if (!Array.isArray(data.challenges)) {
+        data.challenges = [data.challenges]
+    }
+
     await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
     return dispatch({
         type: ActionTypes.UPDATE_PROJECTS,

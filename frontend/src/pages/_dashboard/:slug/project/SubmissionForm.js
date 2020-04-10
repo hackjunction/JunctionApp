@@ -297,8 +297,11 @@ export default props => {
                             name="demo"
                             render={({ field, form }) => (
                                 <FormControl
-                                    label="Demo URL or Coupon Code"
-                                    hint="Add the link of the working version of your project. Depending on the event, this could be a link to an API, a link to file or a presentation. Make sure the link is accessible for humans, as well as machines!"
+                                    label="Demo URL or Coupon Code for Treasure Hunt"
+                                    hint="Add the link of the working version of your MiniHack project or your coupon code, which you have received at the 
+                                    end of the Treasure Hunt. Depending on the event, this could be a link to an API, a link to file or a presentation.
+                                     Make sure the link is accessible for humans, as well as machines! Note: If you are in a team but wish to receive the treasure hunt gifts
+                                     individually, please make sure you mention each coupon code, such as: Bill Gates - COUPONCODE1, Steve Jobs - COUPONCODE2"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
