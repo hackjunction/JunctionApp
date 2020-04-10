@@ -41,6 +41,7 @@ controller.getScoresByEventAndTeamId = (eventId, teamId) => {
         .populate({
             path: 'event',
         })
+        .then(results => results.filter(doc => doc.project !== null))
 }
 
 controller.getScoreByProjectId = projectId => {
