@@ -304,8 +304,16 @@ export default props => {
                             name="demo"
                             render={({ field, form }) => (
                                 <FormControl
-                                    label="Demo URL or Coupon Code"
-                                    hint="Add the link of the working version of your project. Depending on the event, this could be a link to an API, a link to file or a presentation. Make sure the link is accessible for humans, as well as machines!"
+                                    label={
+                                        event.demoLabel
+                                            ? event.demoLabel
+                                            : 'Demo URL or Coupon Code'
+                                    }
+                                    hint={
+                                        event.demoHint
+                                            ? event.demoHint
+                                            : 'Add the link of the working version of your project. Depending on the event, this could be a link to an API, a link to file or a presentation. Make sure the link is accessible for humans, as well as machines!'
+                                    }
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -323,7 +331,11 @@ export default props => {
                                         onBlur={() =>
                                             form.setFieldTouched(field.name)
                                         }
-                                        placeholder="https://... or coupon_code"
+                                        placeholder={
+                                            event.demoPlaceholder
+                                                ? event.demoPlaceholder
+                                                : 'https://..'
+                                        }
                                     />
                                 </FormControl>
                             )}

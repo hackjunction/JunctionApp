@@ -44,6 +44,9 @@ const eventQuery = gql`
                     name
                 }
             }
+            demoLabel
+            demoHint
+            demoPlaceholder
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted
