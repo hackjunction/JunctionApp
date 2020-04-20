@@ -16,6 +16,7 @@ import DefaultTab from './default'
 import ConfigurationTab from './configuration'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
+import SubmissionFormTab from './submission'
 import OtherTab from './other'
 
 export default () => {
@@ -103,6 +104,12 @@ export default () => {
                                     key: 'questions',
                                     label: 'Questions',
                                     component: QuestionsTab,
+                                },
+                                {
+                                    path: '/submission',
+                                    key: 'submission',
+                                    label: 'Submission form',
+                                    component: SubmissionFormTab,
                                 },
                                 {
                                     path: '/other',
