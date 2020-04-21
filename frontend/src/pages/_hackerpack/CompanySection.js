@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ name, icon, description, link }) => {
+export default ({ name, icon, description }) => {
     const classes = useStyles()
 
     return (
@@ -42,13 +42,9 @@ export default ({ name, icon, description, link }) => {
                     <Markdown source={description} />
                 </Typography>
                 <Box className={classes.outboundLink}>
-                    <OutboundLink
-                        eventLabel="myLabel"
-                        to={link}
-                        target="_blank"
-                    >
+                    <OutboundLink eventLabel="myLabel" target="_blank">
                         <Button color="theme_turquoise" variant="contained">
-                            Sign in to redeem!
+                            Join an event to redeem!
                         </Button>
                     </OutboundLink>
                 </Box>
