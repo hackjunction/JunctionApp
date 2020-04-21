@@ -125,6 +125,15 @@ const EventType = new GraphQLObjectType({
             registrationConfig: {
                 type: RegistrationConfig,
             },
+            demoLabel: {
+                type: GraphQLString,
+            },
+            demoHint: {
+                type: GraphQLString,
+            },
+            demoPlaceholder: {
+                type: GraphQLString,
+            },
             // TODO: Figure this stuff out
             // winners: {
             //     type: mongoose.Mixed,
