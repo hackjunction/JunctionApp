@@ -136,7 +136,7 @@ export default props => {
                 projects.map(project => (
                     <ProjectCard key={project._id} project={project} />
                 ))}
-            {canAddMoreSubmissions() && (
+            {/* TODO revork in settings canAddMoreSubmissions()*/ true && (
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3}>
                         <Box
@@ -151,8 +151,8 @@ export default props => {
                                 align="center"
                                 gutterBottom
                             >
-                                This event allows submissions to multiple
-                                challenges! Add a new one now!
+                                This event allows multiple submissions! Add a
+                                new one now!
                             </Typography>
                             <Box p={1} />
                             <Button
