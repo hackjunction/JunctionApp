@@ -57,7 +57,7 @@ export default ({ event, registration }) => {
                                     variant="contained"
                                     color="theme_orange"
                                 >
-                                    {t('Event_dashboard')}
+                                    {t('Event_dashboard_')}
                                 </Button>
                             </Grid>
                         </Grid>
