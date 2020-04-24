@@ -13,11 +13,13 @@ import {
 import { useDispatch } from 'react-redux'
 
 import Button from 'components/generic/Button'
+import { useTranslation } from 'react-i18next'
 
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default ({ userId, onClose }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
 
@@ -43,12 +45,11 @@ export default ({ userId, onClose }) => {
             aria-labelledby="form-dialog-title"
         >
             <DialogTitle id="form-dialog-title">
-                Revoke access to recruitment
+                {t('Revoke_access_recruitment_')}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    This means the selected user will no longer be able to
-                    access the recruitment dashboard
+                    {t('Revoke_access_desc_')}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -64,14 +65,14 @@ export default ({ userId, onClose }) => {
                             color="theme_white"
                             variant="contained"
                         >
-                            Cancel
+                            {t('Cancel_')}
                         </Button>
                         <Button
                             strong
                             onClick={handleRevokeAccess}
                             color="secondary"
                         >
-                            Revoke access
+                            {t('Revoke_access_')}
                         </Button>
                     </React.Fragment>
                 )}

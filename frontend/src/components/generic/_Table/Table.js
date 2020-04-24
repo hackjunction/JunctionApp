@@ -139,7 +139,7 @@ const _Table = ({
         useRowSelect,
         hooks => {
             if (enableSelection) {
-                hooks.flatColumns.push(columns => [
+                hooks.columns.push(columns => [
                     // Let's make a column for selection
                     {
                         id: 'selection',
@@ -173,7 +173,7 @@ const _Table = ({
     const handleRowClick = useCallback(
         row => {
             if (typeof renderExpanded === 'function') {
-                row.toggleExpanded(!row.isExpanded)
+                row.toggleRowExpanded(!row.isExpanded)
             }
 
             if (typeof onRowClick === 'function') {

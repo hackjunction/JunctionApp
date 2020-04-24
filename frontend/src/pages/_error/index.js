@@ -4,7 +4,7 @@ import { useLocation } from 'react-router'
 import { push } from 'connected-react-router'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { useTranslation } from 'react-i18next'
 import { Box } from '@material-ui/core'
 import Button from 'components/generic/Button'
 import FixedLayout from 'components/layouts/FixedLayout'
@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const classes = useStyles()
     const location = useLocation()
@@ -74,7 +75,7 @@ export default () => {
                     alt="logo"
                 />
                 <Typography variant="h6" className={classes.title}>
-                    Oh-oh, something went wrong
+                    {t('Something_wrong_')}
                 </Typography>
                 {error ? (
                     <Typography variant="body1" className={classes.error}>
@@ -82,13 +83,11 @@ export default () => {
                     </Typography>
                 ) : null}
                 <Typography variant="subtitle2" className={classes.subtitle}>
-                    If this problem persists, it might be a problem on our end.
-                    In this case, please reach out to us via email at
-                    dev@hackjunction.com for further support.
+                    {t('Problem_persists_')}
                 </Typography>
                 <Box mt={2}>
                     <Button color="primary" onClick={() => dispatch(push('/'))}>
-                        Back to home page
+                        {t('Back_to_home_page_')}
                     </Button>
                 </Box>
             </Box>

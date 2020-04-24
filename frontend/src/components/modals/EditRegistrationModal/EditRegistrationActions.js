@@ -9,7 +9,7 @@ import OrganiserSelectModal from 'components/modals/OrganiserSelectModal'
 import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-
+import { useTranslation } from 'react-i18next'
 import { useFormField } from 'hooks/formHooks'
 
 export default ({ registration, onSubmit, onCancel }) => {
@@ -21,7 +21,7 @@ export default ({ registration, onSubmit, onCancel }) => {
     const tags = useFormField(registration.tags)
     const status = useFormField(registration.status)
     const travelGrant = useFormField(registration.travelGrant)
-
+    const { t, i18n } = useTranslation()
     const formFields = [rating, assignedTo, tags, status, travelGrant]
     const formValues = {
         rating: rating.value,
@@ -58,11 +58,11 @@ export default ({ registration, onSubmit, onCancel }) => {
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Box pt={3}>
-                    <Typography variant="h5">Edit registration</Typography>
+                    <Typography variant="h5">{t('Edit_reg_')}</Typography>
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="subtitle1">Rating</Typography>
+                <Typography variant="subtitle1">{t('Rating_')}</Typography>
                 <Rating
                     name="disabled"
                     value={rating.value}
@@ -70,7 +70,7 @@ export default ({ registration, onSubmit, onCancel }) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="subtitle1">Assigned to</Typography>
+                <Typography variant="subtitle1">{t('Assigned_to_')}</Typography>
                 <Box
                     display="flex"
                     flexDirection="row"
@@ -90,7 +90,7 @@ export default ({ registration, onSubmit, onCancel }) => {
                         </Typography>
                     </Box>
                     <Button onClick={() => setOrganiserModalOpen(true)}>
-                        Change
+                        {t('Change_')}
                     </Button>
                 </Box>
                 <OrganiserSelectModal
@@ -101,7 +101,7 @@ export default ({ registration, onSubmit, onCancel }) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="subtitle1">Tags</Typography>
+                <Typography variant="subtitle1">{t('Tags_')} </Typography>
                 <EventTagsSelect
                     value={tags.value}
                     onChange={tags.setValue}
@@ -109,7 +109,7 @@ export default ({ registration, onSubmit, onCancel }) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="subtitle1">Status</Typography>
+                <Typography variant="subtitle1">{t('Status_')} </Typography>
                 <RegistrationStatusSelect
                     allowRestricted
                     value={status.value}
@@ -131,14 +131,14 @@ export default ({ registration, onSubmit, onCancel }) => {
                     flexDirection="row"
                     justifyContent="flex-end"
                 >
-                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button onClick={onCancel}>{t('Cancel_')}</Button>
                     <Button
                         color="primary"
                         variant="contained"
                         onClick={handleSubmit}
                         disabled={!formDirty}
                     >
-                        Save changes
+                        {t('Save_changes_')}
                     </Button>
                 </Box>
             </Grid>

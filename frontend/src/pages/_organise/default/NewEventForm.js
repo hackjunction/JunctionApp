@@ -11,8 +11,9 @@ import EventsService from 'services/events'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
-
+import { useTranslation } from 'react-i18next'
 export default () => {
+    const { t, i18n } = useTranslation()
     const [name, setName] = useState('')
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)
@@ -24,25 +25,25 @@ export default () => {
     useEffect(() => {
         if (hasError) {
             if (name.length < 5) {
-                setError('Name must be at least 5 characters')
+                setError(t('Name_must_five_'))
             } else if (name.length >= 50) {
-                setError('Name must be under 50 characters')
+                setError(t('Name_must_under_'))
             } else {
                 setError()
             }
         }
-    }, [name, hasError])
+    }, [name, hasError, t])
 
     const checkName = useCallback(() => {
         if (name.length < 5) {
-            setError('Name must be at least 5 characters')
+            setError(t('Name_must_five_'))
             return false
         } else if (name.length >= 50) {
-            setError('Name must be under 50 characters')
+            setError(t('Name_must_under_'))
             return false
         }
         return true
-    }, [name])
+    }, [name.length, t])
 
     const handleCreate = useCallback(() => {
         if (!checkName()) return
@@ -53,21 +54,17 @@ export default () => {
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {
-                dispatch(
-                    SnackbarActions.error(
-                        'Something went wrong... Unable to create event'
-                    )
-                )
+                dispatch(SnackbarActions.error(t('Unable_to_create_')))
             })
             .finally(() => {
                 setLoading(false)
             })
-    }, [checkName, name, idToken, dispatch])
+    }, [checkName, idToken, name, dispatch, t])
 
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>
-                Create a new event
+                {t('Create_new_event_')}
             </Typography>
             <Grid container spacing={2} direction="row" alignItems="flex-end">
                 <Grid item xs={12}>
@@ -77,8 +74,8 @@ export default () => {
                 </Grid>
                 <Grid item xs={12} sm={9}>
                     <TextInput
-                        label="Event name"
-                        placeholder="Enter the name of your event"
+                        label={t('Event_name_')}
+                        placeholder={t('Enter_event_name_')}
                         value={name}
                         onChange={setName}
                         disabled={loading}
@@ -93,7 +90,7 @@ export default () => {
                         color="primary"
                         variant="contained"
                     >
-                        Create
+                        {t('Create_')}
                     </Button>
                 </Grid>
             </Grid>

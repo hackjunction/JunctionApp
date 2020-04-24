@@ -15,9 +15,10 @@ const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetail
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
 const RegistrationConfigSchema = require('@hackjunction/shared/schemas/RegistrationConfig')
 const AddressSchema = require('@hackjunction/shared/schemas/Address')
+const WebhookSchema = require('@hackjunction/shared/schemas/Webhook')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
-const uploadHelper = require('../../modules/upload/helper')
+const uploadHelper = require('../upload/helper')
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -130,6 +131,10 @@ const EventSchema = new mongoose.Schema({
             'is required if challenges are enabled',
         ],
     },
+    allowProjectSubmissionsPerChallenge: {
+        type: Boolean,
+        default: false,
+    },
     travelGrantConfig: {
         type: TravelGrantConfigSchema.mongoose,
         default: TravelGrantConfigSchema.mongoose,
@@ -164,6 +169,10 @@ const EventSchema = new mongoose.Schema({
     },
     tags: {
         type: [EventTagSchema.mongoose],
+        default: [],
+    },
+    webhooks: {
+        type: [WebhookSchema.mongoose],
         default: [],
     },
     /** System metadata */
@@ -212,6 +221,19 @@ const EventSchema = new mongoose.Schema({
     },
     demo_instructions: {
         type: String,
+    },
+    demoLabel: {
+        type: String,
+        default: 'Demo URL',
+    },
+    demoHint: {
+        type: String,
+        default:
+            'Add the link of the working version of your project. Depending on the event, this could be a link to an API, a link to file or a presentation. Make sure the link is accessible for humans, as well as machines',
+    },
+    demoPlaceholder: {
+        type: String,
+        default: 'https://...',
     },
 })
 

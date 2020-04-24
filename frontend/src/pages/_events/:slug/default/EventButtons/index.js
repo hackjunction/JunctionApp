@@ -9,8 +9,10 @@ import { Typography, Grid } from '@material-ui/core'
 
 import Button from 'components/generic/Button'
 import * as AuthSelectors from 'redux/auth/selectors'
+import { useTranslation } from 'react-i18next'
 
 export default ({ event, registration }) => {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
@@ -19,10 +21,11 @@ export default ({ event, registration }) => {
         case EventStatuses.PUBLISHED.id: {
             return (
                 <Typography align="center" variant="subtitle1">
-                    The application period begins{' '}
-                    {moment(event.registrationStartTime).format(
-                        `LLL [(${event.timezone})]`
-                    )}
+                    {t('Applications_begins_', {
+                        time: moment(event.registrationStartTime).format(
+                            `LLL [(${event.timezone})]`
+                        ),
+                    })}
                 </Typography>
             )
         }
@@ -40,7 +43,7 @@ export default ({ event, registration }) => {
                                     variant="contained"
                                     color="theme_turquoise"
                                 >
-                                    Edit your registration
+                                    {t('Edit_registration_')}
                                 </Button>
                             </Grid>
                             <Grid item xs={12}>
@@ -54,7 +57,7 @@ export default ({ event, registration }) => {
                                     variant="contained"
                                     color="theme_orange"
                                 >
-                                    Event dashboard
+                                    {t('Event_dashboard_')}
                                 </Button>
                             </Grid>
                         </Grid>
@@ -69,7 +72,7 @@ export default ({ event, registration }) => {
                             variant="contained"
                             color="theme_turquoise"
                         >
-                            Register now
+                            {t('Register_now_')}
                         </Button>
                     )
                 }
@@ -83,7 +86,7 @@ export default ({ event, registration }) => {
                         variant="contained"
                         color="theme_turquoise"
                     >
-                        Log in to register
+                        {t('Log_in_register')}
                     </Button>
                 )
             }
@@ -100,13 +103,13 @@ export default ({ event, registration }) => {
                             variant="contained"
                             color="theme_turquoise"
                         >
-                            Event dashboard
+                            {t('Event_dashboard_')}
                         </Button>
                     )
                 } else {
                     return (
                         <Typography variant="subtitle1" align="center">
-                            The application period for this event has ended!
+                            {t('Period_ended_')}
                         </Typography>
                     )
                 }
@@ -120,7 +123,7 @@ export default ({ event, registration }) => {
                         variant="contained"
                         color="theme_turquoise"
                     >
-                        Log in
+                        {t('Log_in_')}
                     </Button>
                 )
             }

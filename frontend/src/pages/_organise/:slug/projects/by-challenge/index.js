@@ -45,7 +45,11 @@ export default () => {
                             ></ListItemText>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Box display="flex" flexDirection="column">
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                style={{ width: '100%' }}
+                            >
                                 <Box p={1}>
                                     <ChallengeLink challenge={challenge.slug} />
                                 </Box>
