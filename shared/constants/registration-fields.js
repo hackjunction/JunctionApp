@@ -165,9 +165,9 @@ const FieldProps = {
         },
     },
     dateOfBirth: {
+        // TODO Hint based on event specific age requiremrement
         label: 'Date of Birth',
-        hint:
-            'Please note that you must be at least 16 years old to register for this event',
+        hint: '',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,
