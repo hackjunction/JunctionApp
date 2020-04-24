@@ -165,7 +165,6 @@ const FieldProps = {
         },
     },
     dateOfBirth: {
-        // TODO Hint based on event specific age requiremrement
         label: 'Date of Birth',
         hint: '',
         hintMarkdown: false,
