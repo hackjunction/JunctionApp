@@ -286,8 +286,7 @@ export default () => {
                                         variant="subtitle2"
                                         className={classes.label}
                                     >
-                                        {/* TODO add custom age requirement */}I
-                                        confirm that I have read and agree to
+                                        I confirm that I have read and agree to
                                         the {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
                                             href={config.TERMS_URL}
