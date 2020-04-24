@@ -166,7 +166,7 @@ const FieldProps = {
     },
     dateOfBirth: {
         label: 'Date of Birth',
-        hint: '',
+        hint: 'Please note that you must be at least 16 years old to register.',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,

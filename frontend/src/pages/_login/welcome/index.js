@@ -286,8 +286,9 @@ export default () => {
                                         variant="subtitle2"
                                         className={classes.label}
                                     >
-                                        I confirm that I have read and agree to
-                                        the {config.PLATFORM_OWNER_NAME}{' '}
+                                        I confirm that I am at least 16 years of
+                                        age, and I have read and agree to the{' '}
+                                        {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
                                             href={config.TERMS_URL}
                                             target="_blank"
