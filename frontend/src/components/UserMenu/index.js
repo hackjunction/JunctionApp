@@ -161,6 +161,12 @@ export default () => {
                                 }
                             />
                         </ListItem>
+                        <ListItem button>
+                            <ListItemText
+                                primary="Hackerpack"
+                                onClick={() => dispatch(push('/hackerpack'))}
+                            />{' '}
+                        </ListItem>
                         {renderEventItems()}
                         {renderOtherItems()}
                         <Divider />

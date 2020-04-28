@@ -7,7 +7,7 @@ import CallbackPage from './pages/_callback'
 import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
-
+import HackerpackPage from './pages/_hackerpack'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 
@@ -83,6 +83,12 @@ const routes = [
     {
         path: '/projects',
         component: ProjectsRouter,
+        exact: false,
+    },
+
+    {
+        path: '/hackerpack',
+        component: HackerpackPage,
         exact: false,
     },
 ]
