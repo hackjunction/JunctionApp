@@ -203,7 +203,7 @@ export default React.memo(
                         className={classes.drawerToggle}
                         aria-label="toggle drawer"
                     >
-                        <MenuIcon />
+                        <MenuIcon fontSize="large" />
                     </IconButton>
                 </Hidden>
                 <Hidden smDown implementation="css">
@@ -212,7 +212,11 @@ export default React.memo(
                         className={classes.drawerToggleDesktop}
                         aria-label="toggle drawer desktop"
                     >
-                        {desktopOpen ? <KeyboardBackspaceIcon /> : <MenuIcon />}
+                        {desktopOpen ? (
+                            <KeyboardBackspaceIcon />
+                        ) : (
+                            <MenuIcon fontSize="large" />
+                        )}
                     </IconButton>
                 </Hidden>
                 <Hidden mdUp implementation="css">
