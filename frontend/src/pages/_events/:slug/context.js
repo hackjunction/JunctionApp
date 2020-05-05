@@ -8,6 +8,7 @@ import { EventStatuses } from '@hackjunction/shared'
 import * as AuthSelectors from 'redux/auth/selectors'
 import RegistrationsService from 'services/registrations'
 
+//TODO move to queries
 const eventQuery = gql`
     query Event($slug: String!) {
         eventBySlug(slug: $slug) {

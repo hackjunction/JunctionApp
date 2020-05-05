@@ -8,6 +8,7 @@ import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
 import HackerpackPage from './pages/_hackerpack'
+import AdminView from './pages/_admin'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 
@@ -85,10 +86,14 @@ const routes = [
         component: ProjectsRouter,
         exact: false,
     },
-
     {
         path: '/hackerpack',
         component: HackerpackPage,
+        exact: false,
+    },
+    {
+        path: '/admin',
+        component: AdminView,
         exact: false,
     },
 ]
