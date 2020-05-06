@@ -1,8 +1,7 @@
 import React from 'react'
 import { Box, Typography, Divider } from '@material-ui/core'
 
-import CompanySection from './CompanySection'
-
+import CompanySection from 'components/hackerpack/CompanySection'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 

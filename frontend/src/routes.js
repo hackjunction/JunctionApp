@@ -8,7 +8,6 @@ import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
 import HackerpackPage from './pages/_hackerpack'
-import AdminView from './pages/_admin'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 
@@ -20,6 +19,7 @@ const OrganiserRouter = lazy(() => import('./pages/_organise'))
 const AccountRouter = lazy(() => import('./pages/_account'))
 const RecruitmentRouter = lazy(() => import('./pages/_recruitment'))
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
+const AdminRouter = lazy(() => import('./pages/_admin'))
 
 const routes = [
     {
@@ -92,8 +92,9 @@ const routes = [
         exact: false,
     },
     {
+        //TODO require superadmin
         path: '/admin',
-        component: AdminView,
+        component: AdminRouter,
         exact: false,
     },
 ]

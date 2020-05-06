@@ -6,11 +6,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Formik, FastField, Field } from 'formik'
 import * as yup from 'yup'
 
-import PageWrapper from 'components/layouts/PageWrapper'
+import ImageUpload from 'components/inputs/ImageUpload'
 import TextInput from 'components/inputs/TextInput'
 import BottomBar from 'components/inputs/BottomBar'
 
-import * as HackerpackActions from 'redux/hackerpack/actions'
+import HackerpackService from 'services/hackerpack'
+
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
@@ -45,10 +46,23 @@ export default () => {
     const { t, i18n } = useTranslation()
 
     const classes = useStyles()
+
+    const validationSchema = useCallback(data => {
+        const validations = {}
+        validations['name'] = yup.string()
+        validations['description'] = yup.string()
+        validations['link'] = yup.string().url()
+        validations['icon'] = yup
+            .string()
+            .url()
+            .nullable()
+        return validations
+    }, [])
+
     const handleSubmit = useCallback(
         (values, formikBag) => {
             formikBag.setSubmitting(true)
-            dispatch(HackerpackActions.createHackerpack(values))
+            dispatch(HackerpackService.createHackerpack(values))
                 .then(() => {
                     dispatch(SnackbarActions.success('Changes saved!'))
                 })
@@ -67,7 +81,16 @@ export default () => {
     )
 
     return (
-        <Formik enableReinitialize onSubmit={handleSubmit}>
+        <Formik
+            validationSchema={props => {
+                return yup.lazy(values => {
+                    return yup.object().shape(validationSchema(values))
+                })
+            }}
+            enableReinitialize
+            initialValues={{}}
+            onSubmit={handleSubmit}
+        >
             {formikProps => (
                 <React.Fragment>
                     <Box className={classes.topWrapper}>
@@ -75,10 +98,10 @@ export default () => {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={6}>
                                     <FastField
-                                        name="firstName"
+                                        name="name"
                                         render={({ field, form }) => (
                                             <TextInput
-                                                label={t('First_name_')}
+                                                label={t('Name_')}
                                                 value={field.value}
                                                 onChange={value =>
                                                     form.setFieldValue(
@@ -97,10 +120,67 @@ export default () => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <FastField
-                                        name="lastName"
+                                        name="description"
                                         render={({ field, form }) => (
                                             <TextInput
-                                                label={t('Last_name_')}
+                                                label={t('Description_')}
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <FastField
+                                        name="icon"
+                                        render={({ field, form }) => (
+                                            <Box
+                                                width="100%"
+                                                height="100%"
+                                                borderRadius="50%"
+                                                overflow="hidden"
+                                                position="relative"
+                                            >
+                                                <ImageUpload
+                                                    value={
+                                                        field.value
+                                                            ? {
+                                                                  url:
+                                                                      field.value,
+                                                              }
+                                                            : undefined
+                                                    }
+                                                    onChange={value =>
+                                                        form.setFieldValue(
+                                                            field.name,
+                                                            value
+                                                                ? value.url
+                                                                : null
+                                                        )
+                                                    }
+                                                    uploadUrl="/api/upload/hackerpack/icon/"
+                                                    resizeMode="cover"
+                                                />
+                                            </Box>
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <FastField
+                                        name="link"
+                                        render={({ field, form }) => (
+                                            <TextInput
+                                                label={t('Link_')}
                                                 value={field.value}
                                                 onChange={value =>
                                                     form.setFieldValue(

@@ -15,6 +15,7 @@ const gavelRouter = require('./reviewing/gavel/routes')
 const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
 const projectScoresRouter = require('./project_score/routes')
+const hackerpackRouter = require('./hackerpack/routes')
 
 module.exports = function(app) {
     app.get('/api', (req, res) => {
@@ -38,6 +39,7 @@ module.exports = function(app) {
     app.use('/api/user-profiles', userProfileRouter)
     app.use('/api/recruitment', recruitmentRouter)
     app.use('/api/project-scores', projectScoresRouter)
+    app.use('/api/hackerpack', hackerpackRouter)
 
     /** Reviewing methods */
     app.use('/api/reviewing/gavel', gavelRouter)
