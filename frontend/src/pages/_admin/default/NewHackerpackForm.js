@@ -50,12 +50,14 @@ export default () => {
         setLoading(true)
         HackerpackService.createHackerpack(idToken, { name })
             .then(data => {
-                //TODO change this
-                dispatch(push(`/organise/${data.slug}`))
+                console.log('doing data', data)
+                dispatch(push(`/admin/${data.slug}`))
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {
-                dispatch(SnackbarActions.error(t('Unable_to_create_')))
+                dispatch(
+                    SnackbarActions.error(t('Unable_to_create_hackerpack_'))
+                )
             })
             .finally(() => {
                 setLoading(false)

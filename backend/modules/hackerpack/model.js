@@ -1,91 +1,65 @@
 const mongoose = require('mongoose')
+const mongooseSlugPlugin = require('mongoose-slug-plugin')
+
 const _ = require('lodash')
 const Shared = require('@hackjunction/shared')
+const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
-const publicFieldsPlugin = require('../../common/plugins/publicFields')
 const AuthController = require('../auth/controller')
 
 const { RegistrationFields } = Shared
 
 const HackerpackSchema = new mongoose.Schema({
-    packId: {
+    name: {
         type: String,
         required: true,
-        unique: true,
+        maxLength: 100,
+        trim: true,
     },
-    icon: {
+    slug: {
+        type: String,
+        slug: 'name',
+        unique: true,
+        slugPaddingSize: 2,
+    },
+    description: {
+        type: String,
+        maxLength: 5000,
+        trim: true,
+    },
+    link: {
         type: String,
     },
-    registrations: {
-        type: Array,
-        required: false,
-        default: [],
+    logo: CloudinaryImageSchema.mongoose,
+})
+
+HackerpackSchema.index(
+    {
+        slug: 1,
     },
-    recruiterEvents: {
-        type: Array,
-        required: false,
-        default: [],
-        set(recruiterEvents) {
-            this._previousRecruiterEvents = this.recruiterEvents
-            return recruiterEvents
+    {
+        unique: true,
+    }
+)
+
+HackerpackSchema.plugin(mongooseSlugPlugin, {
+    tmpl: '<%=name%>',
+    alwaysUpdateSlug: false,
+    slugOptions: {
+        custom: {
+            "'": '',
         },
     },
-    recruiterOrganisation: {
-        type: String,
-        required: false,
-    },
 })
 
-/** Build user profile fields based on possible registration questions */
-const fields = {}
-_.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
-    if (value.copyToHackerpack && value.mongooseSchema) {
-        fields[fieldName] = value.mongooseSchema
-    }
-})
-
-HackerpackSchema.add(fields)
-
-HackerpackSchema.post('save', function(doc, next) {
-    if (
-        _.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0
-    ) {
-        if (this.recruiterEvents.length === 0) {
-            AuthController.revokeRecruiterPermission(this.packId)
-        } else {
-            AuthController.grantRecruiterPermission(this.packId)
-        }
-        AuthController.updateMetadata(this.packId, {
-            recruiterEvents: this.recruiterEvents,
-            recruiterOrganisation: this.recruiterOrganisation,
-        })
-    }
-    next()
+HackerpackSchema.plugin(updateAllowedPlugin, {
+    blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'slug'],
 })
 
 HackerpackSchema.set('timestamps', true)
 
-HackerpackSchema.index({
-    packId: 1,
-})
-
-HackerpackSchema.index({
-    firstName: 'text',
-    lastName: 'text',
-    email: 'text',
-})
-
-HackerpackSchema.plugin(updateAllowedPlugin, {
-    blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'packId'],
-})
-
-HackerpackSchema.plugin(publicFieldsPlugin, {
-    fields: ['packId', 'icon', 'name', 'description'],
-})
+// TODO add remove icon
 
 const Hackerpack = mongoose.model('Hackerpack', HackerpackSchema)
 
-module.exports = {
-    Hackerpack,
-    HackerpackSchema,
-}
+module.exports = Hackerpack

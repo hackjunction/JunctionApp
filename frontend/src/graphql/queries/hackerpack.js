@@ -5,7 +5,7 @@ const Fragments = {
     HackerpackListing: gql`
         fragment HackerpackListing on Hackerpack {
             _id
-            packId
+            slug
             name
             description
             icon {

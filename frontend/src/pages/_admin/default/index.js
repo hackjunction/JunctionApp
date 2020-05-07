@@ -6,7 +6,7 @@ import Footer from 'components/layouts/Footer'
 
 import CenteredContainer from 'components/generic/CenteredContainer'
 
-import NewhackerpackForm from './HackerpackForm'
+import NewHackerpackForm from './NewHackerpackForm'
 import HackerpackList from './HackerpackList'
 
 import { useHackerpackListing } from 'graphql/queries/hackerpack'
@@ -21,7 +21,7 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <CenteredContainer>
-                    <NewhackerpackForm />
+                    <NewHackerpackForm />
                     <HackerpackList hackerpack={hackerpack} />
                 </CenteredContainer>
             )}

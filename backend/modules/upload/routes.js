@@ -150,7 +150,7 @@ router.post(
  */
 // TODO isSuperAdmin
 router.post('/hackerpack/icon', hasToken, (req, res, next) => {
-    console.log('Happanun', req.hackerpack)
+    console.log('Happanun', req)
     helper.uploadHackerpackIcon(req.hackerpack.id)(req, res, function(err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {

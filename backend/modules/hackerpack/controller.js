@@ -1,10 +1,10 @@
 const _ = require('lodash')
-const { Hackerpack } = require('./model')
+const Hackerpack = require('./model')
 const { NotFoundError } = require('../../common/errors/errors')
 
 const controller = {}
 
-controller.getHackerpack = id => {
+controller.getHackerpackById = id => {
     return Hackerpack.findOne({
         id,
     }).then(hackerpack => {
@@ -15,26 +15,29 @@ controller.getHackerpack = id => {
     })
 }
 
+controller.getHackerpackBySlug = slug => {
+    console.log('trying to find slug', slug)
+    return Hackerpack.findOne({ slug })
+}
+
 controller.getHackerpacks = () => {
     return Hackerpack.find()
 }
 
 controller.createHackerpack = (data, id) => {
+    console.log('with', data, id)
     const hackerpack = new Hackerpack({
-        id,
         name: data.name,
-        description: data.description,
-        icon: data.icon,
-        link: data.link,
     })
     return hackerpack.save()
 }
 
-controller.updateHackerpack = async (data, id) => {
-    // TODO validate
-    return controller.getHackerpack(id).then(hackerpack => {
-        return Hackerpack.updateAllowed(hackerpack, data)
-    })
+controller.updateHackerpack = (slug, hackerpackData) => {
+    console.log('updating', slug, 'with!!', hackerpackData)
+    return Hackerpack.findOneAndUpdate({ slug }, hackerpackData)
+
+    // TODO look into updateAllowed, standardize or remove
+    // return Hackerpack.updateAllowed(hackerpack, hackerpackData)
 }
 
 controller.getHackerpackByEvent = eventId => {

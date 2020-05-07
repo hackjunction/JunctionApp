@@ -21,34 +21,41 @@ const getHackerpackByEvent = asyncHandler(async (req, res) => {
 })
 
 const createHackerpack = asyncHandler(async (req, res) => {
-    const Hackerpack = await HackerpackController.createHackerpack(
+    console.log('creating hackerpak')
+    const hackerpack = await HackerpackController.createHackerpack(
         req.body,
         req.user.sub
     )
-    return res.status(201).json(Hackerpack)
+    console.log('crettod hakeorororo', hackerpack)
+    return res.status(201).json(hackerpack)
 })
 
 const updateHackerpack = asyncHandler(async (req, res) => {
+    console.log('reoutes', req.params.slug, req.body)
     const updatedHackerpack = await HackerpackController.updateHackerpack(
-        req.body,
-        req.user.sub
+        req.params.slug,
+        req.body
     )
     return res.status(200).json(updatedHackerpack)
 })
 
-// TODO has superadmin
+// TODO has superadmin for post patch
 router
     .route('/')
     .get(hasToken, getHackerpack)
     .post(
         hasToken,
-        createHackerpack,
-        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT)
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        createHackerpack
     )
+
+router
+    .route('/:slug')
+    .get(hasToken, getHackerpack)
     .patch(
         hasToken,
-        updateHackerpack,
-        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT)
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        updateHackerpack
     )
 
 router.route('/event/:slug').get(getHackerpackByEvent)

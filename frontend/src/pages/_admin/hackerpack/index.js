@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import { useRouteMatch } from 'react-router'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Grid, Typography } from '@material-ui/core'
@@ -13,6 +14,8 @@ import BottomBar from 'components/inputs/BottomBar'
 import HackerpackService from 'services/hackerpack'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
+
+import * as AuthSelectors from 'redux/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(theme => ({
@@ -42,10 +45,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const match = useRouteMatch()
+
     const dispatch = useDispatch()
     const { t, i18n } = useTranslation()
+    const { slug } = match.params
 
     const classes = useStyles()
+    const idToken = useSelector(AuthSelectors.getIdToken)
 
     const validationSchema = useCallback(data => {
         const validations = {}
@@ -62,7 +69,7 @@ export default () => {
     const handleSubmit = useCallback(
         (values, formikBag) => {
             formikBag.setSubmitting(true)
-            dispatch(HackerpackService.createHackerpack(values))
+            dispatch(HackerpackService.updateHackerpack(idToken, slug, values))
                 .then(() => {
                     dispatch(SnackbarActions.success('Changes saved!'))
                 })
@@ -77,7 +84,7 @@ export default () => {
                     formikBag.setSubmitting(false)
                 })
         },
-        [dispatch]
+        [dispatch, idToken, slug]
     )
 
     return (

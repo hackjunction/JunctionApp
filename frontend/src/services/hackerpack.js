@@ -13,19 +13,22 @@ function config(idToken) {
 const BASE_ROUTE = '/hackerpack'
 
 HackerpackService.createHackerpack = (idToken, data) => {
+    console.log('creting!!!', data)
     return _axios.post(`${BASE_ROUTE}`, data, config(idToken))
 }
 
-HackerpackService.updateHackerpack = (id, data) => {
-    return _axios.patch(`${BASE_ROUTE}/id/${id}`, { data })
+HackerpackService.updateHackerpack = (idToken, slug, data) => {
+    console.log('updating with', data)
+    return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken))
 }
 
+/*
 HackerpackService.getHackerpack = id => {
     return _axios.get(`${BASE_ROUTE}/id/${id}`)
 }
 
 HackerpackService.getHackerpackByEvent = slug => {
     return _axios.get(`${BASE_ROUTE}/event/${slug}`)
-}
+}*/
 
 export default HackerpackService
