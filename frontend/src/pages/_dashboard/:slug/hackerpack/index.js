@@ -1,10 +1,9 @@
 import React from 'react'
 import { Box, Typography, Divider } from '@material-ui/core'
 
-import CompanySection from './CompanySection'
-
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
+import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 
 import Partners from 'constants/hackerpack-partners.js'
 
@@ -18,17 +17,7 @@ export default () => {
             <PageWrapper loading={false}>
                 <Divider variant="middle" />
                 {Partners.map(company => (
-                    <React.Fragment>
-                        <Box p={2}>
-                            <CompanySection
-                                name={company.name}
-                                description={company.description}
-                                icon={company.icon}
-                                link={company.link}
-                            />
-                        </Box>
-                        <Divider variant="middle" />
-                    </React.Fragment>
+                    <HackerpackDetail partner={company} />
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">
