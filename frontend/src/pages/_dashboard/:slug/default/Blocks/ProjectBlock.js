@@ -39,15 +39,14 @@ export default () => {
                         Project submissions not yet open
                     </Typography>
                     <Typography variant="body1">
-                        Project submissions begin{' '}
-                        {moment(event.submissionsStartTime).format('LLLL')}, and
+                        Project submissions begin on{' '}
+                        {moment(event.submissionsStartTime).format('LLLL')},and
                         you'll be able to submit your project here. As soon as
                         you have a general idea of what you're building, you
                         should make the first version of your project
-                        submission, so that organisers and partners have a
-                        general idea of what everyone is working on. You can
-                        always edit your project submission until the final
-                        submission deadline,{' '}
+                        submission. The project won't be visible to others until
+                        the end. You can always edit your project submission
+                        until the final submission deadline{' '}
                         {moment(event.submissionsEndTime).format('LLLL')}
                     </Typography>
                 </GradientBox>
@@ -100,10 +99,8 @@ export default () => {
                         submit a draft of your project as soon as you have a
                         rough idea of what you're making. You're free to edit
                         your project submission as many times as you wish until
-                        the final submission deadline. By submitting a draft of
-                        your project now, event organisers, partners and mentors
-                        will be able to see what you're working on and offer you
-                        assistance with your project. It'll take you under a
+                        the final submission deadline, and the project won't be
+                        visible to others until the end. It'll take you under a
                         minute, we promise.
                     </Typography>
                     <Button
