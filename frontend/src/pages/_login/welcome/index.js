@@ -287,7 +287,7 @@ export default () => {
                                         className={classes.label}
                                     >
                                         I confirm that I am at least 16 years of
-                                        age, and I have read and agree to the{' '}
+                                        age, and I have read and agree with the{' '}
                                         {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
                                             href={config.TERMS_URL}
