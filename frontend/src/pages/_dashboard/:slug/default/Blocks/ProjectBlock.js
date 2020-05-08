@@ -40,7 +40,7 @@ export default () => {
                     </Typography>
                     <Typography variant="body1">
                         Project submissions begin on{' '}
-                        {moment(event.submissionsStartTime).format('LLLL')},and
+                        {moment(event.submissionsStartTime).format('LLLL')}, and
                         you'll be able to submit your project here. As soon as
                         you have a general idea of what you're building, you
                         should make the first version of your project
