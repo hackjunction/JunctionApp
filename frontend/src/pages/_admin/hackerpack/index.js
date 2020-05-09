@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useRouteMatch } from 'react-router'
-
 import { useDispatch, useSelector } from 'react-redux'
+
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Formik, FastField, Field } from 'formik'
@@ -51,6 +51,14 @@ export default () => {
     const { t, i18n } = useTranslation()
     const { slug } = match.params
 
+    const [initialData, setInitialData] = useState({})
+
+    useEffect(() => {
+        HackerpackService.getHackerpackBySlug(slug).then(data => {
+            if (data) setInitialData(data)
+        })
+    }, [slug])
+
     const classes = useStyles()
     const idToken = useSelector(AuthSelectors.getIdToken)
 
@@ -95,7 +103,7 @@ export default () => {
                 })
             }}
             enableReinitialize
-            initialValues={{}}
+            initialValues={initialData}
             onSubmit={handleSubmit}
         >
             {formikProps => (
@@ -175,7 +183,7 @@ export default () => {
                                                                 : null
                                                         )
                                                     }
-                                                    uploadUrl="/api/upload/hackerpack/icon/"
+                                                    uploadUrl={`/api/upload/hackerpack/${slug}/icon/`}
                                                     resizeMode="cover"
                                                 />
                                             </Box>

@@ -150,7 +150,7 @@ const UploadHelper = {
         }).single('image')
     },
 
-    uploadHackerpackIcon: id => {
+    uploadHackerpackIcon: slug => {
         const storage = createStorageWithPath(
             `hackerpack`,
             {
@@ -159,7 +159,7 @@ const UploadHelper = {
                 crop: 'fill',
             },
             {
-                tag: UploadHelper.generateHackerpackTag(id),
+                tag: UploadHelper.generateHackerpackTag(slug),
             }
         )
         return multer({

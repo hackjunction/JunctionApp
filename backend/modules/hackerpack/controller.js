@@ -20,7 +20,7 @@ controller.getHackerpackBySlug = slug => {
     return Hackerpack.findOne({ slug })
 }
 
-controller.getHackerpacks = () => {
+controller.getFullHackerpack = () => {
     return Hackerpack.find()
 }
 

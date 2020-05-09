@@ -9,8 +9,15 @@ const EventController = require('../event/controller')
 const { hasToken } = require('../../common/middleware/token')
 const { hasPermission } = require('../../common/middleware/permissions')
 
+const getFullHackerpack = asyncHandler(async (req, res) => {
+    const Hackerpack = await HackerpackController.getFullHackerpack()
+    return res.status(200).json(Hackerpack)
+})
+
 const getHackerpack = asyncHandler(async (req, res) => {
-    const Hackerpack = await HackerpackController.getHackerpack(req.user.sub)
+    const Hackerpack = await HackerpackController.getHackerpackBySlug(
+        req.params.slug
+    )
     return res.status(200).json(Hackerpack)
 })
 
@@ -42,7 +49,7 @@ const updateHackerpack = asyncHandler(async (req, res) => {
 // TODO has superadmin for post patch
 router
     .route('/')
-    .get(hasToken, getHackerpack)
+    .get(hasToken, getFullHackerpack)
     .post(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
@@ -51,7 +58,7 @@ router
 
 router
     .route('/:slug')
-    .get(hasToken, getHackerpack)
+    .get(getHackerpack)
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),

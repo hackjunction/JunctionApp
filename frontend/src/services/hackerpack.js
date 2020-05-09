@@ -22,11 +22,11 @@ HackerpackService.updateHackerpack = (idToken, slug, data) => {
     return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken))
 }
 
-/*
-HackerpackService.getHackerpack = id => {
-    return _axios.get(`${BASE_ROUTE}/id/${id}`)
+HackerpackService.getHackerpackBySlug = slug => {
+    return _axios.get(`${BASE_ROUTE}/${slug}`)
 }
 
+/*
 HackerpackService.getHackerpackByEvent = slug => {
     return _axios.get(`${BASE_ROUTE}/event/${slug}`)
 }*/
