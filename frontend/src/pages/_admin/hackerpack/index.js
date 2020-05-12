@@ -14,6 +14,7 @@ import BottomBar from 'components/inputs/BottomBar'
 import HackerpackService from 'services/hackerpack'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AdminActions from 'redux/admin/actions'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 
@@ -77,7 +78,7 @@ export default () => {
     const handleSubmit = useCallback(
         (values, formikBag) => {
             formikBag.setSubmitting(true)
-            dispatch(HackerpackService.updateHackerpack(idToken, slug, values))
+            dispatch(AdminActions.editHackerpack(idToken, slug, values))
                 .then(() => {
                     dispatch(SnackbarActions.success('Changes saved!'))
                 })

@@ -30,6 +30,9 @@ const HackerpackSchema = new mongoose.Schema({
     link: {
         type: String,
     },
+    icon: {
+        type: String,
+    },
     logo: CloudinaryImageSchema.mongoose,
 })
 
