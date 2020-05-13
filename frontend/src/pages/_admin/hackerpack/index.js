@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useRouteMatch } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Box, Grid, Typography } from '@material-ui/core'
@@ -47,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
     const match = useRouteMatch()
+    const history = useHistory()
 
     const dispatch = useDispatch()
     const { t, i18n } = useTranslation()
@@ -81,6 +83,7 @@ export default () => {
             dispatch(AdminActions.editHackerpack(idToken, slug, values))
                 .then(() => {
                     dispatch(SnackbarActions.success('Changes saved!'))
+                    history.push('/admin')
                 })
                 .catch(err => {
                     dispatch(
@@ -93,7 +96,7 @@ export default () => {
                     formikBag.setSubmitting(false)
                 })
         },
-        [dispatch, idToken, slug]
+        [dispatch, history, idToken, slug]
     )
 
     return (

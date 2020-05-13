@@ -164,7 +164,7 @@ export default () => {
             accepted: yup.bool().oneOf([true]),
         }),
     })
-
+    // TODO check if this causes the loop
     if (!idToken) {
         return <Redirect to="/login" />
     }

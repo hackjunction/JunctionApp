@@ -21,6 +21,13 @@ const getHackerpack = asyncHandler(async (req, res) => {
     return res.status(200).json(Hackerpack)
 })
 
+const deleteHackerpack = asyncHandler(async (req, res) => {
+    const Hackerpack = await HackerpackController.deleteHackerpack(
+        req.params.slug
+    )
+    return res.status(200).json(Hackerpack)
+})
+
 const getHackerpackByEvent = asyncHandler(async (req, res) => {
     const event = await EventController.getEventMembers(req.params.slug)
     const Hackerpacks = await HackerpackController.getHackerpackByEvent(event)
@@ -29,10 +36,7 @@ const getHackerpackByEvent = asyncHandler(async (req, res) => {
 
 const createHackerpack = asyncHandler(async (req, res) => {
     console.log('creating hackerpak')
-    const hackerpack = await HackerpackController.createHackerpack(
-        req.body,
-        req.user.sub
-    )
+    const hackerpack = await HackerpackController.createHackerpack(req.body)
     console.log('crettod hakeorororo', hackerpack)
     return res.status(201).json(hackerpack)
 })
@@ -49,7 +53,7 @@ const updateHackerpack = asyncHandler(async (req, res) => {
 // TODO has superadmin for post patch
 router
     .route('/')
-    .get(hasToken, getFullHackerpack)
+    .get(getFullHackerpack)
     .post(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
@@ -59,6 +63,7 @@ router
 router
     .route('/:slug')
     .get(getHackerpack)
+    .delete(hasToken, deleteHackerpack)
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),

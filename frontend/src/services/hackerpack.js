@@ -26,9 +26,12 @@ HackerpackService.getHackerpackBySlug = slug => {
     return _axios.get(`${BASE_ROUTE}/${slug}`)
 }
 
-/*
-HackerpackService.getHackerpackByEvent = slug => {
-    return _axios.get(`${BASE_ROUTE}/event/${slug}`)
-}*/
+HackerpackService.deleteHackerpack = (idToken, slug) => {
+    return _axios.delete(`${BASE_ROUTE}/${slug}`, config(idToken))
+}
+
+HackerpackService.getFullHackerpack = () => {
+    return _axios.get(`${BASE_ROUTE}`)
+}
 
 export default HackerpackService

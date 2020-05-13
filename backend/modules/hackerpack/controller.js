@@ -24,8 +24,7 @@ controller.getFullHackerpack = () => {
     return Hackerpack.find()
 }
 
-controller.createHackerpack = (data, id) => {
-    console.log('with', data, id)
+controller.createHackerpack = data => {
     const hackerpack = new Hackerpack({
         name: data.name,
     })
@@ -33,9 +32,13 @@ controller.createHackerpack = (data, id) => {
 }
 
 controller.updateHackerpack = (slug, hackerpackData) => {
-    console.log('updating', slug, 'with!!', hackerpackData)
     return Hackerpack.findOneAndUpdate({ slug }, hackerpackData)
+    // TODO look into updateAllowed, standardize or remove
+    // return Hackerpack.updateAllowed(hackerpack, hackerpackData)
+}
 
+controller.deleteHackerpack = slug => {
+    return Hackerpack.findOneAndDelete({ slug })
     // TODO look into updateAllowed, standardize or remove
     // return Hackerpack.updateAllowed(hackerpack, hackerpackData)
 }

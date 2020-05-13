@@ -9,20 +9,17 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import NewHackerpackForm from './NewHackerpackForm'
 import HackerpackList from './HackerpackList'
 
-import { useHackerpackListing } from 'graphql/queries/hackerpack'
+import HackerpackService from 'services/hackerpack'
 
 export default () => {
-    const [hackerpack, loading] = useHackerpackListing()
-
     return (
         <PageWrapper
-            loading={loading}
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
             render={() => (
                 <CenteredContainer>
                     <NewHackerpackForm />
-                    <HackerpackList hackerpack={hackerpack} />
+                    <HackerpackList />
                 </CenteredContainer>
             )}
         />
