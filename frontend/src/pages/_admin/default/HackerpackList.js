@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 
-import { useDispatch } from 'react-redux'
 import { Grid, Box, Typography } from '@material-ui/core'
 import CompanySection from 'components/hackerpack/CompanySection'
 import Divider from 'components/generic/Divider'
@@ -10,11 +10,13 @@ import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
 import { IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
 
 import HackerpackService from 'services/hackerpack'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 export default ({ data = [] }) => {
+    const dispatch = useDispatch()
     const { t, i18n } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [hackerpack, setHackerpack] = useState(data)
@@ -54,6 +56,16 @@ export default ({ data = [] }) => {
                             >
                                 <DeleteIcon />
                             </IconButton>
+                            <IconButton
+                                edge="end"
+                                aria-label="edit"
+                                onClick={() =>
+                                    dispatch(push(`admin/${company.slug}`))
+                                }
+                            >
+                                <EditIcon />
+                            </IconButton>
+
                             <CompanySection
                                 name={company.name}
                                 description={company.description}
