@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider, Button } from '@material-ui/core'
 
-import CompanySection from 'components/hackerpack/CompanySection'
+import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -60,17 +60,7 @@ export default () => {
                 />
                 <Divider variant="middle" />
                 {hackerpack.map(company => (
-                    <React.Fragment>
-                        <Box p={2}>
-                            <CompanySection
-                                name={company.name}
-                                description={company.description}
-                                icon={company.icon}
-                                link={company.link}
-                            />
-                        </Box>
-                        <Divider variant="middle" />
-                    </React.Fragment>
+                    <HackerpackDetail partner={company} />
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">

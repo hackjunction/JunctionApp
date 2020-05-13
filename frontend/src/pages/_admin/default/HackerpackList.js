@@ -65,7 +65,6 @@ export default ({ data = [] }) => {
                             >
                                 <EditIcon />
                             </IconButton>
-
                             <CompanySection
                                 name={company.name}
                                 description={company.description}
