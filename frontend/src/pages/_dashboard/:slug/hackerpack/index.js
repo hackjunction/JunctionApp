@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider } from '@material-ui/core'
 
-import CompanySection from './CompanySection'
-
+import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import Partners from 'constants/hackerpack-partners.js'
+import HackerpackService from 'services/hackerpack'
 
 export default () => {
+    const [hackerpack, setHackerpack] = useState([])
+
+    useEffect(() => {
+        HackerpackService.getFullHackerpack().then(pack => {
+            if (pack) setHackerpack(pack)
+        })
+    }, [])
+
     return (
         <React.Fragment>
             <PageHeader
@@ -17,18 +24,8 @@ export default () => {
             />
             <PageWrapper loading={false}>
                 <Divider variant="middle" />
-                {Partners.map(company => (
-                    <React.Fragment>
-                        <Box p={2}>
-                            <CompanySection
-                                name={company.name}
-                                description={company.description}
-                                icon={company.icon}
-                                link={company.link}
-                            />
-                        </Box>
-                        <Divider variant="middle" />
-                    </React.Fragment>
+                {hackerpack.map(company => (
+                    <HackerpackDetail partner={company} />
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">

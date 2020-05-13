@@ -12,7 +12,7 @@ const cloudinaryRootPath = `${global.gConfig.CLOUDINARY_FOLDER}`
 
 const createStorageWithPath = (path, transformation, options) => {
     return cloudinaryStorage({
-        cloudinary: cloudinary,
+        cloudinary,
         params: {
             tags: [options.tag],
             folder: `${cloudinaryRootPath}/${path}`,
@@ -24,7 +24,7 @@ const createStorageWithPath = (path, transformation, options) => {
 
 const createDocumentStorageWithPath = (path, transformation, options) => {
     return cloudinaryStorage({
-        cloudinary: cloudinary,
+        cloudinary,
         params: {
             tags: [options.tag],
             folder: `${cloudinaryRootPath}/${path}`,
@@ -44,9 +44,11 @@ const UploadHelper = {
     generateProjectTag: (slug, teamCode) => {
         return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`
     },
-
     generateTravelGrantTag: (slug, userId) => {
         return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`
+    },
+    generateHackerpackTag: id => {
+        return `${cloudinaryRootPath}-hackerpac-${id}`
     },
 
     deleteWithTag: tag => {
@@ -126,7 +128,7 @@ const UploadHelper = {
             }
         )
         return multer({
-            storage: storage,
+            storage,
             limits: { fileSize: 10 * 1024 * 1024 },
         }).single('pdf')
     },
@@ -140,6 +142,24 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateProjectTag(slug, teamCode),
+            }
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 5 * 1024 * 1024 },
+        }).single('image')
+    },
+
+    uploadHackerpackIcon: slug => {
+        const storage = createStorageWithPath(
+            `hackerpack`,
+            {
+                width: 1920,
+                height: 960,
+                crop: 'fill',
+            },
+            {
+                tag: UploadHelper.generateHackerpackTag(slug),
             }
         )
         return multer({

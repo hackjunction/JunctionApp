@@ -42,7 +42,6 @@ controller.createEvent = (eventData, user) => {
         name: eventData.name,
         owner: user.sub,
     })
-
     return event.save()
 }
 

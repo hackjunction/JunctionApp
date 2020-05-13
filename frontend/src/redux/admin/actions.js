@@ -6,6 +6,8 @@ import { getUsersFiltersRoles } from './selectors'
 import { getIdToken } from 'redux/auth/selectors'
 import AdminService from 'services/admin'
 
+import HackerpackService from 'services/hackerpack'
+
 export const updateUsers = () => (dispatch, getState) => {
     const idToken = getIdToken(getState())
     dispatch({
@@ -48,4 +50,16 @@ export const toggleUsersFiltersSortBy = field => dispatch => {
         type: ActionTypes.SET_USERS_FILTERS_SORT_BY,
         payload: field,
     })
+}
+
+export const editHackerpack = (idToken, slug, values) => async (
+    dispatch,
+    getState
+) => {
+    const hackerpack = await HackerpackService.updateHackerpack(
+        idToken,
+        slug,
+        values
+    )
+    return hackerpack
 }
