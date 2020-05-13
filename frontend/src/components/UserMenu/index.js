@@ -84,6 +84,14 @@ export default () => {
             })
         }
 
+        // TODO Check Superadmin
+        if (hasOrganiserAccess) {
+            items.push({
+                label: 'Admin dashboard',
+                onClick: () => dispatch(push('/admin')),
+            })
+        }
+
         if (items.length > 0) {
             return (
                 <React.Fragment>
