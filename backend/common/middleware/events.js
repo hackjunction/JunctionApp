@@ -1,10 +1,10 @@
 const moment = require('moment-timezone')
+const Shared = require('@hackjunction/shared')
 const {
     NotFoundError,
     ForbiddenError,
     InsufficientPrivilegesError,
 } = require('../errors/errors')
-const Shared = require('@hackjunction/shared')
 
 const { EventHelpers, RegistrationStatuses } = Shared
 
@@ -81,28 +81,27 @@ function canSubmitProject(event, registration, teamWithMeta) {
         return new ForbiddenError(
             'You must belong to a team before submitting a project'
         )
-    } else {
-        const isTeamValid =
-            [teamWithMeta.owner]
-                .concat(teamWithMeta.members)
-                .map(userId => {
-                    return teamWithMeta.meta[userId]
-                })
-                .filter(member => {
-                    if (
-                        member.registration.status !==
-                        RegistrationStatuses.asObject.checkedIn.id
-                    ) {
-                        return true
-                    }
-                    return false
-                }).length === 0
+    }
+    const isTeamValid =
+        [teamWithMeta.owner]
+            .concat(teamWithMeta.members)
+            .map(userId => {
+                return teamWithMeta.meta[userId]
+            })
+            .filter(member => {
+                if (
+                    member.registration.status !==
+                    RegistrationStatuses.asObject.checkedIn.id
+                ) {
+                    return true
+                }
+                return false
+            }).length === 0
 
-        if (!isTeamValid) {
-            return new ForbiddenError(
-                'All team members must have checked in before you can submit a project'
-            )
-        }
+    if (!isTeamValid) {
+        return new ForbiddenError(
+            'All team members must have checked in before you can submit a project'
+        )
     }
 
     return null
@@ -136,6 +135,7 @@ async function getTeamWithMeta(user, event) {
 
 const EventMiddleware = {
     getEventFromParams: async (req, res, next) => {
+        console.log('getting ent from paprprp', req.url)
         const event = await getEventFromParams(req.params)
         req.event = event
         next()

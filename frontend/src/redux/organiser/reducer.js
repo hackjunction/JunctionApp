@@ -135,6 +135,7 @@ export default function reducer(state = initialState, action) {
             return gavelAnnotatorsHandler(state, action)
         }
         case ActionTypes.UPDATE_RANKINGS: {
+            // console.log('updating rancings with', state, action)
             return rankingsHandler(state, action)
         }
         case ActionTypes.EDIT_GAVEL_PROJECT: {

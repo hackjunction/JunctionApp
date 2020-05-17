@@ -58,6 +58,7 @@ export default () => {
             dispatch(OrganiserActions.updateProjects(slug))
             dispatch(OrganiserActions.updateGavelProjects(slug))
             dispatch(OrganiserActions.updateRankings(slug))
+            dispatch(OrganiserActions.generateResults(slug))
         }
     }, [dispatch, slug, event])
 

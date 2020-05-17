@@ -5,6 +5,7 @@ const asyncHandler = require('express-async-handler')
 
 const { hasToken } = require('../../../common/middleware/token')
 const {
+    getEventFromParams,
     hasRegisteredToEvent,
     isEventOrganiser,
 } = require('../../../common/middleware/events')

@@ -19,6 +19,7 @@ import Markdown from 'components/generic/Markdown'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import VoteTimer from './VoteTimer'
 
+// TODO remove this shit :D wtf
 import instructionsPhysical from './compareprojects-physical.md'
 import instructionsPhysical2 from './compareprojects-physical-2.md'
 import instructionsOnline from './compareprojects-online.md'

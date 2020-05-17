@@ -65,6 +65,20 @@ RankingsService.updateTrackResultsForEvent = (
     )
 }
 
+RankingsService.generateResults = (idToken, eventSlug) => {
+    return _axios.patch(
+        `/rankings/${eventSlug}/admin/generate-results`,
+        config(idToken)
+    )
+}
+
+RankingsService.getVotes = (idToken, eventSlug) => {
+    return _axios.get(
+        `/rankings/${eventSlug}/admin/get-gavel-votes`,
+        config(idToken)
+    )
+}
+
 RankingsService.updateChallengeResultsForEvent = (
     idToken,
     eventSlug,

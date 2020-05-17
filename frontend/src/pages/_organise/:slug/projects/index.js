@@ -15,6 +15,7 @@ import AnnotatorsTab from './annotators'
 import WinnersTab from './winners'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as RankinSelectors from 'redux/organiser/selectors'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -53,21 +54,21 @@ export default () => {
             path: '/gavel',
             key: 'gavel',
             label: 'Gavel voting',
-            content: GavelTab,
+            component: GavelTab,
         })
 
         data.push({
             path: '/annotators',
             key: 'annotators',
             label: 'Gavel annotators',
-            content: AnnotatorsTab,
+            component: AnnotatorsTab,
         })
 
         data.push({
             path: '/winners',
             key: 'winners',
             label: 'Winners',
-            content: WinnersTab,
+            component: WinnersTab,
         })
 
         return data

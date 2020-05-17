@@ -2,11 +2,17 @@ const express = require('express')
 const { Auth } = require('@hackjunction/shared')
 const asyncHandler = require('express-async-handler')
 
-const { isEventOrganiser } = require('../../common/middleware/events')
+const {
+    isEventOrganiser,
+    getEventFromParams,
+} = require('../../common/middleware/events')
 const { hasPermission } = require('../../common/middleware/permissions')
 const { hasToken } = require('../../common/middleware/token')
 
 const RankingsController = require('./controller')
+
+// TODO move this
+const GavelController = require('../reviewing/gavel/controller')
 
 const router = express.Router()
 
@@ -15,7 +21,7 @@ router
     /** Get public results for an event */
     .get(
         asyncHandler(async (req, res) => {
-            //TODO: Get public results
+            // TODO: Get public results
         })
     )
 
@@ -122,19 +128,34 @@ router
         })
     )
 
-router
-    .route('/:slug/admin/generate-results')
-    /** Generate results for an event */
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser,
-        asyncHandler(async (req, res) => {
-            const rankings = await RankingsController.generateAllResults(
-                req.event
-            )
-            return res.status(200).json(rankings)
-        })
-    )
+// TODO move to Gavel module
+const generateResults = asyncHandler(async (req, res) => {
+    const rankings = await RankingsController.generateAllResults(req.event)
+    return res.status(200).json(rankings)
+})
+
+// Generate results for an event
+router.route('/:slug/admin/generate-results').patch(
+    getEventFromParams,
+    // hasToken,
+    // hasPermission(Auth.Permissions.MANAGE_EVENT),
+    // isEventOrganiser,
+    generateResults
+)
+
+// TODO format this file
+const getVotes = asyncHandler(async (req, res) => {
+    console.log('getting votes')
+    const votes = await GavelController.getVotes(req.event)
+    return res.status(200).json(votes)
+})
+
+router.route('/:slug/admin/get-gavel-votes').get(
+    getEventFromParams,
+    // hasToken,
+    // hasPermission(Auth.Permissions.MANAGE_EVENT),
+    // isEventOrganiser,
+    getVotes
+)
 
 module.exports = router
