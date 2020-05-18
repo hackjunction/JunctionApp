@@ -135,27 +135,30 @@ const generateResults = asyncHandler(async (req, res) => {
 })
 
 // Generate results for an event
-router.route('/:slug/admin/generate-results').patch(
-    getEventFromParams,
-    // hasToken,
-    // hasPermission(Auth.Permissions.MANAGE_EVENT),
-    // isEventOrganiser,
-    generateResults
-)
+router
+    .route('/:slug/admin/generate-results')
+    .get(
+        getEventFromParams,
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        generateResults
+    )
 
 // TODO format this file
 const getVotes = asyncHandler(async (req, res) => {
-    console.log('getting votes')
     const votes = await GavelController.getVotes(req.event)
     return res.status(200).json(votes)
 })
 
-router.route('/:slug/admin/get-gavel-votes').get(
-    getEventFromParams,
-    // hasToken,
-    // hasPermission(Auth.Permissions.MANAGE_EVENT),
-    // isEventOrganiser,
-    getVotes
-)
+router
+    .route('/:slug/admin/get-gavel-votes')
+    .get(
+        getEventFromParams,
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        getVotes
+    )
 
 module.exports = router

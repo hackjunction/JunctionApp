@@ -217,14 +217,12 @@ controller.getVotes = async eventId => {
     const votes = await GavelDecision.find({
         event: eventId,
     }).lean()
-    console.log('before', votes)
     const newVotes = votes.map(async v => {
         v.loser = await GavelProject.findById(v.loser).exec()
         v.winner = await GavelProject.findById(v.winner).exec()
         return v
     })
     return Promise.all(newVotes).then(values => {
-        console.log('sending off', values)
         return values
     })
 }

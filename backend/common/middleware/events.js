@@ -135,7 +135,6 @@ async function getTeamWithMeta(user, event) {
 
 const EventMiddleware = {
     getEventFromParams: async (req, res, next) => {
-        console.log('getting ent from paprprp', req.url)
         const event = await getEventFromParams(req.params)
         req.event = event
         next()

@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import {
-    Box,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ListItemText,
-} from '@material-ui/core'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -17,8 +10,6 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import Chip from '@material-ui/core/Chip'
 
-import ProjectsTable from 'components/tables/ProjectsTable'
-
 import RankingsService from 'services/rankings'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -28,12 +19,10 @@ export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const projects = useSelector(OrganiserSelectors.projects)
     const rankingsOverall = useSelector(OrganiserSelectors.rankingsOverall)
-    console.log('rank', rankingsOverall)
-    console.log('projects', projects)
 
     const [ScoreGrid, setScoreGrid] = useState({})
     const [ProjectRank, setProjectRank] = useState([])
-    // build grid
+
     useEffect(() => {
         const fetchData = async () => {
             const pGrid = {}
@@ -72,53 +61,48 @@ export default () => {
     // console.log('ProjectRank', ProjectRank)
 
     return (
-        <Box>
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Spred</TableCell>
-                            {ProjectRank.map(project => (
-                                <TableCell key={project.id}>
-                                    {project.name}
+        <TableContainer component={Paper}>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Gavel_matchup_spread_</TableCell>
+                        {ProjectRank.map(project => (
+                            <TableCell key={project.id}>
+                                {project.name}
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {ProjectRank.map(project => (
+                        <TableRow key={project.id}>
+                            <TableCell key={project.id}>
+                                #{project.rank} {project.name}
+                            </TableCell>
+                            {ProjectRank.map(cell => (
+                                <TableCell key={cell.id}>
+                                    <Chip
+                                        color={
+                                            ScoreGrid[project.id][cell.id]
+                                                .tally === 0
+                                                ? 'default'
+                                                : ScoreGrid[project.id][cell.id]
+                                                      .tally > 0
+                                                ? 'primary'
+                                                : 'secondary'
+                                        }
+                                        label={
+                                            ScoreGrid[project.id][cell.id].win +
+                                            '-' +
+                                            ScoreGrid[project.id][cell.id].lose
+                                        }
+                                    ></Chip>
                                 </TableCell>
                             ))}
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {ProjectRank.map(project => (
-                            <TableRow key={project.id}>
-                                <TableCell key={project.id}>
-                                    #{project.rank} {project.name}
-                                </TableCell>
-                                {ProjectRank.map(cell => (
-                                    <TableCell key={cell.id}>
-                                        <Chip
-                                            color={
-                                                ScoreGrid[project.id][cell.id]
-                                                    .tally === 0
-                                                    ? 'default'
-                                                    : ScoreGrid[project.id][
-                                                          cell.id
-                                                      ].tally > 0
-                                                    ? 'primary'
-                                                    : 'secondary'
-                                            }
-                                            label={
-                                                ScoreGrid[project.id][cell.id]
-                                                    .win +
-                                                '-' +
-                                                ScoreGrid[project.id][cell.id]
-                                                    .lose
-                                            }
-                                        ></Chip>
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 }

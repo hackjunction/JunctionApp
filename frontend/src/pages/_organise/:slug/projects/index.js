@@ -15,7 +15,6 @@ import AnnotatorsTab from './annotators'
 import WinnersTab from './winners'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as RankinSelectors from 'redux/organiser/selectors'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
