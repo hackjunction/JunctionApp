@@ -84,6 +84,14 @@ export default () => {
             })
         }
 
+        // TODO Check Superadmin
+        if (hasOrganiserAccess) {
+            items.push({
+                label: 'Admin dashboard',
+                onClick: () => dispatch(push('/admin')),
+            })
+        }
+
         if (items.length > 0) {
             return (
                 <React.Fragment>
@@ -160,6 +168,12 @@ export default () => {
                                     dispatch(push('/account/profile'))
                                 }
                             />
+                        </ListItem>
+                        <ListItem button>
+                            <ListItemText
+                                primary="Hackerpack"
+                                onClick={() => dispatch(push('/hackerpack'))}
+                            />{' '}
                         </ListItem>
                         {renderEventItems()}
                         {renderOtherItems()}

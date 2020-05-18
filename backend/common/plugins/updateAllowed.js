@@ -12,7 +12,6 @@ function updateAllowedPlugin(schema, { blacklisted = [] } = {}) {
             if (blacklisted.indexOf(key) === -1) {
                 console.log('Adding', key, value)
                 // TODO FIX THE PROBLEM HERE THE CUSTOM QUESTIONS AREN*T ASSIGNED
-                console.log('typeof', typeof doc, Object.keys(doc))
                 doc[key] = value
                 console.log('now dockey is', doc[key])
             } else {

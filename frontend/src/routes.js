@@ -7,7 +7,7 @@ import CallbackPage from './pages/_callback'
 import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
-
+import HackerpackPage from './pages/_hackerpack'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 
@@ -19,6 +19,7 @@ const OrganiserRouter = lazy(() => import('./pages/_organise'))
 const AccountRouter = lazy(() => import('./pages/_account'))
 const RecruitmentRouter = lazy(() => import('./pages/_recruitment'))
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
+const AdminRouter = lazy(() => import('./pages/_admin'))
 
 const routes = [
     {
@@ -83,6 +84,17 @@ const routes = [
     {
         path: '/projects',
         component: ProjectsRouter,
+        exact: false,
+    },
+    {
+        path: '/hackerpack',
+        component: HackerpackPage,
+        exact: false,
+    },
+    {
+        //TODO require superadmin
+        path: '/admin',
+        component: AdminRouter,
         exact: false,
     },
 ]

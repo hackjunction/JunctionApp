@@ -1,13 +1,13 @@
-//Should be equivalent to scipy.special.psi
+// Should be equivalent to scipy.special.psi
 const digamma = require('@stdlib/math/base/special/digamma')
 
-//Should be equivalent to scipy.special.betaln
+// Should be equivalent to scipy.special.betaln
 const betaln = require('@stdlib/math/base/special/betaln')
 
-//Should be equivalent to numpy.exp
+// Should be equivalent to numpy.exp
 const exp = require('@stdlib/math/base/special/exp')
 
-//Should be equivalent to numpy.log
+// Should be equivalent to numpy.log
 const log = require('@stdlib/math/base/special/ln')
 
 const { KAPPA, GAMMA } = require('./settings')
@@ -135,7 +135,7 @@ const Maths = {
 
         const alpha_1 = updated_annotator.updated_alpha
         const beta_1 = updated_annotator.updated_beta
-        const c = updated_annotator.c
+        const { c } = updated_annotator
         const mu_a_1 = updated_mus.updated_mu_winner
         const mu_b_1 = updated_mus.updated_mu_loser
         const sigma_sq_a_1 = updated_sigma_sqs.updated_sigma_sq_winner

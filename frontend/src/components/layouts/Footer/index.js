@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import ExternalLink from 'components/generic/ExternalLink'
+import Grid from '@material-ui/core/Grid'
 import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
 import CenteredContainer from 'components/generic/CenteredContainer'
@@ -67,19 +68,39 @@ const Footer = props => {
                 <CenteredContainer>
                     <LineDivider />
                     <Divider size={1} />
-                    <h2>
-                        {t('Platform_organise_hack_', {
-                            owner: config.PLATFORM_OWNER_NAME,
-                        })}
-                    </h2>
-                    <Button
-                        color="theme_white"
-                        variant="outlined"
-                        strong
-                        onClick={() => dispatch(push('/contact'))}
-                    >
-                        Contact us
-                    </Button>
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <h2>
+                                {t('Platform_organise_hack_', {
+                                    owner: config.PLATFORM_OWNER_NAME,
+                                })}
+                            </h2>
+                            <Button
+                                color="theme_white"
+                                variant="outlined"
+                                strong
+                                onClick={() => dispatch(push('/contact'))}
+                            >
+                                Contact us
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <h2>
+                                {/* {t('Platform_organise_hack_', {
+                                owner: config.PLATFORM_OWNER_NAME,
+                            })} */}
+                                Sign in to check out our Hackerpack partners!{' '}
+                            </h2>
+                            <Button
+                                color="theme_turquoise"
+                                variant="contained"
+                                strong
+                                onClick={() => dispatch(push('/hackerpack'))}
+                            >
+                                To Hackerpack!
+                            </Button>
+                        </Grid>
+                    </Grid>
                     <Divider size={5} />
                 </CenteredContainer>
             )}
