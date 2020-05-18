@@ -90,8 +90,14 @@ export default () => {
                                         <Chip
                                             color={
                                                 ScoreGrid[row][cell].win -
-                                                    ScoreGrid[row][cell].lose >
+                                                    ScoreGrid[row][cell]
+                                                        .lose ===
                                                 0
+                                                    ? 'default'
+                                                    : ScoreGrid[row][cell].win -
+                                                          ScoreGrid[row][cell]
+                                                              .lose >
+                                                      0
                                                     ? 'primary'
                                                     : 'secondary'
                                             }
