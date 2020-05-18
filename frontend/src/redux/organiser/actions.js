@@ -365,3 +365,14 @@ export const updateRankings = slug => async (dispatch, getState) => {
         },
     })
 }
+
+export const generateResults = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+    dispatch({
+        type: ActionTypes.UPDATE_RANKINGS,
+        promise: RankingsService.generateResults(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error generating rankings', e),
+        },
+    })
+}

@@ -53,21 +53,21 @@ export default () => {
             path: '/gavel',
             key: 'gavel',
             label: 'Gavel voting',
-            content: GavelTab,
+            component: GavelTab,
         })
 
         data.push({
             path: '/annotators',
             key: 'annotators',
             label: 'Gavel annotators',
-            content: AnnotatorsTab,
+            component: AnnotatorsTab,
         })
 
         data.push({
             path: '/winners',
             key: 'winners',
             label: 'Winners',
-            content: WinnersTab,
+            component: WinnersTab,
         })
 
         return data
