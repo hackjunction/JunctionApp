@@ -22,12 +22,15 @@ import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 
+import { useTranslation } from 'react-i18next'
+
 //TODO make the form labels and hints customizable
 export default props => {
     const id = props.id
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
+    const { t, i18n } = useTranslation()
 
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
@@ -72,7 +75,6 @@ export default props => {
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id
     }, [event])
-
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -471,12 +473,13 @@ export default props => {
                                 onClick={formikProps.submitForm}
                                 fullWidth
                                 disabled={
-                                    Object.keys(formikProps.errors).length > 0
+                                    Object.keys(formikProps.errors).length >
+                                        0 || formikProps.isSubmitting
                                 }
                                 color="theme_turquoise"
                                 variant="contained"
                             >
-                                Save changes
+                                {t('Save_changes_')}
                             </Button>
                         </Box>
                     </Grid>
@@ -496,7 +499,6 @@ export default props => {
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
                 console.log('values are!', values)
-                //No I don't want to be credited, don't show my name
                 if (!values.privacy) {
                     if (!values.hiddenMembers.includes(idTokenData.sub)) {
                         values.hiddenMembers.push(idTokenData.sub)
