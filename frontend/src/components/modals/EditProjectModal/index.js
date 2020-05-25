@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import {
     Dialog,
@@ -29,7 +28,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import TeamsTable from 'components/tables/TeamsTable'
 import ProjectScoresService from 'services/projectScores'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
 export default ({ project, onClose = () => {}, onEdited = () => {} }) => {

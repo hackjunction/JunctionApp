@@ -18,13 +18,13 @@ export default () => {
     const filtered = FilterHelpers.applyFilters(registrations, filters)
 
     return (
-        <React.Fragment>
+        <>
             <FilterGroupMenu onChange={setFilters} />
             <Divider size={1} />
             <AttendeeTable
                 attendees={filtered}
                 loading={registrationsLoading}
             />
-        </React.Fragment>
+        </>
     )
 }

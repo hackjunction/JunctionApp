@@ -35,7 +35,7 @@ const NewsLetterButton = ({
     country,
 }) => {
     const classes = useStyles()
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() //eslint-disable-line
     const [hidden, setHidden] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -74,7 +74,9 @@ const NewsLetterButton = ({
                 variant="subtitle1"
                 paragraph
             >
-                {t('Join_newsletter_', { owner: config.PLATFORM_OWNER_NAME })}
+                {t('Join_newsletter_', {
+                    owner: config.PLATFORM_OWNER_NAME,
+                })}
             </Typography>
 
             <Button

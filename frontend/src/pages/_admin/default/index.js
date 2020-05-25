@@ -9,8 +9,6 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import NewHackerpackForm from './NewHackerpackForm'
 import HackerpackList from './HackerpackList'
 
-import HackerpackService from 'services/hackerpack'
-
 export default () => {
     return (
         <PageWrapper

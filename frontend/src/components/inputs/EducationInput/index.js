@@ -104,7 +104,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                 />
             </Grid>
             {!fieldsDisabled && (
-                <React.Fragment>
+                <>
                     <Grid item xs={6}>
                         <Select
                             label="Country of study"
@@ -152,7 +152,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                             }
                         />
                     </Grid>
-                </React.Fragment>
+                </>
             )}
         </Grid>
     )

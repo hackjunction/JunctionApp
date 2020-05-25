@@ -108,7 +108,7 @@ export default ({
     }, [selectedRows, dataSource, loading])
 
     return (
-        <React.Fragment>
+        <>
             <Paper className={classes.root}>
                 <TableToolbar
                     title={title}
@@ -243,6 +243,6 @@ export default ({
                     </Paper>
                 </Box>
             )}
-        </React.Fragment>
+        </>
     )
 }

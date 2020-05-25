@@ -77,7 +77,7 @@ export default () => {
                 onSubmit={onSubmit}
             >
                 {formikProps => (
-                    <React.Fragment>
+                    <>
                         <MaterialTabsLayout
                             transparent
                             tabs={[
@@ -128,7 +128,7 @@ export default () => {
                             dirty={formikProps.dirty}
                             loading={formikProps.isSubmitting}
                         />
-                    </React.Fragment>
+                    </>
                 )}
             </Formik>
         </PageWrapper>

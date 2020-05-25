@@ -209,7 +209,7 @@ export default ({
         ]
     }, [event.tags, organiserProfilesMap])
     return (
-        <React.Fragment>
+        <>
             <EditRegistrationModal
                 registrationId={
                     activeModal === 'edit' ? searchParams.get('id') : undefined
@@ -261,6 +261,6 @@ export default ({
                     },
                 ]}
             />
-        </React.Fragment>
+        </>
     )
 }

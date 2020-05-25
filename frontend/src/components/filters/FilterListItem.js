@@ -55,7 +55,7 @@ const FilterListItem = ({ filter = {}, onRemove }) => {
             <ListItemText
                 primary={filter.label}
                 secondary={
-                    <React.Fragment>
+                    <>
                         <Typography
                             variant="body2"
                             className={classes.inline}
@@ -64,7 +64,7 @@ const FilterListItem = ({ filter = {}, onRemove }) => {
                             {getType()}
                         </Typography>{' '}
                         {renderValue(filter.value)}
-                    </React.Fragment>
+                    </>
                 }
             />
             {typeof onRemove === 'function' && (

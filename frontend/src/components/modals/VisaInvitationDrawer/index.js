@@ -45,7 +45,7 @@ export default () => {
     // </Drawer>
 
     return (
-        <React.Fragment>
+        <>
             <Drawer
                 anchor="right"
                 width={640}
@@ -189,6 +189,6 @@ export default () => {
             >
                 Generate Visa Invitation
             </Button>
-        </React.Fragment>
+        </>
     )
 }

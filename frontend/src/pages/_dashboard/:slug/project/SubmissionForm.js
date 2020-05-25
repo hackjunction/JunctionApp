@@ -30,7 +30,7 @@ export default props => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() //eslint-disable-line
 
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
@@ -80,7 +80,7 @@ export default props => {
             return <PageWrapper loading />
         }
         return (
-            <React.Fragment>
+            <>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <FastField
@@ -473,13 +473,8 @@ export default props => {
                                 onClick={formikProps.submitForm}
                                 fullWidth
                                 disabled={
-<<<<<<< HEAD
-                                    formikProps.isSubmitting ||
-                                    Object.keys(formikProps.errors).length > 0
-=======
                                     Object.keys(formikProps.errors).length >
                                         0 || formikProps.isSubmitting
->>>>>>> e12c38c3f32faf4eb2512d6a18d0258599e0a9d6
                                 }
                                 color="theme_turquoise"
                                 variant="contained"
@@ -489,7 +484,7 @@ export default props => {
                         </Box>
                     </Grid>
                 </Grid>
-            </React.Fragment>
+            </>
         )
     }
     return (

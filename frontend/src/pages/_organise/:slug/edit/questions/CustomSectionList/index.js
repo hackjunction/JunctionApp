@@ -115,7 +115,7 @@ export default ({ sections = [], onChange }) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             <AddSectionModal
                 visible={modalOpen}
                 onVisibleChange={setModalOpen}
@@ -138,6 +138,6 @@ export default ({ sections = [], onChange }) => {
             >
                 {renderAdd()}
             </Box>
-        </React.Fragment>
+        </>
     )
 }

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
-import JobRoleInput from 'components/inputs/JobRoleInput'
+// import JobRoleInput from 'components/inputs/JobRoleInput'
 import { push } from 'connected-react-router'
 import { useLocation } from 'react-router-dom'
 import EditProjectModal from 'components/modals/EditProjectModal'
