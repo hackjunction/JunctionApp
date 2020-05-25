@@ -23,14 +23,13 @@ controller.ensureGavelProject = async project => {
         /** Make sure the track is updated, should it change */
         existing.track = project.track
         return existing.save()
-    } else {
-        const gavelproject = new GavelProject({
-            project: project._id,
-            event: project.event,
-            track: project.track,
-        })
-        return gavelproject.save()
     }
+    const gavelproject = new GavelProject({
+        project: project._id,
+        event: project.event,
+        track: project.track,
+    })
+    return gavelproject.save()
 }
 
 controller.getProject = async projectId => {
@@ -40,7 +39,7 @@ controller.getProject = async projectId => {
 controller.editProject = async (projectId, data) => {
     return GavelProject.findById(projectId).then(project => {
         if (!project) {
-            throw new NotFoundError('No project found with id ' + projectId)
+            throw new NotFoundError(`No project found with id ${projectId}`)
         }
         if (data.hasOwnProperty('active')) {
             project.active = data.active
@@ -64,7 +63,7 @@ controller.getAnnotator = async (event, userId) => {
 controller.editAnnotator = async (annotatorId, data) => {
     return GavelAnnotator.findById(annotatorId).then(annotator => {
         if (!annotator) {
-            throw new NotFoundError('No annotator found with id ' + annotatorId)
+            throw new NotFoundError(`No annotator found with id ${annotatorId}`)
         }
 
         if (data.hasOwnProperty('active')) {
@@ -103,17 +102,15 @@ controller.initAnnotator = async (event, userId) => {
 
         if (tracksSorted.length === 1) {
             assignedTrack = tracksSorted[0].slug
-        } else {
-            if (ownProject && ownProject.track) {
-                for (let track of tracksSorted) {
-                    if (track.slug !== ownProject.track) {
-                        assignedTrack = track.slug
-                        break
-                    }
+        } else if (ownProject && ownProject.track) {
+            for (const track of tracksSorted) {
+                if (track.slug !== ownProject.track) {
+                    assignedTrack = track.slug
+                    break
                 }
-            } else {
-                assignedTrack = tracksSorted[0].slug
             }
+        } else {
+            assignedTrack = tracksSorted[0].slug
         }
     }
 
@@ -203,7 +200,7 @@ controller.submitVote = async (event, userId, winningProjectId) => {
 controller.getResults = async (eventId, track = null) => {
     const projects = await GavelProject.find({
         event: eventId,
-        track: track,
+        track,
     }).lean()
     const sorted = _.sortBy(projects, p => -1 * p.mu)
     const results = sorted.map(gavelProject => {
@@ -213,6 +210,21 @@ controller.getResults = async (eventId, track = null) => {
         }
     })
     return results
+}
+
+controller.getVotes = async eventId => {
+    // TODO this is spagetth  fix
+    const votes = await GavelDecision.find({
+        event: eventId,
+    }).lean()
+    const newVotes = votes.map(async v => {
+        v.loser = await GavelProject.findById(v.loser).exec()
+        v.winner = await GavelProject.findById(v.winner).exec()
+        return v
+    })
+    return Promise.all(newVotes).then(values => {
+        return values
+    })
 }
 
 module.exports = controller

@@ -1,16 +1,16 @@
 const Promise = require('bluebird')
 const _ = require('lodash')
 
+const {
+    ReviewingMethods,
+    OverallReviewingMethods,
+} = require('@hackjunction/shared')
 const Rankings = require('./model')
 
 const WinnerVoteController = require('../winner-votes/controller')
 const GavelController = require('../reviewing/gavel/controller')
 
 const { ForbiddenError } = require('../../common/errors/errors')
-const {
-    ReviewingMethods,
-    OverallReviewingMethods,
-} = require('@hackjunction/shared')
 
 const controller = {}
 
@@ -209,13 +209,9 @@ controller.generateTrackResults = async (event, trackSlug) => {
             `Event ${event.name} has no track with the slug ${trackSlug}`
         )
         return []
-    } else {
-        const gavelResults = await GavelController.getResults(
-            event._id,
-            trackSlug
-        )
-        return gavelResults.map(({ project }) => project)
     }
+    const gavelResults = await GavelController.getResults(event._id, trackSlug)
+    return gavelResults.map(({ project }) => project)
 }
 
 /** Generate the results for all tracks */
@@ -224,20 +220,19 @@ controller.generateTrackResultsAll = async event => {
     if (!event.tracksEnabled || !event.tracks.length === 0) {
         console.log('No tracks enabled, skipping track results generation')
         return null
-    } else {
-        return Promise.reduce(
-            event.tracks,
-            async (results, track) => {
-                const trackResults = await controller.generateTrackResults(
-                    event,
-                    track.slug
-                )
-                results[track.slug] = trackResults
-                return results
-            },
-            {}
-        )
     }
+    return Promise.reduce(
+        event.tracks,
+        async (results, track) => {
+            const trackResults = await controller.generateTrackResults(
+                event,
+                track.slug
+            )
+            results[track.slug] = trackResults
+            return results
+        },
+        {}
+    )
 }
 
 module.exports = controller

@@ -1,4 +1,5 @@
 const express = require('express')
+
 const router = express.Router()
 const { Auth } = require('@hackjunction/shared')
 const helper = require('./helper')
@@ -121,7 +122,7 @@ router.post(
     '/events/:slug/projects',
     hasToken,
     canSubmitProject,
-    //TODO: Is participant in project,
+    // TODO: Is participant in project,
     (req, res, next) => {
         helper.uploadProjectImage(req.event.slug, req.team.code)(
             req,
@@ -143,5 +144,27 @@ router.post(
         )
     }
 )
+
+/**
+ * Upload icon for a hackerpack partner
+ */
+// TODO isSuperAdmin
+router.post('/hackerpack/:slug/icon', hasToken, (req, res, next) => {
+    console.log('Happanun', req.params.slug)
+    helper.uploadHackerpackIcon(req.params.slug)(req, res, function(err) {
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                next(new ForbiddenError(err.message))
+            } else {
+                next(err)
+            }
+        } else {
+            res.status(200).json({
+                url: req.file.secure_url || req.file.url,
+                publicId: req.file.public_id,
+            })
+        }
+    })
+})
 
 module.exports = router

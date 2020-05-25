@@ -8,6 +8,8 @@ import {
     Box,
     Dialog,
 } from '@material-ui/core'
+import { useTranslation } from 'react-i18next'
+
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -18,8 +20,6 @@ import Markdown from 'components/generic/Markdown'
 import ProjectDetail from 'components/projects/ProjectDetail'
 
 import GavelService from 'services/reviewing/gavel'
-import instructionsPhysical from './firstproject-physical.md'
-import instructionsOnline from './firstproject-online.md'
 
 export default ({ projectId }) => {
     const dispatch = useDispatch()
@@ -31,18 +31,19 @@ export default ({ projectId }) => {
     const [project, setProject] = useState()
     const [selected, setSelected] = useState()
     const [instructions, setInstructions] = useState('')
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         const path =
             event.eventType === 'physical'
-                ? instructionsPhysical
-                : instructionsOnline
+                ? t('Gavel_first_project_physical_')
+                : t('Gavel_compare_projects_online_')
         fetch(path)
             .then(response => response.text())
             .then(text => {
                 setInstructions(text)
             })
-    }, [event.eventType])
+    }, [event.eventType, t])
 
     const fetchProject = useCallback(async () => {
         setLoading(true)

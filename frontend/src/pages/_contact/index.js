@@ -92,7 +92,7 @@ export default () => {
                 dispatch(SnackbarActions.success('Contact mail sent'))
             })
             .catch(err => {
-                dispatch(SnackbarActions.error('Something went wrttg...'))
+                dispatch(SnackbarActions.error('Something went wrong...'))
             })
             .finally(() => {
                 setLoading(false)
