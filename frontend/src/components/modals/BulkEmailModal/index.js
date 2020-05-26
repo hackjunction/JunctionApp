@@ -72,7 +72,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 }
                 return
             },
-            [ctaText.value]
+            [ctaText.value, t]
         )
     )
 
@@ -129,7 +129,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 setLoading(false)
             })
         return null
-    }, [validate, idToken, event.slug, user.email, params, dispatch])
+    }, [validate, idToken, event.slug, user.email, params, dispatch, t])
 
     const handleConfirm = useCallback(() => {
         if (!validate()) return
@@ -162,6 +162,7 @@ export default ({ visible, userIds = [], onClose }) => {
         messageId.value,
         dispatch,
         onClose,
+        t,
     ])
 
     if (!userIds.length) return null

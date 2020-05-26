@@ -55,7 +55,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
             }
             return isPDF && isLt10M
         },
-        [dispatch]
+        [dispatch, t]
     )
 
     const handleRemove = useCallback(() => {
@@ -80,7 +80,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                 setLoading(false)
             }
         },
-        [dispatch, onChange]
+        [dispatch, onChange, t]
     )
 
     return (

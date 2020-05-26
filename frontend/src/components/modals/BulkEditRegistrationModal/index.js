@@ -100,7 +100,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 setLoading(false)
                 handleClose()
             })
-    }, [getEdits, dispatch, userIds, event.slug, handleClose])
+    }, [getEdits, dispatch, userIds, event.slug, handleClose, t])
 
     if (!userIds.length) return null
     return (
