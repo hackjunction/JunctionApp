@@ -63,10 +63,9 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ event, title, overline, subheading, onBack }) => {
+export default ({ event, title, subheading, onBack }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
-
     return (
         <Box className={classes.wrapper}>
             <Image
@@ -96,6 +95,10 @@ export default ({ event, title, overline, subheading, onBack }) => {
                         <Typography className={classes.title} variant="h3">
                             {title ?? event?.name}
                         </Typography>
+                        <Typography className={classes.title} variant="h4">
+                            {subheading}
+                        </Typography>
+
                         <Typography
                             className={classes.overline}
                             variant="button"

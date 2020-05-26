@@ -34,7 +34,6 @@ export const useEventPreview = _id => {
             _id,
         },
     })
-
     return [data?.eventById, loading, error]
 }
 
