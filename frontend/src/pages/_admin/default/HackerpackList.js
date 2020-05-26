@@ -6,7 +6,6 @@ import { Grid, Box, Typography } from '@material-ui/core'
 import CompanySection from 'components/hackerpack/CompanySection'
 import Divider from 'components/generic/Divider'
 
-import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
 import { IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
