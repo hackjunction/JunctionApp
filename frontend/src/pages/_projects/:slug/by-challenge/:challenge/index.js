@@ -43,7 +43,6 @@ export default ({ event, projects }) => {
         <React.Fragment>
             <EventHeroImage
                 event={event}
-                overline={event.name}
                 title={challenge.partner}
                 subheading={challenge.name}
             />
