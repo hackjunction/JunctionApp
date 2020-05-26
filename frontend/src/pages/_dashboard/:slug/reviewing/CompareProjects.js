@@ -36,25 +36,6 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const [instructions, setInstructions] = useState('')
     const { t, i18n } = useTranslation() // eslint-disable-line
 
-    useEffect(() => {
-        if (isFirstChoice) {
-            const path =
-                event.eventType === 'physical'
-                    ? t('Gavel_compare_projects_physical_')
-                    : t('Gavel_compare_projects_online_')
-            fetch(path)
-                .then(response => response.text())
-                .then(setInstructions)
-        } else {
-            const path =
-                event.eventType === 'physical'
-                    ? t('Gavel_compare_projects_physical2_')
-                    : t('Gavel_compare_projects_online2_')
-            fetch(path)
-                .then(response => response.text())
-                .then(setInstructions)
-        }
-    }, [event.eventType, isFirstChoice, t])
 
     const fetchProjects = useCallback(async () => {
         setLoading(true)
@@ -114,7 +95,13 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     <Typography align="center" variant="h4" gutterBottom>
                         {t('Gavel_vote_')}
                     </Typography>
-                    <Markdown source={instructions} />
+                    <Markdown
+                        source={
+                            event.eventType === 'physical'
+                                ? t('Gavel_compare_projects_physical_')
+                                : t('Gavel_compare_projects_online_')
+                        }
+                    />
                 </Box>
             )
         } else {
@@ -132,7 +119,13 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                         {t('Gavel_vote_count_')}{' '}
                         {annotator.ignore.length - annotator.skipped.length - 1}
                     </Typography>
-                    <Markdown source={instructions} />
+                    <Markdown
+                        source={
+                            event.eventType === 'physical'
+                                ? t('Gavel_compare_projects_physical2_')
+                                : t('Gavel_compare_projects_online2_')
+                        }
+                    />
                 </Box>
             )
         }

@@ -33,17 +33,6 @@ export default ({ projectId }) => {
     const [instructions, setInstructions] = useState('')
     const { t, i18n } = useTranslation() // eslint-disable-line
 
-    useEffect(() => {
-        const path =
-            event.eventType === 'physical'
-                ? t('Gavel_first_project_physical_')
-                : t('Gavel_compare_projects_online_')
-        fetch(path)
-            .then(response => response.text())
-            .then(text => {
-                setInstructions(text)
-            })
-    }, [event.eventType, t])
 
     const fetchProject = useCallback(async () => {
         setLoading(true)
@@ -132,9 +121,15 @@ export default ({ projectId }) => {
             <Grid item xs={12}>
                 <Box display="flex" flexDirection="column" alignItems="center">
                     <Typography align="center" variant="h4" gutterBottom>
-                        Your first project
+                        {t('Gavel_first_project_title_')}
                     </Typography>
-                    <Markdown source={instructions} />
+                    <Markdown
+                        source={
+                            event.eventType === 'physical'
+                                ? t('Gavel_first_project_physical_')
+                                : t('Gavel_first_project_online_')
+                        }
+                    />
                 </Box>
             </Grid>
             <Grid item xs={12}>

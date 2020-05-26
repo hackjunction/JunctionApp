@@ -43,7 +43,6 @@ export default ({ event, projects }) => {
         <>
             <EventHeroImage
                 event={event}
-                overline={event.name}
                 title={challenge.partner}
                 subheading={challenge.name}
             />

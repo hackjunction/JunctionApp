@@ -11,6 +11,7 @@ import GalleryTrack from './by-track/:track'
 import GalleryChallenge from './by-challenge/:challenge'
 import GalleryDetail from './view/:projectId'
 import GalleryChallengeAdmin from './challenge/:token'
+// import { useEventPreview } from 'graphql/queries/events'
 
 export default () => {
     const match = useRouteMatch()
@@ -20,7 +21,8 @@ export default () => {
     const [loading, setLoading] = useState(true)
     const [event, setEvent] = useState()
     const [projects, setProjects] = useState([])
-
+    //TODO use Graphql here to get event
+    // useEventPreview(eventId) but with slug
     const fetchData = useCallback(async () => {
         setLoading(true)
         try {

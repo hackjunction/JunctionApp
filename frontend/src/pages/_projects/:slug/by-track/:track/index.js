@@ -46,7 +46,6 @@ export default ({ event, projects }) => {
         <>
             <EventHeroImage
                 event={event}
-                overline={event.name}
                 title={track.name}
                 subheading={`${filtered.length} projects`}
             />
