@@ -30,7 +30,7 @@ export default props => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
@@ -80,7 +80,7 @@ export default props => {
             return <PageWrapper loading />
         }
         return (
-            <React.Fragment>
+            <>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <FastField
@@ -484,7 +484,7 @@ export default props => {
                         </Box>
                     </Grid>
                 </Grid>
-            </React.Fragment>
+            </>
         )
     }
     return (

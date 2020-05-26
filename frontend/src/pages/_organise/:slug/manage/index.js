@@ -92,7 +92,7 @@ export default () => {
             loading={eventLoading}
             error={!event && !eventLoading}
             render={() => (
-                <React.Fragment>
+                <>
                     <PageHeader
                         heading="Organisers"
                         subheading="Manage who has access to edit this event"
@@ -136,7 +136,7 @@ export default () => {
                         slug={event.slug}
                         organisers={concat(event.owner, event.organisers)}
                     />
-                </React.Fragment>
+                </>
             )}
         />
     )

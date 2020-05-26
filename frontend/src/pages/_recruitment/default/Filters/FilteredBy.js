@@ -25,7 +25,7 @@ const FilteredByItem = ({ label, text }) => {
 }
 
 export default () => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const filters = useSelector(RecruitmentSelectors.filters)
     const eventsMap = useSelector(RecruitmentSelectors.eventsMap)
 

@@ -34,7 +34,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [selected, setSelected] = useState(false)
     const [instructions, setInstructions] = useState('')
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     useEffect(() => {
         if (isFirstChoice) {

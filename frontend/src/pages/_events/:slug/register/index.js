@@ -119,7 +119,7 @@ const useStyles = makeStyles(theme => ({
 const Connector = ({ index, active, completed, disabled }) => <div />
 
 export default RequiresPermission(() => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const classes = useStyles()
     const dispatch = useDispatch()
     const {

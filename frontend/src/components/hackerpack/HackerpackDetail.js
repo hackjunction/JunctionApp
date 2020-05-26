@@ -6,7 +6,7 @@ import GradientBox from 'components/generic/GradientBox'
 
 const HackerpackDetail = ({ partner }) => {
     return (
-        <React.Fragment>
+        <>
             <Box p={2}>
                 <GradientBox color="theme_white" p={3}>
                     <CompanySection
@@ -19,7 +19,7 @@ const HackerpackDetail = ({ partner }) => {
             </Box>
 
             <Divider variant="middle" />
-        </React.Fragment>
+        </>
     )
 }
 export default HackerpackDetail

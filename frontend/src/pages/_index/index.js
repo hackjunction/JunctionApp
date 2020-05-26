@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 export default () => {
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     return (
         <PageWrapper

@@ -18,12 +18,12 @@ const UserListItem = ({
     return (
         <ListItem button={selectable} onClick={onSelect} selected={selected}>
             {user ? (
-                <React.Fragment>
+                <>
                     <ListItemAvatar>
                         <Avatar alt={userName} src={user ? user.avatar : ''} />
                     </ListItemAvatar>
                     <ListItemText primary={userName} secondary={userEmail} />
-                </React.Fragment>
+                </>
             ) : (
                 <ListItemText primary="No one" />
             )}

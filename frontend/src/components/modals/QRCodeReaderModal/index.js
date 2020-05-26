@@ -102,7 +102,7 @@ export default ({ open, onClose, editRegistration }) => {
         const registration = registrationsMap[user.userId]
         if (!registration) {
             return (
-                <React.Fragment>
+                <>
                     <Typography
                         variant="subtitle1"
                         color="secondary"
@@ -110,13 +110,13 @@ export default ({ open, onClose, editRegistration }) => {
                     >
                         No registration found!
                     </Typography>
-                </React.Fragment>
+                </>
             )
         }
         const status = RegistrationStatuses.asObject[registration.status]
 
         return (
-            <React.Fragment>
+            <>
                 <Typography
                     variant="subtitle1"
                     color="textSecondary"
@@ -127,7 +127,7 @@ export default ({ open, onClose, editRegistration }) => {
                 </Typography>
                 <Box mt={2} />
                 {renderActions(status)}
-            </React.Fragment>
+            </>
         )
     }
 
@@ -189,7 +189,7 @@ export default ({ open, onClose, editRegistration }) => {
                         {renderRegistrationInfo()}
                     </Box>
                 ) : (
-                    <React.Fragment>
+                    <>
                         <QrReader
                             ref={reader}
                             delay={500}
@@ -211,7 +211,7 @@ export default ({ open, onClose, editRegistration }) => {
                                 Take a picture
                             </Button>
                         </Box>
-                    </React.Fragment>
+                    </>
                 )}
             </Box>
         </Modal>

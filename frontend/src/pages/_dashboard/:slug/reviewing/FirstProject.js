@@ -31,7 +31,7 @@ export default ({ projectId }) => {
     const [project, setProject] = useState()
     const [selected, setSelected] = useState()
     const [instructions, setInstructions] = useState('')
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     useEffect(() => {
         const path =

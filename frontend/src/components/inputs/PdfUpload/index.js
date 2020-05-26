@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [loading, setLoading] = useState(false)

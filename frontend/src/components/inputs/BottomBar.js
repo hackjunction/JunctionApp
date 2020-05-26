@@ -81,7 +81,7 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             <Box className={classes.wrapper}>
                 {loading && (
                     <CircularProgress size={24} style={{ color: 'white' }} />
@@ -130,7 +130,7 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
                     })}
                 </List>
             </Popover>
-        </React.Fragment>
+        </>
     )
 }
 

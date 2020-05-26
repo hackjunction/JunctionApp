@@ -24,7 +24,7 @@ export default ({ items }) => {
     const page = useSelector(RecruitmentSelectors.page)
     const paginationEnabled = !items
     const isFavorited = !!items
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateSearchResults())
@@ -88,7 +88,7 @@ export default ({ items }) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             {paginationEnabled && (
                 <Box
                     p={2}
@@ -123,6 +123,6 @@ export default ({ items }) => {
                     <Pagination />
                 </Box>
             )}
-        </React.Fragment>
+        </>
     )
 }

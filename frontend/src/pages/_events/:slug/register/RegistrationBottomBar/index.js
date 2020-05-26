@@ -61,7 +61,7 @@ const RegistrationBottomBar = ({
 }) => {
     const classes = useStyles()
     const [enabled, setEnabled] = useState(false)
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     useEffect(() => {
         setTimeout(function() {
             setEnabled(true)

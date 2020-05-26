@@ -19,7 +19,7 @@ export default ({
         dispatch(push(moreLink))
     }, [dispatch, moreLink])
 
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const handleSelected = useCallback(
         project => {
             dispatch(push(`/projects/${event.slug}/view/${project._id}`))

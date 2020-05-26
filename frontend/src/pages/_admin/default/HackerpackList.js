@@ -17,7 +17,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [hackerpack, setHackerpack] = useState(data)
 
@@ -47,7 +47,7 @@ export default ({ data = [] }) => {
             </Typography>
             <Grid container spacing={3}>
                 {hackerpack.map(company => (
-                    <React.Fragment>
+                    <>
                         <Box p={2}>
                             <IconButton
                                 edge="end"
@@ -73,7 +73,7 @@ export default ({ data = [] }) => {
                             />
                         </Box>
                         <Divider variant="middle" />
-                    </React.Fragment>
+                    </>
                 ))}
             </Grid>
         </Box>

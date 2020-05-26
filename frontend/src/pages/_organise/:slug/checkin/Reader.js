@@ -31,7 +31,7 @@ export default ({ onResult, onError }) => {
     )
 
     return (
-        <React.Fragment>
+        <>
             <QrReader
                 ref={reader}
                 delay={500}
@@ -82,6 +82,6 @@ export default ({ onResult, onError }) => {
                     </Button>
                 </Box>
             )}
-        </React.Fragment>
+        </>
     )
 }
