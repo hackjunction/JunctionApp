@@ -30,9 +30,7 @@ export default ({ projectId }) => {
     const [error, setError] = useState(false)
     const [project, setProject] = useState()
     const [selected, setSelected] = useState()
-    const [instructions, setInstructions] = useState('')
-    const { t, i18n } = useTranslation() // eslint-disable-line
-
+    const { t, i18n } = useTranslation()
 
     const fetchProject = useCallback(async () => {
         setLoading(true)
