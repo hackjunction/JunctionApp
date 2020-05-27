@@ -21,7 +21,7 @@ export default ({ value = {}, onChange }) => {
     )
 
     return (
-        <React.Fragment>
+        <>
             <FormControl
                 label="Travel grants"
                 hint="Will you be offering travel grants for participants?"
@@ -57,6 +57,6 @@ export default ({ value = {}, onChange }) => {
                     </Grid>
                 </FormControl>
             )}
-        </React.Fragment>
+        </>
     )
 }

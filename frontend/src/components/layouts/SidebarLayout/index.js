@@ -147,7 +147,7 @@ export default React.memo(
         }
 
         const drawerContent = (
-            <React.Fragment>
+            <>
                 <Box p={2}>{sidebarTopContent}</Box>
                 <List>
                     {routes
@@ -192,7 +192,7 @@ export default React.memo(
                             )
                         })}
                 </List>
-            </React.Fragment>
+            </>
         )
 
         return (

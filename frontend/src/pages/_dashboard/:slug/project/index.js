@@ -123,7 +123,7 @@ export default () => {
         }
 
         return (
-            <React.Fragment>
+            <>
                 <GradientBox p={3} color="theme_white">
                     <Countdown
                         date={event.submissionsEndTime}
@@ -134,7 +134,7 @@ export default () => {
 
                             if (!completed) {
                                 return (
-                                    <React.Fragment>
+                                    <>
                                         <Typography
                                             variant="overline"
                                             gutterBottom
@@ -155,11 +155,11 @@ export default () => {
                                             before the deadline! Late
                                             submissions will not be accepted.
                                         </Typography>
-                                    </React.Fragment>
+                                    </>
                                 )
                             } else {
                                 return (
-                                    <React.Fragment>
+                                    <>
                                         <Typography
                                             variant="overline"
                                             gutterBottom
@@ -183,7 +183,7 @@ export default () => {
                                             project - please make sure that it's
                                             always correct and up-to-date!
                                         </Typography>
-                                    </React.Fragment>
+                                    </>
                                 )
                             }
                         }}
@@ -219,7 +219,7 @@ export default () => {
                 {showSubmissionForm && (
                     <SubmissionForm id={selectedProjectId} />
                 )}
-            </React.Fragment>
+            </>
         )
     }
 

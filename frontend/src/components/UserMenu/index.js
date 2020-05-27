@@ -94,14 +94,14 @@ export default () => {
 
         if (items.length > 0) {
             return (
-                <React.Fragment>
+                <>
                     <ListSubheader disableSticky>Other</ListSubheader>
                     {items.map(({ label, onClick }) => (
                         <ListItem key={label} button onClick={onClick}>
                             <ListItemText primary={label} />
                         </ListItem>
                     ))}
-                </React.Fragment>
+                </>
             )
         }
 

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Paper, Typography, Chip, Box, Grid } from '@material-ui/core'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
 
 import ProjectScoreModal from 'components/modals/ProjectScoreModal'
 import Button from 'components/generic/Button'

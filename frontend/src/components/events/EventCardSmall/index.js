@@ -71,15 +71,15 @@ export default ({ eventId }) => {
     const renderContent = () => {
         if (loading || !event) {
             return (
-                <React.Fragment>
+                <>
                     <Skeleton width="40%" />
                     <Skeleton width="60%" />
                     <Skeleton width="40%" />
-                </React.Fragment>
+                </>
             )
         } else {
             return (
-                <React.Fragment>
+                <>
                     <Typography variant="button">
                         {event?._eventTimeFormatted}
                     </Typography>
@@ -87,7 +87,7 @@ export default ({ eventId }) => {
                     <Typography variant="subtitle1">
                         {event?._eventLocationFormatted}
                     </Typography>
-                </React.Fragment>
+                </>
             )
         }
     }

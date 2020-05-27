@@ -92,7 +92,7 @@ class PageWrapper extends PureComponent {
 
     render() {
         return (
-            <React.Fragment>
+            <>
                 {this.props.header && this.props.header()}
                 {this.props.wrapContent ? (
                     <div style={{ flex: 1 }} {...this.props.wrapperProps}>
@@ -102,7 +102,7 @@ class PageWrapper extends PureComponent {
                     this.renderContent()
                 )}
                 {this.props.footer && this.props.footer()}
-            </React.Fragment>
+            </>
         )
     }
 }

@@ -83,7 +83,7 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
                         {selected.length} selected
                     </Typography>
                 </Box>
-                <React.Fragment>
+                <>
                     {_actions.map(action => (
                         <Box key={action.key} mr={1} mt={1}>
                             <Button
@@ -95,7 +95,7 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
                             </Button>
                         </Box>
                     ))}
-                </React.Fragment>
+                </>
             </Box>
         </motion.div>
     )

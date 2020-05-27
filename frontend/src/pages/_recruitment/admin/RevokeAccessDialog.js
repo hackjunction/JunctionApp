@@ -19,7 +19,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default ({ userId, onClose }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
 
@@ -58,7 +58,7 @@ export default ({ userId, onClose }) => {
                         <CircularProgress size={24} />
                     </Box>
                 ) : (
-                    <React.Fragment>
+                    <>
                         <Button
                             strong
                             onClick={onClose}
@@ -74,7 +74,7 @@ export default ({ userId, onClose }) => {
                         >
                             {t('Revoke_access_')}
                         </Button>
-                    </React.Fragment>
+                    </>
                 )}
             </DialogActions>
         </Dialog>

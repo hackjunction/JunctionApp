@@ -70,7 +70,7 @@ export default () => {
                 />
                 {/** Hide the rest of these routes if the gallery isn't open */}
                 {event?.galleryOpen && (
-                    <React.Fragment>
+                    <>
                         <Route
                             path={`${match.url}/view/:projectId`}
                             component={({ match }) => (
@@ -107,7 +107,7 @@ export default () => {
                                 />
                             )}
                         />
-                    </React.Fragment>
+                    </>
                 )}
                 <Redirect to="/" />
             </Switch>

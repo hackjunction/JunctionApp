@@ -11,7 +11,7 @@ const useButtonStyles = makeStyles(theme => ({
 
 const StepButtons = ({ numSteps, activeStep, onBack, onNext, onFinish }) => {
     const classes = useButtonStyles()
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     return (
         <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
             <Button

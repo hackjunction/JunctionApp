@@ -3,9 +3,9 @@ import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Formik, FastField, Field } from 'formik'
+import { Formik, FastField } from 'formik'
 import * as yup from 'yup'
 
 import ImageUpload from 'components/inputs/ImageUpload'
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const match = useRouteMatch()
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const { slug } = match.params
 
     const [initialData, setInitialData] = useState({})
@@ -109,7 +109,7 @@ export default () => {
             onSubmit={handleSubmit}
         >
             {formikProps => (
-                <React.Fragment>
+                <>
                     <Box className={classes.topWrapper}>
                         <Box flex="1" display="flex" flexDirection="column">
                             <Grid container spacing={3}>
@@ -223,7 +223,7 @@ export default () => {
                         dirty={formikProps.dirty}
                         loading={formikProps.isSubmitting}
                     />
-                </React.Fragment>
+                </>
             )}
         </Formik>
     )

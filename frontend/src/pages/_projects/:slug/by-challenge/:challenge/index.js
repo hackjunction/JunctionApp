@@ -40,7 +40,7 @@ export default ({ event, projects }) => {
     }, [projects, challenge])
 
     return (
-        <React.Fragment>
+        <>
             <EventHeroImage
                 event={event}
                 title={challenge.partner}
@@ -56,6 +56,6 @@ export default ({ event, projects }) => {
                 />
                 <Box mt={5} />
             </CenteredContainer>
-        </React.Fragment>
+        </>
     )
 }

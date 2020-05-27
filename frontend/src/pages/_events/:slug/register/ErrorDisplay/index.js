@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ErrorDisplay = React.memo(({ errors = {} }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ hasErrors })
     const [popperOpen, setPopperOpen] = useState(false)
@@ -68,7 +68,7 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
     }, [hasErrors])
 
     return (
-        <React.Fragment>
+        <>
             <IconButton
                 aria-label="errors"
                 className={classes.errorButton}
@@ -103,7 +103,7 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
                     </Box>
                 </Paper>
             </Popper>
-        </React.Fragment>
+        </>
     )
 })
 

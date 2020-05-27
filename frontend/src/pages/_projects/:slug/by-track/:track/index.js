@@ -43,7 +43,7 @@ export default ({ event, projects }) => {
     }, [])
 
     return (
-        <React.Fragment>
+        <>
             <EventHeroImage
                 event={event}
                 title={track.name}
@@ -59,6 +59,6 @@ export default ({ event, projects }) => {
                 />
                 <Box mt={5} />
             </CenteredContainer>
-        </React.Fragment>
+        </>
     )
 }

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
     const classes = useStyles()
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({

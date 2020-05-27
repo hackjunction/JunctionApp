@@ -28,7 +28,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import { useTranslation } from 'react-i18next'
 export default ({ visible, userIds = [], onClose }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const [loading, setLoading] = useState(false)
@@ -100,7 +100,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 setLoading(false)
                 handleClose()
             })
-    }, [getEdits, dispatch, userIds, event.slug, handleClose])
+    }, [getEdits, dispatch, userIds, event.slug, handleClose, t])
 
     if (!userIds.length) return null
     return (

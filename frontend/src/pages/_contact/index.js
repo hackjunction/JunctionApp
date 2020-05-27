@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useLocation } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { Button, Typography } from '@material-ui/core'
@@ -16,7 +16,7 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+// import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthActions from 'redux/auth/actions'
 import EmailService from 'services/email'
@@ -60,7 +60,7 @@ export default () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const location = useLocation()
-    const idToken = useSelector(AuthSelectors.getIdToken)
+    // const idToken = useSelector(AuthSelectors.getIdToken)
 
     const [loading, setLoading] = useState(false)
     const [subject, setSubject] = useState('')

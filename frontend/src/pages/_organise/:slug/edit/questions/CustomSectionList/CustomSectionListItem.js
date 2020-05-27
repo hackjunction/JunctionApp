@@ -118,7 +118,7 @@ export default ({
     )
 
     return (
-        <React.Fragment>
+        <>
             <Box className={classes.wrapper}>
                 <Typography variant="h6">{section.label}</Typography>
                 <List>
@@ -288,6 +288,6 @@ export default ({
                     editing={editing}
                 />
             </Box>
-        </React.Fragment>
+        </>
     )
 }

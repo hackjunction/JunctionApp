@@ -57,7 +57,7 @@ export default () => {
                                     renderer={({ formatted, completed }) => {
                                         if (!completed) {
                                             return (
-                                                <React.Fragment>
+                                                <>
                                                     <Typography
                                                         variant="subtitle1"
                                                         style={{
@@ -79,7 +79,7 @@ export default () => {
                                                     >
                                                         Start reviewing
                                                     </Button>
-                                                </React.Fragment>
+                                                </>
                                             )
                                         } else {
                                             return (
@@ -101,7 +101,7 @@ export default () => {
                             )
                         } else {
                             return (
-                                <React.Fragment>
+                                <>
                                     <Typography
                                         variant="subtitle1"
                                         style={{ fontWeight: 'bold' }}
@@ -117,7 +117,7 @@ export default () => {
                                     >
                                         Come back here then!
                                     </Typography>
-                                </React.Fragment>
+                                </>
                             )
                         }
                     }}

@@ -108,7 +108,7 @@ export default ({ event, projects }) => {
     )
 
     return (
-        <React.Fragment>
+        <>
             <EventHeroImage event={event} subheading="Project gallery" />
             <CenteredContainer>
                 <Box mt={3} />
@@ -126,6 +126,6 @@ export default ({ event, projects }) => {
                     onSelect={onProjectSelected}
                 />
             </CenteredContainer>
-        </React.Fragment>
+        </>
     )
 }

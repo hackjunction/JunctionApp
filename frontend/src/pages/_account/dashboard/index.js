@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const [registrations = [], loading, error] = useRegistrationsByUser(userId)
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     return (
         <PageWrapper loading={loading} error={Boolean(error)}>
             <Box p={2}>

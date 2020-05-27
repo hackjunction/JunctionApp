@@ -118,7 +118,7 @@ export default ({
 
     const renderPlaceholderInput = () => {
         return (
-            <React.Fragment>
+            <>
                 <Typography variant="body1" className={classes.label}>
                     Placeholder
                 </Typography>
@@ -130,7 +130,7 @@ export default ({
                 <Typography variant="caption" paragraph>
                     Text to show in the field if it's empty
                 </Typography>
-            </React.Fragment>
+            </>
         )
     }
 
@@ -139,7 +139,7 @@ export default ({
             case 'multiple-choice':
             case 'single-choice': {
                 return (
-                    <React.Fragment>
+                    <>
                         <Typography variant="body1" className={classes.label}>
                             Options to choose from
                         </Typography>
@@ -163,13 +163,13 @@ export default ({
                             Enter options to choose from, separated by a comma
                         </Typography>
                         {renderPlaceholderInput()}
-                    </React.Fragment>
+                    </>
                 )
             }
             case 'checkbox':
             case 'boolean': {
                 return (
-                    <React.Fragment>
+                    <>
                         <Typography variant="body1" className={classes.label}>
                             Default value
                         </Typography>
@@ -185,7 +185,7 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Is this field checked/yes by default?
                         </Typography>
-                    </React.Fragment>
+                    </>
                 )
             }
             default:
