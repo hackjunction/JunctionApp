@@ -33,6 +33,7 @@ export default () => {
     const userId = idTokenPayload?.sub
     const [profile] = useMyProfilePreview()
     const dispatch = useDispatch()
+    const hasSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
     const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess)
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
     const classes = useStyles()
