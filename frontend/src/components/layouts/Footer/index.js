@@ -81,23 +81,18 @@ const Footer = props => {
                                 strong
                                 onClick={() => dispatch(push('/contact'))}
                             >
-                                Contact us
+                                {t('Contact_us_')}
                             </Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <h2>
-                                {/* {t('Platform_organise_hack_', {
-                                owner: config.PLATFORM_OWNER_NAME,
-                            })} */}
-                                Sign in to check out our Hackerpack partners!{' '}
-                            </h2>
+                            <h2>{t('Join_hackerpack_')}</h2>
                             <Button
                                 color="theme_turquoise"
                                 variant="contained"
                                 strong
                                 onClick={() => dispatch(push('/hackerpack'))}
                             >
-                                To Hackerpack!
+                                {t('To_hackerpack_')}
                             </Button>
                         </Grid>
                     </Grid>
