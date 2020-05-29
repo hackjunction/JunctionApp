@@ -214,7 +214,7 @@ const _Table = ({
         return <Empty isEmpty />
     } else {
         return (
-            <React.Fragment>
+            <>
                 {pagination}
                 {enableSelection && (
                     <ActionBar
@@ -313,7 +313,7 @@ const _Table = ({
                     </Table>
                 </Box>
                 {pagination}
-            </React.Fragment>
+            </>
         )
     }
 }

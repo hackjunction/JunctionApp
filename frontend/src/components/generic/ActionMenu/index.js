@@ -31,7 +31,7 @@ const ActionMenu = ({ title = 'Actions', actions = [], actionProps }) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             <Tooltip title="Actions">
                 <IconButton
                     aria-controls="simple-menu"
@@ -57,7 +57,7 @@ const ActionMenu = ({ title = 'Actions', actions = [], actionProps }) => {
                     </MenuItem>
                 ))}
             </Menu>
-        </React.Fragment>
+        </>
     )
 }
 

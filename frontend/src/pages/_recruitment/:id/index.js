@@ -58,7 +58,7 @@ export default () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const dispatch = useDispatch()
     const match = useRouteMatch()
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     const sendMessage = useCallback(
         (message, userId) => {
@@ -207,7 +207,7 @@ export default () => {
                         <Box mt={3} />
                         <Grid container>
                             {user.profile.biography ? (
-                                <React.Fragment>
+                                <>
                                     <Grid item xs={12} md={8}>
                                         <DetailSection label="Biography">
                                             <Typography variant="body2">
@@ -231,9 +231,9 @@ export default () => {
                                             </Box>
                                         </Box>
                                     </Grid>
-                                </React.Fragment>
+                                </>
                             ) : (
-                                <React.Fragment>
+                                <>
                                     <Grid item xs={12}>
                                         <Box
                                             p={2}
@@ -250,7 +250,7 @@ export default () => {
                                             </Box>
                                         </Box>
                                     </Grid>
-                                </React.Fragment>
+                                </>
                             )}
                             <Grid item xs={12} sm={6} md={4}>
                                 <DetailSection label="Skills">
@@ -291,7 +291,7 @@ export default () => {
                                 </DetailSection>
                                 <DetailSection label="Education">
                                     {user.education.university ? (
-                                        <React.Fragment>
+                                        <>
                                             <Typography
                                                 className={classes.bold}
                                                 variant="body2"
@@ -308,7 +308,7 @@ export default () => {
                                                     ? `Graduation year: ${user.education.graduationYear}`
                                                     : `Expected graduation year: ${user.education.graduationYear}`}
                                             </Typography>
-                                        </React.Fragment>
+                                        </>
                                     ) : (
                                         <Typography
                                             className={classes.bold}

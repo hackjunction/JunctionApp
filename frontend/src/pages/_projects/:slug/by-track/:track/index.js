@@ -43,10 +43,9 @@ export default ({ event, projects }) => {
     }, [])
 
     return (
-        <React.Fragment>
+        <>
             <EventHeroImage
                 event={event}
-                overline={event.name}
                 title={track.name}
                 subheading={`${filtered.length} projects`}
             />
@@ -60,6 +59,6 @@ export default ({ event, projects }) => {
                 />
                 <Box mt={5} />
             </CenteredContainer>
-        </React.Fragment>
+        </>
     )
 }

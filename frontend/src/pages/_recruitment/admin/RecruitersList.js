@@ -21,7 +21,7 @@ export default ({ onRevoke }) => {
     const events = useSelector(RecruitmentSelectors.events)
     const recruiters = useSelector(RecruitmentSelectors.adminRecruiters)
     const loading = useSelector(RecruitmentSelectors.adminRecruitersLoading)
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateAdminRecruiters())

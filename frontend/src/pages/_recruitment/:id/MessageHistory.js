@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ user }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const actionHistoryByUser = useSelector(
         RecruitmentSelectors.actionHistoryByUser
     )
@@ -40,7 +40,7 @@ export default ({ user }) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             <Typography variant="body2">
                 {t('Message_history_', {
                     user: user.profile.firstName,
@@ -58,7 +58,7 @@ export default ({ user }) => {
                         <ListItemText
                             primary={moment(message.createdAt).format('LLL')}
                             secondary={
-                                <React.Fragment>
+                                <>
                                     <Typography
                                         component="span"
                                         variant="body2"
@@ -72,12 +72,12 @@ export default ({ user }) => {
                                         /<br>/g,
                                         '\n'
                                     )}
-                                </React.Fragment>
+                                </>
                             }
                         />
                     </ListItem>
                 ))}
             </List>
-        </React.Fragment>
+        </>
     )
 }

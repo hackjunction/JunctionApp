@@ -187,11 +187,11 @@ const Markdown = React.memo(
                     },
                     thematicBreak: props => {
                         return (
-                            <React.Fragment>
+                            <>
                                 <Divider size={2} />
                                 <LineDivider />
                                 <Divider size={2} />
-                            </React.Fragment>
+                            </>
                         )
                     },
                 }}

@@ -7,7 +7,7 @@ const HackerpackController = require('./controller')
 const EventController = require('../event/controller')
 
 const { hasToken } = require('../../common/middleware/token')
-const { hasPermission } = require('../../common/middleware/permissions')
+const { hasRole } = require('../../common/middleware/permissions')
 
 const getFullHackerpack = asyncHandler(async (req, res) => {
     const Hackerpack = await HackerpackController.getFullHackerpack()
@@ -28,21 +28,21 @@ const deleteHackerpack = asyncHandler(async (req, res) => {
     return res.status(200).json(Hackerpack)
 })
 
+// TODO implement event specific Hackerpackaa
+/*
 const getHackerpackByEvent = asyncHandler(async (req, res) => {
     const event = await EventController.getEventMembers(req.params.slug)
     const Hackerpacks = await HackerpackController.getHackerpackByEvent(event)
     return res.status(200).json(Hackerpacks)
 })
+*/
 
 const createHackerpack = asyncHandler(async (req, res) => {
-    console.log('creating hackerpak')
     const hackerpack = await HackerpackController.createHackerpack(req.body)
-    console.log('crettod hakeorororo', hackerpack)
     return res.status(201).json(hackerpack)
 })
 
 const updateHackerpack = asyncHandler(async (req, res) => {
-    console.log('reoutes', req.params.slug, req.body)
     const updatedHackerpack = await HackerpackController.updateHackerpack(
         req.params.slug,
         req.body
@@ -50,26 +50,17 @@ const updateHackerpack = asyncHandler(async (req, res) => {
     return res.status(200).json(updatedHackerpack)
 })
 
-// TODO has superadmin for post patch
 router
     .route('/')
     .get(getFullHackerpack)
-    .post(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
-        createHackerpack
-    )
+    .post(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), createHackerpack)
 
 router
     .route('/:slug')
     .get(getHackerpack)
     .delete(hasToken, deleteHackerpack)
-    .patch(
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
-        updateHackerpack
-    )
-
+    .patch(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), updateHackerpack)
+/*
 router.route('/event/:slug').get(getHackerpackByEvent)
-
+*/
 module.exports = router

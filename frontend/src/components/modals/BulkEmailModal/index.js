@@ -33,7 +33,7 @@ export default ({ visible, userIds = [], onClose }) => {
     const [loading, setLoading] = useState(false)
     const [confirmModalOpen, setConfirmModalOpen] = useState(false)
     const headerImage = useFormField('')
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const subject = useFormField('', value => {
         if (!value || value.length === 0) {
             return t('Subject_required_')
@@ -72,7 +72,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 }
                 return
             },
-            [ctaText.value]
+            [ctaText.value, t]
         )
     )
 
@@ -129,7 +129,7 @@ export default ({ visible, userIds = [], onClose }) => {
                 setLoading(false)
             })
         return null
-    }, [validate, idToken, event.slug, user.email, params, dispatch])
+    }, [validate, idToken, event.slug, user.email, params, dispatch, t])
 
     const handleConfirm = useCallback(() => {
         if (!validate()) return
@@ -162,6 +162,7 @@ export default ({ visible, userIds = [], onClose }) => {
         messageId.value,
         dispatch,
         onClose,
+        t,
     ])
 
     if (!userIds.length) return null

@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     const handleChange = event => {
         i18n.changeLanguage(event.target.value)
@@ -19,8 +19,21 @@ export default () => {
             style={{ padding: '0 0 0 32px' }}
             disableUnderline
         >
-            <MenuItem value={'fi'}>🇫🇮</MenuItem>
-            <MenuItem value={'en'}>🇬🇧</MenuItem>
+            <MenuItem value={'fi'}>
+                <span role="img" aria-label="fi">
+                    🇫🇮
+                </span>
+            </MenuItem>
+            <MenuItem value={'en'}>
+                <span role="img" aria-label="en">
+                    🇬🇧
+                </span>
+            </MenuItem>
+            <MenuItem value={'zh'}>
+                <span role="img" aria-label="zh">
+                    🇨🇳
+                </span>
+            </MenuItem>
         </Select>
     )
 }

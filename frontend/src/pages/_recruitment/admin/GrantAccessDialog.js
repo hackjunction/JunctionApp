@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ userId, onClose }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const dispatch = useDispatch()
     const events = useSelector(RecruitmentSelectors.events)
 

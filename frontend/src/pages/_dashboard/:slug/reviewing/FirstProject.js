@@ -8,6 +8,8 @@ import {
     Box,
     Dialog,
 } from '@material-ui/core'
+import { useTranslation } from 'react-i18next'
+
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -18,8 +20,6 @@ import Markdown from 'components/generic/Markdown'
 import ProjectDetail from 'components/projects/ProjectDetail'
 
 import GavelService from 'services/reviewing/gavel'
-import instructionsPhysical from './firstproject-physical.md'
-import instructionsOnline from './firstproject-online.md'
 
 export default ({ projectId }) => {
     const dispatch = useDispatch()
@@ -30,19 +30,7 @@ export default ({ projectId }) => {
     const [error, setError] = useState(false)
     const [project, setProject] = useState()
     const [selected, setSelected] = useState()
-    const [instructions, setInstructions] = useState('')
-
-    useEffect(() => {
-        const path =
-            event.eventType === 'physical'
-                ? instructionsPhysical
-                : instructionsOnline
-        fetch(path)
-            .then(response => response.text())
-            .then(text => {
-                setInstructions(text)
-            })
-    }, [event.eventType])
+    const { t, i18n } = useTranslation()
 
     const fetchProject = useCallback(async () => {
         setLoading(true)
@@ -131,9 +119,15 @@ export default ({ projectId }) => {
             <Grid item xs={12}>
                 <Box display="flex" flexDirection="column" alignItems="center">
                     <Typography align="center" variant="h4" gutterBottom>
-                        Your first project
+                        {t('Gavel_first_project_title_')}
                     </Typography>
-                    <Markdown source={instructions} />
+                    <Markdown
+                        source={
+                            event.eventType === 'physical'
+                                ? t('Gavel_first_project_physical_')
+                                : t('Gavel_first_project_online_')
+                        }
+                    />
                 </Box>
             </Grid>
             <Grid item xs={12}>

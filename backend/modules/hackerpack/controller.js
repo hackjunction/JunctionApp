@@ -16,7 +16,6 @@ controller.getHackerpackById = id => {
 }
 
 controller.getHackerpackBySlug = slug => {
-    console.log('trying to find slug', slug)
     return Hackerpack.findOne({ slug })
 }
 
@@ -43,9 +42,11 @@ controller.deleteHackerpack = slug => {
     // return Hackerpack.updateAllowed(hackerpack, hackerpackData)
 }
 
+// TODO implement event specific packs
+/*
 controller.getHackerpackByEvent = eventId => {
-    // TODO implement event specific packs
     return controller.getHackerpacks()
 }
+*/
 
 module.exports = controller

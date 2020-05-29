@@ -1,13 +1,11 @@
 import React from 'react'
 
-import { useSelector } from 'react-redux'
 import { Grid } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
-import BooleanInput from 'components/inputs/BooleanInput'
 
 export default () => {
     return (

@@ -7,23 +7,20 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as AuthActions from 'redux/auth/actions'
 import * as UserSelectors from 'redux/user/selectors'
 
-/** Hide a component if the user doesn't have a given permission, and also redirect to login/error */
+/** Hide a component if the user doesn't have a given role, and also redirect to login/error */
 
-export default (ComposedComponent, requiredPermissions = []) => {
+export default (ComposedComponent, requiredRoles = []) => {
     return props => {
         const location = useLocation()
         const dispatch = useDispatch()
         const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
         const isSessionExpired = useSelector(AuthSelectors.isSessionExpired)
-        const permissions = useSelector(AuthSelectors.getPermissions)
+        const roles = useSelector(AuthSelectors.getRoles)
         const hasProfile = useSelector(UserSelectors.hasProfile)
 
-        const hasRequiredPermissions = useMemo(() => {
-            return (
-                requiredPermissions.filter(x => !permissions.includes(x))
-                    .length === 0
-            )
-        }, [permissions])
+        const hasRequiredRoles = useMemo(() => {
+            return requiredRoles.filter(x => !roles.includes(x)).length === 0
+        }, [roles])
 
         const checkAndRedirect = useCallback(() => {
             if (!hasProfile || !isAuthenticated) {
@@ -31,14 +28,14 @@ export default (ComposedComponent, requiredPermissions = []) => {
                 dispatch(push('/login', { nextRoute }))
             } else if (isSessionExpired) {
                 dispatch(AuthActions.renewSession())
-            } else if (!hasRequiredPermissions) {
+            } else if (!hasRequiredRoles) {
                 const error = 'Access denied'
                 dispatch(push('/error', { error }))
             }
         }, [
             dispatch,
             hasProfile,
-            hasRequiredPermissions,
+            hasRequiredRoles,
             isAuthenticated,
             isSessionExpired,
             location,
@@ -50,7 +47,7 @@ export default (ComposedComponent, requiredPermissions = []) => {
 
         if (!isAuthenticated) return null
         if (!hasProfile) return null
-        if (!hasRequiredPermissions) return null
+        if (!hasRequiredRoles) return null
         if (isSessionExpired) return null
 
         return <ComposedComponent {...props} />

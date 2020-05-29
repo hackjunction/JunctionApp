@@ -58,7 +58,7 @@ export default () => {
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
     const hasProfile = useSelector(UserSelectors.hasProfile)
     const loading = userProfileLoading || !hasProfile
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
 
     const classes = useStyles()
 
@@ -115,7 +115,7 @@ export default () => {
                 onSubmit={handleSubmit}
             >
                 {formikProps => (
-                    <React.Fragment>
+                    <>
                         <Box className={classes.topWrapper}>
                             <Box width="300px" height="300px" margin={3}>
                                 <FastField
@@ -745,7 +745,7 @@ export default () => {
                             dirty={formikProps.dirty}
                             loading={formikProps.isSubmitting}
                         />
-                    </React.Fragment>
+                    </>
                 )}
             </Formik>
         </PageWrapper>

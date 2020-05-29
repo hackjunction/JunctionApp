@@ -35,6 +35,14 @@ export const getHasPermission = state => {
     }
 }
 
+export const getHasRole = state => {
+    const roles = getRoles(state)
+    console.log('roles are', roles)
+    return requiredRoles => {
+        return difference(requiredRoles, roles).length === 0
+    }
+}
+
 export const idTokenData = createSelector(getIdTokenPayload, data => {
     if (!data) {
         return
@@ -68,3 +76,7 @@ export const hasOrganiserAccess = createSelector(
         return hasPermission([Auth.Permissions.MANAGE_EVENT])
     }
 )
+
+export const hasSuperAdmin = createSelector(getHasRole, hasPermission => {
+    return hasPermission([Auth.Roles.SUPER_ADMIN])
+})

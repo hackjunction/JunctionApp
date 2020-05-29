@@ -174,7 +174,7 @@ export default ({
                     />
                 </Box>
                 {isConditional && (
-                    <React.Fragment>
+                    <>
                         <Box p={1} />
                         <Typography variant="body1" className={classes.label}>
                             Conditional question
@@ -191,7 +191,7 @@ export default ({
                                 handleChange('conditional', value)
                             }
                         />
-                    </React.Fragment>
+                    </>
                 )}
             </DialogContent>
             <DialogActions>

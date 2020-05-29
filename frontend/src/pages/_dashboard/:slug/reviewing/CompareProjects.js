@@ -8,6 +8,8 @@ import {
     Box,
     Dialog,
 } from '@material-ui/core'
+import { useTranslation } from 'react-i18next'
+
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -18,12 +20,6 @@ import ConfirmDialog from 'components/generic/ConfirmDialog'
 import Markdown from 'components/generic/Markdown'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import VoteTimer from './VoteTimer'
-
-// TODO remove this shit :D wtf
-import instructionsPhysical from './compareprojects-physical.md'
-import instructionsPhysical2 from './compareprojects-physical-2.md'
-import instructionsOnline from './compareprojects-online.md'
-import instructionsOnline2 from './compareprojects-online-2.md'
 
 import GavelService from 'services/reviewing/gavel'
 
@@ -37,27 +33,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const [projects, setProjects] = useState()
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [selected, setSelected] = useState(false)
-    const [instructions, setInstructions] = useState('')
-
-    useEffect(() => {
-        if (isFirstChoice) {
-            const path =
-                event.eventType === 'physical'
-                    ? instructionsPhysical
-                    : instructionsOnline
-            fetch(path)
-                .then(response => response.text())
-                .then(setInstructions)
-        } else {
-            const path =
-                event.eventType === 'physical'
-                    ? instructionsPhysical2
-                    : instructionsOnline2
-            fetch(path)
-                .then(response => response.text())
-                .then(setInstructions)
-        }
-    }, [event.eventType, isFirstChoice])
+    const { t, i18n } = useTranslation()
 
     const fetchProjects = useCallback(async () => {
         setLoading(true)
@@ -115,16 +91,22 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
             return (
                 <Box display="flex" flexDirection="column" alignItems="center">
                     <Typography align="center" variant="h4" gutterBottom>
-                        Okay, time to vote!
+                        {t('Gavel_vote_')}
                     </Typography>
-                    <Markdown source={instructions} />
+                    <Markdown
+                        source={
+                            event.eventType === 'physical'
+                                ? t('Gavel_compare_projects_physical_')
+                                : t('Gavel_compare_projects_online_')
+                        }
+                    />
                 </Box>
             )
         } else {
             return (
                 <Box display="flex" flexDirection="column" alignItems="center">
                     <Typography align="center" variant="h4" gutterBottom>
-                        Next decision
+                        {t('Gavel_next_')}
                     </Typography>
                     <Typography
                         align="center"
@@ -132,10 +114,16 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                         style={{ fontWeight: 'bold' }}
                         gutterBottom
                     >
-                        Your votes:{' '}
+                        {t('Gavel_vote_count_')}{' '}
                         {annotator.ignore.length - annotator.skipped.length - 1}
                     </Typography>
-                    <Markdown source={instructions} />
+                    <Markdown
+                        source={
+                            event.eventType === 'physical'
+                                ? t('Gavel_compare_projects_physical2_')
+                                : t('Gavel_compare_projects_online2_')
+                        }
+                    />
                 </Box>
             )
         }
@@ -194,7 +182,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                                     variant="contained"
                                     fullWidth
                                 >
-                                    Previous
+                                    {t('Previous_')}
                                 </Button>
                             </Grid>
                             <Grid item xs={6}>
@@ -204,7 +192,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                                     variant="contained"
                                     fullWidth
                                 >
-                                    Current
+                                    {t('Current_')}
                                 </Button>
                             </Grid>
                             {event.eventType === 'physical' && (

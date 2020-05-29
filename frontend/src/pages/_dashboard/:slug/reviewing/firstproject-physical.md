@@ -1,1 +1,0 @@
-Alright! Time to see your first project! Make your way to the location indicated on the below card. Once you're there and you've found the right team, let them know you've come to review their project. Give them 3 minutes time to demo, and ask any questions you may have - when you think you've seen enough, click DONE.

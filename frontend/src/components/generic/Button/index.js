@@ -71,7 +71,6 @@ const useStyles = makeStyles(theme => ({
 
 const Button = ({ color = 'primary', strong, loading, ...props }) => {
     const classes = useStyles({ color, strong, variant: props.variant })
-
     return (
         <MuiButton
             {...props}

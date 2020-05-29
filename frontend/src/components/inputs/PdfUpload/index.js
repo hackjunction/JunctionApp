@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [loading, setLoading] = useState(false)
@@ -55,7 +55,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
             }
             return isPDF && isLt10M
         },
-        [dispatch]
+        [dispatch, t]
     )
 
     const handleRemove = useCallback(() => {
@@ -80,7 +80,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                 setLoading(false)
             }
         },
-        [dispatch, onChange]
+        [dispatch, onChange, t]
     )
 
     return (

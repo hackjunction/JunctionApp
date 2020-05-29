@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const classes = useStyles()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const favorites = useSelector(RecruitmentSelectors.favorites)
@@ -61,10 +61,10 @@ export default () => {
                 {showFavorites ? (
                     <SearchResults items={favorites} />
                 ) : (
-                    <React.Fragment>
+                    <>
                         <Filters />
                         <SearchResults />
-                    </React.Fragment>
+                    </>
                 )}
             </CenteredContainer>
         </div>

@@ -37,7 +37,7 @@ export default React.memo(({ registration }) => {
     console.log('custom', customAnswers)
     const categoryNames = sorted.filter(key => key !== '')
     return (
-        <React.Fragment>
+        <>
             {categoryNames.map(name => (
                 <ExpansionPanel key={name}>
                     <ExpansionPanelSummary
@@ -104,6 +104,6 @@ export default React.memo(({ registration }) => {
                     </ExpansionPanel>
                 )
             })}
-        </React.Fragment>
+        </>
     )
 })
