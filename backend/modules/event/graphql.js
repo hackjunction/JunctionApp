@@ -212,8 +212,12 @@ const QueryType = new GraphQLObjectType({
 const Resolvers = {
     Query: {
         myEvents: async (parent, args, context) => {
+            // TODO possible vulnerability to be able a provide roles with SuperAdmin?
             const userId = context.req.user ? context.req.user.sub : null
             if (!userId) return null
+            if (context.req.user.roles.includes('SuperAdmin')) {
+                return context.controller('Event').getAll()
+            }
             return context.controller('Event').getByOrganiser(userId)
         },
         eventById: async (parent, args, context) => {
