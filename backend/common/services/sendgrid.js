@@ -307,7 +307,19 @@ const SendgridService = {
                 reply_to: params.reply_to,
             }
         )
-
+        return SendgridService.send(msg)
+    },
+    sendContactEmail: (to, params) => {
+        const msg = SendgridService.buildTemplateMessage(
+            to,
+            global.gConfig.SENDGRID_CONTACT_TEMPLATE,
+            {
+                subject: params.subject,
+                subtitle: params.subtitle,
+                body: params.body,
+                reply_to: params.reply_to,
+            }
+        )
         return SendgridService.send(msg)
     },
     buildTemplateMessage: (to, templateId, data) => {

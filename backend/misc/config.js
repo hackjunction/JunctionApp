@@ -97,6 +97,10 @@ const settings = {
         required: true,
         value: process.env.SENDGRID_GENERIC_TEMPLATE,
     },
+    SENDGRID_CONTACT_TEMPLATE: {
+        required: true,
+        value: process.env.SENDGRID_CONTACT_TEMPLATE,
+    },
     SENDGRID_MAILING_LIST_ID: {
         required: false,
         value: process.env.SENDGRID_MAILING_LIST_ID || '7150117',
