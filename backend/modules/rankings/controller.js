@@ -191,10 +191,9 @@ controller.generateOverallResults = async event => {
                 return gavelResults.map(({ project }) => project)
             }
             case ReviewingMethods.manualReview.id: {
-                /** Skip generating results, no reviewing method defined */
-                console.log(
-                    'Manual reviewing selected, cannot automatically generate results'
-                )
+                /** Skip generating results, no reviewing method defined
+                 * Manual reviewing selected, cannot automatically generate results
+                 */
                 return []
             }
         }
@@ -218,7 +217,7 @@ controller.generateTrackResults = async (event, trackSlug) => {
 
 controller.generateTrackResultsAll = async event => {
     if (!event.tracksEnabled || !event.tracks.length === 0) {
-        console.log('No tracks enabled, skipping track results generation')
+        // No tracks enabled, skipping track results generation
         return null
     }
     return Promise.reduce(
