@@ -39,6 +39,22 @@ const messageParams = () =>
             .allow(''),
     })
 
+const contactMessageParams = () =>
+    Joi.object({
+        subject: Joi.string()
+            .max(200)
+            .required(),
+        subtitle: Joi.string()
+            .max(200)
+            .optional()
+            .allow(''),
+        body: Joi.string().required(),
+        reply_to: Joi.string()
+            .email()
+            .optional()
+            .allow(''),
+    })
+
 /** Send a preview email to a given address */
 router.route('/:slug/preview').post(
     celebrate({
@@ -84,7 +100,7 @@ router.route('/:slug/send').post(
 router.route('/contact').post(
     celebrate({
         body: {
-            params: messageParams().required(),
+            params: contactMessageParams().required(),
         },
     }),
     asyncHandler(async (req, res) => {

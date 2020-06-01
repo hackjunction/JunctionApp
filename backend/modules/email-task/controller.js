@@ -246,7 +246,7 @@ controller.sendPreviewEmail = async (to, msgParams) => {
 
 controller.sendContactEmail = async msgParams => {
     // TODO config in .env
-    return SendgridService.sendGenericEmail(
+    return SendgridService.sendContactEmail(
         'hello@hackjunction.com',
         msgParams
     ).catch(() => {})
