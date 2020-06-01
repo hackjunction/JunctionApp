@@ -12,15 +12,23 @@ const EventController = require('../../modules/event/controller')
 const RegistrationController = require('../../modules/registration/controller')
 const TeamController = require('../../modules/team/controller')
 
+function isSuperAdmin(user) {
+    if (!user) {
+        return new NotFoundError('User does not exist')
+    }
+    if (!user.roles.includes('SuperAdmin')) {
+        return new InsufficientPrivilegesError('Must be owner a superadmin')
+    }
+    return null
+}
+
 function isOwner(user, event) {
     if (!event) {
         return new NotFoundError('Event does not exist')
     }
-
     if (event.owner !== user.sub) {
         return new InsufficientPrivilegesError('Must be owner of event')
     }
-
     return null
 }
 
@@ -28,13 +36,11 @@ function isOrganiser(user, event) {
     if (!event) {
         return new NotFoundError('Event does not exist')
     }
-
     if (event.owner !== user.sub && event.organisers.indexOf(user.sub) === -1) {
         return new InsufficientPrivilegesError(
             'Must be owner or organiser of event'
         )
     }
-
     return null
 }
 
@@ -140,10 +146,15 @@ const EventMiddleware = {
         next()
     },
     isEventOrganiser: async (req, res, next) => {
+        console.log('eeere??')
         const event = await getEventFromParams(req.params)
+        // TODO what the fuck is the logic with these? :D if true, return null?
+        const superAdminError = isSuperAdmin(req.user)
         const error = isOrganiser(req.user, event)
-        if (error) {
+        if (error && superAdminError) {
             next(error)
+        } else if (superAdminError) {
+            next(superAdminError)
         } else {
             req.event = event
             next()
@@ -151,9 +162,12 @@ const EventMiddleware = {
     },
     isEventOwner: async (req, res, next) => {
         const event = await getEventFromParams(req.params)
+        const superAdminError = isSuperAdmin(req.user)
         const error = isOwner(req.user, event)
-        if (error) {
+        if (error && superAdminError) {
             next(error)
+        } else if (superAdminError) {
+            next(superAdminError)
         } else {
             req.event = event
             next()
