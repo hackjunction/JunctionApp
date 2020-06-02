@@ -44,10 +44,10 @@
     "dependencies": {
         "better-npm-run": "^0.1.1",
         "if-env": "^1.0.4",
-        "pino": "^6.2.1",
+        "pino": "^6.3.1",
         "pino-pretty": "^4.0.0",
         "react-pdf": "^4.1.0",
-        "yup": "^0.27.0"
+        "yup": "^0.29.1"
     },
     "engines": {
         "node": "12.3.1",
