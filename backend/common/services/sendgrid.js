@@ -25,11 +25,11 @@ const sendgridAddRecipients = (email, country) => {
     })
 }
 
-const sendgridAddRecipientsToList = (list_id, recipient_ids) => {
+const sendgridAddRecipientsToList = (listId, recipientIds) => {
     const request = {
-        data: recipient_ids,
+        data: recipientIds,
         method: 'POST',
-        url: `/v3/contactdb/lists/${list_id}/recipients/${recipient_ids}`,
+        url: `/v3/contactdb/lists/${listId}/recipients/${recipientIds}`,
     }
 
     return sgClient.request(request).then(([response, body]) => {

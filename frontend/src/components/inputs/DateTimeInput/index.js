@@ -10,9 +10,7 @@ const DateTimeInput = React.memo(
         const momentValue =
             value && timezone
                 ? moment(value).tz(timezone)
-                : moment()
-                      .tz(timezone)
-                      .startOf('day')
+                : moment().tz(timezone).startOf('day')
 
         const handleDateChange = useCallback(
             date => {

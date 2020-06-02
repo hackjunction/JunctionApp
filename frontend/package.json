@@ -77,18 +77,18 @@
     "eslintConfig": {
         "env": {
             "browser": true,
-            "es6": true
+            "es2020": true
         },
         "extends": [
             "react-app",
-            "prettier"
+            "plugin:prettier/recommended"
         ],
         "plugins": [
             "react",
             "prettier"
         ],
         "parserOptions": {
-            "ecmaVersion": 2018
+            "ecmaVersion": 2020
         },
         "rules": {
             "prettier/prettier": [
@@ -101,7 +101,8 @@
                     "singleQuote": true,
                     "useTabs": false,
                     "tabWidth": 4,
-                    "bracketSpacing": true
+                    "bracketSpacing": true,
+                    "arrowParens": "avoid"
                 }
             ],
             "no-console": 0,

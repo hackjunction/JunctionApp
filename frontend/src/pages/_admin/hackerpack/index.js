@@ -68,10 +68,7 @@ export default () => {
         validations['name'] = yup.string()
         validations['description'] = yup.string()
         validations['link'] = yup.string().url()
-        validations['icon'] = yup
-            .string()
-            .url()
-            .nullable()
+        validations['icon'] = yup.string().url().nullable()
         return validations
     }, [])
 

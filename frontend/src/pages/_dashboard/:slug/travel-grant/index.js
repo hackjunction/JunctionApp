@@ -64,9 +64,7 @@ export default () => {
                             style={{ fontWeight: 'bold' }}
                         >
                             This form will close{' '}
-                            {moment(event.endTime)
-                                .add(7, 'days')
-                                .format('LLL')}
+                            {moment(event.endTime).add(7, 'days').format('LLL')}
                             . Should you miss this deadline, we will be unable
                             to pay you your travel grant.
                         </Typography>

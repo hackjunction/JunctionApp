@@ -31,7 +31,7 @@ export default ({ data = [] }) => {
             console.log(hackerpack)
             HackerpackService.deleteHackerpack(idToken, slug)
             setHackerpack(
-                hackerpack.filter(function(obj) {
+                hackerpack.filter(function (obj) {
                     return obj.slug !== slug
                 })
             )

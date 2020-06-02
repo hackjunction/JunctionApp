@@ -14,7 +14,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.response.use(
-    function(response) {
+    function (response) {
         if (
             response.headers['content-type'].indexOf('application/json') !== -1
         ) {
@@ -22,7 +22,7 @@ instance.interceptors.response.use(
         }
         return Promise.reject(new Error('Response was not application/json'))
     },
-    function(error) {
+    function (error) {
         return Promise.reject(error)
     }
 )

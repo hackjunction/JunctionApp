@@ -20,16 +20,16 @@ const MongoUtils = {
         return value
     },
     filterOperatorToMongoOperator: operator => {
-        if (operator == '<') return '$lt'
-        if (operator == '<=') return '$lte'
-        if (operator == '>') return '$gt'
-        if (operator == '>=') return '$gte'
-        if (operator == '==') return '$eq'
-        if (operator == '!=') return '$ne'
-        if (operator == 'array-element-match') return '$elemMatch'
-        if (operator == 'contains') return '$in'
-        if (operator == 'contains-all') return '$all'
-        if (operator == 'not-contains') return '$nin'
+        if (operator === '<') return '$lt'
+        if (operator === '<=') return '$lte'
+        if (operator === '>') return '$gt'
+        if (operator === '>=') return '$gte'
+        if (operator === '==') return '$eq'
+        if (operator === '!=') return '$ne'
+        if (operator === 'array-element-match') return '$elemMatch'
+        if (operator === 'contains') return '$in'
+        if (operator === 'contains-all') return '$all'
+        if (operator === 'not-contains') return '$nin'
     },
 }
 

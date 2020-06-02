@@ -156,11 +156,7 @@ export default () => {
                 .max(100)
                 .required()
                 .label('Last name'),
-            email: yup
-                .string()
-                .email()
-                .required()
-                .label('Email'),
+            email: yup.string().email().required().label('Email'),
             accepted: yup.bool().oneOf([true]),
         }),
     })

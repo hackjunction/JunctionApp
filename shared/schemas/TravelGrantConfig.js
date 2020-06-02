@@ -27,7 +27,7 @@ const TravelGrantConfigSchema = new mongoose.Schema({
             validator(v) {
                 return Currencies.keys.indexOf(v) !== -1
             },
-            message: props => `${props.value} is not a valid currency code`,
+            message: (props) => `${props.value} is not a valid currency code`,
         },
     },
 })
