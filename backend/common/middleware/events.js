@@ -153,8 +153,6 @@ const EventMiddleware = {
         const error = isOrganiser(req.user, event)
         if (error && superAdminError) {
             next(error)
-        } else if (superAdminError) {
-            next(superAdminError)
         } else {
             req.event = event
             next()
@@ -166,8 +164,6 @@ const EventMiddleware = {
         const error = isOwner(req.user, event)
         if (error && superAdminError) {
             next(error)
-        } else if (superAdminError) {
-            next(superAdminError)
         } else {
             req.event = event
             next()
