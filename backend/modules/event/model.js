@@ -85,7 +85,7 @@ const EventSchema = new mongoose.Schema({
     eventLocation: {
         type: AddressSchema.mongoose,
         required: [
-            function() {
+            () => {
                 return this.eventType === EventTypes.physical.id
             },
             `is required for physical events`,
@@ -96,7 +96,7 @@ const EventSchema = new mongoose.Schema({
         type: [TrackSchema.mongoose],
         default: [],
         validate: [
-            function(val) {
+            val => {
                 if (this.tracksEnabled) {
                     return val.length > 0
                 }
@@ -105,7 +105,7 @@ const EventSchema = new mongoose.Schema({
             'must have at least one item if tracks are enabled',
         ],
         required: [
-            function() {
+            () => {
                 return this.tracksEnabled
             },
             'is required if tracks are enabled',
@@ -116,7 +116,7 @@ const EventSchema = new mongoose.Schema({
         type: [ChallengeSchema.mongoose],
         default: [],
         validate: [
-            function(val) {
+            val => {
                 if (this.challengesEnabled) {
                     return val.length > 0
                 }
@@ -125,7 +125,7 @@ const EventSchema = new mongoose.Schema({
             'must have at least one item if challenges are enabled',
         ],
         required: [
-            function() {
+            () => {
                 return this.challengesEnabled
             },
             'is required if challenges are enabled',
@@ -135,9 +135,10 @@ const EventSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    // Mongoose will cast the empty object to match `TravelGrantConfigSchema`, so it will set defaults
     travelGrantConfig: {
         type: TravelGrantConfigSchema.mongoose,
-        default: TravelGrantConfigSchema.mongoose,
+        default: () => ({}),
     },
     reviewMethod: {
         type: String,
@@ -149,7 +150,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         enum: Object.keys(OverallReviewingMethods),
         required: [
-            function() {
+            () => {
                 return this.tracksEnabled
             },
             'is required if tracks are enabled',
@@ -161,8 +162,9 @@ const EventSchema = new mongoose.Schema({
     },
     registrationConfig: {
         /** Introduced in favor of userDetailsConfig in 00-registration-questions */
+        // Mongoose will cast the empty object to match `RegistrationConfigSchema`, so it will set defaults
         type: RegistrationConfigSchema.mongoose,
-        default: RegistrationConfigSchema.mongoose,
+        default: () => ({}),
     },
     customQuestions: {
         type: [RegistrationSectionSchema.mongoose],

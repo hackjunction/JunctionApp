@@ -1,10 +1,17 @@
 const { InsufficientPrivilegesError } = require('../errors/errors')
 
 function userHasRole(user, role) {
+    if (user.roles.indexOf('SuperAdmin') !== -1) {
+        return true
+    }
     return user && user.roles && user.roles.indexOf(role) !== -1
 }
 
 function userHasPermission(user, permission) {
+    // TODO make sure user has roles?
+    if (user.roles.indexOf('SuperAdmin') !== -1) {
+        return true
+    }
     return (
         user && user.permissions && user.permissions.indexOf(permission) !== -1
     )

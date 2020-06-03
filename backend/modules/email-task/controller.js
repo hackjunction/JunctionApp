@@ -1,6 +1,5 @@
 const shortid = require('shortid')
 const Promise = require('bluebird')
-const _ = require('lodash')
 const logger = require('../../misc/logger')
 const EmailTask = require('./model')
 const SendgridService = require('../../common/services/sendgrid')
@@ -245,9 +244,8 @@ controller.sendPreviewEmail = async (to, msgParams) => {
 }
 
 controller.sendContactEmail = async msgParams => {
-    // TODO config in .env
     return SendgridService.sendContactEmail(
-        'hello@hackjunction.com',
+        global.gConfig.SENDGRID_CONTACT_MAIL,
         msgParams
     ).catch(() => {})
 }
