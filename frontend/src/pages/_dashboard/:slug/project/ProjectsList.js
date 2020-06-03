@@ -134,36 +134,40 @@ export default props => {
                 projects.map(project => (
                     <ProjectCard key={project._id} project={project} />
                 ))}
-            {/* TODO revork in settings canAddMoreSubmissions()*/ true && (
-                <Grid item xs={12} md={6}>
-                    <Paper elevation={3}>
-                        <Box
-                            p={4}
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            flexDirection="column"
-                        >
-                            <Typography
-                                variant="body1"
-                                align="center"
-                                gutterBottom
+            {
+                /* TODO revork in settings canAddMoreSubmissions()*/ true && (
+                    <Grid item xs={12} md={6}>
+                        <Paper elevation={3}>
+                            <Box
+                                p={4}
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                flexDirection="column"
                             >
-                                This event allows multiple submissions! Add a
-                                new one now!
-                            </Typography>
-                            <Box p={1} />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => projectSelectedCallback(null)}
-                            >
-                                Add submission
-                            </Button>
-                        </Box>
-                    </Paper>
-                </Grid>
-            )}
+                                <Typography
+                                    variant="body1"
+                                    align="center"
+                                    gutterBottom
+                                >
+                                    This event allows multiple submissions! Add
+                                    a new one now!
+                                </Typography>
+                                <Box p={1} />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() =>
+                                        projectSelectedCallback(null)
+                                    }
+                                >
+                                    Add submission
+                                </Button>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                )
+            }
 
             <ProjectScoreModal
                 score={selectedProjectScore}

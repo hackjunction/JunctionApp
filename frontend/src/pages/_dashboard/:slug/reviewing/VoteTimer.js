@@ -6,9 +6,7 @@ import { Typography } from '@material-ui/core'
 export default ({ annotator, children }) => {
     return (
         <Countdown
-            date={moment(annotator.updatedAt)
-                .add(120, 'seconds')
-                .toDate()}
+            date={moment(annotator.updatedAt).add(120, 'seconds').toDate()}
             renderer={({ completed, minutes, seconds }) => {
                 if (!completed) {
                     return (

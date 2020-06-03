@@ -73,10 +73,7 @@ export default () => {
             }
         })
 
-        validations['avatar'] = yup
-            .string()
-            .url()
-            .nullable()
+        validations['avatar'] = yup.string().url().nullable()
 
         return validations
     }, [])

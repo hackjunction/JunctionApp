@@ -5,14 +5,13 @@ const _ = require('lodash')
  */
 
 function publicFieldsPlugin(schema, { fields = [] } = {}) {
-    schema.statics.publicFields = function(docs) {
+    schema.statics.publicFields = function (docs) {
         if (Array.isArray(docs)) {
             return docs.map(doc => {
                 return _.pick(doc.toJSON(), fields)
             })
-        } else {
-            return _.pick(docs.toJSON(), fields)
         }
+        return _.pick(docs.toJSON(), fields)
     }
 }
 

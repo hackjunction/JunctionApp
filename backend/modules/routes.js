@@ -17,7 +17,7 @@ const rankingsRouter = require('./rankings/routes')
 const projectScoresRouter = require('./project_score/routes')
 const hackerpackRouter = require('./hackerpack/routes')
 
-module.exports = function(app) {
+module.exports = app => {
     app.get('/api', (req, res) => {
         res.status(200).json({
             message: 'Hello!',

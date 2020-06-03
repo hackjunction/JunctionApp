@@ -146,15 +146,15 @@ const EventMiddleware = {
         next()
     },
     isEventOrganiser: async (req, res, next) => {
-        console.log('eeere??')
+        // TODO this method is called quite often. Not really problem here, but a reminder to run a profiler on the frontend at some point
         const event = await getEventFromParams(req.params)
         // TODO what the fuck is the logic with these? :D if true, return null?
         const superAdminError = isSuperAdmin(req.user)
         const error = isOrganiser(req.user, event)
         if (error && superAdminError) {
-            next(superAdminError)
-        } else if (error) {
             next(error)
+        } else if (superAdminError) {
+            next(superAdminError)
         } else {
             req.event = event
             next()
@@ -165,9 +165,9 @@ const EventMiddleware = {
         const superAdminError = isSuperAdmin(req.user)
         const error = isOwner(req.user, event)
         if (error && superAdminError) {
-            next(superAdminError)
-        } else if (error) {
             next(error)
+        } else if (superAdminError) {
+            next(superAdminError)
         } else {
             req.event = event
             next()

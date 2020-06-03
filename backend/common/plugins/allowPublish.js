@@ -15,10 +15,10 @@ function allowPublishPlugin(schema, { defaultPublished = false } = {}) {
 
     _.forOwn(schema.tree, (options, path) => {
         if (options.requiredForPublish) {
-            let newOptions = {
+            const newOptions = {
                 ...options,
                 required: [
-                    function() {
+                    function () {
                         return this.published === true
                     },
                     `must be set before the event can be published!`,
