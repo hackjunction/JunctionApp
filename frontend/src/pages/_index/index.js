@@ -1,24 +1,24 @@
-import React from 'react'
+import React from 'react';
 
-import Divider from 'components/generic/Divider'
-import LineDivider from 'components/generic/LineDivider/'
-import ExternalLink from 'components/generic/ExternalLink'
-import Footer from 'components/layouts/Footer'
-import PageWrapper from 'components/layouts/PageWrapper'
+import Divider from 'components/generic/Divider';
+import LineDivider from 'components/generic/LineDivider/';
+import ExternalLink from 'components/generic/ExternalLink';
+import Footer from 'components/layouts/Footer';
+import PageWrapper from 'components/layouts/PageWrapper';
 
-import EventHighlight from './EventHighlight'
-import EventsGrid from './EventsGrid'
-import CenteredContainer from 'components/generic/CenteredContainer'
-import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import config from 'constants/config'
+import EventHighlight from './EventHighlight';
+import EventsGrid from './EventsGrid';
+import CenteredContainer from 'components/generic/CenteredContainer';
+import GlobalNavBar from 'components/navbars/GlobalNavBar';
+import config from 'constants/config';
 
-import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
-import { useTranslation } from 'react-i18next'
+import { useActiveEvents, usePastEvents } from 'graphql/queries/events';
+import { useTranslation } from 'react-i18next';
 
 export default () => {
-    const [activeEvents] = useActiveEvents({ limit: 3 })
-    const [pastEvents] = usePastEvents({ limit: 3 })
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const [activeEvents] = useActiveEvents({ limit: 3 });
+    const [pastEvents] = usePastEvents({ limit: 3 });
+    const { t, i18n } = useTranslation(); // eslint-disable-line
 
     return (
         <PageWrapper
@@ -58,5 +58,5 @@ export default () => {
                 </>
             )}
         />
-    )
-}
+    );
+};

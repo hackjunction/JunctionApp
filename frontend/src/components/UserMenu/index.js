@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
+import { makeStyles } from '@material-ui/core/styles';
 import {
     Popover,
     IconButton,
@@ -12,13 +12,15 @@ import {
     ListItemText,
     ListSubheader,
     Divider,
-} from '@material-ui/core'
-import * as AuthSelectors from 'redux/auth/selectors'
-import Button from 'components/generic/Button'
+    Grid,
+} from '@material-ui/core';
+import * as AuthSelectors from 'redux/auth/selectors';
+import Button from 'components/generic/Button';
 
-import { useMyProfilePreview } from 'graphql/queries/userProfile'
+import { useMyProfilePreview } from 'graphql/queries/userProfile';
+import PricingMenu from 'components/PricingMenu';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     menuDot: {
         width: '8px',
         height: '8px',
@@ -26,63 +28,64 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '2px',
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
-}))
+}));
 
 export default () => {
-    const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
-    const userId = idTokenPayload?.sub
-    const [profile] = useMyProfilePreview()
-    const dispatch = useDispatch()
-    const hasSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
-    const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess)
-    const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
-    const classes = useStyles()
-    const [anchorEl, setAnchorEl] = useState(null)
+    const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload);
+    const userId = idTokenPayload?.sub;
+    const [profile] = useMyProfilePreview();
+    const dispatch = useDispatch();
+    const hasSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin);
+    const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess);
+    const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess);
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
 
-    const handleMenuOpen = e => {
-        setAnchorEl(e.currentTarget)
-    }
+    const handleMenuOpen = (e) => {
+        setAnchorEl(e.currentTarget);
+    };
 
     const handleMenuClose = () => {
-        setAnchorEl(null)
-    }
+        setAnchorEl(null);
+    };
 
     if (!userId) {
         return (
-            <Box display="flex" flexDirection="row" alignItems="center">
+            <Box display='flex' flexDirection='row' alignItems='center'>
+                <PricingMenu />
                 <Button
-                    color="theme_white"
-                    variant="outlined"
+                    color='theme_white'
+                    variant='outlined'
                     strong
                     onClick={() => dispatch(push('/login'))}
                 >
                     Sign in
                 </Button>
             </Box>
-        )
+        );
     }
 
     const renderEventItems = () => {
         //const items = [];
         //TODO: Add links to event dashboard here for ongoing events
-        return null
-    }
+        return null;
+    };
 
     const renderOtherItems = () => {
-        const items = []
+        const items = [];
 
         if (hasOrganiserAccess) {
             items.push({
                 label: 'Organiser dashboard',
                 onClick: () => dispatch(push('/organise')),
-            })
+            });
         }
 
         if (hasRecruiterAccess) {
             items.push({
                 label: 'Recruitment dashboard',
                 onClick: () => dispatch(push('/recruitment')),
-            })
+            });
         }
 
         // TODO Check Superadmin
@@ -90,7 +93,7 @@ export default () => {
             items.push({
                 label: 'Admin dashboard',
                 onClick: () => dispatch(push('/admin')),
-            })
+            });
         }
 
         if (items.length > 0) {
@@ -103,23 +106,23 @@ export default () => {
                         </ListItem>
                     ))}
                 </>
-            )
+            );
         }
 
-        return null
-    }
+        return null;
+    };
 
     return (
-        <Box display="flex" flexDirection="row" alignItems="center">
+        <Box display='flex' flexDirection='row' alignItems='center'>
             <IconButton onClick={handleMenuOpen}>
                 <Box
-                    width="40px"
-                    height="40px"
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    flexWrap="wrap"
+                    width='40px'
+                    height='40px'
+                    display='flex'
+                    flexDirection='row'
+                    justifyContent='center'
+                    alignItems='center'
+                    flexWrap='wrap'
                 >
                     <Box className={classes.menuDot} />
                     <Box className={classes.menuDot} />
@@ -135,7 +138,7 @@ export default () => {
             <Box p={1} />
             <Avatar
                 src={profile?.avatar}
-                alt="Avatar"
+                alt='Avatar'
                 style={{ width: '60px', height: '60px' }}
             />
             <Popover
@@ -151,20 +154,20 @@ export default () => {
                     horizontal: 'right',
                 }}
             >
-                <Box width="300px">
+                <Box width='300px'>
                     <List onClick={handleMenuClose}>
                         <ListSubheader disableSticky>
                             Your account
                         </ListSubheader>
                         <ListItem button>
                             <ListItemText
-                                primary="Dashboard"
+                                primary='Dashboard'
                                 onClick={() => dispatch(push('/account'))}
                             />
                         </ListItem>
                         <ListItem button>
                             <ListItemText
-                                primary="Edit profile"
+                                primary='Edit profile'
                                 onClick={() =>
                                     dispatch(push('/account/profile'))
                                 }
@@ -172,7 +175,7 @@ export default () => {
                         </ListItem>
                         <ListItem button>
                             <ListItemText
-                                primary="Hackerpack"
+                                primary='Hackerpack'
                                 onClick={() => dispatch(push('/hackerpack'))}
                             />{' '}
                         </ListItem>
@@ -180,17 +183,17 @@ export default () => {
                         {renderOtherItems()}
                         <Divider />
                         <ListItem button onClick={() => dispatch(push('/'))}>
-                            <ListItemText primary="Front page" />
+                            <ListItemText primary='Front page' />
                         </ListItem>
                         <ListItem
                             button
                             onClick={() => dispatch(push('/logout'))}
                         >
-                            <ListItemText primary="Log out" />
+                            <ListItemText primary='Log out' />
                         </ListItem>
                     </List>
                 </Box>
             </Popover>
         </Box>
-    )
-}
+    );
+};
