@@ -47,17 +47,17 @@ export default () => {
                             spacing={3}
                         >
                             <PricingCard
-                                topic="For non-profits and Junction partners"
+                                topic="Community"
                                 body={body1}
                                 price="Free"
                             />
                             <PricingCard
-                                topic="Professional"
+                                topic="Lite"
                                 body={body3}
                                 price="800 €"
                             />
                             <PricingCard
-                                topic="Enterprise"
+                                topic="Pro"
                                 body={body2}
                                 price="4 100 €"
                             />
