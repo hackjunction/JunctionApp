@@ -1,21 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router';
+import { useRouteMatch, useLocation } from 'react-router'
 
-import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout';
-import AccountNavBar from 'components/navbars/AccountNavBar';
-import Footer from 'components/layouts/Footer';
-import PageWrapper from 'components/layouts/PageWrapper';
+import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
+import AccountNavBar from 'components/navbars/AccountNavBar'
+import Footer from 'components/layouts/Footer'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-import Dashboard from './dashboard';
-import Profile from './profile';
+import Dashboard from './dashboard'
+import Profile from './profile'
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const match = useRouteMatch();
-    const location = useLocation();
-    const { t, i18n } = useTranslation(); // eslint-disable-line
+    const match = useRouteMatch()
+    const location = useLocation()
+    const { t, i18n } = useTranslation() // eslint-disable-line
     return (
         <PageWrapper
             header={() => <AccountNavBar />}
@@ -42,5 +42,5 @@ export default () => {
                 />
             )}
         />
-    );
-};
+    )
+}
