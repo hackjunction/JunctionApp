@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation(); // eslint-disable-line
+    const { t, i18n } = useTranslation() // eslint-disable-line
     const classes = useStyles()
     const body1 = ['Event registration and organization through platform']
     const body2 = [
