@@ -16,48 +16,55 @@ const useStyles = makeStyles((theme) => ({
     bottom: {
         padding: theme.spacing(2),
     },
-    turquoise: {
-        color: '#58C7D6',
+    wrapper: {
+        background: '#fbfbfb',
+        borderRadius: '16px',
+        borderColor: '#232323',
+        '&:hover': {
+            borderColor: '#73F9EC'
+        },
     },
+    icon: {
+    marginRight: 10
+}
+   
 }));
 
-function renderText(arr) {
-    return arr.map((text) => {
-        return (
-            <>
-                <ListItem>
-                    <CheckIcon />
-                    <Typography variant='body1'>{text}</Typography>
-                </ListItem>
-            </>
-        );
-    });
-}
-
-// account linking
 
 const PricingItem = ({ topic, body, price, wrapper }) => {
+
+    const renderText = (arr) => {
+        return arr.map((text) => {
+            return (
+                <>
+                    <ListItem>
+                        <CheckIcon className={classes.icon} />
+                        <Typography>{text}</Typography>
+                    </ListItem>
+                </>
+            );
+        });
+    };
+
     const classes = useStyles();
     return (
         <Grid item xs={12} md={4} lg={4}>
-            <div className={wrapper}>
-                <div className={classes.top}>
-                    <Typography variant='h6'>{topic}</Typography>
+            <Box border={2} className={classes.wrapper}>
+                <Box className={classes.top}>
+                    <Typography variant='h6' color='#AB3EB3'>
+                        {topic}
+                    </Typography>
                     <List>{renderText(body)}</List>
                     <Box mt={1} />
-                </div>
-                <div className={classes.bottom}>
+                </Box>
+                <Box className={classes.bottom}>
                     <Box display='flex' flexDirection='row' flexWrap='wrap'>
-                        <Typography
-                            className={classes.turquoise}
-                            variant='h6'
-                            strong
-                        >
+                        <Typography variant='h6' strong>
                             {price}
                         </Typography>
                     </Box>
-                </div>
-            </div>
+                </Box>
+            </Box>
         </Grid>
     );
 };

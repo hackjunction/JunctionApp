@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Typography } from '@material-ui/core';
 
 import Footer from 'components/layouts/Footer';
 import PageWrapper from 'components/layouts/PageWrapper';
@@ -17,33 +16,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
-const useStyles = makeStyles((theme) => ({
-    top: {
-        borderBottom: 3,
-    },
-    wrapper: {
-        background: 'white',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        flex: 1,
-        border: 3,
-    },
-    wrapper2: {
-        background: '#D3D3D3',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        flex: 1,
-        border: 3,
-    },
-    center: {
-        textAlign: 'center',
-    },
-}));
 
 export default () => {
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation(); // eslint-disable-line
-    const classes = useStyles();
     const body1 = ['Event registration and organization through platform'];
     const body2 = [
         'Event registration and organization through platform',
@@ -57,9 +33,7 @@ export default () => {
         'Tech Support during event',
     ];
 
-    function changeBackground(e) {
-        e.target.style.background = 'white';
-    }
+
 
     return (
         <PageWrapper
@@ -79,29 +53,33 @@ export default () => {
                                 topic='For non-profits and Junction partners'
                                 body={body1}
                                 price='Free'
-                                wrapper={classes.wrapper2}
                             />
                             <PricingCard
-                                topic='Platform only'
+                                topic='Professional'
                                 body={body3}
                                 price='800 €'
-                                wrapper={classes.wrapper2}
-                                onMouseOver={changeBackground}
                             />
                             <PricingCard
-                                topic='For companies'
+                                topic='Enterprise'
                                 body={body2}
                                 price='4 100 €'
-                                wrapper={classes.wrapper}
                             />
-
+                            <Divider size={4} />
+                            <Typography variant='body1' justify='center'>
+                                Our expertise of organising hackathons combined
+                                with the power of a highly-customizable platform
+                                for events makes hosting diverse events
+                                possible.
+                            </Typography>
+                            <Divider size={4} />
                             <Button
                                 variant='outlined'
                                 color='theme_lightgray'
                                 strong
+                                m={6}
                                 onClick={() => dispatch(push('/contact'))}
                             >
-                                Contact us for more information
+                                Contact us
                             </Button>
                         </Grid>
                     </CenteredContainer>
