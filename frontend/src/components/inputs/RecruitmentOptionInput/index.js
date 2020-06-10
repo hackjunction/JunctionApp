@@ -28,7 +28,7 @@ const RecruitmentOptionInput = ({
     onBlur,
     autoFocus,
 }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const handleChange = useCallback(
         (field, fieldValue) => {
             if (field === 'status' && fieldValue === 'not-interested') {

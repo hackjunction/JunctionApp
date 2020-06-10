@@ -27,7 +27,7 @@ const {
 const EventType = new GraphQLObjectType({
     name: 'Event',
     fields: () => {
-        const { RegistrationType } = require('../registration/graphql').Types //eslint-disable-line
+        const { RegistrationType } = require('../registration/graphql').Types
         return {
             /** Fields from DB Model */
             _id: {

@@ -36,7 +36,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
     const [confirmed1, setConfirmed1] = useState(false)
     const [confirmed2, setConfirmed2] = useState(false)
     const [confirmed3, setConfirmed3] = useState(false)
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
 
     return (

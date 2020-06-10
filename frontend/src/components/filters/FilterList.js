@@ -32,7 +32,7 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
     const [expanded, setExpanded] = useState(false)
     const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
     const hasFilters = filters.length !== 0
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         setExpanded(false)

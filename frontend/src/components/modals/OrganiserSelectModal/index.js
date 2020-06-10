@@ -11,7 +11,7 @@ import UserListItem from 'components/generic/UserListItem'
 export default ({ open, onClose, onClear, onSelect }) => {
     const organisers = useSelector(OrganiserSelectors.organisers)
     const [selected, setSelected] = useState()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const handleClear = useCallback(() => {
         onClose()
         onClear()

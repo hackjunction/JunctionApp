@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ErrorDisplay = React.memo(({ errors = {} }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ hasErrors })
     const [popperOpen, setPopperOpen] = useState(false)

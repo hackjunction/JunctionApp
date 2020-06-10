@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ setFilters }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.skills ?? []
     const [skills, addSkill, removeSkill, editSkill, setSkills] = useArray(

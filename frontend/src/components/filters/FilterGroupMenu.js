@@ -30,7 +30,7 @@ export default ({
     showEdit = true,
 }) => {
     const filterGroups = useSelector(OrganiserSelectors.filterGroups)
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = React.useState(null)
 

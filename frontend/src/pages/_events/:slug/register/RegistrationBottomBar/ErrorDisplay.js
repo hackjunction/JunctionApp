@@ -57,7 +57,7 @@ const ErrorDisplay = React.memo(({ errors = {} }) => {
     const classes = useStyles({ hasErrors })
     const [popperOpen, setPopperOpen] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
 
     const handleOpen = event => {
         setAnchorEl(event.currentTarget)

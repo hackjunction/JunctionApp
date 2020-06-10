@@ -18,7 +18,7 @@ import { push } from 'connected-react-router'
 
 export default () => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation(); // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const body1 = ['Event registration and organization through platform']
     const body2 = [
         'Event registration and organization through platform',
