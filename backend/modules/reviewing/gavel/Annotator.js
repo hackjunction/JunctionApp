@@ -77,7 +77,7 @@ GavelAnnotatorSchema.virtual('userDetails', {
 })
 
 /** Check if the annotator can vote */
-GavelAnnotatorSchema.methods.canVote = async function() {
+GavelAnnotatorSchema.methods.canVote = async () => {
     if (!this.next) {
         return Promise.reject(
             new ForbiddenError('Cannot submit votes without a project assigned')
@@ -115,8 +115,9 @@ GavelAnnotatorSchema.methods.canVote = async function() {
 
     if (diffSeconds < Settings.ANNOTATOR_WAIT_SECONDS) {
         return Promise.reject(
-            `Must wait ${Settings.ANNOTATOR_WAIT_SECONDS -
-                diffSeconds} before voting again`
+            `Must wait ${
+                Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
+            } before voting again`
         )
     }
 
@@ -124,7 +125,7 @@ GavelAnnotatorSchema.methods.canVote = async function() {
 }
 
 /** Get the preferred candidates for a next project for the annotator */
-GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
+GavelAnnotatorSchema.methods.getPreferredProjects = async () => {
     const projectsConditions = {
         active: true,
         event: this.event,
@@ -189,7 +190,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects
 }
 
-GavelAnnotatorSchema.methods.getNextProject = async function() {
+GavelAnnotatorSchema.methods.getNextProject = async () => {
     const preferredProjects = await this.getPreferredProjects()
 
     /** If there are no projects available, return null */
@@ -220,7 +221,7 @@ GavelAnnotatorSchema.methods.getNextProject = async function() {
     })
 }
 
-GavelAnnotatorSchema.methods.assignNextProject = async function() {
+GavelAnnotatorSchema.methods.assignNextProject = async () => {
     const nextProject = await this.getNextProject()
 
     if (!this.next) {
@@ -242,7 +243,7 @@ GavelAnnotatorSchema.methods.assignNextProject = async function() {
     return this.save()
 }
 
-GavelAnnotatorSchema.methods.skipCurrentProject = async function() {
+GavelAnnotatorSchema.methods.skipCurrentProject = async () => {
     const project = await mongoose.model('GavelProject').findById(this.next)
     project.setSkippedBy(this._id)
 
@@ -253,11 +254,10 @@ GavelAnnotatorSchema.methods.skipCurrentProject = async function() {
                 'Cannot skip current project when there is no project assigned'
             )
         )
-    } else {
-        this.ignore.push(this.next)
-        this.skipped.push(this.next)
-        this.next = nextProject._id
     }
+    this.ignore.push(this.next)
+    this.skipped.push(this.next)
+    this.next = nextProject._id
 
     return this.save()
 }

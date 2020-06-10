@@ -8,6 +8,7 @@ import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
 import LoginPage from './pages/_login'
 import HackerpackPage from './pages/_hackerpack'
+import PricingPage from './pages/_pricing'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 
@@ -89,6 +90,11 @@ const routes = [
     {
         path: '/hackerpack',
         component: HackerpackPage,
+        exact: false,
+    },
+    {
+        path: '/pricing',
+        component: PricingPage,
         exact: false,
     },
     {
