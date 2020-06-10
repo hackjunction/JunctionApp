@@ -12,7 +12,6 @@ import {
     ListItemText,
     ListSubheader,
     Divider,
-    Grid,
 } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
 import Button from 'components/generic/Button'
@@ -88,8 +87,7 @@ export default () => {
             })
         }
 
-        // TODO Check Superadmin
-        if (hasOrganiserAccess) {
+        if (hasSuperAdmin) {
             items.push({
                 label: 'Admin dashboard',
                 onClick: () => dispatch(push('/admin')),

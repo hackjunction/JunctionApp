@@ -75,9 +75,7 @@ const EventHelpers = {
     isGrantDeadlinePast: (event, moment) => {
         if (!event) return true
         return !nowIsBefore(
-            moment(event.endTime)
-                .add(7, 'days')
-                .format(),
+            moment(event.endTime).add(7, 'days').format(),
             moment
         )
     },
