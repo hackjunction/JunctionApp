@@ -188,7 +188,7 @@ const EventSchema = new mongoose.Schema({
         default: false,
         required: true,
         validate: [
-            function(v) {
+            v => {
                 if (v === true) {
                     return this.published
                 }
@@ -268,7 +268,7 @@ EventSchema.plugin(updateAllowedPlugin, {
 
 EventSchema.set('timestamps', true)
 
-EventSchema.post('remove', async function(doc) {
+EventSchema.post('remove', async doc => {
     await uploadHelper.removeEventImages(doc.slug)
 })
 

@@ -5,6 +5,10 @@ const { EventHelpers } = require('@hackjunction/shared')
 const Settings = require('./settings')
 const Maths = require('./maths')
 const Event = require('../../event/model')
+const Project = require('../../project/model')
+const Team = require('../../team/model')
+const UserController = require('../../user-profile/controller')
+
 const { ForbiddenError } = require('../../../common/errors/errors')
 
 const GavelAnnotatorSchema = new mongoose.Schema({
@@ -191,8 +195,17 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async () => {
 }
 
 GavelAnnotatorSchema.methods.getNextProject = async () => {
-    const preferredProjects = await this.getPreferredProjects()
-
+    // TODO make this options
+    // Remove projects that are by the person reviewing
+    const event = await Event.findById(this.event)
+    const user = await UserController.getUserProfile(this.user)
+    const preferredProjects = event.canVoteOnOwnProject
+        ? await this.getPreferredProjects()
+        : await this.getPreferredProjects().filter(async gavelProject => {
+              const project = await Project.findById(gavelProject.project)
+              const team = await Team.findById(project.team)
+              return user._id !== team.owner && !team.members.includes(user._id)
+          })
     /** If there are no projects available, return null */
     if (preferredProjects.length === 0) {
         return null
