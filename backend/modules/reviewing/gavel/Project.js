@@ -45,7 +45,7 @@ const GavelProjectSchema = new mongoose.Schema({
     },
 })
 
-GavelProjectSchema.methods.setSkippedBy = async function (annotatorId) {
+GavelProjectSchema.methods.setSkippedBy = async annotatorId => {
     if (this.skippedBy.indexOf(annotatorId) === -1) {
         this.skippedBy.push(annotatorId)
         return this.save()

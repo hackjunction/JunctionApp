@@ -135,6 +135,10 @@ const EventSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    allowVoteOnOwnProject: {
+        type: Boolean,
+        default: false,
+    },
     // Mongoose will cast the empty object to match `TravelGrantConfigSchema`, so it will set defaults
     travelGrantConfig: {
         type: TravelGrantConfigSchema.mongoose,

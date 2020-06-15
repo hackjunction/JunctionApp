@@ -119,9 +119,11 @@ GavelAnnotatorSchema.methods.canVote = async () => {
 
     if (diffSeconds < Settings.ANNOTATOR_WAIT_SECONDS) {
         return Promise.reject(
-            `Must wait ${
-                Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
-            } before voting again`
+            new ForbiddenError(
+                `Must wait ${
+                    Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
+                } more seconds before voting again`
+            )
         )
     }
 
@@ -199,7 +201,7 @@ GavelAnnotatorSchema.methods.getNextProject = async () => {
     // Remove projects that are by the person reviewing
     const event = await Event.findById(this.event)
     const user = await UserController.getUserProfile(this.user)
-    const preferredProjects = event.canVoteOnOwnProject
+    const preferredProjects = event.allowVoteOnOwnProject
         ? await this.getPreferredProjects()
         : await this.getPreferredProjects().filter(async gavelProject => {
               const project = await Project.findById(gavelProject.project)
