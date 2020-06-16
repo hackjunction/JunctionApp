@@ -131,7 +131,7 @@ export default () => {
             }
         }
     } else {
-        //TODO: Reminder about finalizing team before submission deadline, as it can no longer be edited
+        // TODO: Reminder about finalizing team before submission deadline, as it can no longer be edited
     }
 
     return null

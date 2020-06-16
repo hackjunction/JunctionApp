@@ -16,7 +16,7 @@ export default () => {
     if (event?.eventType !== EventTypes.physical.id) return null
     if (!registration?.answers?.needsTravelGrant) return null
 
-    //TODO: When status is checkedIn, show the travel grant details submission form here
+    // TODO: When status is checkedIn, show the travel grant details submission form here
 
     if (registration.status === STATUSES.accepted.id) {
         return (

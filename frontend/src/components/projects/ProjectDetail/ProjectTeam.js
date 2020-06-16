@@ -15,7 +15,7 @@ import UserProfilesService from 'services/userProfiles'
 const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
     const [teamMembers, setTeamMembers] = useState()
     const [loading, setLoading] = useState(false)
-    //TODO IMPORTANT hide team members in backend
+    // TODO IMPORTANT hide team members in backend
     const fetchTeamMembers = useCallback(async () => {
         if (!teamId) return
         setLoading(true)

@@ -247,7 +247,7 @@ export default RequiresPermission(() => {
 
     const handleSubmit = useCallback(async () => {
         setLoading(true)
-        //TODO shape the custom answers here
+        // TODO shape the custom answers here
         if (event.customQuestions) {
             formData['CustomAnswers'] = []
             event.customQuestions.forEach(section => {

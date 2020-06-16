@@ -66,7 +66,7 @@ export default () => {
 
     const renderEventItems = () => {
         //const items = [];
-        //TODO: Add links to event dashboard here for ongoing events
+        // TODO: Add links to event dashboard here for ongoing events
         return null
     }
 

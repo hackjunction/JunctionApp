@@ -67,7 +67,6 @@ controller.editAnnotator = async (annotatorId, data) => {
         if (!annotator) {
             throw new NotFoundError(`No annotator found with id ${annotatorId}`)
         }
-
         if (data.hasOwnProperty('active')) {
             annotator.active = data.active
         }
@@ -99,8 +98,6 @@ controller.initAnnotator = async (event, userId) => {
 
     /** If the event is using tracks, figure out the track that needs reviewers the most */
     let assignedTrack
-    console.log('tra')
-
     if (event.tracksEnabled && event.tracks && event.tracks.length > 0) {
         const projectsPerTrack = _.countBy(projects, 'track')
         const annotatorsPerTrack = _.countBy(annotators, 'track')
@@ -110,6 +107,19 @@ controller.initAnnotator = async (event, userId) => {
 
             return (annotatorCount * 1.0) / projectCount
         })
+        /*
+        if (tracksSorted.length === 1) {
+            assignedTrack = tracksSorted[0].slug
+        } else if (ownProject && ownProject.track) {
+            for (const track of tracksSorted) {
+                if (track.slug !== ownProject.track) {
+                    assignedTrack = track.slug
+                    break
+                }
+            }
+        } else {
+            assignedTrack = tracksSorted[0].slug
+        } */
 
         if (tracksSorted.length === 1) {
             // TODO the multiple track event gavel should be tested
@@ -122,6 +132,7 @@ controller.initAnnotator = async (event, userId) => {
         } else {
             assignedTrack = tracksSorted[0].slug
         }
+        console.log('assigned track is', assignedTrack)
     }
 
     const annotator = new GavelAnnotator({
@@ -130,10 +141,15 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
-    console.log('tre', assignedTrack)
     const savedAnnotator = await annotator.save()
-    console.log('savedAnnotator', savedAnnotator)
-    return savedAnnotator.assignNextProject()
+    console.log(
+        'savedAnnotator',
+        savedAnnotator,
+        savedAnnotator.methods,
+        annotator,
+        annotator.methods
+    )
+    return annotator.assignNextProject()
 }
 
 controller.submitVote = async (event, userId, winningProjectId) => {
