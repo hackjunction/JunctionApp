@@ -119,11 +119,9 @@ GavelAnnotatorSchema.methods.canVote = async () => {
 
     if (diffSeconds < Settings.ANNOTATOR_WAIT_SECONDS) {
         return Promise.reject(
-            new ForbiddenError(
-                `Must wait ${
-                    Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
-                } more seconds before voting again`
-            )
+            `Must wait ${
+                Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
+            } more seconds before voting again`
         )
     }
 
@@ -197,10 +195,16 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async () => {
 }
 
 GavelAnnotatorSchema.methods.getNextProject = async () => {
-    // TODO make this options
     // Remove projects that are by the person reviewing
-    const event = await Event.findById(this.event)
+    console.log('NextPorjecting')
+    console.log('event', this.user)
+    const preferredProjects = await this.getPreferredProjects()
+    console.log('preferredProjects', preferredProjects)
+    /*
     const user = await UserController.getUserProfile(this.user)
+    console.log('user', user)
+    const event = await Event.findById(this.event)
+    console.log(event.allowVoteOnOwnProject)
     const preferredProjects = event.allowVoteOnOwnProject
         ? await this.getPreferredProjects()
         : await this.getPreferredProjects().filter(async gavelProject => {
@@ -208,6 +212,8 @@ GavelAnnotatorSchema.methods.getNextProject = async () => {
               const team = await Team.findById(project.team)
               return user._id !== team.owner && !team.members.includes(user._id)
           })
+    console.log(preferredProjects.length)
+    */
     /** If there are no projects available, return null */
     if (preferredProjects.length === 0) {
         return null
@@ -237,7 +243,11 @@ GavelAnnotatorSchema.methods.getNextProject = async () => {
 }
 
 GavelAnnotatorSchema.methods.assignNextProject = async () => {
+    console.log('assigning')
+    console.log(this.getNextProject, 'exists?')
+    console.log(this, 'even this?')
     const nextProject = await this.getNextProject()
+    console.log('nextProject', nextProject)
 
     if (!this.next) {
         if (nextProject) {

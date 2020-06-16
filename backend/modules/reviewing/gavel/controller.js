@@ -79,11 +79,13 @@ controller.editAnnotator = async (annotatorId, data) => {
 }
 
 controller.initAnnotator = async (event, userId) => {
+    console.log('voting open?', EventHelpers.isVotingOpen(event, moment))
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
             new ForbiddenError('Cannot start voting while voting is not open')
         )
     }
+    console.log('tem')
     const team = await TeamController.getTeam(event._id, userId).catch(
         () => null
     )
@@ -97,6 +99,8 @@ controller.initAnnotator = async (event, userId) => {
 
     /** If the event is using tracks, figure out the track that needs reviewers the most */
     let assignedTrack
+    console.log('tra')
+
     if (event.tracksEnabled && event.tracks && event.tracks.length > 0) {
         const projectsPerTrack = _.countBy(projects, 'track')
         const annotatorsPerTrack = _.countBy(annotators, 'track')
@@ -126,8 +130,9 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
-
+    console.log('tre', assignedTrack)
     const savedAnnotator = await annotator.save()
+    console.log('savedAnnotator', savedAnnotator)
     return savedAnnotator.assignNextProject()
 }
 

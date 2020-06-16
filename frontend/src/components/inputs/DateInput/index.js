@@ -57,7 +57,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
                 <Grid item xs={12} md={4}>
                     <Select
                         label="Year"
-                        options="year"
+                        options="year-future"
                         value={momentValue ? momentValue.year() : null}
                         onChange={handleYearChange}
                         onBlur={onBlur}
