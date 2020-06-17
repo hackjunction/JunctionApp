@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
-const GavelController = require('../modules/reviewing/gavel/controller')
-
 module.exports = {
     index: 2,
     name: '02-rename-sigma_sq-to-sigmaSq',

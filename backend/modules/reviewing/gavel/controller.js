@@ -78,13 +78,11 @@ controller.editAnnotator = async (annotatorId, data) => {
 }
 
 controller.initAnnotator = async (event, userId) => {
-    console.log('voting open?', EventHelpers.isVotingOpen(event, moment))
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
             new ForbiddenError('Cannot start voting while voting is not open')
         )
     }
-    console.log('tem')
     const team = await TeamController.getTeam(event._id, userId).catch(
         () => null
     )
@@ -107,19 +105,6 @@ controller.initAnnotator = async (event, userId) => {
 
             return (annotatorCount * 1.0) / projectCount
         })
-        /*
-        if (tracksSorted.length === 1) {
-            assignedTrack = tracksSorted[0].slug
-        } else if (ownProject && ownProject.track) {
-            for (const track of tracksSorted) {
-                if (track.slug !== ownProject.track) {
-                    assignedTrack = track.slug
-                    break
-                }
-            }
-        } else {
-            assignedTrack = tracksSorted[0].slug
-        } */
 
         if (tracksSorted.length === 1) {
             // TODO the multiple track event gavel should be tested
@@ -132,7 +117,6 @@ controller.initAnnotator = async (event, userId) => {
         } else {
             assignedTrack = tracksSorted[0].slug
         }
-        console.log('assigned track is', assignedTrack)
     }
 
     const annotator = new GavelAnnotator({
@@ -141,14 +125,8 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
-    const savedAnnotator = await annotator.save()
-    console.log(
-        'savedAnnotator',
-        savedAnnotator,
-        savedAnnotator.methods,
-        annotator,
-        annotator.methods
-    )
+    await annotator.save()
+    // savedaanotator instead?
     return annotator.assignNextProject()
 }
 
