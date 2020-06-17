@@ -38,10 +38,13 @@ const GavelProjectSchema = new mongoose.Schema({
         default: Settings.MU_PRIOR,
         required: true,
     },
-    sigma_sq: {
+    sigmaSq: {
         type: Number,
         default: Settings.SIGMA_SQ_PRIOR,
-        required: true,
+    },
+    // TODO remove this once production is updated
+    sigma_sq: {
+        type: Number,
     },
 })
 

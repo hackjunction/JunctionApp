@@ -22,6 +22,11 @@ const ProjectScoreSchema = new mongoose.Schema(
             type: Number,
             required: false,
         },
+        maxScore: {
+            type: Number,
+            required: false,
+        },
+        // TODO remove this once production is updated
         max_score: {
             type: Number,
             required: false,

@@ -192,21 +192,21 @@ controller.submitVote = async (event, userId, winningProjectId) => {
         annotator.alpha,
         annotator.beta,
         winner.mu,
-        winner.sigma_sq,
+        winner.sigmaSq,
         loser.mu,
-        loser.sigma_sq
+        loser.sigmaSq
     )
 
     annotator.alpha = updatedAlpha
     annotator.beta = updatedBeta
 
     loser.mu = updatedMuLoser
-    loser.sigma_sq = updatedSigmaSqLoser
+    loser.sigmaSq = updatedSigmaSqLoser
     if (loser._id.toString() === annotator.next.toString()) {
         loser.viewedBy.push(annotator._id.toString())
     }
     winner.mu = updatedMuWinner
-    winner.sigma_sq = updatedSigmaSqWinner
+    winner.sigmaSq = updatedSigmaSqWinner
     if (winner._id.toString() === annotator.next.toString()) {
         winner.viewedBy.push(annotator._id.toString())
     }

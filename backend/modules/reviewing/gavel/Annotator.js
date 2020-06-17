@@ -255,9 +255,9 @@ GavelAnnotatorSchema.methods.getNextProject = async function () {
             this.alpha,
             this.beta,
             current.mu,
-            current.sigma_sq,
+            current.sigmaSq,
             prospect.mu,
-            prospect.sigma_sq
+            prospect.sigmaSq
         )
     })
 }
