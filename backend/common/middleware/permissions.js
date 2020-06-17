@@ -8,8 +8,7 @@ function userHasRole(user, role) {
 }
 
 function userHasPermission(user, permission) {
-    // TODO make sure user has roles?
-    if (user.roles.indexOf('SuperAdmin') !== -1) {
+    if (user && user.roles && user.roles.indexOf('SuperAdmin') !== -1) {
         return true
     }
     return (
