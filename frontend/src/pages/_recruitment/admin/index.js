@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 export default RequiresPermission(() => {
     const [grantingUser, setGrantingUser] = useState()
     const [revokingUser, setRevokingUser] = useState()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <CenteredContainer>

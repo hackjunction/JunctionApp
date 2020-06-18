@@ -58,7 +58,7 @@ export default () => {
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
     const hasProfile = useSelector(UserSelectors.hasProfile)
     const loading = userProfileLoading || !hasProfile
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
 
     const classes = useStyles()
 
