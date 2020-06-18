@@ -35,7 +35,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
     const selectEl = useRef(null)
     const [level, setLevel] = useState()
     const [skill, setSkill] = useState()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const handleLevelChange = useCallback(event => {
         setLevel(event.target.value)
     }, [])

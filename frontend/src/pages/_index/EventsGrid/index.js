@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 export default ({ events, loading, title }) => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     function renderEvents() {
         return events.map(event => {
             return (

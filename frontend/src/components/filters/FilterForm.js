@@ -37,7 +37,7 @@ export default ({ onSubmit }) => {
     const [filter, setFilter] = useState()
     const [filterType, setFilterType] = useState()
     const [filterValue, setFilterValue] = useState()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     useEffect(() => {
         setFilterType(undefined)
     }, [filter])

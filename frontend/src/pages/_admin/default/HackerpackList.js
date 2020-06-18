@@ -16,7 +16,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [hackerpack, setHackerpack] = useState(data)
 

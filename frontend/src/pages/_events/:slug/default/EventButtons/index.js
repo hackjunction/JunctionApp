@@ -12,7 +12,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import { useTranslation } from 'react-i18next'
 
 export default ({ event, registration }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)

@@ -19,7 +19,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default ({ userId, onClose }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
 

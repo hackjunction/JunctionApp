@@ -11,7 +11,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const filters =
         useSelector(RecruitmentSelectors.filters)?.countryOfResidence ?? []
