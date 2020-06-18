@@ -18,14 +18,14 @@ const EducationSchema = require('../schemas/Education')
 const RecruitmentOptionsSchema = require('../schemas/RecruitmentOptions')
 const TeamOptionsSchema = require('../schemas/TeamOptions')
 
-const Genders = require('../constants/genders')
-const Countries = require('../constants/countries')
-const Languages = require('../constants/languages')
-const Industries = require('../constants/industries')
-const Themes = require('../constants/themes')
-const Roles = require('../constants/roles')
-const Skills = require('../constants/skills')
-const Misc = require('../constants/misc')
+const Genders = require('./genders')
+const Countries = require('./countries')
+const Languages = require('./languages')
+const Industries = require('./industries')
+const Themes = require('./themes')
+const Roles = require('./roles')
+const Skills = require('./skills')
+const Misc = require('./misc')
 const FieldTypes = require('./field-types')
 const FilterTypes = require('./filter-types')
 const FilterValues = require('./filter-values')
@@ -882,10 +882,7 @@ const Fields = {
         default: (userProfile, idToken) =>
             userProfile.email || idToken.email || '',
         validationSchema: required => {
-            const base = yup
-                .string()
-                .email()
-                .label(FieldProps.email.label)
+            const base = yup.string().email().label(FieldProps.email.label)
             return required ? base.required() : base
         },
     },
@@ -1026,7 +1023,7 @@ const Fields = {
     headline: {
         ...FieldProps.headline,
         category: Categories.skillsAndInterests,
-        default: () => '',
+        default: userProfile => userProfile.headline || '',
         validationSchema: required => {
             const base = yup
                 .string()
@@ -1039,7 +1036,7 @@ const Fields = {
     biography: {
         ...FieldProps.biography,
         category: Categories.skillsAndInterests,
-        default: () => '',
+        default: userProfile => userProfile.biography || '',
         validationSchema: required => {
             const base = yup
                 .string()
@@ -1053,7 +1050,7 @@ const Fields = {
     roles: {
         ...FieldProps.roles,
         category: Categories.skillsAndInterests,
-        default: () => [],
+        default: userProfile => userProfile.roles || [],
         validationSchema: required => {
             const base = yup
                 .array()
@@ -1082,7 +1079,7 @@ const Fields = {
     skills: {
         ...FieldProps.skills,
         category: Categories.skillsAndInterests,
-        default: (userProfile, idToken) => userProfile.skills || [],
+        default: userProfile => userProfile.skills || [],
         validationSchema: required => {
             const base = yup
                 .array()
@@ -1175,10 +1172,7 @@ const Fields = {
             const base = yup
                 .object()
                 .shape({
-                    level: yup
-                        .string()
-                        .label('Level of Education')
-                        .required(),
+                    level: yup.string().label('Level of Education').required(),
                     university: yup.string().label('University'),
                     degree: yup.string().label('Degree'),
                     graduationYear: yup
@@ -1198,10 +1192,7 @@ const Fields = {
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.portfolio || undefined,
         validationSchema: required => {
-            const base = yup
-                .string()
-                .url()
-                .label(FieldProps.portfolio.label)
+            const base = yup.string().url().label(FieldProps.portfolio.label)
 
             return required ? base.required() : base
         },
@@ -1225,10 +1216,7 @@ const Fields = {
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.github || undefined,
         validationSchema: required => {
-            const base = yup
-                .string()
-                .url()
-                .label(FieldProps.github.label)
+            const base = yup.string().url().label(FieldProps.github.label)
 
             return required ? base.required() : base
         },
@@ -1238,10 +1226,7 @@ const Fields = {
         category: Categories.links,
         default: (userProfile, idToken) => userProfile.linkedin || undefined,
         validationSchema: required => {
-            const base = yup
-                .string()
-                .url()
-                .label(FieldProps.linkedin.label)
+            const base = yup.string().url().label(FieldProps.linkedin.label)
 
             return required ? base.required() : base
         },
@@ -1369,9 +1354,11 @@ const Fields = {
     recruitmentOptions: {
         ...FieldProps.recruitmentOptions,
         category: Categories.recruitment,
-        default: () => ({
-            consent: false,
-        }),
+
+        default: userProfile =>
+            userProfile.recruitmentOptions || {
+                consent: false,
+            },
         validationSchema: required => {
             const base = yup
                 .object()

@@ -74,7 +74,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                             element.key === question.name
                         ) {
                             if (question.fieldType === 'multiple-choice') {
-                                // TODO fix so that that multiple choice options with , in them don't cause bugs
+                                // TODO fix so that that multiple choice options with "," in them don't cause bugs
                                 result.initialValues[
                                     element.key
                                 ] = element.value.split(',')

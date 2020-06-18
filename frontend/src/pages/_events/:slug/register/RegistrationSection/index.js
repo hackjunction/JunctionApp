@@ -76,12 +76,10 @@ export default props => {
                         ] = fieldParams.default(userProfile, idTokenData)
                     }
                 }
-
                 if (data.hasOwnProperty(field.fieldName)) {
                     result.initialValues[field.fieldName] =
                         data[field.fieldName]
                 }
-
                 return result
             },
             {
