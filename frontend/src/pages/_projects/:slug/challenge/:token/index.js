@@ -35,7 +35,7 @@ export default ({ event }) => {
         fetchProjects()
     }, [fetchProjects])
 
-    //TODO seems like a bad practice
+    // TODO seems like a bad practice
     if (!data) {
         return null
     }

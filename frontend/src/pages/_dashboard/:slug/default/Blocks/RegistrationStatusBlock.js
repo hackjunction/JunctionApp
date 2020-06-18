@@ -22,7 +22,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import config from 'constants/config'
-
+// TODO can't read null
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)

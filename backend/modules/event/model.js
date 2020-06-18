@@ -135,6 +135,10 @@ const EventSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    allowVoteOnOwnProject: {
+        type: Boolean,
+        default: false,
+    },
     // Mongoose will cast the empty object to match `TravelGrantConfigSchema`, so it will set defaults
     travelGrantConfig: {
         type: TravelGrantConfigSchema.mongoose,
@@ -188,7 +192,7 @@ const EventSchema = new mongoose.Schema({
         default: false,
         required: true,
         validate: [
-            function(v) {
+            v => {
                 if (v === true) {
                     return this.published
                 }
@@ -268,7 +272,7 @@ EventSchema.plugin(updateAllowedPlugin, {
 
 EventSchema.set('timestamps', true)
 
-EventSchema.post('remove', async function(doc) {
+EventSchema.post('remove', async doc => {
     await uploadHelper.removeEventImages(doc.slug)
 })
 

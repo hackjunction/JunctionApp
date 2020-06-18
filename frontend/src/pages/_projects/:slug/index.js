@@ -21,7 +21,7 @@ export default () => {
     const [loading, setLoading] = useState(true)
     const [event, setEvent] = useState()
     const [projects, setProjects] = useState([])
-    //TODO use Graphql here to get event
+    // TODO use Graphql here to get event
     // useEventPreview(eventId) but with slug
     const fetchData = useCallback(async () => {
         setLoading(true)

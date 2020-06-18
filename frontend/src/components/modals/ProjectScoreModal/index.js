@@ -52,7 +52,7 @@ const ProjectScoreModal = ({ open, onClose, score }) => {
                     Awesome, the result for your project is:
                 </Typography>
                 <Typography variant="h5" gutterBottom>
-                    {score.score}/{score.max_score}
+                    {score.score}/{score.maxScore}
                 </Typography>
                 <Typography variant="body1">{score.message}</Typography>
             </>

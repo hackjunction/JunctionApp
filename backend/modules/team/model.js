@@ -44,7 +44,7 @@ TeamSchema.plugin(updateAllowedPlugin, {
     ],
 })
 
-TeamSchema.statics.getMembers = function(teamId) {
+TeamSchema.statics.getMembers = function (teamId) {
     return Team.findById(teamId).then(team => {
         if (!team) return []
         return [team.owner].concat(team.members)

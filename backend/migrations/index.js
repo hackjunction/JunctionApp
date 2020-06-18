@@ -5,6 +5,7 @@ const logger = require('../misc/logger')
 const migrations = [
     require('./00-registration-questions'),
     require('./01-remove-project-unique-index'),
+    require('./02-rename-sigma_sq-to-sigmaSq'),
 ]
 
 const run = async () => {

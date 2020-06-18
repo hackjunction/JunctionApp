@@ -53,7 +53,7 @@ UserProfileSchema.virtual('registrations', {
     foreignField: 'user', // is equal to `foreignField`
   }); */
 
-UserProfileSchema.post('save', function(doc, next) {
+UserProfileSchema.post('save', (doc, next) => {
     if (
         _.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0
     ) {

@@ -15,7 +15,7 @@ export default () => {
 
     const handleLogin = useCallback(async () => {
         const nextRoute = location?.state?.nextRoute ?? '/'
-        //TODO sleep???
+        // TODO sleep???
         await MiscUtils.sleep(1000)
         if (isAuthenticated) {
             dispatch(AuthActions.login({}, nextRoute))

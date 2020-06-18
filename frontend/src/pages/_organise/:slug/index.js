@@ -58,7 +58,7 @@ export default () => {
             dispatch(OrganiserActions.updateProjects(slug))
             dispatch(OrganiserActions.updateGavelProjects(slug))
             dispatch(OrganiserActions.updateRankings(slug))
-            dispatch(OrganiserActions.generateResults(slug)) //TODO do we need to get results always?
+            dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
 

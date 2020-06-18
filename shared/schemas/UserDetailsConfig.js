@@ -44,7 +44,7 @@ _.forOwn(RegistrationFields.getFields(), (value, fieldName) => {
 UserDetailsConfigSchema.add(fields)
 
 /* Ensure that only the fields defined above are sent anywhere */
-UserDetailsConfigSchema.methods.toJSON = function() {
+UserDetailsConfigSchema.methods.toJSON = function () {
     const obj = this.toObject()
     const keys = Object.keys(obj)
 

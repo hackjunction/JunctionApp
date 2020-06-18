@@ -41,7 +41,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
         event: '',
         status: 'submitted',
         score: 0,
-        max_score: 10,
+        maxScore: 10,
         message: '',
     })
     useEffect(() => {
@@ -246,7 +246,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                                     name="score"
                                                     component="div"
                                                 />
-                                                <Field name="max_score">
+                                                <Field name="maxScore">
                                                     {({ field }) => (
                                                         <TextField
                                                             fullWidth
@@ -257,7 +257,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                                     )}
                                                 </Field>
                                                 <ErrorMessage
-                                                    name="max_score"
+                                                    name="maxScore"
                                                     component="div"
                                                 />
                                                 <Field name="message">

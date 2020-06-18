@@ -98,7 +98,6 @@ const routes = [
         exact: false,
     },
     {
-        //TODO require superadmin
         path: '/admin',
         component: AdminRouter,
         exact: false,

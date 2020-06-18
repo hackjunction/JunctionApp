@@ -36,7 +36,7 @@ export default ({ event, showFullTeam }) => {
     useEffect(() => {
         fetchProject()
     }, [fetchProject])
-    //TODO showTableLocation based on if event is ongoing
+    // TODO showTableLocation based on if event is ongoing #139
     return (
         <PageWrapper loading={loading} error={error}>
             <ProjectDetail

@@ -58,7 +58,7 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                ></FastField>
+                />
             </Grid>
             <Grid item xs={12}>
                 <FastField
@@ -78,7 +78,7 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                ></FastField>
+                />
             </Grid>
             <Grid item xs={12}>
                 <FastField
@@ -181,29 +181,23 @@ export default () => {
             <Grid item xs={12}>
                 <Field
                     name="tracks"
-                    render={({ field, form }) => {
-                        if (form.values.tracksEnabled) {
-                            return (
-                                <FormControl
-                                    label="Tracks"
-                                    hint="Enter your different tracks here"
-                                    error={form.errors[field.name]}
-                                    touched={form.touched[field.name]}
-                                >
-                                    <TracksForm
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value
-                                            )
-                                        }
-                                    />
-                                </FormControl>
-                            )
-                        }
-                        return null
-                    }}
+                    render={({ field, form }) =>
+                        form.values.tracksEnabled ? (
+                            <FormControl
+                                label="Tracks"
+                                hint="Enter your different tracks here"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <TracksForm
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                />
+                            </FormControl>
+                        ) : null
+                    }
                 />
             </Grid>
             <Grid item xs={12}>
@@ -317,7 +311,30 @@ export default () => {
                             </FormControl>
                         ) : null
                     }
-                ></Field>
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name="allowVoteOnOwnProject"
+                    render={({ field, form }) =>
+                        form.values.reviewMethod ===
+                        ReviewingMethods.gavelPeerReview.id ? (
+                            <FormControl
+                                label="Allow vote on own projects"
+                                hint="Can user vote on their own projects (consider this for events with few participants and multiple submissions per team)"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <BooleanInput
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                />
+                            </FormControl>
+                        ) : null
+                    }
+                />
             </Grid>
             <Grid item xs={12}>
                 <Box height="300px" />

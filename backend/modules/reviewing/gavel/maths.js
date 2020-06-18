@@ -14,255 +14,220 @@ const { KAPPA, GAMMA } = require('./settings')
 
 // Ok here we go :DD
 const Maths = {
-    divergenceGaussian: (mu_1, sigma_sq_1, mu_2, sigma_sq_2) => {
-        const ratio = sigma_sq_1 / sigma_sq_2
+    divergenceGaussian: (mu1, sigmaSq1, mu2, sigmaSq2) => {
+        const ratio = sigmaSq1 / sigmaSq2
 
         return (
-            Math.pow(mu_1 - mu_2, 2) / (2 * sigma_sq_2) +
+            Math.pow(mu1 - mu2, 2) / (2 * sigmaSq2) +
             (ratio - 1 - log(ratio)) / 2
         )
     },
 
-    divergenceBeta: (alpha_1, beta_1, alpha_2, beta_2) => {
+    divergenceBeta: (alpha1, beta1, alpha2, beta2) => {
         return (
-            betaln(alpha_2, beta_2) -
-            betaln(alpha_1, beta_1) +
-            (alpha_1 - alpha_2) * digamma(alpha_1) +
-            (beta_1 - beta_2) * digamma(beta_1) +
-            (alpha_2 - alpha_1 + beta_2 - beta_1) * digamma(alpha_1 + beta_1)
+            betaln(alpha2, beta2) -
+            betaln(alpha1, beta1) +
+            (alpha1 - alpha2) * digamma(alpha1) +
+            (beta1 - beta2) * digamma(beta1) +
+            (alpha2 - alpha1 + beta2 - beta1) * digamma(alpha1 + beta1)
         )
     },
 
-    update: (
-        alpha,
-        beta,
-        mu_winner,
-        sigma_sq_winner,
-        mu_loser,
-        sigma_sq_loser
-    ) => {
-        const updated_annotator = Maths.updatedAnnotator(
+    update: (alpha, beta, muWinner, sigmaSqWinner, muLoser, sigmaSqLoser) => {
+        const updatedAnnotator = Maths.updatedAnnotator(
             alpha,
             beta,
-            mu_winner,
-            sigma_sq_winner,
-            mu_loser,
-            sigma_sq_loser
+            muWinner,
+            sigmaSqWinner,
+            muLoser,
+            sigmaSqLoser
         )
-        const updated_mus = Maths.updatedMus(
+        const updatedMus = Maths.updatedMus(
             alpha,
             beta,
-            mu_winner,
-            sigma_sq_winner,
-            mu_loser,
-            sigma_sq_loser
+            muWinner,
+            sigmaSqWinner,
+            muLoser,
+            sigmaSqLoser
         )
-        const updated_sigma_sqs = Maths.updatedSigmaSqs(
+        const updatedSigmaSqs = Maths.updatedSigmaSqs(
             alpha,
             beta,
-            mu_winner,
-            sigma_sq_winner,
-            mu_loser,
-            sigma_sq_loser
+            muWinner,
+            sigmaSqWinner,
+            muLoser,
+            sigmaSqLoser
         )
 
         return {
-            updated_alpha: updated_annotator.updated_alpha,
-            updated_beta: updated_annotator.updated_beta,
-            updated_mu_winner: updated_mus.updated_mu_winner,
-            updated_mu_loser: updated_mus.updated_mu_loser,
-            updated_sigma_sq_winner: updated_sigma_sqs.updated_sigma_sq_winner,
-            updated_sigma_sq_loser: updated_sigma_sqs.updated_sigma_sq_loser,
+            updatedAlpha: updatedAnnotator.updatedAlpha,
+            updatedBeta: updatedAnnotator.updatedBeta,
+            updatedMuWinner: updatedMus.updatedMuWinner,
+            updatedMuLoser: updatedMus.updatedMuLoser,
+            updatedSigmaSqWinner: updatedSigmaSqs.updatedSigmaSqWinner,
+            updatedSigmaSqLoser: updatedSigmaSqs.updatedSigmaSqLoser,
         }
     },
 
-    expectedInformationGain: (
-        alpha,
-        beta,
-        mu_a,
-        sigma_sq_a,
-        mu_b,
-        sigma_sq_b
-    ) => {
-        const updated_annotator = Maths.updatedAnnotator(
+    expectedInformationGain: (alpha, beta, muA, sigmaSqA, muB, sigmaSqB) => {
+        const updatedAnnotator = Maths.updatedAnnotator(
             alpha,
             beta,
-            mu_a,
-            sigma_sq_a,
-            mu_b,
-            sigma_sq_b
+            muA,
+            sigmaSqA,
+            muB,
+            sigmaSqB
         )
-        const updated_mus = Maths.updatedMus(
+        const updatedMus = Maths.updatedMus(
             alpha,
             beta,
-            mu_a,
-            sigma_sq_a,
-            mu_b,
-            sigma_sq_b
+            muA,
+            sigmaSqA,
+            muB,
+            sigmaSqB
         )
-        const updated_sigma_sqs = Maths.updatedSigmaSqs(
+        const updatedSigmaSqs = Maths.updatedSigmaSqs(
             alpha,
             beta,
-            mu_a,
-            sigma_sq_a,
-            mu_b,
-            sigma_sq_b
+            muA,
+            sigmaSqA,
+            muB,
+            sigmaSqB
         )
-        const updated_annotator_2 = Maths.updatedAnnotator(
+        const updatedAnnotator2 = Maths.updatedAnnotator(
             alpha,
             beta,
-            mu_b,
-            sigma_sq_b,
-            mu_a,
-            sigma_sq_a
+            muB,
+            sigmaSqB,
+            muA,
+            sigmaSqA
         )
-        const updated_mus_2 = Maths.updatedMus(
+        const updatedMus2 = Maths.updatedMus(
             alpha,
             beta,
-            mu_b,
-            sigma_sq_b,
-            mu_a,
-            sigma_sq_a
+            muB,
+            sigmaSqB,
+            muA,
+            sigmaSqA
         )
-        const updated_sigma_sqs_2 = Maths.updatedSigmaSqs(
+        const updatedSigmaSqs2 = Maths.updatedSigmaSqs(
             alpha,
             beta,
-            mu_b,
-            sigma_sq_b,
-            mu_a,
-            sigma_sq_a
+            muB,
+            sigmaSqB,
+            muA,
+            sigmaSqA
         )
 
-        const alpha_1 = updated_annotator.updated_alpha
-        const beta_1 = updated_annotator.updated_beta
-        const { c } = updated_annotator
-        const mu_a_1 = updated_mus.updated_mu_winner
-        const mu_b_1 = updated_mus.updated_mu_loser
-        const sigma_sq_a_1 = updated_sigma_sqs.updated_sigma_sq_winner
-        const sigma_sq_b_1 = updated_sigma_sqs.updated_sigma_sq_loser
-        const prob_a_ranked_above = c
-        const alpha_2 = updated_annotator_2.updated_alpha
-        const beta_2 = updated_annotator_2.updated_beta
-        const mu_b_2 = updated_mus_2.updated_mu_winner
-        const mu_a_2 = updated_mus_2.updated_mu_loser
-        const sigma_sq_b_2 = updated_sigma_sqs_2.updated_sigma_sq_winner
-        const sigma_sq_a_2 = updated_sigma_sqs_2.updated_sigma_sq_loser
+        const alpha1 = updatedAnnotator.updatedAlpha
+        const beta1 = updatedAnnotator.updatedBeta
+        const { c } = updatedAnnotator
+        const muA1 = updatedMus.updatedMuWinner
+        const muB1 = updatedMus.updatedMuLoser
+        const sigmaSqA1 = updatedSigmaSqs.updatedSigmaSqWinner
+        const sigmaSqB1 = updatedSigmaSqs.updatedSigmaSqLoser
+        const probARankedAbove = c
+        const alpha2 = updatedAnnotator2.updatedAlpha
+        const beta2 = updatedAnnotator2.updatedBeta
+        const muB2 = updatedMus2.updatedMuWinner
+        const muA2 = updatedMus2.updatedMuLoser
+        const sigmaSqB2 = updatedSigmaSqs2.updatedSigmaSqWinner
+        const sigmaSqA2 = updatedSigmaSqs2.updatedSigmaSqLoser
 
         return (
-            prob_a_ranked_above *
-                (Maths.divergenceGaussian(
-                    mu_a_1,
-                    sigma_sq_a_1,
-                    mu_a,
-                    sigma_sq_a
-                ) +
-                    Maths.divergenceGaussian(
-                        mu_b_1,
-                        sigma_sq_b_1,
-                        mu_b,
-                        sigma_sq_b
-                    ) +
-                    GAMMA *
-                        Maths.divergenceBeta(alpha_1, beta_1, alpha, beta)) +
-            (1 - prob_a_ranked_above) *
-                (Maths.divergenceGaussian(
-                    mu_a_2,
-                    sigma_sq_a_2,
-                    mu_a,
-                    sigma_sq_a
-                ) +
-                    Maths.divergenceGaussian(
-                        mu_b_2,
-                        sigma_sq_b_2,
-                        mu_b,
-                        sigma_sq_b
-                    ) +
-                    GAMMA * Maths.divergenceBeta(alpha_2, beta_2, alpha, beta))
+            probARankedAbove *
+                (Maths.divergenceGaussian(muA1, sigmaSqA1, muA, sigmaSqA) +
+                    Maths.divergenceGaussian(muB1, sigmaSqB1, muB, sigmaSqB) +
+                    GAMMA * Maths.divergenceBeta(alpha1, beta1, alpha, beta)) +
+            (1 - probARankedAbove) *
+                (Maths.divergenceGaussian(muA2, sigmaSqA2, muA, sigmaSqA) +
+                    Maths.divergenceGaussian(muB2, sigmaSqB2, muB, sigmaSqB) +
+                    GAMMA * Maths.divergenceBeta(alpha2, beta2, alpha, beta))
         )
     },
 
     updatedMus: (
         alpha,
         beta,
-        mu_winner,
-        sigma_sq_winner,
-        mu_loser,
-        sigma_sq_loser
+        muWinner,
+        sigmaSqWinner,
+        muLoser,
+        sigmaSqLoser
     ) => {
         const mult =
-            (alpha * exp(mu_winner)) /
-                (alpha * exp(mu_winner) + beta * exp(mu_loser)) -
-            exp(mu_winner) / (exp(mu_winner) + exp(mu_loser))
+            (alpha * exp(muWinner)) /
+                (alpha * exp(muWinner) + beta * exp(muLoser)) -
+            exp(muWinner) / (exp(muWinner) + exp(muLoser))
 
-        const updated_mu_winner = mu_winner + sigma_sq_winner * mult
-        const updated_mu_loser = mu_loser - sigma_sq_loser * mult
+        const updatedMuWinner = muWinner + sigmaSqWinner * mult
+        const updatedMuLoser = muLoser - sigmaSqLoser * mult
 
         return {
-            updated_mu_winner,
-            updated_mu_loser,
+            updatedMuWinner,
+            updatedMuLoser,
         }
     },
 
     updatedSigmaSqs: (
         alpha,
         beta,
-        mu_winner,
-        sigma_sq_winner,
-        mu_loser,
-        sigma_sq_loser
+        muWinner,
+        sigmaSqWinner,
+        muLoser,
+        sigmaSqLoser
     ) => {
         const mult =
-            (alpha * exp(mu_winner) * beta * exp(mu_loser)) /
-                Math.pow(alpha * exp(mu_winner) + beta * exp(mu_loser), 2) -
-            (exp(mu_winner) * exp(mu_loser)) /
-                Math.pow(exp(mu_winner) + exp(mu_loser), 2)
+            (alpha * exp(muWinner) * beta * exp(muLoser)) /
+                Math.pow(alpha * exp(muWinner) + beta * exp(muLoser), 2) -
+            (exp(muWinner) * exp(muLoser)) /
+                Math.pow(exp(muWinner) + exp(muLoser), 2)
 
-        const updated_sigma_sq_winner =
-            sigma_sq_winner * Math.max(1 + sigma_sq_winner * mult, KAPPA)
-        const updated_sigma_sq_loser =
-            sigma_sq_loser * Math.max(1 + sigma_sq_loser * mult, KAPPA)
+        const updatedSigmaSqWinner =
+            sigmaSqWinner * Math.max(1 + sigmaSqWinner * mult, KAPPA)
+        const updatedSigmaSqLoser =
+            sigmaSqLoser * Math.max(1 + sigmaSqLoser * mult, KAPPA)
 
         return {
-            updated_sigma_sq_winner,
-            updated_sigma_sq_loser,
+            updatedSigmaSqWinner,
+            updatedSigmaSqLoser,
         }
     },
 
     updatedAnnotator: (
         alpha,
         beta,
-        mu_winner,
-        sigma_sq_winner,
-        mu_loser,
-        sigma_sq_loser
+        muWinner,
+        sigmaSqWinner,
+        muLoser,
+        sigmaSqLoser
     ) => {
-        const c_1 =
-            exp(mu_winner) / (exp(mu_winner) + exp(mu_loser)) +
+        const c1 =
+            exp(muWinner) / (exp(muWinner) + exp(muLoser)) +
             (0.5 *
-                (sigma_sq_winner + sigma_sq_loser) *
-                (exp(mu_winner) *
-                    exp(mu_loser) *
-                    (exp(mu_loser) - exp(mu_winner)))) /
-                Math.pow(exp(mu_winner) + exp(mu_loser), 3)
+                (sigmaSqWinner + sigmaSqLoser) *
+                (exp(muWinner) *
+                    exp(muLoser) *
+                    (exp(muLoser) - exp(muWinner)))) /
+                Math.pow(exp(muWinner) + exp(muLoser), 3)
 
-        const c_2 = 1 - c_1
-        const c = (c_1 * alpha + c_2 * beta) / (alpha + beta)
+        const c2 = 1 - c1
+        const c = (c1 * alpha + c2 * beta) / (alpha + beta)
 
         const expt =
-            (c_1 * (alpha + 1) * alpha + c_2 * alpha * beta) /
+            (c1 * (alpha + 1) * alpha + c2 * alpha * beta) /
             (c * (alpha + beta + 1) * (alpha + beta))
-        const expt_sq =
-            (c_1 * (alpha + 2) * (alpha + 1) * alpha +
-                c_2 * (alpha + 1) * alpha * beta) /
+        const exptSq =
+            (c1 * (alpha + 2) * (alpha + 1) * alpha +
+                c2 * (alpha + 1) * alpha * beta) /
             (c * (alpha + beta + 2) * (alpha + beta + 1) * (alpha + beta))
 
-        const variance = expt_sq - Math.pow(expt, 2)
-        const updated_alpha = ((expt - expt_sq) * expt) / variance
-        const updated_beta = ((expt - expt_sq) * (1 - expt)) / variance
+        const variance = exptSq - Math.pow(expt, 2)
+        const updatedAlpha = ((expt - exptSq) * expt) / variance
+        const updatedBeta = ((expt - exptSq) * (1 - expt)) / variance
 
         return {
-            updated_alpha,
-            updated_beta,
+            updatedAlpha,
+            updatedBeta,
             c,
         }
     },
