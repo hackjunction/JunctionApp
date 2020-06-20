@@ -104,7 +104,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
 

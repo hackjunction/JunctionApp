@@ -18,7 +18,7 @@ import { push } from 'connected-react-router'
 
 export default () => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const body1 = ['Event registration and organization through platform']
     const body2 = [
         'Event registration and organization through platform',
@@ -76,7 +76,7 @@ export default () => {
                                 m={6}
                                 onClick={() => dispatch(push('/contact'))}
                             >
-                                Contact us
+                                {t('Contact_us_')}
                             </Button>
                         </Grid>
                     </CenteredContainer>

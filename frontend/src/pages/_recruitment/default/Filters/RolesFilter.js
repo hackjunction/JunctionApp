@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.roles ?? []
     const classes = useStyles()

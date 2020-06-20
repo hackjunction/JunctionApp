@@ -28,7 +28,7 @@ const RecruitmentOptionInput = ({
     onBlur,
     autoFocus,
 }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const handleChange = useCallback(
         (field, fieldValue) => {
             if (field === 'status' && fieldValue === 'not-interested') {

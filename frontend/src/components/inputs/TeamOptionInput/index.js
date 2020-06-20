@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
     const classes = useStyles()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
             onChange({

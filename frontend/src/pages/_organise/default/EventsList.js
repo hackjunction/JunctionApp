@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 export default ({ events = [] }) => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>

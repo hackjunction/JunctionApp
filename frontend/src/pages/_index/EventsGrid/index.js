@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 export default ({ events, loading, title }) => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     function renderEvents() {
         return events.map(event => {
             return (

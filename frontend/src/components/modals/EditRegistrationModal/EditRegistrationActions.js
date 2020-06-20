@@ -21,7 +21,7 @@ export default ({ registration, onSubmit, onCancel }) => {
     const tags = useFormField(registration.tags)
     const status = useFormField(registration.status)
     const travelGrant = useFormField(registration.travelGrant)
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const formFields = [rating, assignedTo, tags, status, travelGrant]
     const formValues = {
         rating: rating.value,

@@ -35,7 +35,7 @@ const NewsLetterButton = ({
     country,
 }) => {
     const classes = useStyles()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const [hidden, setHidden] = useState(false)
     const [loading, setLoading] = useState(false)
 

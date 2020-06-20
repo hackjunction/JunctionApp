@@ -61,7 +61,7 @@ const RegistrationBottomBar = ({
 }) => {
     const classes = useStyles()
     const [enabled, setEnabled] = useState(false)
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     useEffect(() => {
         setTimeout(function () {
             setEnabled(true)

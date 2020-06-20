@@ -21,7 +21,7 @@ export default ({ onRevoke }) => {
     const events = useSelector(RecruitmentSelectors.events)
     const recruiters = useSelector(RecruitmentSelectors.adminRecruiters)
     const loading = useSelector(RecruitmentSelectors.adminRecruitersLoading)
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateAdminRecruiters())

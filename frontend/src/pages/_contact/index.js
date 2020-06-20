@@ -70,7 +70,7 @@ export default () => {
     const [organisation, setOrganisation] = useState('')
     const [message, setMessage] = useState('')
 
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     useEffect(() => {
         dispatch(AuthActions.clearSession())

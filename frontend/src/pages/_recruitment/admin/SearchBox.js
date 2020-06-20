@@ -20,7 +20,7 @@ export default ({ onGrant, onRevoke }) => {
     const dispatch = useDispatch()
     const searchResults = useSelector(RecruitmentSelectors.adminSearchResults)
     const [searchQuery, setSearchQuery] = useState('')
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     return (
         <Box>
             <Box

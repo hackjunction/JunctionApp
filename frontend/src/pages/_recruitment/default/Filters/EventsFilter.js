@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const allEvents = useSelector(RecruitmentSelectors.events)

@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ user }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const actionHistoryByUser = useSelector(
         RecruitmentSelectors.actionHistoryByUser
     )
