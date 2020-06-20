@@ -58,6 +58,7 @@ export default ({ eventId }) => {
             return (
                 <Image
                     className={classes.image}
+                    defaultImage={require('assets/images/default_cover_image.png')}
                     publicId={event?.coverImage?.publicId}
                     transformation={{
                         width: 400,
