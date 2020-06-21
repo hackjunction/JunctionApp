@@ -310,9 +310,9 @@ export default () => {
                                         render={({ field, form }) => (
                                             <TextInput
                                                 label={
-                                                    RegistrationFields.getFields()[
+                                                    RegistrationFields.getField(
                                                         'headline'
-                                                    ].label
+                                                    ).label
                                                 }
                                                 placeholder="Fullstack developer, hackathon enthusiast"
                                                 value={field.value}
@@ -332,9 +332,9 @@ export default () => {
                                     />
                                     <Typography variant="caption">
                                         {
-                                            RegistrationFields.getFields()[
+                                            RegistrationFields.getField(
                                                 'headline'
-                                            ].hint
+                                            ).hint
                                         }
                                     </Typography>
                                 </Grid>
@@ -345,9 +345,9 @@ export default () => {
                                             render={({ field, form }) => (
                                                 <TextAreaInput
                                                     label={
-                                                        RegistrationFields.getFields()[
+                                                        RegistrationFields.getField(
                                                             'biography'
-                                                        ].label
+                                                        ).label
                                                     }
                                                     placeholder={`Hi my name is ${form.values.firstName} and...`}
                                                     value={field.value}
@@ -368,9 +368,9 @@ export default () => {
                                     </Box>
                                     <Typography variant="caption">
                                         {
-                                            RegistrationFields.getFields()[
+                                            RegistrationFields.getField(
                                                 'biography'
-                                            ].hint
+                                            ).hint
                                         }
                                     </Typography>
                                 </Grid>
@@ -603,9 +603,9 @@ export default () => {
                                         render={({ field, form }) => (
                                             <TextInput
                                                 label={
-                                                    RegistrationFields.getFields()[
+                                                    RegistrationFields.getField(
                                                         'curriculumVitae'
-                                                    ].label
+                                                    ).label
                                                 }
                                                 placeholder="myhomepage.com/cv"
                                                 value={field.value}
@@ -625,9 +625,9 @@ export default () => {
                                     />
                                     <Typography variant="caption">
                                         {
-                                            RegistrationFields.getFields()[
+                                            RegistrationFields.getField(
                                                 'curriculumVitae'
-                                            ].hint
+                                            ).hint
                                         }
                                     </Typography>
                                 </Grid>
@@ -637,9 +637,9 @@ export default () => {
                                         render={({ field, form }) => (
                                             <TextInput
                                                 label={
-                                                    RegistrationFields.getFields()[
+                                                    RegistrationFields.getField(
                                                         'portfolio'
-                                                    ].label
+                                                    ).label
                                                 }
                                                 placeholder="myhomepage.com/portfolio"
                                                 value={field.value}
@@ -659,9 +659,9 @@ export default () => {
                                     />
                                     <Typography variant="caption">
                                         {
-                                            RegistrationFields.getFields()[
+                                            RegistrationFields.getField(
                                                 'portfolio'
-                                            ].hint
+                                            ).hint
                                         }
                                     </Typography>
                                 </Grid>
@@ -671,9 +671,9 @@ export default () => {
                                         render={({ field, form }) => (
                                             <TextInput
                                                 label={
-                                                    RegistrationFields.getFields()[
+                                                    RegistrationFields.getField(
                                                         'github'
-                                                    ].label
+                                                    ).label
                                                 }
                                                 placeholder="github.com/myusername"
                                                 value={field.value}
@@ -693,9 +693,9 @@ export default () => {
                                     />
                                     <Typography variant="caption">
                                         {
-                                            RegistrationFields.getFields()[
+                                            RegistrationFields.getField(
                                                 'github'
-                                            ].hint
+                                            ).hint
                                         }
                                     </Typography>
                                 </Grid>
@@ -705,9 +705,9 @@ export default () => {
                                         render={({ field, form }) => (
                                             <TextInput
                                                 label={
-                                                    RegistrationFields.getFields()[
+                                                    RegistrationFields.getField(
                                                         'linkedin'
-                                                    ].label
+                                                    ).label
                                                 }
                                                 placeholder="linkedin.com/in/myname"
                                                 value={field.value}
@@ -727,9 +727,9 @@ export default () => {
                                     />
                                     <Typography variant="caption">
                                         {
-                                            RegistrationFields.getFields()[
+                                            RegistrationFields.getField(
                                                 'linkedin'
-                                            ].hint
+                                            ).hint
                                         }
                                     </Typography>
                                 </Grid>

@@ -96,7 +96,6 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
             }
         )
     }, [registration, section])
-
     return (
         <Formik
             initialValues={initialValues}
@@ -150,7 +149,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                             </Box>
                         )}
                     </Box>
-                    {visible && (
+                    {visible ? (
                         <Box p={2} className={classes.wrapper}>
                             <Grid container spacing={0}>
                                 {section.questions.map((question, index) => (
@@ -173,7 +172,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                                 ))}
                             </Grid>
                         </Box>
-                    )}
+                    ) : null}
                     {ReactDOM.createPortal(
                         <RegistrationBottomBar
                             prevLabel={prevLabel}

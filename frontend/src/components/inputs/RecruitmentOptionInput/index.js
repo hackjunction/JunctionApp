@@ -63,8 +63,8 @@ const RecruitmentOptionInput = ({
                     options={STATUS_OPTIONS}
                 />
             </Grid>
-            {value.status &&
-                value.status !== 'not-interested' && [
+            {value.status && value.status !== 'not-interested' ? (
+                <>
                     <Grid item xs={12}>
                         <Typography variant="body1">
                             {t('Cool_partners_')}
@@ -80,7 +80,7 @@ const RecruitmentOptionInput = ({
                                 handleChange('consent', consent)
                             }
                         />
-                    </Grid>,
+                    </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body1" gutterBottom>
                             {t('Relocation_option_')}
@@ -93,8 +93,9 @@ const RecruitmentOptionInput = ({
                             }
                             options={RELOCATION_OPTIONS}
                         />
-                    </Grid>,
-                ]}
+                    </Grid>
+                </>
+            ) : null}
         </Grid>
     )
 }

@@ -293,7 +293,6 @@ export default RequiresPermission(() => {
     ])
     // TODO normal and custom sections should be handled the same
     const renderSteps = () => {
-        console.log('right now', formData, sections)
         return sections.map((section, index) => {
             const isCustomSection = section.hasOwnProperty('name')
             const nextStep =

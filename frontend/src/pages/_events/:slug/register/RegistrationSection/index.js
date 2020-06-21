@@ -88,7 +88,6 @@ export default props => {
             }
         )
     }, [fields, data, registration, userProfile, idTokenData])
-
     return (
         <Formik
             initialValues={initialValues}
@@ -126,7 +125,6 @@ export default props => {
                                                 name={field.fieldName}
                                                 component={RegistrationQuestion}
                                                 config={field.fieldConfig}
-                                                required={field.require}
                                             />
                                         </div>
                                     </Grid>

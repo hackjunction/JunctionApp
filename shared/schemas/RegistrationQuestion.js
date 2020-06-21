@@ -44,6 +44,7 @@ const RegistrationQuestionSchema = new mongoose.Schema({
             message: () => `Field type must be one of ${FIELD_TYPES.join(',')}`,
         },
     },
+    // TODO rename to just 'required' to be uniform with normal qestion field
     fieldRequired: {
         type: Boolean,
         default: false,
