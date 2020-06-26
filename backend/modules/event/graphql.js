@@ -131,6 +131,12 @@ const EventType = new GraphQLObjectType({
             demoHint: {
                 type: GraphQLString,
             },
+            eventPrivacy: {
+                type: GraphQLString,
+            },
+            eventTerms: {
+                type: GraphQLString,
+            },
             demoPlaceholder: {
                 type: GraphQLString,
             },

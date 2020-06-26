@@ -47,10 +47,12 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
+export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
     const [visible, setVisible] = useState(!section.conditional)
+
+    console.log('custom', registration, data)
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
             (result, question) => {

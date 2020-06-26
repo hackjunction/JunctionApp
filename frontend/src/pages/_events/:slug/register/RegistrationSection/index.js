@@ -53,7 +53,7 @@ export default props => {
 
     const classes = useStyles({ isActive })
     const mainRef = useRef(null)
-
+    console.log('not custom', registration, data)
     const { validationSchema, initialValues } = useMemo(() => {
         return fields.reduce(
             (result, field) => {

@@ -62,7 +62,7 @@ export default () => {
                         color="theme_white"
                         variant="contained"
                         onClick={() =>
-                            window.open(event.demo_instructions, '_blank')
+                            window.open(event.demoInstructions, '_blank')
                         }
                     >
                         More info about reviewing

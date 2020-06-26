@@ -225,7 +225,7 @@ const EventSchema = new mongoose.Schema({
     faq: {
         type: String,
     },
-    demo_instructions: {
+    demoInstructions: {
         type: String,
     },
     demoLabel: {
@@ -240,6 +240,12 @@ const EventSchema = new mongoose.Schema({
     demoPlaceholder: {
         type: String,
         default: 'https://...',
+    },
+    eventPrivacy: {
+        type: String,
+    },
+    eventTerms: {
+        type: String,
     },
 })
 

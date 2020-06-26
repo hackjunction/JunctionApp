@@ -20,6 +20,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Select from 'components/inputs/Select'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     radioGroup: {
@@ -35,6 +36,7 @@ export default ({ value = [], onChange, autoFocus }) => {
     const selectEl = useRef()
     const [years, setYears] = useState()
     const [role, setRole] = useState()
+    const { t } = useTranslation()
 
     const handleYearsChange = useCallback(event => {
         setYears(event.target.value)
@@ -113,7 +115,7 @@ export default ({ value = [], onChange, autoFocus }) => {
                         color="primary"
                         variant="contained"
                     >
-                        Add
+                        {t('Add_')}
                     </Button>
                 </Box>
             </Grid>
@@ -131,9 +133,9 @@ export default ({ value = [], onChange, autoFocus }) => {
                             <ListItemSecondaryAction>
                                 <Button
                                     onClick={() => handleRemove(index)}
-                                    color="error"
+                                    color="default" //TODO this should be red
                                 >
-                                    Remove
+                                    {t('Remove_')}
                                 </Button>
                             </ListItemSecondaryAction>
                         </ListItem>,

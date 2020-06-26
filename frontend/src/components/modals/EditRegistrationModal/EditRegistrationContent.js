@@ -27,14 +27,12 @@ export default React.memo(({ registration }) => {
     const customAnswers = {}
     if (registration.answers.CustomAnswers) {
         registration.answers.CustomAnswers.forEach(element => {
-            console.log('element', element)
             if (!customAnswers[element.section]) {
                 customAnswers[element.section] = {}
             }
             customAnswers[element.section][element.key] = element.value
         })
     }
-    console.log('custom', customAnswers)
     const categoryNames = sorted.filter(key => key !== '')
     return (
         <>

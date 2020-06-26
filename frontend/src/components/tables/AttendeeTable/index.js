@@ -242,7 +242,7 @@ export default ({
                         action: openBulkEdit,
                     },
                     {
-                        key: 'export',
+                        key: 'export-registerations',
                         label: (
                             <CSVLink
                                 style={{

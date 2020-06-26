@@ -125,6 +125,7 @@ export default RequiresPermission(() => {
     const {
         event,
         slug,
+        registeration,
         hasRegistration,
         createRegistration,
         editRegistration,
@@ -133,7 +134,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-
+    console.log('regi', registeration)
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -393,6 +394,7 @@ export default RequiresPermission(() => {
                                 hasErrors={false}
                                 onSubmit={handleSubmit}
                                 loading={loading}
+                                event={event}
                             />
                         </StepContent>
                     </Step>

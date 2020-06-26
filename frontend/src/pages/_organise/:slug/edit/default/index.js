@@ -157,7 +157,7 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="demo_instructions"
+                    name="demoInstructions"
                     render={({ field, form }) => (
                         <FormControl
                             label="Demo instruction link"
@@ -166,8 +166,54 @@ export default () => {
                             touched={form.touched[field.name]}
                         >
                             <TextInput
-                                name="demo_instructions"
+                                name="demoInstructions"
                                 placeholder="https://hackjunction.com/demo"
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="eventPrivacy"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Privacy Policy for this event"
+                            hint="https://www.hackjunction.com/policy"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <TextInput
+                                name="eventPrivacy"
+                                placeholder="https://www.hackjunction.com/policy"
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="eventTerms"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Terms and Conditions for this event"
+                            hint="https://www.hackjunction.com/terms"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <TextInput
+                                name="eventTerms"
+                                placeholder="https://www.hackjunction.com/terms"
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
