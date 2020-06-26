@@ -47,10 +47,12 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
+export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
     const [visible, setVisible] = useState(!section.conditional)
+
+    console.log('custom', registration, data)
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
             (result, question) => {
@@ -74,7 +76,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                             element.key === question.name
                         ) {
                             if (question.fieldType === 'multiple-choice') {
-                                // TODO fix so that that multiple choice options with , in them don't cause bugs
+                                // TODO fix so that that multiple choice options with "," in them don't cause bugs
                                 result.initialValues[
                                     element.key
                                 ] = element.value.split(',')
@@ -96,7 +98,6 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
             }
         )
     }, [registration, section])
-
     return (
         <Formik
             initialValues={initialValues}
@@ -150,7 +151,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                             </Box>
                         )}
                     </Box>
-                    {visible && (
+                    {visible ? (
                         <Box p={2} className={classes.wrapper}>
                             <Grid container spacing={0}>
                                 {section.questions.map((question, index) => (
@@ -173,7 +174,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel }) => {
                                 ))}
                             </Grid>
                         </Box>
-                    )}
+                    ) : null}
                     {ReactDOM.createPortal(
                         <RegistrationBottomBar
                             prevLabel={prevLabel}

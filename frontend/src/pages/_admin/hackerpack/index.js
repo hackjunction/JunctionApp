@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const match = useRouteMatch()
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const { slug } = match.params
 
     const [initialData, setInitialData] = useState({})

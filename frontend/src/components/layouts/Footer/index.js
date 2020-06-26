@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 const Footer = props => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     return (
         <div className={classes.wrapper}>
             {props.hide_contact ? null : (

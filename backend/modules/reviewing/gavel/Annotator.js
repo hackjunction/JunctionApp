@@ -4,7 +4,10 @@ const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
 const Settings = require('./settings')
 const Maths = require('./maths')
+
 const Event = require('../../event/model')
+const Team = require('../../team/model')
+
 const { ForbiddenError } = require('../../../common/errors/errors')
 
 const GavelAnnotatorSchema = new mongoose.Schema({
@@ -76,8 +79,9 @@ GavelAnnotatorSchema.virtual('userDetails', {
     foreignField: 'userId',
 })
 
+/** Note .methods. functions can't be arrow functions */
 /** Check if the annotator can vote */
-GavelAnnotatorSchema.methods.canVote = async function() {
+GavelAnnotatorSchema.methods.canVote = async function () {
     if (!this.next) {
         return Promise.reject(
             new ForbiddenError('Cannot submit votes without a project assigned')
@@ -115,8 +119,11 @@ GavelAnnotatorSchema.methods.canVote = async function() {
 
     if (diffSeconds < Settings.ANNOTATOR_WAIT_SECONDS) {
         return Promise.reject(
-            `Must wait ${Settings.ANNOTATOR_WAIT_SECONDS -
-                diffSeconds} before voting again`
+            new ForbiddenError(
+                `Must wait ${
+                    Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
+                } more seconds before voting again`
+            )
         )
     }
 
@@ -124,7 +131,9 @@ GavelAnnotatorSchema.methods.canVote = async function() {
 }
 
 /** Get the preferred candidates for a next project for the annotator */
-GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
+GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
+    const event = await Event.findById(this.event)
+
     const projectsConditions = {
         active: true,
         event: this.event,
@@ -157,15 +166,45 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
         })
         .lean()
 
-    const [availableProjects, activeAnnotators] = await Promise.all([
+    const [allProjects, activeAnnotators] = await Promise.all([
         availableProjectsQuery,
         activeAnnotatorsQuery,
     ])
+
+    // Helper function
+    const asyncFilter = async (arr, predicate) => {
+        const results = await Promise.all(arr.map(predicate))
+        return arr.filter((_v, index) => results[index])
+    }
+    // TODO figure out how to do this with a query
+    const availableProjects = await asyncFilter(
+        allProjects,
+        async gavelProject => {
+            if (!event.allowVoteOnOwnProject) {
+                const project = await mongoose
+                    .model('Project')
+                    .findById(gavelProject.project)
+                const team = await Team.findById(project.team)
+                console.log(this.user, team.owner, !team.members)
+                console.log(
+                    this.user !== team.owner &&
+                        !team.members.includes(this.user)
+                )
+                return (
+                    this.user !== team.owner &&
+                    !team.members.includes(this.user)
+                )
+            }
+
+            return true
+        }
+    )
 
     /** If an annotator has been assigned to a project before this time, consider the project free for review */
     const cutoff = moment().subtract(Settings.ANNOTATOR_TIMEOUT_MINS, 'minutes')
 
     // /** Get all projects that are not currently being reviewed by someone, by the above definition */
+    // TODO busy projects aonly apply to physical events, skip this on events that don't have active project presentation
     const nonBusyProjects = availableProjects.filter(project => {
         const assignedAnnotator = _.find(activeAnnotators, annotator => {
             return annotator.next === project._id
@@ -189,8 +228,11 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function() {
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects
 }
 
-GavelAnnotatorSchema.methods.getNextProject = async function() {
+GavelAnnotatorSchema.methods.getNextProject = async function () {
+    // Remove projects that are by the person reviewing
     const preferredProjects = await this.getPreferredProjects()
+    console.log('preferredProjects', preferredProjects)
+    console.log(preferredProjects.length)
 
     /** If there are no projects available, return null */
     if (preferredProjects.length === 0) {
@@ -213,15 +255,19 @@ GavelAnnotatorSchema.methods.getNextProject = async function() {
             this.alpha,
             this.beta,
             current.mu,
-            current.sigma_sq,
+            current.sigmaSq,
             prospect.mu,
-            prospect.sigma_sq
+            prospect.sigmaSq
         )
     })
 }
 
-GavelAnnotatorSchema.methods.assignNextProject = async function() {
+GavelAnnotatorSchema.methods.assignNextProject = async function () {
+    console.log('assigning')
+    console.log(this.getNextProject, 'exists?')
+    console.log(this, 'even this?')
     const nextProject = await this.getNextProject()
+    console.log('nextProject', nextProject)
 
     if (!this.next) {
         if (nextProject) {
@@ -242,7 +288,7 @@ GavelAnnotatorSchema.methods.assignNextProject = async function() {
     return this.save()
 }
 
-GavelAnnotatorSchema.methods.skipCurrentProject = async function() {
+GavelAnnotatorSchema.methods.skipCurrentProject = async function () {
     const project = await mongoose.model('GavelProject').findById(this.next)
     project.setSkippedBy(this._id)
 
@@ -253,11 +299,10 @@ GavelAnnotatorSchema.methods.skipCurrentProject = async function() {
                 'Cannot skip current project when there is no project assigned'
             )
         )
-    } else {
-        this.ignore.push(this.next)
-        this.skipped.push(this.next)
-        this.next = nextProject._id
     }
+    this.ignore.push(this.next)
+    this.skipped.push(this.next)
+    this.next = nextProject._id
 
     return this.save()
 }

@@ -24,7 +24,7 @@ export default ({ items }) => {
     const page = useSelector(RecruitmentSelectors.page)
     const paginationEnabled = !items
     const isFavorited = !!items
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateSearchResults())

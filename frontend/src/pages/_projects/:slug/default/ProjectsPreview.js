@@ -18,7 +18,7 @@ export default ({
     const handleClickMore = useCallback(() => {
         dispatch(push(moreLink))
     }, [dispatch, moreLink])
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
 
     const handleSelected = useCallback(
         project => {

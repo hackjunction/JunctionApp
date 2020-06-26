@@ -33,7 +33,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const [projects, setProjects] = useState()
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [selected, setSelected] = useState(false)
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     const fetchProjects = useCallback(async () => {
         setLoading(true)

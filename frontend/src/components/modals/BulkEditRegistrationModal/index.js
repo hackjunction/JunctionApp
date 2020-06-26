@@ -28,7 +28,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import { useTranslation } from 'react-i18next'
 export default ({ visible, userIds = [], onClose }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const [loading, setLoading] = useState(false)

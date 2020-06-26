@@ -52,6 +52,7 @@ export const renewSession = () => dispatch => {
             dispatch(UserActions.updateUserProfile(authResult.idToken))
         })
         .catch(err => {
+            console.log('error in renewSession')
             dispatch(logout())
         })
 }

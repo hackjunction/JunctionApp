@@ -104,7 +104,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
 

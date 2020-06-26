@@ -30,7 +30,7 @@ export default ({ projectId }) => {
     const [error, setError] = useState(false)
     const [project, setProject] = useState()
     const [selected, setSelected] = useState()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     const fetchProject = useCallback(async () => {
         setLoading(true)

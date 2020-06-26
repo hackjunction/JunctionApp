@@ -14,7 +14,7 @@ const WILLING_TO_RELOCATE = Misc.relocationOptions.items['willing-to-relocate']
 const NOT_CURRENTLY = Misc.relocationOptions.items['not-currently']
 
 export default () => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const filters =
         useSelector(RecruitmentSelectors.filters)?.relocationStatus ?? []

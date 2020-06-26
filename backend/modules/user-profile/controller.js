@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const { UserProfile } = require('./model')
 const { NotFoundError } = require('../../common/errors/errors')
 const UserProfileHelpers = require('./helpers')

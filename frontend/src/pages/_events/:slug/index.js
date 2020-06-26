@@ -19,7 +19,7 @@ const EventDetailRouter = () => {
     const { eventLoading, eventError, isRegistrationOpen } = useContext(
         EventDetailContext
     )
-    //TODO FIX errortext and desc to be from eventErro
+    // TODO FIX errortext and desc to be from eventErro
     return (
         <PageWrapper
             loading={eventLoading}

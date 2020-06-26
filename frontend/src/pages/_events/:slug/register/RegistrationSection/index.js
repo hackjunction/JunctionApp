@@ -53,7 +53,7 @@ export default props => {
 
     const classes = useStyles({ isActive })
     const mainRef = useRef(null)
-
+    console.log('not custom', registration, data)
     const { validationSchema, initialValues } = useMemo(() => {
         return fields.reduce(
             (result, field) => {
@@ -76,12 +76,10 @@ export default props => {
                         ] = fieldParams.default(userProfile, idTokenData)
                     }
                 }
-
                 if (data.hasOwnProperty(field.fieldName)) {
                     result.initialValues[field.fieldName] =
                         data[field.fieldName]
                 }
-
                 return result
             },
             {
@@ -90,7 +88,6 @@ export default props => {
             }
         )
     }, [fields, data, registration, userProfile, idTokenData])
-
     return (
         <Formik
             initialValues={initialValues}
@@ -128,7 +125,6 @@ export default props => {
                                                 name={field.fieldName}
                                                 component={RegistrationQuestion}
                                                 config={field.fieldConfig}
-                                                required={field.require}
                                             />
                                         </div>
                                     </Grid>

@@ -1,5 +1,7 @@
 const _ = require('lodash')
 const mongoose = require('mongoose')
+const moment = require('moment-timezone')
+const { EventHelpers } = require('@hackjunction/shared')
 const GavelAnnotator = require('./Annotator')
 const GavelDecision = require('./Decision')
 const GavelProject = require('./Project')
@@ -65,7 +67,6 @@ controller.editAnnotator = async (annotatorId, data) => {
         if (!annotator) {
             throw new NotFoundError(`No annotator found with id ${annotatorId}`)
         }
-
         if (data.hasOwnProperty('active')) {
             annotator.active = data.active
         }
@@ -77,6 +78,11 @@ controller.editAnnotator = async (annotatorId, data) => {
 }
 
 controller.initAnnotator = async (event, userId) => {
+    if (!EventHelpers.isVotingOpen(event, moment)) {
+        return Promise.reject(
+            new ForbiddenError('Cannot start voting while voting is not open')
+        )
+    }
     const team = await TeamController.getTeam(event._id, userId).catch(
         () => null
     )
@@ -101,14 +107,13 @@ controller.initAnnotator = async (event, userId) => {
         })
 
         if (tracksSorted.length === 1) {
+            // TODO the multiple track event gavel should be tested
             assignedTrack = tracksSorted[0].slug
-        } else if (ownProject && ownProject.track) {
-            for (const track of tracksSorted) {
-                if (track.slug !== ownProject.track) {
+            tracksSorted.forEach(track => {
+                if (assignedTrack.slug === ownProject.track) {
                     assignedTrack = track.slug
-                    break
                 }
-            }
+            })
         } else {
             assignedTrack = tracksSorted[0].slug
         }
@@ -120,9 +125,9 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
-
-    const savedAnnotator = await annotator.save()
-    return savedAnnotator.assignNextProject()
+    await annotator.save()
+    // savedaanotator instead?
+    return annotator.assignNextProject()
 }
 
 controller.submitVote = async (event, userId, winningProjectId) => {
@@ -155,31 +160,31 @@ controller.submitVote = async (event, userId, winningProjectId) => {
     ])
 
     const {
-        updated_alpha,
-        updated_beta,
-        updated_mu_winner,
-        updated_mu_loser,
-        updated_sigma_sq_winner,
-        updated_sigma_sq_loser,
+        updatedAlpha,
+        updatedBeta,
+        updatedMuWinner,
+        updatedMuLoser,
+        updatedSigmaSqWinner,
+        updatedSigmaSqLoser,
     } = Maths.update(
         annotator.alpha,
         annotator.beta,
         winner.mu,
-        winner.sigma_sq,
+        winner.sigmaSq,
         loser.mu,
-        loser.sigma_sq
+        loser.sigmaSq
     )
 
-    annotator.alpha = updated_alpha
-    annotator.beta = updated_beta
+    annotator.alpha = updatedAlpha
+    annotator.beta = updatedBeta
 
-    loser.mu = updated_mu_loser
-    loser.sigma_sq = updated_sigma_sq_loser
+    loser.mu = updatedMuLoser
+    loser.sigmaSq = updatedSigmaSqLoser
     if (loser._id.toString() === annotator.next.toString()) {
         loser.viewedBy.push(annotator._id.toString())
     }
-    winner.mu = updated_mu_winner
-    winner.sigma_sq = updated_sigma_sq_winner
+    winner.mu = updatedMuWinner
+    winner.sigmaSq = updatedSigmaSqWinner
     if (winner._id.toString() === annotator.next.toString()) {
         winner.viewedBy.push(annotator._id.toString())
     }

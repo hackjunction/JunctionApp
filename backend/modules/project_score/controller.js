@@ -23,7 +23,7 @@ controller.updateProjectScore = async (id, updatedProjectScore) => {
     )
 
     projectScore.score = updatedProjectScore.score
-    projectScore.max_score = updatedProjectScore.max_score
+    projectScore.maxScore = updatedProjectScore.maxScore
     projectScore.message = updatedProjectScore.message
     projectScore.status = updatedProjectScore.status
 

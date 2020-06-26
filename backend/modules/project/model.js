@@ -80,11 +80,11 @@ ProjectSchema.index({
     event: 1,
 })
 
-ProjectSchema.methods.getPreview = function() {
+ProjectSchema.methods.getPreview = function () {
     return _.omit(this, ['description'])
 }
 
-ProjectSchema.post('save', async function(doc, next) {
+ProjectSchema.post('save', async function (doc, next) {
     const event = await mongoose.model('Event').findById(this.event)
     switch (event.reviewMethod) {
         /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */

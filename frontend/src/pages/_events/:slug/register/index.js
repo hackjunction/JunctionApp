@@ -119,12 +119,13 @@ const useStyles = makeStyles(theme => ({
 const Connector = ({ index, active, completed, disabled }) => <div />
 
 export default RequiresPermission(() => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const classes = useStyles()
     const dispatch = useDispatch()
     const {
         event,
         slug,
+        registeration,
         hasRegistration,
         createRegistration,
         editRegistration,
@@ -133,7 +134,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-
+    console.log('regi', registeration)
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -247,7 +248,7 @@ export default RequiresPermission(() => {
 
     const handleSubmit = useCallback(async () => {
         setLoading(true)
-        //TODO shape the custom answers here
+        // TODO shape the custom answers here
         if (event.customQuestions) {
             formData['CustomAnswers'] = []
             event.customQuestions.forEach(section => {
@@ -291,9 +292,8 @@ export default RequiresPermission(() => {
         sections,
         slug,
     ])
-
+    // TODO normal and custom sections should be handled the same
     const renderSteps = () => {
-        console.log('right now', formData, sections)
         return sections.map((section, index) => {
             const isCustomSection = section.hasOwnProperty('name')
             const nextStep =
@@ -394,6 +394,7 @@ export default RequiresPermission(() => {
                                 hasErrors={false}
                                 onSubmit={handleSubmit}
                                 loading={loading}
+                                event={event}
                             />
                         </StepContent>
                     </Step>

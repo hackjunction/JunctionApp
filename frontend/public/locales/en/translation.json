@@ -11,7 +11,7 @@
     "Contact_email_": "Your contact email address, where you want to receive necessary notifications related to your activity on the {{platform}} app. Your email address will never be shared with any 3rd parties.",
     "Contact_phone_": "Your phone number will only be used to contact you in urgent matters, and will never be shared with any 3rd parties.",
     "Profile_details_": "Profile details",
-    "Pre_filled_details_": "When you register to events on the {{owner}} app, the below details will be pre-filled into your registrations, and updated from your latest registration. In case you have opted in for recruitment functionality, these details will also be shown to select {{owner}} partners who are looking to hire. Please see our <a href={{privacy}}>Privacy Policy</a> for more details on how your data is used.",
+    "Pre_filled_details_": "When you register to events on the {{owner}} app, the below details will be pre-filled into your registrations, and updated from your latest registration. In case you have opted in for recruitment functionality, these details will also be shown to select {{owner}} partners who are looking to hire. Please see our privacy policy at {{privacy}} for more details on how your data is used.",
     "First_name_": "First name",
     "Last_name_": "Last name",
     "Email_": "Email adress",
@@ -185,7 +185,7 @@
     "Cool_partners_mean_": "This means that relevant recruitment information about you (ex. contact info, education, skills and other cv information) will be visible to select {{owner}} partners representatives who are looking to hire. You can also choose to opt out of this later.",
     "Relocation_option_": "Would you consider relocating to another country for work as a possibility?",
     "Level_of_expertise_": "Level of expertise",
-    "Consent_privacy_": "I have read and I consent to the processing of my data in accordance to the",
+    "Consent_privacy_": "I have read and I consent to the processing of my data in accordance to the ",
     "Privacy_policy_": "{{owner}} Privacy Policty",
     "Read_agree_terms_": "I've read and agree to the ",
     "Terms_and_conditions_": "{{owner}} Terms & Conditions",
@@ -254,5 +254,8 @@
     "Join_hackerpack_": "Sign in to check out our Hackerpack partners!",
     "To_hackerpack_": "To hackerpack!",
     "Contact_": "Contact",
-    "Send_": "Send"
+    "Send_": "Send",
+    "Spoken_languages_": "Spoken Languages",
+    "Contact_us_": "Contact us"
+
 }

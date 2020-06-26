@@ -17,6 +17,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import Button from 'components/generic/Button'
 
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
+import PricingMenu from 'components/PricingMenu'
 
 const useStyles = makeStyles(theme => ({
     menuDot: {
@@ -50,6 +51,7 @@ export default () => {
     if (!userId) {
         return (
             <Box display="flex" flexDirection="row" alignItems="center">
+                <PricingMenu />
                 <Button
                     color="theme_white"
                     variant="outlined"
@@ -64,7 +66,7 @@ export default () => {
 
     const renderEventItems = () => {
         //const items = [];
-        //TODO: Add links to event dashboard here for ongoing events
+        // TODO: Add links to event dashboard here for ongoing events
         return null
     }
 
@@ -85,8 +87,7 @@ export default () => {
             })
         }
 
-        // TODO Check Superadmin
-        if (hasOrganiserAccess) {
+        if (hasSuperAdmin) {
             items.push({
                 label: 'Admin dashboard',
                 onClick: () => dispatch(push('/admin')),

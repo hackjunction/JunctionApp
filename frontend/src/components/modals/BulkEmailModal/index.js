@@ -33,7 +33,7 @@ export default ({ visible, userIds = [], onClose }) => {
     const [loading, setLoading] = useState(false)
     const [confirmModalOpen, setConfirmModalOpen] = useState(false)
     const headerImage = useFormField('')
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const subject = useFormField('', value => {
         if (!value || value.length === 0) {
             return t('Subject_required_')

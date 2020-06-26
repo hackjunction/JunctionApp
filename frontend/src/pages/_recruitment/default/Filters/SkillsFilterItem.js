@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const classes = useStyles()
     const toggleLevel = useCallback(
         level => {

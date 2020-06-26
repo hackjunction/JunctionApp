@@ -8,7 +8,7 @@ import { EventStatuses } from '@hackjunction/shared'
 import * as AuthSelectors from 'redux/auth/selectors'
 import RegistrationsService from 'services/registrations'
 
-//TODO move to queries
+// TODO move to queries
 const eventQuery = gql`
     query Event($slug: String!) {
         eventBySlug(slug: $slug) {
@@ -48,6 +48,8 @@ const eventQuery = gql`
             demoLabel
             demoHint
             demoPlaceholder
+            eventPrivacy
+            eventTerms
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted
@@ -120,7 +122,7 @@ export const EventDetailProvider = ({ children }) => {
     const registration = registrationData?.myRegistration
     const isRegistrationOpen =
         event?._eventStatus === EventStatuses.REGISTRATION_OPEN.id
-
+    console.log('regidata', registrationData)
     return (
         <EventDetailContext.Provider
             value={{

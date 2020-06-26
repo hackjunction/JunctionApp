@@ -13,7 +13,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useTranslation } from 'react-i18next'
 export default () => {
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const [name, setName] = useState('')
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)

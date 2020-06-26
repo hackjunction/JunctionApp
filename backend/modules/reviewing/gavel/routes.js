@@ -69,9 +69,9 @@ router.route('/:slug/annotators/:id').patch(
     })
 )
 
+/** Get a user's annotator for an event */
 router
     .route('/:slug/annotator')
-    /** Get a user's annotator for an event */
     .get(
         hasToken,
         hasRegisteredToEvent,

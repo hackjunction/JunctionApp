@@ -31,14 +31,14 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
+const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
     const classes = useStyles()
     const [confirmed1, setConfirmed1] = useState(false)
     const [confirmed2, setConfirmed2] = useState(false)
     const [confirmed3, setConfirmed3] = useState(false)
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const confirmed = confirmed1 && confirmed2 && confirmed3
-
+    console.log('event is ', event)
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
             <Box className={classes.wrapper}>
@@ -53,8 +53,16 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                     <ExternalLink href={config.PRIVACY_URL}>
                         {t('Privacy_policy_', {
                             owner: config.PLATFORM_OWNER_NAME,
-                        })}
+                        })}{' '}
                     </ExternalLink>
+                    {event.eventPrivacy ? (
+                        <>
+                            {' and Privacy Policy of the '}
+                            <ExternalLink href={event.eventPrivacy}>
+                                event organizer
+                            </ExternalLink>
+                        </>
+                    ) : null}
                 </Typography>
             </Box>
             <Box className={classes.wrapper}>
@@ -71,6 +79,14 @@ const SubmitButton = ({ hasErrors, loading, onSubmit }) => {
                             owner: config.PLATFORM_OWNER_NAME,
                         })}
                     </ExternalLink>
+                    {event.eventTerms ? (
+                        <>
+                            {' and Terms and Conditions of the '}
+                            <ExternalLink href={event.eventTerms}>
+                                event organizer
+                            </ExternalLink>
+                        </>
+                    ) : null}
                 </Typography>
             </Box>
             <Box className={classes.wrapper}>

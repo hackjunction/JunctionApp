@@ -14,8 +14,8 @@ const { Answers, TravelGrantDetails } = require('../graphql-shared-types')
 const RegistrationType = new GraphQLObjectType({
     name: 'Registration',
     fields: () => {
-        const { UserProfileType } = require('../user-profile/graphql').Types //eslint-disable-line
-        const { EventType } = require('../event/graphql').Types //eslint-disable-line
+        const { UserProfileType } = require('../user-profile/graphql').Types
+        const { EventType } = require('../event/graphql').Types
 
         return {
             /** Fields from DB model */

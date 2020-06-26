@@ -58,7 +58,7 @@ export default () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const dispatch = useDispatch()
     const match = useRouteMatch()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
 
     const sendMessage = useCallback(
         (message, userId) => {

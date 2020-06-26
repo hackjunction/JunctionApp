@@ -10,7 +10,7 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import { useTranslation } from 'react-i18next'
 export default () => {
     const dispatch = useDispatch()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     const filters =
         useSelector(RecruitmentSelectors.filters)?.spokenLanguages ?? []
     const [draft, setDraft] = useState(filters)

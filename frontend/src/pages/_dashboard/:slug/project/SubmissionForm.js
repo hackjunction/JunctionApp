@@ -24,13 +24,13 @@ import * as AuthSelectors from 'redux/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
 
-//TODO make the form labels and hints customizable
+// TODO make the form labels and hints customizable
 export default props => {
     const id = props.id
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
 
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)

@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 export default () => {
     const match = useRouteMatch()
     const location = useLocation()
-    const { t, i18n } = useTranslation() // eslint-disable-line
+    const { t } = useTranslation()
     return (
         <PageWrapper
             header={() => <AccountNavBar />}

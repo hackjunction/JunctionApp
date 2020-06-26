@@ -5,6 +5,7 @@ import UserMenu from 'components/UserMenu'
 import LanguageMenu from 'components/LanguageMenu'
 
 import config from 'constants/config'
+import { Grid, Hidden } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -36,10 +37,12 @@ export default () => {
                     className={classes.wordmark}
                     alt={config.PLATFORM_OWNER_NAME + ' logo'}
                 />
-                <div className={classes.inner}>
+                <Grid className={classes.inner}>
                     <UserMenu />
-                    <LanguageMenu />
-                </div>
+                    <Hidden only="xs">
+                        <LanguageMenu />
+                    </Hidden>
+                </Grid>
             </div>
         </div>
     )
