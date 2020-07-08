@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ name, icon, description, link }) => {
+export default ({ name, icon, description, link, redeemable }) => {
     const classes = useStyles()
 
     return (
@@ -41,17 +41,19 @@ export default ({ name, icon, description, link }) => {
                 <Typography>
                     <Markdown source={description} />
                 </Typography>
-                <Box className={classes.outboundLink}>
-                    <OutboundLink
-                        eventLabel="myLabel"
-                        to={link}
-                        target="_blank"
-                    >
-                        <Button color="theme_turquoise" variant="contained">
-                            Redeem
-                        </Button>
-                    </OutboundLink>
-                </Box>
+                {redeemable ? (
+                    <Box className={classes.outboundLink}>
+                        <OutboundLink
+                            eventLabel="myLabel"
+                            to={link}
+                            target="_blank"
+                        >
+                            <Button color="theme_turquoise" variant="contained">
+                                Redeem
+                            </Button>
+                        </OutboundLink>
+                    </Box>
+                ) : null}
             </Box>
         </Box>
     )

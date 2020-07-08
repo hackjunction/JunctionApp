@@ -25,7 +25,7 @@ export default () => {
             <PageWrapper loading={false}>
                 <Divider variant="middle" />
                 {hackerpack.map(company => (
-                    <HackerpackDetail partner={company} />
+                    <HackerpackDetail partner={company} redeemable={true} />
                 ))}
                 <Box p={2}>
                     <Typography color="textSecondary" variant="subtitle1">

@@ -13,46 +13,21 @@ const EmailTaskController = require('./controller')
 
 const messageParams = () =>
     Joi.object({
-        subject: Joi.string()
-            .max(200)
-            .required(),
+        subject: Joi.string().max(200).required(),
         body: Joi.string().required(),
-        subtitle: Joi.string()
-            .max(200)
-            .optional()
-            .allow(''),
-        header_image: Joi.string()
-            .uri()
-            .optional()
-            .allow(''),
-        cta_text: Joi.string()
-            .max(100)
-            .optional()
-            .allow(''),
-        cta_link: Joi.string()
-            .uri()
-            .optional()
-            .allow(''),
-        reply_to: Joi.string()
-            .email()
-            .optional()
-            .allow(''),
+        subtitle: Joi.string().max(200).optional().allow(''),
+        header_image: Joi.string().uri().optional().allow(''),
+        cta_text: Joi.string().max(100).optional().allow(''),
+        cta_link: Joi.string().uri().optional().allow(''),
+        reply_to: Joi.string().email().optional().allow(''),
     })
 
 const contactMessageParams = () =>
     Joi.object({
-        subject: Joi.string()
-            .max(200)
-            .required(),
-        subtitle: Joi.string()
-            .max(200)
-            .optional()
-            .allow(''),
+        subject: Joi.string().max(200).required(),
+        subtitle: Joi.string().max(200).optional().allow(''),
         body: Joi.string().required(),
-        reply_to: Joi.string()
-            .email()
-            .optional()
-            .allow(''),
+        reply_to: Joi.string().email().optional().allow(''),
     })
 
 /** Send a preview email to a given address */
@@ -76,14 +51,9 @@ router.route('/:slug/preview').post(
 router.route('/:slug/send').post(
     celebrate({
         body: {
-            recipients: Joi.array()
-                .items(Joi.string())
-                .min(1)
-                .required(),
+            recipients: Joi.array().items(Joi.string()).min(1).required(),
             params: messageParams(),
-            uniqueId: Joi.string()
-                .optional()
-                .allow(''),
+            uniqueId: Joi.string().optional().allow(''),
         },
     }),
     hasToken,
