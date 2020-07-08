@@ -4,7 +4,7 @@ import { Box, Divider } from '@material-ui/core'
 import CompanySection from './CompanySection'
 import GradientBox from 'components/generic/GradientBox'
 
-const HackerpackDetail = ({ partner }) => {
+const HackerpackDetail = ({ partner, redeemable = false }) => {
     return (
         <>
             <Box p={2}>
@@ -14,6 +14,7 @@ const HackerpackDetail = ({ partner }) => {
                         description={partner.description}
                         icon={partner.icon}
                         link={partner.link}
+                        redeemable={redeemable}
                     />
                 </GradientBox>
             </Box>
