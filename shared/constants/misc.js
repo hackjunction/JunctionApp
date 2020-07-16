@@ -57,6 +57,14 @@ const relocationOptions = {
     },
 }
 
+const hearAboutEventOptions = [
+    "Facebook",
+    "Twitter",
+    "Instagram",
+    "Other social media",
+    "Friend",
+];
+
 const travelGrantStatuses = {
     accepted: {
         id: 'accepted',
@@ -133,5 +141,6 @@ Misc.travelGrantStatuses = {
 
 Misc.tShirtSizes = tShirtSizes
 Misc.dietaryRestrictions = dietaryRestrictions
+Misc.hearAboutEventOptions = hearAboutEventOptions
 
 module.exports = Misc

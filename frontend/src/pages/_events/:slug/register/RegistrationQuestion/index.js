@@ -40,13 +40,13 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             name={field.name}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.PHONE_NUMBER.id:
                 return (
                     <FormControl
@@ -58,13 +58,13 @@ const RegistrationQuestion = ({
                         <PhoneNumberInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
-                            onBlur={value => form.setFieldTouched(field.name)}
+                            onBlur={(value) => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.DATE.id:
                 return (
                     <FormControl
@@ -76,13 +76,13 @@ const RegistrationQuestion = ({
                         <DateInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={date =>
+                            onChange={(date) =>
                                 form.setFieldValue(field.name, date)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.GENDER.id:
                 return (
                     <FormControl
@@ -95,14 +95,14 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={gender =>
+                            onChange={(gender) =>
                                 form.setFieldValue(field.name, gender)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                             options="gender"
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.NATIONALITY.id:
                 return (
                     <FormControl
@@ -115,14 +115,14 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={nationality =>
+                            onChange={(nationality) =>
                                 form.setFieldValue(field.name, nationality)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                             options="nationality"
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.LANGUAGES.id:
                 return (
                     <FormControl
@@ -135,7 +135,7 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={languages =>
+                            onChange={(languages) =>
                                 form.setFieldValue(field.name, languages)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
@@ -143,7 +143,7 @@ const RegistrationQuestion = ({
                             isMulti={true}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.COUNTRY.id:
                 return (
                     <FormControl
@@ -157,14 +157,14 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={country =>
+                            onChange={(country) =>
                                 form.setFieldValue(field.name, country)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                             options="country"
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.ROLES.id:
                 return (
                     <FormControl
@@ -176,13 +176,13 @@ const RegistrationQuestion = ({
                         <JobRoleInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={roles =>
+                            onChange={(roles) =>
                                 form.setFieldValue(field.name, roles)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.SKILLS.id:
                 return (
                     <FormControl
@@ -194,13 +194,13 @@ const RegistrationQuestion = ({
                         <SkillsInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={skills =>
+                            onChange={(skills) =>
                                 form.setFieldValue(field.name, skills)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.INDUSTRIES.id:
                 return (
                     <FormControl
@@ -213,7 +213,7 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={items =>
+                            onChange={(items) =>
                                 form.setFieldValue(field.name, items)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
@@ -221,7 +221,7 @@ const RegistrationQuestion = ({
                             isMulti={true}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.THEMES.id:
                 return (
                     <FormControl
@@ -234,7 +234,7 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={items =>
+                            onChange={(items) =>
                                 form.setFieldValue(field.name, items)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
@@ -242,7 +242,7 @@ const RegistrationQuestion = ({
                             isMulti={true}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.EDUCATION.id:
                 return (
                     <FormControl
@@ -254,13 +254,13 @@ const RegistrationQuestion = ({
                         <EducationInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.LONG_TEXT.id:
                 return (
                     <FormControl
@@ -273,13 +273,13 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             name={field.name}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.NUM_HACKATHONS.id:
                 return (
                     <FormControl
@@ -292,14 +292,14 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={items =>
+                            onChange={(items) =>
                                 form.setFieldValue(field.name, items)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                             options="num-hackathons"
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.T_SHIRT_SIZE.id:
                 return (
                     <FormControl
@@ -312,14 +312,14 @@ const RegistrationQuestion = ({
                             autoFocus={autoFocus}
                             label={config.label}
                             value={field.value}
-                            onChange={items =>
+                            onChange={(items) =>
                                 form.setFieldValue(field.name, items)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                             options="t-shirt-size"
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.BOOLEAN.id:
                 return (
                     <FormControl
@@ -331,13 +331,13 @@ const RegistrationQuestion = ({
                         <BooleanInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.DIETARY_RESTRICTIONS.id:
                 return (
                     <FormControl
@@ -351,14 +351,35 @@ const RegistrationQuestion = ({
                             label={config.label}
                             options="dietary-restriction"
                             value={field.value}
-                            onChange={items =>
+                            onChange={(items) =>
                                 form.setFieldValue(field.name, items)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                             isMulti={true}
                         />
                     </FormControl>
-                )
+                );
+            case fieldTypes.HEAR_ABOUT.id:
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            options="hear-about"
+                            value={field.value}
+                            onChange={(items) =>
+                                form.setFieldValue(field.name, items)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            isMulti={true}
+                        />
+                    </FormControl>
+                );
             case fieldTypes.TEAM_OPTIONS.id:
                 return (
                     <FormControl
@@ -370,13 +391,13 @@ const RegistrationQuestion = ({
                         <TeamOptionInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             case fieldTypes.RECRUITMENT_OPTIONS.id:
                 return (
                     <FormControl
@@ -388,15 +409,15 @@ const RegistrationQuestion = ({
                         <RecruitmentOptionInput
                             autoFocus={autoFocus}
                             value={field.value}
-                            onChange={value =>
+                            onChange={(value) =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
-                )
+                );
             default:
-                return null
+                return null;
         }
     }
 
