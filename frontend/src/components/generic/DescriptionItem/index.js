@@ -57,144 +57,144 @@ const DescriptionItem = ({ title, content, fieldName }) => {
 
     const renderContent = (content, fieldName) => {
         switch (fieldName) {
-            case "roles":
+            case 'roles':
                 return (
                     <List>
-                        {content.map((item) => (
+                        {content.map(item => (
                             <ListItem key={item.role}>
                                 <ListItemText
                                     primary={item.role}
                                     secondary={Roles.getLabelForExperienceLevel(
-                                        item.years,
+                                        item.years
                                     )}
                                     primaryTypographyProps={{
-                                        variant: "body2",
+                                        variant: 'body2',
                                         classes: { root: classes.title },
                                     }}
                                     secondaryTypographyProps={{
-                                        variant: "subtitle1",
+                                        variant: 'subtitle1',
                                     }}
                                 />
                             </ListItem>
                         ))}
                     </List>
-                );
-            case "skills":
+                )
+            case 'skills':
                 return (
                     <List>
-                        {content.map((item) => {
+                        {content.map(item => {
                             const label = Skills.getLabelForSkillLevel(
-                                item.level,
-                            );
+                                item.level
+                            )
                             return (
                                 <ListItem key={item.skill}>
                                     <ListItemText
                                         primary={item.skill}
                                         secondary={label}
                                         primaryTypographyProps={{
-                                            variant: "body2",
+                                            variant: 'body2',
                                             classes: { root: classes.title },
                                         }}
                                         secondaryTypographyProps={{
-                                            variant: "subtitle1",
+                                            variant: 'subtitle1',
                                         }}
                                     />
                                 </ListItem>
-                            );
+                            )
                         })}
                     </List>
-                );
-            case "education":
+                )
+            case 'education':
                 return renderObjectFields(content, {
-                    level: "Level",
-                    university: "University",
-                    degree: "Degree",
-                    graduationYear: "Graduation Year",
-                });
-            case "teamOptions":
+                    level: 'Level',
+                    university: 'University',
+                    degree: 'Degree',
+                    graduationYear: 'Graduation Year',
+                })
+            case 'teamOptions':
                 return renderObjectFields(
                     content,
                     {
-                        applyAsTeam: "Applying as a team?",
-                        applyAlone: "Applying also alone?",
+                        applyAsTeam: 'Applying as a team?',
+                        applyAlone: 'Applying also alone?',
                     },
                     {
                         applyAsTeam: renderBoolean,
                         applyAlone: renderBoolean,
-                    },
-                );
-            case "dateOfBirth":
-                return moment(content).format("DD.MM.YYYY");
-            case "numHackathons":
-                return Misc.numHackathonOptions.getLabelForValue(content);
-            case "portfolio":
-            case "github":
-            case "linkedin":
-            case "curriculumVitae":
+                    }
+                )
+            case 'dateOfBirth':
+                return moment(content).format('DD.MM.YYYY')
+            case 'numHackathons':
+                return Misc.numHackathonOptions.getLabelForValue(content)
+            case 'portfolio':
+            case 'github':
+            case 'linkedin':
+            case 'curriculumVitae':
                 return (
                     <a href={content} target="_blank" rel="noopener noreferrer">
                         {content}
                     </a>
-                );
-            case "recruitmentOptions":
+                )
+            case 'recruitmentOptions':
                 return renderObjectFields(
                     content,
                     {
-                        consent: "Can share data with partners?",
-                        relocation: "Willing to relocate?",
-                        status: "Job-seeking status",
+                        consent: 'Can share data with partners?',
+                        relocation: 'Willing to relocate?',
+                        status: 'Job-seeking status',
                     },
                     {
                         consent: renderBoolean,
-                        relocation: (value) =>
+                        relocation: value =>
                             Misc.relocationOptions.getLabelForValue(value),
-                        status: (value) =>
+                        status: value =>
                             Misc.recruitmentStatuses.getLabelForValue(value),
-                    },
-                );
-            case "dietaryRestrictions":
-            case "hearAboutEvent":
-            case "spokenLanguages":
-                if (!content || !content.length) return "None";
-                return content.join(", ");
-            case "themesOfInterest":
-            case "industriesOfInterest":
+                    }
+                )
+            case 'dietaryRestrictions':
+            case 'hearAboutEvent':
+            case 'spokenLanguages':
+                if (!content || !content.length) return 'None'
+                return content.join(', ')
+            case 'themesOfInterest':
+            case 'industriesOfInterest':
                 return (
                     <List>
-                        {content.map((item) => (
+                        {content.map(item => (
                             <ListItem key={item}>
                                 <ListItemText
                                     primary={item}
                                     primaryTypographyProps={{
-                                        variant: "body2",
+                                        variant: 'body2',
                                         classes: { root: classes.title },
                                     }}
                                     secondaryTypographyProps={{
-                                        variant: "subtitle1",
+                                        variant: 'subtitle1',
                                     }}
                                 />
                             </ListItem>
                         ))}
                     </List>
-                );
-            case "phoneNumber":
-                return `${content.country_code} ${content.number}`;
+                )
+            case 'phoneNumber':
+                return `${content.country_code} ${content.number}`
             default:
-                if (!content) return <NotAvailable />;
-                const contentType = typeof content;
+                if (!content) return <NotAvailable />
+                const contentType = typeof content
 
                 switch (contentType) {
-                    case "string":
-                        return content;
-                    case "boolean":
-                        return renderBoolean(content);
-                    case "array":
-                        if (isEmpty(content)) return "None";
-                        return content.join(", ");
-                    case "object":
-                        return renderObjectFields(content);
+                    case 'string':
+                        return content
+                    case 'boolean':
+                        return renderBoolean(content)
+                    case 'array':
+                        if (isEmpty(content)) return 'None'
+                        return content.join(', ')
+                    case 'object':
+                        return renderObjectFields(content)
                     default:
-                        return "";
+                        return ''
                 }
         }
     }
