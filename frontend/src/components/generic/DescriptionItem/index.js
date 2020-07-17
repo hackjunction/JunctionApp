@@ -153,6 +153,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                     }
                 )
             case 'dietaryRestrictions':
+            case 'hearAboutEvent':
             case 'spokenLanguages':
                 if (!content || !content.length) return 'None'
                 return content.join(', ')

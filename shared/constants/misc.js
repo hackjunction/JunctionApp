@@ -86,6 +86,14 @@ const dietaryRestrictions = [
     'No soybeans',
 ]
 
+const hearAboutEventOptions = [
+    'Facebook',
+    'Twitter',
+    'Instagram',
+    'Other social media',
+    'Friend',
+]
+
 const Misc = {}
 
 Misc.numHackathonOptions = {
@@ -133,5 +141,6 @@ Misc.travelGrantStatuses = {
 
 Misc.tShirtSizes = tShirtSizes
 Misc.dietaryRestrictions = dietaryRestrictions
+Misc.hearAboutEventOptions = hearAboutEventOptions
 
 module.exports = Misc

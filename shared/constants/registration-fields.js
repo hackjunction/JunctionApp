@@ -844,6 +844,26 @@ const FieldProps = {
             },
         ],
     },
+    hearAboutEventOptions: {
+        label: 'How did you hear about this event?',
+        hint:
+            "Please select one option.",
+        hintMarkdown: false,
+        fieldType: FieldTypes.HEAR_ABOUT,
+        copyToUserProfile: false,
+        mongooseSchema: [
+            {
+                type: String,
+            },
+        ],
+        graphqlSchema: GraphQLList(GraphQLString),
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: true,
+            editable: true,
+        },
+    },
+
 }
 
 const Fields = {
@@ -1376,6 +1396,22 @@ const Fields = {
             return required ? base.required() : base
         },
     },
+
+    hearAboutEvent: {
+        ...FieldProps.hearAboutEventOptions,
+        category: Categories.other,
+        default: () => [],
+        validationSchema: (required) => {
+            const base = yup
+                .array()
+                .of(yup.string().oneOf(Misc.hearAboutEventOptions))
+                .ensure()
+                .label(FieldProps.hearAboutEventOptions.label);
+
+            return required ? base.required() : base;
+        },
+    },
+
 }
 
 function buildFieldToLabelMap() {

@@ -34,6 +34,10 @@ const SelectOptions = {
         label: item,
         value: item,
     })),
+    HEAR_ABOUT: Misc.hearAboutEventOptions.map(item => ({
+        label: item,
+        value: item,
+    })),
     GENDERS: Genders.map(gender => ({
         label: gender,
         value: gender,

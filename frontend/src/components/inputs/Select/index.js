@@ -365,6 +365,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.NATIONALITIES
                 case 'dietary-restriction':
                     return SelectOptions.DIETARY_RESTRICTIONS
+                case 'hear-about':
+                    return SelectOptions.HEAR_ABOUT
                 case 'num-hackathons':
                     return SelectOptions.NUM_HACKATHONS
                 case 'gender':

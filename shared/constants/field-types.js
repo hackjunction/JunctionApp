@@ -59,6 +59,9 @@ const FieldTypes = {
     DIETARY_RESTRICTIONS: {
         id: 'DIETARY_RESTRICTIONS',
     },
+    HEAR_ABOUT: {
+        id: 'HEAR_ABOUT',
+    },
     TEAM_OPTIONS: {
         id: 'TEAM_OPTIONS',
     },

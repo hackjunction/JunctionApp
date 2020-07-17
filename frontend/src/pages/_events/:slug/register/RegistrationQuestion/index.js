@@ -359,6 +359,27 @@ const RegistrationQuestion = ({
                         />
                     </FormControl>
                 )
+            case fieldTypes.HEAR_ABOUT.id:
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        <Select
+                            autoFocus={autoFocus}
+                            label={config.label}
+                            options="hear-about"
+                            value={field.value}
+                            onChange={items =>
+                                form.setFieldValue(field.name, items)
+                            }
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            isMulti={true}
+                        />
+                    </FormControl>
+                )
             case fieldTypes.TEAM_OPTIONS.id:
                 return (
                     <FormControl
