@@ -45,7 +45,7 @@
         "heroku-ssl-redirect": "0.0.4",
         "http-status": "^1.4.2",
         "jwks-rsa": "^1.8.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "moment-timezone": "^0.5.31",
         "mongoose": "^5.9.16",
         "mongoose-slug-plugin": "^2.0.3",
