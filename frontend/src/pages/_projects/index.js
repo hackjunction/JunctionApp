@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import { useRouteMatch } from 'react-router'
 
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import ProjectGallery from './:slug/index.js'
+import ProjectGallery from './slug'
 
 export default () => {
     const match = useRouteMatch()
