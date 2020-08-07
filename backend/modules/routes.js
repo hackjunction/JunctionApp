@@ -41,6 +41,7 @@ module.exports = app => {
     app.use('/api/recruitment', recruitmentRouter)
     app.use('/api/project-scores', projectScoresRouter)
     app.use('/api/hackerpack', hackerpackRouter)
+    app.use('/api/organization', organizationRouter)
 
     /** Reviewing methods */
     app.use('/api/reviewing/gavel', gavelRouter)
