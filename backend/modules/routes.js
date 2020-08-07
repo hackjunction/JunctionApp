@@ -16,6 +16,7 @@ const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
 const projectScoresRouter = require('./project_score/routes')
 const hackerpackRouter = require('./hackerpack/routes')
+const organizationRouter = require('./organization/routes')
 
 module.exports = app => {
     app.get('/api', (req, res) => {
