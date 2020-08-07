@@ -9,6 +9,9 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import NewHackerpackForm from './NewHackerpackForm'
 import HackerpackList from './HackerpackList'
 
+import NewOrganizationForm from './NewOrganizationForm'
+import OrganizationList from './OrganizationList'
+
 export default () => {
     return (
         <PageWrapper
@@ -18,6 +21,9 @@ export default () => {
                 <CenteredContainer>
                     <NewHackerpackForm />
                     <HackerpackList />
+
+                    <NewOrganizationForm />
+                    <OrganizationList />
                 </CenteredContainer>
             )}
         />

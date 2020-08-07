@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DefaultPage from './default'
 import HackerpackForm from './hackerpack'
+import OrganizationForm from './organization'
 
 export default () => {
     const match = useRouteMatch()
@@ -12,8 +13,13 @@ export default () => {
             <Route exact={true} path={`${match.url}`} component={DefaultPage} />
             <Route
                 exact={false}
-                path={`${match.url}/:slug`}
+                path={`${match.url}/hackerpack/:slug`}
                 component={HackerpackForm}
+            />
+            <Route
+                exact={false}
+                path={`${match.url}/organization/:slug`}
+                component={OrganizationForm}
             />
             <Redirect to={match.url} />
         </Switch>
