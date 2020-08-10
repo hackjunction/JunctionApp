@@ -59,8 +59,25 @@ controller.removeOrganiser = (event, organiserId) => {
     return event.save()
 }
 
+controller.addOrganization = (event, organizationSlug) => {
+    event.organizations = _.concat(event.organizations, organizationSlug)
+    return event.save()
+}
+
+controller.removeOrganization = (event, organizationSlug) => {
+    event.organizations = _.filter(
+        event.organizations,
+        slug => slug !== organizationSlug
+    )
+    return event.save()
+}
+
 controller.getEventsByOrganiser = user => {
     return Event.find().or([{ owner: user.sub }, { organisers: user.sub }])
+}
+
+controller.getEventsByOrganization = organization => {
+    return Event.find({ organizations: organization.slug })
 }
 
 controller.deleteEventBySlug = slug => {

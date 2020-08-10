@@ -322,6 +322,7 @@ const components = {
     ValueContainer,
 }
 
+console.log('inini', SelectOptions.INDUSTRIES)
 export default function IntegrationReactSelect({
     autoFocus,
     disabled,
@@ -351,6 +352,7 @@ export default function IntegrationReactSelect({
     }
 
     const _options = useMemo(() => {
+        console.log('oppo', options)
         if (Array.isArray(options)) {
             return options
         } else {

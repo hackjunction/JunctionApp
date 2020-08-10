@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
 import { Grid, Box } from '@material-ui/core'
@@ -8,11 +8,22 @@ import MarkdownInput from 'components/inputs/MarkdownInput'
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import ImageUpload from 'components/inputs/ImageUpload'
+import Select from 'components/inputs/Select'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
+import OrganizationService from 'services/organization'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
+    const [organizations, setOrganizations] = useState([])
+
+    // TODO organization should be in redux
+    useEffect(() => {
+        OrganizationService.getOrganizations().then(orgs => {
+            if (orgs) setOrganizations(orgs)
+        })
+    }, [])
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -104,6 +115,33 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 placeholder="Description goes here"
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+
+            <Grid item xs={12}>
+                <FastField
+                    name="organizations"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label={'Organizations organizing the event'}
+                            hint={'Specify the parties behind this event'}
+                            touched={form.touched[field.name]}
+                            error={form.errors[field.name]}
+                        >
+                            <Select
+                                label="Specify the parties behind this event?"
+                                value={field.value}
+                                onChange={items =>
+                                    form.setFieldValue(field.name, items)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                                options={organizations.map(org => {
+                                    return { label: org.name, value: org.slug }
+                                })}
+                                isMulti={true}
                             />
                         </FormControl>
                     )}

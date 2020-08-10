@@ -62,6 +62,10 @@ class EventController {
         )
     }
 
+    getByOrganization(slug) {
+        return this._clean(Event.find({ organizations: slug }).lean())
+    }
+
     getHighlighted() {
         return this._clean(
             Event.find({

@@ -12,7 +12,6 @@ import EditIcon from '@material-ui/icons/Edit'
 
 import OrganizationService from 'services/organization'
 import * as AuthSelectors from 'redux/auth/selectors'
-import { organisersLoading } from 'redux/organiser/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()

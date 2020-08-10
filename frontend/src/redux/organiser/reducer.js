@@ -23,6 +23,13 @@ const initialState = {
         data: [],
         map: {},
     },
+    organizations: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: [],
+        map: {},
+    },
     registrations: {
         loading: false,
         error: false,
