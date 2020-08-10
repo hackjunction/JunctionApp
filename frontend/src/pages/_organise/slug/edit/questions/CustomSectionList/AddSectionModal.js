@@ -54,6 +54,10 @@ export default ({
         if (!data.name) {
             return 'Please give your section a machine name'
         }
+        
+        if ((/^[a-z-]*$/).test(data.name)) {
+            return 'Machine name can only contain lowercase characters and dashes (-)'
+        }
 
         if (!editing) {
             if (reservedNames.indexOf(data.name) !== -1) {
