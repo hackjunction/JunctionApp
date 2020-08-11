@@ -55,7 +55,7 @@ export default ({
             return 'Please give your section a machine name'
         }
         
-        if (!(/^[a-z-]*$/).test(data.name)) {
+        if ((/^[a-z-]*$/).test(data.name)) {
             return 'Machine name can only contain lowercase characters and dashes (-)'
         }
 
