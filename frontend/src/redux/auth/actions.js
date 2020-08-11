@@ -9,7 +9,7 @@ export const login = (params, nextRoute = '/') => dispatch => {
         type: ActionTypes.SET_NEXT_ROUTE,
         payload: nextRoute,
     })
-
+    console.log('loggin in with', params)
     Auth0Service.authorize(params)
 }
 

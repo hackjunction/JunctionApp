@@ -7,8 +7,10 @@ import * as AuthActions from 'redux/auth/actions'
 
 import LoadingOverlay from 'components/loaders/LoadingOverlay'
 import MiscUtils from 'utils/misc'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
+    const { i18n } = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
@@ -20,9 +22,14 @@ export default () => {
         if (isAuthenticated) {
             dispatch(AuthActions.login({}, nextRoute))
         } else {
-            dispatch(AuthActions.login({ prompt: 'login' }, nextRoute))
+            dispatch(
+                AuthActions.login(
+                    { prompt: 'login', ui_locales: i18n.language },
+                    nextRoute
+                )
+            )
         }
-    }, [dispatch, isAuthenticated, location])
+    }, [dispatch, i18n.language, isAuthenticated, location])
 
     useEffect(() => {
         handleLogin()
