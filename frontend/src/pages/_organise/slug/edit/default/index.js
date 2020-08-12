@@ -139,7 +139,11 @@ export default () => {
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
                                 options={organizations.map(org => {
-                                    return { label: org.name, value: org.slug }
+                                    return {
+                                        label: org.name,
+                                        value: org.slug,
+                                        icon: org.icon,
+                                    }
                                 })}
                                 isMulti={true}
                             />
