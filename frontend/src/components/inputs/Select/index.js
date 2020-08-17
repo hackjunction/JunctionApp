@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import Chip from '@material-ui/core/Chip'
+import Avatar from '@material-ui/core/Avatar'
 import MenuItem from '@material-ui/core/MenuItem'
 import CancelIcon from '@material-ui/icons/Cancel'
 
@@ -265,6 +266,7 @@ ValueContainer.propTypes = {
 function MultiValue(props) {
     return (
         <Chip
+            avatar={props.data.icon ? <Avatar src={props.data.icon} /> : null}
             tabIndex={-1}
             label={props.children}
             className={clsx(props.selectProps.classes.chip, {
@@ -322,6 +324,7 @@ const components = {
     ValueContainer,
 }
 
+console.log('inini', SelectOptions.INDUSTRIES)
 export default function IntegrationReactSelect({
     autoFocus,
     disabled,
@@ -351,6 +354,7 @@ export default function IntegrationReactSelect({
     }
 
     const _options = useMemo(() => {
+        console.log('oppo', options)
         if (Array.isArray(options)) {
             return options
         } else {

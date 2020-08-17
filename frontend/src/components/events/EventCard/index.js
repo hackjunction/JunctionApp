@@ -2,6 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Typography } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
 import Image from 'components/generic/Image'
 
 const useStyles = makeStyles(theme => ({
@@ -23,12 +24,17 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         objectFit: 'cover',
     },
+    organizer: {
+        position: 'absolute',
+        top: '5%',
+        left: '2%',
+    },
     bottom: {
         padding: theme.spacing(2),
     },
 }))
 
-const EventsGridItem = ({ event, buttons }) => {
+const EventCard = ({ event, organization, buttons }) => {
     const classes = useStyles()
     return (
         <div className={classes.wrapper}>
@@ -41,6 +47,12 @@ const EventsGridItem = ({ event, buttons }) => {
                         width: 400,
                     }}
                 />
+                {organization?.icon && (
+                    <Avatar
+                        className={classes.organizer}
+                        src={organization?.icon}
+                    />
+                )}
             </div>
             <div className={classes.bottom}>
                 <Typography variant="button">
@@ -63,4 +75,4 @@ const EventsGridItem = ({ event, buttons }) => {
     )
 }
 
-export default EventsGridItem
+export default EventCard

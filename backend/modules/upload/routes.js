@@ -18,7 +18,7 @@ const {
  * Upload a new avatar for a user
  */
 router.post('/users/avatar', hasToken, (req, res, next) => {
-    helper.uploadUserAvatar(req.user.sub)(req, res, function(err) {
+    helper.uploadUserAvatar(req.user.sub)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {
                 next(new ForbiddenError(err.message))
@@ -43,7 +43,7 @@ router.post(
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOrganiser,
     (req, res, next) => {
-        helper.uploadEventCoverImage(req.event.slug)(req, res, function(err) {
+        helper.uploadEventCoverImage(req.event.slug)(req, res, function (err) {
             if (err) {
                 if (err.code === 'LIMIT_FILE_SIZE') {
                     next(new ForbiddenError(err.message))
@@ -69,7 +69,7 @@ router.post(
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOrganiser,
     (req, res, next) => {
-        helper.uploadEventLogo(req.event.slug)(req, res, function(err) {
+        helper.uploadEventLogo(req.event.slug)(req, res, function (err) {
             if (err) {
                 if (err.code === 'LIMIT_FILE_SIZE') {
                     next(new ForbiddenError(err.message))
@@ -97,7 +97,7 @@ router.post(
         helper.uploadTravelGrantReceipt(req.event.slug, req.user.sub)(
             req,
             res,
-            function(err) {
+            function (err) {
                 if (err) {
                     if (err.code === 'LIMIT_FILE_SIZE') {
                         next(new ForbiddenError(err.message))
@@ -127,7 +127,7 @@ router.post(
         helper.uploadProjectImage(req.event.slug, req.team.code)(
             req,
             res,
-            function(err) {
+            function (err) {
                 if (err) {
                     if (err.code === 'LIMIT_FILE_SIZE') {
                         next(new ForbiddenError(err.message))
@@ -150,7 +150,27 @@ router.post(
  */
 // TODO isSuperAdmin
 router.post('/hackerpack/:slug/icon', hasToken, (req, res, next) => {
-    helper.uploadHackerpackIcon(req.params.slug)(req, res, function(err) {
+    helper.uploadHackerpackIcon(req.params.slug)(req, res, function (err) {
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                next(new ForbiddenError(err.message))
+            } else {
+                next(err)
+            }
+        } else {
+            res.status(200).json({
+                url: req.file.secure_url || req.file.url,
+                publicId: req.file.public_id,
+            })
+        }
+    })
+})
+
+/**
+ * Upload icon for an organization
+ */
+router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
+    helper.uploadOrganizationIcon(req.params.slug)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {
                 next(new ForbiddenError(err.message))

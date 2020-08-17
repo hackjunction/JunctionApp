@@ -85,7 +85,6 @@ class RegistrationController {
      *      -> Always return null
      */
     _cleanOne(registration) {
-        console.log('regiclean', registration)
         if (this.isAdmin) {
             return registration
         }

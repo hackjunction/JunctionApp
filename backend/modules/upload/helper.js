@@ -34,6 +34,7 @@ const createDocumentStorageWithPath = (path, transformation, options) => {
     })
 }
 
+// TODO this isn't used properly, use it more
 const UploadHelper = {
     generateEventTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}`
@@ -50,10 +51,13 @@ const UploadHelper = {
     generateHackerpackTag: id => {
         return `${cloudinaryRootPath}-hackerpac-${id}`
     },
+    generateOrganizationTag: id => {
+        return `${cloudinaryRootPath}-organization-${id}`
+    },
 
     deleteWithTag: tag => {
-        return new Promise(function(resolve, reject) {
-            cloudinary.v2.api.delete_resources_by_tag(tag, function(
+        return new Promise(function (resolve, reject) {
+            cloudinary.v2.api.delete_resources_by_tag(tag, function (
                 error,
                 result
             ) {
@@ -160,6 +164,24 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateHackerpackTag(slug),
+            }
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 5 * 1024 * 1024 },
+        }).single('image')
+    },
+
+    uploadOrganizationIcon: slug => {
+        const storage = createStorageWithPath(
+            `organization`,
+            {
+                width: 1024,
+                height: 1024,
+                crop: 'fill',
+            },
+            {
+                tag: UploadHelper.generateOrganizationTag(slug),
             }
         )
         return multer({

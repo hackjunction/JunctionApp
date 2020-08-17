@@ -63,6 +63,25 @@ EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
     )
 }
 
+EventsService.getOrganizations = (idToken, slug) => {
+    return _axios.get(`/events/organizations/${slug}`, config(idToken))
+}
+
+EventsService.addOrganizationToEvent = (idToken, slug, orgSlug) => {
+    return _axios.post(
+        `/events/organizations/${slug}/${orgSlug}`,
+        {},
+        config(idToken)
+    )
+}
+
+EventsService.removeOrganizationFromEvent = (idToken, slug, orgSlug) => {
+    return _axios.delete(
+        `/events/organizations/${slug}/${orgSlug}`,
+        config(idToken)
+    )
+}
+
 EventsService.updateWinners = (idToken, slug, winners) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/winners`,
