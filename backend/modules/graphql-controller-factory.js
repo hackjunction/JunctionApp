@@ -1,6 +1,7 @@
 const UserProfileController = require('./user-profile/graphql-controller')
 const RegistrationController = require('./registration/graphql-controller')
 const EventController = require('./event/graphql-controller')
+const OrganizationController = require('./organization/graphql-controller')
 
 function buildController(key, context) {
     const user = context.req && context.req.user
@@ -11,6 +12,8 @@ function buildController(key, context) {
             return new RegistrationController(user)
         case 'Event':
             return new EventController(user)
+        case 'Organization':
+            return new OrganizationController(user)
         default: {
             throw new Error(`No controller specified for key ${key}!`)
         }

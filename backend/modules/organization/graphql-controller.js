@@ -64,16 +64,11 @@ class OrganizationController {
         const result = await promise
         if (Array.isArray(result)) {
             const results = result.map(item => {
-                return this._cleanOne(item)
+                return item || null
             })
             return results.filter(item => item !== null)
         }
-        return this._cleanOne(result)
-    }
-
-    static _cleanOne(organization) {
-        if (!organization) return null
-        return organization
+        return result || null
     }
 }
 

@@ -122,6 +122,9 @@ const EventType = new GraphQLObjectType({
             organisers: {
                 type: GraphQLList(GraphQLString),
             },
+            organizations: {
+                type: GraphQLList(GraphQLString),
+            },
             registrationConfig: {
                 type: RegistrationConfig,
             },
@@ -140,6 +143,7 @@ const EventType = new GraphQLObjectType({
             demoPlaceholder: {
                 type: GraphQLString,
             },
+            // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
             //     type: mongoose.Mixed,

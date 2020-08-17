@@ -19,8 +19,6 @@
     },
     "eslint.enable": true,
     "editor.formatOnType": true,
-    "prettier.tabWidth": 4,
-    "prettier.trailingComma": "all",
     "javascript.format.semicolons": "remove",
     "typescript.format.semicolons": "remove"
 }

@@ -29,7 +29,7 @@ const OrganizationType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             icon: {
-                type: CloudinaryImage,
+                type: GraphQLString,
             },
         }
     },

@@ -13,6 +13,7 @@ const Fragments = {
                 publicId
             }
             eventType
+            organizations
             _eventLocationFormatted
             _eventTimeFormatted
         }

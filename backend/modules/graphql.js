@@ -6,11 +6,12 @@ const { GraphQLSchema, printSchema } = require('graphql')
 const UserProfile = require('./user-profile/graphql')
 const Registration = require('./registration/graphql')
 const Event = require('./event/graphql')
+const Organization = require('./organization/graphql')
 
 const buildGetController = require('./graphql-controller-factory')
 
 module.exports = app => {
-    const modules = [UserProfile, Registration, Event]
+    const modules = [UserProfile, Registration, Event, Organization]
     const executableSchemas = modules.map(
         ({ QueryType, MutationType, Resolvers }) => {
             const rawSchema = new GraphQLSchema({
