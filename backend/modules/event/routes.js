@@ -59,7 +59,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
 
 const getOrganisers = asyncHandler(async (req, res) => {
     const event = await EventController.getEventBySlug(req.params.slug)
-    const userIds = _.concat(event.owner, event.organisers)
+    const userIds = event.owner.concat(event.organisers)
     const userProfiles = await UserProfileController.getUserProfiles(userIds)
     return res.status(200).json(userProfiles)
 })

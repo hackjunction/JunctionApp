@@ -138,7 +138,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
         active: true,
         event: this.event,
         _id: {
-            $nin: _.concat(this.ignore, this.next || []),
+            $nin: this.ignore.concat(this.next || []),
         },
         team: {
             $ne: this.team,
