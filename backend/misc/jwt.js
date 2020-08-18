@@ -33,7 +33,7 @@ const verifyToken = jwt({
 const parseToken = (req, res, next) => {
     if (req.user) {
         Object.entries(req.user).reduce(
-            (obj, value, key) => {
+            (obj, [key, value]) => {
                 if (key.indexOf(idTokenNamespace) !== -1) {
                     obj[key.replace(idTokenNamespace, '')] = value
                 } else {
