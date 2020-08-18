@@ -50,7 +50,7 @@ controller.updateEvent = (event, eventData) => {
 }
 
 controller.addOrganiser = (event, organiserId) => {
-    event.organisers = _.concat(event.organisers, organiserId)
+    event.organisers = event.organisers.concat(organiserId)
     return event.save()
 }
 
@@ -60,7 +60,7 @@ controller.removeOrganiser = (event, organiserId) => {
 }
 
 controller.addOrganization = (event, organizationSlug) => {
-    event.organizations = _.concat(event.organizations, organizationSlug)
+    event.organizations = event.organizations.concat(organizationSlug)
     return event.save()
 }
 

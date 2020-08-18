@@ -3,7 +3,6 @@ const Shared = require('@hackjunction/shared')
 
 const AuthConstants = Shared.Auth
 const axios = require('axios')
-const _ = require('lodash')
 const request = require('request')
 
 /* Auth0 management api config */
@@ -59,7 +58,7 @@ function getRoles(access_token) {
 
 function getRoleByName(access_token, role) {
     return getRoles(access_token).then(roles => {
-        return _.find(roles, r => r.name === role)
+        return roles.find(r => r.name === role)
     })
 }
 
