@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const jwkRsa = require('jwks-rsa')
 const jwt = require('express-jwt')
 
@@ -33,8 +32,7 @@ const verifyToken = jwt({
 /** Parse the namespaced fields in token */
 const parseToken = (req, res, next) => {
     if (req.user) {
-        req.user = _.reduce(
-            req.user,
+        Object.entries(req.user).reduce(
             (obj, value, key) => {
                 if (key.indexOf(idTokenNamespace) !== -1) {
                     obj[key.replace(idTokenNamespace, '')] = value
