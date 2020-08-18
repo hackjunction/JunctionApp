@@ -91,7 +91,7 @@ controller.initAnnotator = async (event, userId) => {
         GavelAnnotator.find({ event: event._id }),
     ])
     const ownProject = team
-        ? _.find(projects, project => project.team === team._id)
+        ? projects.find(project => project.team === team._id)
         : null
 
     /** If the event is using tracks, figure out the track that needs reviewers the most */

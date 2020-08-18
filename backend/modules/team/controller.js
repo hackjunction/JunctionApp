@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const Team = require('./model')
 const Registration = require('../registration/model')
 const UserProfileController = require('../user-profile/controller')
@@ -129,14 +128,8 @@ controller.attachMeta = async team => {
 
     const userIdsToRemove = []
     const meta = userIds.reduce((res, userId) => {
-        const registration = _.find(
-            registrations,
-            registration => registration.user === userId
-        )
-        const profile = _.find(
-            userProfiles,
-            profile => profile.userId === userId
-        )
+        const registration = registrations.find(registration => registration.user === userId)
+        const profile = userProfiles.find(profile => profile.userId === userId)
 
         if (!registration || !profile) {
             userIdsToRemove.push(userId)

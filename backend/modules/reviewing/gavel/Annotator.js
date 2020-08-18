@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const _ = require('lodash')
 const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
 const Settings = require('./settings')
@@ -206,7 +205,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
     // /** Get all projects that are not currently being reviewed by someone, by the above definition */
     // TODO busy projects aonly apply to physical events, skip this on events that don't have active project presentation
     const nonBusyProjects = availableProjects.filter(project => {
-        const assignedAnnotator = _.find(activeAnnotators, annotator => {
+        const assignedAnnotator = activeAnnotators.find(annotator => {
             return annotator.next === project._id
         })
 

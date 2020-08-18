@@ -1,5 +1,4 @@
 const Promise = require('bluebird')
-const _ = require('lodash')
 
 const {
     ReviewingMethods,
@@ -202,7 +201,7 @@ controller.generateOverallResults = async event => {
 
 /** Generate the results for a single track */
 controller.generateTrackResults = async (event, trackSlug) => {
-    const track = _.find(event.tracks || [], t => t.slug === trackSlug)
+    const track = (event.tracks || []).find(t => t.slug === trackSlug)
     if (!track) {
         console.log(
             `Event ${event.name} has no track with the slug ${trackSlug}`

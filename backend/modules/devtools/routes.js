@@ -1,5 +1,4 @@
 const express = require('express')
-const _ = require('lodash')
 
 const router = express.Router()
 const Registration = require('../registration/model')
@@ -69,10 +68,7 @@ router.route('/sync-user-profiles').get(async (req, res) => {
     const updates = []
 
     userProfiles.forEach(user => {
-        const registration = _.find(
-            registrations,
-            reg => reg.user === user.userId
-        )
+        const registration = registrations.find(reg => reg.user === user.userId)
 
         if (registration && registration.answers) {
             updates.push({
