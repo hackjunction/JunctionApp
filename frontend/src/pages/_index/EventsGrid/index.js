@@ -39,7 +39,7 @@ export default ({ events, organizations, loading, title }) => {
                                     dispatch(push('/events/' + event.slug))
                                 }
                             >
-                                {t('See_more_button_')}
+                                {t('See_more_')}
                             </Button>,
                             event.galleryOpen && (
                                 <Button

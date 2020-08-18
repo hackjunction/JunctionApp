@@ -19,6 +19,8 @@ import Button from 'components/generic/Button'
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
 import PricingMenu from 'components/PricingMenu'
 
+import { useTranslation } from 'react-i18next'
+
 const useStyles = makeStyles(theme => ({
     menuDot: {
         width: '8px',
@@ -30,6 +32,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t } = useTranslation()
+
     const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
     const userId = idTokenPayload?.sub
     const [profile] = useMyProfilePreview()
@@ -58,7 +62,7 @@ export default () => {
                     strong
                     onClick={() => dispatch(push('/login'))}
                 >
-                    Sign in
+                    {t('Sign_in_')}
                 </Button>
             </Box>
         )
@@ -159,13 +163,13 @@ export default () => {
                         </ListSubheader>
                         <ListItem button>
                             <ListItemText
-                                primary="Dashboard"
+                                primary={t('Dashboard_')}
                                 onClick={() => dispatch(push('/account'))}
                             />
                         </ListItem>
                         <ListItem button>
                             <ListItemText
-                                primary="Edit profile"
+                                primary={t('Edit_profile_')}
                                 onClick={() =>
                                     dispatch(push('/account/profile'))
                                 }
@@ -173,7 +177,7 @@ export default () => {
                         </ListItem>
                         <ListItem button>
                             <ListItemText
-                                primary="Hackerpack"
+                                primary={t('Hackerpack_')}
                                 onClick={() => dispatch(push('/hackerpack'))}
                             />{' '}
                         </ListItem>
@@ -181,13 +185,13 @@ export default () => {
                         {renderOtherItems()}
                         <Divider />
                         <ListItem button onClick={() => dispatch(push('/'))}>
-                            <ListItemText primary="Front page" />
+                            <ListItemText primary={t('Front_page_')} />
                         </ListItem>
                         <ListItem
                             button
                             onClick={() => dispatch(push('/logout'))}
                         >
-                            <ListItemText primary="Log out" />
+                            <ListItemText primary={t('Log_out_')} />
                         </ListItem>
                     </List>
                 </Box>
