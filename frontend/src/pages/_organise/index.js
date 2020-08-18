@@ -3,7 +3,7 @@ import { useRouteMatch } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DefaultPage from './default'
-import SlugPage from './:slug'
+import SlugPage from './slug'
 
 export default () => {
     const match = useRouteMatch()

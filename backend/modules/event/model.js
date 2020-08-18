@@ -209,6 +209,10 @@ const EventSchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
+    organizations: {
+        type: [String],
+        default: [],
+    },
     slug: {
         type: String,
         slug: 'name',

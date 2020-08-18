@@ -10,7 +10,7 @@ import BasicNavBar from 'components/navbars/BasicNavBar'
 
 import SearchPage from './default'
 import AdminPage from './admin'
-import DetailPage from './:id'
+import DetailPage from './id'
 import config from 'constants/config'
 
 export default () => {

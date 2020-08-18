@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const Hackerpack = require('./model')
 const { NotFoundError } = require('../../common/errors/errors')
 

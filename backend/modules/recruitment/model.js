@@ -12,6 +12,8 @@ const RecruitmentActionSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        // should be with z, not s
+        // TODO Migrate this shit when done with the organizations feature
         organisation: {
             type: String,
             required: true,
