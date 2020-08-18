@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     heading1: {
         fontFamily: theme.typography.h1.fontFamily,
         fontSize: theme.typography.h5.fontSize,
-        fontWeight: 'normal',
+        fontWeight: 'bold',
         color: 'inherit',
         textAlign: 'justify',
         marginBottom: theme.spacing(3),
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     heading2: {
         fontFamily: theme.typography.h1.fontFamily,
         fontSize: theme.typography.h5.fontSize,
-        fontWeight: 'bold',
+        fontWeight: 'normal',
         color: 'inherit',
         marginBottom: theme.spacing(2),
     },
