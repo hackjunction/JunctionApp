@@ -45,7 +45,7 @@ GavelHelper.generateTrackPlacementAchievements = async event => {
                     concurrency: 5,
                 }
             ).then(achievements => {
-                const flat = _.flatten(achievements)
+                const flat = achievements.reduce((a, b) => a.concat(b), [])
                 console.log('ACHIEVEMENTS', flat.length)
                 return flat
             })
@@ -54,7 +54,7 @@ GavelHelper.generateTrackPlacementAchievements = async event => {
             concurrency: 1,
         }
     ).then(result => {
-        return _.flatten(result)
+        return result.reduce((a, b) => a.concat(b), [])
     })
 }
 
