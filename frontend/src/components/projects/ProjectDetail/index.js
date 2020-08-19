@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { find, filter } from 'lodash-es'
 import { Box, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import SwipeableViews from 'react-swipeable-views'
@@ -89,7 +88,7 @@ const ProjectDetail = ({
     if (!project) return null
 
     const renderTrack = () => {
-        const value = find(event.tracks, t => t.slug === project.track)
+        const value = event.tracks.find(t => t.slug === project.track)
 
         if (!value) {
             return <Typography variant="subtitle1">No track</Typography>
@@ -98,8 +97,7 @@ const ProjectDetail = ({
     }
 
     const renderChallenges = challenges => {
-        const values = filter(
-            event.challenges,
+        const values = event.challenges.filter(
             c => project.challenges.indexOf(c.slug) !== -1
         )
 

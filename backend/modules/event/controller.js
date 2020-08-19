@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const { ReviewingMethods } = require('@hackjunction/shared')
 const Event = require('./model')
 const { NotFoundError } = require('../../common/errors/errors')
@@ -55,7 +54,7 @@ controller.addOrganiser = (event, organiserId) => {
 }
 
 controller.removeOrganiser = (event, organiserId) => {
-    event.organisers = _.filter(event.organisers, id => id !== organiserId)
+    event.organisers = event.organisers.filter(id => id !== organiserId)
     return event.save()
 }
 
@@ -65,7 +64,7 @@ controller.addOrganization = (event, organizationSlug) => {
 }
 
 controller.removeOrganization = (event, organizationSlug) => {
-    event.organizations = _.filter(
+    event.organizations = event.organizations.filter(
         event.organizations,
         slug => slug !== organizationSlug
     )

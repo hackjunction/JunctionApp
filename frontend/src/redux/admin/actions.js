@@ -1,4 +1,4 @@
-import { filter, concat } from 'lodash-es'
+import { concat } from 'lodash-es'
 
 import * as ActionTypes from './actionTypes'
 import { getUsersFiltersRoles } from './selectors'
@@ -35,7 +35,7 @@ export const toggleUsersFiltersRole = role => (dispatch, getState) => {
     const roles = getUsersFiltersRoles(getState())
     let newRoles
     if (roles.indexOf(role) !== -1) {
-        newRoles = filter(roles, r => r !== role)
+        newRoles = roles.filter(r => r !== role)
     } else {
         newRoles = concat(roles, role)
     }

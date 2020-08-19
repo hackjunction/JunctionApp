@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { groupBy, filter } from 'lodash-es'
+import { groupBy } from 'lodash-es'
 import { RegistrationStatuses } from '@hackjunction/shared'
 import { Grid, Paper, Typography } from '@material-ui/core'
 import StatusBadge from 'components/generic/StatusBadge'
@@ -91,7 +91,7 @@ export default () => {
     }
 
     const total = registrations.length
-    const rated = filter(registrations, reg => reg.rating).length
+    const rated = registrations.filter(reg => reg.rating).length
 
     return (
         <PageWrapper loading={loading}>

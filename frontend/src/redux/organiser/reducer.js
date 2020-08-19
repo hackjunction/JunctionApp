@@ -1,7 +1,7 @@
 import * as ActionTypes from './actionTypes'
 import * as AuthActionTypes from '../auth/actionTypes'
 import { buildHandler, buildUpdatePath } from '../utils'
-import { concat, filter } from 'lodash-es'
+import { concat } from 'lodash-es'
 
 const initialState = {
     event: {
@@ -229,7 +229,7 @@ export default function reducer(state = initialState, action) {
             }
         }
         case ActionTypes.REMOVE_ORGANISER: {
-            const data = filter(state.event.data.organisers, userId => {
+            const data = state.event.data.organisers.filter(userId => {
                 return userId !== action.payload
             })
             return editEventOrganisers(state, data)
