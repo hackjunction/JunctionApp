@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { difference } from 'lodash-es'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
@@ -14,7 +13,7 @@ export default (ComposedComponent, requiredPermissions = []) => {
         const permissions = useSelector(AuthSelectors.getPermissions)
 
         const hasRequiredPermissions = useMemo(() => {
-            return difference(requiredPermissions, permissions).length === 0
+            return requiredPermissions.filter(x => permissions.includes(x)).length === 0
         }, [permissions])
 
         if (!isAuthenticated) return null

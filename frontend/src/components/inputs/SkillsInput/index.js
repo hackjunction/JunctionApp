@@ -14,7 +14,6 @@ import {
     Divider,
 } from '@material-ui/core'
 import { Skills } from '@hackjunction/shared'
-import { find } from 'lodash-es'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Select from 'components/inputs/Select'

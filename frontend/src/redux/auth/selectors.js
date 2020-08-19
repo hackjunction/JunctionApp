@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { difference } from 'lodash-es'
 import { Auth } from '@hackjunction/shared'
 import config from 'constants/config'
 
@@ -31,7 +30,7 @@ export const getPermissions = state =>
 export const getHasPermission = state => {
     const permissions = getPermissions(state)
     return requiredPermissions => {
-        return difference(requiredPermissions, permissions).length === 0
+        return requiredPermissions.filter(x => !permissions.includes(x)).length === 0
     }
 }
 
@@ -39,7 +38,7 @@ export const getHasRole = state => {
     const roles = getRoles(state)
     console.log('roles are', roles)
     return requiredRoles => {
-        return difference(requiredRoles, roles).length === 0
+        return requiredRoles.filter(x => !roles.includes(x)).length === 0
     }
 }
 
