@@ -8,7 +8,7 @@ import config from 'constants/config'
 import { Grid, Hidden } from '@material-ui/core'
 
 // JUST FOR TESTING, DON'T KEEP IN FINAL PRODUCT! //
-var userProg = 17
+var userProg = 53
 var userNeed = 100
 var userLvl = 0
 ////////////////////////////////////////////////////
@@ -32,19 +32,24 @@ const useStyles = makeStyles(theme => ({
         height: '50px',
     },
     progBar: {
-        width: '72%',
+        width: '60%',
         height: '48px',
         background: 'gray',
-    },
-    lvlText: {
+        display: 'flex',
         fontSize: '24px',
         color: 'black',
-        background: 'silver',
+        boxShadow: '0 0 4px 1px black',
+    },
+    lvlText: {
+        fontSize: '26px',
+        color: 'black',
+        textShadow: '0 0 6px silver',
     },
     progBarfill: {
         width: (userProg / userNeed) * 100 + '%',
         height: '100%',
-        background: 'orange',
+        background: 'rgb(207, 134, 25)',
+        boxShadow: 'inset 0 0 6px 2px rgb(163, 105, 18)',
     },
 }))
 
@@ -58,11 +63,12 @@ export default () => {
                     className={classes.wordmark}
                     alt={config.PLATFORM_OWNER_NAME + ' logo'}
                 />
+                <span className={classes.lvlText}>PROGRESS: {userProg}%</span>
                 <div className={classes.progBar}>
-                    <span className={classes.lvlText}>
-                        PROGRESS: {userProg}%
-                    </span>
                     <div className={classes.progBarfill}></div>
+                    {/* <span className={classes.lvlText}>
+                        PROGRESS: {userProg}%
+                    </span> */}
                 </div>
                 <span className={classes.lvlText}>LVL: {userLvl}</span>
                 <Grid className={classes.inner}>

@@ -41,14 +41,15 @@ const useStyles = makeStyles(theme => ({
         background: 'gray',
     },
     lvlText: {
-        fontSize: '24px',
+        fontSize: '26px',
         color: 'black',
-        background: 'silver',
+        textShadow: '0 0 6px silver',
     },
     progBarfill: {
         width: (userProg / userNeed) * 100 + '%',
         height: '100%',
-        background: 'orange',
+        background: 'rgb(207, 134, 25)',
+        boxShadow: 'inset 0 0 6px 2px rgb(163, 105, 18)',
     },
 }))
 export default () => {
@@ -56,19 +57,14 @@ export default () => {
     const userProfile = useSelector(UserSelectors.userProfile)
     return (
         <div className={classes.wrapper}>
-            <div id="testausDiv">
-                <Progress />
-            </div>
             <div className={classes.inner}>
                 <div>
                     <span className={classes.userName}>
                         Hi, {userProfile?.firstName}
                     </span>
                 </div>
+                <span className={classes.lvlText}>PROGRESS: {userProg}%</span>
                 <div className={classes.progBar}>
-                    <span className={classes.lvlText}>
-                        PROGRESS: {userProg}%
-                    </span>
                     <div className={classes.progBarfill}></div>
                 </div>
                 <span className={classes.lvlText}>LVL: {userLvl}</span>
