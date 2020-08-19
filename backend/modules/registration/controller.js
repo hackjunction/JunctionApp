@@ -316,9 +316,7 @@ controller.bulkEditRegistrations = (eventId, userIds, edits) => {
                 }
 
                 if (edits.hasOwnProperty('tags')) {
-                    edits.tags = _.uniq(
-                        (registration.tags || []).concat(edits.tags)
-                    )
+                    edits.tags = [...new Set((registration.tags || []).concat(edits.tags))]
                 }
 
                 if (Object.keys(edits).length === 0) return null
