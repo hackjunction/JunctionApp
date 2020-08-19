@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { concat } from 'lodash-es'
 
 import {
     ListItemSecondaryAction,
@@ -134,7 +133,7 @@ export default () => {
                         onClose={() => setDrawerOpen(false)}
                         onAdded={handleOrganiserAdded}
                         slug={event.slug}
-                        organisers={concat(event.owner, event.organisers)}
+                        organisers={event.owner.concat(event.organisers)}
                     />
                 </>
             )}
