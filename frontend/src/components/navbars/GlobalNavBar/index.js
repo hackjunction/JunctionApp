@@ -7,6 +7,12 @@ import LanguageMenu from 'components/LanguageMenu'
 import config from 'constants/config'
 import { Grid, Hidden } from '@material-ui/core'
 
+// JUST FOR TESTING, DON'T KEEP IN FINAL PRODUCT! //
+var userProg = 17
+var userNeed = 100
+var userLvl = 0
+////////////////////////////////////////////////////
+
 const useStyles = makeStyles(theme => ({
     wrapper: {
         width: '100%',
@@ -25,6 +31,21 @@ const useStyles = makeStyles(theme => ({
     wordmark: {
         height: '50px',
     },
+    progBar: {
+        width: '72%',
+        height: '48px',
+        background: 'gray',
+    },
+    lvlText: {
+        fontSize: '24px',
+        color: 'black',
+        background: 'silver',
+    },
+    progBarfill: {
+        width: (userProg / userNeed) * 100 + '%',
+        height: '100%',
+        background: 'orange',
+    },
 }))
 
 export default () => {
@@ -37,6 +58,13 @@ export default () => {
                     className={classes.wordmark}
                     alt={config.PLATFORM_OWNER_NAME + ' logo'}
                 />
+                <div className={classes.progBar}>
+                    <span className={classes.lvlText}>
+                        PROGRESS: {userProg}%
+                    </span>
+                    <div className={classes.progBarfill}></div>
+                </div>
+                <span className={classes.lvlText}>LVL: {userLvl}</span>
                 <Grid className={classes.inner}>
                     <UserMenu />
                     <Hidden only="xs">
