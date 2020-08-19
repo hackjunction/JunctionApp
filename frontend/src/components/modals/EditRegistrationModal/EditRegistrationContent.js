@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RegistrationFields } from '@hackjunction/shared'
-import { groupBy, sortBy, find } from 'lodash-es'
+import { groupBy, sortBy } from 'lodash-es'
 import {
     ExpansionPanel,
     ExpansionPanelSummary,
@@ -51,8 +51,7 @@ export default React.memo(({ registration }) => {
                                 let label =
                                     RegistrationFields.fieldToLabelMap[field]
                                 if (!label) {
-                                    const customField = find(
-                                        event.registrationQuestions,
+                                    const customField = event.registrationQuestions.find(
                                         f => f.name === field
                                     )
                                     if (customField) {

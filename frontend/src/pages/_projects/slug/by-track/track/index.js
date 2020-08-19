@@ -3,7 +3,7 @@ import React, { useMemo, useEffect, useCallback } from 'react'
 import { push } from 'connected-react-router'
 import { useRouteMatch } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { find, sortBy } from 'lodash-es'
+import { sortBy } from 'lodash-es'
 import { Box } from '@material-ui/core'
 
 import CenteredContainer from 'components/generic/CenteredContainer'
@@ -23,7 +23,7 @@ export default ({ event, projects }) => {
 
     const track = useMemo(() => {
         if (!event || !event.tracks) return null
-        return find(event.tracks, track => {
+        return event.tracks.find(track => {
             return track.slug === match.params.track
         })
     }, [match, event])
