@@ -1,5 +1,5 @@
 import { handle } from 'redux-pack'
-import { reduce, cloneDeep, set } from 'lodash-es'
+import { cloneDeep, set } from 'lodash-es'
 
 /**
  * Custom redux-pack handler for reducers. If you want to produce this kind of state:
@@ -67,8 +67,7 @@ export const buildHandler = (field, mapByField, mapIsArray) => (
         }),
         success: prevState => {
             if (mapByField) {
-                const map = reduce(
-                    action.payload,
+                const map = Object.entries(action.payload).reduce(
                     (res, object) => {
                         const key = object[mapByField]
                         if (mapIsArray) {

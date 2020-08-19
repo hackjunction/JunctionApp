@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { reduce, difference } from 'lodash-es'
+import { difference } from 'lodash-es'
 import { Auth } from '@hackjunction/shared'
 import config from 'constants/config'
 
@@ -47,14 +47,10 @@ export const idTokenData = createSelector(getIdTokenPayload, data => {
     if (!data) {
         return
     }
-    return reduce(
-        Object.keys(data),
-        (result, field) => {
-            result[field.replace(namespace, '')] = data[field]
-            return result
-        },
-        {}
-    )
+    return Object.values(Object.keys(data)).reduce((result, field) => {
+        result[field.replace(namespace, '')] = data[field]
+        return result
+    }, {})
 })
 
 export const hasRecruiterAccess = createSelector(
