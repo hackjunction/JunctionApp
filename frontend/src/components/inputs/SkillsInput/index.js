@@ -43,7 +43,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
     const handleAdd = useCallback(() => {
         const item = { skill, level }
 
-        if (find(value, item => item.skill === skill)) {
+        if (value.find(item => item.skill === skill)) {
             dispatch(SnackbarActions.show(`You've already added ${skill}`))
             return
         }

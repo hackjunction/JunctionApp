@@ -14,7 +14,6 @@ import {
     Divider,
 } from '@material-ui/core'
 import { Skills } from '@hackjunction/shared'
-import { find } from 'lodash-es'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Select from 'components/inputs/Select'
@@ -43,7 +42,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
     const handleAdd = useCallback(() => {
         const item = { skill, level }
 
-        if (find(value, item => item.skill === skill)) {
+        if (value.find(item => item.skill === skill)) {
             dispatch(SnackbarActions.show(`You've already added ${skill}`))
             return
         }

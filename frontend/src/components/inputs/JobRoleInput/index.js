@@ -14,7 +14,6 @@ import {
     Divider,
 } from '@material-ui/core'
 import { Roles } from '@hackjunction/shared'
-import { find } from 'lodash-es'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Select from 'components/inputs/Select'
@@ -45,7 +44,7 @@ export default ({ value = [], onChange, autoFocus }) => {
     const handleAdd = useCallback(() => {
         const item = { role, years }
 
-        if (find(value, item => item.role === role)) {
+        if (value.find(item => item.role === role)) {
             dispatch(SnackbarActions.error(`You've already added ${role}`))
             return
         }
