@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'uppercase',
     },
     progBar: {
-        width: '72%',
+        width: '60%',
         height: '48px',
         background: 'gray',
     },
