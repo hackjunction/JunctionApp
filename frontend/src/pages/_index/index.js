@@ -61,7 +61,7 @@ export default () => {
                                 owner: config.PLATFORM_OWNER_NAME,
                             })}
                             <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
-                                {t('More_info_link')}
+                                {t('More_info_link_')}
                             </ExternalLink>
                         </p>
                         <Divider size={5} />
