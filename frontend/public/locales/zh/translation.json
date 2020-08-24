@@ -271,10 +271,10 @@
     "Team_delete_": "删除队伍",
     "Project_submissions_": "项目提交",
     "Project_submissions_not_open_": "项目提交功能尚未开放",
-    "Project_submissions_upcoming_": "项目提交开始于{{submissionsStartTime}}，您可以通过项目提交功能提交您的项目。一旦您对您将要构建的东西有一个大概的框架，您应该提交该项目的最初版本。您提交的项目在大赛期间将处于保密状态。直到最终提交的截止日期{{submissionsEndTime}}前您都可以随时编辑您的项目提交信息。",
+    "Project_submissions_upcoming_": "项目提交开始于{{submissionsStartTime}}，您可以通过项目提交功能提交您的项目。一旦您对您将要构建的东西有一个大概的框架，您应该提交该项目的最初版本。您提交的项目在大赛期间将处于保密状态。直到最终提交的截止日期{{submissionsDeadline}}前您都可以随时编辑您的项目提交信息。",
     "Reviewing_": "评估；检验",
     "Which_chanllenge_to_pick_": "您选择哪一种挑战？",
-    "Challenge_info_.": "本次大赛共设有{challenges}种不同类型的挑战来供您选择提交项目，花一些时间调查现有的不同挑战，与合作伙伴讨论并找出他们对共同解决哪些问题感兴趣将会是一个不错的做法。",
+    "Challenge_info_.": "本次大赛共设有{{challenges}}种不同类型的挑战来供您选择提交项目，花一些时间调查现有的不同挑战，与合作伙伴讨论并找出他们对共同解决哪些问题感兴趣将会是一个不错的做法。",
     "Submission_info_": " 当您提交您的项目时，您将能够选择适用于您项目的每一种不同的挑战。在提交截止日期后，评审团将审核您的项目，并决定出本次挑战的获胜者。",
     "View_all_challenges_": "查看所有挑战"
 }
