@@ -138,7 +138,7 @@ export default () => {
                         lockedDescription: 'Submissions not open',
                         hidden: !shownPages.submissions,
                         icon: <AssignmentOutlinedIcon />,
-                        label: 'Project submission',
+                        label: t('Project_submissions_'),
                         component: ProjectPage,
                     },
                     {
@@ -149,7 +149,7 @@ export default () => {
                         locked: lockedPages.reviewing,
                         lockedDescription: 'Reviewing closed',
                         icon: <StarRateIcon />,
-                        label: 'Reviewing',
+                        label: t('Reviewing_'),
                         component: ReviewingPage,
                     },
                     {
