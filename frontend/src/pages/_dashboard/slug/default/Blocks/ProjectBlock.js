@@ -12,7 +12,11 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
 
+import { useTranslation } from 'react-i18next'
+
 export default () => {
+    const { t } = useTranslation()
+
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
@@ -33,21 +37,20 @@ export default () => {
             <Grid item xs={12}>
                 <GradientBox color="theme_white" p={3}>
                     <Typography variant="button" gutterBottom>
-                        Project submissions
+                        {t('Project_submissions_')}
                     </Typography>
                     <Typography variant="h4" gutterBottom>
-                        Project submissions not yet open
+                        {t('Project_submissions_not_open_')}
                     </Typography>
                     <Typography variant="body1">
-                        Project submissions begin on{' '}
-                        {moment(event.submissionsStartTime).format('LLLL')}, and
-                        you'll be able to submit your project here. As soon as
-                        you have a general idea of what you're building, you
-                        should make the first version of your project
-                        submission. The project won't be visible to others until
-                        the end. You can always edit your project submission
-                        until the final submission deadline{' '}
-                        {moment(event.submissionsEndTime).format('LLLL')}
+                        {t('Project_submissions_upcoming_', {
+                            submissionsStartTime: moment(
+                                event.submissionsStartTime
+                            ).format('LLLL'),
+                            submissionsDeadline: moment(
+                                event.submissionsEndTime
+                            ).format('LLLL'),
+                        })}
                     </Typography>
                 </GradientBox>
             </Grid>
@@ -59,13 +62,13 @@ export default () => {
             <Grid item xs={12}>
                 <GradientBox color="theme_white" p={3}>
                     <Typography variant="button" gutterBottom>
-                        Project submissions
+                        {t('Project_submissions_')}
                     </Typography>
                     <Typography variant="h4" color="secondary" gutterBottom>
-                        Project submissions closed
+                        {t('Project_submissions_closed_')}
                     </Typography>
                     <Typography variant="body1">
-                        Project submissions are now closed!
+                        {t('Project_submissions_closed_text_')}
                     </Typography>
                 </GradientBox>
             </Grid>

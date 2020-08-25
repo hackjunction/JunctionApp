@@ -11,6 +11,8 @@ import * as DashboardActions from 'redux/dashboard/actions'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+import { useTranslation } from 'react-i18next'
+
 const useStyles = makeStyles(theme => ({
     box: {
         background: 'white',
@@ -24,6 +26,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t } = useTranslation()
+
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const classes = useStyles()
@@ -78,21 +82,16 @@ export default () => {
 
     return (
         <Box>
-            <Typography variant="body1">
-                It seems like you don’t have a team yet. Here you can create a
-                new team or join already existing one.
-            </Typography>
+            <Typography variant="body1">{t('Team_none_')}</Typography>
             <Box mt={2} />
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                     <Box className={classes.box}>
                         <Typography variant="h6" align="center" gutterBottom>
-                            Join an existing team
+                            {t('Team_join_')}
                         </Typography>
                         <Typography variant="body1" align="center" gutterBottom>
-                            If one of your team members has already created a
-                            team, all you need to do is fill in the team code
-                            here.
+                            {t('Team_info_0_')}
                         </Typography>
                         <Box
                             mt={2}
@@ -116,7 +115,7 @@ export default () => {
                                 color="theme_turquoise"
                                 variant="contained"
                             >
-                                Join team
+                                {t('Team_join_button_')}
                             </Button>
                         </Box>
                     </Box>
@@ -124,12 +123,10 @@ export default () => {
                 <Grid item xs={12} md={6}>
                     <Box className={classes.box}>
                         <Typography variant="h6" align="center" gutterBottom>
-                            Create a new team
+                            {t('Team_create_')}
                         </Typography>
                         <Typography variant="body1" align="center" gutterBottom>
-                            You can also create a new team, and you'll be given
-                            a unique team code. You can then share this code
-                            with people you want to invite to your team.
+                            {t('Team_info_1_')}
                         </Typography>
                         <Box
                             mt={2}
@@ -145,7 +142,7 @@ export default () => {
                                 color="theme_turquoise"
                                 variant="contained"
                             >
-                                Create team
+                                {t('Team_create_button_')}
                             </Button>
                         </Box>
                     </Box>

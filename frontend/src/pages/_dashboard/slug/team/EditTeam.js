@@ -29,6 +29,8 @@ import * as DashboardActions from 'redux/dashboard/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
+import { useTranslation } from 'react-i18next'
+
 const useStyles = makeStyles(theme => ({
     textHighlight: {
         color: theme.palette.primary.main,
@@ -42,6 +44,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t } = useTranslation()
+
     const dispatch = useDispatch()
     const team = useSelector(DashboardSelectors.team)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
@@ -119,21 +123,17 @@ export default () => {
     return (
         <Box>
             <Typography variant="h5">
-                Your team code is{' '}
+                {t('Team_configure_')}{' '}
                 <span className={classes.textHighlight}>{team.code}</span>
             </Typography>
-            <Typography variant="body1">
-                Share this code with people you want to invite, and they'll be
-                able to join your team.
-            </Typography>
+            <Typography variant="body1">{t('Team_join_info_')}</Typography>
             <Box mt={5} />
             <Typography variant="h5" gutterBottom>
-                Your team
+                {t('Team_your_')}
             </Typography>
             <List className={classes.list}>
                 {allTeamMembers.map((userId, index) => {
                     const { profile, registration } = team.meta[userId]
-
                     return [
                         index !== 0 ? (
                             <Divider
@@ -204,7 +204,7 @@ export default () => {
             </List>
             <Box mt={5} />
             <Typography variant="h5" gutterBottom>
-                Actions
+                {t('Actions_')}
             </Typography>
             <Box display="flex" flexDirection="row" flexWrap="wrap">
                 {/* TODO: Enable making teams complete 
@@ -224,7 +224,7 @@ export default () => {
                             color="error"
                             variant="contained"
                         >
-                            Delete team
+                            {t('Team_delete_')}
                         </Button>
                         <Dialog
                             open={deleteDialogOpen}

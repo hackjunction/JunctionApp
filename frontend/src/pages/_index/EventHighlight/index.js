@@ -10,6 +10,8 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useHighlightedEvents } from 'graphql/queries/events'
 
+import { useTranslation } from 'react-i18next'
+
 const useStyles = makeStyles(theme => ({
     wrapper: {
         display: 'flex',
@@ -64,6 +66,8 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const { t } = useTranslation()
+
     const [events, loading] = useHighlightedEvents({ limit: 1 })
     const event = events?.[0] ?? null
     if (!event) return null
@@ -104,7 +108,7 @@ export default () => {
                                     dispatch(push('/events/' + event.slug))
                                 }
                             >
-                                See more
+                                {t('See_more_')}
                             </Button>
                         </Box>
                         {event.galleryOpen && (
@@ -118,7 +122,7 @@ export default () => {
                                         )
                                     }
                                 >
-                                    View projects
+                                    {t('View_projects_')}
                                 </Button>
                             </Box>
                         )}
