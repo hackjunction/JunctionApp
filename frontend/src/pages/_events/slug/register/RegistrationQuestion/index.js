@@ -15,6 +15,7 @@ import BooleanInput from 'components/inputs/BooleanInput'
 import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import TeamOptionInput from 'components/inputs/TeamOptionInput'
 const { fieldTypes } = RegistrationFields
+// TODO URL-input
 
 const RegistrationQuestion = ({
     field,
@@ -26,8 +27,8 @@ const RegistrationQuestion = ({
 }) => {
     const renderInput = () => {
         switch (config.fieldType.id) {
-            case fieldTypes.EMAIL.id:
             case fieldTypes.URL.id:
+            case fieldTypes.EMAIL.id:
             case fieldTypes.SHORT_TEXT.id:
                 return (
                     <FormControl

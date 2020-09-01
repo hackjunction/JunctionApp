@@ -166,7 +166,7 @@ const FieldProps = {
     },
     dateOfBirth: {
         label: 'Date of Birth',
-        hint: 'Please note that you must be at least 16 years old to register.',
+        hint: 'You need to be at least 16 years old at the time of the event to apply.',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,
@@ -391,7 +391,7 @@ const FieldProps = {
     biography: {
         label: 'Biography',
         hint:
-            "Add a bit of personal touch to your profile by writing a little bit more about yourself and what you do. Especially if you're looking to catch the attention of some of our recruiting partners and get hired, this is a good chance to stand out from the crowd!",
+            "Add a bit of personal touch to your profile by writing a little bit more about yourself and what you do. Keep it short and simple, you have a chance to tell about your motivation later on in the application!",
         hintMarkdown: false,
         fieldType: FieldTypes.LONG_TEXT,
         schemaConfig: {
@@ -409,7 +409,7 @@ const FieldProps = {
     roles: {
         label: 'Roles',
         hint:
-            'Add up to 5 roles you have working experience in. You can type into the field to search for a specific role, or filter by category by typing "Design", "Dev", "Business" or "Other".',
+            'Add up to 5 roles you have working experience in.',
         hintMarkdown: false,
         fieldType: FieldTypes.ROLES,
         copyToUserProfile: true,
@@ -423,12 +423,7 @@ const FieldProps = {
     },
     skills: {
         label: 'Skills',
-        hint: `
-            Add up to 10 skills you consider yourself to be proficient at. Choose a level of experience that best describes your current
-            level of proficiency in that skill. You can click on the experience level options to see the description for that level. 
-            The skills are divided into four categories: Abstract Skills, Programming Languages, Programming Frameworks & Tools and Tools & Software - 
-            you can type the name of a category to only see skills related to that category.
-        `,
+        hint: "Add up to 10 skills you consider yourself to be proficient at.",
         hintMarkdown: false,
         fieldType: FieldTypes.SKILLS,
         copyToUserProfile: true,
@@ -491,7 +486,7 @@ const FieldProps = {
     numHackathons: {
         label: 'Number of hackathons attended',
         hint:
-            "Not your first hackathon? Let us know! But don't worry if it is, we always accept also people who've never attended hackathons before.",
+            "Don't worry if this is your first hackathon ever, your motivation is what matters.",
         hintMarkdown: false,
         fieldType: FieldTypes.NUM_HACKATHONS,
         copyToUserProfile: true,
@@ -548,7 +543,7 @@ const FieldProps = {
     portfolio: {
         label: 'Link to Portfolio',
         hint:
-            "Have a portfolio website or some other place where we can see the cool things you've done in the past? Please provide a valid link beginning with https://, or http:// if you must",
+            "Have a portfolio website or some other place where we can see the cool things you've done in the past? Please provide a valid link beginning with https://, or http://",
         hintMarkdown: false,
         fieldType: FieldTypes.URL,
         copyToUserProfile: true,
