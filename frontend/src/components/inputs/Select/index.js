@@ -354,7 +354,6 @@ export default function IntegrationReactSelect({
     }
 
     const _options = useMemo(() => {
-        console.log('oppo', options)
         if (Array.isArray(options)) {
             return options
         } else {
