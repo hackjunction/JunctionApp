@@ -25,7 +25,6 @@ const PhoneNumberInput = React.memo(
             },
             [value, onChange]
         )
-
         return (
             <Box>
                 {label && <Typography variant="subtitle1">{label}</Typography>}
@@ -48,6 +47,7 @@ const PhoneNumberInput = React.memo(
                         <TextInput
                             label="Phone number"
                             type="number"
+                            placeholder="40XXXXXXX"
                             value={value.number}
                             onChange={handleNumberChange}
                             onBlur={onBlur}

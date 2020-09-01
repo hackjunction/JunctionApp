@@ -144,7 +144,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                         <Select
                             disabled={fieldsDisabled}
                             label="Graduation year"
-                            placeholder="Year of graduation"
+                            placeholder="Year of (expected) graduation."
                             options="year-future"
                             value={value.graduationYear}
                             onChange={graduationYear =>
