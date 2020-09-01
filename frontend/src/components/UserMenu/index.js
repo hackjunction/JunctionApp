@@ -17,7 +17,6 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import Button from 'components/generic/Button'
 
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
-import PricingMenu from 'components/PricingMenu'
 
 import { useTranslation } from 'react-i18next'
 
@@ -55,7 +54,7 @@ export default () => {
     if (!userId) {
         return (
             <Box display="flex" flexDirection="row" alignItems="center">
-                <PricingMenu />
+                {/* <PricingMenu /> */}
                 <Button
                     color="theme_white"
                     variant="outlined"

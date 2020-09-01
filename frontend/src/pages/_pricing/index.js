@@ -11,13 +11,25 @@ import Button from 'components/generic/Button'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import PricingCard from 'components/generic/PricingCard'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 
+const useStyles = makeStyles(theme => ({
+    backButtonWrapper: {
+        position: 'absolute',
+        zIndex: 10,
+        width: '100%',
+        paddingTop: theme.spacing(1),
+    },
+}))
+
 export default () => {
     const dispatch = useDispatch()
+    const classes = useStyles()
     const { t } = useTranslation()
     const body1 = ['Event registration and organization through platform']
     const body2 = [
@@ -38,6 +50,17 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <>
+                    <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+                        <Button onClick={() => dispatch(push('/'))}>
+                            <ArrowBackIosIcon style={{ color: 'black' }} />
+                            <Typography
+                                variant="button"
+                                style={{ color: 'black' }}
+                            >
+                                {t('Back_')}
+                            </Typography>
+                        </Button>
+                    </CenteredContainer>
                     <Divider size={2} />
                     <CenteredContainer>
                         <Grid

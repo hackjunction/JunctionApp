@@ -2,6 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch } from 'react-redux'
+import Hidden from '@material-ui/core/Hidden'
 import { push } from 'connected-react-router'
 
 import ExternalLink from 'components/generic/ExternalLink'
@@ -69,7 +70,7 @@ const Footer = props => {
                     <LineDivider />
                     <Divider size={1} />
                     <Grid container>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} md={6} xl={6}>
                             <h2>
                                 {t('Platform_organise_hack_', {
                                     owner: config.PLATFORM_OWNER_NAME,
@@ -83,18 +84,31 @@ const Footer = props => {
                             >
                                 {t('Contact_us_')}
                             </Button>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <h2>{t('Join_hackerpack_')}</h2>
                             <Button
                                 color="theme_turquoise"
                                 variant="contained"
                                 strong
-                                onClick={() => dispatch(push('/hackerpack'))}
+                                onClick={() => dispatch(push('/pricing'))}
                             >
-                                {t('To_hackerpack_')}
+                                {/* {t('Contact_us_')} */}
+                                Pricing
                             </Button>
                         </Grid>
+                        <Hidden xsDown>
+                            <Grid item xs={6} md={6} x={6}>
+                                <h2>{t('Join_hackerpack_')}</h2>
+                                <Button
+                                    color="theme_white"
+                                    variant="outlined"
+                                    strong
+                                    onClick={() =>
+                                        dispatch(push('/hackerpack'))
+                                    }
+                                >
+                                    {t('To_hackerpack_')}
+                                </Button>
+                            </Grid>
+                        </Hidden>
                     </Grid>
                     <Divider size={5} />
                 </CenteredContainer>
