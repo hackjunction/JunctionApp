@@ -357,20 +357,15 @@ export default RequiresPermission(() => {
                 }}
             />
             <CenteredContainer wrapperClass={classes.content}>
-                <FadeInWrapper enterDelay={0.4}>
-                    <Box className={classes.top}>
-                        <Typography variant="h1" className={classes.topTitle}>
-                            Register
-                        </Typography>
-                        <Box p={1} />
-                        <Typography
-                            variant="h2"
-                            className={classes.topTitleExtra}
-                        >
-                            {event?.name}
-                        </Typography>
-                    </Box>
-                </FadeInWrapper>
+                <Box className={classes.top}>
+                    <Typography variant="h1" className={classes.topTitle}>
+                        Register
+                    </Typography>
+                    <Box p={1} />
+                    <Typography variant="h2" className={classes.topTitleExtra}>
+                        {event?.name}
+                    </Typography>
+                </Box>
                 <div style={{ height: '100px' }} />
                 <Stepper
                     connector={<Connector />}

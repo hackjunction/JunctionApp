@@ -2,6 +2,8 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Typography } from '@material-ui/core'
+//TODO use the markdown component for this project
+import ReactMarkdown from 'react-markdown'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -30,7 +32,7 @@ const FormControl = ({ label, hint, touched, error, children }) => {
         }
 
         if (typeof error === 'string') {
-            return error
+            return hint + ' \n \n' + error
         }
 
         if (Object.keys(error).length > 0) {
@@ -49,9 +51,20 @@ const FormControl = ({ label, hint, touched, error, children }) => {
             <Typography className={classes.label} variant="h6">
                 {label}
             </Typography>
-            <Typography className={classes.hint} variant="subtitle2" paragraph>
-                {renderHintOrError()}
-            </Typography>
+            <ReactMarkdown
+                source={renderHintOrError()}
+                renderers={{
+                    paragraph: ({ children }) => (
+                        <Typography
+                            className={classes.hint}
+                            variant="subtitle2"
+                            paragraph
+                        >
+                            {children}
+                        </Typography>
+                    ),
+                }}
+            />
             {children}
         </Box>
     )
