@@ -83,12 +83,21 @@ const Footer = props => {
                             >
                                 {t('Contact_us_')}
                             </Button>
+                            <Button
+                                color="theme_turquoise"
+                                variant="contained"
+                                strong
+                                onClick={() => dispatch(push('/pricing'))}
+                            >
+                                {/* {t('Contact_us_')} */}
+                                Pricing
+                            </Button>
                         </Grid>
                         <Grid item xs={6}>
                             <h2>{t('Join_hackerpack_')}</h2>
                             <Button
-                                color="theme_turquoise"
-                                variant="contained"
+                                color="theme_white"
+                                variant="outlined"
                                 strong
                                 onClick={() => dispatch(push('/hackerpack'))}
                             >
@@ -102,7 +111,7 @@ const Footer = props => {
 
             <div className={classes.inner}>
                 <div className={classes.links}>
-                    <Divider size={1} />
+                    <Divider size={1} />}
                     <ExternalLink theme="dark" href={config.TERMS_URL}>
                         {t('Terms_')}
                     </ExternalLink>
