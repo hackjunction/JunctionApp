@@ -1,5 +1,6 @@
 [
     "Accountant",
+    "Account Manager",
     "Analyst",
     "Business Angel",
     "Business Developer",
@@ -15,6 +16,8 @@
     "Product Manager",
     "Product Owner",
     "Public Relations",
+    "Sales Associate",
+    "Sales Engineer",
     "Strategist",
     "Venture Capitalist"
 ]
