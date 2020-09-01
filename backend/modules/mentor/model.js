@@ -13,7 +13,7 @@ const SlotSchema = new mongoose.Schema({
   },
 });
 
-const Slot = moongoose.model('Slot', SlotSchema)
+const Slot = mongoose.model('Slot', SlotSchema)
 
 const MentorSchema = new mongoose.Schema({
   name: {

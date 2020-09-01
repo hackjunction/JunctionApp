@@ -7,7 +7,8 @@ const MentorskController = require('./controller');
 const EventController = require('../event/controller');
 
 const { hasToken } = require('../../common/middleware/token');
-const { hasRole } = require('../../common/middleware/permissions');
+const { hasRole, hasPermission } = require('../../common/middleware/permissions');
+const { isEventOrganiser } = require('../../common/middleware/events');
 
 const getFullMentors = asyncHandler(async (req, res) => {
   const Mentors = await MentorsController.getFullMentors();
