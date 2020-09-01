@@ -18,7 +18,7 @@ const SelectOptions = {
         value: country,
     })),
     COUNTRY_CODES: Countries.asArray.map(country => ({
-        label: country.en_short_name,
+        label: country.en_short_name + " ("+ country.phone_code +")",
         value: country.phone_code,
     })),
     CURRENCIES: Currencies.asArray.map(currency => ({
