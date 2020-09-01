@@ -22,8 +22,13 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import config from 'constants/config'
+
+import { useTranslation } from 'react-i18next'
+
 // TODO can't read null
 export default () => {
+    const { t } = useTranslation()
+
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
@@ -127,34 +132,34 @@ export default () => {
             case RegistrationStatuses.asObject.softAccepted.id:
             case RegistrationStatuses.asObject.softRejected.id: {
                 if (isRegistrationOpen) {
-                    return "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! The registration period is still open, so you can still tweak your registration to maximise your chances of being accepted!"
+                    return t('Registeration_info_open_')
                 } else {
-                    return "Your registration is being processed! You'll receive an email notification when we've made the decision, so stay tuned! The registration period is now closed, so you may no longer edit your registration."
+                    return t('Registeration_info_closed_')
                 }
             }
             case RegistrationStatuses.asObject.rejected.id: {
-                return "Unfortunately you didn't quite make it this time...But don't be discouraged, we get a lot of applications and sometimes we have to reject even very talented applicants. Luckily we organise events all of the time, and we would love to have you at one of our other events."
+                return t('Registeration_info_rejected_')
             }
             case RegistrationStatuses.asObject.accepted.id: {
-                return `Congratulations, your application has been accepted! Welcome to ${event.name}! You'll still need to confirm your participation to lock in your spot though - please click the button below to do so.`
+                return t('Registeration_info_accepted_', {
+                    eventName: event.name,
+                })
             }
             case RegistrationStatuses.asObject.cancelled.id: {
-                return "You've cancelled your participation - bummer. We'd love to see you attend one of our other events, see the event calendar below for more information. If something has gone horribly wrong and you've cancelled your participation by accident, please contact us at participants@hackjunction.com as soon as possible."
+                return t('Registeration_info_cancelled_')
             }
             case RegistrationStatuses.asObject.confirmed.id: {
-                return 'Awesome, thanks for confirming your participation! You should probably start making travel and other arrangements as soon as possible. Once you do arrive at the venue, show your Event ID at the registration to gain access to the venue!'
+                return t('Registeration_info_confirmed_')
             }
             case RegistrationStatuses.asObject.checkedIn.id: {
-                return `Wohoo, you're in! Once the event begins (${moment(
-                    event.startTime
-                ).format(
-                    'LLLL'
-                )}), you'll be able to access project submissions and all of the other event-related functionality right here on this dashboard.`
+                return t('Registeration_info_checked_in_', {
+                    time: moment(event.startTime).format('LLLL'),
+                })
             }
             default:
                 return null
         }
-    }, [event, status, isRegistrationOpen])
+    }, [status, isRegistrationOpen, t, event.name, event.startTime])
 
     const action = useMemo(() => {
         if (!event) return null
@@ -171,7 +176,7 @@ export default () => {
                             color="theme_white"
                             variant="contained"
                         >
-                            Edit registration
+                            {t('Edit_registration_')}
                         </Button>
                     )
                 }
@@ -256,7 +261,7 @@ export default () => {
             default:
                 return null
         }
-    }, [event, status, isRegistrationOpen, dispatch, handleConfirm])
+    }, [event, status, isRegistrationOpen, t, dispatch, handleConfirm])
 
     if (!title) {
         return null

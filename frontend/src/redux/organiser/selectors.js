@@ -20,6 +20,14 @@ export const organisersLoading = state => state.organiser.organisers.loading
 export const organisersError = state => state.organiser.organisers.error
 export const organisersUpdated = state => state.organiser.organisers.updated
 
+export const organizations = state => state.organiser.organizations.data
+export const organizationsMap = state => state.organiser.organizations.map
+export const organizationsLoading = state =>
+    state.organiser.organizations.loading
+export const organizationsError = state => state.organiser.organizations.error
+export const organizationsUpdated = state =>
+    state.organiser.organizations.updated
+
 export const registrations = state => state.organiser.registrations.data
 export const registrationsMap = state => state.organiser.registrations.map
 export const registrationsLoading = state =>
@@ -42,7 +50,7 @@ export const filterGroupsUpdated = state => state.organiser.filterGroups.updated
 export const projects = state => state.organiser.projects.data
 export const projectsMap = state => state.organiser.projects.map
 export const projectsLoading = state => state.organiser.projects.loading
-export const projectsError = state => state.organisers.projects.error
+export const projectsError = state => state.organiser.projects.error
 export const projectsUpdated = state => state.organiser.projects.updated
 
 export const gavelProjects = state => state.organiser.gavelProjects.data

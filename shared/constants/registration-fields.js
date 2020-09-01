@@ -1377,7 +1377,7 @@ const Fields = {
         },
     },
 }
-
+//TODO remove this since it kinds of prevents localization
 function buildFieldToLabelMap() {
     const result = {}
 

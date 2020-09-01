@@ -10,7 +10,11 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
 
+import { useTranslation } from 'react-i18next'
+
 export default () => {
+    const { t } = useTranslation()
+
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
 
@@ -25,23 +29,18 @@ export default () => {
         <Grid item xs={12} lg={6}>
             <GradientBox p={3} color="theme_orange">
                 <Typography variant="button" gutterBottom>
-                    Reviewing
+                    {t('Reviewing_')}
                 </Typography>
                 <Typography variant="h4" gutterBottom>
-                    Which challenge to pick?
+                    {t('Which_chanllenge_to_pick_')}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    This event has {event.challenges.length} different
-                    challenges which you can submit your project to. It's a good
-                    idea to spend some time investigating the different
-                    challenges available and discussing with partners to find
-                    out which problem they are interested in working around.
+                    {t('Challenge_info_', {
+                        challenges: event.challenges.length,
+                    })}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    When submitting your project, you'll be able to choose up to
-                    every different challenge that your project applies to.
-                    After the submission deadline the jury will review your
-                    project, and decide the winner of the challenge.
+                    {t('Submission_info_')}
                 </Typography>
                 <Box p={1} />
                 {event.challenge_instructions ? (
@@ -52,7 +51,7 @@ export default () => {
                             window.open(event.challenge_instructions, '_blank')
                         }
                     >
-                        View all challenges
+                        {t('View_all_challenges_')}
                     </Button>
                 ) : null}
             </GradientBox>

@@ -29,6 +29,8 @@ import HackerpackPage from './hackerpack'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 
+import { useTranslation } from 'react-i18next'
+
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
         padding: theme.spacing(3),
@@ -45,6 +47,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    const { t } = useTranslation()
+
     const classes = useStyles()
     const match = useRouteMatch()
     const location = useLocation()
@@ -102,7 +106,7 @@ export default () => {
                         path: '',
                         exact: true,
                         icon: <DashboardIcon />,
-                        label: 'Dashboard',
+                        label: t('Dashboard_'),
                         component: DefaultPage,
                     },
                     {
@@ -121,7 +125,7 @@ export default () => {
                         path: '/team',
                         exact: true,
                         icon: <GroupIcon />,
-                        label: 'Team',
+                        label: t('Team_'),
                         locked: lockedPages.team,
                         lockedDescription: 'Team editing not open',
                         component: TeamPage,
@@ -134,7 +138,7 @@ export default () => {
                         lockedDescription: 'Submissions not open',
                         hidden: !shownPages.submissions,
                         icon: <AssignmentOutlinedIcon />,
-                        label: 'Project submission',
+                        label: t('Project_submissions_'),
                         component: ProjectPage,
                     },
                     {
@@ -145,7 +149,7 @@ export default () => {
                         locked: lockedPages.reviewing,
                         lockedDescription: 'Reviewing closed',
                         icon: <StarRateIcon />,
-                        label: 'Reviewing',
+                        label: t('Reviewing_'),
                         component: ReviewingPage,
                     },
                     {
@@ -172,7 +176,7 @@ export default () => {
                         exact: true,
                         icon: <AmpStoriesIcon />,
                         hidden: !shownPages.hackerPack,
-                        label: 'Hackerpack',
+                        label: t('Hackerpack_'),
                         component: HackerpackPage,
                     },
                 ]}

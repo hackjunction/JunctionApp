@@ -7,7 +7,7 @@ import { Grid, Box, Typography } from '@material-ui/core'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import HackerpackService from 'services/hackerpack'
+import OrganizationService from 'services/organization'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
@@ -48,15 +48,15 @@ export default () => {
     const handleCreate = useCallback(() => {
         if (!checkName()) return
         setLoading(true)
-        HackerpackService.createHackerpack(idToken, { name })
+        OrganizationService.createOrganization(idToken, { name })
             .then(data => {
                 console.log('doing data', data)
-                dispatch(push(`/admin/hackerpack/${data.slug}`))
+                dispatch(push(`/admin/organization/${data.slug}`))
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {
                 dispatch(
-                    SnackbarActions.error(t('Unable_to_create_hackerpack_'))
+                    SnackbarActions.error(t('Unable_to_create_organization_'))
                 )
             })
             .finally(() => {
@@ -67,7 +67,7 @@ export default () => {
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>
-                {t('Create_new_hackerpack_')}
+                {t('Create_new_organization_')}
             </Typography>
             <Grid container spacing={2} direction="row" alignItems="flex-end">
                 <Grid item xs={12}>
@@ -77,8 +77,8 @@ export default () => {
                 </Grid>
                 <Grid item xs={12} sm={9}>
                     <TextInput
-                        label={t('Hackerpack_name_')}
-                        placeholder={t('Enter_hackerpack_name_')}
+                        label={t('Organization_name_')}
+                        placeholder={t('Enter_organization_name_')}
                         value={name}
                         onChange={setName}
                         disabled={loading}

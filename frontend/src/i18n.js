@@ -1,8 +1,8 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
 import Backend from 'i18next-xhr-backend'
-import LanguageDetector from 'i18next-browser-languagedetector'
 
 // translations are already at
 // '../public/locales/en/translation.json'
@@ -20,7 +20,6 @@ i18n
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-        lng: 'en',
         fallbackLng: 'en',
         debug: true,
         saveMissing: true, // send not translated keys to endpoint
