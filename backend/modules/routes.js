@@ -17,6 +17,7 @@ const rankingsRouter = require('./rankings/routes')
 const projectScoresRouter = require('./project_score/routes')
 const hackerpackRouter = require('./hackerpack/routes')
 const organizationRouter = require('./organization/routes')
+const mentorsRouter = require('./mentor/routes')
 
 module.exports = app => {
     app.get('/api', (req, res) => {
@@ -42,6 +43,7 @@ module.exports = app => {
     app.use('/api/project-scores', projectScoresRouter)
     app.use('/api/hackerpack', hackerpackRouter)
     app.use('/api/organization', organizationRouter)
+    app.use('/api/mentors', mentorsRouter)
 
     /** Reviewing methods */
     app.use('/api/reviewing/gavel', gavelRouter)
