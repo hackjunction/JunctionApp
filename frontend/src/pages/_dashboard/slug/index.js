@@ -25,6 +25,7 @@ import ReviewingPage from './reviewing'
 import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
+import MentorsPage from './mentors'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -140,6 +141,15 @@ export default () => {
                         icon: <AssignmentOutlinedIcon />,
                         label: t('Project_submissions_'),
                         component: ProjectPage,
+                    },
+                    {
+                        key: 'mentors',
+                        path: '/mentors',
+                        exact: true,
+                        icon: <AmpStoriesIcon />,
+                        hidden: !shownPages.hackerPack,
+                        label: 'Mentors',
+                        component: MentorsPage,
                     },
                     {
                         key: 'reviewing',
