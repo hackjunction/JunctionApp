@@ -25,7 +25,6 @@ const PhoneNumberInput = React.memo(
             },
             [value, onChange]
         )
-        console.log('country values', value)
         return (
             <Box>
                 {label && <Typography variant="subtitle1">{label}</Typography>}
