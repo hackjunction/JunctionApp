@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, Divider } from '@material-ui/core'
+import { Box, Typography, Divider, Grid } from '@material-ui/core'
 
-import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
+import MentorDetail from 'components/mentors/MentorDetail'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 
@@ -18,15 +18,14 @@ export default () => {
 
     return (
         <>
-            <PageHeader
-                heading="Hackerpack"
-                // subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
-            />
+            <PageHeader heading="Mentors" />
             <PageWrapper loading={false}>
                 <Divider variant="middle" />
-                {mentors.map(mentor => (
-                    <HackerpackDetail partner={mentor} redeemable={true} />
-                ))}
+                <Grid container direction="row" spacing={2}>
+                    {mentors.map(mentor => (
+                        <MentorDetail mentor={mentor} redeemable={true} />
+                    ))}
+                </Grid>
             </PageWrapper>
         </>
     )
