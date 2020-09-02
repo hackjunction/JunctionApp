@@ -3,21 +3,22 @@ const Mentor = require('./model');
 const controller = {};
 const { NotFoundError } = require('../../common/errors/errors');
 
-controller.createMentor = () => {
-  const requestBody = req.body;
+controller.createMentor = (req) => {
+  const requestBody = req;
 
   const mentor = new Mentor({
     name: requestBody.name,
     email: requestBody.email,
-    phoneNumber: requestBody.phone,
+    phoneNumber: requestBody.phoneNumber,
     link: requestBody.link,
+    createdAd: new Date(),
   });
-    
+
   return mentor.save();
 };
 
 controller.getFullMentors = () => {
-  return Mentors.find();
+  return Mentor.find();
 };
 
 module.exports = controller;

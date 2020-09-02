@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const { Auth } = require('@hackjunction/shared');
-const MentorskController = require('./controller');
+const MentorsController = require('./controller');
 const EventController = require('../event/controller');
 
 const { hasToken } = require('../../common/middleware/token');

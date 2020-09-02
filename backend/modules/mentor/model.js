@@ -22,9 +22,9 @@ const MentorSchema = new mongoose.Schema({
   },
 });
 
-// FilterGroupSchema.set('timestamps', true);
+MentorSchema.set('timestamps', true);
 // FilterGroupSchema.index({ event: 1, label: 1 }, { unique: true });
 
 const Mentor = mongoose.model('Mentor', MentorSchema);
 
-module.exports = { Mentor };
+module.exports = Mentor;
