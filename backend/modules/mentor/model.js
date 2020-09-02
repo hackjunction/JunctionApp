@@ -1,20 +1,5 @@
 const mongoose = require('mongoose');
 
-const SlotSchema = new mongoose.Schema({
-  slot_time: {
-    type: String,
-  },
-  slot_date: {
-    type: String,
-  },
-
-  created_at: {
-    type: Date,
-  },
-});
-
-const Slot = mongoose.model('Slot', SlotSchema)
-
 const MentorSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -28,13 +13,13 @@ const MentorSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  slots: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Slot'
-    },
-    createdAt: {
-        type: Date,
-  }
+  link: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+  },
 });
 
 // FilterGroupSchema.set('timestamps', true);
@@ -42,4 +27,4 @@ const MentorSchema = new mongoose.Schema({
 
 const Mentor = mongoose.model('Mentor', MentorSchema);
 
-module.exports = { Mentor, Slot } ;
+module.exports = { Mentor };

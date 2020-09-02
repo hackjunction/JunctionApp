@@ -54,8 +54,7 @@ const createMentor = asyncHandler(async (req, res) => {
 router
   .route('/')
   .get(getFullMentors)
-  .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT),
-        isEventOrganiser, createMentor);
+  .post(createMentor);
 
 // router
 //   .route('/:slug')
