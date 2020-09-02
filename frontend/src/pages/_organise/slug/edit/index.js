@@ -18,6 +18,7 @@ import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
 import OtherTab from './other'
+import MentorsTab from './mentors'
 
 export default () => {
     const dispatch = useDispatch()
@@ -103,6 +104,12 @@ export default () => {
                                     key: 'questions',
                                     label: 'Questions',
                                     component: QuestionsTab,
+                                },
+                                {
+                                    path: '/mentors',
+                                    key: 'mentors',
+                                    label: 'Mentors',
+                                    component: MentorsTab,
                                 },
                                 {
                                     path: '/submission',
