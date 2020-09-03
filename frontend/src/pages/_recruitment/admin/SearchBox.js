@@ -42,8 +42,8 @@ export default ({ onGrant, onRevoke }) => {
                     onClick={() =>
                         dispatch(
                             RecruitmentActions.updateAdminSearchResults(
-                                searchQuery
-                            )
+                                searchQuery,
+                            ),
                         )
                     }
                 >

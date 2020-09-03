@@ -117,21 +117,21 @@ export default () => {
             try {
                 const profile = await UserProfilesService.createUserProfile(
                     data,
-                    idToken
+                    idToken,
                 )
                 dispatch(UserActions.setUserProfile(profile))
                 dispatch(AuthActions.pushNextRoute())
             } catch (err) {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... Please try again'
-                    )
+                        'Something went wrong... Please try again',
+                    ),
                 )
             }
             actions.setSubmitting(false)
             return
         },
-        [dispatch, idToken]
+        [dispatch, idToken],
     )
 
     const formik = useFormik({
@@ -211,7 +211,7 @@ export default () => {
                                     placeholder="Herbert"
                                     InputProps={{
                                         error: formik.errors.hasOwnProperty(
-                                            'firstName'
+                                            'firstName',
                                         ),
                                     }}
                                 />
@@ -230,7 +230,7 @@ export default () => {
                                     placeholder="Hacker"
                                     InputProps={{
                                         error: formik.errors.hasOwnProperty(
-                                            'lastName'
+                                            'lastName',
                                         ),
                                     }}
                                 />
@@ -249,7 +249,7 @@ export default () => {
                                     placeholder="herbert.hacker@bighackathon.com"
                                     InputProps={{
                                         error: formik.errors.hasOwnProperty(
-                                            'email'
+                                            'email',
                                         ),
                                     }}
                                 />

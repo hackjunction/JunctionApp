@@ -45,7 +45,7 @@ export default ({ visible, userIds = [], onClose }) => {
         panel => {
             return expandedIds.indexOf(panel) !== -1
         },
-        [expandedIds]
+        [expandedIds],
     )
 
     const toggleExpanded = panel => {
@@ -84,13 +84,13 @@ export default ({ visible, userIds = [], onClose }) => {
         const edits = getEdits()
 
         dispatch(
-            OrganiserActions.bulkEditRegistrations(userIds, edits, event.slug)
+            OrganiserActions.bulkEditRegistrations(userIds, edits, event.slug),
         )
             .then(() => {
                 dispatch(
                     SnackbarActions.success(
-                        `Edited ${userIds.length} registrations`
-                    )
+                        `Edited ${userIds.length} registrations`,
+                    ),
                 )
             })
             .catch(err => {

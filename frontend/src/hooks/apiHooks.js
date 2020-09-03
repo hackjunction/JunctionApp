@@ -25,7 +25,7 @@ export const usePromise = promise => {
                     handleErr(err)
                 })
         },
-        [handleDone, handleErr, promise]
+        [handleDone, handleErr, promise],
     )
 
     return { data, loading, error, fetch }

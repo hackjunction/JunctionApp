@@ -22,7 +22,7 @@ export default ({ sections = [], onChange }) => {
             const newValue = sections.concat(section)
             onChange(newValue)
         },
-        [onChange, sections]
+        [onChange, sections],
     )
 
     const handleChange = useCallback(
@@ -35,7 +35,7 @@ export default ({ sections = [], onChange }) => {
             })
             onChange(newValue)
         },
-        [onChange, sections]
+        [onChange, sections],
     )
 
     const handleRemove = useCallback(
@@ -44,7 +44,7 @@ export default ({ sections = [], onChange }) => {
             newValue.splice(index, 1)
             onChange(newValue)
         },
-        [onChange, sections]
+        [onChange, sections],
     )
 
     const handleMoveUp = useCallback(
@@ -55,7 +55,7 @@ export default ({ sections = [], onChange }) => {
             newValue[index - 1] = section
             onChange(newValue)
         },
-        [onChange, sections]
+        [onChange, sections],
     )
 
     const handleMoveDown = useCallback(
@@ -66,7 +66,7 @@ export default ({ sections = [], onChange }) => {
             newValue[index + 1] = section
             onChange(newValue)
         },
-        [onChange, sections]
+        [onChange, sections],
     )
 
     const handleEditDone = useCallback(
@@ -80,7 +80,7 @@ export default ({ sections = [], onChange }) => {
             onChange(newValue)
             setEditing(undefined)
         },
-        [onChange, sections]
+        [onChange, sections],
     )
 
     const renderAdd = () => (

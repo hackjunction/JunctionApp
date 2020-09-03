@@ -91,7 +91,7 @@ export default ({ user = {} }) => {
     const actionHistory = useSelector(RecruitmentSelectors.actionHistory)
     const isFavorite =
         actionHistory.filter(
-            action => action.user === user.userId && action.type === 'favorite'
+            action => action.user === user.userId && action.type === 'favorite',
         ).length !== 0
 
     //Toggle favorited state locally for instant feedback on favorite action
@@ -102,7 +102,7 @@ export default ({ user = {} }) => {
     const handleFavorite = useCallback(async () => {
         setIsFavorite(!_isFavorite)
         const { error } = await dispatch(
-            RecruitmentActions.toggleFavorite(user.userId, _isFavorite)
+            RecruitmentActions.toggleFavorite(user.userId, _isFavorite),
         )
         if (error) {
             dispatch(SnackbarActions.error('Something went wrong...'))

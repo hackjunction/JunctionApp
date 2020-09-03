@@ -41,7 +41,7 @@ const SkillsFilterItem = React.memo(({ skill, levels, onEdit, onRemove }) => {
                 })
             }
         },
-        [skill, levels, onEdit]
+        [skill, levels, onEdit],
     )
 
     const renderSelected = () => {

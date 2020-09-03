@@ -35,7 +35,7 @@ export const updateRegistration = slug => (dispatch, getState) => {
 
 export const updateRegistrationGrantDetails = (slug, data) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -43,7 +43,7 @@ export const updateRegistrationGrantDetails = (slug, data) => async (
         const registration = await RegistrationsService.updateTravelGrantDetails(
             idToken,
             slug,
-            data
+            data,
         )
 
         dispatch({
@@ -61,7 +61,7 @@ export const confirmRegistration = slug => async (dispatch, getState) => {
 
     const registration = await RegistrationsService.confirmRegistration(
         idToken,
-        slug
+        slug,
     )
 
     dispatch({
@@ -77,7 +77,7 @@ export const cancelRegistration = slug => async (dispatch, getState) => {
 
     const registration = await RegistrationsService.cancelRegistration(
         idToken,
-        slug
+        slug,
     )
 
     dispatch({
@@ -94,7 +94,7 @@ export const editRegistration = (slug, data) => async (dispatch, getState) => {
     const registration = await RegistrationsService.updateRegistration(
         idToken,
         slug,
-        data
+        data,
     )
 
     dispatch({
@@ -107,14 +107,14 @@ export const editRegistration = (slug, data) => async (dispatch, getState) => {
 
 export const createRegistration = (slug, data) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
     const registration = await RegistrationsService.createRegistration(
         idToken,
         slug,
-        data
+        data,
     )
 
     dispatch({
@@ -136,7 +136,7 @@ export const updateTeam = slug => (dispatch, getState) => {
                     return Promise.resolve(null)
                 }
                 return Promise.reject(err)
-            }
+            },
         ),
         meta: {
             onFailure: e => console.log('Error updating dashboard team', e),
@@ -183,7 +183,7 @@ export const leaveTeam = (slug, code) => async (dispatch, getState) => {
 
 export const removeMemberFromTeam = (slug, code, userId) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const state = getState()
     const idToken = AuthSelectors.getIdToken(state)
@@ -192,7 +192,7 @@ export const removeMemberFromTeam = (slug, code, userId) => async (
         idToken,
         slug,
         code,
-        userId
+        userId,
     )
 
     dispatch({

@@ -33,7 +33,7 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
     const isRegistrationOpen = useSelector(
-        DashboardSelectors.isRegistrationOpen
+        DashboardSelectors.isRegistrationOpen,
     )
 
     const [loading, setLoading] = useState(false)
@@ -46,8 +46,8 @@ export default () => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong, please try again'
-                    )
+                        'Something went wrong, please try again',
+                    ),
                 )
             })
             .finally(() => {
@@ -61,8 +61,8 @@ export default () => {
             .catch(() => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong while cancelling your participation'
-                    )
+                        'Something went wrong while cancelling your participation',
+                    ),
                 )
             })
             .finally(() => {
@@ -245,8 +245,8 @@ export default () => {
                                 onClick={() =>
                                     dispatch(
                                         push(
-                                            `/dashboard/${event.slug}/event-id`
-                                        )
+                                            `/dashboard/${event.slug}/event-id`,
+                                        ),
                                     )
                                 }
                                 color="theme_white"

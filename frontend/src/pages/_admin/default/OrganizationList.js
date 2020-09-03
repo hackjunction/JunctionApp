@@ -32,10 +32,10 @@ export default ({ data = [] }) => {
             setOrganization(
                 organization.filter(function (obj) {
                     return obj.slug !== slug
-                })
+                }),
             )
         },
-        [organization, idToken]
+        [organization, idToken],
     )
 
     return (
@@ -59,7 +59,7 @@ export default ({ data = [] }) => {
                                 aria-label="edit"
                                 onClick={() =>
                                     dispatch(
-                                        push(`admin/organization/${org.slug}`)
+                                        push(`admin/organization/${org.slug}`),
                                     )
                                 }
                             >

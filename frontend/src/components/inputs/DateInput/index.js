@@ -13,7 +13,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             newValue.date(date)
             onChange(newValue.startOf('day').format())
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const handleMonthChange = useCallback(
@@ -22,7 +22,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             newValue.month(month - 1)
             onChange(newValue.startOf('day').format())
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const handleYearChange = useCallback(
@@ -31,7 +31,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             newValue.year(year)
             onChange(newValue.startOf('day').format())
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     return (

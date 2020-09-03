@@ -118,7 +118,7 @@ export default React.memo(
             path => {
                 dispatch(push(`${baseRoute}${path}`))
             },
-            [baseRoute, dispatch]
+            [baseRoute, dispatch],
         )
 
         useEffect(() => {
@@ -269,7 +269,7 @@ export default React.memo(
                                         exact = false,
                                         locked,
                                     },
-                                    index
+                                    index,
                                 ) => {
                                     if (hidden || locked) {
                                         return null
@@ -283,7 +283,7 @@ export default React.memo(
                                             />
                                         )
                                     }
-                                }
+                                },
                             )}
                             <Redirect to={baseRoute} />
                         </Switch>
@@ -291,5 +291,5 @@ export default React.memo(
                 </main>
             </div>
         )
-    }
+    },
 )

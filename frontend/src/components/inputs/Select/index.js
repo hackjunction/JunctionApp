@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? theme.palette.grey[300]
                 : theme.palette.grey[700],
-            0.08
+            0.08,
         ),
     },
     noOptionsMessage: {
@@ -413,7 +413,7 @@ export default function IntegrationReactSelect({
                 return output.value
             }
         },
-        [isMulti]
+        [isMulti],
     )
 
     const transformedInput = useMemo(() => {
@@ -435,7 +435,7 @@ export default function IntegrationReactSelect({
         value => {
             onChange(transformedOutput(value))
         },
-        [onChange, transformedOutput]
+        [onChange, transformedOutput],
     )
 
     const SelectProps = {

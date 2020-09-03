@@ -44,7 +44,7 @@ export default ({
             }).toString()}`
             dispatch(push({ search }))
         },
-        [dispatch]
+        [dispatch],
     )
 
     const openBulkEmail = useCallback(
@@ -55,7 +55,7 @@ export default ({
             })}`
             dispatch(push({ search }))
         },
-        [dispatch]
+        [dispatch],
     )
 
     const openBulkEdit = useCallback(
@@ -66,7 +66,7 @@ export default ({
             })}`
             dispatch(push({ search }))
         },
-        [dispatch]
+        [dispatch],
     )
     // TODO move somewhere else
     function flattenObject(ob) {
@@ -250,7 +250,7 @@ export default ({
                                     color: 'inherit',
                                 }}
                                 data={selected.map(item =>
-                                    flattenObject(item.original)
+                                    flattenObject(item.original),
                                 )}
                                 filename="export.csv"
                             >

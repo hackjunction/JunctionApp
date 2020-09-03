@@ -13,7 +13,7 @@ const PhoneNumberInput = React.memo(
                     country_code: code,
                 })
             },
-            [value, onChange]
+            [value, onChange],
         )
 
         const handleNumberChange = useCallback(
@@ -23,7 +23,7 @@ const PhoneNumberInput = React.memo(
                     number,
                 })
             },
-            [value, onChange]
+            [value, onChange],
         )
         return (
             <Box>
@@ -66,7 +66,7 @@ const PhoneNumberInput = React.memo(
                 </Grid>
             </Box>
         )
-    }
+    },
 )
 
 export default PhoneNumberInput

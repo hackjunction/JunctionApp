@@ -108,7 +108,7 @@ export default ({
                 [field]: value,
             })
         },
-        [data]
+        [data],
     )
 
     return (

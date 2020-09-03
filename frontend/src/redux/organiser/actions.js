@@ -54,7 +54,7 @@ export const updateEventStats = slug => async (dispatch, getState) => {
 /** Update event organisers with loading/error data */
 export const updateOrganisersForEvent = (owner, organisers) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const userIds = [owner].concat(organisers)
 
@@ -69,14 +69,14 @@ export const updateOrganisersForEvent = (owner, organisers) => async (
 
 export const removeOrganiserFromEvent = (slug, userId) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
     const organisers = await EventsService.removeOrganiserFromEvent(
         idToken,
         slug,
-        userId
+        userId,
     )
     dispatch({
         type: ActionTypes.REMOVE_ORGANISER,
@@ -88,14 +88,14 @@ export const removeOrganiserFromEvent = (slug, userId) => async (
 
 export const addOrganiserToEvent = (slug, userId) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
     const organisers = await EventsService.addOrganiserToEvent(
         idToken,
         slug,
-        userId
+        userId,
     )
     dispatch({
         type: ActionTypes.ADD_ORGANISER,
@@ -108,7 +108,7 @@ export const addOrganiserToEvent = (slug, userId) => async (
 /** Update event registrations with loading/error data */
 export const updateRegistrationsForEvent = slug => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -125,7 +125,7 @@ export const updateRegistrationsForEvent = slug => async (
 
 export const editRegistration = (registrationId, data, slug) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -133,7 +133,7 @@ export const editRegistration = (registrationId, data, slug) => async (
         idToken,
         slug,
         registrationId,
-        data
+        data,
     )
     dispatch({
         type: ActionTypes.EDIT_REGISTRATION,
@@ -146,7 +146,7 @@ export const editRegistration = (registrationId, data, slug) => async (
 export const updateRegistrationTravelGrant = (
     registrationId,
     data,
-    slug
+    slug,
 ) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -154,7 +154,7 @@ export const updateRegistrationTravelGrant = (
         idToken,
         slug,
         registrationId,
-        data
+        data,
     )
 
     dispatch({
@@ -167,7 +167,7 @@ export const updateRegistrationTravelGrant = (
 
 export const bulkEditRegistrations = (userIds, edits, slug) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -175,7 +175,7 @@ export const bulkEditRegistrations = (userIds, edits, slug) => async (
         idToken,
         slug,
         userIds,
-        edits
+        edits,
     )
 
     dispatch(updateRegistrationsForEvent(slug))
@@ -214,7 +214,7 @@ export const updateFilterGroups = slug => async (dispatch, getState) => {
 
 export const createFilterGroup = (slug, label, description, filters) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -223,7 +223,7 @@ export const createFilterGroup = (slug, label, description, filters) => async (
         label,
         description,
         filters,
-        slug
+        slug,
     )
 
     dispatch({
@@ -236,7 +236,7 @@ export const createFilterGroup = (slug, label, description, filters) => async (
 
 export const editFilterGroup = (slug, label, description, filters) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -245,7 +245,7 @@ export const editFilterGroup = (slug, label, description, filters) => async (
         label,
         description,
         filters,
-        slug
+        slug,
     )
 
     dispatch({
@@ -258,14 +258,14 @@ export const editFilterGroup = (slug, label, description, filters) => async (
 
 export const deleteFilterGroup = (slug, label) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
     const filterGroup = await FilterGroupsService.deleteFilterGroup(
         idToken,
         label,
-        slug
+        slug,
     )
 
     dispatch({
@@ -302,7 +302,7 @@ export const updateGavelProjects = slug => async (dispatch, getState) => {
 
 export const editGavelProject = (slug, projectId, edits) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -310,7 +310,7 @@ export const editGavelProject = (slug, projectId, edits) => async (
         idToken,
         slug,
         projectId,
-        edits
+        edits,
     )
 
     dispatch({
@@ -335,7 +335,7 @@ export const updateGavelAnnotators = slug => async (dispatch, getState) => {
 
 export const editGavelAnnotator = (slug, annotatorId, edits) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -343,7 +343,7 @@ export const editGavelAnnotator = (slug, annotatorId, edits) => async (
         idToken,
         slug,
         annotatorId,
-        edits
+        edits,
     )
 
     dispatch({

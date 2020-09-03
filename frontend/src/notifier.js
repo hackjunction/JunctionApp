@@ -59,7 +59,7 @@ class Notifier extends Component {
                 const formattedMessage = this.buildMessage(
                     message,
                     options,
-                    key
+                    key,
                 )
                 this.props.enqueueSnackbar(formattedMessage, {
                     key,
@@ -78,7 +78,7 @@ class Notifier extends Component {
                 })
                 // Keep track of snackbars that we've displayed
                 this.storeDisplayed(key)
-            }
+            },
         )
     }
 
@@ -95,5 +95,5 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators({ removeSnackbar }, dispatch)
 
 export default withSnackbar(
-    connect(mapStateToProps, mapDispatchToProps)(Notifier)
+    connect(mapStateToProps, mapDispatchToProps)(Notifier),
 )

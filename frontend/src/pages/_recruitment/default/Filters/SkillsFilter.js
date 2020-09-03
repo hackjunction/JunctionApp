@@ -33,7 +33,7 @@ export default ({ setFilters }) => {
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.skills ?? []
     const [skills, addSkill, removeSkill, editSkill, setSkills] = useArray(
-        filters
+        filters,
     )
     const classes = useStyles()
 
@@ -52,7 +52,7 @@ export default ({ setFilters }) => {
                 levels: [],
             })
         },
-        [addSkill]
+        [addSkill],
     )
 
     const renderSkills = () => {

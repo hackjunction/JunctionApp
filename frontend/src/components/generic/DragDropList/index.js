@@ -82,7 +82,7 @@ const DragDropList = ({
                 const items = reorder(
                     state[source.droppableId],
                     source.index,
-                    destination.index
+                    destination.index,
                 )
 
                 onChange({
@@ -94,7 +94,7 @@ const DragDropList = ({
                     state[source.droppableId],
                     state[destination.droppableId],
                     source,
-                    destination
+                    destination,
                 )
 
                 onChange({
@@ -104,7 +104,7 @@ const DragDropList = ({
                 })
             }
         },
-        [state, value, onChange]
+        [state, value, onChange],
     )
 
     return (
@@ -134,7 +134,7 @@ const DragDropList = ({
                                             {...provided.dragHandleProps}
                                             style={getItemStyle(
                                                 snapshot.isDragging,
-                                                provided.draggableProps.style
+                                                provided.draggableProps.style,
                                             )}
                                         >
                                             {renderTopItem(id, index)}
@@ -170,7 +170,7 @@ const DragDropList = ({
                                             {...provided.dragHandleProps}
                                             style={getItemStyle(
                                                 snapshot.isDragging,
-                                                provided.draggableProps.style
+                                                provided.draggableProps.style,
                                             )}
                                         >
                                             {renderBottomItem(id, index)}

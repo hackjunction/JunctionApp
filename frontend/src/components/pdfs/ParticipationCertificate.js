@@ -153,7 +153,7 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
                         <Text style={styles.date}>
                             {MiscUtils.formatDateInterval(
                                 event.startTime,
-                                event.endTime
+                                event.endTime,
                             )}
                         </Text>
                         <Text style={styles.preName}>
