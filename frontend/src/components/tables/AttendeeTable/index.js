@@ -88,7 +88,7 @@ export default ({
         return toReturn
     }
 
-    const exportRegisterations = selectedRows => {
+    const exportregistrations = selectedRows => {
         setSelected(selectedRows)
     }
 
@@ -242,7 +242,7 @@ export default ({
                         action: openBulkEdit,
                     },
                     {
-                        key: 'export-registerations',
+                        key: 'export-registrations',
                         label: (
                             <CSVLink
                                 style={{
@@ -254,10 +254,10 @@ export default ({
                                 )}
                                 filename="export.csv"
                             >
-                                Export Registerations
+                                Export registrations
                             </CSVLink>
                         ),
-                        action: exportRegisterations,
+                        action: exportregistrations,
                     },
                 ]}
             />

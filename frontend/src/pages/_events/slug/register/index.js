@@ -123,9 +123,9 @@ export default RequiresPermission(() => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const {
-        event,
         slug,
-        registeration,
+        event,
+        registration,
         hasRegistration,
         createRegistration,
         editRegistration,
@@ -134,7 +134,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-    console.log('regi', registeration)
+    console.log('regi', registration)
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
