@@ -20,12 +20,13 @@
         "functions": "ignore"
       }
     ],
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "no-underscore-dangle": "off"
   },
   "globals": {
     "browser": true,
     "$": true,
     "before": true,
     "document": true
-  }
+  },
 }
