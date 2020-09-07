@@ -5,6 +5,7 @@ import MentorSection from './MentorSection'
 import GradientBox from 'components/generic/GradientBox'
 
 const MentorDetail = ({ mentor, redeemable = false }) => {
+    console.log('mentor in detail', mentor)
     return (
         <Grid item xs={12} md={12}>
             <GradientBox color="theme_white" p={3}>

@@ -43,6 +43,22 @@ const createMentor = asyncHandler(async (req, res) => {
   return res.status(201).json(mentor);
 });
 
+const getMentorsBySlug = asyncHandler(async (req, res) => {
+    console.log('Req Params', req.params);
+    
+    const Mentor = await MentorsController.getMentorsBySlug(
+    req.params.slug,
+  );
+  return res.status(200).json(Mentor);
+});
+
+const createMentorBySlug = asyncHandler(async (req, res) => {
+  const Mentor = await MentorsController.createMentorBySlug(req.body, req.params.slug);
+  return res.status(201).json(Mentor);
+});
+
+
+
 // const updateHackerpack = asyncHandler(async (req, res) => {
 //   const updatedHackerpack = await HackerpackController.updateHackerpack(
 //     req.params.slug,
@@ -55,7 +71,12 @@ router
   .route('/')
   .get(getFullMentors)
   .post(createMentor);
-
+router
+  .route('/:slug')
+    .get(getMentorsBySlug)
+  .post(createMentorBySlug)
+//   .delete(hasToken, deleteOrganization)
+//   .patch(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), updateOrganization);
 // router
 //   .route('/:slug')
 //   .get(getHackerpack)

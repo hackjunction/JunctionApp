@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import { useRouteMatch } from 'react-router'
 import { Grid } from '@material-ui/core'
 import { FastField } from 'formik'
 import FormControl from 'components/inputs/FormControl'
@@ -8,12 +8,17 @@ import MentorDetail from './MentorDetail'
 import MentorsService from 'services/mentors'
 
 export default () => {
+    const match = useRouteMatch()
+    // const { t } = useTranslation()
+    const slug = match.path.slice(10).split('/')[0].toString()
     const [mentors, setMentors] = useState([])
     useEffect(() => {
-        MentorsService.getFullMentors().then(mentors => {
+        MentorsService.getMentorsBySlug(slug).then(mentors => {
+            console.log('Mentors in getMentorsBySlug', mentors)
+            console.log('Mentors length', mentors.length)
             if (mentors) setMentors(mentors)
         })
-    }, [])
+    }, [slug])
 
     return (
         <Grid container spacing={3}>

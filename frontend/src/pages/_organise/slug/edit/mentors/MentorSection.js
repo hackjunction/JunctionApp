@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ name, email, phoneNumber, link }) => {
+export default ({ name, email, phoneNumber, slug, link }) => {
     const classes = useStyles()
 
     return (
