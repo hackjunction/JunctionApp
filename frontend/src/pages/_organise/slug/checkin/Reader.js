@@ -20,14 +20,14 @@ export default ({ onResult, onError }) => {
                 onResult(data)
             }
         },
-        [onResult, legacyMode, dispatch]
+        [onResult, legacyMode, dispatch],
     )
 
     const handleError = useCallback(
         err => {
             onError()
         },
-        [onError]
+        [onError],
     )
 
     return (

@@ -55,24 +55,24 @@ export const toggleUsersFiltersSortBy = field => dispatch => {
 
 export const editHackerpack = (idToken, slug, values) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const hackerpack = await HackerpackService.updateHackerpack(
         idToken,
         slug,
-        values
+        values,
     )
     return hackerpack
 }
 
 export const editOrganization = (idToken, slug, values) => async (
     dispatch,
-    getState
+    getState,
 ) => {
     const organization = await OrganizationService.updateOrganization(
         idToken,
         slug,
-        values
+        values,
     )
     return organization
 }

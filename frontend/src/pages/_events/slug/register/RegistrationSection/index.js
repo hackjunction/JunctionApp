@@ -85,7 +85,7 @@ export default props => {
             {
                 validationSchema: {},
                 initialValues: {},
-            }
+            },
         )
     }, [fields, data, registration, userProfile, idTokenData])
     return (
@@ -141,7 +141,7 @@ export default props => {
                             errors={errors}
                             dirty={dirty}
                         />,
-                        document.body
+                        document.body,
                     )}
                 </>
             )}

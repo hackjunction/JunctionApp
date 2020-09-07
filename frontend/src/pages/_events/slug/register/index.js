@@ -181,7 +181,7 @@ export default RequiresPermission(() => {
                 }
                 return result
             },
-            []
+            [],
         )
 
         const fieldCategories = {}
@@ -209,12 +209,12 @@ export default RequiresPermission(() => {
             categoryLabel => {
                 return {
                     order: RegistrationFields.getCategoryOrderByLabel(
-                        categoryLabel
+                        categoryLabel,
                     ),
                     label: categoryLabel,
                     fields: fieldCategories[categoryLabel],
                 }
-            }
+            },
         )
 
         const sorted = sortBy(fieldSections, 'order')
@@ -239,7 +239,7 @@ export default RequiresPermission(() => {
             }
             setActiveStep(nextStep)
         },
-        [formData]
+        [formData],
     )
 
     const setPrevStep = useCallback(() => {
@@ -276,8 +276,8 @@ export default RequiresPermission(() => {
         } catch (e) {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Please try again'
-                )
+                    'Oops, something went wrong... Please try again',
+                ),
             )
         } finally {
             setLoading(false)

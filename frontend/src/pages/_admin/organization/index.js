@@ -83,15 +83,15 @@ export default () => {
                 .catch(err => {
                     dispatch(
                         SnackbarActions.error(
-                            'Something went wrong... Please try again'
-                        )
+                            'Something went wrong... Please try again',
+                        ),
                     )
                 })
                 .finally(() => {
                     formikBag.setSubmitting(false)
                 })
         },
-        [dispatch, idToken, slug]
+        [dispatch, idToken, slug],
     )
 
     return (
@@ -120,12 +120,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -142,12 +142,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -179,7 +179,7 @@ export default () => {
                                                             field.name,
                                                             value
                                                                 ? value.url
-                                                                : null
+                                                                : null,
                                                         )
                                                     }
                                                     uploadUrl={`/api/upload/organization/${slug}/icon/`}
@@ -199,12 +199,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />

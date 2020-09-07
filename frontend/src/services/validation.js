@@ -32,7 +32,7 @@ export const Email = ({ required }) => (value = '') => {
 }
 
 export const Date = ({ min, max, required, format = 'DD.MM.YYYY' }) => (
-    value = null
+    value = null,
 ) => {
     const mom = moment(value)
 
@@ -60,7 +60,7 @@ export const Boolean = ({ required }) => (value = null) => {
 }
 
 export const Array = ({ min, max, required, itemValidator }) => (
-    value = []
+    value = [],
 ) => {
     if (min && value.length < min) {
         return `Value must have at least ${min} items`

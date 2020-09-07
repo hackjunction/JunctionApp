@@ -45,8 +45,8 @@ export default () => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... Please try again.'
-                    )
+                        'Something went wrong... Please try again.',
+                    ),
                 )
             })
             .finally(() => {
@@ -67,8 +67,8 @@ export default () => {
                     } else {
                         dispatch(
                             SnackbarActions.error(
-                                'Something went wrong... Please try again.'
-                            )
+                                'Something went wrong... Please try again.',
+                            ),
                         )
                     }
                 })
@@ -76,18 +76,18 @@ export default () => {
                     setLoading(false)
                 })
         },
-        [idToken, slug, dispatch]
+        [idToken, slug, dispatch],
     )
 
     const handleError = useCallback(
         err => {
             dispatch(
                 SnackbarActions.error(
-                    'Something went wrong... Please try again.'
-                )
+                    'Something went wrong... Please try again.',
+                ),
             )
         },
-        [dispatch]
+        [dispatch],
     )
 
     return (

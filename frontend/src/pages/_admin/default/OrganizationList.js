@@ -53,10 +53,10 @@ export default ({ data = [] }) => {
             setOrganization(
                 organization.filter(function (obj) {
                     return obj.slug !== slug
-                })
+                }),
             )
         },
-        [organization, idToken]
+        [organization, idToken],
     )
 
     return (
@@ -109,8 +109,8 @@ export default ({ data = [] }) => {
                                             onClick={() =>
                                                 dispatch(
                                                     push(
-                                                        `admin/organization/${org.slug}`
-                                                    )
+                                                        `admin/organization/${org.slug}`,
+                                                    ),
                                                 )
                                             }
                                         >

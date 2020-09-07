@@ -19,7 +19,7 @@ export default () => {
 
     const handleSubmit = useCallback(() => {
         dispatch(
-            RecruitmentActions.setFiltersField('countryOfResidence', draft)
+            RecruitmentActions.setFiltersField('countryOfResidence', draft),
         )
     }, [dispatch, draft])
 

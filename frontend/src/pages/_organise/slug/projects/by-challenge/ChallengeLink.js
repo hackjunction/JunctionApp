@@ -21,7 +21,7 @@ export default ({ challenge }) => {
             const link = await ProjectsService.generateChallengeLink(
                 idToken,
                 event.slug,
-                challenge
+                challenge,
             )
             setLink(link)
         } catch (err) {

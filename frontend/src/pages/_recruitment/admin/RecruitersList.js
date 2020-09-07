@@ -55,7 +55,7 @@ export default ({ onRevoke }) => {
                                     .filter(event => {
                                         return (
                                             user.recruiterEvents.indexOf(
-                                                event.slug
+                                                event.slug,
                                             ) !== -1
                                         )
                                     })

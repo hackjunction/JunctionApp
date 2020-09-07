@@ -88,15 +88,15 @@ export default () => {
                 .catch(err => {
                     dispatch(
                         SnackbarActions.error(
-                            'Something went wrong... Please try again'
-                        )
+                            'Something went wrong... Please try again',
+                        ),
                     )
                 })
                 .finally(() => {
                     formikBag.setSubmitting(false)
                 })
         },
-        [dispatch]
+        [dispatch],
     )
 
     return (
@@ -136,7 +136,9 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value ? value.url : null
+                                                        value
+                                                            ? value.url
+                                                            : null,
                                                     )
                                                 }
                                                 uploadUrl="/api/upload/users/avatar/"
@@ -158,12 +160,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -180,12 +182,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -202,12 +204,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -230,12 +232,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -255,12 +257,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -278,12 +280,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -311,7 +313,7 @@ export default () => {
                                             <TextInput
                                                 label={
                                                     RegistrationFields.getField(
-                                                        'headline'
+                                                        'headline',
                                                     ).label
                                                 }
                                                 placeholder="Fullstack developer, hackathon enthusiast"
@@ -319,12 +321,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -333,7 +335,7 @@ export default () => {
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
-                                                'headline'
+                                                'headline',
                                             ).hint
                                         }
                                     </Typography>
@@ -346,7 +348,7 @@ export default () => {
                                                 <TextAreaInput
                                                     label={
                                                         RegistrationFields.getField(
-                                                            'biography'
+                                                            'biography',
                                                         ).label
                                                     }
                                                     placeholder={`Hi my name is ${form.values.firstName} and...`}
@@ -354,12 +356,12 @@ export default () => {
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
-                                                            value
+                                                            value,
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -369,7 +371,7 @@ export default () => {
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
-                                                'biography'
+                                                'biography',
                                             ).hint
                                         }
                                     </Typography>
@@ -380,19 +382,19 @@ export default () => {
                                         render={({ field, form }) => (
                                             <Select
                                                 label={t(
-                                                    'Country_of_residence_'
+                                                    'Country_of_residence_',
                                                 )}
                                                 value={field.value}
                                                 options="country"
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -410,12 +412,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -433,12 +435,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                                 isMulti
@@ -457,12 +459,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                                 isMulti
@@ -476,19 +478,19 @@ export default () => {
                                         render={({ field, form }) => (
                                             <Select
                                                 label={t(
-                                                    'Industries_of_interest_'
+                                                    'Industries_of_interest_',
                                                 )}
                                                 value={field.value}
                                                 options="industry"
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                                 isMulti
@@ -517,7 +519,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -537,7 +539,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -559,7 +561,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -582,7 +584,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -604,7 +606,7 @@ export default () => {
                                             <TextInput
                                                 label={
                                                     RegistrationFields.getField(
-                                                        'curriculumVitae'
+                                                        'curriculumVitae',
                                                     ).label
                                                 }
                                                 placeholder="myhomepage.com/cv"
@@ -612,12 +614,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -626,7 +628,7 @@ export default () => {
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
-                                                'curriculumVitae'
+                                                'curriculumVitae',
                                             ).hint
                                         }
                                     </Typography>
@@ -638,7 +640,7 @@ export default () => {
                                             <TextInput
                                                 label={
                                                     RegistrationFields.getField(
-                                                        'portfolio'
+                                                        'portfolio',
                                                     ).label
                                                 }
                                                 placeholder="myhomepage.com/portfolio"
@@ -646,12 +648,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -660,7 +662,7 @@ export default () => {
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
-                                                'portfolio'
+                                                'portfolio',
                                             ).hint
                                         }
                                     </Typography>
@@ -672,7 +674,7 @@ export default () => {
                                             <TextInput
                                                 label={
                                                     RegistrationFields.getField(
-                                                        'github'
+                                                        'github',
                                                     ).label
                                                 }
                                                 placeholder="github.com/myusername"
@@ -680,12 +682,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -694,7 +696,7 @@ export default () => {
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
-                                                'github'
+                                                'github',
                                             ).hint
                                         }
                                     </Typography>
@@ -706,7 +708,7 @@ export default () => {
                                             <TextInput
                                                 label={
                                                     RegistrationFields.getField(
-                                                        'linkedin'
+                                                        'linkedin',
                                                     ).label
                                                 }
                                                 placeholder="linkedin.com/in/myname"
@@ -714,12 +716,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -728,7 +730,7 @@ export default () => {
                                     <Typography variant="caption">
                                         {
                                             RegistrationFields.getField(
-                                                'linkedin'
+                                                'linkedin',
                                             ).hint
                                         }
                                     </Typography>

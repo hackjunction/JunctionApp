@@ -38,7 +38,7 @@ export default ({
             RegistrationsService.getFullRegistration(
                 idToken,
                 slug,
-                registrationId
+                registrationId,
             )
                 .then(data => {
                     setRegistration(data)
@@ -72,7 +72,7 @@ export default ({
             setLoading(true)
             await MiscUtils.sleep(1000)
             dispatch(
-                OrganiserActions.editRegistration(registrationId, data, slug)
+                OrganiserActions.editRegistration(registrationId, data, slug),
             )
                 .then(data => {
                     dispatch(SnackbarActions.success('Changes saved!'))
@@ -86,7 +86,7 @@ export default ({
                     setLoading(false)
                 })
         },
-        [dispatch, registrationId, slug, onEdited, onClose]
+        [dispatch, registrationId, slug, onEdited, onClose],
     )
 
     return (

@@ -89,18 +89,20 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                 file.type === 'image/jpeg' || file.type === 'image/png'
             if (!isJpgOrPng) {
                 dispatch(
-                    SnackbarActions.error('Please upload a .jpg or .png file')
+                    SnackbarActions.error('Please upload a .jpg or .png file'),
                 )
             }
             const isLt2M = file.size / 1024 / 1024 < 2
             if (!isLt2M) {
                 dispatch(
-                    SnackbarActions.error('Upload size cannot be more than 2MB')
+                    SnackbarActions.error(
+                        'Upload size cannot be more than 2MB',
+                    ),
                 )
             }
             return isJpgOrPng && isLt2M
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleChange = useCallback(
@@ -122,7 +124,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                 setLoading(false)
             }
         },
-        [dispatch, onChange]
+        [dispatch, onChange],
     )
 
     const handleRemove = useCallback(
@@ -130,7 +132,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
             e.stopPropagation()
             onChange()
         },
-        [onChange]
+        [onChange],
     )
 
     const renderLoading = () => {

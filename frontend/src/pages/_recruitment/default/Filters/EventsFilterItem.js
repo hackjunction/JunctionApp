@@ -48,7 +48,7 @@ const EventsFilterItem = React.memo(
                     })
                 }
             },
-            [event, statuses, onEdit]
+            [event, statuses, onEdit],
         )
 
         const renderSelected = () => {
@@ -58,7 +58,7 @@ const EventsFilterItem = React.memo(
                 return statuses
                     .map(
                         status =>
-                            RegistrationStatuses.asObject[status].description
+                            RegistrationStatuses.asObject[status].description,
                     )
                     .join(', ')
             }
@@ -97,7 +97,7 @@ const EventsFilterItem = React.memo(
                 </ExpansionPanelActions>
             </ExpansionPanel>
         )
-    }
+    },
 )
 
 export default EventsFilterItem

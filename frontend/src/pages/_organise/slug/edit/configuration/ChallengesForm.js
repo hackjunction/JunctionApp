@@ -39,7 +39,7 @@ export default ({ value, onChange }) => {
                 name: inputValue,
                 slug: slugValue,
                 partner: partnerValue,
-            })
+            }),
         )
         setInputValue()
         setSlugValue()
@@ -51,10 +51,10 @@ export default ({ value, onChange }) => {
             onChange(
                 value.filter((item, idx) => {
                     return idx !== index
-                })
+                }),
             )
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const handleEditStart = useCallback(
@@ -63,7 +63,7 @@ export default ({ value, onChange }) => {
             setEditName(value[index].name)
             setEditPartner(value[index].partner)
         },
-        [value]
+        [value],
     )
 
     const handleEditCancel = useCallback(() => {
@@ -83,7 +83,7 @@ export default ({ value, onChange }) => {
                     }
                 }
                 return item
-            })
+            }),
         )
         handleEditCancel()
     }, [value, editIndex, editName, editPartner, onChange, handleEditCancel])

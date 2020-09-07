@@ -96,13 +96,13 @@ export const EventDetailProvider = ({ children }) => {
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
-                formData
+                formData,
             ).then(res => {
                 refetchRegistration()
                 return res
             })
         },
-        [idToken, refetchRegistration, slug]
+        [idToken, refetchRegistration, slug],
     )
 
     const editRegistration = useCallback(
@@ -110,13 +110,13 @@ export const EventDetailProvider = ({ children }) => {
             return RegistrationsService.updateRegistration(
                 idToken,
                 slug,
-                formData
+                formData,
             ).then(res => {
                 refetchRegistration()
                 return res
             })
         },
-        [idToken, refetchRegistration, slug]
+        [idToken, refetchRegistration, slug],
     )
     const event = eventData?.eventBySlug
     const registration = registrationData?.myRegistration

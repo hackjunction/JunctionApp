@@ -50,7 +50,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
             }
 
             return
-        }
+        },
     )
 
     const toggleExpanded = useCallback(
@@ -59,7 +59,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
             label.setValue(isEdit ? activeItem.label : '')
             description.setValue(isEdit ? activeItem.description : '')
         },
-        [label, isEdit, activeItem.label, activeItem.description, description]
+        [label, isEdit, activeItem.label, activeItem.description, description],
     )
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
 
     const handleSubmit = () => {
         const errs = [label.validate(), description.validate()].filter(
-            err => err !== undefined
+            err => err !== undefined,
         )
         if (errs.length > 0) {
             return
@@ -89,8 +89,8 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                     event.slug,
                     label,
                     description,
-                    filters
-                )
+                    filters,
+                ),
             )
                 .then(item => {
                     dispatch(SnackbarActions.success('Edits saved!'))
@@ -104,7 +104,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                     setLoading(false)
                 })
         },
-        [dispatch, event.slug, filters, onSave, toggleExpanded]
+        [dispatch, event.slug, filters, onSave, toggleExpanded],
     )
 
     const handleCreate = useCallback(
@@ -115,8 +115,8 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                     event.slug,
                     label,
                     description,
-                    filters
-                )
+                    filters,
+                ),
             )
                 .then(item => {
                     dispatch(SnackbarActions.success('Filter group deleted'))
@@ -130,7 +130,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                     setLoading(false)
                 })
         },
-        [dispatch, event.slug, filters, onSave, toggleExpanded]
+        [dispatch, event.slug, filters, onSave, toggleExpanded],
     )
 
     const handleDelete = useCallback(() => {

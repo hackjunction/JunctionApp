@@ -35,7 +35,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
             const ownerMapped = registrationsMap[team.owner] || {}
             const allMembers = membersMapped.concat(ownerMapped)
             const reviewedCount = allMembers.filter(
-                member => member && member.rating
+                member => member && member.rating,
             ).length
             const memberCount = allMembers.length
             return {
@@ -46,7 +46,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
                     sumBy(allMembers, m => m.rating || 0) / allMembers.length
                 ).toFixed(2),
                 reviewedPercent: Math.floor(
-                    (reviewedCount * 100) / memberCount
+                    (reviewedCount * 100) / memberCount,
                 ),
             }
         })

@@ -61,7 +61,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
                 })
             }
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const universityOptions = useMemo(() => {
@@ -74,7 +74,7 @@ const EducationInput = ({ value = {}, onChange, onBlur, autoFocus }) => {
               ]
             : []
         const countryOptions = Universities.getByAlpha2Code(
-            Countries.alpha2CodeFromName(country)
+            Countries.alpha2CodeFromName(country),
         )
             .map(uni => ({
                 label: uni.name,

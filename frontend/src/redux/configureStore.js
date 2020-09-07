@@ -22,7 +22,7 @@ export const history = createBrowserHistory()
 
 const persistedReducer = persistReducer(
     persistConfig,
-    createRootReducer(history)
+    createRootReducer(history),
 )
 
 export default preloadedState => {
@@ -34,10 +34,10 @@ export default preloadedState => {
                 routerMiddleware(history), // for dispatching history actions
                 thunk,
                 reduxPackMiddleware,
-                LogRocket.reduxMiddleware()
+                LogRocket.reduxMiddleware(),
                 // ... other middlewares ...
-            )
-        )
+            ),
+        ),
     )
     const persistor = persistStore(store)
     return { store, persistor }

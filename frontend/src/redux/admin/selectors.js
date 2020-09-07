@@ -7,7 +7,7 @@ export const usersUpdated = state => state.admin.usersUpdated
 
 export const usersShouldUpdate = createSelector(
     usersUpdated,
-    updated => Date.now() - usersUpdated > 1000 * 60 * 5
+    updated => Date.now() - usersUpdated > 1000 * 60 * 5,
 )
 
 export const getRoles = state => state.admin.roles
@@ -17,7 +17,7 @@ export const rolesUpdated = state => state.admin.rolesUpdated
 
 export const rolesShouldUpdate = createSelector(
     rolesUpdated,
-    updated => Date.now() - rolesUpdated > 1000 * 60 * 5
+    updated => Date.now() - rolesUpdated > 1000 * 60 * 5,
 )
 
 export const getUsersFilters = state => state.admin.usersFilters
