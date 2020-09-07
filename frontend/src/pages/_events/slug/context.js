@@ -56,17 +56,22 @@ const eventQuery = gql`
         }
     }
 `
-// TODO don't specify all fields here like this
-// spokenLanguages
-//                 CustomAnswers
-// roles
-
+// TODO specify all fields somewhere else
 const registrationQuery = gql`
     query Registration($eventSlug: String!) {
         myRegistration(eventSlug: $eventSlug) {
             status
             answers {
                 spokenLanguages
+                roles {
+                    role
+                    years
+                }
+                CustomAnswers {
+                    section
+                    key
+                    value
+                }
                 dietaryRestrictions
                 industriesOfInterest
                 themesOfInterest

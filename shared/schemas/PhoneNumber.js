@@ -20,8 +20,7 @@ const graphqlSchema = new GraphQLObjectType({
     name: 'PhoneNumber',
     fields: () => ({
         countryCode: {
-            type: GraphQLString,
-            resolve: _ => _.countryCode,
+            type: GraphQLNonNull(GraphQLString),
         },
         number: {
             type: GraphQLNonNull(GraphQLString),
