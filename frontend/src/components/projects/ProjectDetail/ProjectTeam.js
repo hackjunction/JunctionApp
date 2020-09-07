@@ -47,7 +47,7 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
     const secondaryText = member => {
         if (!showFullTeam) return null
         return `${member.email} // ${
-            member.phoneNumber ? member.phoneNumber.country_code : ''
+            member.phoneNumber ? member.phoneNumber.countryCode : ''
         } ${member.phoneNumber ? member.phoneNumber.number : ''}`
     }
 

@@ -272,7 +272,7 @@ const Resolvers = {
         _eventTimeFormatted: parent => {
             return dateUtils.formatDateInterval(
                 parent.startTime,
-                parent.endTime
+                parent.endTime,
             )
         },
         _eventStatus: parent => {

@@ -177,7 +177,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                     </List>
                 )
             case 'phoneNumber':
-                return `${content.country_code} ${content.number}`
+                return `${content.countryCode} ${content.number}`
             default:
                 if (!content) return <NotAvailable />
                 const contentType = typeof content

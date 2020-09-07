@@ -166,7 +166,8 @@ const FieldProps = {
     },
     dateOfBirth: {
         label: 'Date of Birth',
-        hint: 'You need to be at least 16 years old at the time of the event to apply.',
+        hint:
+            'You need to be at least 16 years old at the time of the event to apply.',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,
@@ -266,7 +267,7 @@ const FieldProps = {
                 },
             },
         ],
-        grapqlSchema: GraphQLList(GraphQLString),
+        graphqlSchema: GraphQLList(GraphQLString),
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
@@ -391,7 +392,7 @@ const FieldProps = {
     biography: {
         label: 'Biography',
         hint:
-            "Add a bit of personal touch to your profile by writing a little bit more about yourself and what you do. Keep it short and simple, you have a chance to tell about your motivation later on in the application!",
+            'Add a bit of personal touch to your profile by writing a little bit more about yourself and what you do. Keep it short and simple, you have a chance to tell about your motivation later on in the application!',
         hintMarkdown: false,
         fieldType: FieldTypes.LONG_TEXT,
         schemaConfig: {
@@ -408,8 +409,7 @@ const FieldProps = {
     },
     roles: {
         label: 'Roles',
-        hint:
-            'Add up to 5 roles you have working experience in.',
+        hint: 'Add up to 5 roles you have working experience in.',
         hintMarkdown: false,
         fieldType: FieldTypes.ROLES,
         copyToUserProfile: true,
@@ -423,7 +423,7 @@ const FieldProps = {
     },
     skills: {
         label: 'Skills',
-        hint: "Add up to 10 skills you consider yourself to be proficient at.",
+        hint: 'Add up to 10 skills you consider yourself to be proficient at.',
         hintMarkdown: false,
         fieldType: FieldTypes.SKILLS,
         copyToUserProfile: true,
@@ -886,7 +886,7 @@ const Fields = {
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.phoneNumber || undefined,
         validationSchema: required => {
-            const country_code = yup
+            const countryCode = yup
                 .string()
                 .oneOf(Countries.asArrayOfPhoneCodes)
                 .label('Country code')
@@ -896,11 +896,11 @@ const Fields = {
                 .label('Phone number')
             const shape = required
                 ? {
-                      country_code: country_code.required(),
+                      countryCode: countryCode.required(),
                       number: number.required(),
                   }
                 : {
-                      country_code,
+                      countryCode,
                       number,
                   }
 
@@ -1372,7 +1372,7 @@ const Fields = {
         },
     },
 }
-//TODO remove this since it kinds of prevents localization
+// TODO remove this since it kinds of prevents localization
 function buildFieldToLabelMap() {
     const result = {}
 

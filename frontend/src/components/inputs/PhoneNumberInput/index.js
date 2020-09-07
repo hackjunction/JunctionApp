@@ -10,7 +10,7 @@ const PhoneNumberInput = React.memo(
             code => {
                 onChange({
                     ...value,
-                    country_code: code,
+                    countryCode: code,
                 })
             },
             [value, onChange],
@@ -38,7 +38,7 @@ const PhoneNumberInput = React.memo(
                         <Select
                             options="countryCode"
                             label="Country code"
-                            value={value.country_code}
+                            value={value.countryCode}
                             onChange={handleCodeChange}
                             onBlur={onBlur}
                         />
@@ -51,12 +51,12 @@ const PhoneNumberInput = React.memo(
                             value={value.number}
                             onChange={handleNumberChange}
                             onBlur={onBlur}
-                            disabled={!value.country_code}
+                            disabled={!value.countryCode}
                             textFieldProps={{
                                 InputProps: {
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            {value.country_code}
+                                            {value.countryCode}
                                         </InputAdornment>
                                     ),
                                 },

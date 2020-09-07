@@ -56,12 +56,60 @@ const eventQuery = gql`
         }
     }
 `
+// TODO don't specify all fields here like this
+// spokenLanguages
+//                 CustomAnswers
+// roles
 
 const registrationQuery = gql`
     query Registration($eventSlug: String!) {
         myRegistration(eventSlug: $eventSlug) {
             status
-            answers: _fullAnswers
+            answers {
+                spokenLanguages
+                dietaryRestrictions
+                industriesOfInterest
+                themesOfInterest
+                email
+                lastName
+                firstName
+                secretCode
+                recruitmentOptions {
+                    status
+                    consent
+                    relocation
+                }
+                teamOptions {
+                    applyAsTeam
+                    applyAlone
+                }
+                needsAccommodation
+                needsTravelGrant
+                needsVisa
+                countryOfTravel
+                linkedin
+                github
+                curriculumVitae
+                portfolio
+                education {
+                    level
+                    university
+                    degree
+                    graduationYear
+                }
+                motivation
+                biography
+                headline
+                cityOfResidence
+                countryOfResidence
+                nationality
+                gender
+                dateOfBirth
+                phoneNumber {
+                    number
+                    countryCode
+                }
+            }
         }
     }
 `
