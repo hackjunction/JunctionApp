@@ -68,7 +68,10 @@ export default () => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
 
-    const [events, loading] = useHighlightedEvents({ limit: 10, name: "Junction 2020 Connected" })
+    const [events, loading] = useHighlightedEvents({
+        limit: 10,
+        name: 'Junction 2020 Connected',
+    })
     const event = events?.[0] ?? null
     if (!event) return null
     return (
