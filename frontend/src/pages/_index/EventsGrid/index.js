@@ -13,58 +13,67 @@ import { useTranslation } from 'react-i18next'
 export default ({ events, organizations, loading, title }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    var date = new Date();
-    const isodate = date.toISOString();
+    var date = new Date()
+    const isodate = date.toISOString()
     function renderEvents() {
         return events.map(event => {
-            const canApply = isodate < event.registrationEndTime && isodate > event.registrationStartTime;
-            console.log("huutis", event.name, isodate < event.registrationEndTime);
-            console.log(event.registrationEndTime);
-            
+            const canApply =
+                isodate < event.registrationEndTime &&
+                isodate > event.registrationStartTime
+
             return (
-              <Grid key={event.slug} item xs={12} md={6} lg={4}>
-                <EventCard
-                  event={event}
-                  organization={
-                    organizations
-                      ? event.organizations
-                        ? organizations.find(
-                            (org) => org.slug === event.organizations[0],
-                          )
-                        : null
-                      : null
-                  }
-                  buttons={[
-                    <Button
-                      color="theme_lightgray"
-                      variant="outlined"
-                      onClick={() => dispatch(push('/events/' + event.slug))}
-                    >
-                      {t('See_more_')}
-                      </Button>,
-                      canApply && (
-                          <Button
-                      color="theme_turquoise"
-                      variant="contained"
-                      onClick={() => dispatch(push('/events/' + event.slug))}
-                    >
-                      {t('Register_now_')}
-                    </Button>),
-                    event.galleryOpen && (
-                      <Button
-                        color="theme_turquoise"
-                        variant="contained"
-                        onClick={() =>
-                          dispatch(push('/projects/' + event.slug))
+                <Grid key={event.slug} item xs={12} md={6} lg={4}>
+                    <EventCard
+                        event={event}
+                        organization={
+                            organizations
+                                ? event.organizations
+                                    ? organizations.find(
+                                          org =>
+                                              org.slug ===
+                                              event.organizations[0]
+                                      )
+                                    : null
+                                : null
                         }
-                      >
-                        {t('View_projects_')}
-                      </Button>
-                    ),
-                  ]}
-                />
-              </Grid>
-            );
+                        buttons={[
+                            <Button
+                                color="theme_lightgray"
+                                variant="outlined"
+                                onClick={() =>
+                                    dispatch(push('/events/' + event.slug))
+                                }
+                            >
+                                {t('See_more_')}
+                            </Button>,
+                            canApply && !event.galleryOpen && (
+                                <Button
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                    onClick={() =>
+                                        dispatch(push('/events/' + event.slug))
+                                    }
+                                >
+                                    {t('Register_now_')}
+                                </Button>
+                            ),
+                            event.galleryOpen && (
+                                <Button
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                    onClick={() =>
+                                        dispatch(
+                                            push('/projects/' + event.slug)
+                                        )
+                                    }
+                                >
+                                    {t('View_projects_')}
+                                </Button>
+                            ),
+                        ]}
+                    />
+                </Grid>
+            )
         })
     }
 
