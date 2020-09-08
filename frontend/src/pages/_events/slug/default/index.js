@@ -15,12 +15,14 @@ import StaggeredList from 'components/animated/StaggeredList'
 import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
+import { Helmet } from 'react-helmet'
 
 import EventDetailContext from '../context'
 
 export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
+    console.log(event)
     console.log('slugregi', registration)
     useEffect(() => {
         if (slug) {
@@ -28,8 +30,43 @@ export default () => {
         }
     }, [slug])
 
+    const coverImage = () => {
+        if (event.coverImage !== null) return event.coverImage.url
+        else return '%REACT_APP_SEO_IMAGE_URL%'
+    }
+
+    const eventDescription = () => {
+        console.log(event.description.slice(0, 100))
+        return event.description.slice(0, 100)
+    }
+
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>{event.name}</title>
+                <meta name="title" content={event.name} />
+                <meta property="og:title" content={event.name} />
+                <meta name="twitter:title" content={event.name} />
+                <meta name="description" content={eventDescription()} />
+                <meta property="og:description" content={eventDescription()} />
+                <meta name="twitter:description" content={eventDescription()} />
+
+                <meta name="og:type" content="website" />
+                <meta property="og:image" content={coverImage()} />
+                <meta name="twitter:image" content={coverImage()} />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:site"
+                    content="%REACT_APP_SEO_TWITTER_HANDLE%"
+                />
+                <meta
+                    name="twitter:creator"
+                    content="%REACT_APP_SEO_TWITTER_HANDLE%"
+                />
+            </Helmet>
             <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
             <FadeInWrapper>
                 <CenteredContainer>

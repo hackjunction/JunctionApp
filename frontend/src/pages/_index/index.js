@@ -14,6 +14,7 @@ import config from 'constants/config'
 
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 import { useAllOrganizations } from 'graphql/queries/organization'
+import { Helmet } from 'react-helmet'
 
 import { useTranslation } from 'react-i18next'
 
@@ -22,6 +23,7 @@ export default () => {
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
     const [organizations] = useAllOrganizations()
+
     console.log('ororo', organizations)
     console.log('ararr', activeEvents)
 
@@ -32,6 +34,56 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <>
+                    <Helmet>
+                        <meta
+                            name="title"
+                            content="%REACT_APP_SEO_PAGE_TITLE%"
+                        />
+                        <meta
+                            property="og:title"
+                            content="%REACT_APP_SEO_PAGE_TITLE%"
+                        />
+                        <meta
+                            name="twitter:title"
+                            content="%REACT_APP_SEO_PAGE_TITLE%"
+                        />
+                        <meta
+                            name="description"
+                            content="%REACT_APP_SEO_PAGE_DESCRIPTION%"
+                        />
+                        <meta
+                            property="og:description"
+                            content="%REACT_APP_SEO_PAGE_DESCRIPTION%"
+                        />
+                        <meta
+                            name="twitter:description"
+                            content="%REACT_APP_SEO_PAGE_DESCRIPTION%"
+                        />
+
+                        <meta name="og:type" content="website" />
+                        <meta
+                            property="og:image"
+                            content="%REACT_APP_SEO_IMAGE_URL%"
+                        />
+                        <meta
+                            name="twitter:image"
+                            content="%REACT_APP_SEO_IMAGE_URL%"
+                        />
+                        <meta property="og:image:width" content="1200" />
+                        <meta property="og:image:height" content="630" />
+                        <meta
+                            name="twitter:card"
+                            content="summary_large_image"
+                        />
+                        <meta
+                            name="twitter:site"
+                            content="%REACT_APP_SEO_TWITTER_HANDLE%"
+                        />
+                        <meta
+                            name="twitter:creator"
+                            content="%REACT_APP_SEO_TWITTER_HANDLE%"
+                        />
+                    </Helmet>
                     <Divider size={1} />
                     <EventHighlight />
                     <Divider size={2} />
