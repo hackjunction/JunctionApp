@@ -43,6 +43,35 @@ export default () => {
     const slug = match.path.slice(10).split('/')[0].toString()
     const idToken = useSelector(AuthSelectors.getIdToken)
 
+    // const validationSchema = useCallback((data) => {
+    //   const validations = {};
+    //   validations['name'] = yup.string();
+    //   validations['description'] = yup.string();
+    //   validations['link'] = yup.string().url();
+    //   validations['icon'] = yup.string().url().nullable();
+    //   return validations;
+    // }, []);
+
+    // const handleSubmit = useCallback(
+    //   (values, formikBag) => {
+    //     formikBag.setSubmitting(true);
+    //     dispatch(AdminActions.editHackerpack(idToken, slug, values))
+    //       .then(() => {
+    //         dispatch(SnackbarActions.success('Changes saved!'));
+    //         dispatch(push(`/admin`));
+    //       })
+    //       .catch((err) => {
+    //         dispatch(
+    //           SnackbarActions.error('Something went wrong... Please try again'),
+    //         );
+    //       })
+    //       .finally(() => {
+    //         formikBag.setSubmitting(false);
+    //       });
+    //   },
+    //   [slug],
+    // );
+
     // const event = useSelector(OrganiserSelectors.event)
 
     // const [initialData, setInitialData] = useState({})
