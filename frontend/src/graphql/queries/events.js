@@ -2,23 +2,25 @@ import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
 const Fragments = {
-    EventPreview: gql`
-        fragment EventPreview on Event {
-            _id
-            slug
-            name
-            galleryOpen
-            coverImage {
-                url
-                publicId
-            }
-            eventType
-            organizations
-            _eventLocationFormatted
-            _eventTimeFormatted
-        }
-    `,
-}
+  EventPreview: gql`
+    fragment EventPreview on Event {
+      _id
+      slug
+      name
+      galleryOpen
+      coverImage {
+        url
+        publicId
+      }
+      eventType
+      registrationStartTime
+      registrationEndTime
+      organizations
+      _eventLocationFormatted
+      _eventTimeFormatted
+    }
+  `,
+};
 
 export const GET_EVENT_PREVIEW = gql`
     query Event($_id: ID!) {
@@ -39,18 +41,19 @@ export const useEventPreview = _id => {
 }
 
 export const GET_HIGHLIGHTED_EVENTS = gql`
-    query Event($limit: Int) {
-        highlightedEvents(limit: $limit) {
+    query Event($limit: Int, $name: String) {
+        highlightedEvents(limit: $limit, name: $name) {
             ...EventPreview
         }
     }
     ${Fragments.EventPreview}
 `
 
-export const useHighlightedEvents = ({ limit }) => {
+export const useHighlightedEvents = ({ limit, name }) => {
     const { data, loading, error } = useQuery(GET_HIGHLIGHTED_EVENTS, {
         variables: {
             limit,
+            name,
         },
     })
 
