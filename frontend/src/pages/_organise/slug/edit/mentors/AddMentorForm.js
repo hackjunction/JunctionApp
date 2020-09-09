@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import MentorService from 'services/mentors'
 
 import * as AuthSelectors from 'redux/auth/selectors'
+import * as OrganiserSelectors from 'redux/organiser/selectors';
+
 
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -40,7 +42,9 @@ export default () => {
     const match = useRouteMatch()
 
     // const { t } = useTranslation()
-    const slug = match.path.slice(10).split('/')[0].toString()
+    const event = useSelector(OrganiserSelectors.event)
+    const slug = event.slug;
+    // const slug = match.path.slice(10).split('/')[0].toString()
     const idToken = useSelector(AuthSelectors.getIdToken)
 
     // const validationSchema = useCallback((data) => {
