@@ -81,7 +81,11 @@ export default ({ event, registration }) => {
                     <Button
                         fullWidth
                         onClick={() =>
-                            dispatch(push(`/login`, { nextRoute: match.url }))
+                            dispatch(
+                                push(`/login`, {
+                                    nextRoute: `${match.url}/register`,
+                                })
+                            )
                         }
                         variant="contained"
                         color="theme_turquoise"
