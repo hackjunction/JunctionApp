@@ -5,7 +5,10 @@ import moment from 'moment'
 import Select from 'components/inputs/Select'
 
 const DateInput = ({ label, value, onChange, onBlur }) => {
-    const momentValue = value ? moment(value) : null
+    let momentValue = value ? moment(value) : null
+    if (!momentValue.isValid()) {
+        momentValue = moment.unix(value)
+    }
 
     const handleDateChange = useCallback(
         date => {

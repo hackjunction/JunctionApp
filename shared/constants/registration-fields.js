@@ -1,3 +1,9 @@
+const {
+    GraphQLDate,
+    GraphQLTime,
+    GraphQLDateTime,
+} = require('graphql-iso-date')
+
 const yup = require('yup')
 const _ = require('lodash')
 const {
@@ -175,7 +181,7 @@ const FieldProps = {
         mongooseSchema: {
             type: Date,
         },
-        graphqlSchema: GraphQLString,
+        graphqlSchema: GraphQLDate,
         schemaConfig: {
             defaultEnable: false,
             defaultRequire: false,
@@ -1062,7 +1068,7 @@ const Fields = {
                             .max(5)
                             .required()
                             .label('Years of experience'),
-                    })
+                    }),
                 )
                 .ensure()
                 .max(5)
@@ -1091,7 +1097,7 @@ const Fields = {
                             .max(5)
                             .required()
                             .label('Experience level'),
-                    })
+                    }),
                 )
                 .max(10)
                 .ensure()
@@ -1434,7 +1440,7 @@ const Helpers = {
             Object.keys(Categories).map(key => {
                 return Categories[key]
             }),
-            'order'
+            'order',
         )
     },
     getLabel: field => {
@@ -1470,7 +1476,7 @@ const Helpers = {
         config,
         customQuestions,
         userProfile,
-        idToken
+        idToken,
     ) => {
         const result = {}
 
@@ -1479,7 +1485,7 @@ const Helpers = {
                 result[field] = Helpers.getDefaultValue(
                     field,
                     userProfile,
-                    idToken
+                    idToken,
                 )
             }
         })
