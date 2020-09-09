@@ -4,7 +4,7 @@ export const useFormField = (
     initialValue,
     validate = () => null,
     initialError = null,
-    onChangeEvent = true,
+    onChangeEvent = true
 ) => {
     const [value, setValue] = useState(initialValue)
     const [error, setError] = useState(initialError)
@@ -23,7 +23,7 @@ export const useFormField = (
                 }
             }
         },
-        [error, validate, onChangeEvent],
+        [error, validate, onChangeEvent]
     )
 
     const reset = useCallback(() => {

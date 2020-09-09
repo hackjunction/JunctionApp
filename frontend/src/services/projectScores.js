@@ -17,35 +17,35 @@ ProjectScoresService.getScoresByEventAndTeam = (idToken, eventSlug) => {
 ProjectScoresService.getScoreByEventSlugAndProjectId = (
     idToken,
     eventSlug,
-    projectId,
+    projectId
 ) => {
     return _axios.get(
         `/project-scores/event/${eventSlug}/project/${projectId}`,
-        config(idToken),
+        config(idToken)
     )
 }
 
 ProjectScoresService.addScoreByEventSlug = (
     idToken,
     eventSlug,
-    projectScore,
+    projectScore
 ) => {
     return _axios.post(
         `/project-scores/event/${eventSlug}`,
         projectScore,
-        config(idToken),
+        config(idToken)
     )
 }
 
 ProjectScoresService.updateScoreByEventSlug = (
     idToken,
     eventSlug,
-    projectScore,
+    projectScore
 ) => {
     return _axios.put(
         `/project-scores/event/${eventSlug}/${projectScore._id}`,
         projectScore,
-        config(idToken),
+        config(idToken)
     )
 }
 

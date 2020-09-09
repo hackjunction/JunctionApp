@@ -11,7 +11,7 @@ import FilterGroupMenu from 'components/filters/FilterGroupMenu'
 export default () => {
     const registrations = useSelector(OrganiserSelectors.registrations)
     const registrationsLoading = useSelector(
-        OrganiserSelectors.registrationsLoading,
+        OrganiserSelectors.registrationsLoading
     )
 
     const [filters, setFilters] = useState([])

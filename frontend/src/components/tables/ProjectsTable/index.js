@@ -68,7 +68,7 @@ const ProjectsTable = ({ projects, baseURL }) => {
         project => {
             dispatch(push(`${baseURL}${project.original._id}`))
         },
-        [baseURL, dispatch],
+        [baseURL, dispatch]
     )
 
     // TODO refactor forloops

@@ -48,18 +48,18 @@ export const annotatorVoteCount = createSelector(annotator, annotator => {
 })
 
 export const eventStatus = createSelector(event, event =>
-    EventHelpers.getEventStatus(event, moment),
+    EventHelpers.getEventStatus(event, moment)
 )
 
 export const isRegistrationOpen = createSelector(
     eventStatus,
-    status => status === EventStatuses.REGISTRATION_OPEN.id,
+    status => status === EventStatuses.REGISTRATION_OPEN.id
 )
 export const isSubmissionsUpcoming = createSelector(event, event =>
-    EventHelpers.isSubmissionsUpcoming(event, moment),
+    EventHelpers.isSubmissionsUpcoming(event, moment)
 )
 export const isSubmissionsPast = createSelector(event, event =>
-    EventHelpers.isSubmissionsPast(event, moment),
+    EventHelpers.isSubmissionsPast(event, moment)
 )
 
 export const isAcceptancePending = createSelector(
@@ -72,7 +72,7 @@ export const isAcceptancePending = createSelector(
                 RegistrationStatuses.asObject.softRejected.id,
             ].indexOf(registration.status) !== -1
         )
-    },
+    }
 )
 
 export const appliedAsTeam = createSelector(registration, registration => {
@@ -139,7 +139,7 @@ export const shownPages = createSelector(
             eventID:
                 event?.eventType === EventTypes.physical.id &&
                 [STATUSES.confirmed.id, STATUSES.checkedIn.id].indexOf(
-                    registration?.status,
+                    registration?.status
                 ) !== -1,
             reviewing:
                 registration?.status === STATUSES.checkedIn.id &&
@@ -153,8 +153,8 @@ export const shownPages = createSelector(
                 (event?.tracks?.length ?? 0) > 0,
             hackerPack:
                 [STATUSES.checkedIn.id, STATUSES.confirmed.id].indexOf(
-                    registration?.status,
+                    registration?.status
                 ) !== -1,
         }
-    },
+    }
 )

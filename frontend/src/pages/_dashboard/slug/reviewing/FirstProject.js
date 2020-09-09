@@ -37,14 +37,14 @@ export default ({ projectId }) => {
         try {
             const data = await GavelService.getProjectDetails(
                 idToken,
-                projectId,
+                projectId
             )
             setProject(data)
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Please reload the page',
-                ),
+                    'Oops, something went wrong... Please reload the page'
+                )
             )
             setError(true)
         }
@@ -58,8 +58,8 @@ export default ({ projectId }) => {
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Please reload the page',
-                ),
+                    'Oops, something went wrong... Please reload the page'
+                )
             )
         }
     }, [dispatch, event.slug])

@@ -10,7 +10,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 const STATUSES = RegistrationStatuses.asObject
 const VisaInvitationDrawer = React.lazy(() =>
-    import('components/modals/VisaInvitationDrawer'),
+    import('components/modals/VisaInvitationDrawer')
 )
 
 export default () => {

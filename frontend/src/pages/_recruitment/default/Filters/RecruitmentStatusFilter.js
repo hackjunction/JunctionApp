@@ -23,7 +23,7 @@ export default () => {
                 setDraft(draft.filter(item => item !== value))
             }
         },
-        [draft],
+        [draft]
     )
     const handleSubmit = useCallback(() => {
         dispatch(RecruitmentActions.setFiltersField('recruitmentStatus', draft))

@@ -43,8 +43,8 @@ export default () => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
+                        'Something went wrong... please try again.'
+                    )
                 )
             })
     }, [dispatch, event.slug])
@@ -58,22 +58,20 @@ export default () => {
             .catch(err => {
                 if (err.response && err.response.status === 404) {
                     dispatch(
-                        SnackbarActions.error(
-                            'No team found with code ' + code,
-                        ),
+                        SnackbarActions.error('No team found with code ' + code)
                     )
                 } else if (err.response && err.response.status === 403) {
                     dispatch(
                         SnackbarActions.error(
                             'Unable to join team: ' +
-                                err?.response?.data?.message,
-                        ),
+                                err?.response?.data?.message
+                        )
                     )
                 } else {
                     dispatch(
                         SnackbarActions.error(
-                            'Something went wrong... please try again.',
-                        ),
+                            'Something went wrong... please try again.'
+                        )
                     )
                 }
             })

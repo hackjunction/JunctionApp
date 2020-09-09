@@ -48,7 +48,7 @@ export default ({ track }) => {
 
     const unrankedProjects = useMemo(() => {
         return trackProjects.filter(
-            project => rankedProjects.indexOf(project._id) === -1,
+            project => rankedProjects.indexOf(project._id) === -1
         )
     }, [trackProjects, rankedProjects])
 
@@ -82,7 +82,7 @@ export default ({ track }) => {
                 </ListItem>
             )
         },
-        [allProjectsMap],
+        [allProjectsMap]
     )
 
     const renderUnrankedItem = useCallback(
@@ -103,7 +103,7 @@ export default ({ track }) => {
                 </ListItem>
             )
         },
-        [allProjectsMap],
+        [allProjectsMap]
     )
 
     return (

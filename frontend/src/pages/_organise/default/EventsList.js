@@ -26,7 +26,7 @@ export default ({ events = [] }) => {
                                     variant="contained"
                                     onClick={() =>
                                         dispatch(
-                                            push(`/organise/${event.slug}`),
+                                            push(`/organise/${event.slug}`)
                                         )
                                     }
                                 >

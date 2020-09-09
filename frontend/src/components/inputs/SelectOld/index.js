@@ -34,7 +34,7 @@ const _Select = React.memo(
                 e.preventDefault()
                 onChange(e.target.value)
             },
-            [onChange],
+            [onChange]
         )
 
         const items = useMemo(() => {
@@ -123,7 +123,7 @@ const _Select = React.memo(
                 ))}
             </TextField>
         )
-    },
+    }
 )
 
 export default _Select

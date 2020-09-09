@@ -56,65 +56,12 @@ const eventQuery = gql`
         }
     }
 `
-// TODO specify all fields somewhere else
+
 const registrationQuery = gql`
     query Registration($eventSlug: String!) {
         myRegistration(eventSlug: $eventSlug) {
             status
-            answers {
-                spokenLanguages
-                roles {
-                    role
-                    years
-                }
-                CustomAnswers {
-                    section
-                    key
-                    value
-                }
-                dietaryRestrictions
-                industriesOfInterest
-                themesOfInterest
-                email
-                lastName
-                firstName
-                secretCode
-                recruitmentOptions {
-                    status
-                    consent
-                    relocation
-                }
-                teamOptions {
-                    applyAsTeam
-                    applyAlone
-                }
-                needsAccommodation
-                needsTravelGrant
-                needsVisa
-                countryOfTravel
-                linkedin
-                github
-                curriculumVitae
-                portfolio
-                education {
-                    level
-                    university
-                    degree
-                    graduationYear
-                }
-                motivation
-                biography
-                headline
-                cityOfResidence
-                countryOfResidence
-                nationality
-                gender
-                dateOfBirth
-                phoneNumber {
-                    number
-                    countryCode
-                }
-            }
+            answers: _fullAnswers
         }
     }
 `
@@ -149,13 +96,13 @@ export const EventDetailProvider = ({ children }) => {
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
-                formData,
+                formData
             ).then(res => {
                 refetchRegistration()
                 return res
             })
         },
-        [idToken, refetchRegistration, slug],
+        [idToken, refetchRegistration, slug]
     )
 
     const editRegistration = useCallback(
@@ -163,13 +110,13 @@ export const EventDetailProvider = ({ children }) => {
             return RegistrationsService.updateRegistration(
                 idToken,
                 slug,
-                formData,
+                formData
             ).then(res => {
                 refetchRegistration()
                 return res
             })
         },
-        [idToken, refetchRegistration, slug],
+        [idToken, refetchRegistration, slug]
     )
     const event = eventData?.eventBySlug
     const registration = registrationData?.myRegistration

@@ -26,7 +26,7 @@ const StreetAddressInput = ({
                 [fieldName]: fieldValue,
             })
         },
-        [value, onChange],
+        [value, onChange]
     )
 
     return (

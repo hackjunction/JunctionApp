@@ -29,7 +29,7 @@ export default () => {
         page => {
             dispatch(RecruitmentActions.setPage(page))
         },
-        [dispatch],
+        [dispatch]
     )
 
     useEffect(() => {

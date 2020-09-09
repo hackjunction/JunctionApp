@@ -9,7 +9,7 @@ const Component = ({ column }) => {
         e => {
             setFilter(e.target.value)
         },
-        [setFilter],
+        [setFilter]
     )
 
     return (

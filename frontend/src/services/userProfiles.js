@@ -57,7 +57,7 @@ UserProfilesService.updateRecruiter = (
     idToken,
     recruiterId,
     events,
-    organisation,
+    organisation
 ) => {
     const data = { recruiterId, events, organisation }
     return _axios.patch('/user-profiles/recruiters', data, config(idToken))

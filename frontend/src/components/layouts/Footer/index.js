@@ -155,6 +155,18 @@ const Footer = props => {
                                 src="//cdn.auth0.com/oss/badges/a0-badge-light.png"
                             />
                         </a>
+                        <Divider size={1} />
+                        <a
+                            href="https://cloudinary.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            alt="Cloudinary - Image and Video Upload, Storage, Optimization and CDN"
+                        >
+                            <img
+                                alt="Cloudinary - Media Upload, Storage, Optimization and CDN"
+                                src="https://res.cloudinary.com/cloudinary/image/upload/c_scale,w_150/v1/logo/for_white_bg/cloudinary_logo_for_white_bg.png"
+                            />
+                        </a>
                     </div>
                     <Divider size={1} />
                 </div>

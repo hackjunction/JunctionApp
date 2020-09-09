@@ -63,7 +63,7 @@ export default () => {
                 </ListItem>
             )
         },
-        [allProjectsMap],
+        [allProjectsMap]
     )
 
     const renderUnrankedItem = useCallback(
@@ -84,7 +84,7 @@ export default () => {
                 </ListItem>
             )
         },
-        [allProjectsMap],
+        [allProjectsMap]
     )
 
     return (

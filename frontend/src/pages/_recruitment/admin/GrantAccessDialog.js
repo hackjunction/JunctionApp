@@ -47,8 +47,8 @@ export default ({ userId, onClose }) => {
                 RecruitmentActions.adminGrantRecruiterAccess(
                     userId,
                     events,
-                    organisation.trim(),
-                ),
+                    organisation.trim()
+                )
             )
             dispatch(SnackbarActions.success('Success!'))
             onClose()

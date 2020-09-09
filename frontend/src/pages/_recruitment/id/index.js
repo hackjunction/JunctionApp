@@ -64,7 +64,7 @@ export default () => {
         (message, userId) => {
             dispatch(RecruitmentActions.sendMessage(message, userId))
         },
-        [dispatch],
+        [dispatch]
     )
 
     const [loading, setLoading] = useState(true)
@@ -83,7 +83,7 @@ export default () => {
             return
         },
         false,
-        false,
+        false
     )
 
     const { id } = match.params
@@ -266,7 +266,7 @@ export default () => {
                                 <DetailSection label="Spoken languages">
                                     <Typography variant="body2">
                                         {user.profile.spokenLanguages.join(
-                                            ', ',
+                                            ', '
                                         )}
                                     </Typography>
                                 </DetailSection>
@@ -283,7 +283,7 @@ export default () => {
                                             </Typography>
                                             <Typography variant="body2">
                                                 {Roles.getLabelForExperienceLevel(
-                                                    role.years,
+                                                    role.years
                                                 )}
                                             </Typography>
                                         </Box>
@@ -347,7 +347,7 @@ export default () => {
                                                         {industry}
                                                     </Typography>
                                                 </Box>
-                                            ),
+                                            )
                                         )}
                                     </DetailSection>
                                 </Grid>

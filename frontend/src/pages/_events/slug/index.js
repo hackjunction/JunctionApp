@@ -17,7 +17,7 @@ const EventDetailRouter = () => {
     const match = useRouteMatch()
     const location = useLocation()
     const { eventLoading, eventError, isRegistrationOpen } = useContext(
-        EventDetailContext,
+        EventDetailContext
     )
     // TODO FIX errortext and desc to be from eventErro
     return (

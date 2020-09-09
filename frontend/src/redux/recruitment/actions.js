@@ -88,7 +88,7 @@ export const sendMessage = (message, userId) => async (dispatch, getState) => {
             'message',
             idToken,
             userId,
-            message,
+            message
         ),
         meta: {
             onFailure: e => console.log('Error sending message', e),
@@ -100,7 +100,7 @@ export const sendMessage = (message, userId) => async (dispatch, getState) => {
 
 export const toggleFavorite = (userId, isFavorite) => async (
     dispatch,
-    getState,
+    getState
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -112,7 +112,7 @@ export const toggleFavorite = (userId, isFavorite) => async (
             promise: RecruitmentService.submitAction(
                 'favorite',
                 idToken,
-                userId,
+                userId
             ),
             meta: {
                 onFailure: e => console.log('Error adding to favorites', e),
@@ -124,7 +124,7 @@ export const toggleFavorite = (userId, isFavorite) => async (
             promise: RecruitmentService.submitAction(
                 'remove-favorite',
                 idToken,
-                userId,
+                userId
             ),
             meta: {
                 onFailure: e => console.log('Error adding to favorites', e),
@@ -163,7 +163,7 @@ export const updateAdminSearchResults = query => (dispatch, getState) => {
 export const adminGrantRecruiterAccess = (
     userId,
     events,
-    organisation,
+    organisation
 ) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -171,7 +171,7 @@ export const adminGrantRecruiterAccess = (
         idToken,
         userId,
         events,
-        organisation,
+        organisation
     )
     dispatch({
         type: ActionTypes.ADMIN_UPDATE_USER,
@@ -185,7 +185,7 @@ export const adminGrantRecruiterAccess = (
 
 export const adminRevokeRecruiterAccess = userId => async (
     dispatch,
-    getState,
+    getState
 ) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -193,7 +193,7 @@ export const adminRevokeRecruiterAccess = userId => async (
         idToken,
         userId,
         [],
-        '',
+        ''
     )
     dispatch({
         type: ActionTypes.ADMIN_UPDATE_USER,

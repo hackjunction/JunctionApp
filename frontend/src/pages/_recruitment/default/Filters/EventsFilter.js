@@ -39,7 +39,7 @@ export default () => {
     const filters = useSelector(RecruitmentSelectors.filters)?.events ?? []
     const classes = useStyles()
     const [events, addEvent, removeEvent, editEvent, setEvents] = useArray(
-        filters,
+        filters
     )
 
     const handleSubmit = useCallback(() => {
@@ -57,7 +57,7 @@ export default () => {
                 statuses: [],
             })
         },
-        [addEvent],
+        [addEvent]
     )
 
     const eventOptions = useMemo(() => {

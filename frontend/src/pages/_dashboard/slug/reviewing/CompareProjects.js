@@ -46,8 +46,8 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Please reload the page',
-                ),
+                    'Oops, something went wrong... Please reload the page'
+                )
             )
 
             setError(true)

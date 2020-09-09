@@ -45,7 +45,7 @@ const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
             }
             onChange(newValue)
         },
-        [onChange, value],
+        [onChange, value]
     )
 
     const handleMinutesChange = useCallback(
@@ -56,7 +56,7 @@ const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
             }
             onChange(newValue)
         },
-        [onChange, value],
+        [onChange, value]
     )
 
     return (

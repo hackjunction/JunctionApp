@@ -119,7 +119,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value,
+                                                value
                                             )
                                         }
                                         showVenueName
@@ -243,7 +243,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value,
+                                                value
                                             )
                                         }
                                     />
@@ -277,7 +277,7 @@ export default () => {
                                     key => ({
                                         label: ReviewingMethods[key].label,
                                         value: key,
-                                    }),
+                                    })
                                 )}
                             />
                         </FormControl>
@@ -301,7 +301,7 @@ export default () => {
                                         form.setFieldValue(field.name, value)
                                     }
                                     options={Object.keys(
-                                        OverallReviewingMethods,
+                                        OverallReviewingMethods
                                     ).map(key => ({
                                         label:
                                             OverallReviewingMethods[key].label,

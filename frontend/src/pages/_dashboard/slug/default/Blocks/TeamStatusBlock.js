@@ -17,7 +17,7 @@ export default () => {
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const isTeamComplete = useSelector(DashboardSelectors.isTeamComplete)
     const isAcceptancePending = useSelector(
-        DashboardSelectors.isAcceptancePending,
+        DashboardSelectors.isAcceptancePending
     )
 
     if (!registration || !event) return <NotificationBlock loading />
@@ -53,7 +53,7 @@ export default () => {
                                 variant="contained"
                                 onClick={() =>
                                     dispatch(
-                                        push(`/dashboard/${event.slug}/team`),
+                                        push(`/dashboard/${event.slug}/team`)
                                     )
                                 }
                             >
@@ -90,7 +90,7 @@ export default () => {
                                 variant="contained"
                                 onClick={() =>
                                     dispatch(
-                                        push(`/dashboard/${event.slug}/team`),
+                                        push(`/dashboard/${event.slug}/team`)
                                     )
                                 }
                             >

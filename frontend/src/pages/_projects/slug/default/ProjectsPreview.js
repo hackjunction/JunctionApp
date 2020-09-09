@@ -24,7 +24,7 @@ export default ({
         project => {
             dispatch(push(`/projects/${event.slug}/view/${project._id}`))
         },
-        [event.slug, dispatch],
+        [event.slug, dispatch]
     )
     return (
         <Box mb={3} display="flex" flexDirection="column">

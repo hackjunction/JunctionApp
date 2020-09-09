@@ -17,7 +17,7 @@ export default ({ value = {}, onChange }) => {
                 [fieldName]: fieldValue,
             })
         },
-        [value, onChange],
+        [value, onChange]
     )
 
     return (

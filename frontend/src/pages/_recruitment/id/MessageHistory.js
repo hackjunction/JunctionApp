@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 export default ({ user }) => {
     const { t } = useTranslation()
     const actionHistoryByUser = useSelector(
-        RecruitmentSelectors.actionHistoryByUser,
+        RecruitmentSelectors.actionHistoryByUser
     )
     const userHistory = actionHistoryByUser[user.userId] || []
     const messages = userHistory.filter(action => action.type === 'message')
@@ -70,7 +70,7 @@ export default ({ user }) => {
                                     {' — '}
                                     {message.data.message.replace(
                                         /<br>/g,
-                                        '\n',
+                                        '\n'
                                     )}
                                 </>
                             }

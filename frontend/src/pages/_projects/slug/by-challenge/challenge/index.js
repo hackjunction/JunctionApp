@@ -18,7 +18,7 @@ export default ({ event, projects }) => {
         project => {
             dispatch(push(`/projects/${event.slug}/view/${project._id}`))
         },
-        [dispatch, event.slug],
+        [dispatch, event.slug]
     )
 
     const challenge = useMemo(() => {

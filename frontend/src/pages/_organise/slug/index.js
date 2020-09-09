@@ -49,8 +49,8 @@ export default () => {
             dispatch(
                 OrganiserActions.updateOrganisersForEvent(
                     event.owner,
-                    event.organisers,
-                ),
+                    event.organisers
+                )
             )
             dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
             dispatch(OrganiserActions.updateTeamsForEvent(slug))
