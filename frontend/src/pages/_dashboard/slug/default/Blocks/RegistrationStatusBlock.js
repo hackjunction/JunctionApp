@@ -132,27 +132,27 @@ export default () => {
             case RegistrationStatuses.asObject.softAccepted.id:
             case RegistrationStatuses.asObject.softRejected.id: {
                 if (isRegistrationOpen) {
-                    return t('registration_info_open_')
+                    return t('Registration_info_open_')
                 } else {
-                    return t('registration_info_closed_')
+                    return t('Registration_info_closed_')
                 }
             }
             case RegistrationStatuses.asObject.rejected.id: {
-                return t('registration_info_rejected_')
+                return t('Registration_info_rejected_')
             }
             case RegistrationStatuses.asObject.accepted.id: {
-                return t('registration_info_accepted_', {
+                return t('Registration_info_accepted_', {
                     eventName: event.name,
                 })
             }
             case RegistrationStatuses.asObject.cancelled.id: {
-                return t('registration_info_cancelled_')
+                return t('Registration_info_cancelled_')
             }
             case RegistrationStatuses.asObject.confirmed.id: {
-                return t('registration_info_confirmed_')
+                return t('Registration_info_confirmed_')
             }
             case RegistrationStatuses.asObject.checkedIn.id: {
-                return t('registration_info_checked_in_', {
+                return t('Registration_info_checked_in_', {
                     time: moment(event.startTime).format('LLLL'),
                 })
             }

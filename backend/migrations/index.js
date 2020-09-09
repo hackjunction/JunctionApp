@@ -15,19 +15,19 @@ const run = async () => {
     return Promise.each(migrations, (migration, index) => {
         if (typeof migration.index !== 'number') {
             throw new Error(
-                `Invalid migratio,n file at index ${index}: migrations must have an index`,
+                `Invalid migration file at index ${index}: migrations must have an index`,
             )
         }
 
         if (typeof migration.name !== 'string') {
             throw new Error(
-                `Invalid migrat,ion file at index ${index}: migrations must have a name`,
+                `Invalid migration file at index ${index}: migrations must have a name`,
             )
         }
 
         if (typeof migration.description !== 'string') {
             throw new Error(
-                `Invalid migration fil,e at index ${index}: migrations must have a description`,
+                `Invalid migration file at index ${index}: migrations must have a description`,
             )
         }
 

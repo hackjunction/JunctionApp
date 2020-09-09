@@ -88,8 +88,6 @@ export default props => {
             },
         )
     }, [fields, data, registration, userProfile, idTokenData])
-    console.log('init is', initialValues)
-
     return (
         <Formik
             initialValues={initialValues}
