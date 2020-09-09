@@ -163,7 +163,7 @@ export default () => {
                                             arrivalCity={arrivalCity}
                                             arrivalCountry={arrivalCountry}
                                             arrivalDate={moment(
-                                                arrivalDate.value,
+                                                arrivalDate.value
                                             ).format('DD.MM.YYYY')}
                                         />
                                     }

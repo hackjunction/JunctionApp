@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": ["airbnb", "plugin:prettier/recommended"],
   "env": {
     "jest": true,
     "browser": true
@@ -20,13 +20,14 @@
         "functions": "ignore"
       }
     ],
-    "no-plusplus": "off",
-    "no-underscore-dangle": "off"
+    "no-plusplus": "off"
   },
+  "parser": "babel-eslint",
+  "plugins": ["react"],
   "globals": {
     "browser": true,
     "$": true,
     "before": true,
     "document": true
-  },
+  }
 }

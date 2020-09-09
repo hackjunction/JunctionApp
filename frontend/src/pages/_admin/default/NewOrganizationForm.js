@@ -56,7 +56,7 @@ export default () => {
             })
             .catch(e => {
                 dispatch(
-                    SnackbarActions.error(t('Unable_to_create_organization_')),
+                    SnackbarActions.error(t('Unable_to_create_organization_'))
                 )
             })
             .finally(() => {

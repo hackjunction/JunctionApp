@@ -12,28 +12,28 @@ const TablePaginationActions = ({ count, page, rowsPerPage, onChangePage }) => {
         event => {
             onChangePage(event, 0)
         },
-        [onChangePage],
+        [onChangePage]
     )
 
     const handleBackButtonClick = useCallback(
         event => {
             onChangePage(event, page - 1)
         },
-        [onChangePage, page],
+        [onChangePage, page]
     )
 
     const handleNextButtonClick = useCallback(
         event => {
             onChangePage(event, page + 1)
         },
-        [onChangePage, page],
+        [onChangePage, page]
     )
 
     const handleLastPageButtonClick = useCallback(
         event => {
             onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
         },
-        [onChangePage, count, rowsPerPage],
+        [onChangePage, count, rowsPerPage]
     )
 
     return (

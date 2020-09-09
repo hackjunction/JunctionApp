@@ -27,7 +27,7 @@ export default ({ userId, onClose }) => {
         setLoading(true)
         try {
             await dispatch(
-                RecruitmentActions.adminRevokeRecruiterAccess(userId),
+                RecruitmentActions.adminRevokeRecruiterAccess(userId)
             )
             dispatch(SnackbarActions.success('Success!'))
             onClose()

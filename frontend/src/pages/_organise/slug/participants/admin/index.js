@@ -39,25 +39,25 @@ export default () => {
     const handleBulkAccept = () => {
         return RegistrationsService.bulkAcceptRegistrationsForEvent(
             idToken,
-            event.slug,
+            event.slug
         )
             .then(data => {
                 dispatch(
                     SnackbarActions.success(
-                        'Success! All soft accepted registrations have been accepted.',
-                    ),
+                        'Success! All soft accepted registrations have been accepted.'
+                    )
                 )
             })
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        `Something went wrong... Are you sure you're connected to the internet ?`,
-                    ),
+                        `Something went wrong... Are you sure you're connected to the internet ?`
+                    )
                 )
             })
             .finally(() => {
                 dispatch(
-                    OrganiserActions.updateRegistrationsForEvent(event.slug),
+                    OrganiserActions.updateRegistrationsForEvent(event.slug)
                 )
                 return
             })
@@ -66,25 +66,25 @@ export default () => {
     const handleBulkReject = () => {
         return RegistrationsService.bulkRejectRegistrationsForEvent(
             idToken,
-            event.slug,
+            event.slug
         )
             .then(data => {
                 dispatch(
                     SnackbarActions.success(
-                        `Success! All soft rejected registrations have been rejected.`,
-                    ),
+                        `Success! All soft rejected registrations have been rejected.`
+                    )
                 )
             })
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        `Something went wrong... Are you sure you're connected to the internet?`,
-                    ),
+                        `Something went wrong... Are you sure you're connected to the internet?`
+                    )
                 )
             })
             .finally(() => {
                 dispatch(
-                    OrganiserActions.updateRegistrationsForEvent(event.slug),
+                    OrganiserActions.updateRegistrationsForEvent(event.slug)
                 )
                 return
             })

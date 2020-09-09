@@ -23,7 +23,7 @@ export default ({ event, registration }) => {
                 <Typography align="center" variant="subtitle1">
                     {t('Applications_begins_', {
                         time: moment(event.registrationStartTime).format(
-                            `LLL [(${event.timezone})]`,
+                            `LLL [(${event.timezone})]`
                         ),
                     })}
                 </Typography>
@@ -51,7 +51,7 @@ export default ({ event, registration }) => {
                                     fullWidth
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/${event.slug}`),
+                                            push(`/dashboard/${event.slug}`)
                                         )
                                     }
                                     variant="contained"

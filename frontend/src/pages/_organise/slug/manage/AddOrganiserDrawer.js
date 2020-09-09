@@ -36,8 +36,8 @@ export default ({ isOpen, onClose, onAdded, organisers, slug }) => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... Please try again.',
-                    ),
+                        'Something went wrong... Please try again.'
+                    )
                 )
             })
     }, [searchValue, idToken, dispatch])
@@ -47,7 +47,7 @@ export default ({ isOpen, onClose, onAdded, organisers, slug }) => {
             onAdded(user.userId)
             onClose()
         },
-        [onAdded, onClose],
+        [onAdded, onClose]
     )
 
     return (

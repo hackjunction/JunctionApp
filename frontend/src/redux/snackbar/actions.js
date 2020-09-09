@@ -8,7 +8,7 @@ export const success = (message, options) => dispatch => {
                 variant: 'success',
                 ...options,
             },
-        }),
+        })
     )
 }
 
@@ -20,7 +20,7 @@ export const error = (message, options) => dispatch => {
                 variant: 'error',
                 ...options,
             },
-        }),
+        })
     )
 }
 
@@ -32,7 +32,7 @@ export const warning = (message, options) => dispatch => {
                 variant: 'warning',
                 ...options,
             },
-        }),
+        })
     )
 }
 
@@ -41,7 +41,7 @@ export const show = (message, options) => dispatch => {
         enqueueSnackbar({
             message,
             options,
-        }),
+        })
     )
 }
 

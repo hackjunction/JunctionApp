@@ -22,7 +22,7 @@ export default () => {
     const isTeamValid = useSelector(DashboardSelectors.isTeamValid)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const isSubmissionsUpcoming = useSelector(
-        DashboardSelectors.isSubmissionsUpcoming,
+        DashboardSelectors.isSubmissionsUpcoming
     )
     const projects = useSelector(DashboardSelectors.projects)
 
@@ -111,7 +111,7 @@ export default () => {
                     <Typography variant="h4" color="primary" gutterBottom>
                         Submissions open{' '}
                         {moment(event.submissionsStartTime).format(
-                            'dddd MMM Do, hhA',
+                            'dddd MMM Do, hhA'
                         )}
                     </Typography>
                     <Typography variant="body1">
@@ -230,9 +230,9 @@ export default () => {
                 subheading={`Here's where you submit your project for ${
                     event.name
                 }. As soon as you have a general idea of what you're building, please make a draft submission here - you'll be able to make edits to it until the final submission deadline on ${moment(
-                    event.submissionsEndTime,
+                    event.submissionsEndTime
                 ).format(
-                    'LLLL',
+                    'LLLL'
                 )}. All of the members in your team can edit your team's project submission.`}
             />
             {renderContent()}

@@ -36,7 +36,7 @@ export default ({ value, onChange }) => {
             value.concat({
                 name: inputValue,
                 slug: slugValue,
-            }),
+            })
         )
         setInputValue()
         setSlugValue()
@@ -47,10 +47,10 @@ export default ({ value, onChange }) => {
             onChange(
                 value.filter((item, idx) => {
                     return idx !== index
-                }),
+                })
             )
         },
-        [value, onChange],
+        [value, onChange]
     )
 
     const handleEditStart = useCallback(
@@ -58,7 +58,7 @@ export default ({ value, onChange }) => {
             setEditIndex(index)
             setEditValue(value[index].name)
         },
-        [value],
+        [value]
     )
 
     const handleEditCancel = useCallback(() => {
@@ -76,7 +76,7 @@ export default ({ value, onChange }) => {
                     }
                 }
                 return item
-            }),
+            })
         )
         handleEditCancel()
     }, [value, editIndex, editValue, onChange, handleEditCancel])

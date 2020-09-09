@@ -66,8 +66,8 @@ export default () => {
             .catch(() => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
+                        'Something went wrong... please try again.'
+                    )
                 )
             })
             .finally(() => {
@@ -84,8 +84,8 @@ export default () => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
+                        'Something went wrong... please try again.'
+                    )
                 )
             })
             .finally(() => {
@@ -100,8 +100,8 @@ export default () => {
                 DashboardActions.removeMemberFromTeam(
                     event.slug,
                     team.code,
-                    userId,
-                ),
+                    userId
+                )
             )
                 .then(() => {
                     dispatch(SnackbarActions.success('Removed team member'))
@@ -109,15 +109,15 @@ export default () => {
                 .catch(() => {
                     dispatch(
                         SnackbarActions.error(
-                            'Something went wrong... Please try again.',
-                        ),
+                            'Something went wrong... Please try again.'
+                        )
                     )
                 })
                 .finally(() => {
                     setLoading(false)
                 })
         },
-        [dispatch, event.slug, team.code],
+        [dispatch, event.slug, team.code]
     )
 
     return (
@@ -187,7 +187,7 @@ export default () => {
                                         <IconButton
                                             onClick={() =>
                                                 handleRemoveMember(
-                                                    profile.userId,
+                                                    profile.userId
                                                 )
                                             }
                                             edge="end"

@@ -32,7 +32,7 @@ export default props => {
         if (event && event.tracks) {
             event.tracks.forEach(
                 track =>
-                    (challengeAndTrackSlugToNameMap[track.slug] = track.name),
+                    (challengeAndTrackSlugToNameMap[track.slug] = track.name)
             )
         }
         setChallengeAndTrackSlugState(challengeAndTrackSlugToNameMap)
@@ -41,14 +41,14 @@ export default props => {
     useEffect(() => {
         if (projectScoreModalOpen) {
             setSelectedProjectStore(
-                projectScores.find(s => s._id === selectedProjectScore._id),
+                projectScores.find(s => s._id === selectedProjectScore._id)
             )
         }
     }, [projectScoreModalOpen, projectScores, selectedProjectScore])
 
     const showProjectScore = project => {
         const score = projectScores.find(
-            score => score.project._id === project._id,
+            score => score.project._id === project._id
         )
         setSelectedProjectStore(score)
         setProjectScoreModalOpen(true)
@@ -60,14 +60,14 @@ export default props => {
         if (event && event.challenges && projects) {
             const challengesWithSubmittedProjects = [].concat.apply(
                 [],
-                projects.map(project => project.challenges),
+                projects.map(project => project.challenges)
             )
             return (
                 event.challenges.filter(
                     challenge =>
                         challengesWithSubmittedProjects.indexOf(
-                            challenge.slug,
-                        ) < 0,
+                            challenge.slug
+                        ) < 0
                 ).length > 0
             )
         }

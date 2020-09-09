@@ -39,7 +39,7 @@ class EventController {
             overrideChecks ||
             PermissionUtils.userHasPermission(
                 requestingUser,
-                Auth.Permissions.MANAGE_EVENT,
+                Auth.Permissions.MANAGE_EVENT
             )
 
         this.eventIdLoader = new DataLoader(batchGetEventsByIds)
@@ -58,7 +58,7 @@ class EventController {
         return this._clean(
             Event.find()
                 .or([{ owner: userId }, { organisers: userId }])
-                .lean(),
+                .lean()
         )
     }
 
@@ -67,30 +67,16 @@ class EventController {
     }
 
     getHighlighted() {
-        // TODO remove this once connected is done
         return this._clean(
             Event.find({
-                name: 'Junction 2020 Connected',
                 published: true,
                 startTime: {
                     $gte: new Date(),
                 },
             })
                 .sort([['startTime', 1]])
-                .lean(),
+                .lean()
         )
-        /*
-    return this._clean(
-      Event.find({
-        published: true,
-        startTime: {
-          $gte: new Date(),
-        },
-      })
-        .sort([['startTime', 1]])
-        .lean(),
-    );
-    */
     }
 
     getActive() {
@@ -102,7 +88,7 @@ class EventController {
                 },
             })
                 .sort([['startTime', 1]])
-                .lean(),
+                .lean()
         )
     }
 
@@ -115,7 +101,7 @@ class EventController {
                 },
             })
                 .sort([['endTime', -1]])
-                .lean(),
+                .lean()
         )
     }
 

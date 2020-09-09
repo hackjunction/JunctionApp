@@ -61,10 +61,10 @@ export default ({ value = [], onChange, autoFocus }) => {
             onChange(
                 value.filter((item, idx) => {
                     return index !== idx
-                }),
+                })
             )
         },
-        [value, onChange],
+        [value, onChange]
     )
 
     const buttonDisabled = !years || !role
@@ -127,7 +127,7 @@ export default ({ value = [], onChange, autoFocus }) => {
                             <ListItemText
                                 primary={role}
                                 secondary={Roles.getLabelForExperienceLevel(
-                                    years,
+                                    years
                                 )}
                             />
                             <ListItemSecondaryAction>

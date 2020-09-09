@@ -65,7 +65,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                                 <ListItemText
                                     primary={item.role}
                                     secondary={Roles.getLabelForExperienceLevel(
-                                        item.years,
+                                        item.years
                                     )}
                                     primaryTypographyProps={{
                                         variant: 'body2',
@@ -84,7 +84,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                     <List>
                         {content.map(item => {
                             const label = Skills.getLabelForSkillLevel(
-                                item.level,
+                                item.level
                             )
                             return (
                                 <ListItem key={item.skill}>
@@ -121,7 +121,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                     {
                         applyAsTeam: renderBoolean,
                         applyAlone: renderBoolean,
-                    },
+                    }
                 )
             case 'dateOfBirth':
                 return moment(content).format('DD.MM.YYYY')
@@ -150,7 +150,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                             Misc.relocationOptions.getLabelForValue(value),
                         status: value =>
                             Misc.recruitmentStatuses.getLabelForValue(value),
-                    },
+                    }
                 )
             case 'dietaryRestrictions':
             case 'spokenLanguages':
@@ -177,7 +177,7 @@ const DescriptionItem = ({ title, content, fieldName }) => {
                     </List>
                 )
             case 'phoneNumber':
-                return `${content.countryCode} ${content.number}`
+                return `${content.country_code} ${content.number}`
             default:
                 if (!content) return <NotAvailable />
                 const contentType = typeof content

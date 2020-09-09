@@ -49,12 +49,12 @@ export default ({ open, onClose, editRegistration }) => {
             OrganiserActions.editRegistration(
                 registration._id,
                 { status: RegistrationStatuses.asObject.checkedIn.id },
-                event.slug,
-            ),
+                event.slug
+            )
         )
             .then(() => {
                 dispatch(
-                    SnackbarActions.success('Changed status to checked in'),
+                    SnackbarActions.success('Changed status to checked in')
                 )
             })
             .catch(err => {
@@ -79,7 +79,7 @@ export default ({ open, onClose, editRegistration }) => {
                     })
                     .catch(err => {
                         dispatch(
-                            SnackbarActions.error('Somethign went wrong...'),
+                            SnackbarActions.error('Somethign went wrong...')
                         )
                     })
                     .finally(() => {
@@ -89,13 +89,13 @@ export default ({ open, onClose, editRegistration }) => {
                 if (legacyMode) {
                     dispatch(
                         SnackbarActions.error(
-                            'No QR code detected, please upload another image',
-                        ),
+                            'No QR code detected, please upload another image'
+                        )
                     )
                 }
             }
         },
-        [dispatch, legacyMode],
+        [dispatch, legacyMode]
     )
 
     const renderRegistrationInfo = () => {

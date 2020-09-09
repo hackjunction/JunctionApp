@@ -19,7 +19,7 @@ const BooleanInput = ({ value = false, onChange, alignCenter = false }) => {
         e => {
             onChange(!value)
         },
-        [onChange, value],
+        [onChange, value]
     )
     return (
         <Box>

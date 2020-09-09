@@ -27,7 +27,7 @@ export const useArray = (initialValue = []) => {
         item => {
             setValue(value.concat(item))
         },
-        [value],
+        [value]
     )
 
     const removeValue = useCallback(
@@ -36,7 +36,7 @@ export const useArray = (initialValue = []) => {
             newValue.splice(index, 1)
             setValue(newValue)
         },
-        [value],
+        [value]
     )
 
     const editValue = useCallback(
@@ -45,7 +45,7 @@ export const useArray = (initialValue = []) => {
             newValue[index] = edited
             setValue(newValue)
         },
-        [value],
+        [value]
     )
 
     return [value, addValue, removeValue, editValue, setValue]
@@ -83,7 +83,7 @@ export const useDebounce = (value, delay) => {
         // Only re-call effect if value changes
         // You could also add the "delay" var to inputs array if you ...
         // ... need to be able to change that dynamically.
-        [value, delay],
+        [value, delay]
     )
 
     return debouncedValue

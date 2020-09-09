@@ -101,7 +101,7 @@ const _Table = ({
             ...Filters.Disabled,
             ...Sorters.Disabled,
         }),
-        [],
+        []
     )
     const {
         getTableProps,
@@ -167,7 +167,7 @@ const _Table = ({
                     ...columns,
                 ])
             }
-        },
+        }
     )
 
     const handleRowClick = useCallback(
@@ -180,7 +180,7 @@ const _Table = ({
                 onRowClick(row)
             }
         },
-        [onRowClick, renderExpanded],
+        [onRowClick, renderExpanded]
     )
 
     const pagination = enablePagination && data.length > 10 && (
@@ -235,7 +235,7 @@ const _Table = ({
                                     {headerGroup.headers.map(column => (
                                         <TableCell
                                             {...column.getHeaderProps(
-                                                column.getSortByToggleProps(),
+                                                column.getSortByToggleProps()
                                             )}
                                         >
                                             <TableSortLabel

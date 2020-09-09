@@ -56,7 +56,7 @@ export default ({
                 questions: newQuestions,
             })
         },
-        [onChange, questions, section],
+        [onChange, questions, section]
     )
 
     const handleEdit = useCallback(
@@ -74,7 +74,7 @@ export default ({
             })
             setEditing(undefined)
         },
-        [onChange, questions, section],
+        [onChange, questions, section]
     )
 
     const handleQuestionUp = useCallback(
@@ -88,7 +88,7 @@ export default ({
                 questions: newItems,
             })
         },
-        [onChange, questions, section],
+        [onChange, questions, section]
     )
 
     const handleQuestionDown = useCallback(
@@ -102,7 +102,7 @@ export default ({
                 questions: newItems,
             })
         },
-        [onChange, questions, section],
+        [onChange, questions, section]
     )
 
     const handleQuestionRemove = useCallback(
@@ -114,7 +114,7 @@ export default ({
                 questions: newItems,
             })
         },
-        [onChange, questions, section],
+        [onChange, questions, section]
     )
 
     return (
@@ -203,7 +203,7 @@ export default ({
                                                                     Options:{' '}
                                                                 </strong>
                                                                 {question.settings.options.join(
-                                                                    ', ',
+                                                                    ', '
                                                                 )}
                                                             </li>
                                                         )}

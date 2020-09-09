@@ -18,7 +18,7 @@ const TextInput = React.memo(
             e => {
                 onChange(e.target.value)
             },
-            [onChange],
+            [onChange]
         )
 
         return (
@@ -35,7 +35,7 @@ const TextInput = React.memo(
                 type={type}
             />
         )
-    },
+    }
 )
 
 export default TextInput

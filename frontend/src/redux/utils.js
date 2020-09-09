@@ -40,7 +40,7 @@ import { reduce, cloneDeep, set } from 'lodash-es'
 
 export const buildHandler = (field, mapByField, mapIsArray) => (
     state,
-    action,
+    action
 ) =>
     handle(state, action, {
         start: prevState => ({
@@ -82,7 +82,7 @@ export const buildHandler = (field, mapByField, mapIsArray) => (
                         }
                         return res
                     },
-                    {},
+                    {}
                 )
 
                 return {

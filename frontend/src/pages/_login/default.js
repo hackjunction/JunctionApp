@@ -25,8 +25,8 @@ export default () => {
             dispatch(
                 AuthActions.login(
                     { prompt: 'login', ui_locales: i18n.language },
-                    nextRoute,
-                ),
+                    nextRoute
+                )
             )
         }
     }, [dispatch, i18n.language, isAuthenticated, location])

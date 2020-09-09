@@ -20,7 +20,7 @@ export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const registrations = useSelector(OrganiserSelectors.registrations)
     const registrationsLoading = useSelector(
-        OrganiserSelectors.registrationsLoading,
+        OrganiserSelectors.registrationsLoading
     )
     const { slug } = event
 
@@ -35,14 +35,14 @@ export default () => {
                 if (data === 0) {
                     dispatch(
                         SnackbarActions.show(
-                            'No available registrations left to assign!',
-                        ),
+                            'No available registrations left to assign!'
+                        )
                     )
                 } else {
                     dispatch(
                         SnackbarActions.success(
-                            `Assigned ${data} registrations to you`,
-                        ),
+                            `Assigned ${data} registrations to you`
+                        )
                     )
                 }
             })

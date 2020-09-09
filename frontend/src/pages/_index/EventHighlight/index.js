@@ -118,7 +118,7 @@ export default () => {
                                     variant="contained"
                                     onClick={() =>
                                         dispatch(
-                                            push('/projects/' + event.slug),
+                                            push('/projects/' + event.slug)
                                         )
                                     }
                                 >

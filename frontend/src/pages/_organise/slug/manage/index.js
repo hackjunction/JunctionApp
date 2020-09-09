@@ -34,13 +34,13 @@ export default () => {
         dispatch(
             OrganiserActions.updateOrganisersForEvent(
                 event.owner,
-                event.organisers,
-            ),
+                event.organisers
+            )
         ).catch(() => {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Unable to load organisers. Please try again.',
-                ),
+                    'Oops, something went wrong... Unable to load organisers. Please try again.'
+                )
             )
         })
     }, [event.organisers, event.owner, dispatch])
@@ -55,15 +55,15 @@ export default () => {
                 .catch(() => {
                     dispatch(
                         SnackbarActions.error(
-                            'Oops, something went wrong... Unable to remove organiser',
-                        ),
+                            'Oops, something went wrong... Unable to remove organiser'
+                        )
                     )
                 })
                 .finally(() => {
                     setLoading(false)
                 })
         },
-        [dispatch, slug],
+        [dispatch, slug]
     )
 
     const handleOrganiserAdded = useCallback(
@@ -76,15 +76,15 @@ export default () => {
                 .catch(err => {
                     dispatch(
                         SnackbarActions.error(
-                            'Oops, something went wrong... Please try again.',
-                        ),
+                            'Oops, something went wrong... Please try again.'
+                        )
                     )
                 })
                 .finally(() => {
                     setLoading(false)
                 })
         },
-        [dispatch, slug],
+        [dispatch, slug]
     )
 
     return (
@@ -118,7 +118,7 @@ export default () => {
                                         color="error"
                                         onClick={() =>
                                             handleOrganiserRemoved(
-                                                profile.userId,
+                                                profile.userId
                                             )
                                         }
                                     >

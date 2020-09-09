@@ -23,7 +23,7 @@ const Component = ({ column }) => {
         e => {
             setFilter(e.target.value)
         },
-        [setFilter],
+        [setFilter]
     )
 
     const options = useMemo(() => {

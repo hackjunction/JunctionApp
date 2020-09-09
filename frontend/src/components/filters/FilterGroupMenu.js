@@ -57,7 +57,7 @@ export default ({
         filter => {
             setFilters(filters.concat(filter))
         },
-        [filters],
+        [filters]
     )
 
     const handleClickListItem = event => {
@@ -145,7 +145,7 @@ export default ({
                                         : ''
                                 }
                             />
-                        </MenuItem>,
+                        </MenuItem>
                     )
                     return items
                 })}

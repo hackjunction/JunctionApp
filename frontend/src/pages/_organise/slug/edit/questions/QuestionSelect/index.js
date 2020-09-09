@@ -53,7 +53,7 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
                 })
             }
         },
-        [onChange, optionalFields, requiredFields],
+        [onChange, optionalFields, requiredFields]
     )
 
     const getChipProps = (isOptional, isRequired) => {
@@ -133,7 +133,7 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
                                     <Chip
                                         {...getChipProps(
                                             isOptional,
-                                            isRequired,
+                                            isRequired
                                         )}
                                         clickable
                                         size="small"
@@ -141,7 +141,7 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
                                             handleChange(
                                                 fieldName,
                                                 isOptional,
-                                                isRequired,
+                                                isRequired
                                             )
                                         }
                                         label={label}

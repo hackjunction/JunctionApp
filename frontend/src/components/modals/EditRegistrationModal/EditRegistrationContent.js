@@ -18,10 +18,10 @@ export default React.memo(({ registration }) => {
     const event = useSelector(OrganiserSelectors.event)
     const fields = Object.keys(registration.answers)
     const grouped = groupBy(fields, field =>
-        RegistrationFields.getCategory(field),
+        RegistrationFields.getCategory(field)
     )
     const sorted = sortBy(Object.keys(grouped), label =>
-        RegistrationFields.getCategoryOrderByLabel(label),
+        RegistrationFields.getCategoryOrderByLabel(label)
     )
     console.log('registration.answers', registration.answers)
     const customAnswers = {}
@@ -53,7 +53,7 @@ export default React.memo(({ registration }) => {
                                 if (!label) {
                                     const customField = find(
                                         event.registrationQuestions,
-                                        f => f.name === field,
+                                        f => f.name === field
                                     )
                                     if (customField) {
                                         label = customField.label

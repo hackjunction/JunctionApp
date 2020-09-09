@@ -198,7 +198,7 @@ export default ({
                                     {columns.map(column => {
                                         const value = objectPath.get(
                                             item,
-                                            column.path,
+                                            column.path
                                         )
                                         return (
                                             <TableCell key={column.key}>

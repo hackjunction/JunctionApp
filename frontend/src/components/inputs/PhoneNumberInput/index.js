@@ -10,10 +10,10 @@ const PhoneNumberInput = React.memo(
             code => {
                 onChange({
                     ...value,
-                    countryCode: code,
+                    country_code: code,
                 })
             },
-            [value, onChange],
+            [value, onChange]
         )
 
         const handleNumberChange = useCallback(
@@ -23,7 +23,7 @@ const PhoneNumberInput = React.memo(
                     number,
                 })
             },
-            [value, onChange],
+            [value, onChange]
         )
         return (
             <Box>
@@ -38,7 +38,7 @@ const PhoneNumberInput = React.memo(
                         <Select
                             options="countryCode"
                             label="Country code"
-                            value={value.countryCode}
+                            value={value.country_code}
                             onChange={handleCodeChange}
                             onBlur={onBlur}
                         />
@@ -51,12 +51,12 @@ const PhoneNumberInput = React.memo(
                             value={value.number}
                             onChange={handleNumberChange}
                             onBlur={onBlur}
-                            disabled={!value.countryCode}
+                            disabled={!value.country_code}
                             textFieldProps={{
                                 InputProps: {
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            {value.countryCode}
+                                            {value.country_code}
                                         </InputAdornment>
                                     ),
                                 },
@@ -66,7 +66,7 @@ const PhoneNumberInput = React.memo(
                 </Grid>
             </Box>
         )
-    },
+    }
 )
 
 export default PhoneNumberInput

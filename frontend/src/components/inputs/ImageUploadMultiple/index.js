@@ -6,7 +6,7 @@ const ImageUploadMultiple = (
     uploadUrl,
     resizeMode = 'contain',
     enqueueSnackbar,
-    idToken,
+    idToken
 ) => {
     return <h1>Hello</h1>
 }

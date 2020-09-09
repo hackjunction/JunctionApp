@@ -121,7 +121,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     label: label.value,
                     color: color.value,
                     description: description.value,
-                }),
+                })
             )
             resetForm()
         }
@@ -131,10 +131,10 @@ export default ({ value = [], fieldName, setFieldValue }) => {
         label => {
             setFieldValue(
                 fieldName,
-                value.filter(tag => tag.label !== label),
+                value.filter(tag => tag.label !== label)
             )
         },
-        [setFieldValue, fieldName, value],
+        [setFieldValue, fieldName, value]
     )
 
     const renderRows = () => {

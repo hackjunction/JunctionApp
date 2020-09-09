@@ -30,7 +30,7 @@ export default () => {
         value => {
             dispatch(RecruitmentActions.setFiltersField('textSearch', value))
         },
-        [dispatch],
+        [dispatch]
     )
 
     useEffect(() => {

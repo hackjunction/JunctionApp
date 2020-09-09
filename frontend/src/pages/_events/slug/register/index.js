@@ -123,9 +123,9 @@ export default RequiresPermission(() => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const {
-        slug,
         event,
-        registration,
+        slug,
+        registeration,
         hasRegistration,
         createRegistration,
         editRegistration,
@@ -134,7 +134,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-    console.log('regi', registration)
+    console.log('regi', registeration)
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -181,7 +181,7 @@ export default RequiresPermission(() => {
                 }
                 return result
             },
-            [],
+            []
         )
 
         const fieldCategories = {}
@@ -209,12 +209,12 @@ export default RequiresPermission(() => {
             categoryLabel => {
                 return {
                     order: RegistrationFields.getCategoryOrderByLabel(
-                        categoryLabel,
+                        categoryLabel
                     ),
                     label: categoryLabel,
                     fields: fieldCategories[categoryLabel],
                 }
-            },
+            }
         )
 
         const sorted = sortBy(fieldSections, 'order')
@@ -239,7 +239,7 @@ export default RequiresPermission(() => {
             }
             setActiveStep(nextStep)
         },
-        [formData],
+        [formData]
     )
 
     const setPrevStep = useCallback(() => {
@@ -276,8 +276,8 @@ export default RequiresPermission(() => {
         } catch (e) {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Please try again',
-                ),
+                    'Oops, something went wrong... Please try again'
+                )
             )
         } finally {
             setLoading(false)

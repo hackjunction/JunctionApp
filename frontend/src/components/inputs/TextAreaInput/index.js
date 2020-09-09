@@ -17,7 +17,7 @@ const TextAreaInput = React.memo(
             e => {
                 onChange(e.target.value)
             },
-            [onChange],
+            [onChange]
         )
 
         return (
@@ -38,7 +38,7 @@ const TextAreaInput = React.memo(
                 rowsMax={100}
             />
         )
-    },
+    }
 )
 
 export default TextAreaInput

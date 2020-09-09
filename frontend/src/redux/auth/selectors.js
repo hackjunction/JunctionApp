@@ -53,7 +53,7 @@ export const idTokenData = createSelector(getIdTokenPayload, data => {
             result[field.replace(namespace, '')] = data[field]
             return result
         },
-        {},
+        {}
     )
 })
 
@@ -67,14 +67,14 @@ export const hasRecruiterAccess = createSelector(
             idTokenData.recruiter_events.length > 0 &&
             idTokenData.recruiter_organisation
         )
-    },
+    }
 )
 
 export const hasOrganiserAccess = createSelector(
     getHasPermission,
     hasPermission => {
         return hasPermission([Auth.Permissions.MANAGE_EVENT])
-    },
+    }
 )
 
 export const hasSuperAdmin = createSelector(getHasRole, hasPermission => {
