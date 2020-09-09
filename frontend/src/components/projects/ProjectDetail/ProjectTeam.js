@@ -21,7 +21,7 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
         setLoading(true)
         try {
             const data = await UserProfilesService.getPublicUserProfilesByTeam(
-                teamId
+                teamId,
             )
             setTeamMembers(data.filter(i => !hiddenUsers.includes(i.userId)))
         } catch (err) {}
@@ -47,7 +47,7 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
     const secondaryText = member => {
         if (!showFullTeam) return null
         return `${member.email} // ${
-            member.phoneNumber ? member.phoneNumber.country_code : ''
+            member.phoneNumber ? member.phoneNumber.countryCode : ''
         } ${member.phoneNumber ? member.phoneNumber.number : ''}`
     }
 

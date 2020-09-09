@@ -16,7 +16,7 @@ export default ({ items }) => {
     const searchResults =
         items ?? useSelector(RecruitmentSelectors.searchResults)
     const searchResultsCount = useSelector(
-        RecruitmentSelectors.searchResultsCount
+        RecruitmentSelectors.searchResultsCount,
     )
     const loading = useSelector(RecruitmentSelectors.searchResultsLoading)
     const filters = useSelector(RecruitmentSelectors.filters)

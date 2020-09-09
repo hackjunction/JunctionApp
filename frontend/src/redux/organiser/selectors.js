@@ -95,7 +95,7 @@ export const gavelProjectsPopulated = createSelector(
             }
             return project
         })
-    }
+    },
 )
 
 export const registrationsAssigned = createSelector(
@@ -105,7 +105,7 @@ export const registrationsAssigned = createSelector(
         return registrations.filter(registration => {
             return registration.assignedTo === idTokenData.sub
         })
-    }
+    },
 )
 
 export const registrationsReviewed = createSelector(
@@ -114,7 +114,7 @@ export const registrationsReviewed = createSelector(
         return registrations.filter(registration => {
             return !!registration.rating
         })
-    }
+    },
 )
 
 export const registrationsConfirmed = createSelector(
@@ -127,7 +127,7 @@ export const registrationsConfirmed = createSelector(
         return registrations.filter(registration => {
             return validStatuses.indexOf(registration.status) !== -1
         })
-    }
+    },
 )
 
 export const registrationsEligibleForTravelGrant = createSelector(
@@ -139,7 +139,7 @@ export const registrationsEligibleForTravelGrant = createSelector(
                 r.travelGrant !== 0 &&
                 r.answers.needsTravelGrant
             )
-        })
+        }),
 )
 
 export const registrationsWithTravelGrant = createSelector(
@@ -147,7 +147,7 @@ export const registrationsWithTravelGrant = createSelector(
     registrations =>
         registrations.filter(r => {
             return r.travelGrant && r.travelGrant !== 0
-        })
+        }),
 )
 
 export const travelGrantSpend = createSelector(
@@ -156,17 +156,17 @@ export const travelGrantSpend = createSelector(
         return sumBy(registrations, r => {
             return r.travelGrant || 0
         })
-    }
+    },
 )
 
 export const travelGrantCount = createSelector(
     registrationsWithTravelGrant,
-    registrations => registrations.length
+    registrations => registrations.length,
 )
 
 export const travelGrantRejectedCount = createSelector(
     registrationsConfirmed,
-    registrations => registrations.filter(r => r.travelGrant === 0).length
+    registrations => registrations.filter(r => r.travelGrant === 0).length,
 )
 
 export const teamsPopulated = createSelector(
@@ -179,13 +179,13 @@ export const teamsPopulated = createSelector(
             })
             return team
         })
-    }
+    },
 )
 
 /** Stats selectors */
 export const registrationsCount = createSelector(
     registrations,
-    registrations => registrations.length
+    registrations => registrations.length,
 )
 
 export const teamsCount = createSelector(teams, teams => teams.length)
@@ -202,7 +202,7 @@ export const percentReviewed = createSelector(registrations, registrations => {
         {
             reviewed: 0,
             total: 0,
-        }
+        },
     )
     return (reviewed * 100) / total
 })
@@ -211,7 +211,7 @@ export const averageRating = createSelector(
     registrationsReviewed,
     registrations => {
         return meanBy(registrations, 'rating')
-    }
+    },
 )
 
 export const registrationsLast24h = createSelector(
@@ -220,37 +220,37 @@ export const registrationsLast24h = createSelector(
         return registrations.filter(registration => {
             return registration.createdAt > Date.now() - 1000 * 60 * 60 * 24
         }).length
-    }
+    },
 )
 
 export const registrationsByDay = createSelector(
     registrations,
     registrations => {
         return countBy(registrations, r =>
-            moment(r.createdAt).format('YYYY-MM-DD')
+            moment(r.createdAt).format('YYYY-MM-DD'),
         )
-    }
+    },
 )
 
 export const registrationsByRating = createSelector(
     registrationsReviewed,
     registrations => {
         return countBy(registrations, 'rating')
-    }
+    },
 )
 
 export const registrationsByReviewer = createSelector(
     registrationsReviewed,
     registrations => {
         return countBy(registrations, 'ratedBy')
-    }
+    },
 )
 
 export const registrationsBySecretCode = createSelector(
     registrations,
     registrations => {
         return countBy(registrations, 'answers.secretCode')
-    }
+    },
 )
 
 export const reviewAverageByReviewer = createSelector(
@@ -260,5 +260,5 @@ export const reviewAverageByReviewer = createSelector(
         return mapValues(grouped, registrations => {
             return meanBy(registrations, 'rating')
         })
-    }
+    },
 )

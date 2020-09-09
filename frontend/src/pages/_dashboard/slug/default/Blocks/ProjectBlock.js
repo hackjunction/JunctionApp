@@ -23,7 +23,7 @@ export default () => {
     const project = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
     const isSubmissionsUpcoming = useSelector(
-        DashboardSelectors.isSubmissionsUpcoming
+        DashboardSelectors.isSubmissionsUpcoming,
     )
     const isSubmissionsPast = useSelector(DashboardSelectors.isSubmissionsPast)
 
@@ -45,10 +45,10 @@ export default () => {
                     <Typography variant="body1">
                         {t('Project_submissions_upcoming_', {
                             submissionsStartTime: moment(
-                                event.submissionsStartTime
+                                event.submissionsStartTime,
                             ).format('LLLL'),
                             submissionsDeadline: moment(
-                                event.submissionsEndTime
+                                event.submissionsEndTime,
                             ).format('LLLL'),
                         })}
                     </Typography>

@@ -10,7 +10,7 @@ import TeamsTable from 'components/tables/TeamsTable'
 export default () => {
     const teams = useSelector(OrganiserSelectors.teams)
     const registrationsLoading = useSelector(
-        OrganiserSelectors.registrationsLoading
+        OrganiserSelectors.registrationsLoading,
     )
     const teamsLoading = useSelector(OrganiserSelectors.teamsLoading)
 

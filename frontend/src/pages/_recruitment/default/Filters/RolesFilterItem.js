@@ -41,7 +41,7 @@ const RolesFilterItem = React.memo(({ role, years, onEdit, onRemove }) => {
                 })
             }
         },
-        [role, years, onEdit]
+        [role, years, onEdit],
     )
 
     const renderSelected = () => {

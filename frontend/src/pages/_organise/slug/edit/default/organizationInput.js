@@ -58,10 +58,10 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
             onChange(
                 value.filter((item, idx) => {
                     return index !== idx
-                })
+                }),
             )
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const buttonDisabled = !level || !skill
@@ -137,7 +137,7 @@ export default React.memo(({ value = [], onChange, onBlur, autoFocus }) => {
                                         style={{ marginRight: '50px' }}
                                     >
                                         {Skills.getDescriptionForSkillLevel(
-                                            level
+                                            level,
                                         )}
                                     </Typography>
                                 }

@@ -89,7 +89,7 @@ export default React.memo(
     ({ data }) => {
         const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
-            RecruitmentSelectors.actionHistoryByUser
+            RecruitmentSelectors.actionHistoryByUser,
         )
         const userHistory = actionHistoryByUser[data.userId] ?? []
         const isFavorite =
@@ -108,17 +108,17 @@ export default React.memo(
                 e.stopPropagation()
                 setIsFavorite(!_isFavorite)
                 dispatch(
-                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite)
+                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite),
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(
-                            SnackbarActions.error('Something went wrong...')
+                            SnackbarActions.error('Something went wrong...'),
                         )
                         setIsFavorite(_isFavorite)
                     }
                 })
             },
-            [_isFavorite, data.userId, dispatch]
+            [_isFavorite, data.userId, dispatch],
         )
 
         return (
@@ -194,5 +194,5 @@ export default React.memo(
         }
         // If the above didn't change, no need to render again
         return true
-    }
+    },
 )

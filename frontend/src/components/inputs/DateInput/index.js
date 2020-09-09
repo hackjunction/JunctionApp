@@ -5,7 +5,10 @@ import moment from 'moment'
 import Select from 'components/inputs/Select'
 
 const DateInput = ({ label, value, onChange, onBlur }) => {
-    const momentValue = value ? moment(value) : null
+    let momentValue = value ? moment(value) : null
+    if (!momentValue.isValid()) {
+        momentValue = moment.unix(value)
+    }
 
     const handleDateChange = useCallback(
         date => {
@@ -13,7 +16,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             newValue.date(date)
             onChange(newValue.startOf('day').format())
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const handleMonthChange = useCallback(
@@ -22,7 +25,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             newValue.month(month - 1)
             onChange(newValue.startOf('day').format())
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const handleYearChange = useCallback(
@@ -31,7 +34,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
             newValue.year(year)
             onChange(newValue.startOf('day').format())
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     return (

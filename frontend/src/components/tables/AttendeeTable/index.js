@@ -44,7 +44,7 @@ export default ({
             }).toString()}`
             dispatch(push({ search }))
         },
-        [dispatch]
+        [dispatch],
     )
 
     const openBulkEmail = useCallback(
@@ -55,7 +55,7 @@ export default ({
             })}`
             dispatch(push({ search }))
         },
-        [dispatch]
+        [dispatch],
     )
 
     const openBulkEdit = useCallback(
@@ -66,7 +66,7 @@ export default ({
             })}`
             dispatch(push({ search }))
         },
-        [dispatch]
+        [dispatch],
     )
     // TODO move somewhere else
     function flattenObject(ob) {
@@ -88,7 +88,7 @@ export default ({
         return toReturn
     }
 
-    const exportRegisterations = selectedRows => {
+    const exportregistrations = selectedRows => {
         setSelected(selectedRows)
     }
 
@@ -242,7 +242,7 @@ export default ({
                         action: openBulkEdit,
                     },
                     {
-                        key: 'export-registerations',
+                        key: 'export-registrations',
                         label: (
                             <CSVLink
                                 style={{
@@ -250,14 +250,14 @@ export default ({
                                     color: 'inherit',
                                 }}
                                 data={selected.map(item =>
-                                    flattenObject(item.original)
+                                    flattenObject(item.original),
                                 )}
                                 filename="export.csv"
                             >
-                                Export Registerations
+                                Export registrations
                             </CSVLink>
                         ),
-                        action: exportRegisterations,
+                        action: exportregistrations,
                     },
                 ]}
             />

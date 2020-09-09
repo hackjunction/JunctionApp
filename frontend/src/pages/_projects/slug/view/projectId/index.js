@@ -19,7 +19,7 @@ export default ({ event, showFullTeam }) => {
         setLoading(true)
         try {
             const project = await ProjectsService.getPublicProjectById(
-                projectId
+                projectId,
             )
             setProject(project)
         } catch (err) {

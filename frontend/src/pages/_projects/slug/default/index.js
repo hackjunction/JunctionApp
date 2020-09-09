@@ -41,7 +41,7 @@ export default ({ event, projects }) => {
             {
                 byChallenge: {},
                 byTrack: {},
-            }
+            },
         )
     }, [projects])
 
@@ -104,7 +104,7 @@ export default ({ event, projects }) => {
         project => {
             dispatch(push(`/projects/${event.slug}/view/${project._id}`))
         },
-        [dispatch, event.slug]
+        [dispatch, event.slug],
     )
 
     return (

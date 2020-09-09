@@ -33,10 +33,10 @@ export default ({ data = [] }) => {
             setHackerpack(
                 hackerpack.filter(function (obj) {
                     return obj.slug !== slug
-                })
+                }),
             )
         },
-        [hackerpack, idToken]
+        [hackerpack, idToken],
     )
 
     return (
@@ -60,7 +60,9 @@ export default ({ data = [] }) => {
                                 aria-label="edit"
                                 onClick={() =>
                                     dispatch(
-                                        push(`admin/hackerpack/${company.slug}`)
+                                        push(
+                                            `admin/hackerpack/${company.slug}`,
+                                        ),
                                     )
                                 }
                             >

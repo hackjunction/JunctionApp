@@ -197,7 +197,7 @@ const Markdown = React.memo(
                 }}
             />
         )
-    }
+    },
 )
 
 export default Markdown

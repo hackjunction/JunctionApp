@@ -85,12 +85,13 @@ export default props => {
             {
                 validationSchema: {},
                 initialValues: {},
-            }
+            },
         )
     }, [fields, data, registration, userProfile, idTokenData])
     return (
         <Formik
             initialValues={initialValues}
+            enableReinitialize={true}
             validationSchema={props => {
                 return yup.lazy(values => {
                     return yup.object().shape(validationSchema)
@@ -141,7 +142,7 @@ export default props => {
                             errors={errors}
                             dirty={dirty}
                         />,
-                        document.body
+                        document.body,
                     )}
                 </>
             )}

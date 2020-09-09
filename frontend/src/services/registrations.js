@@ -68,12 +68,12 @@ RegistrationsService.bulkEditRegistrationsForEvent = (
     idToken,
     slug,
     userIds,
-    edits
+    edits,
 ) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/bulk`,
         { userIds, edits },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -83,12 +83,12 @@ RegistrationsService.bulkEditRegistrationsForEvent = (
 RegistrationsService.bulkAssignTravelGrantsForEvent = (
     idToken,
     slug,
-    grants
+    grants,
 ) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/bulk/grants`,
         { grants },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -103,7 +103,7 @@ RegistrationsService.bulkAcceptRegistrationsForEvent = (idToken, slug) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/bulk/accept`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -114,7 +114,7 @@ RegistrationsService.bulkRejectRegistrationsForEvent = (idToken, slug) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/bulk/reject`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -131,7 +131,7 @@ RegistrationsService.assignRandomRegistrations = (idToken, slug) => {
 RegistrationsService.getFullRegistration = (idToken, slug, registrationId) => {
     return _axios.get(
         `${BASE_ROUTE}/${slug}/${registrationId}`,
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -149,12 +149,12 @@ RegistrationsService.editRegistration = (
     idToken,
     slug,
     registrationId,
-    data
+    data,
 ) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/${registrationId}`,
         data,
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -162,7 +162,7 @@ RegistrationsService.updateTravelGrantDetails = (idToken, slug, data) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/travel-grant-details`,
         { data },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -170,12 +170,12 @@ RegistrationsService.adminUpdateTravelGrantDetails = (
     idToken,
     slug,
     registrationId,
-    data
+    data,
 ) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/admin/travel-grant-details`,
         { registrationId, data },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -183,7 +183,7 @@ RegistrationsService.adminNotifyRejectedTravelGrants = (idToken, slug) => {
     return _axios.post(
         `${BASE_ROUTE}/${slug}/admin/travel-grant-details/notify-rejected`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -191,7 +191,7 @@ RegistrationsService.adminNotifyAcceptedTravelGrants = (idToken, slug) => {
     return _axios.post(
         `${BASE_ROUTE}/${slug}/admin/travel-grant-details/notify-accepted`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 

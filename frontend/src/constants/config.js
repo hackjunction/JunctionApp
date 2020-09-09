@@ -111,7 +111,7 @@ const buildConfig = () => {
             } else {
                 if (obj.required) {
                     throw new Error(
-                        `Invalid configuration: ${key} must be provided a value from .env, or a default value. See config.js`
+                        `Invalid configuration: ${key} must be provided a value from .env, or a default value. See config.js`,
                     )
                 }
             }

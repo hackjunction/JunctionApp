@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const { GraphQLObjectType, GraphQLList } = require('graphql')
 const RegistrationFields = require('../constants/registration-fields')
 
-const CustomAnswerSchema = require('../schemas/CustomAnswer')
+const CustomAnswerSchema = require('./CustomAnswer')
 
 const mongooseFields = {
     CustomAnswers: [CustomAnswerSchema.mongoose],
