@@ -114,6 +114,7 @@ export default () => {
                                 {t('See_more_')}
                             </Button>
                         </Box>
+                        ,
                         {event.galleryOpen && (
                             <Box mr={1} mb={1}>
                                 <Button
