@@ -4,7 +4,7 @@ const Promise = require('bluebird')
 module.exports = {
     index: 3,
     name: '03-rename-country_code-to-countryCode',
-    description: 'Rename country_code in GaveProject to countryCode',
+    description: 'Rename country_code in to countryCode',
     run: async () => {
         const res = await mongoose.model('Registration').updateMany(
             {},
@@ -16,7 +16,7 @@ module.exports = {
             },
             { multi: true },
         )
-        console.log('Done with countryCodeo', res.n, res.nModified)
+        console.log('Done with countryCode', res.n, res.nModified)
 
         const psres = await mongoose.model('UserProfile').updateMany(
             {},

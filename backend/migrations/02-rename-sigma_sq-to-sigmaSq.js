@@ -19,7 +19,7 @@ module.exports = {
             .updateMany(
                 {},
                 { $rename: { sigma_sq: 'sigmaSq' } },
-                { multi: true }
+                { multi: true },
             )
         console.log('Done with gavelproject', res.n, res.nModified)
 
@@ -28,7 +28,7 @@ module.exports = {
             .updateMany(
                 {},
                 { $rename: { max_score: 'maxScore' } },
-                { multi: true }
+                { multi: true },
             )
 
         console.log('Done with ProjectScore', psres.n, psres.nModified)
