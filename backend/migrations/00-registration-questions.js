@@ -52,12 +52,12 @@ module.exports = {
         if (events.length > 0) {
             return Promise.map(events, event => {
                 const { optionalFields, requiredFields } = Object.keys(
-                    event.toJSON().userDetailsConfig
+                    event.toJSON().userDetailsConfig,
                 ).reduce(
                     (result, field) => {
                         if (
                             ['firstName', 'lastName', 'email'].indexOf(
-                                field
+                                field,
                             ) !== -1
                         ) {
                             return result
@@ -75,7 +75,7 @@ module.exports = {
                     {
                         optionalFields: [],
                         requiredFields: [],
-                    }
+                    },
                 )
 
                 return mongoose.model('Event').findByIdAndUpdate(event._id, {
