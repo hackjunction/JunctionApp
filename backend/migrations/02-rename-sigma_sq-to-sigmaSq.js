@@ -6,18 +6,10 @@ module.exports = {
     name: '02-rename-sigma_sq-to-sigmaSq',
     description: 'Rename sigma_sq in GaveProject to sigmaSq',
     run: async () => {
-        /*
-        // in case you do an oopsie and delete all gavelprojects
-        const cursor = mongoose.model('Project').find().cursor()
-        await cursor.eachAsync(async function (doc) {
-            GavelController.ensureGavelProject(doc)
-        })
-        */
-
         const res = await mongoose
             .model('GavelProject')
             .updateMany(
-                {},
+                { sigma_sq: { $exists: true } },
                 { $rename: { sigma_sq: 'sigmaSq' } },
                 { multi: true },
             )
@@ -26,7 +18,7 @@ module.exports = {
         const psres = await mongoose
             .model('ProjectScore')
             .updateMany(
-                {},
+                { max_score: { $exists: true } },
                 { $rename: { max_score: 'maxScore' } },
                 { multi: true },
             )
