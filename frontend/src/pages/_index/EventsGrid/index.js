@@ -13,9 +13,14 @@ import { useTranslation } from 'react-i18next'
 export default ({ events, organizations, loading, title }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    console.log('orog', organizations)
+    var date = new Date()
+    const isodate = date.toISOString()
     function renderEvents() {
         return events.map(event => {
+            const canApply =
+                isodate < event.registrationEndTime &&
+                isodate > event.registrationStartTime
+
             return (
                 <Grid key={event.slug} item xs={12} md={6} lg={4}>
                     <EventCard
@@ -26,7 +31,7 @@ export default ({ events, organizations, loading, title }) => {
                                     ? organizations.find(
                                           org =>
                                               org.slug ===
-                                              event.organizations[0],
+                                              event.organizations[0]
                                       )
                                     : null
                                 : null
@@ -41,13 +46,30 @@ export default ({ events, organizations, loading, title }) => {
                             >
                                 {t('See_more_')}
                             </Button>,
+                            canApply && !event.galleryOpen && (
+                                <Button
+                                    color="theme_turquoise"
+                                    variant="contained"
+                                    onClick={() =>
+                                        dispatch(
+                                            push(
+                                                '/events/' +
+                                                    event.slug +
+                                                    '/register/'
+                                            )
+                                        )
+                                    }
+                                >
+                                    {t('Register_now_')}
+                                </Button>
+                            ),
                             event.galleryOpen && (
                                 <Button
                                     color="theme_turquoise"
                                     variant="contained"
                                     onClick={() =>
                                         dispatch(
-                                            push('/projects/' + event.slug),
+                                            push('/projects/' + event.slug)
                                         )
                                     }
                                 >

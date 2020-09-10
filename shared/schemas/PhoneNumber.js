@@ -3,7 +3,7 @@ const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
 const Countries = require('../constants/countries')
 
 const mongooseSchema = new mongoose.Schema({
-    country_code: {
+    countryCode: {
         type: String,
         required: true,
         validate: {
@@ -13,6 +13,10 @@ const mongooseSchema = new mongoose.Schema({
             message: props => `${props.value} is not a valid phone code`,
         },
     },
+    // TODO REMOVE THIS ONCE MIGRATIONS ARE DONE
+    country_code: {
+        type: String,
+    },
     number: String,
 })
 
@@ -21,7 +25,6 @@ const graphqlSchema = new GraphQLObjectType({
     fields: () => ({
         countryCode: {
             type: GraphQLNonNull(GraphQLString),
-            resolve: _ => _.country_code,
         },
         number: {
             type: GraphQLNonNull(GraphQLString),

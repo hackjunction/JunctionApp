@@ -91,6 +91,7 @@ export default props => {
     return (
         <Formik
             initialValues={initialValues}
+            enableReinitialize={true}
             validationSchema={props => {
                 return yup.lazy(values => {
                     return yup.object().shape(validationSchema)

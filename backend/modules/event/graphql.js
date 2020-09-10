@@ -198,6 +198,9 @@ const QueryType = new GraphQLObjectType({
                 limit: {
                     type: GraphQLInt,
                 },
+                name: {
+                    type: GraphQLString,
+                },
             },
         },
         activeEvents: {
@@ -245,6 +248,9 @@ const Resolvers = {
             if (args.limit) {
                 events = events.slice(0, args.limit)
             }
+            if (args.name) {
+                events = events.filter(e => e.name === args.name)
+            }
             return events
         },
         activeEvents: async (parent, args, context) => {
@@ -272,7 +278,7 @@ const Resolvers = {
         _eventTimeFormatted: parent => {
             return dateUtils.formatDateInterval(
                 parent.startTime,
-                parent.endTime
+                parent.endTime,
             )
         },
         _eventStatus: parent => {
