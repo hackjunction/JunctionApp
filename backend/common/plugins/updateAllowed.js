@@ -20,7 +20,7 @@ function updateAllowedPlugin(schema, { blacklisted = [] } = {}) {
                     value,
                     key,
                     'since',
-                    blacklisted.indexOf(key)
+                    blacklisted.indexOf(key),
                 )
             }
         })
