@@ -46,8 +46,8 @@ export default () => {
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Oops, something went wrong... Please reload the page.'
-                )
+                    'Oops, something went wrong... Please reload the page.',
+                ),
             )
         } finally {
             setLoading(false)
@@ -64,15 +64,15 @@ export default () => {
             const result = await WinnerVoteService.submitVote(
                 idToken,
                 event.slug,
-                vote
+                vote,
             )
             setVote(result.project)
             dispatch(SnackbarActions.success('Vote submitted!'))
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Something went wrong... Please try again'
-                )
+                    'Something went wrong... Please try again',
+                ),
             )
         }
         setLoading(false)

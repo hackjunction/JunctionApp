@@ -100,7 +100,7 @@ const ProjectDetail = ({
     const renderChallenges = challenges => {
         const values = filter(
             event.challenges,
-            c => project.challenges.indexOf(c.slug) !== -1
+            c => project.challenges.indexOf(c.slug) !== -1,
         )
 
         if (values.length === 0) {

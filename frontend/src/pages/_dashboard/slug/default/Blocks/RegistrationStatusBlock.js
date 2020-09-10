@@ -33,7 +33,7 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
     const isRegistrationOpen = useSelector(
-        DashboardSelectors.isRegistrationOpen
+        DashboardSelectors.isRegistrationOpen,
     )
 
     const [loading, setLoading] = useState(false)
@@ -46,8 +46,8 @@ export default () => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong, please try again'
-                    )
+                        'Something went wrong, please try again',
+                    ),
                 )
             })
             .finally(() => {
@@ -61,8 +61,8 @@ export default () => {
             .catch(() => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong while cancelling your participation'
-                    )
+                        'Something went wrong while cancelling your participation',
+                    ),
                 )
             })
             .finally(() => {
@@ -132,27 +132,27 @@ export default () => {
             case RegistrationStatuses.asObject.softAccepted.id:
             case RegistrationStatuses.asObject.softRejected.id: {
                 if (isRegistrationOpen) {
-                    return t('Registeration_info_open_')
+                    return t('Registration_info_open_')
                 } else {
-                    return t('Registeration_info_closed_')
+                    return t('Registration_info_closed_')
                 }
             }
             case RegistrationStatuses.asObject.rejected.id: {
-                return t('Registeration_info_rejected_')
+                return t('Registration_info_rejected_')
             }
             case RegistrationStatuses.asObject.accepted.id: {
-                return t('Registeration_info_accepted_', {
+                return t('Registration_info_accepted_', {
                     eventName: event.name,
                 })
             }
             case RegistrationStatuses.asObject.cancelled.id: {
-                return t('Registeration_info_cancelled_')
+                return t('Registration_info_cancelled_')
             }
             case RegistrationStatuses.asObject.confirmed.id: {
-                return t('Registeration_info_confirmed_')
+                return t('Registration_info_confirmed_')
             }
             case RegistrationStatuses.asObject.checkedIn.id: {
-                return t('Registeration_info_checked_in_', {
+                return t('Registration_info_checked_in_', {
                     time: moment(event.startTime).format('LLLL'),
                 })
             }
@@ -245,8 +245,8 @@ export default () => {
                                 onClick={() =>
                                     dispatch(
                                         push(
-                                            `/dashboard/${event.slug}/event-id`
-                                        )
+                                            `/dashboard/${event.slug}/event-id`,
+                                        ),
                                     )
                                 }
                                 color="theme_white"

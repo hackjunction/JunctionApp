@@ -15,7 +15,7 @@ FilterGroupsService.createFilterGroup = (
     label,
     description,
     filters,
-    eventSlug
+    eventSlug,
 ) => {
     const data = {
         label,
@@ -30,7 +30,7 @@ FilterGroupsService.editFilterGroup = (
     label,
     description,
     filters,
-    eventSlug
+    eventSlug,
 ) => {
     const data = {
         label,

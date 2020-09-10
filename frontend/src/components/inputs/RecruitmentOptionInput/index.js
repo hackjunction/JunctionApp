@@ -12,14 +12,14 @@ const STATUS_OPTIONS = Misc.recruitmentStatuses.asArray.map(
     ({ id, label }) => ({
         value: id,
         label,
-    })
+    }),
 )
 
 const RELOCATION_OPTIONS = Misc.relocationOptions.asArray.map(
     ({ id, label }) => ({
         value: id,
         label,
-    })
+    }),
 )
 
 const RecruitmentOptionInput = ({
@@ -45,7 +45,7 @@ const RecruitmentOptionInput = ({
                 })
             }
         },
-        [onChange, value]
+        [onChange, value],
     )
 
     return (

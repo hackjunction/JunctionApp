@@ -40,7 +40,7 @@ const EventTimeline = ({ event }) => {
             {
                 date: MiscUtils.formatDateInterval(
                     event.startTime,
-                    event.endTime
+                    event.endTime,
                 ),
                 dateValue: moment(event.startTime).unix(),
                 completed: moment(event.endTime).isBefore(),

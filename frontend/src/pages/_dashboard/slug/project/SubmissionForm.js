@@ -101,7 +101,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -127,7 +127,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -154,7 +154,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -183,7 +183,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -223,7 +223,7 @@ export default props => {
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,
-                                                    value
+                                                    value,
                                                 )
                                             }
                                             onBlur={() =>
@@ -256,7 +256,7 @@ export default props => {
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,
-                                                    value
+                                                    value,
                                                 )
                                             }
                                             onBlur={() =>
@@ -289,7 +289,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -327,7 +327,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -361,7 +361,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -388,7 +388,7 @@ export default props => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -415,7 +415,7 @@ export default props => {
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,
-                                                    value
+                                                    value,
                                                 )
                                             }
                                             onBlur={() =>
@@ -453,7 +453,7 @@ export default props => {
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,
-                                                    value
+                                                    value,
                                                 )
                                             }
                                         />
@@ -511,11 +511,11 @@ export default props => {
                 let res
                 if (project) {
                     res = await dispatch(
-                        DashboardActions.editProject(event.slug, values)
+                        DashboardActions.editProject(event.slug, values),
                     )
                 } else {
                     res = await dispatch(
-                        DashboardActions.createProject(event.slug, values)
+                        DashboardActions.createProject(event.slug, values),
                     )
                 }
 
@@ -526,13 +526,13 @@ export default props => {
                     dispatch(
                         SnackbarActions.error(message, {
                             autoHideDuration: 3000,
-                        })
+                        }),
                     )
                 } else {
                     dispatch(
                         SnackbarActions.success(
-                            'Success! Project submission updated'
-                        )
+                            'Success! Project submission updated',
+                        ),
                     )
                 }
                 actions.setSubmitting(false)

@@ -29,7 +29,7 @@ class RegistrationController {
             overrideChecks ||
             PermissionUtils.userHasPermission(
                 requestingUser,
-                Auth.Permissions.MANAGE_EVENT
+                Auth.Permissions.MANAGE_EVENT,
             )
 
         this.registrationIdLoader = new DataLoader(batchGetRegistrationsById)
@@ -49,7 +49,7 @@ class RegistrationController {
             Registration.findOne({
                 event: eventId,
                 user: userId,
-            })
+            }),
         )
     }
 

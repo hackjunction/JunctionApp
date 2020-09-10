@@ -39,8 +39,8 @@ export default () => {
             .then(() => {
                 dispatch(
                     SnackbarActions.success(
-                        'Your changes were saved successfully'
-                    )
+                        'Your changes were saved successfully',
+                    ),
                 )
                 actions.setSubmitting(false)
             })
@@ -51,10 +51,10 @@ export default () => {
                     dispatch(
                         SnackbarActions.error('Unable to save changes', {
                             errorMessages: Object.keys(errors).map(
-                                key => `${key}: ${errors[key].message}`
+                                key => `${key}: ${errors[key].message}`,
                             ),
                             persist: true,
-                        })
+                        }),
                     )
                 } else {
                     dispatch(SnackbarActions.error('Unable to save changes'))

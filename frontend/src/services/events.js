@@ -52,14 +52,14 @@ EventsService.addOrganiserToEvent = (idToken, slug, userId) => {
     return _axios.post(
         `/events/organisers/${slug}/${userId}`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 
 EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
     return _axios.delete(
         `/events/organisers/${slug}/${userId}`,
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -71,14 +71,14 @@ EventsService.addOrganizationToEvent = (idToken, slug, orgSlug) => {
     return _axios.post(
         `/events/organizations/${slug}/${orgSlug}`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 
 EventsService.removeOrganizationFromEvent = (idToken, slug, orgSlug) => {
     return _axios.delete(
         `/events/organizations/${slug}/${orgSlug}`,
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -86,7 +86,7 @@ EventsService.updateWinners = (idToken, slug, winners) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/winners`,
         { winners },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -98,7 +98,7 @@ EventsService.generateAchievements = (idToken, slug) => {
     return _axios.patch(
         `${BASE_ROUTE}/${slug}/achievements`,
         {},
-        config(idToken)
+        config(idToken),
     )
 }
 

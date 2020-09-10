@@ -45,7 +45,7 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
             })
             onChange(newFilters)
         },
-        [onChange, filters]
+        [onChange, filters],
     )
 
     return (

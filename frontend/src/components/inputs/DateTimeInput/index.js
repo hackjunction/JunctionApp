@@ -25,7 +25,7 @@ const DateTimeInput = React.memo(
                     onChange(newValue.startOf('minute').format())
                 }
             },
-            [onChange, momentValue]
+            [onChange, momentValue],
         )
 
         const handleTimeChange = useCallback(
@@ -35,7 +35,7 @@ const DateTimeInput = React.memo(
                 newValue.minute(minutes)
                 onChange(newValue.startOf('minute').format())
             },
-            [momentValue, onChange]
+            [momentValue, onChange],
         )
 
         return (
@@ -54,7 +54,7 @@ const DateTimeInput = React.memo(
                 </Grid>
             </Grid>
         )
-    }
+    },
 )
 
 export default DateTimeInput

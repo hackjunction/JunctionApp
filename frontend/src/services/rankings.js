@@ -25,30 +25,30 @@ RankingsService.getOverallResultsForEvent = (idToken, eventSlug) => {
 RankingsService.getTrackResultsForEvent = (idToken, eventSlug, trackSlug) => {
     return _axios.get(
         `/rankings/${eventSlug}/admin/track/${trackSlug}`,
-        config(idToken)
+        config(idToken),
     )
 }
 
 RankingsService.getChallengeResultsForEvent = (
     idToken,
     eventSlug,
-    challengeSlug
+    challengeSlug,
 ) => {
     return _axios.get(
         `/rankings/${eventSlug}/admin/challenge/${challengeSlug}`,
-        config(idToken)
+        config(idToken),
     )
 }
 
 RankingsService.updateOverallResultsForEvent = (
     idToken,
     eventSlug,
-    rankings
+    rankings,
 ) => {
     return _axios.patch(
         `/rankings/${eventSlug}/admin/overall`,
         { rankings },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -56,12 +56,12 @@ RankingsService.updateTrackResultsForEvent = (
     idToken,
     eventSlug,
     trackSlug,
-    rankings
+    rankings,
 ) => {
     return _axios.patch(
         `/rankings/${eventSlug}/admin/track/${trackSlug}`,
         { rankings },
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -69,7 +69,7 @@ RankingsService.updateTrackResultsForEvent = (
 RankingsService.generateResults = (idToken, eventSlug) => {
     return _axios.get(
         `/rankings/${eventSlug}/admin/generate-results`,
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -77,7 +77,7 @@ RankingsService.generateResults = (idToken, eventSlug) => {
 RankingsService.getVotes = (idToken, eventSlug) => {
     return _axios.get(
         `/rankings/${eventSlug}/admin/get-gavel-votes`,
-        config(idToken)
+        config(idToken),
     )
 }
 
@@ -85,12 +85,12 @@ RankingsService.updateChallengeResultsForEvent = (
     idToken,
     eventSlug,
     challengeSlug,
-    rankings
+    rankings,
 ) => {
     return _axios.patch(
         `/rankings/${eventSlug}/admin/challenge/${challengeSlug}`,
         { rankings },
-        config(idToken)
+        config(idToken),
     )
 }
 

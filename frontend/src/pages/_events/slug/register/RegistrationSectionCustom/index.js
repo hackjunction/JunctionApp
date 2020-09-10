@@ -95,7 +95,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
             {
                 validationSchema: {},
                 initialValues: {},
-            }
+            },
         )
     }, [registration, section])
     return (
@@ -184,7 +184,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                             errors={errors}
                             dirty={dirty}
                         />,
-                        document.body
+                        document.body,
                     )}
                 </Box>
             )}

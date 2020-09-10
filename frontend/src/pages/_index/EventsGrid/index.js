@@ -26,7 +26,7 @@ export default ({ events, organizations, loading, title }) => {
                                     ? organizations.find(
                                           org =>
                                               org.slug ===
-                                              event.organizations[0]
+                                              event.organizations[0],
                                       )
                                     : null
                                 : null
@@ -47,7 +47,7 @@ export default ({ events, organizations, loading, title }) => {
                                     variant="contained"
                                     onClick={() =>
                                         dispatch(
-                                            push('/projects/' + event.slug)
+                                            push('/projects/' + event.slug),
                                         )
                                     }
                                 >

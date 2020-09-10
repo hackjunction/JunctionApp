@@ -9,7 +9,7 @@ export const eventsMap = createSelector(events, events =>
     events.reduce((res, event) => {
         res[event._id] = event
         return res
-    }, {})
+    }, {}),
 )
 
 export const searchResults = state => state.recruitment.searchResults.data
@@ -37,7 +37,7 @@ export const adminRecruitersUpdated = state =>
     state.recruitment.adminRecruiters.updated
 
 export const adminRecruiters = createSelector(_adminRecruiters, recruiters =>
-    recruiters.filter(recruiter => recruiter.recruiterEvents.length > 0)
+    recruiters.filter(recruiter => recruiter.recruiterEvents.length > 0),
 )
 
 export const adminSearchResults = state =>
@@ -52,13 +52,13 @@ export const adminSearchResultsUpdated = state =>
 export const favorites = createSelector(actionHistory, actions =>
     actions
         .filter(action => action.type === 'favorite')
-        .map(action => action._user)
+        .map(action => action._user),
 )
 
 export const filters = state => state.recruitment.filters
 export const filtersRecruitmentStatuses = createSelector(
     filters,
-    filters => filters.recruitmentStatuses || []
+    filters => filters.recruitmentStatuses || [],
 )
 
 export const page = state => state.recruitment.pagination.page
@@ -66,5 +66,5 @@ export const pageSize = state => state.recruitment.pagination.page_size
 export const pageCount = createSelector(
     searchResultsCount,
     pageSize,
-    (count, pageSize) => Math.ceil(count / pageSize)
+    (count, pageSize) => Math.ceil(count / pageSize),
 )

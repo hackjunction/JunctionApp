@@ -22,7 +22,7 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
                 [fieldName]: fieldValue,
             })
         },
-        [value, onChange]
+        [value, onChange],
     )
     return (
         <Grid container spacing={3}>

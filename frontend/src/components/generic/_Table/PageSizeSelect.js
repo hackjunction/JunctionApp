@@ -16,7 +16,7 @@ export default ({ gotoPage, pageSize, setPageSize }) => {
             setPageSize(size)
             gotoPage(0)
         },
-        [setPageSize, gotoPage]
+        [setPageSize, gotoPage],
     )
 
     return (

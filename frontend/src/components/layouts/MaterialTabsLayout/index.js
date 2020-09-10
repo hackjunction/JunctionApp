@@ -59,7 +59,7 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
         path => {
             dispatch(push(`${baseRoute}${path}`))
         },
-        [baseRoute, dispatch]
+        [baseRoute, dispatch],
     )
 
     const handleChange = (event, newValue) => {

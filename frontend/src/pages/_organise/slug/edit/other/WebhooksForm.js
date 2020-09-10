@@ -104,7 +104,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     action: action.value,
                     url: url.value,
                     enabled: enabled.value,
-                })
+                }),
             )
             resetForm()
         }
@@ -124,10 +124,10 @@ export default ({ value = [], fieldName, setFieldValue }) => {
         name => {
             setFieldValue(
                 fieldName,
-                value.filter(webhook => webhook.name !== name)
+                value.filter(webhook => webhook.name !== name),
             )
         },
-        [setFieldValue, fieldName, value]
+        [setFieldValue, fieldName, value],
     )
 
     const renderRows = () => {
