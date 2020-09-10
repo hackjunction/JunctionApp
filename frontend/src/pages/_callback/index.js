@@ -21,7 +21,7 @@ export default () => {
         if (idToken) {
             try {
                 const userProfile = await dispatch(
-                    UserActions.updateUserProfile(idToken)
+                    UserActions.updateUserProfile(idToken),
                 )
                 if (!userProfile) {
                     dispatch(push('/login/welcome'))

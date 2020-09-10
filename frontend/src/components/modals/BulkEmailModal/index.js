@@ -72,8 +72,8 @@ export default ({ visible, userIds = [], onClose }) => {
                 }
                 return
             },
-            [ctaText.value, t]
-        )
+            [ctaText.value, t],
+        ),
     )
 
     const fields = [
@@ -118,8 +118,8 @@ export default ({ visible, userIds = [], onClose }) => {
             .then(() => {
                 dispatch(
                     SnackbarActions.success(
-                        t('Test_email_sent_', { user: user.email })
-                    )
+                        t('Test_email_sent_', { user: user.email }),
+                    ),
                 )
             })
             .catch(err => {
@@ -139,11 +139,11 @@ export default ({ visible, userIds = [], onClose }) => {
             event.slug,
             userIds,
             params,
-            messageId.value
+            messageId.value,
         )
             .then(data => {
                 dispatch(
-                    SnackbarActions.success(t(''), { autoHideDuration: 5000 })
+                    SnackbarActions.success(t(''), { autoHideDuration: 5000 }),
                 )
             })
             .catch(err => {

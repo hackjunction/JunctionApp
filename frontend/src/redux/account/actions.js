@@ -6,7 +6,7 @@ export const updateRegistrations = () => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
     const registrations = await RegistrationsService.getUserRegistrations(
-        idToken
+        idToken,
     )
 
     dispatch({

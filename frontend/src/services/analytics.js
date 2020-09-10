@@ -17,7 +17,7 @@ AnalyticsService.init = () => {
                 autoConfig: true,
                 debug: false,
             },
-            {}
+            {},
         )
     }
 }

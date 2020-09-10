@@ -57,12 +57,12 @@ export default () => {
                 const error = await dispatch(
                     DashboardActions.updateRegistrationGrantDetails(
                         event.slug,
-                        values
-                    )
+                        values,
+                    ),
                 )
                 if (error) {
                     dispatch(
-                        SnackbarActions.error('Oops, something went wrong...')
+                        SnackbarActions.error('Oops, something went wrong...'),
                     )
                 } else {
                     dispatch(SnackbarActions.success('Success!'))
@@ -98,12 +98,12 @@ export default () => {
                                                         {
                                                             ...field.value,
                                                             firstName: value,
-                                                        }
+                                                        },
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -118,12 +118,12 @@ export default () => {
                                                         {
                                                             ...field.value,
                                                             middleName: value,
-                                                        }
+                                                        },
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -138,12 +138,12 @@ export default () => {
                                                         {
                                                             ...field.value,
                                                             lastName: value,
-                                                        }
+                                                        },
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -170,7 +170,7 @@ export default () => {
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,
-                                                    value
+                                                    value,
                                                 )
                                             }
                                             onBlur={() =>
@@ -208,7 +208,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -234,7 +234,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -255,7 +255,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -282,12 +282,12 @@ export default () => {
                                                 onChange={value =>
                                                     form.setFieldValue(
                                                         field.name,
-                                                        value
+                                                        value,
                                                     )
                                                 }
                                                 onBlur={() =>
                                                     form.setFieldTouched(
-                                                        field.name
+                                                        field.name,
                                                     )
                                                 }
                                             />
@@ -313,7 +313,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>
@@ -338,7 +338,7 @@ export default () => {
                                             onChange={value =>
                                                 form.setFieldValue(
                                                     field.name,
-                                                    value
+                                                    value,
                                                 )
                                             }
                                         />
@@ -381,12 +381,12 @@ export default () => {
                                                             {
                                                                 ...field.value,
                                                                 accountNumber: value,
-                                                            }
+                                                            },
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -401,12 +401,12 @@ export default () => {
                                                             {
                                                                 ...field.value,
                                                                 swift: value,
-                                                            }
+                                                            },
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -421,12 +421,12 @@ export default () => {
                                                             {
                                                                 ...field.value,
                                                                 bankName: value,
-                                                            }
+                                                            },
                                                         )
                                                     }
                                                     onBlur={() =>
                                                         form.setFieldTouched(
-                                                            field.name
+                                                            field.name,
                                                         )
                                                     }
                                                 />
@@ -453,7 +453,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                     />
@@ -477,7 +477,7 @@ export default () => {
                                         onChange={value =>
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }
                                         onBlur={() =>

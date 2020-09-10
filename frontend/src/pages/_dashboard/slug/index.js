@@ -57,7 +57,7 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
-        DashboardSelectors.registrationLoading
+        DashboardSelectors.registrationLoading,
     )
     const team = useSelector(DashboardSelectors.team)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)

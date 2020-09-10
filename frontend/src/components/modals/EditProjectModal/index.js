@@ -49,7 +49,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
             ProjectScoresService.getScoreByEventSlugAndProjectId(
                 idToken,
                 event.slug,
-                project._id
+                project._id,
             ).then(score => {
                 if (score) setProjectScore(score)
             })
@@ -111,7 +111,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                             <ListItemText
                                                 primary="Challenge"
                                                 secondary={project.challenges.join(
-                                                    ', '
+                                                    ', ',
                                                 )}
                                             ></ListItemText>
                                         </ListItem>
@@ -172,7 +172,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                         enableReinitialize={true}
                                         onSubmit={async (
                                             values,
-                                            { setSubmitting }
+                                            { setSubmitting },
                                         ) => {
                                             values.project = project._id
                                             values.event = event._id
@@ -181,25 +181,25 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                                     await ProjectScoresService.updateScoreByEventSlug(
                                                         idToken,
                                                         event.slug,
-                                                        values
+                                                        values,
                                                     )
                                                 } else {
                                                     await ProjectScoresService.addScoreByEventSlug(
                                                         idToken,
                                                         event.slug,
-                                                        values
+                                                        values,
                                                     )
                                                 }
                                                 dispatch(
                                                     SnackbarActions.success(
-                                                        'Score saved successfully.'
-                                                    )
+                                                        'Score saved successfully.',
+                                                    ),
                                                 )
                                             } catch (e) {
                                                 dispatch(
                                                     SnackbarActions.error(
-                                                        `Score could not be saved. Error: ${e.message}`
-                                                    )
+                                                        `Score could not be saved. Error: ${e.message}`,
+                                                    ),
                                                 )
                                             } finally {
                                                 setSubmitting(false)

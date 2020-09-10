@@ -20,7 +20,7 @@ RecruitmentService.search = (idToken, filters, page, page_size) => {
                 page,
             },
         },
-        config(idToken)
+        config(idToken),
     )
 }
 RecruitmentService.getUserProfile = (idToken, userId) => {
@@ -35,7 +35,7 @@ RecruitmentService.submitAction = (type, idToken, userId, message) => {
             user: userId,
             data: { message: message },
         },
-        config(idToken)
+        config(idToken),
     )
 }
 

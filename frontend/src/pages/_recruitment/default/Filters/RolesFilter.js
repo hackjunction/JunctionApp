@@ -52,7 +52,7 @@ export default () => {
                 years: [],
             })
         },
-        [addRole]
+        [addRole],
     )
 
     const renderRoles = () => {

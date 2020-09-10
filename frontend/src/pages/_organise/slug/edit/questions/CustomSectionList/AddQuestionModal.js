@@ -68,6 +68,10 @@ export default ({
             return 'Please choose a question type'
         }
 
+        if (!/^[a-z-]*$/.test(data.name)) {
+            return 'Machine name can only contain lowercase characters and dashes (-)'
+        }
+
         if (!editing) {
             if (reservedNames.indexOf(data.name) !== -1) {
                 return `This section already contains a question with the machine name ${data.name}, please use something else`
@@ -113,7 +117,7 @@ export default ({
                 [field]: value,
             })
         },
-        [data]
+        [data],
     )
 
     const renderPlaceholderInput = () => {
