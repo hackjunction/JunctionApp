@@ -48,6 +48,23 @@ const variantStyles = (theme, props) => {
                 border: `2px solid ${color.dark}`,
             }
         }
+        case 'contained-large': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `2px solid ${color.main}`,
+                height: '3em',
+                fontSize: '1.5em',
+                '&:hover': {
+                    backgroundColor: color.main,
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: color.dark,
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
         default: {
             return {
                 borderRadius: 0,

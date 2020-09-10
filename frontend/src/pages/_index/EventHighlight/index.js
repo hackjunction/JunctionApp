@@ -103,7 +103,7 @@ export default () => {
                         flexDirection="row"
                         flexWrap="wrap"
                     >
-                        <Box mr={1} mb={1}>
+                        <Box mr={1} mb={1} mt={2}>
                             <Button
                                 color="theme_lightgray"
                                 variant="outlined"
@@ -114,7 +114,17 @@ export default () => {
                                 {t('See_more_')}
                             </Button>
                         </Box>
-                        ,
+                        <Box mr={1} mb={1} mt={2}>
+                            <Button
+                                color="theme_orange"
+                                variant="contained"
+                                onClick={() =>
+                                    dispatch(push('/events/' + event.slug + '/register'))
+                                }
+                            >
+                                {t('Register_now_')}
+                            </Button>
+                        </Box>
                         {event.galleryOpen && (
                             <Box mr={1} mb={1}>
                                 <Button
