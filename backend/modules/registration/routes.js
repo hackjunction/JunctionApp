@@ -17,7 +17,7 @@ const {
 
 const getUserRegistrations = asyncHandler(async (req, res) => {
     const registrations = await RegistrationController.getUserRegistrations(
-        req.user
+        req.user,
     )
     return res.status(200).json(registrations)
 })
@@ -26,7 +26,7 @@ const getRegistration = asyncHandler(async (req, res) => {
     const event = await EventController.getPublicEventBySlug(req.params.slug)
     const registration = await RegistrationController.getRegistration(
         req.user.sub,
-        event._id.toString()
+        event._id.toString(),
     )
     return res.status(200).json(registration)
 })
@@ -35,7 +35,7 @@ const createRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.createRegistration(
         req.user,
         req.event,
-        req.body
+        req.body,
     )
     return res.status(201).json(registration)
 })
@@ -44,7 +44,7 @@ const updateRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.updateRegistration(
         req.user,
         req.event,
-        req.body
+        req.body,
     )
     /** Mirror the changes to the user's profile here */
     UserProfileController.updateUserProfile(registration.answers, req.user.sub)
@@ -54,7 +54,7 @@ const updateRegistration = asyncHandler(async (req, res) => {
 const confirmRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.confirmRegistration(
         req.user,
-        req.event
+        req.event,
     )
     return res.status(200).json(registration)
 })
@@ -62,7 +62,7 @@ const confirmRegistration = asyncHandler(async (req, res) => {
 const cancelRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.cancelRegistration(
         req.user,
-        req.event
+        req.event,
     )
     return res.status(200).json(registration)
 })
@@ -71,7 +71,7 @@ const setTravelGrantDetails = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.setTravelGrantDetailsForRegistration(
         req.user,
         req.event,
-        req.body.data
+        req.body.data,
     )
     return res.status(200).json(registration)
 })
@@ -80,21 +80,21 @@ const updateTravelGrantDetails = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.updateTravelGrantDetails(
         req.body.registrationId,
         req.event,
-        req.body.data
+        req.body.data,
     )
     return res.status(200).json(registration)
 })
 
 const notifyTravelGrantDetailsRejected = asyncHandler(async (req, res) => {
     const count = await RegistrationController.notifyRejectedTravelGrants(
-        req.event
+        req.event,
     )
     return res.status(200).json({ count })
 })
 
 const notifyTravelGrantDetailsAccepted = asyncHandler(async (req, res) => {
     const count = await RegistrationController.notifyAcceptedTravelGrants(
-        req.event
+        req.event,
     )
     return res.status(200).json({ count })
 })
@@ -104,14 +104,14 @@ const editRegistration = asyncHandler(async (req, res) => {
         req.params.registrationId,
         req.event,
         req.body,
-        req.user
+        req.user,
     )
     return res.status(200).json(registration)
 })
 
 const getRegistrationsForEvent = asyncHandler(async (req, res) => {
     const registrations = await RegistrationController.getRegistrationsForEvent(
-        req.event._id.toString()
+        req.event._id.toString(),
     )
     return res.status(200).json(registrations)
 })
@@ -119,7 +119,7 @@ const getRegistrationsForEvent = asyncHandler(async (req, res) => {
 const selfAssignRegistrationsForEvent = asyncHandler(async (req, res) => {
     const registrations = await RegistrationController.selfAssignRegistrationsForEvent(
         req.event._id.toString(),
-        req.user.sub
+        req.user.sub,
     )
 
     return res.status(200).json(registrations)
@@ -127,7 +127,7 @@ const selfAssignRegistrationsForEvent = asyncHandler(async (req, res) => {
 
 const assignRegistrationForEvent = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.assignRegistrationForEvent(
-        req.body
+        req.body,
     )
 
     return res.status(200).json(registration)
@@ -136,7 +136,7 @@ const assignRegistrationForEvent = asyncHandler(async (req, res) => {
 const getFullRegistration = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.getFullRegistration(
         req.event._id.toString(),
-        req.params.registrationId
+        req.params.registrationId,
     )
     return res.status(200).json(registration)
 })
@@ -145,7 +145,7 @@ const bulkEditRegistrations = asyncHandler(async (req, res) => {
     await RegistrationController.bulkEditRegistrations(
         req.event._id.toString(),
         req.body.userIds,
-        req.body.edits
+        req.body.edits,
     )
     return res.status(200).json([])
 })
@@ -153,7 +153,7 @@ const bulkEditRegistrations = asyncHandler(async (req, res) => {
 const bulkAssignTravelGrants = asyncHandler(async (req, res) => {
     await RegistrationController.bulkAssignTravelGrants(
         req.event._id.toString(),
-        req.body.grants
+        req.body.grants,
     )
 
     return res.status(200).json([])
@@ -161,7 +161,7 @@ const bulkAssignTravelGrants = asyncHandler(async (req, res) => {
 
 const bulkRejectTravelGrants = asyncHandler(async (req, res) => {
     await RegistrationController.rejectPendingTravelGrants(
-        req.event._id.toString()
+        req.event._id.toString(),
     )
 
     return res.status(200).json([])
@@ -206,7 +206,7 @@ router.get(
     hasToken,
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOrganiser,
-    getRegistrationsForEvent
+    getRegistrationsForEvent,
 )
 
 router
@@ -215,13 +215,13 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        selfAssignRegistrationsForEvent
+        selfAssignRegistrationsForEvent,
     )
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        assignRegistrationForEvent
+        assignRegistrationForEvent,
     )
 
 router
@@ -230,7 +230,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        bulkEditRegistrations
+        bulkEditRegistrations,
     )
 
 router
@@ -239,13 +239,13 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        bulkAssignTravelGrants
+        bulkAssignTravelGrants,
     )
     .delete(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        bulkRejectTravelGrants
+        bulkRejectTravelGrants,
     )
 
 router
@@ -254,7 +254,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        bulkAcceptRegistrations
+        bulkAcceptRegistrations,
     )
 
 router
@@ -263,7 +263,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        bulkRejectRegistrations
+        bulkRejectRegistrations,
     )
 
 router
@@ -272,7 +272,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        updateTravelGrantDetails
+        updateTravelGrantDetails,
     )
 
 router
@@ -281,7 +281,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        notifyTravelGrantDetailsRejected
+        notifyTravelGrantDetailsRejected,
     )
 
 router
@@ -290,7 +290,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        notifyTravelGrantDetailsAccepted
+        notifyTravelGrantDetailsAccepted,
     )
 
 /** Get or edit single registration as an organiser */
@@ -300,13 +300,13 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        getFullRegistration
+        getFullRegistration,
     )
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        editRegistration
+        editRegistration,
     )
 
 module.exports = router

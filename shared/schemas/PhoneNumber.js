@@ -16,13 +16,6 @@ const mongooseSchema = new mongoose.Schema({
     // TODO REMOVE THIS ONCE MIGRATIONS ARE DONE
     country_code: {
         type: String,
-        required: true,
-        validate: {
-            validator(v) {
-                return Countries.asArrayOfPhoneCodes.indexOf(v) !== -1
-            },
-            message: props => `${props.value} is not a valid phone code`,
-        },
     },
     number: String,
 })
@@ -31,9 +24,6 @@ const graphqlSchema = new GraphQLObjectType({
     name: 'PhoneNumber',
     fields: () => ({
         countryCode: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        country_code: {
             type: GraphQLNonNull(GraphQLString),
         },
         number: {
