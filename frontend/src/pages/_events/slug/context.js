@@ -67,6 +67,10 @@ const registrationQuery = gql`
                     role
                     years
                 }
+                skills {
+                    level
+                    skill
+                }
                 CustomAnswers {
                     section
                     key
