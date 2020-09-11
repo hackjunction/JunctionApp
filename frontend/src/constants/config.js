@@ -90,7 +90,7 @@ const settings = {
         required: true,
         value:
             process.env.REACT_APP_SEO_PAGE_TITLE ||
-            'Experience Europe’s Leading Hackathon',
+            'Experience Europe´s Leading Hackathon Platform',
     },
     SEO_TWITTER_HANDLE: {
         required: false,

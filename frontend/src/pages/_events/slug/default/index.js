@@ -55,17 +55,6 @@ export default () => {
                 <meta name="og:type" content="website" />
                 <meta property="og:image" content={coverImage()} />
                 <meta name="twitter:image" content={coverImage()} />
-                <meta property="og:image:width" content="1200" />
-                <meta property="og:image:height" content="630" />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta
-                    name="twitter:site"
-                    content="%REACT_APP_SEO_TWITTER_HANDLE%"
-                />
-                <meta
-                    name="twitter:creator"
-                    content="%REACT_APP_SEO_TWITTER_HANDLE%"
-                />
             </Helmet>
             <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
             <FadeInWrapper>

@@ -26,7 +26,7 @@ app.use(bodyParser.json())
 app.use(
     bodyParser.urlencoded({
         extended: true,
-    })
+    }),
 )
 
 /* JWT-middleware from all requests */
@@ -52,6 +52,14 @@ if (process.env.NODE_ENV === 'production') {
 
 /* Handle Joi validation errors */
 app.use(errors())
+
+/* Prerender */
+app.use(
+    require('prerender-node').set(
+        'prerenderToken',
+        process.env.PRERENDER_TOKEN,
+    ),
+)
 
 /* Global error handler */
 app.use(require('./common/errors/errorHandler'))
@@ -82,7 +90,7 @@ throng({
 
         app.listen(PORT, () => {
             logger.info(
-                `Worker ${process.pid} started, listening on port ${PORT}`
+                `Worker ${process.pid} started, listening on port ${PORT}`,
             )
         })
     },
