@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import { Helmet } from 'react-helmet'
+import config from 'constants/config'
 
 import HackerpackService from 'services/hackerpack'
 
@@ -45,6 +47,47 @@ export default () => {
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
         >
+            <Helmet>
+                <title>{config.PLATFORM_OWNER_NAME}</title>
+                <meta
+                    name="keywords"
+                    content="Hackathon, hackathon platform, Junction, hackerpack, hackjunction"
+                />
+                <meta name="title" content="Junction App || Hackerpack" />
+                <meta
+                    property="og:title"
+                    content="Junction App || Hackerpack"
+                />
+
+                <meta
+                    name="twitter:title"
+                    content="Junction App || Hackerpack"
+                />
+                <meta
+                    name="description"
+                    content="Login to redeem our awesome hackerpack offers!"
+                />
+                <meta
+                    property="og:description"
+                    content="Login to redeem our awesome hackerpack offers!"
+                />
+                <meta
+                    name="twitter:description"
+                    content="Login to redeem our awesome hackerpack offers!"
+                />
+
+                <meta name="og:type" content="website" />
+                <meta property="og:image" content={config.SEO_IMAGE_URL} />
+                <meta name="twitter:image" content={config.SEO_IMAGE_URL} />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content={config.SEO_TWITTER_HANDLE} />
+                <meta
+                    name="twitter:creator"
+                    content={config.SEO_TWITTER_HANDLE}
+                />
+            </Helmet>
             <CenteredContainer wrapperClass={classes.backButtonWrapper}>
                 <Button onClick={() => dispatch(push('/'))}>
                     <ArrowBackIosIcon style={{ color: 'black' }} />

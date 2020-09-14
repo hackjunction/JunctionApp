@@ -119,7 +119,13 @@ export default () => {
                                 color="theme_orange"
                                 variant="contained"
                                 onClick={() =>
-                                    dispatch(push('/events/' + event.slug + '/register'))
+                                    dispatch(
+                                        push(
+                                            '/events/' +
+                                                event.slug +
+                                                '/register',
+                                        ),
+                                    )
                                 }
                             >
                                 {t('Register_now_')}

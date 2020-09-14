@@ -22,8 +22,11 @@ import EventDetailContext from '../context'
 export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
-    console.log(event)
+    const keywords = event.name.split(' ').join(', ')
     console.log('slugregi', registration)
+    console.log('KEYWORDS', keywords)
+    console.log('HELMET', Helmet.peek())
+
     useEffect(() => {
         if (slug) {
             AnalyticsService.events.VIEW_EVENT(slug)
@@ -45,6 +48,7 @@ export default () => {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>{event.name}</title>
+                <meta name="keywords" content={keywords} />
                 <meta name="title" content={event.name} />
                 <meta property="og:title" content={event.name} />
                 <meta name="twitter:title" content={event.name} />

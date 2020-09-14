@@ -26,6 +26,7 @@ export default () => {
 
     console.log('ororo', organizations)
     console.log('ararr', activeEvents)
+    console.log('HELMET', Helmet.peek())
 
     const { t } = useTranslation()
     return (
@@ -35,11 +36,17 @@ export default () => {
             render={() => (
                 <>
                     <Helmet>
+                        <title>{config.PLATFORM_OWNER_NAME}</title>
+                        <meta
+                            name="keywords"
+                            content="Hackathon, hackathon platform, Junction"
+                        />
                         <meta name="title" content={config.SEO_PAGE_TITLE} />
                         <meta
                             property="og:title"
                             content={config.SEO_PAGE_TITLE}
                         />
+
                         <meta
                             name="twitter:title"
                             content={config.SEO_PAGE_TITLE}

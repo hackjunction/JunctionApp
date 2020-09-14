@@ -101,6 +101,10 @@ const settings = {
         value:
             process.env.REACT_APP_TERMS_URL || 'https://hackjunction.com/terms',
     },
+    SEO_PAGE_LOGIN_DESCRIPTION: {
+        required: true,
+        value: 'Login to see something',
+    },
 }
 const buildConfig = () => {
     const config = {}
