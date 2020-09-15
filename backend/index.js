@@ -18,6 +18,14 @@ const logger = require('./misc/logger')
 /** Use helmet for some basic security measures */
 app.use(helmet())
 
+/* Prerender */
+app.use(
+    require('prerender-node').set(
+        'prerenderToken',
+        process.env.PRERENDER_TOKEN,
+    ),
+)
+
 /* Force SSL Redirect in production */
 app.use(sslRedirect(['production'], 301))
 
@@ -26,7 +34,7 @@ app.use(bodyParser.json())
 app.use(
     bodyParser.urlencoded({
         extended: true,
-    })
+    }),
 )
 
 /* JWT-middleware from all requests */
@@ -82,7 +90,7 @@ throng({
 
         app.listen(PORT, () => {
             logger.info(
-                `Worker ${process.pid} started, listening on port ${PORT}`
+                `Worker ${process.pid} started, listening on port ${PORT}`,
             )
         })
     },
