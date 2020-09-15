@@ -134,7 +134,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-    console.log('regi', registration)
+
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -299,6 +299,7 @@ export default RequiresPermission(() => {
             const nextStep =
                 index !== sections.length - 1 ? sections[index + 1] : null
             const prevStep = index !== 0 ? sections[index - 1] : null
+
             return (
                 <Step key={section.label}>
                     <RegistrationSectionLabel
@@ -307,6 +308,7 @@ export default RequiresPermission(() => {
                         label={section.label}
                         previousLabel={prevStep ? prevStep.label : null}
                         onPrevious={setPrevStep}
+                        isVisible={activeStep !== sections.length + 1}
                     />
                     <StepContent
                         classes={{
@@ -344,6 +346,8 @@ export default RequiresPermission(() => {
             )
         })
     }
+
+    const shareurl = 'https://app.hackjunction.com/' + event.slug // TODO: remove hard coded base URL
 
     return (
         <FadeInWrapper className={classes.wrapper}>
@@ -400,7 +404,6 @@ export default RequiresPermission(() => {
                             }}
                         >
                             <Box
-                                mt={'200px'}
                                 display="flex"
                                 flexDirection="column"
                                 alignItems="center"
@@ -431,6 +434,65 @@ export default RequiresPermission(() => {
                                 >
                                     {t('Back_to_event_')}
                                 </Button>
+
+                                <Typography
+                                    className={classes.doneTitle}
+                                    variant="h4"
+                                >
+                                    Share to friends!
+                                </Typography>
+                                <Box>
+                                    <Button
+                                        href={`https://twitter.com/intent/tweet?text=${
+                                            'Just applied to ' +
+                                            event.name +
+                                            '!'
+                                        }&url=${shareurl}`}
+                                        target="_blank"
+                                        style={{
+                                            width: '300px',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        Twitter
+                                    </Button>
+                                    <Button
+                                        href={`https://www.facebook.com/dialog/share?app_id=${'appidhere'}&display=popup&href=&${shareurl}&redirect_uri=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fexplorer`}
+                                        target="_blank"
+                                        style={{
+                                            width: '300px',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        Facebook
+                                    </Button>
+                                </Box>
+                                <Box
+                                    display="flex"
+                                    flexDirection="row"
+                                    alignItems="center"
+                                >
+                                    <Button
+                                        href={`https://vkontakte.ru/share.php?url=${shareurl}`}
+                                        target="_blank"
+                                        style={{
+                                            width: '300px',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        VKontakte
+                                    </Button>
+                                    <Button
+                                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`}
+                                        target="_blank"
+                                        style={{
+                                            width: '300px',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        LinkedIn
+                                    </Button>
+                                </Box>
                             </Box>
                         </StepContent>
                     </Step>

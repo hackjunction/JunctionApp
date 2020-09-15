@@ -113,6 +113,12 @@ export default ({ history, location }) => {
                                 name="twitter:creator"
                                 content={config.SEO_TWITTER_HANDLE}
                             />
+                            <script
+                                type="text/javascript"
+                                async
+                                src="https://platform.twitter.com/widgets.js"
+                            ></script>
+
                             <Redirect to="/" />
                         </Switch>
                     )}
