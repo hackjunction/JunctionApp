@@ -62,7 +62,7 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
-
+    console.log('showpages,', shownPages, lockedPages)
     const { slug } = match.params
 
     /** Update when slug changes */
@@ -114,7 +114,7 @@ export default () => {
                         path: '/finalist-voting',
                         exact: true,
                         hidden: !shownPages.finalistVoting,
-                        locked: true,
+                        locked: lockedPages.finalistVoting,
                         lockedDescription: 'Finalist voting closed',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
