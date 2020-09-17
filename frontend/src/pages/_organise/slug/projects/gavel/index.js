@@ -20,16 +20,12 @@ export default () => {
     const projects = useSelector(OrganiserSelectors.projects)
     const rankingsOverall = useSelector(OrganiserSelectors.rankingsOverall)
     const rankingsByTrack = useSelector(OrganiserSelectors.rankingsByTrack)
-    const rankingsByChallenge = useSelector(
-        OrganiserSelectors.rankingsByChallenge,
-    )
 
     const [ScoreGrid, setScoreGrid] = useState({})
     const [ProjectRank, setProjectRank] = useState([])
     const [ProjectRanks, setProjectRanks] = useState({})
 
     console.log('trk', rankingsByTrack)
-    console.log('rankingsByChallenge', rankingsByChallenge)
     useEffect(() => {
         const fetchData = async () => {
             const pGrid = {}
@@ -47,7 +43,7 @@ export default () => {
                 })
             })
             if (rankingsByTrack) {
-                Object.keys(rankingsByTrack).forEach((name, projectsIds) => {
+                Object.keys(rankingsByTrack).forEach(name => {
                     pRanks[name] = []
                     projects.forEach(p0 => {
                         const i = rankingsByTrack[name].indexOf(p0._id)
@@ -66,7 +62,6 @@ export default () => {
                 })
             } else {
                 pRanks['overall'] = []
-
                 projects.forEach(p0 => {
                     const i = rankingsOverall?.indexOf(p0._id)
                     pRank[i] = {}
