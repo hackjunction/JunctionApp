@@ -11,7 +11,12 @@ import ProjectsGridItem from 'components/projects/ProjectsGridItem'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
+
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserActions from 'redux/organiser/actions'
+
 import EventsService from 'services/events'
+import ProjectsService from 'services/projects'
 
 import WinnerVoteService from 'services/winnerVote'
 
@@ -20,7 +25,10 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
 
+    const rankingsByTrack = useSelector(OrganiserSelectors.rankingsByTrack)
+    console.log('ranktak,', rankingsByTrack)
     const [loading, setLoading] = useState(true)
+
     const [projects, setProjects] = useState([])
     const [vote, setVote] = useState([])
 
@@ -29,17 +37,28 @@ export default () => {
     }, [idToken, event])
 
     const updateProjects = useCallback(() => {
-        return EventsService.getWinnerProjects(idToken, event.slug)
+        // TODO use Eventservice
+        return ProjectsService.getProjectsByEvent(event.slug)
+        // return EventsService.getWinnerProjects(idToken, event.slug)
     }, [idToken, event])
 
     const update = useCallback(async () => {
         setLoading(true)
+        const topProjects = []
         try {
             const [vote, projects] = await Promise.all([
                 updateVote(),
                 updateProjects(),
             ])
-            setProjects(projects)
+            if (rankingsByTrack) {
+                Object.keys(rankingsByTrack).forEach(name =>
+                    topProjects?.push(
+                        projects?.find(x => x._id === rankingsByTrack[name][0]),
+                    ),
+                )
+            }
+            console.log('topProjects are', topProjects)
+            setProjects(topProjects)
             if (vote) {
                 setVote(vote.project)
             }
@@ -52,7 +71,7 @@ export default () => {
         } finally {
             setLoading(false)
         }
-    }, [updateVote, updateProjects, dispatch])
+    }, [updateVote, updateProjects, rankingsByTrack, dispatch])
 
     useEffect(() => {
         update()

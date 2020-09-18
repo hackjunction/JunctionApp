@@ -68,7 +68,7 @@ const addOrganiser = asyncHandler(async (req, res) => {
     await AuthController.grantAssistantOrganiser(req.params.organiserId)
     const event = await EventController.addOrganiser(
         req.event,
-        req.params.organiserId
+        req.params.organiserId,
     )
     return res.status(200).json(event.organisers)
 })
@@ -76,7 +76,7 @@ const addOrganiser = asyncHandler(async (req, res) => {
 const removeOrganiser = asyncHandler(async (req, res) => {
     const event = await EventController.removeOrganiser(
         req.event,
-        req.params.organiserId
+        req.params.organiserId,
     )
     return res.status(200).json(event.organisers)
 })
@@ -84,7 +84,7 @@ const removeOrganiser = asyncHandler(async (req, res) => {
 const updateWinners = asyncHandler(async (req, res) => {
     const event = await EventController.updateWinners(
         req.event._id,
-        req.body.winners
+        req.body.winners,
     )
     return res.status(200).json(event)
 })
@@ -93,7 +93,7 @@ const getWinnerProjects = asyncHandler(async (req, res) => {
     const projectIds = Object.keys(req.event.winners.trackWinners).map(
         track => {
             return req.event.winners.trackWinners[track]
-        }
+        },
     )
 
     const projects = await mongoose
@@ -119,7 +119,7 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
-        getEventsAsOrganiser
+        getEventsAsOrganiser,
     )
     .post(hasToken, hasPermission(Auth.Permissions.MANAGE_EVENT), createEvent)
 
@@ -139,19 +139,19 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        getEventAsOrganiser
+        getEventAsOrganiser,
     )
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        updateEvent
+        updateEvent,
     )
     .delete(
         hasToken,
         hasPermission(Auth.Permissions.DELETE_EVENT),
         isEventOwner,
-        deleteEvent
+        deleteEvent,
     )
 
 router
@@ -160,13 +160,13 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        generateAchievements
+        generateAchievements,
     )
     .delete(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        clearAchievements
+        clearAchievements,
     )
 
 router
@@ -176,7 +176,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        updateWinners
+        updateWinners,
     )
 
 /** Get organisers for single event */
@@ -185,7 +185,7 @@ router.get(
     hasToken,
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOwner,
-    getOrganisers
+    getOrganisers,
 )
 
 /** Add or remove organisers from event */
@@ -195,13 +195,13 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        addOrganiser
+        addOrganiser,
     )
     .delete(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        removeOrganiser
+        removeOrganiser,
     )
 
 module.exports = router

@@ -37,7 +37,8 @@ export const getHasPermission = state => {
 
 export const getHasRole = state => {
     const roles = getRoles(state)
-    console.log('roles are', roles)
+    // TODO This runs super often,  fix
+    // console.log('roles are', roles)
     return requiredRoles => {
         return difference(requiredRoles, roles).length === 0
     }

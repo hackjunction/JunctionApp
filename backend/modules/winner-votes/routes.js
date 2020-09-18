@@ -1,4 +1,5 @@
 const express = require('express')
+
 const router = express.Router()
 const _ = require('lodash')
 const asyncHandler = require('express-async-handler')
@@ -23,7 +24,7 @@ router
             })
 
             return res.status(200).json(vote)
-        })
+        }),
     )
     .post(
         hasToken,
@@ -33,21 +34,19 @@ router
                 event: req.event._id,
                 user: req.user.sub,
             })
-
             if (vote) {
                 vote.project = req.body.projectId
                 const result = await vote.save()
                 return res.status(200).json(result)
-            } else {
-                const newVote = new WinnerVote({
-                    event: req.event._id,
-                    user: req.user.sub,
-                    project: req.body.projectId,
-                })
-                const result = await newVote.save()
-                return res.status(200).json(result)
             }
-        })
+            const newVote = new WinnerVote({
+                event: req.event._id,
+                user: req.user.sub,
+                project: req.body.projectId,
+            })
+            const result = await newVote.save()
+            return res.status(200).json(result)
+        }),
     )
 
 router.route('/:slug/results').get(
@@ -61,7 +60,7 @@ router.route('/:slug/results').get(
         const grouped = _.groupBy(votes, 'project')
 
         return res.status(200).json(grouped)
-    })
+    }),
 )
 
 module.exports = router

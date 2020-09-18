@@ -67,7 +67,7 @@ class EventController {
     }
 
     getHighlighted() {
-        // TODO remove this once connected is done
+        /* TODO remove this once connected is done
         return this._clean(
             Event.find({
                 name: 'Junction 2020 Connected',
@@ -79,18 +79,18 @@ class EventController {
                 .sort([['startTime', 1]])
                 .lean(),
         )
-        /*
-    return this._clean(
-      Event.find({
-        published: true,
-        startTime: {
-          $gte: new Date(),
-        },
-      })
-        .sort([['startTime', 1]])
-        .lean(),
-    );
-    */
+        */
+
+        return this._clean(
+            Event.find({
+                published: true,
+                startTime: {
+                    $gte: new Date(),
+                },
+            })
+                .sort([['startTime', 1]])
+                .lean(),
+        )
     }
 
     getActive() {

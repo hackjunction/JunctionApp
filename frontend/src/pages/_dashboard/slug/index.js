@@ -28,6 +28,7 @@ import HackerpackPage from './hackerpack'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
+import * as OrganiserActions from 'redux/organiser/actions'
 
 import { useTranslation } from 'react-i18next'
 
@@ -62,7 +63,7 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
-
+    console.log('showpages,', shownPages, lockedPages)
     const { slug } = match.params
 
     /** Update when slug changes */
@@ -70,6 +71,11 @@ export default () => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
+        //TODO dont use OrganiserSelectors here
+        dispatch(OrganiserActions.updateProjects(slug))
+        dispatch(OrganiserActions.updateGavelProjects(slug))
+        dispatch(OrganiserActions.updateRankings(slug))
+        dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
     }, [slug, dispatch])
 
     /** Update project when team changes */
@@ -114,7 +120,7 @@ export default () => {
                         path: '/finalist-voting',
                         exact: true,
                         hidden: !shownPages.finalistVoting,
-                        locked: true,
+                        locked: lockedPages.finalistVoting,
                         lockedDescription: 'Finalist voting closed',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
