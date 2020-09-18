@@ -120,11 +120,12 @@ export const isTeamValid = createSelector(team, team => {
 })
 
 export const lockedPages = createSelector(event, event => {
+    console.log('event', event)
     return {
         submissions: !EventHelpers.isSubmissionsOpen(event, moment),
         reviewing: EventHelpers.isVotingPast(event, moment),
         team: EventHelpers.isSubmissionsPast(event, moment),
-        finalistVoting: event?.winners?.votingOpen ?? false,
+        finalistVoting: !event?.winners?.isFinalistVotingOpen ?? false,
     }
 })
 

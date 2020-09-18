@@ -66,6 +66,7 @@ export default () => {
     console.log('showpages,', shownPages, lockedPages)
     const { slug } = match.params
 
+    console.log('locked pages', lockedPages)
     /** Update when slug changes */
     useEffect(() => {
         dispatch(DashboardActions.updateEvent(slug))
@@ -121,7 +122,8 @@ export default () => {
                         exact: true,
                         hidden: !shownPages.finalistVoting,
                         locked: lockedPages.finalistVoting,
-                        lockedDescription: 'Finalist voting closed',
+                        lockedDescription:
+                            'Finalist voting closed until peer review is done',
                         icon: <HowToVoteIcon />,
                         label: 'Finalist voting',
                         component: FinalistVotingPage,

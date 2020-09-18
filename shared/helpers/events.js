@@ -33,7 +33,7 @@ const EventHelpers = {
         return nowIsBetween(
             event.registrationStartTime,
             event.registrationEndTime,
-            moment
+            moment,
         )
     },
     isSubmissionsOpen: (event, moment) => {
@@ -41,7 +41,7 @@ const EventHelpers = {
         return nowIsBetween(
             event.submissionsStartTime,
             event.submissionsEndTime,
-            moment
+            moment,
         )
     },
     isSubmissionsUpcoming: (event, moment) => {
@@ -57,8 +57,12 @@ const EventHelpers = {
         return nowIsBetween(
             event.reviewingStartTime,
             event.reviewingEndTime,
-            moment
+            moment,
         )
+    },
+    isFinalistVotingOpen: (event, moment) => {
+        if (!event) return false
+        return nowIsBetween(event.reviewingEndTime, event.endTime, moment)
     },
     isVotingPast: (event, moment) => {
         if (!event) return true
@@ -76,7 +80,7 @@ const EventHelpers = {
         if (!event) return true
         return !nowIsBefore(
             moment(event.endTime).add(7, 'days').format(),
-            moment
+            moment,
         )
     },
     getEventStatus: (event, moment) => {
