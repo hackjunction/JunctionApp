@@ -348,6 +348,40 @@ export default RequiresPermission(() => {
     }
 
     const shareurl = 'https://app.hackjunction.com/' + event.slug // TODO: remove hard coded base URL
+    const popupCenter = ({ url, title, w = 900, h = 600 }) => {
+        const dualScreenLeft =
+            window.screenLeft !== undefined ? window.screenLeft : window.screenX
+        const dualScreenTop =
+            window.screenTop !== undefined ? window.screenTop : window.screenY
+
+        const width = window.innerWidth
+            ? window.innerWidth
+            : document.documentElement.clientWidth
+            ? document.documentElement.clientWidth
+            : window.screen.width
+        const height = window.innerHeight
+            ? window.innerHeight
+            : document.documentElement.clientHeight
+            ? document.documentElement.clientHeight
+            : window.screen.height
+
+        const systemZoom = width / window.screen.availWidth
+        const left = (width - w) / 2 / systemZoom + dualScreenLeft
+        const top = (height - h) / 2 / systemZoom + dualScreenTop
+        const newWindow = window.open(
+            url,
+            title,
+            `
+      scrollbars=yes,
+      width=${w / systemZoom}, 
+      height=${h / systemZoom}, 
+      top=${top}, 
+      left=${left}
+      `,
+        )
+
+        if (window.focus) newWindow.focus()
+    }
 
     return (
         <FadeInWrapper className={classes.wrapper}>
@@ -443,12 +477,16 @@ export default RequiresPermission(() => {
                                 </Typography>
                                 <Box>
                                     <Button
-                                        href={`https://twitter.com/intent/tweet?text=${
-                                            'Just applied to ' +
-                                            event.name +
-                                            '!'
-                                        }&url=${shareurl}`}
-                                        target="_blank"
+                                        onClick={() =>
+                                            popupCenter({
+                                                url: `https://twitter.com/intent/tweet?text=${
+                                                    'Just applied to ' +
+                                                    event.name +
+                                                    '!'
+                                                }&url=${shareurl}`,
+                                                title: 'Twitter',
+                                            })
+                                        }
                                         style={{
                                             width: '300px',
                                             color: 'white',
@@ -457,8 +495,16 @@ export default RequiresPermission(() => {
                                         Twitter
                                     </Button>
                                     <Button
-                                        href={`https://www.facebook.com/dialog/share?app_id=${'appidhere'}&display=popup&href=&${shareurl}&redirect_uri=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fexplorer`}
-                                        target="_blank"
+                                        onClick={() =>
+                                            popupCenter({
+                                                url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${
+                                                    'Just applied to ' +
+                                                    event.name +
+                                                    '!'
+                                                }`,
+                                                title: 'Facebook',
+                                            })
+                                        }
                                         style={{
                                             width: '300px',
                                             color: 'white',
@@ -473,8 +519,12 @@ export default RequiresPermission(() => {
                                     alignItems="center"
                                 >
                                     <Button
-                                        href={`https://vkontakte.ru/share.php?url=${shareurl}`}
-                                        target="_blank"
+                                        onClick={() =>
+                                            popupCenter({
+                                                url: `https://vkontakte.ru/share.php?url=${shareurl}`,
+                                                title: 'VKOntakte',
+                                            })
+                                        }
                                         style={{
                                             width: '300px',
                                             color: 'white',
@@ -483,8 +533,12 @@ export default RequiresPermission(() => {
                                         VKontakte
                                     </Button>
                                     <Button
-                                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`}
-                                        target="_blank"
+                                        onClick={() =>
+                                            popupCenter({
+                                                url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
+                                                title: 'Linkedin',
+                                            })
+                                        }
                                         style={{
                                             width: '300px',
                                             color: 'white',
