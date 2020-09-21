@@ -31,14 +31,22 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ eventId }) => {
+    // TODO a lot of event?. here due to possibility of null event in test databases.
+    // Shouldn't happen in production
     const [event = {}, loading] = useEventPreview(eventId)
+    //TODO make sure this never fires
+    if (!event) {
+        console.log('No event with id ', eventId)
+    } else {
+        console.log('mem')
+    }
     const dispatch = useDispatch()
     const classes = useStyles()
 
     const handleClick = useCallback(() => {
         if (loading) return
-        dispatch(push(`/dashboard/${event.slug}`))
-    }, [dispatch, event.slug, loading])
+        dispatch(push(`/dashboard/${event?.slug}`))
+    }, [dispatch, event?.slug, loading])
 
     if (!event && !eventId) {
         return null
@@ -93,7 +101,7 @@ export default ({ eventId }) => {
         }
     }
 
-    return (
+    return event ? (
         <Paper className={classes.paper} onClick={handleClick}>
             <Grid container spacing={0}>
                 <Grid item xs={12} md={3}>
@@ -112,5 +120,5 @@ export default ({ eventId }) => {
                 </Grid>
             </Grid>
         </Paper>
-    )
+    ) : null
 }
