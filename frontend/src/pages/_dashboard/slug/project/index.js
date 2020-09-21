@@ -217,7 +217,10 @@ export default () => {
                 )}
                 <Box p={1} />
                 {showSubmissionForm && (
-                    <SubmissionForm id={selectedProjectId} />
+                    <SubmissionForm
+                        id={selectedProjectId}
+                        handleProjectSelected={handleProjectSelected}
+                    />
                 )}
             </>
         )

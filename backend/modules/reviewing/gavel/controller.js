@@ -80,11 +80,11 @@ controller.editAnnotator = async (annotatorId, data) => {
 controller.initAnnotator = async (event, userId) => {
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
-            new ForbiddenError('Cannot start voting while voting is not open')
+            new ForbiddenError('Cannot start voting while voting is not open'),
         )
     }
     const team = await TeamController.getTeam(event._id, userId).catch(
-        () => null
+        () => null,
     )
     const [projects, annotators] = await Promise.all([
         mongoose.model('Project').find({ event: event._id }),
@@ -118,16 +118,15 @@ controller.initAnnotator = async (event, userId) => {
             assignedTrack = tracksSorted[0].slug
         }
     }
-
     const annotator = new GavelAnnotator({
         user: userId,
         event: event._id,
         team: team ? team._id : null,
         track: assignedTrack,
     })
-    await annotator.save()
-    // savedaanotator instead?
-    return annotator.assignNextProject()
+    console.log('created Annatator', annotator)
+    const savedAnnator = await annotator.save()
+    return savedAnnator.assignNextProject()
 }
 
 controller.submitVote = async (event, userId, winningProjectId) => {
@@ -142,7 +141,7 @@ controller.submitVote = async (event, userId, winningProjectId) => {
         winningProjectId !== annotator.prev.toString()
     ) {
         throw new ForbiddenError(
-            `Invalid choice for winning project, must be one of: ${annotator.prev}, ${annotator.next}`
+            `Invalid choice for winning project, must be one of: ${annotator.prev}, ${annotator.next}`,
         )
     }
 
@@ -172,7 +171,7 @@ controller.submitVote = async (event, userId, winningProjectId) => {
         winner.mu,
         winner.sigmaSq,
         loser.mu,
-        loser.sigmaSq
+        loser.sigmaSq,
     )
 
     annotator.alpha = updatedAlpha

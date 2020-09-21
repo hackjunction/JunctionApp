@@ -84,32 +84,34 @@ GavelAnnotatorSchema.virtual('userDetails', {
 GavelAnnotatorSchema.methods.canVote = async function () {
     if (!this.next) {
         return Promise.reject(
-            new ForbiddenError('Cannot submit votes without a project assigned')
+            new ForbiddenError(
+                'Cannot submit votes without a project assigned',
+            ),
         )
     }
 
     if (!this.active) {
         return Promise.reject(
-            new ForbiddenError('Cannot submit votes while disabled')
+            new ForbiddenError('Cann,ot submit votes while disabled'),
         )
     }
 
     if (!this.onboarded) {
         return Promise.reject(
-            new ForbiddenError('Cannot submit votes before being onboarded')
+            new ForbiddenError('Cannot subm,it votes before being onboarded'),
         )
     }
 
     const event = await Event.findById(this.event)
     if (!event) {
         return Promise.reject(
-            new ForbiddenError('Annotator belongs to no event')
+            new ForbiddenError('Annotator belongs to no event'),
         )
     }
 
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
-            new ForbiddenError('Cannot submit votes while voting is not open')
+            new ForbiddenError('Cannot subm,it votes while voting is not open'),
         )
     }
 
@@ -122,8 +124,8 @@ GavelAnnotatorSchema.methods.canVote = async function () {
             new ForbiddenError(
                 `Must wait ${
                     Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
-                } more seconds before voting again`
-            )
+                } more seconds before voting again`,
+            ),
         )
     }
 
@@ -184,22 +186,25 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
                 const project = await mongoose
                     .model('Project')
                     .findById(gavelProject.project)
-                const team = await Team.findById(project.team)
-                console.log(this.user, team.owner, !team.members)
-                console.log(
-                    this.user !== team.owner &&
+                if (project) {
+                    const team = await Team.findById(project.team)
+                    console.log(this.user, team.owner, !team.members)
+                    console.log(
+                        this.user !== team.owner &&
+                            !team.members.includes(this.user),
+                    )
+                    return (
+                        this.user !== team.owner &&
                         !team.members.includes(this.user)
-                )
-                return (
-                    this.user !== team.owner &&
-                    !team.members.includes(this.user)
-                )
+                    )
+                }
+                // TOOD these should be removed
+                console.log('orpahn gavelproject', gavelProject)
+                return false
             }
-
             return true
-        }
+        },
     )
-
     /** If an annotator has been assigned to a project before this time, consider the project free for review */
     const cutoff = moment().subtract(Settings.ANNOTATOR_TIMEOUT_MINS, 'minutes')
 
@@ -257,7 +262,7 @@ GavelAnnotatorSchema.methods.getNextProject = async function () {
             current.mu,
             current.sigmaSq,
             prospect.mu,
-            prospect.sigmaSq
+            prospect.sigmaSq,
         )
     })
 }
@@ -296,8 +301,8 @@ GavelAnnotatorSchema.methods.skipCurrentProject = async function () {
     if (!this.next) {
         return Promise.reject(
             new ForbiddenError(
-                'Cannot skip current project when there is no project assigned'
-            )
+                'Cannot skip current project when there is no project assigned',
+            ),
         )
     }
     this.ignore.push(this.next)
@@ -318,7 +323,7 @@ GavelAnnotatorSchema.index(
     },
     {
         unique: true,
-    }
+    },
 )
 
 const GavelAnnotator = mongoose.model('GavelAnnotator', GavelAnnotatorSchema)

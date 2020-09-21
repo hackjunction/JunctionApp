@@ -65,8 +65,6 @@ export default () => {
     const shownPages = useSelector(DashboardSelectors.shownPages)
     console.log('showpages,', shownPages, lockedPages)
     const { slug } = match.params
-
-    console.log('locked pages', lockedPages)
     /** Update when slug changes */
     useEffect(() => {
         dispatch(DashboardActions.updateEvent(slug))

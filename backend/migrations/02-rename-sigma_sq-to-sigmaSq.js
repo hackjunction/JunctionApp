@@ -24,7 +24,6 @@ module.exports = {
             )
 
         console.log('Done with ProjectScore', psres.n, psres.nModified)
-
         return Promise.resolve()
     },
 }
