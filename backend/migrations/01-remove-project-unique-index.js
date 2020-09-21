@@ -9,7 +9,7 @@ module.exports = {
     run: async () => {
         const indexes = await mongoose.model('Project').listIndexes()
         const indexToDelete = indexes.find(
-            index => index.name === 'event_1_team_1'
+            index => index.name === 'event_1_team_1',
         )
         if (indexToDelete) {
             await mongoose

@@ -26,6 +26,7 @@ export default () => {
 
     console.log('ororo', organizations)
     console.log('ararr', activeEvents)
+    console.log('HELMET', Helmet.peek())
 
     const { t } = useTranslation()
     return (
@@ -35,39 +36,42 @@ export default () => {
             render={() => (
                 <>
                     <Helmet>
+                        <title>{config.PLATFORM_OWNER_NAME}</title>
                         <meta
-                            name="title"
-                            content="%REACT_APP_SEO_PAGE_TITLE%"
+                            name="keywords"
+                            content="Hackathon, hackathon platform, Junction"
                         />
+                        <meta name="title" content={config.SEO_PAGE_TITLE} />
                         <meta
                             property="og:title"
-                            content="%REACT_APP_SEO_PAGE_TITLE%"
+                            content={config.SEO_PAGE_TITLE}
                         />
+
                         <meta
                             name="twitter:title"
-                            content="%REACT_APP_SEO_PAGE_TITLE%"
+                            content={config.SEO_PAGE_TITLE}
                         />
                         <meta
                             name="description"
-                            content="%REACT_APP_SEO_PAGE_DESCRIPTION%"
+                            content={config.SEO_PAGE_DESCRIPTION}
                         />
                         <meta
                             property="og:description"
-                            content="%REACT_APP_SEO_PAGE_DESCRIPTION%"
+                            content={config.SEO_PAGE_DESCRIPTION}
                         />
                         <meta
                             name="twitter:description"
-                            content="%REACT_APP_SEO_PAGE_DESCRIPTION%"
+                            content={config.SEO_PAGE_DESCRIPTION}
                         />
 
                         <meta name="og:type" content="website" />
                         <meta
                             property="og:image"
-                            content="%REACT_APP_SEO_IMAGE_URL%"
+                            content={config.SEO_IMAGE_URL}
                         />
                         <meta
                             name="twitter:image"
-                            content="%REACT_APP_SEO_IMAGE_URL%"
+                            content={config.SEO_IMAGE_URL}
                         />
                         <meta property="og:image:width" content="1200" />
                         <meta property="og:image:height" content="630" />
@@ -77,11 +81,11 @@ export default () => {
                         />
                         <meta
                             name="twitter:site"
-                            content="%REACT_APP_SEO_TWITTER_HANDLE%"
+                            content={config.SEO_TWITTER_HANDLE}
                         />
                         <meta
                             name="twitter:creator"
-                            content="%REACT_APP_SEO_TWITTER_HANDLE%"
+                            content={config.SEO_TWITTER_HANDLE}
                         />
                     </Helmet>
                     <Divider size={1} />

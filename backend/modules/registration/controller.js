@@ -27,7 +27,6 @@ controller.getUserRegistrations = user => {
 
 controller.createRegistration = async (user, event, data) => {
     const answers = await RegistrationHelpers.validateAnswers(data, event)
-    console.log('Adsand after', answers)
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
@@ -50,7 +49,7 @@ controller.getRegistration = (userId, eventId) => {
     }).then(registration => {
         if (!registration) {
             throw new NotFoundError(
-                `Registration for event ${eventId} not found for user ${userId}`
+                `Registration for event ${eventId} not found for user ${userId}`,
             )
         }
         return registration
@@ -63,9 +62,8 @@ controller.updateRegistration = (user, event, data) => {
         .then(async registration => {
             const answers = await RegistrationHelpers.validateAnswers(
                 data,
-                event
+                event,
             )
-            console.log('Adsand after', answers)
             return Registration.updateAllowed(registration, { answers })
         })
 }
@@ -80,7 +78,7 @@ controller.confirmRegistration = (user, event) => {
             }
 
             throw new ForbiddenError(
-                'Only accepted registrations can be confirmed'
+                'Only accepted registrations can be confirmed',
             )
         })
 }
@@ -98,7 +96,7 @@ controller.cancelRegistration = (user, event) => {
             }
 
             throw new ForbiddenError(
-                'Only accepted or confirmed registrations can be cancelled'
+                'Only accepted or confirmed registrations can be cancelled',
             )
         })
 }
@@ -106,7 +104,7 @@ controller.cancelRegistration = (user, event) => {
 controller.setTravelGrantDetailsForRegistration = async (
     user,
     event,
-    travelGrantDetails
+    travelGrantDetails,
 ) => {
     const schema = yup.object().shape(TravelGrantDetailsValidationSchema)
     const validated = await schema.validate(travelGrantDetails, {
@@ -116,7 +114,7 @@ controller.setTravelGrantDetailsForRegistration = async (
 
     if (registration.status !== STATUSES.checkedIn.id) {
         throw new ForbiddenError(
-            'Only those can receive reimbursement who have checked-in at the event!'
+            'Only those can receive reimbursement who have checked-in at the event!',
         )
     }
     if (registration.travelGrant <= 0) {
@@ -177,12 +175,12 @@ controller.notifyAcceptedTravelGrants = async event => {
         registration => {
             return EmailTaskController.createTravelGrantDetailsAcceptedTask(
                 registration,
-                true
+                true,
             )
         },
         {
             concurrency: 10,
-        }
+        },
     )
     return registrations.length
 }
@@ -197,12 +195,12 @@ controller.notifyRejectedTravelGrants = async event => {
         registration => {
             return EmailTaskController.createTravelGrantDetailsRejectedTask(
                 registration,
-                true
+                true,
             )
         },
         {
             concurrency: 10,
-        }
+        },
     )
 
     return registrations.length
@@ -275,7 +273,7 @@ controller.selfAssignRegistrationsForEvent = (eventId, userId) => {
                 },
                 {
                     assignedTo: userId,
-                }
+                },
             ).then(data => {
                 return data.nModified
             })
@@ -317,7 +315,7 @@ controller.bulkEditRegistrations = (eventId, userIds, edits) => {
 
                 if (edits.hasOwnProperty('tags')) {
                     edits.tags = _.uniq(
-                        (registration.tags || []).concat(edits.tags)
+                        (registration.tags || []).concat(edits.tags),
                     )
                 }
 
@@ -380,7 +378,7 @@ controller.getFullRegistration = (eventId, registrationId) => {
         .then(registration => {
             if (!registration) {
                 throw new NotFoundError(
-                    `Registration with id ${registrationId} does not exist`
+                    `Registration with id ${registrationId} does not exist`,
                 )
             }
 

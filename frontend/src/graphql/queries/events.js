@@ -13,6 +13,8 @@ const Fragments = {
                 publicId
             }
             eventType
+            registrationStartTime
+            registrationEndTime
             organizations
             _eventLocationFormatted
             _eventTimeFormatted
@@ -39,18 +41,19 @@ export const useEventPreview = _id => {
 }
 
 export const GET_HIGHLIGHTED_EVENTS = gql`
-    query Event($limit: Int) {
-        highlightedEvents(limit: $limit) {
+    query Event($limit: Int, $name: String) {
+        highlightedEvents(limit: $limit, name: $name) {
             ...EventPreview
         }
     }
     ${Fragments.EventPreview}
 `
 
-export const useHighlightedEvents = ({ limit }) => {
+export const useHighlightedEvents = ({ limit, name }) => {
     const { data, loading, error } = useQuery(GET_HIGHLIGHTED_EVENTS, {
         variables: {
             limit,
+            name,
         },
     })
 

@@ -69,8 +69,8 @@ export default ({ event, registration }) => {
                             onClick={() =>
                                 dispatch(push(`${match.url}/register`))
                             }
-                            variant="contained"
-                            color="theme_turquoise"
+                            variant="contained-large"
+                            color="theme_orange"
                         >
                             {t('Register_now_')}
                         </Button>
@@ -81,10 +81,14 @@ export default ({ event, registration }) => {
                     <Button
                         fullWidth
                         onClick={() =>
-                            dispatch(push(`/login`, { nextRoute: match.url }))
+                            dispatch(
+                                push(`/login`, {
+                                    nextRoute: `${match.url}/register`,
+                                }),
+                            )
                         }
-                        variant="contained"
-                        color="theme_turquoise"
+                        variant="contained-large"
+                        color="theme_orange"
                     >
                         {t('Log_in_register_')}
                     </Button>

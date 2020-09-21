@@ -22,8 +22,11 @@ import EventDetailContext from '../context'
 export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
-    console.log(event)
+    const keywords = event.name.split(' ').join(', ')
     console.log('slugregi', registration)
+    console.log('KEYWORDS', keywords)
+    console.log('HELMET', Helmet.peek())
+
     useEffect(() => {
         if (slug) {
             AnalyticsService.events.VIEW_EVENT(slug)
@@ -45,6 +48,7 @@ export default () => {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>{event.name}</title>
+                <meta name="keywords" content={keywords} />
                 <meta name="title" content={event.name} />
                 <meta property="og:title" content={event.name} />
                 <meta name="twitter:title" content={event.name} />
@@ -55,17 +59,6 @@ export default () => {
                 <meta name="og:type" content="website" />
                 <meta property="og:image" content={coverImage()} />
                 <meta name="twitter:image" content={coverImage()} />
-                <meta property="og:image:width" content="1200" />
-                <meta property="og:image:height" content="630" />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta
-                    name="twitter:site"
-                    content="%REACT_APP_SEO_TWITTER_HANDLE%"
-                />
-                <meta
-                    name="twitter:creator"
-                    content="%REACT_APP_SEO_TWITTER_HANDLE%"
-                />
             </Helmet>
             <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
             <FadeInWrapper>
