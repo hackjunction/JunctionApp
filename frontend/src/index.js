@@ -16,6 +16,11 @@ import configureStore, { history } from 'redux/configureStore'
 import config from 'constants/config'
 import theme from './material-ui-theme'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+
+library.add(fab)
+
 const { store, persistor } = configureStore()
 
 /** Disable log statements in production */

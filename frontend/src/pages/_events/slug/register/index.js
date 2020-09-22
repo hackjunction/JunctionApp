@@ -16,6 +16,7 @@ import {
     StepContent,
     Box,
     Button,
+    Grid,
 } from '@material-ui/core'
 import { RegistrationFields } from '@hackjunction/shared'
 import { push } from 'connected-react-router'
@@ -34,6 +35,8 @@ import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import EventDetailContext from '../context'
 
@@ -114,6 +117,12 @@ const useStyles = makeStyles(theme => ({
         color: 'white',
         textAlign: 'center',
     },
+    socialIcon: {
+        color: 'white',
+        width: 'auto',
+        margin: '1rem',
+        cursor: 'pointer',
+    },
 }))
 
 const Connector = ({ index, active, completed, disabled }) => <div />
@@ -134,7 +143,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-    console.log('regi', registration)
+
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -299,6 +308,7 @@ export default RequiresPermission(() => {
             const nextStep =
                 index !== sections.length - 1 ? sections[index + 1] : null
             const prevStep = index !== 0 ? sections[index - 1] : null
+
             return (
                 <Step key={section.label}>
                     <RegistrationSectionLabel
@@ -307,6 +317,7 @@ export default RequiresPermission(() => {
                         label={section.label}
                         previousLabel={prevStep ? prevStep.label : null}
                         onPrevious={setPrevStep}
+                        isVisible={activeStep !== sections.length + 1}
                     />
                     <StepContent
                         classes={{
@@ -343,6 +354,43 @@ export default RequiresPermission(() => {
                 </Step>
             )
         })
+    }
+
+    const shareurl = 'https://app.hackjunction.com/' + event.slug // TODO: remove hard coded base URL
+    const sharetext = `I just applied to ${event.name}!`
+    const popupCenter = ({ url, title, w = 900, h = 600 }) => {
+        const dualScreenLeft =
+            window.screenLeft !== undefined ? window.screenLeft : window.screenX
+        const dualScreenTop =
+            window.screenTop !== undefined ? window.screenTop : window.screenY
+
+        const width = window.innerWidth
+            ? window.innerWidth
+            : document.documentElement.clientWidth
+            ? document.documentElement.clientWidth
+            : window.screen.width
+        const height = window.innerHeight
+            ? window.innerHeight
+            : document.documentElement.clientHeight
+            ? document.documentElement.clientHeight
+            : window.screen.height
+
+        const systemZoom = width / window.screen.availWidth
+        const left = (width - w) / 2 / systemZoom + dualScreenLeft
+        const top = (height - h) / 2 / systemZoom + dualScreenTop
+        const newWindow = window.open(
+            url,
+            title,
+            `
+      scrollbars=yes,
+      width=${w / systemZoom}, 
+      height=${h / systemZoom}, 
+      top=${top}, 
+      left=${left}
+      `,
+        )
+
+        if (window.focus) newWindow.focus()
     }
 
     return (
@@ -400,7 +448,6 @@ export default RequiresPermission(() => {
                             }}
                         >
                             <Box
-                                mt={'200px'}
                                 display="flex"
                                 flexDirection="column"
                                 alignItems="center"
@@ -411,6 +458,76 @@ export default RequiresPermission(() => {
                                 >
                                     {t('Registration_saved_')}
                                 </Typography>
+                                <Box mt={5} alignItems="center">
+                                    <Typography
+                                        className={classes.doneTitle}
+                                        variant="h4"
+                                    >
+                                        Share with friends!
+                                    </Typography>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        alignContent="center"
+                                        alignItems="center"
+                                    >
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={['fab', 'twitter-square']}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://twitter.com/intent/tweet?text=${sharetext}&url=${shareurl}`,
+                                                        title: 'Twitter',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={[
+                                                    'fab',
+                                                    'facebook-square',
+                                                ]}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${sharetext}`,
+                                                        title: 'Facebook',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={['fab', 'linkedin']}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
+                                                        title: 'Linkedin',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={['fab', 'vk']}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
+                                                        title: 'VKOntakte',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Box>
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
