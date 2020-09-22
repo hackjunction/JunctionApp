@@ -16,6 +16,7 @@ import {
     StepContent,
     Box,
     Button,
+    Grid,
 } from '@material-ui/core'
 import { RegistrationFields } from '@hackjunction/shared'
 import { push } from 'connected-react-router'
@@ -34,6 +35,8 @@ import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import EventDetailContext from '../context'
 
@@ -113,6 +116,12 @@ const useStyles = makeStyles(theme => ({
     doneTitle: {
         color: 'white',
         textAlign: 'center',
+    },
+    socialIcon: {
+        color: 'white',
+        width: 'auto',
+        margin: '1rem',
+        cursor: 'pointer',
     },
 }))
 
@@ -348,6 +357,7 @@ export default RequiresPermission(() => {
     }
 
     const shareurl = 'https://app.hackjunction.com/' + event.slug // TODO: remove hard coded base URL
+    const sharetext = `I just applied to ${event.name}!`
     const popupCenter = ({ url, title, w = 900, h = 600 }) => {
         const dualScreenLeft =
             window.screenLeft !== undefined ? window.screenLeft : window.screenX
@@ -448,6 +458,76 @@ export default RequiresPermission(() => {
                                 >
                                     {t('Registration_saved_')}
                                 </Typography>
+                                <Box mt={5} alignItems="center">
+                                    <Typography
+                                        className={classes.doneTitle}
+                                        variant="h4"
+                                    >
+                                        Share with friends!
+                                    </Typography>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        alignContent="center"
+                                        alignItems="center"
+                                    >
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={['fab', 'twitter-square']}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://twitter.com/intent/tweet?text=${sharetext}&url=${shareurl}`,
+                                                        title: 'Twitter',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={[
+                                                    'fab',
+                                                    'facebook-square',
+                                                ]}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${sharetext}`,
+                                                        title: 'Facebook',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={['fab', 'linkedin']}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
+                                                        title: 'Linkedin',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <FontAwesomeIcon
+                                                icon={['fab', 'vk']}
+                                                onClick={() =>
+                                                    popupCenter({
+                                                        url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
+                                                        title: 'VKOntakte',
+                                                    })
+                                                }
+                                                className={classes.socialIcon}
+                                                size="3x"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Box>
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
@@ -468,85 +548,6 @@ export default RequiresPermission(() => {
                                 >
                                     {t('Back_to_event_')}
                                 </Button>
-
-                                <Typography
-                                    className={classes.doneTitle}
-                                    variant="h4"
-                                >
-                                    Share to friends!
-                                </Typography>
-                                <Box>
-                                    <Button
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://twitter.com/intent/tweet?text=${
-                                                    'Just applied to ' +
-                                                    event.name +
-                                                    '!'
-                                                }&url=${shareurl}`,
-                                                title: 'Twitter',
-                                            })
-                                        }
-                                        style={{
-                                            width: '300px',
-                                            color: 'white',
-                                        }}
-                                    >
-                                        Twitter
-                                    </Button>
-                                    <Button
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${
-                                                    'Just applied to ' +
-                                                    event.name +
-                                                    '!'
-                                                }`,
-                                                title: 'Facebook',
-                                            })
-                                        }
-                                        style={{
-                                            width: '300px',
-                                            color: 'white',
-                                        }}
-                                    >
-                                        Facebook
-                                    </Button>
-                                </Box>
-                                <Box
-                                    display="flex"
-                                    flexDirection="row"
-                                    alignItems="center"
-                                >
-                                    <Button
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://vkontakte.ru/share.php?url=${shareurl}`,
-                                                title: 'VKOntakte',
-                                            })
-                                        }
-                                        style={{
-                                            width: '300px',
-                                            color: 'white',
-                                        }}
-                                    >
-                                        VKontakte
-                                    </Button>
-                                    <Button
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
-                                                title: 'Linkedin',
-                                            })
-                                        }
-                                        style={{
-                                            width: '300px',
-                                            color: 'white',
-                                        }}
-                                    >
-                                        LinkedIn
-                                    </Button>
-                                </Box>
                             </Box>
                         </StepContent>
                     </Step>
