@@ -23,7 +23,6 @@ export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
     const keywords = event.name.split(' ').join(', ')
-    console.log('slugregi', registration)
     console.log('KEYWORDS', keywords)
     console.log('HELMET', Helmet.peek())
 

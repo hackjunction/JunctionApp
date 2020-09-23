@@ -24,10 +24,7 @@ export default () => {
     const [pastEvents] = usePastEvents({ limit: 3 })
     const [organizations] = useAllOrganizations()
 
-    console.log('ororo', organizations)
-    console.log('ararr', activeEvents)
     console.log('HELMET', Helmet.peek())
-
     const { t } = useTranslation()
     return (
         <PageWrapper
@@ -46,7 +43,6 @@ export default () => {
                             property="og:title"
                             content={config.SEO_PAGE_TITLE}
                         />
-
                         <meta
                             name="twitter:title"
                             content={config.SEO_PAGE_TITLE}
