@@ -27,6 +27,8 @@ import { useTranslation } from 'react-i18next'
 // TODO make the form labels and hints customizable
 export default props => {
     const id = props.id
+    const handleProjectSelected = props.handleProjectSelected
+
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
@@ -470,7 +472,10 @@ export default props => {
                     <Grid item xs={12}>
                         <Box margin="0 auto" width="100%" maxWidth="300px">
                             <Button
-                                onClick={formikProps.submitForm}
+                                onClick={() => {
+                                    formikProps.submitForm()
+                                    handleProjectSelected(undefined)
+                                }}
                                 fullWidth
                                 disabled={
                                     Object.keys(formikProps.errors).length >

@@ -5,14 +5,14 @@ import { Box, Typography, Button } from '@material-ui/core'
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
 
 const useStyles = makeStyles(theme => ({
-    wrapper: ({ active, completed }) => ({
+    wrapper: ({ active, completed, isVisible }) => ({
         transition: 'all 0.25s ease',
         opacity: !active && !completed ? 0 : 1,
-        display: 'flex',
         alignItems: 'center',
         justifyContent: completed ? 'flex-start' : 'center',
         flexDirection: 'row',
         padding: completed ? 0 : theme.spacing(2),
+        display: isVisible ? 'flex' : 'none',
     }),
     label: ({ completed }) => ({
         color: 'white',
@@ -60,8 +60,14 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const RegistrationSectionLabel = ({ label, active, completed, onClick }) => {
-    const classes = useStyles({ active, completed })
+const RegistrationSectionLabel = ({
+    label,
+    active,
+    completed,
+    onClick,
+    isVisible,
+}) => {
+    const classes = useStyles({ active, completed, isVisible })
 
     return (
         <Box className={classes.wrapper}>

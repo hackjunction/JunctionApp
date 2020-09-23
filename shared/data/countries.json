@@ -1982,5 +1982,12 @@
         "en_short_name": "Zimbabwe",
         "nationality": "Zimbabwean",
         "phone_code": "+263"
+    },
+    {
+        "alpha_2_code": "XK",
+        "alpha_3_code": "XXK",
+        "en_short_name": "Kosovo",
+        "nationality": "Kosovar",
+        "phone_code": "+383"
     }
 ]

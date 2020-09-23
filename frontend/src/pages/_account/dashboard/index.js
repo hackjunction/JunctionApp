@@ -15,6 +15,7 @@ export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const [registrations = [], loading, error] = useRegistrationsByUser(userId)
     const { t } = useTranslation()
+    //TODO Erin had designs for the redesign. Follow it
     return (
         <PageWrapper loading={loading} error={Boolean(error)}>
             <Box p={2}>

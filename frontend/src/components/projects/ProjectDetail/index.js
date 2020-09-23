@@ -9,6 +9,8 @@ import Image from 'components/generic/Image'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import Markdown from 'components/generic/Markdown'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import config from 'constants/config'
+import { Helmet } from 'react-helmet'
 
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
@@ -85,7 +87,7 @@ const ProjectDetail = ({
 }) => {
     const classes = useStyles()
     const [index, setIndex] = useState(0)
-
+    console.log('HELMET IN PROJECT VIEW', Helmet.peek())
     if (!project) return null
 
     const renderTrack = () => {
@@ -114,164 +116,220 @@ const ProjectDetail = ({
         ))
     }
     return (
-        <Box className={classes.wrapper}>
-            <Box style={{ position: 'relative' }}>
-                <AutoPlaySwipeableViews
-                    enableMouseEvents
-                    index={index}
-                    onChangeIndex={setIndex}
-                >
-                    {project.images.length > 0 ? (
-                        project.images.map(image => (
-                            <Box key={image.publicId} className={classes.top}>
+        <>
+            <Helmet>
+                <title>{config.PLATFORM_OWNER_NAME}</title>
+                <meta
+                    name="keywords"
+                    content="Hackathon, hackathon platform, Junction"
+                />
+                <meta name="title" content="Junction App || Projects" />
+                <meta property="og:title" content="Junction App || Projects" />
+                <meta name="twitter:title" content="Junction App || Projects" />
+                <meta
+                    name="description"
+                    content={`Check out these awesome projects made during ${event.name}!`}
+                />
+                <meta
+                    property="og:description"
+                    content={`Check out these awesome projects made during ${event.name}!`}
+                />
+                <meta
+                    name="twitter:description"
+                    content={`Check out these awesome projects made during ${event.name}!`}
+                />
+                <meta name="og:type" content="website" />
+                <meta
+                    property="og:image"
+                    content={
+                        project.images[0]
+                            ? project.images[0].url
+                            : config.SEO_IMAGE_URL
+                    }
+                />
+                <meta
+                    name="twitter:image"
+                    content={
+                        project.images[0]
+                            ? project.images[0].url
+                            : config.SEO_IMAGE_URL
+                    }
+                />{' '}
+                />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content={config.SEO_TWITTER_HANDLE} />
+                <meta
+                    name="twitter:creator"
+                    content={config.SEO_TWITTER_HANDLE}
+                />
+            </Helmet>
+            <Box className={classes.wrapper}>
+                <Box style={{ position: 'relative' }}>
+                    <AutoPlaySwipeableViews
+                        enableMouseEvents
+                        index={index}
+                        onChangeIndex={setIndex}
+                    >
+                        {project.images.length > 0 ? (
+                            project.images.map(image => (
+                                <Box
+                                    key={image.publicId}
+                                    className={classes.top}
+                                >
+                                    <Image
+                                        className={classes.image}
+                                        publicId={image.publicId}
+                                        defaultImage={require('assets/images/default_cover_image.png')}
+                                    />
+                                </Box>
+                            ))
+                        ) : (
+                            <Box className={classes.placeholderTop}>
                                 <Image
-                                    className={classes.image}
-                                    publicId={image.publicId}
+                                    className={classes.placeholderImage}
+                                    publicId={event?.coverImage?.logo}
                                     defaultImage={require('assets/images/default_cover_image.png')}
                                 />
                             </Box>
-                        ))
-                    ) : (
-                        <Box className={classes.placeholderTop}>
-                            <Image
-                                className={classes.placeholderImage}
-                                publicId={event?.coverImage?.logo}
-                                defaultImage={require('assets/images/default_cover_image.png')}
-                            />
-                        </Box>
-                    )}
-                </AutoPlaySwipeableViews>
-                <Box className={classes.backButtonWrapper}>
-                    <Button onClick={onBack} style={{ color: 'white' }}>
-                        <ArrowBackIosIcon style={{ fontSize: '14px' }} />
-                        Back
-                    </Button>
-                </Box>
-            </Box>
-            <CenteredContainer>
-                <Pagination
-                    pages={project.images.length}
-                    active={index}
-                    onChange={setIndex}
-                />
-                <Box className={classes.content}>
-                    <Typography variant="h4" gutterBottom>
-                        {project.name}
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        style={{ fontWeight: 'bold' }}
-                    >
-                        {project.punchline}
-                    </Typography>
-                    <Box mt={5} mb={5}>
-                        <Markdown source={project.description} />
+                        )}
+                    </AutoPlaySwipeableViews>
+                    <Box className={classes.backButtonWrapper}>
+                        <Button onClick={onBack} style={{ color: 'white' }}>
+                            <ArrowBackIosIcon style={{ fontSize: '14px' }} />
+                            Back
+                        </Button>
                     </Box>
-                    {showTableLocation && project.location && (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Location
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                {project.location}
-                            </Typography>
-                        </Box>
-                    )}
-                    {project.demo ? (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Demo
-                            </Typography>
-                            <a
-                                href={project.demo}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {project.demo}
-                            </a>
-                        </Box>
-                    ) : (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Demo
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                No demo available
-                            </Typography>
-                        </Box>
-                    )}
-                    {!project.sourcePublic ? (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Source code
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                Source code not public
-                            </Typography>
-                        </Box>
-                    ) : (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Source code
-                            </Typography>
-                            <a
-                                href={project.source}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {project.source}
-                            </a>
-                        </Box>
-                    )}
-                    {event && project.track && (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Track
-                            </Typography>
-                            {renderTrack()}
-                        </Box>
-                    )}
-                    {event && project.challenges.length > 0 && (
-                        <Box mb={3}>
-                            <Typography
-                                variant="h6"
-                                className={classes.sectionTitle}
-                            >
-                                Challenges
-                            </Typography>
-                            {renderChallenges()}
-                        </Box>
-                    )}
-                    <Typography variant="h6" className={classes.sectionTitle}>
-                        Team
-                    </Typography>
-                    <ProjectTeam
-                        hiddenUsers={project.hiddenMembers}
-                        teamId={project.team}
-                        showFullTeam={showFullTeam}
-                    />
                 </Box>
-                <Box height={200} />
-            </CenteredContainer>
-        </Box>
+                <CenteredContainer>
+                    <Pagination
+                        pages={project.images.length}
+                        active={index}
+                        onChange={setIndex}
+                    />
+                    <Box className={classes.content}>
+                        <Typography variant="h4" gutterBottom>
+                            {project.name}
+                        </Typography>
+                        <Typography
+                            variant="subtitle1"
+                            style={{ fontWeight: 'bold' }}
+                        >
+                            {project.punchline}
+                        </Typography>
+                        <Box mt={5} mb={5}>
+                            <Markdown source={project.description} />
+                        </Box>
+                        {showTableLocation && project.location && (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Location
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    {project.location}
+                                </Typography>
+                            </Box>
+                        )}
+                        {project.demo ? (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Demo
+                                </Typography>
+                                <a
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {project.demo}
+                                </a>
+                            </Box>
+                        ) : (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Demo
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    No demo available
+                                </Typography>
+                            </Box>
+                        )}
+                        {!project.sourcePublic ? (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Source code
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Source code not public
+                                </Typography>
+                            </Box>
+                        ) : (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Source code
+                                </Typography>
+                                <a
+                                    href={project.source}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {project.source}
+                                </a>
+                            </Box>
+                        )}
+                        {event && project.track && (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Track
+                                </Typography>
+                                {renderTrack()}
+                            </Box>
+                        )}
+                        {event && project.challenges.length > 0 && (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    Challenges
+                                </Typography>
+                                {renderChallenges()}
+                            </Box>
+                        )}
+                        <Typography
+                            variant="h6"
+                            className={classes.sectionTitle}
+                        >
+                            Team
+                        </Typography>
+                        <ProjectTeam
+                            hiddenUsers={project.hiddenMembers}
+                            teamId={project.team}
+                            showFullTeam={showFullTeam}
+                        />
+                    </Box>
+                    <Box height={200} />
+                </CenteredContainer>
+            </Box>
+        </>
     )
 }
 

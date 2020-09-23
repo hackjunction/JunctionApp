@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/react-hooks'
 
 import { Route, Redirect, Switch } from 'react-router-dom'
-
+import { Helmet } from 'react-helmet'
 import routeConfig from './routes'
 import apolloClient from './graphql/client'
-
+import config from 'constants/config'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as AuthActions from 'redux/auth/actions'
 import AnalyticsService from 'services/analytics'
@@ -59,6 +59,66 @@ export default ({ history, location }) => {
                              * Miscellaneous
                              * TODO: 404 page
                              */}
+                            <title>{config.PLATFORM_OWNER_NAME}</title>
+                            <meta
+                                name="keywords"
+                                content="Hackathon, hackathon platform, Junction"
+                            />
+                            <meta
+                                name="title"
+                                content={config.SEO_PAGE_TITLE}
+                            />
+                            <meta
+                                property="og:title"
+                                content={config.SEO_PAGE_TITLE}
+                            />
+
+                            <meta
+                                name="twitter:title"
+                                content={config.SEO_PAGE_TITLE}
+                            />
+                            <meta
+                                name="description"
+                                content={config.SEO_PAGE_DESCRIPTION}
+                            />
+                            <meta
+                                property="og:description"
+                                content={config.SEO_PAGE_DESCRIPTION}
+                            />
+                            <meta
+                                name="twitter:description"
+                                content={config.SEO_PAGE_DESCRIPTION}
+                            />
+
+                            <meta name="og:type" content="website" />
+                            <meta
+                                property="og:image"
+                                content={config.SEO_IMAGE_URL}
+                            />
+                            <meta
+                                name="twitter:image"
+                                content={config.SEO_IMAGE_URL}
+                            />
+                            <meta property="og:image:width" content="1200" />
+                            <meta property="og:image:height" content="630" />
+                            <meta
+                                name="twitter:card"
+                                content="summary_large_image"
+                            />
+                            <meta
+                                name="twitter:site"
+                                content={config.SEO_TWITTER_HANDLE}
+                            />
+                            <meta
+                                name="twitter:creator"
+                                content={config.SEO_TWITTER_HANDLE}
+                            />
+                            <script
+                                type="text/javascript"
+                                async
+                                src="https://platform.twitter.com/widgets.js"
+                            ></script>
+
                             <Redirect to="/" />
                         </Switch>
                     )}
