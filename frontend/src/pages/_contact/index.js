@@ -22,6 +22,7 @@ import * as AuthActions from 'redux/auth/actions'
 import EmailService from 'services/email'
 import Shared from '@hackjunction/shared'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -116,6 +117,62 @@ export default () => {
             footer={() => <Footer hide_contact={true} />}
             render={() => (
                 <>
+                    <Helmet>
+                        <title>{config.PLATFORM_OWNER_NAME}</title>
+                        <meta
+                            name="keywords"
+                            content="Hackathon, hackathon platform, Junction"
+                        />
+                        <meta
+                            name="title"
+                            content="Junction App || Contact us"
+                        />
+                        <meta
+                            property="og:title"
+                            content="Junction App || Contact us"
+                        />
+
+                        <meta
+                            name="twitter:title"
+                            content="Junction App || Contact us"
+                        />
+                        <meta
+                            name="description"
+                            content="If you're interested in hearing more from us, the easiest way to contact us is through this contact form.!"
+                        />
+                        <meta
+                            property="og:description"
+                            content="If you're interested in hearing more from us, the easiest way to contact us is through this contact form.!"
+                        />
+                        <meta
+                            name="twitter:description"
+                            content="If you're interested in hearing more from us, the easiest way to contact us is through this contact form.!"
+                        />
+
+                        <meta name="og:type" content="website" />
+                        <meta
+                            property="og:image"
+                            content={config.SEO_IMAGE_URL}
+                        />
+                        <meta
+                            name="twitter:image"
+                            content={config.SEO_IMAGE_URL}
+                        />
+                        <meta property="og:image:width" content="1200" />
+                        <meta property="og:image:height" content="630" />
+                        <meta
+                            name="twitter:card"
+                            content="summary_large_image"
+                        />
+                        <meta
+                            name="twitter:site"
+                            content={config.SEO_TWITTER_HANDLE}
+                        />
+                        <meta
+                            name="twitter:creator"
+                            content={config.SEO_TWITTER_HANDLE}
+                        />
+                    </Helmet>
                     <CenteredContainer wrapperClass={classes.backButtonWrapper}>
                         <Button onClick={() => dispatch(push('/'))}>
                             <ArrowBackIosIcon style={{ color: 'black' }} />

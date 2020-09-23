@@ -90,7 +90,7 @@ const settings = {
         required: true,
         value:
             process.env.REACT_APP_SEO_PAGE_TITLE ||
-            'Experience Europe’s Leading Hackathon',
+            'Experience Europe´s Leading Hackathon Platform',
     },
     SEO_TWITTER_HANDLE: {
         required: false,
@@ -100,6 +100,10 @@ const settings = {
         required: false,
         value:
             process.env.REACT_APP_TERMS_URL || 'https://hackjunction.com/terms',
+    },
+    SEO_PAGE_LOGIN_DESCRIPTION: {
+        required: true,
+        value: 'Login to see something',
     },
 }
 const buildConfig = () => {
