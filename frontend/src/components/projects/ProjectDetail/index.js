@@ -123,20 +123,29 @@ const ProjectDetail = ({
                     name="keywords"
                     content="Hackathon, hackathon platform, Junction"
                 />
-                <meta name="title" content="Junction App || Projects" />
-                <meta property="og:title" content="Junction App || Projects" />
-                <meta name="twitter:title" content="Junction App || Projects" />
+                <meta
+                    name="title"
+                    content={project ? `Junction App || ${project.name}` : ''}
+                />
+                <meta
+                    property="og:title"
+                    content={project ? `Junction App || ${project.name}` : ''}
+                />
+                <meta
+                    name="twitter:title"
+                    content={project ? `Junction App || ${project.name}` : ''}
+                />
                 <meta
                     name="description"
-                    content={`Check out these awesome projects made during ${event.name}!`}
+                    content={project ? project.punchline : ''}
                 />
                 <meta
                     property="og:description"
-                    content={`Check out these awesome projects made during ${event.name}!`}
+                    content={project ? project.punchline : ''}
                 />
                 <meta
                     name="twitter:description"
-                    content={`Check out these awesome projects made during ${event.name}!`}
+                    content={project ? project.punchline : ''}
                 />
                 <meta name="og:type" content="website" />
                 <meta

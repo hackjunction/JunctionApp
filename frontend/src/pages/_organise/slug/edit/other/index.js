@@ -50,7 +50,7 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Meta Tags"
-                            hint="Add meta tag descriptions"
+                            hint="Add meta tag descriptions. Default one is '<Event Name> is coming up! If you're interested in joining the coolest hackathon on the planet just head straight to ...'"
                         >
                             <MetaTagsForm
                                 value={field.value}
