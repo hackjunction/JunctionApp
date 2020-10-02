@@ -15,6 +15,7 @@ const eventQuery = gql`
             name
             slug
             description
+            metaDescription
             coverImage {
                 url
                 publicId

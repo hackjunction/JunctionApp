@@ -168,7 +168,7 @@ const EventSchema = new mongoose.Schema({
         /** Introduced in favor of userDetailsConfig in 00-registration-questions */
         // Mongoose will cast the empty object to match `RegistrationConfigSchema`, so it will set defaults
         type: RegistrationConfigSchema.mongoose,
-        default: () => ({}),
+        default: () => ({ description: '' }),
     },
     customQuestions: {
         type: [RegistrationSectionSchema.mongoose],
@@ -180,6 +180,10 @@ const EventSchema = new mongoose.Schema({
     webhooks: {
         type: [WebhookSchema.mongoose],
         default: [],
+    },
+    metaDescription: {
+        type: String,
+        default: '',
     },
     /** System metadata */
     published: {
@@ -259,7 +263,7 @@ EventSchema.index(
     },
     {
         unique: true,
-    }
+    },
 )
 
 EventSchema.plugin(mongooseSlugPlugin, {

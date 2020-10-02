@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 
 import { Grid, Box } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import EventHeroImage from 'components/events/EventHeroImage'
@@ -16,12 +16,12 @@ import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import { Helmet } from 'react-helmet'
-
 import EventDetailContext from '../context'
 
 export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
+
     const keywords = event.name.split(' ').join(', ')
     console.log('KEYWORDS', keywords)
     console.log('HELMET', Helmet.peek())
@@ -38,10 +38,9 @@ export default () => {
     }
 
     const eventDescription = () => {
-        console.log(event.description.slice(0, 100))
-        return event.description.slice(0, 100)
+        return `${event.name} is coming up! If you're interested in joining the coolest hackathon on the planet just head straight to ...`
     }
-
+    console.log('event :>> ', event)
     return (
         <>
             <Helmet>
@@ -51,9 +50,30 @@ export default () => {
                 <meta name="title" content={event.name} />
                 <meta property="og:title" content={event.name} />
                 <meta name="twitter:title" content={event.name} />
-                <meta name="description" content={eventDescription()} />
-                <meta property="og:description" content={eventDescription()} />
-                <meta name="twitter:description" content={eventDescription()} />
+                <meta
+                    name="description"
+                    content={
+                        event.metaDescription !== null
+                            ? event.metaDescription
+                            : eventDescription()
+                    }
+                />
+                <meta
+                    property="og:description"
+                    content={
+                        event.metaDescription !== null
+                            ? event.metaDescription
+                            : eventDescription()
+                    }
+                />
+                <meta
+                    name="twitter:description"
+                    content={
+                        event.metaDescription !== null
+                            ? event.metaDescription
+                            : eventDescription()
+                    }
+                />
 
                 <meta name="og:type" content="website" />
                 <meta property="og:image" content={coverImage()} />
