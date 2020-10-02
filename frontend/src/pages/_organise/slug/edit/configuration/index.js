@@ -86,7 +86,7 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Event type"
-                            hint="Is this a physical or online event?"
+                            hint="Is this a physical, online or hidden event?"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >

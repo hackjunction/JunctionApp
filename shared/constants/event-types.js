@@ -7,6 +7,10 @@ const EventTypes = {
         id: 'online',
         label: 'Online event',
     },
+    hidden: {
+        id: 'hidden',
+        label: 'Hidden event',
+    },
 }
 
 module.exports = EventTypes

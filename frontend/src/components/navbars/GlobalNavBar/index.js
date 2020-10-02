@@ -32,11 +32,13 @@ export default () => {
     return (
         <div className={classes.wrapper}>
             <div className={classes.inner}>
-                <a href="/"><img
-                    src={config.LOGO_DARK_URL}
-                    className={classes.wordmark}
-                    alt={config.PLATFORM_OWNER_NAME + ' logo'}
-                /></a>
+                <a href="/">
+                    <img
+                        src={config.LOGO_DARK_URL}
+                        className={classes.wordmark}
+                        alt={config.PLATFORM_OWNER_NAME + ' logo'}
+                    />
+                </a>
                 <Grid className={classes.inner}>
                     <UserMenu />
                     <Hidden only="xs">

@@ -211,6 +211,14 @@ const QueryType = new GraphQLObjectType({
                 },
             },
         },
+        activeButNotHidden: {
+            type: GraphQLList(EventType),
+            args: {
+                limit: {
+                    type: GraphQLInt,
+                },
+            },
+        },
         pastEvents: {
             type: GraphQLList(EventType),
             args: {
@@ -260,6 +268,17 @@ const Resolvers = {
             }
             return events
         },
+        activeButNotHidden: async (parent, args, context) => {
+            let events = await context
+                .controller('Event')
+                .getActiveButNotHidden()
+            if (args.limit) {
+                events = events.slice(0, args.limit)
+            }
+
+            return events
+        },
+
         pastEvents: async (parents, args, context) => {
             let events = await context.controller('Event').getPast()
             if (args.limit) {

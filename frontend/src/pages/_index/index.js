@@ -12,7 +12,11 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
-import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
+import {
+    useActiveEvents,
+    usePastEvents,
+    useActiveButNotHidden,
+} from 'graphql/queries/events'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import { Helmet } from 'react-helmet'
 
@@ -20,11 +24,10 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
-    const [activeEvents] = useActiveEvents({ limit: 3 })
-    const [pastEvents] = usePastEvents({ limit: 3 })
+    const [activeButNotHidden] = useActiveButNotHidden({ limit: 3 })
+    const [pastEvents] = usePastEvents({ limit: 6 })
     const [organizations] = useAllOrganizations()
 
-    console.log('HELMET', Helmet.peek())
     const { t } = useTranslation()
     return (
         <PageWrapper
@@ -90,7 +93,7 @@ export default () => {
                     <CenteredContainer>
                         <EventsGrid
                             title={t('Upcoming_')}
-                            events={activeEvents}
+                            events={activeButNotHidden}
                             organizations={organizations}
                         />
                         <EventsGrid

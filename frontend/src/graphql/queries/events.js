@@ -79,6 +79,24 @@ export const useActiveEvents = ({ limit }) => {
     return [data?.activeEvents, loading, error]
 }
 
+export const GET_ACTIVE_BUT_NOT_HIDDEN = gql`
+    query Event {
+        activeButNotHidden {
+            ...EventPreview
+        }
+    }
+    ${Fragments.EventPreview}
+`
+export const useActiveButNotHidden = ({ limit }) => {
+    const { data, loading, error } = useQuery(GET_ACTIVE_BUT_NOT_HIDDEN, {
+        variables: {
+            limit,
+        },
+    })
+
+    return [data?.activeButNotHidden, loading, error]
+}
+
 export const GET_PAST_EVENTS = gql`
     query Event($limit: Int) {
         pastEvents(limit: $limit) {

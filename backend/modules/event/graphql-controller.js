@@ -106,6 +106,20 @@ class EventController {
         )
     }
 
+    getActiveButNotHidden() {
+        return this._clean(
+            Event.find({
+                published: true,
+                endTime: {
+                    $gte: new Date(),
+                },
+                eventType: 'online' || 'physical',
+            })
+                .sort([['startTime', 1]])
+                .lean(),
+        )
+    }
+
     getPast() {
         return this._clean(
             Event.find({
