@@ -143,6 +143,9 @@ const EventType = new GraphQLObjectType({
             demoPlaceholder: {
                 type: GraphQLString,
             },
+            metaDescription: {
+                type: GraphQLString,
+            },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {

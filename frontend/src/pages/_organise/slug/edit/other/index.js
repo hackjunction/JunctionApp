@@ -5,6 +5,7 @@ import { FastField } from 'formik'
 import FormControl from 'components/inputs/FormControl'
 import EventTagsForm from './EventTagsForm'
 import WebhooksForm from './WebhooksForm'
+import MetaTagsForm from './MetaTagsForm'
 
 export default () => {
     return (
@@ -35,6 +36,23 @@ export default () => {
                             hint="Add webhooks that should fire on different events"
                         >
                             <WebhooksForm
+                                value={field.value}
+                                fieldName={field.name}
+                                setFieldValue={form.setFieldValue}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="metaDescription"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Meta Tags"
+                            hint="Add meta tag descriptions. Default one is '<Event Name> is coming up! If you're interested in joining the coolest hackathon on the planet just head straight to ...'"
+                        >
+                            <MetaTagsForm
                                 value={field.value}
                                 fieldName={field.name}
                                 setFieldValue={form.setFieldValue}
