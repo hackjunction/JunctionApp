@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
+import { Helmet } from 'react-helmet'
 
 import ProjectsService from 'services/projects'
 
@@ -14,6 +15,7 @@ export default ({ event, showFullTeam }) => {
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
+    console.log('project :>> ', project)
 
     const fetchProject = useCallback(async () => {
         setLoading(true)

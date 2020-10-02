@@ -22,7 +22,7 @@ controller.getPublicEventById = id => {
     return Event.findById(id).then(event => {
         if (!event.published) {
             throw new NotFoundError(
-                `Event with slug ${event.slug} does not exist`
+                `Event with slug ${event.slug} does not exist`,
             )
         }
         return event
@@ -67,7 +67,7 @@ controller.addOrganization = (event, organizationSlug) => {
 controller.removeOrganization = (event, organizationSlug) => {
     event.organizations = _.filter(
         event.organizations,
-        slug => slug !== organizationSlug
+        slug => slug !== organizationSlug,
     )
     return event.save()
 }
