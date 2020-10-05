@@ -142,10 +142,12 @@ const getFullRegistration = asyncHandler(async (req, res) => {
 })
 
 const bulkEditRegistrations = asyncHandler(async (req, res) => {
+    console.log('bulkin')
     await RegistrationController.bulkEditRegistrations(
         req.event._id.toString(),
         req.body.userIds,
         req.body.edits,
+        req.user,
     )
     return res.status(200).json([])
 })
