@@ -219,12 +219,12 @@ export default ({
             <BulkEditRegistrationModal
                 visible={activeModal === 'bulkEdit'}
                 onClose={resetSearch}
-                registrationIds={selected.map(s => s.original.user)}
+                userIds={selected.map(s => s.original.user)}
             />
             <BulkEmailModal
                 visible={activeModal === 'bulkEmail'}
                 onClose={resetSearch}
-                registrationIds={selected.map(s => s.original.user)}
+                userIds={selected.map(s => s.original.user)}
             />
             <Table
                 data={attendees}

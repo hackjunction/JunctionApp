@@ -288,7 +288,7 @@ controller.assignRegistrationForEvent = data => {
     })
 }
 
-controller.bulkEditRegistrations = (eventId, userIds, edits) => {
+controller.bulkEditRegistrations = (eventId, userIds, edits, user) => {
     const cleanedEdits = _.pick(edits, [
         'status',
         'tags',
@@ -312,6 +312,9 @@ controller.bulkEditRegistrations = (eventId, userIds, edits) => {
                         delete edits.status
                     }
                 }
+                if (edits.rating) {
+                    edits.ratedBy = user.sub
+                }
 
                 if (edits.hasOwnProperty('tags')) {
                     edits.tags = _.uniq(
@@ -320,7 +323,6 @@ controller.bulkEditRegistrations = (eventId, userIds, edits) => {
                 }
 
                 if (Object.keys(edits).length === 0) return null
-
                 return {
                     updateOne: {
                         filter: {
