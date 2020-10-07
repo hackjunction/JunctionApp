@@ -4,7 +4,7 @@ import { Grid, Box, Typography } from '@material-ui/core'
 import moment from 'moment'
 import Select from 'components/inputs/Select'
 
-const DateInput = ({ label, value, onChange, onBlur }) => {
+const DateInput = ({ label, value, onChange, onBlur, future = true }) => {
     const momentValue = value ? moment(value) : null
 
     const handleDateChange = useCallback(
@@ -57,7 +57,7 @@ const DateInput = ({ label, value, onChange, onBlur }) => {
                 <Grid item xs={12} md={4}>
                     <Select
                         label="Year"
-                        options="year-future"
+                        options={future ? 'year-future' : 'year'}
                         value={momentValue ? momentValue.year() : null}
                         onChange={handleYearChange}
                         onBlur={onBlur}

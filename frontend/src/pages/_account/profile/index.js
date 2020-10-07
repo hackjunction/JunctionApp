@@ -78,6 +78,18 @@ export default () => {
         return validations
     }, [])
 
+    //Terrible function to fix date of birth error since the text exists nowhere editable
+    function changeDateOfBirthError(errors) {
+        let errStart = 'Date of Birth field must be at earlier than'
+        let newErr = 'You must be at least 16 years old to register.'
+        Object.keys(errors).map(key => {
+            if (errors[key].startsWith(errStart)) {
+                errors[key] = newErr
+            }
+        })
+        return errors
+    }
+
     const handleSubmit = useCallback(
         (values, formikBag) => {
             formikBag.setSubmitting(true)
@@ -265,6 +277,7 @@ export default () => {
                                                             field.name,
                                                         )
                                                     }
+                                                    future={false}
                                                 />
                                             )}
                                         />
@@ -740,7 +753,7 @@ export default () => {
                         <Box height="300px" />
                         <BottomBar
                             onSubmit={formikProps.handleSubmit}
-                            errors={formikProps.errors}
+                            errors={changeDateOfBirthError(formikProps.errors)}
                             dirty={formikProps.dirty}
                             loading={formikProps.isSubmitting}
                         />
