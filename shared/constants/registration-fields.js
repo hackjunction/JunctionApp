@@ -198,7 +198,8 @@ const FieldProps = {
     },
     gender: {
         label: 'Gender',
-        hint: 'We require this to help our staff use the most respectful language and to track the diversity in our events. Our entire team is committed to making sure everyone feels safe, welcome and respected in all Junction events.',
+        hint:
+            'We require this to help our staff use the most respectful language and to track the diversity in our events. Our entire team is committed to making sure everyone feels safe, welcome and respected in all Junction events.',
         hintMarkdown: false,
         fieldType: FieldTypes.GENDER,
         copyToUserProfile: true,
@@ -902,13 +903,13 @@ const Fields = {
                 .label('Phone number')
             const shape = required
                 ? {
-                    countryCode: countryCode.required(),
-                    number: number.required(),
-                }
+                      countryCode: countryCode.required(),
+                      number: number.required(),
+                  }
                 : {
-                    countryCode,
-                    number,
-                }
+                      countryCode,
+                      number,
+                  }
 
             return yup.object(shape).label(FieldProps.phoneNumber.label)
         },
