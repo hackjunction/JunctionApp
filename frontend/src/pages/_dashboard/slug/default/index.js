@@ -16,6 +16,7 @@ import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
+import SocialMediaBlock from './Blocks/SocialMediaBlock'
 
 export default () => {
     return (
@@ -71,6 +72,7 @@ export default () => {
                 <TeamStatusBlock />
                 <GavelReviewingBlock />
                 <PartnerReviewingBlock />
+                <SocialMediaBlock />
             </Grid>
         </Box>
     )
