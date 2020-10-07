@@ -357,7 +357,7 @@ export default RequiresPermission(() => {
         })
     }
 
-    const shareurl = 'https://app.hackjunction.com/' + event.slug // TODO: remove hard coded base URL
+    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
 
     return (
