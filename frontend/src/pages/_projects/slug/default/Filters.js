@@ -2,6 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import { Grid, Box, Typography, Input } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import TextInput from 'components/inputs/TextInput'
 
 const useStyles = makeStyles(theme => ({
     filterItem: {
@@ -41,7 +42,7 @@ const Filters = ({ event, active = 'by-track', onChange }) => {
     const classes = useStyles()
     console.log('active :>> ', active)
     return (
-        <Grid container spacing={1}>
+        <Grid container justify="center" spacing={1}>
             {event.tracksEnabled && event.tracks && (
                 <Grid item xs={12} md={6}>
                     <Box
@@ -107,7 +108,9 @@ const Filters = ({ event, active = 'by-track', onChange }) => {
                         Search projects
                     </Typography>
                 </Box>
-                {active === 'search' ? <Input /> : null}
+                {active === 'search' ? (
+                    <TextInput label="Search projects" autoFocus="true" />
+                ) : null}
             </Grid> */}
         </Grid>
     )
