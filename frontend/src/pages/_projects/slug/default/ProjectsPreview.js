@@ -26,6 +26,7 @@ export default ({
         },
         [event.slug, dispatch],
     )
+    console.log('projects :>> ', projects)
     return (
         <>
             <Box mb={3} display="flex" flexDirection="column">

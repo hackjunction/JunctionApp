@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography, Input } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const Filters = ({ event, active = 'by-track', onChange }) => {
     const classes = useStyles()
+    console.log('active :>> ', active)
     return (
         <Grid container spacing={1}>
             {event.tracksEnabled && event.tracks && (
@@ -76,15 +77,37 @@ const Filters = ({ event, active = 'by-track', onChange }) => {
                     </Box>
                 </Grid>
             )}
-            {/* <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
+                <Box
+                    onClick={() => onChange('')}
+                    className={clsx(classes.filterItem, {
+                        [classes.filterItemActive]: active === '',
+                    })}
+                >
+                    <Typography
+                        className={classes.filterItemText}
+                        variant="button"
+                    >
+                        All projects
+                    </Typography>
+                </Box>
+            </Grid>
+
+            {/* <Grid item xs={12} md={6}>
                 <Box
                     onClick={() => onChange('search')}
-                    className={clsx(classes.filterItem, { [classes.filterItemActive]: active === 'search' })}
+                    className={clsx(classes.filterItem, {
+                        [classes.filterItemActive]: active === 'search',
+                    })}
                 >
-                    <Typography className={classes.filterItemText} variant="button">
+                    <Typography
+                        className={classes.filterItemText}
+                        variant="button"
+                    >
                         Search projects
                     </Typography>
                 </Box>
+                {active === 'search' ? <Input /> : null}
             </Grid> */}
         </Grid>
     )
