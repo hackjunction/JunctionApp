@@ -12,7 +12,7 @@ import Filters from './Filters'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
 export default ({ event, projects }) => {
-    const [activeFilter, setActiveFilter] = useState('by-track')
+    const [activeFilter, setActiveFilter] = useState('')
     const dispatch = useDispatch()
 
     const { byChallenge, byTrack } = useMemo(() => {
@@ -89,14 +89,28 @@ export default ({ event, projects }) => {
         })
     }
 
+    const renderProjectGrid = () => {
+        if (!event) return null
+        return (
+            <ProjectsGrid
+                sortField={null}
+                projects={projects}
+                event={event}
+                onSelect={onProjectSelected}
+            />
+        )
+    }
+
     const renderContent = () => {
+        console.log('activeFilter :>> ', activeFilter)
+
         switch (activeFilter) {
             case 'by-track':
                 return renderTrackPreviews()
             case 'by-challenge':
                 return renderChallengePreviews()
             default:
-                return renderTrackPreviews()
+                return renderProjectGrid()
         }
     }
 
@@ -118,13 +132,6 @@ export default ({ event, projects }) => {
                     onChange={setActiveFilter}
                 />
                 {renderContent()}
-                {renderTrackPreviews()}
-                <ProjectsGrid
-                    sortField={null}
-                    projects={projects}
-                    event={event}
-                    onSelect={onProjectSelected}
-                />
             </CenteredContainer>
         </>
     )
