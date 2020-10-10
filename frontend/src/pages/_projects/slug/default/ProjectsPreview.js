@@ -26,6 +26,7 @@ export default ({
         },
         [event.slug, dispatch],
     )
+
     return (
         <>
             <Box mb={3} display="flex" flexDirection="column">
@@ -56,12 +57,12 @@ export default ({
                         flexDirection="row"
                         justifyContent="flex-end"
                     >
-                        <MuiButton onClick={handleClickMore}>
+                        {/* <MuiButton onClick={handleClickMore}>
                             {t('See_all_projects_', {
                                 count: count,
                             })}
                             <ArrowForwardIosIcon />
-                        </MuiButton>
+                        </MuiButton> */}
                     </Box>
                 )}
             </Box>
