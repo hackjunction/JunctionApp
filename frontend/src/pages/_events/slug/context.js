@@ -151,6 +151,7 @@ export const EventDetailProvider = ({ children }) => {
     })
     const createRegistration = useCallback(
         formData => {
+            console.log('creatin regigiigi', idToken, slug)
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
@@ -180,7 +181,7 @@ export const EventDetailProvider = ({ children }) => {
     const registration = registrationData?.myRegistration
     const isRegistrationOpen =
         event?._eventStatus === EventStatuses.REGISTRATION_OPEN.id
-    // console.log('regidata', registrationData)
+    console.log('regidata', registrationData)
     return (
         <EventDetailContext.Provider
             value={{

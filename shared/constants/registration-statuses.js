@@ -1,4 +1,12 @@
 const RegistrationStatuses = {
+    incomplete: {
+        id: 'incomplete',
+        label: 'Incomplete',
+        description: "The registration hasn't been completed",
+        color: '#555555',
+        allowAssign: false,
+        allowEdit: true,
+    },
     pending: {
         id: 'pending',
         label: 'Pending',
@@ -77,6 +85,6 @@ module.exports = {
     ids: Object.keys(RegistrationStatuses),
     asObject: RegistrationStatuses,
     asArray: Object.keys(RegistrationStatuses).map(
-        status => RegistrationStatuses[status]
+        status => RegistrationStatuses[status],
     ),
 }

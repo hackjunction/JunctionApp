@@ -26,20 +26,18 @@ controller.getUserRegistrations = user => {
 }
 
 controller.createRegistration = async (user, event, data) => {
-    const answers = await RegistrationHelpers.validateAnswers(data, event)
+    const answers = await RegistrationHelpers.registrationFromUser(data)
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
         answers,
     })
-    if (event.eventType === EventTypes.physical.id) {
-        registration.status = RegistrationStatuses.asObject.pending.id
-    }
-    if (event.eventType === EventTypes.online.id) {
-        registration.status = RegistrationStatuses.asObject.checkedIn.id
-    }
+    registration.status = RegistrationStatuses.asObject.incomplete.id
 
     return registration.save()
+    /* .catch(function (err) {
+        console.log(err.name, err.errors)
+    }) */
 }
 
 controller.getRegistration = (userId, eventId) => {
@@ -60,11 +58,45 @@ controller.updateRegistration = (user, event, data) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(async registration => {
-            const answers = await RegistrationHelpers.validateAnswers(
-                data,
-                event,
-            )
-            return Registration.updateAllowed(registration, { answers })
+            const [
+                success,
+                answers,
+            ] = await RegistrationHelpers.validateAnswers(data, event)
+            console.log('answers are', answers)
+            // answers are valid
+            if (answers) {
+                return Registration.updateAllowed(registration, { answers })
+            }
+            return false
+        })
+}
+
+controller.finishRegistration = (user, event, data) => {
+    return controller
+        .getRegistration(user.sub, event._id.toString())
+        .then(async registration => {
+            const [
+                success,
+                answers,
+            ] = await RegistrationHelpers.validateAnswers(data, event)
+            // answers are valid
+            if (answers) {
+                // answers are complete
+                if (success) {
+                    if (event.eventType === EventTypes.physical.id) {
+                        registration.status =
+                            RegistrationStatuses.asObject.pending.id
+                    }
+                    // TODO we most likely don't want to do this here? Get desired state from event?
+                    if (event.eventType === EventTypes.online.id) {
+                        registration.status =
+                            RegistrationStatuses.asObject.checkedIn.id
+                    }
+                    return Registration.updateAllowed(registration, { answers })
+                }
+                return false
+            }
+            return false
         })
 }
 

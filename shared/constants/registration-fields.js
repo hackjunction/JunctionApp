@@ -896,14 +896,11 @@ const Fields = {
                 .string()
                 .oneOf(Countries.asArrayOfPhoneCodes)
                 .label('Country code')
-            const number = yup
-                .string()
-                .matches(/^[0-9]{7,14}$/)
-                .label('Phone number')
+            const number = yup.string().label('Phone number')
             const shape = required
                 ? {
                       countryCode: countryCode.required(),
-                      number: number.required(),
+                      number: number.matches(/^[0-9]{7,14}$/).required(),
                   }
                 : {
                       countryCode,
@@ -1173,7 +1170,9 @@ const Fields = {
             const base = yup
                 .object()
                 .shape({
-                    level: yup.string().label('Level of Education').required(),
+                    level: required
+                        ? yup.string().label('Level of Education').required()
+                        : yup.string().label('Level of Education'),
                     university: yup.string().label('University'),
                     degree: yup.string().label('Degree'),
                     graduationYear: yup
