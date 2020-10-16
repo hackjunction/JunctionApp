@@ -46,24 +46,26 @@ const RegistrationHelpers = {
 
         const minSchema = yup.object().shape(minimalSchema)
         const schema = yup.object().shape(validationSchema)
-
+        console.log('now validation data: ', data)
         return schema
             .validate(data, { stripUknown: true })
             .catch(e => {
                 // TODO proper log
                 console.log('error in validateAnswers', e)
-                return [
-                    false,
-                    minSchema
-                        .validate(data, { stripUknown: true })
-                        .catch(ee => {
-                            // TODO proper log
-                            console.log('error in minimalValidateAnswers', ee)
-                            return false
-                        }),
-                ]
+                return minSchema
+                    .validate(data, { stripUknown: true })
+                    .catch(ee => {
+                        // TODO proper log
+                        console.log('error in minimalValidateAnswers', ee)
+                        return [false, false]
+                    })
+                    .then(value => {
+                        console.log('mini doin dis')
+                        return [false, value]
+                    })
             })
             .then(value => {
+                console.log('then doin dis')
                 return [true, value]
             })
     },

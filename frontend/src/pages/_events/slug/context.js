@@ -177,6 +177,21 @@ export const EventDetailProvider = ({ children }) => {
         },
         [idToken, refetchRegistration, slug],
     )
+
+    const finishRegistration = useCallback(
+        formData => {
+            return RegistrationsService.finishRegistration(
+                idToken,
+                slug,
+                formData,
+            ).then(res => {
+                refetchRegistration()
+                return res
+            })
+        },
+        [idToken, refetchRegistration, slug],
+    )
+
     const event = eventData?.eventBySlug
     const registration = registrationData?.myRegistration
     const isRegistrationOpen =
@@ -196,6 +211,7 @@ export const EventDetailProvider = ({ children }) => {
                 refetchRegistration,
                 createRegistration,
                 editRegistration,
+                finishRegistration,
                 hasRegistration: !!registration,
                 isRegistrationOpen,
             }}

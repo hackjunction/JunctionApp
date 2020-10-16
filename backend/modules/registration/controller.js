@@ -62,7 +62,6 @@ controller.updateRegistration = (user, event, data) => {
                 success,
                 answers,
             ] = await RegistrationHelpers.validateAnswers(data, event)
-            console.log('answers are', answers)
             // answers are valid
             if (answers) {
                 return Registration.updateAllowed(registration, { answers })

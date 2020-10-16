@@ -140,6 +140,7 @@ export default RequiresPermission(() => {
         hasRegistration,
         createRegistration,
         editRegistration,
+        finishRegistration,
     } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
 
@@ -280,7 +281,7 @@ export default RequiresPermission(() => {
         }
         try {
             if (hasRegistration) {
-                await editRegistration(formData)
+                await finishRegistration(formData)
             } else {
                 console.log("ALARM ALAMR, this shouldn't happen")
             }
