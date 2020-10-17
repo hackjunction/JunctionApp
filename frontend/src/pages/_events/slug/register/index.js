@@ -153,7 +153,6 @@ export default RequiresPermission(() => {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
         }, 500)
     }, [activeStep])
-    console.log('doing hasrgeere', hasRegistration)
     useEffect(() => {
         if (!hasRegistration) {
             AnalyticsService.events.BEGIN_REGISTRATION(slug)
@@ -307,7 +306,6 @@ export default RequiresPermission(() => {
         slug,
     ])
     // TODO normal and custom sections should be handled the same
-    console.log('fordata is', formData)
     const renderSteps = () => {
         return sections.map((section, index) => {
             const isCustomSection = section.hasOwnProperty('name')
