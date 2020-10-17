@@ -47,8 +47,31 @@ const updateRegistration = asyncHandler(async (req, res) => {
         req.body,
     )
     /** Mirror the changes to the user's profile here */
-    UserProfileController.updateUserProfile(registration.answers, req.user.sub)
-    return res.status(200).json(registration)
+    if (registration) {
+        UserProfileController.updateUserProfile(
+            registration.answers,
+            req.user.sub,
+        )
+        return res.status(200).json(registration)
+    }
+    return res.status(500).json('Internal server error')
+})
+
+const finishRegistration = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController.finishRegistration(
+        req.user,
+        req.event,
+        req.body,
+    )
+    /** Mirror the changes to the user's profile here */
+    if (registration) {
+        UserProfileController.updateUserProfile(
+            registration.answers,
+            req.user.sub,
+        )
+        return res.status(200).json(registration)
+    }
+    return res.status(500).json('Internal server error')
 })
 
 const confirmRegistration = asyncHandler(async (req, res) => {
@@ -142,7 +165,6 @@ const getFullRegistration = asyncHandler(async (req, res) => {
 })
 
 const bulkEditRegistrations = asyncHandler(async (req, res) => {
-    console.log('bulkin')
     await RegistrationController.bulkEditRegistrations(
         req.event._id.toString(),
         req.body.userIds,
@@ -192,6 +214,7 @@ router
 
 router
     .route('/:slug/confirm')
+    .post(hasToken, canRegisterToEvent, finishRegistration)
     .patch(hasToken, hasRegisteredToEvent, confirmRegistration)
 
 router

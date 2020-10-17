@@ -151,6 +151,7 @@ export const EventDetailProvider = ({ children }) => {
     })
     const createRegistration = useCallback(
         formData => {
+            console.log('creatin regigiigi', idToken, slug)
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
@@ -176,11 +177,26 @@ export const EventDetailProvider = ({ children }) => {
         },
         [idToken, refetchRegistration, slug],
     )
+
+    const finishRegistration = useCallback(
+        formData => {
+            return RegistrationsService.finishRegistration(
+                idToken,
+                slug,
+                formData,
+            ).then(res => {
+                refetchRegistration()
+                return res
+            })
+        },
+        [idToken, refetchRegistration, slug],
+    )
+
     const event = eventData?.eventBySlug
     const registration = registrationData?.myRegistration
     const isRegistrationOpen =
         event?._eventStatus === EventStatuses.REGISTRATION_OPEN.id
-    // console.log('regidata', registrationData)
+    console.log('regidata', registrationData)
     return (
         <EventDetailContext.Provider
             value={{
@@ -195,6 +211,7 @@ export const EventDetailProvider = ({ children }) => {
                 refetchRegistration,
                 createRegistration,
                 editRegistration,
+                finishRegistration,
                 hasRegistration: !!registration,
                 isRegistrationOpen,
             }}
