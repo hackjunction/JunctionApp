@@ -82,14 +82,16 @@ controller.finishRegistration = (user, event, data) => {
             if (answers) {
                 // answers are complete
                 if (success) {
-                    if (event.eventType === EventTypes.physical.id) {
-                        registration.status =
-                            RegistrationStatuses.asObject.pending.id
-                    }
-                    // TODO we most likely don't want to do this here? Get desired state from event?
-                    if (event.eventType === EventTypes.online.id) {
-                        registration.status =
-                            RegistrationStatuses.asObject.checkedIn.id
+                    if (RegistrationStatuses.asObject.id === 'incomplete') {
+                        if (event.eventType === EventTypes.physical.id) {
+                            registration.status =
+                                RegistrationStatuses.asObject.pending.id
+                        }
+                        // TODO we most likely don't want to do this here? Get desired state from event?
+                        if (event.eventType === EventTypes.online.id) {
+                            registration.status =
+                                RegistrationStatuses.asObject.checkedIn.id
+                        }
                     }
                     return Registration.updateAllowed(registration, { answers })
                 }
