@@ -52,7 +52,6 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
     const { registration } = useContext(EventDetailContext)
     const [visible, setVisible] = useState(!section.conditional)
 
-    console.log('custom', registration, data)
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
             (result, question) => {
