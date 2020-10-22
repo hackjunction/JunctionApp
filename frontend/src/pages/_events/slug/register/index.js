@@ -312,7 +312,6 @@ export default RequiresPermission(() => {
             const nextStep =
                 index !== sections.length - 1 ? sections[index + 1] : null
             const prevStep = index !== 0 ? sections[index - 1] : null
-
             return (
                 <Step key={section.label}>
                     <RegistrationSectionLabel
@@ -321,7 +320,7 @@ export default RequiresPermission(() => {
                         label={section.label}
                         previousLabel={prevStep ? prevStep.label : null}
                         onPrevious={setPrevStep}
-                        isVisible={activeStep !== sections.length + 1}
+                        isVisible={activeStep >= index}
                     />
                     <StepContent
                         classes={{
