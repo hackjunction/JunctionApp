@@ -17,10 +17,10 @@ const {
 router.route('/id/:projectId').get(
     asyncHandler(async (req, res) => {
         const project = await ProjectController.getPublicProjectById(
-            req.params.projectId
+            req.params.projectId,
         )
         return res.status(200).json(project)
-    })
+    }),
 )
 
 router
@@ -30,10 +30,10 @@ router
         getEventFromParams,
         asyncHandler(async (req, res) => {
             const projects = await ProjectController.getProjectPreviewsByEvent(
-                req.event._id
+                req.event._id,
             )
             return res.status(200).json(projects)
-        })
+        }),
     )
 
 router
@@ -45,10 +45,10 @@ router
         asyncHandler(async (req, res) => {
             const projects = await ProjectController.getProjectsByEventAndTeam(
                 req.event._id,
-                req.team._id
+                req.team._id,
             )
             return res.status(200).json(projects)
-        })
+        }),
     )
     /** Submit a project for a user's team at a given event */
     .post(
@@ -60,10 +60,10 @@ router
             const project = await ProjectController.createProjectForEventAndTeam(
                 req.event,
                 req.team,
-                req.body.data
+                req.body.data,
             )
             return res.status(200).json(project)
-        })
+        }),
     )
     /** Update the project for a user's team at a given event */
     .patch(
@@ -75,10 +75,10 @@ router
             const project = await ProjectController.updateProjectForEventAndTeam(
                 req.event,
                 req.team,
-                req.body.data
+                req.body.data,
             )
             return res.status(200).json(project)
-        })
+        }),
     )
 
 router
@@ -89,10 +89,10 @@ router
         isEventOrganiser,
         asyncHandler(async (req, res) => {
             const projects = await ProjectController.getAllProjectsByEvent(
-                req.event._id
+                req.event._id,
             )
             return res.status(200).json(projects)
-        })
+        }),
     )
 
 router
@@ -104,10 +104,10 @@ router
         asyncHandler(async (req, res) => {
             const data = await ProjectController.generateChallengeLink(
                 req.event,
-                req.params.challengeSlug
+                req.params.challengeSlug,
             )
             return res.status(200).json(data)
-        })
+        }),
     )
 
 router
@@ -118,10 +118,24 @@ router
         asyncHandler(async (req, res) => {
             const projects = await ProjectController.getProjectsWithToken(
                 req.event,
-                req.params.token
+                req.params.token,
             )
             return res.status(200).json(projects)
-        })
+        }),
+    )
+
+router
+    .route('/:slug/token/:token/validate')
+    /** check if the token is valid */
+    .get(
+        getEventFromParams,
+        asyncHandler(async (req, res) => {
+            const projects = await ProjectController.validateToken(
+                req.event,
+                req.params.token,
+            )
+            return res.status(200).json(projects)
+        }),
     )
 
 module.exports = router
