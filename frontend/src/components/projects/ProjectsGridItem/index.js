@@ -48,6 +48,8 @@ const ProjectsGridItem = ({
     onClickMore,
     label,
     labelBackground = 'primary',
+    score = null,
+    message = null,
 }) => {
     const classes = useStyles({ labelBackground })
 
@@ -96,6 +98,19 @@ const ProjectsGridItem = ({
                         </Typography>
                     </Box>
                 )}
+                {score && (
+                    <Box pb={2} pl={2} pr={2}>
+                        <Typography
+                            style={{ fontWeight: 'bold' }}
+                            variant="body1"
+                        >
+                            Score
+                        </Typography>
+                        <Typography variant="body1">{score} / 10</Typography>
+                        <Typography variant="body1">{message}</Typography>
+                    </Box>
+                )}
+
                 {onClickMore && (
                     <Box pl={2} pr={2} pb={2}>
                         <Button

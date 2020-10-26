@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         objectFit: 'cover',
     },
-    organizer: {
+    organiser: {
         position: 'absolute',
         top: '5%',
         left: '2%',
@@ -49,7 +49,7 @@ const EventCard = ({ event, organization, buttons }) => {
                 />
                 {organization?.icon && (
                     <Avatar
-                        className={classes.organizer}
+                        className={classes.organiser}
                         src={organization?.icon}
                     />
                 )}
