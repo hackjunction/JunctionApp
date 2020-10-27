@@ -82,7 +82,10 @@ controller.finishRegistration = (user, event, data) => {
             if (answers) {
                 // answers are complete
                 if (success) {
-                    if (RegistrationStatuses.asObject.id === 'incomplete') {
+                    if (
+                        registration.status ===
+                        RegistrationStatuses.asObject.incomplete.id
+                    ) {
                         if (event.eventType === EventTypes.physical.id) {
                             registration.status =
                                 RegistrationStatuses.asObject.pending.id
