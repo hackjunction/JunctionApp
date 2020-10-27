@@ -39,7 +39,6 @@ export default ({ event }) => {
     if (!data) {
         return null
     }
-
     return (
         <PageWrapper
             loading={loading || !data}
@@ -56,6 +55,8 @@ export default ({ event }) => {
                         onSelect={project =>
                             dispatch(push(`${match.url}/view/${project._id}`))
                         }
+                        showScore={true}
+                        token={token}
                     />
                     <Box height={200} />
                 </CenteredContainer>

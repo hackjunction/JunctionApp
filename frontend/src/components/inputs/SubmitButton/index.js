@@ -59,7 +59,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
                         <>
                             {' and Privacy Policy of the '}
                             <ExternalLink href={event.eventPrivacy}>
-                                event organizer
+                                event organiser
                             </ExternalLink>
                         </>
                     ) : null}
@@ -83,7 +83,7 @@ const SubmitButton = ({ hasErrors, loading, onSubmit, event }) => {
                         <>
                             {' and Terms and Conditions of the '}
                             <ExternalLink href={event.eventTerms}>
-                                event organizer
+                                event organiser
                             </ExternalLink>
                         </>
                     ) : null}

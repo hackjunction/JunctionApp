@@ -1,5 +1,8 @@
 const moment = require('moment-timezone')
 const Shared = require('@hackjunction/shared')
+const bcrypt = require('bcrypt')
+const Promise = require('bluebird')
+
 const {
     NotFoundError,
     ForbiddenError,
@@ -38,7 +41,7 @@ function isOrganiser(user, event) {
     }
     if (event.owner !== user.sub && event.organisers.indexOf(user.sub) === -1) {
         return new InsufficientPrivilegesError(
-            'Must be owner or organiser of event'
+            'Must be owner or organiser of event',
         )
     }
     return null
@@ -79,13 +82,13 @@ function canSubmitProject(event, registration, teamWithMeta) {
 
     if (registration.status !== RegistrationStatuses.asObject.checkedIn.id) {
         return new ForbiddenError(
-            'You must be checked in to the event to submit a project'
+            'You must be checked in to the event to submit a project',
         )
     }
 
     if (!teamWithMeta) {
         return new ForbiddenError(
-            'You must belong to a team before submitting a project'
+            'You must belong to a team before submitting a project',
         )
     }
     const isTeamValid =
@@ -106,7 +109,7 @@ function canSubmitProject(event, registration, teamWithMeta) {
 
     if (!isTeamValid) {
         return new ForbiddenError(
-            'All team members must have checked in before you can submit a project'
+            'All team members must have checked in before you can submit a project',
         )
     }
 
@@ -126,7 +129,7 @@ async function getEventFromParams(params) {
 async function getRegistration(user, event) {
     return RegistrationController.getRegistration(
         user.sub,
-        event._id.toString()
+        event._id.toString(),
     )
 }
 
@@ -137,6 +140,24 @@ async function getTeamWithMeta(user, event) {
     } catch (err) {
         return null
     }
+}
+
+async function hasPartnerToken(event, token) {
+    if (
+        !event.challengesEnabled ||
+        !event.challenges ||
+        event.challenges.length === 0
+    ) {
+        throw new ForbiddenError('This event has no challenges')
+    }
+
+    const matches = await Promise.filter(event.challenges, challenge => {
+        return bcrypt.compare(challenge.slug, token)
+    })
+    if (matches.length === 0) {
+        return new ForbiddenError('Invalid token')
+    }
+    return null
 }
 
 const EventMiddleware = {
@@ -207,6 +228,15 @@ const EventMiddleware = {
             next()
         }
     },
+    hasPartnerToken: async (req, res, next) => {
+        const error = await hasPartnerToken(req.event, req.params.token)
+        if (error) {
+            next(error)
+        } else {
+            next()
+        }
+    },
+
     /** Can only be called after req.event has been set by other middleware */
     isBefore: {
         submissionsEndTime: async (req, res, next) => {

@@ -49,4 +49,38 @@ ProjectScoresService.updateScoreByEventSlug = (
     )
 }
 
+// Alternative endpoints for partner reviewing
+
+ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken = (
+    token,
+    eventSlug,
+    projectId,
+) => {
+    return _axios.get(
+        `/project-scores/event/${eventSlug}/project/${projectId}/${token}`,
+    )
+}
+
+ProjectScoresService.addScoreByEventSlugAndPartnerToken = (
+    token,
+    eventSlug,
+    projectScore,
+) => {
+    return _axios.post(
+        `/project-scores/event/${eventSlug}/${token}`,
+        projectScore,
+    )
+}
+
+ProjectScoresService.updateScoreByEventSlugAndPartnerToken = (
+    token,
+    eventSlug,
+    projectScore,
+) => {
+    return _axios.put(
+        `/project-scores/event/${eventSlug}/${projectScore._id}/${token}`,
+        projectScore,
+    )
+}
+
 export default ProjectScoresService

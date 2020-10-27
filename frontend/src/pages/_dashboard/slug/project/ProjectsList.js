@@ -116,13 +116,13 @@ export default props => {
                         >
                             Edit Submission
                         </Button>
-                        <Button
+                        {/*<Button
                             variant="contained"
                             color="theme_orange"
                             onClick={() => showProjectScore(project)}
                         >
                             View Score
-                        </Button>
+                        </Button>*/}
                     </Box>
                 </Paper>
             </Grid>
