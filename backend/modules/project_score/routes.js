@@ -82,6 +82,10 @@ router.get(
     getScoreByProjectId,
 )
 
+router.post('/event/:slug', hasToken, isEventOrganiser, addProjectScore)
+router.put('/event/:slug/:id', hasToken, isEventOrganiser, updateProjectScore)
+
+/* Partner reviewing routes */
 router.get(
     '/event/:slug/project/:projectId/:token',
     getEventFromParams,
@@ -90,7 +94,7 @@ router.get(
 )
 
 router.post(
-    '/event/:slu/:token',
+    '/event/:slug/:id/:token',
     getEventFromParams,
     hasPartnerToken,
     addProjectScore,
@@ -101,8 +105,5 @@ router.put(
     hasPartnerToken,
     updateProjectScore,
 )
-
-router.post('/event/:slug', hasToken, isEventOrganiser, addProjectScore)
-router.put('/event/:slug/:id', hasToken, isEventOrganiser, updateProjectScore)
 
 module.exports = router
