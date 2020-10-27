@@ -67,7 +67,7 @@ ProjectScoresService.addScoreByEventSlugAndPartnerToken = (
     projectScore,
 ) => {
     return _axios.post(
-        `/project-scores/event/${eventSlug}/${token}`,
+        `/project-scores/event/${eventSlug}/${projectScore._id}/${token}`,
         projectScore,
     )
 }
