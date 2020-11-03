@@ -10,6 +10,7 @@ const {
     canSubmitProject,
     isEventOrganiser,
     getEventFromParams,
+    hasPartnerToken,
 } = require('../../common/middleware/events')
 
 const addProjectScore = asyncHandler(async (req, res) => {
@@ -30,7 +31,7 @@ const updateProjectScore = asyncHandler(async (req, res) => {
     try {
         const score = await ProjectScoreController.updateProjectScore(
             req.params.id,
-            req.body
+            req.body,
         )
         return res.status(200).json(score)
     } catch (e) {
@@ -45,14 +46,14 @@ const updateProjectScore = asyncHandler(async (req, res) => {
 const getScoresByEventAndTeam = asyncHandler(async (req, res) => {
     const scores = await ProjectScoreController.getScoresByEventAndTeamId(
         req.event._id,
-        req.team._id
+        req.team._id,
     )
     return res.status(200).json(scores)
 })
 
 const getScoreByProjectId = asyncHandler(async (req, res) => {
     const score = await ProjectScoreController.getScoreByProjectId(
-        req.params.projectId
+        req.params.projectId,
     )
     return res.status(200).json(score)
 })
@@ -71,16 +72,38 @@ router.get(
     '/personal/:slug',
     hasToken,
     canSubmitProject,
-    getScoresByEventAndTeam
+    getScoresByEventAndTeam,
 )
 router.get('/event/:slug', getEventFromParams, getPublicScores)
 router.get(
     '/event/:slug/project/:projectId',
     hasToken,
     isEventOrganiser,
-    getScoreByProjectId
+    getScoreByProjectId,
 )
+
 router.post('/event/:slug', hasToken, isEventOrganiser, addProjectScore)
 router.put('/event/:slug/:id', hasToken, isEventOrganiser, updateProjectScore)
+
+/* Partner reviewing routes */
+router.get(
+    '/event/:slug/project/:projectId/:token',
+    getEventFromParams,
+    hasPartnerToken,
+    getScoreByProjectId,
+)
+
+router.post(
+    '/event/:slug/:id/:token',
+    getEventFromParams,
+    hasPartnerToken,
+    addProjectScore,
+)
+router.put(
+    '/event/:slug/:id/:token',
+    getEventFromParams,
+    hasPartnerToken,
+    updateProjectScore,
+)
 
 module.exports = router

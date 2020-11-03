@@ -48,4 +48,8 @@ ProjectsService.getProjectsWithToken = (eventSlug, token) => {
     return _axios.get(`/projects/${eventSlug}/token/${token}`)
 }
 
+ProjectsService.validateToken = (eventSlug, token) => {
+    return _axios.get(`/projects/${eventSlug}/token/${token}/validate`)
+}
+
 export default ProjectsService
