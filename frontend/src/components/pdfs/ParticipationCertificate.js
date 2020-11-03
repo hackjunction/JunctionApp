@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     },
     connected: {
         // fontWeight: 'bold',
-        marginVertical: 25,
+        marginVertical: 28,
         marginHorizontal: 100,
         // height: '60pt',
         objectFit: 'contain',
@@ -197,7 +197,7 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
                 <View style={styles.outer} wrap={false}>
                     <View style={styles.outer2} wrap={false}>
                         <View style={styles.upperRings}>
-                            <Image src="https://res.cloudinary.com/hackjunction/image/upload/v1603291704/misc_assets/Group.png" />
+                            <Image src="https://res.cloudinary.com/hackjunction/image/upload/v1603370284/misc_assets/Group.png" />
                         </View>
                         <Text style={styles.title}>
                             Certificate of Participation
@@ -211,7 +211,7 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
                             />
                         </View>
                         <Text style={styles.date}>
-                            {MiscUtils.formatDateInterval(
+                            {MiscUtils.formatPDFDateInterval(
                                 event.startTime,
                                 event.endTime,
                             )}
@@ -230,14 +230,15 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
                         </View>
                         <Text style={styles.footer}>
                             <strong style={styles.junction}>Junction</strong> is
-                            the world's leading hackathon organiser and a global
-                            community of hackers. Our mission is to empower
-                            people to create with technology.
+                            the world’s leading hackathon organizer and a global
+                            community of hackers. Our mission is to bridge the
+                            gap between creators by making everyone fall in love
+                            with technology.
                         </Text>
 
                         <View style={styles.lowerRings}>
                             <Image
-                                src="https://res.cloudinary.com/hackjunction/image/upload/v1603291704/misc_assets/Groupsecond.png"
+                                src="https://res.cloudinary.com/hackjunction/image/upload/v1603370284/misc_assets/Groupsecond.png"
                                 style={styles.image}
                             />
                         </View>
