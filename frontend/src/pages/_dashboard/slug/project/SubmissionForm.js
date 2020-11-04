@@ -305,6 +305,36 @@ export default props => {
                     </Grid>
                     <Grid item xs={12}>
                         <FastField
+                            name="video"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Video link"
+                                    hint="YouTube link for embedded video"
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
+                                    error={form.errors[field.name]}
+                                >
+                                    <TextInput
+                                        value={field.value}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
+                                        placeholder="https://youtu..."
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FastField
                             name="demo"
                             render={({ field, form }) => (
                                 <FormControl
