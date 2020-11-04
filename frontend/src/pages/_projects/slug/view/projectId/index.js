@@ -31,7 +31,7 @@ export default ({ event, showFullTeam }) => {
     const [validToken, setValidToken] = useState(false)
 
     useEffect(() => {
-        if (project && event) {
+        if (token && project && event) {
             ProjectsService.validateToken(slug, token).then(v => {
                 if (v) setValidToken(v)
             })
@@ -47,7 +47,7 @@ export default ({ event, showFullTeam }) => {
         message: '',
     })
     useEffect(() => {
-        if (project && event) {
+        if (token && project && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
                 token,
                 event.slug,

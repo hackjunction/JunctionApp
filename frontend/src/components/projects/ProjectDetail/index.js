@@ -12,6 +12,8 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
 
+import ReactPlayer from 'react-player/youtube'
+
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
 
@@ -75,6 +77,15 @@ const useStyles = makeStyles(theme => ({
     },
     paginationText: {
         color: 'white',
+    },
+    playerWrapper: {
+        position: 'relative',
+        height: '360px',
+    },
+    reactPlayer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
     },
 }))
 
@@ -243,6 +254,48 @@ const ProjectDetail = ({
                                 </Typography>
                             </Box>
                         )}
+                        {project.video ? (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    video
+                                </Typography>
+                                <div className={classes.playerWrapper}>
+                                    <ReactPlayer
+                                        url={project.video}
+                                        className={classes.reactPlayer}
+                                        width="100%"
+                                        height="100%"
+                                        controls
+                                        light={false}
+                                        loop={false}
+                                        playbackRate={1.0}
+                                        volume={0.8}
+                                        muted={false}
+                                        onReady={() => console.log('onReady')}
+                                        onStart={() => console.log('onStart')}
+                                        onBuffer={() => console.log('onBuffer')}
+                                        onSeek={e => console.log('onSeek', e)}
+                                        onError={e => console.log('onError', e)}
+                                    />
+                                </div>
+                            </Box>
+                        ) : (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    video
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    No video available
+                                </Typography>
+                            </Box>
+                        )}
+
                         {project.demo ? (
                             <Box mb={3}>
                                 <Typography

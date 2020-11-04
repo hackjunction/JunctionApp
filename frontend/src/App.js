@@ -118,7 +118,6 @@ export default ({ history, location }) => {
                                 async
                                 src="https://platform.twitter.com/widgets.js"
                             ></script>
-
                             <Redirect to="/" />
                         </Switch>
                     )}
