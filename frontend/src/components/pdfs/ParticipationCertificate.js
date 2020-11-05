@@ -15,7 +15,6 @@ Font.register({
     family: 'Montserrat',
     src:
         'https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-_x3rCs.ttf',
-    fontWeight: 'bold',
 })
 Font.register({
     family: 'Lato',
@@ -27,35 +26,36 @@ Font.registerHyphenationCallback(word => [word])
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'column',
-        backgroundColor: '#fff',
-        padding: '16pt',
+        backgroundColor: '#F4D1A1',
+        padding: '2pt 16pt ',
         position: 'relative',
         boxSizing: 'border-box',
     },
     outer: {
         flex: 1,
-        borderWidth: '4pt',
-        borderColor: '#232323',
-        borderStyle: 'solid',
+        // borderWidth: '4pt',
+        // borderColor: '#232323',
+        // borderStyle: 'solid',
         display: 'flex',
         padding: '6pt',
     },
     outer2: {
         flex: 1,
-        borderWidth: '3pt',
-        borderColor: '#232323',
-        borderStyle: 'solid',
+        // borderWidth: '3pt',
+        // borderColor: '#232323',
+        // borderStyle: 'solid',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '20px 50px',
+        padding: '2px 50px',
         position: 'relative',
     },
     title: {
         textAlign: 'center',
         fontFamily: 'Montserrat',
-        fontSize: '21pt',
+        fontSize: 30,
         fontWeight: 'bold',
+        color: '#1C2F5C',
     },
     eventName: {
         textAlign: 'center',
@@ -66,53 +66,72 @@ const styles = StyleSheet.create({
     date: {
         textAlign: 'center',
         fontFamily: 'Montserrat',
-        fontSize: '21pt',
+        fontSize: 20,
         fontWeight: 'bold',
+        textTransform: 'uppercase',
+        color: '#1C2F5C',
     },
     preName: {
         marginTop: '80px',
         textAlign: 'center',
         fontFamily: 'Lato',
+        color: '#1C2F5C',
+
+        fontSize: 13,
     },
     name: {
         textAlign: 'center',
         fontSize: '42pt',
         fontFamily: 'Montserrat',
-        textTransform: 'uppercase',
+
         fontWeight: 'bold',
         lineHeight: 0.9,
-        marginBottom: '3px',
+        margin: '5pt 0 5pt',
+        color: '#1C2F5C',
     },
     nameSmall: {
         textAlign: 'center',
         fontSize: '32pt',
         fontFamily: 'Montserrat',
-        textTransform: 'uppercase',
+
         fontWeight: 'bold',
+        color: '#1C2F5C',
+        margin: '3px 0 3px',
     },
     postName: {
-        marginTop: '10px',
+        marginTop: '15px',
         textAlign: 'center',
         fontFamily: 'Lato',
+        fontSize: 13,
+
+        color: '#1C2F5C',
     },
     footer: {
-        marginTop: '80pt',
+        // padding: '80pt',
+
+        // marginTop: '80pt',
         textAlign: 'center',
         fontFamily: 'Lato',
-        fontSize: '16pt',
-    },
-    logoWrapper: {
+        fontSize: 12,
+        color: '#1C2F5C',
         position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
+        bottom: 90,
+        left: 100,
+        right: 100,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    logoWrapper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 120,
+    },
     logo: {
-        height: '52pt',
+        height: '70pt',
         objectFit: 'contain',
     },
     footerLink: {
@@ -122,6 +141,43 @@ const styles = StyleSheet.create({
         fontSize: '16pt',
         fontFamily: 'Montserrat',
         marginTop: '10px',
+    },
+    connected: {
+        // fontWeight: 'bold',
+        marginVertical: 28,
+        marginHorizontal: 100,
+        // height: '60pt',
+        objectFit: 'contain',
+    },
+    image: {},
+    upper: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: '70pt',
+    },
+    junction: {
+        fontWeight: 600,
+    },
+    upperRings: {
+        position: 'absolute',
+        height: 250,
+
+        objectFit: 'contain',
+        left: -22,
+        top: 0,
+        zIndex: 10,
+    },
+    lowerRings: {
+        position: 'absolute',
+        height: 250,
+
+        objectFit: 'contain',
+        right: -22,
+        bottom: -8,
+        zIndex: 10,
     },
 })
 
@@ -140,33 +196,53 @@ const ParticipationCertificate = ({ event, project, userProfile }) => {
             <Page size="A4" style={styles.page} wrap={false}>
                 <View style={styles.outer} wrap={false}>
                     <View style={styles.outer2} wrap={false}>
-                        <View style={styles.logoWrapper}>
-                            <Image
-                                src={config.LOGO_DARK_URL}
-                                style={styles.logo}
-                            />
+                        <View style={styles.upperRings}>
+                            <Image src="https://res.cloudinary.com/hackjunction/image/upload/v1603370284/misc_assets/Group.png" />
                         </View>
                         <Text style={styles.title}>
-                            Certificate of participation
+                            Certificate of Participation
                         </Text>
-                        <Text style={styles.eventName}>{event.name}</Text>
+
+                        {/* <Text style={styles.eventName}>{event.name}</Text> */}
+                        <View style={styles.connected}>
+                            <Image
+                                src="https://res.cloudinary.com/hackjunction/image/upload/v1603284923/misc_assets/logo.png"
+                                style={styles.image}
+                            />
+                        </View>
                         <Text style={styles.date}>
-                            {MiscUtils.formatDateInterval(
+                            {MiscUtils.formatPDFDateInterval(
                                 event.startTime,
                                 event.endTime,
                             )}
                         </Text>
+
                         <Text style={styles.preName}>
-                            This certificate is proudly presented to
+                            This certificate is proudly presented to:
                         </Text>
                         <Text style={nameStyle}>{name}</Text>
                         <Text style={styles.postName}>{postName}</Text>
+                        <View style={styles.logoWrapper}>
+                            <Image
+                                src={config.EMBLEM_DARK_URL}
+                                style={styles.logo}
+                            />
+                        </View>
                         <Text style={styles.footer}>
-                            Junction is the world's leading hackathon organiser
-                            and a global community of hackers. Our mission is to
-                            empower people to create with technology.
+                            <strong style={styles.junction}>Junction</strong> is
+                            the world’s leading hackathon organizer and a global
+                            community of hackers. Our mission is to bridge the
+                            gap between creators by making everyone fall in love
+                            with technology.
                         </Text>
-                        <Text style={styles.footerLink}>hackjunction.com</Text>
+
+                        <View style={styles.lowerRings}>
+                            <Image
+                                src="https://res.cloudinary.com/hackjunction/image/upload/v1603370284/misc_assets/Groupsecond.png"
+                                style={styles.image}
+                            />
+                        </View>
+                        {/* <Text style={styles.footerLink}>hackjunction.com</Text> */}
                     </View>
                 </View>
             </Page>
