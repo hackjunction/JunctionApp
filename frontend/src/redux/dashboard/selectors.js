@@ -125,7 +125,7 @@ export const lockedPages = createSelector(event, event => {
         submissions: !EventHelpers.isSubmissionsOpen(event, moment),
         reviewing: EventHelpers.isVotingPast(event, moment),
         team: EventHelpers.isSubmissionsPast(event, moment),
-        finalistVoting: !event?.winners?.isFinalistVotingOpen ?? false,
+        finalistVoting: !EventHelpers.isFinalistVotingOpen(event, moment),
     }
 })
 
@@ -150,8 +150,7 @@ export const shownPages = createSelector(
                 (registration?.travelGrant ?? 0) > 0,
             finalistVoting:
                 registration?.status === STATUSES.checkedIn.id &&
-                event?.tracksEnabled &&
-                (event?.tracks?.length ?? 0) > 0,
+                event.overallReviewMethod !== 'noOverallWinner',
             hackerPack:
                 [STATUSES.checkedIn.id, STATUSES.confirmed.id].indexOf(
                     registration?.status,

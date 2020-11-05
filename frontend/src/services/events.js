@@ -90,6 +90,18 @@ EventsService.updateWinners = (idToken, slug, winners) => {
     )
 }
 
+EventsService.updateFinalists = (idToken, slug, projectId) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/${slug}/finalist`,
+        { projectId },
+        config(idToken),
+    )
+}
+
+EventsService.getFinalists = (idToken, slug) => {
+    return _axios.get(`${BASE_ROUTE}/${slug}/finalist`, config(idToken))
+}
+
 EventsService.getWinnerProjects = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/winners`, config(idToken))
 }

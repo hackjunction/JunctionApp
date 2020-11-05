@@ -7,6 +7,7 @@ const migrations = [
     require('./01-remove-project-unique-index'),
     require('./02-rename-sigma_sq-to-sigmaSq'),
     require('./03-rename-country_code-to-countryCode'),
+    require('./04-add-finalists-to-event'),
 ]
 
 const run = async () => {
