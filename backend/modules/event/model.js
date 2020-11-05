@@ -227,6 +227,10 @@ const EventSchema = new mongoose.Schema({
         type: mongoose.Mixed,
         default: {},
     },
+    finalists: {
+        type: [String],
+        default: [],
+    },
     challenge_instructions: {
         type: String,
     },

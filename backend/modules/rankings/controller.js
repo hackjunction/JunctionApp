@@ -24,12 +24,12 @@ controller.getTrackResults = (event, track) => {
 controller.updateTrackResults = (event, track, rankings) => {
     if (!event.tracksEnabled) {
         throw new ForbiddenError(
-            `Can't update track results for event with tracks disabled`
+            `Can't update track results for event with tracks disabled`,
         )
     }
     if (!event.tracks.indexOf(track) === -1) {
         throw new ForbiddenError(
-            `${track} is not a valid track for event ${event.name}`
+            `${track} is not a valid track for event ${event.name}`,
         )
     }
     return Rankings.findOneAndUpdate(
@@ -42,7 +42,7 @@ controller.updateTrackResults = (event, track, rankings) => {
         },
         {
             upsert: true,
-        }
+        },
     )
 }
 
@@ -56,12 +56,12 @@ controller.getChallengeResults = (event, challenge) => {
 controller.updateChallengeResults = (event, challenge, rankings) => {
     if (!event.challengesEnabled) {
         throw new ForbiddenError(
-            `Can't update challenge results for event with challenges disabled`
+            `Can't update challenge results for event with challenges disabled`,
         )
     }
     if (event.challenges.indexOf(challenge) === -1) {
         throw new ForbiddenError(
-            `${challenge} is not a valid challenge for event ${event.name}`
+            `${challenge} is not a valid challenge for event ${event.name}`,
         )
     }
     return Rankings.findOneAndUpdate(
@@ -74,7 +74,7 @@ controller.updateChallengeResults = (event, challenge, rankings) => {
         },
         {
             upsert: true,
-        }
+        },
     )
 }
 
@@ -96,7 +96,7 @@ controller.updateOverallResults = (event, rankings) => {
         },
         {
             upsert: true,
-        }
+        },
     )
 }
 
@@ -137,7 +137,7 @@ controller.resetAllResults = async event => {
             return controller.updateTrackResults(
                 event,
                 track,
-                results.tracks[track]
+                results.tracks[track],
             )
         })
     }
@@ -163,7 +163,7 @@ controller.generateOverallResults = async event => {
         switch (event.overallReviewMethod) {
             case OverallReviewingMethods.finalsPublicVoting.id: {
                 const voteTotals = await WinnerVoteController.getVotesForEvent(
-                    event
+                    event,
                 )
                 return voteTotals.map(({ project }) => project)
             }
@@ -196,6 +196,11 @@ controller.generateOverallResults = async event => {
                  */
                 return []
             }
+            default: {
+                /** No reviewing method defined, skip this */
+                console.log('No reviewing method defined')
+                return []
+            }
         }
     }
 }
@@ -205,7 +210,7 @@ controller.generateTrackResults = async (event, trackSlug) => {
     const track = _.find(event.tracks || [], t => t.slug === trackSlug)
     if (!track) {
         console.log(
-            `Event ${event.name} has no track with the slug ${trackSlug}`
+            `Event ${event.name} has no track with the slug ${trackSlug}`,
         )
         return []
     }
@@ -225,12 +230,12 @@ controller.generateTrackResultsAll = async event => {
         async (results, track) => {
             const trackResults = await controller.generateTrackResults(
                 event,
-                track.slug
+                track.slug,
             )
             results[track.slug] = trackResults
             return results
         },
-        {}
+        {},
     )
 }
 

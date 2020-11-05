@@ -19,6 +19,7 @@ import {
     FormControl,
     Select,
     MenuItem,
+    Checkbox,
 } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
@@ -27,6 +28,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import TeamsTable from 'components/tables/TeamsTable'
 import ProjectScoresService from 'services/projectScores'
+import EventsService from 'services/events'
+
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Button from 'components/generic/Button'
 
@@ -35,7 +38,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const event = useSelector(OrganiserSelectors.event)
     const teams = useSelector(OrganiserSelectors.teams)
-
+    const [finalistChecked, setFinalistChecked] = useState(false)
     const [projectScore, setProjectScore] = useState({
         project: '',
         event: '',
@@ -53,6 +56,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
             ).then(score => {
                 if (score) setProjectScore(score)
             })
+            setFinalistChecked(event.finalists.includes(project._id))
         }
     }, [event, idToken, project])
     const team = useMemo(() => {
@@ -62,7 +66,11 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
         return []
     }, [project, teams])
 
-    console.log('projectScore', { ...projectScore })
+    const setAsFinalist = () => {
+        setFinalistChecked(!finalistChecked)
+        EventsService.updateFinalists(idToken, event.slug, project._id)
+    }
+
     return (
         <Dialog open={!!project} onClose={onClose} maxWidth="md" fullWidth>
             <PageWrapper loading={!project}>
@@ -287,6 +295,22 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                     </Formik>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
+                            {event.overallReviewMethod ===
+                            'finalsManualSelection' ? (
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    style={{ width: '100%' }}
+                                >
+                                    <Typography gutterBottom>
+                                        Does this project go to finals!
+                                    </Typography>
+                                    <Checkbox
+                                        onChange={setAsFinalist}
+                                        checked={finalistChecked}
+                                    />
+                                </Box>
+                            ) : null}
                         </CenteredContainer>
                     </Box>
                 )}

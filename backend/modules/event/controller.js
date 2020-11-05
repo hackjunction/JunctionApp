@@ -96,6 +96,19 @@ controller.updateWinners = (eventId, winners) => {
     })
 }
 
+controller.updateFinalists = (eventId, finalist) => {
+    console.log(eventId, finalist)
+    return Event.findById(eventId).then(event => {
+        const index = event.finalists.indexOf(finalist)
+        if (index > -1) {
+            event.finalists.splice(index, 1)
+        } else {
+            event.finalists.push(finalist)
+        }
+        return event.save()
+    })
+}
+
 controller.generateTrackPlacementAchievements = async event => {
     // If the event is not using tracks, get outta here
     if (!event.tracksEnabled) {

@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Grid, Box, Button } from '@material-ui/core'
+import { Grid, Box, Button, Dialog } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Select from 'components/inputs/Select'
 import ProjectsGridItem from 'components/projects/ProjectsGridItem'
+import ProjectDetail from 'components/projects/ProjectDetail'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -25,9 +26,8 @@ export default () => {
     const event = useSelector(DashboardSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
 
-    const rankingsByTrack = useSelector(OrganiserSelectors.rankingsByTrack)
-    console.log('ranktak,', rankingsByTrack)
     const [loading, setLoading] = useState(true)
+    const [selected, setSelected] = useState(false)
 
     const [projects, setProjects] = useState([])
     const [vote, setVote] = useState([])
@@ -37,41 +37,58 @@ export default () => {
     }, [idToken, event])
 
     const updateProjects = useCallback(() => {
-        // TODO use Eventservice
+        // TODO use EventsService
         return ProjectsService.getProjectsByEvent(event.slug)
         // return EventsService.getWinnerProjects(idToken, event.slug)
     }, [idToken, event])
 
     const update = useCallback(async () => {
         setLoading(true)
-        const topProjects = []
-        try {
-            const [vote, projects] = await Promise.all([
-                updateVote(),
-                updateProjects(),
-            ])
-            if (rankingsByTrack) {
-                Object.keys(rankingsByTrack).forEach(name =>
-                    topProjects?.push(
-                        projects?.find(x => x._id === rankingsByTrack[name][0]),
-                    ),
-                )
-            }
-            console.log('topProjects are', topProjects)
+        if (event.overallReviewMethod === 'finalsManualSelection') {
+            const vote = await updateVote()
+
+            const topProjects = await EventsService.getFinalists(
+                idToken,
+                event.slug,
+            )
             setProjects(topProjects)
             if (vote) {
                 setVote(vote.project)
             }
-        } catch (err) {
-            dispatch(
-                SnackbarActions.error(
-                    'Oops, something went wrong... Please reload the page.',
-                ),
+        } else {
+            //TODO holy shit redo this
+            const topProjects = []
+            const rankingsByTrack = useSelector(
+                OrganiserSelectors.rankingsByTrack,
             )
-        } finally {
-            setLoading(false)
+            try {
+                const [vote, projects] = await Promise.all([
+                    updateVote(),
+                    updateProjects(),
+                ])
+                if (rankingsByTrack) {
+                    Object.keys(rankingsByTrack).forEach(name =>
+                        topProjects?.push(
+                            projects?.find(
+                                x => x._id === rankingsByTrack[name][0],
+                            ),
+                        ),
+                    )
+                }
+                setProjects(topProjects)
+                if (vote) {
+                    setVote(vote.project)
+                }
+            } catch (err) {
+                dispatch(
+                    SnackbarActions.error(
+                        'Oops, something went wrong... Please reload the page.',
+                    ),
+                )
+            }
         }
-    }, [updateVote, updateProjects, rankingsByTrack, dispatch])
+        setLoading(false)
+    }, [updateVote, updateProjects, dispatch])
 
     useEffect(() => {
         update()
@@ -133,10 +150,27 @@ export default () => {
             </Box>
             <Grid container spacing={3}>
                 {projects.map(project => (
-                    <ProjectsGridItem project={project} event={event} />
+                    <ProjectsGridItem
+                        project={project}
+                        event={event}
+                        onClickMore={() => setSelected(project)}
+                    />
                 ))}
             </Grid>
             <Box height="200px" />
+            <Dialog
+                transitionDuration={0}
+                fullScreen
+                open={Boolean(selected)}
+                onClose={() => setSelected()}
+            >
+                <ProjectDetail
+                    project={selected}
+                    event={event}
+                    onBack={() => setSelected()}
+                    showTableLocation={false}
+                />
+            </Dialog>
         </PageWrapper>
     )
 }
