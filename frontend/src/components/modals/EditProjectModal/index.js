@@ -70,9 +70,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
         setFinalistChecked(!finalistChecked)
         EventsService.updateFinalists(idToken, event.slug, project._id)
     }
-    console.log(event.overallReviewMethod)
-    console.log(event.finalists)
-    console.log('projectScore', { ...projectScore })
+
     return (
         <Dialog open={!!project} onClose={onClose} maxWidth="md" fullWidth>
             <PageWrapper loading={!project}>

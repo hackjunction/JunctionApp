@@ -75,7 +75,6 @@ export default () => {
                         ),
                     )
                 }
-                console.log('topProjects are', topProjects)
                 setProjects(topProjects)
                 if (vote) {
                     setVote(vote.project)
