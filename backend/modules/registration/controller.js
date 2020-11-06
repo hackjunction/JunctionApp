@@ -344,9 +344,10 @@ controller.bulkEditRegistrations = (eventId, userIds, edits, user) => {
                 if (edits.hasOwnProperty('status')) {
                     const status =
                         RegistrationStatuses.asObject[registration.status]
-                    if (status && !status.allowEdit) {
+                    /*
+                    if (!status?.allowEdit) {
                         delete edits.status
-                    }
+                    } */
                 }
                 if (edits.rating) {
                     edits.ratedBy = user.sub
