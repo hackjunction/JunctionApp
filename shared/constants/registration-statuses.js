@@ -69,7 +69,7 @@ const RegistrationStatuses = {
         description: 'Has arrived at the event',
         color: '#0083f3',
         allowAssign: false,
-        allowEdit: false,
+        allowEdit: true, // todo change back to false
     },
     noShow: {
         id: 'noShow',
