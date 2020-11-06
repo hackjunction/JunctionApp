@@ -68,7 +68,7 @@ const RegistrationStatuses = {
         label: 'Checked In',
         description: 'Has arrived at the event',
         color: '#0083f3',
-        allowAssign: false,
+        allowAssign: true,
         allowEdit: true, // todo change back to false
     },
     noShow: {
