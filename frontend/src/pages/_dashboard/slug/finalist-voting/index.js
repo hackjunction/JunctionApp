@@ -30,7 +30,8 @@ export default () => {
     const [selected, setSelected] = useState(false)
 
     const [projects, setProjects] = useState([])
-    const [vote, setVote] = useState([])
+    const [vote, setVote] = useState(null)
+    const [hasVoted, setVoted] = useState(false)
 
     const updateVote = useCallback(() => {
         return WinnerVoteService.getVote(idToken, event.slug)
@@ -54,6 +55,7 @@ export default () => {
             setProjects(topProjects)
             if (vote) {
                 setVote(vote.project)
+                setVoted(true)
             }
         } else {
             //TODO holy shit redo this
@@ -103,6 +105,7 @@ export default () => {
                 vote,
             )
             setVote(result.project)
+            setVoted(true)
             dispatch(SnackbarActions.success('Vote submitted!'))
         } catch (err) {
             dispatch(
@@ -144,7 +147,7 @@ export default () => {
                         color="primary"
                         variant="contained"
                     >
-                        Submit vote
+                        {hasVoted ? 'Change vote' : 'Submit vote'}
                     </Button>
                 </Box>
             </Box>
