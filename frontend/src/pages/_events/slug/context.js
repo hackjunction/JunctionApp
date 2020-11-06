@@ -48,6 +48,7 @@ const eventQuery = gql`
             }
             demoLabel
             demoHint
+            finalists
             demoPlaceholder
             eventPrivacy
             eventTerms

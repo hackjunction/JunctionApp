@@ -63,7 +63,6 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
-    console.log('showpages,', shownPages, lockedPages)
     const { slug } = match.params
     /** Update when slug changes */
     useEffect(() => {

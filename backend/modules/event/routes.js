@@ -101,6 +101,22 @@ const getWinnerProjects = asyncHandler(async (req, res) => {
         .find({ _id: { $in: projectIds } })
     return res.status(200).json(projects)
 })
+// Finalists
+
+const updateFinalists = asyncHandler(async (req, res) => {
+    const event = await EventController.updateFinalists(
+        req.event._id,
+        req.body.projectId,
+    )
+    return res.status(200).json(event)
+})
+
+const getFinalists = asyncHandler(async (req, res) => {
+    const projects = await mongoose
+        .model('Project')
+        .find({ _id: { $in: req.event.finalists } })
+    return res.status(200).json(projects)
+})
 
 /** Generate achievements for projects submitted in this event */
 const generateAchievements = asyncHandler(async (req, res) => {
@@ -177,6 +193,16 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         updateWinners,
+    )
+
+router
+    .route('/:slug/finalist')
+    .get(hasToken, hasRegisteredToEvent, getFinalists)
+    .patch(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        updateFinalists,
     )
 
 /** Get organisers for single event */

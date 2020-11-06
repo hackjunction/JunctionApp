@@ -4,48 +4,22 @@ const EventTypes = require('./event-types')
 /** The user editable fields and their validation rules for a Project */
 // TODO: Add tracks and challenges
 const ProjectSchema = {
-    name: yup
-        .string()
-        .required()
-        .max(100)
-        .label('Project name'),
-    punchline: yup
-        .string()
-        .required()
-        .max(300)
-        .label('Punchline'),
-    description: yup
-        .string()
-        .required()
-        .max(3000)
-        .label('Description'),
-    source: yup
-        .string()
-        .url()
-        .label('Source code'),
-    sourcePublic: yup
-        .boolean()
-        .default(true)
-        .label('Source code public'),
-    technologies: yup
-        .array()
-        .of(yup.string())
-        .label('Technologies'),
-    hiddenMembers: yup
-        .array()
-        .of(yup.string())
-        .label('Hidden members'),
-    demo: yup
-        .string()
-        .url()
-        .label('Demo link'),
+    name: yup.string().required().max(100).label('Project name'),
+    punchline: yup.string().required().max(300).label('Punchline'),
+    description: yup.string().required().max(3000).label('Description'),
+    source: yup.string().url().label('Source code'),
+    sourcePublic: yup.boolean().default(true).label('Source code public'),
+    technologies: yup.array().of(yup.string()).label('Technologies'),
+    hiddenMembers: yup.array().of(yup.string()).label('Hidden members'),
+    demo: yup.string().url().label('Demo link'),
+    video: yup.string().url().label('Video link'),
     images: yup
         .array()
         .of(
             yup.object().shape({
                 publicId: yup.string(),
                 url: yup.string().url(),
-            })
+            }),
         )
         .max(5)
         .ensure()
@@ -69,7 +43,7 @@ const buildProjectSchema = event => {
             .of(
                 yup
                     .string()
-                    .oneOf(event.challenges.map(challenge => challenge.slug))
+                    .oneOf(event.challenges.map(challenge => challenge.slug)),
             )
             .max(5)
             .ensure()

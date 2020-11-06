@@ -54,6 +54,11 @@ const settings = {
             process.env.REACT_APP_LOGO_LIGHT_URL ||
             'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419635/Junction%20Logos/wordmark_white.png',
     },
+    EMBLEM_DARK_URL: {
+        required: true,
+        value:
+            'https://res.cloudinary.com/hackjunction/image/upload/v1581419640/Junction%20Logos/emblem_black.png',
+    },
     LOGROCKET_ID: {
         required: false,
         value: process.env.REACT_APP_LOGROCKET_ID,
