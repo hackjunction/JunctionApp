@@ -72,6 +72,11 @@ const EventSchema = new mongoose.Schema({
         type: Date,
         requiredForPublish: true,
     },
+    /** Make this a date type also */
+    finalsActive: {
+        type: Boolean,
+        default: false,
+    },
     /** Event customisation */
     coverImage: CloudinaryImageSchema.mongoose,
     logo: CloudinaryImageSchema.mongoose,

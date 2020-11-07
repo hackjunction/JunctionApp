@@ -434,8 +434,8 @@ export default props => {
                                 name="location"
                                 render={({ field, form }) => (
                                     <FormControl
-                                        label="Table location"
-                                        hint="Where can judges find your project? Make sure this is always correct and up-to-date!"
+                                        label="Contact info"
+                                        hint="How can people judging the projects contact you during judging? Make sure this info is always up-to-date!"
                                         touched={
                                             form.touched[field.name] ||
                                             formikProps.submitCount > 0
