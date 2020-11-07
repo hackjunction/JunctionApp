@@ -62,7 +62,10 @@ const EventHelpers = {
     },
     isFinalistVotingOpen: (event, moment) => {
         if (!event) return false
-        return nowIsBetween(event.reviewingEndTime, event.endTime, moment)
+        return (
+            nowIsBetween(event.reviewingEndTime, event.endTime, moment) &&
+            event.finalsActive
+        )
     },
     isVotingPast: (event, moment) => {
         if (!event) return true

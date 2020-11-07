@@ -334,6 +334,27 @@ export default () => {
                 />
             </Grid>
             <Grid item xs={12}>
+                <Field
+                    name="finalsActive"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Is finalist voting open"
+                            hint="Check this to allow the finalist voting to open (after the gavel review has been completed)"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <BooleanInput
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+
+            <Grid item xs={12}>
                 <Box height="300px" />
             </Grid>
         </Grid>

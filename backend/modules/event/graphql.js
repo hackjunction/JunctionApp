@@ -79,6 +79,9 @@ const EventType = new GraphQLObjectType({
             reviewingEndTime: {
                 type: GraphQLDateTime,
             },
+            finalsActive: {
+                type: GraphQLBoolean,
+            },
             eventLocation: {
                 type: Address,
             },
