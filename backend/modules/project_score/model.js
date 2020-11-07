@@ -17,6 +17,15 @@ const ProjectScoreSchema = new mongoose.Schema(
             type: String,
             required: true,
             enum: STATUS_TYPES,
+            default: STATUS_TYPES[0],
+        },
+        challenge: {
+            type: String,
+            default: null,
+        },
+        track: {
+            type: String,
+            default: null,
         },
         score: {
             type: Number,
@@ -36,16 +45,18 @@ const ProjectScoreSchema = new mongoose.Schema(
             required: false,
         },
     },
-    { toJSON: { virtuals: true } }
+    { toJSON: { virtuals: true } },
 )
 ProjectScoreSchema.index(
     {
         project: 1,
         event: 1,
+        challenge: 1,
+        track: 1,
     },
     {
         unique: true,
-    }
+    },
 )
 
 ProjectScoreSchema.set('timestamps', true)

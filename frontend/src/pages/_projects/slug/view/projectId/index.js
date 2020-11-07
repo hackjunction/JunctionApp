@@ -53,7 +53,7 @@ export default ({ event, showFullTeam }) => {
                 event.slug,
                 project._id,
             ).then(score => {
-                if (score) setProjectScore(score)
+                if (score[0]) setProjectScore(score[0])
             })
         }
     }, [event, token, project])
