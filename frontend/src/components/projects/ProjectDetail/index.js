@@ -12,7 +12,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
 
-import ReactPlayer from 'react-player/youtube'
+import ReactPlayer from 'react-player'
 
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
@@ -262,6 +262,13 @@ const ProjectDetail = ({
                                 >
                                     video
                                 </Typography>
+                                <a
+                                    href={project.video}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {project.video}
+                                </a>
                                 <div className={classes.playerWrapper}>
                                     <ReactPlayer
                                         url={project.video}
