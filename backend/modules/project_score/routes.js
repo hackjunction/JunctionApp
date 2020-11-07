@@ -12,9 +12,16 @@ const {
     getEventFromParams,
     hasPartnerToken,
 } = require('../../common/middleware/events')
+const { registrationAccepted } = require('../email-task/types')
 
 const addProjectScore = asyncHandler(async (req, res) => {
     try {
+        if (req.params.track) {
+            req.body.track = req.params.track._id
+        }
+        if (req.params.challenge) {
+            req.body.challenge = req.params.challenge._id
+        }
         const score = await ProjectScoreController.addProjectScore(req.body)
         return res.status(200).json(score)
     } catch (e) {
@@ -29,6 +36,12 @@ const addProjectScore = asyncHandler(async (req, res) => {
 
 const updateProjectScore = asyncHandler(async (req, res) => {
     try {
+        if (req.params.track) {
+            req.body.track = req.params.track._id
+        }
+        if (req.params.challenge) {
+            req.body.challenge = req.params.challenge._id
+        }
         const score = await ProjectScoreController.updateProjectScore(
             req.params.id,
             req.body,
@@ -52,8 +65,13 @@ const getScoresByEventAndTeam = asyncHandler(async (req, res) => {
 })
 
 const getScoreByProjectId = asyncHandler(async (req, res) => {
+    // TODO figure out why ?. operator didn't work here
+    const challenge = req.params.challenge ? req.params.challenge._id : null
+    const track = req.params.track ? req.params.track._id : null
     const score = await ProjectScoreController.getScoreByProjectId(
         req.params.projectId,
+        challenge,
+        track,
     )
     return res.status(200).json(score)
 })

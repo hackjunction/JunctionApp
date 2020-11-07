@@ -29,8 +29,13 @@ const ProjectsGrid = ({
                     project._id,
                 )
                     .then(score => {
-                        console.log('got score', score, project)
-                        return Object.assign(score, project)
+                        if (score[0]) {
+                            return Object.assign(score[0], project)
+                        }
+                        return Object.assign(
+                            { score: 0, message: 'Not rated' },
+                            project,
+                        )
                     })
                     .catch(e => {
                         console.log(e)
@@ -70,8 +75,8 @@ const ProjectsGrid = ({
                     showTableLocation={isOngoingEvent}
                     showFullTeam={showFullTeam}
                     onClickMore={() => onSelect(project)}
-                    score={project.score ? project?.score : null}
-                    message={project.message ? project?.message : null}
+                    score={project?.score}
+                    message={project?.message}
                 />
             ))}
         </Grid>
