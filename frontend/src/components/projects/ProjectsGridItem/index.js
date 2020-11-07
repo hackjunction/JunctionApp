@@ -91,7 +91,7 @@ const ProjectsGridItem = ({
                             style={{ fontWeight: 'bold' }}
                             variant="body1"
                         >
-                            Table location
+                            Contact info
                         </Typography>
                         <Typography variant="body1">
                             {project.location}
@@ -106,7 +106,7 @@ const ProjectsGridItem = ({
                         >
                             Score
                         </Typography>
-                        <Typography variant="body1">{score} / 10</Typography>
+                        <Typography variant="body1">{score}</Typography>
                         <Typography variant="body1">{message}</Typography>
                     </Box>
                 )}
