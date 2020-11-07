@@ -53,7 +53,7 @@ export default ({ event, showFullTeam }) => {
                 event.slug,
                 project._id,
             ).then(score => {
-                if (score) setProjectScore(score)
+                if (score[0]) setProjectScore(score[0])
             })
         }
     }, [event, token, project])
@@ -98,6 +98,7 @@ export default ({ event, showFullTeam }) => {
                     onSubmit={async (values, { setSubmitting }) => {
                         values.project = project._id
                         values.event = event._id
+                        // values.track =
                         try {
                             if (projectScore._id) {
                                 await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(

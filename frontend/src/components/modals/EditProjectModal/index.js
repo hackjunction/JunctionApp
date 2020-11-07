@@ -39,14 +39,18 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
     const event = useSelector(OrganiserSelectors.event)
     const teams = useSelector(OrganiserSelectors.teams)
     const [finalistChecked, setFinalistChecked] = useState(false)
-    const [projectScore, setProjectScore] = useState({
-        project: '',
-        event: '',
-        status: 'submitted',
-        score: 0,
-        maxScore: 10,
-        message: '',
-    })
+    const [projectScores, setProjectScores] = useState([
+        {
+            project: '',
+            event: '',
+            status: 'submitted',
+            score: 0,
+            maxScore: 10,
+            message: '',
+            track: 'null',
+            challenge: 'null',
+        },
+    ])
     useEffect(() => {
         if (project && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectId(
@@ -54,7 +58,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                 event.slug,
                 project._id,
             ).then(score => {
-                if (score) setProjectScore(score)
+                if (score) setProjectScores(score)
             })
             setFinalistChecked(event.finalists.includes(project._id))
         }
@@ -173,126 +177,144 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                     <Typography>Project Score</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
-                                    <Formik
-                                        initialValues={{
-                                            ...projectScore,
-                                        }}
-                                        enableReinitialize={true}
-                                        onSubmit={async (
-                                            values,
-                                            { setSubmitting },
-                                        ) => {
-                                            values.project = project._id
-                                            values.event = event._id
-                                            try {
-                                                if (projectScore._id) {
-                                                    await ProjectScoresService.updateScoreByEventSlug(
-                                                        idToken,
-                                                        event.slug,
-                                                        values,
+                                    {projectScores.map(projectScore => (
+                                        <Formik
+                                            initialValues={{
+                                                ...projectScore,
+                                            }}
+                                            enableReinitialize={true}
+                                            onSubmit={async (
+                                                values,
+                                                { setSubmitting },
+                                            ) => {
+                                                values.project = project._id
+                                                values.event = event._id
+                                                values.track =
+                                                    projectScore.track
+                                                values.challenge =
+                                                    projectScore.challenge
+                                                try {
+                                                    if (projectScore._id) {
+                                                        await ProjectScoresService.updateScoreByEventSlug(
+                                                            idToken,
+                                                            event.slug,
+                                                            values,
+                                                        )
+                                                    } else {
+                                                        await ProjectScoresService.addScoreByEventSlug(
+                                                            idToken,
+                                                            event.slug,
+                                                            values,
+                                                        )
+                                                    }
+                                                    dispatch(
+                                                        SnackbarActions.success(
+                                                            'Score saved successfully.',
+                                                        ),
                                                     )
-                                                } else {
-                                                    await ProjectScoresService.addScoreByEventSlug(
-                                                        idToken,
-                                                        event.slug,
-                                                        values,
+                                                } catch (e) {
+                                                    dispatch(
+                                                        SnackbarActions.error(
+                                                            `Score could not be saved. Error: ${e.message}`,
+                                                        ),
                                                     )
+                                                } finally {
+                                                    setSubmitting(false)
                                                 }
-                                                dispatch(
-                                                    SnackbarActions.success(
-                                                        'Score saved successfully.',
-                                                    ),
-                                                )
-                                            } catch (e) {
-                                                dispatch(
-                                                    SnackbarActions.error(
-                                                        `Score could not be saved. Error: ${e.message}`,
-                                                    ),
-                                                )
-                                            } finally {
-                                                setSubmitting(false)
-                                            }
-                                        }}
-                                    >
-                                        {({ isSubmitting }) => (
-                                            <Form>
-                                                <Field name="status">
-                                                    {({ field }) => (
-                                                        <FormControl fullWidth>
-                                                            <InputLabel>
-                                                                Status
-                                                            </InputLabel>
-                                                            <Select {...field}>
-                                                                <MenuItem value="submitted">
-                                                                    Submitted
-                                                                </MenuItem>
-                                                                <MenuItem value="evaluating">
-                                                                    Evaluating
-                                                                </MenuItem>
-                                                                <MenuItem value="evaluated">
-                                                                    Evaluated
-                                                                </MenuItem>
-                                                            </Select>
-                                                        </FormControl>
-                                                    )}
-                                                </Field>
-                                                <ErrorMessage
-                                                    name="status"
-                                                    component="div"
-                                                />
-                                                <Field name="score">
-                                                    {({ field }) => (
-                                                        <TextField
-                                                            fullWidth
-                                                            label="Score"
-                                                            type="number"
-                                                            {...field}
-                                                        />
-                                                    )}
-                                                </Field>
-                                                <ErrorMessage
-                                                    name="score"
-                                                    component="div"
-                                                />
-                                                <Field name="maxScore">
-                                                    {({ field }) => (
-                                                        <TextField
-                                                            fullWidth
-                                                            type="number"
-                                                            label="Maximum Score"
-                                                            {...field}
-                                                        />
-                                                    )}
-                                                </Field>
-                                                <ErrorMessage
-                                                    name="maxScore"
-                                                    component="div"
-                                                />
-                                                <Field name="message">
-                                                    {({ field }) => (
-                                                        <TextField
-                                                            fullWidth
-                                                            label="Message"
-                                                            {...field}
-                                                        />
-                                                    )}
-                                                </Field>
-                                                <ErrorMessage
-                                                    name="message"
-                                                    component="div"
-                                                />
-                                                <Box p={2} />
-                                                <Button
-                                                    color="theme_turquoise"
-                                                    variant="contained"
-                                                    type="submit"
-                                                    disabled={isSubmitting}
-                                                >
-                                                    Save
-                                                </Button>
-                                            </Form>
-                                        )}
-                                    </Formik>
+                                            }}
+                                        >
+                                            {({ isSubmitting }) => (
+                                                <Form>
+                                                    <Field name="status">
+                                                        {({ field }) => (
+                                                            <FormControl
+                                                                fullWidth
+                                                            >
+                                                                <InputLabel>
+                                                                    Status{' '}
+                                                                    {projectScore.track
+                                                                        ? 'in track ' +
+                                                                          projectScore.track
+                                                                        : null}{' '}
+                                                                    {projectScore.challenge
+                                                                        ? 'in challenge ' +
+                                                                          projectScore.challenge
+                                                                        : null}
+                                                                </InputLabel>
+                                                                <Select
+                                                                    {...field}
+                                                                >
+                                                                    <MenuItem value="submitted">
+                                                                        Submitted
+                                                                    </MenuItem>
+                                                                    <MenuItem value="evaluating">
+                                                                        Evaluating
+                                                                    </MenuItem>
+                                                                    <MenuItem value="evaluated">
+                                                                        Evaluated
+                                                                    </MenuItem>
+                                                                </Select>
+                                                            </FormControl>
+                                                        )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                        name="status"
+                                                        component="div"
+                                                    />
+                                                    <Field name="score">
+                                                        {({ field }) => (
+                                                            <TextField
+                                                                fullWidth
+                                                                label="Score"
+                                                                type="number"
+                                                                {...field}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                        name="score"
+                                                        component="div"
+                                                    />
+                                                    <Field name="maxScore">
+                                                        {({ field }) => (
+                                                            <TextField
+                                                                fullWidth
+                                                                type="number"
+                                                                label="Maximum Score"
+                                                                {...field}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                        name="maxScore"
+                                                        component="div"
+                                                    />
+                                                    <Field name="message">
+                                                        {({ field }) => (
+                                                            <TextField
+                                                                fullWidth
+                                                                label="Message"
+                                                                {...field}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                        name="message"
+                                                        component="div"
+                                                    />
+                                                    <Box p={2} />
+                                                    <Button
+                                                        color="theme_turquoise"
+                                                        variant="contained"
+                                                        type="submit"
+                                                        disabled={isSubmitting}
+                                                    >
+                                                        Save
+                                                    </Button>
+                                                </Form>
+                                            )}
+                                        </Formik>
+                                    ))}
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                             {event.overallReviewMethod ===

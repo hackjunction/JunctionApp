@@ -154,10 +154,7 @@ async function hasPartnerToken(event, token) {
     const matches = await Promise.filter(event.challenges, challenge => {
         return bcrypt.compare(challenge.slug, token)
     })
-    if (matches.length === 0) {
-        return new ForbiddenError('Invalid token')
-    }
-    return null
+    return matches
 }
 
 const EventMiddleware = {
@@ -229,12 +226,15 @@ const EventMiddleware = {
         }
     },
     hasPartnerToken: async (req, res, next) => {
-        const error = await hasPartnerToken(req.event, req.params.token)
-        if (error) {
-            next(error)
-        } else {
-            next()
+        const [match, ...other] = await hasPartnerToken(
+            req.event,
+            req.params.token,
+        )
+        if (other.length !== 0) {
+            next(new ForbiddenError('Invalid token'))
         }
+        req.params.track = match
+        next()
     },
 
     /** Can only be called after req.event has been set by other middleware */

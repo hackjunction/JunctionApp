@@ -98,7 +98,7 @@ const ProjectsGridItem = ({
                         </Typography>
                     </Box>
                 )}
-                {score && (
+                {score !== null && (
                     <Box pb={2} pl={2} pr={2}>
                         <Typography
                             style={{ fontWeight: 'bold' }}
