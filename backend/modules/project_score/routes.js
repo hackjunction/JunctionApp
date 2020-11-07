@@ -118,7 +118,7 @@ router.post(
     addProjectScore,
 )
 router.put(
-    '/event/:slug/:id/',
+    '/event/:slug/:id/:token',
     getEventFromParams,
     hasPartnerToken,
     updateProjectScore,

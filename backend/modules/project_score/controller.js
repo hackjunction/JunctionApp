@@ -12,11 +12,8 @@ controller.addProjectScore = async score => {
     await Event.findById(score.event).orFail(
         new NotFoundError('The given event does not exist.'),
     )
-    console.log('Adding', score)
-
     const projectScore = new ProjectScore({ ...score })
     return projectScore.save()
-    // return null
 }
 
 controller.updateProjectScore = async (id, updatedProjectScore) => {
@@ -52,7 +49,6 @@ controller.getScoreByProjectId = (
     challenge = null,
     track = null,
 ) => {
-    console.log('projecting', projectId, challenge, track)
     const query = {
         project: projectId,
     }

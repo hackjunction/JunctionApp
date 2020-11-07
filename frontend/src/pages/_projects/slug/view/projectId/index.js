@@ -98,7 +98,6 @@ export default ({ event, showFullTeam }) => {
                     onSubmit={async (values, { setSubmitting }) => {
                         values.project = project._id
                         values.event = event._id
-                        // values.track =
                         try {
                             if (projectScore._id) {
                                 await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
