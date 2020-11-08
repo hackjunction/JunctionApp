@@ -175,7 +175,6 @@ const ProjectDetail = ({
                             : config.SEO_IMAGE_URL
                     }
                 />{' '}
-                />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
                 <meta name="twitter:card" content="summary_large_image" />
