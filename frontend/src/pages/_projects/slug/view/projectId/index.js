@@ -6,6 +6,9 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import { Helmet } from 'react-helmet'
 
+import moment from 'moment-timezone'
+import { EventHelpers } from '@hackjunction/shared'
+
 import { Box, TextField } from '@material-ui/core'
 import Button from 'components/generic/Button'
 
@@ -79,7 +82,6 @@ export default ({ event, showFullTeam }) => {
     useEffect(() => {
         fetchProject()
     }, [fetchProject])
-    // TODO showTableLocation based on if event is ongoing #139
     return (
         <PageWrapper loading={loading} error={error}>
             <ProjectDetail
@@ -87,7 +89,7 @@ export default ({ event, showFullTeam }) => {
                 event={event}
                 onBack={onBack}
                 showFullTeam={showFullTeam}
-                showTableLocation={true}
+                showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
             {validToken ? (
                 <Formik

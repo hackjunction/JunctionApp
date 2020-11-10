@@ -22,7 +22,7 @@ const syncCheckedIn = asyncHandler(async (req, res) => {
         },
         {
             concurrency: 100,
-        }
+        },
     )
 
     return res.status(200).json({
@@ -32,11 +32,12 @@ const syncCheckedIn = asyncHandler(async (req, res) => {
 })
 
 const anonymiseUserProfile = asyncHandler(async (req, res) => {
+    // GDPR
     /** Anonymise the user's profile */
     const userProfile = await UserProfile.findOne({ userId: req.params.userId })
     if (!userProfile) {
         throw new NotFoundError(
-            `User profile with id ${req.params.userId} not found`
+            `User profile with id ${req.params.userId} not found`,
         )
     }
     Object.keys(userProfile.toJSON()).map(field => {
@@ -108,7 +109,7 @@ const anonymiseUserProfile = asyncHandler(async (req, res) => {
             })
 
             return registration.save()
-        }
+        },
     )
 
     /** Delete the original Auth0 user profile */

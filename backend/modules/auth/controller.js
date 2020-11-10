@@ -52,7 +52,7 @@ function getRoles(access_token) {
     return axios
         .get(
             `${global.gConfig.AUTH0_AUTHORIZATION_EXTENSION_URL}/roles`,
-            config(access_token)
+            config(access_token),
         )
         .then(res => res.data.roles)
 }
@@ -68,7 +68,7 @@ function assignRole(access_token, userId, roleId) {
         .patch(
             `${global.gConfig.AUTH0_AUTHORIZATION_EXTENSION_URL}/users/${userId}/roles`,
             [roleId],
-            config(access_token)
+            config(access_token),
         )
         .then(res => res.data)
 }
@@ -80,7 +80,7 @@ function removeRole(access_token, userId, roleId) {
             {
                 ...config(access_token),
                 data: [roleId],
-            }
+            },
         )
         .then(res => res.data)
 }
@@ -89,7 +89,7 @@ controller.grantAssistantOrganiser = async userId => {
     const { access_token } = await getAuthorizationToken()
     const role = await getRoleByName(
         access_token,
-        AuthConstants.Roles.ASSISTANT_ORGANISER
+        AuthConstants.Roles.ASSISTANT_ORGANISER,
     )
     return assignRole(access_token, userId, role._id)
 }
@@ -98,7 +98,7 @@ controller.revokeAssistantOrganiser = async userId => {
     const { access_token } = await getAuthorizationToken()
     const role = await getRoleByName(
         access_token,
-        AuthConstants.Roles.ASSISTANT_ORGANISER
+        AuthConstants.Roles.ASSISTANT_ORGANISER,
     )
     return removeRole(access_token, userId, role._id)
 }
@@ -107,7 +107,7 @@ controller.grantRecruiterPermission = async userId => {
     const { access_token } = await getAuthorizationToken()
     const role = await getRoleByName(
         access_token,
-        AuthConstants.Roles.RECRUITER
+        AuthConstants.Roles.RECRUITER,
     )
     return assignRole(access_token, userId, role._id)
 }
@@ -116,7 +116,7 @@ controller.revokeRecruiterPermission = async userId => {
     const { access_token } = await getAuthorizationToken()
     const role = await getRoleByName(
         access_token,
-        AuthConstants.Roles.RECRUITER
+        AuthConstants.Roles.RECRUITER,
     )
     return removeRole(access_token, userId, role._id)
 }

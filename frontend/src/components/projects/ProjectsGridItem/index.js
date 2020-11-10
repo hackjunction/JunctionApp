@@ -91,7 +91,7 @@ const ProjectsGridItem = ({
                             style={{ fontWeight: 'bold' }}
                             variant="body1"
                         >
-                            Contact info
+                            Table Location
                         </Typography>
                         <Typography variant="body1">
                             {project.location}

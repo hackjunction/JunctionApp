@@ -16,7 +16,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const getUserProfilesPublic = asyncHandler(async (req, res) => {
     const userProfiles = await UserProfileController.getUserProfilesPublic(
-        req.query.userIds
+        req.query.userIds,
     )
     return res.status(200).json(userProfiles)
 })
@@ -24,7 +24,7 @@ const getUserProfilesPublic = asyncHandler(async (req, res) => {
 const getUserProfilesByTeamPublic = asyncHandler(async (req, res) => {
     const teamMembers = await TeamController.getTeamMembers(req.params.teamId)
     const userProfiles = await UserProfileController.getUserProfilesPublic(
-        teamMembers
+        teamMembers,
     )
     return res.status(200).json(userProfiles)
 })
@@ -32,7 +32,7 @@ const getUserProfilesByTeamPublic = asyncHandler(async (req, res) => {
 const createUserProfile = asyncHandler(async (req, res) => {
     const userProfile = await UserProfileController.createUserProfile(
         req.body,
-        req.user.sub
+        req.user.sub,
     )
     return res.status(201).json(userProfile)
 })
@@ -40,7 +40,7 @@ const createUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUserProfile = await UserProfileController.updateUserProfile(
         req.body,
-        req.user.sub
+        req.user.sub,
     )
     return res.status(200).json(updatedUserProfile)
 })
@@ -59,7 +59,7 @@ const updateRecruiter = asyncHandler(async (req, res) => {
     const user = await UserProfileController.updateRecruiter(
         req.body.recruiterId,
         req.body.events,
-        req.body.organisation
+        req.body.organisation,
     )
     return res.status(200).json(user)
 })
@@ -80,13 +80,13 @@ router
         '/recruiters',
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
-        getRecruiters
+        getRecruiters,
     )
     .patch(
         '/recruiters',
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
-        updateRecruiter
+        updateRecruiter,
     )
 
 module.exports = router
