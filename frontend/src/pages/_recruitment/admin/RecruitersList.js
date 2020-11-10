@@ -38,7 +38,6 @@ export default ({ onRevoke }) => {
     if (recruiters.length === 0) {
         return <Empty isEmpty emptyText="No recruiters" hideIfNotEmpty />
     }
-
     return (
         <Box>
             <List style={{ backgroundColor: 'white' }}>
@@ -55,7 +54,7 @@ export default ({ onRevoke }) => {
                                     .filter(event => {
                                         return (
                                             user.recruiterEvents.indexOf(
-                                                event.slug,
+                                                event._id,
                                             ) !== -1
                                         )
                                     })

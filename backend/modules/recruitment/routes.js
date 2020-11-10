@@ -1,8 +1,9 @@
 const express = require('express')
+
 const router = express.Router()
 const asyncHandler = require('express-async-handler')
-const RecruitmentController = require('./controller')
 const { Auth } = require('@hackjunction/shared')
+const RecruitmentController = require('./controller')
 
 const { hasToken } = require('../../common/middleware/token')
 const { hasPermission } = require('../../common/middleware/permissions')
@@ -15,14 +16,14 @@ const queryUsers = asyncHandler(async (req, res) => {
 const getUserProfileRecruitment = asyncHandler(async (req, res) => {
     const userProfile = await RecruitmentController.getRecruitmentProfile(
         req.params.id,
-        req.user.sub
+        req.user.sub,
     )
     return res.status(200).json(userProfile)
 })
 
 const getRecruiterActions = asyncHandler(async (req, res) => {
     const actionHistory = await RecruitmentController.getRecruiterActions(
-        req.user
+        req.user,
     )
     return res.status(200).json(actionHistory)
 })
@@ -30,7 +31,7 @@ const getRecruiterActions = asyncHandler(async (req, res) => {
 const saveRecruiterAction = asyncHandler(async (req, res) => {
     const actionHistory = await RecruitmentController.saveRecruiterAction(
         req.user,
-        req.body
+        req.body,
     )
     return res.status(200).json(actionHistory)
 })
@@ -39,7 +40,7 @@ router.post(
     '/search',
     hasToken,
     hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
-    queryUsers
+    queryUsers,
 )
 
 router
@@ -47,7 +48,7 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
-        getUserProfileRecruitment
+        getUserProfileRecruitment,
     )
 
 router
@@ -55,12 +56,12 @@ router
     .get(
         hasToken,
         hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
-        getRecruiterActions
+        getRecruiterActions,
     )
     .post(
         hasToken,
         hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
-        saveRecruiterAction
+        saveRecruiterAction,
     )
 
 module.exports = router

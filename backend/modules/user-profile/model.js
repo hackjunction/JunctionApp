@@ -54,17 +54,15 @@ UserProfileSchema.virtual('registrations', {
   }); */
 
 UserProfileSchema.post('save', (doc, next) => {
-    if (
-        _.xor(this._previousRecruiterEvents, this.recruiterEvents).length !== 0
-    ) {
-        if (this.recruiterEvents.length === 0) {
-            AuthController.revokeRecruiterPermission(this.userId)
+    if (_.xor(doc._previousRecruiterEvents, doc.recruiterEvents).length !== 0) {
+        if (doc.recruiterEvents.length === 0) {
+            AuthController.revokeRecruiterPermission(doc.userId)
         } else {
-            AuthController.grantRecruiterPermission(this.userId)
+            AuthController.grantRecruiterPermission(doc.userId)
         }
-        AuthController.updateMetadata(this.userId, {
-            recruiterEvents: this.recruiterEvents,
-            recruiterOrganisation: this.recruiterOrganisation,
+        AuthController.updateMetadata(doc.userId, {
+            recruiterEvents: doc.recruiterEvents,
+            recruiterOrganisation: doc.recruiterOrganisation,
         })
     }
     next()

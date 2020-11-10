@@ -14,7 +14,6 @@ const MongoUtils = {
                 })
             }
         } else if (value.length === 24 && mongodb.ObjectID.isValid(value)) {
-            console.log('IS VALID MONGO ID', value)
             return mongoose.Types.ObjectId(value)
         }
         return value
