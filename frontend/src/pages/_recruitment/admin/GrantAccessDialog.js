@@ -46,7 +46,7 @@ export default ({ userId, onClose }) => {
             await dispatch(
                 RecruitmentActions.adminGrantRecruiterAccess(
                     userId,
-                    events,
+                    selectedEvents,
                     organisation.trim(),
                 ),
             )

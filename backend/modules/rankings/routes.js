@@ -22,7 +22,7 @@ router
     .get(
         asyncHandler(async (req, res) => {
             // TODO: Get public results
-        })
+        }),
     )
 
 router
@@ -34,10 +34,10 @@ router
         isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getAllResultsForEvent(
-                req.event
+                req.event,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
 
 router
@@ -50,10 +50,10 @@ router
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getTrackResults(
                 req.event,
-                req.params.track
+                req.params.track,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
     /** Update results for a track, as event organiser */
     .patch(
@@ -64,10 +64,10 @@ router
             const rankings = await RankingsController.updateTrackResults(
                 req.event,
                 req.params.track,
-                req.body.rankings
+                req.body.rankings,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
 
 router
@@ -80,10 +80,10 @@ router
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getChallengeResults(
                 req.event,
-                req.params.challenge
+                req.params.challenge,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
     /** Update results for a challenge, as event organiser */
     .patch(
@@ -94,10 +94,10 @@ router
             const rankings = await RankingsController.updateChallengeResults(
                 req.event,
                 req.params.challenge,
-                req.body.rankings
+                req.body.rankings,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
 
 router
@@ -109,10 +109,10 @@ router
         isEventOrganiser,
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.getOverallResults(
-                req.event
+                req.event,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
     /** Update overall results for an event, as event organiser */
     .patch(
@@ -122,10 +122,10 @@ router
         asyncHandler(async (req, res) => {
             const rankings = await RankingsController.updateOverallResults(
                 req.event,
-                req.body.rankings
+                req.body.rankings,
             )
             return res.status(200).json(rankings)
-        })
+        }),
     )
 
 // TODO move to Gavel module
@@ -142,7 +142,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        generateResults
+        generateResults,
     )
 
 // TODO format this file
@@ -158,7 +158,7 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        getVotes
+        getVotes,
     )
 
 module.exports = router

@@ -12,7 +12,7 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
         return controller.createRecruitmentProfile(
             userProfile,
             true,
-            recruiterId
+            recruiterId,
         )
     })
 }
@@ -36,7 +36,7 @@ controller.queryProfiles = (query = {}, user) => {
             return {
                 [filter.field]: {
                     [MongoUtils.filterOperatorToMongoOperator(
-                        filter.operator
+                        filter.operator,
                     )]: formatted,
                 },
             }
@@ -77,7 +77,7 @@ controller.queryProfiles = (query = {}, user) => {
         return Promise.all(
             results.found.map(profile => {
                 return controller.createRecruitmentProfile(profile, false)
-            })
+            }),
         ).then(profiles => {
             return { data: profiles, count: results.count }
         })
@@ -87,7 +87,7 @@ controller.queryProfiles = (query = {}, user) => {
 controller.createRecruitmentProfile = async (
     userProfile,
     eager = false,
-    recruiterId = null
+    recruiterId = null,
 ) => {
     const profile = {
         userId: userProfile.userId,
@@ -176,7 +176,7 @@ controller.getRecruiterActions = async recruiter => {
         .then(actions => {
             return Promise.map(actions, async action => {
                 action._user = await controller.createRecruitmentProfile(
-                    action._user
+                    action._user,
                 )
                 return action
             })

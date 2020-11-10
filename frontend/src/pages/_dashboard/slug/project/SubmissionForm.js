@@ -434,7 +434,7 @@ export default props => {
                                 name="location"
                                 render={({ field, form }) => (
                                     <FormControl
-                                        label="Contact info"
+                                        label="Table location"
                                         hint="How can people judging the projects contact you during judging? Make sure this info is always up-to-date!"
                                         touched={
                                             form.touched[field.name] ||

@@ -10,7 +10,7 @@ controller.getUserProfile = userId => {
     }).then(userProfile => {
         if (!userProfile) {
             throw new NotFoundError(
-                `UserProfile with id ${userId} does not exist`
+                `UserProfile with id ${userId} does not exist`,
             )
         }
         return userProfile
