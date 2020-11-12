@@ -6,6 +6,7 @@ module.exports = {
     name: '07-uniform-answers',
     description: 'Fix data out from schema',
     run: async () => {
+        /*
         const cursor = mongoose.model('UserProfile').find({}).cursor()
         await cursor.eachAsync(async function (user) {
             if (user.gender === "Don't want to answer") {
@@ -75,7 +76,7 @@ module.exports = {
                 console.error(error)
             }
         })
-
+        */
         return Promise.resolve()
     },
 }
