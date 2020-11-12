@@ -1,6 +1,5 @@
 const initialEvents = [
     {
-        //event: '5d5a7b2e9b1056002b824ad8',
         statuses: ['checkedIn'],
     },
 ]

@@ -20,7 +20,6 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
 controller.queryProfiles = (query = {}, user) => {
     let userQuery = {}
     let pagination = {}
-    console.log('serhcin', JSON.stringify(query))
     if (typeof query.filters === 'string') {
         userQuery = {
             $and: [
@@ -126,12 +125,10 @@ controller.createRecruitmentProfile = async (
         })
             .populate('event')
             .then(registrations => {
-                console.log('regis', registrations)
                 return registrations.map(reg => {
                     if (reg.event) {
                         return { id: reg.event._id, name: reg.event.name }
                     }
-
                     console.log('Missing reg.event in ', reg)
                 })
             })

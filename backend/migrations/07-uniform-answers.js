@@ -16,7 +16,6 @@ module.exports = {
                 (user.education.graduationYear > 2100 ||
                     user.education.graduationYear < 1900)
             ) {
-                console.log('setting graduation yer')
                 user.education.graduationYear = 1901
             }
             if (user.nationality === 'Åland Island') {
@@ -29,7 +28,6 @@ module.exports = {
             try {
                 await user.save()
             } catch (error) {
-                console.log('Error with users', user.userId)
                 console.error(error)
             }
         })
@@ -44,7 +42,6 @@ module.exports = {
                 (registration.answers.education.graduationYear > 2100 ||
                     registration.answers.education.graduationYear < 1900)
             ) {
-                console.log('setting graduation yer')
                 registration.answers.education.graduationYear = 1901
             }
             if (registration.answers.nationality === 'Åland Island') {
@@ -55,14 +52,12 @@ module.exports = {
                     registration.travelGrantDetails.IBAN &&
                     !registration.travelGrantDetails.IBAN.swift
                 ) {
-                    console.log('empty Swift')
                     registration.travelGrantDetails.IBAN.swift = 'NoSwift'
                 }
                 if (
                     registration.travelGrantDetails.IBAN &&
                     !registration.travelGrantDetails.IBAN.accountNumber
                 ) {
-                    console.log('empty accountNumber')
                     registration.travelGrantDetails.IBAN.accountNumber =
                         'NoAccount'
                 }
@@ -70,7 +65,6 @@ module.exports = {
                     registration.travelGrantDetails.IBAN &&
                     !registration.travelGrantDetails.IBAN.bankName
                 ) {
-                    console.log('empty bankName')
                     registration.travelGrantDetails.IBAN.bankName = 'NoBank'
                 }
             }

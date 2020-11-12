@@ -26,7 +26,6 @@ controller.getUserProfiles = userIds => {
 }
 
 controller.queryProfiles = async query => {
-    console.log('querying', JSON.stringify(query.query))
     const found = await UserProfile.find(query.query)
         .sort('updatedAt')
         .skip(query.pagination.skip)
@@ -86,7 +85,6 @@ controller.syncRegistration = async registration => {
                 return r
             })
             if (add) {
-                console.log('adddd')
                 registrations.push(data)
             }
             profile.registrations = registrations

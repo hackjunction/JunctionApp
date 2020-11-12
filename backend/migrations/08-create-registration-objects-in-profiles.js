@@ -8,11 +8,10 @@ module.exports = {
     name: '08-create-registration-objects-in-profiles',
     description: 'Sync registrationa and profile data',
     run: async () => {
-        /*
         const cursor = mongoose.model('Registration').find({}).cursor()
         await cursor.eachAsync(async function (registration) {
             UserProfileControlller.syncRegistration(registration)
-        }) */
+        })
 
         return Promise.resolve()
     },
