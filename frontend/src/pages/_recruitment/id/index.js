@@ -113,12 +113,13 @@ export default () => {
             const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
             const res = await sendMessage(formatted, user.userId)
 
-            if (res.error) {
+            // TODO fix snackbar here
+            /*if (res?.error) {
                 dispatch(SnackbarActions.error(t('Something_went_wrong_')))
-            } else {
-                message.reset()
-                dispatch(SnackbarActions.success(t('Message_sent_')))
-            }
+            } else {*/
+            message.reset()
+            dispatch(SnackbarActions.success(t('Message_sent_')))
+            //}
             setLoading(false)
         }
     }, [message, sendMessage, user, dispatch, t])
