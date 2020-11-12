@@ -72,7 +72,6 @@ module.exports = {
             try {
                 await registration.save()
             } catch (error) {
-                console.log('Error with regis', registration._id)
                 console.error(error)
             }
         })
