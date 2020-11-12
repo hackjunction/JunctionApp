@@ -10,6 +10,9 @@ const migrations = [
     require('./04-add-finalists-to-event'),
     require('./05-add-track-challenge-to-projectscore'),
     require('./06-finals-active-to-event'),
+    require('./07-uniform-answers'),
+    require('./08-create-registration-objects-in-profiles'),
+    require('./09-sync-registration-to-profiles'),
 ]
 
 const run = async () => {
