@@ -26,6 +26,7 @@ controller.getUserProfiles = userIds => {
 }
 
 controller.queryProfiles = async query => {
+    console.log('querying', JSON.stringify(query.query))
     const found = await UserProfile.find(query.query)
         .sort('updatedAt')
         .skip(query.pagination.skip)
@@ -66,19 +67,41 @@ controller.syncRegistration = async registration => {
         event: registration.event,
         status: registration.status,
     }
-    return controller.getUserProfile(registration.user).then(profile => {
+    return controller.getUserProfile(registration.user).then(async profile => {
         if (profile.registrations.length === 0) {
             profile.registrations = [data]
         } else {
-            profile.registrations = profile.toJSON().registrations.map(r => {
+            let add = true
+            const registrations = profile.toJSON().registrations.map(r => {
+                if (!r.event) {
+                    console.log('No Event in R', profile)
+                }
+                if (!data.event) {
+                    console.log('No Event in data', r)
+                }
                 if (r.event.toString() === data.event.toString()) {
+                    add = false
                     return data
                 }
                 return r
             })
+            if (add) {
+                console.log('adddd')
+                registrations.push(data)
+            }
+            profile.registrations = registrations
         }
-
-        return profile.save()
+        try {
+            const ret = await profile.save()
+            return ret
+        } catch (error) {
+            console.log(
+                'Error with users registration to event',
+                registration.user,
+                registration.event,
+            )
+            console.error(error)
+        }
     })
 }
 

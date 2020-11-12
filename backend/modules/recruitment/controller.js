@@ -20,6 +20,7 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
 controller.queryProfiles = (query = {}, user) => {
     let userQuery = {}
     let pagination = {}
+    console.log('serhcin', JSON.stringify(query))
     if (typeof query.filters === 'string') {
         userQuery = {
             $and: [
@@ -41,7 +42,6 @@ controller.queryProfiles = (query = {}, user) => {
                 },
             }
         })
-
         userQuery = { $and: whereFields }
     }
     if (query.pagination) {
@@ -63,13 +63,15 @@ controller.queryProfiles = (query = {}, user) => {
         },
     }
 
+    console.log('userquery are', JSON.stringify(userQuery))
+    console.log('eventfileters are', JSON.stringify(eventFilter))
     // Set default filters (consent & recruiter scope)
     if (userQuery.$and) {
         userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
-        userQuery.$and = [consentFilter, eventFilter]
+        userQuery.$and = [eventFilter]
     }
-
+    console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({
         query: userQuery,
         pagination,
@@ -124,8 +126,13 @@ controller.createRecruitmentProfile = async (
         })
             .populate('event')
             .then(registrations => {
+                console.log('regis', registrations)
                 return registrations.map(reg => {
-                    return { id: reg.event._id, name: reg.event.name }
+                    if (reg.event) {
+                        return { id: reg.event._id, name: reg.event.name }
+                    }
+
+                    console.log('Missing reg.event in ', reg)
                 })
             })
 

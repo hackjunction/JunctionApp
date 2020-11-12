@@ -1,6 +1,6 @@
 const initialEvents = [
     {
-        event: '5d5a7b2e9b1056002b824ad8',
+        //event: '5d5a7b2e9b1056002b824ad8',
         statuses: ['checkedIn'],
     },
 ]
@@ -55,7 +55,7 @@ export const buildFilterArray = ({
     }
 
     events.forEach(({ event, statuses }) => {
-        if (statuses.length) {
+        if (statuses?.length) {
             filters.push({
                 field: 'registrations',
                 operator: 'array-element-match',
