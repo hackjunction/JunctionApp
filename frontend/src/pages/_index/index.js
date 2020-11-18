@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Divider from 'components/generic/Divider'
-import LineDivider from 'components/generic/LineDivider/'
 import ExternalLink from 'components/generic/ExternalLink'
 import Button from 'components/generic/Button'
 import Footer from 'components/layouts/Footer'
@@ -12,6 +11,7 @@ import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import CenteredContainerSmall from 'components/generic/CenteredContainerSmall'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
+import Image from 'components/generic/Image'
 import config from 'constants/config'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
@@ -21,7 +21,9 @@ import { Helmet } from 'react-helmet'
 
 import { useTranslation } from 'react-i18next'
 
-import { Typography, Grid, Hidden } from '@material-ui/core'
+import emblem_black from 'assets/logos/emblem_black.png'
+
+import { Typography, Grid, Avatar } from '@material-ui/core'
 
 export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
@@ -105,9 +107,15 @@ export default () => {
                             organizations={organizations}
                         />
                     </CenteredContainer>
-                    <Divider size={4} />
+                    <Divider size={20} />
                     <CenteredContainerSmall>
                         <Grid>
+                            <Image
+                                defaultImage={require('assets/logos/emblem_black.png')}
+                                transformation={{
+                                    width: 150,
+                                }}
+                            />
                             <Typography variant="h4" align="center">
                                 {t('Platform_organise_hack_', {
                                     owner: config.PLATFORM_OWNER_NAME,
@@ -132,8 +140,10 @@ export default () => {
                                 Pricing
                             </Button>
                         </Grid>
+                        <Divider size={4} />
                     </CenteredContainerSmall>
-                    <Divider size={2} />
+                    <Divider size={20} />
+
                     <CenteredContainerSmall>
                         <Divider size={1} />
                         <Typography variant="h3" align="center">
@@ -154,8 +164,8 @@ export default () => {
                                 {t('More_info_link_')}
                             </ExternalLink>
                         </Typography>
-                        <Divider size={5} />
                     </CenteredContainerSmall>
+                    <Divider size={20} />
                     <CenteredContainerSmall center>
                         <Typography variant="h4" align="center">
                             {t('Join_hackerpack_')}
@@ -169,6 +179,7 @@ export default () => {
                             {t('To_hackerpack_')}
                         </Button>
                     </CenteredContainerSmall>
+                    <Divider size={20} />
                 </>
             )}
         />

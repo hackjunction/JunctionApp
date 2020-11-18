@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
+        borderRadius: '15px',
     },
     organiser: {
         position: 'absolute',
@@ -76,19 +77,19 @@ const EventCard = ({ event, organization, buttons }) => {
                 )}
             </div>
             <div className={classes.bottom}>
-                <Typography variant="h6">{event.name}</Typography>
-
-                <Box mt={1} />
+                <Box width="100%" height="4em" margin="0">
+                    <Typography variant="h6">{event.name}</Typography>
+                </Box>
+                {/* <Box mt={1} /> */}
                 <Box
                     display="flex"
                     flexDirection="row"
                     flexWrap="wrap"
                     justifyContent="center"
+                    m={0}
                 >
                     {buttons?.map((btn, index) => (
-                        <Box key={index} mr={1} mb={1}>
-                            {btn}
-                        </Box>
+                        <Box key={index}>{btn}</Box>
                     ))}
                 </Box>
             </div>

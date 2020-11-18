@@ -16,7 +16,7 @@ import config from 'constants/config'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        background: theme.palette.theme_white.main,
+        background: theme.palette.theme_black.main,
         padding: theme.spacing(2),
     },
     inner: {
@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             textAlign: 'left',
         },
+        color: 'white',
     },
     links: {
         flex: 1,
@@ -65,66 +66,17 @@ const Footer = props => {
     const { t } = useTranslation()
     return (
         <div className={classes.wrapper}>
-            {/* {props.hide_contact ? null : (
-                <CenteredContainer>
-                    <LineDivider />
-                    <Divider size={1} />
-                    <Grid container>
-                        <Grid item xs={12} md={6} xl={6}>
-                            <h2>
-                                {t('Platform_organise_hack_', {
-                                    owner: config.PLATFORM_OWNER_NAME,
-                                })}
-                            </h2>
-                            <Button
-                                color="theme_white"
-                                variant="outlined"
-                                strong
-                                onClick={() => dispatch(push('/contact'))}
-                            >
-                                {t('Contact_us_')}
-                            </Button>
-                            <Button
-                                color="theme_turquoise"
-                                variant="contained"
-                                strong
-                                onClick={() => dispatch(push('/pricing'))}
-                            >
-
-                                Pricing
-                            </Button>
-                        </Grid>
-                        <Hidden xsDown>
-                            <Grid item xs={6} md={6} x={6}>
-                                <h2>{t('Join_hackerpack_')}</h2>
-                                <Button
-                                    color="theme_white"
-                                    variant="outlined"
-                                    strong
-                                    onClick={() =>
-                                        dispatch(push('/hackerpack'))
-                                    }
-                                >
-                                    {t('To_hackerpack_')}
-                                </Button>
-                            </Grid>
-                        </Hidden>
-                    </Grid>
-                    <Divider size={5} />
-                </CenteredContainer>
-            )} */}
-
             <div className={classes.inner}>
                 <div className={classes.links}>
                     <Divider size={1} />
-                    <ExternalLink theme="dark" href={config.TERMS_URL}>
+                    <ExternalLink theme="footer" href={config.TERMS_URL}>
                         {t('Terms_')}
                     </ExternalLink>
-                    <ExternalLink theme="dark" href={config.PRIVACY_URL}>
+                    <ExternalLink theme="footer" href={config.PRIVACY_URL}>
                         {t('Privacy_')}
                     </ExternalLink>
                     <ExternalLink
-                        theme="dark"
+                        theme="footer"
                         href={config.PLATFORM_OWNER_WEBSITE}
                     >
                         {t('Website_', {
@@ -136,7 +88,8 @@ const Footer = props => {
                 <div className={classes.copyright}>
                     <Divider size={1} />
                     <span className={classes.copyright}>
-                        {t('Designed_developed_')}
+                        Designed and developed with ❤️ and ☕ by the Junction
+                        team, with the help of:
                     </span>
                     <Divider size={1} />
                     <div className={classes.logos}>

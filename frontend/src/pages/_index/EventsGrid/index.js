@@ -51,8 +51,8 @@ export default ({ events, organizations, loading, title }) => {
                             ),
                             canApply && !event.galleryOpen && (
                                 <Button
-                                    color="theme_turquoise"
-                                    variant="contained"
+                                    color="theme_lightgray"
+                                    variant="outlinedNew"
                                     strong
                                     onClick={() =>
                                         dispatch(
