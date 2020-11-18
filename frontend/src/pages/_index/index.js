@@ -3,27 +3,32 @@ import React from 'react'
 import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
 import ExternalLink from 'components/generic/ExternalLink'
+import Button from 'components/generic/Button'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventHighlight from './EventHighlight'
 import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
+import CenteredContainerSmall from 'components/generic/CenteredContainerSmall'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
-
+import { push } from 'connected-react-router'
+import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import { Helmet } from 'react-helmet'
 
 import { useTranslation } from 'react-i18next'
 
+import { Typography, Grid, Hidden } from '@material-ui/core'
+
 export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
     const [organizations] = useAllOrganizations()
-
+    const dispatch = useDispatch()
     console.log('HELMET', Helmet.peek())
     const { t } = useTranslation()
     return (
@@ -86,8 +91,9 @@ export default () => {
                     </Helmet>
                     <Divider size={1} />
                     <EventHighlight />
-                    <Divider size={2} />
+                    <Divider size={4} />
                     <CenteredContainer>
+                        <Divider size={2} />
                         <EventsGrid
                             title={t('Upcoming_')}
                             events={activeEvents}
@@ -99,25 +105,70 @@ export default () => {
                             organizations={organizations}
                         />
                     </CenteredContainer>
+                    <Divider size={4} />
+                    <CenteredContainerSmall>
+                        <Grid>
+                            <Typography variant="h4" align="center">
+                                {t('Platform_organise_hack_', {
+                                    owner: config.PLATFORM_OWNER_NAME,
+                                })}
+                            </Typography>
+                        </Grid>
+                        <Grid item justify="center" alignItems="center">
+                            <Button
+                                color="theme_lightgray"
+                                variant="outlinedNew"
+                                strong
+                                onClick={() => dispatch(push('/contact'))}
+                            >
+                                {t('Contact_us_')}
+                            </Button>
+                            <Button
+                                color="theme_lightgray"
+                                variant="outlinedNew"
+                                strong
+                                onClick={() => dispatch(push('/pricing'))}
+                            >
+                                Pricing
+                            </Button>
+                        </Grid>
+                    </CenteredContainerSmall>
                     <Divider size={2} />
-                    <CenteredContainer>
-                        <LineDivider />
+                    <CenteredContainerSmall>
                         <Divider size={1} />
-                        <h2>
+                        <Typography variant="h3" align="center">
                             {t('New_to_', {
                                 platform: config.PLATFORM_OWNER_NAME,
                             })}
-                        </h2>
-                        <p>
+                        </Typography>
+                        <Divider size={3} />
+                        <Typography variant="body1" align="center">
+                            {t('Junction_info_')}
+                        </Typography>
+                        <Divider size={3} />
+                        <Typography variant="body1" align="center">
                             {t('More_info_', {
                                 owner: config.PLATFORM_OWNER_NAME,
                             })}
                             <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
                                 {t('More_info_link_')}
                             </ExternalLink>
-                        </p>
+                        </Typography>
                         <Divider size={5} />
-                    </CenteredContainer>
+                    </CenteredContainerSmall>
+                    <CenteredContainerSmall center>
+                        <Typography variant="h4" align="center">
+                            {t('Join_hackerpack_')}
+                        </Typography>
+                        <Button
+                            color="theme_lightgray"
+                            variant="outlinedNew"
+                            strong
+                            onClick={() => dispatch(push('/hackerpack'))}
+                        >
+                            {t('To_hackerpack_')}
+                        </Button>
+                    </CenteredContainerSmall>
                 </>
             )}
         />

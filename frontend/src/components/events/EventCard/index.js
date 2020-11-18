@@ -16,6 +16,17 @@ const useStyles = makeStyles(theme => ({
         height: '148px',
         position: 'relative',
     },
+    topWrapper: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    topLeft: {
+        justifyContent: 'flex-start',
+    },
+    topRight: {
+        justifyContent: 'flex-end',
+    },
     image: {
         position: 'absolute',
         top: 0,
@@ -31,6 +42,7 @@ const useStyles = makeStyles(theme => ({
     },
     bottom: {
         padding: theme.spacing(2),
+        textAlign: 'center',
     },
 }))
 
@@ -38,6 +50,15 @@ const EventCard = ({ event, organization, buttons }) => {
     const classes = useStyles()
     return (
         <div className={classes.wrapper}>
+            <div className={classes.topWrapper}>
+                <Typography variant="button" align="left">
+                    {event?._eventTimeFormatted}
+                </Typography>
+
+                <Typography variant="button" align="right">
+                    {event?._eventLocationFormatted}
+                </Typography>
+            </div>
             <div className={classes.top}>
                 <Image
                     className={classes.image}
@@ -55,15 +76,15 @@ const EventCard = ({ event, organization, buttons }) => {
                 )}
             </div>
             <div className={classes.bottom}>
-                <Typography variant="button">
-                    {event?._eventTimeFormatted}
-                </Typography>
                 <Typography variant="h6">{event.name}</Typography>
-                <Typography variant="body1">
-                    {event?._eventLocationFormatted}
-                </Typography>
+
                 <Box mt={1} />
-                <Box display="flex" flexDirection="row" flexWrap="wrap">
+                <Box
+                    display="flex"
+                    flexDirection="row"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                >
                     {buttons?.map((btn, index) => (
                         <Box key={index} mr={1} mb={1}>
                             {btn}

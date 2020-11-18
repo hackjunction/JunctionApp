@@ -65,7 +65,7 @@ const settings = {
     },
     PLATFORM_OWNER_NAME: {
         required: true,
-        value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'Junction',
+        value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'JUNCTION',
     },
     PLATFORM_OWNER_WEBSITE: {
         required: true,

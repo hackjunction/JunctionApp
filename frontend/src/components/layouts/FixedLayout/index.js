@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+
         overflowY: 'scroll',
         [theme.breakpoints.up('md')]: {
             padding: theme.spacing(5),

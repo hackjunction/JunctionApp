@@ -41,11 +41,23 @@ const variantStyles = (theme, props) => {
                 },
             }
         }
+
         case 'outlined': {
             return {
                 backgroundColor: 'transparent',
                 color: color.contrastText,
                 border: `2px solid ${color.dark}`,
+            }
+        }
+        case 'outlinedNew': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`,
+                borderRadius: '28px',
+                height: '3em',
+                width: '13em',
+                margin: theme.spacing(3),
             }
         }
         case 'contained-large': {

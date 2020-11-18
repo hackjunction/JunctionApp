@@ -37,19 +37,23 @@ export default ({ events, organizations, loading, title }) => {
                                 : null
                         }
                         buttons={[
-                            <Button
-                                color="theme_lightgray"
-                                variant="outlined"
-                                onClick={() =>
-                                    dispatch(push('/events/' + event.slug))
-                                }
-                            >
-                                {t('See_more_')}
-                            </Button>,
+                            !canApply && (
+                                <Button
+                                    color="theme_lightgray"
+                                    variant="outlinedNew"
+                                    strong
+                                    onClick={() =>
+                                        dispatch(push('/events/' + event.slug))
+                                    }
+                                >
+                                    {t('See_more_')}
+                                </Button>
+                            ),
                             canApply && !event.galleryOpen && (
                                 <Button
                                     color="theme_turquoise"
                                     variant="contained"
+                                    strong
                                     onClick={() =>
                                         dispatch(
                                             push(
@@ -67,6 +71,7 @@ export default ({ events, organizations, loading, title }) => {
                                 <Button
                                     color="theme_turquoise"
                                     variant="contained"
+                                    strong
                                     onClick={() =>
                                         dispatch(
                                             push('/projects/' + event.slug),
@@ -94,12 +99,15 @@ export default ({ events, organizations, loading, title }) => {
                 <CenteredContainer>
                     <Grid
                         container
-                        spacing={3}
+                        spacing={6}
                         direction="row"
                         alignItems="stretch"
+                        justify="center"
                     >
                         <Grid item xs={12}>
-                            <Typography variant="h6">{title}</Typography>
+                            <Typography variant="h3" align="center">
+                                {title}
+                            </Typography>
                         </Grid>
                         {renderEvents()}
                     </Grid>

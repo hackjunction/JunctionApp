@@ -65,7 +65,7 @@ const Footer = props => {
     const { t } = useTranslation()
     return (
         <div className={classes.wrapper}>
-            {props.hide_contact ? null : (
+            {/* {props.hide_contact ? null : (
                 <CenteredContainer>
                     <LineDivider />
                     <Divider size={1} />
@@ -90,7 +90,7 @@ const Footer = props => {
                                 strong
                                 onClick={() => dispatch(push('/pricing'))}
                             >
-                                {/* {t('Contact_us_')} */}
+
                                 Pricing
                             </Button>
                         </Grid>
@@ -112,7 +112,7 @@ const Footer = props => {
                     </Grid>
                     <Divider size={5} />
                 </CenteredContainer>
-            )}
+            )} */}
 
             <div className={classes.inner}>
                 <div className={classes.links}>

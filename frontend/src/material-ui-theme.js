@@ -49,7 +49,7 @@ const theme = createMuiTheme({
         },
         background: {
             paper: '#fff',
-            default: '#fafafa',
+            default: '#ffffff',
             level2: '#f5f5f5',
             level1: '#fff',
         },
@@ -67,11 +67,11 @@ const theme = createMuiTheme({
         },
         h3: {
             fontFamily: titleFont,
-            fontWeight: '700',
+            fontWeight: '400',
         },
         h4: {
             fontFamily: titleFont,
-            fontWeight: '700',
+            fontWeight: '400',
         },
         h5: {
             fontFamily: titleFont,
