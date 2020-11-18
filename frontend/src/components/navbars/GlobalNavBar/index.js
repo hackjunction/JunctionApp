@@ -41,9 +41,6 @@ export default () => {
                 </a>
                 <Grid className={classes.inner}>
                     <UserMenu />
-                    <Hidden only="xs">
-                        <LanguageMenu />
-                    </Hidden>
                 </Grid>
             </div>
         </div>
