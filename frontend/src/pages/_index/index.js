@@ -161,11 +161,19 @@ export default () => {
                         </Typography>
                         <Divider size={3} />
 
-                        <Typography variant="body1" align="center">
+                        <Typography
+                            variant="body1"
+                            align="center"
+                            style={{ fontSize: '24px' }}
+                        >
                             {t('Junction_info_')}
                         </Typography>
                         <Divider size={3} />
-                        <Typography variant="body1" align="center">
+                        <Typography
+                            variant="body1"
+                            align="center"
+                            style={{ fontSize: '24px' }}
+                        >
                             {t('More_info_', {
                                 owner: config.PLATFORM_OWNER_NAME,
                             })}
