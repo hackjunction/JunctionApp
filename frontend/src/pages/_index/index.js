@@ -156,7 +156,7 @@ export default () => {
                         <Divider size={1} />
                         <Typography variant="h3" align="center">
                             {t('New_to_', {
-                                platform: config.PLATFORM_OWNER_NAME,
+                                owner: config.PLATFORM_OWNER_NAME_CAPS,
                             })}
                         </Typography>
                         <Divider size={3} />
@@ -166,7 +166,9 @@ export default () => {
                             align="center"
                             style={{ fontSize: '24px' }}
                         >
-                            {t('Junction_info_')}
+                            {t('Junction_info_', {
+                                owner: config.PLATFORM_OWNER_NAME,
+                            })}
                         </Typography>
                         <Divider size={3} />
                         <Typography
