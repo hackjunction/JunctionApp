@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Box, Typography } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Image from 'components/generic/Image'
+import Button from 'components/generic/Button'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -15,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     top: {
         height: '148px',
         position: 'relative',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
     },
     topWrapper: {
         display: 'flex',
@@ -24,9 +30,7 @@ const useStyles = makeStyles(theme => ({
     topLeft: {
         justifyContent: 'flex-start',
     },
-    topRight: {
-        justifyContent: 'flex-end',
-    },
+
     image: {
         position: 'absolute',
         top: 0,
@@ -45,21 +49,20 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         textAlign: 'center',
     },
+    bolded: {
+        fontWeight: 'bold',
+        marginBottom: theme.spacing(1),
+    },
+    uppercase: {
+        textTransform: 'uppercase',
+    },
 }))
 
 const EventCard = ({ event, organization, buttons }) => {
+    const dispatch = useDispatch()
     const classes = useStyles()
     return (
         <div className={classes.wrapper}>
-            <div className={classes.topWrapper}>
-                <Typography variant="button" align="left">
-                    {event?._eventTimeFormatted}
-                </Typography>
-
-                <Typography variant="button" align="right">
-                    {event?._eventLocationFormatted}
-                </Typography>
-            </div>
             <div className={classes.top}>
                 <Image
                     className={classes.image}
@@ -75,6 +78,13 @@ const EventCard = ({ event, organization, buttons }) => {
                         src={organization?.icon}
                     />
                 )}
+                <Button
+                    variant="containedCard"
+                    color="theme_lightgray"
+                    onClick={() => dispatch(push('/events/' + event.slug))}
+                >
+                    See more
+                </Button>
             </div>
             <div className={classes.bottom}>
                 <Box width="100%" height="4em" margin="0">
@@ -83,11 +93,18 @@ const EventCard = ({ event, organization, buttons }) => {
                 {/* <Box mt={1} /> */}
                 <Box
                     display="flex"
-                    flexDirection="row"
+                    flexDirection="column"
                     flexWrap="wrap"
                     justifyContent="center"
-                    m={0}
+                    mt={2}
+                    className={classes.uppercase}
                 >
+                    <Typography variant="body1" className={classes.bolded}>
+                        {event?._eventTimeFormatted}
+                    </Typography>
+                    <Typography variant="body1">
+                        {event?._eventLocationFormatted}
+                    </Typography>
                     {buttons?.map((btn, index) => (
                         <Box key={index}>{btn}</Box>
                     ))}

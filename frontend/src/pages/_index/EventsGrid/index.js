@@ -37,7 +37,7 @@ export default ({ events, organizations, loading, title }) => {
                                 : null
                         }
                         buttons={[
-                            !canApply && (
+                            !canApply && !event.galleryOpen && (
                                 <Button
                                     color="theme_lightgray"
                                     variant="outlinedNew"
@@ -46,7 +46,7 @@ export default ({ events, organizations, loading, title }) => {
                                         dispatch(push('/events/' + event.slug))
                                     }
                                 >
-                                    {t('See_more_')}
+                                    {t('Register_now_')}
                                 </Button>
                             ),
                             canApply && !event.galleryOpen && (
@@ -69,8 +69,8 @@ export default ({ events, organizations, loading, title }) => {
                             ),
                             event.galleryOpen && (
                                 <Button
-                                    color="theme_turquoise"
-                                    variant="contained"
+                                    color="theme_lightgray"
+                                    variant="outlinedNew"
                                     strong
                                     onClick={() =>
                                         dispatch(

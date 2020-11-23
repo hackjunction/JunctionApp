@@ -41,6 +41,41 @@ const variantStyles = (theme, props) => {
                 },
             }
         }
+        case 'containedNew': {
+            return {
+                color: color.contrastText,
+
+                textDecoration: 'underline',
+                textTransform: 'uppercase',
+                textAlign: 'center',
+                '&:hover': {
+                    textDecoration: 'none',
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: 'transparent',
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
+        case 'containedCard': {
+            return {
+                color: color.contrastText,
+                backgroundColor: color.main,
+                borderRadius: '16px 0 15px',
+                textTransform: 'uppercase',
+                opacity: 0.75,
+                fontSize: '12px',
+                '&:hover': {
+                    textDecoration: 'none',
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: 'transparent',
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
 
         case 'outlined': {
             return {

@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next'
 
 import emblem_black from 'assets/logos/emblem_black.png'
 
-import { Typography, Grid, Avatar } from '@material-ui/core'
+import { Typography, Grid, Avatar, Box } from '@material-ui/core'
 
 export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
@@ -31,7 +31,6 @@ export default () => {
     const [pastEvents] = usePastEvents({ limit: 3 })
     const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
-    console.log('HELMET', Helmet.peek())
     const { t } = useTranslation()
     return (
         <PageWrapper
@@ -94,7 +93,7 @@ export default () => {
                     <Divider size={1} />
                     <EventHighlight />
                     <Divider size={4} />
-                    <CenteredContainer>
+                    <CenteredContainer spacing={3}>
                         <Divider size={2} />
                         <EventsGrid
                             title={t('Upcoming_')}
@@ -106,6 +105,15 @@ export default () => {
                             events={pastEvents}
                             organizations={organizations}
                         />
+                        <Box textAlign="center">
+                            <Button
+                                variant="containedNew"
+                                color="theme_black"
+                                onClick={() => dispatch(push('/pricing'))} // TODO: Add past events page
+                            >
+                                See All Past Events
+                            </Button>
+                        </Box>
                     </CenteredContainer>
                     <Divider size={20} />
                     <CenteredContainerSmall>
@@ -152,6 +160,7 @@ export default () => {
                             })}
                         </Typography>
                         <Divider size={3} />
+
                         <Typography variant="body1" align="center">
                             {t('Junction_info_')}
                         </Typography>
