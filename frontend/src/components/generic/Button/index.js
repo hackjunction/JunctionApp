@@ -67,12 +67,13 @@ const variantStyles = (theme, props) => {
                 opacity: 0.75,
                 fontSize: '12px',
                 '&:hover': {
-                    textDecoration: 'none',
+                    backgroundColor: color.main,
+                    opacity: 1,
                 },
                 '&.Mui-disabled': {
                     backgroundColor: 'transparent',
                     color: color.contrastText,
-                    opacity: 0.5,
+                    opacity: 1,
                 },
             }
         }

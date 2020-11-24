@@ -26,6 +26,7 @@ const theme = createMuiTheme({
             dark: '#bc5700',
             contrastText: '#ffffff',
         },
+
         theme_purple: {
             main: '#392F80',
             light: '#6959b0',
