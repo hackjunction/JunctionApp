@@ -23,13 +23,13 @@ export default ({ event, registration }) => {
     switch (event?._eventStatus) {
         case EventStatuses.PUBLISHED.id: {
             return (
-                <Typography align="center" variant="subtitle1">
-                    {t('Applications_begins_', {
-                        time: moment(event.registrationStartTime).format(
-                            `LLL [(${event.timezone})]`,
-                        ),
-                    })}
-                </Typography>
+                <Button
+                    disabled
+                    variant="applicationsClosed"
+                    color="theme_blue"
+                >
+                    Applications not open
+                </Button>
             )
         }
         case EventStatuses.REGISTRATION_OPEN.id: {
@@ -39,26 +39,24 @@ export default ({ event, registration }) => {
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <Button
-                                    fullWidth
                                     onClick={() =>
                                         dispatch(push(`${match.url}/register`))
                                     }
-                                    variant="contained"
-                                    color="theme_turquoise"
+                                    variant="applicationsClosed"
+                                    color="theme_blue"
                                 >
                                     {t('Edit_registration_')}
                                 </Button>
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
-                                    fullWidth
                                     onClick={() =>
                                         dispatch(
                                             push(`/dashboard/${event.slug}`),
                                         )
                                     }
-                                    variant="contained"
-                                    color="theme_orange"
+                                    variant="applicationsClosed"
+                                    color="theme_blue"
                                 >
                                     {t('Event_dashboard_')}
                                 </Button>
@@ -68,12 +66,11 @@ export default ({ event, registration }) => {
                 } else {
                     return (
                         <Button
-                            fullWidth
                             onClick={() =>
                                 dispatch(push(`${match.url}/register`))
                             }
-                            variant="contained-large"
-                            color="theme_orange"
+                            variant="applicationsClosed"
+                            color="theme_blue"
                         >
                             {t('Register_now_')}
                         </Button>
@@ -82,7 +79,6 @@ export default ({ event, registration }) => {
             } else {
                 return (
                     <Button
-                        fullWidth
                         onClick={() =>
                             dispatch(
                                 push(`/login`, {
@@ -90,8 +86,8 @@ export default ({ event, registration }) => {
                                 }),
                             )
                         }
-                        variant="contained-large"
-                        color="theme_orange"
+                        variant="applicationsClosed"
+                        color="theme_blue"
                     >
                         {t('Log_in_register_')}
                     </Button>
@@ -103,12 +99,11 @@ export default ({ event, registration }) => {
                 if (hasRegistration) {
                     return (
                         <Button
-                            fullWidth
                             onClick={() =>
                                 dispatch(push(`/dashboard/${event.slug}`))
                             }
-                            variant="contained"
-                            color="theme_turquoise"
+                            variant="applicationsClosed"
+                            color="theme_blue"
                         >
                             {t('Event_dashboard_')}
                         </Button>
@@ -123,12 +118,11 @@ export default ({ event, registration }) => {
             } else {
                 return (
                     <Button
-                        fullWidth
                         onClick={() =>
                             dispatch(push('/login', { nextRoute: match.url }))
                         }
-                        variant="contained"
-                        color="theme_turquoise"
+                        variant="applicationsClosed"
+                        color="theme_blue"
                     >
                         {t('Log_in_')}
                     </Button>

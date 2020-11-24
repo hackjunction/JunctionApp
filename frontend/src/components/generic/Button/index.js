@@ -58,6 +58,24 @@ const variantStyles = (theme, props) => {
                 },
             }
         }
+        case 'applicationsClosed': {
+            return {
+                color: color.main,
+                padding: 0,
+                margin: '25px 0 0 0',
+                textTransform: 'uppercase',
+                fontSize: '18px',
+                textAlign: 'center',
+                '&:hover': {
+                    textDecoration: 'none',
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: 'transparent',
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
         case 'containedCard': {
             return {
                 color: color.contrastText,

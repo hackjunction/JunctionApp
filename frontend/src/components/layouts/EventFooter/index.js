@@ -69,14 +69,10 @@ const useStyles = makeStyles(theme => ({
     },
     white: {
         color: 'white',
-        '& button': {
-            textAlign: 'right',
-            background: 'red',
-        },
     },
     align: {
         '& button': {
-            background: 'red',
+            marginLeft: 0,
         },
     },
     innest: {
@@ -85,6 +81,7 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'right',
         '& button': {
             alignSelf: 'flex-end',
+            marginRight: 0,
         },
     },
 }))
@@ -96,7 +93,7 @@ const EventFooter = props => {
     return (
         <div className={classes.wrapper}>
             <Grid container className={classes.innerSecond}>
-                <Grid item xs={12} md={6} xl={6}>
+                <Grid item xs={12} md={6} xl={6} className={classes.align}>
                     <Typography variant="h4" className={classes.white}>
                         {t('Platform_organise_hack_', {
                             owner: config.PLATFORM_OWNER_NAME,
