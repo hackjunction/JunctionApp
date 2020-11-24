@@ -7,6 +7,7 @@ import { useRouteMatch, useLocation } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
+import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
 import EventRegister from './register'
@@ -27,7 +28,7 @@ const EventDetailRouter = () => {
             errorText={`Oops, something went wrong`}
             errorDesc={`Please refresh the page to try again.`}
             header={() => <GlobalNavBar />}
-            footer={() => <Footer />}
+            footer={() => <EventFooter />}
             render={() => {
                 return (
                     <AnimatePresence>

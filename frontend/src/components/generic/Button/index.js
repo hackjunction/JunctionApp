@@ -113,6 +113,25 @@ const variantStyles = (theme, props) => {
                 },
             }
         }
+        case 'containedEventImage': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `2px solid ${color.main}`,
+                height: '3em',
+                borderRadius: '28px',
+                fontSize: '1.5em',
+                margin: theme.spacing(2),
+                '&:hover': {
+                    backgroundColor: color.main,
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: color.dark,
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
         default: {
             return {
                 borderRadius: 0,

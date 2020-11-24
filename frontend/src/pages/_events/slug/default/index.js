@@ -9,7 +9,7 @@ import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
 
 import EventTimeline from './EventTimeline'
-
+import EventCarousel from './EventCarousel'
 import EventInformation from './EventInformation'
 
 import StaggeredList from 'components/animated/StaggeredList'
@@ -119,6 +119,7 @@ export default () => {
                     </StaggeredList>
                 </CenteredContainer>
             </FadeInWrapper>
+            <EventCarousel event={event} />
         </>
     )
 }

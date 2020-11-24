@@ -26,7 +26,12 @@ const theme = createMuiTheme({
             dark: '#bc5700',
             contrastText: '#ffffff',
         },
-
+        theme_blue: {
+            main: '#73F9EC',
+            light: '#8ffaff',
+            dark: '#0b96a5',
+            contrastText: '#232323',
+        },
         theme_purple: {
             main: '#392F80',
             light: '#6959b0',
@@ -44,6 +49,12 @@ const theme = createMuiTheme({
             light: '#ffffff',
             dark: '#bdbdbd',
             contrastText: '#000000',
+        },
+        theme_lightgrayDark: {
+            main: '#efefef',
+            light: '#ffffff',
+            dark: '#bdbdbd',
+            contrastText: '#ffffff',
         },
         theme_white: {
             main: '#ffffff',
