@@ -70,7 +70,7 @@ const EventImage = ({
                             strong
                             color="theme_blue"
                             className={classes.buttons}
-                            onClick={() => dispatch(push('/'))}
+                            onClick={() => dispatch(push(button.push))}
                         >
                             {button.text}
                         </Button>

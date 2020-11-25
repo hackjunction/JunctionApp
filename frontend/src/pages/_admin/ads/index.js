@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useRouteMatch, Router } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 
@@ -51,6 +51,8 @@ export default () => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const { slug } = match.params
+    const router = match
+    console.log('router :>> ', router)
 
     const [initialData, setInitialData] = useState({})
 
