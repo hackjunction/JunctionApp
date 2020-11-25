@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { find, filter } from 'lodash-es'
-import { Box, Typography, Button } from '@material-ui/core'
+import { Box, Typography, Button, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        '&:hover': {
+            opacity: 0.6,
+        },
     },
     placeholderImage: {
         width: '100%',
@@ -98,6 +101,8 @@ const ProjectDetail = ({
 }) => {
     const classes = useStyles()
     const [index, setIndex] = useState(0)
+    const [pause, setPause] = useState(true)
+    console.log('pause :>> ', pause)
     console.log('HELMET IN PROJECT VIEW', Helmet.peek())
     if (!project) return null
 
@@ -184,43 +189,53 @@ const ProjectDetail = ({
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
+
             <Box className={classes.wrapper}>
-                <Box style={{ position: 'relative' }}>
-                    <AutoPlaySwipeableViews
-                        enableMouseEvents
-                        index={index}
-                        onChangeIndex={setIndex}
+                <Tooltip title={pause ? 'Click to pause' : 'Click to play'}>
+                    <Box
+                        style={{ position: 'relative' }}
+                        onClick={e => setPause(!pause)}
                     >
-                        {project.images.length > 0 ? (
-                            project.images.map(image => (
-                                <Box
-                                    key={image.publicId}
-                                    className={classes.top}
-                                >
+                        <AutoPlaySwipeableViews
+                            enableMouseEvents
+                            index={index}
+                            onChangeIndex={setIndex}
+                            interval={5000}
+                            autoplay={pause}
+                        >
+                            {project.images.length > 0 ? (
+                                project.images.map(image => (
+                                    <Box
+                                        key={image.publicId}
+                                        className={classes.top}
+                                    >
+                                        <Image
+                                            className={classes.image}
+                                            publicId={image.publicId}
+                                            defaultImage={require('assets/images/default_cover_image.png')}
+                                        />
+                                    </Box>
+                                ))
+                            ) : (
+                                <Box className={classes.placeholderTop}>
                                     <Image
-                                        className={classes.image}
-                                        publicId={image.publicId}
+                                        className={classes.placeholderImage}
+                                        publicId={event?.coverImage?.logo}
                                         defaultImage={require('assets/images/default_cover_image.png')}
                                     />
                                 </Box>
-                            ))
-                        ) : (
-                            <Box className={classes.placeholderTop}>
-                                <Image
-                                    className={classes.placeholderImage}
-                                    publicId={event?.coverImage?.logo}
-                                    defaultImage={require('assets/images/default_cover_image.png')}
+                            )}
+                        </AutoPlaySwipeableViews>
+                        <Box className={classes.backButtonWrapper}>
+                            <Button onClick={onBack} style={{ color: 'white' }}>
+                                <ArrowBackIosIcon
+                                    style={{ fontSize: '14px' }}
                                 />
-                            </Box>
-                        )}
-                    </AutoPlaySwipeableViews>
-                    <Box className={classes.backButtonWrapper}>
-                        <Button onClick={onBack} style={{ color: 'white' }}>
-                            <ArrowBackIosIcon style={{ fontSize: '14px' }} />
-                            Back
-                        </Button>
+                                Back
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
+                </Tooltip>
                 <CenteredContainer>
                     <Pagination
                         pages={project.images.length}
