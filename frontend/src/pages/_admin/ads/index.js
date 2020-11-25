@@ -3,7 +3,7 @@ import { useRouteMatch, Router } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Formik, FastField, FieldArray, Field } from 'formik'
 import * as yup from 'yup'
@@ -20,6 +20,7 @@ import * as AdminActions from 'redux/admin/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
+import Button from 'components/generic/Button'
 const useStyles = makeStyles(theme => ({
     topWrapper: {
         display: 'flex',
@@ -120,36 +121,57 @@ export default () => {
                         <Box flex="1" display="flex" flexDirection="column">
                             <Grid container spacing={3}>
                                 <Grid item xs={12} md={6}>
-                                    <FastField
-                                        name="name"
-                                        render={({ field, form }) => (
-                                            <TextInput
-                                                label={t('Name_')}
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value,
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name,
-                                                    )
-                                                }
+                                    <Grid container direction="column">
+                                        <Grid item xs={12} md={12}>
+                                            <FastField
+                                                name="name"
+                                                render={({ field, form }) => (
+                                                    <TextInput
+                                                        label={t('Name_')}
+                                                        value={field.value}
+                                                        onChange={value =>
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                value,
+                                                            )
+                                                        }
+                                                        onBlur={() =>
+                                                            form.setFieldTouched(
+                                                                field.name,
+                                                            )
+                                                        }
+                                                    />
+                                                )}
                                             />
-                                        )}
-                                    />
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            <Typography>
+                                                The name of the item isn't
+                                                basically used for anything, but
+                                                the Text on the button is shown
+                                                on top of the image. You can add
+                                                several buttons. The push
+                                                destination is important, for
+                                                now only tested inside the
+                                                platform, but should be used so
+                                                that you take everything after
+                                                "app.hackjunction.com",
+                                                including the last slash, and
+                                                add it there. For example
+                                                "/pricing" at the push
+                                                destiation would lead to
+                                                app.hackjunction.com/pricing
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
-
                                 <Grid item xs={12} md={6}>
                                     <FastField
                                         name="icon"
                                         render={({ field, form }) => (
                                             <Box
                                                 width="100%"
-                                                height="100%"
-                                                borderRadius="50%"
+                                                height="200px"
                                                 overflow="hidden"
                                                 position="relative"
                                             >
@@ -177,15 +199,66 @@ export default () => {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <FieldArray
-                                        name="buttons"
-                                        render={({ push }) => (
-                                            <div>
-                                                <Field name="text" />
-                                                <Field name="push" />
-                                                <button
+
+                                <FieldArray
+                                    name="buttons"
+                                    render={({ push }) => (
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={12} md={6}>
+                                                <FastField
+                                                    name="text"
+                                                    render={({
+                                                        field,
+                                                        form,
+                                                    }) => (
+                                                        <TextInput
+                                                            label="Text on button"
+                                                            value={field.value}
+                                                            onChange={value =>
+                                                                form.setFieldValue(
+                                                                    field.name,
+                                                                    value,
+                                                                )
+                                                            }
+                                                            onBlur={() =>
+                                                                form.setFieldTouched(
+                                                                    field.name,
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <FastField
+                                                    name="push"
+                                                    render={({
+                                                        field,
+                                                        form,
+                                                    }) => (
+                                                        <TextInput
+                                                            label="Push destination"
+                                                            value={field.value}
+                                                            onChange={value =>
+                                                                form.setFieldValue(
+                                                                    field.name,
+                                                                    value,
+                                                                )
+                                                            }
+                                                            onBlur={() =>
+                                                                form.setFieldTouched(
+                                                                    field.name,
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <Button
                                                     type="button"
+                                                    variant="outlinedNew"
+                                                    color="theme_blue"
                                                     onClick={() =>
                                                         push({
                                                             text:
@@ -200,14 +273,11 @@ export default () => {
                                                     }
                                                 >
                                                     Add button to image
-                                                </button>
-                                            </div>
-                                        )}
-                                    />
-                                    <pre>
-                                        {JSON.stringify(formikProps, null, 2)}
-                                    </pre>
-                                </Grid>
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    )}
+                                />
                             </Grid>
                         </Box>
                     </Box>
