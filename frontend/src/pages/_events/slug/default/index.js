@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 
 import { Grid, Box, Typography } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +19,7 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import Button from 'components/generic/Button'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
+import AdService from 'services/ads'
 
 export default () => {
     const dispatch = useDispatch()
@@ -27,6 +28,7 @@ export default () => {
     const keywords = event.name.split(' ').join(', ')
     console.log('KEYWORDS', keywords)
     console.log('HELMET', Helmet.peek())
+    const [pictures, setPictures] = useState()
 
     useEffect(() => {
         if (slug) {
@@ -34,6 +36,12 @@ export default () => {
         }
     }, [slug])
 
+    useEffect(() => {
+        AdService.getFullAd().then(pack => {
+            if (pack) setPictures(pack)
+        })
+    }, [])
+    console.log('pictures :>> ', pictures)
     const coverImage = () => {
         if (event.coverImage !== null) return event.coverImage.url
         else return '%REACT_APP_SEO_IMAGE_URL%'
@@ -119,7 +127,7 @@ export default () => {
                     </StaggeredList>
                 </CenteredContainer>
             </FadeInWrapper>
-            <EventCarousel event={event} />
+            <EventCarousel event={event} pictures={pictures} />
         </>
     )
 }

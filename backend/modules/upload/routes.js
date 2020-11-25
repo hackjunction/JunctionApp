@@ -57,7 +57,7 @@ router.post(
                 })
             }
         })
-    }
+    },
 )
 
 /**
@@ -83,7 +83,7 @@ router.post(
                 })
             }
         })
-    }
+    },
 )
 
 /**
@@ -110,9 +110,9 @@ router.post(
                         publicId: req.file.public_id,
                     })
                 }
-            }
+            },
         )
-    }
+    },
 )
 
 /**
@@ -140,9 +140,9 @@ router.post(
                         publicId: req.file.public_id,
                     })
                 }
-            }
+            },
         )
-    }
+    },
 )
 
 /**
@@ -151,6 +151,23 @@ router.post(
 // TODO isSuperAdmin
 router.post('/hackerpack/:slug/icon', hasToken, (req, res, next) => {
     helper.uploadHackerpackIcon(req.params.slug)(req, res, function (err) {
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                next(new ForbiddenError(err.message))
+            } else {
+                next(err)
+            }
+        } else {
+            res.status(200).json({
+                url: req.file.secure_url || req.file.url,
+                publicId: req.file.public_id,
+            })
+        }
+    })
+})
+
+router.post('/ad/:slug/icon', hasToken, (req, res, next) => {
+    helper.uploadAdIcon(req.params.slug)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {
                 next(new ForbiddenError(err.message))

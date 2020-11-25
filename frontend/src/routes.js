@@ -92,6 +92,7 @@ const routes = [
         component: HackerpackPage,
         exact: false,
     },
+
     {
         path: '/pricing',
         component: PricingPage,

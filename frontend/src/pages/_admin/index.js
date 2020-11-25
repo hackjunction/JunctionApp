@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DefaultPage from './default'
 import HackerpackForm from './hackerpack'
+import AdForm from './ads'
 import OrganizationForm from './organization'
 
 export default () => {
@@ -15,6 +16,11 @@ export default () => {
                 exact={false}
                 path={`${match.url}/hackerpack/:slug`}
                 component={HackerpackForm}
+            />
+            <Route
+                exact={false}
+                path={`${match.url}/ad/:slug`}
+                component={AdForm}
             />
             <Route
                 exact={false}
