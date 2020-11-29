@@ -76,12 +76,12 @@ export default () => {
     const renderOtherItems = () => {
         const items = []
 
-        if (hasOrganiserAccess) {
-            items.push({
-                label: 'Organiser dashboard',
-                onClick: () => dispatch(push('/organise')),
-            })
-        }
+        // if (hasOrganiserAccess) {
+        items.push({
+            label: 'Organiser dashboard',
+            onClick: () => dispatch(push('/organise')),
+        })
+        // }
 
         if (hasRecruiterAccess) {
             items.push({

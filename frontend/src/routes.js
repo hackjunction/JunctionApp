@@ -60,9 +60,10 @@ const routes = [
     },
     {
         path: '/organise',
-        component: RequiresPermission(OrganiserRouter, [
+        component: RequiresPermission(OrganiserRouter),
+        /*component: RequiresPermission(OrganiserRouter, [
             AuthConstants.Permissions.MANAGE_EVENT,
-        ]),
+        ]),*/
         exact: false,
     },
     {
