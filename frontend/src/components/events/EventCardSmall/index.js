@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ eventId }) => {
+export default ({ eventId, handleClick }) => {
     // TODO a lot of event?. here due to possibility of null event in test databases.
     // Shouldn't happen in production
     const [event = {}, loading] = useEventPreview(eventId)
@@ -43,9 +43,9 @@ export default ({ eventId }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
 
-    const handleClick = useCallback(() => {
+    const onClick = useCallback(() => {
         if (loading) return
-        dispatch(push(`/dashboard/${event?.slug}`))
+        handleClick(event)
     }, [dispatch, event?.slug, loading])
 
     if (!event && !eventId) {
@@ -102,7 +102,7 @@ export default ({ eventId }) => {
     }
 
     return event ? (
-        <Paper className={classes.paper} onClick={handleClick}>
+        <Paper className={classes.paper} onClick={onClick}>
             <Grid container spacing={0}>
                 <Grid item xs={12} md={3}>
                     {renderImage()}

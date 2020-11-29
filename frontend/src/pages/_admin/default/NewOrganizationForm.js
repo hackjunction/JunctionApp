@@ -50,7 +50,6 @@ export default () => {
         setLoading(true)
         OrganizationService.createOrganization(idToken, { name })
             .then(data => {
-                console.log('doing data', data)
                 dispatch(push(`/admin/organization/${data.slug}`))
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })

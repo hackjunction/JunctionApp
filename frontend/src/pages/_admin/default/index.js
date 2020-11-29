@@ -12,6 +12,8 @@ import HackerpackList from './HackerpackList'
 import NewOrganizationForm from './NewOrganizationForm'
 import OrganizationList from './OrganizationList'
 
+import UnapprovedEvents from './UnapprovedEvents'
+
 export default () => {
     return (
         <PageWrapper
@@ -24,6 +26,8 @@ export default () => {
 
                     <NewOrganizationForm />
                     <OrganizationList />
+
+                    <UnapprovedEvents />
                 </CenteredContainer>
             )}
         />

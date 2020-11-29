@@ -13,6 +13,7 @@ const migrations = [
     require('./07-uniform-answers'),
     require('./08-create-registration-objects-in-profiles'),
     require('./09-sync-registration-to-profiles'),
+    require('./10-add-banner-priority-and-approved-to-event'),
 ]
 
 const run = async () => {

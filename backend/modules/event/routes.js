@@ -7,7 +7,10 @@ const EventController = require('./controller.js')
 const AuthController = require('../auth/controller')
 const UserProfileController = require('../user-profile/controller')
 
-const { hasPermission } = require('../../common/middleware/permissions')
+const {
+    hasPermission,
+    hasRole,
+} = require('../../common/middleware/permissions')
 const {
     isEventOwner,
     isEventOrganiser,
@@ -25,6 +28,11 @@ const getPublicEvents = asyncHandler(async (req, res) => {
 const getPublicEventBySlug = asyncHandler(async (req, res) => {
     const event = await EventController.getPublicEventBySlug(req.params.slug)
     return res.status(200).json(event)
+})
+
+const getUnapprovedEvents = asyncHandler(async (req, res) => {
+    const events = await EventController.getUnapprovedEvents()
+    return res.status(200).json(events)
 })
 
 const getPublicEventById = asyncHandler(async (req, res) => {
@@ -129,6 +137,12 @@ const clearAchievements = asyncHandler(async (req, res) => {
     return res.status(200).json(result)
 })
 
+// Approve
+const approveEvent = asyncHandler(async (req, res) => {
+    const event = await EventController.approveEvent(req.event, req.body)
+    return res.status(200).json(event)
+})
+
 /** Create event, get events by logged in user */
 router
     .route('/')
@@ -228,6 +242,20 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         removeOrganiser,
+    )
+
+/** Unapproved */
+router
+    .route('/admin/unapproved')
+    .get(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), getUnapprovedEvents)
+
+router
+    .route('/admin/unapproved/:slug')
+    .patch(
+        hasToken,
+        hasRole(Auth.Roles.SUPER_ADMIN),
+        isEventOrganiser,
+        approveEvent,
     )
 
 module.exports = router

@@ -152,6 +152,12 @@ const EventType = new GraphQLObjectType({
             finalists: {
                 type: GraphQLList(GraphQLString),
             },
+            frontPagePriority: {
+                type: GraphQLInt,
+            },
+            approved: {
+                type: GraphQLBoolean,
+            },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {

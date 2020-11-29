@@ -20,7 +20,7 @@ controller.getPublicEventBySlug = slug => {
 
 controller.getPublicEventById = id => {
     return Event.findById(id).then(event => {
-        if (!event.published) {
+        if (!event.published || !event.approved) {
             throw new NotFoundError(
                 `Event with slug ${event.slug} does not exist`,
             )
@@ -31,6 +31,15 @@ controller.getPublicEventById = id => {
 
 controller.getEventBySlug = slug => {
     return Event.findOne({ slug })
+}
+
+controller.getUnapprovedEvents = () => {
+    return Event.find({ approved: false })
+}
+
+controller.approveEvent = (event, data) => {
+    const eventData = { approved: data.approved }
+    return Event.updateAllowed(event, eventData)
 }
 
 controller.getEventById = id => {
