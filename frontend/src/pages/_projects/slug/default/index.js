@@ -120,7 +120,6 @@ export default ({ event, projects }) => {
         },
         [dispatch, event.slug],
     )
-
     return (
         <>
             <EventHeroImage event={event} subheading="Project gallery" />
