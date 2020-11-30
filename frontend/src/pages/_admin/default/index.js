@@ -11,6 +11,8 @@ import HackerpackList from './HackerpackList'
 
 import NewOrganizationForm from './NewOrganizationForm'
 import OrganizationList from './OrganizationList'
+import NewAdForm from './NewAdForm'
+import AdList from './AdList'
 
 import UnapprovedEvents from './UnapprovedEvents'
 
@@ -28,6 +30,8 @@ export default () => {
                     <OrganizationList />
 
                     <UnapprovedEvents />
+                    <NewAdForm />
+                    <AdList />
                 </CenteredContainer>
             )}
         />

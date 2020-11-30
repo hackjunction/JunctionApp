@@ -41,19 +41,18 @@ export const useEventPreview = _id => {
 }
 
 export const GET_HIGHLIGHTED_EVENTS = gql`
-    query Event($limit: Int, $name: String) {
-        highlightedEvents(limit: $limit, name: $name) {
+    query Event($limit: Int) {
+        highlightedEvents(limit: $limit) {
             ...EventPreview
         }
     }
     ${Fragments.EventPreview}
 `
 
-export const useHighlightedEvents = ({ limit, name }) => {
+export const useHighlightedEvents = ({ limit }) => {
     const { data, loading, error } = useQuery(GET_HIGHLIGHTED_EVENTS, {
         variables: {
             limit,
-            name,
         },
     })
 

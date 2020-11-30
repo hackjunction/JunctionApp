@@ -1,8 +1,9 @@
 {
-    "Upcoming_": "Ongoing & Upcoming events",
-    "Past_": "Past events",
-    "New_to_": "New to {{platform}}?",
+    "Upcoming_": "UPCOMING EVENTS",
+    "Past_": "PAST EVENTS",
+    "New_to_": "NEW TO {{owner}}?",
     "More_info_": "More info about {{owner}} can be found from our website ",
+    "Junction_info_": "{{owner}} is a non-profit hackathon and tech community. Our volunteer-led teams organize hackathons, speaker events, coding workshops and other tech events - around the year and around the world.",
     "More_info_link_": "here",
     "View_projects_": "View projects",
     "See_more_": "See more",

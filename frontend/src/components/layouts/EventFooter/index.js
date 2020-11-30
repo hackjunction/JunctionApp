@@ -7,6 +7,7 @@ import { push } from 'connected-react-router'
 
 import ExternalLink from 'components/generic/ExternalLink'
 import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 import Divider from 'components/generic/Divider'
 import LineDivider from 'components/generic/LineDivider/'
 import CenteredContainer from 'components/generic/CenteredContainer'
@@ -29,6 +30,14 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row-reverse',
         },
+    },
+    innerSecond: {
+        width: '100%',
+        maxWidth: '1120px',
+        margin: '48px auto 24px',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     copyright: {
         flex: 1,
@@ -58,14 +67,75 @@ const useStyles = makeStyles(theme => ({
             justifyContent: 'flex-start',
         },
     },
+    white: {
+        color: 'white',
+    },
+    align: {
+        '& button': {
+            marginLeft: 0,
+        },
+    },
+    innest: {
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'right',
+        '& button': {
+            alignSelf: 'flex-end',
+            marginRight: 0,
+        },
+    },
 }))
 
-const Footer = props => {
+const EventFooter = props => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
         <div className={classes.wrapper}>
+            <Grid container className={classes.innerSecond}>
+                <Grid item xs={12} md={6} xl={6} className={classes.align}>
+                    <Typography variant="h4" className={classes.white}>
+                        {t('Platform_organise_hack_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
+                    </Typography>
+                    <Button
+                        color="theme_lightgrayDark"
+                        variant="outlinedNew"
+                        strong
+                        onClick={() => dispatch(push('/contact'))}
+                    >
+                        {t('Contact_us_')}
+                    </Button>
+                    <Button
+                        color="theme_lightgrayDark"
+                        variant="outlinedNew"
+                        strong
+                        onClick={() => dispatch(push('/pricing'))}
+                    >
+                        {/* {t('Contact_us_')} */}
+                        Pricing
+                    </Button>
+                </Grid>
+                <Hidden xsDown>
+                    <Grid item xs={6} md={6} x={6} className={classes.innest}>
+                        <Typography variant="h4" className={classes.white}>
+                            {t('Join_hackerpack_')}
+                        </Typography>
+                        <Button
+                            color="theme_lightgrayDark"
+                            variant="outlinedNew"
+                            strong
+                            onClick={() => dispatch(push('/hackerpack'))}
+                            className={classes.align}
+                        >
+                            {t('To_hackerpack_')}
+                        </Button>
+                    </Grid>
+                </Hidden>
+            </Grid>
+            <Divider size={5} />
+
             <div className={classes.inner}>
                 <div className={classes.links}>
                     <Divider size={1} />
@@ -115,7 +185,7 @@ const Footer = props => {
         </div>
     )
 }
-Footer.defaultProps = {
+EventFooter.defaultProps = {
     hide_contact: false,
 }
-export default Footer
+export default EventFooter
