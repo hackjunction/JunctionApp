@@ -51,23 +51,32 @@ const EventImage = ({
     console.log('buttons :>> ', buttons)
     if (publicId) {
         return (
-            <CloudinaryImage
-                className={clsx(classes.root, className)}
-                publicId={publicId}
-            >
-                <Transformation
-                    crop="fill"
-                    format="auto"
-                    quality="auto"
-                    {...transformation}
-                />
-
-                {buttons?.map(button => (
-                    <Button variant="outlined" strong color="theme_turquoise">
-                        {button.text}
-                    </Button>
-                ))}
-            </CloudinaryImage>
+            <div className={classes.wrapper}>
+                <CloudinaryImage
+                    className={clsx(classes.root, className)}
+                    publicId={publicId}
+                >
+                    <Transformation
+                        crop="fill"
+                        format="auto"
+                        quality="auto"
+                        {...transformation}
+                    />
+                </CloudinaryImage>
+                <div className={classes.inner}>
+                    {buttons?.map(button => (
+                        <Button
+                            variant="containedEventImage"
+                            strong
+                            color="theme_blue"
+                            className={classes.buttons}
+                            onClick={() => dispatch(push(button.push))}
+                        >
+                            {button.text}
+                        </Button>
+                    ))}
+                </div>
+            </div>
         )
     }
 
@@ -80,21 +89,20 @@ const EventImage = ({
                 width={transformation.width}
                 height={transformation.height}
             />
-            {buttons && (
-                <div className={classes.inner}>
-                    {buttons.map(button => (
-                        <Button
-                            variant="containedEventImage"
-                            strong
-                            color="theme_blue"
-                            className={classes.buttons}
-                            onClick={() => dispatch(push('/'))}
-                        >
-                            {button.text}
-                        </Button>
-                    ))}
-                </div>
-            )}
+
+            <div className={classes.inner}>
+                {buttons?.map(button => (
+                    <Button
+                        variant="containedEventImage"
+                        strong
+                        color="theme_blue"
+                        className={classes.buttons}
+                        onClick={() => dispatch(push('/'))}
+                    >
+                        {button.text}
+                    </Button>
+                ))}
+            </div>
         </div>
     )
 }

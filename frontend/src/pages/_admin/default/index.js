@@ -11,6 +11,8 @@ import HackerpackList from './HackerpackList'
 
 import NewOrganizationForm from './NewOrganizationForm'
 import OrganizationList from './OrganizationList'
+import NewAdForm from './NewAdForm'
+import AdList from './AdList'
 
 export default () => {
     return (
@@ -24,6 +26,9 @@ export default () => {
 
                     <NewOrganizationForm />
                     <OrganizationList />
+
+                    <NewAdForm />
+                    <AdList />
                 </CenteredContainer>
             )}
         />
