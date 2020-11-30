@@ -124,7 +124,7 @@ class EventController {
         if (!event) return null
 
         /** If it's a public event, anyone can see it */
-        if (event.published) {
+        if (event.published && event.approved) {
             // TODO: Maybe strip some fields from the response if necessary?
             return event
         }

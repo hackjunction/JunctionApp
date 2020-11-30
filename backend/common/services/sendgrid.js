@@ -65,7 +65,7 @@ const SendgridService = {
                 // event_name: event.name,
                 // first_name: user.firstName,
                 // dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
-            }
+            },
         )
         return SendgridService.send(msg)
     },
@@ -96,7 +96,7 @@ const SendgridService = {
                         one of them. Check out the full event calendar here <a href="${global.gConfig.CALENDAR_URL}">here</a>.
                     </p>
                 `,
-            }
+            },
         )
         return SendgridService.send(msg)
     },
@@ -111,13 +111,13 @@ const SendgridService = {
                     subject: `Thanks for registering to ${event.name}!`,
                     subtitle: 'Awesome! Now just sit back and relax.',
                     body: `The application period ends <b>${moment(
-                        event.registrationEndTime
+                        event.registrationEndTime,
                     ).format(
-                        'MMMM Do'
+                        'MMMM Do',
                     )}</b>, and we'll be able to process all of the applications shortly after that. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
                     cta_text: 'Event dashboard',
                     cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
-                }
+                },
             )
         } else {
             msg = SendgridService.buildTemplateMessage(
@@ -128,13 +128,13 @@ const SendgridService = {
                     subject: `Thanks for registering to ${event.name}!`,
                     subtitle: 'Time to get to work!',
                     body: `The final project submission deadline is <b>${moment(
-                        event.submissionsEndTime
+                        event.submissionsEndTime,
                     ).format(
-                        'LLLL'
+                        'LLLL',
                     )}</b>, so make sure you submit something before then! You'll find all of the necessary information on the Event Dashboard, which you can access with the below link. Have fun!`,
                     cta_text: 'Event dashboard',
                     cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
-                }
+                },
             )
         }
 
@@ -172,7 +172,7 @@ const SendgridService = {
             `,
                 cta_text: 'Event dashboard',
                 cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
-            }
+            },
         )
 
         return SendgridService.send(msg)
@@ -207,7 +207,7 @@ const SendgridService = {
             `,
                 cta_text: 'Event dashboard',
                 cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
-            }
+            },
         )
 
         return SendgridService.send(msg)
@@ -230,7 +230,7 @@ const SendgridService = {
                 required from you, and we are currently on track to be able to initiate the transactions on 15 December. 
                 Please reach out to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
             `,
-            }
+            },
         )
 
         return SendgridService.send(msg)
@@ -266,7 +266,7 @@ const SendgridService = {
                 cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}/travel-grant`,
                 cta_text: 'Edit your details',
                 reply_to: 'finance@hackjunction.com',
-            }
+            },
         )
 
         return SendgridService.send(msg)
@@ -305,8 +305,9 @@ const SendgridService = {
                 cta_text: params.cta_text,
                 cta_link: params.cta_link,
                 reply_to: params.reply_to,
-            }
+            },
         )
+        console.log('sending', msg)
         return SendgridService.send(msg)
     },
     sendContactEmail: (to, params) => {
@@ -318,7 +319,7 @@ const SendgridService = {
                 subtitle: params.subtitle,
                 body: params.body,
                 reply_to: params.reply_to,
-            }
+            },
         )
         return SendgridService.send(msg)
     },
@@ -356,7 +357,7 @@ const SendgridService = {
             if (mailingListId) {
                 await sendgridAddRecipientsToList(
                     mailingListId,
-                    addedRecipients
+                    addedRecipients,
                 )
             }
         } catch (e) {

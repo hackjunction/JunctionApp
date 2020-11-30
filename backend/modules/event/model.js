@@ -264,6 +264,14 @@ const EventSchema = new mongoose.Schema({
     eventTerms: {
         type: String,
     },
+    frontPagePriority: {
+        type: Number,
+        default: 0,
+    },
+    approved: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 EventSchema.index(

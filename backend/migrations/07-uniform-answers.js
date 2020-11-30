@@ -32,7 +32,6 @@ module.exports = {
                 console.error(error)
             }
         })
-
         const regcursor = mongoose.model('Registration').find({}).cursor()
         await regcursor.eachAsync(async function (registration) {
             if (registration.answers.gender === "Don't want to answer") {
@@ -77,6 +76,7 @@ module.exports = {
             }
         })
         */
+
         return Promise.resolve()
     },
 }

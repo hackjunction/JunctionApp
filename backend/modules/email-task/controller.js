@@ -36,7 +36,7 @@ controller.createAcceptedTask = async (userId, eventId, deliverNow = false) => {
     const task = await controller.createTask(
         userId,
         eventId,
-        EmailTypes.registrationAccepted
+        EmailTypes.registrationAccepted,
     )
     if (deliverNow) {
         return controller.deliverEmailTask(task)
@@ -48,7 +48,7 @@ controller.createRejectedTask = async (userId, eventId, deliverNow = false) => {
     const task = await controller.createTask(
         userId,
         eventId,
-        EmailTypes.registrationRejected
+        EmailTypes.registrationRejected,
     )
     if (deliverNow) {
         return controller.deliverEmailTask(task)
@@ -59,12 +59,12 @@ controller.createRejectedTask = async (userId, eventId, deliverNow = false) => {
 controller.createRegisteredTask = async (
     userId,
     eventId,
-    deliverNow = false
+    deliverNow = false,
 ) => {
     const task = await controller.createTask(
         userId,
         eventId,
-        EmailTypes.registrationReceived
+        EmailTypes.registrationReceived,
     )
     if (task && deliverNow) {
         return controller.deliverEmailTask(task)
@@ -74,7 +74,7 @@ controller.createRegisteredTask = async (
 
 controller.createTravelGrantAcceptedTask = async (
     registration,
-    deliverNow = false
+    deliverNow = false,
 ) => {
     const task = await controller.createTask(
         registration.user,
@@ -83,7 +83,7 @@ controller.createTravelGrantAcceptedTask = async (
         {
             amount: registration.travelGrant,
             countryOfTravel: registration.answers.countryOfTravel,
-        }
+        },
     )
     if (task && deliverNow) {
         return controller.deliverEmailTask(task)
@@ -93,12 +93,12 @@ controller.createTravelGrantAcceptedTask = async (
 
 controller.createTravelGrantRejectedTask = async (
     registration,
-    deliverNow = false
+    deliverNow = false,
 ) => {
     const task = await controller.createTask(
         registration.user,
         registration.event,
-        EmailTypes.travelGrantRejected
+        EmailTypes.travelGrantRejected,
     )
     if (task && deliverNow) {
         return controller.deliverEmailTask(task)
@@ -108,7 +108,7 @@ controller.createTravelGrantRejectedTask = async (
 
 controller.createTravelGrantDetailsRejectedTask = async (
     registration,
-    deliverNow = false
+    deliverNow = false,
 ) => {
     const task = await controller.createTask(
         registration.user,
@@ -116,7 +116,7 @@ controller.createTravelGrantDetailsRejectedTask = async (
         EmailTypes.travelGrantDetailsRejected,
         {
             comment: registration.travelGrantComment,
-        }
+        },
     )
     if (task && deliverNow) {
         return controller.deliverEmailTask(task)
@@ -126,7 +126,7 @@ controller.createTravelGrantDetailsRejectedTask = async (
 
 controller.createTravelGrantDetailsAcceptedTask = async (
     registration,
-    deliverNow = false
+    deliverNow = false,
 ) => {
     const task = await controller.createTask(
         registration.user,
@@ -134,7 +134,7 @@ controller.createTravelGrantDetailsAcceptedTask = async (
         EmailTypes.travelGrantDetailsAccepted,
         {
             amount: registration.travelGrantAmount,
-        }
+        },
     )
     if (task && deliverNow) {
         return controller.deliverEmailTask(task)
@@ -152,7 +152,7 @@ controller.createRecruiterMessageTask = async recruiterAction => {
         recruiter,
         user,
         recruiter.recruiterOrganisation,
-        recruiterAction.data.message
+        recruiterAction.data.message,
     )
 }
 
@@ -161,7 +161,7 @@ controller.createGenericTask = async (
     eventId,
     uniqueId,
     msgParams,
-    deliverNow = false
+    deliverNow = false,
 ) => {
     if (!uniqueId) {
         uniqueId = shortid.generate()
@@ -170,7 +170,7 @@ controller.createGenericTask = async (
         userId,
         eventId,
         `generic_${uniqueId}`,
-        msgParams
+        msgParams,
     )
     if (task && deliverNow) {
         return controller.deliverEmailTask(task)
@@ -200,7 +200,7 @@ controller.deliverEmailTask = async task => {
             await SendgridService.sendTravelGrantAcceptedEmail(
                 event,
                 user,
-                task.params
+                task.params,
             )
             break
         }
@@ -208,7 +208,7 @@ controller.deliverEmailTask = async task => {
             await SendgridService.sendTravelGrantRejectedEmail(
                 event,
                 user,
-                task.params
+                task.params,
             )
             break
         }
@@ -216,7 +216,7 @@ controller.deliverEmailTask = async task => {
             await SendgridService.sendTravelGrantDetailsAcceptedEmail(
                 event,
                 user,
-                task.params
+                task.params,
             )
             break
         }
@@ -224,7 +224,7 @@ controller.deliverEmailTask = async task => {
             await SendgridService.sendTravelGrantDetailsRejectedEmail(
                 event,
                 user,
-                task.params
+                task.params,
             )
             break
         }
@@ -246,7 +246,7 @@ controller.sendPreviewEmail = async (to, msgParams) => {
 controller.sendContactEmail = async msgParams => {
     return SendgridService.sendContactEmail(
         global.gConfig.SENDGRID_CONTACT_MAIL,
-        msgParams
+        msgParams,
     ).catch(() => {})
 }
 
@@ -260,7 +260,7 @@ controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
                     event._id.toString(),
                     uniqueId,
                     msgParams,
-                    true
+                    true,
                 )
                 .then(task => {
                     if (task && task.deliveredAt) {
@@ -271,10 +271,10 @@ controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {
         },
         {
             concurrency: 10,
-        }
+        },
     ).then(deliveredTasks => {
         const delivered = deliveredTasks.filter(
-            taskDelivered => taskDelivered === true
+            taskDelivered => taskDelivered === true,
         ).length
         const total = recipients.length
 
