@@ -5,19 +5,21 @@ import CheckIcon from '@material-ui/icons/Check'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: '24px',
-        height: '24px',
+        width: '14px',
+        height: '14px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: 0,
     },
     dot: ({ active }) => ({
-        width: '24px',
-        height: '24px',
+        width: '14px',
+        height: '14px',
         borderStyle: 'solid',
-        borderRadius: '12px',
-        borderColor: active ? theme.palette.primary.main : '#ccc',
-        borderWidth: '3px',
+        borderRadius: '50%',
+        borderColor: active ? '#19DDEA' : '#ccc',
+        backgroundColor: active ? 'transparent' : '#19DDEA',
+        borderWidth: '1px',
     }),
 }))
 

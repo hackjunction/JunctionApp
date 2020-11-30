@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useSelector } from 'react-redux'
 
 import UserMenu from 'components/UserMenu'
-import LanguageMenu from 'components/LanguageMenu'
 
 import * as UserSelectors from 'redux/user/selectors'
 
@@ -42,7 +41,6 @@ export default () => {
                 </div>
                 <div className={classes.inner}>
                     <UserMenu />
-                    <LanguageMenu />
                 </div>
             </div>
         </div>
