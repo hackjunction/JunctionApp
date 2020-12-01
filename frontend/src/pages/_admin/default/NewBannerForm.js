@@ -51,7 +51,7 @@ export default () => {
         BannerService.createBanner(idToken, { name })
             .then(data => {
                 console.log('doing data', data)
-                dispatch(push(`/admin/Banner/${data.slug}`))
+                dispatch(push(`/admin/banner/${data.slug}`))
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {

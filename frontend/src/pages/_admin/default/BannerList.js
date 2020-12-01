@@ -58,7 +58,7 @@ export default ({ data = [] }) => {
                                 aria-label="edit"
                                 onClick={() =>
                                     dispatch(
-                                        push(`admin/Banner/${company.slug}`),
+                                        push(`admin/banner/${company.slug}`),
                                     )
                                 }
                             >
