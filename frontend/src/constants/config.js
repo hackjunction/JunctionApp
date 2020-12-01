@@ -67,6 +67,10 @@ const settings = {
         required: true,
         value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'Junction',
     },
+    PLATFORM_OWNER_NAME_CAPS: {
+        required: true,
+        value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'JUNCTION',
+    },
     PLATFORM_OWNER_WEBSITE: {
         required: true,
         value:

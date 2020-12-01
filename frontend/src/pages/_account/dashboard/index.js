@@ -2,6 +2,8 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 import { Grid, Box, Typography } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 
@@ -15,6 +17,8 @@ export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const [registrations = [], loading, error] = useRegistrationsByUser(userId)
     const { t } = useTranslation()
+    const dispatch = useDispatch()
+
     //TODO Erin had designs for the redesign. Follow it
     return (
         <PageWrapper loading={loading} error={Boolean(error)}>
@@ -32,7 +36,12 @@ export default () => {
                     </Grid>
                     {registrations.map(registration => (
                         <Grid key={registration.id} item xs={12} md={6}>
-                            <EventCardSmall eventId={registration.event} />
+                            <EventCardSmall
+                                eventId={registration.event}
+                                handleClick={event =>
+                                    dispatch(push(`/dashboard/${event?.slug}`))
+                                }
+                            />
                         </Grid>
                     ))}
                 </Grid>

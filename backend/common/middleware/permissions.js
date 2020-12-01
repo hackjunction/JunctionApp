@@ -28,23 +28,21 @@ const PermissionMiddleware = {
     },
     hasOneOfRoles: (roles = []) => {
         return (req, res, next) => {
-            for (const role of roles) {
+            roles.forEach(role => {
                 if (userHasRole(req.user, role)) {
                     next()
-                    return
                 }
-            }
+            })
             next(new InsufficientPrivilegesError())
         }
     },
     hasAllOfRoles: (roles = []) => {
         return (req, res, next) => {
-            for (const role of roles) {
+            roles.forEach(role => {
                 if (!userHasRole(req.user, role)) {
                     next(new InsufficientPrivilegesError())
-                    return
                 }
-            }
+            })
             next()
         }
     },
@@ -59,23 +57,21 @@ const PermissionMiddleware = {
     },
     hasOneOfPermissions: (permissions = []) => {
         return (req, res, next) => {
-            for (const permission of permissions) {
+            permissions.forEach(permission => {
                 if (userHasPermission(req.user, permission)) {
                     next()
-                    return
                 }
-            }
+            })
             next(new InsufficientPrivilegesError())
         }
     },
     hasAllOfPermissions: (permissions = []) => {
         return (req, res, next) => {
-            for (const permission of permissions) {
+            permissions.forEach(permission => {
                 if (!userHasPermission(req.user, permission)) {
                     next(new InsufficientPrivilegesError())
-                    return
                 }
-            }
+            })
             next()
         }
     },

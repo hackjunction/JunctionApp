@@ -1,22 +1,25 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 
-import { Grid, Box } from '@material-ui/core'
+import { Grid, Box, Typography } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
-
+import moment from 'moment'
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
 
 import EventTimeline from './EventTimeline'
-import EventButtons from './EventButtons'
+import EventCarousel from './EventCarousel'
+import EventInformation from './EventInformation'
 
 import StaggeredList from 'components/animated/StaggeredList'
 import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import CenteredContainer from 'components/generic/CenteredContainer'
+import Button from 'components/generic/Button'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
+import AdService from 'services/ads'
 
 export default () => {
     const dispatch = useDispatch()
@@ -25,6 +28,7 @@ export default () => {
     const keywords = event.name.split(' ').join(', ')
     console.log('KEYWORDS', keywords)
     console.log('HELMET', Helmet.peek())
+    const [pictures, setPictures] = useState()
 
     useEffect(() => {
         if (slug) {
@@ -32,6 +36,12 @@ export default () => {
         }
     }, [slug])
 
+    useEffect(() => {
+        AdService.getFullAd().then(pack => {
+            if (pack) setPictures(pack)
+        })
+    }, [])
+    console.log('pictures :>> ', pictures)
     const coverImage = () => {
         if (event.coverImage !== null) return event.coverImage.url
         else return '%REACT_APP_SEO_IMAGE_URL%'
@@ -84,6 +94,13 @@ export default () => {
                 <CenteredContainer>
                     <StaggeredList>
                         <Grid container spacing={5} wrap="wrap-reverse">
+                            <Grid item xs={12} md={4}>
+                                <Box mt={3} />
+                                <StaggeredListItem>
+                                    <Box mt={3} />
+                                    <EventTimeline event={event} />
+                                </StaggeredListItem>
+                            </Grid>
                             <Grid item xs={12} md={8}>
                                 <Box mt={3} />
                                 <StaggeredListItem>
@@ -92,19 +109,25 @@ export default () => {
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <Box mt={3} />
-                                <StaggeredListItem>
-                                    <EventButtons
-                                        event={event}
+                            </Grid>
+                            <Grid item xs={12} md={8}>
+                                <Box mt={3} />
+
+                                <Typography variant="h2">
+                                    {event.name}
+                                </Typography>
+                                <Grid container justify="space-between">
+                                    <EventInformation
                                         registration={registration}
+                                        event={event}
                                     />
-                                    <Box mt={3} />
-                                    <EventTimeline event={event} />
-                                </StaggeredListItem>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </StaggeredList>
                 </CenteredContainer>
             </FadeInWrapper>
+            <EventCarousel event={event} pictures={pictures} />
         </>
     )
 }

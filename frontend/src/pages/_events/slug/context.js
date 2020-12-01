@@ -51,6 +51,8 @@ const eventQuery = gql`
             finalists
             demoPlaceholder
             eventPrivacy
+            frontPagePriority
+            approved
             eventTerms
             _eventStatus
             _eventTimeFormatted

@@ -22,13 +22,14 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             alignItems: 'stretch',
-            height: '324px',
+            height: '465px',
             padding: 0,
         },
     },
     left: {
-        height: '148px',
+        height: '465px',
         position: 'relative',
+        width: '100%',
         padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flex: 1,
@@ -43,23 +44,6 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
-        borderRadius: '12px 12px 0 0',
-        [theme.breakpoints.up('md')]: {
-            borderRadius: '0 12px 12px 0',
-        },
-    },
-    right: {
-        background: 'white',
-        padding: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: '0 0 12px 12px',
-        [theme.breakpoints.up('md')]: {
-            flex: 1,
-            background: 'transparent',
-            justifyContent: 'center',
-            padding: theme.spacing(2, 4),
-        },
     },
 }))
 
@@ -69,9 +53,9 @@ export default () => {
     const { t } = useTranslation()
 
     const [events, loading] = useHighlightedEvents({
-        limit: 10,
-        name: 'Junction 2020 Connected',
+        limit: 1,
     })
+    console.log('events :>> ', events)
     const event = events?.[0] ?? null
     if (!event) return null
     return (
@@ -86,7 +70,7 @@ export default () => {
                         defaultImage={require('assets/images/default_cover_image.png')}
                     />
                 </div>
-                <div className={classes.right}>
+                {/* <div className={classes.right}>
                     <Typography variant="h6" color="primary">
                         Highlight
                     </Typography>
@@ -147,7 +131,7 @@ export default () => {
                             </Box>
                         )}
                     </Box>
-                </div>
+                </div> */}
             </div>
         </PageWrapper>
     )

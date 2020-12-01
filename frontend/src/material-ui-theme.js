@@ -17,11 +17,20 @@ const theme = createMuiTheme({
             dark: '#5a9216',
             contrastText: '#ffffff',
         },
+        theme_black: {
+            main: '#232323',
+        },
         theme_orange: {
             main: '#f58532',
             light: '#ffb661',
             dark: '#bc5700',
             contrastText: '#ffffff',
+        },
+        theme_blue: {
+            main: '#73F9EC',
+            light: '#8ffaff',
+            dark: '#0b96a5',
+            contrastText: '#232323',
         },
         theme_purple: {
             main: '#392F80',
@@ -41,6 +50,12 @@ const theme = createMuiTheme({
             dark: '#bdbdbd',
             contrastText: '#000000',
         },
+        theme_lightgrayDark: {
+            main: '#efefef',
+            light: '#ffffff',
+            dark: '#bdbdbd',
+            contrastText: '#ffffff',
+        },
         theme_white: {
             main: '#ffffff',
             light: '#ffffff',
@@ -49,7 +64,7 @@ const theme = createMuiTheme({
         },
         background: {
             paper: '#fff',
-            default: '#fafafa',
+            default: '#ffffff',
             level2: '#f5f5f5',
             level1: '#fff',
         },
@@ -67,11 +82,11 @@ const theme = createMuiTheme({
         },
         h3: {
             fontFamily: titleFont,
-            fontWeight: '700',
+            fontWeight: '400',
         },
         h4: {
             fontFamily: titleFont,
-            fontWeight: '700',
+            fontWeight: '400',
         },
         h5: {
             fontFamily: titleFont,

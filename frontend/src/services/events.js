@@ -45,12 +45,12 @@ EventsService.deleteEventBySlugAsOrganiser = (idToken, slug) => {
 }
 
 EventsService.getOrganisers = (idToken, slug) => {
-    return _axios.get(`/events/organisers/${slug}`, config(idToken))
+    return _axios.get(`${BASE_ROUTE}/organisers/${slug}`, config(idToken))
 }
 
 EventsService.addOrganiserToEvent = (idToken, slug, userId) => {
     return _axios.post(
-        `/events/organisers/${slug}/${userId}`,
+        `${BASE_ROUTE}/organisers/${slug}/${userId}`,
         {},
         config(idToken),
     )
@@ -58,18 +58,18 @@ EventsService.addOrganiserToEvent = (idToken, slug, userId) => {
 
 EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
     return _axios.delete(
-        `/events/organisers/${slug}/${userId}`,
+        `${BASE_ROUTE}/organisers/${slug}/${userId}`,
         config(idToken),
     )
 }
 
 EventsService.getOrganizations = (idToken, slug) => {
-    return _axios.get(`/events/organizations/${slug}`, config(idToken))
+    return _axios.get(`${BASE_ROUTE}/organizations/${slug}`, config(idToken))
 }
 
 EventsService.addOrganizationToEvent = (idToken, slug, orgSlug) => {
     return _axios.post(
-        `/events/organizations/${slug}/${orgSlug}`,
+        `${BASE_ROUTE}/organizations/${slug}/${orgSlug}`,
         {},
         config(idToken),
     )
@@ -77,7 +77,7 @@ EventsService.addOrganizationToEvent = (idToken, slug, orgSlug) => {
 
 EventsService.removeOrganizationFromEvent = (idToken, slug, orgSlug) => {
     return _axios.delete(
-        `/events/organizations/${slug}/${orgSlug}`,
+        `${BASE_ROUTE}/organizations/${slug}/${orgSlug}`,
         config(idToken),
     )
 }
@@ -114,4 +114,15 @@ EventsService.generateAchievements = (idToken, slug) => {
     )
 }
 
+EventsService.getUnapprovedEvents = idToken => {
+    return _axios.get(`${BASE_ROUTE}/admin/unapproved`, config(idToken))
+}
+
+EventsService.setApproved = (idToken, slug, approved) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/admin/unapproved/${slug}`,
+        { approved: approved },
+        config(idToken),
+    )
+}
 export default EventsService

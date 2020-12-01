@@ -60,9 +60,10 @@ const routes = [
     },
     {
         path: '/organise',
-        component: RequiresPermission(OrganiserRouter, [
+        component: RequiresPermission(OrganiserRouter),
+        /*component: RequiresPermission(OrganiserRouter, [
             AuthConstants.Permissions.MANAGE_EVENT,
-        ]),
+        ]),*/
         exact: false,
     },
     {
@@ -92,6 +93,7 @@ const routes = [
         component: HackerpackPage,
         exact: false,
     },
+
     {
         path: '/pricing',
         component: PricingPage,
