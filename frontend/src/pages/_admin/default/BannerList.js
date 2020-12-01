@@ -11,32 +11,30 @@ import { IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
-    const [ad, setAd] = useState(data)
-    console.log('ad :>> ', ad)
+    const [banner, setBanner] = useState(data)
     useEffect(() => {
-        AdService.getFullAd().then(pack => {
-            if (pack) setAd(pack)
+        BannerService.getFullBanner().then(pack => {
+            if (pack) setBanner(pack)
         })
     }, [])
 
     const handleRemove = useCallback(
         slug => {
-            console.log(ad)
-            AdService.deleteAd(idToken, slug)
-            setAd(
-                ad.filter(function (obj) {
+            BannerService.deleteBanner(idToken, slug)
+            setBanner(
+                banner.filter(function (obj) {
                     return obj.slug !== slug
                 }),
             )
         },
-        [ad, idToken],
+        [banner, idToken],
     )
 
     return (
@@ -45,7 +43,7 @@ export default ({ data = [] }) => {
                 {t('Your_hackerpack_')}
             </Typography>
             <Grid container spacing={3}>
-                {ad.map(company => (
+                {banner.map(company => (
                     <>
                         <Box p={2}>
                             <IconButton
@@ -59,7 +57,9 @@ export default ({ data = [] }) => {
                                 edge="end"
                                 aria-label="edit"
                                 onClick={() =>
-                                    dispatch(push(`admin/ad/${company.slug}`))
+                                    dispatch(
+                                        push(`admin/Banner/${company.slug}`),
+                                    )
                                 }
                             >
                                 <EditIcon />

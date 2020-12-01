@@ -19,7 +19,7 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 import Button from 'components/generic/Button'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 
 export default () => {
     const dispatch = useDispatch()
@@ -37,7 +37,7 @@ export default () => {
     }, [slug])
 
     useEffect(() => {
-        AdService.getFullAd().then(pack => {
+        BannerService.getFullBanner().then(pack => {
             if (pack) setPictures(pack)
         })
     }, [])
