@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         width: '100%',
         height: '100%',
-        objectFit: 'cover',
+        objectFit: 'contain',
     },
 }))
 
@@ -70,68 +70,6 @@ export default () => {
                         defaultImage={require('assets/images/default_cover_image.png')}
                     />
                 </div>
-                {/* <div className={classes.right}>
-                    <Typography variant="h6" color="primary">
-                        Highlight
-                    </Typography>
-                    <Typography variant="button">
-                        {event?._eventTimeFormatted}
-                    </Typography>
-                    <Typography variant="h4">{event.name}</Typography>
-                    <Typography variant="subtitle1">
-                        {event?._eventLocationFormatted}
-                    </Typography>
-                    <Box
-                        mt={2}
-                        display="flex"
-                        flexDirection="row"
-                        flexWrap="wrap"
-                    >
-                        <Box mr={1} mb={1} mt={2}>
-                            <Button
-                                color="theme_lightgray"
-                                variant="outlined"
-                                onClick={() =>
-                                    dispatch(push('/events/' + event.slug))
-                                }
-                            >
-                                {t('See_more_')}
-                            </Button>
-                        </Box>
-                        <Box mr={1} mb={1} mt={2}>
-                            <Button
-                                color="theme_orange"
-                                variant="contained"
-                                onClick={() =>
-                                    dispatch(
-                                        push(
-                                            '/events/' +
-                                                event.slug +
-                                                '/register',
-                                        ),
-                                    )
-                                }
-                            >
-                                {t('Register_now_')}
-                            </Button>
-                        </Box>
-                        {event.galleryOpen && (
-                            <Box mr={1} mb={1}>
-                                <Button
-                                    color="theme_turquoise"
-                                    variant="contained"
-                                    onClick={() =>
-                                        dispatch(
-                                            push('/projects/' + event.slug),
-                                        )
-                                    }
-                                >
-                                    {t('View_projects_')}
-                                </Button>
-                            </Box>
-                        )}
-                    </Box>
-                </div> */}
             </div>
         </PageWrapper>
     )

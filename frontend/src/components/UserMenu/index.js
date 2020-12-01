@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
     dropdown: {
+        marginRight: '10px',
         transition: theme.transitions.create(['transform'], {
             duration: theme.transitions.duration.short,
         }),
@@ -140,7 +141,7 @@ export default () => {
 
         // if (hasOrganiserAccess) {
         items.push({
-            label: 'Organiser dashboard',
+            label: 'Organiser',
             onClick: () => dispatch(push('/organise')),
         })
         // }
@@ -261,6 +262,11 @@ export default () => {
                     </TableContainer>
                 </Box>
             </Popover>
+            <Avatar
+                src={profile?.avatar}
+                alt="Avatar"
+                style={{ width: '33px', height: '33px' }}
+            />
         </Box>
     )
 }

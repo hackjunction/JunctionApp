@@ -17,7 +17,7 @@ export default () => {
             id="demo-simple-select"
             value={i18n.language}
             onChange={handleChange}
-            style={{ padding: '0 0 0 32px' }}
+            style={{ padding: '0 0 0 0' }}
             disableUnderline
         >
             {/* <MenuItem value={'fi'}>
