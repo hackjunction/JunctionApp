@@ -20,6 +20,7 @@ export default ({ data = [] }) => {
     const { t } = useTranslation()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [events, setEvents] = useState(data)
+    //TODO add state for counter component
 
     useEffect(() => {
         EventService.getPublicEvents().then(e => {
@@ -27,21 +28,13 @@ export default ({ data = [] }) => {
         })
     }, [])
 
-    const handleRemove = useCallback(
-        slug => {
-            EventService.deleteEventBySlugAsOrganiser(idToken, slug)
-            setEvents(
-                events.filter(function (obj) {
-                    return obj.slug !== slug
-                }),
+    const handleClick = useCallback(
+        (event, i) => {
+            EventService.setFrontpagePriority(
+                idToken,
+                event.slug,
+                event.frontPagePriority + i,
             )
-        },
-        [events, idToken],
-    )
-
-    const handleApprove = useCallback(
-        slug => {
-            EventService.setApproved(idToken, slug, true)
         },
         [events, idToken],
     )
@@ -49,34 +42,20 @@ export default ({ data = [] }) => {
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>
-                {t('unapproved_events_')}
+                {t('event_priority_')}
             </Typography>
             <Grid container spacing={3}>
-                {events.map(Event => (
+                {events.map(event => (
                     <>
                         <Box p={2}>
-                            <IconButton
-                                edge="end"
-                                aria-label="delete"
-                                onClick={() => handleRemove(Event.slug)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                            <IconButton
-                                edge="end"
-                                aria-label="Approve"
-                                onClick={() => handleApprove(Event.slug)}
-                            >
-                                <ThumbUpIcon />
-                            </IconButton>
-                            <EventCardSmall
-                                eventId={Event._id}
-                                handleClick={event =>
-                                    dispatch(
-                                        push(`/organise/${event?.slug}/edit`),
-                                    )
-                                }
-                            />
+                            {event.slug}
+                            <button onClick={() => handleClick(event, 1)}>
+                                +
+                            </button>
+                            {event.frontPagePriority}
+                            <button onClick={() => handleClick(event, -1)}>
+                                -
+                            </button>
                         </Box>
                         <Divider variant="middle" />
                     </>

@@ -125,4 +125,13 @@ EventsService.setApproved = (idToken, slug, approved) => {
         config(idToken),
     )
 }
+
+EventsService.setFrontpagePriority = (idToken, slug, priority) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/admin/priority/${slug}`,
+        { frontPagePriority: priority },
+        config(idToken),
+    )
+}
+
 export default EventsService

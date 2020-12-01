@@ -42,6 +42,11 @@ controller.approveEvent = (event, data) => {
     return Event.updateAllowed(event, eventData)
 }
 
+controller.setPriority = (event, data) => {
+    const eventData = { frontPagePriority: data.frontPagePriority }
+    return Event.updateAllowed(event, eventData)
+}
+
 controller.getEventById = id => {
     return Event.findById(id)
 }

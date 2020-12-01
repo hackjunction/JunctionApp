@@ -15,6 +15,7 @@ import NewBannerForm from './NewBannerForm'
 import BannerList from './BannerList'
 
 import UnapprovedEvents from './UnapprovedEvents'
+import EventPriority from './EventPriority'
 
 export default () => {
     return (
@@ -32,6 +33,8 @@ export default () => {
                     <UnapprovedEvents />
                     <NewBannerForm />
                     <BannerList />
+
+                    <EventPriority />
                 </CenteredContainer>
             )}
         />

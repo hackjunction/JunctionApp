@@ -143,6 +143,12 @@ const approveEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(event)
 })
 
+// Priority
+const setPriority = asyncHandler(async (req, res) => {
+    const event = await EventController.setPriority(req.event, req.body)
+    return res.status(200).json(event)
+})
+
 /** Create event, get events by logged in user */
 router
     .route('/')
@@ -256,6 +262,17 @@ router
         hasRole(Auth.Roles.SUPER_ADMIN),
         isEventOrganiser,
         approveEvent,
+    )
+
+/** Priority */
+
+router
+    .route('/admin/priority/:slug')
+    .patch(
+        hasToken,
+        hasRole(Auth.Roles.SUPER_ADMIN),
+        isEventOrganiser,
+        setPriority,
     )
 
 module.exports = router
