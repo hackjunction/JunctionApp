@@ -6,7 +6,7 @@ import EventImage from 'components/generic/EventImage'
 import React, { useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 import { useEffect } from 'react'
 import Pagination from '../../../../../components/projects/ProjectDetail/Pagination'
 

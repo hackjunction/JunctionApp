@@ -6,7 +6,7 @@ const _ = require('lodash')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 
-const AdSchema = new mongoose.Schema({
+const BannerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -38,7 +38,7 @@ const AdSchema = new mongoose.Schema({
     logo: CloudinaryImageSchema.mongoose,
 })
 
-AdSchema.index(
+BannerSchema.index(
     {
         slug: 1,
     },
@@ -47,7 +47,7 @@ AdSchema.index(
     },
 )
 
-AdSchema.plugin(mongooseSlugPlugin, {
+BannerSchema.plugin(mongooseSlugPlugin, {
     tmpl: '<%=name%>',
     alwaysUpdateSlug: false,
     slugOptions: {
@@ -57,12 +57,12 @@ AdSchema.plugin(mongooseSlugPlugin, {
     },
 })
 
-AdSchema.plugin(updateAllowedPlugin, {
+BannerSchema.plugin(updateAllowedPlugin, {
     blacklisted: ['__v', '_id', 'createdAt', 'updatedAt', 'slug'],
 })
 
-AdSchema.set('timestamps', true)
+BannerSchema.set('timestamps', true)
 
-const Ad = mongoose.model('Ad', AdSchema)
+const Banner = mongoose.model('Banner', BannerSchema)
 
-module.exports = Ad
+module.exports = Banner

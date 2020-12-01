@@ -7,7 +7,7 @@ import { getIdToken } from 'redux/auth/selectors'
 import AdminService from 'services/admin'
 
 import HackerpackService from 'services/hackerpack'
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 import OrganizationService from 'services/organization'
 
 export const updateUsers = () => (dispatch, getState) => {
@@ -66,8 +66,11 @@ export const editHackerpack = (idToken, slug, values) => async (
     return hackerpack
 }
 
-export const editAd = (idToken, slug, values) => async (dispatch, getState) => {
-    const ad = await AdService.updateAd(idToken, slug, values)
+export const editBanner = (idToken, slug, values) => async (
+    dispatch,
+    getState,
+) => {
+    const ad = await BannerService.updateBanner(idToken, slug, values)
     return ad
 }
 

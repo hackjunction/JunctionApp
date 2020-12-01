@@ -166,7 +166,7 @@ router.post('/hackerpack/:slug/icon', hasToken, (req, res, next) => {
     })
 })
 
-router.post('/ad/:slug/icon', hasToken, (req, res, next) => {
+router.post('/banner/:slug/icon', hasToken, (req, res, next) => {
     helper.uploadAdIcon(req.params.slug)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {

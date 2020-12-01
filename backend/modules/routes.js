@@ -16,7 +16,7 @@ const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
 const projectScoresRouter = require('./project_score/routes')
 const hackerpackRouter = require('./hackerpack/routes')
-const adRouter = require('./ads/routes')
+const bannerRouter = require('./banner/routes')
 const organizationRouter = require('./organization/routes')
 
 module.exports = app => {
@@ -42,7 +42,7 @@ module.exports = app => {
     app.use('/api/recruitment', recruitmentRouter)
     app.use('/api/project-scores', projectScoresRouter)
     app.use('/api/hackerpack', hackerpackRouter)
-    app.use('/api/ad', adRouter)
+    app.use('/api/banner', bannerRouter)
     app.use('/api/organization', organizationRouter)
 
     /** Reviewing methods */
