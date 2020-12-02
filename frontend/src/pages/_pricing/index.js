@@ -25,6 +25,11 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         paddingTop: theme.spacing(1),
     },
+
+    pricingWrapper: {
+        width: '100%',
+        paddingTop: '2em',
+    },
 }))
 
 export default () => {
@@ -61,8 +66,8 @@ export default () => {
                             </Typography>
                         </Button>
                     </CenteredContainer>
-                    <Divider size={2} />
-                    <CenteredContainer>
+                    <Divider size={3} />
+                    <CenteredContainer wrapperClass={classes.pricingWrapper}>
                         <Grid
                             container
                             direction="row"
