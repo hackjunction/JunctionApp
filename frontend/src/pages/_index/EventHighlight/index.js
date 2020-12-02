@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'stretch',
         width: '100%',
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             alignItems: 'stretch',
@@ -30,10 +30,13 @@ const useStyles = makeStyles(theme => ({
         height: '465px',
         position: 'relative',
         width: '100%',
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flex: 1,
             height: '100%',
+        },
+        [theme.breakpoints.down('md')]: {
+            maxHeight: '200px',
         },
     },
     leftImage: {
@@ -43,7 +46,10 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         width: '100%',
         height: '100%',
-        objectFit: 'contain',
+        objectFit: 'cover',
+        [theme.breakpoints.down('md')]: {
+            objectFit: 'contain',
+        },
     },
 }))
 
@@ -52,21 +58,24 @@ export default () => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
 
-    const [events, loading] = useHighlightedEvents({
-        limit: 1,
-    })
-    console.log('events :>> ', events)
-    const event = events?.[0] ?? null
-    if (!event) return null
+    // const [events, loading] = useHighlightedEvents({
+    //     limit: 1,
+    // })
+    // console.log('events :>> ', events)
+    // const event = events?.[0] ?? null
+    // if (!event) return null
     return (
-        <PageWrapper loading={loading}>
+        <PageWrapper>
             <div className={classes.wrapper}>
                 <div className={classes.left}>
                     <Image
                         className={classes.leftImage}
-                        publicId={
-                            event.coverImage ? event.coverImage.publicId : ''
-                        }
+                        // publicId={
+                        //     event.coverImage ? event.coverImage.publicId : ''
+                        // }
+                        transformation={{
+                            width: '100%',
+                        }}
                         defaultImage={require('assets/images/default_cover_image.png')}
                     />
                 </div>
