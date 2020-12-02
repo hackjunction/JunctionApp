@@ -39,6 +39,11 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    linkText: {
+        textDecoration: 'inherit',
+        color: 'inherit',
+        whiteSpace: 'pre',
+    },
 }))
 
 const EventImage = ({
@@ -62,17 +67,36 @@ const EventImage = ({
                     defaultImage={require('assets/images/default_cover_image.png')}
                 />
                 <div className={classes.inner}>
-                    {buttons?.map(button => (
-                        <Button
-                            variant="containedEventImage"
-                            strong
-                            color="theme_blue"
-                            className={classes.buttons}
-                            onClick={() => dispatch(push(button.push))}
-                        >
-                            {button.text}
-                        </Button>
-                    ))}
+                    {buttons?.map(button =>
+                        button.push.startsWith('/') ? (
+                            <Button
+                                variant="containedEventImage"
+                                strong
+                                color="theme_blue"
+                                className={classes.buttons}
+                                onClick={() => dispatch(push(button.push))}
+                            >
+                                <span className={classes.linkText}>
+                                    {button.text}
+                                </span>
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="containedEventImage"
+                                strong
+                                color="theme_blue"
+                                className={classes.buttons}
+                            >
+                                <a
+                                    className={classes.linkText}
+                                    target="_blank"
+                                    href={button.push}
+                                >
+                                    {button.text}
+                                </a>
+                            </Button>
+                        ),
+                    )}
                 </div>
             </div>
         )

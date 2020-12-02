@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     placeholderImage: {
         width: '100%',
         maxHeight: '465px',
-        objectFit: 'contain',
+        objectFit: 'scale-down',
         maxWidth: '1440px',
     },
     margin: {
