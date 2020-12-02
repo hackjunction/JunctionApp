@@ -86,7 +86,7 @@ export const GET_PAST_EVENTS = gql`
     }
     ${Fragments.EventPreview}
 `
-
+// TODO: usePastEvents limit is conditional in backend
 export const usePastEvents = ({ limit }) => {
     const { data, loading, error } = useQuery(GET_PAST_EVENTS, {
         variables: {
