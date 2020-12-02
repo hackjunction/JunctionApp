@@ -109,7 +109,7 @@ export default () => {
                             <Button
                                 variant="containedNew"
                                 color="theme_black"
-                                onClick={() => dispatch(push('/pricing'))} // TODO: Add past events page
+                                onClick={() => dispatch(push('/events'))} // TODO: Add past events page
                             >
                                 See All Past Events
                             </Button>
