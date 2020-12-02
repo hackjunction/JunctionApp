@@ -39,9 +39,7 @@ export default () => {
                         alt={config.PLATFORM_OWNER_NAME + ' logo'}
                     />
                 </a>
-                <Grid className={classes.inner}>
-                    <UserMenu />
-                </Grid>
+                <UserMenu />
             </div>
         </div>
     )

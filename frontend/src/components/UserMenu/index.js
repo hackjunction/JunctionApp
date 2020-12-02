@@ -16,6 +16,7 @@ import {
     Table,
     TableCell,
     TableRow,
+    Grid,
 } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -33,19 +34,26 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '2px',
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
-    dropdown: {
+    hamburger: {
         transition: theme.transitions.create(['transform'], {
             duration: theme.transitions.duration.short,
         }),
     },
-    dropdownOpen: {
+    hamburgerOpen: {
         transform: 'rotate(-90deg)',
     },
-    dropdownClosed: {
+    hamburgerClosed: {
         transform: 'rotate(0)',
     },
     tableBottom: {
         borderBottom: 'none',
+    },
+    popover: {
+        borderRadius: '15px',
+    },
+    menuBox: {
+        width: '220px',
+        borderRadius: '15px',
     },
 }))
 
@@ -76,12 +84,11 @@ export default () => {
                 <MenuIcon
                     fontSize="large"
                     onClick={handleMenuOpen}
-                    className={[
-                        classes.dropdown,
+                    className={`${classes.hamburger} ${
                         anchorEl
-                            ? classes.dropdownOpen
-                            : classes.dropdownClosed,
-                    ]}
+                            ? classes.hamburgerOpen
+                            : classes.hamburgerClosed
+                    }`}
                 />
 
                 <Popover
@@ -96,33 +103,27 @@ export default () => {
                         vertical: 'top',
                         horizontal: 'right',
                     }}
+                    classes={{
+                        paper: classes.menuBox,
+                    }}
                 >
-                    <Box width="220px" borderRadius="15px">
-                        <TableContainer>
-                            <Table padding="none">
-                                <TableRow>
-                                    <List onClick={handleMenuClose}>
-                                        <TableCell
-                                            padding="none"
-                                            className={classes.tableBottom}
-                                        >
-                                            <ListItem button padding="none">
-                                                <ListItemText
-                                                    primary={t('Sign_in_')}
-                                                    onClick={() =>
-                                                        dispatch(push('/login'))
-                                                    }
-                                                />
-                                            </ListItem>
-                                        </TableCell>
-                                        <Divider />
-                                        <ListItem>
-                                            <LanguageMenu />
-                                        </ListItem>
-                                    </List>
-                                </TableRow>
-                            </Table>
-                        </TableContainer>
+                    <Box className={classes.menuBox}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={12}>
+                                <ListItem button>
+                                    <ListItemText
+                                        primary={t('Sign_in_')}
+                                        onClick={() => dispatch(push('/login'))}
+                                    />
+                                </ListItem>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Divider variant="middle" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <LanguageMenu />
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Popover>
             </Box>
@@ -158,19 +159,16 @@ export default () => {
                 onClick: () => dispatch(push('/admin')),
             })
         }
-
+        // Grid Item isn't neccessary here, but put it in for consistency
         if (items.length > 0) {
             return (
                 <>
                     {items.map(({ label, onClick }) => (
-                        <ListItem
-                            key={label}
-                            button
-                            onClick={onClick}
-                            padding="none"
-                        >
-                            <ListItemText primary={label} />
-                        </ListItem>
+                        <Grid key={label} item xs={12}>
+                            <ListItem button onClick={onClick}>
+                                <ListItemText primary={label} />
+                            </ListItem>
+                        </Grid>
                     ))}
                 </>
             )
@@ -184,10 +182,9 @@ export default () => {
             <MenuIcon
                 fontSize="large"
                 onClick={handleMenuOpen}
-                className={[
-                    classes.dropdown,
-                    anchorEl ? classes.dropdownOpen : classes.dropdownClosed,
-                ]}
+                className={`${classes.hamburger} ${
+                    anchorEl ? classes.hamburgerOpen : classes.hamburgerClosed
+                }`}
             />
 
             <Popover
@@ -202,17 +199,65 @@ export default () => {
                     vertical: 'top',
                     horizontal: 'right',
                 }}
+                classes={{
+                    paper: classes.menuBox,
+                }}
             >
-                <Box width="220px" borderRadius="15px">
-                    <TableContainer>
-                        <Table padding="none">
+                <Box className={classes.menuBox}>
+                    <Grid container spacing={0}>
+                        <Grid item xs={6}>
+                            <ListItem button>
+                                <ListItemText
+                                    primary={t('Dashboard_')}
+                                    onClick={() => dispatch(push('/account'))}
+                                />
+                            </ListItem>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <ListItem
+                                button
+                                onClick={() => dispatch(push('/logout'))}
+                            >
+                                <ListItemText primary={t('Log_out_')} />
+                            </ListItem>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ListItem button>
+                                <ListItemText
+                                    primary={t('Edit_profile_')}
+                                    onClick={() =>
+                                        dispatch(push('/account/profile'))
+                                    }
+                                />
+                            </ListItem>
+                        </Grid>
+                        {renderEventItems()}
+                        {renderOtherItems()}
+
+                        <Grid item xs={12}>
+                            <Divider variant="middle" />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <LanguageMenu />
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Popover>
+        </Box>
+    )
+}
+
+/**
+ * 
+                   <TableContainer>
+                        <Table>
                             <TableRow>
                                 <List onClick={handleMenuClose}>
                                     <TableCell
-                                        padding="none"
+                                    
                                         className={classes.tableBottom}
                                     >
-                                        <ListItem button padding="none">
+                                        <ListItem button>
                                             <ListItemText
                                                 primary={t('Dashboard_')}
                                                 onClick={() =>
@@ -220,7 +265,7 @@ export default () => {
                                                 }
                                             />
                                         </ListItem>
-                                        <ListItem button padding="none">
+                                        <ListItem button>
                                             <ListItemText
                                                 primary={t('Edit_profile_')}
                                                 onClick={() =>
@@ -241,7 +286,7 @@ export default () => {
                                         </ListItem>
                                     </TableCell>
                                     <TableCell
-                                        padding="none"
+                                    
                                         className={classes.tableBottom}
                                     >
                                         <ListItem
@@ -259,8 +304,36 @@ export default () => {
                             </TableRow>
                         </Table>
                     </TableContainer>
-                </Box>
-            </Popover>
-        </Box>
-    )
-}
+
+ */
+
+/*
+
+
+                         <TableContainer>
+                            <Table>
+                                <TableRow>
+                                    <List onClick={handleMenuClose}>
+                                        <TableCell
+                                        
+                                            className={classes.tableBottom}
+                                        >
+                                            <ListItem button>
+                                                <ListItemText
+                                                    primary={t('Sign_in_')}
+                                                    onClick={() =>
+                                                        dispatch(push('/login'))
+                                                    }
+                                                />
+                                            </ListItem>
+                                        </TableCell>
+                                        <Divider />
+                                        <ListItem>
+                                            <LanguageMenu />
+                                        </ListItem>
+                                    </List>
+                                </TableRow>
+                            </Table>
+                        </TableContainer>
+
+ */

@@ -64,14 +64,13 @@ const useStyles = makeStyles(theme => ({
 const BannerCarousel = (event = null) => {
     const classes = useStyles()
     //TODO in case event is provided, display event pic
-    const [pictures, setPictures] = useState()
+    const [pictures, setPictures] = useState([])
 
     useEffect(() => {
         BannerService.getAllBanners().then(banners => {
             if (banners) setPictures(banners)
         })
     }, [])
-    console.log('pictures :>> ', pictures)
     const [index, setIndex] = useState(0)
 
     return (
@@ -81,24 +80,24 @@ const BannerCarousel = (event = null) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={setIndex}
-                    interval="5000"
+                    interval={5000}
                     disabled
                 >
                     {pictures?.map(picture => {
                         return (
                             <Box
-                                key={picture?.publicId}
+                                key={picture._id}
                                 className={classes.placeholderTop}
                             >
                                 <EventImage
                                     className={classes.placeholderImage}
-                                    publicId={picture?.icon}
+                                    publicId={picture.icon}
                                     defaultImage={require('assets/images/default_cover_image.png')}
                                     transformation={{
                                         width: 1440,
                                         height: 465,
                                     }}
-                                    buttons={picture?.buttons}
+                                    buttons={picture.buttons}
                                 />
                             </Box>
                         )

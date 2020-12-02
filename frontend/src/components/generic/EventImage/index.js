@@ -50,14 +50,13 @@ const EventImage = ({
     className,
     publicId,
     transformation = {},
-    alt,
-    url,
+    alt = null,
+    url = '',
     defaultImage,
     buttons,
 }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    console.log('buttons :>> ', buttons)
     if (publicId) {
         return (
             <div className={classes.wrapper}>
@@ -70,6 +69,7 @@ const EventImage = ({
                     {buttons?.map(button =>
                         button.push.startsWith('/') ? (
                             <Button
+                                key={button._id}
                                 variant="containedEventImage"
                                 strong
                                 color="theme_blue"
@@ -82,6 +82,7 @@ const EventImage = ({
                             </Button>
                         ) : (
                             <Button
+                                key={button._id}
                                 variant="containedEventImage"
                                 strong
                                 color="theme_blue"
@@ -115,6 +116,7 @@ const EventImage = ({
             <div className={classes.inner}>
                 {buttons?.map(button => (
                     <Button
+                        key={button._id}
                         variant="containedEventImage"
                         strong
                         color="theme_blue"
