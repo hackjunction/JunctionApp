@@ -80,14 +80,9 @@ export default () => {
                                 price="Free"
                             />
                             <PricingCard
-                                topic="Lite"
-                                body={body3}
-                                price="800 €"
-                            />
-                            <PricingCard
                                 topic="Pro"
                                 body={body2}
-                                price="4 100 €"
+                                price="Ask: hello@hackjunction.com"
                             />
                             <Divider size={4} />
                             <Typography variant="body1" justify="center">
