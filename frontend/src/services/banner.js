@@ -30,7 +30,7 @@ BannerService.deleteBanner = (idToken, slug) => {
     return _axios.delete(`${BASE_ROUTE}/${slug}`, config(idToken))
 }
 
-BannerService.getFullBanner = () => {
+BannerService.getAllBanners = () => {
     return _axios.get(`${BASE_ROUTE}`)
 }
 

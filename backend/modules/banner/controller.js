@@ -18,7 +18,7 @@ controller.getBannerBySlug = slug => {
     return Banner.findOne({ slug })
 }
 
-controller.getFullBanner = () => {
+controller.getAllBanners = () => {
     return Banner.find()
 }
 

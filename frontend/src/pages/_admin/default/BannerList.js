@@ -20,7 +20,7 @@ export default ({ data = [] }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [banner, setBanner] = useState(data)
     useEffect(() => {
-        BannerService.getFullBanner().then(pack => {
+        BannerService.getAllBanners().then(pack => {
             if (pack) setBanner(pack)
         })
     }, [])

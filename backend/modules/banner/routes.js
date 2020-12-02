@@ -9,8 +9,8 @@ const EventController = require('../event/controller')
 const { hasToken } = require('../../common/middleware/token')
 const { hasRole } = require('../../common/middleware/permissions')
 
-const getFullBanner = asyncHandler(async (req, res) => {
-    const Banner = await BannerController.getFullBanner()
+const getAllBanners = asyncHandler(async (req, res) => {
+    const Banner = await BannerController.getAllBanners()
     return res.status(200).json(Banner)
 })
 
@@ -48,7 +48,7 @@ const updateBanner = asyncHandler(async (req, res) => {
 
 router
     .route('/')
-    .get(getFullBanner)
+    .get(getAllBanners)
     .post(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), createBanner)
 
 router

@@ -9,7 +9,7 @@ import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
 
 import EventTimeline from './EventTimeline'
-import EventCarousel from './EventCarousel'
+import BannerCarousel from 'components/generic/BannerCarousel'
 import EventInformation from './EventInformation'
 
 import StaggeredList from 'components/animated/StaggeredList'
@@ -28,20 +28,12 @@ export default () => {
     const keywords = event.name.split(' ').join(', ')
     console.log('KEYWORDS', keywords)
     console.log('HELMET', Helmet.peek())
-    const [pictures, setPictures] = useState()
 
     useEffect(() => {
         if (slug) {
             AnalyticsService.events.VIEW_EVENT(slug)
         }
     }, [slug])
-
-    useEffect(() => {
-        BannerService.getFullBanner().then(pack => {
-            if (pack) setPictures(pack)
-        })
-    }, [])
-    console.log('pictures :>> ', pictures)
     const coverImage = () => {
         if (event.coverImage !== null) return event.coverImage.url
         else return '%REACT_APP_SEO_IMAGE_URL%'
@@ -50,7 +42,6 @@ export default () => {
     const eventDescription = () => {
         return `${event.name} is coming up! If you're interested in joining the coolest hackathon on the planet just head straight to ...`
     }
-    console.log('event :>> ', event)
     return (
         <>
             <Helmet>
@@ -127,7 +118,7 @@ export default () => {
                     </StaggeredList>
                 </CenteredContainer>
             </FadeInWrapper>
-            <EventCarousel event={event} pictures={pictures} />
+            <BannerCarousel />
         </>
     )
 }

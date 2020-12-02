@@ -6,7 +6,7 @@ import Button from 'components/generic/Button'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import EventHighlight from './EventHighlight'
+import BannerCarousel from 'components/generic/BannerCarousel'
 import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
 import CenteredContainerSmall from 'components/generic/CenteredContainerSmall'
@@ -91,7 +91,10 @@ export default () => {
                         />
                     </Helmet>
                     <Divider size={1} />
+                    <BannerCarousel />
+                    {/**
                     <EventHighlight />
+                     */}
                     <Divider size={4} />
                     <CenteredContainer spacing={3}>
                         <Divider size={2} />
@@ -151,7 +154,6 @@ export default () => {
                         <Divider size={4} />
                     </CenteredContainerSmall>
                     <Divider size={20} />
-
                     <CenteredContainerSmall>
                         <Divider size={1} />
                         <Typography variant="h3" align="center">

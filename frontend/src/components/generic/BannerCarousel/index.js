@@ -8,7 +8,7 @@ import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 import BannerService from 'services/banner'
 import { useEffect } from 'react'
-import Pagination from '../../../../../components/projects/ProjectDetail/Pagination'
+import Pagination from '../../projects/ProjectDetail/Pagination'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '1440px',
     },
     margin: {
-        marginTop: theme.spacing(15),
+        marginTop: theme.spacing(0),
     },
     backButtonWrapper: {
         background: 'black',
@@ -61,19 +61,17 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-// const buttons = [
-//     {
-//         text: 'Create An Event',
-//     },
-//     {
-//         text: 'Create An Event',
-//     },
-// ]
-
-const EventCarousel = ({ event, pictures }) => {
+const BannerCarousel = (event = null) => {
     const classes = useStyles()
-    console.log('buttons :>> ', pictures)
-    console.log('event :>> ', event)
+    //TODO in case event is provided, display event pic
+    const [pictures, setPictures] = useState()
+
+    useEffect(() => {
+        BannerService.getAllBanners().then(banners => {
+            if (banners) setPictures(banners)
+        })
+    }, [])
+    console.log('pictures :>> ', pictures)
     const [index, setIndex] = useState(0)
 
     return (
@@ -111,4 +109,4 @@ const EventCarousel = ({ event, pictures }) => {
     )
 }
 
-export default EventCarousel
+export default BannerCarousel

@@ -1,6 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
+
+import Image from 'components/generic/Image'
+
 import { Image as CloudinaryImage, Transformation } from 'cloudinary-react'
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
@@ -28,6 +31,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
     },
     inner: {
         position: 'absolute',
@@ -52,17 +56,11 @@ const EventImage = ({
     if (publicId) {
         return (
             <div className={classes.wrapper}>
-                <CloudinaryImage
-                    className={clsx(classes.root, className)}
+                <Image
+                    className={classes.root}
                     publicId={publicId}
-                >
-                    <Transformation
-                        crop="fill"
-                        format="auto"
-                        quality="auto"
-                        {...transformation}
-                    />
-                </CloudinaryImage>
+                    defaultImage={require('assets/images/default_cover_image.png')}
+                />
                 <div className={classes.inner}>
                     {buttons?.map(button => (
                         <Button
