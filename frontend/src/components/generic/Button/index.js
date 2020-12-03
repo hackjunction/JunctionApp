@@ -3,7 +3,7 @@ import React from 'react'
 import { Button as MuiButton, CircularProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-const baseStyles = (theme, props, variant) => {
+const baseStyles = (theme, props) => {
     return {
         borderRadius: '13px',
         padding: '0.35rem 1.5rem',
@@ -171,8 +171,18 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Button = ({ color = 'primary', strong, loading, ...props }) => {
+const Button = ({
+    color = 'primary',
+    strong = false,
+    loading = false,
+    ...props
+}) => {
     const classes = useStyles({ color, strong, variant: props.variant })
+
+    // These are the only variants offered by MUIbutton
+    if (!['text', 'outlined', 'contained'].includes(props.variant)) {
+        delete props.variant
+    }
     return (
         <MuiButton
             {...props}

@@ -12,7 +12,7 @@ import ImageUpload from 'components/inputs/ImageUpload'
 import TextInput from 'components/inputs/TextInput'
 import BottomBar from 'components/inputs/BottomBar'
 
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AdminActions from 'redux/admin/actions'
@@ -58,7 +58,7 @@ export default () => {
     const [initialData, setInitialData] = useState({})
 
     useEffect(() => {
-        AdService.getAdBySlug(slug).then(data => {
+        BannerService.getBannerBySlug(slug).then(data => {
             if (data) setInitialData(data)
         })
     }, [slug])
@@ -85,7 +85,7 @@ export default () => {
                 icon: values.icon,
             }
             formikBag.setSubmitting(true)
-            dispatch(AdminActions.editAd(idToken, slug, newVal))
+            dispatch(AdminActions.editBanner(idToken, slug, newVal))
                 .then(() => {
                     dispatch(SnackbarActions.success('Changes saved!'))
                     dispatch(push(`/admin`))
@@ -192,7 +192,7 @@ export default () => {
                                                                 : null,
                                                         )
                                                     }
-                                                    uploadUrl={`/api/upload/ad/${slug}/icon/`}
+                                                    uploadUrl={`/api/upload/banner/${slug}/icon/`}
                                                     resizeMode="cover"
                                                 />
                                             </Box>

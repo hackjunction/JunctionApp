@@ -11,6 +11,9 @@ const useStyles = makeStyles(theme => ({
         width: '60%',
         maxWidth: '1120px',
         textAlign: 'center',
+        [theme.breakpoints.down('md')]: {
+            width: '80%',
+        },
     },
 }))
 

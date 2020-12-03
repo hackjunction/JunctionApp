@@ -1,6 +1,6 @@
 import _axios from 'services/axios'
 
-const AdService = {}
+const BannerService = {}
 
 function config(idToken) {
     return {
@@ -10,28 +10,28 @@ function config(idToken) {
     }
 }
 
-const BASE_ROUTE = '/ad'
+const BASE_ROUTE = '/banner'
 
-AdService.createAd = (idToken, data) => {
+BannerService.createBanner = (idToken, data) => {
     console.log('creting!!!', data)
     return _axios.post(`${BASE_ROUTE}`, data, config(idToken))
 }
 
-AdService.updateAd = (idToken, slug, data) => {
+BannerService.updateBanner = (idToken, slug, data) => {
     console.log('updating with', data)
     return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken))
 }
 
-AdService.getAdBySlug = slug => {
+BannerService.getBannerBySlug = slug => {
     return _axios.get(`${BASE_ROUTE}/${slug}`)
 }
 
-AdService.deleteAd = (idToken, slug) => {
+BannerService.deleteBanner = (idToken, slug) => {
     return _axios.delete(`${BASE_ROUTE}/${slug}`, config(idToken))
 }
 
-AdService.getFullAd = () => {
+BannerService.getAllBanners = () => {
     return _axios.get(`${BASE_ROUTE}`)
 }
 
-export default AdService
+export default BannerService

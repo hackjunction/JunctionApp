@@ -1,8 +1,8 @@
 import React from 'react'
 
 import Select from '@material-ui/core/Select'
-import Box from '@material-ui/core/Box'
 import MenuItem from '@material-ui/core/MenuItem'
+
 import { useTranslation } from 'react-i18next'
 
 export default () => {
@@ -17,7 +17,7 @@ export default () => {
             id="demo-simple-select"
             value={i18n.language}
             onChange={handleChange}
-            style={{ padding: '0 0 0 32px' }}
+            style={{ padding: '8px 0px 8px 16px' }}
             disableUnderline
         >
             {/* <MenuItem value={'fi'}>
@@ -28,12 +28,12 @@ export default () => {
 
             <MenuItem value={'en'}>
                 <span role="img" aria-label="en">
-                    ENG
+                    English
                 </span>
             </MenuItem>
             <MenuItem value={'zh'}>
                 <span role="img" aria-label="zh">
-                    ZH
+                    Chinese
                 </span>
             </MenuItem>
         </Select>

@@ -45,7 +45,7 @@ router.route('/:slug/preview').post(
         const { to, params } = req.body
         await EmailTaskController.sendPreviewEmail(to, params)
         return res.status(status.OK).json({ message: 'success' })
-    })
+    }),
 )
 
 router.route('/:slug/send').post(
@@ -64,7 +64,7 @@ router.route('/:slug/send').post(
         const { recipients, params, uniqueId } = req.body
         EmailTaskController.sendBulkEmail(recipients, params, event, uniqueId)
         return res.status(status.OK).json({ message: 'success' })
-    })
+    }),
 )
 
 router.route('/contact').post(
@@ -77,7 +77,7 @@ router.route('/contact').post(
         const { params } = req.body
         await EmailTaskController.sendContactEmail(params)
         return res.status(status.OK).json({ message: 'success' })
-    })
+    }),
 )
 
 module.exports = router

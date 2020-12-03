@@ -7,7 +7,7 @@ import { Grid, Box, Typography } from '@material-ui/core'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
@@ -48,15 +48,15 @@ export default () => {
     const handleCreate = useCallback(() => {
         if (!checkName()) return
         setLoading(true)
-        AdService.createAd(idToken, { name })
+        BannerService.createBanner(idToken, { name })
             .then(data => {
                 console.log('doing data', data)
-                dispatch(push(`/admin/ad/${data.slug}`))
+                dispatch(push(`/admin/banner/${data.slug}`))
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })
             .catch(e => {
                 dispatch(
-                    SnackbarActions.error('Unable to create ad'), // t('Unable_to_create_hackerpack_')
+                    SnackbarActions.error(t('Unable_to_create_banner_')), //
                 )
             })
             .finally(() => {
@@ -67,7 +67,7 @@ export default () => {
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>
-                Create new ad
+                Create new frontpage banner
             </Typography>
             <Grid container spacing={2} direction="row" alignItems="flex-end">
                 <Grid item xs={12}>
@@ -77,8 +77,8 @@ export default () => {
                 </Grid>
                 <Grid item xs={12} sm={9}>
                     <TextInput
-                        label="Ad name"
-                        placeholder="Ad name"
+                        label="Banner name"
+                        placeholder="Banner name"
                         value={name}
                         onChange={setName}
                         disabled={loading}

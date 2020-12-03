@@ -46,7 +46,8 @@ const settings = {
         required: true,
         value:
             process.env.REACT_APP_LOGO_DARK_URL ||
-            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419636/Junction%20Logos/wordmark_black.png',
+            //'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419636/Junction%20Logos/wordmark_black.png',
+            'https://res.cloudinary.com/hackjunction/image/upload/v1606900986/Junction%20Logos/app.svg',
     },
     LOGO_LIGHT_URL: {
         required: true,

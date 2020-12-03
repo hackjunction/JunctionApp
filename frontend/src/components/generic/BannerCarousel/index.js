@@ -6,9 +6,9 @@ import EventImage from 'components/generic/EventImage'
 import React, { useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
-import AdService from 'services/ads'
+import BannerService from 'services/banner'
 import { useEffect } from 'react'
-import Pagination from '../../../../../components/projects/ProjectDetail/Pagination'
+import Pagination from '../../projects/ProjectDetail/Pagination'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -33,11 +33,11 @@ const useStyles = makeStyles(theme => ({
     placeholderImage: {
         width: '100%',
         maxHeight: '465px',
-        objectFit: 'contain',
+        objectFit: 'scale-down',
         maxWidth: '1440px',
     },
     margin: {
-        marginTop: theme.spacing(15),
+        marginTop: theme.spacing(0),
     },
     backButtonWrapper: {
         background: 'black',
@@ -61,19 +61,16 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-// const buttons = [
-//     {
-//         text: 'Create An Event',
-//     },
-//     {
-//         text: 'Create An Event',
-//     },
-// ]
-
-const EventCarousel = ({ event, pictures }) => {
+const BannerCarousel = (event = null) => {
     const classes = useStyles()
-    console.log('buttons :>> ', pictures)
-    console.log('event :>> ', event)
+    //TODO in case event is provided, display event pic
+    const [pictures, setPictures] = useState([])
+
+    useEffect(() => {
+        BannerService.getAllBanners().then(banners => {
+            if (banners) setPictures(banners)
+        })
+    }, [])
     const [index, setIndex] = useState(0)
 
     return (
@@ -83,24 +80,24 @@ const EventCarousel = ({ event, pictures }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={setIndex}
-                    interval="5000"
+                    interval={5000}
                     disabled
                 >
                     {pictures?.map(picture => {
                         return (
                             <Box
-                                key={picture?.publicId}
+                                key={picture._id}
                                 className={classes.placeholderTop}
                             >
                                 <EventImage
                                     className={classes.placeholderImage}
-                                    publicId={picture?.icon}
+                                    publicId={picture.icon}
                                     defaultImage={require('assets/images/default_cover_image.png')}
                                     transformation={{
                                         width: 1440,
                                         height: 465,
                                     }}
-                                    buttons={picture?.buttons}
+                                    buttons={picture.buttons}
                                 />
                             </Box>
                         )
@@ -111,4 +108,4 @@ const EventCarousel = ({ event, pictures }) => {
     )
 }
 
-export default EventCarousel
+export default BannerCarousel

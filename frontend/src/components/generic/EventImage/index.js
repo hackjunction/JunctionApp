@@ -1,6 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
+
+import Image from 'components/generic/Image'
+
 import { Image as CloudinaryImage, Transformation } from 'cloudinary-react'
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
@@ -28,6 +31,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
     },
     inner: {
         position: 'absolute',
@@ -35,46 +39,65 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    linkText: {
+        textDecoration: 'inherit',
+        color: 'inherit',
+        whiteSpace: 'pre',
+    },
 }))
 
 const EventImage = ({
     className,
     publicId,
     transformation = {},
-    alt,
-    url,
+    alt = null,
+    url = '',
     defaultImage,
     buttons,
 }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    console.log('buttons :>> ', buttons)
     if (publicId) {
         return (
             <div className={classes.wrapper}>
-                <CloudinaryImage
-                    className={clsx(classes.root, className)}
+                <Image
+                    className={classes.root}
                     publicId={publicId}
-                >
-                    <Transformation
-                        crop="fill"
-                        format="auto"
-                        quality="auto"
-                        {...transformation}
-                    />
-                </CloudinaryImage>
+                    defaultImage={require('assets/images/default_cover_image.png')}
+                />
                 <div className={classes.inner}>
-                    {buttons?.map(button => (
-                        <Button
-                            variant="containedEventImage"
-                            strong
-                            color="theme_blue"
-                            className={classes.buttons}
-                            onClick={() => dispatch(push(button.push))}
-                        >
-                            {button.text}
-                        </Button>
-                    ))}
+                    {buttons?.map(button =>
+                        button.push.startsWith('/') ? (
+                            <Button
+                                key={button._id}
+                                variant="containedEventImage"
+                                strong
+                                color="theme_blue"
+                                className={classes.buttons}
+                                onClick={() => dispatch(push(button.push))}
+                            >
+                                <span className={classes.linkText}>
+                                    {button.text}
+                                </span>
+                            </Button>
+                        ) : (
+                            <Button
+                                key={button._id}
+                                variant="containedEventImage"
+                                strong
+                                color="theme_blue"
+                                className={classes.buttons}
+                            >
+                                <a
+                                    className={classes.linkText}
+                                    target="_blank"
+                                    href={button.push}
+                                >
+                                    {button.text}
+                                </a>
+                            </Button>
+                        ),
+                    )}
                 </div>
             </div>
         )
@@ -93,6 +116,7 @@ const EventImage = ({
             <div className={classes.inner}>
                 {buttons?.map(button => (
                     <Button
+                        key={button._id}
                         variant="containedEventImage"
                         strong
                         color="theme_blue"
