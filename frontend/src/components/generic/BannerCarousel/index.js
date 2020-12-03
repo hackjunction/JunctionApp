@@ -28,10 +28,12 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '465px',
+        height: '100%',
+        maxHeight: '465px',
     },
     placeholderImage: {
         width: '100%',
+        height: '100%',
         maxHeight: '465px',
         objectFit: 'scale-down',
         maxWidth: '1440px',
