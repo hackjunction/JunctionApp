@@ -22,12 +22,14 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             alignItems: 'stretch',
-            height: '465px',
+            height: '100%',
+            maxHeight: '465px',
             padding: 0,
         },
     },
     left: {
-        height: '465px',
+        height: '100%',
+        maxHeight: '465px',
         position: 'relative',
         width: '100%',
         // padding: theme.spacing(2),

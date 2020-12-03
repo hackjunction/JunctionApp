@@ -13,12 +13,14 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        height: '465px',
+        height: '100%',
+        maxHeight: '465px',
         width: '100%',
         position: 'relative',
         background: 'black',
         [theme.breakpoints.up('sm')]: {
-            height: '465px',
+            height: '100%',
+            maxHeight: '465px',
         },
         marginBottom: theme.spacing(5),
     },
