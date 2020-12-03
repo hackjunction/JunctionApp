@@ -3,7 +3,6 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
-import { useAllOrganizations } from 'graphql/queries/organization'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
@@ -27,7 +26,6 @@ export default () => {
     //TODO these shouldn't be queried. Events and organizations should be in the state
     const [activeEvents] = useActiveEvents({ limit: 3 })
     const [pastEvents] = usePastEvents({ limit: 3 })
-    const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
@@ -70,16 +68,8 @@ export default () => {
             <Divider size={4} />
             <CenteredContainer>
                 <Divider size={2} />
-                <EventsGrid
-                    title={t('Upcoming_')}
-                    events={activeEvents}
-                    organizations={organizations}
-                />
-                <EventsGrid
-                    title={t('Past_events')}
-                    events={pastEvents}
-                    organizations={organizations}
-                />
+                <EventsGrid title={t('Upcoming_')} events={activeEvents} />
+                <EventsGrid title={t('Past_events')} events={pastEvents} />
                 <Box textAlign="center">
                     <Button
                         variant="containedNew"

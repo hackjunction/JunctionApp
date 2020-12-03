@@ -17,7 +17,6 @@ import config from 'constants/config'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
-import { useAllOrganizations } from 'graphql/queries/organization'
 import { Helmet } from 'react-helmet'
 
 import { useTranslation } from 'react-i18next'
@@ -31,7 +30,6 @@ export default () => {
 
     const [pastEvents] = usePastEvents({ limit: 100 })
 
-    const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
@@ -48,7 +46,6 @@ export default () => {
                         <EventsGrid
                             title={t('Past_events')}
                             events={pastEvents}
-                            organizations={organizations}
                         />
                     </CenteredContainer>
                     <Divider size={20} />
