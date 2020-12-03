@@ -10,7 +10,7 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useTranslation } from 'react-i18next'
 
-export default ({ events, organizations, loading, title }) => {
+export default ({ events, loading = false, title }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     var date = new Date()
@@ -20,21 +20,12 @@ export default ({ events, organizations, loading, title }) => {
             const canApply =
                 isodate < event.registrationEndTime &&
                 isodate > event.registrationStartTime
-
             return (
                 <Grid key={event.slug} item xs={12} md={6} lg={4}>
                     <EventCard
                         event={event}
                         organization={
-                            organizations
-                                ? event.organizations
-                                    ? organizations.find(
-                                          org =>
-                                              org.slug ===
-                                              event.organizations[0],
-                                      )
-                                    : null
-                                : null
+                            event?.organizations ? event.organizations[0] : null
                         }
                         buttons={[
                             !canApply && !event.galleryOpen && (

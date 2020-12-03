@@ -39,12 +39,12 @@ class OrganizationController {
             overrideChecks ||
             PermissionUtils.userHasPermission(
                 requestingUser,
-                Auth.Permissions.MANAGE_EVENT
+                Auth.Permissions.MANAGE_EVENT,
             )
 
         this.organizationIdLoader = new DataLoader(batchGetOrganizationsByIds)
         this.organizationSlugLoader = new DataLoader(
-            batchGetOrganizationsBySlugs
+            batchGetOrganizationsBySlugs,
         )
     }
 

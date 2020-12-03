@@ -75,10 +75,9 @@ const Resolvers = {
     },
 }
 
+// You can have multiple types
 module.exports = {
     QueryType,
     Resolvers,
-    Types: {
-        OrganizationType,
-    },
+    OrganizationType,
 }
