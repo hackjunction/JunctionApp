@@ -100,7 +100,7 @@ export default () => {
                     anchorEl={anchorEl}
                     anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'left',
+                        horizontal: 'right',
                     }}
                     transformOrigin={{
                         vertical: 'top',
@@ -196,7 +196,7 @@ export default () => {
                 anchorEl={anchorEl}
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'right',
                 }}
                 transformOrigin={{
                     vertical: 'top',
