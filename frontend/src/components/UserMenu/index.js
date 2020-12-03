@@ -141,7 +141,7 @@ export default () => {
 
         // if (hasOrganiserAccess) {
         items.push({
-            label: 'Organiser dashboard',
+            label: 'Create Event',
             onClick: () => dispatch(push('/organise')),
         })
         // }
@@ -243,97 +243,11 @@ export default () => {
                     </Grid>
                 </Box>
             </Popover>
+            <Avatar
+                src={profile?.avatar}
+                alt="Avatar"
+                style={{ width: '33px', height: '33px' }}
+            />
         </Box>
     )
 }
-
-/**
- * 
-                   <TableContainer>
-                        <Table>
-                            <TableRow>
-                                <List onClick={handleMenuClose}>
-                                    <TableCell
-                                    
-                                        className={classes.tableBottom}
-                                    >
-                                        <ListItem button>
-                                            <ListItemText
-                                                primary={t('Dashboard_')}
-                                                onClick={() =>
-                                                    dispatch(push('/account'))
-                                                }
-                                            />
-                                        </ListItem>
-                                        <ListItem button>
-                                            <ListItemText
-                                                primary={t('Edit_profile_')}
-                                                onClick={() =>
-                                                    dispatch(
-                                                        push(
-                                                            '/account/profile',
-                                                        ),
-                                                    )
-                                                }
-                                            />
-                                        </ListItem>
-
-                                        {renderEventItems()}
-                                        {renderOtherItems()}
-
-                                        <ListItem>
-                                            <LanguageMenu />
-                                        </ListItem>
-                                    </TableCell>
-                                    <TableCell
-                                    
-                                        className={classes.tableBottom}
-                                    >
-                                        <ListItem
-                                            button
-                                            onClick={() =>
-                                                dispatch(push('/logout'))
-                                            }
-                                        >
-                                            <ListItemText
-                                                primary={t('Log_out_')}
-                                            />
-                                        </ListItem>
-                                    </TableCell>
-                                </List>
-                            </TableRow>
-                        </Table>
-                    </TableContainer>
-
- */
-
-/*
-
-
-                         <TableContainer>
-                            <Table>
-                                <TableRow>
-                                    <List onClick={handleMenuClose}>
-                                        <TableCell
-                                        
-                                            className={classes.tableBottom}
-                                        >
-                                            <ListItem button>
-                                                <ListItemText
-                                                    primary={t('Sign_in_')}
-                                                    onClick={() =>
-                                                        dispatch(push('/login'))
-                                                    }
-                                                />
-                                            </ListItem>
-                                        </TableCell>
-                                        <Divider />
-                                        <ListItem>
-                                            <LanguageMenu />
-                                        </ListItem>
-                                    </List>
-                                </TableRow>
-                            </Table>
-                        </TableContainer>
-
- */

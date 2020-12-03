@@ -1,8 +1,8 @@
 import React from 'react'
 
 import Select from '@material-ui/core/Select'
-import Box from '@material-ui/core/Box'
 import MenuItem from '@material-ui/core/MenuItem'
+
 import { useTranslation } from 'react-i18next'
 
 export default () => {

@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'stretch',
         width: '100%',
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             alignItems: 'stretch',
@@ -30,10 +30,13 @@ const useStyles = makeStyles(theme => ({
         height: '465px',
         position: 'relative',
         width: '100%',
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flex: 1,
             height: '100%',
+        },
+        [theme.breakpoints.down('md')]: {
+            maxHeight: '200px',
         },
     },
     leftImage: {
@@ -44,6 +47,9 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
+        [theme.breakpoints.down('md')]: {
+            maxHeight: '200px',
+        },
     },
 }))
 
@@ -55,7 +61,7 @@ export default () => {
     const [events, loading] = useHighlightedEvents({
         limit: 1,
     })
-    console.log('events :>> ', events)
+    //TODO no?
     const event = events?.[0] ?? null
     if (!event) return null
     return (
@@ -68,6 +74,9 @@ export default () => {
                             event.coverImage ? event.coverImage.publicId : ''
                         }
                         defaultImage={require('assets/images/default_cover_image.png')}
+                        transformation={{
+                            width: '100%',
+                        }}
                     />
                 </div>
                 {/* <div className={classes.right}>

@@ -102,8 +102,7 @@ const ProjectDetail = ({
     const classes = useStyles()
     const [index, setIndex] = useState(0)
     const [pause, setPause] = useState(true)
-    console.log('pause :>> ', pause)
-    console.log('HELMET IN PROJECT VIEW', Helmet.peek())
+
     if (!project) return null
 
     const renderTrack = () => {
