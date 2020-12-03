@@ -69,7 +69,7 @@ export default () => {
             <CenteredContainer>
                 <Divider size={2} />
                 <EventsGrid title={t('Upcoming_')} events={activeEvents} />
-                <EventsGrid title={t('Past_events')} events={pastEvents} />
+                <EventsGrid title={t('Past_events_')} events={pastEvents} />
                 <Box textAlign="center">
                     <Button
                         variant="containedNew"
