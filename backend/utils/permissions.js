@@ -13,7 +13,7 @@ const PermissionsUtils = {
             requiredPermissions.forEach(permission => {
                 if (!PermissionsUtils.userHasPermission(user, permission)) {
                     throw new Error(
-                        `User does not have a required permission: ${permission}`
+                        `User does not have a required permission: ${permission}`,
                     )
                 }
             })

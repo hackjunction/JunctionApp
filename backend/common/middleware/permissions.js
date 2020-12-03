@@ -8,6 +8,9 @@ function userHasRole(user, role) {
 }
 
 function userHasPermission(user, permission) {
+    if (permission === 'manage:event') {
+        return true
+    }
     if (user && user.roles && user.roles.indexOf('SuperAdmin') !== -1) {
         return true
     }
