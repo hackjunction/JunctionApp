@@ -1,6 +1,6 @@
 {
     "Upcoming_": "UPCOMING EVENTS",
-    "Past_": "PAST EVENTS",
+    "Past_events": "PAST EVENTS",
     "New_to_": "NEW TO {{owner}}?",
     "More_info_": "More info about {{owner}} can be found from our website ",
     "Junction_info_": "{{owner}} is a non-profit hackathon and tech community. Our volunteer-led teams organize hackathons, speaker events, coding workshops and other tech events - around the year and around the world.",
@@ -298,5 +298,7 @@
     "Which_chanllenge_to_pick_": "Which challenge to pick?",
     "Challenge_info_": "This event has {{challenges}} different challenges which you can submit your project to. It's a good idea to spend some time investigating the different challenges available and discussing with partners to find out which problem they are interested in working around.",
     "Submission_info_": "When submitting your project, you'll be able to choose up to every different challenge that your project applies to. After the submission deadline the jury will review your project,  and decide the winner of the challenge.",
-    "View_all_challenges_": "View all challenges"
+    "View_all_challenges_": "View all challenges",
+    "Past_events_all_": "See All Past Events",
+    "Pricing_": "Pricing"
 }

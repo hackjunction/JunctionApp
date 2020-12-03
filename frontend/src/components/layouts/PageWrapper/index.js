@@ -1,53 +1,26 @@
-import React, { PureComponent } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { Box, Typography, CircularProgress } from '@material-ui/core'
 
-class PageWrapper extends PureComponent {
-    static propTypes = {
-        loading: PropTypes.bool,
-        error: PropTypes.bool,
-        errorText: PropTypes.string,
-        render: PropTypes.func,
-        header: PropTypes.func,
-        footer: PropTypes.func,
-        wrapContent: PropTypes.bool,
-        wrapperProps: PropTypes.object,
-        showErrorMessage: PropTypes.bool,
-    }
+const PageWrapper = ({
+    loading = false,
+    loadingText = 'Loading',
+    error = false,
+    errorText = 'Oops, something went wrong...',
+    errorDesc = 'Please reload the page to try again',
+    wrapContent = true,
+    wrapperProps = {},
+    showErrorMessage = false,
+    render = null,
+    footer,
+    header,
+    children = null,
+}) => {
+    const [errorMessage] = useState(null)
 
-    static defaultProps = {
-        loading: false,
-        loadingText: 'Loading',
-        error: false,
-        errorText: 'Oops, something went wrong...',
-        errorDesc: 'Please reload the page to try again',
-        wrapContent: true,
-        wrapperProps: {},
-        showErrorMessage: false,
-    }
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            error: false,
-            errorMessage: null,
-        }
-    }
-
-    static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        return { error: true, errorMessage: error.message }
-    }
-
-    componentDidCatch(error, errorInfo) {
-        console.error('PageWrapper error', error)
-        console.error(errorInfo)
-    }
-
-    renderContent() {
-        if (this.props.loading) {
+    const renderContent = () => {
+        if (loading) {
             return (
                 <Box
                     p={2}
@@ -59,8 +32,8 @@ class PageWrapper extends PureComponent {
                 </Box>
             )
         }
-
-        if (this.props.error || this.state.error) {
+        if (error || errorMessage) {
+            // TODO Oops something went wrong happens here. Make it better :D
             return (
                 <Box
                     p={2}
@@ -71,40 +44,44 @@ class PageWrapper extends PureComponent {
                 >
                     <Box maxWidth="600px">
                         <Box p={1} />
-                        <Typography variant="h6">
-                            {this.props.errorText}
-                        </Typography>
+                        <Typography variant="h6">{errorText}</Typography>
                         <Typography variant="body1">
-                            {this.props.showErrorMessage
-                                ? this.state.errorMessage ||
-                                  this.props.errorDesc
-                                : this.props.errorDesc}
+                            {showErrorMessage
+                                ? errorMessage || errorDesc
+                                : errorDesc}
                         </Typography>
                     </Box>
                 </Box>
             )
         }
 
-        return typeof this.props.render === 'function'
-            ? this.props.render()
-            : this.props.children
+        return typeof render === 'function' ? render() : children
     }
+    return (
+        <>
+            {header && header()}
+            {wrapContent ? (
+                <div style={{ flex: 1 }} {...wrapperProps}>
+                    {renderContent()}
+                </div>
+            ) : (
+                renderContent()
+            )}
+            {footer && footer()}
+        </>
+    )
+}
 
-    render() {
-        return (
-            <>
-                {this.props.header && this.props.header()}
-                {this.props.wrapContent ? (
-                    <div style={{ flex: 1 }} {...this.props.wrapperProps}>
-                        {this.renderContent()}
-                    </div>
-                ) : (
-                    this.renderContent()
-                )}
-                {this.props.footer && this.props.footer()}
-            </>
-        )
-    }
+PageWrapper.propTypes = {
+    loading: PropTypes.bool,
+    error: PropTypes.bool,
+    errorText: PropTypes.string,
+    render: PropTypes.func,
+    header: PropTypes.func,
+    footer: PropTypes.func,
+    wrapContent: PropTypes.bool,
+    wrapperProps: PropTypes.object,
+    showErrorMessage: PropTypes.bool,
 }
 
 export default PageWrapper

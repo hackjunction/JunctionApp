@@ -9,7 +9,6 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import BannerCarousel from 'components/generic/BannerCarousel'
 import EventsGrid from './EventsGrid'
 import CenteredContainer from 'components/generic/CenteredContainer'
-import CenteredContainerSmall from 'components/generic/CenteredContainerSmall'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Image from 'components/generic/Image'
 import config from 'constants/config'
@@ -21,8 +20,6 @@ import { Helmet } from 'react-helmet'
 
 import { useTranslation } from 'react-i18next'
 
-import emblem_black from 'assets/logos/emblem_black.png'
-
 import { Typography, Grid, Avatar, Box } from '@material-ui/core'
 
 export default () => {
@@ -33,175 +30,148 @@ export default () => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
-        <PageWrapper
-            header={() => <GlobalNavBar />}
-            footer={() => <Footer />}
-            render={() => (
-                <>
-                    <Helmet>
-                        <title>{config.PLATFORM_OWNER_NAME}</title>
-                        <meta
-                            name="keywords"
-                            content="Hackathon, hackathon platform, Junction"
-                        />
-                        <meta name="title" content={config.SEO_PAGE_TITLE} />
-                        <meta
-                            property="og:title"
-                            content={config.SEO_PAGE_TITLE}
-                        />
-                        <meta
-                            name="twitter:title"
-                            content={config.SEO_PAGE_TITLE}
-                        />
-                        <meta
-                            name="description"
-                            content={config.SEO_PAGE_DESCRIPTION}
-                        />
-                        <meta
-                            property="og:description"
-                            content={config.SEO_PAGE_DESCRIPTION}
-                        />
-                        <meta
-                            name="twitter:description"
-                            content={config.SEO_PAGE_DESCRIPTION}
-                        />
+        <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
+            <Helmet>
+                <title>{config.PLATFORM_OWNER_NAME}</title>
+                <meta
+                    name="keywords"
+                    content="Hackathon, hackathon platform, Junction"
+                />
+                <meta name="title" content={config.SEO_PAGE_TITLE} />
+                <meta property="og:title" content={config.SEO_PAGE_TITLE} />
+                <meta name="twitter:title" content={config.SEO_PAGE_TITLE} />
+                <meta
+                    name="description"
+                    content={config.SEO_PAGE_DESCRIPTION}
+                />
+                <meta
+                    property="og:description"
+                    content={config.SEO_PAGE_DESCRIPTION}
+                />
+                <meta
+                    name="twitter:description"
+                    content={config.SEO_PAGE_DESCRIPTION}
+                />
 
-                        <meta name="og:type" content="website" />
-                        <meta
-                            property="og:image"
-                            content={config.SEO_IMAGE_URL}
-                        />
-                        <meta
-                            name="twitter:image"
-                            content={config.SEO_IMAGE_URL}
-                        />
-                        <meta property="og:image:width" content="1200" />
-                        <meta property="og:image:height" content="630" />
-                        <meta
-                            name="twitter:card"
-                            content="summary_large_image"
-                        />
-                        <meta
-                            name="twitter:site"
-                            content={config.SEO_TWITTER_HANDLE}
-                        />
-                        <meta
-                            name="twitter:creator"
-                            content={config.SEO_TWITTER_HANDLE}
-                        />
-                    </Helmet>
-                    <BannerCarousel />
-                    {/**
-                    <EventHighlight />
-                     */}
-                    <Divider size={4} />
-                    <CenteredContainer spacing={3}>
-                        <Divider size={2} />
-                        <EventsGrid
-                            title={t('Upcoming_')}
-                            events={activeEvents}
-                            organizations={organizations}
-                        />
-                        <EventsGrid
-                            title={t('Past_')}
-                            events={pastEvents}
-                            organizations={organizations}
-                        />
-                        <Box textAlign="center">
-                            <Button
-                                variant="containedNew"
-                                color="theme_black"
-                                onClick={() => dispatch(push('/events'))} // TODO: Add past events page
-                            >
-                                See All Past Events
-                            </Button>
-                        </Box>
-                    </CenteredContainer>
-                    <Divider size={20} />
-                    <CenteredContainerSmall>
-                        <Grid>
-                            <Image
-                                defaultImage={require('assets/logos/emblem_black.png')}
-                                transformation={{
-                                    width: 150,
-                                }}
-                            />
-                            <Typography variant="h4" align="center">
-                                {t('Platform_organise_hack_', {
-                                    owner: config.PLATFORM_OWNER_NAME,
-                                })}
-                            </Typography>
-                        </Grid>
-                        <Grid container justify="center" alignItems="center">
-                            <Button
-                                color="theme_lightgray"
-                                variant="outlinedNew"
-                                strong
-                                onClick={() => dispatch(push('/contact'))}
-                            >
-                                {t('Contact_us_')}
-                            </Button>
-                            <Button
-                                color="theme_lightgray"
-                                variant="outlinedNew"
-                                strong
-                                onClick={() => dispatch(push('/pricing'))}
-                            >
-                                Pricing
-                            </Button>
-                        </Grid>
-                        <Divider size={4} />
-                    </CenteredContainerSmall>
-                    <Divider size={20} />
-                    <CenteredContainerSmall>
-                        <Divider size={1} />
-                        <Typography variant="h3" align="center">
-                            {t('New_to_', {
-                                owner: config.PLATFORM_OWNER_NAME_CAPS,
-                            })}
-                        </Typography>
-                        <Divider size={3} />
+                <meta name="og:type" content="website" />
+                <meta property="og:image" content={config.SEO_IMAGE_URL} />
+                <meta name="twitter:image" content={config.SEO_IMAGE_URL} />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content={config.SEO_TWITTER_HANDLE} />
+                <meta
+                    name="twitter:creator"
+                    content={config.SEO_TWITTER_HANDLE}
+                />
+            </Helmet>
+            <BannerCarousel />
+            <Divider size={4} />
+            <CenteredContainer>
+                <Divider size={2} />
+                <EventsGrid
+                    title={t('Upcoming_')}
+                    events={activeEvents}
+                    organizations={organizations}
+                />
+                <EventsGrid
+                    title={t('Past_events')}
+                    events={pastEvents}
+                    organizations={organizations}
+                />
+                <Box textAlign="center">
+                    <Button
+                        variant="containedNew"
+                        color="theme_black"
+                        onClick={() => dispatch(push('/events'))} // TODO: Add past events page
+                    >
+                        {t('Past_events_all_')}
+                    </Button>
+                </Box>
+            </CenteredContainer>
+            <Divider size={20} />
+            <CenteredContainer small>
+                <Grid>
+                    <Image
+                        defaultImage={require('assets/logos/emblem_black.png')}
+                        transformation={{
+                            width: 150,
+                        }}
+                    />
+                    <Typography variant="h4" align="center">
+                        {t('Platform_organise_hack_', {
+                            owner: config.PLATFORM_OWNER_NAME,
+                        })}
+                    </Typography>
+                </Grid>
+                <Grid container justify="center" alignItems="center">
+                    <Button
+                        color="theme_lightgray"
+                        variant="outlinedNew"
+                        strong
+                        onClick={() => dispatch(push('/contact'))}
+                    >
+                        {t('Contact_us_')}
+                    </Button>
+                    <Button
+                        color="theme_lightgray"
+                        variant="outlinedNew"
+                        strong
+                        onClick={() => dispatch(push('/pricing'))}
+                    >
+                        {t('Pricing')}
+                    </Button>
+                </Grid>
+                <Divider size={4} />
+            </CenteredContainer>
+            <Divider size={20} />
+            <CenteredContainer small>
+                <Divider size={1} />
+                <Typography variant="h3" align="center">
+                    {t('New_to_', {
+                        owner: config.PLATFORM_OWNER_NAME_CAPS,
+                    })}
+                </Typography>
+                <Divider size={3} />
 
-                        <Typography
-                            variant="body1"
-                            align="center"
-                            style={{ fontSize: '24px' }}
-                        >
-                            {t('Junction_info_', {
-                                owner: config.PLATFORM_OWNER_NAME,
-                            })}
-                        </Typography>
-                        <Divider size={3} />
-                        <Typography
-                            variant="body1"
-                            align="center"
-                            style={{ fontSize: '24px' }}
-                        >
-                            {t('More_info_', {
-                                owner: config.PLATFORM_OWNER_NAME,
-                            })}
-                            <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
-                                {t('More_info_link_')}
-                            </ExternalLink>
-                        </Typography>
-                    </CenteredContainerSmall>
-                    <Divider size={20} />
-                    <CenteredContainerSmall center>
-                        <Typography variant="h4" align="center">
-                            {t('Join_hackerpack_')}
-                        </Typography>
-                        <Button
-                            color="theme_lightgray"
-                            variant="outlinedNew"
-                            strong
-                            onClick={() => dispatch(push('/hackerpack'))}
-                        >
-                            {t('To_hackerpack_')}
-                        </Button>
-                    </CenteredContainerSmall>
-                    <Divider size={20} />
-                </>
-            )}
-        />
+                <Typography
+                    variant="body1"
+                    align="center"
+                    style={{ fontSize: '24px' }}
+                >
+                    {t('Junction_info_', {
+                        owner: config.PLATFORM_OWNER_NAME,
+                    })}
+                </Typography>
+                <Divider size={3} />
+                <Typography
+                    variant="body1"
+                    align="center"
+                    style={{ fontSize: '24px' }}
+                >
+                    {t('More_info_', {
+                        owner: config.PLATFORM_OWNER_NAME,
+                    })}
+                    <ExternalLink href={config.PLATFORM_OWNER_WEBSITE}>
+                        {t('More_info_link_')}
+                    </ExternalLink>
+                </Typography>
+            </CenteredContainer>
+            <Divider size={20} />
+            <CenteredContainer>
+                <Typography variant="h4" align="center">
+                    {t('Join_hackerpack_')}
+                </Typography>
+                <Button
+                    color="theme_lightgray"
+                    variant="outlinedNew"
+                    strong
+                    onClick={() => dispatch(push('/hackerpack'))}
+                >
+                    {t('To_hackerpack_')}
+                </Button>
+            </CenteredContainer>
+            <Divider size={20} />
+        </PageWrapper>
     )
 }
