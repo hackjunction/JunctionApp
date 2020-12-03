@@ -90,7 +90,6 @@ export default () => {
                             content={config.SEO_TWITTER_HANDLE}
                         />
                     </Helmet>
-                    <Divider size={1} />
                     <BannerCarousel />
                     {/**
                     <EventHighlight />

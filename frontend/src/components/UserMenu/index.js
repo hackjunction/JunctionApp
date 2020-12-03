@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '2px',
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
+    avatar: {
+        marginLeft: '16px',
+    },
     hamburger: {
         transition: theme.transitions.create(['transform'], {
             duration: theme.transitions.duration.short,
@@ -244,6 +247,7 @@ export default () => {
                 </Box>
             </Popover>
             <Avatar
+                className={classes.avatar}
                 src={profile?.avatar}
                 alt="Avatar"
                 style={{ width: '33px', height: '33px' }}
