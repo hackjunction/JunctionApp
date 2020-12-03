@@ -136,9 +136,9 @@ const variantStyles = (theme, props) => {
                 backgroundColor: color.main,
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
-                height: '3em',
+                height: '2.6em',
                 borderRadius: '28px',
-                fontSize: '1.5em',
+                fontSize: '1.3em',
                 margin: theme.spacing(2),
                 '&:hover': {
                     backgroundColor: color.main,

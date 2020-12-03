@@ -25,7 +25,14 @@ const useStyles = makeStyles(theme => ({
         },
     },
     buttons: {
+        color: 'white',
+        background: 'black',
         zIndex: 2,
+        border: 'none',
+        '&:hover': {
+            background: 'black',
+            opacity: '70%',
+        },
     },
     wrapper: {
         display: 'flex',
