@@ -57,7 +57,9 @@ const ProjectSchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
-
+    video: {
+        type: String,
+    },
     achievements: [AchievementSchema],
 })
 

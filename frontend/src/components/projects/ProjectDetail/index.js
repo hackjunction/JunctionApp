@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { find, filter } from 'lodash-es'
-import { Box, Typography, Button, Grid } from '@material-ui/core'
+import { Box, Typography, Button, Grid, Tooltip  } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
@@ -11,7 +11,11 @@ import Markdown from 'components/generic/Markdown'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
+
 import { popupCenter } from '../../../utils/misc'
+
+import ReactPlayer from 'react-player'
+
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -48,6 +52,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        '&:hover': {
+            opacity: 0.6,
+        },
     },
     placeholderImage: {
         width: '100%',
@@ -86,6 +93,15 @@ const useStyles = makeStyles(theme => ({
         width: 'auto',
         margin: '0.10rem',
         cursor: 'pointer',
+    }
+    playerWrapper: {
+        position: 'relative',
+        height: '360px',
+    },
+    reactPlayer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
     },
 }))
 
@@ -98,7 +114,8 @@ const ProjectDetail = ({
 }) => {
     const classes = useStyles()
     const [index, setIndex] = useState(0)
-    console.log('HELMET IN PROJECT VIEW', Helmet.peek())
+    const [pause, setPause] = useState(true)
+
     if (!project) return null
     console.log('project :>> ', project)
     const shareurl =
@@ -182,7 +199,6 @@ const ProjectDetail = ({
                             : config.SEO_IMAGE_URL
                     }
                 />{' '}
-                />
                 <meta property="og:image:width" content="1200" />
                 <meta property="og:image:height" content="630" />
                 <meta name="twitter:card" content="summary_large_image" />
@@ -192,43 +208,53 @@ const ProjectDetail = ({
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
+
             <Box className={classes.wrapper}>
-                <Box style={{ position: 'relative' }}>
-                    <AutoPlaySwipeableViews
-                        enableMouseEvents
-                        index={index}
-                        onChangeIndex={setIndex}
+                <Tooltip title={pause ? 'Click to pause' : 'Click to play'}>
+                    <Box
+                        style={{ position: 'relative' }}
+                        onClick={e => setPause(!pause)}
                     >
-                        {project.images.length > 0 ? (
-                            project.images.map(image => (
-                                <Box
-                                    key={image.publicId}
-                                    className={classes.top}
-                                >
+                        <AutoPlaySwipeableViews
+                            enableMouseEvents
+                            index={index}
+                            onChangeIndex={setIndex}
+                            interval={5000}
+                            autoplay={pause}
+                        >
+                            {project.images.length > 0 ? (
+                                project.images.map(image => (
+                                    <Box
+                                        key={image.publicId}
+                                        className={classes.top}
+                                    >
+                                        <Image
+                                            className={classes.image}
+                                            publicId={image.publicId}
+                                            defaultImage={require('assets/images/default_cover_image.png')}
+                                        />
+                                    </Box>
+                                ))
+                            ) : (
+                                <Box className={classes.placeholderTop}>
                                     <Image
-                                        className={classes.image}
-                                        publicId={image.publicId}
+                                        className={classes.placeholderImage}
+                                        publicId={event?.coverImage?.logo}
                                         defaultImage={require('assets/images/default_cover_image.png')}
                                     />
                                 </Box>
-                            ))
-                        ) : (
-                            <Box className={classes.placeholderTop}>
-                                <Image
-                                    className={classes.placeholderImage}
-                                    publicId={event?.coverImage?.logo}
-                                    defaultImage={require('assets/images/default_cover_image.png')}
+                            )}
+                        </AutoPlaySwipeableViews>
+                        <Box className={classes.backButtonWrapper}>
+                            <Button onClick={onBack} style={{ color: 'white' }}>
+                                <ArrowBackIosIcon
+                                    style={{ fontSize: '14px' }}
                                 />
-                            </Box>
-                        )}
-                    </AutoPlaySwipeableViews>
-                    <Box className={classes.backButtonWrapper}>
-                        <Button onClick={onBack} style={{ color: 'white' }}>
-                            <ArrowBackIosIcon style={{ fontSize: '14px' }} />
-                            Back
-                        </Button>
+                                Back
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
+                </Tooltip>
                 <CenteredContainer>
                     <Pagination
                         pages={project.images.length}
@@ -261,6 +287,55 @@ const ProjectDetail = ({
                                 </Typography>
                             </Box>
                         )}
+                        {project.video ? (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    video
+                                </Typography>
+                                <a
+                                    href={project.video}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {project.video}
+                                </a>
+                                <div className={classes.playerWrapper}>
+                                    <ReactPlayer
+                                        url={project.video}
+                                        className={classes.reactPlayer}
+                                        width="100%"
+                                        height="100%"
+                                        controls
+                                        light={false}
+                                        loop={false}
+                                        playbackRate={1.0}
+                                        volume={0.8}
+                                        muted={false}
+                                        onReady={() => console.log('onReady')}
+                                        onStart={() => console.log('onStart')}
+                                        onBuffer={() => console.log('onBuffer')}
+                                        onSeek={e => console.log('onSeek', e)}
+                                        onError={e => console.log('onError', e)}
+                                    />
+                                </div>
+                            </Box>
+                        ) : (
+                            <Box mb={3}>
+                                <Typography
+                                    variant="h6"
+                                    className={classes.sectionTitle}
+                                >
+                                    video
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    No video available
+                                </Typography>
+                            </Box>
+                        )}
+
                         {project.demo ? (
                             <Box mb={3}>
                                 <Typography

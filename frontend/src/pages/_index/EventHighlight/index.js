@@ -18,21 +18,27 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'stretch',
         width: '100%',
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             alignItems: 'stretch',
-            height: '324px',
+            height: '100%',
+            maxHeight: '465px',
             padding: 0,
         },
     },
     left: {
-        height: '148px',
+        height: '100%',
+        maxHeight: '465px',
         position: 'relative',
-        padding: theme.spacing(2),
+        width: '100%',
+        // padding: theme.spacing(2),
         [theme.breakpoints.up('md')]: {
             flex: 1,
             height: '100%',
+        },
+        [theme.breakpoints.down('md')]: {
+            maxHeight: '200px',
         },
     },
     leftImage: {
@@ -43,22 +49,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
-        borderRadius: '12px 12px 0 0',
-        [theme.breakpoints.up('md')]: {
-            borderRadius: '0 12px 12px 0',
-        },
-    },
-    right: {
-        background: 'white',
-        padding: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: '0 0 12px 12px',
-        [theme.breakpoints.up('md')]: {
-            flex: 1,
-            background: 'transparent',
-            justifyContent: 'center',
-            padding: theme.spacing(2, 4),
+        [theme.breakpoints.down('md')]: {
+            maxHeight: '200px',
         },
     },
 }))
@@ -69,9 +61,9 @@ export default () => {
     const { t } = useTranslation()
 
     const [events, loading] = useHighlightedEvents({
-        limit: 10,
-        name: 'Junction 2020 Connected',
+        limit: 1,
     })
+    //TODO no?
     const event = events?.[0] ?? null
     if (!event) return null
     return (
@@ -84,9 +76,12 @@ export default () => {
                             event.coverImage ? event.coverImage.publicId : ''
                         }
                         defaultImage={require('assets/images/default_cover_image.png')}
+                        transformation={{
+                            width: '100%',
+                        }}
                     />
                 </div>
-                <div className={classes.right}>
+                {/* <div className={classes.right}>
                     <Typography variant="h6" color="primary">
                         Highlight
                     </Typography>
@@ -147,7 +142,7 @@ export default () => {
                             </Box>
                         )}
                     </Box>
-                </div>
+                </div> */}
             </div>
         </PageWrapper>
     )

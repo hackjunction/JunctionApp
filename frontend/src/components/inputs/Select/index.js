@@ -324,7 +324,6 @@ const components = {
     ValueContainer,
 }
 
-console.log('inini', SelectOptions.INDUSTRIES)
 export default function IntegrationReactSelect({
     autoFocus,
     disabled,

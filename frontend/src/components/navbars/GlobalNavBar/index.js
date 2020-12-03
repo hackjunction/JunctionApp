@@ -10,7 +10,7 @@ import { Grid, Hidden } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
     wrapper: {
         width: '100%',
-        height: '78px',
+        height: '60px',
         background: 'white',
         padding: theme.spacing(0, 2),
     },
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
     },
     wordmark: {
-        height: '50px',
+        height: '20px',
     },
 }))
 
@@ -39,12 +39,7 @@ export default () => {
                         alt={config.PLATFORM_OWNER_NAME + ' logo'}
                     />
                 </a>
-                <Grid className={classes.inner}>
-                    <UserMenu />
-                    <Hidden only="xs">
-                        <LanguageMenu />
-                    </Hidden>
-                </Grid>
+                <UserMenu />
             </div>
         </div>
     )

@@ -11,6 +11,7 @@ const { GraphQLDateTime } = require('graphql-iso-date')
 
 const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
+const { OrganizationType } = require('../organization/graphql')
 const dateUtils = require('../../common/utils/dateUtils')
 
 const {
@@ -23,6 +24,8 @@ const {
     EventTag,
     RegistrationConfig,
 } = require('../graphql-shared-types')
+
+const Organization = require('../organization/model')
 
 const EventType = new GraphQLObjectType({
     name: 'Event',
@@ -79,6 +82,9 @@ const EventType = new GraphQLObjectType({
             reviewingEndTime: {
                 type: GraphQLDateTime,
             },
+            finalsActive: {
+                type: GraphQLBoolean,
+            },
             eventLocation: {
                 type: Address,
             },
@@ -123,7 +129,7 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLList(GraphQLString),
             },
             organizations: {
-                type: GraphQLList(GraphQLString),
+                type: GraphQLList(OrganizationType),
             },
             registrationConfig: {
                 type: RegistrationConfig,
@@ -145,6 +151,15 @@ const EventType = new GraphQLObjectType({
             },
             metaDescription: {
                 type: GraphQLString,
+            },
+            finalists: {
+                type: GraphQLList(GraphQLString),
+            },
+            frontPagePriority: {
+                type: GraphQLInt,
+            },
+            approved: {
+                type: GraphQLBoolean,
             },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
@@ -201,9 +216,6 @@ const QueryType = new GraphQLObjectType({
                 limit: {
                     type: GraphQLInt,
                 },
-                name: {
-                    type: GraphQLString,
-                },
             },
         },
         activeEvents: {
@@ -251,9 +263,7 @@ const Resolvers = {
             if (args.limit) {
                 events = events.slice(0, args.limit)
             }
-            if (args.name) {
-                events = events.filter(e => e.name === args.name)
-            }
+
             return events
         },
         activeEvents: async (parent, args, context) => {
@@ -272,6 +282,13 @@ const Resolvers = {
         },
     },
     Event: {
+        organizations: parent => {
+            // TODO change this to use id
+            // ^ Requires a migration
+            return parent.organizations.map(org =>
+                Organization.findOne({ slug: org }),
+            )
+        },
         _eventLocationFormatted: parent => {
             if (parent.eventType === 'physical') {
                 return `${parent.eventLocation.city}, ${parent.eventLocation.country}`

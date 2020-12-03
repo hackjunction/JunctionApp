@@ -7,7 +7,10 @@ const EventController = require('./controller.js')
 const AuthController = require('../auth/controller')
 const UserProfileController = require('../user-profile/controller')
 
-const { hasPermission } = require('../../common/middleware/permissions')
+const {
+    hasPermission,
+    hasRole,
+} = require('../../common/middleware/permissions')
 const {
     isEventOwner,
     isEventOrganiser,
@@ -25,6 +28,11 @@ const getPublicEvents = asyncHandler(async (req, res) => {
 const getPublicEventBySlug = asyncHandler(async (req, res) => {
     const event = await EventController.getPublicEventBySlug(req.params.slug)
     return res.status(200).json(event)
+})
+
+const getUnapprovedEvents = asyncHandler(async (req, res) => {
+    const events = await EventController.getUnapprovedEvents()
+    return res.status(200).json(events)
 })
 
 const getPublicEventById = asyncHandler(async (req, res) => {
@@ -101,6 +109,22 @@ const getWinnerProjects = asyncHandler(async (req, res) => {
         .find({ _id: { $in: projectIds } })
     return res.status(200).json(projects)
 })
+// Finalists
+
+const updateFinalists = asyncHandler(async (req, res) => {
+    const event = await EventController.updateFinalists(
+        req.event._id,
+        req.body.projectId,
+    )
+    return res.status(200).json(event)
+})
+
+const getFinalists = asyncHandler(async (req, res) => {
+    const projects = await mongoose
+        .model('Project')
+        .find({ _id: { $in: req.event.finalists } })
+    return res.status(200).json(projects)
+})
 
 /** Generate achievements for projects submitted in this event */
 const generateAchievements = asyncHandler(async (req, res) => {
@@ -111,6 +135,18 @@ const generateAchievements = asyncHandler(async (req, res) => {
 const clearAchievements = asyncHandler(async (req, res) => {
     const result = await EventController.clearAchivements(req.event)
     return res.status(200).json(result)
+})
+
+// Approve
+const approveEvent = asyncHandler(async (req, res) => {
+    const event = await EventController.approveEvent(req.event, req.body)
+    return res.status(200).json(event)
+})
+
+// Priority
+const setPriority = asyncHandler(async (req, res) => {
+    const event = await EventController.setPriority(req.event, req.body)
+    return res.status(200).json(event)
 })
 
 /** Create event, get events by logged in user */
@@ -179,6 +215,16 @@ router
         updateWinners,
     )
 
+router
+    .route('/:slug/finalist')
+    .get(hasToken, hasRegisteredToEvent, getFinalists)
+    .patch(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        updateFinalists,
+    )
+
 /** Get organisers for single event */
 router.get(
     '/organisers/:slug',
@@ -202,6 +248,31 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         removeOrganiser,
+    )
+
+/** Unapproved */
+router
+    .route('/admin/unapproved')
+    .get(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), getUnapprovedEvents)
+
+router
+    .route('/admin/unapproved/:slug')
+    .patch(
+        hasToken,
+        hasRole(Auth.Roles.SUPER_ADMIN),
+        isEventOrganiser,
+        approveEvent,
+    )
+
+/** Priority */
+
+router
+    .route('/admin/priority/:slug')
+    .patch(
+        hasToken,
+        hasRole(Auth.Roles.SUPER_ADMIN),
+        isEventOrganiser,
+        setPriority,
     )
 
 module.exports = router

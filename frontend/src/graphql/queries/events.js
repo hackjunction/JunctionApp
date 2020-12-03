@@ -15,7 +15,13 @@ const Fragments = {
             eventType
             registrationStartTime
             registrationEndTime
-            organizations
+            organizations {
+                name
+                slug
+                about
+                link
+                icon
+            }
             _eventLocationFormatted
             _eventTimeFormatted
         }
@@ -41,19 +47,18 @@ export const useEventPreview = _id => {
 }
 
 export const GET_HIGHLIGHTED_EVENTS = gql`
-    query Event($limit: Int, $name: String) {
-        highlightedEvents(limit: $limit, name: $name) {
+    query Event($limit: Int) {
+        highlightedEvents(limit: $limit) {
             ...EventPreview
         }
     }
     ${Fragments.EventPreview}
 `
 
-export const useHighlightedEvents = ({ limit, name }) => {
+export const useHighlightedEvents = ({ limit }) => {
     const { data, loading, error } = useQuery(GET_HIGHLIGHTED_EVENTS, {
         variables: {
             limit,
-            name,
         },
     })
 
@@ -87,7 +92,7 @@ export const GET_PAST_EVENTS = gql`
     }
     ${Fragments.EventPreview}
 `
-
+// TODO: usePastEvents limit is conditional in backend
 export const usePastEvents = ({ limit }) => {
     const { data, loading, error } = useQuery(GET_PAST_EVENTS, {
         variables: {

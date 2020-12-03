@@ -20,8 +20,10 @@ import {
 } from '@material-ui/core'
 import { RegistrationFields } from '@hackjunction/shared'
 import { push } from 'connected-react-router'
+import { useSelector } from 'react-redux'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as UserSelectors from 'redux/user/selectors'
 
 import CenteredContainer from 'components/generic/CenteredContainer'
 import Image from 'components/generic/Image'
@@ -139,7 +141,9 @@ export default RequiresPermission(() => {
         hasRegistration,
         createRegistration,
         editRegistration,
+        finishRegistration,
     } = useContext(EventDetailContext)
+    const userProfile = useSelector(UserSelectors.userProfile)
 
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
@@ -150,10 +154,10 @@ export default RequiresPermission(() => {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
         }, 500)
     }, [activeStep])
-
     useEffect(() => {
         if (!hasRegistration) {
             AnalyticsService.events.BEGIN_REGISTRATION(slug)
+            createRegistration(userProfile)
         }
     }, [hasRegistration, slug])
 
@@ -233,20 +237,20 @@ export default RequiresPermission(() => {
 
     const setNextStep = useCallback(
         (nextStep, values, path) => {
-            if (path) {
-                setFormData({
-                    ...formData,
-                    [path]: {
-                        ...formData[path],
-                        ...values,
-                    },
-                })
-            } else {
-                setFormData({
-                    ...formData,
-                    ...values,
-                })
-            }
+            const newFormData = path
+                ? {
+                      ...formData,
+                      [path]: {
+                          ...formData[path],
+                          ...values,
+                      },
+                  }
+                : {
+                      ...formData,
+                      ...values,
+                  }
+            editRegistration(newFormData)
+            setFormData(newFormData)
             setActiveStep(nextStep)
         },
         [formData],
@@ -277,9 +281,9 @@ export default RequiresPermission(() => {
         }
         try {
             if (hasRegistration) {
-                await editRegistration(formData)
+                await finishRegistration(formData)
             } else {
-                await createRegistration(formData)
+                console.log("ALARM ALAMR, this shouldn't happen")
             }
             AnalyticsService.events.COMPLETE_REGISTRATION(slug)
             setActiveStep(sections.length + 1)
@@ -309,7 +313,6 @@ export default RequiresPermission(() => {
             const nextStep =
                 index !== sections.length - 1 ? sections[index + 1] : null
             const prevStep = index !== 0 ? sections[index - 1] : null
-
             return (
                 <Step key={section.label}>
                     <RegistrationSectionLabel
@@ -318,7 +321,7 @@ export default RequiresPermission(() => {
                         label={section.label}
                         previousLabel={prevStep ? prevStep.label : null}
                         onPrevious={setPrevStep}
-                        isVisible={activeStep !== sections.length + 1}
+                        isVisible={activeStep >= index}
                     />
                     <StepContent
                         classes={{

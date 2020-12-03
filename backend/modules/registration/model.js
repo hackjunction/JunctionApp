@@ -14,9 +14,11 @@ const RegistrationSchema = new mongoose.Schema({
     event: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event',
+        required: true,
     },
     user: {
         type: String,
+        required: true,
     },
     status: {
         type: String,
@@ -78,7 +80,7 @@ RegistrationSchema.index(
     },
     {
         unique: true,
-    }
+    },
 )
 
 RegistrationSchema.index({
@@ -95,13 +97,13 @@ RegistrationSchema.plugin(updateAllowedPlugin, {
     blacklisted: ['__v', '_id', 'event', 'user', 'createdAt', 'updatedAt'],
 })
 
-RegistrationSchema.pre('save', function(next) {
+RegistrationSchema.pre('save', function (next) {
     this._wasNew = this.isNew
     next()
 })
 
 /** Trigger email sending on status changes etc. */
-RegistrationSchema.post('save', function(doc, next) {
+RegistrationSchema.post('save', function (doc, next) {
     const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id
     const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id

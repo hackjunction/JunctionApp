@@ -67,20 +67,6 @@ class EventController {
     }
 
     getHighlighted() {
-        /* TODO remove this once connected is done
-        return this._clean(
-            Event.find({
-                name: 'Junction 2020 Connected',
-                published: true,
-                startTime: {
-                    $gte: new Date(),
-                },
-            })
-                .sort([['startTime', 1]])
-                .lean(),
-        )
-        */
-
         return this._clean(
             Event.find({
                 published: true,
@@ -114,6 +100,7 @@ class EventController {
                     $lt: new Date(),
                 },
             })
+                .sort([['frontPagePriority', -1]])
                 .sort([['endTime', -1]])
                 .lean(),
         )
@@ -138,7 +125,7 @@ class EventController {
         if (!event) return null
 
         /** If it's a public event, anyone can see it */
-        if (event.published) {
+        if (event.published && event.approved) {
             // TODO: Maybe strip some fields from the response if necessary?
             return event
         }

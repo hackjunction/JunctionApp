@@ -40,6 +40,13 @@ RegistrationsService.updateRegistration = (idToken, slug, data) => {
     return _axios.patch(`${BASE_ROUTE}/${slug}`, data, config(idToken))
 }
 
+/** Finish registration progress for an event as the logged in user
+ * Post /:slug/confirm
+ */
+RegistrationsService.finishRegistration = (idToken, slug, data) => {
+    return _axios.post(`${BASE_ROUTE}/${slug}/confirm`, data, config(idToken))
+}
+
 /** Confirm participation for an event as the logged in user
  * PATCH /:slug/confirm
  */

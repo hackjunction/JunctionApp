@@ -51,6 +51,9 @@ const UploadHelper = {
     generateHackerpackTag: id => {
         return `${cloudinaryRootPath}-hackerpac-${id}`
     },
+    generateAdTag: id => {
+        return `${cloudinaryRootPath}-ad-${id}`
+    },
     generateOrganizationTag: id => {
         return `${cloudinaryRootPath}-organization-${id}`
     },
@@ -59,7 +62,7 @@ const UploadHelper = {
         return new Promise(function (resolve, reject) {
             cloudinary.v2.api.delete_resources_by_tag(tag, function (
                 error,
-                result
+                result,
             ) {
                 if (error) {
                     console.error('Unable to delete images with tag', tag)
@@ -79,7 +82,7 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateUserTag(userId),
-            }
+            },
         )
         return multer({
             storage,
@@ -97,7 +100,7 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateEventTag(slug),
-            }
+            },
         )
         return multer({
             storage,
@@ -115,7 +118,7 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateEventTag(slug),
-            }
+            },
         )
         return multer({
             storage,
@@ -129,7 +132,7 @@ const UploadHelper = {
             {},
             {
                 tag: UploadHelper.generateTravelGrantTag(slug, userId),
-            }
+            },
         )
         return multer({
             storage,
@@ -146,7 +149,7 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateProjectTag(slug, teamCode),
-            }
+            },
         )
         return multer({
             storage,
@@ -164,7 +167,24 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateHackerpackTag(slug),
-            }
+            },
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 5 * 1024 * 1024 },
+        }).single('image')
+    },
+    uploadAdIcon: slug => {
+        const storage = createStorageWithPath(
+            `ad`,
+            {
+                width: 1920,
+                height: 960,
+                crop: 'fill',
+            },
+            {
+                tag: UploadHelper.generateAdTag(slug),
+            },
         )
         return multer({
             storage,
@@ -182,7 +202,7 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateOrganizationTag(slug),
-            }
+            },
         )
         return multer({
             storage,

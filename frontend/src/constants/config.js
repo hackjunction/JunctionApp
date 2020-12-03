@@ -46,13 +46,19 @@ const settings = {
         required: true,
         value:
             process.env.REACT_APP_LOGO_DARK_URL ||
-            'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419636/Junction%20Logos/wordmark_black.png',
+            //'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419636/Junction%20Logos/wordmark_black.png',
+            'https://res.cloudinary.com/hackjunction/image/upload/v1606900986/Junction%20Logos/app.svg',
     },
     LOGO_LIGHT_URL: {
         required: true,
         value:
             process.env.REACT_APP_LOGO_LIGHT_URL ||
             'https://res.cloudinary.com/hackjunction/image/upload/c_scale,w_500/v1581419635/Junction%20Logos/wordmark_white.png',
+    },
+    EMBLEM_DARK_URL: {
+        required: true,
+        value:
+            'https://res.cloudinary.com/hackjunction/image/upload/v1581419640/Junction%20Logos/emblem_black.png',
     },
     LOGROCKET_ID: {
         required: false,
@@ -61,6 +67,10 @@ const settings = {
     PLATFORM_OWNER_NAME: {
         required: true,
         value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'Junction',
+    },
+    PLATFORM_OWNER_NAME_CAPS: {
+        required: true,
+        value: process.env.REACT_APP_PLATFORM_OWNER_NAME || 'JUNCTION',
     },
     PLATFORM_OWNER_WEBSITE: {
         required: true,

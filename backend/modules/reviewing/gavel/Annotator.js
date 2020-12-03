@@ -188,15 +188,19 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
                     .findById(gavelProject.project)
                 if (project) {
                     const team = await Team.findById(project.team)
-                    console.log(this.user, team.owner, !team.members)
-                    console.log(
-                        this.user !== team.owner &&
-                            !team.members.includes(this.user),
-                    )
-                    return (
-                        this.user !== team.owner &&
-                        !team.members.includes(this.user)
-                    )
+                    if (team) {
+                        console.log(this.user, team.owner, !team.members)
+                        console.log(
+                            this.user !== team.owner &&
+                                !team.members.includes(this.user),
+                        )
+                        return (
+                            this.user !== team.owner &&
+                            !team.members.includes(this.user)
+                        )
+                    }
+                    console.log('no team for', project)
+                    return false
                 }
                 // TOOD these should be removed
                 console.log('orpahn gavelproject', gavelProject)

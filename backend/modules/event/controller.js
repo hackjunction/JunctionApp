@@ -20,7 +20,7 @@ controller.getPublicEventBySlug = slug => {
 
 controller.getPublicEventById = id => {
     return Event.findById(id).then(event => {
-        if (!event.published) {
+        if (!event.published || !event.approved) {
             throw new NotFoundError(
                 `Event with slug ${event.slug} does not exist`,
             )
@@ -31,6 +31,20 @@ controller.getPublicEventById = id => {
 
 controller.getEventBySlug = slug => {
     return Event.findOne({ slug })
+}
+
+controller.getUnapprovedEvents = () => {
+    return Event.find({ approved: false })
+}
+
+controller.approveEvent = (event, data) => {
+    const eventData = { approved: data.approved }
+    return Event.updateAllowed(event, eventData)
+}
+
+controller.setPriority = (event, data) => {
+    const eventData = { frontPagePriority: data.frontPagePriority }
+    return Event.updateAllowed(event, eventData)
 }
 
 controller.getEventById = id => {
@@ -92,6 +106,19 @@ controller.deleteEventBySlug = slug => {
 controller.updateWinners = (eventId, winners) => {
     return Event.findById(eventId).then(event => {
         event.winners = winners
+        return event.save()
+    })
+}
+
+controller.updateFinalists = (eventId, finalist) => {
+    console.log(eventId, finalist)
+    return Event.findById(eventId).then(event => {
+        const index = event.finalists.indexOf(finalist)
+        if (index > -1) {
+            event.finalists.splice(index, 1)
+        } else {
+            event.finalists.push(finalist)
+        }
         return event.save()
     })
 }

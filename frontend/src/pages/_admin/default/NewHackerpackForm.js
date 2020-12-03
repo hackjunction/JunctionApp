@@ -50,7 +50,6 @@ export default () => {
         setLoading(true)
         HackerpackService.createHackerpack(idToken, { name })
             .then(data => {
-                console.log('doing data', data)
                 dispatch(push(`/admin/hackerpack/${data.slug}`))
                 dispatch(SnackbarActions.success(`Created ${data.name}`))
             })

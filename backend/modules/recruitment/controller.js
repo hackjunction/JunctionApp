@@ -12,7 +12,7 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
         return controller.createRecruitmentProfile(
             userProfile,
             true,
-            recruiterId
+            recruiterId,
         )
     })
 }
@@ -36,12 +36,11 @@ controller.queryProfiles = (query = {}, user) => {
             return {
                 [filter.field]: {
                     [MongoUtils.filterOperatorToMongoOperator(
-                        filter.operator
+                        filter.operator,
                     )]: formatted,
                 },
             }
         })
-
         userQuery = { $and: whereFields }
     }
     if (query.pagination) {
@@ -63,13 +62,15 @@ controller.queryProfiles = (query = {}, user) => {
         },
     }
 
+    console.log('userquery are', JSON.stringify(userQuery))
+    console.log('eventfileters are', JSON.stringify(eventFilter))
     // Set default filters (consent & recruiter scope)
     if (userQuery.$and) {
         userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
-        userQuery.$and = [consentFilter, eventFilter]
+        userQuery.$and = [eventFilter]
     }
-
+    console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({
         query: userQuery,
         pagination,
@@ -77,7 +78,7 @@ controller.queryProfiles = (query = {}, user) => {
         return Promise.all(
             results.found.map(profile => {
                 return controller.createRecruitmentProfile(profile, false)
-            })
+            }),
         ).then(profiles => {
             return { data: profiles, count: results.count }
         })
@@ -87,7 +88,7 @@ controller.queryProfiles = (query = {}, user) => {
 controller.createRecruitmentProfile = async (
     userProfile,
     eager = false,
-    recruiterId = null
+    recruiterId = null,
 ) => {
     const profile = {
         userId: userProfile.userId,
@@ -125,7 +126,10 @@ controller.createRecruitmentProfile = async (
             .populate('event')
             .then(registrations => {
                 return registrations.map(reg => {
-                    return { id: reg.event._id, name: reg.event.name }
+                    if (reg.event) {
+                        return { id: reg.event._id, name: reg.event.name }
+                    }
+                    console.log('Missing reg.event in ', reg)
                 })
             })
 
@@ -176,7 +180,7 @@ controller.getRecruiterActions = async recruiter => {
         .then(actions => {
             return Promise.map(actions, async action => {
                 action._user = await controller.createRecruitmentProfile(
-                    action._user
+                    action._user,
                 )
                 return action
             })

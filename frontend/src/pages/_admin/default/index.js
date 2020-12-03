@@ -11,6 +11,11 @@ import HackerpackList from './HackerpackList'
 
 import NewOrganizationForm from './NewOrganizationForm'
 import OrganizationList from './OrganizationList'
+import NewBannerForm from './NewBannerForm'
+import BannerList from './BannerList'
+
+import UnapprovedEvents from './UnapprovedEvents'
+import EventPriority from './EventPriority'
 
 export default () => {
     return (
@@ -24,6 +29,12 @@ export default () => {
 
                     <NewOrganizationForm />
                     <OrganizationList />
+
+                    <UnapprovedEvents />
+                    <NewBannerForm />
+                    <BannerList />
+
+                    <EventPriority />
                 </CenteredContainer>
             )}
         />

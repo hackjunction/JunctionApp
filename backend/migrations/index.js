@@ -7,6 +7,13 @@ const migrations = [
     require('./01-remove-project-unique-index'),
     require('./02-rename-sigma_sq-to-sigmaSq'),
     require('./03-rename-country_code-to-countryCode'),
+    require('./04-add-finalists-to-event'),
+    require('./05-add-track-challenge-to-projectscore'),
+    require('./06-finals-active-to-event'),
+    require('./07-uniform-answers'),
+    require('./08-create-registration-objects-in-profiles'),
+    require('./09-sync-registration-to-profiles'),
+    require('./10-add-banner-priority-and-approved-to-event'),
 ]
 
 const run = async () => {

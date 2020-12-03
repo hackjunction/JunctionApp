@@ -13,13 +13,16 @@ import CenteredContainer from 'components/generic/CenteredContainer'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        height: '200px',
+        height: '100%',
+        maxHeight: '465px',
         width: '100%',
         position: 'relative',
         background: 'black',
         [theme.breakpoints.up('sm')]: {
-            height: '300px',
+            height: '100%',
+            maxHeight: '465px',
         },
+        marginBottom: theme.spacing(5),
     },
     backButtonWrapper: {
         position: 'absolute',
@@ -74,10 +77,10 @@ export default ({ event, title, subheading, onBack }) => {
                 defaultImage={require('assets/images/default_cover_image.png')}
                 transformation={{
                     width: 1440,
-                    height: 300,
+                    height: 465,
                 }}
             />
-            <Box className={classes.logoWrapper}>
+            {/* <Box className={classes.logoWrapper}>
                 <FadeInWrapper enterDelay={0.3} verticalOffset={50}>
                     <Box
                         p={3}
@@ -107,7 +110,7 @@ export default ({ event, title, subheading, onBack }) => {
                         </Typography>
                     </Box>
                 </FadeInWrapper>
-            </Box>
+            </Box> */}
             <CenteredContainer wrapperClass={classes.backButtonWrapper}>
                 <Button
                     onClick={

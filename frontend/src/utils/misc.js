@@ -34,6 +34,28 @@ const MiscUtils = {
         }
     },
 
+    formatPDFDateInterval: (start, end) => {
+        const mom1 = moment(start)
+        const mom2 = moment(end)
+
+        if (mom1.month() === mom2.month()) {
+            if (mom1.date() === mom2.date()) {
+                return mom1.format('MMM D, YYYY')
+            }
+            return mom1.format('MMM D') + '-' + mom2.format('D, YYYY')
+        } else {
+            if (mom1.year() === mom2.year()) {
+                return mom1.format('MMM D') + ' - ' + mom2.format('MMM D, YYYY')
+            } else {
+                return (
+                    mom1.format('MMM D, YYYY') +
+                    ' - ' +
+                    mom2.format('MMM D, YYYY')
+                )
+            }
+        }
+    },
+
     parseFormikErrors: errors => {
         return Object.keys(errors).flatMap(key => {
             if (typeof errors[key] === 'object') {

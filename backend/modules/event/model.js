@@ -72,6 +72,11 @@ const EventSchema = new mongoose.Schema({
         type: Date,
         requiredForPublish: true,
     },
+    /** Make this a date type also */
+    finalsActive: {
+        type: Boolean,
+        default: false,
+    },
     /** Event customisation */
     coverImage: CloudinaryImageSchema.mongoose,
     logo: CloudinaryImageSchema.mongoose,
@@ -227,6 +232,10 @@ const EventSchema = new mongoose.Schema({
         type: mongoose.Mixed,
         default: {},
     },
+    finalists: {
+        type: [String],
+        default: [],
+    },
     challenge_instructions: {
         type: String,
     },
@@ -254,6 +263,14 @@ const EventSchema = new mongoose.Schema({
     },
     eventTerms: {
         type: String,
+    },
+    frontPagePriority: {
+        type: Number,
+        default: 0,
+    },
+    approved: {
+        type: Boolean,
+        default: false,
     },
 })
 

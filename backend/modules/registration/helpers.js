@@ -7,7 +7,8 @@ const {
 } = require('@hackjunction/shared')
 
 const RegistrationHelpers = {
-    validateAnswers: (answers, event) => {
+    validateAnswers: (data, event) => {
+        const minimalSchema = {}
         const validationSchema = {}
 
         // Build validation schema for standard fields
@@ -22,12 +23,13 @@ const RegistrationHelpers = {
             const params = allFields[fieldName]
             if (params.alwaysRequired) {
                 validationSchema[fieldName] = params.validationSchema(true)
-            }
-            if (requiredFields.indexOf(fieldName) !== -1) {
+                minimalSchema[fieldName] = params.validationSchema(true)
+            } else if (requiredFields.indexOf(fieldName) !== -1) {
                 validationSchema[fieldName] = params.validationSchema(true)
-            }
-            if (optionalFields.indexOf(fieldName) !== -1) {
+                minimalSchema[fieldName] = params.validationSchema(false)
+            } else if (optionalFields.indexOf(fieldName) !== -1) {
                 validationSchema[fieldName] = params.validationSchema(false)
+                minimalSchema[fieldName] = params.validationSchema(false)
             }
         })
 
@@ -39,11 +41,58 @@ const RegistrationHelpers = {
                     question.fieldType
                 ].validationSchema(question.fieldRequired, question)
             })
-
             validationSchema[section.name] = yup.object().shape(sectionSchema)
         })
+
+        const minSchema = yup.object().shape(minimalSchema)
         const schema = yup.object().shape(validationSchema)
-        return schema.validate(answers, { stripUknown: true })
+        console.log('now validation data: ', data)
+        return schema
+            .validate(data, { stripUknown: true })
+            .catch(e => {
+                // TODO proper log
+                console.log('error in validateAnswers', e)
+                return minSchema
+                    .validate(data, { stripUknown: true })
+                    .catch(ee => {
+                        // TODO proper log
+                        console.log('error in minimalValidateAnswers', ee)
+                        return [false, false]
+                    })
+                    .then(value => {
+                        console.log('mini doin dis')
+                        return [false, value]
+                    })
+            })
+            .then(value => {
+                console.log('then doin dis')
+                return [true, value]
+            })
+    },
+    registrationFromUser: user => {
+        const d = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+        }
+        const validationSchema = {}
+        const allFields = RegistrationFields.getFields()
+
+        Object.keys(allFields).forEach(fieldName => {
+            const params = allFields[fieldName]
+            if (params.alwaysRequired) {
+                validationSchema[fieldName] = params.validationSchema(true)
+            }
+        })
+
+        const schema = yup.object().shape(validationSchema)
+        console.log('users', d)
+
+        const data = schema.validate(d, { stripUknown: true }).catch(e => {
+            console.log('RFU', e)
+        })
+        console.log('got data', data)
+        return data
     },
     buildAggregation: (eventId, userId, qp) => {
         const aggregationSteps = []

@@ -10,10 +10,22 @@ const useStyles = makeStyles(theme => ({
         margin: '0 auto',
         width: '100%',
         maxWidth: '1120px',
+        textAlign: 'center',
+    },
+    small: {
+        width: '60%',
+        [theme.breakpoints.down('md')]: {
+            width: '80%',
+        },
     },
 }))
 
-export default ({ wrapperClass, className, children }) => {
+export default ({
+    wrapperClass = null,
+    className = null,
+    small = false,
+    children,
+}) => {
     const classes = useStyles()
     return (
         <div
@@ -25,6 +37,7 @@ export default ({ wrapperClass, className, children }) => {
             <div
                 className={clsx({
                     [classes.inner]: true,
+                    [classes.small]: small,
                     [className]: typeof className !== 'undefined',
                 })}
             >

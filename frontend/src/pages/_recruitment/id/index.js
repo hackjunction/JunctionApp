@@ -69,7 +69,7 @@ export default () => {
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const [user, setUser] = useState()
+    const [user, setUser] = useState(null)
     const message = useFormField(
         '',
         value => {
@@ -107,19 +107,22 @@ export default () => {
 
     const handleSendMessage = useCallback(async () => {
         const err = message.validate()
-        if (err) return
-        setLoading(true)
-        const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
-        const res = await sendMessage(formatted, user.userId)
+        console.log('user is', user)
+        if (!err && user !== null) {
+            setLoading(true)
+            const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
+            const res = await sendMessage(formatted, user.userId)
 
-        if (res.error) {
-            dispatch(SnackbarActions.error(t('Something_went_wrong_')))
-        } else {
+            // TODO fix snackbar here
+            /*if (res?.error) {
+                dispatch(SnackbarActions.error(t('Something_went_wrong_')))
+            } else {*/
             message.reset()
             dispatch(SnackbarActions.success(t('Message_sent_')))
+            //}
+            setLoading(false)
         }
-        setLoading(false)
-    }, [message, sendMessage, user.userId, dispatch, t])
+    }, [message, sendMessage, user, dispatch, t])
 
     // TODO A little bit hard to define for translating
     const renderRecruitmentStatus = () => {

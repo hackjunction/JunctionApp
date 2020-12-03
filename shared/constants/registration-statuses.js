@@ -1,4 +1,12 @@
 const RegistrationStatuses = {
+    incomplete: {
+        id: 'incomplete',
+        label: 'Incomplete',
+        description: "The registration hasn't been completed",
+        color: '#555555',
+        allowAssign: false,
+        allowEdit: true,
+    },
     pending: {
         id: 'pending',
         label: 'Pending',
@@ -60,8 +68,8 @@ const RegistrationStatuses = {
         label: 'Checked In',
         description: 'Has arrived at the event',
         color: '#0083f3',
-        allowAssign: false,
-        allowEdit: false,
+        allowAssign: true,
+        allowEdit: true, // todo change back to false
     },
     noShow: {
         id: 'noShow',
@@ -77,6 +85,6 @@ module.exports = {
     ids: Object.keys(RegistrationStatuses),
     asObject: RegistrationStatuses,
     asArray: Object.keys(RegistrationStatuses).map(
-        status => RegistrationStatuses[status]
+        status => RegistrationStatuses[status],
     ),
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { sortBy } from 'lodash-es'
 import moment from 'moment-timezone'
@@ -6,16 +6,60 @@ import { Grid } from '@material-ui/core'
 import { EventHelpers } from '@hackjunction/shared'
 import ProjectsGridItem from '../ProjectsGridItem'
 
+import ProjectScoresService from 'services/projectScores'
+
 const ProjectsGrid = ({
     projects,
     event,
     onSelect,
     sortField = 'location',
     showFullTeam = false,
+    showScore = false,
+    token = '',
 }) => {
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
-    const sorted = sortField ? sortBy(projects, p => p[sortField]) : projects
+    const [sorted, setSorted] = useState(projects)
 
+    async function fetchData() {
+        const nprojects = await Promise.all(
+            projects.map(async project => {
+                return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
+                    token,
+                    event.slug,
+                    project._id,
+                )
+                    .then(score => {
+                        if (score[0]) {
+                            return Object.assign(score[0], project)
+                        }
+                        return Object.assign(
+                            { score: 0, message: 'Not rated' },
+                            project,
+                        )
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        return Object.assign(
+                            { score: 0, message: 'Not rated' },
+                            project,
+                        )
+                    })
+            }),
+        )
+        setSorted((sortBy(nprojects, p => -p['score']): nprojects))
+    }
+
+    useEffect(() => {
+        if (showScore) {
+            console.log('fetch')
+            fetchData()
+        } else {
+            setSorted(
+                sortField ? sortBy(projects, p => p[sortField]) : projects,
+            )
+        }
+    }, [projects])
+    console.log(sorted)
     return (
         <Grid
             container
@@ -31,6 +75,8 @@ const ProjectsGrid = ({
                     showTableLocation={isOngoingEvent}
                     showFullTeam={showFullTeam}
                     onClickMore={() => onSelect(project)}
+                    score={project?.score}
+                    message={project?.message}
                 />
             ))}
         </Grid>

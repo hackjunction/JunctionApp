@@ -56,7 +56,7 @@ controller.updateProjectForEventAndTeam = async (event, team, data) => {
     const validatedData = await schema.validate(data, { stripUnknown: true })
     const projects = await controller.getProjectsByEventAndTeam(
         event._id,
-        team._id
+        team._id,
     )
     const project = projects.find(p => p._id.toString() === data._id)
     project.set(validatedData)
@@ -83,9 +83,6 @@ controller.getProjectsWithToken = async (event, token) => {
         throw new ForbiddenError('This event has no challenges')
     }
 
-    console.log('EVENT', event)
-    console.log('TOKEN', token)
-
     const matches = await Promise.filter(event.challenges, challenge => {
         return bcrypt.compare(challenge.slug, token)
     })
@@ -105,6 +102,26 @@ controller.getProjectsWithToken = async (event, token) => {
         challenge,
         event,
     }
+}
+
+// TODO remove
+controller.validateToken = async (event, token) => {
+    if (
+        !event.challengesEnabled ||
+        !event.challenges ||
+        event.challenges.length === 0
+    ) {
+        throw new ForbiddenError('This event has no challenges')
+    }
+
+    const matches = await Promise.filter(event.challenges, challenge => {
+        return bcrypt.compare(challenge.slug, token)
+    })
+
+    if (matches.length === 0) {
+        throw new ForbiddenError('Invalid token')
+    }
+    return true
 }
 
 module.exports = controller

@@ -45,19 +45,11 @@ export default () => {
     useEffect(() => {
         fetchData()
     }, [fetchData])
+
+    //First two routes are for challenge link cases
     return (
         <PageWrapper loading={loading} error={error}>
             <Switch>
-                <Route
-                    path={`${match.url}/challenge/:token`}
-                    component={({ match }) => (
-                        <GalleryChallengeAdmin
-                            projects={projects}
-                            event={event}
-                            match={match}
-                        />
-                    )}
-                />
                 <Route
                     path={`${match.url}/challenge/:token/view/:projectId`}
                     component={({ match }) => (
@@ -65,6 +57,16 @@ export default () => {
                             event={event}
                             match={match}
                             showFullTeam={true}
+                        />
+                    )}
+                />
+                <Route
+                    path={`${match.url}/challenge/:token`}
+                    component={({ match }) => (
+                        <GalleryChallengeAdmin
+                            projects={projects}
+                            event={event}
+                            match={match}
                         />
                     )}
                 />
