@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { find, filter } from 'lodash-es'
-import { Box, Typography, Button, Grid, Tooltip  } from '@material-ui/core'
+import { Box, Typography, Button, Grid, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
         width: 'auto',
         margin: '0.10rem',
         cursor: 'pointer',
-    }
+    },
     playerWrapper: {
         position: 'relative',
         height: '360px',

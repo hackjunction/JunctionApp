@@ -66,8 +66,8 @@ const OrganizationDetail = ({ organization, handleRemove }) => {
                             onClick={() =>
                                 dispatch(
                                     push(
-                                        `admin/organization/${organization.slug}`
-                                    )
+                                        `admin/organization/${organization.slug}`,
+                                    ),
                                 )
                             }
                         >
