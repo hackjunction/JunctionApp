@@ -41,7 +41,7 @@ export default () => {
                     <Divider size={1} />
                     <EventHighlight />
                     <Divider size={4} />
-                    <CenteredContainer spacing={3}>
+                    <CenteredContainer>
                         <Divider size={2} />
                         <EventsGrid
                             title={t('Past_events_')}

@@ -134,7 +134,7 @@ export default () => {
                                 options={organizations?.map(org => {
                                     return {
                                         label: org.name,
-                                        value: org.slug,
+                                        value: org._id,
                                         icon: org.icon,
                                     }
                                 })}

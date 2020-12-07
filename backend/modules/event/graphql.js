@@ -283,10 +283,8 @@ const Resolvers = {
     },
     Event: {
         organizations: parent => {
-            // TODO change this to use id
-            // ^ Requires a migration
-            return parent.organizations.map(org =>
-                Organization.findOne({ slug: org }),
+            return parent.organizations.map(orgId =>
+                Organization.findById(orgId),
             )
         },
         _eventLocationFormatted: parent => {
