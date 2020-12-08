@@ -260,6 +260,9 @@ controller.getRegistrationsForEvent = eventId => {
             const reg = document.toObject()
             reg.answers = _.mapValues(reg.answers, (answer, field) => {
                 const fieldType = RegistrationFields.getFieldType(field)
+                if (answer === null) {
+                    console.log('Null answer in ', field)
+                }
                 switch (fieldType) {
                     case FieldTypes.LONG_TEXT.id:
                         if (answer && answer.length > 10) {
@@ -268,6 +271,7 @@ controller.getRegistrationsForEvent = eventId => {
                         return answer
                     default: {
                         if (
+                            answer &&
                             typeof answer === 'object' &&
                             !Array.isArray(answer) &&
                             Object.keys(answer).length > 0

@@ -4,7 +4,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 
 import NewHackerpackForm from './NewHackerpackForm'
 import HackerpackList from './HackerpackList'
@@ -23,7 +23,7 @@ export default () => {
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
             render={() => (
-                <CenteredContainer>
+                <Container center>
                     <NewHackerpackForm />
                     <HackerpackList />
 
@@ -35,7 +35,7 @@ export default () => {
                     <BannerList />
 
                     <EventPriority />
-                </CenteredContainer>
+                </Container>
             )}
         />
     )

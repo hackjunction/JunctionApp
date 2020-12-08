@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Dialog } from '@material-ui/core'
 
 import PageWrapper from 'components/layouts/PageWrapper'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -92,7 +92,7 @@ export default ({
     return (
         <Dialog open={!!registrationId} onClose={onClose} fullScreen>
             <PageWrapper loading={loading || !registration} error={error}>
-                <CenteredContainer>
+                <Container center>
                     <PageHeader
                         heading={participantName}
                         subheading={participantSubheading}
@@ -103,7 +103,7 @@ export default ({
                         onSubmit={handleEdit}
                         onCancel={onClose}
                     />
-                </CenteredContainer>
+                </Container>
             </PageWrapper>
         </Dialog>
     )

@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const ExternalLink = ({ href, children, theme }) => {
+const ExternalLink = ({ href, children, theme = null }) => {
     const classes = useStyles({ _theme: theme })
     return (
         <a

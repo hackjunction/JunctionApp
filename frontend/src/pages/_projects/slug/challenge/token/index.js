@@ -5,7 +5,7 @@ import { useRouteMatch } from 'react-router'
 import { push } from 'connected-react-router'
 import { Box } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
@@ -44,7 +44,7 @@ export default ({ event }) => {
             loading={loading || !data}
             error={error}
             render={() => (
-                <CenteredContainer>
+                <Container center>
                     <PageHeader
                         heading={data.challenge.name}
                         subheading={data.projects.length + ' projects'}
@@ -59,7 +59,7 @@ export default ({ event }) => {
                         token={token}
                     />
                     <Box height={200} />
-                </CenteredContainer>
+                </Container>
             )}
         ></PageWrapper>
     )

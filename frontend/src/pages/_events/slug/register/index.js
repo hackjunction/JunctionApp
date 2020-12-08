@@ -25,7 +25,7 @@ import { useSelector } from 'react-redux'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as UserSelectors from 'redux/user/selectors'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import AnalyticsService from 'services/analytics'
@@ -39,6 +39,7 @@ import NewsLetterButton from 'components/inputs/NewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { popupCenter } from '../../../../utils/misc'
 
 import EventDetailContext from '../context'
 
@@ -359,42 +360,8 @@ export default RequiresPermission(() => {
         })
     }
 
-    const shareurl = 'https://app.hackjunction.com/' + event.slug // TODO: remove hard coded base URL
+    const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
-    const popupCenter = ({ url, title, w = 900, h = 600 }) => {
-        const dualScreenLeft =
-            window.screenLeft !== undefined ? window.screenLeft : window.screenX
-        const dualScreenTop =
-            window.screenTop !== undefined ? window.screenTop : window.screenY
-
-        const width = window.innerWidth
-            ? window.innerWidth
-            : document.documentElement.clientWidth
-            ? document.documentElement.clientWidth
-            : window.screen.width
-        const height = window.innerHeight
-            ? window.innerHeight
-            : document.documentElement.clientHeight
-            ? document.documentElement.clientHeight
-            : window.screen.height
-
-        const systemZoom = width / window.screen.availWidth
-        const left = (width - w) / 2 / systemZoom + dualScreenLeft
-        const top = (height - h) / 2 / systemZoom + dualScreenTop
-        const newWindow = window.open(
-            url,
-            title,
-            `
-      scrollbars=yes,
-      width=${w / systemZoom}, 
-      height=${h / systemZoom}, 
-      top=${top}, 
-      left=${left}
-      `,
-        )
-
-        if (window.focus) newWindow.focus()
-    }
 
     return (
         <FadeInWrapper className={classes.wrapper}>
@@ -407,7 +374,7 @@ export default RequiresPermission(() => {
                     height: 1080,
                 }}
             />
-            <CenteredContainer wrapperClass={classes.content}>
+            <Container center wrapperClass={classes.content}>
                 <Box className={classes.top}>
                     <Typography variant="h1" className={classes.topTitle}>
                         Register
@@ -556,7 +523,7 @@ export default RequiresPermission(() => {
                     </Step>
                 </Stepper>
                 <div style={{ height: '100px' }} />
-            </CenteredContainer>
+            </Container>
         </FadeInWrapper>
     )
 })

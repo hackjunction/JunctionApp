@@ -11,6 +11,7 @@ const { GraphQLDateTime } = require('graphql-iso-date')
 
 const moment = require('moment-timezone')
 const { EventHelpers } = require('@hackjunction/shared')
+const { OrganizationType } = require('../organization/graphql')
 const dateUtils = require('../../common/utils/dateUtils')
 
 const {
@@ -23,6 +24,8 @@ const {
     EventTag,
     RegistrationConfig,
 } = require('../graphql-shared-types')
+
+const Organization = require('../organization/model')
 
 const EventType = new GraphQLObjectType({
     name: 'Event',
@@ -126,7 +129,7 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLList(GraphQLString),
             },
             organizations: {
-                type: GraphQLList(GraphQLString),
+                type: GraphQLList(OrganizationType),
             },
             registrationConfig: {
                 type: RegistrationConfig,
@@ -279,6 +282,11 @@ const Resolvers = {
         },
     },
     Event: {
+        organizations: parent => {
+            return parent.organizations.map(orgId =>
+                Organization.findById(orgId),
+            )
+        },
         _eventLocationFormatted: parent => {
             if (parent.eventType === 'physical') {
                 return `${parent.eventLocation.city}, ${parent.eventLocation.country}`

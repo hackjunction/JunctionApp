@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 import SearchResults from './SearchResults'
 import Filters from './Filters'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -45,7 +45,7 @@ export default () => {
 
     return (
         <div className={classes.root}>
-            <CenteredContainer>
+            <Container center>
                 <Box
                     display="flex"
                     flexDirection="row"
@@ -66,7 +66,7 @@ export default () => {
                         <SearchResults />
                     </>
                 )}
-            </CenteredContainer>
+            </Container>
         </div>
     )
 }
