@@ -6,7 +6,7 @@ import PageHeader from 'components/generic/PageHeader'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
@@ -88,15 +88,15 @@ export default () => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+            <Container center wrapperClass={classes.backButtonWrapper}>
                 <Button onClick={() => dispatch(push('/'))}>
                     <ArrowBackIosIcon style={{ color: 'black' }} />
                     <Typography variant="button" style={{ color: 'black' }}>
                         Back
                     </Typography>
                 </Button>
-            </CenteredContainer>
-            <CenteredContainer>
+            </Container>
+            <Container center>
                 <PageHeader
                     heading="Hackerpack"
                     subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
@@ -112,7 +112,7 @@ export default () => {
                         suggestion.
                     </Typography>
                 </Box>
-            </CenteredContainer>
+            </Container>
         </PageWrapper>
     )
 }

@@ -12,7 +12,7 @@ import { Box, Grid, Typography } from '@material-ui/core'
 
 import BannerCarousel from 'components/generic/BannerCarousel'
 import Button from 'components/generic/Button'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import Divider from 'components/generic/Divider'
 import ExternalLink from 'components/generic/ExternalLink'
 import Footer from 'components/layouts/Footer'
@@ -66,7 +66,7 @@ export default () => {
             </Helmet>
             <BannerCarousel />
             <Divider size={4} />
-            <CenteredContainer>
+            <Container center>
                 <Divider size={2} />
                 <EventsGrid title={t('Upcoming_')} events={activeEvents} />
                 <EventsGrid title={t('Past_events_')} events={pastEvents} />
@@ -79,9 +79,9 @@ export default () => {
                         {t('Past_events_all_')}
                     </Button>
                 </Box>
-            </CenteredContainer>
+            </Container>
             <Divider size={20} />
-            <CenteredContainer small>
+            <Container center small>
                 <Grid>
                     <Image
                         defaultImage={require('assets/logos/emblem_black.png')}
@@ -114,9 +114,9 @@ export default () => {
                     </Button>
                 </Grid>
                 <Divider size={4} />
-            </CenteredContainer>
+            </Container>
             <Divider size={20} />
-            <CenteredContainer small>
+            <Container center small>
                 <Divider size={1} />
                 <Typography variant="h3" align="center">
                     {t('New_to_', {
@@ -147,9 +147,9 @@ export default () => {
                         {t('More_info_link_')}
                     </ExternalLink>
                 </Typography>
-            </CenteredContainer>
+            </Container>
             <Divider size={20} />
-            <CenteredContainer>
+            <Container center>
                 <Typography variant="h4" align="center">
                     {t('Join_hackerpack_')}
                 </Typography>
@@ -161,7 +161,7 @@ export default () => {
                 >
                     {t('To_hackerpack_')}
                 </Button>
-            </CenteredContainer>
+            </Container>
             <Divider size={20} />
         </PageWrapper>
     )

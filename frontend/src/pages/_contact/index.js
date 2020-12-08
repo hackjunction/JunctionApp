@@ -12,7 +12,7 @@ import Divider from 'components/generic/Divider'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
@@ -173,7 +173,7 @@ export default () => {
                             content={config.SEO_TWITTER_HANDLE}
                         />
                     </Helmet>
-                    <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+                    <Container center wrapperClass={classes.backButtonWrapper}>
                         <Button onClick={() => dispatch(push('/'))}>
                             <ArrowBackIosIcon style={{ color: 'black' }} />
                             <Typography
@@ -183,8 +183,8 @@ export default () => {
                                 {t('Back_')}
                             </Typography>
                         </Button>
-                    </CenteredContainer>
-                    <CenteredContainer>
+                    </Container>
+                    <Container center>
                         <h2>
                             {t('Contact_')} {config.PLATFORM_OWNER_NAME}
                         </h2>
@@ -197,8 +197,8 @@ export default () => {
                             margin="dense"
                             variant="filled"
                         />
-                    </CenteredContainer>
-                    <CenteredContainer>
+                    </Container>
+                    <Container center>
                         <TextField
                             style={{ width: '60%' }}
                             label={'Email'}
@@ -208,8 +208,8 @@ export default () => {
                             margin="dense"
                             variant="filled"
                         />
-                    </CenteredContainer>
-                    <CenteredContainer>
+                    </Container>
+                    <Container center>
                         <TextField
                             style={{ width: '60%' }}
                             label={'Name'}
@@ -218,8 +218,8 @@ export default () => {
                             margin="dense"
                             variant="filled"
                         />
-                    </CenteredContainer>
-                    <CenteredContainer>
+                    </Container>
+                    <Container center>
                         <TextField
                             style={{ width: '60%' }}
                             label={'Organisation'}
@@ -228,8 +228,8 @@ export default () => {
                             margin="dense"
                             variant="filled"
                         />
-                    </CenteredContainer>
-                    <CenteredContainer>
+                    </Container>
+                    <Container center>
                         <TextField
                             style={{ width: '60%' }}
                             label={'Message'}
@@ -242,8 +242,8 @@ export default () => {
                             rows={10}
                             rowsMax={100}
                         />
-                    </CenteredContainer>
-                    <CenteredContainer>
+                    </Container>
+                    <Container center>
                         <Button
                             color="primary"
                             variant="contained"
@@ -252,7 +252,7 @@ export default () => {
                         >
                             {t('Send_')}
                         </Button>
-                    </CenteredContainer>
+                    </Container>
                     <Divider />
                 </>
             )}

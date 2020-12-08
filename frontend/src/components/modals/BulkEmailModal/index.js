@@ -10,7 +10,7 @@ import {
     DialogActions,
 } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
@@ -171,7 +171,7 @@ export default ({ visible, userIds = [], onClose }) => {
         <Dialog fullScreen open={visible} onClose={onClose}>
             <DialogContent>
                 <PageWrapper loading={loading} wrapContent={false}>
-                    <CenteredContainer>
+                    <Container center>
                         <ConfirmDialog
                             open={confirmModalOpen}
                             title={t('Sure_')}
@@ -260,7 +260,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                 />
                             </Grid>
                         </Grid>
-                    </CenteredContainer>
+                    </Container>
                 </PageWrapper>
             </DialogContent>
             <DialogActions>

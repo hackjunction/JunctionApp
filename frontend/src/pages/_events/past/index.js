@@ -9,8 +9,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventHighlight from '../../_index/EventHighlight'
 import EventsGrid from '../../_index/EventsGrid'
-import CenteredContainer from 'components/generic/CenteredContainer'
-import CenteredContainerSmall from 'components/generic/CenteredContainerSmall'
+import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Image from 'components/generic/Image'
 import config from 'constants/config'
@@ -41,13 +40,13 @@ export default () => {
                     <Divider size={1} />
                     <EventHighlight />
                     <Divider size={4} />
-                    <CenteredContainer>
+                    <Container center>
                         <Divider size={2} />
                         <EventsGrid
                             title={t('Past_events_')}
                             events={pastEvents}
                         />
-                    </CenteredContainer>
+                    </Container>
                     <Divider size={20} />
                 </>
             )}

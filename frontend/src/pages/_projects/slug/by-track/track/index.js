@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { find, sortBy } from 'lodash-es'
 import { Box } from '@material-ui/core'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
@@ -49,7 +49,7 @@ export default ({ event, projects }) => {
                 title={track.name}
                 subheading={`${filtered.length} projects`}
             />
-            <CenteredContainer>
+            <Container center>
                 <Box mt={3} />
                 <ProjectsGrid
                     sortField={null}
@@ -58,7 +58,7 @@ export default ({ event, projects }) => {
                     onSelect={onProjectSelected}
                 />
                 <Box mt={5} />
-            </CenteredContainer>
+            </Container>
         </>
     )
 }

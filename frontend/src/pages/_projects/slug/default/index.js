@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { sortBy } from 'lodash-es'
 import { Box } from '@material-ui/core'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsPreview from './ProjectsPreview'
 import Filters from './Filters'
@@ -123,7 +123,7 @@ export default ({ event, projects }) => {
     return (
         <>
             <EventHeroImage event={event} subheading="Project gallery" />
-            <CenteredContainer>
+            <Container center>
                 <Box mt={3} />
                 <Filters
                     event={event}
@@ -131,7 +131,7 @@ export default ({ event, projects }) => {
                     onChange={setActiveFilter}
                 />
                 {renderContent()}
-            </CenteredContainer>
+            </Container>
         </>
     )
 }

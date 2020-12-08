@@ -8,7 +8,7 @@ import CheckIcon from '@material-ui/icons/Check'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 
 import UserProfilesService from 'services/userProfiles'
 
@@ -205,7 +205,7 @@ export default () => {
                 wrapContent={false}
                 loading={loading}
                 render={() => (
-                    <CenteredContainer>
+                    <Container center>
                         <DetailTop user={user} />
                         <Box mt={3} />
                         <Grid container>
@@ -421,7 +421,7 @@ export default () => {
                                 </DetailSection>
                             </Grid>
                         </Grid>
-                    </CenteredContainer>
+                    </Container>
                 )}
             />
         </Dialog>

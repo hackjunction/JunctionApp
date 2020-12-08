@@ -9,7 +9,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { Button, Typography } from '@material-ui/core'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -111,7 +111,7 @@ export default ({ event, title, subheading, onBack }) => {
                     </Box>
                 </FadeInWrapper>
             </Box> */}
-            <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+            <Container center wrapperClass={classes.backButtonWrapper}>
                 <Button
                     onClick={
                         typeof onBack === 'function'
@@ -124,7 +124,7 @@ export default ({ event, title, subheading, onBack }) => {
                         Back
                     </Typography>
                 </Button>
-            </CenteredContainer>
+            </Container>
         </Box>
     )
 }

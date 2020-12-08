@@ -25,7 +25,7 @@ import { useSelector } from 'react-redux'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as UserSelectors from 'redux/user/selectors'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import Image from 'components/generic/Image'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import AnalyticsService from 'services/analytics'
@@ -374,7 +374,7 @@ export default RequiresPermission(() => {
                     height: 1080,
                 }}
             />
-            <CenteredContainer wrapperClass={classes.content}>
+            <Container center wrapperClass={classes.content}>
                 <Box className={classes.top}>
                     <Typography variant="h1" className={classes.topTitle}>
                         Register
@@ -523,7 +523,7 @@ export default RequiresPermission(() => {
                     </Step>
                 </Stepper>
                 <div style={{ height: '100px' }} />
-            </CenteredContainer>
+            </Container>
         </FadeInWrapper>
     )
 })

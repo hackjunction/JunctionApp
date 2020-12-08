@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 import Image from 'components/generic/Image'
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import Markdown from 'components/generic/Markdown'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
@@ -255,7 +255,7 @@ const ProjectDetail = ({
                         </Box>
                     </Box>
                 </Tooltip>
-                <CenteredContainer>
+                <Container center>
                     <Pagination
                         pages={project.images.length}
                         active={index}
@@ -500,7 +500,7 @@ const ProjectDetail = ({
                             </Grid>
                         </Box>
                     </Grid>
-                </CenteredContainer>
+                </Container>
             </Box>
         </>
     )

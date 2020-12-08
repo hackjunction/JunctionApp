@@ -8,7 +8,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Divider from 'components/generic/Divider'
 import Button from 'components/generic/Button'
 
-import CenteredContainer from 'components/generic/CenteredContainer'
+import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import PricingCard from 'components/generic/PricingCard'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -55,7 +55,7 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <>
-                    <CenteredContainer wrapperClass={classes.backButtonWrapper}>
+                    <Container center wrapperClass={classes.backButtonWrapper}>
                         <Button onClick={() => dispatch(push('/'))}>
                             <ArrowBackIosIcon style={{ color: 'black' }} />
                             <Typography
@@ -65,9 +65,9 @@ export default () => {
                                 {t('Back_')}
                             </Typography>
                         </Button>
-                    </CenteredContainer>
+                    </Container>
                     <Divider size={3} />
-                    <CenteredContainer wrapperClass={classes.pricingWrapper}>
+                    <Container center wrapperClass={classes.pricingWrapper}>
                         <Grid
                             container
                             direction="row"
@@ -102,7 +102,7 @@ export default () => {
                                 {t('Contact_us_')}
                             </Button>
                         </Grid>
-                    </CenteredContainer>
+                    </Container>
                     <Divider size={4} />
                 </>
             )}
