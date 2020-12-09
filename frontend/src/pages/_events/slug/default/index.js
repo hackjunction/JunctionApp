@@ -15,7 +15,7 @@ import EventInformation from './EventInformation'
 import StaggeredList from 'components/animated/StaggeredList'
 import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import Button from 'components/generic/Button'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
@@ -82,7 +82,7 @@ export default () => {
             </Helmet>
             <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
             <FadeInWrapper>
-                <Container center>
+                <CenteredContainer>
                     <StaggeredList>
                         <Grid container spacing={5} wrap="wrap-reverse">
                             <Grid item xs={12} md={4}>
@@ -116,7 +116,7 @@ export default () => {
                             </Grid>
                         </Grid>
                     </StaggeredList>
-                </Container>
+                </CenteredContainer>
             </FadeInWrapper>
             <BannerCarousel />
         </>

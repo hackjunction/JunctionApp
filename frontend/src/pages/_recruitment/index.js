@@ -5,7 +5,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import * as RecruitmentActions from 'redux/recruitment/actions'
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import BasicNavBar from 'components/navbars/BasicNavBar'
 
 import SearchPage from './default'
@@ -22,11 +22,11 @@ export default () => {
 
     return (
         <PageWrapper wrapContent={false} showErrorMessage>
-            <Container center>
+            <CenteredContainer>
                 <BasicNavBar
                     text={config.PLATFORM_OWNER_NAME + ' Recruitment Tool'}
                 />
-            </Container>
+            </CenteredContainer>
             <Route path="/recruitment" component={SearchPage} />
             <Switch>
                 <Route exact path="/recruitment/admin" component={AdminPage} />

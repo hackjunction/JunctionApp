@@ -22,12 +22,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Image = ({
-    className = null,
-    publicId = null,
+    className,
+    publicId,
     transformation = {},
-    alt = null,
-    url = null,
-    defaultImage = null,
+    alt,
+    url,
+    defaultImage,
 }) => {
     const classes = useStyles()
     if (publicId) {
@@ -51,8 +51,8 @@ const Image = ({
             src={url ?? defaultImage ?? ''}
             alt={alt}
             className={clsx(classes.root, className)}
-            width={transformation?.width}
-            height={transformation?.height}
+            width={transformation.width}
+            height={transformation.height}
         />
     )
 }

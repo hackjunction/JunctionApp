@@ -15,13 +15,7 @@ const Fragments = {
             eventType
             registrationStartTime
             registrationEndTime
-            organizations {
-                name
-                slug
-                about
-                link
-                icon
-            }
+            organizations
             _eventLocationFormatted
             _eventTimeFormatted
         }

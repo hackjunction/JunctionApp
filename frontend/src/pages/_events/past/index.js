@@ -9,13 +9,15 @@ import PageWrapper from 'components/layouts/PageWrapper'
 
 import EventHighlight from '../../_index/EventHighlight'
 import EventsGrid from '../../_index/EventsGrid'
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
+import CenteredContainerSmall from 'components/generic/CenteredContainerSmall'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Image from 'components/generic/Image'
 import config from 'constants/config'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
+import { useAllOrganizations } from 'graphql/queries/organization'
 import { Helmet } from 'react-helmet'
 
 import { useTranslation } from 'react-i18next'
@@ -29,6 +31,7 @@ export default () => {
 
     const [pastEvents] = usePastEvents({ limit: 100 })
 
+    const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
@@ -40,13 +43,14 @@ export default () => {
                     <Divider size={1} />
                     <EventHighlight />
                     <Divider size={4} />
-                    <Container center>
+                    <CenteredContainer spacing={3}>
                         <Divider size={2} />
                         <EventsGrid
-                            title={t('Past_events_')}
+                            title={t('Past_')}
                             events={pastEvents}
+                            organizations={organizations}
                         />
-                    </Container>
+                    </CenteredContainer>
                     <Divider size={20} />
                 </>
             )}

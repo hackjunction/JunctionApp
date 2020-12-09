@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch } from 'react-redux'
 import { findIndex } from 'lodash-es'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import Container from 'components/generic/Container/index'
+import CenteredContainer from 'components/generic/CenteredContainer/index'
 import MenuIcon from '@material-ui/icons/Menu'
 import LockIcon from '@material-ui/icons/Lock'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
@@ -254,7 +254,7 @@ export default React.memo(
                 </Hidden>
                 <main className={classes.content}>
                     {topContent}
-                    <Container
+                    <CenteredContainer
                         className={classes.pageWrapperInner}
                         wrapperClass={classes.pageWrapper}
                     >
@@ -287,7 +287,7 @@ export default React.memo(
                             )}
                             <Redirect to={baseRoute} />
                         </Switch>
-                    </Container>
+                    </CenteredContainer>
                 </main>
             </div>
         )

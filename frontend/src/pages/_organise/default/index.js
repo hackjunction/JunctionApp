@@ -4,7 +4,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
 
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 
 import NewEventForm from './NewEventForm'
 import EventsList from './EventsList'
@@ -20,10 +20,10 @@ export default () => {
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
             render={() => (
-                <Container center>
+                <CenteredContainer>
                     <NewEventForm />
                     <EventsList events={events} />
-                </Container>
+                </CenteredContainer>
             )}
         />
     )

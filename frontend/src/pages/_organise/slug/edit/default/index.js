@@ -11,11 +11,18 @@ import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import { useAllOrganizations } from 'graphql/queries/organization'
+import OrganizationService from 'services/organization'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
-    const [organizations] = useAllOrganizations()
+    const [organizations, setOrganizations] = useState([])
+
+    // TODO organization should be in redux
+    useEffect(() => {
+        OrganizationService.getOrganizations().then(orgs => {
+            if (orgs) setOrganizations(orgs)
+        })
+    }, [])
 
     return (
         <Grid container spacing={3}>
@@ -131,10 +138,10 @@ export default () => {
                                     form.setFieldValue(field.name, items)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
-                                options={organizations?.map(org => {
+                                options={organizations.map(org => {
                                     return {
                                         label: org.name,
-                                        value: org._id,
+                                        value: org.slug,
                                         icon: org.icon,
                                     }
                                 })}

@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { Grid, Typography } from '@material-ui/core'
 
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useTranslation } from 'react-i18next'
 
-export default ({ events, loading = false, title }) => {
+export default ({ events, organizations, loading, title }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     var date = new Date()
@@ -20,12 +20,21 @@ export default ({ events, loading = false, title }) => {
             const canApply =
                 isodate < event.registrationEndTime &&
                 isodate > event.registrationStartTime
+
             return (
                 <Grid key={event.slug} item xs={12} md={6} lg={4}>
                     <EventCard
                         event={event}
                         organization={
-                            event?.organizations ? event.organizations[0] : null
+                            organizations
+                                ? event.organizations
+                                    ? organizations.find(
+                                          org =>
+                                              org.slug ===
+                                              event.organizations[0],
+                                      )
+                                    : null
+                                : null
                         }
                         buttons={[
                             !canApply && !event.galleryOpen && (
@@ -87,7 +96,7 @@ export default ({ events, loading = false, title }) => {
         <PageWrapper
             loading={loading}
             render={() => (
-                <Container center>
+                <CenteredContainer>
                     <Grid
                         container
                         spacing={6}
@@ -102,7 +111,7 @@ export default ({ events, loading = false, title }) => {
                         </Grid>
                         {renderEvents()}
                     </Grid>
-                </Container>
+                </CenteredContainer>
             )}
         />
     )
