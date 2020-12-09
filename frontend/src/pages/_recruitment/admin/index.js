@@ -4,7 +4,7 @@ import { Auth } from '@hackjunction/shared'
 import { Typography, Dialog } from '@material-ui/core'
 import RequiresPermission from 'hocs/RequiresPermission'
 
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import PageHeader from 'components/generic/PageHeader'
 
 import SearchBox from './SearchBox'
@@ -19,7 +19,7 @@ export default RequiresPermission(() => {
     const { t } = useTranslation()
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
-            <Container center>
+            <CenteredContainer>
                 <PageHeader
                     heading="Recruitment admin"
                     subheading="Manage access to recruitment dashboard"
@@ -39,7 +39,7 @@ export default RequiresPermission(() => {
                     userId={revokingUser}
                     onClose={() => setRevokingUser()}
                 />
-            </Container>
+            </CenteredContainer>
         </Dialog>
     )
 }, [Auth.Permissions.MANAGE_RECRUITMENT])

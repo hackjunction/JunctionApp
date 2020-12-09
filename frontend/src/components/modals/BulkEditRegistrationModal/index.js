@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import PageWrapper from 'components/layouts/PageWrapper'
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import PageHeader from 'components/generic/PageHeader'
 import OrganiserSelectModal from 'components/modals/OrganiserSelectModal'
 import OrganiserListItem from 'components/generic/UserListItem/OrganiserListItem'
@@ -114,7 +114,7 @@ export default ({ visible, userIds = [], onClose }) => {
                         onClose={() => setConfirmDialog(false)}
                         onOk={handleSubmit}
                     />
-                    <Container center>
+                    <CenteredContainer>
                         <PageHeader
                             heading="Bulk edit"
                             subheading={
@@ -311,7 +311,7 @@ export default ({ visible, userIds = [], onClose }) => {
                                 />
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
-                    </Container>
+                    </CenteredContainer>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

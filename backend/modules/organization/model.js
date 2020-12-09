@@ -1,8 +1,12 @@
 const mongoose = require('mongoose')
 const mongooseSlugPlugin = require('mongoose-slug-plugin')
 
+const Shared = require('@hackjunction/shared')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const AuthController = require('../auth/controller')
+
+const { RegistrationFields } = Shared
 
 const OrganizationSchema = new mongoose.Schema({
     name: {
@@ -37,7 +41,7 @@ OrganizationSchema.index(
     },
     {
         unique: true,
-    },
+    }
 )
 
 OrganizationSchema.plugin(mongooseSlugPlugin, {

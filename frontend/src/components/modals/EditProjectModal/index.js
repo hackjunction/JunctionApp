@@ -22,7 +22,7 @@ import {
     Checkbox,
 } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import PageHeader from 'components/generic/PageHeader'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
@@ -80,7 +80,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
             <PageWrapper loading={!project}>
                 {project && (
                     <Box p={1}>
-                        <Container center>
+                        <CenteredContainer>
                             <PageHeader
                                 heading={project.name}
                                 subheading={project.track}
@@ -333,7 +333,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                     />
                                 </Box>
                             ) : null}
-                        </Container>
+                        </CenteredContainer>
                     </Box>
                 )}
             </PageWrapper>

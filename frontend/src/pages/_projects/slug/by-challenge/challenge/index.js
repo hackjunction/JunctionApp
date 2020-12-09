@@ -6,7 +6,7 @@ import { useRouteMatch } from 'react-router'
 import { find, sortBy } from 'lodash-es'
 import { Box } from '@material-ui/core'
 
-import Container from 'components/generic/Container'
+import CenteredContainer from 'components/generic/CenteredContainer'
 import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
@@ -46,7 +46,7 @@ export default ({ event, projects }) => {
                 title={challenge.partner}
                 subheading={challenge.name}
             />
-            <Container center>
+            <CenteredContainer>
                 <Box mt={3} />
                 <ProjectsGrid
                     sortField={null}
@@ -55,7 +55,7 @@ export default ({ event, projects }) => {
                     onSelect={onProjectSelected}
                 />
                 <Box mt={5} />
-            </Container>
+            </CenteredContainer>
         </>
     )
 }

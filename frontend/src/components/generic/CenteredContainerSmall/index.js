@@ -8,27 +8,16 @@ const useStyles = makeStyles(theme => ({
     },
     inner: {
         margin: '0 auto',
-        width: '100%',
-        maxWidth: '1120px',
-    },
-    small: {
         width: '60%',
+        maxWidth: '1120px',
+        textAlign: 'center',
         [theme.breakpoints.down('md')]: {
             width: '80%',
         },
     },
-    center: {
-        textAlign: 'center',
-    },
 }))
 
-export default ({
-    wrapperClass = null,
-    className = null,
-    small = false,
-    center = false,
-    children,
-}) => {
+export default ({ wrapperClass, className, children }) => {
     const classes = useStyles()
     return (
         <div
@@ -40,8 +29,6 @@ export default ({
             <div
                 className={clsx({
                     [classes.inner]: true,
-                    [classes.small]: small,
-                    [classes.center]: center,
                     [className]: typeof className !== 'undefined',
                 })}
             >

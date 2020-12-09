@@ -104,20 +104,18 @@ RegistrationSchema.pre('save', function (next) {
 
 /** Trigger email sending on status changes etc. */
 RegistrationSchema.post('save', function (doc, next) {
-    const INCOMPLETE = RegistrationStatuses.asObject.incomplete.id
-
     const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id
     const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id
     const REJECTED = RegistrationStatuses.asObject.rejected.id
+    /** If a registration was just created, create an email notification about it */
+    if (this._wasNew) {
+        EmailTaskController.createRegisteredTask(doc.user, doc.event, true)
+    }
+
     /** If a registration has its status changed, update the user profile */
     if (this._previousStatus !== this.status) {
         UserProfileController.syncRegistration(doc)
-        // Used to be incomplete, isn't anymore
-        if (this._previousStatus === INCOMPLETE) {
-            /** If a registration was just created, create an email notification about it */
-            EmailTaskController.createRegisteredTask(doc.user, doc.event, true)
-        }
     }
 
     /** If a registration is accepted, create an email notification about it */
