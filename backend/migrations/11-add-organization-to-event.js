@@ -32,7 +32,7 @@ module.exports = {
                     ),
                 ),
             ).then(values => {
-                event.organizations = values.filter(value => value)
+                event.organizations = values.filter(value => value !== null)
                 event.save()
             })
         })

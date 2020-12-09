@@ -8,13 +8,12 @@ async function batchGetRegistrationsById(ids) {
         _id: {
             $in: ids,
         },
-    })
+    }).lean()
     const resultsMap = results.reduce((map, current) => {
         map[current._id] = current
         return map
     }, {})
-
-    return ids.map(id => resultsMap[id] || null)
+    return ids.map(_id => resultsMap[_id] || null)
 }
 
 class RegistrationController {
@@ -59,19 +58,18 @@ class RegistrationController {
     }
 
     getByUserId(userId) {
-        return this._clean(Registration.find({ user: userId }))
+        return this._clean(Registration.find({ user: userId }).lean())
     }
 
     /** Utilities for enforcing what items & fields are visible to the requestingUser */
     async _clean(promise) {
         const result = await promise
         if (Array.isArray(result)) {
-            const mapped = result.map(item => {
+            const results = result.map(item => {
                 return this._cleanOne(item)
             })
-            return mapped.filter(item => item !== null)
+            return results.filter(item => item !== null)
         }
-
         return this._cleanOne(result)
     }
 

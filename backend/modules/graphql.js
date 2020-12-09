@@ -22,15 +22,15 @@ module.exports = app => {
                 typeDefs: printSchema(rawSchema),
                 resolvers: Resolvers,
             })
-        }
+        },
     )
     const schema = mergeSchemas({
         schemas: executableSchemas,
     })
-
     const server = new ApolloServer({
         schema,
         playground: true,
+        introspection: true,
         context: ({ req, res }) => ({
             req,
             res,

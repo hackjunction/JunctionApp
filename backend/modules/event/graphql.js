@@ -161,6 +161,10 @@ const EventType = new GraphQLObjectType({
             approved: {
                 type: GraphQLBoolean,
             },
+            foobar: {
+                type: GraphQLInt,
+            },
+
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
@@ -282,6 +286,10 @@ const Resolvers = {
         },
     },
     Event: {
+        foobar: parent => {
+            console.log(parent)
+            return 20
+        },
         organizations: parent => {
             return parent.organizations.map(orgId =>
                 Organization.findById(orgId),

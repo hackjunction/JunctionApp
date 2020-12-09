@@ -71,6 +71,12 @@ const RegistrationType = new GraphQLObjectType({
             _fullAnswers: {
                 type: GraphQLJSONObject,
             },
+            foobar: {
+                type: GraphQLInt,
+            },
+            testimeemi: {
+                type: GraphQLInt,
+            },
         }
     },
 })
@@ -175,19 +181,22 @@ const Resolvers = {
         },
     },
     Registration: {
+        foobar: parent => {
+            return 20
+        },
         _user: (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(parent.user)
         },
         _fullAnswers: parent => {
             return parent.answers
         },
-        // _event: (parent, args, context) => {
-        //     return context.controller('Event').getById(parent.event)
-        // },
+        _event: (parent, args, context) => {
+            return context.controller('Event').getById(parent.event)
+        },
     },
 }
 
-const RegistrationModule = {
+module.exports = {
     QueryType,
     MutationType,
     Resolvers,
@@ -195,5 +204,3 @@ const RegistrationModule = {
         RegistrationType,
     },
 }
-
-module.exports = RegistrationModule

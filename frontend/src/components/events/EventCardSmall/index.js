@@ -30,82 +30,31 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ eventId, handleClick }) => {
-    // TODO a lot of event?. here due to possibility of null event in test databases.
-    // Shouldn't happen in production
-    const [event = {}, loading] = useEventPreview(eventId)
-    //TODO make sure this never fires
-    if (!event) {
-        console.log('No event with id ', eventId)
-    } else {
-        console.log('mem')
+export default ({ event, handleClick }) => {
+    if (!event.slug) {
+        return 'loading'
     }
+    console.log('event is', event)
     const dispatch = useDispatch()
     const classes = useStyles()
 
     const onClick = useCallback(() => {
-        if (loading) return
         handleClick(event)
-    }, [dispatch, event?.slug, loading])
-
-    if (!event && !eventId) {
-        return null
-    }
-
-    const renderImage = () => {
-        if (loading) {
-            return (
-                <Skeleton
-                    className={classes.image}
-                    variant="rect"
-                    height="100%"
-                    width="100%"
-                />
-            )
-        } else {
-            return (
-                <Image
-                    className={classes.image}
-                    defaultImage={require('assets/images/default_cover_image.png')}
-                    publicId={event?.coverImage?.publicId}
-                    transformation={{
-                        width: 400,
-                        height: 150,
-                    }}
-                />
-            )
-        }
-    }
-
-    const renderContent = () => {
-        if (loading || !event) {
-            return (
-                <>
-                    <Skeleton width="40%" />
-                    <Skeleton width="60%" />
-                    <Skeleton width="40%" />
-                </>
-            )
-        } else {
-            return (
-                <>
-                    <Typography variant="button">
-                        {event?._eventTimeFormatted}
-                    </Typography>
-                    <Typography variant="h6">{event.name}</Typography>
-                    <Typography variant="subtitle1">
-                        {event?._eventLocationFormatted}
-                    </Typography>
-                </>
-            )
-        }
-    }
+    }, [dispatch, event.slug])
 
     return event ? (
         <Paper className={classes.paper} onClick={onClick}>
             <Grid container spacing={0}>
                 <Grid item xs={12} md={3}>
-                    {renderImage()}
+                    <Image
+                        className={classes.image}
+                        defaultImage={require('assets/images/default_cover_image.png')}
+                        publicId={event.coverImage?.publicId}
+                        transformation={{
+                            width: 400,
+                            height: 150,
+                        }}
+                    />
                 </Grid>
                 <Grid item xs={12} md={9}>
                     <Box
@@ -115,7 +64,13 @@ export default ({ eventId, handleClick }) => {
                         justifyContent="center"
                         p={2}
                     >
-                        {renderContent()}
+                        <Typography variant="button">
+                            {event._eventTimeFormatted}
+                        </Typography>
+                        <Typography variant="h6">{event.name}</Typography>
+                        <Typography variant="subtitle1">
+                            {event._eventLocationFormatted}
+                        </Typography>
                     </Box>
                 </Grid>
             </Grid>
