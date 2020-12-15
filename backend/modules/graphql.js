@@ -3,9 +3,9 @@ const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
 const { GraphQLSchema, printSchema } = require('graphql')
 // const { SharedSchema } = require('@hackjunction/shared/schemas')
 /** Schemas */
-const UserProfile = require('./user-profile/graphql')
 const Registration = require('./registration/graphql')
 const Event = require('./event/graphql')
+const UserProfile = require('./user-profile/graphql')
 const Organization = require('./organization/graphql')
 
 const buildGetController = require('./graphql-controller-factory')

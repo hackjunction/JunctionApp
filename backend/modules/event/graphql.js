@@ -181,9 +181,15 @@ const EventType = new GraphQLObjectType({
             _eventStatus: {
                 type: GraphQLString,
             },
+            /**
+            registrations: {
+                type: require('../registration/graphql').Types.RegistrationType,
+            },
+            // TODO figure out why this breaks everything
             _myRegistration: {
                 type: require('../registration/graphql').Types.RegistrationType,
             },
+            */
         }
     },
 })
@@ -309,11 +315,15 @@ const Resolvers = {
         _eventStatus: parent => {
             return EventHelpers.getEventStatus(parent, moment)
         },
+        /**
+        // TODO figure out why this breaks
         _myRegistration: (parent, args, context) => {
             return context
                 .controller('Registration')
                 .getByIdAndUser(parent._id, context.userId)
         },
+
+         */
     },
 }
 

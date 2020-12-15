@@ -20,10 +20,10 @@ const RegistrationType = new GraphQLObjectType({
                 type: GraphQLNonNull(GraphQLID),
             },
             user: {
-                type: GraphQLNonNull(GraphQLID),
+                type: require('../user-profile/graphql').Types.UserProfileType,
             },
             event: {
-                type: GraphQLNonNull(GraphQLID),
+                type: require('../event/graphql').Types.EventType,
             },
             status: {
                 type: GraphQLString,
@@ -59,12 +59,6 @@ const RegistrationType = new GraphQLObjectType({
                 type: GraphQLFloat,
             },
             /** Custom fields */
-            _user: {
-                type: require('../user-profile/graphql').Types.UserProfileType,
-            },
-            _event: {
-                type: require('../event/graphql').Types.EventType,
-            },
             _fullAnswers: {
                 type: GraphQLJSONObject,
             },
@@ -179,14 +173,15 @@ const Resolvers = {
             console.log('calling registration foobar')
             return 20
         },
-        _user: (parent, args, context) => {
+        user: (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(parent.user)
         },
+        event: (parent, args, context) => {
+            return context.controller('Event').getById(parent.event)
+        },
+
         _fullAnswers: parent => {
             return parent.answers
-        },
-        _event: (parent, args, context) => {
-            return context.controller('Event').getById(parent.event)
         },
     },
 }
