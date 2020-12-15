@@ -14,9 +14,6 @@ const { Answers, TravelGrantDetails } = require('../graphql-shared-types')
 const RegistrationType = new GraphQLObjectType({
     name: 'Registration',
     fields: () => {
-        const { UserProfileType } = require('../user-profile/graphql').Types
-        const { EventType } = require('../event/graphql').Types
-
         return {
             /** Fields from DB model */
             _id: {
@@ -63,18 +60,15 @@ const RegistrationType = new GraphQLObjectType({
             },
             /** Custom fields */
             _user: {
-                type: UserProfileType,
+                type: require('../user-profile/graphql').Types.UserProfileType,
             },
             _event: {
-                type: EventType,
+                type: require('../event/graphql').Types.EventType,
             },
             _fullAnswers: {
                 type: GraphQLJSONObject,
             },
             foobar: {
-                type: GraphQLInt,
-            },
-            testimeemi: {
                 type: GraphQLInt,
             },
         }
@@ -162,26 +156,27 @@ const Resolvers = {
             }
             return null
         },
-        registrationById: (parent, args, context) => {
+        registrationById: async (parent, args, context) => {
             return context.controller('Registration').getById(args._id)
         },
-        registrations: (parent, args, context) => {
+        registrations: async (parent, args, context) => {
             return context.controller('Registration').getAll()
         },
-        registrationsByEvent: (parent, args, context) => {
+        registrationsByEvent: async (parent, args, context) => {
             return context.controller('Registration').getByEventId(args.eventId)
         },
-        registrationsByUser: (parent, args, context) => {
+        registrationsByUser: async (parent, args, context) => {
             return context.controller('Registration').getByUserId(args.userId)
         },
     },
     Mutation: {
-        updateRegistrationAnswers: (parent, args, context) => {
+        updateRegistrationAnswers: async (parent, args, context) => {
             return context.controller('Registration').getById(args._id)
         },
     },
     Registration: {
         foobar: parent => {
+            console.log('calling registration foobar')
             return 20
         },
         _user: (parent, args, context) => {

@@ -30,7 +30,6 @@ const Organization = require('../organization/model')
 const EventType = new GraphQLObjectType({
     name: 'Event',
     fields: () => {
-        const { RegistrationType } = require('../registration/graphql').Types
         return {
             /** Fields from DB Model */
             _id: {
@@ -183,7 +182,7 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLString,
             },
             _myRegistration: {
-                type: RegistrationType,
+                type: require('../registration/graphql').Types.RegistrationType,
             },
         }
     },
@@ -287,7 +286,7 @@ const Resolvers = {
     },
     Event: {
         foobar: parent => {
-            console.log(parent)
+            console.log('calling event foobar')
             return 20
         },
         organizations: parent => {
