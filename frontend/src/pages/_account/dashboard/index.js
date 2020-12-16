@@ -37,7 +37,7 @@ export default () => {
                     {registrations.map(registration => (
                         <Grid key={registration.id} item xs={12} md={6}>
                             <EventCardSmall
-                                eventId={registration.event}
+                                event={registration.event}
                                 handleClick={event =>
                                     dispatch(push(`/dashboard/${event?.slug}`))
                                 }

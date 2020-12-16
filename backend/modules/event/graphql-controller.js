@@ -1,21 +1,19 @@
-const mongoose = require('mongoose')
 const { Auth } = require('@hackjunction/shared')
 const DataLoader = require('dataloader')
-const Event = require('./model')
 const PermissionUtils = require('../../utils/permissions')
+const Event = require('./model')
 
-async function batchGetEventsByIds(eventIds) {
-    const objectIds = eventIds.map(id => new mongoose.Types.ObjectId(id))
+async function batchGetEventsByIds(ids) {
     const results = await Event.find({
         _id: {
-            $in: objectIds,
+            $in: ids,
         },
     }).lean()
     const resultsMap = results.reduce((map, current) => {
-        map[current._id.toString()] = current
+        map[current._id] = current
         return map
     }, {})
-    return eventIds.map(_id => resultsMap[_id] || null)
+    return ids.map(_id => resultsMap[_id] || null)
 }
 
 async function batchGetEventsBySlugs(eventSlugs) {
