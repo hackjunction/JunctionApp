@@ -6,7 +6,6 @@ const Fragments = {
         fragment RegistrationPreview on Registration {
             _id
             status
-            foobar
             event {
                 slug
                 name

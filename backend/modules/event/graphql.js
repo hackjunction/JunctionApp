@@ -160,10 +160,6 @@ const EventType = new GraphQLObjectType({
             approved: {
                 type: GraphQLBoolean,
             },
-            foobar: {
-                type: GraphQLInt,
-            },
-
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
@@ -185,7 +181,8 @@ const EventType = new GraphQLObjectType({
             registrations: {
                 type: require('../registration/graphql').Types.RegistrationType,
             },
-            // TODO figure out why this breaks everything
+            // TODO figure out why this breaks resolvers for Registartion
+            // TODO tests
             _myRegistration: {
                 type: require('../registration/graphql').Types.RegistrationType,
             },
@@ -291,10 +288,6 @@ const Resolvers = {
         },
     },
     Event: {
-        foobar: parent => {
-            console.log('calling event foobar')
-            return 20
-        },
         organizations: parent => {
             return parent.organizations.map(orgId =>
                 Organization.findById(orgId),

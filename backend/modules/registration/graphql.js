@@ -62,9 +62,6 @@ const RegistrationType = new GraphQLObjectType({
             _fullAnswers: {
                 type: GraphQLJSONObject,
             },
-            foobar: {
-                type: GraphQLInt,
-            },
         }
     },
 })
@@ -169,10 +166,6 @@ const Resolvers = {
         },
     },
     Registration: {
-        foobar: parent => {
-            console.log('calling registration foobar')
-            return 20
-        },
         user: (parent, args, context) => {
             return context.controller('UserProfile').getByUserId(parent.user)
         },
