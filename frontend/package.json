@@ -38,6 +38,7 @@
         "qrcode.react": "^1.0.0",
         "react": "16.13.1",
         "react-beautiful-dnd": "^13.0.0",
+        "react-color": "^2.19.3",
         "react-countdown-now": "^2.1.2",
         "react-csv": "^2.0.3",
         "react-dom": "^16.13.1",
