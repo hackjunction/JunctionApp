@@ -26,7 +26,7 @@ const useStyles = makeStyles({
         background: props => props.headerBackgroundColor,
         color: props => props.headerTextColor,
 
-        button: {
+        '& button': {
             color: props => props.accentColor,
         },
     },
@@ -39,10 +39,13 @@ const useStyles = makeStyles({
     details: {
         background: props => props.detailsBackgroundColor,
         color: props => props.detailsTextColor,
+
+        '& *': {
+            color: props => props.detailsTextColor,
+        },
     },
     sidebar: {
         background: props => props.sidebarBackgroundColor,
-        color: props => props.sidebarTextColor,
     },
 })
 
@@ -158,6 +161,9 @@ export default () => {
                                             event={event}
                                             accentColor={
                                                 event.theme.accentColor
+                                            }
+                                            textColor={
+                                                event.theme.sidebarTextColor
                                             }
                                         />
                                     </StaggeredListItem>

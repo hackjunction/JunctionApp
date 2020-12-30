@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 import React, { useState } from 'react'
-import { BlockPicker } from 'react-color'
+import { CompactPicker } from 'react-color'
 
 const useStyles = makeStyles({
     wrapper: {
@@ -25,9 +25,9 @@ const useStyles = makeStyles({
     },
     picker: {
         position: 'absolute',
-        zIndex: 2,
+        zIndex: 501,
 
-        '& .block-picker': {
+        '& .compact-picker': {
             boxShadow: 'rgba(0, 0, 0, 0.3) 0px 0px 8px !important',
         },
     },
@@ -67,7 +67,7 @@ const ColorSelect = ({ onChange = color => {}, value = '' }) => {
             {isOpen && (
                 <div className={classes.picker}>
                     <div className={classes.pageCover} onClick={togglePicker} />
-                    <BlockPicker
+                    <CompactPicker
                         color={value}
                         onChangeComplete={onColorChange}
                     />

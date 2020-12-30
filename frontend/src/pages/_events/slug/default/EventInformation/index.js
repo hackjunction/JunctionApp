@@ -35,7 +35,7 @@ const EventInformation = ({ event, registration }) => {
                 <Typography variant="body1" className={classes.date}>
                     {event._eventLocationFormatted}
                 </Typography>
-                <Box>
+                <Box pb={2}>
                     <EventButtons event={event} registration={registration} />
                 </Box>
             </Grid>
