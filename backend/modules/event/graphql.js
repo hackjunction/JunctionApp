@@ -23,6 +23,7 @@ const {
     RegistrationSection,
     EventTag,
     RegistrationConfig,
+    EventTheme,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -159,6 +160,9 @@ const EventType = new GraphQLObjectType({
             },
             approved: {
                 type: GraphQLBoolean,
+            },
+            theme: {
+                type: EventTheme,
             },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out

@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         background: 'transparent',
     },
     borderContent: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accentColor || '#19DDEA',
         paddingTop: '8px',
         marginTop: '-9px',
         marginLeft: '6px',
@@ -51,20 +51,20 @@ const ColorlibConnector = withStyles({
         },
     },
     line: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accentColor || '#19DDEA',
 
         borderRadius: 1,
     },
     lineVertical: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accentColor || '#19DDEA',
         padding: 0,
 
         borderRadius: 1,
     },
 })(StepConnector)
 
-const EventTimeline = ({ event }) => {
-    const classes = useStyles()
+const EventTimeline = ({ event, accentColor = undefined }) => {
+    const classes = useStyles({ accentColor })
     const timelineItems = useMemo(() => {
         const items = [
             {
@@ -109,7 +109,7 @@ const EventTimeline = ({ event }) => {
             className={classes.root}
             activeStep={0}
             orientation="vertical"
-            connector={<ColorlibConnector />}
+            connector={<ColorlibConnector accentColor={accentColor} />}
         >
             {timelineItems.map(item => (
                 <Step
@@ -119,7 +119,9 @@ const EventTimeline = ({ event }) => {
                     expanded
                 >
                     <StepLabel
-                        StepIconComponent={TimelineDot}
+                        StepIconComponent={props => (
+                            <TimelineDot {...props} accentColor={accentColor} />
+                        )}
                         className={classes.label}
                     >
                         <Typography variant="button" className={classes.date}>

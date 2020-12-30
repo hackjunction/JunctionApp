@@ -24,6 +24,7 @@ const UserDetailsConfig = require('./UserDetailsConfig')
 const UserDetailsConfigItem = require('./UserDetailsConfigItem')
 const UserProfileFields = require('./UserProfileFields')
 const Webhook = require('./Webhook')
+const EventTheme = require('./EventTheme')
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
@@ -52,6 +53,7 @@ const SharedSchema = new GraphQLSchema({
         UserDetailsConfigItem.graphql,
         UserProfileFields.graphql,
         Webhook.graphql,
+        EventTheme.graphql,
     ],
 })
 
