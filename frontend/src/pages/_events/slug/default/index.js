@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 import moment from 'moment'
@@ -21,9 +21,38 @@ import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
 import BannerService from 'services/banner'
 
+const useStyles = makeStyles({
+    header: {
+        background: props => props.headerBackgroundColor,
+        color: props => props.headerTextColor,
+
+        '& button': {
+            color: props => props.accentColor,
+        },
+    },
+    body: {
+        background: props => props.bodyBackgroundColor,
+        '& a>p': {
+            color: props => props.linkColor,
+        },
+    },
+    details: {
+        background: props => props.detailsBackgroundColor,
+        color: props => props.detailsTextColor,
+
+        '& *': {
+            color: props => props.detailsTextColor,
+        },
+    },
+    sidebar: {
+        background: props => props.sidebarBackgroundColor,
+    },
+})
+
 export default () => {
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
+    const classes = useStyles(event.theme)
 
     const keywords = event.name.split(' ').join(', ')
     console.log('KEYWORDS', keywords)
@@ -81,42 +110,79 @@ export default () => {
                 <meta name="twitter:image" content={coverImage()} />
             </Helmet>
             <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
-            <FadeInWrapper>
-                <Container center>
-                    <StaggeredList>
-                        <Grid container spacing={5} wrap="wrap-reverse">
-                            <Grid item xs={12} md={4}>
-                                <Box mt={3} />
-                                <StaggeredListItem>
-                                    <Box mt={3} />
-                                    <EventTimeline event={event} />
-                                </StaggeredListItem>
-                            </Grid>
-                            <Grid item xs={12} md={8}>
-                                <Box mt={3} />
-                                <StaggeredListItem>
-                                    <Markdown source={event?.description} />
-                                </StaggeredListItem>
-                            </Grid>
-                            <Grid item xs={12} md={4}>
-                                <Box mt={3} />
-                            </Grid>
-                            <Grid item xs={12} md={8}>
-                                <Box mt={3} />
 
-                                <Typography variant="h2">
-                                    {event.name}
-                                </Typography>
-                                <Grid container justify="space-between">
-                                    <EventInformation
-                                        registration={registration}
-                                        event={event}
-                                    />
+            <FadeInWrapper>
+                <StaggeredList>
+                    <Box className={classes.header}>
+                        <Container>
+                            <Grid container spacing={5}>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={4}
+                                    className={classes.header}
+                                >
+                                    <Box mt={3} />
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={8}
+                                    className={classes.header}
+                                >
+                                    <Box mt={3} />
+
+                                    <Typography variant="h2">
+                                        {event.name}
+                                    </Typography>
+                                    <Grid container justify="space-between">
+                                        <EventInformation
+                                            registration={registration}
+                                            event={event}
+                                        />
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    </StaggeredList>
-                </Container>
+                        </Container>
+                    </Box>
+                    <Box className={classes.body}>
+                        <Container>
+                            <Grid container spacing={5} wrap="wrap-reverse">
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={4}
+                                    className={classes.sidebar}
+                                >
+                                    <Box mt={3} />
+                                    <StaggeredListItem>
+                                        <Box mt={3} />
+                                        <EventTimeline
+                                            event={event}
+                                            accentColor={
+                                                event.theme.accentColor
+                                            }
+                                            textColor={
+                                                event.theme.sidebarTextColor
+                                            }
+                                        />
+                                    </StaggeredListItem>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={8}
+                                    className={classes.details}
+                                >
+                                    <Box mt={3} />
+                                    <StaggeredListItem>
+                                        <Markdown source={event?.description} />
+                                    </StaggeredListItem>
+                                </Grid>
+                            </Grid>
+                        </Container>
+                    </Box>
+                </StaggeredList>
             </FadeInWrapper>
             <BannerCarousel />
         </>

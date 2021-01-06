@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-
+import PropTypes from 'prop-types'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
     Stepper,
@@ -19,11 +19,12 @@ const useStyles = makeStyles(theme => ({
         background: 'transparent',
     },
     borderContent: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accentColor || '#19DDEA',
         paddingTop: '8px',
         marginTop: '-9px',
         marginLeft: '6px',
         textTransform: 'uppercase',
+        color: props => props.textColor,
     },
     date: {
         fontWeight: 'bold',
@@ -32,10 +33,17 @@ const useStyles = makeStyles(theme => ({
     },
     label: {
         marginTop: '-9px',
+        '& .MuiStepLabel-label': {
+            color: props => props.textColor,
+            opacity: 0.54,
+        },
+        '& .MuiStepLabel-active': {
+            opacity: 0.87,
+        },
     },
 }))
 
-const ColorlibConnector = withStyles({
+const colorLibStyle = props => ({
     root: {
         marginLeft: '6px',
         paddingBottom: 0,
@@ -51,20 +59,27 @@ const ColorlibConnector = withStyles({
         },
     },
     line: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accent || '#19DDEA',
 
         borderRadius: 1,
     },
     lineVertical: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accent || '#19DDEA',
         padding: 0,
 
         borderRadius: 1,
     },
-})(StepConnector)
+})
 
-const EventTimeline = ({ event }) => {
-    const classes = useStyles()
+const ColorlibConnector = withStyles(colorLibStyle())(StepConnector)
+
+ColorlibConnector.propTypes = {
+    ...ColorlibConnector.propTypes,
+    accent: PropTypes.string,
+}
+
+const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
+    const classes = useStyles({ accentColor, textColor })
     const timelineItems = useMemo(() => {
         const items = [
             {
@@ -109,7 +124,7 @@ const EventTimeline = ({ event }) => {
             className={classes.root}
             activeStep={0}
             orientation="vertical"
-            connector={<ColorlibConnector />}
+            connector={<ColorlibConnector accent={accentColor} />}
         >
             {timelineItems.map(item => (
                 <Step
@@ -119,7 +134,9 @@ const EventTimeline = ({ event }) => {
                     expanded
                 >
                     <StepLabel
-                        StepIconComponent={TimelineDot}
+                        StepIconComponent={props => (
+                            <TimelineDot {...props} accentColor={accentColor} />
+                        )}
                         className={classes.label}
                     >
                         <Typography variant="button" className={classes.date}>

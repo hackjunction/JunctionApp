@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         zIndex: 10,
         width: '100%',
-        paddingTop: theme.spacing(1),
+        paddingTop: theme.spacing(3),
     },
     logoWrapper: {
         position: 'absolute',
@@ -111,7 +111,7 @@ export default ({ event, title, subheading, onBack }) => {
                     </Box>
                 </FadeInWrapper>
             </Box> */}
-            <Container center wrapperClass={classes.backButtonWrapper}>
+            <Container wrapperClass={classes.backButtonWrapper}>
                 <Button
                     onClick={
                         typeof onBack === 'function'
