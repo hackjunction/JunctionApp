@@ -27,7 +27,7 @@ module.exports = {
                             if (data) {
                                 return data._id
                             }
-                            return false
+                            return null
                         },
                     ),
                 ),
