@@ -14,6 +14,12 @@ module.exports = {
                 { organizations: { $exists: false } },
                 { $set: { organizations: [] } },
             )
+        const bres = await mongoose
+            .model('Event')
+            .updateMany(
+                { organizations: null },
+                { $set: { organizations: [] } },
+            )
 
         const cursor = mongoose
             .model('Event')
