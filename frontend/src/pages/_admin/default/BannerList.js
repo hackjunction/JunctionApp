@@ -44,7 +44,7 @@ export default ({ data = [] }) => {
             </Typography>
             <Grid container spacing={3}>
                 {banner.map(company => (
-                    <>
+                    <div key={company.slug}>
                         <Box p={2}>
                             <IconButton
                                 edge="end"
@@ -73,7 +73,7 @@ export default ({ data = [] }) => {
                             ))}
                         </Box>
                         <Divider variant="middle" />
-                    </>
+                    </div>
                 ))}
             </Grid>
         </Box>

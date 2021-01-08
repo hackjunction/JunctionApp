@@ -90,7 +90,12 @@ export default () => {
                         </Typography>
                     </Box>
                 }
-                topContent={<BasicNavBar text={event.name} />}
+                topContent={
+                    <>
+                        {event.published && !event.approved ? 'jeejej' : null}
+                        <BasicNavBar text={event.name} />
+                    </>
+                }
                 baseRoute={match.url}
                 location={location}
                 routes={[
