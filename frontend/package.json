@@ -34,7 +34,7 @@
         "moment": "^2.26.0",
         "moment-timezone": "^0.5.31",
         "notistack": "^0.9.16",
-        "object-path": "^0.11.4",
+        "object-path": "^0.11.5",
         "qrcode.react": "^1.0.0",
         "react": "16.13.1",
         "react-beautiful-dnd": "^13.0.0",
