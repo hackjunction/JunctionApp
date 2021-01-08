@@ -34,7 +34,7 @@ const BasicNavBar = ({ text }) => {
     return (
         <div className={classes.wrapper}>
             <div className={classes.inner}>
-                <Typography variant="button" style={{ padding: '40px' }}>
+                <Typography variant="button" style={{ paddingLeft: '50px' }}>
                     {text}
                 </Typography>
                 <div className={classes.inner}>
