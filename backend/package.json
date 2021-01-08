@@ -23,6 +23,7 @@
         "@stdlib/stdlib": "0.0.91",
         "apollo-server-express": "^2.19.0",
         "auth0": "^2.27.1",
+        "bcrypt": "^5.0.0",
         "axios": "^0.21.1",
         "bcrypt": "^4.0.1",
         "better-npm-run": "^0.1.1",
