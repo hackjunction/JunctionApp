@@ -24,9 +24,6 @@ export default ({ events, loading = false, title }) => {
                 <Grid key={event.slug} item xs={12} md={6} lg={4}>
                     <EventCard
                         event={event}
-                        organization={
-                            event?.organizations ? event.organizations[0] : null
-                        }
                         buttons={[
                             !canApply && !event.galleryOpen && (
                                 <Button

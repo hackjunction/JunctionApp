@@ -97,7 +97,6 @@ export default () => {
                             <Alert
                                 variant="filled"
                                 severity="warning"
-                                flexDirection="column"
                                 alignItems="center"
                                 justifyContent="center"
                                 style={{
