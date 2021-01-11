@@ -22,6 +22,8 @@ const Fragments = {
                 link
                 icon
             }
+            published
+            approved
             _eventLocationFormatted
             _eventTimeFormatted
         }
