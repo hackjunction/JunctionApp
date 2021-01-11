@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
 const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ dirty, hasErrors })
-    const [showErrors, setShowErrors] = useState(null)
+    const [showErrors, setShowErrors] = useState(false)
 
     const handleShowErrors = useCallback(e => {
         setShowErrors(true)

@@ -31,10 +31,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ event, handleClick }) => {
+    /*
     if (!event.slug) {
         return 'loading'
     }
     console.log('event is', event)
+    */
     const dispatch = useDispatch()
     const classes = useStyles()
 

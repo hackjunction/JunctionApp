@@ -23,7 +23,9 @@ export default ({ data = [] }) => {
 
     useEffect(() => {
         EventService.getUnapprovedEvents(idToken).then(e => {
-            if (e) setEvents(e)
+            if (e) {
+                setEvents(e)
+            }
         })
     }, [])
 
@@ -52,35 +54,39 @@ export default ({ data = [] }) => {
                 {t('unapproved_events_')}
             </Typography>
             <Grid container spacing={3}>
-                {events.map(Event => (
-                    <>
-                        <Box p={2}>
-                            <IconButton
-                                edge="end"
-                                aria-label="delete"
-                                onClick={() => handleRemove(Event.slug)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                            <IconButton
-                                edge="end"
-                                aria-label="Approve"
-                                onClick={() => handleApprove(Event.slug)}
-                            >
-                                <ThumbUpIcon />
-                            </IconButton>
-                            <EventCardSmall
-                                eventId={Event._id}
-                                handleClick={event =>
-                                    dispatch(
-                                        push(`/organise/${event?.slug}/edit`),
-                                    )
-                                }
-                            />
-                        </Box>
-                        <Divider variant="middle" />
-                    </>
-                ))}
+                {events.map(event =>
+                    event.published ? (
+                        <div key={event.slug}>
+                            <Box p={2}>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    onClick={() => handleRemove(event.slug)}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="Approve"
+                                    onClick={() => handleApprove(event.slug)}
+                                >
+                                    <ThumbUpIcon />
+                                </IconButton>
+                                <EventCardSmall
+                                    event={event}
+                                    handleClick={event =>
+                                        dispatch(
+                                            push(
+                                                `/organise/${event?.slug}/edit`,
+                                            ),
+                                        )
+                                    }
+                                />
+                            </Box>
+                            <Divider variant="middle" />
+                        </div>
+                    ) : null,
+                )}
             </Grid>
         </Box>
     )

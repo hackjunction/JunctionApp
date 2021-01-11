@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
             height: '100%',
             maxHeight: '465px',
         },
-        marginBottom: theme.spacing(5),
     },
     backButtonWrapper: {
         position: 'absolute',
@@ -56,17 +55,16 @@ const useStyles = makeStyles(theme => ({
         },
     },
     image: {
-        position: 'absolute',
         zIndex: 1,
         top: 0,
         left: 0,
         width: '100%',
-        height: '100%',
+        height: '465px',
         objectFit: 'cover',
     },
 }))
 
-export default ({ event, title, subheading, onBack }) => {
+export default ({ event, title = '', subheading = '', onBack }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
     return (

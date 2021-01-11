@@ -58,9 +58,11 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const EventCard = ({ event, organization, buttons }) => {
+const EventCard = ({ event, buttons }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
+    const organization = event?.organizations
+    // {event.published && !event.approved ? 'Waiting approval' : null}
     return (
         <div className={classes.wrapper}>
             <div className={classes.top}>
@@ -90,7 +92,6 @@ const EventCard = ({ event, organization, buttons }) => {
                 <Box width="100%" height="4em" margin="0">
                     <Typography variant="h6">{event.name}</Typography>
                 </Box>
-                {/* <Box mt={1} /> */}
                 <Box
                     display="flex"
                     flexDirection="column"
