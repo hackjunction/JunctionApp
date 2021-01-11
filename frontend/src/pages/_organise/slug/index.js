@@ -97,8 +97,6 @@ export default () => {
                             <Alert
                                 variant="filled"
                                 severity="warning"
-                                alignItems="center"
-                                justifyContent="center"
                                 style={{
                                     left: '25%',
                                     width: '50%',
