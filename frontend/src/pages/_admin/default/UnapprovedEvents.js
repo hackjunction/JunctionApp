@@ -23,7 +23,9 @@ export default ({ data = [] }) => {
 
     useEffect(() => {
         EventService.getUnapprovedEvents(idToken).then(e => {
-            if (e) setEvents(e)
+            if (e) {
+                setEvents(e)
+            }
         })
     }, [])
 

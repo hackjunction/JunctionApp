@@ -12,6 +12,7 @@ import CropFreeIcon from '@material-ui/icons/CropFree'
 import CodeIcon from '@material-ui/icons/Code'
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff'
 import AssessmentIcon from '@material-ui/icons/Assessment'
+import Alert from '@material-ui/lab/Alert'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
@@ -92,7 +93,27 @@ export default () => {
                 }
                 topContent={
                     <>
-                        {event.published && !event.approved ? 'jeejej' : null}
+                        {event.published && !event.approved ? (
+                            <Alert
+                                variant="filled"
+                                severity="warning"
+                                flexDirection="column"
+                                alignItems="center"
+                                justifyContent="center"
+                                style={{
+                                    left: '25%',
+                                    width: '50%',
+                                    position: 'fixed',
+                                    zIndex: 100,
+                                }}
+                            >
+                                <>
+                                    The event will be published once approved by
+                                    admins. Questions about the approval process
+                                    can be directed to hello@hackjunction.com
+                                </>
+                            </Alert>
+                        ) : null}
                         <BasicNavBar text={event.name} />
                     </>
                 }
