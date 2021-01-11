@@ -46,7 +46,6 @@ export default ({ events = [] }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const classes = useStyles()
-    console.log(events)
     return (
         <Box mt={3}>
             <Typography variant="h6" gutterBottom>

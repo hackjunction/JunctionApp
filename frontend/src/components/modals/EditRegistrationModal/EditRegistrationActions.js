@@ -104,7 +104,14 @@ export default ({ registration, onSubmit, onCancel }) => {
                 <Typography variant="subtitle1">{t('Tags_')} </Typography>
                 <EventTagsSelect
                     value={tags.value}
-                    onChange={tags.setValue}
+                    onChange={v => {
+                        // Null tags causes problems, use empty array instead
+                        if (v === null) {
+                            tags.setValue([])
+                        } else {
+                            tags.setValue(v)
+                        }
+                    }}
                     tags={event.tags}
                 />
             </Grid>
