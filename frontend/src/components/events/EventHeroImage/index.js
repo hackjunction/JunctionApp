@@ -13,21 +13,33 @@ import Container from 'components/generic/Container'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        height: '100%',
-        maxHeight: '465px',
+        display: 'flex',
+        overflow: 'hidden',
+    },
+    image: {
+        zIndex: 1,
+        top: 0,
+        left: 0,
         width: '100%',
-        position: 'relative',
-        background: 'black',
-        [theme.breakpoints.up('sm')]: {
-            height: '100%',
-            maxHeight: '465px',
-        },
+        height: '465px',
+        objectFit: 'cover',
     },
     backButtonWrapper: {
         position: 'absolute',
         zIndex: 10,
-        width: '100%',
+        width: 'auto',
         paddingTop: theme.spacing(3),
+    },
+    buttonInner: {
+        color: 'black',
+        background: 'white',
+        zIndex: 2,
+        border: 'none',
+        width: '100%',
+        '&:hover': {
+            opacity: '70%',
+        },
+        borderRadius: '10px',
     },
     logoWrapper: {
         position: 'absolute',
@@ -53,14 +65,6 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('md')]: {
             fontSize: '1rem',
         },
-    },
-    image: {
-        zIndex: 1,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '465px',
-        objectFit: 'cover',
     },
 }))
 
@@ -109,7 +113,10 @@ export default ({ event, title = '', subheading = '', onBack }) => {
                     </Box>
                 </FadeInWrapper>
             </Box> */}
-            <Container wrapperClass={classes.backButtonWrapper}>
+            <Container
+                wrapperClass={classes.backButtonWrapper}
+                className={classes.buttonInner}
+            >
                 <Button
                     onClick={
                         typeof onBack === 'function'
@@ -117,8 +124,8 @@ export default ({ event, title = '', subheading = '', onBack }) => {
                             : () => dispatch(goBack())
                     }
                 >
-                    <ArrowBackIosIcon style={{ color: 'white' }} />
-                    <Typography variant="button" style={{ color: 'white' }}>
+                    <ArrowBackIosIcon style={{ color: 'black' }} />
+                    <Typography variant="button" style={{ color: 'black' }}>
                         Back
                     </Typography>
                 </Button>
