@@ -116,6 +116,5 @@ export const GET_MY_EVENTS = gql`
 
 export const useMyEvents = () => {
     const { data, loading, error } = useQuery(GET_MY_EVENTS)
-
     return [data?.myEvents, loading, error]
 }
