@@ -91,7 +91,7 @@ const EventSchema = new mongoose.Schema({
     eventLocation: {
         type: AddressSchema.mongoose,
         required: [
-            () => {
+            function () {
                 return this.eventType === EventTypes.physical.id
             },
             `is required for physical events`,
@@ -102,7 +102,7 @@ const EventSchema = new mongoose.Schema({
         type: [TrackSchema.mongoose],
         default: [],
         validate: [
-            val => {
+            function (val) {
                 if (this.tracksEnabled) {
                     return val.length > 0
                 }
@@ -111,7 +111,7 @@ const EventSchema = new mongoose.Schema({
             'must have at least one item if tracks are enabled',
         ],
         required: [
-            () => {
+            function () {
                 return this.tracksEnabled
             },
             'is required if tracks are enabled',
@@ -122,7 +122,7 @@ const EventSchema = new mongoose.Schema({
         type: [ChallengeSchema.mongoose],
         default: [],
         validate: [
-            val => {
+            function (val) {
                 if (this.challengesEnabled) {
                     return val.length > 0
                 }
@@ -131,7 +131,7 @@ const EventSchema = new mongoose.Schema({
             'must have at least one item if challenges are enabled',
         ],
         required: [
-            () => {
+            function () {
                 return this.challengesEnabled
             },
             'is required if challenges are enabled',
@@ -160,7 +160,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         enum: Object.keys(OverallReviewingMethods),
         required: [
-            () => {
+            function () {
                 return this.tracksEnabled
             },
             'is required if tracks are enabled',
@@ -202,8 +202,8 @@ const EventSchema = new mongoose.Schema({
         default: false,
         required: true,
         validate: [
-            v => {
-                if (v === true) {
+            function (val) {
+                if (val === true) {
                     return this.published
                 }
                 return true
