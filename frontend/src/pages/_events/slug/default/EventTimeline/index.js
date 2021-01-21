@@ -77,26 +77,57 @@ ColorlibConnector.propTypes = {
     ...ColorlibConnector.propTypes,
     accent: PropTypes.string,
 }
-
+function differentYear(event) {
+    const currentYear = moment()
+    return (
+        currentYear.diff(event.registrationStartTime, 'years') ||
+        currentYear.diff(event.registrationEndTime, 'years') ||
+        currentYear.diff(event.startTime, 'years') ||
+        currentYear.diff(event.endTime, 'years')
+    )
+}
 const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
     const classes = useStyles({ accentColor, textColor })
+    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D'
     const timelineItems = useMemo(() => {
         const items = [
             {
-                date: moment(event.registrationStartTime).format('MMM D'),
+                date: moment(event.registrationStartTime).format(dateString),
                 dateValue: moment(event.registrationStartTime).unix(),
                 completed: moment(event.registrationStartTime).isBefore(),
                 title: 'Application period begins',
                 active: true,
             },
             {
-                date: moment(event.registrationEndTime).format('MMM D'),
+                date: moment(event.registrationEndTime).format(dateString),
                 dateValue: moment(event.registrationEndTime).unix(),
                 completed: moment(event.registrationEndTime).isBefore(),
                 title: 'Application period ends',
                 active: true,
             },
-            {
+        ]
+        if (
+            moment(event.registrationEndTime).isBetween(
+                event.startTime,
+                event.endTime,
+            )
+        ) {
+            items.push({
+                date: moment(event.startTime).format(dateString),
+                dateValue: moment(event.startTime).unix(),
+                completed: moment(event.startTime).isBefore(),
+                title: event.name + ' begins',
+                active: true,
+            })
+            items.push({
+                date: moment(event.endTime).format(dateString),
+                dateValue: moment(event.endTime).unix(),
+                completed: moment(event.endTime).isBefore(),
+                title: event.name + ' ends',
+                active: true,
+            })
+        } else {
+            items.push({
                 date: MiscUtils.formatPDFDateInterval(
                     event.startTime,
                     event.endTime,
@@ -105,8 +136,8 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
                 completed: moment(event.endTime).isBefore(),
                 title: event.name,
                 active: true,
-            },
-        ]
+            })
+        }
 
         const sorted = sortBy(items, 'dateValue')
 
