@@ -12,6 +12,7 @@ import CropFreeIcon from '@material-ui/icons/CropFree'
 import CodeIcon from '@material-ui/icons/Code'
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff'
 import AssessmentIcon from '@material-ui/icons/Assessment'
+import Alert from '@material-ui/lab/Alert'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
@@ -61,7 +62,7 @@ export default () => {
             dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
-
+    console.log('event', event.published, event.approved)
     return (
         <PageWrapper loading={loading} error={error}>
             <SidebarLayout
@@ -90,7 +91,29 @@ export default () => {
                         </Typography>
                     </Box>
                 }
-                topContent={<BasicNavBar text={event.name} />}
+                topContent={
+                    <>
+                        {event.published && !event.approved ? (
+                            <Alert
+                                variant="filled"
+                                severity="warning"
+                                style={{
+                                    left: '25%',
+                                    width: '50%',
+                                    position: 'fixed',
+                                    zIndex: 100,
+                                }}
+                            >
+                                <>
+                                    The event will be published once approved by
+                                    admins. Questions about the approval process
+                                    can be directed to hello@hackjunction.com
+                                </>
+                            </Alert>
+                        ) : null}
+                        <BasicNavBar text={event.name} />
+                    </>
+                }
                 baseRoute={match.url}
                 location={location}
                 routes={[

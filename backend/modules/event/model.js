@@ -16,6 +16,7 @@ const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
 const RegistrationConfigSchema = require('@hackjunction/shared/schemas/RegistrationConfig')
 const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const WebhookSchema = require('@hackjunction/shared/schemas/Webhook')
+const EventThemeSchema = require('@hackjunction/shared/schemas/EventTheme')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../upload/helper')
@@ -90,7 +91,7 @@ const EventSchema = new mongoose.Schema({
     eventLocation: {
         type: AddressSchema.mongoose,
         required: [
-            () => {
+            function () {
                 return this.eventType === EventTypes.physical.id
             },
             `is required for physical events`,
@@ -101,7 +102,7 @@ const EventSchema = new mongoose.Schema({
         type: [TrackSchema.mongoose],
         default: [],
         validate: [
-            val => {
+            function (val) {
                 if (this.tracksEnabled) {
                     return val.length > 0
                 }
@@ -110,7 +111,7 @@ const EventSchema = new mongoose.Schema({
             'must have at least one item if tracks are enabled',
         ],
         required: [
-            () => {
+            function () {
                 return this.tracksEnabled
             },
             'is required if tracks are enabled',
@@ -121,7 +122,7 @@ const EventSchema = new mongoose.Schema({
         type: [ChallengeSchema.mongoose],
         default: [],
         validate: [
-            val => {
+            function (val) {
                 if (this.challengesEnabled) {
                     return val.length > 0
                 }
@@ -130,7 +131,7 @@ const EventSchema = new mongoose.Schema({
             'must have at least one item if challenges are enabled',
         ],
         required: [
-            () => {
+            function () {
                 return this.challengesEnabled
             },
             'is required if challenges are enabled',
@@ -159,7 +160,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         enum: Object.keys(OverallReviewingMethods),
         required: [
-            () => {
+            function () {
                 return this.tracksEnabled
             },
             'is required if tracks are enabled',
@@ -201,8 +202,8 @@ const EventSchema = new mongoose.Schema({
         default: false,
         required: true,
         validate: [
-            v => {
-                if (v === true) {
+            function (val) {
+                if (val === true) {
                     return this.published
                 }
                 return true
@@ -272,6 +273,7 @@ const EventSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    theme: { type: EventThemeSchema.mongoose, default: {} },
 })
 
 EventSchema.index(

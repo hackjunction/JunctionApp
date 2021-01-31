@@ -9,7 +9,13 @@ import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 const useStyles = makeStyles(theme => ({
-    root: {
+    wrapper: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    image: {
         maxWidth: '100%',
         position: 'relative',
         overflow: 'hidden',
@@ -33,12 +39,6 @@ const useStyles = makeStyles(theme => ({
             background: 'black',
             opacity: '70%',
         },
-    },
-    wrapper: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
     },
     inner: {
         position: 'absolute',
@@ -68,7 +68,7 @@ const EventImage = ({
         return (
             <div className={classes.wrapper}>
                 <Image
-                    className={classes.root}
+                    className={classes.image}
                     publicId={publicId}
                     defaultImage={require('assets/images/default_cover_image.png')}
                 />
@@ -115,7 +115,7 @@ const EventImage = ({
             <img
                 src={url ?? defaultImage ?? ''}
                 alt={alt}
-                className={clsx(classes.root, className)}
+                className={clsx(classes.image, className)}
                 width={transformation.width}
                 height={transformation.height}
             />

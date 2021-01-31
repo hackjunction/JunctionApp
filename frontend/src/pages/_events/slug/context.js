@@ -54,6 +54,17 @@ const eventQuery = gql`
             frontPagePriority
             approved
             eventTerms
+            theme {
+                headerBackgroundColor
+                headerTextColor
+                bodyBackgroundColor
+                detailsBackgroundColor
+                detailsTextColor
+                sidebarBackgroundColor
+                sidebarTextColor
+                accentColor
+                linkColor
+            }
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted

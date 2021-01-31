@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-
+import PropTypes from 'prop-types'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
     Stepper,
@@ -19,11 +19,12 @@ const useStyles = makeStyles(theme => ({
         background: 'transparent',
     },
     borderContent: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accentColor || '#19DDEA',
         paddingTop: '8px',
         marginTop: '-9px',
         marginLeft: '6px',
         textTransform: 'uppercase',
+        color: props => props.textColor,
     },
     date: {
         fontWeight: 'bold',
@@ -32,10 +33,17 @@ const useStyles = makeStyles(theme => ({
     },
     label: {
         marginTop: '-9px',
+        '& .MuiStepLabel-label': {
+            color: props => props.textColor,
+            opacity: 0.54,
+        },
+        '& .MuiStepLabel-active': {
+            opacity: 0.87,
+        },
     },
 }))
 
-const ColorlibConnector = withStyles({
+const colorLibStyle = props => ({
     root: {
         marginLeft: '6px',
         paddingBottom: 0,
@@ -51,37 +59,75 @@ const ColorlibConnector = withStyles({
         },
     },
     line: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accent || '#19DDEA',
 
         borderRadius: 1,
     },
     lineVertical: {
-        borderColor: '#19DDEA',
+        borderColor: props => props.accent || '#19DDEA',
         padding: 0,
 
         borderRadius: 1,
     },
-})(StepConnector)
+})
 
-const EventTimeline = ({ event }) => {
-    const classes = useStyles()
+const ColorlibConnector = withStyles(colorLibStyle())(StepConnector)
+
+ColorlibConnector.propTypes = {
+    ...ColorlibConnector.propTypes,
+    accent: PropTypes.string,
+}
+function differentYear(event) {
+    const currentYear = moment()
+    return (
+        currentYear.diff(event.registrationStartTime, 'years') ||
+        currentYear.diff(event.registrationEndTime, 'years') ||
+        currentYear.diff(event.startTime, 'years') ||
+        currentYear.diff(event.endTime, 'years')
+    )
+}
+const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
+    const classes = useStyles({ accentColor, textColor })
+    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D'
     const timelineItems = useMemo(() => {
         const items = [
             {
-                date: moment(event.registrationStartTime).format('MMM D'),
+                date: moment(event.registrationStartTime).format(dateString),
                 dateValue: moment(event.registrationStartTime).unix(),
                 completed: moment(event.registrationStartTime).isBefore(),
                 title: 'Application period begins',
                 active: true,
             },
             {
-                date: moment(event.registrationEndTime).format('MMM D'),
+                date: moment(event.registrationEndTime).format(dateString),
                 dateValue: moment(event.registrationEndTime).unix(),
                 completed: moment(event.registrationEndTime).isBefore(),
                 title: 'Application period ends',
                 active: true,
             },
-            {
+        ]
+        if (
+            moment(event.registrationEndTime).isBetween(
+                event.startTime,
+                event.endTime,
+            )
+        ) {
+            items.push({
+                date: moment(event.startTime).format(dateString),
+                dateValue: moment(event.startTime).unix(),
+                completed: moment(event.startTime).isBefore(),
+                title: event.name + ' begins',
+                active: true,
+            })
+            items.push({
+                date: moment(event.endTime).format(dateString),
+                dateValue: moment(event.endTime).unix(),
+                completed: moment(event.endTime).isBefore(),
+                title: event.name + ' ends',
+                active: true,
+            })
+        } else {
+            items.push({
                 date: MiscUtils.formatPDFDateInterval(
                     event.startTime,
                     event.endTime,
@@ -90,8 +136,8 @@ const EventTimeline = ({ event }) => {
                 completed: moment(event.endTime).isBefore(),
                 title: event.name,
                 active: true,
-            },
-        ]
+            })
+        }
 
         const sorted = sortBy(items, 'dateValue')
 
@@ -109,7 +155,7 @@ const EventTimeline = ({ event }) => {
             className={classes.root}
             activeStep={0}
             orientation="vertical"
-            connector={<ColorlibConnector />}
+            connector={<ColorlibConnector accent={accentColor} />}
         >
             {timelineItems.map(item => (
                 <Step
@@ -119,7 +165,9 @@ const EventTimeline = ({ event }) => {
                     expanded
                 >
                     <StepLabel
-                        StepIconComponent={TimelineDot}
+                        StepIconComponent={props => (
+                            <TimelineDot {...props} accentColor={accentColor} />
+                        )}
                         className={classes.label}
                     >
                         <Typography variant="button" className={classes.date}>
