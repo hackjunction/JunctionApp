@@ -68,40 +68,11 @@ export default () => {
                     </Container>
                     <Divider size={3} />
                     <Container center wrapperClass={classes.pricingWrapper}>
-                        <Grid
-                            container
-                            direction="row"
-                            justify="center"
-                            spacing={3}
-                        >
-                            <PricingCard
-                                topic="Community"
-                                body={body1}
-                                price="Free"
-                            />
-                            <PricingCard
-                                topic="Pro"
-                                body={body2}
-                                price="Ask: hello@hackjunction.com"
-                            />
-                            <Divider size={4} />
-                            <Typography variant="body1" justify="center">
-                                Our expertise of organising hackathons combined
-                                with the power of a highly-customizable platform
-                                for events makes hosting diverse events
-                                possible.
-                            </Typography>
-                            <Divider size={4} />
-                            <Button
-                                variant="outlined"
-                                color="theme_lightgray"
-                                strong
-                                m={6}
-                                onClick={() => dispatch(push('/contact'))}
-                            >
-                                {t('Contact_us_')}
-                            </Button>
-                        </Grid>
+                        <Typography variant="body1" justify="center">
+                            Our expertise of organising hackathons combined with
+                            the power of a highly-customizable platform for
+                            events makes hosting diverse events possible.
+                        </Typography>
                     </Container>
                     <Divider size={4} />
                 </>

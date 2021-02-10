@@ -106,7 +106,7 @@ const routes = [
         exact: false,
     },
     {
-        path: '/contribute',
+        path: '/contributing',
         component: ContributingPage,
         exact: false,
     },
