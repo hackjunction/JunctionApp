@@ -12,7 +12,8 @@
         "lint-fix": "eslint ./common --fix && eslint ./modules --fix && eslint ./utils --fix",
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
-        "precommit": "echo \"Backend: running pre-commit checks\""
+        "precommit": "echo \"Backend: running pre-commit checks\"",
+        "debug": "nodemon --inspect index.js"
     },
     "author": "",
     "license": "ISC",
