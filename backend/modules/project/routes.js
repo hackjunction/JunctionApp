@@ -96,7 +96,7 @@ router
     )
 
 router
-    .route('/:slug/admin/:challengeSlug/link')
+    .route('/:slug/admin/challenge/:challengeSlug/link')
     /** Generate the unique link with which partners can access their projects */
     .get(
         hasToken,
@@ -111,12 +111,41 @@ router
     )
 
 router
-    .route('/:slug/token/:token')
+    .route('/:slug/challenges/:token')
     /** Get the projects for a challenge with an admin token */
     .get(
         getEventFromParams,
         asyncHandler(async (req, res) => {
-            const projects = await ProjectController.getProjectsWithToken(
+            const projects = await ProjectController.getChallengeProjectsWithToken(
+                req.event,
+                req.params.token,
+            )
+            return res.status(200).json(projects)
+        }),
+    )
+
+router
+    .route('/:slug/admin/track/:trackSlug/link')
+    /** Generate the unique link with which partners can access their projects */
+    .get(
+        hasToken,
+        isEventOrganiser,
+        asyncHandler(async (req, res) => {
+            const data = await ProjectController.generateTrackLink(
+                req.event,
+                req.params.trackSlug,
+            )
+            return res.status(200).json(data)
+        }),
+    )
+
+router
+    .route('/:slug/tracks/:token')
+    /** Get the projects for a challenge with an admin token */
+    .get(
+        getEventFromParams,
+        asyncHandler(async (req, res) => {
+            const projects = await ProjectController.getTrackProjectsWithToken(
                 req.event,
                 req.params.token,
             )

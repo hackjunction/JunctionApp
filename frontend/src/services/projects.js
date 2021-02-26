@@ -39,13 +39,27 @@ ProjectsService.getAllProjectsAsOrganiser = (idToken, eventSlug) => {
 
 ProjectsService.generateChallengeLink = (idToken, eventSlug, challengeSlug) => {
     return _axios.get(
-        `/projects/${eventSlug}/admin/${challengeSlug}/link`,
+        `/projects/${eventSlug}/admin/challenge/${challengeSlug}/link`,
         config(idToken),
     )
 }
 
-ProjectsService.getProjectsWithToken = (eventSlug, token) => {
-    return _axios.get(`/projects/${eventSlug}/token/${token}`)
+ProjectsService.generateTrackLink = (idToken, eventSlug, trackSlug) => {
+    console.log('trackSlug :>> ', trackSlug)
+    return _axios.get(
+        `/projects/${eventSlug}/admin/track/${trackSlug}/link`,
+        config(idToken),
+    )
+}
+
+ProjectsService.getChallengeProjectsWithToken = (eventSlug, token) => {
+    return _axios.get(`/projects/${eventSlug}/challenges/${token}`)
+}
+
+ProjectsService.getTrackProjectsWithToken = (eventSlug, token) => {
+    const projects = _axios.get(`/projects/${eventSlug}/tracks/${token}`)
+    console.log('projects :>> ', projects)
+    return _axios.get(`/projects/${eventSlug}/tracks/${token}`)
 }
 
 ProjectsService.validateToken = (eventSlug, token) => {

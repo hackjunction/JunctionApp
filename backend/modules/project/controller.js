@@ -66,15 +66,27 @@ controller.updateProjectForEventAndTeam = async (event, team, data) => {
 
 controller.generateChallengeLink = async (event, challengeSlug) => {
     const hashed = await bcrypt.hash(challengeSlug, global.gConfig.HASH_SALT)
+    console.log('inhere challenge :>> ')
     return {
         hash: hashed,
         link: `${global.gConfig.FRONTEND_URL}/projects/${
             event.slug
-        }/challenge/${encodeURIComponent(hashed)}`,
+        }/challenges/${encodeURIComponent(hashed)}`,
     }
 }
 
-controller.getProjectsWithToken = async (event, token) => {
+controller.generateTrackLink = async (event, trackSlug) => {
+    const hashed = await bcrypt.hash(trackSlug, global.gConfig.HASH_SALT)
+    console.log('inhere track  :>> ')
+    return {
+        hash: hashed,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${
+            event.slug
+        }/tracks/${encodeURIComponent(hashed)}`,
+    }
+}
+
+controller.getChallengeProjectsWithToken = async (event, token) => {
     if (
         !event.challengesEnabled ||
         !event.challenges ||
@@ -100,6 +112,34 @@ controller.getProjectsWithToken = async (event, token) => {
     return {
         projects,
         challenge,
+        event,
+    }
+}
+
+controller.getTrackProjectsWithToken = async (event, token) => {
+    if (!event.tracksEnabled || !event.tracks || event.tracks.length === 0) {
+        throw new ForbiddenError('This event has no tracks')
+    }
+    console.log('event :>> ', event)
+    const matches = await Promise.filter(event.tracks, track => {
+        return bcrypt.compare(track.slug, token)
+    })
+    console.log('matches :>> ', matches)
+
+    if (matches.length === 0) {
+        throw new ForbiddenError('Invalid token')
+    }
+
+    const track = matches[0]
+    const projects = await Project.find({
+        event: event._id,
+        track: track.slug,
+    })
+    console.log('projects :>> ', projects)
+
+    return {
+        projects,
+        track,
         event,
     }
 }
