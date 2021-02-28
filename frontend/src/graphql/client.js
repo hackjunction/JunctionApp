@@ -1,9 +1,11 @@
-import { ApolloClient } from 'apollo-client'
-import { ApolloLink } from 'apollo-link'
-import { createHttpLink } from 'apollo-link-http'
-import { setContext } from 'apollo-link-context'
-import { onError } from 'apollo-link-error'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import {
+    createHttpLink,
+    ApolloLink,
+    InMemoryCache,
+    ApolloClient,
+} from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
+import { setContext } from '@apollo/client/link/context'
 import config from 'constants/config'
 
 const httpLink = createHttpLink({

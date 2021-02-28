@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
+import { useQuery, gql } from '@apollo/client'
 import { useRouteMatch } from 'react-router'
 import { useSelector } from 'react-redux'
 import { EventStatuses } from '@hackjunction/shared'

@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense } from 'react'
 
 import { ConnectedRouter } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloProvider } from '@apollo/client'
 
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
