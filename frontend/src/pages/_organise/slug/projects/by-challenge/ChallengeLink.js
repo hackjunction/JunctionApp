@@ -23,13 +23,13 @@ export default ({ challenge }) => {
                 event.slug,
                 challenge,
             )
+            console.log(link)
             setLink(link)
         } catch (err) {
             dispatch(SnackbarActions.error('Oops, something went wrong...'))
         }
         setLinkLoading(false)
     }, [idToken, event, challenge, dispatch])
-
     if (link && link.link) {
         return (
             <a href={link.link} target="_blank" rel="noopener noreferrer">

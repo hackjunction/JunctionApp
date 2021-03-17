@@ -53,7 +53,7 @@ ProjectsService.generateTrackLink = (idToken, eventSlug, trackSlug) => {
 }
 
 ProjectsService.getChallengeProjectsWithToken = (eventSlug, token) => {
-    return _axios.get(`/projects/${eventSlug}/challenges/${token}`)
+    return _axios.get(`/projects/${eventSlug}/challenge/${token}`)
 }
 
 ProjectsService.getTrackProjectsWithToken = (eventSlug, token) => {

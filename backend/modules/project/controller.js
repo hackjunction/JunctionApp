@@ -66,18 +66,18 @@ controller.updateProjectForEventAndTeam = async (event, team, data) => {
 
 controller.generateChallengeLink = async (event, challengeSlug) => {
     const hashed = await bcrypt.hash(challengeSlug, global.gConfig.HASH_SALT)
-    console.log('inhere challenge :>> ')
+    //    console.log('inhere challenge :>> ')
     return {
         hash: hashed,
         link: `${global.gConfig.FRONTEND_URL}/projects/${
             event.slug
-        }/challenges/${encodeURIComponent(hashed)}`,
+        }/challenge/${encodeURIComponent(hashed)}`,
     }
 }
 
 controller.generateTrackLink = async (event, trackSlug) => {
     const hashed = await bcrypt.hash(trackSlug, global.gConfig.HASH_SALT)
-    console.log('inhere track  :>> ')
+    //    console.log('inhere track  :>> ')
     return {
         hash: hashed,
         link: `${global.gConfig.FRONTEND_URL}/projects/${
@@ -153,7 +153,6 @@ controller.validateToken = async (event, token) => {
     ) {
         throw new ForbiddenError('This event has no challenges')
     }
-
     const matches = await Promise.filter(event.challenges, challenge => {
         return bcrypt.compare(challenge.slug, token)
     })

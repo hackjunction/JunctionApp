@@ -111,7 +111,7 @@ router
     )
 
 router
-    .route('/:slug/challenges/:token')
+    .route('/:slug/challenge/:token')
     /** Get the projects for a challenge with an admin token */
     .get(
         getEventFromParams,
