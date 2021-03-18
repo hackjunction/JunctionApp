@@ -143,18 +143,30 @@ async function getTeamWithMeta(user, event) {
 }
 
 async function hasPartnerToken(event, token) {
-    if (
+    /*     if (
         !event.challengesEnabled ||
         !event.challenges ||
         event.challenges.length === 0
     ) {
         throw new ForbiddenError('This event has no challenges')
-    }
+    } */
 
-    const matches = await Promise.filter(event.challenges, challenge => {
-        return bcrypt.compare(challenge.slug, token)
+    const ChallengeMatches = await Promise.filter(
+        event.challenges,
+        challenge => {
+            return bcrypt.compare(challenge.slug, token)
+        },
+    )
+
+    const TrackMatches = await Promise.filter(event.tracks, track => {
+        return bcrypt.compare(track.slug, token)
     })
-    return matches
+    const result = {
+        challengeMatches: ChallengeMatches,
+        trackMatches: TrackMatches,
+    }
+    // console.log(result)
+    return result
 }
 
 const EventMiddleware = {
@@ -226,15 +238,26 @@ const EventMiddleware = {
         }
     },
     hasPartnerToken: async (req, res, next) => {
-        const [match, ...other] = await hasPartnerToken(
+        /*         const [match, ...other] = await hasPartnerToken(
             req.event,
             req.params.token,
         )
+
         if (other.length !== 0) {
             next(new ForbiddenError('Invalid token'))
+        } */
+        const match = await hasPartnerToken(req.event, req.params.token)
+        if (Array.isArray(match.trackMatches) || match.trackMatches.length) {
+            req.params.track = match.trackMatches
+            return next()
         }
-        req.params.track = match
-        next()
+        if (
+            Array.isArray(match.challengeMatches) ||
+            match.challengeMatches.length
+        ) {
+            req.params.track = match.challengeMatches
+            return next()
+        }
     },
 
     /** Can only be called after req.event has been set by other middleware */
