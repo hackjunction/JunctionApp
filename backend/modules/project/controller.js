@@ -144,18 +144,16 @@ controller.getTrackProjectsWithToken = async (event, token) => {
     }
 }
 
-// TODO remove
+// TODO remove. This was done in a hurry
 controller.validateToken = async (event, token) => {
     /*     if (
-        event.challengesEnabled ||
-        event.challenges ||
-        !event.challenges.length === 0 ||
-        event.tracksEnabled ||
-        event.tracks ||
-        !event.tracks.length === 0
+        !event.challengesEnabled ||
+        !event.challenges ||
+        event.challenges.length === 0
     ) {
         throw new ForbiddenError('This event has no challenges')
     } */
+
     const Challengematches = await Promise.filter(
         event.challenges,
         challenge => {
