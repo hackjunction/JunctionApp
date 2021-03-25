@@ -6,7 +6,7 @@ import ProjectScoresService from 'services/projectScores'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { Box, TextField } from '@material-ui/core'
 
-export default ({ event, project, token }) => {
+export default ({ event, project, submit }) => {
     const dispatch = useDispatch()
     const initalProjectValues = {
         project: project._id,
@@ -17,68 +17,13 @@ export default ({ event, project, token }) => {
         maxScore: 10,
         message: '',
     }
+
     return (
         <>
             <Formik
                 initialValues={{ ...initalProjectValues }}
                 enableReinitialize={true}
-                /*                 onSubmit={async (values, { setSubmitting }) => {
-                    values.project = project._id
-                    values.event = event._id
-                    try {
-                        if (projectScore._id) {
-                            await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
-                                token,
-                                event.slug,
-                                values,
-                            )
-                        } else {
-                            await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
-                                token,
-                                event.slug,
-                                values,
-                            )
-                        }
-                        dispatch(
-                            SnackbarActions.success(
-                                'Score saved successfully.',
-                            ),
-                        )
-                    } catch (e) {
-                        dispatch(
-                            SnackbarActions.error(
-                                `Score could not be saved. Error: ${e.message}`,
-                            ),
-                        )
-                    } finally {
-                        setSubmitting(false)
-                    }
-                }} */
-                onSubmit={async (values, { setSubmitting, resetForm }) => {
-                    values.project = project._id
-                    values.event = event._id
-                    try {
-                        await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
-                            token,
-                            event.slug,
-                            values,
-                        )
-                        dispatch(
-                            SnackbarActions.success(
-                                `Score could not be saved.`,
-                            ),
-                        )
-                        resetForm()
-                    } catch (e) {
-                        dispatch(
-                            SnackbarActions.error(
-                                `Score could not be saved. Error: ${e.message}`,
-                            ),
-                        )
-                    } finally {
-                        setSubmitting(false)
-                    }
-                }}
+                onSubmit={submit}
             >
                 {({ isSubmitting }) => (
                     <Form>

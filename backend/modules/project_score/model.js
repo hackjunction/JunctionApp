@@ -51,7 +51,7 @@ const ProjectScoreSchema = new mongoose.Schema(
     },
     { toJSON: { virtuals: true } },
 )
-ProjectScoreSchema.index(
+/* ProjectScoreSchema.index(
     {
         project: 1,
         event: 1,
@@ -61,7 +61,7 @@ ProjectScoreSchema.index(
     {
         unique: true,
     },
-)
+) */
 
 ProjectScoreSchema.set('timestamps', true)
 

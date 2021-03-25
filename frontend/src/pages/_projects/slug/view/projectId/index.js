@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
+import Container from 'components/generic/Container'
 import { Helmet } from 'react-helmet'
 
 import moment from 'moment-timezone'
@@ -33,6 +34,7 @@ export default ({ event, showFullTeam }) => {
     const [error, setError] = useState(false)
     console.log('project :>> ', project)
     const [validToken, setValidToken] = useState(false)
+    const [showNextProject, setShowNextProject] = useState(false)
 
     useEffect(() => {
         if (token && project && event) {
@@ -42,7 +44,7 @@ export default ({ event, showFullTeam }) => {
         }
     }, [event, project])
 
-    const [projectScore, setProjectScore] = useState({
+    /*     const [projectScore, setProjectScore] = useState({
         project: '',
         event: '',
         status: 'submitted',
@@ -60,7 +62,7 @@ export default ({ event, showFullTeam }) => {
                 if (score[0]) setProjectScore(score[0])
             })
         }
-    }, [event, token, project])
+    }, [event, token, project]) */
 
     const fetchProject = useCallback(async () => {
         setLoading(true)
@@ -83,6 +85,30 @@ export default ({ event, showFullTeam }) => {
     useEffect(() => {
         fetchProject()
     }, [fetchProject])
+
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        values.project = project._id
+        values.event = event._id
+        try {
+            await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
+                token,
+                event.slug,
+                values,
+            )
+            dispatch(SnackbarActions.success(`Score saved.`))
+            resetForm()
+            setShowNextProject(true)
+        } catch (e) {
+            dispatch(
+                SnackbarActions.error(
+                    `Score could not be saved. Error: ${e.message}`,
+                ),
+            )
+        } finally {
+            setSubmitting(false)
+        }
+    }
+
     return (
         <PageWrapper loading={loading} error={error}>
             <ProjectDetail
@@ -93,7 +119,17 @@ export default ({ event, showFullTeam }) => {
                 showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
             {validToken ? (
-                <ScoreForm event={event} project={project} token={token} />
+                showNextProject ? (
+                    <></>
+                ) : (
+                    <Container>
+                        <ScoreForm
+                            event={event}
+                            project={project}
+                            submit={handleSubmit}
+                        />
+                    </Container>
+                )
             ) : null}
         </PageWrapper>
     )
