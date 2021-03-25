@@ -27,6 +27,10 @@ const ProjectScoreSchema = new mongoose.Schema(
             type: String,
             default: null,
         },
+        scoreGiver: {
+            type: String,
+            required: false,
+        },
         score: {
             type: Number,
             required: false,

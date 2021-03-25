@@ -11,7 +11,6 @@ import { EventHelpers } from '@hackjunction/shared'
 
 import { Box, TextField } from '@material-ui/core'
 import Button from 'components/generic/Button'
-
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
@@ -19,6 +18,8 @@ import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
 
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+
+import ScoreForm from './ScoreForm'
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
@@ -92,79 +93,7 @@ export default ({ event, showFullTeam }) => {
                 showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
             {validToken ? (
-                <Formik
-                    initialValues={{
-                        ...projectScore,
-                    }}
-                    enableReinitialize={true}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        values.project = project._id
-                        values.event = event._id
-                        try {
-                            if (projectScore._id) {
-                                await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
-                                    token,
-                                    event.slug,
-                                    values,
-                                )
-                            } else {
-                                await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
-                                    token,
-                                    event.slug,
-                                    values,
-                                )
-                            }
-                            dispatch(
-                                SnackbarActions.success(
-                                    'Score saved successfully.',
-                                ),
-                            )
-                        } catch (e) {
-                            dispatch(
-                                SnackbarActions.error(
-                                    `Score could not be saved. Error: ${e.message}`,
-                                ),
-                            )
-                        } finally {
-                            setSubmitting(false)
-                        }
-                    }}
-                >
-                    {({ isSubmitting }) => (
-                        <Form>
-                            <Field name="score">
-                                {({ field }) => (
-                                    <TextField
-                                        fullWidth
-                                        label="Score"
-                                        type="number"
-                                        {...field}
-                                    />
-                                )}
-                            </Field>
-                            <ErrorMessage name="score" component="div" />
-                            <Field name="message">
-                                {({ field }) => (
-                                    <TextField
-                                        fullWidth
-                                        label="Message"
-                                        {...field}
-                                    />
-                                )}
-                            </Field>
-                            <ErrorMessage name="message" component="div" />
-                            <Box p={2} />
-                            <Button
-                                color="theme_turquoise"
-                                variant="contained"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                Save
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
+                <ScoreForm event={event} project={project} token={token} />
             ) : null}
         </PageWrapper>
     )
