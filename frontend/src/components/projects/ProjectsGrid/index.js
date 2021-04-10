@@ -65,6 +65,7 @@ const ProjectsGrid = ({
                     project._id,
                 )
                     .then(score => {
+                        //TODO: refactor this one
                         if (!isVotingOpen) {
                             if (score[0]) {
                                 return { ...{ scores: [...score] }, ...project }
@@ -75,7 +76,11 @@ const ProjectsGrid = ({
                             )
                         } else {
                             return Object.assign(
-                                { score: 0, message: 'Review ongoing' },
+                                {
+                                    score: 0,
+                                    message:
+                                        'Review ongoing. Results will be shown after review period is over',
+                                },
                                 project,
                             )
                         }
