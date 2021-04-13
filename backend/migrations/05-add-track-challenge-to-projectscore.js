@@ -26,7 +26,7 @@ module.exports = {
             pres.n,
             pres.nModified,
         )
-        /*         const PS = mongoose.model('ProjectScore')
+        const PS = mongoose.model('ProjectScore')
         await PS.collection.createIndex(
             {
                 project: 1,
@@ -38,7 +38,7 @@ module.exports = {
                 unique: true,
             },
         )
-        await PS.syncIndexes() */
+        await PS.syncIndexes()
 
         return Promise.resolve()
     },

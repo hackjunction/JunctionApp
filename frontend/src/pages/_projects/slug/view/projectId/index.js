@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
-import Container from 'components/generic/Container'
 import { Helmet } from 'react-helmet'
 
 import moment from 'moment-timezone'
@@ -12,6 +11,7 @@ import { EventHelpers } from '@hackjunction/shared'
 
 import { Box, TextField } from '@material-ui/core'
 import Button from 'components/generic/Button'
+
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
@@ -19,8 +19,6 @@ import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
 
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-
-import ScoreForm from './ScoreForm'
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
@@ -34,7 +32,6 @@ export default ({ event, showFullTeam }) => {
     const [error, setError] = useState(false)
     console.log('project :>> ', project)
     const [validToken, setValidToken] = useState(false)
-    const [showNextProject, setShowNextProject] = useState(false)
 
     useEffect(() => {
         if (token && project && event) {
@@ -44,7 +41,7 @@ export default ({ event, showFullTeam }) => {
         }
     }, [event, project])
 
-    /*     const [projectScore, setProjectScore] = useState({
+    const [projectScore, setProjectScore] = useState({
         project: '',
         event: '',
         status: 'submitted',
@@ -62,7 +59,7 @@ export default ({ event, showFullTeam }) => {
                 if (score[0]) setProjectScore(score[0])
             })
         }
-    }, [event, token, project]) */
+    }, [event, token, project])
 
     const fetchProject = useCallback(async () => {
         setLoading(true)
@@ -85,30 +82,6 @@ export default ({ event, showFullTeam }) => {
     useEffect(() => {
         fetchProject()
     }, [fetchProject])
-
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-        values.project = project._id
-        values.event = event._id
-        try {
-            await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
-                token,
-                event.slug,
-                values,
-            )
-            dispatch(SnackbarActions.success(`Score saved.`))
-            resetForm()
-            setShowNextProject(true)
-        } catch (e) {
-            dispatch(
-                SnackbarActions.error(
-                    `Score could not be saved. Error: ${e.message}`,
-                ),
-            )
-        } finally {
-            setSubmitting(false)
-        }
-    }
-
     return (
         <PageWrapper loading={loading} error={error}>
             <ProjectDetail
@@ -119,17 +92,79 @@ export default ({ event, showFullTeam }) => {
                 showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
             {validToken ? (
-                showNextProject ? (
-                    <></>
-                ) : (
-                    <Container>
-                        <ScoreForm
-                            event={event}
-                            project={project}
-                            submit={handleSubmit}
-                        />
-                    </Container>
-                )
+                <Formik
+                    initialValues={{
+                        ...projectScore,
+                    }}
+                    enableReinitialize={true}
+                    onSubmit={async (values, { setSubmitting }) => {
+                        values.project = project._id
+                        values.event = event._id
+                        try {
+                            if (projectScore._id) {
+                                await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
+                                    token,
+                                    event.slug,
+                                    values,
+                                )
+                            } else {
+                                await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
+                                    token,
+                                    event.slug,
+                                    values,
+                                )
+                            }
+                            dispatch(
+                                SnackbarActions.success(
+                                    'Score saved successfully.',
+                                ),
+                            )
+                        } catch (e) {
+                            dispatch(
+                                SnackbarActions.error(
+                                    `Score could not be saved. Error: ${e.message}`,
+                                ),
+                            )
+                        } finally {
+                            setSubmitting(false)
+                        }
+                    }}
+                >
+                    {({ isSubmitting }) => (
+                        <Form>
+                            <Field name="score">
+                                {({ field }) => (
+                                    <TextField
+                                        fullWidth
+                                        label="Score"
+                                        type="number"
+                                        {...field}
+                                    />
+                                )}
+                            </Field>
+                            <ErrorMessage name="score" component="div" />
+                            <Field name="message">
+                                {({ field }) => (
+                                    <TextField
+                                        fullWidth
+                                        label="Message"
+                                        {...field}
+                                    />
+                                )}
+                            </Field>
+                            <ErrorMessage name="message" component="div" />
+                            <Box p={2} />
+                            <Button
+                                color="theme_turquoise"
+                                variant="contained"
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                Save
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
             ) : null}
         </PageWrapper>
     )

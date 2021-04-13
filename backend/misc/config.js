@@ -71,10 +71,7 @@ const settings = {
     },
     MONGODB_URI: {
         required: true,
-        value:
-            process.env.NODE_ENV === 'test'
-                ? process.env.TEST_MONGODB_URI
-                : process.env.MONGODB_URI,
+        value: process.env.MONGODB_URI,
     },
     PLATFORM_OWNER_NAME: {
         required: true,
@@ -126,7 +123,7 @@ const buildConfig = () => {
                 config[key] = obj.default
             } else {
                 throw new Error(
-                    `Invalid configuration: ${key} must be provided a value from .env, or a default value. See config.js`,
+                    `Invalid configuration: ${key} must be provided a value from .env, or a default value. See config.js`
                 )
             }
         } else {
