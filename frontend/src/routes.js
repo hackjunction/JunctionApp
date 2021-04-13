@@ -11,7 +11,6 @@ import HackerpackPage from './pages/_hackerpack'
 import PricingPage from './pages/_pricing'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
-import ContributingPage from './pages/_contributing'
 
 import RequiresPermission from './hocs/RequiresPermission'
 
@@ -103,11 +102,6 @@ const routes = [
     {
         path: '/admin',
         component: AdminRouter,
-        exact: false,
-    },
-    {
-        path: '/contributing',
-        component: ContributingPage,
         exact: false,
     },
 ]
