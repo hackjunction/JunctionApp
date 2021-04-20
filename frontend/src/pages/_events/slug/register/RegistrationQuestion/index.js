@@ -442,6 +442,7 @@ const RegistrationQuestion = ({
                     </FormControl>
                 )
             case 'boolean':
+                //console.log('f value', field.value)
                 return (
                     <FormControl
                         label={config.label}
