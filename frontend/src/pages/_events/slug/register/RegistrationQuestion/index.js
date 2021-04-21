@@ -404,6 +404,7 @@ const RegistrationQuestion = ({
     const renderCustomInput = () => {
         switch (config.fieldType) {
             case 'text':
+                console.log('config', config)
                 return (
                     <FormControl
                         label={config.label}
@@ -418,11 +419,13 @@ const RegistrationQuestion = ({
                             onChange={value =>
                                 form.setFieldValue(field.name, value)
                             }
+                            placeholder={config.placeholder}
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
                 )
             case 'textarea':
+                console.log('config', config)
                 return (
                     <FormControl
                         label={config.label}
@@ -437,6 +440,7 @@ const RegistrationQuestion = ({
                             onChange={value =>
                                 form.setFieldValue(field.name, value)
                             }
+                            placeholder={config.placeholder}
                             onBlur={() => form.setFieldTouched(field.name)}
                         />
                     </FormControl>
