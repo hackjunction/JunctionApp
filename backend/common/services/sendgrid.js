@@ -126,14 +126,16 @@ const SendgridService = {
                 {
                     header_image: event.coverImage.url,
                     subject: `Thanks for registering to ${event.name}!`,
-                    subtitle: 'Time to get to work!',
-                    body: `The final project submission deadline is <b>${moment(
-                        event.submissionsEndTime,
+                    subtitle: `Thank you for registering to ${event.name}!`,
+                    body: `You can modify your registration until the registration period ends <b>${moment(
+                        event.registrationEndTime,
                     ).format(
-                        'LLLL',
-                    )}</b>, so make sure you submit something before then! You'll find all of the necessary information on the Event Dashboard, which you can access with the below link. Have fun!`,
-                    cta_text: 'Event dashboard',
-                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                        'MMMM Do',
+                    )}</b> <br /> <br /> Save the dates for the event: <b>${moment(
+                        event.startTime,
+                    ).format('MMMM Do')} - ${moment(event.endTime).format(
+                        'MMMM Do',
+                    )}</b>`,
                 },
             )
         }
