@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <p align="center">
-  <a href="https://github.com/hackjunction/calendso">
+  <a href="https://github.com/hackjunction/">
     <img src="https://res.cloudinary.com/hackjunction/image/upload/v1563872579/misc_assets/junction_logos_2019-emblem_black.png" alt="Logo" width="160" height="160">
   </a>
 
@@ -10,7 +10,7 @@
     The open source hackathon organizing platform
     <br />
     <br />
-    <a href="https://www.app.hackjunction.com">Junctino App</a>
+    <a href="https://www.app.hackjunction.com">Junction App</a>
     ·
     <a href="https://www.hackjunction.com">Junction organization</a>
   </p>
@@ -39,7 +39,7 @@ Junction App is a community-driven open source project. We are developing the ap
 
 ### Installation and Contributing
 Documentation for installation of the project and contributing can be found here:
-* [`DEVELOPEMENT.MD`](https://github.com/hackjunction/JunctionApp/blob/dev/DEVELOPMENT.md)
+* [`DEVELOPMENT.MD`](https://github.com/hackjunction/JunctionApp/blob/dev/DEVELOPMENT.md)
 * [`CONTRIBUTING.MD`](https://github.com/hackjunction/JunctionApp/blob/dev/CONTRIBUTING.md)
 
 ### Roadmap
