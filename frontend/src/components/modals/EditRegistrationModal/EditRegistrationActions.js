@@ -25,7 +25,7 @@ export default ({ registration, onSubmit, onCancel }) => {
     const formFields = [rating, assignedTo, tags, status, travelGrant]
     const formValues = {
         rating: rating.value,
-        assignedto: assignedTo.value,
+        assignedTo: assignedTo.value,
         tags: tags.value,
         status: status.value,
         travelGrant: travelGrant.value,
