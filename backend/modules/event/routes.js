@@ -14,7 +14,7 @@ const {
 const {
     isEventOwner,
     isEventOrganiser,
-    hasRegisteredToEvent,
+    getEventFromParams,
 } = require('../../common/middleware/events')
 const { hasToken } = require('../../common/middleware/token')
 
@@ -207,7 +207,7 @@ router
 
 router
     .route('/:slug/winners')
-    .get(hasToken, hasRegisteredToEvent, getWinnerProjects)
+    .get(hasToken, getEventFromParams, getWinnerProjects)
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
@@ -217,7 +217,7 @@ router
 
 router
     .route('/:slug/finalist')
-    .get(hasToken, hasRegisteredToEvent, getFinalists)
+    .get(hasToken, getEventFromParams, getFinalists)
     .patch(
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
