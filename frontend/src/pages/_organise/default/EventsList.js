@@ -6,6 +6,8 @@ import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 /*
 textShadow:
@@ -43,6 +45,20 @@ const useStyles = makeStyles({
 })
 
 export default ({ events = [] }) => {
+    const [searchTerm, setSearchTerm] = React.useState('')
+    const [searchResults, setSearchResults] = useState(events)
+
+    const handleChange = event => {
+        setSearchTerm(event.target.value)
+    }
+
+    useEffect(() => {
+        const results = events.filter(event =>
+            event.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        )
+        setSearchResults(results)
+    }, [searchTerm])
+
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const classes = useStyles()
@@ -51,8 +67,14 @@ export default ({ events = [] }) => {
             <Typography variant="h6" gutterBottom>
                 {t('Your_events_')}
             </Typography>
+            <input
+                type="text"
+                placeholder="search"
+                value={searchTerm}
+                onChange={handleChange}
+            />
             <Grid container spacing={3}>
-                {events.map(event => (
+                {searchResults.map(event => (
                     <Grid item xs={12} md={6} lg={4}>
                         <div className={classes.statusText}>
                             {event.published && event.approved ? (
