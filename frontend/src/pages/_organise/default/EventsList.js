@@ -53,8 +53,10 @@ export default ({ events = [] }) => {
     }
 
     useEffect(() => {
-        const results = events.filter(event =>
-            event.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        const results = events.filter(
+            event =>
+                event.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !==
+                -1,
         )
         setSearchResults(results)
     }, [searchTerm])
