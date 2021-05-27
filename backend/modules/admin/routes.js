@@ -122,7 +122,7 @@ const anonymiseUserProfile = asyncHandler(async (req, res) => {
 })
 
 router.route('/sync-registrations').get(hasAdminToken, syncCheckedIn)
-router.route('/anonymise-user/:userId').get(anonymiseUserProfile)
+router.route('/anonymise-user/:userId').get(hasAdminToken, anonymiseUserProfile)
 // router.route('/sync-user-profiles').get(hasAdminToken, syncUserProfiles);
 
 module.exports = router
