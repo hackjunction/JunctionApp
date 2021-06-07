@@ -79,7 +79,7 @@ clients:
       rotation_type: non-rotating
     sso_disabled: false
     token_endpoint_auth_method: client_secret_post
-  - name: ##APP_NAME##
+  - name: ##APP_NAME_BACKEND##
     allowed_clients: []
     app_type: non_interactive
     callbacks: []
@@ -106,7 +106,7 @@ clients:
       expiration_type: non-expiring
     sso_disabled: false
     token_endpoint_auth_method: client_secret_post
-  - name: ##APP_NAME##
+  - name: ##APP_NAME_FRONTEND##
     allowed_clients: []
     allowed_logout_urls: @@APP_LOGOUT_URLS@@
     app_type: spa
@@ -207,8 +207,8 @@ databases:
       - auth0-account-link
       - auth0-authz
       - auth0-deploy-cli-extension
-      - ##APP_NAME##
-      - Junction SSO (Dev)
+      - ##APP_NAME_BACKEND##
+      - ##APP_NAME_FRONTEND##
     is_domain_connection: false
     options:
       mfa:
@@ -227,8 +227,8 @@ connections:
       - auth0-account-link
       - auth0-authz
       - auth0-deploy-cli-extension
-      - ##APP_NAME##
-      - Junction SSO (Dev)
+      - ##APP_NAME_BACKEND##
+      - ##APP_NAME_FRONTEND##
     is_domain_connection: false
     options:
       gist: false
@@ -261,8 +261,8 @@ connections:
       - auth0-account-link
       - auth0-authz
       - auth0-deploy-cli-extension
-      - ##APP_NAME##
-      - Junction SSO (Dev)
+      - ##APP_NAME_BACKEND##
+      - ##APP_NAME_FRONTEND##
     is_domain_connection: false
     options:
       email: true
@@ -434,7 +434,7 @@ clientGrants:
       - 'create:organization_invitations'
       - 'read:organization_invitations'
       - 'delete:organization_invitations'
-  - client_id: ##APP_NAME##
+  - client_id: ##APP_NAME_BACKEND##
     audience: 'urn:auth0-authz-api'
     scope:
       - 'read:users'
@@ -458,7 +458,7 @@ clientGrants:
       - 'create:resource-server'
       - 'update:resource-server'
       - 'delete:resource-server'
-  - client_id: ##APP_NAME##
+  - client_id: ##APP_NAME_BACKEND##
     audience: ##AUDIENCE##
     scope:
       - 'read:client_grants'

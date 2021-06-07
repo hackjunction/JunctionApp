@@ -36,9 +36,10 @@ JunctionApp uses Auth0 for user authentication and authorization. To set up Auth
 3. Add Auth0 Authorization extension to your tenant.
 4. Go to the Authorization extensions settings and enable API access
 5. Fill `config.js` with `auth0-deploy-cli-extension` applications information and with Authorization extensions url.
-6. Run `npm auth0 export`
+6. Run `npm auth0 export` !Note that its a bug that the script fails, but it still works
 7. Copy and paste frontend auth0 applications applicationId to `data.json`
 8. Import `data.json` file to the Authorization Extensions
+9. In Authorization Extension click PUBLISH RULES
 
 ### Set up your environment variables
 
