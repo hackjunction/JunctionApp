@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
     wrapper: ({ light, alignCenter }) => ({
         color: light ? 'white' : theme.palette.text.primary,
         textAlign: alignCenter ? 'center' : 'left',
+        '& img ': {
+            width: '100%',
+        },
     }),
     heading1: {
         fontFamily: theme.typography.h1.fontFamily,
