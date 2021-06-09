@@ -134,7 +134,7 @@ export default React.memo(
         const safeIndex = activeIndex === -1 ? 0 : activeIndex
 
         const [mobileOpen, setMobileOpen] = React.useState(false)
-        const [desktopOpen, setDesktopOpen] = React.useState(false)
+        const [desktopOpen, setDesktopOpen] = React.useState(true)
 
         const classes = useStyles({ desktopOpen })
 
