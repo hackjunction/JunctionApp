@@ -46,7 +46,6 @@
         "if-env": "^1.0.4",
         "pino": "^6.3.1",
         "pino-pretty": "^4.0.0",
-        "react-cookie-consent": "^6.2.4",
         "react-helmet": "^6.1.0",
         "react-pdf": "^4.1.0",
         "yup": "^0.29.1"

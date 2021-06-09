@@ -13,6 +13,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as AuthActions from 'redux/auth/actions'
 import AnalyticsService from 'services/analytics'
 import CookieConsent from 'react-cookie-consent'
+import Cookies from 'js-cookie'
 
 export default ({ history, location }) => {
     const dispatch = useDispatch()
@@ -23,12 +24,13 @@ export default ({ history, location }) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        //AnalyticsService.init()
-        AnalyticsService.pageView(window.location)
-        const unlisten = history.listen(AnalyticsService.pageView)
-
-        return () => {
-            unlisten()
+        if (Cookies.get('CookieConsent')) {
+            AnalyticsService.init()
+            AnalyticsService.pageView(window.location)
+            const unlisten = history.listen(AnalyticsService.pageView)
+            return () => {
+                unlisten()
+            }
         }
     }, [location, history])
 
@@ -127,7 +129,7 @@ export default ({ history, location }) => {
             <CookieConsent
                 buttonText="Yes"
                 enableDeclineButton
-                onAccept={() => AnalyticsService.init()}
+                onAccept={() => console.log('huutis')}
                 onDecline={() => console.log('denied')}
                 debug={true}
             >
