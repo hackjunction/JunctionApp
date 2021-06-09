@@ -12,6 +12,7 @@ import config from 'constants/config'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as AuthActions from 'redux/auth/actions'
 import AnalyticsService from 'services/analytics'
+import CookieConsent from 'react-cookie-consent'
 
 export default ({ history, location }) => {
     const dispatch = useDispatch()
@@ -22,7 +23,7 @@ export default ({ history, location }) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        AnalyticsService.init()
+        //AnalyticsService.init()
         AnalyticsService.pageView(window.location)
         const unlisten = history.listen(AnalyticsService.pageView)
 
@@ -123,6 +124,15 @@ export default ({ history, location }) => {
                     )}
                 </Suspense>
             </ConnectedRouter>
+            <CookieConsent
+                buttonText="Yes"
+                enableDeclineButton
+                onAccept={() => AnalyticsService.init()}
+                onDecline={() => console.log('denied')}
+                debug={true}
+            >
+                Cookie consent
+            </CookieConsent>
         </ApolloProvider>
     )
 }
