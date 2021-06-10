@@ -23,7 +23,7 @@ export default ({ history, location }) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (getCookieConsentValue()) {
+        if (getCookieConsentValue() === 'true') {
             AnalyticsService.init()
             AnalyticsService.pageView(window.location)
             const unlisten = history.listen(AnalyticsService.pageView)
