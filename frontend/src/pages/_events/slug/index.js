@@ -17,9 +17,8 @@ import EventDetailContext, { EventDetailProvider } from './context'
 const EventDetailRouter = () => {
     const match = useRouteMatch()
     const location = useLocation()
-    const { eventLoading, eventError, isRegistrationOpen } = useContext(
-        EventDetailContext,
-    )
+    const { eventLoading, eventError, isRegistrationOpen } =
+        useContext(EventDetailContext)
     // TODO FIX errortext and desc to be from eventErro
     return (
         <PageWrapper

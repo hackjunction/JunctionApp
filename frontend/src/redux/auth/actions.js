@@ -4,14 +4,16 @@ import * as AuthSelectors from './selectors'
 import * as UserActions from '../user/actions'
 import Auth0Service from 'services/auth0'
 
-export const login = (params, nextRoute = '/') => dispatch => {
-    dispatch({
-        type: ActionTypes.SET_NEXT_ROUTE,
-        payload: nextRoute,
-    })
-    console.log('loggin in with', params)
-    Auth0Service.authorize(params)
-}
+export const login =
+    (params, nextRoute = '/') =>
+    dispatch => {
+        dispatch({
+            type: ActionTypes.SET_NEXT_ROUTE,
+            payload: nextRoute,
+        })
+        console.log('loggin in with', params)
+        Auth0Service.authorize(params)
+    }
 
 export const pushNextRoute = () => (dispatch, getState) => {
     const nextRoute = AuthSelectors.getNextRoute(getState())

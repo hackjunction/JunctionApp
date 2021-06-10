@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const { errors } = require('celebrate')
 const path = require('path')
 const helmet = require('helmet')
-const sslRedirect = require('heroku-ssl-redirect')
+const sslRedirect = require('heroku-ssl-redirect').default
 
 /** Create Express application */
 const app = express()

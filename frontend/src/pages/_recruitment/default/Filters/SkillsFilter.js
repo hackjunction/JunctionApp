@@ -32,9 +32,8 @@ export default ({ setFilters }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const filters = useSelector(RecruitmentSelectors.filters)?.skills ?? []
-    const [skills, addSkill, removeSkill, editSkill, setSkills] = useArray(
-        filters,
-    )
+    const [skills, addSkill, removeSkill, editSkill, setSkills] =
+        useArray(filters)
     const classes = useStyles()
 
     const handleSubmit = useCallback(() => {

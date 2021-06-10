@@ -1,6 +1,6 @@
 {
     "name": "junctionapp",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -35,7 +35,7 @@
         "pre-commit:backend",
         "pre-commit:shared"
     ],
-    "author": "Juuso Lappalainen",
+    "author": "Junction Ltd",
     "license": "ISC",
     "devDependencies": {
         "npm-run-all": "^4.1.5",
@@ -44,15 +44,15 @@
     "dependencies": {
         "better-npm-run": "^0.1.1",
         "if-env": "^1.0.4",
-        "pino": "^6.3.1",
-        "pino-pretty": "^4.0.0",
+        "pino": "^6.11.3",
+        "pino-pretty": "^5.0.2",
         "react-helmet": "^6.1.0",
-        "react-pdf": "^4.1.0",
-        "yup": "^0.29.1"
+        "react-pdf": "^5.3.0",
+        "yup": "^0.32.9"
     },
     "engines": {
-        "node": "12.3.1",
-        "npm": "6.9.0"
+        "node": "^16.3.0",
+        "npm": "^7.15.0"
     },
     "type": "module"
 }

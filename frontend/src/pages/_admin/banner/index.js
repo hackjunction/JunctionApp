@@ -179,8 +179,7 @@ export default () => {
                                                     value={
                                                         field.value
                                                             ? {
-                                                                  url:
-                                                                      field.value,
+                                                                  url: field.value,
                                                               }
                                                             : undefined
                                                     }
@@ -261,14 +260,10 @@ export default () => {
                                                     color="theme_blue"
                                                     onClick={() =>
                                                         push({
-                                                            text:
-                                                                formikProps
-                                                                    .values
-                                                                    .text,
-                                                            push:
-                                                                formikProps
-                                                                    .values
-                                                                    .push,
+                                                            text: formikProps
+                                                                .values.text,
+                                                            push: formikProps
+                                                                .values.push,
                                                         })
                                                     }
                                                 >

@@ -173,10 +173,8 @@ export default RequiresPermission(() => {
         const allFields = RegistrationFields.getFields()
         const enabledFields = Object.keys(allFields).reduce(
             (result, fieldName) => {
-                const {
-                    optionalFields = [],
-                    requiredFields = [],
-                } = event?.registrationConfig
+                const { optionalFields = [], requiredFields = [] } =
+                    event?.registrationConfig
                 if (
                     requiredFields.indexOf(fieldName) !== -1 ||
                     allFields[fieldName].alwaysRequired
