@@ -29,7 +29,6 @@
         "i18next": "^19.4.5",
         "i18next-browser-languagedetector": "^4.3.1",
         "i18next-xhr-backend": "^3.2.2",
-        "js-cookie": "^2.2.1",
         "lodash-es": "^4.17.15",
         "logrocket": "^1.0.7",
         "moment": "^2.26.0",
