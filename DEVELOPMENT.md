@@ -35,14 +35,18 @@ JunctionApp uses Auth0 for user authentication and authorization. To set up Auth
 2. Follow [this](https://auth0.com/docs/deploy/deploy-cli-tool/create-and-configure-the-deploy-cli-application) tutorial to create a `auth0-deploy-cli-extension` in Auth0
 3. Add Auth0 Authorization extension to your tenant. [img. 1.]
 4. Go to the Authorization extensions settings and enable API access
-5. Fill `config.json` with `auth0-deploy-cli-extension` applications information and authorization extensions url. [img. 2, img. 3.]
+5. Fill `config.json` with `auth0-deploy-cli-extension` applications information and authorization extensions url. [img. 2]
 
 -   AUTH0_DOMAIN
+    -   from `auth0-deploy-cli-extension` [img. 2.]
 -   AUTH0_CLIENT_ID
+    -   from `auth0-deploy-cli-extension` [img. 2.]
 -   AUTHO_CLIENT_SECRET
+    -   from `auth0-deploy-cli-extension` [img. 2.]
 -   AUDIENCE
     -   Your domain url
 -   AUTHZ_URL
+    -   from authorization extension [img. 2.]
 
 6. Run `npm run auth0`. The script is going to display error message but everything works.
 

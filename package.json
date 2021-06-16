@@ -19,7 +19,7 @@
         "pre-commit:frontend": "cd frontend && npm run precommit",
         "pre-commit:backend": "cd backend && npm run precommit",
         "pre-commit:shared": "cd shared && npm run precommit",
-        "auth0:import": "a0deploy import -c ./auth0/config.json -i ./auth0/tenant.yaml"
+        "auth0": "a0deploy import -c ./auth0/config.json -i ./auth0/tenant.yaml"
     },
     "betterScripts": {
         "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
