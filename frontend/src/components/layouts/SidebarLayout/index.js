@@ -61,6 +61,7 @@ const useStyles = makeStyles(theme => ({
         width: SIDEBAR_WIDTH,
         maxWidth: '80%',
         background: 'black',
+        zIndex: 998,
     },
 
     listItem: {
