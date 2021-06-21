@@ -1,16 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Box,
-    Dialog,
-    DialogTitle,
-    Grid,
-    Typography,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
-} from '@material-ui/core'
+import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Formik, FastField, Field } from 'formik'
 import { RegistrationFields } from '@hackjunction/shared'
@@ -29,7 +20,6 @@ import EducationInput from 'components/inputs/EducationInput'
 import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import Select from 'components/inputs/Select'
 import BottomBar from 'components/inputs/BottomBar'
-import Button from 'components/generic/Button'
 
 import * as UserSelectors from 'redux/user/selectors'
 import * as UserActions from 'redux/user/actions'
@@ -68,9 +58,6 @@ export default () => {
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
     const hasProfile = useSelector(UserSelectors.hasProfile)
     const loading = userProfileLoading || !hasProfile
-
-    const [deleteProfileOpen, setDeleteProfileOpen] = useState(false)
-
     const { t } = useTranslation()
 
     const classes = useStyles()
@@ -111,10 +98,6 @@ export default () => {
         },
         [dispatch],
     )
-
-    const handleProfileDelete = useCallback(() => {
-        console.log('lol')
-    })
 
     return (
         <PageWrapper loading={loading}>
@@ -754,48 +737,6 @@ export default () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        </Box>
-                        <Box mt={3}>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() => setDeleteProfileOpen(true)}
-                                disabled={loading}
-                            >
-                                {t('Profile_delete_')}
-                            </Button>
-                            <Dialog
-                                open={deleteProfileOpen}
-                                onClose={() => setDeleteProfileOpen(false)}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                            >
-                                <DialogTitle id="alert-dialog-title">
-                                    Are you sure?
-                                </DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText id="alert-dialog-description">
-                                        You won't be able to recover your
-                                        profile. after deleting it
-                                    </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button
-                                        onClick={() =>
-                                            setDeleteProfileOpen(false)
-                                        }
-                                    >
-                                        I've changed my mind
-                                    </Button>
-                                    <Button
-                                        onClick={() => handleProfileDelete()}
-                                        color="error"
-                                        autoFocus
-                                    >
-                                        Yes, delete it
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
                         </Box>
                         <Box height="300px" />
                         <BottomBar
