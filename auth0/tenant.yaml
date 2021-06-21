@@ -1,0 +1,613 @@
+rules:
+  - name: Add data to idToken
+    script: ./rules/Add data to idToken.js
+    stage: login_success
+    enabled: true
+    order: 3
+  - name: auth0-account-link-extension
+    script: ./rules/auth0-account-link-extension.js
+    stage: login_success
+    enabled: true
+    order: 4
+  - name: auth0-authorization-extension
+    script: ./rules/auth0-authorization-extension.js
+    stage: login_success
+    enabled: false
+    order: 2
+  - name: auth0-authorization-extension-deafult
+    script: ./rules/auth0-authorization-extension-deafult.js
+    stage: login_success
+    enabled: true
+    order: 1
+rulesConfigs: []
+hooks: []
+pages:
+  - name: login
+    enabled: true
+    html: ./pages/login.html
+resourceServers:
+  - name: auth0-authorization-extension-api
+    identifier: 'urn:auth0-authz-api'
+    allow_offline_access: false
+    scopes:
+      - value: 'read:users'
+      - value: 'read:applications'
+      - value: 'read:connections'
+      - value: 'read:configuration'
+      - value: 'update:configuration'
+      - value: 'read:groups'
+      - value: 'create:groups'
+      - value: 'update:groups'
+      - value: 'delete:groups'
+      - value: 'read:roles'
+      - value: 'create:roles'
+      - value: 'update:roles'
+      - value: 'delete:roles'
+      - value: 'read:permissions'
+      - value: 'create:permissions'
+      - value: 'update:permissions'
+      - value: 'delete:permissions'
+      - value: 'read:resource-server'
+      - value: 'create:resource-server'
+      - value: 'update:resource-server'
+      - value: 'delete:resource-server'
+    signing_alg: RS256
+    skip_consent_for_verifiable_first_party_clients: false
+    token_lifetime: 86400
+    token_lifetime_for_web: 7200
+clients:
+  - name: API Explorer Application
+    app_type: non_interactive
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      expiration_type: non-expiring
+      leeway: 0
+      infinite_token_lifetime: true
+      infinite_idle_token_lifetime: true
+      token_lifetime: 31557600
+      idle_token_lifetime: 2592000
+      rotation_type: non-rotating
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: ##APP_NAME_BACKEND##
+    allowed_clients: []
+    app_type: non_interactive
+    callbacks: []
+    client_aliases: []
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - client_credentials
+      - implicit
+      - authorization_code
+      - refresh_token
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    native_social_login:
+      apple:
+        enabled: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+  - name: ##APP_NAME_FRONTEND##
+    allowed_clients: []
+    allowed_logout_urls: @@APP_LOGOUT_URLS@@
+    app_type: spa
+    callbacks: @@APP_CALLBACKS@@
+    client_aliases: []
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    logo_uri: 'https://www.hackjunction.com/static/media/text_white.4811a1ac.png'
+    native_social_login:
+      apple:
+        enabled: false
+      facebook:
+        enabled: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+    token_endpoint_auth_method: none
+    web_origins:
+      - 'http://localhost:3000'
+  - name: auth0-account-link
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+  - name: auth0-authz
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - authorization_code
+      - implicit
+      - refresh_token
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      rotation_type: non-rotating
+      expiration_type: non-expiring
+    sso_disabled: false
+  - name: auth0-deploy-cli-extension
+    app_type: non_interactive
+    cross_origin_auth: false
+    custom_login_page_on: true
+    grant_types:
+      - client_credentials
+    is_first_party: true
+    is_token_endpoint_ip_header_trusted: false
+    jwt_configuration:
+      alg: RS256
+      lifetime_in_seconds: 36000
+      secret_encoded: false
+    oidc_conformant: true
+    refresh_token:
+      expiration_type: non-expiring
+      leeway: 0
+      infinite_token_lifetime: true
+      infinite_idle_token_lifetime: true
+      token_lifetime: 31557600
+      idle_token_lifetime: 2592000
+      rotation_type: non-rotating
+    sso_disabled: false
+    token_endpoint_auth_method: client_secret_post
+databases:
+  - name: Username-Password-Authentication
+    strategy: auth0
+    enabled_clients:
+      - API Explorer Application
+      - auth0-account-link
+      - auth0-authz
+      - auth0-deploy-cli-extension
+      - ##APP_NAME_BACKEND##
+      - ##APP_NAME_FRONTEND##
+    is_domain_connection: false
+    options:
+      mfa:
+        active: true
+        return_enroll_settings: true
+      passwordPolicy: good
+      strategy_version: 2
+      brute_force_protection: true
+    realms:
+      - Username-Password-Authentication
+connections:
+  - name: github
+    strategy: github
+    enabled_clients:
+      - API Explorer Application
+      - auth0-account-link
+      - auth0-authz
+      - auth0-deploy-cli-extension
+      - ##APP_NAME_BACKEND##
+      - ##APP_NAME_FRONTEND##
+    is_domain_connection: false
+    options:
+      gist: false
+      repo: false
+      email: true
+      scope:
+        - 'user:email'
+      follow: false
+      profile: true
+      read_org: false
+      admin_org: false
+      client_id: ''
+      read_user: false
+      write_org: false
+      delete_repo: false
+      public_repo: false
+      repo_status: false
+      notifications: false
+      read_repo_hook: false
+      admin_repo_hook: false
+      read_public_key: false
+      repo_deployment: false
+      write_repo_hook: false
+      admin_public_key: false
+      write_public_key: false
+  - name: google-oauth2
+    strategy: google-oauth2
+    enabled_clients:
+      - API Explorer Application
+      - auth0-account-link
+      - auth0-authz
+      - auth0-deploy-cli-extension
+      - ##APP_NAME_BACKEND##
+      - ##APP_NAME_FRONTEND##
+    is_domain_connection: false
+    options:
+      email: true
+      scope:
+        - email
+        - profile
+      profile: true
+  - name: linkedin
+    strategy: linkedin
+    enabled_clients: []
+    is_domain_connection: false
+    options:
+      email: true
+      scope:
+        - r_emailaddress
+        - r_liteprofile
+      profile: true
+      client_id: ''
+      basic_profile: false
+      strategy_version: 2
+tenant:
+  enabled_locales:
+    - en
+  flags:
+    new_universal_login_experience_enabled: true
+    universal_login: true
+    disable_clickjack_protection_headers: false
+    include_email_in_reset_pwd_redirect: true
+    include_email_in_verify_email_redirect: true
+  picture_url: >-
+    https://res.cloudinary.com/hackjunction/image/upload/v1597153890/test/test/photo_2020-08-11_16-51-09.jpg
+  universal_login:
+    colors:
+      page_background: '#a4f8fd'
+      primary: '#bcd800'
+emailProvider: {}
+emailTemplates: []
+clientGrants:
+  - client_id: API Explorer Application
+    audience: ##AUDIENCE##
+    scope:
+      - 'read:client_grants'
+      - 'create:client_grants'
+      - 'delete:client_grants'
+      - 'update:client_grants'
+      - 'read:users'
+      - 'update:users'
+      - 'delete:users'
+      - 'create:users'
+      - 'read:users_app_metadata'
+      - 'update:users_app_metadata'
+      - 'delete:users_app_metadata'
+      - 'create:users_app_metadata'
+      - 'read:user_custom_blocks'
+      - 'create:user_custom_blocks'
+      - 'delete:user_custom_blocks'
+      - 'create:user_tickets'
+      - 'read:clients'
+      - 'update:clients'
+      - 'delete:clients'
+      - 'create:clients'
+      - 'read:client_keys'
+      - 'update:client_keys'
+      - 'delete:client_keys'
+      - 'create:client_keys'
+      - 'read:connections'
+      - 'update:connections'
+      - 'delete:connections'
+      - 'create:connections'
+      - 'read:resource_servers'
+      - 'update:resource_servers'
+      - 'delete:resource_servers'
+      - 'create:resource_servers'
+      - 'read:device_credentials'
+      - 'update:device_credentials'
+      - 'delete:device_credentials'
+      - 'create:device_credentials'
+      - 'read:rules'
+      - 'update:rules'
+      - 'delete:rules'
+      - 'create:rules'
+      - 'read:rules_configs'
+      - 'update:rules_configs'
+      - 'delete:rules_configs'
+      - 'read:hooks'
+      - 'update:hooks'
+      - 'delete:hooks'
+      - 'create:hooks'
+      - 'read:actions'
+      - 'update:actions'
+      - 'delete:actions'
+      - 'create:actions'
+      - 'read:email_provider'
+      - 'update:email_provider'
+      - 'delete:email_provider'
+      - 'create:email_provider'
+      - 'blacklist:tokens'
+      - 'read:stats'
+      - 'read:insights'
+      - 'read:tenant_settings'
+      - 'update:tenant_settings'
+      - 'read:logs'
+      - 'read:logs_users'
+      - 'read:shields'
+      - 'create:shields'
+      - 'update:shields'
+      - 'delete:shields'
+      - 'read:anomaly_blocks'
+      - 'delete:anomaly_blocks'
+      - 'update:triggers'
+      - 'read:triggers'
+      - 'read:grants'
+      - 'delete:grants'
+      - 'read:guardian_factors'
+      - 'update:guardian_factors'
+      - 'read:guardian_enrollments'
+      - 'delete:guardian_enrollments'
+      - 'create:guardian_enrollment_tickets'
+      - 'read:user_idp_tokens'
+      - 'create:passwords_checking_job'
+      - 'delete:passwords_checking_job'
+      - 'read:custom_domains'
+      - 'delete:custom_domains'
+      - 'create:custom_domains'
+      - 'update:custom_domains'
+      - 'read:email_templates'
+      - 'create:email_templates'
+      - 'update:email_templates'
+      - 'read:mfa_policies'
+      - 'update:mfa_policies'
+      - 'read:roles'
+      - 'create:roles'
+      - 'delete:roles'
+      - 'update:roles'
+      - 'read:prompts'
+      - 'update:prompts'
+      - 'read:branding'
+      - 'update:branding'
+      - 'delete:branding'
+      - 'read:log_streams'
+      - 'create:log_streams'
+      - 'delete:log_streams'
+      - 'update:log_streams'
+      - 'create:signing_keys'
+      - 'read:signing_keys'
+      - 'update:signing_keys'
+      - 'read:limits'
+      - 'update:limits'
+      - 'create:role_members'
+      - 'read:role_members'
+      - 'delete:role_members'
+      - 'read:entitlements'
+      - 'read:attack_protection'
+      - 'update:attack_protection'
+      - 'read:organizations'
+      - 'update:organizations'
+      - 'create:organizations'
+      - 'delete:organizations'
+      - 'create:organization_members'
+      - 'read:organization_members'
+      - 'delete:organization_members'
+      - 'create:organization_connections'
+      - 'read:organization_connections'
+      - 'update:organization_connections'
+      - 'delete:organization_connections'
+      - 'create:organization_member_roles'
+      - 'read:organization_member_roles'
+      - 'delete:organization_member_roles'
+      - 'create:organization_invitations'
+      - 'read:organization_invitations'
+      - 'delete:organization_invitations'
+  - client_id: ##APP_NAME_BACKEND##
+    audience: 'urn:auth0-authz-api'
+    scope:
+      - 'read:users'
+      - 'read:applications'
+      - 'read:connections'
+      - 'read:configuration'
+      - 'update:configuration'
+      - 'read:groups'
+      - 'create:groups'
+      - 'update:groups'
+      - 'delete:groups'
+      - 'read:roles'
+      - 'create:roles'
+      - 'update:roles'
+      - 'delete:roles'
+      - 'read:permissions'
+      - 'create:permissions'
+      - 'update:permissions'
+      - 'delete:permissions'
+      - 'read:resource-server'
+      - 'create:resource-server'
+      - 'update:resource-server'
+      - 'delete:resource-server'
+  - client_id: ##APP_NAME_BACKEND##
+    audience: ##AUDIENCE##
+    scope:
+      - 'read:client_grants'
+      - 'create:client_grants'
+      - 'delete:client_grants'
+      - 'update:client_grants'
+      - 'read:users'
+      - 'update:users'
+      - 'delete:users'
+      - 'create:users'
+      - 'read:users_app_metadata'
+      - 'update:users_app_metadata'
+      - 'delete:users_app_metadata'
+      - 'create:users_app_metadata'
+      - 'create:user_tickets'
+      - 'read:clients'
+      - 'update:clients'
+      - 'delete:clients'
+      - 'create:clients'
+      - 'read:client_keys'
+      - 'update:client_keys'
+      - 'delete:client_keys'
+      - 'create:client_keys'
+      - 'read:connections'
+      - 'update:connections'
+      - 'delete:connections'
+      - 'create:connections'
+      - 'read:resource_servers'
+      - 'update:resource_servers'
+      - 'delete:resource_servers'
+      - 'create:resource_servers'
+      - 'read:device_credentials'
+      - 'update:device_credentials'
+      - 'delete:device_credentials'
+      - 'create:device_credentials'
+      - 'read:rules'
+      - 'update:rules'
+      - 'delete:rules'
+      - 'create:rules'
+      - 'read:rules_configs'
+      - 'update:rules_configs'
+      - 'delete:rules_configs'
+      - 'read:hooks'
+      - 'update:hooks'
+      - 'delete:hooks'
+      - 'create:hooks'
+      - 'read:email_provider'
+      - 'update:email_provider'
+      - 'delete:email_provider'
+      - 'create:email_provider'
+      - 'blacklist:tokens'
+      - 'read:stats'
+      - 'read:tenant_settings'
+      - 'update:tenant_settings'
+      - 'read:logs'
+      - 'read:shields'
+      - 'create:shields'
+      - 'delete:shields'
+      - 'read:anomaly_blocks'
+      - 'delete:anomaly_blocks'
+      - 'update:triggers'
+      - 'read:triggers'
+      - 'read:grants'
+      - 'delete:grants'
+      - 'read:guardian_factors'
+      - 'update:guardian_factors'
+      - 'read:guardian_enrollments'
+      - 'delete:guardian_enrollments'
+      - 'create:guardian_enrollment_tickets'
+      - 'read:user_idp_tokens'
+      - 'create:passwords_checking_job'
+      - 'delete:passwords_checking_job'
+      - 'read:custom_domains'
+      - 'delete:custom_domains'
+      - 'create:custom_domains'
+      - 'read:email_templates'
+      - 'create:email_templates'
+      - 'update:email_templates'
+      - 'read:mfa_policies'
+      - 'update:mfa_policies'
+      - 'read:roles'
+      - 'create:roles'
+      - 'delete:roles'
+      - 'update:roles'
+      - 'read:prompts'
+      - 'update:prompts'
+      - 'read:branding'
+      - 'update:branding'
+      - 'read:log_streams'
+      - 'create:log_streams'
+      - 'delete:log_streams'
+      - 'update:log_streams'
+  - client_id: auth0-account-link
+    audience: ##AUDIENCE##
+    scope:
+      - 'read:connections'
+      - 'read:users'
+      - 'read:rules'
+      - 'create:rules'
+      - 'update:rules'
+      - 'delete:rules'
+      - 'delete:clients'
+  - client_id: auth0-authz
+    audience: ##AUDIENCE##
+    scope:
+      - 'read:connections'
+      - 'read:resource_servers'
+      - 'update:resource_servers'
+      - 'delete:resource_servers'
+      - 'read:clients'
+      - 'delete:clients'
+      - 'read:users'
+      - 'read:rules'
+      - 'create:rules'
+      - 'update:rules_configs'
+      - 'update:rules'
+      - 'delete:rules'
+guardianFactors:
+  - name: duo
+    enabled: false
+  - name: email
+    enabled: false
+  - name: otp
+    enabled: false
+  - name: push-notification
+    enabled: false
+  - name: sms
+    enabled: false
+  - name: webauthn-platform
+    enabled: false
+  - name: webauthn-roaming
+    enabled: false
+guardianFactorProviders: []
+guardianFactorTemplates: []
+guardianPolicies:
+  policies: []
+guardianPhoneFactorSelectedProvider:
+  provider: auth0
+guardianPhoneFactorMessageTypes:
+  message_types: []
+roles: []
+branding:
+  colors:
+    page_background: '#a4f8fd'
+    primary: '#bcd800'
+  logo_url: >-
+    https://res.cloudinary.com/hackjunction/image/upload/v1597153890/test/test/photo_2020-08-11_16-51-09.jpg
+prompts:
+  universal_login_experience: new
+  identifier_first: false
+migrations:
+  legacy_tls: true

@@ -1,0 +1,24 @@
+{
+    "AUTH0_DOMAIN": "<your-tenant>.eu.auth0.com",
+    "AUTH0_CLIENT_ID": "<your-tenant>",
+    "AUTH0_CLIENT_SECRET": "<your-tenant>",
+    "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
+        "APP_CALLBACKS": [
+            "http://localhost:3000/callback",
+            "http://localhost:3000"
+        ],
+        "APP_LOGOUT_URLS": [
+            "http://localhost:3000/logout",
+            "http://localhost:3000"
+        ],
+        "AUDIENCE": "https://<your-tenant>.eu.auth0.com/api/v2/",
+        "APP_NAME_BACKEND": "Junction App Backend",
+        "APP_NAME_FRONTEND": "Junction SSO",
+        "AUTHZ_URL": "https://<your-tenant>.webtask.io/adf6e2f2b84784b57522e3b19dfc9201"
+    },
+    "EXCLUDED_PROPS": {
+        "clients": ["client_secret"],
+        "connections": ["options.client_secret"]
+    },
+    "AUTH0_ALLOW_DELETE": true
+}
