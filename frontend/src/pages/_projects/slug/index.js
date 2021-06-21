@@ -11,6 +11,7 @@ import GalleryTrack from './by-track/track'
 import GalleryChallenge from './by-challenge/challenge'
 import GalleryDetail from './view/projectId'
 import GalleryChallengeAdmin from './challenge/token'
+import GalleryTrackAdmin from './track/token'
 // import { useEventPreview } from 'graphql/queries/events'
 
 export default () => {
@@ -47,6 +48,7 @@ export default () => {
     }, [fetchData])
 
     //First two routes are for challenge link cases
+    // TODO make this more modulary
     return (
         <PageWrapper loading={loading} error={error}>
             <Switch>
@@ -64,6 +66,26 @@ export default () => {
                     path={`${match.url}/challenge/:token`}
                     component={({ match }) => (
                         <GalleryChallengeAdmin
+                            projects={projects}
+                            event={event}
+                            match={match}
+                        />
+                    )}
+                />
+                <Route
+                    path={`${match.url}/tracks/:token/view/:projectId`}
+                    component={({ match }) => (
+                        <GalleryDetail
+                            event={event}
+                            match={match}
+                            showFullTeam={true}
+                        />
+                    )}
+                />
+                <Route
+                    path={`${match.url}/tracks/:token`}
+                    component={({ match }) => (
+                        <GalleryTrackAdmin
                             projects={projects}
                             event={event}
                             match={match}

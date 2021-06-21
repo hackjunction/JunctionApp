@@ -1,23 +1,59 @@
-# Junction Hackathon Platform
+<!-- PROJECT LOGO -->
+<p align="center">
+  <a href="https://github.com/hackjunction/">
+    <img src="https://res.cloudinary.com/hackjunction/image/upload/v1563872579/misc_assets/junction_logos_2019-emblem_black.png" alt="Logo" width="160" height="160">
+  </a>
 
-All in one app to handle everything related to organising a hackathon. Shall be documented better in the future.
+  <h3 align="center">Junction App</h3>
 
-## Directory structure
+  <p align="center">
+    The open source hackathon organizing platform
+    <br />
+    <br />
+    <a href="https://www.app.hackjunction.com">Junction App</a>
+    ·
+    <a href="https://www.hackjunction.com">Junction organization</a>
+  </p>
+</p>
 
-The project is set up as follows:
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
--   The root level package.json contains some scripts for interacting with the project
--   The API lives under `backend`, and the client under `frontend`
--   `shared` contains an npm package with all of the shared code between the backend and frontend
+[![JunctionApp Screenshot][product-screenshot]](https://app.hackjunction.com)
 
-# Setting up the environment
+We want to provide the best tools for organizing hackathons, so we have developed a platform that anybody can use. Junction App provides an all-in-one platform for hackathon organizing from custom event creation to project judging.
 
-Read DEVELOPMENT.md for instructions on how to set up your local development environment
+### Features
 
-# Contributing
+* Custom event configuration
+* Custom registration forms
+* Participant acceptance
+* Project submissions
+* [Gavel voting system](https://www.anishathalye.com/2015/03/07/designing-a-better-judging-system/)
 
-See CONTRIBUTING.md for instructions on how to contribute to the project, and what kinds of contributions we're looking for.
 
-### Reporting bugs
+<!-- ROADMAP & FOLLOWING DEVELOPMENT -->
+## Getting started and involved
 
-If you come across a bug / improvement idea / feature request for the platform, please create an issue describing the problem or request in this repository, with as much detail as you're able to provide. 
+Junction App is a community-driven open source project. We are developing the application in the open and always keened to have contributors for the project. If you find a bug or have a smaller feature please post them to [github issues](https://github.com/hackjunction/JunctionApp/issues). Bigger ideas can be discussed at our [discussions page][disussions-page]. Junction application is continuously being improved. To follow the development of the application you can start the project and check out our [discussions page][disussions-page].
+
+### Installation and Contributing
+Documentation for installation of the project and contributing can be found here:
+* [`DEVELOPMENT.MD`](https://github.com/hackjunction/JunctionApp/blob/dev/DEVELOPMENT.md)
+* [`CONTRIBUTING.MD`](https://github.com/hackjunction/JunctionApp/blob/dev/CONTRIBUTING.md)
+
+### Roadmap
+
+Our development roadmap is divided into two roadmaps. Technical and features. **Features Roadmap** contains what functional features are being developed. These features are meant to capture the use cases and intended behavior of the system. **Technical Roadmap** contains information about what is being developed on the technical side and is meant to capture non-functional features.
+* [Features Roadmap](https://github.com/hackjunction/JunctionApp/projects/10)
+* [Technical Roadmap](https://github.com/hackjunction/JunctionApp/projects/11)
+
+## Contact
+If you have any questions please post them to our [discussions page][disussions-page] or contact us at hello@hackjunction.com
+
+If you want to know more about Junction organization check out our [website](https://www.hackjunction.com).
+
+
+[product-screenshot]: https://res.cloudinary.com/hackjunction/image/upload/v1619696835/github/2021-04-29_14-44.png
+
+[disussions-page]: https://github.com/hackjunction/JunctionApp/issues

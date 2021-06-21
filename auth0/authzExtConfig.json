@@ -1,0 +1,103 @@
+{
+  "configuration": [
+    {
+      "_id": "v1",
+      "rolesInToken": true,
+      "permissionsInToken": true,
+      "persistRoles": true,
+      "persistPermissions": true
+    }
+  ],
+  "permissions": [
+    {
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Can access the recruitment dashboard",
+      "name": "access:recruitment",
+      "_id": "e7b2a8a4-a0d7-4d2d-8287-f855f14ce788"
+    },
+    {
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Can create new events",
+      "name": "create:event",
+      "_id": "de453879-880f-444e-8776-f3ca4d11558b"
+    },
+    {
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Can delete events which they organise",
+      "name": "delete:event",
+      "_id": "3687fde6-ab38-4fbf-bb93-b1a496f53e04"
+    },
+    {
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Can access event management",
+      "name": "manage:event",
+      "_id": "e4531c1d-3825-47ad-aaef-72169843c4f2"
+    },
+    {
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Can manage access to recruitment dashboard",
+      "name": "manage:recruitment",
+      "_id": "60ccbf60-7172-42f9-bf02-e552c03f5946"
+    }
+  ],
+  "roles": [
+    {
+      "_id": "2d2c4e8e-6716-476d-badc-aa37abd4a99b",
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Access to some organiser functionality",
+      "name": "AssistantOrganiser",
+      "permissions": ["e4531c1d-3825-47ad-aaef-72169843c4f2"]
+    },
+    {
+      "_id": "8b6bcb7c-011a-4479-b45c-f646d5b200cb",
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Access to all organiser functionality",
+      "name": "Organiser",
+      "permissions": [
+        "de453879-880f-444e-8776-f3ca4d11558b",
+        "3687fde6-ab38-4fbf-bb93-b1a496f53e04",
+        "e4531c1d-3825-47ad-aaef-72169843c4f2"
+      ]
+    },
+    {
+      "_id": "412a6c79-4ec7-41e4-b180-5d1391c7dcf1",
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Can access recruitment functionality",
+      "name": "Recruiter",
+      "permissions": ["e7b2a8a4-a0d7-4d2d-8287-f855f14ce788"]
+    },
+    {
+      "_id": "45e3cd1c-2fbc-4d49-b730-3bedbab57cb6",
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "Has permission to add and remove recruiter access",
+      "name": "RecruiterAdmin",
+      "permissions": [
+        "60ccbf60-7172-42f9-bf02-e552c03f5946",
+        "e7b2a8a4-a0d7-4d2d-8287-f855f14ce788"
+      ]
+    },
+    {
+      "_id": "637fae63-fa0d-49fb-b137-01dcb75e8efe",
+      "applicationType": "client",
+      "applicationId": "applicationId",
+      "description": "God Mode (can do everything)",
+      "name": "SuperAdmin",
+      "permissions": [
+        "e7b2a8a4-a0d7-4d2d-8287-f855f14ce788",
+        "3687fde6-ab38-4fbf-bb93-b1a496f53e04",
+        "e4531c1d-3825-47ad-aaef-72169843c4f2",
+        "de453879-880f-444e-8776-f3ca4d11558b",
+        "60ccbf60-7172-42f9-bf02-e552c03f5946"
+      ]
+    }
+  ]
+}

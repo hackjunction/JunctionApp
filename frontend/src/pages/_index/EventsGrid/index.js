@@ -20,12 +20,14 @@ export default ({ events, loading = false, title }) => {
             const canApply =
                 isodate < event.registrationEndTime &&
                 isodate > event.registrationStartTime
+
+            const eventStarted = isodate > event.startTime
             return (
                 <Grid key={event.slug} item xs={12} md={6} lg={4}>
                     <EventCard
                         event={event}
                         buttons={[
-                            !canApply && !event.galleryOpen && (
+                            !canApply && !eventStarted && (
                                 <Button
                                     color="theme_lightgray"
                                     variant="outlinedNew"
@@ -55,7 +57,7 @@ export default ({ events, loading = false, title }) => {
                                     {t('Register_now_')}
                                 </Button>
                             ),
-                            event.galleryOpen && (
+                            event.galleryOpen && eventStarted && (
                                 <Button
                                     color="theme_lightgray"
                                     variant="outlinedNew"

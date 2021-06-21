@@ -12,6 +12,7 @@ const Fragments = {
                 publicId
             }
             eventType
+            startTime
             registrationStartTime
             registrationEndTime
             organizations {

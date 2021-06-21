@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import ProjectsTable from 'components/tables/ProjectsTable'
+import TrackLink from './TrackLink'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -44,6 +45,9 @@ export default () => {
                                 flexDirection="column"
                                 style={{ width: '100%' }}
                             >
+                                <Box p={1}>
+                                    <TrackLink track={track.slug} />
+                                </Box>
                                 <ProjectsTable projects={projects} />
                             </Box>
                         </ExpansionPanelDetails>

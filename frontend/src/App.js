@@ -12,22 +12,24 @@ import config from 'constants/config'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as AuthActions from 'redux/auth/actions'
 import AnalyticsService from 'services/analytics'
+import { getCookieConsentValue } from 'react-cookie-consent'
+import CookieConsentBar from 'components/layouts/CookieConsentBar'
 
 export default ({ history, location }) => {
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
     const isSessionExpired = useSelector(AuthSelectors.isSessionExpired)
-
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        AnalyticsService.init()
-        AnalyticsService.pageView(window.location)
-        const unlisten = history.listen(AnalyticsService.pageView)
-
-        return () => {
-            unlisten()
+        if (getCookieConsentValue() === 'true') {
+            AnalyticsService.init()
+            AnalyticsService.pageView(window.location)
+            const unlisten = history.listen(AnalyticsService.pageView)
+            return () => {
+                unlisten()
+            }
         }
     }, [location, history])
 
@@ -123,6 +125,7 @@ export default ({ history, location }) => {
                     )}
                 </Suspense>
             </ConnectedRouter>
+            <CookieConsentBar />
         </ApolloProvider>
     )
 }

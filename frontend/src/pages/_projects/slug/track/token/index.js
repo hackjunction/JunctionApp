@@ -11,13 +11,12 @@ import ProjectsGrid from 'components/projects/ProjectsGrid'
 
 import ProjectsService from 'services/projects'
 
-//TODO make this and track one into a component
+//TODO make this and challenge one into a component
 export default ({ event }) => {
     const match = useRouteMatch()
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params
-    console.log(token)
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -25,7 +24,7 @@ export default ({ event }) => {
     const fetchProjects = useCallback(async () => {
         setLoading(true)
         try {
-            const data = await ProjectsService.getChallengeProjectsWithToken(
+            const data = await ProjectsService.getTrackProjectsWithToken(
                 slug,
                 token,
             )
@@ -51,7 +50,7 @@ export default ({ event }) => {
             render={() => (
                 <Container center>
                     <PageHeader
-                        heading={data.challenge.name}
+                        heading={data.track.name}
                         subheading={data.projects.length + ' projects'}
                     />
                     <ProjectsGrid

@@ -3,7 +3,7 @@ import LogRocket from 'logrocket'
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from 'redux/auth/selectors'
 import config from 'constants/config'
-
+import { getCookieConsentValue } from 'react-cookie-consent'
 import UserProfilesService from 'services/userProfiles'
 
 export const setUserProfile = profile => dispatch => {
@@ -13,7 +13,11 @@ export const setUserProfile = profile => dispatch => {
     })
 
     /** To connect logs and crash reports with the user */
-    if (profile?.userId && config.LOGROCKET_ID) {
+    if (
+        profile?.userId &&
+        config.LOGROCKET_ID &&
+        getCookieConsentValue() === 'true'
+    ) {
         LogRocket.init(config.LOGROCKET_ID)
         LogRocket.identify(profile.userId, {
             email: profile.email,

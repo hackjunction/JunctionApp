@@ -74,7 +74,7 @@ const EventImage = ({
                 />
                 <div className={classes.inner}>
                     {buttons?.map(button =>
-                        button.push.startsWith('/') ? (
+                        button && button.push && button.push.startsWith('/') ? (
                             <Button
                                 key={button._id}
                                 variant="containedEventImage"
