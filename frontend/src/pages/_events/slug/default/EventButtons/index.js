@@ -3,7 +3,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 import { useRouteMatch } from 'react-router'
-import moment from 'moment-timezone'
 import { EventStatuses } from '@hackjunction/shared'
 import { Typography, Grid } from '@material-ui/core'
 
@@ -16,7 +15,6 @@ export default ({ event, registration }) => {
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
-    console.log('regi', registration)
     const hasRegistration = registration
         ? registration.status != 'incomplete'
         : false
