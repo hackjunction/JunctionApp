@@ -36,7 +36,7 @@ export default ({ events, loading = false, title }) => {
                                         dispatch(push('/events/' + event.slug))
                                     }
                                 >
-                                    {t('Register_now_')}
+                                    {t('See_more_')}
                                 </Button>
                             ),
                             canApply && !event.galleryOpen && (
