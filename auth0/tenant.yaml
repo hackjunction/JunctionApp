@@ -137,7 +137,7 @@ clients:
     sso_disabled: false
     token_endpoint_auth_method: none
     web_origins:
-      - 'http://localhost:3000'
+      - ##URL##
   - name: auth0-account-link
     cross_origin_auth: false
     custom_login_page_on: true
