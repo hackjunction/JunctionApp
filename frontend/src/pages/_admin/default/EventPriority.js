@@ -36,7 +36,7 @@ export default ({ data = [] }) => {
                 event.frontPagePriority + i,
             )
         },
-        [events, idToken],
+        [idToken],
     )
 
     return (

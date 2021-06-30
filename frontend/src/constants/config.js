@@ -57,8 +57,7 @@ const settings = {
     },
     EMBLEM_DARK_URL: {
         required: true,
-        value:
-            'https://res.cloudinary.com/hackjunction/image/upload/v1581419640/Junction%20Logos/emblem_black.png',
+        value: 'https://res.cloudinary.com/hackjunction/image/upload/v1581419640/Junction%20Logos/emblem_black.png',
     },
     LOGROCKET_ID: {
         required: false,

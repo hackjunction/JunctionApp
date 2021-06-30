@@ -17,10 +17,8 @@ export default props => {
     const [selectedProjectScore, setSelectedProjectStore] = useState(null)
     const [projectScoreModalOpen, setProjectScoreModalOpen] = useState(false)
 
-    const [
-        challengeAndTrackSlugState,
-        setChallengeAndTrackSlugState,
-    ] = useState({})
+    const [challengeAndTrackSlugState, setChallengeAndTrackSlugState] =
+        useState({})
 
     useEffect(() => {
         let challengeAndTrackSlugToNameMap = {}

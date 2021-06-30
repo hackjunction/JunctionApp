@@ -62,7 +62,7 @@ export default ({ events = [] }) => {
                 -1,
         )
         setSearchResults(results)
-    }, [searchTerm])
+    }, [events, searchTerm])
 
     const dispatch = useDispatch()
     const { t } = useTranslation()

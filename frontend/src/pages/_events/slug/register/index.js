@@ -159,7 +159,7 @@ export default RequiresPermission(() => {
             AnalyticsService.events.BEGIN_REGISTRATION(slug)
             createRegistration(userProfile)
         }
-    }, [hasRegistration, slug])
+    }, [createRegistration, hasRegistration, slug, userProfile])
 
     useEffect(() => {
         document.querySelector('html').style.backgroundColor = '#000000'
@@ -173,10 +173,8 @@ export default RequiresPermission(() => {
         const allFields = RegistrationFields.getFields()
         const enabledFields = Object.keys(allFields).reduce(
             (result, fieldName) => {
-                const {
-                    optionalFields = [],
-                    requiredFields = [],
-                } = event?.registrationConfig
+                const { optionalFields = [], requiredFields = [] } =
+                    event?.registrationConfig
                 if (
                     requiredFields.indexOf(fieldName) !== -1 ||
                     allFields[fieldName].alwaysRequired
@@ -253,7 +251,7 @@ export default RequiresPermission(() => {
             setFormData(newFormData)
             setActiveStep(nextStep)
         },
-        [formData],
+        [editRegistration, formData],
     )
 
     const setPrevStep = useCallback(() => {
@@ -297,13 +295,12 @@ export default RequiresPermission(() => {
             setLoading(false)
         }
     }, [
-        createRegistration,
         dispatch,
-        editRegistration,
         event.customQuestions,
+        finishRegistration,
         formData,
         hasRegistration,
-        sections,
+        sections.length,
         slug,
     ])
     // TODO normal and custom sections should be handled the same

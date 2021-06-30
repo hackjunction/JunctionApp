@@ -250,10 +250,8 @@ const _Table = ({
                                                 }
                                                 classes={{
                                                     root: classes.tableHeadCell,
-                                                    active:
-                                                        classes.tableHeadCellActive,
-                                                    icon:
-                                                        classes.tableHeadSortIcon,
+                                                    active: classes.tableHeadCellActive,
+                                                    icon: classes.tableHeadSortIcon,
                                                 }}
                                                 IconComponent={ExpandMoreIcon}
                                                 hideSortIcon

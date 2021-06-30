@@ -27,7 +27,7 @@ export default ({ data = [] }) => {
                 setEvents(e)
             }
         })
-    }, [])
+    }, [idToken])
 
     const handleRemove = useCallback(
         slug => {
@@ -45,7 +45,7 @@ export default ({ data = [] }) => {
         slug => {
             EventService.setApproved(idToken, slug, true)
         },
-        [events, idToken],
+        [idToken],
     )
 
     return (

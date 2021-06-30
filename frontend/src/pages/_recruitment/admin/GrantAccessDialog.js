@@ -57,7 +57,7 @@ export default ({ userId, onClose }) => {
         } finally {
             setLoading(false)
         }
-    }, [dispatch, userId, events, organisation, onClose])
+    }, [dispatch, userId, selectedEvents, organisation, onClose])
 
     return (
         <Dialog

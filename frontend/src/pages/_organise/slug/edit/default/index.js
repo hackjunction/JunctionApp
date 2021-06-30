@@ -31,8 +31,7 @@ const themeFields = [
     {
         field: 'bodyBackgroundColor',
         label: 'Page background',
-        hint:
-            'Background color of the main body of the page (visible on wide screens)',
+        hint: 'Background color of the main body of the page (visible on wide screens)',
     },
     {
         field: 'detailsBackgroundColor',

@@ -39,7 +39,7 @@ export default ({ event, showFullTeam }) => {
                 if (v) setValidToken(v)
             })
         }
-    }, [event, project])
+    }, [event, project, slug, token])
 
     const [projectScore, setProjectScore] = useState({
         project: '',

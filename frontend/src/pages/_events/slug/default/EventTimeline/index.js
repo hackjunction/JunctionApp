@@ -143,6 +143,7 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
 
         return sorted
     }, [
+        dateString,
         event.endTime,
         event.name,
         event.registrationEndTime,

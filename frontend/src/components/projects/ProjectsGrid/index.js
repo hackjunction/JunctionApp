@@ -58,7 +58,7 @@ const ProjectsGrid = ({
                 sortField ? sortBy(projects, p => p[sortField]) : projects,
             )
         }
-    }, [projects])
+    }, [fetchData, projects, showScore, sortField])
     console.log(sorted)
     return (
         <Grid

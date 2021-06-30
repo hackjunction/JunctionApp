@@ -42,7 +42,7 @@ export default ({ event, handleClick }) => {
 
     const onClick = useCallback(() => {
         handleClick(event)
-    }, [dispatch, event.slug])
+    }, [event, handleClick])
 
     return event ? (
         <Paper className={classes.paper} onClick={onClick}>

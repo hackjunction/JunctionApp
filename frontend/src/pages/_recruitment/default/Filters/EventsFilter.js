@@ -38,9 +38,8 @@ export default () => {
     const eventsMap = useSelector(RecruitmentSelectors.eventsMap)
     const filters = useSelector(RecruitmentSelectors.filters)?.events ?? []
     const classes = useStyles()
-    const [events, addEvent, removeEvent, editEvent, setEvents] = useArray(
-        filters,
-    )
+    const [events, addEvent, removeEvent, editEvent, setEvents] =
+        useArray(filters)
 
     const handleSubmit = useCallback(() => {
         dispatch(RecruitmentActions.setFiltersField('events', events))

@@ -87,14 +87,14 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                 resetForm()
             }
         },
-        [value, fieldName, label, description, resetForm, setFieldValue],
+        [fieldName, description, resetForm, setFieldValue],
     )
 
     const handleDelete = useCallback(
         description => {
             setFieldValue(fieldName, '')
         },
-        [setFieldValue, fieldName, value],
+        [setFieldValue, fieldName],
     )
 
     const renderRows = () => {

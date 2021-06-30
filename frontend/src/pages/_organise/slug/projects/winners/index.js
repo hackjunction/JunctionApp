@@ -35,7 +35,7 @@ export default () => {
         // TODO use EventsService
         return ProjectsService.getProjectsByEvent(event.slug)
         // return EventsService.getWinnerProjects(idToken, event.slug)
-    }, [idToken, event])
+    }, [event])
 
     const update = useCallback(async () => {
         setLoading(true)
@@ -52,7 +52,7 @@ export default () => {
             }
             setLoading(false)
         }
-    }, [updateVote, updateProjects, dispatch])
+    }, [event.overallReviewMethod, event.slug, updateVote, idToken])
 
     useEffect(() => {
         update()
