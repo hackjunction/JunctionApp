@@ -20,7 +20,8 @@
                 "functions": "ignore"
             }
         ],
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "import/no-anonymous-default-export": "off"
     },
     "parser": "babel-eslint",
     "plugins": ["react"],
