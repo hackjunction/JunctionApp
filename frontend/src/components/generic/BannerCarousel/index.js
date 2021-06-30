@@ -1,14 +1,11 @@
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import Button from 'components/generic/Button'
 import EventImage from 'components/generic/EventImage'
 import React, { useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 import BannerService from 'services/banner'
 import { useEffect } from 'react'
-import Pagination from '../../projects/ProjectDetail/Pagination'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 

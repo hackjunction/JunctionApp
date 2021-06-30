@@ -44,10 +44,10 @@ export default () => {
         'Junction made website for event',
         'Event PR through Junction media channel',
     ]
-    const body3 = [
-        'Event registration and organization through platform',
-        'Tech Support during event',
-    ]
+    // const body3 = [
+    //     'Event registration and organization through platform',
+    //     'Tech Support during event',
+    // ]
 
     return (
         <PageWrapper

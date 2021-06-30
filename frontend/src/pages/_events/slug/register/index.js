@@ -137,7 +137,6 @@ export default RequiresPermission(() => {
     const {
         slug,
         event,
-        registration,
         hasRegistration,
         createRegistration,
         editRegistration,

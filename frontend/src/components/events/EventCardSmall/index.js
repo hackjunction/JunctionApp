@@ -1,14 +1,9 @@
 import React, { useCallback } from 'react'
 
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Grid, Box, Typography } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
 
 import Image from 'components/generic/Image'
-
-import { useEventPreview } from 'graphql/queries/events'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -37,7 +32,6 @@ export default ({ event, handleClick }) => {
     }
     console.log('event is', event)
     */
-    const dispatch = useDispatch()
     const classes = useStyles()
 
     const onClick = useCallback(() => {

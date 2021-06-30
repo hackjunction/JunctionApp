@@ -14,7 +14,6 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
 
 import EventsService from 'services/events'
 import ProjectsService from 'services/projects'

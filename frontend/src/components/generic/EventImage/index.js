@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import Image from 'components/generic/Image'
 
-import { Image as CloudinaryImage, Transformation } from 'cloudinary-react'
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'

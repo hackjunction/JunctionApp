@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { goBack } from 'connected-react-router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
-import { Helmet } from 'react-helmet'
 
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
@@ -12,7 +11,6 @@ import { EventHelpers } from '@hackjunction/shared'
 import { Box, TextField } from '@material-ui/core'
 import Button from 'components/generic/Button'
 
-import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import ProjectsService from 'services/projects'

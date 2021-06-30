@@ -1,22 +1,15 @@
 import React, { useMemo, useCallback, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
-import JobRoleInput from 'components/inputs/JobRoleInput'
-import { push } from 'connected-react-router'
-import { useLocation } from 'react-router-dom'
 import EditProjectModal from 'components/modals/EditProjectModal'
 
 const ProjectsTable = ({ projects, baseURL }) => {
     const teams = useSelector(OrganiserSelectors.teams)
-    const dispatch = useDispatch()
-    const location = useLocation()
-    const searchParams = new URLSearchParams(location.search)
-    const query = new URLSearchParams(location.search)
-    const hasModal = query.has('modal')
-    const activeModal = query.get('modal')
+    //const dispatch = useDispatch()
+    //const location = useLocation()
 
     const [selectedProject, setSelectedProject] = useState(null)
     // TODO config columsn (table only in physical events)
@@ -64,12 +57,12 @@ const ProjectsTable = ({ projects, baseURL }) => {
         ]
     }, [])
 
-    const onProjectSelected = useCallback(
-        project => {
-            dispatch(push(`${baseURL}${project.original._id}`))
-        },
-        [baseURL, dispatch],
-    )
+    // const onProjectSelected = useCallback(
+    //     project => {
+    //         dispatch(push(`${baseURL}${project.original._id}`))
+    //     },
+    //     [baseURL, dispatch],
+    // )
 
     // TODO refactor forloops
     const data = projects.map(project => {

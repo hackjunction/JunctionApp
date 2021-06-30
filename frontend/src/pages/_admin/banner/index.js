@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouteMatch, Router } from 'react-router'
+import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 
 import { Box, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Formik, FastField, FieldArray, Field } from 'formik'
+import { Formik, FastField, FieldArray } from 'formik'
 import * as yup from 'yup'
 
 import ImageUpload from 'components/inputs/ImageUpload'

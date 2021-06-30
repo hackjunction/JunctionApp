@@ -5,14 +5,12 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import * as RecruitmentActions from 'redux/recruitment/actions'
-import Container from 'components/generic/Container'
 /*import BasicNavBar from 'components/navbars/BasicNavBar'*/
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
 import SearchPage from './default'
 import AdminPage from './admin'
 import DetailPage from './id'
-import config from 'constants/config'
 
 export default () => {
     const dispatch = useDispatch()

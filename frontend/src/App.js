@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/client'
 
 import { Route, Redirect, Switch } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
 import routeConfig from './routes'
 import apolloClient from './graphql/client'
 import config from 'constants/config'

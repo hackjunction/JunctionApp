@@ -1,16 +1,9 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch } from 'react-redux'
-import Hidden from '@material-ui/core/Hidden'
-import { push } from 'connected-react-router'
 
 import ExternalLink from 'components/generic/ExternalLink'
-import Grid from '@material-ui/core/Grid'
 import Divider from 'components/generic/Divider'
-import LineDivider from 'components/generic/LineDivider/'
-import Container from 'components/generic/Container'
-import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
 import config from 'constants/config'
 
@@ -62,7 +55,6 @@ const useStyles = makeStyles(theme => ({
 
 const Footer = props => {
     const classes = useStyles()
-    const dispatch = useDispatch()
     const { t } = useTranslation()
     return (
         <div className={classes.wrapper}>

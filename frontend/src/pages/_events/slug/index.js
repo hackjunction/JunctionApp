@@ -6,7 +6,6 @@ import { useRouteMatch, useLocation } from 'react-router'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import Footer from 'components/layouts/Footer'
 import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
