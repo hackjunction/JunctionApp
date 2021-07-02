@@ -77,11 +77,9 @@ export default ({ value = [], fieldName, setFieldValue }) => {
             if (!passing) {
                 return
             } else {
-                {
-                    value
-                        ? setFieldValue(fieldName, description.value)
-                        : setFieldValue(fieldName, description.value)
-                }
+                value
+                    ? setFieldValue(fieldName, description.value)
+                    : setFieldValue(fieldName, description.value)
                 resetForm()
             }
         },
