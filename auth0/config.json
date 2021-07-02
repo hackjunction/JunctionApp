@@ -14,7 +14,8 @@
         "AUDIENCE": "https://<your-tenant>.eu.auth0.com/api/v2/",
         "APP_NAME_BACKEND": "Junction App Backend",
         "APP_NAME_FRONTEND": "Junction SSO",
-        "AUTHZ_URL": "https://<your-tenant>.webtask.io/adf6e2f2b84784b57522e3b19dfc9201"
+        "AUTHZ_URL": "https://<your-tenant>.webtask.io/adf6e2f2b84784b57522e3b19dfc9201",
+        "URL": "https://localhost:3000"
     },
     "EXCLUDED_PROPS": {
         "clients": ["client_secret"],

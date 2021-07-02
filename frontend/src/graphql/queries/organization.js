@@ -1,5 +1,4 @@
-import { gql } from 'apollo-boost'
-import { useQuery } from '@apollo/react-hooks'
+import { gql, useQuery } from '@apollo/client'
 
 export const GET_ORGANIZATION = gql`
     query Organization($userId: ID!) {
