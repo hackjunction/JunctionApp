@@ -97,6 +97,7 @@ const EventImage = ({
                                 <a
                                     className={classes.linkText}
                                     target="_blank"
+                                    rel="noopener noreferrer"
                                     href={button.push}
                                 >
                                     {button.text}
