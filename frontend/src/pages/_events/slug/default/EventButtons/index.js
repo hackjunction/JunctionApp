@@ -16,7 +16,7 @@ export default ({ event, registration }) => {
     const match = useRouteMatch()
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
     const hasRegistration = registration
-        ? registration.status != 'incomplete'
+        ? registration.status !== 'incomplete'
         : false
     switch (event?._eventStatus) {
         case EventStatuses.PUBLISHED.id: {

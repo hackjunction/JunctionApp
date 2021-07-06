@@ -52,136 +52,126 @@ export const updateEventStats = slug => async (dispatch, getState) => {
 }
 
 /** Update event organisers with loading/error data */
-export const updateOrganisersForEvent = (owner, organisers) => async (
-    dispatch,
-    getState,
-) => {
-    const userIds = [owner].concat(organisers)
+export const updateOrganisersForEvent =
+    (owner, organisers) => async (dispatch, getState) => {
+        const userIds = [owner].concat(organisers)
 
-    dispatch({
-        type: ActionTypes.UPDATE_ORGANISERS,
-        promise: UserProfilesService.getPublicUserProfiles(userIds),
-        meta: {
-            onFailure: e => console.log('Error updating event organisers', e),
-        },
-    })
-}
+        dispatch({
+            type: ActionTypes.UPDATE_ORGANISERS,
+            promise: UserProfilesService.getPublicUserProfiles(userIds),
+            meta: {
+                onFailure: e =>
+                    console.log('Error updating event organisers', e),
+            },
+        })
+    }
 
-export const removeOrganiserFromEvent = (slug, userId) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const removeOrganiserFromEvent =
+    (slug, userId) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const organisers = await EventsService.removeOrganiserFromEvent(
-        idToken,
-        slug,
-        userId,
-    )
-    dispatch({
-        type: ActionTypes.REMOVE_ORGANISER,
-        payload: userId,
-    })
+        const organisers = await EventsService.removeOrganiserFromEvent(
+            idToken,
+            slug,
+            userId,
+        )
+        dispatch({
+            type: ActionTypes.REMOVE_ORGANISER,
+            payload: userId,
+        })
 
-    return organisers
-}
+        return organisers
+    }
 
-export const addOrganiserToEvent = (slug, userId) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const addOrganiserToEvent =
+    (slug, userId) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const organisers = await EventsService.addOrganiserToEvent(
-        idToken,
-        slug,
-        userId,
-    )
-    dispatch({
-        type: ActionTypes.ADD_ORGANISER,
-        payload: userId,
-    })
+        const organisers = await EventsService.addOrganiserToEvent(
+            idToken,
+            slug,
+            userId,
+        )
+        dispatch({
+            type: ActionTypes.ADD_ORGANISER,
+            payload: userId,
+        })
 
-    return organisers
-}
+        return organisers
+    }
 
 /** Update event registrations with loading/error data */
-export const updateRegistrationsForEvent = slug => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateRegistrationsForEvent =
+    slug => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    if (!slug) return
+        if (!slug) return
 
-    dispatch({
-        type: ActionTypes.UPDATE_REGISTRATIONS,
-        promise: RegistrationsService.getRegistrationsForEvent(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error updating registrations', e),
-        },
-    })
-}
+        dispatch({
+            type: ActionTypes.UPDATE_REGISTRATIONS,
+            promise: RegistrationsService.getRegistrationsForEvent(
+                idToken,
+                slug,
+            ),
+            meta: {
+                onFailure: e => console.log('Error updating registrations', e),
+            },
+        })
+    }
 
-export const editRegistration = (registrationId, data, slug) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const editRegistration =
+    (registrationId, data, slug) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const registration = await RegistrationsService.editRegistration(
-        idToken,
-        slug,
-        registrationId,
-        data,
-    )
-    dispatch({
-        type: ActionTypes.EDIT_REGISTRATION,
-        payload: registration,
-    })
+        const registration = await RegistrationsService.editRegistration(
+            idToken,
+            slug,
+            registrationId,
+            data,
+        )
+        dispatch({
+            type: ActionTypes.EDIT_REGISTRATION,
+            payload: registration,
+        })
 
-    return registration
-}
+        return registration
+    }
 
-export const updateRegistrationTravelGrant = (
-    registrationId,
-    data,
-    slug,
-) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateRegistrationTravelGrant =
+    (registrationId, data, slug) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const registration = await RegistrationsService.adminUpdateTravelGrantDetails(
-        idToken,
-        slug,
-        registrationId,
-        data,
-    )
+        const registration =
+            await RegistrationsService.adminUpdateTravelGrantDetails(
+                idToken,
+                slug,
+                registrationId,
+                data,
+            )
 
-    dispatch({
-        type: ActionTypes.EDIT_REGISTRATION,
-        payload: registration,
-    })
+        dispatch({
+            type: ActionTypes.EDIT_REGISTRATION,
+            payload: registration,
+        })
 
-    return registration
-}
+        return registration
+    }
 
-export const bulkEditRegistrations = (userIds, edits, slug) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const bulkEditRegistrations =
+    (userIds, edits, slug) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    await RegistrationsService.bulkEditRegistrationsForEvent(
-        idToken,
-        slug,
-        userIds,
-        edits,
-    )
+        await RegistrationsService.bulkEditRegistrationsForEvent(
+            idToken,
+            slug,
+            userIds,
+            edits,
+        )
 
-    dispatch(updateRegistrationsForEvent(slug))
+        dispatch(updateRegistrationsForEvent(slug))
 
-    return
-}
+        return
+    }
 
 /** Update event teams with loading/error data */
 export const updateTeamsForEvent = slug => async (dispatch, getState) => {
@@ -212,69 +202,63 @@ export const updateFilterGroups = slug => async (dispatch, getState) => {
     return
 }
 
-export const createFilterGroup = (slug, label, description, filters) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const createFilterGroup =
+    (slug, label, description, filters) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const filterGroup = await FilterGroupsService.createFilterGroup(
-        idToken,
-        label,
-        description,
-        filters,
-        slug,
-    )
+        const filterGroup = await FilterGroupsService.createFilterGroup(
+            idToken,
+            label,
+            description,
+            filters,
+            slug,
+        )
 
-    dispatch({
-        type: ActionTypes.CREATE_FILTER_GROUP,
-        payload: filterGroup,
-    })
+        dispatch({
+            type: ActionTypes.CREATE_FILTER_GROUP,
+            payload: filterGroup,
+        })
 
-    return filterGroup
-}
+        return filterGroup
+    }
 
-export const editFilterGroup = (slug, label, description, filters) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const editFilterGroup =
+    (slug, label, description, filters) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const filterGroup = await FilterGroupsService.editFilterGroup(
-        idToken,
-        label,
-        description,
-        filters,
-        slug,
-    )
+        const filterGroup = await FilterGroupsService.editFilterGroup(
+            idToken,
+            label,
+            description,
+            filters,
+            slug,
+        )
 
-    dispatch({
-        type: ActionTypes.EDIT_FILTER_GROUP,
-        payload: filterGroup,
-    })
+        dispatch({
+            type: ActionTypes.EDIT_FILTER_GROUP,
+            payload: filterGroup,
+        })
 
-    return filterGroup
-}
+        return filterGroup
+    }
 
-export const deleteFilterGroup = (slug, label) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const deleteFilterGroup =
+    (slug, label) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const filterGroup = await FilterGroupsService.deleteFilterGroup(
-        idToken,
-        label,
-        slug,
-    )
+        const filterGroup = await FilterGroupsService.deleteFilterGroup(
+            idToken,
+            label,
+            slug,
+        )
 
-    dispatch({
-        type: ActionTypes.DELETE_FILTER_GROUP,
-        payload: filterGroup,
-    })
+        dispatch({
+            type: ActionTypes.DELETE_FILTER_GROUP,
+            payload: filterGroup,
+        })
 
-    return filterGroup
-}
+        return filterGroup
+    }
 
 export const updateProjects = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -300,26 +284,24 @@ export const updateGavelProjects = slug => async (dispatch, getState) => {
     })
 }
 
-export const editGavelProject = (slug, projectId, edits) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const editGavelProject =
+    (slug, projectId, edits) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const project = await GavelService.editProject(
-        idToken,
-        slug,
-        projectId,
-        edits,
-    )
+        const project = await GavelService.editProject(
+            idToken,
+            slug,
+            projectId,
+            edits,
+        )
 
-    dispatch({
-        type: ActionTypes.EDIT_GAVEL_PROJECT,
-        payload: project,
-    })
+        dispatch({
+            type: ActionTypes.EDIT_GAVEL_PROJECT,
+            payload: project,
+        })
 
-    return
-}
+        return
+    }
 
 export const updateGavelAnnotators = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -333,26 +315,24 @@ export const updateGavelAnnotators = slug => async (dispatch, getState) => {
     })
 }
 
-export const editGavelAnnotator = (slug, annotatorId, edits) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const editGavelAnnotator =
+    (slug, annotatorId, edits) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const annotator = await GavelService.editAnnotator(
-        idToken,
-        slug,
-        annotatorId,
-        edits,
-    )
+        const annotator = await GavelService.editAnnotator(
+            idToken,
+            slug,
+            annotatorId,
+            edits,
+        )
 
-    dispatch({
-        type: ActionTypes.EDIT_GAVEL_ANNOTATOR,
-        payload: annotator,
-    })
+        dispatch({
+            type: ActionTypes.EDIT_GAVEL_ANNOTATOR,
+            payload: annotator,
+        })
 
-    return
-}
+        return
+    }
 
 export const updateRankings = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())

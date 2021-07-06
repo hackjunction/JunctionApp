@@ -11,9 +11,7 @@ import {
     Typography,
 } from '@material-ui/core'
 
-import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
-import Tag from 'components/generic/Tag'
 import Button from 'components/generic/Button'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -79,22 +77,20 @@ export default ({ value = [], fieldName, setFieldValue }) => {
             if (!passing) {
                 return
             } else {
-                {
-                    value
-                        ? setFieldValue(fieldName, description.value)
-                        : setFieldValue(fieldName, description.value)
-                }
+                value
+                    ? setFieldValue(fieldName, description.value)
+                    : setFieldValue(fieldName, description.value)
                 resetForm()
             }
         },
-        [value, fieldName, label, description, resetForm, setFieldValue],
+        [fieldName, description, resetForm, setFieldValue],
     )
 
     const handleDelete = useCallback(
         description => {
             setFieldValue(fieldName, '')
         },
-        [setFieldValue, fieldName, value],
+        [setFieldValue, fieldName],
     )
 
     const renderRows = () => {

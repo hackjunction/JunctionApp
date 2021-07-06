@@ -380,7 +380,8 @@ export default () => {
                                                             field.name,
                                                             {
                                                                 ...field.value,
-                                                                accountNumber: value,
+                                                                accountNumber:
+                                                                    value,
                                                             },
                                                         )
                                                     }

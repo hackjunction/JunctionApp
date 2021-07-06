@@ -1,16 +1,10 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Box } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
 import Image from 'components/generic/Image'
-import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useHighlightedEvents } from 'graphql/queries/events'
-
-import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -57,8 +51,6 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const { t } = useTranslation()
 
     const [events, loading] = useHighlightedEvents({
         limit: 1,

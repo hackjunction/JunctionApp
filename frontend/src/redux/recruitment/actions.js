@@ -98,42 +98,40 @@ export const sendMessage = (message, userId) => async (dispatch, getState) => {
     return res
 }
 
-export const toggleFavorite = (userId, isFavorite) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const toggleFavorite =
+    (userId, isFavorite) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    let res
+        let res
 
-    if (!isFavorite) {
-        res = await dispatch({
-            type: ActionTypes.UPDATE_ACTION_HISTORY,
-            promise: RecruitmentService.submitAction(
-                'favorite',
-                idToken,
-                userId,
-            ),
-            meta: {
-                onFailure: e => console.log('Error adding to favorites', e),
-            },
-        })
-    } else {
-        res = await dispatch({
-            type: ActionTypes.UPDATE_ACTION_HISTORY,
-            promise: RecruitmentService.submitAction(
-                'remove-favorite',
-                idToken,
-                userId,
-            ),
-            meta: {
-                onFailure: e => console.log('Error adding to favorites', e),
-            },
-        })
+        if (!isFavorite) {
+            res = await dispatch({
+                type: ActionTypes.UPDATE_ACTION_HISTORY,
+                promise: RecruitmentService.submitAction(
+                    'favorite',
+                    idToken,
+                    userId,
+                ),
+                meta: {
+                    onFailure: e => console.log('Error adding to favorites', e),
+                },
+            })
+        } else {
+            res = await dispatch({
+                type: ActionTypes.UPDATE_ACTION_HISTORY,
+                promise: RecruitmentService.submitAction(
+                    'remove-favorite',
+                    idToken,
+                    userId,
+                ),
+                meta: {
+                    onFailure: e => console.log('Error adding to favorites', e),
+                },
+            })
+        }
+
+        return res
     }
-
-    return res
-}
 
 /* Admin actions */
 export const updateAdminRecruiters = () => (dispatch, getState) => {
@@ -160,43 +158,38 @@ export const updateAdminSearchResults = query => (dispatch, getState) => {
     })
 }
 
-export const adminGrantRecruiterAccess = (
-    userId,
-    events,
-    organisation,
-) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const adminGrantRecruiterAccess =
+    (userId, events, organisation) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const user = await UserProfilesService.updateRecruiter(
-        idToken,
-        userId,
-        events,
-        organisation,
-    )
-    dispatch({
-        type: ActionTypes.ADMIN_UPDATE_USER,
-        payload: user,
-    })
+        const user = await UserProfilesService.updateRecruiter(
+            idToken,
+            userId,
+            events,
+            organisation,
+        )
+        dispatch({
+            type: ActionTypes.ADMIN_UPDATE_USER,
+            payload: user,
+        })
 
-    dispatch(updateAdminRecruiters())
+        dispatch(updateAdminRecruiters())
 
-    return user
-}
+        return user
+    }
 
-export const adminRevokeRecruiterAccess = userId => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const adminRevokeRecruiterAccess =
+    userId => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const user = await UserProfilesService.updateRecruiter(
-        idToken,
-        userId,
-        [],
-        '',
-    )
-    dispatch({
-        type: ActionTypes.ADMIN_UPDATE_USER,
-        payload: user,
-    })
-}
+        const user = await UserProfilesService.updateRecruiter(
+            idToken,
+            userId,
+            [],
+            '',
+        )
+        dispatch({
+            type: ActionTypes.ADMIN_UPDATE_USER,
+            payload: user,
+        })
+    }

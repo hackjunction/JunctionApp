@@ -33,28 +33,27 @@ export const updateRegistration = slug => (dispatch, getState) => {
     })
 }
 
-export const updateRegistrationGrantDetails = (slug, data) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const updateRegistrationGrantDetails =
+    (slug, data) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    try {
-        const registration = await RegistrationsService.updateTravelGrantDetails(
-            idToken,
-            slug,
-            data,
-        )
+        try {
+            const registration =
+                await RegistrationsService.updateTravelGrantDetails(
+                    idToken,
+                    slug,
+                    data,
+                )
 
-        dispatch({
-            type: ActionTypes.EDIT_REGISTRATION,
-            payload: registration,
-        })
-        return
-    } catch (err) {
-        return err
+            dispatch({
+                type: ActionTypes.EDIT_REGISTRATION,
+                payload: registration,
+            })
+            return
+        } catch (err) {
+            return err
+        }
     }
-}
 
 export const confirmRegistration = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -105,25 +104,23 @@ export const editRegistration = (slug, data) => async (dispatch, getState) => {
     return registration
 }
 
-export const createRegistration = (slug, data) => async (
-    dispatch,
-    getState,
-) => {
-    const idToken = AuthSelectors.getIdToken(getState())
+export const createRegistration =
+    (slug, data) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
 
-    const registration = await RegistrationsService.createRegistration(
-        idToken,
-        slug,
-        data,
-    )
+        const registration = await RegistrationsService.createRegistration(
+            idToken,
+            slug,
+            data,
+        )
 
-    dispatch({
-        type: ActionTypes.EDIT_REGISTRATION,
-        payload: registration,
-    })
+        dispatch({
+            type: ActionTypes.EDIT_REGISTRATION,
+            payload: registration,
+        })
 
-    return registration
-}
+        return registration
+    }
 
 export const updateTeam = slug => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -181,30 +178,28 @@ export const leaveTeam = (slug, code) => async (dispatch, getState) => {
     return team
 }
 
-export const removeMemberFromTeam = (slug, code, userId) => async (
-    dispatch,
-    getState,
-) => {
-    const state = getState()
-    const idToken = AuthSelectors.getIdToken(state)
-    const oldTeam = DashboardSelectors.team(state)
-    const team = await TeamsService.removeMemberFromTeam(
-        idToken,
-        slug,
-        code,
-        userId,
-    )
+export const removeMemberFromTeam =
+    (slug, code, userId) => async (dispatch, getState) => {
+        const state = getState()
+        const idToken = AuthSelectors.getIdToken(state)
+        const oldTeam = DashboardSelectors.team(state)
+        const team = await TeamsService.removeMemberFromTeam(
+            idToken,
+            slug,
+            code,
+            userId,
+        )
 
-    dispatch({
-        type: ActionTypes.EDIT_TEAM,
-        payload: {
-            ...team,
-            meta: oldTeam.meta,
-        },
-    })
+        dispatch({
+            type: ActionTypes.EDIT_TEAM,
+            payload: {
+                ...team,
+                meta: oldTeam.meta,
+            },
+        })
 
-    return team
-}
+        return team
+    }
 
 export const deleteTeam = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())

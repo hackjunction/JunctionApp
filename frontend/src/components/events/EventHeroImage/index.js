@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { Button, Typography } from '@material-ui/core'
 import Image from 'components/generic/Image'
-import FadeInWrapper from 'components/animated/FadeInWrapper'
 import Container from 'components/generic/Container'
 
 const useStyles = makeStyles(theme => ({

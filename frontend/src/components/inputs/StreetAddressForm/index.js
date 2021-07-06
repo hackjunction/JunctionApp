@@ -10,14 +10,8 @@ const StreetAddressInput = ({
     onBlur,
     showVenueName = false,
 }) => {
-    const {
-        country,
-        addressLine,
-        addressLine2,
-        city,
-        postalCode,
-        venueName,
-    } = value
+    const { country, addressLine, addressLine2, city, postalCode, venueName } =
+        value
 
     const handleChange = useCallback(
         (fieldName, fieldValue) => {

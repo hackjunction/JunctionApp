@@ -58,11 +58,10 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                 if (
                     RegistrationFieldsCustom.hasOwnProperty(question.fieldType)
                 ) {
-                    result.validationSchema[
-                        question.name
-                    ] = RegistrationFieldsCustom[
-                        question.fieldType
-                    ].validationSchema(question.fieldRequired, question)
+                    result.validationSchema[question.name] =
+                        RegistrationFieldsCustom[
+                            question.fieldType
+                        ].validationSchema(question.fieldRequired, question)
                 }
                 if (
                     registration &&
@@ -76,9 +75,8 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                         ) {
                             if (question.fieldType === 'multiple-choice') {
                                 // TODO fix so that that multiple choice options with "," in them don't cause bugs
-                                result.initialValues[
-                                    element.key
-                                ] = element.value.split(',')
+                                result.initialValues[element.key] =
+                                    element.value.split(',')
                             } else if (question.fieldType === 'boolean') {
                                 result.initialValues[element.key] =
                                     element.value === 'true'

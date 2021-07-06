@@ -13,8 +13,7 @@ import config from 'constants/config'
 
 Font.register({
     family: 'Montserrat',
-    src:
-        'https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-_x3rCs.ttf',
+    src: 'https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD-_x3rCs.ttf',
 })
 Font.register({
     family: 'Lato',

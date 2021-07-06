@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Box, Typography } from '@material-ui/core'
@@ -31,8 +31,7 @@ const themeFields = [
     {
         field: 'bodyBackgroundColor',
         label: 'Page background',
-        hint:
-            'Background color of the main body of the page (visible on wide screens)',
+        hint: 'Background color of the main body of the page (visible on wide screens)',
     },
     {
         field: 'detailsBackgroundColor',

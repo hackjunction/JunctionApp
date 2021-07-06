@@ -2,10 +2,8 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import UserMenu from 'components/UserMenu'
-import LanguageMenu from 'components/LanguageMenu'
 
 import config from 'constants/config'
-import { Grid, Hidden } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {

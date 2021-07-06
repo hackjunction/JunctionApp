@@ -79,41 +79,6 @@
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
         "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint"
     },
-    "eslintConfig": {
-        "env": {
-            "browser": true,
-            "es2020": true
-        },
-        "extends": [
-            "react-app",
-            "plugin:prettier/recommended"
-        ],
-        "plugins": [
-            "react",
-            "prettier"
-        ],
-        "parserOptions": {
-            "ecmaVersion": 2020
-        },
-        "rules": {
-            "prettier/prettier": [
-                "error",
-                {
-                    "printWidth": 80,
-                    "trailingComma": "es5",
-                    "semi": false,
-                    "jsxSingleQuote": false,
-                    "singleQuote": true,
-                    "useTabs": false,
-                    "tabWidth": 4,
-                    "bracketSpacing": true,
-                    "arrowParens": "avoid"
-                }
-            ],
-            "no-console": 0,
-            "jsx-a11y/img-redundant-alt": 0
-        }
-    },
     "browserslist": [
         ">0.2%",
         "not dead",
@@ -127,12 +92,11 @@
     },
     "devDependencies": {
         "depcheck": "^0.9.2",
-        "eslint": "^6.6.0",
-        "eslint-config-prettier": "^6.11.0",
-        "eslint-config-react-app": "^5.2.1",
-        "eslint-plugin-import": "^2.20.2",
-        "eslint-plugin-jsx-a11y": "^6.2.3",
-        "eslint-plugin-prettier": "^3.1.3",
-        "prettier": "^2.0.5"
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-config-react-app": "^6.0.0",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-prettier": "^3.4.0",
+        "prettier": "^2.3.2"
     }
 }
