@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 
@@ -61,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const dispatch = useDispatch()
     const classes = useStyles()
-    const location = useLocation()
+    //const location = useLocation()
     // const idToken = useSelector(AuthSelectors.getIdToken)
 
     const [loading, setLoading] = useState(false)
@@ -108,8 +107,6 @@ export default () => {
             })
         return null
     }, [dispatch, email, message, name, organisation, subject])
-
-    const error = location?.state?.error
 
     return (
         <PageWrapper

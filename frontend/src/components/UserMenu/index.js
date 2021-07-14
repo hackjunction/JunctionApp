@@ -4,23 +4,15 @@ import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
 import {
     Popover,
-    IconButton,
     Avatar,
     Box,
-    List,
     ListItem,
     ListItemText,
-    ListSubheader,
     Divider,
-    TableContainer,
-    Table,
-    TableCell,
-    TableRow,
     Grid,
 } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
 import MenuIcon from '@material-ui/icons/Menu'
-import Button from 'components/generic/Button'
 import LanguageMenu from 'components/LanguageMenu'
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
@@ -68,7 +60,6 @@ export default () => {
     const [profile] = useMyProfilePreview()
     const dispatch = useDispatch()
     const hasSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
-    const hasOrganiserAccess = useSelector(AuthSelectors.hasOrganiserAccess)
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { sortBy } from 'lodash-es'
 import moment from 'moment-timezone'
@@ -20,7 +20,7 @@ const ProjectsGrid = ({
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
 
-    async function fetchData() {
+    const fetchData = useCallback(async () => {
         const nprojects = await Promise.all(
             projects.map(async project => {
                 return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
@@ -47,7 +47,7 @@ const ProjectsGrid = ({
             }),
         )
         setSorted((sortBy(nprojects, p => -p['score']): nprojects))
-    }
+    }, [event.slug, projects, token])
 
     useEffect(() => {
         if (showScore) {
@@ -58,7 +58,7 @@ const ProjectsGrid = ({
                 sortField ? sortBy(projects, p => p[sortField]) : projects,
             )
         }
-    }, [projects])
+    }, [fetchData, projects, showScore, sortField])
     console.log(sorted)
     return (
         <Grid

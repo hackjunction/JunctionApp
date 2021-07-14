@@ -13,7 +13,6 @@ import Container from 'components/generic/Container'
 import UserProfilesService from 'services/userProfiles'
 
 import * as AuthSelectors from 'redux/auth/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import { useFormField } from 'hooks/formHooks'
@@ -60,12 +59,12 @@ export default () => {
     const match = useRouteMatch()
     const { t } = useTranslation()
 
-    const sendMessage = useCallback(
-        (message, userId) => {
-            dispatch(RecruitmentActions.sendMessage(message, userId))
-        },
-        [dispatch],
-    )
+    // const sendMessage = useCallback(
+    //     (message, userId) => {
+    //         dispatch(RecruitmentActions.sendMessage(message, userId))
+    //     },
+    //     [dispatch],
+    // )
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -110,8 +109,8 @@ export default () => {
         console.log('user is', user)
         if (!err && user !== null) {
             setLoading(true)
-            const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
-            const res = await sendMessage(formatted, user.userId)
+            //const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
+            //const res = await sendMessage(formatted, user.userId)
 
             // TODO fix snackbar here
             /*if (res?.error) {
@@ -122,7 +121,7 @@ export default () => {
             //}
             setLoading(false)
         }
-    }, [message, sendMessage, user, dispatch, t])
+    }, [message, user, dispatch, t])
 
     // TODO A little bit hard to define for translating
     const renderRecruitmentStatus = () => {

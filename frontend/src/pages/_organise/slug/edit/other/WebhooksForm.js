@@ -26,7 +26,7 @@ import { useFormField } from 'hooks/formHooks'
 
 const ACTIONS = ['save', 'remove']
 
-const RESOURCES = ['Project']
+const RESOURCES = ['Project', 'Registration']
 
 const useStyles = makeStyles(theme => ({
     errorMessage: {

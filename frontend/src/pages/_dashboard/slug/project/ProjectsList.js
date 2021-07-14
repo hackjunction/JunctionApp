@@ -17,10 +17,8 @@ export default props => {
     const [selectedProjectScore, setSelectedProjectStore] = useState(null)
     const [projectScoreModalOpen, setProjectScoreModalOpen] = useState(false)
 
-    const [
-        challengeAndTrackSlugState,
-        setChallengeAndTrackSlugState,
-    ] = useState({})
+    const [challengeAndTrackSlugState, setChallengeAndTrackSlugState] =
+        useState({})
 
     useEffect(() => {
         let challengeAndTrackSlugToNameMap = {}
@@ -46,33 +44,33 @@ export default props => {
         }
     }, [projectScoreModalOpen, projectScores, selectedProjectScore])
 
-    const showProjectScore = project => {
-        const score = projectScores.find(
-            score => score.project._id === project._id,
-        )
-        setSelectedProjectStore(score)
-        setProjectScoreModalOpen(true)
-    }
+    // const showProjectScore = project => {
+    //     const score = projectScores.find(
+    //         score => score.project._id === project._id,
+    //     )
+    //     setSelectedProjectStore(score)
+    //     setProjectScoreModalOpen(true)
+    // }
 
     // Checks whether there are more unique challenges that the competitor has not submitted
     // a solution to yet.
-    const canAddMoreSubmissions = () => {
-        if (event && event.challenges && projects) {
-            const challengesWithSubmittedProjects = [].concat.apply(
-                [],
-                projects.map(project => project.challenges),
-            )
-            return (
-                event.challenges.filter(
-                    challenge =>
-                        challengesWithSubmittedProjects.indexOf(
-                            challenge.slug,
-                        ) < 0,
-                ).length > 0
-            )
-        }
-        return false
-    }
+    // const canAddMoreSubmissions = () => {
+    //     if (event && event.challenges && projects) {
+    //         const challengesWithSubmittedProjects = [].concat.apply(
+    //             [],
+    //             projects.map(project => project.challenges),
+    //         )
+    //         return (
+    //             event.challenges.filter(
+    //                 challenge =>
+    //                     challengesWithSubmittedProjects.indexOf(
+    //                         challenge.slug,
+    //                     ) < 0,
+    //             ).length > 0
+    //         )
+    //     }
+    //     return false
+    // }
     const ProjectCard = props => {
         const project = props.project
         return (

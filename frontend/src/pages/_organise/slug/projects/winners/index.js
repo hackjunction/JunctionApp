@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Grid, Box, Button, Dialog } from '@material-ui/core'
-import { useSelector, useDispatch } from 'react-redux'
+import { Grid, Box, Dialog } from '@material-ui/core'
+import { useSelector } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -12,12 +12,11 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 import EventsService from 'services/events'
-import ProjectsService from 'services/projects'
+//import ProjectsService from 'services/projects'
 
 import WinnerVoteService from 'services/winnerVote'
 
 export default () => {
-    const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
 
@@ -31,11 +30,11 @@ export default () => {
         return WinnerVoteService.getResults(idToken, event.slug)
     }, [idToken, event])
 
-    const updateProjects = useCallback(() => {
-        // TODO use EventsService
-        return ProjectsService.getProjectsByEvent(event.slug)
-        // return EventsService.getWinnerProjects(idToken, event.slug)
-    }, [idToken, event])
+    // const updateProjects = useCallback(() => {
+    //     // TODO use EventsService
+    //     return ProjectsService.getProjectsByEvent(event.slug)
+    //     // return EventsService.getWinnerProjects(idToken, event.slug)
+    // }, [event])
 
     const update = useCallback(async () => {
         setLoading(true)
@@ -52,7 +51,7 @@ export default () => {
             }
             setLoading(false)
         }
-    }, [updateVote, updateProjects, dispatch])
+    }, [event.overallReviewMethod, event.slug, updateVote, idToken])
 
     useEffect(() => {
         update()

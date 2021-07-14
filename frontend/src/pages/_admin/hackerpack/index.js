@@ -169,8 +169,7 @@ export default () => {
                                                     value={
                                                         field.value
                                                             ? {
-                                                                  url:
-                                                                      field.value,
+                                                                  url: field.value,
                                                               }
                                                             : undefined
                                                     }

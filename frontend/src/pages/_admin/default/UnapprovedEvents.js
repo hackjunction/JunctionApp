@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
-import EditIcon from '@material-ui/icons/Edit'
 
 import EventService from 'services/events'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -27,7 +26,7 @@ export default ({ data = [] }) => {
                 setEvents(e)
             }
         })
-    }, [])
+    }, [idToken])
 
     const handleRemove = useCallback(
         slug => {
@@ -45,7 +44,7 @@ export default ({ data = [] }) => {
         slug => {
             EventService.setApproved(idToken, slug, true)
         },
-        [events, idToken],
+        [idToken],
     )
 
     return (

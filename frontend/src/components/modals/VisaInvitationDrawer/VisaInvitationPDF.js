@@ -11,8 +11,7 @@ import config from 'constants/config'
 // TODO: Make dynamic
 Font.register({
     family: 'Montserrat',
-    src:
-        'https://fonts.gstatic.com/s/montserrat/v10/zhcz-_WihjSQC0oHJ9TCYC3USBnSvpkopQaUR-2r7iU.ttf',
+    src: 'https://fonts.gstatic.com/s/montserrat/v10/zhcz-_WihjSQC0oHJ9TCYC3USBnSvpkopQaUR-2r7iU.ttf',
     fontWeight: 'bold',
 })
 Font.register({

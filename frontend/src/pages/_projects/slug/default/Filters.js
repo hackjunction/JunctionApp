@@ -1,8 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Grid, Box, Typography, Input } from '@material-ui/core'
+import { Grid, Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import TextInput from 'components/inputs/TextInput'
 
 const useStyles = makeStyles(theme => ({
     filterItem: {

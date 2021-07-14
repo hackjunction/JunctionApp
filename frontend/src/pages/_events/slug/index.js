@@ -6,7 +6,6 @@ import { useRouteMatch, useLocation } from 'react-router'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
-import Footer from 'components/layouts/Footer'
 import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
@@ -17,9 +16,8 @@ import EventDetailContext, { EventDetailProvider } from './context'
 const EventDetailRouter = () => {
     const match = useRouteMatch()
     const location = useLocation()
-    const { eventLoading, eventError, isRegistrationOpen } = useContext(
-        EventDetailContext,
-    )
+    const { eventLoading, eventError, isRegistrationOpen } =
+        useContext(EventDetailContext)
     // TODO FIX errortext and desc to be from eventErro
     return (
         <PageWrapper

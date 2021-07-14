@@ -93,7 +93,7 @@ export default () => {
             })
         }
         fetchData()
-    }, [idToken, event.slug, projects, rankingsOverall])
+    }, [idToken, event.slug, projects, rankingsOverall, rankingsByTrack])
     console.log('ScoreGrid', ScoreGrid)
     console.log('ProjectRank', ProjectRank)
     console.log('ProjectRanks', ProjectRanks)

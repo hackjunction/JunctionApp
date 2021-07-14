@@ -5,6 +5,7 @@ const useStyles = makeStyles(theme => ({
     link: ({ _theme }) => {
         let color
         let hoverColor
+        // eslint-disable-next-line no-unused-vars
         let textDecoration
 
         switch (_theme) {

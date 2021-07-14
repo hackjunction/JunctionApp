@@ -54,34 +54,28 @@ export const toggleUsersFiltersSortBy = field => dispatch => {
     })
 }
 
-export const editHackerpack = (idToken, slug, values) => async (
-    dispatch,
-    getState,
-) => {
-    const hackerpack = await HackerpackService.updateHackerpack(
-        idToken,
-        slug,
-        values,
-    )
-    return hackerpack
-}
+export const editHackerpack =
+    (idToken, slug, values) => async (dispatch, getState) => {
+        const hackerpack = await HackerpackService.updateHackerpack(
+            idToken,
+            slug,
+            values,
+        )
+        return hackerpack
+    }
 
-export const editBanner = (idToken, slug, values) => async (
-    dispatch,
-    getState,
-) => {
-    const ad = await BannerService.updateBanner(idToken, slug, values)
-    return ad
-}
+export const editBanner =
+    (idToken, slug, values) => async (dispatch, getState) => {
+        const ad = await BannerService.updateBanner(idToken, slug, values)
+        return ad
+    }
 
-export const editOrganization = (idToken, slug, values) => async (
-    dispatch,
-    getState,
-) => {
-    const organization = await OrganizationService.updateOrganization(
-        idToken,
-        slug,
-        values,
-    )
-    return organization
-}
+export const editOrganization =
+    (idToken, slug, values) => async (dispatch, getState) => {
+        const organization = await OrganizationService.updateOrganization(
+            idToken,
+            slug,
+            values,
+        )
+        return organization
+    }

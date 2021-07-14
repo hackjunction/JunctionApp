@@ -1,9 +1,8 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useContext } from 'react'
 
 import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import moment from 'moment'
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
@@ -16,10 +15,8 @@ import StaggeredList from 'components/animated/StaggeredList'
 import StaggeredListItem from 'components/animated/StaggeredListItem'
 import FadeInWrapper from 'components/animated/FadeInWrapper'
 import Container from 'components/generic/Container'
-import Button from 'components/generic/Button'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
-import BannerService from 'services/banner'
 
 const useStyles = makeStyles({
     header: {

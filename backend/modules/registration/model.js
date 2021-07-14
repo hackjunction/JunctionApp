@@ -7,6 +7,7 @@ const {
 const AnswersSchema = require('@hackjunction/shared/schemas/Answers')
 const TravelGrantDetailsSchema = require('@hackjunction/shared/schemas/TravelGrantDetails')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const WebhookService = require('../../common/services/webhook')
 const EmailTaskController = require('../email-task/controller')
 const UserProfileController = require('../user-profile/controller')
 
@@ -137,6 +138,8 @@ RegistrationSchema.post('save', function (doc, next) {
     if (!this._previousGrant && this.travelGrant > 0) {
         EmailTaskController.createTravelGrantAcceptedTask(doc, true)
     }
+
+    WebhookService.triggerWebhooks('Registration', 'save', doc, doc.event)
 
     next()
 })
