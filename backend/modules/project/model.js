@@ -98,7 +98,7 @@ ProjectSchema.post('save', async function (doc, next) {
             /** By default, no action needed */
         }
     }
-    WebhookService.handleProjectWebhook(doc, 'save', event)
+    WebhookService.triggerWebhooks('Project', 'save', doc, this.event)
     next()
 })
 
