@@ -915,20 +915,13 @@ const Fields = {
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.dateOfBirth || undefined,
         validationSchema: (required, event) => {
+            const relativeTime = event
+                ? Date.parse(event.startTime)
+                : Date.now()
             const base = yup
                 .date()
-                .min(
-                    new Date(
-                        Date.parse(event.startTime) -
-                            1000 * 60 * 60 * 24 * 365 * 120,
-                    ),
-                )
-                .max(
-                    new Date(
-                        Date.parse(event.startTime) -
-                            1000 * 60 * 60 * 24 * 364 * 16,
-                    ),
-                )
+                .min(new Date(relativeTime - 1000 * 60 * 60 * 24 * 365 * 120))
+                .max(new Date(relativeTime - 1000 * 60 * 60 * 24 * 364 * 16))
                 .label(FieldProps.dateOfBirth.label)
 
             return required ? base.required() : base
