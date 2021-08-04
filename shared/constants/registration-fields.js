@@ -914,11 +914,14 @@ const Fields = {
         ...FieldProps.dateOfBirth,
         category: Categories.basicDetails,
         default: (userProfile, idToken) => userProfile.dateOfBirth || undefined,
-        validationSchema: required => {
+        validationSchema: (required, event) => {
+            const relativeTime = event
+                ? Date.parse(event.startTime)
+                : Date.now()
             const base = yup
                 .date()
-                .min(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 120))
-                .max(new Date(Date.now() - 1000 * 60 * 60 * 24 * 364 * 16))
+                .min(new Date(relativeTime - 1000 * 60 * 60 * 24 * 365 * 120))
+                .max(new Date(relativeTime - 1000 * 60 * 60 * 24 * 364 * 16))
                 .label(FieldProps.dateOfBirth.label)
 
             return required ? base.required() : base

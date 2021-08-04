@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const mongoose = require('mongoose')
 const yup = require('yup')
 const {
@@ -12,24 +11,31 @@ const RegistrationHelpers = {
         const validationSchema = {}
 
         // Build validation schema for standard fields
-        const {
-            optionalFields = [],
-            requiredFields = [],
-        } = event.registrationConfig.toObject()
+        const { optionalFields = [], requiredFields = [] } =
+            event.registrationConfig.toObject()
 
         const allFields = RegistrationFields.getFields()
 
         Object.keys(allFields).forEach(fieldName => {
-            const params = allFields[fieldName]
-            if (params.alwaysRequired) {
-                validationSchema[fieldName] = params.validationSchema(true)
-                minimalSchema[fieldName] = params.validationSchema(true)
+            const field = allFields[fieldName]
+            if (field.alwaysRequired) {
+                validationSchema[fieldName] = field.validationSchema(
+                    true,
+                    event,
+                )
+                minimalSchema[fieldName] = field.validationSchema(true, event)
             } else if (requiredFields.indexOf(fieldName) !== -1) {
-                validationSchema[fieldName] = params.validationSchema(true)
-                minimalSchema[fieldName] = params.validationSchema(false)
+                validationSchema[fieldName] = field.validationSchema(
+                    true,
+                    event,
+                )
+                minimalSchema[fieldName] = field.validationSchema(false, event)
             } else if (optionalFields.indexOf(fieldName) !== -1) {
-                validationSchema[fieldName] = params.validationSchema(false)
-                minimalSchema[fieldName] = params.validationSchema(false)
+                validationSchema[fieldName] = field.validationSchema(
+                    false,
+                    event,
+                )
+                minimalSchema[fieldName] = field.validationSchema(false, event)
             }
         })
 
@@ -46,7 +52,6 @@ const RegistrationHelpers = {
 
         const minSchema = yup.object().shape(minimalSchema)
         const schema = yup.object().shape(validationSchema)
-        console.log('now validation data: ', data)
         return schema
             .validate(data, { stripUknown: true })
             .catch(e => {
@@ -60,12 +65,10 @@ const RegistrationHelpers = {
                         return [false, false]
                     })
                     .then(value => {
-                        console.log('mini doin dis')
                         return [false, value]
                     })
             })
             .then(value => {
-                console.log('then doin dis')
                 return [true, value]
             })
     },
@@ -79,9 +82,9 @@ const RegistrationHelpers = {
         const allFields = RegistrationFields.getFields()
 
         Object.keys(allFields).forEach(fieldName => {
-            const params = allFields[fieldName]
-            if (params.alwaysRequired) {
-                validationSchema[fieldName] = params.validationSchema(true)
+            const field = allFields[fieldName]
+            if (field.alwaysRequired) {
+                validationSchema[fieldName] = field.validationSchema(true)
             }
         })
 
