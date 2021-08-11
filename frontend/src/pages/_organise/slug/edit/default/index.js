@@ -68,7 +68,6 @@ export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
     const dispatch = useDispatch()
-    console.log('orgs', organizations)
 
     return (
         <Grid container spacing={3}>
