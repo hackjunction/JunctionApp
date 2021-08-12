@@ -179,9 +179,13 @@ export default () => {
                             <Select
                                 label="Specify the parties behind this event?"
                                 value={field.value}
-                                onChange={items =>
-                                    form.setFieldValue(field.name, items)
-                                }
+                                onChange={items => {
+                                    if (items === null) {
+                                        form.setFieldValue(field.name, [])
+                                    } else {
+                                        form.setFieldValue(field.name, items)
+                                    }
+                                }}
                                 onBlur={() => form.setFieldTouched(field.name)}
                                 options={organizations?.map(org => {
                                     return {
