@@ -60,6 +60,9 @@ const ProjectSchema = new mongoose.Schema({
     video: {
         type: String,
     },
+    status: {
+        type: String,
+    },
     achievements: [AchievementSchema],
 })
 

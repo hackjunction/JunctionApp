@@ -171,4 +171,12 @@ controller.validateToken = async (event, token) => {
     return true
 }
 
+controller.getFinalProjects = async event => {
+    const projects = await Project.find({
+        event: event._id,
+        status: 'final',
+    })
+    return projects
+}
+
 module.exports = controller
