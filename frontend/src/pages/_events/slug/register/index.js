@@ -147,7 +147,6 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
-
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })

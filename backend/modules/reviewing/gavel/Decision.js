@@ -1,4 +1,3 @@
-'use strict'
 const mongoose = require('mongoose')
 
 const GavelDecisionSchema = new mongoose.Schema({

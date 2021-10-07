@@ -36,7 +36,7 @@ export default ({
 
     const [selected, setSelected] = useState()
     const [filters, setFilters] = useState([])
-
+    console.log('filters', filters)
     useEffect(() => {
         if (selected) {
             setFilters(selected.filters)

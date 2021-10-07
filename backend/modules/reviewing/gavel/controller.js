@@ -35,7 +35,8 @@ controller.ensureGavelProject = async project => {
 }
 
 controller.getProject = async projectId => {
-    return GavelProject.findById(projectId).populate('project')
+    const projects = GavelProject.findById(projectId).populate('project')
+    return projects
 }
 
 controller.editProject = async (projectId, data) => {
@@ -51,7 +52,7 @@ controller.editProject = async (projectId, data) => {
 }
 
 controller.getProjectsForEvent = async eventId => {
-    return GavelProject.find({ event: eventId })
+    return GavelProject.find({ event: eventId, status: 'final' })
 }
 
 controller.getAnnotatorsForEvent = async eventId => {
