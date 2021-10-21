@@ -82,7 +82,7 @@ export default props => {
         if (projectLoading) {
             return <PageWrapper loading />
         }
-        console.log('props', formikProps)
+        //console.log('props', formikProps)
         return (
             <>
                 <Grid container spacing={3}>
@@ -411,7 +411,7 @@ export default props => {
                         <FastField
                             name="sourcePublic"
                             render={({ field, form }) => {
-                                console.log('sourcePublic', field.value)
+                                //console.log('sourcePublic', field.value)
                                 return (
                                     <FormControl
                                         label="Source code public?"
@@ -564,7 +564,7 @@ export default props => {
             }}
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
-                console.log('values are!', values)
+                //console.log('values are!', values)
                 if (!values.privacy) {
                     if (!values.hiddenMembers.includes(idTokenData.sub)) {
                         values.hiddenMembers.push(idTokenData.sub)
@@ -573,7 +573,7 @@ export default props => {
                     const index = values.hiddenMembers.indexOf(idTokenData.sub)
                     if (index !== -1) values.hiddenMembers.splice(index, 1)
                 }
-                console.log('sending', values)
+                //console.log('sending', values)
                 let res
                 if (project) {
                     res = await dispatch(
