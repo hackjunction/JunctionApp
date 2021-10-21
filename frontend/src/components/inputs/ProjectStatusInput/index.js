@@ -14,7 +14,11 @@ const useStyles = makeStyles(theme => ({
 
 //Boolean radio buttons are on default unchecked. If value is already defined check the box
 
-const ProjectStatusInput = ({ value, onChange, alignCenter = false }) => {
+const ProjectStatusInput = ({
+    value = 'draft',
+    onChange,
+    alignCenter = false,
+}) => {
     const classes = useStyles({ alignCenter })
     const [checked, setChecked] = useState(value)
 
