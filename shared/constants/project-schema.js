@@ -1,5 +1,6 @@
 const yup = require('yup')
 const EventTypes = require('./event-types')
+const ProjectStatuses = require('./project-statuses')
 
 /** The user editable fields and their validation rules for a Project */
 // TODO: Add tracks and challenges
@@ -24,6 +25,11 @@ const ProjectSchema = {
         .max(5)
         .ensure()
         .label('Images'),
+    status: yup
+        .string()
+        .oneOf(ProjectStatuses)
+        .default('draft')
+        .label('Status'),
 }
 
 const buildProjectSchema = event => {

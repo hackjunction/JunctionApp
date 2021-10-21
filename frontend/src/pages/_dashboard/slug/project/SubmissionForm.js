@@ -16,6 +16,7 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ErrorsBox from 'components/generic/ErrorsBox'
 import ProjectImages from './ProjectImages'
+import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -81,6 +82,7 @@ export default props => {
         if (projectLoading) {
             return <PageWrapper loading />
         }
+        //console.log('props', formikProps)
         return (
             <>
                 <Grid container spacing={3}>
@@ -409,7 +411,7 @@ export default props => {
                         <FastField
                             name="sourcePublic"
                             render={({ field, form }) => {
-                                console.log('sourcePublic', field.value)
+                                //console.log('sourcePublic', field.value)
                                 return (
                                     <FormControl
                                         label="Source code public?"
@@ -497,6 +499,32 @@ export default props => {
                             />
                         </Box>
                     </Grid>
+                    <Grid item xs={12}>
+                        <FastField
+                            name="status"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Final or draft"
+                                    hint="If you're done with your project, you can mark it as final. If you're still working on it, you can mark it as draft."
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
+                                    error={form.errors[field.name]}
+                                >
+                                    <ProjectStatusInput
+                                        value={field.value}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
+                                        }
+                                    />
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
                     {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <ErrorsBox errors={formikProps.errors} />
@@ -536,7 +564,7 @@ export default props => {
             }}
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
-                console.log('values are!', values)
+                //console.log('values are!', values)
                 if (!values.privacy) {
                     if (!values.hiddenMembers.includes(idTokenData.sub)) {
                         values.hiddenMembers.push(idTokenData.sub)
@@ -545,7 +573,7 @@ export default props => {
                     const index = values.hiddenMembers.indexOf(idTokenData.sub)
                     if (index !== -1) values.hiddenMembers.splice(index, 1)
                 }
-                console.log('sending', values)
+                //console.log('sending', values)
                 let res
                 if (project) {
                     res = await dispatch(
