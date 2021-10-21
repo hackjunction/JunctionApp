@@ -16,22 +16,35 @@ const Maths = require('./maths')
 const controller = {}
 
 controller.ensureGavelProject = async project => {
-    const existing = await GavelProject.findOne({
-        project: project._id,
-        event: project.event,
-    })
+    switch (project.status) {
+        case 'draft': {
+            const deleted = await GavelProject.findOneAndDelete({
+                project: project._id,
+            })
+            return deleted
+        }
+        case 'final': {
+            // console.log('final')
+            const existing = await GavelProject.findOne({
+                project: project._id,
+                event: project.event,
+            })
 
-    if (existing) {
-        /** Make sure the track is updated, should it change */
-        existing.track = project.track
-        return existing.save()
+            if (existing) {
+                /** Make sure the track is updated, should it change */
+                existing.track = project.track
+                return existing.save()
+            }
+            const gavelproject = new GavelProject({
+                project: project._id,
+                event: project.event,
+                track: project.track,
+            })
+            return gavelproject.save()
+        }
+        default:
+            throw new Error(`Unknown project status ${project.status}`)
     }
-    const gavelproject = new GavelProject({
-        project: project._id,
-        event: project.event,
-        track: project.track,
-    })
-    return gavelproject.save()
 }
 
 controller.getProject = async projectId => {
@@ -52,7 +65,7 @@ controller.editProject = async (projectId, data) => {
 }
 
 controller.getProjectsForEvent = async eventId => {
-    return GavelProject.find({ event: eventId, status: 'final' })
+    return GavelProject.find({ event: eventId })
 }
 
 controller.getAnnotatorsForEvent = async eventId => {
@@ -88,7 +101,7 @@ controller.initAnnotator = async (event, userId) => {
         () => null,
     )
     const [projects, annotators] = await Promise.all([
-        mongoose.model('Project').find({ event: event._id }),
+        mongoose.model('Project').find({ event: event._id, status: 'final' }),
         GavelAnnotator.find({ event: event._id }),
     ])
     const ownProject = team

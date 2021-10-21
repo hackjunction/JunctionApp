@@ -92,7 +92,9 @@ ProjectSchema.methods.getPreview = function () {
 ProjectSchema.post('save', async function (doc, next) {
     const event = await mongoose.model('Event').findById(this.event)
     switch (event.reviewMethod) {
-        /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly */
+        /** If using Gavel peer review, make sure a GavelProject exists for each project, and is updated accordingly,
+            updated to GavelProject only if it has status 'final'
+         */
         case ReviewingMethods.gavelPeerReview.id: {
             GavelController.ensureGavelProject(doc)
             break
