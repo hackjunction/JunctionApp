@@ -16,7 +16,7 @@
         "@welldone-software/why-did-you-render": "^4.2.5",
         "antd": "^4.3.1",
         "auth0-js": "^9.13.2",
-        "axios": "^0.21.1",
+        "axios": "^0.21.2",
         "babel-plugin-import": "^1.13.0",
         "cloudinary-react": "^1.5.0",
         "connected-react-router": "^6.8.0",
