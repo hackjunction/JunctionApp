@@ -106,11 +106,11 @@ controller.confirmRegistration = (user, event) => {
         .getRegistration(user.sub, event._id.toString())
         .then(registration => {
             switch (registration.status) {
-                case STATUSES.accepted:
+                case STATUSES.accepted.id:
                     registration.status = STATUSES.confirmed.id
                     return registration.save()
-                case STATUSES.acceptedToHub:
-                    registration.status = STATUSES.confirmed.id
+                case STATUSES.acceptedToHub.id:
+                    registration.status = STATUSES.confirmedToHub.id
                     return registration.save()
                 default:
                     throw new ForbiddenError(

@@ -82,7 +82,9 @@ export default () => {
                 return 'error'
             }
             case RegistrationStatuses.asObject.accepted.id:
+            case RegistrationStatuses.asObject.acceptedToHub.id:
             case RegistrationStatuses.asObject.confirmed.id:
+            case RegistrationStatuses.asObject.confirmedToHub.id:
             case RegistrationStatuses.asObject.checkedIn.id: {
                 return 'theme_turquoise'
             }
