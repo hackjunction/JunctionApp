@@ -18,7 +18,10 @@ export default () => {
 
     // TODO: When status is checkedIn, show the travel grant details submission form here
 
-    if (registration.status === STATUSES.accepted.id) {
+    if (
+        registration.status === STATUSES.accepted.id ||
+        registration.status === STATUSES.acceptedToHub.id
+    ) {
         return (
             <Grid item xs={12} md={6}>
                 <GradientBox p={3} color="theme_white">

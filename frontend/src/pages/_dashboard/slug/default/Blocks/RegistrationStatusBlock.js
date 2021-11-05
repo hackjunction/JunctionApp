@@ -107,11 +107,17 @@ export default () => {
             case RegistrationStatuses.asObject.accepted.id: {
                 return 'Accepted'
             }
+            case RegistrationStatuses.asObject.acceptedToHub.id: {
+                return 'Accepted to Hub'
+            }
             case RegistrationStatuses.asObject.cancelled.id: {
                 return 'Cancelled'
             }
             case RegistrationStatuses.asObject.confirmed.id: {
                 return 'Confirmed'
+            }
+            case RegistrationStatuses.asObject.confirmedToHub.id: {
+                return 'Confirmed to Hub'
             }
             // case RegistrationStatuses.asObject.checkedIn.id: {
             //     switch (event.eventType) {
@@ -145,10 +151,18 @@ export default () => {
                     eventName: event.name,
                 })
             }
+            case RegistrationStatuses.asObject.acceptedToHub.id: {
+                return t('Registration_info_accepted_', {
+                    eventName: event.name,
+                })
+            }
             case RegistrationStatuses.asObject.cancelled.id: {
                 return t('Registration_info_cancelled_')
             }
             case RegistrationStatuses.asObject.confirmed.id: {
+                return t('Registration_info_confirmed_')
+            }
+            case RegistrationStatuses.asObject.confirmedToHub.id: {
                 return t('Registration_info_confirmed_')
             }
             case RegistrationStatuses.asObject.checkedIn.id: {
@@ -224,7 +238,69 @@ export default () => {
                     </Box>
                 )
             }
+            case RegistrationStatuses.asObject.acceptedToHub.id: {
+                return (
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="flex-end"
+                        flexWrap="wrap"
+                    >
+                        <Box ml={1} mt={1}>
+                            <Button
+                                onClick={() => setCancelDialogOpen(true)}
+                                color="theme_white"
+                            >
+                                Can't make it after all?
+                            </Button>
+                        </Box>
+                        <Box ml={1} mt={1}>
+                            <Button
+                                onClick={handleConfirm}
+                                color="theme_white"
+                                variant="contained"
+                            >
+                                Confirm participation
+                            </Button>
+                        </Box>
+                    </Box>
+                )
+            }
             case RegistrationStatuses.asObject.confirmed.id: {
+                return (
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="flex-end"
+                        flexWrap="wrap"
+                    >
+                        <Box ml={1} mt={1}>
+                            <Button
+                                onClick={() => setCancelDialogOpen(true)}
+                                color="theme_white"
+                            >
+                                Cancel participation
+                            </Button>
+                        </Box>
+                        <Box ml={1} mt={1}>
+                            <Button
+                                onClick={() =>
+                                    dispatch(
+                                        push(
+                                            `/dashboard/${event.slug}/event-id`,
+                                        ),
+                                    )
+                                }
+                                color="theme_white"
+                                variant="contained"
+                            >
+                                Your event ID
+                            </Button>
+                        </Box>
+                    </Box>
+                )
+            }
+            case RegistrationStatuses.asObject.confirmedToHub.id: {
                 return (
                     <Box
                         display="flex"
