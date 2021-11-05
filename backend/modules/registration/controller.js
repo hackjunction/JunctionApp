@@ -126,7 +126,9 @@ controller.cancelRegistration = (user, event) => {
         .then(registration => {
             if (
                 registration.status === STATUSES.confirmed.id ||
-                registration.status === STATUSES.accepted.id
+                registration.status === STATUSES.accepted.id ||
+                registration.status === STATUSES.confirmedToHub.id ||
+                registration.status === STATUSES.acceptedToHub.id
             ) {
                 registration.status = STATUSES.cancelled.id
                 return registration.save()
