@@ -80,11 +80,10 @@
         "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint"
     },
     "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
-    ],
+        "defaults",
+        "not IE 11",
+        "maintained node versions"
+      ],
     "proxy": "http://localhost:2222",
     "engines": {
         "node": "12.3.1",
