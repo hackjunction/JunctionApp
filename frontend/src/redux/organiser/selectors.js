@@ -122,6 +122,7 @@ export const registrationsConfirmed = createSelector(
     registrations => {
         const validStatuses = [
             RegistrationStatuses.asObject.confirmed.id,
+            RegistrationStatuses.asObject.confirmedToHub.id,
             RegistrationStatuses.asObject.checkedIn.id,
         ]
         return registrations.filter(registration => {

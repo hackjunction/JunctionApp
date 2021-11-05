@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 
 const STATUSES = [
     RegistrationStatuses.asObject.confirmed,
+    RegistrationStatuses.asObject.confirmedToHub,
     RegistrationStatuses.asObject.checkedIn,
 ]
 

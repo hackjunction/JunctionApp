@@ -123,20 +123,20 @@ RegistrationSchema.post('save', function (doc, next) {
 
     /** If a registration is accepted, create an email notification about it */
     if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {
-        EmailTaskController.createAcceptedTask(doc.user, doc.event, true)
+        // EmailTaskController.createAcceptedTask(doc.user, doc.event, true)
     }
 
     /** If a registration is rejected, create an email notification about it */
     if (this._previousStatus === SOFT_REJECTED && this.status === REJECTED) {
-        EmailTaskController.createRejectedTask(doc.user, doc.event, true)
+        // EmailTaskController.createRejectedTask(doc.user, doc.event, true)
     }
 
     if (!this._previousGrant && this.travelGrant === 0) {
-        EmailTaskController.createTravelGrantRejectedTask(doc, true)
+        // EmailTaskController.createTravelGrantRejectedTask(doc, true)
     }
 
     if (!this._previousGrant && this.travelGrant > 0) {
-        EmailTaskController.createTravelGrantAcceptedTask(doc, true)
+        // EmailTaskController.createTravelGrantAcceptedTask(doc, true)
     }
 
     WebhookService.triggerWebhooks('Registration', 'save', doc, doc.event)

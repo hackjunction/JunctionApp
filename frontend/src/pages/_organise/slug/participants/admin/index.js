@@ -129,9 +129,33 @@ export default () => {
                     <Paper>
                         <Statistic
                             label={
+                                <StatusBadge
+                                    status={STATUSES.confirmedToHub.id}
+                                />
+                            }
+                            value={getCount(['confirmedToHub'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={
                                 <StatusBadge status={STATUSES.accepted.id} />
                             }
                             value={getCount(['accepted'])}
+                        ></Statistic>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper>
+                        <Statistic
+                            label={
+                                <StatusBadge
+                                    status={STATUSES.acceptedToHub.id}
+                                />
+                            }
+                            value={getCount(['acceptedToHub'])}
                         ></Statistic>
                     </Paper>
                 </Grid>

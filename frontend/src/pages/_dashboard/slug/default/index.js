@@ -66,7 +66,7 @@ export default () => {
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />
-                <VisaInvitationBlock />
+                {/* <VisaInvitationBlock /> */}
                 <ProjectBlock />
                 <TeamStatusBlock />
                 <GavelReviewingBlock />

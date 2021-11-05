@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const _ = require('lodash')
 const Promise = require('bluebird')
 const mongoose = require('mongoose')
@@ -58,10 +59,8 @@ controller.updateRegistration = (user, event, data) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(async registration => {
-            const [
-                success,
-                answers,
-            ] = await RegistrationHelpers.validateAnswers(data, event)
+            const [success, answers] =
+                await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
                 return Registration.updateAllowed(registration, { answers })
@@ -74,10 +73,8 @@ controller.finishRegistration = (user, event, data) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(async registration => {
-            const [
-                success,
-                answers,
-            ] = await RegistrationHelpers.validateAnswers(data, event)
+            const [success, answers] =
+                await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
                 // answers are complete
@@ -108,14 +105,18 @@ controller.confirmRegistration = (user, event) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(registration => {
-            if (registration.status === STATUSES.accepted.id) {
-                registration.status = STATUSES.confirmed.id
-                return registration.save()
+            switch (registration.status) {
+                case STATUSES.accepted.id:
+                    registration.status = STATUSES.confirmed.id
+                    return registration.save()
+                case STATUSES.acceptedToHub.id:
+                    registration.status = STATUSES.confirmedToHub.id
+                    return registration.save()
+                default:
+                    throw new ForbiddenError(
+                        'Only accepted registrations can be confirmed',
+                    )
             }
-
-            throw new ForbiddenError(
-                'Only accepted registrations can be confirmed',
-            )
         })
 }
 
@@ -125,7 +126,9 @@ controller.cancelRegistration = (user, event) => {
         .then(registration => {
             if (
                 registration.status === STATUSES.confirmed.id ||
-                registration.status === STATUSES.accepted.id
+                registration.status === STATUSES.accepted.id ||
+                registration.status === STATUSES.confirmedToHub.id ||
+                registration.status === STATUSES.acceptedToHub.id
             ) {
                 registration.status = STATUSES.cancelled.id
                 return registration.save()
