@@ -139,9 +139,11 @@ export const shownPages = createSelector(
             submissions: registration?.status === STATUSES.checkedIn.id,
             eventID:
                 event?.eventType === EventTypes.physical.id &&
-                [STATUSES.confirmed.id, STATUSES.checkedIn.id].indexOf(
-                    registration?.status,
-                ) !== -1,
+                [
+                    STATUSES.confirmed.id,
+                    STATUSES.confirmedToHub.id,
+                    STATUSES.checkedIn.id,
+                ].indexOf(registration?.status) !== -1,
             reviewing:
                 registration?.status === STATUSES.checkedIn.id &&
                 event?.reviewMethod === ReviewingMethods.gavelPeerReview.id,
@@ -152,9 +154,11 @@ export const shownPages = createSelector(
                 registration?.status === STATUSES.checkedIn.id &&
                 event.overallReviewMethod !== 'noOverallWinner',
             hackerPack:
-                [STATUSES.checkedIn.id, STATUSES.confirmed.id].indexOf(
-                    registration?.status,
-                ) !== -1,
+                [
+                    STATUSES.checkedIn.id,
+                    STATUSES.confirmed.id,
+                    STATUSES.confirmedToHub.id,
+                ].indexOf(registration?.status) !== -1,
         }
     },
 )

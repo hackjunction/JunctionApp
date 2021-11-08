@@ -38,15 +38,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default props => {
-    const {
-        fields,
-        onNext,
-        nextLabel,
-        prevLabel,
-        onPrev,
-        data,
-        isActive,
-    } = props
+    const { fields, onNext, nextLabel, prevLabel, onPrev, data, isActive } =
+        props
     const { event, registration } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
@@ -59,9 +52,8 @@ export default props => {
                 const fieldParams = RegistrationFields.getField(field.fieldName)
 
                 if (fieldParams) {
-                    result.validationSchema[
-                        field.fieldName
-                    ] = fieldParams.validationSchema(field.require, event)
+                    result.validationSchema[field.fieldName] =
+                        fieldParams.validationSchema(field.require, event)
                     if (
                         registration &&
                         registration.answers &&
@@ -70,9 +62,8 @@ export default props => {
                         result.initialValues[field.fieldName] =
                             registration.answers[field.fieldName]
                     } else {
-                        result.initialValues[
-                            field.fieldName
-                        ] = fieldParams.default(userProfile, idTokenData)
+                        result.initialValues[field.fieldName] =
+                            fieldParams.default(userProfile, idTokenData)
                     }
                 }
                 if (data.hasOwnProperty(field.fieldName)) {
