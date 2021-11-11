@@ -29,6 +29,15 @@ const getUserProfilesByTeamPublic = asyncHandler(async (req, res) => {
     return res.status(200).json(userProfiles)
 })
 
+// Maybe trim down the data sent to the frontend
+const getUserProfilesByTeamId = asyncHandler(async (req, res) => {
+    const teamMembers = await TeamController.getTeamMembers(req.params.teamId)
+    const userProfiles = await UserProfileController.getUserProfiles(
+        teamMembers,
+    )
+    return res.status(200).json(userProfiles)
+})
+
 const createUserProfile = asyncHandler(async (req, res) => {
     const userProfile = await UserProfileController.createUserProfile(
         req.body,
@@ -72,6 +81,13 @@ router
 
 router.route('/public').get(getUserProfilesPublic)
 router.route('/public/team/:teamId').get(getUserProfilesByTeamPublic)
+
+router.get(
+    '/team/:teamId',
+    hasToken,
+    hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+    getUserProfilesByTeamId,
+)
 
 router.get('/search/:terms', hasToken, searchUsers)
 
