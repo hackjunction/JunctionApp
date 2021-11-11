@@ -292,33 +292,36 @@ export default () => {
                                     ))}
                                 </DetailSection>
                                 <DetailSection label="Education">
-                                    {user.education.university ? (
-                                        <>
+                                    {typeof user.education !== 'undefined' ? (
+                                        user.education.university ? (
+                                            <>
+                                                <Typography
+                                                    className={classes.bold}
+                                                    variant="body2"
+                                                >
+                                                    {user.education.level},{' '}
+                                                    {user.education.degree}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {user.education.university}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {user.education
+                                                        .graduationYear <
+                                                    new Date().getFullYear()
+                                                        ? `Graduation year: ${user.education.graduationYear}`
+                                                        : `Expected graduation year: ${user.education.graduationYear}`}
+                                                </Typography>
+                                            </>
+                                        ) : (
                                             <Typography
                                                 className={classes.bold}
                                                 variant="body2"
                                             >
-                                                {user.education.level},{' '}
-                                                {user.education.degree}
+                                                {user.education.level}
                                             </Typography>
-                                            <Typography variant="body2">
-                                                {user.education.university}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                {user.education.graduationYear <
-                                                new Date().getFullYear()
-                                                    ? `Graduation year: ${user.education.graduationYear}`
-                                                    : `Expected graduation year: ${user.education.graduationYear}`}
-                                            </Typography>
-                                        </>
-                                    ) : (
-                                        <Typography
-                                            className={classes.bold}
-                                            variant="body2"
-                                        >
-                                            {user.education.level}
-                                        </Typography>
-                                    )}
+                                        )
+                                    ) : null}
                                 </DetailSection>
                             </Grid>
                             <Grid item xs={12} md={4} container>
