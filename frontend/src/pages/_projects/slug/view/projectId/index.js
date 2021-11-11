@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
+import ShareProject from 'components/projects/ProjectDetail/ShareProject'
 import ScoreForm from './ScoreForm'
 import Container from 'components/generic/Container'
 
@@ -117,6 +118,7 @@ export default ({ event, showFullTeam }) => {
                     />
                 </Container>
             ) : null}
+            <ShareProject project={project} event={event} />
         </PageWrapper>
     )
 }

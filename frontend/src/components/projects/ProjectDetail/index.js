@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { find, filter } from 'lodash-es'
-import { Box, Typography, Button, Grid, Tooltip } from '@material-ui/core'
+import { Box, Typography, Button, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
@@ -12,13 +12,10 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
 
-import { popupCenter } from '../../../utils/misc'
-
 import ReactPlayer from 'react-player'
 
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -117,13 +114,6 @@ const ProjectDetail = ({
     const [pause, setPause] = useState(true)
 
     if (!project) return null
-    console.log('project :>> ', project)
-    const shareurl =
-        'https://app.hackjunction.com/projects/' +
-        event.slug +
-        '/view/' +
-        project._id // TODO: remove hard coded base URL
-    const sharetext = `I just applied to ${event.name}!`
 
     const renderTrack = () => {
         const value = find(event.tracks, t => t.slug === project.track)
@@ -429,77 +419,6 @@ const ProjectDetail = ({
                         />
                     </Box>
                     <Box height={200} />
-
-                    <Grid item xs={12} lg={12}>
-                        <Box mt={5} alignItems="center" alignContent="center">
-                            <Typography
-                                className={classes.doneTitle}
-                                variant="h5"
-                            >
-                                Share this project with friends!
-                            </Typography>
-                            <Grid
-                                container
-                                spacing={1}
-                                direction="row"
-                                justify="center"
-                                alignItems="center"
-                            >
-                                <Grid item>
-                                    <FontAwesomeIcon
-                                        icon={['fab', 'twitter-square']}
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://twitter.com/intent/tweet?text=${sharetext}&url=${shareurl}`,
-                                                title: 'Twitter',
-                                            })
-                                        }
-                                        className={classes.socialIcon}
-                                        size="3x"
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <FontAwesomeIcon
-                                        icon={['fab', 'facebook-square']}
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://www.facebook.com/sharer/sharer.php?u=${shareurl}&quote=${sharetext}`,
-                                                title: 'Facebook',
-                                            })
-                                        }
-                                        className={classes.socialIcon}
-                                        size="3x"
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <FontAwesomeIcon
-                                        icon={['fab', 'linkedin']}
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareurl}`,
-                                                title: 'Linkedin',
-                                            })
-                                        }
-                                        className={classes.socialIcon}
-                                        size="3x"
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <FontAwesomeIcon
-                                        icon={['fab', 'vk']}
-                                        onClick={() =>
-                                            popupCenter({
-                                                url: `https://vkontakte.ru/share.php?url=${shareurl}&`,
-                                                title: 'VKOntakte',
-                                            })
-                                        }
-                                        className={classes.socialIcon}
-                                        size="3x"
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Grid>
                 </Container>
             </Box>
         </>
