@@ -53,6 +53,10 @@ UserProfilesService.getRecruiters = idToken => {
     return _axios.get('/user-profiles/recruiters', config(idToken))
 }
 
+UserProfilesService.getUserProfilesByTeamId = (teamId, idToken) => {
+    return _axios.get(`/user-profiles/team/${teamId}`, config(idToken))
+}
+
 UserProfilesService.updateRecruiter = (
     idToken,
     recruiterId,
