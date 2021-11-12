@@ -19,7 +19,9 @@ import UserProfilesService from 'services/userProfiles'
 
 const RecruitmentLink = ({ memberId }) => {
     return (
-        <ExternalLink href={`http://localhost:3000/recruitment/${memberId}`}>
+        <ExternalLink
+            href={`${process.env.REACT_APP_BASE_URL}/recruitment/${memberId}`}
+        >
             <ListItemText>Interested in recruitment</ListItemText>
         </ExternalLink>
     )
