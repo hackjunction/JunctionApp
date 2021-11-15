@@ -98,9 +98,10 @@ const ProjectTeam = React.memo(({ hiddenUsers, teamId, showFullTeam }) => {
                             primary={`${member.firstName} ${member.lastName}`}
                             secondary={secondaryText(member)}
                         />
-                        {member.recruitmentOptions.consent && (
-                            <IfRecruiter memberId={member.userId} />
-                        )}
+                        {typeof member.recruitmentOptions !== 'undefined' &&
+                            member.recruitmentOptions.consent && (
+                                <IfRecruiter memberId={member.userId} />
+                            )}
                     </ListItem>
                 )
             })}

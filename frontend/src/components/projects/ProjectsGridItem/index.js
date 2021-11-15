@@ -5,6 +5,8 @@ import { Box, Grid, Typography } from '@material-ui/core'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
+import Tag from 'components/generic/Tag'
+import theme from 'material-ui-theme'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -52,9 +54,30 @@ const ProjectsGridItem = ({
     message = null,
 }) => {
     const classes = useStyles({ labelBackground })
-
     const previewImage =
         project.images.length > 0 ? project.images[0].publicId : ''
+
+    const statusTag = status => {
+        switch (status) {
+            case 'final':
+                return (
+                    <Tag
+                        label="Final"
+                        color={theme.palette.theme_turquoise.main}
+                    />
+                )
+            case 'draft':
+                return (
+                    <Tag
+                        label="Draft"
+                        color={theme.palette.theme_lightgray.main}
+                    />
+                )
+            default:
+                return null
+        }
+    }
+
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Box className={classes.wrapper}>
@@ -84,6 +107,7 @@ const ProjectsGridItem = ({
                     <Typography variant="body1" paragraph>
                         {project.punchline}
                     </Typography>
+                    {statusTag(project.status)}
                 </Box>
                 {showTableLocation && project.location && (
                     <Box pb={2} pl={2} pr={2}>

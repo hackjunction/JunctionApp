@@ -16,6 +16,8 @@ import ReactPlayer from 'react-player'
 
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
+import theme from 'material-ui-theme'
+import Tag from 'components/generic/Tag'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
@@ -140,6 +142,28 @@ const ProjectDetail = ({
             </Typography>
         ))
     }
+
+    const statusTag = status => {
+        switch (status) {
+            case 'final':
+                return (
+                    <Tag
+                        label="Final"
+                        color={theme.palette.theme_turquoise.main}
+                    />
+                )
+            case 'draft':
+                return (
+                    <Tag
+                        label="Draft"
+                        color={theme.palette.theme_lightgray.main}
+                    />
+                )
+            default:
+                return null
+        }
+    }
+
     return (
         <>
             <Helmet>
@@ -261,6 +285,7 @@ const ProjectDetail = ({
                         >
                             {project.punchline}
                         </Typography>
+                        {statusTag(project.status)}
                         <Box mt={5} mb={5}>
                             <Markdown source={project.description} />
                         </Box>
