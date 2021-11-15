@@ -285,7 +285,8 @@ const ProjectDetail = ({
                         >
                             {project.punchline}
                         </Typography>
-                        {statusTag(project.status)}
+                        {typeof project.status !== 'undefined' &&
+                            statusTag(project.status)}
                         <Box mt={5} mb={5}>
                             <Markdown source={project.description} />
                         </Box>

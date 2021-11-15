@@ -107,7 +107,8 @@ const ProjectsGridItem = ({
                     <Typography variant="body1" paragraph>
                         {project.punchline}
                     </Typography>
-                    {statusTag(project.status)}
+                    {typeof project.status !== 'undefined' &&
+                        statusTag(project.status)}
                 </Box>
                 {showTableLocation && project.location && (
                     <Box pb={2} pl={2} pr={2}>
