@@ -4,37 +4,16 @@ import Button from 'components/generic/Button'
 
 import { Box, TextField } from '@material-ui/core'
 
-const ScoreForm = ({ event, project, submit }) => {
-    const initalProjectValues = {
-        project: project._id,
-        event: event._id,
-        scoreGiver: '',
-        status: 'submitted',
-        score: 0,
-        maxScore: 10,
-        message: '',
-    }
-
+const ScoreForm = ({ event, project, submit, score }) => {
     return (
         <>
             <Formik
-                initialValues={{ ...initalProjectValues }}
+                initialValues={{ ...score }}
                 enableReinitialize={true}
                 onSubmit={submit}
             >
                 {({ isSubmitting }) => (
                     <Form>
-                        <Field name="scoreGiver">
-                            {({ field }) => (
-                                <TextField
-                                    fullWidth
-                                    label="Name"
-                                    required={true}
-                                    {...field}
-                                />
-                            )}
-                        </Field>
-                        <ErrorMessage name="score" component="div" />
                         <Field name="score">
                             {({ field }) => (
                                 <TextField

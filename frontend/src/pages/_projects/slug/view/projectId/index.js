@@ -15,6 +15,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 
 import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
+import { set } from 'object-path'
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
@@ -22,7 +23,7 @@ export default ({ event, showFullTeam }) => {
     const match = useRouteMatch()
     const { projectId, token } = match.params
     const { slug } = event
-
+    const [scoreExists, setScoreExists] = useState(false)
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -52,7 +53,10 @@ export default ({ event, showFullTeam }) => {
                 event.slug,
                 project._id,
             ).then(score => {
-                if (score[0]) setProjectScore(score[0])
+                if (score[0]) {
+                    setProjectScore(score[0])
+                    setScoreExists(true)
+                }
             })
         }
     }, [event, token, project])
@@ -75,11 +79,22 @@ export default ({ event, showFullTeam }) => {
         values.project = project._id
         values.event = event._id
         try {
-            await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
-                token,
-                event.slug,
-                values,
-            )
+            if (scoreExists) {
+                await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
+                    token,
+                    event.slug,
+                    values,
+                )
+                setProjectScore(values)
+            } else {
+                await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
+                    token,
+                    event.slug,
+                    values,
+                )
+                setProjectScore(values)
+            }
+
             dispatch(SnackbarActions.success(`Score saved.`))
             resetForm()
         } catch (e) {
@@ -115,6 +130,7 @@ export default ({ event, showFullTeam }) => {
                         event={event}
                         project={project}
                         submit={handleSubmit}
+                        score={projectScore}
                     />
                 </Container>
             ) : null}
