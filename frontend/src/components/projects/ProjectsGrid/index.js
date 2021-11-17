@@ -19,7 +19,6 @@ const ProjectsGrid = ({
 }) => {
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
-
     const fetchData = useCallback(async () => {
         const nprojects = await Promise.all(
             projects.map(async project => {
@@ -51,7 +50,6 @@ const ProjectsGrid = ({
 
     useEffect(() => {
         if (showScore) {
-            console.log('fetch')
             fetchData()
         } else {
             setSorted(
@@ -59,6 +57,7 @@ const ProjectsGrid = ({
             )
         }
     }, [fetchData, projects, showScore, sortField])
+
     console.log(sorted)
     return (
         <Grid
