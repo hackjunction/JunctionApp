@@ -23,7 +23,7 @@ controller.deleteTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {
         if (team.owner !== userId) {
             throw new InsufficientPrivilegesError(
-                'Only the team owner can delete a team.'
+                'Only the team owner can delete a team.',
             )
         }
         return team.remove()
@@ -34,7 +34,7 @@ controller.editTeam = (eventId, userId, edits) => {
     return controller.getTeam(eventId, userId).then(team => {
         if (team.owner !== userId) {
             throw new InsufficientPrivilegesError(
-                'Only the team owner can edit a team.'
+                'Only the team owner can edit a team.',
             )
         }
         return Team.updateAllowed(team, edits)
@@ -44,11 +44,9 @@ controller.editTeam = (eventId, userId, edits) => {
 controller.joinTeam = (eventId, userId, code) => {
     return controller.getTeamByCode(eventId, code).then(team => {
         // TODO HIGH PRIORITY team size defined in event
-        /*
         if (team.members.length >= 4) {
             throw new ForbiddenError('Teams can have at most 5 members')
         }
-        */
         team.members = team.members.concat(userId)
         return team.save()
     })
@@ -65,7 +63,7 @@ controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
     return controller.getTeam(eventId, userId).then(team => {
         if (team.owner !== userId) {
             throw new InsufficientPrivilegesError(
-                'Only the team owner can remove members'
+                'Only the team owner can remove members',
             )
         }
         team.members = team.members.filter(member => member !== userToRemove)
@@ -102,7 +100,7 @@ controller.getTeam = (eventId, userId) => {
         .then(team => {
             if (!team) {
                 throw new NotFoundError(
-                    'No team exists for this user and event'
+                    'No team exists for this user and event',
                 )
             }
             return team
@@ -131,11 +129,11 @@ controller.attachMeta = async team => {
     const meta = userIds.reduce((res, userId) => {
         const registration = _.find(
             registrations,
-            registration => registration.user === userId
+            registration => registration.user === userId,
         )
         const profile = _.find(
             userProfiles,
-            profile => profile.userId === userId
+            profile => profile.userId === userId,
         )
 
         if (!registration || !profile) {
@@ -173,7 +171,7 @@ controller.attachMeta = async team => {
                 team.remove()
                 // Throw not found error
                 throw new NotFoundError(
-                    'No team exists for this user and event'
+                    'No team exists for this user and event',
                 )
             }
         }
