@@ -208,52 +208,31 @@ export default () => {
                         <DetailTop user={user} />
                         <Box mt={3} />
                         <Grid container>
-                            {user.profile.biography ? (
-                                <>
-                                    <Grid item xs={12} md={8}>
-                                        <DetailSection label="Biography">
-                                            <Typography variant="body2">
-                                                {user.profile.biography}
-                                            </Typography>
-                                        </DetailSection>
-                                    </Grid>
-                                    <Grid item xs={12} md={4}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            flexDirection="row"
-                                            flexWrap="wrap"
-                                            justifyContent="flex-start"
-                                        >
-                                            <Box ml={0.5} mr={0.5} mb={0.5}>
-                                                {renderRecruitmentStatus()}
-                                            </Box>
-                                            <Box ml={0.5} mr={0.5} mb={0.5}>
-                                                {renderRelocationStatus()}
-                                            </Box>
-                                        </Box>
-                                    </Grid>
-                                </>
-                            ) : (
-                                <>
-                                    <Grid item xs={12}>
-                                        <Box
-                                            p={2}
-                                            display="flex"
-                                            flexDirection="row"
-                                            flexWrap="wrap"
-                                            justifyContent="center"
-                                        >
-                                            <Box mr={0.5} mb={0.5}>
-                                                {renderRecruitmentStatus()}
-                                            </Box>
-                                            <Box mr={0.5} mb={0.5}>
-                                                {renderRelocationStatus()}
-                                            </Box>
-                                        </Box>
-                                    </Grid>
-                                </>
-                            )}
+                            <>
+                                <Grid item xs={9} md={8}>
+                                    <DetailSection label="Biography">
+                                        <Typography variant="body2">
+                                            {user.profile.biography}
+                                        </Typography>
+                                    </DetailSection>
+                                </Grid>
+                            </>
+                            <Grid item xs={3} md={4}>
+                                <Box
+                                    p={2}
+                                    display="flex"
+                                    flexDirection="row"
+                                    flexWrap="wrap"
+                                    justifyContent="flex-start"
+                                >
+                                    <Box ml={0.5} mr={0.5} mb={0.5}>
+                                        {renderRecruitmentStatus()}
+                                    </Box>
+                                    <Box ml={0.5} mr={0.5} mb={0.5}>
+                                        {renderRelocationStatus()}
+                                    </Box>
+                                </Box>
+                            </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <DetailSection label="Skills">
                                     <Box>

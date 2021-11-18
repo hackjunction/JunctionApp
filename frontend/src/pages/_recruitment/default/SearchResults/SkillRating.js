@@ -49,6 +49,7 @@ const SkillRating = ({ data, small = false, showTooltip }) => {
             <Typography
                 variant={small ? 'caption' : 'inherit'}
                 className={classes.label}
+                align="left"
             >
                 {data.skill}
             </Typography>
