@@ -4,7 +4,8 @@ import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, FastField } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
-import { Grid, Box } from '@material-ui/core'
+import { Grid, Box, Typography } from '@material-ui/core'
+import GradientBox from 'components/generic/GradientBox'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
@@ -22,14 +23,18 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
-
+import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 
+const useStyles = makeStyles(theme => ({
+    uppercase: { 'text-transform': 'uppercase' },
+}))
+
 // TODO make the form labels and hints customizable
-export default props => {
+const SubmissionForm = props => {
     const id = props.id
     const handleProjectSelected = props.handleProjectSelected
-
+    const classes = useStyles()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
@@ -39,11 +44,13 @@ export default props => {
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
 
     const [project, setProject] = useState(null)
+    const [projectStatus, setProjectStatus] = useState('')
 
     useEffect(() => {
         if (projects && projects.length && id) {
             const foundProject = projects.find(p => p._id === id)
             setProject(foundProject)
+            setProjectStatus(foundProject.status)
         } else {
             setProject(null)
         }
@@ -82,10 +89,32 @@ export default props => {
         if (projectLoading) {
             return <PageWrapper loading />
         }
-        //console.log('props', formikProps)
         return (
             <>
                 <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <GradientBox p={3} color="theme_white">
+                            <Typography variant="overline" gutterBottom>
+                                This projects status is:
+                            </Typography>
+                            <Typography
+                                variant="h4"
+                                color={
+                                    projectStatus === 'final'
+                                        ? 'primary'
+                                        : 'error'
+                                }
+                                className={classes.uppercase}
+                                gutterBottom
+                            >
+                                {projectStatus}
+                            </Typography>
+                            <Typography variant="body1">
+                                Remember to update the project status to final
+                                if you want this project to be graded!
+                            </Typography>
+                        </GradientBox>
+                    </Grid>
                     <Grid item xs={12}>
                         <FastField
                             name="name"
@@ -608,3 +637,5 @@ export default props => {
         </Formik>
     )
 }
+
+export default SubmissionForm
