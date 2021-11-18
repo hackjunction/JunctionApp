@@ -12,6 +12,8 @@ import ImageUpload from 'components/inputs/ImageUpload'
 import TextInput from 'components/inputs/TextInput'
 import BottomBar from 'components/inputs/BottomBar'
 
+import MarkdownInput from 'components/inputs/MarkdownInput'
+
 import HackerpackService from 'services/hackerpack'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
@@ -136,8 +138,9 @@ export default () => {
                                     <FastField
                                         name="description"
                                         render={({ field, form }) => (
-                                            <TextInput
+                                            <MarkdownInput
                                                 label={t('Description_')}
+                                                multiline
                                                 value={field.value}
                                                 onChange={value =>
                                                     form.setFieldValue(
