@@ -11,7 +11,7 @@ const Settings = {
     KAPPA: 0.0001,
     EPSILON: 0.25,
     /** How long must an annotator wait between votes? */
-    ANNOTATOR_WAIT_SECONDS: 120,
+    ANNOTATOR_WAIT_SECONDS: 45,
     /** How long after being assigned a project is an annotator considered inactive? */
     ANNOTATOR_TIMEOUT_MINS: 5,
     /** How many views must a project have to no longer be automatically prioritised? */
