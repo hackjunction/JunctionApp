@@ -1,6 +1,12 @@
 const initialEvents = [
     {
-        statuses: ['checkedIn'],
+        statuses: [
+            'checkedIn',
+            'confirmed',
+            'accepted',
+            'confirmedToHub',
+            'acceptedToHub',
+        ],
     },
 ]
 
