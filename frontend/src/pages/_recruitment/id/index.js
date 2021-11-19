@@ -11,6 +11,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 
 import UserProfilesService from 'services/userProfiles'
+import * as RecruitmentActions from 'redux/recruitment/actions'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
@@ -59,12 +60,12 @@ export default () => {
     const match = useRouteMatch()
     const { t } = useTranslation()
 
-    // const sendMessage = useCallback(
-    //     (message, userId) => {
-    //         dispatch(RecruitmentActions.sendMessage(message, userId))
-    //     },
-    //     [dispatch],
-    // )
+    const sendMessage = useCallback(
+        (message, userId) => {
+            dispatch(RecruitmentActions.sendMessage(message, userId))
+        },
+        [dispatch],
+    )
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
@@ -109,8 +110,8 @@ export default () => {
         console.log('user is', user)
         if (!err && user !== null) {
             setLoading(true)
-            //const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
-            //const res = await sendMessage(formatted, user.userId)
+            const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
+            const res = await sendMessage(formatted, user.userId)
 
             // TODO fix snackbar here
             /*if (res?.error) {
@@ -121,7 +122,7 @@ export default () => {
             //}
             setLoading(false)
         }
-    }, [message, user, dispatch, t])
+    }, [message, user, sendMessage, dispatch, t])
 
     // TODO A little bit hard to define for translating
     const renderRecruitmentStatus = () => {
@@ -375,7 +376,7 @@ export default () => {
                                     <FormControl
                                         touched={true}
                                         error={message.error}
-                                        hint={`Type a message for ${user.profile.firstName} here. They will receive an email notification with the message as well as your email address, so you can continue the conversation in the medium of your choice.`}
+                                        hint={`Type a message for ${user.profile.firstName} here. They will receive an email notification with the message. Remember to add your contact information to continue the messaging on your prefered platform`}
                                     >
                                         <TextAreaInput
                                             label="Your message"
