@@ -35,9 +35,8 @@ controller.queryProfiles = (query = {}, user) => {
             const formatted = MongoUtils.ensureObjectId(filter.value)
             return {
                 [filter.field]: {
-                    [MongoUtils.filterOperatorToMongoOperator(
-                        filter.operator,
-                    )]: formatted,
+                    [MongoUtils.filterOperatorToMongoOperator(filter.operator)]:
+                        formatted,
                 },
             }
         })
@@ -95,6 +94,7 @@ controller.createRecruitmentProfile = async (
         profile: {
             firstName: userProfile.firstName,
             lastName: userProfile.lastName,
+            email: userProfile.email,
             gender: userProfile.gender,
             nationality: userProfile.nationality,
             countryOfResidence: userProfile.countryOfResidence,

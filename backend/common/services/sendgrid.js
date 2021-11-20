@@ -280,8 +280,7 @@ const SendgridService = {
             subject: `${global.gConfig.PLATFORM_OWNER_NAME}: You have a message from a recruiter!`,
             subtitle: `${recruiter.firstName} ${recruiter.lastName} messaged you on ${global.gConfig.SENDGRID_FROM_NAME} Recruitment.`,
             body: `
-                Look at that, someone is interested in your hacker skills!
-                ${organization} has just sent you a message via the ${global.gConfig.SENDGRID_FROM_NAME} Recruitment platform. Here is their message:
+                ${organization} has just sent you a message via the ${global.gConfig.SENDGRID_FROM_NAME} Recruitment platform:
                 <br/>
                 <br/>
                 <div style="padding: 1rem; background: lightgray;">

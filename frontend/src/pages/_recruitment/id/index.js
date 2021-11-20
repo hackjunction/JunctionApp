@@ -77,7 +77,7 @@ export default () => {
                 return t('Your_message_length_')
             }
             if (value.length > 1000) {
-                return t('Your_message_long')
+                return t('Your_message_long_')
             }
 
             return
@@ -197,7 +197,6 @@ export default () => {
                 return null
         }
     }
-
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <PageWrapper

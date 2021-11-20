@@ -153,6 +153,7 @@ export default ({ user = {} }) => {
             </Box>
             <Box className={classes.nameWrapper}>
                 <Typography variant="h6">{`${profile.firstName} ${profile.lastName}`}</Typography>
+                <Typography variant="subtitle1">{`${profile.email}`}</Typography>
                 <Typography variant="subtitle1">
                     {profile.countryOfResidence}
                 </Typography>
