@@ -195,6 +195,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                                     {t('Current_')}
                                 </Button>
                             </Grid>
+                            {/* commented out for Junction 2021
                             {event.eventType === 'physical' && (
                                 <Grid item xs={12}>
                                     <Box
@@ -212,7 +213,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                                         </Button>
                                     </Box>
                                 </Grid>
-                            )}
+                            )} */}
                         </Grid>
                     </VoteTimer>
                 </Grid>
