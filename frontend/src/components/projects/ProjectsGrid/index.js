@@ -76,6 +76,7 @@ const ProjectsGrid = ({
                     onClickMore={() => onSelect(project)}
                     score={project?.score}
                     message={project?.message}
+                    showTags={true}
                 />
             ))}
         </Grid>

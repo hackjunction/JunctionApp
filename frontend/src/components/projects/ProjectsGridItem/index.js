@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
+        textAlign: 'left',
     },
     image: {
         height: '140px',
@@ -52,6 +53,7 @@ const ProjectsGridItem = ({
     labelBackground = 'primary',
     score = null,
     message = null,
+    showTags = false,
 }) => {
     const classes = useStyles({ labelBackground })
     const previewImage =
@@ -107,7 +109,10 @@ const ProjectsGridItem = ({
                     <Typography variant="body1" paragraph>
                         {project.punchline}
                     </Typography>
-                    {typeof project.status !== 'undefined' &&
+                </Box>
+                <Box pb={2} pl={2} pr={2}>
+                    {showTags &&
+                        typeof project.status !== 'undefined' &&
                         statusTag(project.status)}
                 </Box>
                 {showTableLocation && project.location && (
