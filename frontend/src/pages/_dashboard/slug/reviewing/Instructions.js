@@ -10,7 +10,7 @@ import PageHeader from 'components/generic/PageHeader'
 import Markdown from 'components/generic/Markdown'
 import Button from 'components/generic/Button'
 
-import instructionsPhysical from './instructions-physical.md'
+//import instructionsPhysical from './instructions-physical.md'
 import instructionsOnline from './instructions-online.md'
 
 export default () => {
@@ -20,10 +20,11 @@ export default () => {
     const [instructions, setInstructions] = useState('')
 
     useEffect(() => {
-        const path =
-            event.eventType === 'physical'
-                ? instructionsPhysical
-                : instructionsOnline
+        // const path =
+        //     event.eventType === 'physical'
+        //         ? instructionsPhysical
+        //         : instructionsOnline
+        const path = instructionsOnline
         fetch(path)
             .then(response => response.text())
             .then(text => {

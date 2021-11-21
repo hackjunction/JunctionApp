@@ -8,7 +8,7 @@ Gavel is a fully automated judging system that both tells you which projects to 
 
 ### Reviewing quota
 
-To ensure quality results, each participant should review at least 5 other projects. However, since reviewing other projects is a lot of fun, you're free to keep going until you've reviewed all of the other projects. If your team does not participate in reviewing other projects, we reserve the right to apply a small penalty to your team's score.
+To ensure quality results, each participant should review as many projects they can. If your team does not participate in reviewing other projects, we reserve the right to apply a small penalty to your team's score.
 
 ### To recap:
 
