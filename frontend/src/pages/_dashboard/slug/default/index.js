@@ -14,7 +14,7 @@ import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
 import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
 //import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
-//import CertificateBlock from './Blocks/CertificateBlock'
+import CertificateBlock from './Blocks/CertificateBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
 import SocialMediaBlock from './Blocks/SocialMediaBlock'
 
@@ -67,6 +67,7 @@ export default () => {
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />
                 {/* <VisaInvitationBlock /> */}
+                <CertificateBlock />
                 <ProjectBlock />
                 <TeamStatusBlock />
                 <GavelReviewingBlock />
