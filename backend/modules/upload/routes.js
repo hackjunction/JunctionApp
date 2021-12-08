@@ -115,6 +115,33 @@ router.post(
     },
 )
 
+router.post(
+    '/events/:slug/certificate',
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    (req, res, next) => {
+        helper.uploadEventCertificate(req.event.slug, req.user.sub)(
+            req,
+            res,
+            function (err) {
+                if (err) {
+                    if (err.code === 'LIMIT_FILE_SIZE') {
+                        next(new ForbiddenError(err.message))
+                    } else {
+                        next(err)
+                    }
+                } else {
+                    res.status(200).json({
+                        url: req.file.secure_url || req.file.url,
+                        publicId: req.file.public_id,
+                    })
+                }
+            },
+        )
+    },
+)
+
 /**
  * Upload images for a project
  */

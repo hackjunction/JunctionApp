@@ -48,6 +48,9 @@ const UploadHelper = {
     generateTravelGrantTag: (slug, userId) => {
         return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`
     },
+    generateCertificateTag: slug => {
+        return `${cloudinaryRootPath}-event-${slug}-certificate`
+    },
     generateHackerpackTag: id => {
         return `${cloudinaryRootPath}-hackerpac-${id}`
     },
@@ -60,15 +63,15 @@ const UploadHelper = {
 
     deleteWithTag: tag => {
         return new Promise(function (resolve, reject) {
-            cloudinary.v2.api.delete_resources_by_tag(tag, function (
-                error,
-                result,
-            ) {
-                if (error) {
-                    console.error('Unable to delete images with tag', tag)
-                }
-                resolve(result)
-            })
+            cloudinary.v2.api.delete_resources_by_tag(
+                tag,
+                function (error, result) {
+                    if (error) {
+                        console.error('Unable to delete images with tag', tag)
+                    }
+                    resolve(result)
+                },
+            )
         })
     },
 
@@ -132,6 +135,19 @@ const UploadHelper = {
             {},
             {
                 tag: UploadHelper.generateTravelGrantTag(slug, userId),
+            },
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 10 * 1024 * 1024 },
+        }).single('pdf')
+    },
+    uploadEventCertificate: (slug, userId) => {
+        const storage = createDocumentStorageWithPath(
+            `events/certificates/`,
+            {},
+            {
+                tag: UploadHelper.generateCertificateTag(slug, userId),
             },
         )
         return multer({

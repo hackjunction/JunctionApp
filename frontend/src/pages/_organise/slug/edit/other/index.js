@@ -1,11 +1,14 @@
 import React from 'react'
-
+import { useSelector } from 'react-redux'
 import { Grid } from '@material-ui/core'
-import { FastField } from 'formik'
+import { FastField, Field } from 'formik'
 import FormControl from 'components/inputs/FormControl'
 import EventTagsForm from './EventTagsForm'
 import WebhooksForm from './WebhooksForm'
 import MetaTagsForm from './MetaTagsForm'
+
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import CertificateForm from './CertificateForm'
 
 export default () => {
     return (
@@ -59,6 +62,28 @@ export default () => {
                             />
                         </FormControl>
                     )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name="certificate"
+                    render={({ field, form }) => {
+                        console.log(field)
+                        return (
+                            <FormControl
+                                label="Certificate"
+                                hint="Add a certificate that will be given to the participants. max file size: 10mb"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <CertificateForm
+                                    value={field.value}
+                                    fieldName={field.name}
+                                    setFieldValue={form.setFieldValue}
+                                />
+                            </FormControl>
+                        )
+                    }}
                 />
             </Grid>
         </Grid>
