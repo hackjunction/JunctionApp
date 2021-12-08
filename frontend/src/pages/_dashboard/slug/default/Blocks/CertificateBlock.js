@@ -25,7 +25,7 @@ export default () => {
     if (!EventHelpers.isEventOver(event, moment)) return null
     if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id)
         return null
-    if ('certificate' in event) {
+    if (event.certificate !== '' || 'certificate' in event) {
         return (
             <Grid item xs={12}>
                 <GradientBox p={3} color="theme_turquoise">

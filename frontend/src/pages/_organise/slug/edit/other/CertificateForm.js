@@ -28,8 +28,7 @@ const CertificateForm = ({
             <PdfUpload
                 value={{ url, publicId }}
                 onChange={value => {
-                    if (typeof value === 'undefined') {
-                        console.log('undefined')
+                    if (typeof value.url === 'undefined') {
                         setUrl('')
                         setPublicId('')
                     } else {
