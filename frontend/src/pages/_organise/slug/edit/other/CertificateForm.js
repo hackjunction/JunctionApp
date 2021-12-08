@@ -27,15 +27,21 @@ const CertificateForm = ({
         <>
             <PdfUpload
                 value={{ url, publicId }}
-                onChange={value => {
-                    if (typeof value.url === 'undefined') {
+                onChange={async value => {
+                    if (typeof value === 'undefined') {
                         setUrl('')
                         setPublicId('')
+                        await setFieldValue(fieldName, {
+                            url: '',
+                            publicId: '',
+                            x: x,
+                            y: y,
+                        })
                     } else {
                         setUrl(value.url)
                         console.log('url', value.url)
                         setPublicId(value.publicId)
-                        setFieldValue(fieldName, {
+                        await setFieldValue(fieldName, {
                             url: value.url,
                             publicId: value.publicId,
                             x: x,
@@ -45,11 +51,13 @@ const CertificateForm = ({
                 }}
                 uploadUrl={`/api/upload/events/${event.slug}/certificate`}
             />
-            <TextInput
+            {/* Add validation to accept only numbers */}
+            {/* <TextInput
                 value={x}
-                onChange={value => {
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                onChange={async value => {
                     setX(value)
-                    setFieldValue(fieldName, {
+                    await setFieldValue(fieldName, {
                         url,
                         publicId,
                         x,
@@ -59,16 +67,17 @@ const CertificateForm = ({
             />
             <TextInput
                 value={y}
-                onChange={value => {
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                onChange={async value => {
                     setY(value)
-                    setFieldValue(fieldName, {
+                    await setFieldValue(fieldName, {
                         url,
                         publicId,
                         x,
                         y,
                     })
                 }}
-            />
+            /> */}
         </>
     )
 }
