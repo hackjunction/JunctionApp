@@ -23,7 +23,7 @@
     },
     "betterScripts": {
         "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
-        "setup:frontend": "cd frontend && npm ci",
+        "setup:frontend": "cd frontend && npm install",
         "setup:backend": "cd backend && npm ci",
         "setup:shared": "cd shared && npm ci",
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
