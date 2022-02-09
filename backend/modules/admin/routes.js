@@ -2,14 +2,10 @@ const express = require('express')
 const asyncHandler = require('express-async-handler')
 const Promise = require('bluebird')
 
-const { Auth } = require('@hackjunction/shared')
 const Registration = require('../registration/model')
 const { UserProfile } = require('../user-profile/model')
 const UserProfileController = require('../user-profile/controller')
 const AuthController = require('../auth/controller')
-
-const { hasToken } = require('../../common/middleware/token')
-const { hasRole } = require('../../common/middleware/permissions')
 
 const router = express.Router()
 
@@ -38,7 +34,6 @@ const syncCheckedIn = asyncHandler(async (req, res) => {
 const anonymiseUserProfile = asyncHandler(async (req, res) => {
     // GDPR
     /** Anonymise the user's profile */
-    console.log('anon', req.params)
     const userProfile = await UserProfile.findOne({ userId: req.params.userId })
     if (!userProfile) {
         throw new NotFoundError(
@@ -127,9 +122,7 @@ const anonymiseUserProfile = asyncHandler(async (req, res) => {
 })
 
 router.route('/sync-registrations').get(hasAdminToken, syncCheckedIn)
-router
-    .route('/anonymise-user/:userId')
-    .get(hasToken, hasRole(Auth.Roles.SUPER_ADMIN), anonymiseUserProfile)
+router.route('/anonymise-user/:userId').get(hasAdminToken, anonymiseUserProfile)
 // router.route('/sync-user-profiles').get(hasAdminToken, syncUserProfiles);
 
 module.exports = router
