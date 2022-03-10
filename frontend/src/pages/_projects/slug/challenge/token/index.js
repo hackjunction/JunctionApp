@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import { push } from 'connected-react-router'
@@ -65,12 +65,17 @@ export default ({ event }) => {
         return null
     }
 
+    const scrollRef = useRef()
+    const scrollTo = () => {
+        scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
     return (
         <PageWrapper
             loading={loading || !data}
             error={error}
             render={() => (
                 <Container center>
+                    <button onClick={scrollTo}>Recruitment</button>
                     <PageHeader
                         heading={data.challenge.name}
                         subheading={data.projects.length + ' projects'}
@@ -124,7 +129,9 @@ export default ({ event }) => {
                         token={token}
                     />
                     <Box height={200} />
-                    < RecruitDefault />
+                    <div ref={scrollRef} >
+                        < RecruitDefault />
+                    </div>
                 </Container>
             )}
         ></PageWrapper>
