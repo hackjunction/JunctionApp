@@ -9,6 +9,7 @@ import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 import Button from 'components/generic/Button'
 import { makeStyles } from '@material-ui/core/styles'
+import RecruitDefault from '../../../../_recruitment/default'
 
 import ProjectsService from 'services/projects'
 
@@ -123,6 +124,7 @@ export default ({ event }) => {
                         token={token}
                     />
                     <Box height={200} />
+                    < RecruitDefault />
                 </Container>
             )}
         ></PageWrapper>

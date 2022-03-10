@@ -38,9 +38,9 @@ export default () => {
         if (!idTokenData.recruiter_events) {
             throw new Error(t('Invalid_access_'))
         }
-        if (!idTokenData.recruiter_organisation) {
-            throw new Error(t('Invalid_organisation_'))
-        }
+        //if (!idTokenData.recruiter_organisation) {
+        //    throw new Error(t('Invalid_organisation_'))
+        //}
     }, [idTokenData, t])
 
     return (
