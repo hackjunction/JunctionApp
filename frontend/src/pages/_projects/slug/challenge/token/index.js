@@ -75,7 +75,8 @@ export default ({ event }) => {
             error={error}
             render={() => (
                 <Container center>
-                    <button onClick={scrollTo}>Recruitment</button>
+                    <Button onClick={scrollTo} variant="outlined"
+                        color="theme_lightgray">Recruitment</Button>
                     <PageHeader
                         heading={data.challenge.name}
                         subheading={data.projects.length + ' projects'}

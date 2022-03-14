@@ -69,10 +69,14 @@ export const updateSearchResults = () => (dispatch, getState) => {
     const page = RecruitmentSelectors.page(state)
     const pageSize = RecruitmentSelectors.pageSize(state)
     const filters = buildFilterArray(RecruitmentSelectors.filters(state))
+    var eventSlug = ""
+    if (window.location.pathname.includes("challenge")) {
+        eventSlug = window.location.pathname.split("projects/")[1].split("/challenge")[0]
+    }
 
     dispatch({
         type: ActionTypes.UPDATE_SEARCH_RESULTS,
-        promise: RecruitmentService.search(idToken, filters, page, pageSize),
+        promise: RecruitmentService.search(idToken, filters, page, pageSize, eventSlug),
         meta: {
             onFailure: e => console.log('Error getting search results', e),
         },

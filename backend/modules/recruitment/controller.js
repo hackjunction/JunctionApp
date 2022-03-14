@@ -4,8 +4,9 @@ const MongoUtils = require('../../common/utils/mongoUtils')
 const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
 const EmailTaskController = require('../email-task/controller')
-
+const EventController = require('../event/controller.js')
 const controller = {}
+const { ObjectId } = require('mongodb')
 
 controller.getRecruitmentProfile = (userId, recruiterId) => {
     return UserController.getUserProfile(userId).then(userProfile => {
@@ -17,9 +18,12 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
     })
 }
 
-controller.queryProfiles = (query = {}, user) => {
+controller.queryProfiles = async (query = {}, user) => {
     let userQuery = {}
     let pagination = {}
+
+
+    //console.log(query.eventSlug, "##########")
     if (typeof query.filters === 'string') {
         userQuery = {
             $and: [
@@ -48,15 +52,23 @@ controller.queryProfiles = (query = {}, user) => {
             limit: query.pagination.page_size,
         }
     }
+    var currentEvent = {
+        _id: "123234234234123234234234"
+    }
 
+    if (query.eventSlug != "") {
+        currentEvent = await EventController.getEventBySlug(query.eventSlug)
+        console.log(String(currentEvent._id))
+    }
     // Set event filters based on recruiter scope
     const consentFilter = { 'recruitmentOptions.consent': true }
+
     const eventFilter = {
         registrations: {
             $elemMatch: {
-                event: {
-                    $in: MongoUtils.ensureObjectId(user.recruiter_events),
-                },
+                event:
+                    ObjectId(String(currentEvent._id))
+
             },
         },
     }
@@ -64,10 +76,13 @@ controller.queryProfiles = (query = {}, user) => {
     console.log('userquery are', JSON.stringify(userQuery))
     console.log('eventfileters are', JSON.stringify(eventFilter))
     // Set default filters (consent & recruiter scope)
-    if (userQuery.$and) {
-        userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
-    } else {
-        userQuery.$and = [eventFilter]
+    if (currentEvent._id != "123") {
+        if (userQuery.$and) {
+            userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
+            userQuery.$and = userQuery.$and.concat([eventFilter])
+        } else {
+            userQuery.$and = [eventFilter]
+        }
     }
     console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({

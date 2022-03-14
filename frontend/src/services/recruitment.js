@@ -10,7 +10,7 @@ function config(idToken) {
     }
 }
 
-RecruitmentService.search = (idToken, filters, page, page_size) => {
+RecruitmentService.search = (idToken, filters, page, page_size, eventSlug) => {
     return _axios.post(
         '/recruitment/search',
         {
@@ -19,6 +19,7 @@ RecruitmentService.search = (idToken, filters, page, page_size) => {
                 page_size,
                 page,
             },
+            eventSlug,
         },
         config(idToken),
     )
