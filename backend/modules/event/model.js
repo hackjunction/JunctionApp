@@ -18,6 +18,7 @@ const RegistrationConfigSchema = require('@hackjunction/shared/schemas/Registrat
 const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const WebhookSchema = require('@hackjunction/shared/schemas/Webhook')
 const EventThemeSchema = require('@hackjunction/shared/schemas/EventTheme')
+const EventTimelineSchema = require('@hackjunction/shared/schemas/EventTimeline')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../upload/helper')
@@ -188,6 +189,10 @@ const EventSchema = new mongoose.Schema({
     webhooks: {
         type: [WebhookSchema.mongoose],
         default: [],
+    },
+    eventTimeline: {
+        type: EventTimelineSchema.mongoose,
+        default: { items: [] },
     },
     metaDescription: {
         type: String,

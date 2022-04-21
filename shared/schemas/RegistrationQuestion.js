@@ -4,9 +4,12 @@ const {
     GraphQLString,
     GraphQLBoolean,
     GraphQLNonNull,
+    GraphQLInputObjectType,
 } = require('graphql')
 const RegistrationQuestionSettingsType = require('./RegistrationQuestionSettings')
     .graphql
+const RegistrationQuestionSettingsInput = require('./RegistrationQuestionSettings')
+    .graphqlInput
 
 const FIELD_TYPES = [
     'text',
@@ -56,7 +59,7 @@ const RegistrationQuestionSchema = new mongoose.Schema({
             required() {
                 return (
                     ['single-choice', 'multiple-choice'].indexOf(
-                        this.fieldType
+                        this.fieldType,
                     ) !== -1
                 )
             },
@@ -98,7 +101,35 @@ const RegistrationQuestionType = new GraphQLObjectType({
     },
 })
 
+const RegistrationQuestionInput = new GraphQLInputObjectType({
+    name: 'RegistrationQuestionInput',
+    fields: {
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        label: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        hint: {
+            type: GraphQLString,
+        },
+        placeholder: {
+            type: GraphQLString,
+        },
+        fieldType: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        fieldRequired: {
+            type: GraphQLBoolean,
+        },
+        settings: {
+            type: RegistrationQuestionSettingsInput,
+        },
+    },
+})
+
 module.exports = {
     mongoose: RegistrationQuestionSchema,
     graphql: RegistrationQuestionType,
+    graphqlInput: RegistrationQuestionInput,
 }

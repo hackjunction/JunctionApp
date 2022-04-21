@@ -5,6 +5,7 @@ const {
     GraphQLString,
     GraphQLInt,
     GraphQLBoolean,
+    GraphQLInputObjectType,
 } = require('graphql')
 const Currencies = require('../constants/currencies')
 
@@ -27,7 +28,7 @@ const TravelGrantConfigSchema = new mongoose.Schema({
             validator(v) {
                 return Currencies.keys.indexOf(v) !== -1
             },
-            message: (props) => `${props.value} is not a valid currency code`,
+            message: props => `${props.value} is not a valid currency code`,
         },
     },
 })
@@ -47,7 +48,23 @@ const TravelGrantConfigType = new GraphQLObjectType({
     },
 })
 
+const TravelGrantConfigInput = new GraphQLInputObjectType({
+    name: 'TravelGrantConfigInput',
+    fields: {
+        enabled: {
+            type: GraphQLNonNull(GraphQLBoolean),
+        },
+        budget: {
+            type: GraphQLNonNull(GraphQLInt),
+        },
+        currency: {
+            type: GraphQLString,
+        },
+    },
+})
+
 module.exports = {
     mongoose: TravelGrantConfigSchema,
     graphql: TravelGrantConfigType,
+    graphqlInput: TravelGrantConfigInput,
 }
