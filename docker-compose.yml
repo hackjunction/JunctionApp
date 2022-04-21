@@ -8,4 +8,6 @@ services:
       - PGID=1000
     ports:
       - 27011:27017
+    volumes:
+      - ./dump:/data/db
     restart: unless-stopped
