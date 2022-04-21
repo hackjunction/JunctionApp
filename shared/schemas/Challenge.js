@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLInputObjectType,
+    GraphQLNonNull,
+} = require('graphql')
 
 const ChallengeSchema = new mongoose.Schema({
     name: {
@@ -31,7 +36,23 @@ const ChallengeType = new GraphQLObjectType({
     },
 })
 
+const ChallengeInput = new GraphQLInputObjectType({
+    name: 'ChallengeInput',
+    fields: {
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        partner: {
+            type: GraphQLString,
+        },
+        slug: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+    },
+})
+
 module.exports = {
     mongoose: ChallengeSchema,
     graphql: ChallengeType,
+    graphqlInput: ChallengeInput,
 }

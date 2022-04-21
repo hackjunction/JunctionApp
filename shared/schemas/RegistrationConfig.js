@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLList, GraphQLString } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLList,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLInputObjectType,
+} = require('graphql')
 
 const RegistrationConfigSchema = new mongoose.Schema({
     optionalFields: {
@@ -22,7 +28,20 @@ const RegistrationConfigType = new GraphQLObjectType({
     },
 })
 
+const RegistrationConfigInput = new GraphQLInputObjectType({
+    name: 'RegistrationConfigInput',
+    fields: {
+        optionalFields: {
+            type: GraphQLList(GraphQLString),
+        },
+        requiredFields: {
+            type: GraphQLNonNull(GraphQLList(GraphQLString)),
+        },
+    },
+})
+
 module.exports = {
     mongoose: RegistrationConfigSchema,
     graphql: RegistrationConfigType,
+    graphqlInput: RegistrationConfigInput,
 }

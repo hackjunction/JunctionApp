@@ -4,9 +4,8 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLList,
+    GraphQLInputObjectType,
 } = require('graphql')
-
-const { CloudinaryImage } = require('../graphql-shared-types')
 
 const OrganizationType = new GraphQLObjectType({
     name: 'Organization',
@@ -32,6 +31,27 @@ const OrganizationType = new GraphQLObjectType({
                 type: GraphQLString,
             },
         }
+    },
+})
+
+const graphqlInput = new GraphQLInputObjectType({
+    name: 'OrganizationInput',
+    fields: {
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        slug: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        about: {
+            type: GraphQLString,
+        },
+        link: {
+            type: GraphQLString,
+        },
+        icon: {
+            type: GraphQLString,
+        },
     },
 })
 
@@ -80,4 +100,5 @@ module.exports = {
     QueryType,
     Resolvers,
     OrganizationType,
+    graphqlInput,
 }
