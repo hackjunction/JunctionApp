@@ -24,6 +24,7 @@ const {
     EventTag,
     RegistrationConfig,
     EventTheme,
+    EventTimeline,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -145,6 +146,9 @@ const EventType = new GraphQLObjectType({
             },
             eventTerms: {
                 type: GraphQLString,
+            },
+            eventTimeline: {
+                type: EventTimeline,
             },
             demoPlaceholder: {
                 type: GraphQLString,
