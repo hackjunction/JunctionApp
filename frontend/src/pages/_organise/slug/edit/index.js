@@ -17,16 +17,44 @@ import ConfigurationTab from './configuration'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
+import TimelineTab from './timeline'
 import OtherTab from './other'
+import { useMutation } from '@apollo/client'
+import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 
 export default () => {
     const dispatch = useDispatch()
+    const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
+        onError: err => {
+            const errors = err.graphQLErrors
+
+            if (errors) {
+                dispatch(
+                    SnackbarActions.error('Unable to save changes', {
+                        errorMessages: Object.keys(errors).map(
+                            key => `${key}: ${errors[key].message}`,
+                        ),
+                        persist: true,
+                    }),
+                )
+            } else {
+                dispatch(SnackbarActions.error('Unable to save changes'))
+            }
+        },
+        onCompleted: () => {
+            dispatch(
+                SnackbarActions.success('Your changes were saved successfully'),
+            )
+        },
+    })
     const match = useRouteMatch()
     const location = useLocation()
 
     const event = useSelector(OrganiserSelectors.event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
-    const { slug } = event
+    const { slug, _id } = event
+
+    console.info(event)
 
     function onSubmit(values, actions) {
         const changed = {}
@@ -35,34 +63,9 @@ export default () => {
                 changed[field] = value
             }
         })
-        dispatch(OrganiserActions.editEvent(slug, changed))
-            .then(() => {
-                dispatch(
-                    SnackbarActions.success(
-                        'Your changes were saved successfully',
-                    ),
-                )
-                actions.setSubmitting(false)
-            })
-            .catch(err => {
-                const errors = err?.response?.data?.errors
-
-                if (errors) {
-                    dispatch(
-                        SnackbarActions.error('Unable to save changes', {
-                            errorMessages: Object.keys(errors).map(
-                                key => `${key}: ${errors[key].message}`,
-                            ),
-                            persist: true,
-                        }),
-                    )
-                } else {
-                    dispatch(SnackbarActions.error('Unable to save changes'))
-                }
-            })
-            .finally(() => {
-                actions.setSubmitting(false)
-            })
+        saveChanges({
+            variables: { _id, input: changed },
+        })
     }
     return (
         <PageWrapper loading={loading}>
@@ -98,6 +101,12 @@ export default () => {
                                     label: 'Schedule',
                                     component: ScheduleTab,
                                 },
+                                /* {
+                                    path: '/timeline',
+                                    key: 'timeline',
+                                    label: 'Timeline',
+                                    component: TimelineTab,
+                                }, */
                                 {
                                     path: '/questions',
                                     key: 'questions',
