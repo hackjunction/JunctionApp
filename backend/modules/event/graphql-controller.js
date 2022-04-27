@@ -1,6 +1,8 @@
 const { Auth } = require('@hackjunction/shared')
 const DataLoader = require('dataloader')
+const { GraphQLError } = require('graphql')
 const PermissionUtils = require('../../utils/permissions')
+const Organization = require('../organization/model')
 const Event = require('./model')
 
 async function batchGetEventsByIds(ids) {
@@ -106,6 +108,15 @@ class EventController {
 
     async getAll() {
         return this._clean(Event.find().lean())
+    }
+
+    async update(id, event) {
+        if (!this.isAdmin) {
+            return null
+        }
+        return this._clean(
+            Event.findOneAndUpdate({ _id: id }, event, { new: true }),
+        )
     }
 
     async _clean(promise) {

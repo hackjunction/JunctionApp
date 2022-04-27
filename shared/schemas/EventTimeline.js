@@ -1,4 +1,10 @@
-const { GraphQLObjectType, GraphQLList, GraphQLString } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLList,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLInputObjectType,
+} = require('graphql')
 const { GraphQLDate } = require('graphql-iso-date')
 const mongoose = require('mongoose')
 
@@ -17,14 +23,26 @@ const EventTimelineSchema = new mongoose.Schema({
 
 const EventTimelineItemType = new GraphQLObjectType({
     name: 'EventTimelineItem',
-    fields: () => ({
+    fields: {
         title: {
-            type: GraphQLString,
+            type: GraphQLNonNull(GraphQLString),
         },
         startTime: {
-            type: GraphQLDate,
+            type: GraphQLNonNull(GraphQLDate),
         },
-    }),
+    },
+})
+
+const EventTimelineItemInput = new GraphQLInputObjectType({
+    name: 'EventTimelineItemInput',
+    fields: {
+        title: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        startTime: {
+            type: GraphQLNonNull(GraphQLDate),
+        },
+    },
 })
 
 const EventTimelineType = new GraphQLObjectType({
@@ -34,7 +52,16 @@ const EventTimelineType = new GraphQLObjectType({
     },
 })
 
+const EventTimelineInput = new GraphQLInputObjectType({
+    name: 'EventTimelineInput',
+    fields: {
+        items: { type: GraphQLList(EventTimelineItemInput) },
+    },
+})
+
 module.exports = {
     mongoose: EventTimelineSchema,
     graphql: EventTimelineType,
+    graphqlInput: EventTimelineInput,
+    itemInput: EventTimelineItemInput,
 }
