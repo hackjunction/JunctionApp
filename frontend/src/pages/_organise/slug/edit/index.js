@@ -66,6 +66,7 @@ export default () => {
         saveChanges({
             variables: { _id, input: changed },
         })
+        actions.setSubmitting(false)
     }
     return (
         <PageWrapper loading={loading}>
@@ -134,7 +135,7 @@ export default () => {
                             onSubmit={formikProps.handleSubmit}
                             errors={formikProps.errors}
                             dirty={formikProps.dirty}
-                            loading={formikProps.isSubmitting}
+                            loading={saveResult.loading}
                         />
                     </>
                 )}
