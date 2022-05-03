@@ -74,8 +74,11 @@ export default () => {
                 heading="Edit event"
                 subheading="Configure event information, schedule and other settings"
             />
+            {console.info(saveResult.data)}
             <Formik
-                initialValues={event}
+                initialValues={
+                    saveResult.data ? saveResult.data.updateEvent : event
+                }
                 enableReinitialize={true}
                 onSubmit={onSubmit}
             >
