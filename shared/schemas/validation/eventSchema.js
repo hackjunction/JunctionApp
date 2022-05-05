@@ -60,6 +60,32 @@ const registrationSection = yup.object().shape({
     questions: yup.array.of(registrationQuestion),
 })
 
+const registrationConfig = yup.object().shape({
+    optionalFields: yup.array().of(yup.string()),
+    requiredFields: yup.array().of(yup.string()),
+})
+
+const eventTimeline = yup.object().shape({
+    items: yup.array().of(
+        yup.object().shape({
+            title: yup.string().required(),
+            startTime: yup.date().required(),
+        }),
+    ),
+})
+
+const eventTheme = yup.object().shape({
+    headerBackgroundColor: yup.string().required(),
+    headerTextColoe: yup.string().required(),
+    bodyBackgroundColor: yup.string().required(),
+    detailsBackgroundColor: yup.string().required(),
+    detailsTextColor: yup.string().required(),
+    sidebarBackgroundColor: yup.string().required(),
+    sidebarTextColor: yup.string().required(),
+    accentColor: yup.string().required(),
+    linkColor: yup.string().required(),
+})
+
 export default yup.object().shape({
     name: yup.string().required('Event name is required'),
     slug: yup.string().required('Event must have a unique slug'),
@@ -91,4 +117,16 @@ export default yup.object().shape({
     owner: yup.string(),
     organisers: yup.array().of(yup.string()),
     organizations: yup.array().of(yup.string().uuid()),
+    registrationConfig,
+    demoLabel: yup.string(),
+    demoHint: yup.string(),
+    eventPrivacy: yup.string(),
+    eventTerms: yup.string(),
+    eventTimeline,
+    demoPlaceholder: yup.string(),
+    metaDescription: yup.string(),
+    finalists: yup.array().of(yup.string()),
+    frontPagePriority: yup.number().integer(),
+    approved: yup.boolean(),
+    theme: eventTheme,
 })
