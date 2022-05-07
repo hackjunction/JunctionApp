@@ -68,7 +68,7 @@ const registrationConfig = yup.object().shape({
 const eventTimeline = yup.object().shape({
     items: yup.array().of(
         yup.object().shape({
-            title: yup.string().required(),
+            title: yup.string().min(2).required(),
             startTime: yup.date().required(),
         }),
     ),

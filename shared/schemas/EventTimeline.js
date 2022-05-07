@@ -36,6 +36,9 @@ const EventTimelineItemType = new GraphQLObjectType({
 const EventTimelineItemInput = new GraphQLInputObjectType({
     name: 'EventTimelineItemInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         title: {
             type: GraphQLNonNull(GraphQLString),
         },
@@ -55,6 +58,9 @@ const EventTimelineType = new GraphQLObjectType({
 const EventTimelineInput = new GraphQLInputObjectType({
     name: 'EventTimelineInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         items: { type: GraphQLList(EventTimelineItemInput) },
     },
 })
