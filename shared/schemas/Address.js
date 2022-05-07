@@ -41,6 +41,9 @@ const mongooseSchema = new mongoose.Schema({
 const graphqlInput = new GraphQLInputObjectType({
     name: 'AddressInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         country: {
             type: GraphQLNonNull(GraphQLString),
         },

@@ -62,6 +62,7 @@ const SharedSchema = new GraphQLSchema({
         UserDetailsConfigItem.graphql,
         UserProfileFields.graphql,
         Webhook.graphql,
+        Webhook.graphqlInput,
         EventTheme.graphql,
         EventTheme.graphqlInput,
         EventTimeline.graphql,
