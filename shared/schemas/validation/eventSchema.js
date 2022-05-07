@@ -9,7 +9,7 @@ const address = yup.object().shape({
     country: yup.string().required(),
     addressLine: yup.string().required(),
     addressLine2: yup.string(),
-    city: yup.string.required(),
+    city: yup.string().required(),
     postalCode: yup
         .string()
         .matches(/^[0-9]+$/, 'Invalid zipcode')
@@ -57,7 +57,7 @@ const registrationSection = yup.object().shape({
     name: yup.string().required(),
     description: yup.string(),
     conditional: yup.string(),
-    questions: yup.array.of(registrationQuestion),
+    questions: yup.array().of(registrationQuestion),
 })
 
 const registrationConfig = yup.object().shape({
@@ -76,7 +76,7 @@ const eventTimeline = yup.object().shape({
 
 const eventTheme = yup.object().shape({
     headerBackgroundColor: yup.string().required(),
-    headerTextColoe: yup.string().required(),
+    headerTextColor: yup.string().required(),
     bodyBackgroundColor: yup.string().required(),
     detailsBackgroundColor: yup.string().required(),
     detailsTextColor: yup.string().required(),
@@ -98,7 +98,7 @@ export default yup.object().shape({
     reviewingStartTime: yup.date(),
     reviewingEndTime: yup.date(),
     finalsActive: yup.boolean(),
-    eventLocation: address,
+    eventLocation: address.nullable(),
     tracksEnabled: yup.boolean(),
     tracks: yup.array().of(track),
     challengesEnabled: yup.boolean(),
@@ -107,16 +107,18 @@ export default yup.object().shape({
     reviewMethod: yup.string(),
     overallReviewMethod: yup.string(),
     customQuestions: yup.array().of(registrationSection),
-    tags: yup.object().shape({
-        label: yup.string(),
-        color: yup.string(),
-        description: yup.string(),
-    }),
+    tags: yup.array().of(
+        yup.object().shape({
+            label: yup.string(),
+            color: yup.string(),
+            description: yup.string(),
+        }),
+    ),
     published: yup.boolean().required(),
     galleryOpen: yup.boolean(),
     owner: yup.string(),
     organisers: yup.array().of(yup.string()),
-    organizations: yup.array().of(yup.string().uuid()),
+    organizations: yup.array().of(yup.string()),
     registrationConfig,
     demoLabel: yup.string(),
     demoHint: yup.string(),

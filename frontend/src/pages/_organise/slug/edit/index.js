@@ -1,5 +1,7 @@
 import React from 'react'
 
+import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
+
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { forOwn } from 'lodash-es'
@@ -42,8 +44,12 @@ export default () => {
             }
         },
         onCompleted: () => {
-            dispatch(
-                SnackbarActions.success('Your changes were saved successfully'),
+            dispatch(OrganiserActions.updateEvent(slug)).then(() =>
+                dispatch(
+                    SnackbarActions.success(
+                        'Your changes were saved successfully',
+                    ),
+                ),
             )
         },
     })
@@ -81,6 +87,7 @@ export default () => {
                 }
                 enableReinitialize={true}
                 onSubmit={onSubmit}
+                validationSchema={yupSchema}
             >
                 {formikProps => (
                     <>

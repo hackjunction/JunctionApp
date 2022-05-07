@@ -39,6 +39,9 @@ const ChallengeType = new GraphQLObjectType({
 const ChallengeInput = new GraphQLInputObjectType({
     name: 'ChallengeInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },
