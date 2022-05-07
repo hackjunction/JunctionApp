@@ -60,8 +60,6 @@ export default () => {
     const loading = useSelector(OrganiserSelectors.eventLoading)
     const { slug, _id } = event
 
-    console.info(event)
-
     function onSubmit(values, actions) {
         const changed = {}
         forOwn(values, (value, field) => {
@@ -80,7 +78,6 @@ export default () => {
                 heading="Edit event"
                 subheading="Configure event information, schedule and other settings"
             />
-            {console.info(saveResult.data)}
             <Formik
                 initialValues={
                     saveResult.data ? saveResult.data.updateEvent : event
@@ -112,12 +109,12 @@ export default () => {
                                     label: 'Schedule',
                                     component: ScheduleTab,
                                 },
-                                /* {
+                                {
                                     path: '/timeline',
                                     key: 'timeline',
                                     label: 'Timeline',
                                     component: TimelineTab,
-                                }, */
+                                },
                                 {
                                     path: '/questions',
                                     key: 'questions',
