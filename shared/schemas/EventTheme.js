@@ -48,6 +48,9 @@ const EventThemeSchema = new mongoose.Schema({
 const EventThemeInput = new GraphQLInputObjectType({
     name: 'EventThemeInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         headerBackgroundColor: {
             type: GraphQLNonNull(GraphQLString),
         },

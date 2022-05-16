@@ -1,8 +1,6 @@
 const { Auth } = require('@hackjunction/shared')
 const DataLoader = require('dataloader')
-const { GraphQLError } = require('graphql')
 const PermissionUtils = require('../../utils/permissions')
-const Organization = require('../organization/model')
 const Event = require('./model')
 
 async function batchGetEventsByIds(ids) {

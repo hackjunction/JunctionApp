@@ -36,6 +36,8 @@ const {
     EventThemeInput,
     EventTimeline,
     EventTimelineInput,
+    Webhook,
+    WebhookInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -120,7 +122,7 @@ const EventInput = new GraphQLInputObjectType({
             type: GraphQLList(RegistrationSectionInput),
         },
         tags: {
-            type: EventTagInput,
+            type: GraphQLList(EventTagInput),
         },
         /** System metadata */
         published: {
@@ -173,6 +175,9 @@ const EventInput = new GraphQLInputObjectType({
         },
         theme: {
             type: EventThemeInput,
+        },
+        webhooks: {
+            type: GraphQLList(WebhookInput),
         },
     },
 })
@@ -262,7 +267,7 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLList(RegistrationSection),
             },
             tags: {
-                type: EventTag,
+                type: GraphQLList(EventTag),
             },
             /** System metadata */
             published: {
@@ -315,6 +320,9 @@ const EventType = new GraphQLObjectType({
             },
             theme: {
                 type: EventTheme,
+            },
+            webhooks: {
+                type: GraphQLList(Webhook),
             },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out

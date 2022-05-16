@@ -25,6 +25,9 @@ const TrackSchema = new mongoose.Schema({
 const TrackInput = new GraphQLInputObjectType({
     name: 'TrackInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },
@@ -40,6 +43,9 @@ const TrackInput = new GraphQLInputObjectType({
 const TrackType = new GraphQLObjectType({
     name: 'Track',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },

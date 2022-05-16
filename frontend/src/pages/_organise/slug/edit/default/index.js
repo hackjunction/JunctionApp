@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography, TextField } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
@@ -64,6 +64,7 @@ const themeFields = [
         hint: 'Text color of links in the event details',
     },
 ]
+
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
@@ -165,7 +166,6 @@ export default () => {
                     )}
                 />
             </Grid>
-
             <Grid item xs={12}>
                 <FastField
                     name="organizations"

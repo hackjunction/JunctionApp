@@ -51,6 +51,9 @@ const TravelGrantConfigType = new GraphQLObjectType({
 const TravelGrantConfigInput = new GraphQLInputObjectType({
     name: 'TravelGrantConfigInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         enabled: {
             type: GraphQLNonNull(GraphQLBoolean),
         },

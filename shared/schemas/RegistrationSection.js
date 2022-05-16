@@ -47,6 +47,9 @@ const RegistrationSectionType = new GraphQLObjectType({
 const RegistrationSectionInput = new GraphQLInputObjectType({
     name: 'RegistrationSectionInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         label: {
             type: GraphQLNonNull(GraphQLString),
         },
