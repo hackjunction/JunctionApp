@@ -12,7 +12,6 @@ import {
     Tooltip,
     Typography,
 } from '@material-ui/core'
-import getSlug from 'speakingurl'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import EditIcon from '@material-ui/icons/Edit'
 import SaveIcon from '@material-ui/icons/Save'
