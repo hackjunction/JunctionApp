@@ -96,36 +96,49 @@ export default ({ value, onChange }) => {
         if (index === editIndex) {
             return (
                 <ListItem key={`item-${index}`} divider>
-                    <TextInput
-                        value={editValue.title}
-                        onChange={value =>
-                            setEditValue({ ...editValue, title: value })
-                        }
-                        label={`Title of item ${index + 1}`}
-                    />
-                    <DateTimeInput
-                        value={editValue.startTime}
-                        onChange={value =>
-                            setEditValue({ ...editValue, startTime: value })
-                        }
-                    />
-                    <Tooltip title="Cancel">
-                        <IconButton onClick={handleEditCancel}>
-                            <CloseIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Save">
-                        <IconButton
-                            disabled={
-                                !editValue ||
-                                editValue.title.length < 1 ||
-                                !editValue.startTime
-                            }
-                            onClick={handleEditSave}
-                        >
-                            <SaveIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <Grid container style={{ justifyContent: 'space-between' }}>
+                        <Grid item xs={11}>
+                            <TextInput
+                                value={editValue.title}
+                                onChange={value =>
+                                    setEditValue({ ...editValue, title: value })
+                                }
+                                label={`Title of item ${index + 1}`}
+                            />
+                        </Grid>
+                        <Grid item xs={1}>
+                            <Tooltip title="Cancel">
+                                <IconButton onClick={handleEditCancel}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                        <Grid item xs={11}>
+                            <DateTimeInput
+                                value={editValue.startTime}
+                                onChange={value =>
+                                    setEditValue({
+                                        ...editValue,
+                                        startTime: value,
+                                    })
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={1}>
+                            <Tooltip title="Save">
+                                <IconButton
+                                    disabled={
+                                        !editValue ||
+                                        editValue.title.length < 1 ||
+                                        !editValue.startTime
+                                    }
+                                    onClick={handleEditSave}
+                                >
+                                    <SaveIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
                 </ListItem>
             )
         }
