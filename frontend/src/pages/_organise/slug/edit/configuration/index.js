@@ -92,9 +92,44 @@ export default () => {
                         >
                             <Select
                                 value={field.value}
-                                onChange={value =>
+                                onChange={async value => {
+                                    if (value === 'online') {
+                                        await form.setFieldValue(
+                                            'eventLocation',
+                                            null,
+                                        )
+                                    }
+                                    if (value === 'physical') {
+                                        await form.setFieldValue(
+                                            'eventLocation',
+                                            form.values.eventLocation ?? {},
+                                        )
+                                    }
+                                    console.info(
+                                        'change',
+                                        form.values.eventLocation,
+                                    )
                                     form.setFieldValue(field.name, value)
-                                }
+                                }}
+                                onBlur={() => {
+                                    console.info(field.value)
+                                    /* if (field.value === 'online') {
+                                        form.setFieldValue(
+                                            'eventLocation',
+                                            null,
+                                        )
+                                    }
+                                    if (field.value === 'physical') {
+                                        form.setFieldValue(
+                                            'eventLocation',
+                                            form.values.eventLocation ?? {},
+                                        )
+                                    } */
+                                    console.info(
+                                        'blur',
+                                        form.values.eventLocation,
+                                    )
+                                }}
                                 options={Object.keys(EventTypes).map(key => ({
                                     label: EventTypes[key].label,
                                     value: key,
@@ -108,7 +143,10 @@ export default () => {
                 <Field
                     name="eventLocation"
                     render={({ field, form }) => {
-                        if (form.values.eventType === 'physical') {
+                        if (
+                            form.values.eventType === 'physical' &&
+                            field.value
+                        ) {
                             return (
                                 <FormControl
                                     label="Event location"

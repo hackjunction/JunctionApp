@@ -98,7 +98,7 @@ export default yup.object().shape({
     reviewingStartTime: yup.date(),
     reviewingEndTime: yup.date(),
     finalsActive: yup.boolean(),
-    eventLocation: address.nullable(),
+    eventLocation: address.notRequired().nullable(),
     tracksEnabled: yup.boolean(),
     tracks: yup.array().of(track),
     challengesEnabled: yup.boolean(),
