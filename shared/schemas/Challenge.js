@@ -3,8 +3,9 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLInputObjectType,
-    GraphQLNonNull,
+    GraphQLNonNull
 } = require('graphql')
+const CloudinaryImageSchema = require('./CloudinaryImage')
 
 const ChallengeSchema = new mongoose.Schema({
     name: {
@@ -19,6 +20,39 @@ const ChallengeSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    title: {
+        type: String,
+        required: true
+    },
+    subtitle: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    insights: {
+        type: String,
+        required: true
+    },
+    resources: {
+        type: String,
+        required: true
+    },
+    prizes: {
+        type: String,
+        required: true
+    },
+    criteria: {
+        type: String,
+        required: true
+    },
+    company_info: {
+        type: String,
+        required: true
+    },
+    logo: CloudinaryImageSchema.mongoose
 })
 
 const ChallengeType = new GraphQLObjectType({
@@ -33,6 +67,33 @@ const ChallengeType = new GraphQLObjectType({
         slug: {
             type: GraphQLString,
         },
+        title: {
+            type: GraphQLString,
+        },
+        subtitle: {
+            type: GraphQLString,
+        },
+        description: {
+            type: GraphQLString,
+        },
+        insights: {
+            type: GraphQLString,
+        },
+        resources: {
+            type: GraphQLString,
+        },
+        prizes: {
+            type: GraphQLString,
+        },
+        criteria: {
+            type: GraphQLString,
+        },
+        company_info: {
+            type: GraphQLString,
+        },
+        logo: {
+            type: CloudinaryImageSchema.graphql,
+        }
     },
 })
 
@@ -51,7 +112,34 @@ const ChallengeInput = new GraphQLInputObjectType({
         slug: {
             type: GraphQLNonNull(GraphQLString),
         },
-    },
+        title: {
+            type: GraphQLString,
+        },
+        subtitle: {
+            type: GraphQLString,
+        },
+        description: {
+            type: GraphQLString,
+        },
+        insights: {
+            type: GraphQLString,
+        },
+        resources: {
+            type: GraphQLString,
+        },
+        prizes: {
+            type: GraphQLString,
+        },
+        criteria: {
+            type: GraphQLString,
+        },
+        company_info: {
+            type: GraphQLString,
+        },
+        logo: {
+            type: CloudinaryImageSchema.graphqlInput,
+        }
+    }
 })
 
 module.exports = {
