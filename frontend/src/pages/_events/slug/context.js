@@ -53,6 +53,12 @@ const eventQuery = gql`
             frontPagePriority
             approved
             eventTerms
+            eventTimeline {
+                items {
+                    title
+                    startTime
+                }
+            }
             theme {
                 headerBackgroundColor
                 headerTextColor
