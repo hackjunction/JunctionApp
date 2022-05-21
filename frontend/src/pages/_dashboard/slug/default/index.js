@@ -17,6 +17,8 @@ import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
 import SocialMediaBlock from './Blocks/SocialMediaBlock'
+import EventTimeline from 'pages/_events/slug/default/EventTimeline'
+import TimeLineBlock from './Blocks/TimeLineBlock'
 
 export default () => {
     return (
@@ -62,6 +64,7 @@ export default () => {
             </Helmet>
             <Box mt={2} />
             <Grid container spacing={5}>
+                <TimeLineBlock />
                 <EventOverBlock />
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
