@@ -17,14 +17,30 @@ import FadeInWrapper from 'components/animated/FadeInWrapper'
 import Container from 'components/generic/Container'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
+import EventButtons from './EventButtons'
 
 const useStyles = makeStyles({
     header: {
         background: props => props.headerBackgroundColor,
         color: props => props.headerTextColor,
 
+        '& button:not(disabled)': {
+            color: props => props.headerBackgroundColor,
+            background: props => props.accentColor,
+
+            '&:hover': {
+                background: props => props.linkColor,
+            },
+        },
+    },
+    cta: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '3rem 2rem',
+        margin: '20px 0 0 0',
         '& button': {
-            color: props => props.accentColor,
+            margin: 0,
         },
     },
     body: {
@@ -178,6 +194,12 @@ export default () => {
                                 </Grid>
                             </Grid>
                         </Container>
+                    </Box>
+                    <Box className={`${classes.header} ${classes.cta}`}>
+                        <EventButtons
+                            event={event}
+                            registration={registration}
+                        />
                     </Box>
                 </StaggeredList>
             </FadeInWrapper>
