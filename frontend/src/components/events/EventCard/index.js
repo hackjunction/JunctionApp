@@ -16,7 +16,10 @@ const useStyles = makeStyles(theme => ({
         flex: 1,
     },
     top: {
-        height: '148px',
+        height: '200px',
+        maxWidth: 'min(100%, 400px)',
+        aspectRatio: '16/9',
+        margin: '0 auto',
         position: 'relative',
         display: 'flex',
         justifyContent: 'flex-end',
