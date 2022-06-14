@@ -38,6 +38,7 @@ const {
     EventTimelineInput,
     Webhook,
     WebhookInput,
+    EventPageScript,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -323,6 +324,9 @@ const EventType = new GraphQLObjectType({
             },
             webhooks: {
                 type: GraphQLList(Webhook),
+            },
+            pageScripts: {
+                type: GraphQLList(EventPageScript),
             },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out

@@ -9,6 +9,7 @@ import MetaTagsForm from './MetaTagsForm'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import CertificateForm from './CertificateForm'
+import PageScriptsForm from './PageScriptsForm'
 
 export default () => {
     return (
@@ -39,6 +40,23 @@ export default () => {
                             hint="Add webhooks that should fire on different events"
                         >
                             <WebhooksForm
+                                value={field.value}
+                                fieldName={field.name}
+                                setFieldValue={form.setFieldValue}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="pageScripts"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Custom tracking scripts"
+                            hint="You can add tracking scripts that will run on selected pages. This is useful if you want to add custom Google Analytics or Facebook Pixel event tracking. This is an advanced field, use it with extra caution, as a malicious/buggy script could cause the site to crash."
+                        >
+                            <PageScriptsForm
                                 value={field.value}
                                 fieldName={field.name}
                                 setFieldValue={form.setFieldValue}

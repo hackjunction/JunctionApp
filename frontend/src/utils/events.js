@@ -23,6 +23,12 @@ const EventUtils = {
 
         return EventConstants.STATUS.Finished
     },
+    getEventPageScripts: (event, pageId) => {
+        return (
+            event?.pageScripts.find(script => script.page === pageId)?.script ||
+            ''
+        )
+    },
 }
 
 export default EventUtils

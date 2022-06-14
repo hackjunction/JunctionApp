@@ -18,6 +18,8 @@ import Container from 'components/generic/Container'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
 import EventButtons from './EventButtons'
+import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
+import { EventPageScripts } from '@hackjunction/shared'
 
 const useStyles = makeStyles({
     header: {
@@ -208,6 +210,11 @@ export default () => {
                 </StaggeredList>
             </FadeInWrapper>
             <BannerCarousel />
+            <EventPageScriptIFrame
+                slug={slug}
+                pageId={EventPageScripts.PageScriptLocation.EVENT_DETAILS_PAGE}
+                event={event}
+            />
         </>
     )
 }
