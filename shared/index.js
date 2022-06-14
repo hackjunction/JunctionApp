@@ -6,6 +6,7 @@ module.exports = {
     EventStatuses: require('./constants/event-statuses'),
     EventHelpers: require('./helpers/events'),
     EventTypes: require('./constants/event-types'),
+    EventPageScripts: require('./constants/event-page-scripts'),
     Genders: require('./constants/genders'),
     Industries: require('./constants/industries'),
     Languages: require('./constants/languages'),

@@ -17,6 +17,8 @@ import FadeInWrapper from 'components/animated/FadeInWrapper'
 import Container from 'components/generic/Container'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
+import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
+import { EventPageScripts } from '@hackjunction/shared'
 
 const useStyles = makeStyles({
     header: {
@@ -182,6 +184,11 @@ export default () => {
                 </StaggeredList>
             </FadeInWrapper>
             <BannerCarousel />
+            <EventPageScriptIFrame
+                slug={slug}
+                pageId={EventPageScripts.PageScriptLocation.EVENT_DETAILS_PAGE}
+                event={event}
+            />
         </>
     )
 }

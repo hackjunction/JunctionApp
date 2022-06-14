@@ -64,6 +64,10 @@ const eventQuery = gql`
                 accentColor
                 linkColor
             }
+            pageScripts {
+                page
+                script
+            }
             _eventStatus
             _eventTimeFormatted
             _eventLocationFormatted
