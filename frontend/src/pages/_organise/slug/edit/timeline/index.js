@@ -17,7 +17,7 @@ export default () => {
                     return (
                         <FormControl
                             label="Timeline"
-                            hint="Timeline for the event (displayed on the dashboard)"
+                            hint="Timeline for the event (displayed on the dashboard and the event information page)"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
