@@ -4,6 +4,7 @@ const {
     GraphQLList,
     GraphQLNonNull,
     GraphQLObjectType,
+    GraphQLInputObjectType,
 } = require('graphql')
 
 const RegistrationQuestionSchema = require('./RegistrationQuestion')
@@ -43,7 +44,32 @@ const RegistrationSectionType = new GraphQLObjectType({
     },
 })
 
+const RegistrationSectionInput = new GraphQLInputObjectType({
+    name: 'RegistrationSectionInput',
+    fields: {
+        _id: {
+            type: GraphQLString,
+        },
+        label: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        description: {
+            type: GraphQLString,
+        },
+        conditional: {
+            type: GraphQLString,
+        },
+        questions: {
+            type: GraphQLList(RegistrationQuestionSchema.graphqlInput),
+        },
+    },
+})
+
 module.exports = {
     mongoose: RegistrationSectionSchema,
     graphql: RegistrationSectionType,
+    graphqlInput: RegistrationSectionInput,
 }

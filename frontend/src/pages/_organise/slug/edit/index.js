@@ -1,5 +1,7 @@
 import React from 'react'
 
+import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
+
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { forOwn } from 'lodash-es'
@@ -17,16 +19,46 @@ import ConfigurationTab from './configuration'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
+import TimelineTab from './timeline'
 import OtherTab from './other'
+import { useMutation } from '@apollo/client'
+import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 
 export default () => {
     const dispatch = useDispatch()
+    const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
+        onError: err => {
+            const errors = err.graphQLErrors
+
+            if (errors) {
+                dispatch(
+                    SnackbarActions.error('Unable to save changes', {
+                        errorMessages: Object.keys(errors).map(
+                            key => `${key}: ${errors[key].message}`,
+                        ),
+                        persist: true,
+                    }),
+                )
+            } else {
+                dispatch(SnackbarActions.error('Unable to save changes'))
+            }
+        },
+        onCompleted: () => {
+            dispatch(OrganiserActions.updateEvent(slug)).then(() =>
+                dispatch(
+                    SnackbarActions.success(
+                        'Your changes were saved successfully',
+                    ),
+                ),
+            )
+        },
+    })
     const match = useRouteMatch()
     const location = useLocation()
 
     const event = useSelector(OrganiserSelectors.event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
-    const { slug } = event
+    const { slug, _id } = event
 
     function onSubmit(values, actions) {
         const changed = {}
@@ -35,34 +67,10 @@ export default () => {
                 changed[field] = value
             }
         })
-        dispatch(OrganiserActions.editEvent(slug, changed))
-            .then(() => {
-                dispatch(
-                    SnackbarActions.success(
-                        'Your changes were saved successfully',
-                    ),
-                )
-                actions.setSubmitting(false)
-            })
-            .catch(err => {
-                const errors = err?.response?.data?.errors
-
-                if (errors) {
-                    dispatch(
-                        SnackbarActions.error('Unable to save changes', {
-                            errorMessages: Object.keys(errors).map(
-                                key => `${key}: ${errors[key].message}`,
-                            ),
-                            persist: true,
-                        }),
-                    )
-                } else {
-                    dispatch(SnackbarActions.error('Unable to save changes'))
-                }
-            })
-            .finally(() => {
-                actions.setSubmitting(false)
-            })
+        saveChanges({
+            variables: { _id, input: changed },
+        })
+        actions.setSubmitting(false)
     }
     return (
         <PageWrapper loading={loading}>
@@ -71,9 +79,12 @@ export default () => {
                 subheading="Configure event information, schedule and other settings"
             />
             <Formik
-                initialValues={event}
+                initialValues={
+                    saveResult.data ? saveResult.data.updateEvent : event
+                }
                 enableReinitialize={true}
                 onSubmit={onSubmit}
+                validationSchema={yupSchema}
             >
                 {formikProps => (
                     <>
@@ -97,6 +108,12 @@ export default () => {
                                     key: 'schedule',
                                     label: 'Schedule',
                                     component: ScheduleTab,
+                                },
+                                {
+                                    path: '/timeline',
+                                    key: 'timeline',
+                                    label: 'Timeline',
+                                    component: TimelineTab,
                                 },
                                 {
                                     path: '/questions',
@@ -125,7 +142,7 @@ export default () => {
                             onSubmit={formikProps.handleSubmit}
                             errors={formikProps.errors}
                             dirty={formikProps.dirty}
-                            loading={formikProps.isSubmitting}
+                            loading={saveResult.loading}
                         />
                     </>
                 )}

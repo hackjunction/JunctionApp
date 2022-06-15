@@ -39,9 +39,9 @@ export default ({ value = {}, onChange }) => {
                                 label="Amount"
                                 value={budget}
                                 type="number"
-                                onChange={value =>
-                                    handleChange('budget', value)
-                                }
+                                onChange={value => {
+                                    handleChange('budget', Number(value))
+                                }}
                             />
                         </Grid>
                         <Grid item xs={4}>

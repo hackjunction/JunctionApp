@@ -108,6 +108,15 @@ class EventController {
         return this._clean(Event.find().lean())
     }
 
+    async update(id, event) {
+        if (!this.isAdmin) {
+            return null
+        }
+        return this._clean(
+            Event.findOneAndUpdate({ _id: id }, event, { new: true }),
+        )
+    }
+
     async _clean(promise) {
         const result = await promise
         if (Array.isArray(result)) {
