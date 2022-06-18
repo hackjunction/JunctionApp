@@ -290,7 +290,14 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Overall winner method"
-                            hint="Which method should be used to determine the overall winner?"
+                            hint={`Which method should be used to determine the overall winner?
+
+*Finals, public voting*: Winners are selected by voting in the JunctionApp, finalists are auto-generated from the top-ranked projects in each challenge.
+
+*Finals, manual voting*: Winners are selected by voting in the JunctionApp, finalists are hand picked by organisers in the "Finalist selection" tab in "Projects".
+
+*No overall winner*: There is no single overall winner for this event and no voting happens for overall results.
+`}
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
