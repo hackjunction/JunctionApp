@@ -119,6 +119,14 @@ const updateFinalists = asyncHandler(async (req, res) => {
     return res.status(200).json(event)
 })
 
+const batchUpdateFinalists = asyncHandler(async (req, res) => {
+    const event = await EventController.batchUpdateFinalists(
+        req.event._id,
+        req.body.projectIds,
+    )
+    return res.status(200).json(event)
+})
+
 const getFinalists = asyncHandler(async (req, res) => {
     const projects = await mongoose
         .model('Project')
@@ -228,6 +236,16 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         updateFinalists,
+    )
+
+router
+    .route('/:slug/finalist/batch')
+    .get(hasToken, getEventFromParams, getFinalists)
+    .patch(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        batchUpdateFinalists,
     )
 
 /** Get organisers for single event */

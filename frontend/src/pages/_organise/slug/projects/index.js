@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 
 import { useSelector } from 'react-redux'
 import { useRouteMatch, useLocation } from 'react-router'
+import { OverallReviewingMethods } from '@hackjunction/shared'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
@@ -13,6 +14,7 @@ import TracksTab from './by-track'
 import GavelTab from './gavel'
 import AnnotatorsTab from './annotators'
 import WinnersTab from './winners'
+import FinalistSelectionTab from './finalist-selection'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
@@ -62,6 +64,18 @@ export default () => {
             label: 'Gavel annotators',
             component: AnnotatorsTab,
         })
+
+        if (
+            event?.overallReviewMethod ===
+            OverallReviewingMethods.finalsManualSelection.id
+        ) {
+            data.push({
+                path: '/finalist-selection',
+                key: 'finalist-selection',
+                label: 'Finalist selection',
+                component: FinalistSelectionTab,
+            })
+        }
 
         data.push({
             path: '/winners',
