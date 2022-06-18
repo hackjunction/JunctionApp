@@ -98,6 +98,14 @@ EventsService.updateFinalists = (idToken, slug, projectId) => {
     )
 }
 
+EventsService.batchUpdateFinalists = (idToken, slug, projectIds) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/${slug}/finalist/batch`,
+        { projectIds },
+        config(idToken),
+    )
+}
+
 EventsService.getFinalists = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/finalist`, config(idToken))
 }
