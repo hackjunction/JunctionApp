@@ -71,4 +71,13 @@ ProjectsService.getCommits = projectId => {
     return project
 }
 
+ProjectsService.exportProjects = (idToken, eventSlug, projectIds) => {
+    const projects = _axios.post(
+        `/projects/${eventSlug}/admin/export`,
+        { projectIds },
+        config(idToken),
+    )
+    return projects
+}
+
 export default ProjectsService

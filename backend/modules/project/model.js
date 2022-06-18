@@ -89,6 +89,23 @@ ProjectSchema.methods.getPreview = function () {
     return _.omit(this, ['description'])
 }
 
+ProjectSchema.methods.getExportData = function () {
+    return {
+        name: this.name || '',
+        punchline: this.punchline || '',
+        description: this.description || '',
+        technologies: this.technologies.join(', ') || '',
+        source: this.source || '',
+        demo: this.demo || '',
+        images: this.images.map(image => image.url).join(', ') || '',
+        challenges: this.challenges.join(', ') || '',
+        track: this.track || '',
+        location: this.location || '',
+        status: this.status || '',
+        video: this.video || '',
+    }
+}
+
 ProjectSchema.post('save', async function (doc, next) {
     const event = await mongoose.model('Event').findById(this.event)
     switch (event.reviewMethod) {

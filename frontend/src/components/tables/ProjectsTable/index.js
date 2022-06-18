@@ -5,13 +5,20 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import EditProjectModal from 'components/modals/EditProjectModal'
+import ProjectsService from 'services/projects'
+import * as AuthSelectors from 'redux/auth/selectors'
+import CsvExporterService from 'services/csvExporter'
 
 const ProjectsTable = ({ projects, baseURL }) => {
     const teams = useSelector(OrganiserSelectors.teams)
+    const event = useSelector(OrganiserSelectors.event)
+
     //const dispatch = useDispatch()
     //const location = useLocation()
 
     const [selectedProject, setSelectedProject] = useState(null)
+    const idToken = useSelector(AuthSelectors.getIdToken)
+
     // TODO config columsn (table only in physical events)
     const openSingleEdit = useCallback(row => {
         setSelectedProject(row.original)
@@ -75,13 +82,39 @@ const ProjectsTable = ({ projects, baseURL }) => {
         }
         return project
     })
+
+    const fetchExportProjectData = exportSelectedProjects => {
+        ProjectsService.exportProjects(
+            idToken,
+            event.slug,
+            exportSelectedProjects,
+        ).then(response => {
+            CsvExporterService.exportToCsv(response, 'project-export')
+        })
+    }
+
     return (
         <>
             <EditProjectModal
                 project={selectedProject}
                 onClose={() => setSelectedProject(null)}
             />
-            <Table data={data} columns={columns} onRowClick={openSingleEdit} />
+            <Table
+                data={data}
+                columns={columns}
+                onRowClick={openSingleEdit}
+                enableExport={false}
+                bulkActions={[
+                    {
+                        key: 'export-projects',
+                        label: 'Export selected',
+                        action: rows => {
+                            const newRows = rows.map(row => row.original._id)
+                            fetchExportProjectData(newRows)
+                        },
+                    },
+                ]}
+            />
         </>
     )
 }
