@@ -57,11 +57,12 @@ router
         isAfter.submissionsStartTime,
         isBefore.submissionsEndTime,
         asyncHandler(async (req, res) => {
-            const project = await ProjectController.createProjectForEventAndTeam(
-                req.event,
-                req.team,
-                req.body.data,
-            )
+            const project =
+                await ProjectController.createProjectForEventAndTeam(
+                    req.event,
+                    req.team,
+                    req.body.data,
+                )
             return res.status(200).json(project)
         }),
     )
@@ -72,11 +73,12 @@ router
         isAfter.submissionsStartTime,
         isBefore.submissionsEndTime,
         asyncHandler(async (req, res) => {
-            const project = await ProjectController.updateProjectForEventAndTeam(
-                req.event,
-                req.team,
-                req.body.data,
-            )
+            const project =
+                await ProjectController.updateProjectForEventAndTeam(
+                    req.event,
+                    req.team,
+                    req.body.data,
+                )
             return res.status(200).json(project)
         }),
     )
@@ -116,10 +118,11 @@ router
     .get(
         getEventFromParams,
         asyncHandler(async (req, res) => {
-            const projects = await ProjectController.getChallengeProjectsWithToken(
-                req.event,
-                req.params.token,
-            )
+            const projects =
+                await ProjectController.getChallengeProjectsWithToken(
+                    req.event,
+                    req.params.token,
+                )
             return res.status(200).json(projects)
         }),
     )
@@ -162,6 +165,20 @@ router
             const projects = await ProjectController.validateToken(
                 req.event,
                 req.params.token,
+            )
+            return res.status(200).json(projects)
+        }),
+    )
+
+router
+    .route('/:slug/admin/export')
+    /** As an event admin, export selected projects */
+    .post(
+        hasToken,
+        isEventOrganiser,
+        asyncHandler(async (req, res) => {
+            const projects = await ProjectController.exportProjects(
+                req.body.projectIds,
             )
             return res.status(200).json(projects)
         }),
