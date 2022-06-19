@@ -109,8 +109,8 @@ const ProjectsTable = ({ projects, baseURL }) => {
                         key: 'export-projects',
                         label: 'Export selected',
                         action: rows => {
-                            const newRows = rows.map(row => row.original._id)
-                            fetchExportProjectData(newRows)
+                            const projectIds = rows.map(row => row.original._id)
+                            fetchExportProjectData(projectIds)
                         },
                     },
                 ]}

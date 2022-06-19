@@ -14,6 +14,14 @@ TeamsService.getTeamsForEvent = (idToken, eventSlug) => {
     return _axios.get(`/teams/organiser/${eventSlug}`, config(idToken))
 }
 
+TeamsService.exportTeams = (idToken, eventSlug, teamIds) => {
+    return _axios.post(
+        `/teams/organiser/${eventSlug}/export`,
+        { teamIds },
+        config(idToken),
+    )
+}
+
 TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     return _axios.post(
         `/teams/${eventSlug}?populate=${populate}`,

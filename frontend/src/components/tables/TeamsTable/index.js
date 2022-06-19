@@ -10,9 +10,16 @@ import BulkEmailModal from 'components/modals/BulkEmailModal'
 
 import { Table, Sorters } from 'components/generic/_Table'
 import AttendeeTable from '../AttendeeTable'
+import * as AuthSelectors from 'redux/auth/selectors'
+import CsvExporterService from 'services/csvExporter'
+import TeamsService from 'services/teams'
 
 export default ({ loading, teams = [], simplifiedView = false }) => {
+    const idToken = useSelector(AuthSelectors.getIdToken)
+
     const registrationsMap = useSelector(OrganiserSelectors.registrationsMap)
+    const event = useSelector(OrganiserSelectors.event)
+
     const [reviewStatus, setReviewStatus] = useState('any')
     const [completedStatus, setCompletedStatus] = useState('any')
     const [ratingRange, setRatingRange] = useState([0, 5])
@@ -137,6 +144,14 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
         ]
     }, [])
 
+    const fetchExportTeamData = teamIds => {
+        TeamsService.exportTeams(idToken, event.slug, teamIds).then(
+            response => {
+                CsvExporterService.exportToCsv(response, 'teams-export')
+            },
+        )
+    }
+
     return (
         <Grid container spacing={2}>
             <BulkEditRegistrationModal
@@ -241,6 +256,18 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
                     renderExpanded={row => (
                         <AttendeeTable attendees={row.original.members} />
                     )}
+                    bulkActions={[
+                        {
+                            key: 'export-teams',
+                            label: 'Export team members',
+                            action: rows => {
+                                const teamIds = rows.map(
+                                    row => row.original._id,
+                                )
+                                fetchExportTeamData(teamIds)
+                            },
+                        },
+                    ]}
                 />
                 {/* <MaterialTable
                     title="Teams"
