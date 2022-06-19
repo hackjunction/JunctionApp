@@ -195,14 +195,7 @@ controller.exportProjects = async projectIds => {
     const exportData = projectAndMeta.map(([project, teamWithMeta]) => {
         return {
             ...project.getExportData(),
-            teamCode: teamWithMeta.code,
-            teamMembers: Object.values(teamWithMeta.meta)
-                .map(memberMeta => memberMeta.profile)
-                .map(
-                    memberProfile =>
-                        `${memberProfile.firstName} ${memberProfile.lastName} <${memberProfile.email}>`,
-                )
-                .join(', '),
+            ...TeamController.convertToFlatExportData(teamWithMeta),
         }
     })
 

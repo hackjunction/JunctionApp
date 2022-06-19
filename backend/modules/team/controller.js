@@ -200,4 +200,26 @@ controller.getTeamStatsForEvent = async eventId => {
     }
 }
 
+controller.exportTeams = async teamIds => {
+    const teams = await Team.find({ _id: { $in: teamIds } })
+    const teamsWithMeta = await Promise.all(
+        teams.map(team => controller.attachMeta(team)),
+    )
+
+    return teamsWithMeta.map(controller.convertToFlatExportData)
+}
+
+controller.convertToFlatExportData = teamWithMeta => {
+    return {
+        teamCode: teamWithMeta.code,
+        teamMembers: Object.values(teamWithMeta.meta)
+            .map(memberMeta => memberMeta.profile)
+            .map(
+                memberProfile =>
+                    `${memberProfile.firstName} ${memberProfile.lastName} <${memberProfile.email}>`,
+            )
+            .join(', '),
+    }
+}
+
 module.exports = controller
