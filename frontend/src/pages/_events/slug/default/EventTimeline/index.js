@@ -50,12 +50,12 @@ const colorLibStyle = props => ({
     },
     active: {
         '& $line': {
-            borderColor: '#784af4',
+            borderColor: props => props.accent || '#784af4',
         },
     },
     completed: {
         '& $line': {
-            borderColor: '#784af4',
+            borderColor: props => props.accent || '#784af4',
         },
     },
     line: {
