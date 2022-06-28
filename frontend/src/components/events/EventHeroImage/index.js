@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useDispatch } from 'react-redux'
 import { goBack } from 'connected-react-router'
-import { Box } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -12,22 +12,31 @@ import Container from 'components/generic/Container'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
+        position: 'relative',
+        background: props => props.backgroundColor ?? undefined,
+        paddingTop: theme.spacing(2),
+    },
+    imageContainer: {
         display: 'flex',
-        overflow: 'hidden',
     },
     image: {
         zIndex: 1,
         top: 0,
         left: 0,
-        width: '100%',
-        height: '465px',
         objectFit: 'cover',
+        aspectRatio: '16/9',
+        maxHeight: 500,
+        borderRadius: 6,
+        margin: '0 auto',
+        boxShadow: '2px 7px 15px rgba(0, 0, 0, 0.12)',
     },
     backButtonWrapper: {
         position: 'absolute',
         zIndex: 10,
         width: 'auto',
         paddingTop: theme.spacing(3),
+        top: 0,
+        left: 0,
     },
     buttonInner: {
         color: 'black',
@@ -67,20 +76,40 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ event, title = '', subheading = '', onBack }) => {
+export default ({
+    event,
+    title = '',
+    subheading = '',
+    onBack,
+    backgroundColor,
+    alignRight,
+}) => {
     const dispatch = useDispatch()
-    const classes = useStyles()
+    const classes = useStyles({ backgroundColor })
     return (
         <Box className={classes.wrapper}>
-            <Image
-                className={classes.image}
-                publicId={event?.coverImage?.publicId}
-                defaultImage={require('assets/images/default_cover_image.png')}
-                transformation={{
-                    width: 1440,
-                    height: 465,
-                }}
-            />
+            <Container>
+                <Grid container>
+                    {alignRight && <Grid item xs={12} md={4} />}
+                    <Grid
+                        item
+                        xs={12}
+                        md={alignRight ? 8 : 12}
+                        className={classes.imageContainer}
+                    >
+                        <Image
+                            className={classes.image}
+                            publicId={event?.coverImage?.publicId}
+                            defaultImage={require('assets/images/default_cover_image.png')}
+                            transformation={{
+                                width: 1920,
+                                height: 1080,
+                            }}
+                        />
+                    </Grid>
+                </Grid>
+            </Container>
+
             {/* <Box className={classes.logoWrapper}>
                 <FadeInWrapper enterDelay={0.3} verticalOffset={50}>
                     <Box
