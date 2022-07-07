@@ -42,6 +42,15 @@ controller.approveEvent = (event, data) => {
     return Event.updateAllowed(event, eventData)
 }
 
+controller.approveEventPageScript = (event, data) => {
+    const pageScripts = [...event.pageScripts] || []
+    if (data.index < pageScripts.length) {
+        pageScripts[data.index].approved = data.approved
+    }
+    const eventData = { pageScripts }
+    return Event.updateAllowed(event, eventData)
+}
+
 controller.setPriority = (event, data) => {
     const eventData = { frontPagePriority: data.frontPagePriority }
     return Event.updateAllowed(event, eventData)

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import { useSelector } from 'react-redux'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import {
@@ -10,7 +11,13 @@ import {
     Divider,
     Grid,
     Typography,
+    FormGroup,
+    FormControlLabel,
+    Checkbox,
 } from '@material-ui/core'
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import EventService from 'services/events'
 
 import Select from 'components/inputs/Select'
 import Button from 'components/generic/Button'
@@ -27,6 +34,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value = [], fieldName, setFieldValue }) => {
+    const hasSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
+    const idToken = useSelector(AuthSelectors.getIdToken)
+    const event = useSelector(OrganiserSelectors.event)
+
     const classes = useStyles()
     const availablePages = React.useMemo(() => {
         return EventPageScripts.ALLOWED_PAGE_SCRIPT_LOCATIONS.filter(
@@ -74,6 +85,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                 value.concat({
                     page: page.value,
                     script: scriptValue.value,
+                    approved: false,
                 }),
             )
             resetForm()
@@ -89,6 +101,19 @@ export default ({ value = [], fieldName, setFieldValue }) => {
         },
         [setFieldValue, fieldName, value],
     )
+
+    const setScriptApproval = (index, approved) => {
+        EventService.setPageScriptApproved(
+            idToken,
+            event.slug,
+            approved,
+            index,
+        ).then(() => {
+            const newValue = [...value]
+            newValue[index].approved = approved
+            setFieldValue(fieldName, newValue)
+        })
+    }
 
     const renderRows = () => {
         if (!value) return null
@@ -108,6 +133,29 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                             value={item.script}
                             onChange={() => {}}
                         />
+                    }
+                    secondary={
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={item.approved}
+                                        disabled={!hasSuperAdmin}
+                                        onChange={() =>
+                                            setScriptApproval(
+                                                index,
+                                                !item.approved,
+                                            )
+                                        }
+                                    />
+                                }
+                                label={
+                                    item.approved
+                                        ? 'This script was approved by Junction'
+                                        : 'This script is not yet approved by Junction. Request approval by getting in touch with the platform maintainers..'
+                                }
+                            />
+                        </FormGroup>
                     }
                 />
                 <ListItemSecondaryAction>
