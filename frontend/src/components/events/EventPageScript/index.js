@@ -8,7 +8,7 @@ export default ({ event, pageId }) => {
         const scriptEl = document
             .createRange()
             .createContextualFragment(
-                EventUtils.getEventPageScripts(event, pageId),
+                EventUtils.getApprovedEventPageScripts(event, pageId),
             )
         wrapper.appendChild(scriptEl)
         document.body.appendChild(wrapper)

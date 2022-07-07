@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
+const { GraphQLBoolean } = require('graphql')
 
 const EventPageScriptSchema = new mongoose.Schema({
     page: {
@@ -7,6 +8,10 @@ const EventPageScriptSchema = new mongoose.Schema({
     },
     script: {
         type: String,
+    },
+    approved: {
+        type: Boolean,
+        default: false,
     },
 })
 
@@ -18,6 +23,9 @@ const EventPageScriptType = new GraphQLObjectType({
         },
         script: {
             type: GraphQLNonNull(GraphQLString),
+        },
+        approved: {
+            type: GraphQLNonNull(GraphQLBoolean),
         },
     },
 })

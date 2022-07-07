@@ -73,6 +73,7 @@ const eventQuery = gql`
             pageScripts {
                 page
                 script
+                approved
             }
             _eventStatus
             _eventTimeFormatted

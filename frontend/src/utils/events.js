@@ -23,10 +23,11 @@ const EventUtils = {
 
         return EventConstants.STATUS.Finished
     },
-    getEventPageScripts: (event, pageId) => {
+    getApprovedEventPageScripts: (event, pageId) => {
         return (
-            event?.pageScripts.find(script => script.page === pageId)?.script ||
-            ''
+            event?.pageScripts.find(
+                script => script.page === pageId && script.approved,
+            )?.script || ''
         )
     },
 }

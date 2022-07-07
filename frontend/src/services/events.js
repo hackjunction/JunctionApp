@@ -126,6 +126,14 @@ EventsService.setApproved = (idToken, slug, approved) => {
     )
 }
 
+EventsService.setPageScriptApproved = (idToken, slug, approved, index) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/admin/page-scripts/${slug}`,
+        { approved, index },
+        config(idToken),
+    )
+}
+
 EventsService.setFrontpagePriority = (idToken, slug, priority) => {
     return _axios.patch(
         `${BASE_ROUTE}/admin/priority/${slug}`,
