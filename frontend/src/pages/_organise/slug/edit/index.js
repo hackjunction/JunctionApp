@@ -16,6 +16,7 @@ import BottomBar from 'components/inputs/BottomBar'
 
 import DefaultTab from './default'
 import ConfigurationTab from './configuration'
+import ChallengesTab from './challenges'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
@@ -102,6 +103,12 @@ export default () => {
                                     key: 'configuration',
                                     label: 'Configuration',
                                     component: ConfigurationTab,
+                                },
+                                {
+                                    path: '/challenges',
+                                    key: 'challenges',
+                                    label: 'Challenges',
+                                    component: ChallengesTab,
                                 },
                                 {
                                     path: '/schedule',

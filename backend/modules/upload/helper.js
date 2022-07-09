@@ -39,6 +39,9 @@ const UploadHelper = {
     generateEventTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}`
     },
+    generateChallengeTag: slug => {
+        return `${cloudinaryRootPath}-challenge-${slug}`
+    },
     generateUserTag: userId => {
         return `${cloudinaryRootPath}-user-${userId}`
     },
@@ -121,6 +124,24 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateEventTag(slug),
+            },
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 2 * 1024 * 1024 },
+        }).single('image')
+    },
+
+    uploadChallengeLogo: slug => {
+        const storage = createStorageWithPath(
+            `challenge/logos/`,
+            {
+                width: 640,
+                height: 640,
+                crop: 'fit',
+            },
+            {
+                tag: UploadHelper.generateChallengeTag(slug),
             },
         )
         return multer({
