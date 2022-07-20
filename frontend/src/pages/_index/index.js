@@ -163,6 +163,9 @@ export default () => {
                 </Button>
             </Container>
             <Divider size={20} />
+            <Container center >
+                    <img src="https://i.imgur.com/R7pG4Ln.png" style={{ width:"10em"}} />
+            </Container>
         </PageWrapper>
     )
 }
