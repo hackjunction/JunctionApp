@@ -9,7 +9,6 @@ const EventTracking = () => {
     const { pageId } = useParams()
     const { event } = useContext(EventDetailContext)
 
-    console.log(event, pageId)
     return (
         <>
             {event && pageId && (
