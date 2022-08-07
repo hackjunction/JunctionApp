@@ -92,17 +92,17 @@ const MeetingInput = new GraphQLInputObjectType({
 const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
-        meetingSlotsFor: {
-            type: MeetingType,
+        meetingSlots: {
+            type: GraphQLList(MeetingType),
             args: {
                 eventId: {
-                    type: GraphQLID,
+                    type: GraphQLString,
                 },
                 challengeId: {
-                    type: GraphQLID,
+                    type: GraphQLString,
                 },
                 from: {
-                    type: GraphQLString,
+                    type: GraphQLDate,
                 },
                 dayRange: {
                     type: GraphQLInt,
@@ -126,11 +126,11 @@ const MutationType = new GraphQLObjectType({
 
 const Resolvers = {
     Query: {
-        meetingSlotsFor: async (parent, args, context) => {
+        meetingSlots: async (parent, args, context) => {
             if (args.eventId && args.challengeId) {
                 return context
                     .controller('Meeting')
-                    .getByEventIdAndChallengeId(
+                    .getMeetings(
                         args.eventId,
                         args.challengeId,
                         args.from,

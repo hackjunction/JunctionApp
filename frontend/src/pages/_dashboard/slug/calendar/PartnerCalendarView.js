@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useMutation } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_MEETING_SLOT } from 'graphql/mutations/meetings'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useDispatch } from 'react-redux'
@@ -34,8 +34,8 @@ export default () => {
     const handleSubmit = () => {
         const meeting = {
             event: '606d8326de289c00431125e7',
-            startTime: '2022-08-04T15:00:00+03:00',
-            endTime: '2022-08-04T17:00:00+03:00',
+            startTime: '2022-08-06T15:00:00+03:00',
+            endTime: '2022-08-06T17:00:00+03:00',
             challenge: '62ea30080f273de91bd18ccd',
         }
         createSlot({

@@ -61,10 +61,25 @@ class MeetingContorller {
                 type: GraphQLString,
             },
 */
-    async getMeetings(event, challenge, from, to) {}
+    async getMeetings(eventId, challengeId, from, dayRange) {
+        console.log('\nNEW REQUEST\nevent', eventId)
+        console.log('challenge', challengeId)
+        console.log('from', from)
+        console.log('dayRange', dayRange)
+        const endDate = new Date(from)
+        endDate.setDate(endDate.getDate() + dayRange)
+        const queryParams = {
+            challenge: challengeId,
+            event: eventId,
+            startTime: { $gte: from, $lt: endDate },
+        }
+        console.log('find query params:', queryParams)
+        return this._clean(Meeting.find(queryParams))
+        // {createdAt:{$gte:ISODate("2021-01-01"),$lt:ISODate("2020-05-01"}}
+    }
 
     async create(meeting) {
-        console.log('\n\nNEW REQUEST')
+        console.log('\n\nNEW createMeeting REQUEST')
         console.log(meeting)
         console.log('isChallengePartner', this.isChallengePartner)
 
@@ -76,7 +91,6 @@ class MeetingContorller {
         const challenge = event.challenges.find(
             c => c._id.toString() === meeting.challenge,
         )
-        console.log(challenge)
 
         if (!(challenge && challenge.partnerEmail)) return null
 
@@ -96,7 +110,6 @@ class MeetingContorller {
             timeZone: meeting.timeZone || 'Europe/Helsinki',
         })
         console.log(newMeetingSlot)
-        console.log('ok here')
         return this._cleanOne(newMeetingSlot.save())
     }
 
@@ -116,8 +129,12 @@ class MeetingContorller {
     }
 
     _cleanOne(meeting) {
-        if (!meeting) return null
-        if (this.isChallengePartner) return meeting
+        if (!meeting) {
+            return null
+        }
+        if (this.isChallengePartner) {
+            return meeting
+        }
         return meeting
     }
 }
