@@ -16,6 +16,10 @@ const ChallengeSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    partnerEmail: {
+        type: String,
+        required: true,
+    },
     slug: {
         type: String,
         required: true,
@@ -64,6 +68,9 @@ const ChallengeType = new GraphQLObjectType({
         partner: {
             type: GraphQLString,
         },
+        partnerEmail: {
+            type: GraphQLString,
+        },
         slug: {
             type: GraphQLString,
         },
@@ -107,6 +114,9 @@ const ChallengeInput = new GraphQLInputObjectType({
             type: GraphQLNonNull(GraphQLString),
         },
         partner: {
+            type: GraphQLString,
+        },
+        partnerEmail: {
             type: GraphQLString,
         },
         slug: {

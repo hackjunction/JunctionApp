@@ -12,6 +12,7 @@ import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import StarRateIcon from '@material-ui/icons/StarRate'
 import HowToVoteIcon from '@material-ui/icons/HowToVote'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
+import EventIcon from '@material-ui/icons/Event'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
@@ -27,6 +28,7 @@ import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
+import CalendarPage from './calendar'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -193,6 +195,14 @@ export default () => {
                         icon: <FormatListBulletedIcon />,
                         label: 'Challenges',
                         component: ChallengesIndex,
+                    },
+                    {
+                        key: 'calendar',
+                        path: '/calendar',
+                        exact: true,
+                        icon: <EventIcon />,
+                        label: 'Calendar / Meetings',
+                        component: CalendarPage,
                     },
                 ]}
             />
