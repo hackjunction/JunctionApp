@@ -24,6 +24,8 @@ const {
     EventTag,
     RegistrationConfig,
     EventTheme,
+    Webhook,
+    EventPageScript,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -163,6 +165,12 @@ const EventType = new GraphQLObjectType({
             },
             theme: {
                 type: EventTheme,
+            },
+            webhooks: {
+                type: GraphQLList(Webhook),
+            },
+            pageScripts: {
+                type: GraphQLList(EventPageScript),
             },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out

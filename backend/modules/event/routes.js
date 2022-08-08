@@ -143,6 +143,11 @@ const approveEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(event)
 })
 
+const approveEventPageScript = asyncHandler(async (req, res) => {
+    const event = await EventController.approveEventPageScript(req.event, req.body)
+    return res.status(200).json(event)
+})
+
 // Priority
 const setPriority = asyncHandler(async (req, res) => {
     const event = await EventController.setPriority(req.event, req.body)
@@ -262,6 +267,15 @@ router
         hasRole(Auth.Roles.SUPER_ADMIN),
         isEventOrganiser,
         approveEvent,
+    )
+
+router
+    .route('/admin/page-scripts/:slug')
+    .patch(
+        hasToken,
+        hasRole(Auth.Roles.SUPER_ADMIN),
+        isEventOrganiser,
+        approveEventPageScript,
     )
 
 /** Priority */

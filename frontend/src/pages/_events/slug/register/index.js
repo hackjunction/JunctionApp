@@ -44,6 +44,8 @@ import { popupCenter } from '../../../../utils/misc'
 import EventDetailContext from '../context'
 
 import { useTranslation } from 'react-i18next'
+import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
+import { EventPageScripts } from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -350,6 +352,16 @@ export default RequiresPermission(() => {
                             />
                         )}
                     </StepContent>
+                    {index === 0 && (
+                        <EventPageScriptIFrame
+                            slug={slug}
+                            pageId={
+                                EventPageScripts.PageScriptLocation
+                                    .EVENT_REGISTRATION_FORM_START
+                            }
+                            event={event}
+                        />
+                    )}
                 </Step>
             )
         })
@@ -514,6 +526,14 @@ export default RequiresPermission(() => {
                                     {t('Back_to_event_')}
                                 </Button>
                             </Box>
+                            <EventPageScriptIFrame
+                                slug={slug}
+                                pageId={
+                                    EventPageScripts.PageScriptLocation
+                                        .EVENT_REGISTRATION_FORM_END
+                                }
+                                event={event}
+                            />
                         </StepContent>
                     </Step>
                 </Stepper>

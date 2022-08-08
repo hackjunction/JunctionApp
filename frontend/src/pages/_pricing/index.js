@@ -38,7 +38,7 @@ export default () => {
     const { t } = useTranslation()
     const body1 = [
         'Event registration and organization through platform.',
-        'For non - profit organizations.'
+        'For non - profit organizations.',
     ]
     const body2 = [
         'Event registration and organization through platform',

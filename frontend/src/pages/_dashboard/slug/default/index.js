@@ -17,8 +17,14 @@ import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
 import SocialMediaBlock from './Blocks/SocialMediaBlock'
+import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
+import { EventPageScripts } from '@hackjunction/shared'
+import { useSelector } from 'react-redux'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 export default () => {
+    const event = useSelector(DashboardSelectors.event)
+
     return (
         <Box>
             <PageHeader heading="Dashboard" />
@@ -73,6 +79,13 @@ export default () => {
                 <GavelReviewingBlock />
                 <SocialMediaBlock />
             </Grid>
+            {event && (
+                <EventPageScriptIFrame
+                    slug={event.slug}
+                    pageId={EventPageScripts.PageScriptLocation.EVENT_DASHBOARD}
+                    event={event}
+                />
+            )}
         </Box>
     )
 }
