@@ -1,37 +1,5 @@
 const mongoose = require('mongoose')
 
-/*
- summary: event.title || 'Junction: meeting with challenge partner',
-        location: event.location || '',
-        description: event.description || '',
-        start: {
-            dateTime: '2022-07-30T15:00:00+03:00',
-            timeZone: 'Europe/Helsinki',
-        },
-        end: {
-            dateTime: '2022-07-30T17:00:00+03:00',
-            timeZone: 'Europe/Helsinki',
-        },
-        attendees: event.attendees.map(attendee => ({
-            email: attendee.email || '',
-            organizer: attendee.isOrganizer || false,
-            responseStatus: 'needsAction',
-        })),
-        // attendees: [
-        //     // { email: 'ruukku.cadus@gmail.com' },
-        //     {
-        //         email: 'oskar.sandas@gmail.com',
-        //         responseStatus: 'needsAction',
-        //         organizer: false,
-        //     },
-        //     {
-        //         email: 'oskar.sandas1@gmail.com',
-        //         responseStatus: 'needsAction',
-        //         organizer: true,
-        //     },
-        // ],
-*/
-
 const MeetingSchema = new mongoose.Schema({
     event: {
         type: mongoose.Schema.Types.ObjectId,
@@ -78,13 +46,7 @@ const MeetingSchema = new mongoose.Schema({
         // enum: ['Europe/Helsinki']
     },
     attendees: {
-        type: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-                required: false,
-            },
-        ],
+        type: [String],
         required: true,
     },
     googleEventId: {

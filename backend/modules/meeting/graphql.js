@@ -121,6 +121,13 @@ const MutationType = new GraphQLObjectType({
                 meeting: { type: GraphQLNonNull(MeetingInput) },
             },
         },
+        bookMeeting: {
+            type: MeetingType,
+            args: {
+                meetingId: { type: GraphQLNonNull(GraphQLString) },
+                attendees: { type: GraphQLNonNull(GraphQLList(GraphQLString)) },
+            },
+        },
     },
 })
 
@@ -141,8 +148,16 @@ const Resolvers = {
         },
     },
     Mutation: {
-        createMeetingSlot: async (paren, args, context) => {
+        createMeetingSlot: async (parent, args, context) => {
             return context.controller('Meeting').create(args.meeting)
+        },
+        bookMeeting: async (parent, args, context) => {
+            if (args.meetingId && args.attendees) {
+                return context
+                    .controller('Meeting')
+                    .bookMeeting(args.meetingId, args.attendees)
+            }
+            return null
         },
     },
 }

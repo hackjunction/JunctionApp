@@ -3,6 +3,10 @@ const DataLoader = require('dataloader')
 const Meeting = require('./model')
 const PermissionUtils = require('../../utils/permissions')
 const Event = require('../event/model')
+const UsersController = require('../user-profile/controller')
+const {
+    createGoogleEvent,
+} = require('../../common/services/google-calendar/google-calendar')
 
 async function batchGetMeetingsByIds(ids) {
     const results = await Meeting.find({
@@ -32,40 +36,7 @@ class MeetingContorller {
             )
     }
 
-    /*
-               event: {
-                type: GraphQLNonNull(GraphQLString),
-            },
-            attendees: {
-                type: GraphQLList(GraphQLString),
-            },
-            organizerEmail: {
-                type: GraphQLString,
-            },
-            challenge: {
-                type: GraphQLNonNull(GraphQLList(GraphQLString)),
-            },
-            title: {
-                type: GraphQLString,
-            },
-            description: {
-                type: GraphQLString,
-            },
-            startTime: {
-                type: GraphQLDate,
-            },
-            endTime: {
-                type: GraphQLDate,
-            },
-            timeZone: {
-                type: GraphQLString,
-            },
-*/
     async getMeetings(eventId, challengeId, from, dayRange) {
-        console.log('\nNEW REQUEST\nevent', eventId)
-        console.log('challenge', challengeId)
-        console.log('from', from)
-        console.log('dayRange', dayRange)
         const endDate = new Date(from)
         endDate.setDate(endDate.getDate() + dayRange)
         const queryParams = {
@@ -73,7 +44,6 @@ class MeetingContorller {
             event: eventId,
             startTime: { $gte: from, $lt: endDate },
         }
-        console.log('find query params:', queryParams)
         return this._clean(Meeting.find(queryParams))
         // {createdAt:{$gte:ISODate("2021-01-01"),$lt:ISODate("2020-05-01"}}
     }
@@ -109,8 +79,57 @@ class MeetingContorller {
             endTime: meeting.endTime,
             timeZone: meeting.timeZone || 'Europe/Helsinki',
         })
-        console.log(newMeetingSlot)
         return this._cleanOne(newMeetingSlot.save())
+    }
+
+    async bookMeeting(meetingId, attendees) {
+        if (!(meetingId && attendees && attendees.length > 0)) return null
+        const meetingToBook = await Meeting.findOne({ _id: meetingId })
+        console.log(meetingToBook)
+        // return null if meeting already has attendees (already booked)
+        // if (meetingToBook.attendees.length !== 0) return null
+        const attendeeProfiles = await UsersController.getUserProfiles(
+            attendees,
+        )
+
+        const googleEvent = {
+            title: meetingToBook.title,
+            description: meetingToBook.description,
+            location: meetingToBook.location,
+            start: {
+                dateTime: meetingToBook.startTime,
+                timeZone: meetingToBook.timeZone,
+            },
+            end: {
+                dateTime: meetingToBook.endTime,
+                timeZone: meetingToBook.timeZone,
+            },
+            attendees: [
+                ...attendeeProfiles.map(attendee => ({
+                    email: attendee.email,
+                    responseStatus: 'needsAction',
+                    organizer: false,
+                })),
+                {
+                    email: meetingToBook.organizerEmail,
+                    responseStatus: 'needsAction',
+                    organizer: true,
+                },
+            ],
+            meetingId,
+        }
+
+        console.log('google event to create', googleEvent)
+        // create google calednar event and meets link
+        createGoogleEvent(googleEvent)
+
+        return this._cleanOne(
+            Meeting.findOneAndUpdate(
+                { _id: meetingId },
+                { ...meetingToBook.toObject(), attendees },
+                { new: true },
+            ),
+        )
     }
 
     getById(meetingId) {

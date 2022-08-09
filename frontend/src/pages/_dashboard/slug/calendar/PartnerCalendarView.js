@@ -32,10 +32,28 @@ export default () => {
     })
 
     const handleSubmit = () => {
+        // const meeting = {
+        //     event: '606d8326de289c00431125e7',
+        //     startTime: '2022-08-08T15:00:00+03:00',
+        //     endTime: '2022-08-08T15:30:00+03:00',
+        //     challenge: '62ea30080f273de91bd18ccd',
+        // }
+        // const meeting = {
+        //     event: '606d8326de289c00431125e7',
+        //     startTime: '2022-08-08T15:30:00+03:00',
+        //     endTime: '2022-08-08T16:00:00+03:00',
+        //     challenge: '62ea30080f273de91bd18ccd',
+        // }
+        // const meeting = {
+        //     event: '606d8326de289c00431125e7',
+        //     startTime: '2022-08-09T15:00:00+03:00',
+        //     endTime: '2022-08-09T15:30:00+03:00',
+        //     challenge: '62ea30080f273de91bd18ccd',
+        // }
         const meeting = {
             event: '606d8326de289c00431125e7',
-            startTime: '2022-08-06T15:00:00+03:00',
-            endTime: '2022-08-06T17:00:00+03:00',
+            startTime: '2022-08-09T15:30:00+03:00',
+            endTime: '2022-08-09T16:00:00+03:00',
             challenge: '62ea30080f273de91bd18ccd',
         }
         createSlot({

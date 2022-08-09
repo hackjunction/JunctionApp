@@ -3,6 +3,10 @@ const fs = require('fs')
 const readline = require('readline')
 const { google } = require('googleapis')
 const uuidv4 = require('uuid/v4')
+const {
+    updateMeetingGoogleInfo,
+    cancelMeeting,
+} = require('../../../modules/meeting/helpers')
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -95,57 +99,40 @@ function listEvents(auth) {
     )
 }
 
-const insertEvent = (auth, event) => {
+const insertEvent = (auth, eventInfo) => {
     const calendar = google.calendar({ version: 'v3', auth })
     calendar.events.insert(
         {
             auth,
             calendarId: 'primary',
-            resource: event,
+            resource: eventInfo.googleEvent,
             conferenceDataVersion: 1,
         },
-        (err, returnEvent) => {
+        (err, res) => {
             if (err) {
                 console.log(
                     `There was an error contacting the Calendar service: ${err}`,
                 )
+                // cancelMeeting(eventInfo.meetingId)
+            } else {
+                updateMeetingGoogleInfo(
+                    eventInfo.meetingId,
+                    res.data.id,
+                    res.data.hangoutLink,
+                )
             }
-            // console.log('Created event \n:', returnEvent)
         },
     )
 }
 
-const createEvent = event => {
+const createGoogleEvent = event => {
     const googleEvent = {
         summary: event.title || 'Junction: meeting with challenge partner',
         location: event.location || '',
         description: event.description || '',
-        start: {
-            dateTime: '2022-07-30T15:00:00+03:00',
-            timeZone: 'Europe/Helsinki',
-        },
-        end: {
-            dateTime: '2022-07-30T17:00:00+03:00',
-            timeZone: 'Europe/Helsinki',
-        },
-        attendees: event.attendees.map(attendee => ({
-            email: attendee.email || '',
-            organizer: attendee.isOrganizer || false,
-            responseStatus: 'needsAction',
-        })),
-        // attendees: [
-        //     // { email: 'ruukku.cadus@gmail.com' },
-        //     {
-        //         email: 'oskar.sandas@gmail.com',
-        //         responseStatus: 'needsAction',
-        //         organizer: false,
-        //     },
-        //     {
-        //         email: 'oskar.sandas1@gmail.com',
-        //         responseStatus: 'needsAction',
-        //         organizer: true,
-        //     },
-        // ],
+        start: event.start,
+        end: event.end,
+        attendees: event.attendees,
         conferenceData: {
             createRequest: {
                 conferenceSolutionKey: {
@@ -162,6 +149,10 @@ const createEvent = event => {
             ],
         },
     }
+    const eventInfo = {
+        googleEvent,
+        meetingId: event.meetingId,
+    }
 
     // Load client secrets from a local file.
     fs.readFile(`${__dirname}/credentials.json`, (err, content) => {
@@ -170,9 +161,9 @@ const createEvent = event => {
             return false
         }
         // Authorize a client with credentials, then call the Google Calendar API.
-        authorize(JSON.parse(content), insertEvent, googleEvent)
+        authorize(JSON.parse(content), insertEvent, eventInfo)
         return true
     })
 }
 
-module.exports = { createEvent }
+module.exports = { createGoogleEvent }
