@@ -5,7 +5,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import { useDispatch } from 'react-redux'
 import Button from 'components/generic/Button'
 
-export default () => {
+export default ({ event }) => {
     const dispatch = useDispatch()
     const [createSlot, createSlotResult] = useMutation(CREATE_MEETING_SLOT, {
         onError: err => {
@@ -31,30 +31,49 @@ export default () => {
         },
     })
 
+    console.log(event)
+    const challenge = event.challenges[0]._id
+
     const handleSubmit = () => {
-        // const meeting = {
-        //     event: '606d8326de289c00431125e7',
-        //     startTime: '2022-08-08T15:00:00+03:00',
-        //     endTime: '2022-08-08T15:30:00+03:00',
-        //     challenge: '62ea30080f273de91bd18ccd',
-        // }
-        // const meeting = {
-        //     event: '606d8326de289c00431125e7',
-        //     startTime: '2022-08-08T15:30:00+03:00',
-        //     endTime: '2022-08-08T16:00:00+03:00',
-        //     challenge: '62ea30080f273de91bd18ccd',
-        // }
-        // const meeting = {
-        //     event: '606d8326de289c00431125e7',
-        //     startTime: '2022-08-09T15:00:00+03:00',
-        //     endTime: '2022-08-09T15:30:00+03:00',
-        //     challenge: '62ea30080f273de91bd18ccd',
-        // }
         const meeting = {
-            event: '606d8326de289c00431125e7',
+            event: event._id,
+            startTime: '2022-08-08T15:00:00+03:00',
+            endTime: '2022-08-08T15:30:00+03:00',
+            challenge,
+        }
+        createSlot({
+            variables: { meeting },
+        })
+    }
+
+    const handleSubmit1 = () => {
+        const meeting = {
+            event: event._id,
+            startTime: '2022-08-08T15:30:00+03:00',
+            endTime: '2022-08-08T16:00:00+03:00',
+            challenge,
+        }
+        createSlot({
+            variables: { meeting },
+        })
+    }
+    const handleSubmit2 = () => {
+        const meeting = {
+            event: event._id,
+            startTime: '2022-08-09T15:00:00+03:00',
+            endTime: '2022-08-09T15:30:00+03:00',
+            challenge,
+        }
+        createSlot({
+            variables: { meeting },
+        })
+    }
+    const handleSubmit3 = () => {
+        const meeting = {
+            event: event._id,
             startTime: '2022-08-09T15:30:00+03:00',
             endTime: '2022-08-09T16:00:00+03:00',
-            challenge: '62ea30080f273de91bd18ccd',
+            challenge,
         }
         createSlot({
             variables: { meeting },
@@ -66,6 +85,15 @@ export default () => {
             <h4>This is the calendar view</h4>
             <Button onClick={handleSubmit} color="primary" variant="contained">
                 SEND IT
+            </Button>
+            <Button onClick={handleSubmit1} color="primary" variant="contained">
+                SEND IT 1
+            </Button>
+            <Button onClick={handleSubmit2} color="primary" variant="contained">
+                SEND IT 2
+            </Button>
+            <Button onClick={handleSubmit3} color="primary" variant="contained">
+                SEND IT 3
             </Button>
         </>
     )

@@ -56,14 +56,16 @@ class MeetingContorller {
         if (!(this.isChallengePartner && meeting.event && meeting.challenge))
             return null
         const event = await Event.findOne({ _id: meeting.event })
+        console.log('here')
         if (!(event && event.challenges.length > 0)) return null
-
+        console.log('here1')
         const challenge = event.challenges.find(
             c => c._id.toString() === meeting.challenge,
         )
+        console.log(challenge)
 
         if (!(challenge && challenge.partnerEmail)) return null
-
+        console.log('here2')
         const newMeetingSlot = new Meeting({
             event: meeting.event,
             challenge: meeting.challenge,
