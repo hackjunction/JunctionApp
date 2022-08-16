@@ -104,8 +104,8 @@ const QueryType = new GraphQLObjectType({
                 from: {
                     type: GraphQLDate,
                 },
-                dayRange: {
-                    type: GraphQLInt,
+                to: {
+                    type: GraphQLDate,
                 },
             },
         },
@@ -128,6 +128,12 @@ const MutationType = new GraphQLObjectType({
                 attendees: { type: GraphQLNonNull(GraphQLList(GraphQLString)) },
             },
         },
+        cancelMeeting: {
+            type: MeetingType,
+            args: {
+                meetingId: { type: GraphQLNonNull(GraphQLString) },
+            },
+        },
     },
 })
 
@@ -141,7 +147,7 @@ const Resolvers = {
                         args.eventId,
                         args.challengeId,
                         args.from,
-                        args.dayRange,
+                        args.to,
                     )
             }
             return null
@@ -156,6 +162,14 @@ const Resolvers = {
                 return context
                     .controller('Meeting')
                     .bookMeeting(args.meetingId, args.attendees)
+            }
+            return null
+        },
+        cancelMeeting: async (parent, args, context) => {
+            if (args.meetingId) {
+                return context
+                    .controller('Meeting')
+                    .cancelMeeting(args.meetingId)
             }
             return null
         },

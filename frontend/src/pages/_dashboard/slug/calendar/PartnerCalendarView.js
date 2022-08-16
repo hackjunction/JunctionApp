@@ -37,8 +37,8 @@ export default ({ event }) => {
     const handleSubmit = () => {
         const meeting = {
             event: event._id,
-            startTime: '2022-08-08T15:00:00+03:00',
-            endTime: '2022-08-08T15:30:00+03:00',
+            startTime: '2020-05-22T13:00:00.000Z',
+            endTime: '2020-05-22T13:30:00.000Z',
             challenge,
         }
         createSlot({
@@ -49,8 +49,8 @@ export default ({ event }) => {
     const handleSubmit1 = () => {
         const meeting = {
             event: event._id,
-            startTime: '2022-08-08T15:30:00+03:00',
-            endTime: '2022-08-08T16:00:00+03:00',
+            startTime: '2020-05-22T14:00:00.000Z',
+            endTime: '2020-05-22T14:30:00.000Z',
             challenge,
         }
         createSlot({
@@ -60,8 +60,8 @@ export default ({ event }) => {
     const handleSubmit2 = () => {
         const meeting = {
             event: event._id,
-            startTime: '2022-08-09T15:00:00+03:00',
-            endTime: '2022-08-09T15:30:00+03:00',
+            startTime: '2020-05-23T13:00:00.000Z',
+            endTime: '2020-05-23T13:30:00.000Z',
             challenge,
         }
         createSlot({
@@ -71,8 +71,8 @@ export default ({ event }) => {
     const handleSubmit3 = () => {
         const meeting = {
             event: event._id,
-            startTime: '2022-08-09T15:30:00+03:00',
-            endTime: '2022-08-09T16:00:00+03:00',
+            startTime: '2020-05-24T15:00:00.000Z',
+            endTime: '2020-05-24T15:30:00.000Z',
             challenge,
         }
         createSlot({

@@ -125,6 +125,35 @@ const insertEvent = (auth, eventInfo) => {
     )
 }
 
+const deleteEvent = (auth, eventId) => {
+    const calendar = google.calendar({ version: 'v3', auth })
+    calendar.events.delete(
+        {
+            auth,
+            calendarId: 'primary',
+            eventId,
+        },
+        (err, res) => {
+            if (err) {
+                console.log('Error while deleting google event:', err)
+            }
+        },
+    )
+}
+
+const deleteGoogleEvent = eventId => {
+    // Load client secrets from a local file.
+    fs.readFile(`${__dirname}/credentials.json`, (err, content) => {
+        if (err) {
+            console.log('Error loading client secret file:', err)
+            return false
+        }
+        // Authorize a client with credentials, then call the Google Calendar API.
+        authorize(JSON.parse(content), deleteEvent, eventId)
+        return true
+    })
+}
+
 const createGoogleEvent = event => {
     const googleEvent = {
         summary: event.title || 'Junction: meeting with challenge partner',
@@ -166,4 +195,4 @@ const createGoogleEvent = event => {
     })
 }
 
-module.exports = { createGoogleEvent }
+module.exports = { createGoogleEvent, deleteGoogleEvent }

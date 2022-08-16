@@ -22,25 +22,25 @@ export const GET_MEETINGS = gql`
         $eventId: String!
         $challengeId: String!
         $from: Date
-        $dayRange: Int
+        $to: Date
     ) {
         meetingSlots(
             eventId: $eventId
             challengeId: $challengeId
             from: $from
-            dayRange: $dayRange
+            to: $to
         ) {
             ...MeetingFull
         }
     }
     ${MeetingFull}
 `
-export const getMeetingslots = ({ eventId, challengeId, from, dayRange }) => {
+export const getMeetingslots = ({ eventId, challengeId, from, to }) => {
     const { data, loading, error } = useQuery(GET_MEETINGS, {
         variables: {
             eventId,
             from,
-            dayRange,
+            to,
             challengeId,
         },
     })

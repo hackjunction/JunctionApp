@@ -33,3 +33,12 @@ export const BOOK_MEETING = gql`
     }
     ${MeetingFullFragment}
 `
+
+export const CANCEL_MEETING = gql`
+    mutation cancelMeeting($meetingId: String!) {
+        cancelMeeting(meetingId: $meetingId) {
+            ...MeetingFull
+        }
+    }
+    ${MeetingFullFragment}
+`

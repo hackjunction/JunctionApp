@@ -6,6 +6,7 @@ const Event = require('../event/model')
 const UsersController = require('../user-profile/controller')
 const {
     createGoogleEvent,
+    deleteGoogleEvent,
 } = require('../../common/services/google-calendar/google-calendar')
 
 async function batchGetMeetingsByIds(ids) {
@@ -36,36 +37,26 @@ class MeetingContorller {
             )
     }
 
-    async getMeetings(eventId, challengeId, from, dayRange) {
-        const endDate = new Date(from)
-        endDate.setDate(endDate.getDate() + dayRange)
+    async getMeetings(eventId, challengeId, from, to) {
         const queryParams = {
             challenge: challengeId,
             event: eventId,
-            startTime: { $gte: from, $lt: endDate },
+            startTime: { $gte: from, $lt: to },
         }
         return this._clean(Meeting.find(queryParams))
         // {createdAt:{$gte:ISODate("2021-01-01"),$lt:ISODate("2020-05-01"}}
     }
 
     async create(meeting) {
-        console.log('\n\nNEW createMeeting REQUEST')
-        console.log(meeting)
-        console.log('isChallengePartner', this.isChallengePartner)
-
         if (!(this.isChallengePartner && meeting.event && meeting.challenge))
             return null
         const event = await Event.findOne({ _id: meeting.event })
-        console.log('here')
         if (!(event && event.challenges.length > 0)) return null
-        console.log('here1')
         const challenge = event.challenges.find(
             c => c._id.toString() === meeting.challenge,
         )
-        console.log(challenge)
 
         if (!(challenge && challenge.partnerEmail)) return null
-        console.log('here2')
         const newMeetingSlot = new Meeting({
             event: meeting.event,
             challenge: meeting.challenge,
@@ -87,9 +78,8 @@ class MeetingContorller {
     async bookMeeting(meetingId, attendees) {
         if (!(meetingId && attendees && attendees.length > 0)) return null
         const meetingToBook = await Meeting.findOne({ _id: meetingId })
-        console.log(meetingToBook)
         // return null if meeting already has attendees (already booked)
-        // if (meetingToBook.attendees.length !== 0) return null
+        if (meetingToBook.attendees.length !== 0) return null
         const attendeeProfiles = await UsersController.getUserProfiles(
             attendees,
         )
@@ -121,7 +111,6 @@ class MeetingContorller {
             meetingId,
         }
 
-        console.log('google event to create', googleEvent)
         // create google calednar event and meets link
         createGoogleEvent(googleEvent)
 
@@ -132,6 +121,19 @@ class MeetingContorller {
                 { new: true },
             ),
         )
+    }
+
+    async cancelMeeting(meetingId) {
+        if (!meetingId) return null
+        const meetingToCancel = await Meeting.findOne({ _id: meetingId })
+
+        // remove google calendar event
+        deleteGoogleEvent(meetingToCancel.googleEventId)
+        meetingToCancel.attendees = []
+        meetingToCancel.googleEventId = ''
+        meetingToCancel.googleMeetLink = ''
+
+        return this._cleanOne(meetingToCancel.save())
     }
 
     getById(meetingId) {
