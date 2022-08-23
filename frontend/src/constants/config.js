@@ -114,6 +114,14 @@ const settings = {
         required: true,
         value: 'Login to see something',
     },
+    METABASE_SECRET_KEY: {
+        required: false,
+        value: process.env.REACT_APP_METABASE_SECRET_KEY,
+    },
+    METABASE_SITE_URL: {
+        required: false,
+        value: process.env.REACT_APP_METABASE_SITE_URL,
+    },
 }
 const buildConfig = () => {
     const config = {}
