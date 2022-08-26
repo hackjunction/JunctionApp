@@ -15,6 +15,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import Button from 'components/generic/Button'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty/index'
+import { isArray } from 'lodash-es'
 
 const useStyles = makeStyles(theme => ({
     wrapper: ({ dirty, hasErrors }) => ({
@@ -118,6 +119,17 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
                             return (
                                 <ListItem divider key={field}>
                                     <ListItemText primary={errorMsg} />
+                                </ListItem>
+                            )
+                            // TODO: improve
+                        } else if (isArray(errorMsg)) {
+                            if (showErrors)
+                                console.info(`${field} errors`, errorMsg)
+                            return (
+                                <ListItem divider key={field}>
+                                    <ListItemText
+                                        primary={`Multiple errors in ${field}`}
+                                    />
                                 </ListItem>
                             )
                         } else {

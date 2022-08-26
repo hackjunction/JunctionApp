@@ -1,9 +1,13 @@
 import * as yup from 'yup'
 
-const cloudinaryImage = yup.object().shape({
-    url: yup.string().required(),
-    publicId: yup.string().required(),
-})
+const cloudinaryImage = yup
+    .object()
+    .shape({
+        url: yup.string().required(),
+        publicId: yup.string().required(),
+    })
+    .default(null)
+    .nullable()
 
 const address = yup.object().shape({
     country: yup.string().required(),
@@ -29,6 +33,15 @@ const challenge = yup.object().shape({
     name: yup.string().required(),
     partner: yup.string(),
     slug: yup.string().required(),
+    title: yup.string(),
+    subtitle: yup.string(),
+    description: yup.string(),
+    insights: yup.string(),
+    resources: yup.string(),
+    prizes: yup.string(),
+    criteria: yup.string(),
+    companyInfo: yup.string(),
+    logo: cloudinaryImage,
 })
 
 const travelGrantConfig = yup.object().shape({
@@ -98,11 +111,11 @@ export default yup.object().shape({
     reviewingStartTime: yup.date(),
     reviewingEndTime: yup.date(),
     finalsActive: yup.boolean(),
-    eventLocation: address.notRequired().nullable(),
+    eventLocation: address.notRequired().nullable(true),
     tracksEnabled: yup.boolean(),
     tracks: yup.array().of(track),
     challengesEnabled: yup.boolean(),
-    challenges: yup.array().of(challenge),
+    challenges: yup.array().of(challenge).min(0),
     travelGrantConfig,
     reviewMethod: yup.string(),
     overallReviewMethod: yup.string(),
