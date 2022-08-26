@@ -726,12 +726,7 @@ const FieldProps = {
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
         hint:
-            "We can't cover all of your travel costs, but we offer the following travel grants for people travelling to the event from farther away: \n\n" +
-            '- Finland (outside Greater Helsinki Region): 20€ \n' +
-            '- Baltics: 40€ \n' +
-            '- Nordics & Russia: 60€ \n' +
-            '- Rest of Europe: 80€ \n' +
-            '- Outside of Europe: 150€',
+            "",
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         copyToUserProfile: false,

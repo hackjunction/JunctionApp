@@ -73,17 +73,16 @@ const travelGrantStatuses = {
 }
 
 const dietaryRestrictions = [
-    'Vegan',
+    'No restrictions',
+    'Gluten free',
+    'Lactose free',
+    'Dairy free',
     'Vegetarian',
+    'Vegan',
+    'Lacto-ovo vegetarian',
+    'Pescatarian',
+    'Kosher',
     'Halal',
-    'Gluten-free',
-    'No milk/dairy',
-    'No eggs',
-    'No nuts',
-    'No peanuts',
-    'No shellfish',
-    'No fish',
-    'No soybeans',
 ]
 
 const Misc = {}
