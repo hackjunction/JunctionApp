@@ -173,7 +173,7 @@ const FieldProps = {
     dateOfBirth: {
         label: 'Date of Birth',
         hint:
-            'You need to be at least 16 years old at the time of the event to apply.',
+            'You need to be at least 15 years old at the time of the event to apply.',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,
@@ -916,7 +916,7 @@ const Fields = {
             const base = yup
                 .date()
                 .min(new Date(relativeTime - 1000 * 60 * 60 * 24 * 365 * 120))
-                .max(new Date(relativeTime - 1000 * 60 * 60 * 24 * 364 * 16))
+                .max(new Date(relativeTime - 1000 * 60 * 60 * 24 * 364 * 14))
                 .label(FieldProps.dateOfBirth.label)
 
             return required ? base.required() : base

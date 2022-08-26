@@ -282,7 +282,7 @@ export default () => {
                                         variant="subtitle2"
                                         className={classes.label}
                                     >
-                                        I confirm that I am at least 16 years of
+                                        I confirm that I am at least 15 years of
                                         age, and I have read and agree with the{' '}
                                         {config.PLATFORM_OWNER_NAME}{' '}
                                         <a
