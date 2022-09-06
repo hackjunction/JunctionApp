@@ -10,6 +10,8 @@ import {
     ListItem,
     ListItemSecondaryAction,
     IconButton,
+    ListItemAvatar,
+    Avatar,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -57,7 +59,7 @@ export default ({ isOpen, onClose, onAdded, organisers, slug }) => {
                     Search for users
                 </Typography>
                 <TextInput
-                    placeholder="Name / email"
+                    placeholder="Search by first name, last name or e-mail address"
                     value={searchValue}
                     onChange={setSearchValue}
                 />
@@ -74,9 +76,37 @@ export default ({ isOpen, onClose, onAdded, organisers, slug }) => {
                 <List>
                     {results.map(user => (
                         <ListItem key={user.userId}>
+                            <ListItemAvatar>
+                                <Avatar
+                                    alt={'User avatar image'}
+                                    src={user ? user.avatar : ''}
+                                />
+                            </ListItemAvatar>
+
                             <ListItemText
                                 primary={`${user.firstName} ${user.lastName}`}
-                                secondary={user.userId}
+                                secondary={
+                                    <React.Fragment>
+                                        <Typography
+                                            component="p"
+                                            variant="body2"
+                                        >
+                                            E-mail:{' '}
+                                            <strong>{user.email}</strong>
+                                        </Typography>
+                                        <Typography
+                                            component="p"
+                                            variant="body2"
+                                        >
+                                            Account created:{' '}
+                                            <strong>
+                                                {new Date(
+                                                    user.createdAt,
+                                                ).toLocaleString()}
+                                            </strong>
+                                        </Typography>
+                                    </React.Fragment>
+                                }
                             />
                             {organisers.indexOf(user.userId) === -1 ? (
                                 <ListItemSecondaryAction>
