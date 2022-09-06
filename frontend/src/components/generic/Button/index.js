@@ -61,7 +61,6 @@ const variantStyles = (theme, props) => {
         case 'applicationsClosed': {
             return {
                 color: color.main,
-                padding: 0,
                 margin: '25px 0 0 0',
                 textTransform: 'uppercase',
                 fontSize: '18px',
