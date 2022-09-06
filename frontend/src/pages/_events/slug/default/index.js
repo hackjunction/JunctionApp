@@ -108,7 +108,12 @@ export default () => {
                 <meta property="og:image" content={coverImage()} />
                 <meta name="twitter:image" content={coverImage()} />
             </Helmet>
-            <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
+            <EventHeroImage
+                event={event}
+                onBack={() => dispatch(push('/'))}
+                alignRight
+                backgroundColor={event.theme.headerBackgroundColor}
+            />
 
             <FadeInWrapper>
                 <StaggeredList>
