@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     },
     body: {
         background: props => props.bodyBackgroundColor,
-        '& a>p': {
+        '& a *': {
             color: props => props.linkColor,
         },
     },
