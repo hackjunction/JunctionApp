@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLInputObjectType,
+} = require('graphql')
+const { GraphQLBoolean } = require('graphql')
 
 const EventThemeSchema = new mongoose.Schema({
     headerBackgroundColor: {
@@ -38,6 +44,49 @@ const EventThemeSchema = new mongoose.Schema({
         type: String,
         default: '#52d7af',
     },
+    isLandingPageBannerHidden: {
+        type: Boolean,
+        default: false,
+    },
+})
+
+const EventThemeInput = new GraphQLInputObjectType({
+    name: 'EventThemeInput',
+    fields: {
+        _id: {
+            type: GraphQLString,
+        },
+        headerBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        headerTextColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        bodyBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        detailsBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        detailsTextColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        sidebarBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        sidebarTextColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        accentColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        linkColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        isLandingPageBannerHidden: {
+            type: GraphQLNonNull(GraphQLBoolean),
+        },
+    },
 })
 
 const EventThemeType = new GraphQLObjectType({
@@ -69,6 +118,9 @@ const EventThemeType = new GraphQLObjectType({
         },
         linkColor: {
             type: GraphQLNonNull(GraphQLString),
+        },
+        isLandingPageBannerHidden: {
+            type: GraphQLNonNull(GraphQLBoolean),
         },
     },
 })
