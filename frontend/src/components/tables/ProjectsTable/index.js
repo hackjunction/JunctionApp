@@ -47,6 +47,16 @@ const ProjectsTable = ({ projects, baseURL }) => {
                 accessor: 'punchline',
                 ...Filters.ContainsSearch,
             },
+            {
+                Header: 'Demo',
+                accessor: 'demo',
+                ...Filters.ContainsSearch,
+            },
+            {
+                Header: 'Source',
+                accessor: 'source',
+                ...Filters.ContainsSearch,
+            },
             /*
             {
                 Header: 'Location',
