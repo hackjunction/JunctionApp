@@ -203,11 +203,12 @@ export default () => {
                         <EventButtons
                             event={event}
                             registration={registration}
+                            alignCenter
                         />
                     </Box>
                 </StaggeredList>
             </FadeInWrapper>
-            <BannerCarousel />
+            {!event.theme.isLandingPageBannerHidden && <BannerCarousel />}
         </>
     )
 }

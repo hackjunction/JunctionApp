@@ -86,6 +86,7 @@ const eventQuery = gql`
                 sidebarTextColor
                 accentColor
                 linkColor
+                isLandingPageBannerHidden
             }
             _eventStatus
             _eventTimeFormatted

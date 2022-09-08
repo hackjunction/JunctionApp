@@ -8,4 +8,5 @@ export const defaultEventStyles = {
     sidebarTextColor: '#000000',
     accentColor: '#73f9ec',
     linkColor: '#52d7af',
+    isLandingPageBannerHidden: false,
 }
