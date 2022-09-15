@@ -70,6 +70,7 @@ const eventQuery = gql`
             frontPagePriority
             approved
             eventTerms
+            eventNewsletter
             eventTimeline {
                 items {
                     title

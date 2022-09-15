@@ -137,6 +137,7 @@ export default yup.object().shape({
     demoHint: yup.string(),
     eventPrivacy: yup.string(),
     eventTerms: yup.string(),
+    eventNewsletter: yup.string(),
     eventTimeline,
     demoPlaceholder: yup.string(),
     metaDescription: yup.string(),

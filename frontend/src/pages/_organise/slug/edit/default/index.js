@@ -316,6 +316,29 @@ export default () => {
                 />
             </Grid>
             <Grid item xs={12}>
+                <FastField
+                    name="eventNewsletter"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Newsletter subscription link"
+                            hint="Set this if you want a subscription button to appear when people register. It will appear after the Junction newsletter and should link to an external subscription form."
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <TextInput
+                                name="eventNewsletter"
+                                placeholder="Signup form URL from Mailchimp, Sendgrid etc."
+                                value={field.value}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12}>
                 <Typography variant="h5">Event page customization</Typography>
             </Grid>
             <Grid item xs={12}>
