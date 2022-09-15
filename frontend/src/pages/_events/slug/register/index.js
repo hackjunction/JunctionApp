@@ -36,6 +36,7 @@ import RegistrationSection from './RegistrationSection'
 import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
+import EventNewsLetterButton from 'components/inputs/EventNewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -149,6 +150,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
+    const [eventNewsLetterHidden, setEventNewsLetterHidden] = useState(true)
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -408,7 +410,17 @@ export default RequiresPermission(() => {
                             <NewsLetterButton
                                 email={formData.email}
                                 country={formData.countryOfResidence}
+                                onHidden={() => setEventNewsLetterHidden(false)}
                             />
+                            {event?.eventNewsletter && (
+                                <>
+                                    <Box mt={5} />
+                                    <EventNewsLetterButton
+                                        signupUrl={event?.eventNewsletter}
+                                        initiallyHidden={eventNewsLetterHidden}
+                                    />
+                                </>
+                            )}
                             <Box mt={5} />
                             <SubmitButton
                                 hasErrors={false}

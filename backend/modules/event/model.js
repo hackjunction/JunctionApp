@@ -268,6 +268,9 @@ const EventSchema = new mongoose.Schema({
     eventTerms: {
         type: String,
     },
+    eventNewsletter: {
+        type: String,
+    },
     frontPagePriority: {
         type: Number,
         default: 0,

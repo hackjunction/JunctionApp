@@ -23,7 +23,7 @@ export default () => {
         '/embed/dashboard/' +
         token +
         '#bordered=true&titled=true'
-    
+
     return (
         <PageWrapper>
             <PageHeader

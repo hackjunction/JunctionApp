@@ -53,6 +53,7 @@ const eventQuery = gql`
             frontPagePriority
             approved
             eventTerms
+            eventNewsletter
             theme {
                 headerBackgroundColor
                 headerTextColor

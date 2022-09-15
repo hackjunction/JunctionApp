@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     },
     imageContainer: {
         display: 'flex',
-
     },
     image: {
         zIndex: 1,
