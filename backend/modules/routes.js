@@ -18,6 +18,7 @@ const projectScoresRouter = require('./project_score/routes')
 const hackerpackRouter = require('./hackerpack/routes')
 const bannerRouter = require('./banner/routes')
 const organizationRouter = require('./organization/routes')
+const votingTokenRouter = require('./voting-token/routes')
 
 module.exports = app => {
     app.get('/api', (req, res) => {
@@ -30,6 +31,7 @@ module.exports = app => {
     app.use('/api/newsletter', newsletterRouter)
     app.use('/api/upload', uploadRouter)
     app.use('/api/winner-votes', winnerVoteRouter)
+    app.use('/api/voting-token', votingTokenRouter)
 
     /** Model related routes */
     app.use('/api/rankings', rankingsRouter)
