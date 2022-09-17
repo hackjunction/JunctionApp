@@ -26,6 +26,7 @@ const UserProfileFields = require('./UserProfileFields')
 const Webhook = require('./Webhook')
 const EventTheme = require('./EventTheme')
 const EventTimeline = require('./EventTimeline')
+const Checklist = require('./Checklist')
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
@@ -68,6 +69,9 @@ const SharedSchema = new GraphQLSchema({
         EventTimeline.graphql,
         EventTimeline.itemInput,
         EventTimeline.graphqlInput,
+        Checklist.graphql,
+        Checklist.itemInput,
+        Checklist.graphqlInput,
     ],
 })
 

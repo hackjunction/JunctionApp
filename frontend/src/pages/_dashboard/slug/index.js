@@ -27,12 +27,14 @@ import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
+import ChecklistPage from './checklist'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as OrganiserActions from 'redux/organiser/actions'
 
 import { useTranslation } from 'react-i18next'
+import { CheckBox } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -193,6 +195,15 @@ export default () => {
                         icon: <FormatListBulletedIcon />,
                         label: 'Challenges',
                         component: ChallengesIndex,
+                    },
+                    {
+                        key: 'checklist',
+                        path: '/checklist',
+                        exact: true,
+                        icon: <CheckBox />,
+                        hidden: !shownPages.hackerPack,
+                        label: 'Checklist',
+                        component: ChecklistPage,
                     },
                 ]}
             />
