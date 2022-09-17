@@ -4,13 +4,22 @@ import ParticipantCalendarView from './ParticipantCalendarView'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as UserSelectors from 'redux/user/selectors'
+import * as AuthSelectors from 'redux/auth/selectors'
 import Button from 'components/generic/Button'
 
 export default () => {
     const event = useSelector(DashboardSelectors.event)
     const user = useSelector(UserSelectors.userProfile)
-    const [isPartner, setIsPartner] = useState(false)
-    console.log(event)
+    console.log(useSelector(AuthSelectors.getRoles))
+    const [isPartner, setIsPartner] = useState(
+        useSelector(AuthSelectors.getRoles).includes(
+            'SuperAdmin',
+            'Organiser',
+            'AssistantOrganiser',
+            'Recruiter',
+        ),
+    )
+    //console.log(event)
     return (
         <>
             <Button
