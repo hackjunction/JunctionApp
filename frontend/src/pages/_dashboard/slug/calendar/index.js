@@ -18,7 +18,6 @@ export default () => {
             'Recruiter',
         ),
     )
-    //console.log(event)
     return (
         <>
             <Button

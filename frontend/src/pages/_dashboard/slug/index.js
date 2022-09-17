@@ -201,7 +201,7 @@ export default () => {
                         path: '/calendar',
                         exact: true,
                         icon: <EventIcon />,
-                        label: 'Calendar / Meetings',
+                        label: 'Meetings',
                         component: CalendarPage,
                     },
                 ]}

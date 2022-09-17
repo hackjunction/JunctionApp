@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ event, user }) => {
     const challenges = event.challenges
-    console.log('user:', user)
     const [challenge, setChallenge] = React.useState('')
     const [daysStartIndex, setDaysStartIndex] = useState(0)
     const [noOfDaysToShow, setNoOfDaysToShow] = useState(3)
@@ -154,10 +153,9 @@ export default ({ event, user }) => {
     }
 
     const team = useSelector(DashboardSelectors.team)
+        ? user
+        : useSelector(DashboardSelectors.team)
     const bookMeetingAction = meeting => {
-        // TODO fetch team and fill attendees array with userIds of team
-        // const teams = TeamsService.getTeamForEvent(
-        console.log('booking meeting:', meeting._id)
         bookMeeting({
             variables: {
                 meetingId: meeting._id,
