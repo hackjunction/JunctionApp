@@ -5,13 +5,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import { getMeetingslots } from 'graphql/queries/meetings'
 
 import Button from 'components/generic/Button'
-import {
-    FormControl,
-    InputLabel,
-    makeStyles,
-    MenuItem,
-    Select,
-} from '@material-ui/core'
+import { Link, makeStyles } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import theme from 'material-ui-theme'
 
@@ -41,16 +35,24 @@ const useStyles = makeStyles(theme => ({
         color: 'white',
         borderRadius: '0.5em',
         width: 'fit-content',
+        marginTop: '0.75em',
     }),
     meetingInfo: {
         fontWeight: 'bold',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
     },
     meetsLink: {
-        marginBottom: '0.5em',
-        color: 'black',
-        wordBreak: 'break-all',
+        textDecoration: 'none',
+    },
+    joinButton: {
+        borderRadius: '0.5em',
+        color: 'theme_primary',
+        width: 'fit-content',
+        marginTop: '0.75em',
+        marginRight: '0.75em',
     },
 }))
 
@@ -61,6 +63,7 @@ export default ({
     googleMeetLink,
     bookAction,
     cancelAction,
+    hasFutureBooking,
 }) => {
     const classes = useStyles({ booked })
     const [open, setOpen] = useState(false)
@@ -69,16 +72,23 @@ export default ({
     const startMinutes = start.getMinutes()
     const endMinutes = end.getMinutes()
 
+    console.log(hasFutureBooking)
     const openContent = () => (
         <>
             {booked ? (
                 <div className={classes.meetingInfo}>
                     <a
+                        className={classes.meetsLink}
                         href={googleMeetLink}
                         target="blank"
-                        className={classes.meetsLink}
                     >
-                        {googleMeetLink}
+                        <Button
+                            className={classes.joinButton}
+                            variant="contained"
+                            color="theme_orange"
+                        >
+                            Join meeting
+                        </Button>
                     </a>
                     <Button
                         className={classes.actionButton}
@@ -95,6 +105,9 @@ export default ({
                     variant="contained"
                     color="primary"
                     onClick={bookAction}
+                    // styles={{
+                    //     cursor: hasFutureBooking ? 'default' : 'pointer',
+                    // }}
                 >
                     Book this meeting
                 </Button>
@@ -102,11 +115,14 @@ export default ({
         </>
     )
 
+    const isOpenable = start.getTime() > new Date().getTime() || booked
+
     return (
         <div
             className={classes.meetingCard}
             key={startTime}
-            onClick={() => setOpen(!open)}
+            onClick={() => (isOpenable ? setOpen(!open) : {})}
+            style={!isOpenable ? { cursor: 'default' } : {}}
         >
             <p className={classes.meetingTime}>
                 <span>{`${start.getHours()}:${

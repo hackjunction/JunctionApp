@@ -17,6 +17,9 @@ import {
     Select,
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
+import { divide } from 'lodash-es'
+import PageHeader from 'components/generic/PageHeader'
+import theme from 'material-ui-theme'
 
 const useStyles = makeStyles(theme => ({
     formWrapper: {
@@ -56,6 +59,10 @@ const useStyles = makeStyles(theme => ({
         padding: '0.5em 0.25em 0.2em 0.4em',
         visibility: 'hidden',
     },
+    info: {
+        marginLeft: theme.spacing(0.5),
+        fontSize: '1rem',
+    },
 }))
 
 export default ({ event, user }) => {
@@ -82,6 +89,7 @@ export default ({ event, user }) => {
         date.setDate(startDate.getDate() + i)
         eventDays[date.toISOString().split('T')[0]] = []
     }
+    const [hasFutureBooking, setHasFutureBooking] = useState(false)
     const [days, setDays] = useState(eventDays)
     const classes = useStyles(dayDifference)
     const [cancelMeeting, cancelMeetingResult] = useMutation(CANCEL_MEETING, {
@@ -175,6 +183,12 @@ export default ({ event, user }) => {
                 daysObj[meetingDateStr] =
                     daysObj[meetingDateStr].concat(meeting)
             }
+            if (
+                meeting.attendees.includes(user.userId) &&
+                new Date(meeting.startTime).getTime() > new Date().getTime()
+            ) {
+                setHasFutureBooking(true)
+            }
         })
         console.log(daysObj)
         setDays(daysObj)
@@ -192,7 +206,7 @@ export default ({ event, user }) => {
         setMeetingsLoaded(true)
     }
 
-    const columnContent = meetings =>
+    const columnContent = (meetings, oneBooked) =>
         meetings ? (
             meetings.map((meeting, index) => (
                 <MeetingCard
@@ -207,6 +221,7 @@ export default ({ event, user }) => {
                     cancelAction={() => {
                         cancelMeetingAction(meeting)
                     }}
+                    hasFutureBooking={hasFutureBooking}
                 />
             ))
         ) : (
@@ -236,6 +251,15 @@ export default ({ event, user }) => {
 
     return (
         <>
+            <PageHeader
+                heading="Meetings"
+                subheading="Book a meeting with Partners to learn more about their Challenge."
+            />
+            {!challenge && (
+                <div className={classes.info}>
+                    Select a Challenge to see the available time slots.
+                </div>
+            )}
             <FormControl className={classes.formWrapper}>
                 <InputLabel id="challenge-selection-label">
                     Challenge
@@ -252,59 +276,67 @@ export default ({ event, user }) => {
                     ))}
                 </Select>
             </FormControl>
-            <div className={classes.columns}>
-                {days &&
-                    Object.keys(days)
-                        .slice(daysStartIndex, daysStartIndex + noOfDaysToShow)
-                        .map((day, index) => {
-                            const columnMeetings = days[day]
-                            return (
-                                <div className={classes.column} key={day}>
-                                    <div className={classes.columnDay}>
-                                        <div
-                                            onClick={() => {
-                                                prevDayButtonVisible(index) &&
-                                                    showPrevDayRange(index)
-                                            }}
-                                            className={
-                                                prevDayButtonVisible(index)
-                                                    ? classes.iconVisible
-                                                    : classes.iconHidden
-                                            }
-                                        >
-                                            <ArrowBackIosIcon />
-                                        </div>
-                                        <p>{dayStr(day)}</p>
-                                        <div
-                                            onClick={() => {
-                                                nextDayRangeButtonVisible(
-                                                    index,
-                                                ) && showNextDayRange(index)
-                                            }}
-                                            className={
-                                                nextDayRangeButtonVisible(index)
-                                                    ? classes.iconVisible
-                                                    : classes.iconHidden
-                                            }
-                                        >
-                                            <ArrowForwardIosIcon />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={classes.columnContent}
-                                        style={{
-                                            borderRight:
-                                                index == noOfDaysToShow - 1
-                                                    ? 'none'
-                                                    : '1px solid lightgray',
-                                        }}
-                                    >
-                                        {columnContent(columnMeetings)}
-                                    </div>
-                                </div>
+            {challenge && (
+                <div className={classes.columns}>
+                    {days &&
+                        Object.keys(days)
+                            .slice(
+                                daysStartIndex,
+                                daysStartIndex + noOfDaysToShow,
                             )
-                        })}
-            </div>
+                            .map((day, index) => {
+                                const columnMeetings = days[day]
+                                return (
+                                    <div className={classes.column} key={day}>
+                                        <div className={classes.columnDay}>
+                                            <div
+                                                onClick={() => {
+                                                    prevDayButtonVisible(
+                                                        index,
+                                                    ) && showPrevDayRange(index)
+                                                }}
+                                                className={
+                                                    prevDayButtonVisible(index)
+                                                        ? classes.iconVisible
+                                                        : classes.iconHidden
+                                                }
+                                            >
+                                                <ArrowBackIosIcon />
+                                            </div>
+                                            <p>{dayStr(day)}</p>
+                                            <div
+                                                onClick={() => {
+                                                    nextDayRangeButtonVisible(
+                                                        index,
+                                                    ) && showNextDayRange(index)
+                                                }}
+                                                className={
+                                                    nextDayRangeButtonVisible(
+                                                        index,
+                                                    )
+                                                        ? classes.iconVisible
+                                                        : classes.iconHidden
+                                                }
+                                            >
+                                                <ArrowForwardIosIcon />
+                                            </div>
+                                        </div>
+                                        <div
+                                            className={classes.columnContent}
+                                            style={{
+                                                borderRight:
+                                                    index == noOfDaysToShow - 1
+                                                        ? 'none'
+                                                        : '1px solid lightgray',
+                                            }}
+                                        >
+                                            {columnContent(columnMeetings)}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                </div>
+            )}
         </>
     )
 }
