@@ -5,7 +5,8 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import { getMeetingslots } from 'graphql/queries/meetings'
 
 import Button from 'components/generic/Button'
-import { Link, makeStyles } from '@material-ui/core'
+import MuiButton from '@material-ui/core/Button'
+import { Link, makeStyles, Tooltip, withStyles } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import theme from 'material-ui-theme'
 
@@ -56,6 +57,27 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+const ButtonBase = withStyles({
+    root: {
+        '&.Mui-disabled': {
+            pointerEvents: 'auto',
+        },
+    },
+})(MuiButton)
+
+const ButtonWithTooltip = ({ tooltipText, disabled, onClick, ...other }) => {
+    const adjustedButtonProps = {
+        disabled: disabled,
+        component: disabled ? 'div' : undefined,
+        onClick: disabled ? undefined : onClick,
+    }
+    return (
+        <Tooltip title={tooltipText}>
+            <ButtonBase {...other} {...adjustedButtonProps} />
+        </Tooltip>
+    )
+}
+
 export default ({
     startTime,
     endTime,
@@ -100,17 +122,16 @@ export default ({
                     </Button>
                 </div>
             ) : (
-                <Button
+                <ButtonWithTooltip
                     className={classes.actionButton}
                     variant="contained"
                     color="primary"
                     onClick={bookAction}
-                    // styles={{
-                    //     cursor: hasFutureBooking ? 'default' : 'pointer',
-                    // }}
+                    disabled={true}
+                    tooltipText="Kikkeli on hyvää MUUTA TÄÄ ja sit kato et toi disabled state tulee sen future bookingin kautta"
                 >
                     Book this meeting
-                </Button>
+                </ButtonWithTooltip>
             )}
         </>
     )
