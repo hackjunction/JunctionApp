@@ -10,7 +10,6 @@ import Button from 'components/generic/Button'
 export default () => {
     const event = useSelector(DashboardSelectors.event)
     const user = useSelector(UserSelectors.userProfile)
-    console.log(useSelector(AuthSelectors.getRoles))
     const [isPartner, setIsPartner] = useState(
         useSelector(AuthSelectors.getRoles).includes(
             'SuperAdmin',

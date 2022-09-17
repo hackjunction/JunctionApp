@@ -3,10 +3,10 @@ import { useMutation } from '@apollo/client'
 import { BOOK_MEETING, CANCEL_MEETING } from 'graphql/mutations/meetings'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { getMeetingslots } from 'graphql/queries/meetings'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 import MeetingCard from './MeetingCard'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
-import TeamsService from '../../../../services/teams'
 
 import Button from 'components/generic/Button'
 import {
@@ -16,7 +16,7 @@ import {
     MenuItem,
     Select,
 } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
     formWrapper: {
@@ -153,6 +153,7 @@ export default ({ event, user }) => {
         }
     }
 
+    const team = useSelector(DashboardSelectors.team)
     const bookMeetingAction = meeting => {
         // TODO fetch team and fill attendees array with userIds of team
         // const teams = TeamsService.getTeamForEvent(
@@ -160,7 +161,7 @@ export default ({ event, user }) => {
         bookMeeting({
             variables: {
                 meetingId: meeting._id,
-                attendees: [user.userId],
+                attendees: [...team.members, team.owner],
             },
         })
     }
