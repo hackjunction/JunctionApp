@@ -13,7 +13,9 @@
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
         "precommit": "echo \"Backend: running pre-commit checks\"",
-        "debug": "nodemon --inspect index.js"
+        "debug": "nodemon --inspect index.js",
+        "authorizeGoogleCalendar": "node common/services/google-calendar/getAccessTokenCode.js",
+        "writeGoogleTokenJson": "node common/services/google-calendar/writeAccessTokenJson.js"
     },
     "author": "",
     "license": "ISC",
