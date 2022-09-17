@@ -1,11 +1,19 @@
 const _ = require('lodash')
 const jwkRsa = require('jwks-rsa')
-const jwt = require('express-jwt')
+const ejwt = require('express-jwt')
+const jwt = require('jsonwebtoken')
 
 const idTokenNamespace = global.gConfig.ID_TOKEN_NAMESPACE
 
+const jwksClient = jwkRsa({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${global.gConfig.AUTH0_DOMAIN}/.well-known/jwks.json`,
+})
+
 /* Verify JWT from client requests */
-const verifyToken = jwt({
+const verifyToken = ejwt({
     secret: jwkRsa.expressJwtSecret({
         cache: true,
         rateLimit: true,
@@ -43,14 +51,35 @@ const parseToken = (req, res, next) => {
                 }
                 return obj
             },
-            {}
+            {},
         )
     }
 
     next()
 }
 
+/**
+ * Verify JWT for thw websocket server separately,
+ * as it cannot use auth0's express
+ *
+ * @param token
+ * @returns verified jwt
+ */
+const verifyWsToken = async token => {
+    const headerBase64 = token.split('.')[0]
+    const header = JSON.parse(
+        Buffer.from(headerBase64, 'base64').toString('utf-8'),
+    )
+    const key = await jwksClient.getSigningKeyAsync(header.kid)
+    const publicKey = key.getPublicKey()
+
+    const test = jwt.verify(token, publicKey)
+
+    return test
+}
+
 module.exports = {
+    verifyWsToken,
     verifyToken,
     parseToken,
 }
