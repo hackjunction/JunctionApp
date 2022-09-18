@@ -146,7 +146,9 @@ export default () => {
                                         color="primary"
                                         variant="contained"
                                     >
-                                        {vote ? 'Change vote' : 'Submit vote'}
+                                        {votingToken?.project
+                                            ? 'Change vote'
+                                            : 'Submit vote'}
                                     </Button>
                                 </Box>
                             </Box>

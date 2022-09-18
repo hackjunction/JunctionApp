@@ -10,7 +10,7 @@ import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
 import EventRegister from './register'
-import FinalistVoting from './finalistVoting'
+import FinalistVoting from './voteWithToken'
 
 import EventDetailContext, { EventDetailProvider } from './context'
 
