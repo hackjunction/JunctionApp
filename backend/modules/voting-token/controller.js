@@ -43,6 +43,16 @@ controller.getToken = id => {
     return VotingToken.findById(id)
 }
 
+controller.getTokenPublic = async id => {
+    const token = await VotingToken.findById(id)
+
+    return {
+        _id: token._id,
+        project: token.project,
+        isRevoked: token.isRevoked,
+    }
+}
+
 controller.getAllTokensForEvent = eventId => {
     return VotingToken.find({ event: eventId })
 }

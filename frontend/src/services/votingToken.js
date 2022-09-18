@@ -41,12 +41,14 @@ VotingTokenService.revokeVotingToken = (idToken, slug, tokenId) => {
     )
 }
 
-VotingTokenService.voteWithToken = (idToken, tokenId, projectId) => {
-    return _axios.post(
-        `/voting-token/vote?votingToken=${tokenId}`,
-        { projectId },
-        config(idToken),
-    )
+VotingTokenService.getVotingTokenPublic = tokenId => {
+    return _axios.get(`/voting-token/${tokenId}`)
+}
+
+VotingTokenService.voteWithToken = (tokenId, projectId) => {
+    return _axios.post(`/voting-token/vote?votingToken=${tokenId}`, {
+        projectId,
+    })
 }
 
 export default VotingTokenService

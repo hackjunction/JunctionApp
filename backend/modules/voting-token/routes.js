@@ -89,4 +89,12 @@ router.route('/vote').post(
     }),
 )
 
+router.route('/:votingToken').get(
+    hasValidVotingToken,
+    asyncHandler(async (req, res) => {
+        const token = await VotingTokenController.getTokenPublic(req.votingToken._id)
+        return res.status(200).json(token)
+    }),
+)
+
 module.exports = router

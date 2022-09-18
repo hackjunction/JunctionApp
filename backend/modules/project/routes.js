@@ -6,7 +6,6 @@ const asyncHandler = require('express-async-handler')
 const ProjectController = require('./controller')
 
 const { hasToken } = require('../../common/middleware/token')
-const { hasValidVotingToken } = require('../../common/middleware/votingToken')
 const {
     isBefore,
     isAfter,
@@ -94,18 +93,6 @@ router
             const projects = await ProjectController.getAllProjectsByEvent(
                 req.event._id,
             )
-            return res.status(200).json(projects)
-        }),
-    )
-
-router
-    .route('/:slug/withVotingToken/finalists')
-    /** As a valid voting token holder, list all projects for an event */
-    .get(
-        hasValidVotingToken,
-        getEventFromParams,
-        asyncHandler(async (req, res) => {
-            const projects = await ProjectController.getFinalists(req.event)
             return res.status(200).json(projects)
         }),
     )

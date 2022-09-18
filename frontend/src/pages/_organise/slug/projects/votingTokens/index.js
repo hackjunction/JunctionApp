@@ -94,7 +94,7 @@ export default () => {
     }, [])
 
     const generateTokenLink = tokenId => {
-        return `${window.origin}/finalist-voting/?token=${tokenId}`
+        return `${window.origin}/events/${event?.slug}/finalist-voting/?token=${tokenId}`
     }
 
     const getOrganiserName = userId => {
@@ -115,6 +115,10 @@ export default () => {
             {
                 Header: 'Name',
                 accessor: 'name',
+            },
+            {
+                Header: 'Status',
+                accessor: 'status',
             },
             {
                 Header: 'Voted on',

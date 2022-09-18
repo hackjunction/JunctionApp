@@ -3,23 +3,31 @@ const { UnauthorizedError } = require('../errors/errors')
 
 module.exports = {
     hasValidVotingToken: async (req, res, next) => {
-        if (!req.query.votingToken) {
+        const token = req.query.votingToken || req.params.votingToken
+
+        if (!token) {
             next(new UnauthorizedError('Voting token is required'))
         } else {
-            const votingToken = await VotingTokenController.getToken(
-                req.query.votingToken,
-            )
+            try {
+                const votingToken = await VotingTokenController.getToken(token)
 
-            if (!votingToken || votingToken.isRevoked) {
+                if (!votingToken || votingToken.isRevoked) {
+                    next(
+                        new UnauthorizedError(
+                            'Voting token does not exist or it has been revoked',
+                        ),
+                    )
+                }
+
+                req.votingToken = votingToken
+                next()
+            } catch {
                 next(
                     new UnauthorizedError(
                         'Voting token does not exist or it has been revoked',
                     ),
                 )
             }
-
-            req.votingToken = votingToken
-            next()
         }
     },
 }
