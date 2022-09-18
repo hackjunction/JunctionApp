@@ -50,45 +50,6 @@ const EventThemeSchema = new mongoose.Schema({
     },
 })
 
-const EventThemeInput = new GraphQLInputObjectType({
-    name: 'EventThemeInput',
-    fields: {
-        _id: {
-            type: GraphQLString,
-        },
-        headerBackgroundColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        headerTextColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        bodyBackgroundColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        detailsBackgroundColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        detailsTextColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        sidebarBackgroundColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        sidebarTextColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        accentColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        linkColor: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        isLandingPageBannerHidden: {
-            type: GraphQLNonNull(GraphQLBoolean),
-        },
-    },
-})
-
 const EventThemeType = new GraphQLObjectType({
     name: 'EventTheme',
     fields: {
