@@ -15,6 +15,7 @@ const migrations = [
     require('./09-sync-registration-to-profiles'),
     require('./10-add-banner-priority-and-approved-to-event'),
     require('./11-add-organization-to-event'),
+    require("./12-regs-ref"),
 ]
 
 const run = async () => {

@@ -41,6 +41,20 @@ controller.createRegistration = async (user, event, data) => {
     }) */
 }
 
+controller.getRegistrationByRegId = (userId, eventId) => {
+    return Registration.findOne({
+        _id: userId,
+        event: eventId,
+    }).then(registration => {
+        if (!registration) {
+            throw new NotFoundError(
+                `Registration for event ${eventId} not found for user ${userId}`,
+            )
+        }
+        return registration
+    })
+}
+
 controller.getRegistration = (userId, eventId) => {
     return Registration.findOne({
         event: eventId,
@@ -63,6 +77,21 @@ controller.updateRegistration = (user, event, data) => {
                 await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
+                console.log(answers.otherquestions)
+                return Registration.updateAllowed(registration, { answers })
+            }
+            return false
+        })
+}
+
+controller.updateRegistrationWithRegId = (user, event, data) => {
+    return controller
+        .getRegistration(user, event.toString())
+        .then(async registration => {
+            const [success, answers] =
+                await RegistrationHelpers.validateAnswers(data, event)
+            // answers are valid
+            if (answers) {
                 return Registration.updateAllowed(registration, { answers })
             }
             return false
@@ -79,21 +108,47 @@ controller.finishRegistration = (user, event, data) => {
             if (answers) {
                 // answers are complete
                 if (success) {
-                    if (
-                        registration.status ===
-                        RegistrationStatuses.asObject.incomplete.id
-                    ) {
-                        if (event.eventType === EventTypes.physical.id) {
-                            registration.status =
-                                RegistrationStatuses.asObject.pending.id
+                    if (answers.nftsection && answers.nftsection.nftcode) {
+                        const valueNFT = answers.nftsection.nftcode
+                        answers.ref = registration.ref+1
+                        //var anf = await controller.updateRegistrationWithRegId(answers.otherquestions.nft, event._id.toString(),answers)
+                        //console.log("##")
+                        if (
+                            registration.status ===
+                            RegistrationStatuses.asObject.incomplete.id
+                        ) {
+                            if (event.eventType === EventTypes.physical.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.pending.id
+                            }
+                            // TODO we most likely don't want to do this here? Get desired state from event?
+                            if (event.eventType === EventTypes.online.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.checkedIn.id
+                            }
                         }
-                        // TODO we most likely don't want to do this here? Get desired state from event?
-                        if (event.eventType === EventTypes.online.id) {
-                            registration.status =
-                                RegistrationStatuses.asObject.checkedIn.id
-                        }
+                        return Registration.updateAllowed(registration, { answers, ref: answers.ref })
                     }
-                    return Registration.updateAllowed(registration, { answers })
+                    else {
+                        if (
+                            registration.status ===
+                            RegistrationStatuses.asObject.incomplete.id
+                        ) {
+                            if (event.eventType === EventTypes.physical.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.pending.id
+                            }
+                            // TODO we most likely don't want to do this here? Get desired state from event?
+                            if (event.eventType === EventTypes.online.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.checkedIn.id
+                            }
+                        }
+                        return Registration.updateAllowed(registration, { answers })
+                    }
+                    
+                    
+
                 }
                 return false
             }

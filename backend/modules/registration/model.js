@@ -71,6 +71,9 @@ const RegistrationSchema = new mongoose.Schema({
     travelGrantAmount: {
         type: Number,
     },
+    ref: {
+        type: Number,
+    },
 })
 
 /* Only allow a single registration per event per user */
