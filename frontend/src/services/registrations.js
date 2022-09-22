@@ -202,4 +202,16 @@ RegistrationsService.adminNotifyAcceptedTravelGrants = (idToken, slug) => {
     )
 }
 
+RegistrationsService.getNFTStatus = (idToken, slug, regId) => {
+    return _axios.get(`${BASE_ROUTE}/${slug}/nft/${regId}`, {}, config(idToken))
+}
+
+RegistrationsService.postNFTStatus = (idToken, slug, regId, data) => {
+    return _axios.post(
+        `${BASE_ROUTE}/${slug}/nft/${regId}`,
+        data,
+        config(idToken),
+    )
+}
+
 export default RegistrationsService

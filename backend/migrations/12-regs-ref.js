@@ -8,6 +8,19 @@ module.exports = {
     run: async () => {
         // REMINDER!!!!
         // WHEN MIGRATING FIELD A INTO FIELD B, BOTH A AND B MUST EXIST IN THE SCHEMA
-        const res = await mongoose.model('Registration').updateMany({ ref: {$exists : false}}, {$set: {'ref': 0}}, { multi: true } )
+        const res = await mongoose
+            .model('Registration')
+            .updateMany(
+                { ref: { $exists: false } },
+                { $set: { ref: 0 } },
+                { multi: true },
+            )
+        const res2 = await mongoose
+            .model('Registration')
+            .updateMany(
+                { minted: { $exists: false } },
+                { $set: { minted: '' } },
+                { multi: true },
+            )
     },
 }

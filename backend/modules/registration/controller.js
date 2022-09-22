@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const _ = require('lodash')
+const { ObjectID } = require('mongodb')
 const Promise = require('bluebird')
 const mongoose = require('mongoose')
 const {
@@ -108,47 +109,60 @@ controller.finishRegistration = (user, event, data) => {
             if (answers) {
                 // answers are complete
                 if (success) {
-                    if (answers.nftsection && answers.nftsection.nftcode) {
-                        const valueNFT = answers.nftsection.nftcode
-                        answers.ref = registration.ref+1
-                        //var anf = await controller.updateRegistrationWithRegId(answers.otherquestions.nft, event._id.toString(),answers)
-                        //console.log("##")
-                        if (
-                            registration.status ===
-                            RegistrationStatuses.asObject.incomplete.id
-                        ) {
-                            if (event.eventType === EventTypes.physical.id) {
-                                registration.status =
-                                    RegistrationStatuses.asObject.pending.id
-                            }
-                            // TODO we most likely don't want to do this here? Get desired state from event?
-                            if (event.eventType === EventTypes.online.id) {
-                                registration.status =
-                                    RegistrationStatuses.asObject.checkedIn.id
-                            }
-                        }
-                        return Registration.updateAllowed(registration, { answers, ref: answers.ref })
-                    }
-                    else {
-                        if (
-                            registration.status ===
-                            RegistrationStatuses.asObject.incomplete.id
-                        ) {
-                            if (event.eventType === EventTypes.physical.id) {
-                                registration.status =
-                                    RegistrationStatuses.asObject.pending.id
-                            }
-                            // TODO we most likely don't want to do this here? Get desired state from event?
-                            if (event.eventType === EventTypes.online.id) {
-                                registration.status =
-                                    RegistrationStatuses.asObject.checkedIn.id
-                            }
-                        }
-                        return Registration.updateAllowed(registration, { answers })
-                    }
-                    
-                    
+                    if (answers.nftsection && answers.nftsection.nft) {
+                        const reg2 = controller
+                            .getRegistrationByRegId(answers.nftsection.nft)
+                            .then(regis2 => {
+                                if (regis2.ref) {
+                                    regis2.ref = regis2 + 1
+                                } else {
+                                    regis2.ref = 1
+                                    regis2.minted = ''
+                                }
+                                regis2.save()
+                            })
+                            .catch(err => {
+                                console.log('reg2 err')
+                            })
 
+                        // answers.ref = registration.ref + 1
+                        // var anf = await controller.updateRegistrationWithRegId(answers.otherquestions.nft, event._id.toString(),answers)
+                        // console.log("##")
+                        if (
+                            registration.status ===
+                            RegistrationStatuses.asObject.incomplete.id
+                        ) {
+                            if (event.eventType === EventTypes.physical.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.pending.id
+                            }
+                            // TODO we most likely don't want to do this here? Get desired state from event?
+                            if (event.eventType === EventTypes.online.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.checkedIn.id
+                            }
+                        }
+                        return Registration.updateAllowed(registration, {
+                            answers,
+                            ref: answers.ref,
+                        })
+                    }
+
+                    if (
+                        registration.status ===
+                        RegistrationStatuses.asObject.incomplete.id
+                    ) {
+                        if (event.eventType === EventTypes.physical.id) {
+                            registration.status =
+                                RegistrationStatuses.asObject.pending.id
+                        }
+                        // TODO we most likely don't want to do this here? Get desired state from event?
+                        if (event.eventType === EventTypes.online.id) {
+                            registration.status =
+                                RegistrationStatuses.asObject.checkedIn.id
+                        }
+                    }
+                    return Registration.updateAllowed(registration, { answers })
                 }
                 return false
             }
@@ -534,6 +548,35 @@ controller.rejectSoftRejected = async eventId => {
         user.save()
     })
     return rejected
+}
+
+controller.getRegistrationByRegIdOnly = async regId => {
+    return Registration.findOne({
+        _id: regId,
+    }).then(registration => {
+        if (!registration) {
+            throw new NotFoundError(`Registration for event not found for user`)
+        }
+        return registration
+    })
+}
+
+controller.postNFTStatus = async (regId, txId) => {
+    console.log(regId, txId, '123')
+    console.log(1)
+    const a = 13
+    return Registration.findById(regId.toString()).then(registration => {
+        console.log(registration)
+        if (!registration) {
+            console.log('##########')
+            throw new NotFoundError(
+                `Registration for event not found for user `,
+            )
+        } else {
+            registration.minted = txId
+            return registration.save()
+        }
+    })
 }
 
 module.exports = controller

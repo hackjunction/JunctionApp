@@ -73,6 +73,11 @@ const RegistrationSchema = new mongoose.Schema({
     },
     ref: {
         type: Number,
+        default: 0,
+    },
+    minted: {
+        type: String,
+        default: '',
     },
 })
 
