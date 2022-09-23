@@ -1,13 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Box, Grid, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import { popupCenter } from '../../../../../utils/misc'
 import RegistrationService from 'services/registrations'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as fcl from '@onflow/fcl'
+import { serverAuthorization } from '../../../../../utils/serverSigner'
+import { currentUser } from '@onflow/fcl'
 
 const useStyles = makeStyles(theme => ({
     doneTitle: {
@@ -38,6 +40,15 @@ const SocialMediaBlock = () => {
         event.slug === 'hack4fi-hack-your-heritage'
     const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
+
+    // Just a temporary solution to get the user's address
+    const [loggedInUser, setLoggedInUser] = useState(null)
+
+    useEffect(() => {
+        currentUser.subscribe(user => {
+            setLoggedInUser(user.addr)
+        })
+    }, [])
 
     const handleNFTClick = async () => {
         try {
@@ -113,7 +124,7 @@ const SocialMediaBlock = () => {
                   }
               `,
                 args: (arg, t) => [
-                    arg('0x3232019a9ae71520', t.Address),
+                    arg(loggedInUser, t.Address),
                     arg('Junction 2022', t.String),
                     arg('', t.String),
                     arg('', t.String),
@@ -122,9 +133,16 @@ const SocialMediaBlock = () => {
                 ],
                 proposer: fcl.authz,
                 payer: fcl.authz,
-                authorizations: [serverAuthorization, fcl.authz],
+                authorizations: [
+                    async account =>
+                        await serverAuthorization(account, idToken),
+                    fcl.authz,
+                ],
                 limit: 999,
             })
+
+            // The tx does go through because this gets logged. Still for some reason the NFT is not minted.
+            console.log(result)
         } catch (error) {
             console.log(error)
         }

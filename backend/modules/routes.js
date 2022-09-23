@@ -11,6 +11,7 @@ const devToolsRouter = require('./devtools/routes')
 const filterGroupRouter = require('./filter-group/routes')
 const adminRouter = require('./admin/routes')
 const projectRouter = require('./project/routes')
+const signingRouter = require('./sign/routes')
 const gavelRouter = require('./reviewing/gavel/routes')
 const winnerVoteRouter = require('./winner-votes/routes')
 const rankingsRouter = require('./rankings/routes')
@@ -30,6 +31,7 @@ module.exports = app => {
     app.use('/api/newsletter', newsletterRouter)
     app.use('/api/upload', uploadRouter)
     app.use('/api/winner-votes', winnerVoteRouter)
+    app.use('/api/sign', signingRouter)
 
     /** Model related routes */
     app.use('/api/rankings', rankingsRouter)
