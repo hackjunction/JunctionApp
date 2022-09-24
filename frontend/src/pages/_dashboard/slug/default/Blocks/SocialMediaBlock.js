@@ -10,6 +10,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as fcl from '@onflow/fcl'
 import { serverAuthorization } from '../../../../../utils/serverSigner'
 import { currentUser } from '@onflow/fcl'
+import useMetadata from 'flow/hooks/use-metadata'
 
 const useStyles = makeStyles(theme => ({
     doneTitle: {
@@ -41,14 +42,19 @@ const SocialMediaBlock = () => {
     const shareurl = 'https://app.hackjunction.com/events/' + event.slug // TODO: remove hard coded base URL
     const sharetext = `I just applied to ${event.name}!`
 
+    const { getMetadata } = useMetadata()
+
     // Just a temporary solution to get the user's address
     const [loggedInUser, setLoggedInUser] = useState(null)
 
     useEffect(() => {
-        currentUser.subscribe(user => {
-            setLoggedInUser(user.addr)
-        })
-    }, [])
+        currentUser.subscribe(setLoggedInUser)
+    }, [loggedInUser])
+
+    const getUserMetadata = async () => {
+        const metadata = await getMetadata(loggedInUser.addr)
+        console.log(metadata)
+    }
 
     const handleNFTClick = async () => {
         try {
@@ -124,7 +130,7 @@ const SocialMediaBlock = () => {
                   }
               `,
                 args: (arg, t) => [
-                    arg(loggedInUser, t.Address),
+                    arg(loggedInUser.addr, t.Address),
                     arg('Junction 2022', t.String),
                     arg('', t.String),
                     arg('', t.String),
@@ -168,6 +174,13 @@ const SocialMediaBlock = () => {
                                 Junction 2022 in order to get a unique Junction
                                 NFT: {registration._id}
                             </Typography>
+                            <button onClick={() => currentUser.authenticate()}>
+                                connect wallet
+                            </button>
+
+                            <button onClick={() => getUserMetadata()}>
+                                get metadata
+                            </button>
                             {isRefs && !hasMinted ? (
                                 <Button
                                     onClick={handleNFTClick}
