@@ -4,6 +4,7 @@ const router = express.Router()
 const asyncHandler = require('express-async-handler')
 const { Auth } = require('@hackjunction/shared')
 const RegistrationController = require('./controller')
+const ReferralController = require('../referral/controller')
 const EventController = require('../event/controller')
 const UserProfileController = require('../user-profile/controller')
 
@@ -206,19 +207,16 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
 
 const verifyNFTStatus = asyncHandler(async (req, res) => {
     const reg_id = req.params.registrationId.toString()
-    const regis = await RegistrationController.getRegistrationByRegIdOnly(
-        reg_id,
-    )
+    const regis = await ReferralController.getReferralById(reg_id)
     const NFT_json = new Object()
-    NFT_json.isValid = regis.ref >= 3
+    NFT_json.isValid = regis.score >= 3
     NFT_json.hasMinted = regis.minted !== ''
     NFT_json.txId = regis.minted
     return res.status(200).json(JSON.stringify(NFT_json))
 })
 
 const postNFTStatus = asyncHandler(async (req, res) => {
-    console.log(req.body)
-    const postStatus = await RegistrationController.postNFTStatus(
+    const postStatus = await ReferralController.addMint(
         req.body.regId,
         req.body.txId,
     ).catch(err => {

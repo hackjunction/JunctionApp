@@ -58,12 +58,6 @@ const RegistrationType = new GraphQLObjectType({
             travelGrantAmount: {
                 type: GraphQLFloat,
             },
-            ref: {
-                type: GraphQLInt,
-            },
-            minted: {
-                type: GraphQLString,
-            },
             /** Custom fields */
             _fullAnswers: {
                 type: GraphQLJSONObject,

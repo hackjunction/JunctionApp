@@ -16,6 +16,7 @@ const Registration = require('./model')
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
 const RegistrationHelpers = require('./helpers')
 const EmailTaskController = require('../email-task/controller')
+const ReferralController = require('../referral/controller')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
@@ -78,7 +79,6 @@ controller.updateRegistration = (user, event, data) => {
                 await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
-                console.log(answers.otherquestions)
                 return Registration.updateAllowed(registration, { answers })
             }
             return false
@@ -99,7 +99,7 @@ controller.updateRegistrationWithRegId = (user, event, data) => {
         })
 }
 
-controller.finishRegistration = (user, event, data) => {
+controller.finishRegistration = async (user, event, data) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(async registration => {
@@ -110,20 +110,27 @@ controller.finishRegistration = (user, event, data) => {
                 // answers are complete
                 if (success) {
                     if (answers.nftsection && answers.nftsection.nft) {
-                        const reg2 = controller
-                            .getRegistrationByRegId(answers.nftsection.nft)
-                            .then(regis2 => {
-                                if (regis2.ref) {
-                                    regis2.ref = regis2 + 1
-                                } else {
-                                    regis2.ref = 1
-                                    regis2.minted = ''
-                                }
-                                regis2.save()
-                            })
-                            .catch(err => {
-                                console.log('reg2 err')
-                            })
+                        try {
+                            const reg2 = await ReferralController.getReferralById(
+                                answers.nftsection.nft,
+                            )
+                        }
+                        catch {
+                            await ReferralController.createReferral(
+                                answers.nftsection.nft,
+                            )
+                        }
+                        if (
+                            answers.nftsection.nft !==
+                            registration._id.toString()
+                        ) {
+                            await ReferralController.addScore(
+                                answers.nftsection.nft,
+                            )
+                        }
+
+                            await ReferralController.getReferralById(
+                                answers.nftsection.nft)
 
                         // answers.ref = registration.ref + 1
                         // var anf = await controller.updateRegistrationWithRegId(answers.otherquestions.nft, event._id.toString(),answers)
@@ -143,8 +150,7 @@ controller.finishRegistration = (user, event, data) => {
                             }
                         }
                         return Registration.updateAllowed(registration, {
-                            answers,
-                            ref: answers.ref,
+                            answers
                         })
                     }
 

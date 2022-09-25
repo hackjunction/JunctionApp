@@ -137,8 +137,6 @@ const registrationQuery = gql`
                     number
                     countryCode
                 }
-                ref
-                minted
             }
         }
     }
