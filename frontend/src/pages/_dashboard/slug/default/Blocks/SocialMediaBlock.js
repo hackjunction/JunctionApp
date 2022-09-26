@@ -32,7 +32,7 @@ const SocialMediaBlock = () => {
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
     const ref = registration.ref
-    const isRefs = true // EDITED
+    const isRefs = false // EDITED
     const hasMinted = registration.minted !== ''
     const classes = useStyles()
     const isJ22 =
