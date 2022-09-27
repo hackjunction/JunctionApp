@@ -94,7 +94,7 @@ export default () => {
     }, [])
 
     const generateTokenLink = tokenId => {
-        return `${window.origin}/events/${event?.slug}/finalist-voting/?votingToken=${tokenId}`
+        return `${window.origin}/events/${event?.slug}/finalist-voting/?token=${tokenId}`
     }
 
     const getOrganiserName = userId => {
