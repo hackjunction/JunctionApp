@@ -148,6 +148,9 @@ const EventType = new GraphQLObjectType({
             eventTerms: {
                 type: GraphQLString,
             },
+            eventNewsletter: {
+                type: GraphQLString,
+            },
             demoPlaceholder: {
                 type: GraphQLString,
             },
