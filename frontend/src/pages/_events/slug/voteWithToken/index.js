@@ -36,7 +36,7 @@ export default () => {
     const classes = useStyles()
 
     const queryParams = useQueryParams()
-    const votingTokenFromParams = queryParams.get('token')
+    const votingTokenFromParams = queryParams.get('votingToken')
 
     useEffect(() => {
         EventsService.getFinalistsWithVotingToken(slug, votingTokenFromParams)
