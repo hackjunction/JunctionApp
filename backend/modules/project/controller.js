@@ -4,6 +4,7 @@ const Promise = require('bluebird')
 const { ProjectSchema } = require('@hackjunction/shared')
 const Project = require('./model')
 const { ForbiddenError } = require('../../common/errors/errors')
+const TeamController = require('../team/controller')
 
 const controller = {}
 
@@ -179,4 +180,25 @@ controller.getFinalProjects = async event => {
     return projects
 }
 
+controller.exportProjects = async projectIds => {
+    let projects = await Project.find({ _id: { $in: projectIds } }).populate({
+        path: 'team',
+    })
+
+    const projectAndMeta = await Promise.all(
+        projects.map(async project => {
+            const teamWithMeta = await TeamController.attachMeta(project.team)
+            return [project, teamWithMeta]
+        }),
+    )
+
+    const exportData = projectAndMeta.map(([project, teamWithMeta]) => {
+        return {
+            ...project.getExportData(),
+            ...TeamController.convertToFlatExportData(teamWithMeta),
+        }
+    })
+
+    return exportData
+}
 module.exports = controller

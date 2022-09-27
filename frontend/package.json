@@ -21,6 +21,7 @@
         "cloudinary-react": "^1.5.0",
         "connected-react-router": "^6.8.0",
         "downloadjs": "^1.4.7",
+        "export-to-csv": "^0.2.1",
         "formik": "^2.1.4",
         "framer-motion": "^1.11.0",
         "graphql": "^15.0.0",

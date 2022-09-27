@@ -31,7 +31,7 @@ const editTeam = asyncHandler(async (req, res) => {
     const team = await TeamController.editTeam(
         req.event._id,
         req.user.sub,
-        req.body
+        req.body,
     )
     return res.status(200).json(team)
 })
@@ -40,7 +40,7 @@ const joinTeam = asyncHandler(async (req, res) => {
     let team = await TeamController.joinTeam(
         req.event._id,
         req.user.sub,
-        req.params.code
+        req.params.code,
     )
     if (req.query.populate === 'true') {
         team = await TeamController.attachMeta(team)
@@ -57,7 +57,7 @@ const removeMember = asyncHandler(async (req, res) => {
     const team = await TeamController.removeMemberFromTeam(
         req.event._id,
         req.user.sub,
-        req.params.userId
+        req.params.userId,
     )
     return res.status(200).json(team)
 })
@@ -65,7 +65,7 @@ const removeMember = asyncHandler(async (req, res) => {
 const getTeam = asyncHandler(async (req, res) => {
     let team = await TeamController.getTeam(
         req.event._id.toString(),
-        req.user.sub
+        req.user.sub,
     )
     if (req.query.populate === 'true') {
         team = await TeamController.attachMeta(team)
@@ -78,6 +78,11 @@ const getTeamsForEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(teams)
 })
 
+const exportTeams = asyncHandler(async (req, res) => {
+    const teams = await TeamController.exportTeams(req.body.teamIds)
+    return res.status(200).json(teams)
+})
+
 /** Organiser routes */
 router
     .route('/organiser/:slug')
@@ -85,7 +90,16 @@ router
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
-        getTeamsForEvent
+        getTeamsForEvent,
+    )
+
+router
+    .route('/organiser/:slug/export')
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        exportTeams,
     )
 
 /** User-facing routes */
@@ -96,19 +110,19 @@ router
         hasToken,
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
-        createTeam
+        createTeam,
     )
     .patch(
         hasToken,
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
-        editTeam
+        editTeam,
     )
     .delete(
         hasToken,
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
-        deleteTeam
+        deleteTeam,
     )
 
 router
@@ -118,7 +132,7 @@ router
         hasToken,
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
-        leaveTeam
+        leaveTeam,
     )
 
 router
@@ -127,7 +141,7 @@ router
         hasToken,
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
-        removeMember
+        removeMember,
     )
 
 module.exports = router
