@@ -15,7 +15,6 @@ import EventsService from 'services/events'
 //import ProjectsService from 'services/projects'
 
 import WinnerVoteService from 'services/winnerVote'
-import VotingTokenService from 'services/votingToken'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -25,20 +24,10 @@ export default () => {
     const [selected, setSelected] = useState(false)
 
     const [projects, setProjects] = useState([])
-    const [results, setResults] = useState({})
-    const [tokenVoterResults, setTokenVoterResults] = useState([])
+    const [results, setResults] = useState([])
 
     const updateVote = useCallback(() => {
         return WinnerVoteService.getResults(idToken, event.slug)
-    }, [idToken, event])
-
-    const updateVotesWithToken = useCallback(() => {
-        return VotingTokenService.getVotingTokenResults(
-            idToken,
-            event.slug,
-        ).catch(error => {
-            console.error(error?.response)
-        })
     }, [idToken, event])
 
     // const updateProjects = useCallback(() => {
@@ -51,7 +40,6 @@ export default () => {
         setLoading(true)
         if (event.overallReviewMethod === 'finalsManualSelection') {
             const vote = await updateVote()
-            const partnerVotes = await updateVotesWithToken()
 
             const topProjects = await EventsService.getFinalists(
                 idToken,
@@ -61,9 +49,6 @@ export default () => {
             if (vote) {
                 setResults(vote)
             }
-            if (partnerVotes) {
-                setTokenVoterResults(partnerVotes)
-            }
             setLoading(false)
         }
     }, [event.overallReviewMethod, event.slug, updateVote, idToken])
@@ -71,21 +56,6 @@ export default () => {
     useEffect(() => {
         update()
     }, [update])
-
-    const getScoreText = projectId => {
-        const scoreFromUsers = results[projectId]?.length ?? 0
-        const scoreFromTokenVoters =
-            tokenVoterResults.find(res => res.project === projectId)?.votes ?? 0
-
-        const total = scoreFromUsers + scoreFromTokenVoters
-        return (
-            <>
-                <strong>{total}</strong> <br />
-                Participant votes: {scoreFromUsers} <br />
-                Token votes: {scoreFromTokenVoters}
-            </>
-        )
-    }
     console.log('resus are', results)
     return (
         <PageWrapper loading={loading}>
@@ -95,7 +65,11 @@ export default () => {
                     <ProjectsGridItem
                         project={project}
                         event={event}
-                        score={getScoreText(project._id)}
+                        score={
+                            Object.keys(results).includes(project._id)
+                                ? results[project._id].length
+                                : 0
+                        }
                         onClickMore={() => setSelected(project)}
                     />
                 ))}

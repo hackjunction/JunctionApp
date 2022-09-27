@@ -110,12 +110,6 @@ EventsService.getFinalists = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/finalist`, config(idToken))
 }
 
-EventsService.getFinalistsWithVotingToken = (slug, votingToken) => {
-    return _axios.get(
-        `${BASE_ROUTE}/${slug}/withVotingToken/finalists?votingToken=${votingToken}`,
-    )
-}
-
 EventsService.getWinnerProjects = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/winners`, config(idToken))
 }
