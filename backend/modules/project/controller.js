@@ -201,9 +201,4 @@ controller.exportProjects = async projectIds => {
 
     return exportData
 }
-
-controller.getFinalists = event => {
-    return Project.find({ _id: { $in: event.finalists } })
-}
-
 module.exports = controller

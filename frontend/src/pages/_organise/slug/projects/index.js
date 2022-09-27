@@ -15,7 +15,6 @@ import GavelTab from './gavel'
 import AnnotatorsTab from './annotators'
 import WinnersTab from './winners'
 import FinalistSelectionTab from './finalist-selection'
-import VotingTokensTab from './votingTokens'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
@@ -83,13 +82,6 @@ export default () => {
             key: 'winners',
             label: 'Winners',
             component: WinnersTab,
-        })
-
-        data.push({
-            path: '/votingTokens',
-            key: 'votingTokens',
-            label: 'Voting Tokens',
-            component: VotingTokensTab,
         })
 
         return data
