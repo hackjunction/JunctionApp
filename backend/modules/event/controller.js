@@ -132,6 +132,14 @@ controller.updateFinalists = (eventId, finalist) => {
     })
 }
 
+controller.batchUpdateFinalists = (eventId, finalists) => {
+    console.log(eventId, finalists)
+    return Event.findById(eventId).then(event => {
+        event.finalists = finalists || []
+        return event.save()
+    })
+}
+
 controller.generateTrackPlacementAchievements = async event => {
     // If the event is not using tracks, get outta here
     if (!event.tracksEnabled) {
