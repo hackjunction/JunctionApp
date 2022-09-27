@@ -4,7 +4,7 @@ const errorHandler = (error, request, response, next) => {
     switch (error.name) {
         case 'UnauthorizedError': {
             return response.status(401).json({
-                message: 'Unauthorized',
+                message: error.message || 'Unauthorized',
                 status: 401,
             })
         }
