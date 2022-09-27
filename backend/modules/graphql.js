@@ -29,8 +29,8 @@ module.exports = app => {
     })
     const server = new ApolloServer({
         schema,
-        playground: true,
-        introspection: true,
+        playground: false,
+        introspection: false,
         context: ({ req, res }) => ({
             req,
             res,
