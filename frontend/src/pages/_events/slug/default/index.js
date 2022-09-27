@@ -197,12 +197,11 @@ export default () => {
                         <EventButtons
                             event={event}
                             registration={registration}
-                            alignCenter
                         />
                     </Box>
                 </StaggeredList>
             </FadeInWrapper>
-            {!event.theme.isLandingPageBannerHidden && <BannerCarousel />}
+            <BannerCarousel />
             <EventPageScriptIFrame
                 slug={slug}
                 pageId={EventPageScripts.PageScriptLocation.EVENT_DETAILS_PAGE}

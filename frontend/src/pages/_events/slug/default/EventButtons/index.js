@@ -10,7 +10,7 @@ import Button from 'components/generic/Button'
 import * as AuthSelectors from 'redux/auth/selectors'
 import { useTranslation } from 'react-i18next'
 
-export default ({ event, registration, alignCenter }) => {
+export default ({ event, registration }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const match = useRouteMatch()
@@ -33,16 +33,8 @@ export default ({ event, registration, alignCenter }) => {
         case EventStatuses.REGISTRATION_OPEN.id: {
             if (isAuthenticated) {
                 if (hasRegistration) {
-                    const centerAlignAttributes = alignCenter
-                        ? {
-                              direction: 'column',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                          }
-                        : undefined
-
                     return (
-                        <Grid container spacing={1} {...centerAlignAttributes}>
+                        <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <Button
                                     onClick={() =>
