@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const _ = require('lodash')
+const { ObjectID } = require('mongodb')
 const Promise = require('bluebird')
 const mongoose = require('mongoose')
 const {
@@ -15,6 +16,7 @@ const Registration = require('./model')
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
 const RegistrationHelpers = require('./helpers')
 const EmailTaskController = require('../email-task/controller')
+const ReferralController = require('../referral/controller')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
@@ -39,6 +41,20 @@ controller.createRegistration = async (user, event, data) => {
     /* .catch(function (err) {
         console.log(err.name, err.errors)
     }) */
+}
+
+controller.getRegistrationByRegId = (userId, eventId) => {
+    return Registration.findOne({
+        _id: userId,
+        event: eventId,
+    }).then(registration => {
+        if (!registration) {
+            throw new NotFoundError(
+                `Registration for event ${eventId} not found for user ${userId}`,
+            )
+        }
+        return registration
+    })
 }
 
 controller.getRegistration = (userId, eventId) => {
@@ -69,7 +85,21 @@ controller.updateRegistration = (user, event, data) => {
         })
 }
 
-controller.finishRegistration = (user, event, data) => {
+controller.updateRegistrationWithRegId = (user, event, data) => {
+    return controller
+        .getRegistration(user, event.toString())
+        .then(async registration => {
+            const [success, answers] =
+                await RegistrationHelpers.validateAnswers(data, event)
+            // answers are valid
+            if (answers) {
+                return Registration.updateAllowed(registration, { answers })
+            }
+            return false
+        })
+}
+
+controller.finishRegistration = async (user, event, data) => {
     return controller
         .getRegistration(user.sub, event._id.toString())
         .then(async registration => {
@@ -79,6 +109,51 @@ controller.finishRegistration = (user, event, data) => {
             if (answers) {
                 // answers are complete
                 if (success) {
+                    if (answers.nftsection && answers.nftsection.nft) {
+                        try {
+                            const reg2 = await ReferralController.getReferralById(
+                                answers.nftsection.nft,
+                            )
+                        }
+                        catch {
+                            await ReferralController.createReferral(
+                                answers.nftsection.nft,
+                            )
+                        }
+                        if (
+                            answers.nftsection.nft !==
+                            registration._id.toString()
+                        ) {
+                            await ReferralController.addScore(
+                                answers.nftsection.nft,
+                            )
+                        }
+
+                            await ReferralController.getReferralById(
+                                answers.nftsection.nft)
+
+                        // answers.ref = registration.ref + 1
+                        // var anf = await controller.updateRegistrationWithRegId(answers.otherquestions.nft, event._id.toString(),answers)
+                        // console.log("##")
+                        if (
+                            registration.status ===
+                            RegistrationStatuses.asObject.incomplete.id
+                        ) {
+                            if (event.eventType === EventTypes.physical.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.pending.id
+                            }
+                            // TODO we most likely don't want to do this here? Get desired state from event?
+                            if (event.eventType === EventTypes.online.id) {
+                                registration.status =
+                                    RegistrationStatuses.asObject.checkedIn.id
+                            }
+                        }
+                        return Registration.updateAllowed(registration, {
+                            answers
+                        })
+                    }
+
                     if (
                         registration.status ===
                         RegistrationStatuses.asObject.incomplete.id
@@ -479,6 +554,35 @@ controller.rejectSoftRejected = async eventId => {
         user.save()
     })
     return rejected
+}
+
+controller.getRegistrationByRegIdOnly = async regId => {
+    return Registration.findOne({
+        _id: regId,
+    }).then(registration => {
+        if (!registration) {
+            throw new NotFoundError(`Registration for event not found for user`)
+        }
+        return registration
+    })
+}
+
+controller.postNFTStatus = async (regId, txId) => {
+    console.log(regId, txId, '123')
+    console.log(1)
+    const a = 13
+    return Registration.findById(regId.toString()).then(registration => {
+        console.log(registration)
+        if (!registration) {
+            console.log('##########')
+            throw new NotFoundError(
+                `Registration for event not found for user `,
+            )
+        } else {
+            registration.minted = txId
+            return registration.save()
+        }
+    })
 }
 
 module.exports = controller

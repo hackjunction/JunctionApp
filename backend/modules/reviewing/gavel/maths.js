@@ -1,14 +1,14 @@
 // Should be equivalent to scipy.special.psi
-const digamma = require('@stdlib/math/base/special/digamma')
+const digamma = require('@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/digamma')
 
 // Should be equivalent to scipy.special.betaln
-const betaln = require('@stdlib/math/base/special/betaln')
+const betaln = require('@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/betaln')
 
 // Should be equivalent to numpy.exp
-const exp = require('@stdlib/math/base/special/exp')
+const exp = require('@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/exp')
 
 // Should be equivalent to numpy.log
-const log = require('@stdlib/math/base/special/ln')
+const log = require('@stdlib/stdlib/lib/node_modules/@stdlib/math/base/special/log')
 
 const { KAPPA, GAMMA } = require('./settings')
 
@@ -40,7 +40,7 @@ const Maths = {
             muWinner,
             sigmaSqWinner,
             muLoser,
-            sigmaSqLoser
+            sigmaSqLoser,
         )
         const updatedMus = Maths.updatedMus(
             alpha,
@@ -48,7 +48,7 @@ const Maths = {
             muWinner,
             sigmaSqWinner,
             muLoser,
-            sigmaSqLoser
+            sigmaSqLoser,
         )
         const updatedSigmaSqs = Maths.updatedSigmaSqs(
             alpha,
@@ -56,7 +56,7 @@ const Maths = {
             muWinner,
             sigmaSqWinner,
             muLoser,
-            sigmaSqLoser
+            sigmaSqLoser,
         )
 
         return {
@@ -76,7 +76,7 @@ const Maths = {
             muA,
             sigmaSqA,
             muB,
-            sigmaSqB
+            sigmaSqB,
         )
         const updatedMus = Maths.updatedMus(
             alpha,
@@ -84,7 +84,7 @@ const Maths = {
             muA,
             sigmaSqA,
             muB,
-            sigmaSqB
+            sigmaSqB,
         )
         const updatedSigmaSqs = Maths.updatedSigmaSqs(
             alpha,
@@ -92,7 +92,7 @@ const Maths = {
             muA,
             sigmaSqA,
             muB,
-            sigmaSqB
+            sigmaSqB,
         )
         const updatedAnnotator2 = Maths.updatedAnnotator(
             alpha,
@@ -100,7 +100,7 @@ const Maths = {
             muB,
             sigmaSqB,
             muA,
-            sigmaSqA
+            sigmaSqA,
         )
         const updatedMus2 = Maths.updatedMus(
             alpha,
@@ -108,7 +108,7 @@ const Maths = {
             muB,
             sigmaSqB,
             muA,
-            sigmaSqA
+            sigmaSqA,
         )
         const updatedSigmaSqs2 = Maths.updatedSigmaSqs(
             alpha,
@@ -116,7 +116,7 @@ const Maths = {
             muB,
             sigmaSqB,
             muA,
-            sigmaSqA
+            sigmaSqA,
         )
 
         const alpha1 = updatedAnnotator.updatedAlpha
@@ -152,7 +152,7 @@ const Maths = {
         muWinner,
         sigmaSqWinner,
         muLoser,
-        sigmaSqLoser
+        sigmaSqLoser,
     ) => {
         const mult =
             (alpha * exp(muWinner)) /
@@ -174,7 +174,7 @@ const Maths = {
         muWinner,
         sigmaSqWinner,
         muLoser,
-        sigmaSqLoser
+        sigmaSqLoser,
     ) => {
         const mult =
             (alpha * exp(muWinner) * beta * exp(muLoser)) /
@@ -199,7 +199,7 @@ const Maths = {
         muWinner,
         sigmaSqWinner,
         muLoser,
-        sigmaSqLoser
+        sigmaSqLoser,
     ) => {
         const c1 =
             exp(muWinner) / (exp(muWinner) + exp(muLoser)) +

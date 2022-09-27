@@ -4,6 +4,7 @@ const router = express.Router()
 const asyncHandler = require('express-async-handler')
 const { Auth } = require('@hackjunction/shared')
 const RegistrationController = require('./controller')
+const ReferralController = require('../referral/controller')
 const EventController = require('../event/controller')
 const UserProfileController = require('../user-profile/controller')
 
@@ -91,11 +92,12 @@ const cancelRegistration = asyncHandler(async (req, res) => {
 })
 
 const setTravelGrantDetails = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.setTravelGrantDetailsForRegistration(
-        req.user,
-        req.event,
-        req.body.data,
-    )
+    const registration =
+        await RegistrationController.setTravelGrantDetailsForRegistration(
+            req.user,
+            req.event,
+            req.body.data,
+        )
     return res.status(200).json(registration)
 })
 
@@ -140,18 +142,18 @@ const getRegistrationsForEvent = asyncHandler(async (req, res) => {
 })
 
 const selfAssignRegistrationsForEvent = asyncHandler(async (req, res) => {
-    const registrations = await RegistrationController.selfAssignRegistrationsForEvent(
-        req.event._id.toString(),
-        req.user.sub,
-    )
+    const registrations =
+        await RegistrationController.selfAssignRegistrationsForEvent(
+            req.event._id.toString(),
+            req.user.sub,
+        )
 
     return res.status(200).json(registrations)
 })
 
 const assignRegistrationForEvent = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.assignRegistrationForEvent(
-        req.body,
-    )
+    const registration =
+        await RegistrationController.assignRegistrationForEvent(req.body)
 
     return res.status(200).json(registration)
 })
@@ -201,6 +203,30 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
     const eventId = req.event._id.toString()
     const rejected = await RegistrationController.rejectSoftRejected(eventId)
     return res.status(200).json(rejected)
+})
+
+const verifyNFTStatus = asyncHandler(async (req, res) => {
+    const reg_id = req.params.registrationId.toString()
+    const regis = await ReferralController.getReferralById(reg_id)
+    const NFT_json = new Object()
+    NFT_json.isValid = regis.score >= 3
+    NFT_json.hasMinted = regis.minted !== ''
+    NFT_json.txId = regis.minted
+    return res.status(200).json(JSON.stringify(NFT_json))
+})
+
+const postNFTStatus = asyncHandler(async (req, res) => {
+    const postStatus = await ReferralController.addMint(
+        req.body.regId,
+        req.body.txId,
+    ).catch(err => {
+        console.log('error in post')
+    })
+    if (postStatus) {
+        return res.status(201)
+    }
+
+    return res.status(404).json('Not found registration id')
 })
 
 router.route('/').get(hasToken, getUserRegistrations)
@@ -333,5 +359,11 @@ router
         isEventOrganiser,
         editRegistration,
     )
+
+// NFT routes
+router
+    .route('/:slug/nft/:registrationId')
+    .get(verifyNFTStatus)
+    .post(postNFTStatus)
 
 module.exports = router
