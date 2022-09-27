@@ -64,7 +64,6 @@ const eventQuery = gql`
                 sidebarTextColor
                 accentColor
                 linkColor
-                isLandingPageBannerHidden
             }
             pageScripts {
                 page

@@ -9,7 +9,6 @@ import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
-import BooleanInput from 'components/inputs/BooleanInput'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
@@ -18,7 +17,7 @@ import Button from 'components/generic/Button'
 import { push } from 'connected-react-router'
 import { defaultEventStyles } from './const'
 
-const colorThemeFields = [
+const themeFields = [
     {
         field: 'headerBackgroundColor',
         label: 'Header background',
@@ -344,7 +343,7 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={5}>
-                    {colorThemeFields.map(themeField => (
+                    {themeFields.map(themeField => (
                         <Grid
                             item
                             xs={12}
@@ -376,29 +375,6 @@ export default () => {
                             />
                         </Grid>
                     ))}
-                    <Grid item xs={12}>
-                        <FastField
-                            name="theme.isLandingPageBannerHidden"
-                            render={({ field, form }) => (
-                                <FormControl
-                                    label="Hide Junction banner on landing page"
-                                    hint="The banner displays information regarding the JunctionApp or other platform related news."
-                                    error={form.errors[field.name]}
-                                    touched={form.touched[field.name]}
-                                >
-                                    <BooleanInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                    />
-                                </FormControl>
-                            )}
-                        />
-                    </Grid>
                     <Grid item xs={12}>
                         <Button
                             variant="contained"
