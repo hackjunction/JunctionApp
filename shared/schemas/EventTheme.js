@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLInputObjectType,
+} = require('graphql')
+const { GraphQLBoolean } = require('graphql')
 
 const EventThemeSchema = new mongoose.Schema({
     headerBackgroundColor: {
@@ -38,6 +44,10 @@ const EventThemeSchema = new mongoose.Schema({
         type: String,
         default: '#52d7af',
     },
+    isLandingPageBannerHidden: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const EventThemeType = new GraphQLObjectType({
@@ -69,6 +79,9 @@ const EventThemeType = new GraphQLObjectType({
         },
         linkColor: {
             type: GraphQLNonNull(GraphQLString),
+        },
+        isLandingPageBannerHidden: {
+            type: GraphQLNonNull(GraphQLBoolean),
         },
     },
 })
