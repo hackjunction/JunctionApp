@@ -58,7 +58,7 @@
         "react-swipeable-views": "0.13.9",
         "react-swipeable-views-utils": "0.13.9",
         "react-table": "^7.1.0",
-        "recharts": "^1.8.5",
+        "recharts": "^2.1.14",
         "redux": "^4.0.5",
         "redux-devtools-extension": "^2.13.8",
         "redux-pack": "^0.1.5",
