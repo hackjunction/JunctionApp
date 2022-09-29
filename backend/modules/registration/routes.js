@@ -207,20 +207,21 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
 
 const verifyNFTStatus = asyncHandler(async (req, res) => {
     const reg_id = req.params.registrationId.toString()
-    return await ReferralController.getReferralById(reg_id).then(regis => {
-        const NFT_json = new Object()
-        NFT_json.isValid = regis.score >= 3
-        NFT_json.hasMinted = regis.minted !== ''
-        NFT_json.txId = regis.minted
-        return res.status(200).json(JSON.stringify(NFT_json))
-    }).catch(err => {
-        const empty_json = new Object()
-        empty_json.isValid = false
-        empty_json.hasMinted = false
-        empty_json.txId = ""
-        return res.status(200).json(JSON.stringify(empty_json))
-    })
-
+    return await ReferralController.getReferralById(reg_id)
+        .then(regis => {
+            const NFT_json = new Object()
+            NFT_json.isValid = regis.score >= 3
+            NFT_json.hasMinted = regis.minted !== ''
+            NFT_json.txId = regis.minted
+            return res.status(200).json(JSON.stringify(NFT_json))
+        })
+        .catch(err => {
+            const empty_json = new Object()
+            empty_json.isValid = false
+            empty_json.hasMinted = false
+            empty_json.txId = ''
+            return res.status(200).json(JSON.stringify(empty_json))
+        })
 })
 
 const postNFTStatus = asyncHandler(async (req, res) => {

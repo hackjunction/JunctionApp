@@ -5,8 +5,8 @@ import { CTAButton } from './CTAButton'
 import { useMinter } from 'flow/hooks/useMinter'
 import { useSelector } from 'react-redux'
 
-const MintNFT = ({ handleLogout, onComplete }) => {
-    const handleMint = useMinter({ onComplete })
+const MintNFT = ({ handleLogout, onComplete, onFinalized }) => {
+    const { handleMint } = useMinter({ onComplete, onFinalized })
     const walletAddress = useSelector(WalletSelectors.address)
 
     return (

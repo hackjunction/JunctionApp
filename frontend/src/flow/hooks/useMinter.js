@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import * as WalletSelectors from 'redux/wallet/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
@@ -17,7 +17,7 @@ const NFT_VIDEO_URI =
 const NFT_VIDEO_CID =
     'bafybeiadm74htav4vygndvws5bgusb4x4bygwu4jacdryq4ggxvexxjpmy'
 
-export const useMinter = ({ onComplete }) => {
+export const useMinter = ({ onComplete, onFinalized }) => {
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const walletAddress = useSelector(WalletSelectors.address)
@@ -25,23 +25,35 @@ export const useMinter = ({ onComplete }) => {
     const event = useSelector(DashboardSelectors.event)
     const [txStatus, setTxStatus] = useState(null)
 
+    const updateMintedStatus = useCallback(async () => {
+        await RegistrationsService.postNFTStatus(
+            idToken,
+            event.slug,
+            registration._id,
+            { txId: txStatus, regId: registration._id },
+        )
+    }, [event.slug, idToken, registration._id, txStatus])
+
     useEffect(() => {
         if (txStatus) {
             fcl.tx(txStatus).subscribe(tx => {
-                // TODO - do something with the tx
+                if (tx.status === 4) {
+                    updateMintedStatus()
+                    onFinalized(txStatus)
+                }
             })
         }
-    }, [txStatus, dispatch])
+    }, [txStatus, dispatch, updateMintedStatus, onFinalized])
 
     const checkEligibility = async () => {
         try {
-            const status = await RegistrationsService.getNFTStatus(
+            const response = await RegistrationsService.getNFTStatus(
                 idToken,
                 event.slug,
                 registration._id,
             )
 
-            return status
+            return JSON.parse(response)
         } catch (error) {
             console.log(error)
         }
@@ -49,8 +61,8 @@ export const useMinter = ({ onComplete }) => {
 
     const handleMint = async () => {
         try {
-            const status = await checkEligibility()
-            console.log(status)
+            const { isValid } = await checkEligibility()
+            if (!isValid) throw new Error('User not eligible for minting')
 
             const result = await fcl.mutate({
                 cadence: MINT_NFT,
@@ -72,7 +84,6 @@ export const useMinter = ({ onComplete }) => {
                 limit: 999,
             })
 
-            // await updateRegistration()
             setTxStatus(result)
             onComplete()
         } catch (error) {
@@ -80,5 +91,5 @@ export const useMinter = ({ onComplete }) => {
         }
     }
 
-    return handleMint
+    return { handleMint, checkEligibility }
 }

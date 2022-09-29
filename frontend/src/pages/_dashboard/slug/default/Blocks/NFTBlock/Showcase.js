@@ -2,11 +2,8 @@ import React, { useState } from 'react'
 import { Box, Typography } from '@material-ui/core'
 import NFTModal from 'components/modals/NFTModal'
 import { CTAButton } from './CTAButton'
-import { useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
 
-const Showcase = () => {
-    const registration = useSelector(DashboardSelectors.registration)
+const Showcase = ({ transactionId }) => {
     const [open, setOpen] = useState(false)
 
     const openModal = () => {
@@ -17,9 +14,8 @@ const Showcase = () => {
     }
 
     const openFlowscan = async () => {
-        /* window.open(`https://flowscan.org/tx/${registration.txId}`, '_blank') */
         window.open(
-            `https://testnet.flowscan.org/tx/c7d66bf3994802b57257c6425f3f434c4eb00b6f9c69028ecfcda891d1536a32`,
+            `https://testnet.flowscan.org/tx/${transactionId}`,
             '_blank',
         )
     }
