@@ -21,7 +21,7 @@ import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
-import NFTBlock from './Blocks/NFTBlock'
+import NFTBlock from './Blocks/NFTBlock/index'
 
 export default () => {
     const event = useSelector(DashboardSelectors.event)

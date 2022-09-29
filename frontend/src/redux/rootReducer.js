@@ -11,6 +11,7 @@ import dashboard from './dashboard/reducer'
 import organiser from './organiser/reducer'
 import recruitment from './recruitment/reducer'
 import user from './user/reducer'
+import wallet from './wallet/reducer'
 import snackbar from './snackbar/reducer'
 
 export default history =>
@@ -26,4 +27,5 @@ export default history =>
         recruitment,
         snackbar,
         user,
+        wallet,
     })

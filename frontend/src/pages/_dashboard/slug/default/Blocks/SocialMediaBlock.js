@@ -10,7 +10,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as fcl from '@onflow/fcl'
 import { serverAuthorization } from '../../../../../utils/serverSigner'
 import { currentUser } from '@onflow/fcl'
-import useMetadata from 'flow/hooks/use-metadata'
+import useMetadata from 'flow/hooks/useMetadata'
 
 const useStyles = makeStyles(theme => ({
     doneTitle: {
