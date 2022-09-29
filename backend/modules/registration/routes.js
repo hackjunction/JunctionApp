@@ -224,17 +224,14 @@ const verifyNFTStatus = asyncHandler(async (req, res) => {
 })
 
 const postNFTStatus = asyncHandler(async (req, res) => {
-    const postStatus = await ReferralController.addMint(
+    return await ReferralController.addMint(
         req.body.regId,
         req.body.txId,
-    ).catch(err => {
-        console.log('error in post')
-    })
-    if (postStatus) {
-        return res.status(201)
-    }
-
-    return res.status(404).json('Not found registration id')
+        )
+        .then(status => { return res.status(201) })
+        .catch(err => {
+            return res.status(404).json('Not found registration id')
+        })
 })
 
 router.route('/').get(hasToken, getUserRegistrations)
