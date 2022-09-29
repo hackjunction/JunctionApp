@@ -62,7 +62,9 @@ const Resolvers = {
             return context.controller('UserProfile').getByUserId(args.userId)
         },
         userProfiles: (parent, args, context) => {
-            return context.controller('UserProfile').getAll()
+            if (context.req.user) {
+                return context.controller('UserProfile').getAll()
+            }
         },
     },
 }
