@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,6 +36,11 @@ import * as OrganiserActions from 'redux/organiser/actions'
 
 import { useTranslation } from 'react-i18next'
 import { CheckBox } from '@material-ui/icons'
+import { Alerts } from 'components/messaging/alerts'
+import Badge from '@material-ui/core/Badge'
+import { useLazyQuery, useSubscription } from '@apollo/client'
+import { ALERTS_QUERY } from 'graphql/queries/alert'
+import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
 // TODO: Chat UI still a work in progress
 // import { Chat } from 'components/messaging/chat'
 
@@ -71,6 +76,14 @@ export default () => {
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
     const { slug } = match.params
+
+    // Set up browser notifications
+    useEffect(() => {
+        if ('Notification' in window && Notification.permission !== 'granted') {
+            Notification.requestPermission()
+        }
+    }, [])
+
     /** Update when slug changes */
     useEffect(() => {
         dispatch(DashboardActions.updateEvent(slug))
@@ -83,6 +96,53 @@ export default () => {
         dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
     }, [slug, dispatch])
 
+    const [alerts, setAlerts] = useState([])
+    const [alertCount, setAlertCount] = useState(0)
+    const { data: newAlert } = useSubscription(NEW_ALERTS_SUBSCRIPTION, {
+        variables: { slug },
+    })
+
+    // Must use lazy query because event is fetched asynchnronously
+    const [getAlerts, { loading: alertsLoading, data: alertsData }] =
+        useLazyQuery(ALERTS_QUERY)
+    useEffect(() => {
+        if (event) {
+            getAlerts({ variables: { eventId: event._id } })
+        }
+    }, [event, getAlerts])
+
+    // Set alerts when data is fetched or recieved through websocket
+    useEffect(() => {
+        if (alertsData) {
+            setAlerts(old => {
+                const newArray = [...old, ...alertsData.alerts]
+                newArray.sort(
+                    (a, b) => +new Date(a.sentAt) - +new Date(b.sentAt),
+                )
+                return old.length === 0 ? newArray : old
+            })
+        }
+        if (newAlert) {
+            if (
+                'Notification' in window &&
+                Notification.permission === 'granted'
+            ) {
+                new Notification('Announcement', {
+                    body: newAlert.newAlert.content,
+                })
+            }
+            setAlertCount(alertCount + 1)
+            setAlerts(old => {
+                const newArray = [...old, newAlert.newAlert]
+                newArray.sort(
+                    (a, b) => +new Date(a.sentAt) - +new Date(b.sentAt),
+                )
+                return newArray
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [alertsData, setAlerts, newAlert, setAlertCount])
+
     /** Update project when team changes */
     useEffect(() => {
         dispatch(DashboardActions.updateProjects(slug))
@@ -91,7 +151,7 @@ export default () => {
 
     return (
         <PageWrapper
-            loading={eventLoading || registrationLoading}
+            loading={eventLoading || registrationLoading || alertsLoading}
             wrapContent={false}
         >
             <SidebarLayout
@@ -116,9 +176,16 @@ export default () => {
                         key: 'dashboard',
                         path: '',
                         exact: true,
-                        icon: <DashboardIcon />,
+                        icon: (
+                            <Badge badgeContent={alertCount} color="primary">
+                                <DashboardIcon />
+                            </Badge>
+                        ),
                         label: t('Dashboard_'),
-                        component: DefaultPage,
+                        component: () => {
+                            setAlertCount(0)
+                            return DefaultPage({ alerts })
+                        },
                     },
                     {
                         key: 'finals',

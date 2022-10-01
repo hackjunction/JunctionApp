@@ -35,7 +35,6 @@ export function Chat({ recipients = [] }) {
         useMutation(SEND_MESSAGE_MUTATION)
 
     const onSubmit = values => {
-        console.info(userId)
         sendMessage({
             variables: {
                 input: {

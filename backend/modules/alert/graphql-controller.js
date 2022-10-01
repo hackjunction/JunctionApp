@@ -1,9 +1,9 @@
 const { Auth } = require('@hackjunction/shared')
 const { v4: uuid } = require('uuid')
 const PermissionUtils = require('../../utils/permissions')
-const { Message } = require('./model')
+const { Alert } = require('./model')
 
-class MessageController {
+class AlertController {
     constructor(requestingUser, overrideChecks) {
         this.requestingUser = requestingUser
         this.overrideChecks = overrideChecks
@@ -15,68 +15,24 @@ class MessageController {
             )
     }
 
-    async find({ recipients, read }, requesterId) {
+    async find({ eventId }) {
         const query = {
-            ...(recipients
-                ? {
-                      recipients: {
-                          $size: recipients.length,
-                          $all: recipients,
-                      },
-                  }
-                : { recipients: requesterId }),
-            ...(read && { readAt: { $ne: null } }),
+            eventId: { $eq: eventId },
         }
-        return this._clean(Message.find(query))
+
+        return this._clean(Alert.find(query))
     }
 
     async send(input, requesterId) {
-        const recipients = [...input.recipients, requesterId]
-
-        const newMessage = new Message({
+        const newAlert = new Alert({
             id: uuid(),
             content: input.content,
-            recipients,
+            eventId: input.eventId,
             sender: requesterId,
             sentAt: new Date(),
         })
 
-        return this._cleanOne(newMessage.save())
-    }
-
-    async read(messageId, requesterId) {
-        const message = await Message.findOne({
-            id: messageId,
-            recipients: requesterId,
-        })
-
-        if (!message) {
-            return null
-        }
-
-        message.readAt = new Date()
-
-        return this._cleanOne(message.save())
-    }
-
-    async readMany(messageIds, requesterId) {
-        const messages = await Message.find({
-            id: { $in: messageIds },
-            recipients: requesterId,
-        })
-
-        if (messages.length < 1) {
-            return null
-        }
-
-        const date = new Date()
-
-        messages.forEach(m => {
-            // eslint-disable-next-line no-param-reassign
-            m.readAt = date
-        })
-
-        return this._clean(Promise.all(messages.map(m => m.save())))
+        return this._cleanOne(newAlert.save())
     }
 
     async _clean(promise) {
@@ -111,4 +67,4 @@ class MessageController {
     }
 }
 
-module.exports = MessageController
+module.exports = AlertController

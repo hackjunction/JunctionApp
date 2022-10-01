@@ -12,12 +12,20 @@ const Event = require('./event/graphql')
 const UserProfile = require('./user-profile/graphql')
 const Organization = require('./organization/graphql')
 const Message = require('./message/graphql')
+const Alert = require('./alert/graphql')
 
 const buildGetController = require('./graphql-controller-factory')
 const { verifyWsToken } = require('../misc/jwt')
 
 module.exports = app => {
-    const modules = [UserProfile, Registration, Event, Organization, Message]
+    const modules = [
+        UserProfile,
+        Registration,
+        Event,
+        Organization,
+        Message,
+        Alert,
+    ]
     const executableSchemas = modules.map(
         ({ QueryType, MutationType, SubscriptionType, Resolvers }) => {
             const rawSchema = new GraphQLSchema({
