@@ -21,6 +21,7 @@ import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
 import TimelineTab from './timeline'
+import MeetingRoomsTab from './meetingRooms'
 import OtherTab from './other'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
@@ -122,6 +123,12 @@ export default () => {
                                     key: 'timeline',
                                     label: 'Timeline',
                                     component: TimelineTab,
+                                },
+                                {
+                                    path: '/rooms',
+                                    key: 'meetingRooms',
+                                    label: 'Meeting Rooms',
+                                    component: MeetingRoomsTab,
                                 },
                                 {
                                     path: '/questions',
