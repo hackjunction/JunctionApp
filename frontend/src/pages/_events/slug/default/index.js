@@ -68,8 +68,6 @@ export default () => {
     const classes = useStyles(event.theme)
 
     const keywords = event.name.split(' ').join(', ')
-    console.log('KEYWORDS', keywords)
-    console.log('HELMET', Helmet.peek())
 
     useEffect(() => {
         if (slug) {

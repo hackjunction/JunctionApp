@@ -181,7 +181,7 @@ controller.getFinalProjects = async event => {
 }
 
 controller.exportProjects = async projectIds => {
-    let projects = await Project.find({ _id: { $in: projectIds } }).populate({
+    const projects = await Project.find({ _id: { $in: projectIds } }).populate({
         path: 'team',
     })
 
@@ -200,5 +200,8 @@ controller.exportProjects = async projectIds => {
     })
 
     return exportData
+}
+controller.getFinalists = event => {
+    return Project.find({ _id: { $in: event.finalists } })
 }
 module.exports = controller

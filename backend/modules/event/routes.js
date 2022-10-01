@@ -1,11 +1,14 @@
 const express = require('express')
 const _ = require('lodash')
 const mongoose = require('mongoose')
-const { Auth } = require('@hackjunction/shared')
+const { Auth, EventHelpers } = require('@hackjunction/shared')
 const asyncHandler = require('express-async-handler')
+const moment = require('moment-timezone')
 const EventController = require('./controller.js')
 const AuthController = require('../auth/controller')
 const UserProfileController = require('../user-profile/controller')
+const ProjectController = require('../project/controller')
+const { hasValidVotingToken } = require('../../common/middleware/votingToken')
 
 const {
     hasPermission,
@@ -147,12 +150,18 @@ const clearAchievements = asyncHandler(async (req, res) => {
 
 // Approve
 const approveEvent = asyncHandler(async (req, res) => {
-    const event = await EventController.approveEvent(req.event, req.body)
+    const event = await EventController.approveEventPageScript(
+        req.event,
+        req.body,
+    )
     return res.status(200).json(event)
 })
 
 const approveEventPageScript = asyncHandler(async (req, res) => {
-    const event = await EventController.approveEventPageScript(req.event, req.body)
+    const event = await EventController.approveEventPageScript(
+        req.event,
+        req.body,
+    )
     return res.status(200).json(event)
 })
 
@@ -246,6 +255,23 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         batchUpdateFinalists,
+    )
+
+router
+    .route('/:slug/withVotingToken/finalists')
+    /** As a valid voting token holder, list all projects for an event */
+    .get(
+        hasValidVotingToken,
+        getEventFromParams,
+        asyncHandler(async (req, res) => {
+            if (!EventHelpers.isFinalistVotingOpen(req.event, moment)) {
+                return res
+                    .status(404)
+                    .json({ message: 'Finalist voting is currently closed' })
+            }
+            const projects = await ProjectController.getFinalists(req.event)
+            return res.status(200).json(projects)
+        }),
     )
 
 /** Get organisers for single event */
