@@ -38,6 +38,8 @@ const {
     EventTimelineInput,
     Webhook,
     WebhookInput,
+    MeetingRoom,
+    MeetingRoomInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -178,6 +180,9 @@ const EventInput = new GraphQLInputObjectType({
         },
         webhooks: {
             type: GraphQLList(WebhookInput),
+        },
+        meetingRooms: {
+            type: GraphQLList(MeetingRoomInput),
         },
     },
 })
@@ -323,6 +328,9 @@ const EventType = new GraphQLObjectType({
             },
             webhooks: {
                 type: GraphQLList(Webhook),
+            },
+            meetingRooms: {
+                type: GraphQLList(MeetingRoom),
             },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out

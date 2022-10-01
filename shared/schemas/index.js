@@ -26,6 +26,7 @@ const UserProfileFields = require('./UserProfileFields')
 const Webhook = require('./Webhook')
 const EventTheme = require('./EventTheme')
 const EventTimeline = require('./EventTimeline')
+const MeetingRoom = require('./MeetingRoom')
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
@@ -68,6 +69,8 @@ const SharedSchema = new GraphQLSchema({
         EventTimeline.graphql,
         EventTimeline.itemInput,
         EventTimeline.graphqlInput,
+        MeetingRoom.graphql,
+        MeetingRoom.graphqlInput,
     ],
 })
 
