@@ -51,7 +51,7 @@ export default () => {
             })
 
         updateVote()
-    }, [slug, updateVote, votingTokenFromParams])
+    }, [])
 
     const updateVote = () => {
         VotingTokenService.getVotingTokenPublic(votingTokenFromParams)
