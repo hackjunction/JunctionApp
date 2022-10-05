@@ -11,7 +11,8 @@ import RegistrationsService from 'services/registrations'
 const NFT_NAME = 'Junction 2022 Referral Trophy'
 const NFT_DESCRIPTION =
     'Junction is the global community behind the world’s best hackathons. For Junction 2022, we created this NFT collection as a prize for our referral program. We created the perfect reward for our hacker community, starting an NFT project which we hope will last through the years!'
-const NFT_THUMBNAIL = '' // NEED THIS FROM KASPER
+const NFT_THUMBNAIL =
+    'https://res.cloudinary.com/hackjunction/image/upload/v1664994199/misc_assets/trophy.0001.png'
 const NFT_VIDEO_URI =
     'https://ipfs.io/ipfs/bafybeiadm74htav4vygndvws5bgusb4x4bygwu4jacdryq4ggxvexxjpmy'
 const NFT_VIDEO_CID =
