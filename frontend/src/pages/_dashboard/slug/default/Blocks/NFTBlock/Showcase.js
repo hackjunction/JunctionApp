@@ -13,13 +13,6 @@ const Showcase = ({ transactionId }) => {
         setOpen(false)
     }
 
-    const openFlowscan = async () => {
-        window.open(
-            `https://testnet.flowscan.org/tx/${transactionId}`,
-            '_blank',
-        )
-    }
-
     return (
         <>
             <Typography variant="h4">Congratulations! 🎉</Typography>
@@ -29,9 +22,12 @@ const Showcase = ({ transactionId }) => {
             </Typography>
             <Box display="flex" mt={2} alignItems="center">
                 <CTAButton label="View NFT" onClick={openModal} />
-                <CTAButton label="View Transaction" onClick={openFlowscan} />
             </Box>
-            <NFTModal open={open} onClose={closeModal} />
+            <NFTModal
+                open={open}
+                onClose={closeModal}
+                transactionId={transactionId}
+            />
         </>
     )
 }

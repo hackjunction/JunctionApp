@@ -1,7 +1,7 @@
 import { config } from '@onflow/fcl'
 
 config({
-    'app.detail.title': 'Junction Referrer 2022',
+    'app.detail.title': 'Junction Referral 2022',
     'app.detail.icon':
         'https://uploads-ssl.webflow.com/62a062bf99397d0fefb0c3ee/62bee49bdf4e9398b37e8bef_Favicon-Junction.png',
     'accessNode.api': process.env.REACT_APP_ACCESS_NODE_API,
