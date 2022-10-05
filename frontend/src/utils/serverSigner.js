@@ -8,7 +8,7 @@ const getSignature = async (signable, idToken) => {
 }
 
 export const serverAuthorization = async (account, idToken) => {
-    const addr = process.env.REACT_APP_SERVICE_ACCOUNT_ADDRESS_TESTNET
+    const addr = process.env.REACT_APP_SERVICE_ACCOUNT_ADDRESS
     const keyId = 0
 
     return {

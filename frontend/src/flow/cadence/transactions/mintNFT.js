@@ -1,7 +1,7 @@
 export const MINT_NFT = `
-import NonFungibleToken from 0xNonFungibleTokenTestnet
-import MetadataViews from 0xMetadataViewsTestnet
-import Junction from 0xJunctionTestnet
+import NonFungibleToken from 0xNonFungibleToken
+import MetadataViews from 0xMetadataViews
+import Junction from 0xJunction
 
 /// This script uses the NFTMinter resource to mint a new NFT
 /// It must be run with the account that has the minter resource

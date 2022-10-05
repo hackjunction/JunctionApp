@@ -9,13 +9,6 @@ config({
     'discovery.wallet.method': 'TAB/RPC',
     'flow.network': process.env.REACT_APP_FLOW_NETWORK,
 
-    // Testnet contracts
-    '0xJunctionTestnet': process.env.REACT_APP_TESTNET_JUNCTION_CONTRACT,
-    '0xMetadataViewsTestnet': process.env.REACT_APP_TESTNET_METADATA_VIEWS,
-    '0xNonFungibleTokenTestnet':
-        process.env.REACT_APP_TESTNET_NON_FUNGIBLE_TOKEN,
-
-    // Mainnet contracts
     '0xJunction': process.env.REACT_APP_JUNCTION_CONTRACT,
     '0xMetadataViews': process.env.REACT_APP_METADATA_VIEWS,
     '0xNonFungibleToken': process.env.REACT_APP_NON_FUNGIBLE_TOKEN,

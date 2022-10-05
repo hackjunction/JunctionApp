@@ -10,15 +10,15 @@ const EC = require('elliptic').ec
 
 const ec = new EC('p256')
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY_TESTNET
-const NonFungibleTokenTestnet = process.env.TESTNET_NON_FUNGIBLE_TOKEN
-const MetadataViewsTestnet = process.env.TESTNET_METADATA_VIEWS
-const JunctionTestnet = process.env.TESTNET_JUNCTION_CONTRACT
+const { PRIVATE_KEY } = process.env
+const NonFungibleToken = process.env.NON_FUNGIBLE_TOKEN
+const MetadataViews = process.env.METADATA_VIEWS
+const Junction = process.env.JUNCTION_CONTRACT
 
 const mintTransactionCode = `
-    import NonFungibleToken from ${NonFungibleTokenTestnet}
-    import MetadataViews from ${MetadataViewsTestnet}
-    import Junction from ${JunctionTestnet}
+    import NonFungibleToken from ${NonFungibleToken}
+    import MetadataViews from ${MetadataViews}
+    import Junction from ${Junction}
 
     /// This script uses the NFTMinter resource to mint a new NFT
     /// It must be run with the account that has the minter resource

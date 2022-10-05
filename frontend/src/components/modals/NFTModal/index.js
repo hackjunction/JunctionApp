@@ -86,7 +86,7 @@ const NFTModal = ({ open, onClose, transactionId }) => {
 
                         <span>
                             <Link
-                                href={`https://testnet.flowscan.org/tx/${transactionId}`}
+                                href={`https://flowscan.org/transaction/${transactionId}`}
                                 target="_blank"
                             >
                                 Transaction
