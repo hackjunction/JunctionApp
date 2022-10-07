@@ -65,6 +65,9 @@ const MeetingRoomType = new GraphQLObjectType({
 const MeetingRoomInput = new GraphQLInputObjectType({
     name: 'MeetingRoomInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },
@@ -76,6 +79,9 @@ const MeetingRoomInput = new GraphQLInputObjectType({
                 new GraphQLInputObjectType({
                     name: 'MeetingRoomTimeSlotInput',
                     fields: {
+                        _id: {
+                            type: GraphQLString,
+                        },
                         start: {
                             type: GraphQLNonNull(GraphQLDate),
                         },

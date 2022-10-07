@@ -22,6 +22,7 @@ import Button from 'components/generic/Button'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import { SettingsBrightnessSharp } from '@material-ui/icons'
+import TimeSlotsInput from './TimeSlotsInput'
 
 export default ({ value, onChange }) => {
     const [name, setName] = useState(undefined)
@@ -38,6 +39,7 @@ export default ({ value, onChange }) => {
     const handleAdd = useCallback(() => {
         handleNameChange(name)
         setEditing(true)
+        setTimeSlots([])
     }, [handleNameChange, name])
 
     const handleRemove = useCallback(
@@ -57,6 +59,7 @@ export default ({ value, onChange }) => {
             setEditing(true)
             setName(value[index].name)
             setCapacity(value[index].capacity)
+            setTimeSlots(value[index].timeSlots)
         },
         [value],
     )
@@ -66,6 +69,7 @@ export default ({ value, onChange }) => {
         setEditing(false)
         setName(undefined)
         setCapacity(undefined)
+        setTimeSlots(undefined)
     }, [])
 
     const handleEditDone = useCallback(() => {
@@ -77,6 +81,7 @@ export default ({ value, onChange }) => {
                             ...item,
                             name,
                             capacity,
+                            timeSlots,
                         }
                     }
                     return item
@@ -87,11 +92,20 @@ export default ({ value, onChange }) => {
                 value.concat({
                     name,
                     capacity,
+                    timeSlots,
                 }),
             )
         }
         handleEditCancel()
-    }, [editIndex, handleEditCancel, onChange, value, name, capacity])
+    }, [
+        editIndex,
+        handleEditCancel,
+        onChange,
+        value,
+        name,
+        capacity,
+        timeSlots,
+    ])
 
     const isValid = useMemo(() => {
         return (
@@ -99,9 +113,13 @@ export default ({ value, onChange }) => {
             name.length > 0 &&
             capacity &&
             capacity > -1 &&
-            !value.find(item => item.name === name)
+            timeSlots &&
+            (editIndex === -1 ||
+                value[editIndex].name !== name ||
+                value[editIndex].capacity !== capacity ||
+                value[editIndex].timeSlots !== timeSlots)
         )
-    }, [capacity, name, value])
+    }, [capacity, editIndex, name, timeSlots, value])
 
     const renderListItem = (room, index) => {
         return (
@@ -139,13 +157,18 @@ export default ({ value, onChange }) => {
             <Grid item xs={12}>
                 <TextInput
                     label="Capacity"
+                    type="number"
                     value={capacity}
-                    onChange={setCapacity}
+                    onChange={value => setCapacity(parseInt(value))}
                 />
                 <Typography variant="caption">
                     The maximum number of people that can be in the room at the
                     same time.
                 </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="heading">Time slots</Typography>
+                <TimeSlotsInput value={timeSlots} onChange={setTimeSlots} />
             </Grid>
 
             <Grid item xs={12}>
@@ -184,7 +207,7 @@ export default ({ value, onChange }) => {
     const renderListView = () => (
         <>
             <Grid item xs={12}>
-                <List>{value.map(renderListItem)}</List>
+                <List>{value && value.map(renderListItem)}</List>
             </Grid>
             <Grid item xs={12}>
                 <Box display="flex" flexDirection="row" justifyContent="center">
