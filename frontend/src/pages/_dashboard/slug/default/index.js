@@ -19,8 +19,9 @@ import EventOverBlock from './Blocks/EventOverBlock'
 import SocialMediaBlock from './Blocks/SocialMediaBlock'
 import EventTimeline from 'pages/_events/slug/default/EventTimeline'
 import TimeLineBlock from './Blocks/TimeLineBlock'
+import AlertBlock from './Blocks/AlertBlock'
 
-export default () => {
+export default ({ alerts }) => {
     return (
         <Box>
             <PageHeader heading="Dashboard" />
@@ -64,7 +65,18 @@ export default () => {
             </Helmet>
             <Box mt={2} />
             <Grid container spacing={5}>
-                <TimeLineBlock />
+                <div
+                    style={{
+                        height: '0 0 100%',
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: '2em',
+                    }}
+                >
+                    <TimeLineBlock />
+                    <AlertBlock alerts={alerts} />
+                </div>
                 <EventOverBlock />
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />

@@ -33,6 +33,28 @@ export const updateRegistration = slug => (dispatch, getState) => {
     })
 }
 
+export const updateRegistrationChecklist =
+    (slug, registrationId, data) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+
+        try {
+            const registration = await RegistrationsService.updateChecklist(
+                idToken,
+                slug,
+                registrationId,
+                data,
+            )
+
+            dispatch({
+                type: ActionTypes.EDIT_REGISTRATION,
+                payload: registration,
+            })
+            return
+        } catch (err) {
+            return err
+        }
+    }
+
 export const updateRegistrationGrantDetails =
     (slug, data) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
