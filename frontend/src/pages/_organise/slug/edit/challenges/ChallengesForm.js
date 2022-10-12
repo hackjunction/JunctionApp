@@ -27,6 +27,7 @@ export default ({ value, onChange }) => {
     const [name, setName] = useState(undefined)
     const [slug, setSlug] = useState(undefined)
     const [partner, setPartner] = useState(undefined)
+    const [partnerEmail, setPartnerEmail] = useState(undefined)
     const [title, setTitle] = useState(undefined)
     const [subtitle, setSubtitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
@@ -67,6 +68,7 @@ export default ({ value, onChange }) => {
             setEditing(true)
             setName(value[index].name)
             setPartner(value[index].partner)
+            setPartnerEmail(value[index].partnerEmail)
             setSlug(value[index].slug)
             setTitle(value[index].title)
             setSubtitle(value[index].subtitle)
@@ -86,6 +88,7 @@ export default ({ value, onChange }) => {
         setEditing(false)
         setName(undefined)
         setPartner(undefined)
+        setPartnerEmail(undefined)
         setTitle(undefined)
         setSubtitle(undefined)
         setDescription(undefined)
@@ -106,6 +109,7 @@ export default ({ value, onChange }) => {
                             ...item,
                             name,
                             partner,
+                            partnerEmail,
                             slug,
                             title,
                             subtitle,
@@ -126,6 +130,7 @@ export default ({ value, onChange }) => {
                 value.concat({
                     name,
                     partner,
+                    partnerEmail,
                     slug,
                     title,
                     subtitle,
@@ -147,6 +152,7 @@ export default ({ value, onChange }) => {
         value,
         name,
         partner,
+        partnerEmail,
         slug,
         title,
         subtitle,
@@ -162,6 +168,7 @@ export default ({ value, onChange }) => {
     const isValid = useMemo(() => {
         return (
             partner &&
+            partnerEmail &&
             name &&
             slug &&
             value.filter((challenge, index) => {
@@ -171,7 +178,7 @@ export default ({ value, onChange }) => {
                 )
             }).length === 0
         )
-    }, [editIndex, name, partner, slug, value])
+    }, [editIndex, name, partner, partnerEmail, slug, value])
 
     const renderListItem = (challenge, index) => {
         return (
@@ -227,6 +234,18 @@ export default ({ value, onChange }) => {
                 />
                 <Typography variant="caption">
                     Who is the partner responsible for this challenge?
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <TextInput
+                    label="Partner email"
+                    value={partnerEmail}
+                    onChange={setPartnerEmail}
+                />
+                <Typography variant="caption">
+                    This email will be used for meetings with participants:
+                    meeting invitations with a Google Meets link will be sent to
+                    this mail.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -359,34 +378,30 @@ export default ({ value, onChange }) => {
         </>
     )
 
+    const renderListView = () => (
+        <>
+            <Grid item xs={12}>
+                <List>{value.map(renderListItem)}</List>
+            </Grid>
+            <Grid item xs={12}>
+                <Box display="flex" flexDirection="row" justifyContent="center">
+                    <Button
+                        onClick={handleAdd}
+                        color="theme_turquoise"
+                        variant="contained"
+                    >
+                        Add challenge
+                    </Button>
+                </Box>
+            </Grid>
+        </>
+    )
+
     return (
         <Paper>
             <Box p={3}>
                 <Grid container spacing={3}>
-                    {!editing ? (
-                        <>
-                            <Grid item xs={12}>
-                                <List>{value.map(renderListItem)}</List>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box
-                                    display="flex"
-                                    flexDirection="row"
-                                    justifyContent="center"
-                                >
-                                    <Button
-                                        onClick={handleAdd}
-                                        color="theme_turquoise"
-                                        variant="contained"
-                                    >
-                                        Add challenge
-                                    </Button>
-                                </Box>
-                            </Grid>
-                        </>
-                    ) : (
-                        renderForm()
-                    )}
+                    {!editing ? renderListView() : renderForm()}
                 </Grid>
             </Box>
         </Paper>

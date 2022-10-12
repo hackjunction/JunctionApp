@@ -11,6 +11,7 @@ const Registration = require('./registration/graphql')
 const Event = require('./event/graphql')
 const UserProfile = require('./user-profile/graphql')
 const Organization = require('./organization/graphql')
+const Meeting = require('./meeting/graphql')
 const Message = require('./message/graphql')
 const Alert = require('./alert/graphql')
 
@@ -25,6 +26,7 @@ module.exports = app => {
         Organization,
         Message,
         Alert,
+        Meeting,
     ]
     const executableSchemas = modules.map(
         ({ QueryType, MutationType, SubscriptionType, Resolvers }) => {

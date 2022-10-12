@@ -41,8 +41,6 @@ export default () => {
             },
             itemIndex: index,
         }
-        console.log('this is data: ', data)
-        console.log(registration)
         dispatch(
             DashboardActions.updateRegistrationChecklist(
                 registration_event.slug,
