@@ -221,37 +221,36 @@ class MeetingContorller {
                 ? location
                 : ''
 
-        if (newLocation === 'ONLINE' || newLocation === '') {
-            const googleEvent = {
-                title: meetingToBook.title,
-                description: meetingToBook.description,
-                location: newLocation,
-                start: {
-                    dateTime: meetingToBook.startTime,
-                    timeZone: meetingToBook.timeZone,
+        const googleEvent = {
+            title: meetingToBook.title,
+            description: meetingToBook.description,
+            location: newLocation,
+            start: {
+                dateTime: meetingToBook.startTime,
+                timeZone: meetingToBook.timeZone,
+            },
+            end: {
+                dateTime: meetingToBook.endTime,
+                timeZone: meetingToBook.timeZone,
+            },
+            attendees: [
+                ...attendeeProfiles.map(attendee => ({
+                    email: attendee.email,
+                    responseStatus: 'needsAction',
+                    organizer: false,
+                })),
+                {
+                    email: meetingToBook.organizerEmail,
+                    responseStatus: 'needsAction',
+                    organizer: true,
                 },
-                end: {
-                    dateTime: meetingToBook.endTime,
-                    timeZone: meetingToBook.timeZone,
-                },
-                attendees: [
-                    ...attendeeProfiles.map(attendee => ({
-                        email: attendee.email,
-                        responseStatus: 'needsAction',
-                        organizer: false,
-                    })),
-                    {
-                        email: meetingToBook.organizerEmail,
-                        responseStatus: 'needsAction',
-                        organizer: true,
-                    },
-                ],
-                meetingId,
-            }
-
-            // create google calednar event and meets link
-            createGoogleEvent(googleEvent)
+            ],
+            meetingId,
         }
+
+        // create google calednar event and meets link
+        createGoogleEvent(googleEvent)
+
         return this._cleanOne(
             Meeting.findOneAndUpdate(
                 { _id: meetingId },
