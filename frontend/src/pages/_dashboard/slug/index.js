@@ -13,6 +13,7 @@ import StarRateIcon from '@material-ui/icons/StarRate'
 import HowToVoteIcon from '@material-ui/icons/HowToVote'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import { QuestionAnswerSharp } from '@material-ui/icons'
+import EventIcon from '@material-ui/icons/Event'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
@@ -28,6 +29,7 @@ import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
+import CalendarPage from './calendar'
 import ChecklistPage from './checklist'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
@@ -41,7 +43,6 @@ import Badge from '@material-ui/core/Badge'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
-// TODO: Chat UI still a work in progress
 // import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({
@@ -275,7 +276,6 @@ export default () => {
                         label: 'Checklist',
                         component: ChecklistPage,
                     },
-                    // TODO: Chat UI still a work in progress
                     /*
                     {
                         key: 'chat',
@@ -285,6 +285,14 @@ export default () => {
                         label: 'Chat',
                         component: Chat,
                     }, */
+                    {
+                        key: 'calendar',
+                        path: '/calendar',
+                        exact: true,
+                        icon: <EventIcon />,
+                        label: 'Meetings',
+                        component: CalendarPage,
+                    },
                 ]}
             />
         </PageWrapper>

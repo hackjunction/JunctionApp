@@ -99,6 +99,18 @@ const eventTheme = yup.object().shape({
     linkColor: yup.string().required(),
 })
 
+const meetingRoom = yup.object().shape({
+    name: yup.string().required(),
+    capacity: yup.number().integer().required(),
+    timeSlots: yup.array().of(
+        yup.object().shape({
+            start: yup.date().required(),
+            end: yup.date().required(),
+            reserved: yup.boolean().required(),
+        }),
+    ),
+})
+
 export default yup.object().shape({
     name: yup.string().required('Event name is required'),
     slug: yup.string().required('Event must have a unique slug'),
@@ -144,4 +156,5 @@ export default yup.object().shape({
     frontPagePriority: yup.number().integer(),
     approved: yup.boolean(),
     theme: eventTheme,
+    meetingRooms: yup.array().of(meetingRoom),
 })

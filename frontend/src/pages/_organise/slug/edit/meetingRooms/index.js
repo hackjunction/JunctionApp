@@ -3,22 +3,22 @@ import React from 'react'
 import { Grid } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
 import { Field } from 'formik'
-import TimelineForm from './TimelineForm'
+import MeetingRoomsForm from './MeetingRoomsForm'
 
 export default () => {
     return (
         <Grid item xs={12}>
             <Field
-                name="eventTimeline.items"
+                name="meetingRooms"
                 render={({ field, form }) => {
                     return (
                         <FormControl
-                            label="Timeline"
-                            hint="Timeline for the event (displayed on the dashboard and the event information page)"
+                            label="Meeting Rooms"
+                            hint="Rooms available for meetings"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <TimelineForm
+                            <MeetingRoomsForm
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
