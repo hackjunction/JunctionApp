@@ -9,7 +9,7 @@ export default () => {
         <Switch>
             <Route
                 exact={false}
-                path={`${match.url}/:slug`}
+                path={`${match.path}/:slug`}
                 component={SlugPage}
             />
 

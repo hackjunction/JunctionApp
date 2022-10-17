@@ -173,6 +173,33 @@ router.post(
 )
 
 /**
+ * Upload a logo for a challenge
+ */
+router.post(
+    '/challenges/:slug/logo',
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    (req, res, next) => {
+        helper.uploadChallengeLogo(req.params.slug)(req, res, function (err) {
+            if (err) {
+                if (err.code === 'LIMIT_FILE_SIZE') {
+                    next(new ForbiddenError(err.message))
+                } else {
+                    next(err)
+                }
+            } else {
+                res.status(200).json({
+                    url: req.file.secure_url || req.file.url,
+                    publicId: req.file.public_id,
+                })
+            }
+        })
+    },
+)
+
+
+/**
  * Upload icon for a hackerpack partner
  */
 // TODO isSuperAdmin

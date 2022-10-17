@@ -11,7 +11,7 @@ import AmpStoriesIcon from '@material-ui/icons/AmpStories'
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import StarRateIcon from '@material-ui/icons/StarRate'
 import HowToVoteIcon from '@material-ui/icons/HowToVote'
-
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -25,6 +25,7 @@ import ReviewingPage from './reviewing'
 import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
+import ChallengesIndex from './challenges'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -183,6 +184,14 @@ export default () => {
                         hidden: !shownPages.hackerPack,
                         label: t('Hackerpack_'),
                         component: HackerpackPage,
+                    },
+                    {
+                        key: 'challenges',
+                        path: '/challenges',
+                        exact: true,
+                        icon: <FormatListBulletedIcon />,
+                        label: 'Challenges',
+                        component: ChallengesIndex,
                     },
                 ]}
             />

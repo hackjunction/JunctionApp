@@ -28,6 +28,23 @@ const eventQuery = gql`
                 optionalFields
                 requiredFields
             }
+            challenges {
+                name
+                partner
+                slug
+                title
+                subtitle
+                description
+                insights
+                resources
+                prizes
+                criteria
+                companyInfo
+                logo {
+                    url
+                    publicId
+                }
+            }
             customQuestions {
                 label
                 name

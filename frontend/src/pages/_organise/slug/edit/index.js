@@ -17,6 +17,7 @@ import ConfigurationTab from './configuration'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
+import ChallengesTab from './challenges'
 import OtherTab from './other'
 
 export default () => {
@@ -91,6 +92,12 @@ export default () => {
                                     key: 'configuration',
                                     label: 'Configuration',
                                     component: ConfigurationTab,
+                                },
+                                {
+                                    path: '/challenges',
+                                    key: 'challenges',
+                                    label: 'Challenges',
+                                    component: ChallengesTab,
                                 },
                                 {
                                     path: '/schedule',
