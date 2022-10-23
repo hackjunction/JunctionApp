@@ -51,19 +51,14 @@ const updateRoomSlotReservedStatus = async (
     }
 }
 
-class MeetingContorller {
+class MeetingController {
     constructor(requestingUser, overrideChecks = false) {
         this.requestingUser = requestingUser
         this.overrideChecks = overrideChecks
         this.meetingIdLoader = new DataLoader(batchGetMeetingsByIds)
-
         this.isChallengePartner =
             overrideChecks ||
-            PermissionUtils.userHasPermission(
-                requestingUser,
-                Auth.Permissions.MANAGE_EVENT,
-                // TODO fix this to check for approriate right, ie partner rights
-            )
+            requestingUser.roles.includes("Recruiter")
     }
 
     async getMeetings(eventId, challengeId, from, to) {
@@ -319,4 +314,4 @@ class MeetingContorller {
     }
 }
 
-module.exports = MeetingContorller
+module.exports = MeetingController
