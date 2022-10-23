@@ -12,7 +12,7 @@ const { GraphQLDate } = require('graphql-iso-date')
 const RegistrationController = require('../registration/controller')
 const Event = require('../event/model')
 const Redis = require('ioredis')
-
+const client = new Redis("http://redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com:11912");
 const options = {
   host: global.gConfig.REDIS_HOST,
   port: global.gConfig.REDIS_PORT,
@@ -21,10 +21,13 @@ const options = {
     return Math.min(times * 50, 2000);
   }
 };
-const pubsub = new RedisPubSub({
+
+
+
+const pubsub =new Redis("http://redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com:11912"); /*new RedisPubSub({
   publisher: new Redis(options),
   subscriber: new Redis(options)
-});
+});*/
 
 const AlertInput = new GraphQLInputObjectType({
     name: 'AlertInput',
