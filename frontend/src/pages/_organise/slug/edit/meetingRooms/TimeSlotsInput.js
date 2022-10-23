@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-
+import moment from 'moment-timezone'
 import {
     Paper,
     Grid,
@@ -22,8 +22,8 @@ import DateTimeInput from 'components/inputs/DateTimeInput'
 
 export default ({ value, onChange }) => {
     const [reserved, setReserved] = useState(false)
-    const [start, setStart] = useState(new Date())
-    const [end, setEnd] = useState(new Date())
+    const [start, setStart] = useState(moment())
+    const [end, setEnd] = useState(moment())
     const [editIndex, setEditIndex] = useState(-1)
     const [editValue, setEditValue] = useState({
         reserved: false,
@@ -40,8 +40,6 @@ export default ({ value, onChange }) => {
             }),
         )
         setReserved(false)
-        setStart(new Date())
-        setEnd(new Date())
     }, [onChange, value, reserved, start, end])
 
     const handleRemove = useCallback(
@@ -86,9 +84,61 @@ export default ({ value, onChange }) => {
         handleEditCancel()
     }, [value, editIndex, editValue, onChange, handleEditCancel])
 
+    const handleEditStartTimeChange = newValue => {
+        const startDate = moment(newValue).tz('Europe/Helsinki')
+        const currentlySavedStartDate = editValue.start
+            ? moment(editValue.start).tz('Europe/Helsinki')
+            : moment().tz('Europe/Helsinki')
+        const startTimeChanged =
+            startDate.format() !== currentlySavedStartDate.format()
+        const startMinutes = startDate.get('minute')
+        const endDate = startDate.clone()
+        if (startMinutes === 0) {
+            endDate.minute(30)
+        } else {
+            endDate.minute(0)
+            endDate.hour(startDate.get('hour') + 1)
+        }
+        setEditValue({
+            // if startTime changes, then the new slot is always initially free
+            reserved: startTimeChanged ? false : editValue.reserved,
+            start: newValue,
+            end: endDate.format(),
+        })
+    }
+
+    const handleStartTimeChange = newValue => {
+        const startDate = moment(newValue).tz('Europe/Helsinki')
+        const startMinutes = startDate.get('minute')
+        const endDate = startDate.clone()
+        if (startMinutes === 0) {
+            endDate.minute(30)
+        } else {
+            endDate.minute(0)
+            endDate.hour(startDate.get('hour') + 1)
+        }
+        setStart(startDate)
+        setEnd(endDate)
+    }
+
     const isValid = useMemo(() => {
-        return start && end && end > start
+        return start && end
+        // && end > start
     }, [end, start])
+
+
+    const minutesOptions = [
+        { value: 0, label: '00' },
+        { value: 30, label: '30' },
+    ]
+
+    const formatTimeSlotStr = slot => {
+        const start = moment(slot.start)
+        const end = moment(slot.end)
+        return `${start.format('D.M.YYYY')} / ${start.format(
+            'H:mm',
+        )} - ${end.format('H:mm')}`
+    }
 
     const renderListItem = (item, index) => {
         if (index === editIndex) {
@@ -98,31 +148,8 @@ export default ({ value, onChange }) => {
                         <Grid item xs={11}>
                             <DateTimeInput
                                 value={editValue.start}
-                                onChange={value =>
-                                    setEditValue({
-                                        ...editValue,
-                                        start: value,
-                                    })
-                                }
-                                timezone={'Europe/Helsinki'}
-                            />
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Tooltip title="Cancel">
-                                <IconButton onClick={handleEditCancel}>
-                                    <CloseIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                        <Grid item xs={11}>
-                            <DateTimeInput
-                                value={editValue.end}
-                                onChange={value =>
-                                    setEditValue({
-                                        ...editValue,
-                                        end: value,
-                                    })
-                                }
+                                onChange={handleEditStartTimeChange}
+                                optionsMinutes={minutesOptions}
                                 timezone={'Europe/Helsinki'}
                             />
                         </Grid>
@@ -132,12 +159,17 @@ export default ({ value, onChange }) => {
                                     disabled={
                                         !editValue ||
                                         !editValue.start ||
-                                        !editValue.end ||
-                                        editValue.end <= editValue.start
+                                        !editValue.end
+                                        // || editValue.end <= editValue.start
                                     }
                                     onClick={handleEditSave}
                                 >
                                     <SaveIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Cancel">
+                                <IconButton onClick={handleEditCancel}>
+                                    <CloseIcon />
                                 </IconButton>
                             </Tooltip>
                         </Grid>
@@ -149,8 +181,8 @@ export default ({ value, onChange }) => {
         return (
             <ListItem key={`item-${index}`} divider>
                 <ListItemText
-                    primary={item.start.toString()}
-                    secondary={item.end.toString()}
+                    primary={formatTimeSlotStr(item)}
+                    secondary={item.reserved ? 'IS BOOKED' : ''}
                 />
                 <ListItemSecondaryAction>
                     <Tooltip title="Edit item">
@@ -173,15 +205,15 @@ export default ({ value, onChange }) => {
             <Box p={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <DateTimeInput value={start} onChange={setStart} />
+                        <DateTimeInput
+                            value={start}
+                            onChange={handleStartTimeChange}
+                            optionsMinutes={minutesOptions}
+                            timezone={'Europe/Helsinki'}
+                        />
                         <Typography variant="caption">
-                            The slot will start at this time
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <DateTimeInput value={end} onChange={setEnd} />
-                        <Typography variant="caption">
-                            The slot will end at this time
+                            The slot will start at this time and end 30min
+                            later. Slots can start 00 or 30
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -204,9 +236,7 @@ export default ({ value, onChange }) => {
                         <List>
                             {value &&
                                 value
-                                    .sort((a, b) =>
-                                        a.startTime < b.startTime ? -1 : 1,
-                                    )
+                                    .sort((a, b) => (a.start < b.end ? -1 : 1))
                                     .map(renderListItem)}
                         </List>
                     </Grid>

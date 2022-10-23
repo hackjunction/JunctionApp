@@ -36,7 +36,12 @@ const DEFAULT_VALUE = {
     minutes: MINUTES[0].value,
 }
 
-const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
+const TimeInput = ({
+    value = DEFAULT_VALUE,
+    onChange,
+    optionsHours = HOURS,
+    optionsMinutes = MINUTES,
+}) => {
     const handleHoursChange = useCallback(
         hours => {
             const newValue = {
@@ -64,7 +69,7 @@ const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
             <Grid item xs={6}>
                 <Select
                     label="HH"
-                    options={HOURS}
+                    options={optionsHours}
                     value={value.hours}
                     onChange={handleHoursChange}
                 />
@@ -72,7 +77,7 @@ const TimeInput = ({ value = DEFAULT_VALUE, onChange }) => {
             <Grid item xs={6}>
                 <Select
                     label="mm"
-                    options={MINUTES}
+                    options={optionsMinutes}
                     value={value.minutes}
                     onChange={handleMinutesChange}
                 />
