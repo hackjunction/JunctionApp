@@ -30,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export default idToken => {
     const wsLink = new GraphQLWsLink(
         createClient({
-            url: 'ws://' +window.location.hostname+ ':2222/graphql',
+            url: 'ws://' +window.location.href+ ':2222/graphql',
             connectionParams: { authToken: idToken },
         }),
     )
