@@ -11,8 +11,20 @@ const {
 const { GraphQLDate } = require('graphql-iso-date')
 const RegistrationController = require('../registration/controller')
 const Event = require('../event/model')
+const Redis = require('ioredis')
 
-const pubsub = new RedisPubSub()
+const options = {
+  host: global.gConfig.REDIS_HOST,
+  port: global.gConfig.REDIS_PORT,
+  retryStrategy: times => {
+    // reconnect after
+    return Math.min(times * 50, 2000);
+  }
+};
+const pubsub = new RedisPubSub({
+  publisher: new Redis(options),
+  subscriber: new Redis(options)
+});
 
 const AlertInput = new GraphQLInputObjectType({
     name: 'AlertInput',
