@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLInputObjectType,
+} = require('graphql')
 
 const EventThemeSchema = new mongoose.Schema({
     headerBackgroundColor: {
@@ -40,6 +45,42 @@ const EventThemeSchema = new mongoose.Schema({
     },
 })
 
+const EventThemeInput = new GraphQLInputObjectType({
+    name: 'EventThemeInput',
+    fields: {
+        _id: {
+            type: GraphQLString,
+        },
+        headerBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        headerTextColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        bodyBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        detailsBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        detailsTextColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        sidebarBackgroundColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        sidebarTextColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        accentColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        linkColor: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+    },
+})
+
 const EventThemeType = new GraphQLObjectType({
     name: 'EventTheme',
     fields: {
@@ -76,4 +117,5 @@ const EventThemeType = new GraphQLObjectType({
 module.exports = {
     mongoose: EventThemeSchema,
     graphql: EventThemeType,
+    graphqlInput: EventThemeInput,
 }

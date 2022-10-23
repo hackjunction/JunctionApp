@@ -33,6 +33,15 @@ controller.getEventBySlug = slug => {
     return Event.findOne({ slug })
 }
 
+controller.isEventOnline = id => {
+    Event.findById(id).then(event => {
+        if (event.eventType === 'online') {
+            return true
+        }
+        return false
+    })
+}
+
 controller.getUnapprovedEvents = () => {
     return Event.find({ approved: false })
 }

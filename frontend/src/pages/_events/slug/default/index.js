@@ -28,6 +28,10 @@ const useStyles = makeStyles({
             color: props => props.headerBackgroundColor,
             background: props => props.accentColor,
 
+        '& button:not(disabled)': {
+            color: props => props.headerBackgroundColor,
+            background: props => props.accentColor,
+
             '&:hover': {
                 background: props => props.linkColor,
             },
@@ -120,8 +124,12 @@ export default () => {
                 <meta property="og:image" content={coverImage()} />
                 <meta name="twitter:image" content={coverImage()} />
             </Helmet>
-            <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
-
+            <EventHeroImage
+                event={event}
+                onBack={() => dispatch(push('/'))}
+                alignRight
+                backgroundColor={event.theme.headerBackgroundColor}
+            />
             <FadeInWrapper>
                 <StaggeredList>
                     <Box className={classes.header}>

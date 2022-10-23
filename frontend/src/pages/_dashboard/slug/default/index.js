@@ -17,12 +17,15 @@ import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
 import SocialMediaBlock from './Blocks/SocialMediaBlock'
+import EventTimeline from 'pages/_events/slug/default/EventTimeline'
+import TimeLineBlock from './Blocks/TimeLineBlock'
+import AlertBlock from './Blocks/AlertBlock'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 
-export default () => {
+export default ({ alerts }) => {
     const event = useSelector(DashboardSelectors.event)
 
     return (
@@ -68,6 +71,18 @@ export default () => {
             </Helmet>
             <Box mt={2} />
             <Grid container spacing={5}>
+                <div
+                    style={{
+                        height: '0 0 100%',
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: '2em',
+                    }}
+                >
+                    <TimeLineBlock />
+                    <AlertBlock alerts={alerts} />
+                </div>
                 <EventOverBlock />
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />

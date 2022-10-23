@@ -70,6 +70,12 @@ const eventQuery = gql`
             frontPagePriority
             approved
             eventTerms
+            eventTimeline {
+                items {
+                    title
+                    startTime
+                }
+            }
             eventNewsletter
             theme {
                 headerBackgroundColor

@@ -47,7 +47,7 @@ app.use(parseToken)
 require('./modules/routes')(app)
 
 /* Register GraphQL server */
-require('./modules/graphql')(app)
+const httpServer = require('./modules/graphql')(app)
 
 /* Serve frontend at all other routes */
 if (process.env.NODE_ENV === 'production') {
@@ -88,7 +88,7 @@ throng({
     start: () => {
         const PORT = process.env.PORT || 2222
 
-        app.listen(PORT, () => {
+        httpServer.listen(PORT, () => {
             logger.info(
                 `Worker ${process.pid} started, listening on port ${PORT}`,
             )

@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLInputObjectType,
+} = require('graphql')
 
 // TODO: The Project ref here might be an issue
 const TrackSchema = new mongoose.Schema({
@@ -17,9 +22,30 @@ const TrackSchema = new mongoose.Schema({
     },
 })
 
+const TrackInput = new GraphQLInputObjectType({
+    name: 'TrackInput',
+    fields: {
+        _id: {
+            type: GraphQLString,
+        },
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        slug: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        winner: {
+            type: GraphQLString,
+        },
+    },
+})
+
 const TrackType = new GraphQLObjectType({
     name: 'Track',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },
@@ -35,4 +61,5 @@ const TrackType = new GraphQLObjectType({
 module.exports = {
     mongoose: TrackSchema,
     graphql: TrackType,
+    graphqlInput: TrackInput,
 }

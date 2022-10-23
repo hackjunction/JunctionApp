@@ -18,6 +18,8 @@ const RegistrationConfigSchema = require('@hackjunction/shared/schemas/Registrat
 const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const WebhookSchema = require('@hackjunction/shared/schemas/Webhook')
 const EventThemeSchema = require('@hackjunction/shared/schemas/EventTheme')
+const EventTimelineSchema = require('@hackjunction/shared/schemas/EventTimeline')
+const MeetingRoomSchema = require('@hackjunction/shared/schemas/MeetingRoom')
 const EventPageScriptSchema = require('@hackjunction/shared/schemas/EventPageScript')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
@@ -190,6 +192,10 @@ const EventSchema = new mongoose.Schema({
         type: [WebhookSchema.mongoose],
         default: [],
     },
+    eventTimeline: {
+        type: EventTimelineSchema.mongoose,
+        default: { items: [] },
+    },
     metaDescription: {
         type: String,
         default: '',
@@ -282,6 +288,10 @@ const EventSchema = new mongoose.Schema({
     theme: { type: EventThemeSchema.mongoose, default: {} },
     pageScripts: {
         type: [EventPageScriptSchema.mongoose],
+        default: [],
+    },
+    meetingRooms: {
+        type: [MeetingRoomSchema.mongoose],
         default: [],
     },
 })

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +12,9 @@ import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import StarRateIcon from '@material-ui/icons/StarRate'
 import HowToVoteIcon from '@material-ui/icons/HowToVote'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
+import { QuestionAnswerSharp } from '@material-ui/icons'
+import EventIcon from '@material-ui/icons/Event'
+
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -26,12 +29,21 @@ import TravelGrantPage from './travel-grant'
 import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
+import CalendarPage from './calendar'
+import ChecklistPage from './checklist'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as OrganiserActions from 'redux/organiser/actions'
 
 import { useTranslation } from 'react-i18next'
+import { CheckBox } from '@material-ui/icons'
+import { Alerts } from 'components/messaging/alerts'
+import Badge from '@material-ui/core/Badge'
+import { useLazyQuery, useSubscription } from '@apollo/client'
+import { ALERTS_QUERY } from 'graphql/queries/alert'
+import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
+// import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -65,6 +77,14 @@ export default () => {
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
     const { slug } = match.params
+
+    // Set up browser notifications
+    useEffect(() => {
+        if ('Notification' in window && Notification.permission !== 'granted') {
+            Notification.requestPermission()
+        }
+    }, [])
+
     /** Update when slug changes */
     useEffect(() => {
         dispatch(DashboardActions.updateEvent(slug))
@@ -77,6 +97,53 @@ export default () => {
         dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
     }, [slug, dispatch])
 
+    const [alerts, setAlerts] = useState([])
+    const [alertCount, setAlertCount] = useState(0)
+    const { data: newAlert } = useSubscription(NEW_ALERTS_SUBSCRIPTION, {
+        variables: { slug },
+    })
+
+    // Must use lazy query because event is fetched asynchnronously
+    const [getAlerts, { loading: alertsLoading, data: alertsData }] =
+        useLazyQuery(ALERTS_QUERY)
+    useEffect(() => {
+        if (event) {
+            getAlerts({ variables: { eventId: event._id } })
+        }
+    }, [event, getAlerts])
+
+    // Set alerts when data is fetched or recieved through websocket
+    useEffect(() => {
+        if (alertsData) {
+            setAlerts(old => {
+                const newArray = [...old, ...alertsData.alerts]
+                newArray.sort(
+                    (a, b) => +new Date(a.sentAt) - +new Date(b.sentAt),
+                )
+                return old.length === 0 ? newArray : old
+            })
+        }
+        if (newAlert) {
+            if (
+                'Notification' in window &&
+                Notification.permission === 'granted'
+            ) {
+                new Notification('Announcement', {
+                    body: newAlert.newAlert.content,
+                })
+            }
+            setAlertCount(alertCount + 1)
+            setAlerts(old => {
+                const newArray = [...old, newAlert.newAlert]
+                newArray.sort(
+                    (a, b) => +new Date(a.sentAt) - +new Date(b.sentAt),
+                )
+                return newArray
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [alertsData, setAlerts, newAlert, setAlertCount])
+
     /** Update project when team changes */
     useEffect(() => {
         dispatch(DashboardActions.updateProjects(slug))
@@ -85,7 +152,7 @@ export default () => {
 
     return (
         <PageWrapper
-            loading={eventLoading || registrationLoading}
+            loading={eventLoading || registrationLoading || alertsLoading}
             wrapContent={false}
         >
             <SidebarLayout
@@ -110,9 +177,16 @@ export default () => {
                         key: 'dashboard',
                         path: '',
                         exact: true,
-                        icon: <DashboardIcon />,
+                        icon: (
+                            <Badge badgeContent={alertCount} color="primary">
+                                <DashboardIcon />
+                            </Badge>
+                        ),
                         label: t('Dashboard_'),
-                        component: DefaultPage,
+                        component: () => {
+                            setAlertCount(0)
+                            return DefaultPage({ alerts })
+                        },
                     },
                     {
                         key: 'finals',
@@ -192,6 +266,32 @@ export default () => {
                         icon: <FormatListBulletedIcon />,
                         label: 'Challenges',
                         component: ChallengesIndex,
+                    },
+                    {
+                        key: 'checklist',
+                        path: '/checklist',
+                        exact: true,
+                        icon: <CheckBox />,
+                        hidden: !shownPages.hackerPack,
+                        label: 'Checklist',
+                        component: ChecklistPage,
+                    },
+                    /*
+                    {
+                        key: 'chat',
+                        path: '/chat',
+                        exact: true,
+                        icon: <QuestionAnswerSharp />,
+                        label: 'Chat',
+                        component: Chat,
+                    }, */
+                    {
+                        key: 'calendar',
+                        path: '/calendar',
+                        exact: true,
+                        icon: <EventIcon />,
+                        label: 'Meetings',
+                        component: CalendarPage,
                     },
                 ]}
             />

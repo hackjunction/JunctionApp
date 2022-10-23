@@ -15,6 +15,7 @@ const Registration = require('./model')
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
 const RegistrationHelpers = require('./helpers')
 const EmailTaskController = require('../email-task/controller')
+const { checklistItemsOnline, checklistItemsPhysical } = require('./checklists')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
@@ -33,6 +34,15 @@ controller.createRegistration = async (user, event, data) => {
         user: user.sub,
         answers,
     })
+    if (event.eventType === 'online') {
+        registration.checklist = {
+            items: checklistItemsOnline(),
+        }
+    } else {
+        registration.checklist = {
+            items: checklistItemsPhysical(),
+        }
+    }
     registration.status = RegistrationStatuses.asObject.incomplete.id
 
     return registration.save()
@@ -169,6 +179,13 @@ controller.setTravelGrantDetailsForRegistration = async (
     registration.travelGrantDetails = validated
     registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id
     return registration.save()
+}
+
+controller.updateChecklist = (registrationId, data) => {
+    return Registration.findById(registrationId).then(registration => {
+        registration.checklist.items[data.itemIndex] = data.checklistItem
+        return registration.save()
+    })
 }
 
 controller.updateTravelGrantDetails = (registrationId, event, data) => {
