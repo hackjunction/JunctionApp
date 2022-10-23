@@ -11,11 +11,11 @@ import { Auth } from '@hackjunction/shared'
 export default () => {
     const event = useSelector(DashboardSelectors.event)
     const user = useSelector(UserSelectors.userProfile)
-    const [isPartner, setIsPartner] = useState(
-        useSelector(AuthSelectors.getRoles).includes(
-            'Recruiter',
-        ),
-    )
+    const isPartner = 
+        useSelector(AuthSelectors.idTokenData).roles.includes(
+            'Recruiter'   
+            )
+
 return (
         <>
             {/* button for DEV to swithc between participant / partner view */}
