@@ -20,13 +20,11 @@ import EventDetailContext from '../context'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import EventButtons from './EventButtons'
+
 const useStyles = makeStyles({
     header: {
         background: props => props.headerBackgroundColor,
         color: props => props.headerTextColor,
-        '& button:not(disabled)': {
-            color: props => props.headerBackgroundColor,
-            background: props => props.accentColor,
 
         '& button:not(disabled)': {
             color: props => props.headerBackgroundColor,
@@ -49,7 +47,7 @@ const useStyles = makeStyles({
     },
     body: {
         background: props => props.bodyBackgroundColor,
-        '& a *': {
+        '& a>p': {
             color: props => props.linkColor,
         },
     },

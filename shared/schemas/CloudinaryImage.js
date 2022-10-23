@@ -27,20 +27,6 @@ const CloudinaryImageType = new GraphQLObjectType({
         },
     },
 })
-const CloudinaryImageInput = new GraphQLInputObjectType({
-    name: 'CloudinaryImageInput',
-    fields: {
-        url: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        publicId: {
-            type: GraphQLNonNull(GraphQLString),
-        },
-        _id: {
-            type: GraphQLString,
-        },
-    },
-})
 
 const CloudinaryImageInput = new GraphQLInputObjectType({
     name: 'CloudinaryImageInput',
