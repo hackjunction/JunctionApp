@@ -14,20 +14,14 @@ const Event = require('../event/model')
 const Redis = require('ioredis')
 const client = new Redis("http://redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com:11912");
 const options = {
-  host: global.gConfig.REDIS_HOST,
-  port: global.gConfig.REDIS_PORT,
-  retryStrategy: times => {
-    // reconnect after
-    return Math.min(times * 50, 2000);
-  }
+  host: "http://redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com",
+  port: 11912
 };
 
-
-
-const pubsub =new Redis("http://redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com:11912"); /*new RedisPubSub({
+const pubsub =new RedisPubSub({
   publisher: new Redis(options),
   subscriber: new Redis(options)
-});*/
+});
 
 const AlertInput = new GraphQLInputObjectType({
     name: 'AlertInput',
