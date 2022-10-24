@@ -14,12 +14,7 @@ const Event = require('../event/model')
 const Redis = require('ioredis')
 //const client = new Redis("rediss://default:JSVhlHFiXTnFo1Z1IVok05TOQqccA2qB@redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com:11912");
 //console.log(client,"##")
-const options = {
-    username: 'default',
-    password: global.gConfig.REDIS_PASSWORD,
-    host: 'redis-11912.c226.eu-west-1-3.ec2.cloud.redislabs.com',
-    port: 11912,
-}
+
 
 const pubsub = new RedisPubSub({
     publisher: new Redis(process.env.REDISCLOUD_URL),
