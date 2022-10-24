@@ -21,7 +21,6 @@ const pubsub = new RedisPubSub({
     subscriber: new Redis(process.env.REDISCLOUD_URL)
 })
 
-console.log(pubsub)
 
 const AlertInput = new GraphQLInputObjectType({
     name: 'AlertInput',

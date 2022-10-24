@@ -7,7 +7,7 @@
         "test": "",
         "precommit": "echo \"Shared: running pre-commit checks\" && npm run test"
     },
-    "author": "Juuso Lappalainen",
+    "author": "Eino Miettinen",
     "license": "ISC",
     "eslintConfig": {
         "env": {
@@ -72,7 +72,7 @@
         "prettier": "^2.0.5"
     },
     "engines": {
-        "node": "12.3.1",
-        "npm": "6.9.0"
+        "node": "16.14.2",
+        "npm": "8.5.0"
     }
 }
