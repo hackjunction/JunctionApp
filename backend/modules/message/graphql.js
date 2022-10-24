@@ -19,8 +19,8 @@ const options = {
 }
 
 const pubsub = new RedisPubSub({
-    publisher: new Redis(options),
-    subscriber: new Redis(options)
+    publisher: new Redis(process.env.REDISCLOUD_URL),
+    subscriber: new Redis(process.env.REDISCLOUD_URL)
 })
 const MessageInput = new GraphQLInputObjectType({
     name: 'MessageInput',
