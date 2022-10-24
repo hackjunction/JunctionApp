@@ -10,7 +10,7 @@ const {
     GraphQLInputObjectType,
 } = require('graphql')
 const { GraphQLDate } = require('graphql-iso-date')
-const Redis = require('ioredis'
+const Redis = require('ioredis')
 const options = {
     username: 'default',
     password: global.gConfig.REDIS_PASSWORD,
