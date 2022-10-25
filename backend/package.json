@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "nodemon index.js",
         "start": "node index.js | npm run pipe-logs",
+        "pipe-logs": "pino-cloudwatch --aws_access_key_id=$AWS_ACCESS_KEY_ID --aws_secret_access_key=$AWS_SECRET_ACCESS_KEY --aws_region=$AWS_REGION --group=$AWS_CLOUDWATCH_LOG_GROUP",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint ./common && eslint ./modules && eslint ./utils",
         "lint-fix": "eslint ./common --fix && eslint ./modules --fix && eslint ./utils --fix",
