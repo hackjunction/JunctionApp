@@ -22,7 +22,7 @@ export default () => {
         METABASE_SITE_URL +
         '/embed/dashboard/' +
         token +
-        '#bordered=true&titled=true'
+        '#bordered=false&titled=false'
 
     return (
         <PageWrapper>
@@ -36,7 +36,7 @@ export default () => {
                 src={iframeUrl}
                 frameBorder={0}
                 width={1200}
-                height={1500}
+                height={2500}
                 allowTransparency
             />
         </PageWrapper>
