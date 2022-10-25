@@ -137,18 +137,25 @@ const Resolvers = {
                 () => {
                     return pubsub.asyncIterator('ALERT_SENT')
                 },
-                async (_, { eventId, slug }, { user }) => {
+                async ({newAlert}, { eventId, slug }, { user }) => {
                     // Check authentication from context
                     const userId = user ? user.sub : null
                     if (!userId) {
                         return false
                     }
 
-                    const id = eventId || (await Event.findOne({ slug }))._id
+                    const id = (
+                        eventId || (await Event.findOne({ slug }))._id
+                    ).toString()
 
+                    // Check if the alert was sent to the relevant event
+                    if (newAlert.eventId !== id) {
+                        return false
+                    }
                     // Find a registration for the user and event
                     const registration =
                         await RegistrationController.getRegistration(userId, id)
+                    // If no registration exists, the user is not allowed to see the alert
                     if (!registration) {
                         return false
                     }
