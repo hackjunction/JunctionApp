@@ -90,8 +90,8 @@
     ],
     "proxy": "http://localhost:2222",
     "engines": {
-        "node": "16.14.2",
-        "npm": "8.5.0"
+        "node": "12.3.1",
+        "npm": "6.9.0"
     },
     "devDependencies": {
         "depcheck": "^0.9.2",

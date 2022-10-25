@@ -30,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export default idToken => {
     const wsLink = new GraphQLWsLink(
         createClient({
-            url: 'wss://staging.app.hackjunction.com/graphql',
+            url: 'wss://app.hackjunction.com/graphql',
             connectionParams: { authToken: idToken },
         }),
     )
