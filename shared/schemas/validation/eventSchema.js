@@ -32,7 +32,7 @@ const track = yup.object().shape({
 const challenge = yup.object().shape({
     name: yup.string().required(),
     partner: yup.string(),
-    slug: yup.string().required(),
+    slug: yup.string(),
     title: yup.string(),
     subtitle: yup.string(),
     description: yup.string(),

@@ -17,11 +17,6 @@ const ChallengeSchema = new mongoose.Schema({
     },
     partnerEmail: {
         type: String,
-        required: true,
-    },
-    partnerEmail: {
-        type: String,
-        required: true,
     },
     slug: {
         type: String,
@@ -52,35 +47,27 @@ const ChallengeSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true,
     },
     subtitle: {
         type: String,
-        required: true,
     },
     description: {
         type: String,
-        required: true,
     },
     insights: {
         type: String,
-        required: true,
     },
     resources: {
         type: String,
-        required: true,
     },
     prizes: {
         type: String,
-        required: true,
     },
     criteria: {
         type: String,
-        required: true,
     },
     companyInfo: {
         type: String,
-        required: true,
     },
     logo: CloudinaryImageSchema.mongoose,
 })

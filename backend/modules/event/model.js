@@ -135,12 +135,6 @@ const EventSchema = new mongoose.Schema({
             },
             'must have at least one item if challenges are enabled',
         ],
-        required: [
-            function () {
-                return this.challengesEnabled
-            },
-            'is required if challenges are enabled',
-        ],
     },
     allowProjectSubmissionsPerChallenge: {
         type: Boolean,
