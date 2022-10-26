@@ -1,3 +1,4 @@
+
 const { Auth } = require('@hackjunction/shared')
 const DataLoader = require('dataloader')
 const Meeting = require('./model')
@@ -51,14 +52,19 @@ const updateRoomSlotReservedStatus = async (
     }
 }
 
-class MeetingController {
+class MeetingContorller {
     constructor(requestingUser, overrideChecks = false) {
         this.requestingUser = requestingUser
         this.overrideChecks = overrideChecks
         this.meetingIdLoader = new DataLoader(batchGetMeetingsByIds)
+
         this.isChallengePartner =
             overrideChecks ||
-            requestingUser.roles.includes("Recruiter")
+            PermissionUtils.userHasPermission(
+                requestingUser,
+                Auth.Permissions.MANAGE_EVENT,
+                // TODO fix this to check for approriate right, ie partner rights
+            )
     }
 
     async getMeetings(eventId, challengeId, from, to) {
@@ -213,40 +219,39 @@ class MeetingController {
             location === 'ONLINE'
                 ? 'ONLINE'
                 : roomBookedSuccessfully
-                ? location
-                : ''
+                    ? location
+                    : ''
 
-        if (newLocation === 'ONLINE' || newLocation === '') {
-            const googleEvent = {
-                title: meetingToBook.title,
-                description: meetingToBook.description,
-                location: newLocation,
-                start: {
-                    dateTime: meetingToBook.startTime,
-                    timeZone: meetingToBook.timeZone,
+        const googleEvent = {
+            title: meetingToBook.title,
+            description: meetingToBook.description,
+            location: newLocation,
+            start: {
+                dateTime: meetingToBook.startTime,
+                timeZone: meetingToBook.timeZone,
+            },
+            end: {
+                dateTime: meetingToBook.endTime,
+                timeZone: meetingToBook.timeZone,
+            },
+            attendees: [
+                ...attendeeProfiles.map(attendee => ({
+                    email: attendee.email,
+                    responseStatus: 'needsAction',
+                    organizer: false,
+                })),
+                {
+                    email: meetingToBook.organizerEmail,
+                    responseStatus: 'needsAction',
+                    organizer: true,
                 },
-                end: {
-                    dateTime: meetingToBook.endTime,
-                    timeZone: meetingToBook.timeZone,
-                },
-                attendees: [
-                    ...attendeeProfiles.map(attendee => ({
-                        email: attendee.email,
-                        responseStatus: 'needsAction',
-                        organizer: false,
-                    })),
-                    {
-                        email: meetingToBook.organizerEmail,
-                        responseStatus: 'needsAction',
-                        organizer: true,
-                    },
-                ],
-                meetingId,
-            }
-
-            // create google calednar event and meets link
-            createGoogleEvent(googleEvent)
+            ],
+            meetingId,
         }
+
+        // create google calednar event and meets link
+        createGoogleEvent(googleEvent)
+
         return this._cleanOne(
             Meeting.findOneAndUpdate(
                 { _id: meetingId },
@@ -314,4 +319,4 @@ class MeetingController {
     }
 }
 
-module.exports = MeetingController
+module.exports = MeetingContorller
