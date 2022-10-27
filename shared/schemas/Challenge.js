@@ -138,9 +138,6 @@ const ChallengeInput = new GraphQLInputObjectType({
         partner: {
             type: GraphQLString,
         },
-        partnerEmail: {
-            type: GraphQLString,
-        },
         slug: {
             type: GraphQLNonNull(GraphQLString),
         },
@@ -152,6 +149,24 @@ const ChallengeInput = new GraphQLInputObjectType({
         },
         description: {
             type: GraphQLString,
+        },
+        insights: {
+            type: GraphQLString,
+        },
+        resources: {
+            type: GraphQLString,
+        },
+        prizes: {
+            type: GraphQLString,
+        },
+        criteria: {
+            type: GraphQLString,
+        },
+        companyInfo: {
+            type: GraphQLString,
+        },
+        logo: {
+            type: CloudinaryImageSchema.graphqlInput,
         },
     },
 })
