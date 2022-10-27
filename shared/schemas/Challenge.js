@@ -138,6 +138,9 @@ const ChallengeInput = new GraphQLInputObjectType({
         partner: {
             type: GraphQLString,
         },
+        partnerEmail: {
+            type: GraphQLString,
+        },
         slug: {
             type: GraphQLNonNull(GraphQLString),
         },
