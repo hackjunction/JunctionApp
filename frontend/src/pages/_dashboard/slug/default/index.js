@@ -73,10 +73,9 @@ export default ({ alerts }) => {
             <Grid container spacing={5}>
                 <div
                     style={{
-                        height: '0 0 100%',
+                        height: '400px',
                         width: '100%',
                         display: 'flex',
-                        justifyContent: 'space-between',
                         padding: '2em',
                     }}
                 >
