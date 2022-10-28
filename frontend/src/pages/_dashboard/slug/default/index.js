@@ -80,7 +80,6 @@ export default ({ alerts }) => {
                         padding: '2em',
                     }}
                 >
-                    <TimeLineBlock />
                     <AlertBlock alerts={alerts} />
                 </div>
                 <EventOverBlock />
