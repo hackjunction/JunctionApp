@@ -206,7 +206,7 @@ export default ({ event, user }) => {
                 meetingId: meeting._id,
                 attendees: att,
                 location: location,
-                description: partiComment,
+                description: partiComment + " ||  " + location,
             },
         })
     }
