@@ -198,13 +198,15 @@ export default ({ event, user }) => {
         att = [user.userId]
     }
 
-    const bookMeetingAction = (meeting, location) => {
+    const bookMeetingAction = (meeting, location, partiComment) => {
         setLoading(true)
+        console.log(partiComment)
         bookMeeting({
             variables: {
                 meetingId: meeting._id,
                 attendees: att,
                 location: location,
+                description: partiComment,
             },
         })
     }

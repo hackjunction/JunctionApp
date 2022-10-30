@@ -31,6 +31,7 @@ import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
 import CalendarPage from './calendar'
 import ChecklistPage from './checklist'
+import MapPage from './map'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -292,6 +293,13 @@ export default () => {
                         icon: <EventIcon />,
                         label: 'Meetings',
                         component: CalendarPage,
+                    },
+                    {
+                        key: 'map',
+                        path: '/map',
+                        exact: true,
+                        label: 'Map',
+                        component: MapPage,
                     },
                 ]}
             />

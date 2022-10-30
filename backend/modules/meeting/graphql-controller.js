@@ -195,7 +195,7 @@ class MeetingContorller {
         return created
     }
 
-    async bookMeeting(meetingId, attendees, location = 'ONLINE') {
+    async bookMeeting(meetingId, attendees, location = 'ONLINE', partiComment) {
         if (!(meetingId && attendees && attendees.length > 0)) return null
         const meetingToBook = await Meeting.findOne({ _id: meetingId })
         // return null if meeting already has attendees (already booked)
@@ -247,6 +247,7 @@ class MeetingContorller {
                 },
             ],
             meetingId,
+            desc: partiComment,
         }
 
         // create google calednar event and meets link

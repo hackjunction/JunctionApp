@@ -120,7 +120,7 @@ const deleteGoogleEvent = eventId => {
 const createGoogleEvent = event => {
     try {
         const googleEvent = {
-            summary: event.title || 'Junction: meeting with challenge partner',
+            summary: event.title + " ||  " + event.desc || 'Junction: meeting with challenge partner',
             location: event.location || '',
             description: event.description || '',
             start: event.start,

@@ -44,11 +44,13 @@ export const BOOK_MEETING = gql`
         $meetingId: String!
         $attendees: [String!]!
         $location: String
+        $description: String
     ) {
         bookMeeting(
             meetingId: $meetingId
             attendees: $attendees
             location: $location
+            description: $description
         ) {
             ...MeetingFull
         }
