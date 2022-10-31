@@ -50,7 +50,7 @@ controller.queryProfiles = (query = {}, user) => {
     }
 
     // Set event filters based on recruiter scope
-    const consentFilter = { 'recruitmentOptions.consent': true }
+    const consentFilter = {$or: [{'recruitmentOptions.status': 'actively-looking'}, {'recruitmentOptions.status': 'up-for-discussions'}]}
     const eventFilter = {
         registrations: {
             $elemMatch: {
@@ -65,7 +65,7 @@ controller.queryProfiles = (query = {}, user) => {
     console.log('eventfileters are', JSON.stringify(eventFilter))
     // Set default filters (consent & recruiter scope)
     if (userQuery.$and) {
-        userQuery.$and = userQuery.$and.concat([eventFilter])
+        userQuery.$and = userQuery.$and.concat([consentFilter,eventFilter])
     } else {
         userQuery.$and = [eventFilter]
     }
