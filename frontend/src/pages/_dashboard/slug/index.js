@@ -75,6 +75,8 @@ export default () => {
 
     const isPartner =useSelector(AuthSelectors.idTokenData)?.roles?.includes(
             'Recruiter'   
+            ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+            'SuperAdmin'   
             )
     console.log(isPartner,"¤¤¤")
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
