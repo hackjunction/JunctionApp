@@ -360,7 +360,7 @@ export default () => {
                         label: 'Challenges',
                         component: ChallengesIndex,
                     },
-                    {
+                    /*{
                         key: 'checklist',
                         path: '/checklist',
                         exact: true,
@@ -368,7 +368,7 @@ export default () => {
                         hidden: !shownPages.hackerPack,
                         label: 'Checklist',
                         component: ChecklistPage,
-                    },
+                    },*/
                     /*
                     {
                         key: 'chat',
