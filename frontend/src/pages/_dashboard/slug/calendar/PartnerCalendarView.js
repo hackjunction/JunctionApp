@@ -119,7 +119,7 @@ const useStyles = makeStyles(theme => ({
 
 const dailyPresetMeetings = () => {
     const dailyPresetMeetings = []
-    for (let hour = 8; hour < 20; hour++) {
+    for (let hour = 8; hour < 23; hour++) {
         dailyPresetMeetings.push(
             {
                 startHour: hour,

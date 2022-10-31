@@ -14,7 +14,9 @@ export default () => {
     const isPartner = user.userId == "google-oauth2|108766439620242776277" ||
         useSelector(AuthSelectors.idTokenData)?.roles?.includes(
             'Recruiter'   
-            ) 
+            ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+            'SuperAdmin'   
+            )
 
 return (
         <>
