@@ -4,6 +4,7 @@ const MongoUtils = require('../../common/utils/mongoUtils')
 const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
 const EmailTaskController = require('../email-task/controller')
+const { ObjectId } = require('mongodb')
 
 const controller = {}
 
@@ -50,26 +51,27 @@ controller.queryProfiles = (query = {}, user) => {
     }
 
     // Set event filters based on recruiter scope
-    const consentFilter = {$or: [{'recruitmentOptions.status': 'actively-looking'}, {'recruitmentOptions.status': 'up-for-discussions'}]}
+    const consentFilter = {$or: [{'recruitmentOptions.status': 'actively-looking'}, {'recruitmentOptions.status': 'up-for-discussions'},{'recruitmentOptions.consent': true}]}
     const eventFilter = {
         registrations: {
             $elemMatch: {
-                event: {
-                    $in: MongoUtils.ensureObjectId(user.recruiter_events),
-                },
+                event: ObjectId("62cd62fcfb0cc900455212fb")//{
+                    //$in: MongoUtils.ensureObjectId('ObjectId("61012f8b31dc320049369a96")'),
+                //},
             },
         },
     }
 
-    console.log('userquery are', JSON.stringify(userQuery))
-    console.log('eventfileters are', JSON.stringify(eventFilter))
+    //console.log('userquery are', JSON.stringify(userQuery))
+    
     // Set default filters (consent & recruiter scope)
     if (userQuery.$and) {
         userQuery.$and = userQuery.$and.concat([consentFilter,eventFilter])
     } else {
         userQuery.$and = [eventFilter]
     }
-    console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
+    
+    //console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({
         query: userQuery,
         pagination,
