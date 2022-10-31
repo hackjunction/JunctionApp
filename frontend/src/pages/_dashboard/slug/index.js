@@ -32,10 +32,12 @@ import ChallengesIndex from './challenges'
 import CalendarPage from './calendar'
 import ChecklistPage from './checklist'
 import MapPage from './map'
+import RecruitmentPage from './partnerrecruitment'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as OrganiserActions from 'redux/organiser/actions'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
 import { CheckBox } from '@material-ui/icons'
@@ -70,6 +72,11 @@ export default () => {
     const dispatch = useDispatch()
 
     const event = useSelector(DashboardSelectors.event)
+
+    const isPartner =useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+            'Recruiter'   
+            )
+    console.log(isPartner,"¤¤¤")
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
@@ -156,6 +163,89 @@ export default () => {
             loading={eventLoading || registrationLoading || alertsLoading}
             wrapContent={false}
         >
+        {isPartner ? (            <SidebarLayout
+                baseRoute={match.url}
+                location={location}
+                sidebarTopContent={
+                    <div className={classes.sidebarTop}>
+                        <Image
+                            className={classes.sidebarLogo}
+                            publicId={
+                                event && event.logo ? event.logo.publicId : ''
+                            }
+                            transformation={{
+                                width: 200,
+                            }}
+                        />
+                    </div>
+                }
+                topContent={<BasicNavBar />}
+                routes={[
+                    {
+                        key: 'dashboard',
+                        path: '',
+                        exact: true,
+                        icon: (
+                            <Badge badgeContent={alertCount} color="primary">
+                                <DashboardIcon />
+                            </Badge>
+                        ),
+                        label: t('Dashboard_'),
+                        component: () => {
+                            setAlertCount(0)
+                            return DefaultPage({ alerts })
+                        },
+                    },
+                    {
+                        key: 'hackerpack',
+                        path: '/hackerpack',
+                        exact: true,
+                        icon: <AmpStoriesIcon />,
+                        hidden: !shownPages.hackerPack,
+                        label: t('Hackerpack_'),
+                        component: HackerpackPage,
+                    },
+                    {
+                        key: 'challenges',
+                        path: '/challenges',
+                        exact: true,
+                        icon: <FormatListBulletedIcon />,
+                        label: 'Challenges',
+                        component: ChallengesIndex,
+                    },
+                    /*
+                    {
+                        key: 'chat',
+                        path: '/chat',
+                        exact: true,
+                        icon: <QuestionAnswerSharp />,
+                        label: 'Chat',
+                        component: Chat,
+                    }, */
+                    {
+                        key: 'calendar',
+                        path: '/calendar',
+                        exact: true,
+                        icon: <EventIcon />,
+                        label: 'Meetings',
+                        component: CalendarPage,
+                    },
+                    {
+                        key: 'map',
+                        path: '/map',
+                        exact: true,
+                        label: 'Map',
+                        component: MapPage,
+                    },
+                    {
+                        key: 'recruitment',
+                        path: '/recruitment',
+                        exact: true,
+                        label: 'Recruitment',
+                        component: RecruitmentPage,
+                    },
+                ]}
+            />) : (
             <SidebarLayout
                 baseRoute={match.url}
                 location={location}
@@ -302,7 +392,7 @@ export default () => {
                         component: MapPage,
                     },
                 ]}
-            />
+            />)}
         </PageWrapper>
     )
 }
