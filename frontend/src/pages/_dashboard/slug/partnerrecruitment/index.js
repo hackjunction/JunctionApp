@@ -23,7 +23,7 @@ return (
             </Button> */
             }
             <div className="recruitment">
-                <iframe src="/recruitment" width='100%;' height='1500;' frameborder='0' scrolling='no'></iframe>
+                <iframe src="/recruitment" width='100%;' height='1500;' frameborder='0'></iframe>
             </div>
         </>
     )
