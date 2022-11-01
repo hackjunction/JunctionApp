@@ -6,13 +6,13 @@ const { updateMeetingGoogleInfo } = require('../../../modules/meeting/helpers')
 
 const TOKEN_PATH = `${__dirname}/token.json`
 const install = {
-        client_id: "977605669153-ab3kq61j6ehj4dn4emta0ouasbegrvhf.apps.googleusercontent.com",//global.gConfig.GOOGLE_CLIENT_ID,
+        client_id: "977605669153-uvqei66gsabc1mnv3gsbknsupurpcjgu.apps.googleusercontent.com",//global.gConfig.GOOGLE_CLIENT_ID,
         project_id: "junctionapp-calendar",//global.gConfig.GOOGLE_PROJECT_ID,
         auth_uri:"https://accounts.google.com/o/oauth2/auth", //global.gConfig.GOOGLE_AUTH_URI,
         token_uri:"https://oauth2.googleapis.com/token", //global.gConfig.GOOGLE_TOKEN_URI,
         auth_provider_x509_cert_url:"https://www.googleapis.com/oauth2/v1/certs", //global.gConfig.GOOGLE_AUTH_PROVIDER,
-        client_secret:"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
-        redirect_uris:["http://localhost"], //[ global.gConfig.GOOGLE_REDIRECT]
+        client_secret:"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
+        redirect_uris:["http://localhost","https://app.hackjunction.com"], //[ global.gConfig.GOOGLE_REDIRECT]
 }
 const credentialsJ = {
     installed: install
@@ -42,11 +42,11 @@ function authorize(credentials, callback, callbackParameter = null) {
         callback(oAuth2Client, callbackParameter)
     })*/
     const token = {
-        access_token:"ya29.a0Aa4xrXPm_2WvYR1lIgL197y6scNs02LJayRTLFTPZXI4JhdjLbuqvHqdVK2me_PEDtxIf7mBToBUiEM6R0gNHCrhodUkmTYLUOlwj_oXhEazuXvQ9pTtyYWvElEYkNr0K6toEu1YI504wMQWVgfU7ycilsi8aCgYKATASARMSFQEjDvL97hV0nKF-oU2GojngJkmeLw0163", //global.gConfig.GOOGLE_ACCESS_TOKEN,
-        refresh_token:"1//0csnFALFtU0yJCgYIARAAGAwSNwF-L9IrT9_uBlsJhNPicoj1hKliF80gFzufjk3sRV3aek0wrvQvKokWJohgNFPMH4RGIJONbds" ,//global.gConfig.GOOGLE_REFRESH_TOKEN,
+        access_token:"ya29.a0Aa4xrXOdNBsFXqQSSiMLbAWnKBaBfhWB342CzU-oTbyHcK52nCPe1XYaP9N4hnYFrR4a6fGpjpy6pB656Z073qwhUugmJGwefoUEuIB314vlKvnM6QjOjMJJCZ09blKY4q6mmS-pk8SFRdjfyxmHFC-jtgfGaCgYKATASARMSFQEjDvL9RjspRr9FOAM3oWebqAnbRw0163", //global.gConfig.GOOGLE_ACCESS_TOKEN,
+        refresh_token:"1//0cC5U4m6XKnh2CgYIARAAGAwSNwF-L9Irl9DukV1QMHGFK7BozAXfSA-fgfWD3at--Y_rNt1XVA6hQ0k5AeaALOGs9KeuHtZXW_0" ,//global.gConfig.GOOGLE_REFRESH_TOKEN,
         scope:"https://www.googleapis.com/auth/calendar", //global.gConfig.GOOGLE_SCOPE,
         token_type:"Bearer", //global.gConfig.GOOGLE_TOKEN_TYPE,
-        expiry_date:"1666534185958", //global.gConfig.GOOGLE_EXPIRY_DATE
+        expiry_date:"1667307274047", //global.gConfig.GOOGLE_EXPIRY_DATE
     }
 
     oAuth2Client.setCredentials(JSON.parse(JSON.stringify(token)))
