@@ -62,7 +62,8 @@ class MeetingContorller {
             overrideChecks ||
             PermissionUtils.userHasPermission(
                 requestingUser,
-                Auth.Permissions.MANAGE_EVENT,
+                Auth.Permissions.ACCESS_RECRUITMENT
+                //Auth.Permissions.MANAGE_EVENT,
                 // TODO fix this to check for approriate right, ie partner rights
             )
     }

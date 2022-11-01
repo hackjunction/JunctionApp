@@ -4,7 +4,6 @@ const MongoUtils = require('../../common/utils/mongoUtils')
 const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
 const EmailTaskController = require('../email-task/controller')
-const { ObjectId } = require('mongodb')
 
 const controller = {}
 
@@ -55,9 +54,9 @@ controller.queryProfiles = (query = {}, user) => {
     const eventFilter = {
         registrations: {
             $elemMatch: {
-                event: ObjectId("62cd62fcfb0cc900455212fb")//{
-                    //$in: MongoUtils.ensureObjectId('ObjectId("61012f8b31dc320049369a96")'),
-                //},
+                event: {
+                    $in: MongoUtils.ensureObjectId(user.recruiter_events),
+                },
             },
         },
     }
@@ -70,8 +69,7 @@ controller.queryProfiles = (query = {}, user) => {
     } else {
         userQuery.$and = [eventFilter]
     }
-    
-    //console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
+    console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({
         query: userQuery,
         pagination,
