@@ -74,10 +74,11 @@ export default () => {
                     pRanks['overall'][i]['id'] = p0._id
                     pRanks['overall'][i]['name'] = p0.name
                 })
+
             }
             RankingsService.getVotes(idToken, event.slug).then(votes => {
-                console.log('votes', votes)
-                votes.forEach(v => {
+
+                /*votes.forEach(v => {
                     pGrid[v.winner.project][v.loser.project].win += 1
                     pGrid[v.loser.project][v.winner.project].lose += 1
                     pGrid[v.winner.project][v.loser.project].tally =
@@ -86,20 +87,20 @@ export default () => {
                     pGrid[v.loser.project][v.winner.project].tally =
                         pGrid[v.loser.project][v.winner.project].win -
                         pGrid[v.loser.project][v.winner.project].lose
-                })
+                })*/
                 setScoreGrid(pGrid)
                 setProjectRank(pRank)
                 setProjectRanks(pRanks)
             })
+
         }
         fetchData()
     }, [idToken, event.slug, projects, rankingsOverall, rankingsByTrack])
-    console.log('ScoreGrid', ScoreGrid)
-    console.log('ProjectRank', ProjectRank)
     console.log('ProjectRanks', ProjectRanks)
 
     return (
         <>
+
             {Object.keys(ProjectRanks).map(trackName => (
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
@@ -128,10 +129,10 @@ export default () => {
                                                     ].tally === 0
                                                         ? 'default'
                                                         : ScoreGrid[project.id][
-                                                              cell.id
-                                                          ].tally > 0
-                                                        ? 'primary'
-                                                        : 'secondary'
+                                                            cell.id
+                                                        ].tally > 0
+                                                            ? 'primary'
+                                                            : 'secondary'
                                                 }
                                                 label={
                                                     ScoreGrid[project.id][
