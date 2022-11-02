@@ -24,76 +24,76 @@ export default () => {
     const [ScoreGrid, setScoreGrid] = useState({})
     const [ProjectRank, setProjectRank] = useState([])
     const [ProjectRanks, setProjectRanks] = useState({})
+    const fetchData = async () => {
+        const pGrid = {}
+        const pRank = []
+        const pRanks = {}
 
-    console.log('trk', rankingsByTrack)
-    useEffect(() => {
-        const fetchData = async () => {
-            const pGrid = {}
-            const pRank = []
-            const pRanks = {}
+        /*projects.forEach(p0 => {
+            pGrid[p0._id] = {}
+            projects.forEach(p1 => {
+                pGrid[p0._id][p1._id] = {
+                    win: 0,
+                    lose: 0,
+                    tally: 0,
+                }
+            })
+        })*/
 
-            projects.forEach(p0 => {
-                pGrid[p0._id] = {}
-                projects.forEach(p1 => {
-                    pGrid[p0._id][p1._id] = {
-                        win: 0,
-                        lose: 0,
-                        tally: 0,
+        if (rankingsByTrack) {
+            Object.keys(rankingsByTrack).forEach(name => {
+                pRanks[name] = []
+                projects.forEach(p0 => {
+                    const i = rankingsByTrack[name].indexOf(p0._id)
+                    if (i !== -1) {
+                        /*pRank[i] = {}
+                        pRank[i]['rank'] = i
+                        pRank[i]['id'] = p0._id
+                        pRank[i]['name'] = p0.name*/
+
+                        pRanks[name][i] = {}
+                        pRanks[name][i]['rank'] = i
+                        pRanks[name][i]['id'] = p0._id
+                        pRanks[name][i]['name'] = p0.name
                     }
                 })
             })
-            if (rankingsByTrack) {
-                Object.keys(rankingsByTrack).forEach(name => {
-                    pRanks[name] = []
-                    projects.forEach(p0 => {
-                        const i = rankingsByTrack[name].indexOf(p0._id)
-                        if (i !== -1) {
-                            pRank[i] = {}
-                            pRank[i]['rank'] = i
-                            pRank[i]['id'] = p0._id
-                            pRank[i]['name'] = p0.name
+        } else {
+            pRanks['overall'] = []
+            projects.forEach(p0 => {
+                const i = rankingsOverall?.indexOf(p0._id)
+                /*pRank[i] = {}
+                pRank[i]['rank'] = i
+                pRank[i]['id'] = p0._id
+                pRank[i]['name'] = p0.name*/
 
-                            pRanks[name][i] = {}
-                            pRanks[name][i]['rank'] = i
-                            pRanks[name][i]['id'] = p0._id
-                            pRanks[name][i]['name'] = p0.name
-                        }
-                    })
-                })
-            } else {
-                pRanks['overall'] = []
-                projects.forEach(p0 => {
-                    const i = rankingsOverall?.indexOf(p0._id)
-                    pRank[i] = {}
-                    pRank[i]['rank'] = i
-                    pRank[i]['id'] = p0._id
-                    pRank[i]['name'] = p0.name
-
-                    pRanks['overall'][i] = {}
-                    pRanks['overall'][i]['rank'] = i
-                    pRanks['overall'][i]['id'] = p0._id
-                    pRanks['overall'][i]['name'] = p0.name
-                })
-
-            }
-            RankingsService.getVotes(idToken, event.slug).then(votes => {
-
-                /*votes.forEach(v => {
-                    pGrid[v.winner.project][v.loser.project].win += 1
-                    pGrid[v.loser.project][v.winner.project].lose += 1
-                    pGrid[v.winner.project][v.loser.project].tally =
-                        pGrid[v.winner.project][v.loser.project].win -
-                        pGrid[v.winner.project][v.loser.project].lose
-                    pGrid[v.loser.project][v.winner.project].tally =
-                        pGrid[v.loser.project][v.winner.project].win -
-                        pGrid[v.loser.project][v.winner.project].lose
-                })*/
-                setScoreGrid(pGrid)
-                setProjectRank(pRank)
-                setProjectRanks(pRanks)
+                pRanks['overall'][i] = {}
+                pRanks['overall'][i]['rank'] = i
+                pRanks['overall'][i]['id'] = p0._id
+                pRanks['overall'][i]['name'] = p0.name
             })
 
         }
+        /*RankingsService.getVotes(idToken, event.slug).then(votes => {
+
+            votes.forEach(v => {
+                pGrid[v.winner.project][v.loser.project].win += 1
+                pGrid[v.loser.project][v.winner.project].lose += 1
+                pGrid[v.winner.project][v.loser.project].tally =
+                    pGrid[v.winner.project][v.loser.project].win -
+                    pGrid[v.winner.project][v.loser.project].lose
+                pGrid[v.loser.project][v.winner.project].tally =
+                    pGrid[v.loser.project][v.winner.project].win -
+                    pGrid[v.loser.project][v.winner.project].lose
+            })
+            //setScoreGrid(pGrid)
+            //setProjectRank(pRank)
+            
+        })*/
+        setProjectRanks(pRanks)
+    }
+
+    useEffect(() => {
         fetchData()
     }, [idToken, event.slug, projects, rankingsOverall, rankingsByTrack])
     console.log('ProjectRanks', ProjectRanks)
@@ -103,55 +103,18 @@ export default () => {
 
             {Object.keys(ProjectRanks).map(trackName => (
                 <TableContainer component={Paper}>
-                    <Table aria-label="collapsible table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>{trackName}</TableCell>
-                                {ProjectRanks[trackName].map(project => (
-                                    <TableCell key={project.id}>
-                                        {project.name}
-                                    </TableCell>
-                                ))}
+                    <TableBody>
+                        {ProjectRanks[trackName].map(project => (
+                            <TableRow key={project.id}>
+                                <TableCell key={project.id}>
+                                    #{project.rank} {project.name}
+                                </TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {ProjectRanks[trackName].map(project => (
-                                <TableRow key={project.id}>
-                                    <TableCell key={project.id}>
-                                        #{project.rank} {project.name}
-                                    </TableCell>
-                                    {ProjectRanks[trackName].map(cell => (
-                                        <TableCell key={cell.id}>
-                                            <Chip
-                                                color={
-                                                    ScoreGrid[project.id][
-                                                        cell.id
-                                                    ].tally === 0
-                                                        ? 'default'
-                                                        : ScoreGrid[project.id][
-                                                            cell.id
-                                                        ].tally > 0
-                                                            ? 'primary'
-                                                            : 'secondary'
-                                                }
-                                                label={
-                                                    ScoreGrid[project.id][
-                                                        cell.id
-                                                    ].win +
-                                                    '-' +
-                                                    ScoreGrid[project.id][
-                                                        cell.id
-                                                    ].lose
-                                                }
-                                            ></Chip>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                        ))}
+                    </TableBody>
                 </TableContainer>
-            ))}
+            ))
+            }
         </>
     )
 }
