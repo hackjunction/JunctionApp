@@ -3,7 +3,6 @@ const { RecruitmentAction } = require('./model')
 const MongoUtils = require('../../common/utils/mongoUtils')
 const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
-const RegistrationController = require('../registration/controller')
 const EmailTaskController = require('../email-task/controller')
 
 const controller = {}
@@ -51,7 +50,9 @@ controller.queryProfiles = (query = {}, user) => {
     }
 
     // Set event filters based on recruiter scope
-    const consentFilter = { 'recruitmentOptions.consent': { $ne: false } } /* {
+    const consentFilter = {
+        'recruitmentOptions.consent': 'true',
+    } /* {
         $not: { 'recruitmentOptions.consent': false },
     } */
 
