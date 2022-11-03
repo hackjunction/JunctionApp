@@ -31,6 +31,10 @@ export default ({ alerts }) => {
     return (
         <Box>
             <PageHeader heading="Dashboard" />
+            <p>{'Checkout participant guidebook: '}</p>
+            <a href="https://guidebook2022.notion.site/guidebook2022/Participant-Guidebook-a98e9f36c4594c1ca757a1e2c120b587">
+                Click here!
+            </a>
             <Helmet>
                 <title>Junction App || Dashboard</title>
                 <meta
