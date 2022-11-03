@@ -3,6 +3,7 @@ const { RecruitmentAction } = require('./model')
 const MongoUtils = require('../../common/utils/mongoUtils')
 const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
+const RegistrationController = require('../registration/controller')
 const EmailTaskController = require('../email-task/controller')
 
 const controller = {}
@@ -50,7 +51,17 @@ controller.queryProfiles = (query = {}, user) => {
     }
 
     // Set event filters based on recruiter scope
-    const consentFilter = {$or: [{'recruitmentOptions.status': 'actively-looking'}, {'recruitmentOptions.status': 'up-for-discussions'},{'recruitmentOptions.consent': true}]}
+    const consentFilter = { 'recruitmentOptions.consent': { $ne: false } } /* {
+        $not: { 'recruitmentOptions.consent': false },
+    } */
+
+    /* {
+        $or: [
+            { 'recruitmentOptions.status': 'actively-looking' },
+            { 'recruitmentOptions.status': 'up-for-discussions' },
+            { 'recruitmentOptions.consent': true },
+        ],
+    } */
     const eventFilter = {
         registrations: {
             $elemMatch: {
@@ -61,11 +72,22 @@ controller.queryProfiles = (query = {}, user) => {
         },
     }
 
-    //console.log('userquery are', JSON.stringify(userQuery))
-    
+    // console.log('userquery are', JSON.stringify(userQuery))
+    /* RegistrationController.getRegistrationsForEvent(
+        '61012f8b31dc320049369a96',
+    ).then(reg => {
+        reg.filter(function (val) {
+            /console.log(val.answers.recruitmentOptions)
+            if (val.answers.recruitmentOptions)
+                return val.answers.recruitmentOptions.consent === true
+            return false
+        })
+        console.log(reg)
+    }) */
+
     // Set default filters (consent & recruiter scope)
     if (userQuery.$and) {
-        userQuery.$and = userQuery.$and.concat([consentFilter,eventFilter])
+        userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
         userQuery.$and = [eventFilter]
     }
