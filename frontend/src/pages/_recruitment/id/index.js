@@ -370,7 +370,7 @@ export default () => {
                                     <MessageHistory user={user} />
                                 </DetailSection>
                             </Grid>
-                            <Grid item xs={12}>
+                            {/*<Grid item xs={12}>
                                 <DetailSection label="Send message">
                                     <FormControl
                                         touched={true}
@@ -400,7 +400,7 @@ export default () => {
                                         </Button>
                                     </Box>
                                 </DetailSection>
-                            </Grid>
+                                                    </Grid>*/}
                         </Grid>
                     </Container>
                 )}
