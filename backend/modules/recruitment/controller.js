@@ -4,6 +4,7 @@ const MongoUtils = require('../../common/utils/mongoUtils')
 const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
 const EmailTaskController = require('../email-task/controller')
+const RegistrationController = require('../registration/controller')
 
 const controller = {}
 
@@ -17,7 +18,7 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
     })
 }
 
-controller.queryProfiles = (query = {}, user) => {
+controller.queryProfiles = async (query = {}, user) => {
     let userQuery = {}
     let pagination = {}
     if (typeof query.filters === 'string') {
@@ -74,25 +75,40 @@ controller.queryProfiles = (query = {}, user) => {
     }
 
     // console.log('userquery are', JSON.stringify(userQuery))
-    /* RegistrationController.getRegistrationsForEvent(
-        '61012f8b31dc320049369a96',
+    const idsuper = await RegistrationController.getRegistrationsForEvent(
+        '62cd62fcfb0cc900455212fb',
     ).then(reg => {
-        reg.filter(function (val) {
-            /console.log(val.answers.recruitmentOptions)
+        const ab = reg.filter(function (val) {
+            // console.log(val.answers.recruitmentOptions)
             if (val.answers.recruitmentOptions)
                 return val.answers.recruitmentOptions.consent === true
             return false
         })
-        console.log(reg)
-    }) */
+        // console.log(reg)
+        return ab
+    })
+    // console.log(idsuper, idsuper.length)
+    function selectuser(paska) {
+        const { user } = paska
+        return { user }
+    }
+    const user_list = idsuper.map(selectuser)
+    const a = Object.keys(user_list).map(key => user_list[key].user)
+    // console.log(a)
 
-    // Set default filters (consent & recruiter scope)
-    if (userQuery.$and) {
-        userQuery.$and = userQuery.$and.concat([eventFilter])
+    const matcher = {
+        userId: {
+            $in: a,
+        },
+    }
+    // Set defaultfilters (consent & recruiter scope)
+    /* if (userQuery.$and) {
+        userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
         userQuery.$and = [eventFilter]
-    }
-    console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
+    } */
+    userQuery.$and = userQuery.$and.concat([matcher])
+    // console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({
         query: userQuery,
         pagination,
