@@ -88,7 +88,7 @@ controller.queryProfiles = (query = {}, user) => {
 
     // Set default filters (consent & recruiter scope)
     if (userQuery.$and) {
-        userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
+        userQuery.$and = userQuery.$and.concat([eventFilter])
     } else {
         userQuery.$and = [eventFilter]
     }
