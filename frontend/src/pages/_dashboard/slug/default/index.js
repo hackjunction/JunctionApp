@@ -24,17 +24,30 @@ import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
-
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
 export default ({ alerts }) => {
+    const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
-
+    const isPartner =
+        user.userId == 'google-oauth2|108766439620242776277' ||
+        (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
+            !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+                'SuperAdmin',
+            ))
     return (
         <Box>
             <PageHeader heading="Dashboard" />
-            <p>{'Checkout participant guidebook: '}</p>
-            <a href="https://guidebook2022.notion.site/guidebook2022/Participant-Guidebook-a98e9f36c4594c1ca757a1e2c120b587">
-                Click here!
-            </a>
+            {isPartner ? (
+                <a href="https://junction-partner-guidebook-2022.notion.site/Partner-Guidebook-7f5b37bee5a9466cb801211c2b7d99e2">
+                    Click here for guidebook!
+                </a>
+            ) : (
+                <a href="https://guidebook2022.notion.site/guidebook2022/Participant-Guidebook-a98e9f36c4594c1ca757a1e2c120b587">
+                    Click here for guidebook!
+                </a>
+            )}
+
             <Helmet>
                 <title>Junction App || Dashboard</title>
                 <meta
