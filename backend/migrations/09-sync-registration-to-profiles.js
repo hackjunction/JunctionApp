@@ -8,8 +8,8 @@ module.exports = {
     name: '09-sync-registration-to-profiles',
     description: 'Sync registrationa and profile data',
     run: async () => {
-        /*
-        const cursor = mongoose.model('Registration').find({}).cursor()
+
+        const cursor = mongoose.model('Registration').find({ "event": "62cd62fcfb0cc900455212fb" }).cursor()
         await cursor.eachAsync(async function (registration) {
             UserProfileControlller.getUserProfile(registration.user).then(
                 async user => {
@@ -29,7 +29,7 @@ module.exports = {
                 },
             )
         })
-        */
+
         return Promise.resolve()
     },
 }
