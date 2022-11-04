@@ -75,7 +75,7 @@ controller.queryProfiles = async (query = {}, user) => {
     }
 
     // console.log('userquery are', JSON.stringify(userQuery))
-    /*const idsuper = await RegistrationController.getRegistrationsForEvent(
+    /* const idsuper = await RegistrationController.getRegistrationsForEvent(
         '62cd62fcfb0cc900455212fb',
     ).then(reg => {
         const ab = reg.filter(function (val) {
@@ -100,14 +100,14 @@ controller.queryProfiles = async (query = {}, user) => {
         userId: {
             $in: a,
         },
-    }*/
+    } */
     // Set defaultfilters (consent & recruiter scope)
     if (userQuery.$and) {
-        userQuery.$and = userQuery.$and.concat([eventFilter])
+        userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
         userQuery.$and = [eventFilter]
     }
-    //userQuery.$and = userQuery.$and.concat([matcher])
+    // userQuery.$and = userQuery.$and.concat([matcher])
     // console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     return UserController.queryProfiles({
         query: userQuery,
