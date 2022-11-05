@@ -9,9 +9,7 @@ import GradientBox from 'components/generic/GradientBox'
 import { Grid, Typography } from '@material-ui/core'
 
 export default () => {
-
-
-return (
+    return (
         <>
             {/* button for DEV to swithc between participant / partner view */}
             {/* <Button
@@ -20,11 +18,19 @@ return (
                 variant="contained"
             >
                 Switch between participant / partner view (only for dev)
-            </Button> */
-            }
+            </Button> */}
+            <a href="https://junction.desk.me/hardware">
+                Reserve hardware from this link!
+            </a>
             <div className="App">
                 <h3>Map of dipoli</h3>
-                <iframe src="https://junction.desk.me" width='100%;' height='600px;' frameborder='0' scrolling='no'></iframe>
+                <iframe
+                    src="https://junction.desk.me"
+                    width="100%;"
+                    height="600px;"
+                    frameborder="0"
+                    scrolling="no"
+                ></iframe>
             </div>
         </>
     )
