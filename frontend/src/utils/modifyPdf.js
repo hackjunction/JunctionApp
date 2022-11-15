@@ -19,7 +19,7 @@ const modifyPdf = async (url, x, y, name, slug, color) => {
     // align text center
     page.drawText(text, {
         x: 100 + 200 - textWidth / 2,
-        y: 475,
+        y: 540,
         size: textSize,
         font: font,
         align: 'center',

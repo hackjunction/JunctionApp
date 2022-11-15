@@ -9,7 +9,7 @@ module.exports = {
     description: 'Sync registrationa and profile data',
     run: async () => {
         const cursor = mongoose.model('Registration').find({}).cursor()
-        await cursor.eachAsync(async function (registration) {
+        /*await cursor.eachAsync(async function (registration) {
             UserProfileControlller.getUserProfile(registration.user).then(
                 async user => {
                     Object.entries(registration.toObject().answers).forEach(
@@ -28,7 +28,7 @@ module.exports = {
                 },
             )
         })
-
+        */
         return Promise.resolve()
     },
 }
