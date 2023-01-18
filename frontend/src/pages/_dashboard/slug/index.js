@@ -73,12 +73,12 @@ export default () => {
 
     const event = useSelector(DashboardSelectors.event)
 
-    const isPartner =useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'Recruiter'   
-            ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'SuperAdmin'   
-            )
-    console.log(isPartner,"¤¤¤")
+    const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+        'Recruiter'
+    ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+        'SuperAdmin'
+    )
+    console.log(isPartner, "¤¤¤")
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
@@ -165,7 +165,7 @@ export default () => {
             loading={eventLoading || registrationLoading || alertsLoading}
             wrapContent={false}
         >
-        {isPartner ? (            <SidebarLayout
+            {isPartner ? (<SidebarLayout
                 baseRoute={match.url}
                 location={location}
                 sidebarTopContent={
@@ -231,13 +231,6 @@ export default () => {
                         icon: <EventIcon />,
                         label: 'Meetings',
                         component: CalendarPage,
-                    },
-                    {
-                        key: 'map',
-                        path: '/map',
-                        exact: true,
-                        label: 'Map',
-                        component: MapPage,
                     },
                     {
                         key: 'recruitment',
@@ -248,153 +241,146 @@ export default () => {
                     },
                 ]}
             />) : (
-            <SidebarLayout
-                baseRoute={match.url}
-                location={location}
-                sidebarTopContent={
-                    <div className={classes.sidebarTop}>
-                        <Image
-                            className={classes.sidebarLogo}
-                            publicId={
-                                event && event.logo ? event.logo.publicId : ''
-                            }
-                            transformation={{
-                                width: 200,
-                            }}
-                        />
-                    </div>
-                }
-                topContent={<BasicNavBar />}
-                routes={[
-                    {
-                        key: 'dashboard',
-                        path: '',
-                        exact: true,
-                        icon: (
-                            <Badge badgeContent={alertCount} color="primary">
-                                <DashboardIcon />
-                            </Badge>
-                        ),
-                        label: t('Dashboard_'),
-                        component: () => {
-                            setAlertCount(0)
-                            return DefaultPage({ alerts })
+                <SidebarLayout
+                    baseRoute={match.url}
+                    location={location}
+                    sidebarTopContent={
+                        <div className={classes.sidebarTop}>
+                            <Image
+                                className={classes.sidebarLogo}
+                                publicId={
+                                    event && event.logo ? event.logo.publicId : ''
+                                }
+                                transformation={{
+                                    width: 200,
+                                }}
+                            />
+                        </div>
+                    }
+                    topContent={<BasicNavBar />}
+                    routes={[
+                        {
+                            key: 'dashboard',
+                            path: '',
+                            exact: true,
+                            icon: (
+                                <Badge badgeContent={alertCount} color="primary">
+                                    <DashboardIcon />
+                                </Badge>
+                            ),
+                            label: t('Dashboard_'),
+                            component: () => {
+                                setAlertCount(0)
+                                return DefaultPage({ alerts })
+                            },
                         },
-                    },
-                    {
-                        key: 'finals',
-                        path: '/finalist-voting',
-                        exact: true,
-                        hidden: !shownPages.finalistVoting,
-                        locked: lockedPages.finalistVoting,
-                        lockedDescription:
-                            'Finalist voting closed until peer review is done',
-                        icon: <HowToVoteIcon />,
-                        label: 'Finalist voting',
-                        component: FinalistVotingPage,
-                    },
-                    {
-                        key: 'team',
-                        path: '/team',
-                        exact: true,
-                        icon: <GroupIcon />,
-                        label: t('Team_'),
-                        locked: lockedPages.team,
-                        lockedDescription: 'Team editing not open',
-                        component: TeamPage,
-                    },
-                    {
-                        key: 'project',
-                        path: '/project',
-                        exact: true,
-                        locked: lockedPages.submissions,
-                        lockedDescription: 'Submissions not open',
-                        hidden: !shownPages.submissions,
-                        icon: <AssignmentOutlinedIcon />,
-                        label: t('Project_submissions_'),
-                        component: ProjectPage,
-                    },
-                    {
-                        key: 'reviewing',
-                        path: '/reviewing',
-                        exact: true,
-                        hidden: !shownPages.reviewing,
-                        locked: lockedPages.reviewing,
-                        lockedDescription: 'Reviewing closed',
-                        icon: <StarRateIcon />,
-                        label: t('Reviewing_'),
-                        component: ReviewingPage,
-                    },
-                    {
-                        key: 'eventid',
-                        path: '/event-id',
-                        exact: true,
-                        hidden: !shownPages.eventID,
-                        icon: <FingerprintIcon />,
-                        label: 'Event ID',
-                        component: EventIDPage,
-                    },
-                    {
-                        key: 'travelgrant',
-                        path: '/travel-grant',
-                        exact: true,
-                        icon: <FlightTakeoffIcon />,
-                        hidden: !shownPages.travelGrant,
-                        label: 'Travel grant',
-                        component: TravelGrantPage,
-                    },
-                    {
-                        key: 'hackerpack',
-                        path: '/hackerpack',
-                        exact: true,
-                        icon: <AmpStoriesIcon />,
-                        hidden: !shownPages.hackerPack,
-                        label: t('Hackerpack_'),
-                        component: HackerpackPage,
-                    },
-                    {
-                        key: 'challenges',
-                        path: '/challenges',
-                        exact: true,
-                        icon: <FormatListBulletedIcon />,
-                        label: 'Challenges',
-                        component: ChallengesIndex,
-                    },
-                    /*{
-                        key: 'checklist',
-                        path: '/checklist',
-                        exact: true,
-                        icon: <CheckBox />,
-                        hidden: !shownPages.hackerPack,
-                        label: 'Checklist',
-                        component: ChecklistPage,
-                    },*/
-                    /*
-                    {
-                        key: 'chat',
-                        path: '/chat',
-                        exact: true,
-                        icon: <QuestionAnswerSharp />,
-                        label: 'Chat',
-                        component: Chat,
-                    }, */
-                    {
-                        key: 'calendar',
-                        path: '/calendar',
-                        exact: true,
-                        icon: <EventIcon />,
-                        label: 'Meetings',
-                        component: CalendarPage,
-                    },
-                    {
-                        key: 'map',
-                        path: '/map',
-                        exact: true,
-                        label: 'Map',
-                        component: MapPage,
-                    },
-                ]}
-            />)}
+                        {
+                            key: 'finals',
+                            path: '/finalist-voting',
+                            exact: true,
+                            hidden: !shownPages.finalistVoting,
+                            locked: lockedPages.finalistVoting,
+                            lockedDescription:
+                                'Finalist voting closed until peer review is done',
+                            icon: <HowToVoteIcon />,
+                            label: 'Finalist voting',
+                            component: FinalistVotingPage,
+                        },
+                        {
+                            key: 'team',
+                            path: '/team',
+                            exact: true,
+                            icon: <GroupIcon />,
+                            label: t('Team_'),
+                            locked: lockedPages.team,
+                            lockedDescription: 'Team editing not open',
+                            component: TeamPage,
+                        },
+                        {
+                            key: 'project',
+                            path: '/project',
+                            exact: true,
+                            locked: lockedPages.submissions,
+                            lockedDescription: 'Submissions not open',
+                            hidden: !shownPages.submissions,
+                            icon: <AssignmentOutlinedIcon />,
+                            label: t('Project_submissions_'),
+                            component: ProjectPage,
+                        },
+                        {
+                            key: 'reviewing',
+                            path: '/reviewing',
+                            exact: true,
+                            hidden: !shownPages.reviewing,
+                            locked: lockedPages.reviewing,
+                            lockedDescription: 'Reviewing closed',
+                            icon: <StarRateIcon />,
+                            label: t('Reviewing_'),
+                            component: ReviewingPage,
+                        },
+                        {
+                            key: 'eventid',
+                            path: '/event-id',
+                            exact: true,
+                            hidden: !shownPages.eventID,
+                            icon: <FingerprintIcon />,
+                            label: 'Event ID',
+                            component: EventIDPage,
+                        },
+                        {
+                            key: 'travelgrant',
+                            path: '/travel-grant',
+                            exact: true,
+                            icon: <FlightTakeoffIcon />,
+                            hidden: !shownPages.travelGrant,
+                            label: 'Travel grant',
+                            component: TravelGrantPage,
+                        },
+                        {
+                            key: 'hackerpack',
+                            path: '/hackerpack',
+                            exact: true,
+                            icon: <AmpStoriesIcon />,
+                            hidden: !shownPages.hackerPack,
+                            label: t('Hackerpack_'),
+                            component: HackerpackPage,
+                        },
+                        {
+                            key: 'challenges',
+                            path: '/challenges',
+                            exact: true,
+                            icon: <FormatListBulletedIcon />,
+                            label: 'Challenges',
+                            component: ChallengesIndex,
+                        },
+                        /*{
+                            key: 'checklist',
+                            path: '/checklist',
+                            exact: true,
+                            icon: <CheckBox />,
+                            hidden: !shownPages.hackerPack,
+                            label: 'Checklist',
+                            component: ChecklistPage,
+                        },*/
+                        /*
+                        {
+                            key: 'chat',
+                            path: '/chat',
+                            exact: true,
+                            icon: <QuestionAnswerSharp />,
+                            label: 'Chat',
+                            component: Chat,
+                        }, */
+                        {
+                            key: 'calendar',
+                            path: '/calendar',
+                            exact: true,
+                            icon: <EventIcon />,
+                            label: 'Meetings',
+                            component: CalendarPage,
+                        },
+                    ]}
+                />)}
         </PageWrapper>
     )
 }

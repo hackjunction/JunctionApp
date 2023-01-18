@@ -38,7 +38,7 @@ export default ({ alerts }) => {
     return (
         <Box>
             <PageHeader heading="Dashboard" />
-            {isPartner ? (
+            {/*isPartner ? (
                 <a href="https://junction-partner-guidebook-2022.notion.site/Partner-Guidebook-7f5b37bee5a9466cb801211c2b7d99e2">
                     Click here for guidebook!
                 </a>
@@ -46,7 +46,7 @@ export default ({ alerts }) => {
                 <a href="https://guidebook2022.notion.site/guidebook2022/Participant-Guidebook-a98e9f36c4594c1ca757a1e2c120b587">
                     Click here for guidebook!
                 </a>
-            )}
+            )*/}
 
             <Helmet>
                 <title>Junction App || Dashboard</title>
