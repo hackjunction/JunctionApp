@@ -159,6 +159,7 @@ export const shownPages = createSelector(
                     STATUSES.confirmed.id,
                     STATUSES.confirmedToHub.id,
                 ].indexOf(registration?.status) !== -1,
+            meetings: EventHelpers.areMeetingsEnabled(event),
         }
     },
 )

@@ -108,6 +108,10 @@ const EventHelpers = {
         }
         return EventStatuses.FINISHED.id
     },
+    areMeetingsEnabled: (event) => {
+        if (!event) return true
+        return event.meetingsEnabled
+    },
 }
 
 module.exports = EventHelpers
