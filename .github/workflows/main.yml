@@ -17,8 +17,6 @@ jobs:
         - uses: actions/setup-node@v1
           with:
              node-version: '12.20.1'
-        - name: clean cache
-          run: npm cache clean --force
         - name: npm install
           run: npm install
         - name: 'Create backend env file'
@@ -33,7 +31,7 @@ jobs:
             cat .env
         - name: build
           run: |
-            export NODE_OPTIONS="--max_old_space_size=8192"
+            export NODE_OPTIONS="--max_old_space_size=32768"
             npm run build
         - name: azure deploy
           #if: ${{ github.event_name == 'push' && !(contains( join( toJson(github.event.commits.*.message) ), '#skip')) }}
