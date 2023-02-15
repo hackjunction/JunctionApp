@@ -17,6 +17,8 @@ jobs:
         - uses: actions/setup-node@v1
           with:
              node-version: '12.20.1'
+        - name: clean cache
+          run: npm cache clean --force
         - name: npm install
           run: npm install
         - name: 'Create backend env file'
