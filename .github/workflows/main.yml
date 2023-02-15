@@ -19,8 +19,6 @@ jobs:
              node-version: '12.20.1'
         - name: npm install
           run: npm install
-        - name: npm setup
-          run: npm run setup
         - name: 'Create backend env file'
           run: |
             cd backend
