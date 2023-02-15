@@ -27,10 +27,11 @@ return (
                 variant="contained"
             >
                 Switch between participant / partner view (only for dev)
-            </Button> */
+            </Button>
+            TODO: change this img to be generic and updatable
             <img 
             src="https://res.cloudinary.com/hackjunction/image/upload/v1667494674/misc_assets/meeting_area.png"
-            />
+            /> */
             }
             {isPartner ? (
                 <PartnerCalendarView event={event} />

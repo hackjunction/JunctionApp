@@ -284,9 +284,19 @@ const EventSchema = new mongoose.Schema({
         type: [EventPageScriptSchema.mongoose],
         default: [],
     },
+    meetingsEnabled: false,
     meetingRooms: {
         type: [MeetingRoomSchema.mongoose],
         default: [],
+        /*validate: [
+            function (val) {
+                if (!this.meetingsEnabled) {
+                    return !val.length > 0
+                }
+                return true
+            },
+            'cant have meetingrooms if meetings are not enabled',
+        ],*/
     },
 })
 

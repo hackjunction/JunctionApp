@@ -182,6 +182,9 @@ const EventInput = new GraphQLInputObjectType({
         webhooks: {
             type: GraphQLList(WebhookInput),
         },
+        meetingsEnabled: {
+            type: GraphQLBoolean,
+        },
         meetingRooms: {
             type: GraphQLList(MeetingRoomInput),
         },
@@ -335,6 +338,9 @@ const EventType = new GraphQLObjectType({
             },
             pageScripts: {
                 type: GraphQLList(EventPageScript),
+            },
+            meetingsEnabled: {
+                type: GraphQLBoolean,
             },
             meetingRooms: {
                 type: GraphQLList(MeetingRoom),
