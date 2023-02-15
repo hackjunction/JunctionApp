@@ -25,10 +25,12 @@ jobs:
           run: |
             cd backend
             echo "${{ secrets.BACKEND_ENV_FILE }}" > .env
+            cat .env
         - name: 'Create frontend env file'
           run: |
             cd frontend
             echo "${{ secrets.FRONTEND_ENV_FILE }}" > .env
+            cat .env
         - name: build
           run: npm run build
         - name: azure deploy
