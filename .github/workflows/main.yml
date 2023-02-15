@@ -2,7 +2,7 @@ name: Deployment pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [einoSTAG]
   pull_request:
     branches: [einoSTAG]
     types: [opened, synchronize]
