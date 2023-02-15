@@ -38,7 +38,7 @@ jobs:
             password: ${{ secrets.PASSWORD }}
             key: ${{ secrets.SSH_KEY }}
             overwrite: true
-            source: "frontend"
+            source: "README.md"
             target: "/home/azurejunction/junctionapp/JunctionApp2"
        
         
