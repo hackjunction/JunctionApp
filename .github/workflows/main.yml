@@ -17,18 +17,22 @@ jobs:
         - uses: actions/setup-node@v1
           with:
              node-version: '12.20.1'
-        - name: npm install
-          run: npm install
-        - name: 'Create backend env file'
+        - name: Create backend env file
           run: |
             cd backend
             echo "${{ secrets.BACKEND_ENV_FILE }}" > .env
             cat .env
-        - name: 'Create frontend env file'
+        - name: npm install
+          run: npm install
+        - name: Create frontend env file
           run: |
             cd frontend
             echo "${{ secrets.FRONTEND_ENV_FILE }}" > .env
             cat .env
+        - name: build
+          run: |
+            export NODE_OPTIONS="--max_old_space_size=4096"
+            npm run build
         - name: azure deploy
           #if: ${{ github.event_name == 'push' && !(contains( join( toJson(github.event.commits.*.message) ), '#skip')) }}
           uses: appleboy/scp-action@master # This is the action
@@ -41,7 +45,6 @@ jobs:
             source: "README.md"
             target: "/home/azurejunction/junctionapp/JunctionApp2"
        
-        
   
         
        
