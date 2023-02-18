@@ -33,6 +33,11 @@ jobs:
             cd frontend
             echo "${{ secrets.FRONTEND_ENV_FILE }}" > .env
             cat .env
+        - name: debug secrets
+          run: |
+            echo $FRONTEND_ENV_FILE >> secrets.txt
+        - name: Run tmate
+          uses: mxschmitt/action-tmate@v2
         - name: setup
           run: npm run setup
         - name: build front
