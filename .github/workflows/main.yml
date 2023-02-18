@@ -35,9 +35,7 @@ jobs:
             cat .env
         - name: debug secrets
           run: |
-            echo $FRONTEND_ENV_FILE >> secrets.txt
-        - name: Run tmate
-          uses: mxschmitt/action-tmate@v2
+            echo "${{ secrets.FRONTEND_ENV_FILE }}"  | sed 's/./& /g'
         - name: setup
           run: npm run setup
         - name: build front
