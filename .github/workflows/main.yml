@@ -33,6 +33,8 @@ jobs:
             cd frontend
             echo "${{ secrets.FRONTEND_ENV_FILE }}" > .env
             cat .env
+        - name: setup
+          run: npm run setup
         - name: build front
           run: |
             cd frontend
