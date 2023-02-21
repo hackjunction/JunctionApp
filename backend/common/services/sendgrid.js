@@ -51,9 +51,8 @@ const SendgridService = {
                         After your celebratory dance, please remember to confirm your spot <strong>A.S.A.P</strong> so that
                         we know you're coming. You can do this by logging into the Event Dashboard (link below) with the same 
                         account you used when filling the registration form. Please note: you'll need to use the same login
-                        method as last time, which in your case was <strong>${
-                            user.userId.split('|')[0]
-                        }</strong>
+                        method as last time, which in your case was <strong>${user.userId.split('|')[0]
+                    }</strong>
                     </p>
                     <p>
                         If something has come up, and you won't be able to join the event, please go ahead and
@@ -139,7 +138,6 @@ const SendgridService = {
                 },
             )
         }
-
         return SendgridService.send(msg)
     },
 
@@ -291,6 +289,7 @@ const SendgridService = {
             `,
             reply_to: recruiter.email,
         }
+
         return SendgridService.sendGenericEmail(user.email, params)
     },
     sendGenericEmail: (to, params) => {
@@ -324,8 +323,10 @@ const SendgridService = {
         return SendgridService.send(msg)
     },
     buildTemplateMessage: (to, templateId, data) => {
+
         return {
             to,
+            //TODO: from email and name should be customazible
             from: {
                 name: global.gConfig.SENDGRID_FROM_NAME,
                 email: global.gConfig.SENDGRID_FROM_EMAIL,
