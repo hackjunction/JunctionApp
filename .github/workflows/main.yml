@@ -1,0 +1,59 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches: [einoSTAG]
+  pull_request:
+    branches: [einoSTAG]
+    types: [opened, synchronize]
+    
+  workflow_dispatch:
+
+jobs:
+  simple_deployment_pipeline:
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v1
+          with:
+             node-version: '12.20.1'
+        - name: clean
+          run: npm cache clean --force
+        - name: remove modules
+          run: rm -rf node_modules
+        - name: npm install
+          run: npm install
+        - name: Create backend env file
+          run: |
+            cd backend
+            echo "${{ secrets.BACKEND_ENV_FILE }}" > .env
+            cat .env
+        - name: Create frontend env file
+          run: |
+            cd frontend
+            echo "${{ secrets.FRONTEND_ENV_FILE }}" > .env
+            cat .env
+        - name: debug secrets
+          run: |
+            echo "${{ secrets.FRONTEND_ENV_FILE }}"  | sed 's/./& /g'
+        - name: setup
+          run: npm run setup
+        - name: build front
+          run: |
+            cd frontend
+            npm run build
+        - name: azure deploy
+          #if: ${{ github.event_name == 'push' && !(contains( join( toJson(github.event.commits.*.message) ), '#skip')) }}
+          uses: appleboy/scp-action@master # This is the action
+          with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            password: ${{ secrets.PASSWORD }}
+            key: ${{ secrets.SSH_KEY }}
+            overwrite: true
+            source: "./build"
+            target: "/home/azurejunction/junctionapp/JunctionApp2"
+       
+  
+        
+       
