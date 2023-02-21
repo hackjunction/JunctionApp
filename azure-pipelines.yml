@@ -25,7 +25,7 @@ steps:
   
 - task: CopyFilesOverSSH@0
   inputs:
-      sshEndpoint: junctionAppEurope# string. Required. SSH service connection. 
+      sshEndpoint: JunctionAppEurope# string. Required. SSH service connection. 
       sourceFolder: /backend/build # string. Source folder. 
       contents: '**' # string. Required. Contents. Default: **.
       targetFolder: /usr/share/nginx/html/build # string. Target folder. 
