@@ -57,7 +57,7 @@ steps:
 - script: ls -a ./frontend
   displayName: 'ls'
 
-- script: file ./frontend/.env
+- script: cat ./frontend/.env
   displayName: 'cat'
 
 
@@ -72,6 +72,21 @@ steps:
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappeurope'
+      sourceFolder: './backend/build'
+      contents: '**' 
+      targetFolder: './usr/share/nginx/html/build'
+    # Advanced
+      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true 
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      #readyTimeout: '20000' 
+      overwrite: true 
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
+
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'newadmin_junctionappasia'
       sourceFolder: './backend/build'
       contents: '**' 
       targetFolder: './usr/share/nginx/html/build'
