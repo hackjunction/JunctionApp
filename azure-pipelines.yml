@@ -51,12 +51,12 @@ steps:
     Contents: FRONTEND_ENV_FILE
     TargetFolder: './frontend'
 
-- script: ls -R
+- script: cat ./frontend/FRONTEND_ENV_FILE
   displayName: 'ls'
 
 - script: |
     cd frontend
-    mv FRONTEND_ENV_FILE .env
+    mv 'FRONTEND_ENV_FILE' '.env'
   displayName: 'rename front env'
 
 - script: ls -R
