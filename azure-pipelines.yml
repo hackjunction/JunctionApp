@@ -54,9 +54,7 @@ steps:
 - script: cat ./frontend/FRONTEND_ENV_FILE
   displayName: 'ls'
 
-- script: |
-    cd frontend
-    mv /FRONTEND_ENV_FILE /.env
+- script: mv ./frontend/FRONTEND_ENV_FILE ./frontend/.env
   displayName: 'rename front env'
 
 - script: ls -R
