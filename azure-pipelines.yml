@@ -51,6 +51,9 @@ steps:
     Contents: FRONTEND_ENV_FILE
     TargetFolder: './frontend'
 
+- script: ls -R
+  displayName: 'ls'
+
 - script: |
     cd frontend
     mv FRONTEND_ENV_FILE .env
@@ -65,7 +68,7 @@ steps:
 
 - script: ls -R
   displayName: 'ls'
-  
+
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'junctionappeurope'
