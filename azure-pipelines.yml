@@ -19,6 +19,9 @@ steps:
     npm install
   displayName: 'npm install'
 
+- script: ls -R
+  displayName: 'ls'
+  
 - task: DownloadSecureFile@1
   displayName: 'download backendend'
   inputs:
