@@ -74,7 +74,7 @@ steps:
       sshEndpoint: 'newadmin_junctionappeurope'
       sourceFolder: './backend/build'
       contents: '**' 
-      targetFolder: './usr/share/nginx/html/build'
+      targetFolder: './usr/share/nginx/html/new_build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
@@ -89,7 +89,7 @@ steps:
       sshEndpoint: 'newadmin_junctionappasia'
       sourceFolder: './backend/build'
       contents: '**' 
-      targetFolder: './usr/share/nginx/html/build'
+      targetFolder: './usr/share/nginx/html/new_build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
@@ -99,9 +99,9 @@ steps:
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
 
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'newadmin_junctionappeurope'
-    runOptions: 'commands' 
-    commands: sudo systemctl reload nginx
-    interactiveSession: true
+#- task: SSH@0
+ # inputs:
+  #  sshEndpoint: 'newadmin_junctionappeurope'
+   # runOptions: 'commands' 
+    #commands: sudo systemctl reload nginx
+    #interactiveSession: true
