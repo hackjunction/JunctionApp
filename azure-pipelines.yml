@@ -47,8 +47,11 @@ steps:
     Contents: FRONTEND_ENV_FILE
     TargetFolder: './frontend/.env'
 
-- script: ls -R
+- script: ls frontend -a
   displayName: 'ls'
+
+- script: cat ./frontend/.env
+  displayName: 'cat'
 
 - script: |
     npm run build
