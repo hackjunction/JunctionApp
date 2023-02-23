@@ -21,7 +21,7 @@ steps:
 
 - script: ls -R
   displayName: 'ls'
-  
+
 - task: DownloadSecureFile@1
   displayName: 'download backendend'
   inputs:
@@ -32,7 +32,12 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: BACKEND_ENV_FILE
-    TargetFolder: '/backend'
+    TargetFolder: './backend'
+
+- script: |
+    cd backend
+    mv BACKEND_ENV_FILE .env
+  displayName: 'rename back env'
 
 - task: DownloadSecureFile@1
   displayName: 'download frontend'
@@ -44,7 +49,12 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: FRONTEND_ENV_FILE
-    TargetFolder: '/frontend'
+    TargetFolder: './frontend'
+
+- script: |
+    cd frontend
+    mv FRONTEND_ENV_FILE .env
+  displayName: 'rename front env'
 
 - script: |
     npm run build
