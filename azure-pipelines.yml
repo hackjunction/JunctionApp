@@ -32,12 +32,8 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: BACKEND_ENV_FILE
-    TargetFolder: './backend'
+    TargetFolder: './backend/.env'
 
-- script: |
-    cd backend
-    mv BACKEND_ENV_FILE .env
-  displayName: 'rename back env'
 
 - task: DownloadSecureFile@1
   displayName: 'download frontend'
@@ -49,13 +45,7 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: FRONTEND_ENV_FILE
-    TargetFolder: './frontend'
-
-- script: cat ./frontend/FRONTEND_ENV_FILE
-  displayName: 'ls'
-
-- script: mv ./frontend/FRONTEND_ENV_FILE ./frontend/.env
-  displayName: 'rename front env'
+    TargetFolder: './frontend/.env'
 
 - script: ls -R
   displayName: 'ls'
@@ -69,7 +59,7 @@ steps:
 
 - task: CopyFilesOverSSH@0
   inputs:
-      sshEndpoint: 'junctionappeurope'
+      sshEndpoint: 'newadmin_junctionappeurope'
       sourceFolder: './backend/build'
       contents: '**' 
       targetFolder: './usr/share/nginx/html/build'
