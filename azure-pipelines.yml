@@ -32,9 +32,10 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: BACKEND_ENV_FILE
-    TargetFolder: './backend/.env'
+    TargetFolder: './backend'
 
-
+- script: mv ./backend/BACKEND_ENV_FILE ./backend/.env
+  displayName: 'rename'
 - task: DownloadSecureFile@1
   displayName: 'download frontend'
   inputs:
@@ -50,14 +51,16 @@ steps:
 - script: ls frontend -a
   displayName: 'ls'
 
-- script: ren FRONTEND_ENV_FILE .env
+- script: mv ./frontend/FRONTEND_ENV_FILE ./frontend/.env
   displayName: 'rename'
+
+- script: ls -a ./frontend
+  displayName: 'ls'
 
 - script: file ./frontend/.env
   displayName: 'cat'
 
-- script: ls ./frontend/.env
-  displayName: 'ls'
+
 
 - script: |
     npm run build
@@ -85,4 +88,5 @@ steps:
   inputs:
     sshEndpoint: 'newadmin_junctionappeurope'
     runOptions: 'commands' 
-    commands: 
+    commands: sudo systemctl reload nginx
+    interactiveSession: true
