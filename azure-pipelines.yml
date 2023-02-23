@@ -56,22 +56,28 @@ steps:
     mv FRONTEND_ENV_FILE .env
   displayName: 'rename front env'
 
+- script: ls -R
+  displayName: 'ls'
+
 - script: |
     npm run build
   displayName: 'npm build'
+
+- script: ls -R
+  displayName: 'ls'
   
-#- task: CopyFilesOverSSH@0
- # inputs:
-  #    sshEndpoint: JunctionAppEurope# string. Required. SSH service connection. 
-   #   sourceFolder: /backend/build # string. Source folder. 
-    #  contents: '**' 
-     # targetFolder: /usr/share/nginx/html/build # string. Target folder. 
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'junctionappeurope'
+      sourceFolder: './backend/build'
+      contents: '**' 
+      targetFolder: './usr/share/nginx/html/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-      #cleanTargetFolder: true 
+      cleanTargetFolder: true 
       #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
       #readyTimeout: '20000' 
-      #overwrite: true # boolean. Overwrite. Default: true.
+      overwrite: true 
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
       
