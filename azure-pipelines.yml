@@ -50,8 +50,11 @@ steps:
 - script: ls frontend -a
   displayName: 'ls'
 
-- script: cat ./frontend/.env
+- script: file ./frontend/.env
   displayName: 'cat'
+
+- script: ls ./frontend/.env
+  displayName: 'ls'
 
 - script: |
     npm run build
@@ -74,4 +77,9 @@ steps:
       overwrite: true 
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
-      
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'newadmin_junctionappeurope'
+    runOptions: 'commands' 
+    commands: 
