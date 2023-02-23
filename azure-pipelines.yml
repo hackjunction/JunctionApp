@@ -45,10 +45,13 @@ steps:
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: FRONTEND_ENV_FILE
-    TargetFolder: './frontend/.env'
+    TargetFolder: './frontend'
 
 - script: ls frontend -a
   displayName: 'ls'
+
+- script: ren FRONTEND_ENV_FILE .env
+  displayName: 'rename'
 
 - script: file ./frontend/.env
   displayName: 'cat'
