@@ -74,7 +74,7 @@ steps:
       sshEndpoint: 'newadmin_junctionappeurope'
       sourceFolder: './backend/build'
       contents: '**' 
-      targetFolder: './usr/share/nginx/html/new_build'
+      targetFolder: '/usr/share/nginx/html/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
@@ -89,7 +89,7 @@ steps:
       sshEndpoint: 'newadmin_junctionappasia'
       sourceFolder: './backend/build'
       contents: '**' 
-      targetFolder: './usr/share/nginx/html/new_build'
+      targetFolder: '/usr/share/nginx/html/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
