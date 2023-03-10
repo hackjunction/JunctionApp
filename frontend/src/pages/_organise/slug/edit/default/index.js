@@ -229,7 +229,7 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="FAQ link"
-                            hint="https://hackjunction.com/faq"
+
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
