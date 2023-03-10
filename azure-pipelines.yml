@@ -19,22 +19,104 @@ steps:
     npm install
   displayName: 'npm install'
 
+- script: ls -R
+  displayName: 'ls'
+
+- task: DownloadSecureFile@1
+  displayName: 'download backendend'
+  inputs:
+    secureFile: 'BACKEND_ENV_FILE' # string. Required. Secure File. 
+
+- task: CopyFiles@2
+  displayName: 'copy backendend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: BACKEND_ENV_FILE
+    TargetFolder: './backend'
+
+- script: mv ./backend/BACKEND_ENV_FILE ./backend/.env
+  displayName: 'rename'
+- task: DownloadSecureFile@1
+  displayName: 'download frontend'
+  inputs:
+    secureFile: 'FRONTEND_ENV_FILE' # string. Required. Secure File. 
+
+- task: CopyFiles@2
+  displayName: 'copy frontend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: FRONTEND_ENV_FILE
+    TargetFolder: './frontend'
+
+- script: ls frontend -a
+  displayName: 'ls'
+
+- script: mv ./frontend/FRONTEND_ENV_FILE ./frontend/.env
+  displayName: 'rename'
+
+- script: ls -a ./frontend
+  displayName: 'ls'
+
+- script: cat ./frontend/.env
+  displayName: 'cat'
+
+
+
 - script: |
     npm run build
   displayName: 'npm build'
-  
+
+- script: ls -R
+  displayName: 'ls'
+
 - task: CopyFilesOverSSH@0
   inputs:
-      sshEndpoint: junctionAppEurope# string. Required. SSH service connection. 
-      sourceFolder: /backend/build # string. Source folder. 
-      contents: '**' # string. Required. Contents. Default: **.
-      targetFolder: /usr/share/nginx/html/build # string. Target folder. 
+      sshEndpoint: 'newadmin_junctionappeurope'
+      sourceFolder: './backend/build'
+      contents: '**' 
+      targetFolder: '/home/newadmin/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-      cleanTargetFolder: true # boolean. Clean target folder. Default: false.
+      cleanTargetFolder: true 
       #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-      readyTimeout: '20000' # string. Required. SSH handshake timeout. Default: 20000.
-      #overwrite: true # boolean. Overwrite. Default: true.
+      #readyTimeout: '20000' 
+      overwrite: true 
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
+
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'newadmin_junctionappasia'
+      sourceFolder: './backend/build'
+      contents: '**' 
+      targetFolder: '/home/newadmin/build'
+    # Advanced
+      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true 
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      #readyTimeout: '20000' 
+      overwrite: true 
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
       
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'newadmin_junctionappafrica'
+      sourceFolder: './backend/build'
+      contents: '**' 
+      targetFolder: '/home/newadmin/build'
+    # Advanced
+      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true 
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      #readyTimeout: '20000' 
+      overwrite: true 
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
+
+#- task: SSH@0
+ # inputs:
+  #  sshEndpoint: 'newadmin_junctionappeurope'
+   # runOptions: 'commands' 
+    #commands: sudo systemctl reload nginx
+    #interactiveSession: true
