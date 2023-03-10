@@ -68,13 +68,7 @@ export default () => {
                 {hackerpack.map(company => (
                     <HackerpackDetail partner={company} redeemable={true} />
                 ))}
-                <Box p={2}>
-                    <Typography color="textSecondary" variant="subtitle1">
-                        Anything you would like to see here in the future?
-                        Contact us at partnerships@hackjunction.com with your
-                        suggestion.
-                    </Typography>
-                </Box>
+
             </PageWrapper>
         </>
     )
