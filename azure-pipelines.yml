@@ -25,16 +25,16 @@ steps:
 - task: DownloadSecureFile@1
   displayName: 'download backendend'
   inputs:
-    secureFile: 'BACKEND_ENV_FILE' # string. Required. Secure File. 
+    secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
 
 - task: CopyFiles@2
   displayName: 'copy backendend'
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
-    Contents: BACKEND_ENV_FILE
+    Contents: BACKEND_ENV_FILE_EU
     TargetFolder: './backend'
 
-- script: mv ./backend/BACKEND_ENV_FILE ./backend/.env
+- script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
   displayName: 'rename'
 - task: DownloadSecureFile@1
   displayName: 'download frontend'
@@ -45,13 +45,13 @@ steps:
   displayName: 'copy frontend'
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
-    Contents: FRONTEND_ENV_FILE
+    Contents: FRONTEND_ENV_FILE_EU
     TargetFolder: './frontend'
 
 - script: ls frontend -a
   displayName: 'ls'
 
-- script: mv ./frontend/FRONTEND_ENV_FILE ./frontend/.env
+- script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
   displayName: 'rename'
 
 - script: ls -a ./frontend
