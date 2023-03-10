@@ -39,7 +39,7 @@ steps:
 - task: DownloadSecureFile@1
   displayName: 'download frontend'
   inputs:
-    secureFile: 'FRONTEND_ENV_FILE' # string. Required. Secure File. 
+    secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
 
 - task: CopyFiles@2
   displayName: 'copy frontend'
