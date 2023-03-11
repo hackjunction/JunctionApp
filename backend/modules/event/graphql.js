@@ -134,6 +134,9 @@ const EventInput = new GraphQLInputObjectType({
         galleryOpen: {
             type: GraphQLBoolean,
         },
+        allowProjectSubmissionsPerChallenge: {
+            type: GraphQLBoolean,
+        },
         owner: {
             type: GraphQLString,
         },
