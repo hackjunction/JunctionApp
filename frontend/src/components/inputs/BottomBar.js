@@ -53,7 +53,13 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
+const BottomBar = ({
+    errors,
+    dirty,
+    onSubmit,
+    loading,
+    submitLabel = 'Save Changes',
+}) => {
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ dirty, hasErrors })
     const [showErrors, setShowErrors] = useState(false)
@@ -93,7 +99,7 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
                         variant="contained"
                         onClick={onSubmit}
                     >
-                        Save changes
+                        {submitLabel}
                     </Button>
                 )}
                 {!loading && hasErrors && renderErrorsButton()}

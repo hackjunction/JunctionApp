@@ -38,6 +38,8 @@ const {
     EventTimelineInput,
     Webhook,
     WebhookInput,
+    MeetingRoom,
+    MeetingRoomInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -178,6 +180,9 @@ const EventInput = new GraphQLInputObjectType({
         },
         webhooks: {
             type: GraphQLList(WebhookInput),
+        },
+        meetingRooms: {
+            type: GraphQLList(MeetingRoomInput),
         },
     },
 })
@@ -324,6 +329,9 @@ const EventType = new GraphQLObjectType({
             webhooks: {
                 type: GraphQLList(Webhook),
             },
+            meetingRooms: {
+                type: GraphQLList(MeetingRoom),
+            },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
@@ -404,6 +412,14 @@ const QueryType = new GraphQLObjectType({
                 },
             },
         },
+        roomsByEvent: {
+            type: GraphQLList(MeetingRoom),
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
     },
 })
 
@@ -418,6 +434,17 @@ const MutationType = new GraphQLObjectType({
                 },
                 event: {
                     type: GraphQLNonNull(EventInput),
+                },
+            },
+        },
+        setTimeslotReserved: {
+            type: GraphQLBoolean,
+            args: {
+                timeSlotId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+                reserved: {
+                    type: GraphQLNonNull(GraphQLBoolean),
                 },
             },
         },
@@ -467,10 +494,18 @@ const Resolvers = {
             }
             return events
         },
+        roomsByEvent: async (parent, args, context) => {
+            return context.controller('Event').getRoomsByEvent(args.eventId)
+        },
     },
     Mutation: {
         updateEvent: async (parent, args, context) => {
             return context.controller('Event').update(args._id, args.event)
+        },
+        setTimeslotReserved: async (parent, args, context) => {
+            return context
+                .controller('Event')
+                .setTimeslotReserved(args.timeSlotId, args.reserved)
         },
     },
     Event: {

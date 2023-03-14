@@ -13,7 +13,9 @@
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
         "precommit": "echo \"Backend: running pre-commit checks\"",
-        "debug": "nodemon --inspect index.js"
+        "debug": "nodemon --inspect index.js",
+        "authorizeGoogleCalendar": "node common/services/google-calendar/getAccessTokenCode.js",
+        "writeGoogleTokenJson": "node common/services/google-calendar/writeAccessTokenJson.js"
     },
     "author": "",
     "license": "ISC",
@@ -21,7 +23,9 @@
         "@hackjunction/shared": "file:../shared",
         "@sendgrid/client": "^7.4.1",
         "@sendgrid/mail": "^7.1.1",
+        "@stdlib/math": "^0.0.11",
         "@stdlib/stdlib": "0.0.91",
+        "apollo-server-core": "^3.10.0",
         "apollo-server-express": "^2.19.0",
         "auth0": "^2.31.1",
         "axios": "^0.21.1",
@@ -38,6 +42,7 @@
         "express": "^4.17.1",
         "express-async-handler": "^1.1.4",
         "express-jwt": "^6.0.0",
+        "googleapis": "^107.0.0",
         "graphql": "^15.4.0",
         "graphql-iso-date": "^3.6.1",
         "graphql-tools": "^7.0.2",

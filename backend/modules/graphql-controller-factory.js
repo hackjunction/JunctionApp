@@ -2,6 +2,9 @@ const UserProfileController = require('./user-profile/graphql-controller')
 const RegistrationController = require('./registration/graphql-controller')
 const EventController = require('./event/graphql-controller')
 const OrganizationController = require('./organization/graphql-controller')
+const MessageController = require('./message/graphql-controller')
+const AlertController = require('./alert/graphql-controller')
+const MeetingController = require('./meeting/graphql-controller')
 
 function buildController(key, context) {
     const user = context.req && context.req.user
@@ -14,6 +17,12 @@ function buildController(key, context) {
             return new EventController(user)
         case 'Organization':
             return new OrganizationController(user)
+        case 'Message':
+            return new MessageController(user)
+        case 'Alert':
+            return new AlertController(user)
+        case 'Meeting':
+            return new MeetingController(user)
         default: {
             throw new Error(`No controller specified for key ${key}!`)
         }

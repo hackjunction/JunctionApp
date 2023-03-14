@@ -1,11 +1,8 @@
 import React from 'react'
 
-import { Box, Grid, Paper } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
 import { Field } from 'formik'
-import Button from 'components/generic/Button'
-import TextInput from 'components/inputs/TextInput'
-import DateTimeInput from 'components/inputs/DateTimeInput'
 import TimelineForm from './TimelineForm'
 
 export default () => {

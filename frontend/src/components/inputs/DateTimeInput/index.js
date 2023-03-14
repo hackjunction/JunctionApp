@@ -6,7 +6,14 @@ import DateInput from '../DateInput'
 import TimeInput from '../TimeInput'
 
 const DateTimeInput = React.memo(
-    ({ value, onChange, onBlur, timezone = 'UTC' }) => {
+    ({
+        value,
+        onChange,
+        onBlur,
+        timezone = 'UTC',
+        optionsHours,
+        optionsMinutes,
+    }) => {
         const momentValue =
             value && timezone
                 ? moment(value).tz(timezone)
@@ -50,6 +57,8 @@ const DateTimeInput = React.memo(
                             minutes: momentValue.minutes(),
                         }}
                         onChange={handleTimeChange}
+                        optionsHours={optionsHours}
+                        optionsMinutes={optionsMinutes}
                     />
                 </Grid>
             </Grid>

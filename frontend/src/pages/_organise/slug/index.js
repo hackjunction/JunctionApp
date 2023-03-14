@@ -30,6 +30,8 @@ import ProjectsPage from './projects'
 import ResultsPage from './results'
 import StatsPage from './stats'
 import TravelGrantsPage from './travel-grants'
+import AlertsPage from './alerts'
+import { QuestionAnswerSharp } from '@material-ui/icons'
 
 export default () => {
     const match = useRouteMatch()
@@ -180,6 +182,14 @@ export default () => {
                         icon: <SettingsIcon />,
                         label: 'Manage',
                         component: ManagePage,
+                    },
+                    {
+                        key: 'alerts',
+                        path: '/alerts',
+                        exact: true,
+                        icon: <QuestionAnswerSharp />,
+                        label: 'Send announcements',
+                        component: AlertsPage,
                     },
                 ]}
             />

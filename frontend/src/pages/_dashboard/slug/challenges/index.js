@@ -14,10 +14,7 @@ export default () => {
     const [activeChallenge, setActiveChallenge] = useState(null)
 
     const challenges = event.challenges
-    console.info('challenges', challenges)
-    console.info('open challenge', openChallenge)
     if (openChallenge !== null) {
-        console.info('here')
         return (
             <ChallengePage
                 onClose={() => setOpenChallenge(null)}

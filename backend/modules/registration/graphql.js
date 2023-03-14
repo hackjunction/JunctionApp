@@ -9,7 +9,11 @@ const {
 } = require('graphql')
 const { GraphQLJSONObject } = require('graphql-type-json')
 
-const { Answers, TravelGrantDetails } = require('../graphql-shared-types')
+const {
+    Answers,
+    TravelGrantDetails,
+    Checklist,
+} = require('../graphql-shared-types')
 
 const RegistrationType = new GraphQLObjectType({
     name: 'Registration',
@@ -39,6 +43,9 @@ const RegistrationType = new GraphQLObjectType({
             },
             tags: {
                 type: GraphQLList(GraphQLString),
+            },
+            checklist: {
+                type: Checklist,
             },
             answers: {
                 type: Answers,
