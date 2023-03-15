@@ -62,9 +62,9 @@ steps:
 
 
 
-- script: |
-    npm run build
-  displayName: 'npm build'
+#- script: |
+#    npm run build
+ # displayName: 'npm build'
 
 - script: ls -R
   displayName: 'ls'
@@ -72,7 +72,7 @@ steps:
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappeurope'
-      sourceFolder: './backend/build'
+      sourceFolder: '.'
       contents: '**' 
       targetFolder: '/home/newadmin/build'
     # Advanced
