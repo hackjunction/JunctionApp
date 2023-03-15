@@ -63,7 +63,7 @@ steps:
 
 
 - script: |
-    better-npm-run build
+    npm run build
   displayName: 'npm build'
 
 - script: ls -R
