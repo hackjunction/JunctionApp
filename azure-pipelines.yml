@@ -86,7 +86,12 @@ steps:
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
 
-
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'newadmin_junctionappeurope'
+    runOptions: 'commands' 
+    commands: cd /home/newadmin/build && npm install &&  npm run build && cd backend &&#&& npm start
+    #interactiveSession: true
 
 - task: CopyFilesOverSSH@0
   inputs:
@@ -118,9 +123,3 @@ steps:
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
 
-#- task: SSH@0
- # inputs:
-  #  sshEndpoint: 'newadmin_junctionappeurope'
-   # runOptions: 'commands' 
-    #commands: sudo systemctl reload nginx
-    #interactiveSession: true
