@@ -6,6 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "better-npm-run start:prod",
+        "prod": "better-npm-run forever:prod",
         "dev": "better-npm-run start:dev",
         "debug": "better-npm-run start:debug",
         "build": "better-npm-run setup && better-npm-run build",
@@ -29,6 +30,7 @@
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
         "start:debug": "npm-run-all --parallel dev:frontend dev:backend --debug-brk=2222",
         "start:prod": "cd backend && npm start",
+        "forever:prod": "cd backend && npm run prod",
         "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
     },
     "pre-commit": [
