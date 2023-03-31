@@ -6,12 +6,12 @@ const { updateMeetingGoogleInfo } = require('../../../modules/meeting/helpers')
 
 const TOKEN_PATH = `${__dirname}/token.json`
 const install = {
-        client_id: "977605669153-uvqei66gsabc1mnv3gsbknsupurpcjgu.apps.googleusercontent.com",//global.gConfig.GOOGLE_CLIENT_ID,
-        project_id: "junctionapp-calendar",//global.gConfig.GOOGLE_PROJECT_ID,
+        client_id: "758477701769-0bpsr9791j20j2s42e1lm1uta5fbih43.apps.googleusercontent.com",//global.gConfig.GOOGLE_CLIENT_ID,
+        project_id: "junction-calendar-375014",//global.gConfig.GOOGLE_PROJECT_ID,
         auth_uri:"https://accounts.google.com/o/oauth2/auth", //global.gConfig.GOOGLE_AUTH_URI,
         token_uri:"https://oauth2.googleapis.com/token", //global.gConfig.GOOGLE_TOKEN_URI,
         auth_provider_x509_cert_url:"https://www.googleapis.com/oauth2/v1/certs", //global.gConfig.GOOGLE_AUTH_PROVIDER,
-        client_secret:"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
+        client_secret:"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
         redirect_uris:["http://localhost","https://app.hackjunction.com"], //[ global.gConfig.GOOGLE_REDIRECT]
 }
 const credentialsJ = {
