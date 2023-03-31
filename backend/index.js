@@ -88,9 +88,10 @@ throng({
     start: () => {
         const PORT = process.env.PORT || 2222
 
-        httpServer.listen(PORT, () => {
+        httpServer.listen(0, () => {
             logger.info(
-                `Worker ${process.pid} started, listening on port ${PORT}`,
+                `Worker ${process.pid} started, listening on port ${httpServer.address().port}`,
+                
             )
         })
     },
