@@ -2,5 +2,3 @@
 /build
 .env
 .ignored
-/common/services/google-calendar/credentials.json
-/common/services/google-calendar/token.json
