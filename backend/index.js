@@ -90,7 +90,8 @@ throng({
 
         httpServer.listen(PORT, () => {
             logger.info(
-                `Worker ${process.pid} started, listening on port ${PORT}`,
+                `Worker ${process.pid} started, listening on port ${httpServer.address().port}`,
+                
             )
         })
     },
