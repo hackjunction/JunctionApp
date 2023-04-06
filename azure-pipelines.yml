@@ -69,7 +69,7 @@ steps:
 
   
 - script: |
-    better-npm-run build
+    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
   displayName: 'npm build front'
 
 - script: rm -rf ./frontend
