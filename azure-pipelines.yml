@@ -3,8 +3,7 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
-- einoSTAG
+trigger: none
 
 pool:
   vmImage: ubuntu-latest
@@ -65,7 +64,7 @@ steps:
   displayName: 'install frontend'
 
 - script: |
-    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+    npm run build
   displayName: 'npm build front'
 
 - script: ls -R
