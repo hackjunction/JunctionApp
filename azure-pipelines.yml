@@ -64,8 +64,16 @@ steps:
   displayName: 'install frontend'
 
 - script: |
-    npm run build
+    cd frontend && npm install
+  displayName: 'npm setup front'
+
+  
+- script: |
+    better-npm-run build
   displayName: 'npm build front'
+
+- script: rm -rf ./frontend
+  displayName: 'rm frontend'
 
 - script: ls -R
   displayName: 'ls'
@@ -118,8 +126,20 @@ steps:
   displayName: 'rename'
 
 - script: |
-    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+    npm install
+  displayName: 'install frontend'
+
+- script: |
+    cd frontend && npm install
+  displayName: 'npm setup front'
+
+  
+- script: |
+    better-npm-run build
   displayName: 'npm build front'
+
+- script: rm -rf ./frontend
+  displayName: 'rm frontend'
 
 - task: CopyFilesOverSSH@0
   inputs:
@@ -171,8 +191,20 @@ steps:
   displayName: 'rename'
 
 - script: |
-    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+    npm install
+  displayName: 'install frontend'
+
+- script: |
+    cd frontend && npm install
+  displayName: 'npm setup front'
+
+  
+- script: |
+    better-npm-run build
   displayName: 'npm build front'
+
+- script: rm -rf ./frontend
+  displayName: 'rm frontend'
 
 
 
