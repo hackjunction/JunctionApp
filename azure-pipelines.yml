@@ -60,13 +60,13 @@ steps:
 - script: cat ./frontend/.env
   displayName: 'cat'
 
-#- script: |
- #   cd frontend && npm install
-  #displayName: 'install frontend'
+- script: |
+    npm install
+  displayName: 'install frontend'
 
-#- script: |
- #   rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
-  #displayName: 'npm build front'
+- script: |
+    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+  displayName: 'npm build front'
 
 - script: ls -R
   displayName: 'ls'
@@ -74,9 +74,115 @@ steps:
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappeurope'
-      sourceFolder: '.'
+      sourceFolder: './backend'
       contents: '**' 
-      targetFolder: '/home/newadmin/build'
+      targetFolder: '/home/newadmin/build/backend'
+    # Advanced
+      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true 
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      #readyTimeout: '20000' 
+      overwrite: true 
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
+
+- task: DownloadSecureFile@1
+  displayName: 'download backendend'
+  inputs:
+    secureFile: 'BACKEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+
+- task: CopyFiles@2
+  displayName: 'copy backendend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: BACKEND_ENV_FILE_ASIA
+    TargetFolder: './backend'
+
+- script: mv ./backend/BACKEND_ENV_FILE_ASIA ./backend/.env
+  displayName: 'rename'
+- task: DownloadSecureFile@1
+  displayName: 'download frontend'
+  inputs:
+    secureFile: 'FRONTEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+
+- task: CopyFiles@2
+  displayName: 'copy frontend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: FRONTEND_ENV_FILE_ASIA
+    TargetFolder: './frontend'
+
+- script: ls frontend -a
+  displayName: 'ls'
+
+- script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
+  displayName: 'rename'
+
+- script: |
+    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+  displayName: 'npm build front'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'newadmin_junctionappasia'
+      sourceFolder: './backend'
+      contents: '**' 
+      targetFolder: '/home/newadmin/build/backend'
+    # Advanced
+      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true 
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      #readyTimeout: '20000' 
+      overwrite: true 
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
+      
+
+
+- task: DownloadSecureFile@1
+  displayName: 'download backendend'
+  inputs:
+    secureFile: 'BACKEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
+
+- task: CopyFiles@2
+  displayName: 'copy backendend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: BACKEND_ENV_FILE_AFRICA
+    TargetFolder: './backend'
+
+- script: mv ./backend/BACKEND_ENV_FILE_AFRICA ./backend/.env
+  displayName: 'rename'
+- task: DownloadSecureFile@1
+  displayName: 'download frontend'
+  inputs:
+    secureFile: 'FRONTEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
+
+- task: CopyFiles@2
+  displayName: 'copy frontend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: FRONTEND_ENV_FILE_AFRICA
+    TargetFolder: './frontend'
+
+- script: ls frontend -a
+  displayName: 'ls'
+
+- script: mv ./frontend/FRONTEND_ENV_FILE_AFRICA ./frontend/.env
+  displayName: 'rename'
+
+- script: |
+    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+  displayName: 'npm build front'
+
+
+
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'newadmin_junctionappafrica'
+      sourceFolder: './backend'
+      contents: '**' 
+      targetFolder: '/home/newadmin/build/backend'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
@@ -92,34 +198,3 @@ steps:
     runOptions: 'commands' 
     commands: cd /home/newadmin/build && npm install &&  npm run build && cd backend &&#&& npm start
     #interactiveSession: true
-
-- task: CopyFilesOverSSH@0
-  inputs:
-      sshEndpoint: 'newadmin_junctionappasia'
-      sourceFolder: './backend/build'
-      contents: '**' 
-      targetFolder: '/home/newadmin/build'
-    # Advanced
-      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-      cleanTargetFolder: true 
-      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-      #readyTimeout: '20000' 
-      overwrite: true 
-      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
-      #flattenFolders: false # boolean. Flatten folders. Default: false.
-      
-- task: CopyFilesOverSSH@0
-  inputs:
-      sshEndpoint: 'newadmin_junctionappafrica'
-      sourceFolder: './backend/build'
-      contents: '**' 
-      targetFolder: '/home/newadmin/build'
-    # Advanced
-      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-      cleanTargetFolder: true 
-      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-      #readyTimeout: '20000' 
-      overwrite: true 
-      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
-      #flattenFolders: false # boolean. Flatten folders. Default: false.
-
