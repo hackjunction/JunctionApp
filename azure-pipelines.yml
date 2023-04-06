@@ -72,7 +72,7 @@ steps:
     rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
   displayName: 'npm build front'
 
-- script: rm -rf ./frontend
+- script: rm -rf ./frontend/node_modules
   displayName: 'rm frontend'
 
 - script: ls -R
@@ -81,9 +81,9 @@ steps:
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappeurope'
-      sourceFolder: './backend'
+      sourceFolder: '.'
       contents: '**' 
-      targetFolder: '/home/newadmin/build/backend'
+      targetFolder: '/home/newadmin/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
@@ -135,18 +135,19 @@ steps:
 
   
 - script: |
-    better-npm-run build
+    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
   displayName: 'npm build front'
 
-- script: rm -rf ./frontend
+
+- script: rm -rf ./frontend/node_modules
   displayName: 'rm frontend'
 
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappasia'
-      sourceFolder: './backend'
+      sourceFolder: '.'
       contents: '**' 
-      targetFolder: '/home/newadmin/build/backend'
+      targetFolder: '/home/newadmin/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
@@ -203,7 +204,7 @@ steps:
     rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
   displayName: 'npm build front'
 
-- script: rm -rf ./frontend
+- script: rm -rf ./frontend/node_modules
   displayName: 'rm frontend'
 
 
@@ -211,9 +212,9 @@ steps:
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappafrica'
-      sourceFolder: './backend'
+      sourceFolder: '.'
       contents: '**' 
-      targetFolder: '/home/newadmin/build/backend'
+      targetFolder: '/home/newadmin/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
       cleanTargetFolder: true 
