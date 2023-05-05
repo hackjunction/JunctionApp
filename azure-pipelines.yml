@@ -22,26 +22,26 @@ steps:
   displayName: 'ls'
 
 - task: DownloadSecureFile@1
-  displayName: 'download backendend'
+  displayName: 'download EU backendend'
   inputs:
     secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
 
 - task: CopyFiles@2
-  displayName: 'copy backendend'
+  displayName: 'copy EU backendend'
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: BACKEND_ENV_FILE_EU
     TargetFolder: './backend'
 
 - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
-  displayName: 'rename'
+  displayName: 'rename eu .env'
 - task: DownloadSecureFile@1
-  displayName: 'download frontend'
+  displayName: 'download eu frontend'
   inputs:
     secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
 
 - task: CopyFiles@2
-  displayName: 'copy frontend'
+  displayName: 'copy eu frontend'
   inputs:
     SourceFolder: '$(Agent.TempDirectory)'
     Contents: FRONTEND_ENV_FILE_EU
@@ -51,7 +51,7 @@ steps:
   displayName: 'ls'
 
 - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
-  displayName: 'rename'
+  displayName: 'rename eu .env'
 
 - script: ls -a ./frontend
   displayName: 'ls'
@@ -73,7 +73,7 @@ steps:
   displayName: 'npm build front'
 
 - script: rm -rf ./frontend/node_modules
-  displayName: 'rm frontend'
+  displayName: 'rm frontend node_modules'
 
 - script: ls -R
   displayName: 'ls'
@@ -143,6 +143,9 @@ steps:
 - script: rm -rf ./frontend/node_modules
   displayName: 'rm frontend'
 
+- script: ls -R
+  displayName: 'ls'
+  
 - task: CopyFilesOverSSH@0
   inputs:
       sshEndpoint: 'newadmin_junctionappasia'
@@ -158,7 +161,12 @@ steps:
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
       
-
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'newadmin_junctionappasia'
+    runOptions: 'commands' 
+    commands: mkdir /home/newadmin/testdir
+    #interactiveSession: true
 
 - task: DownloadSecureFile@1
   displayName: 'download backendend'
@@ -225,9 +233,3 @@ steps:
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
 
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'newadmin_junctionappasia'
-    runOptions: 'commands' 
-    commands: mkdir /home/newadmin/testdir
-    #interactiveSession: true
