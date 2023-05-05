@@ -78,20 +78,21 @@ steps:
 - script: ls -R
   displayName: 'ls'
 
-- task: CopyFilesOverSSH@0
-  inputs:
-      sshEndpoint: 'newadmin_junctionappeurope'
-      sourceFolder: '.'
-      contents: '**' 
-      targetFolder: '/home/newadmin/build'
-    # Advanced
-      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-      cleanTargetFolder: true 
-      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-      #readyTimeout: '20000' 
-      overwrite: true 
-      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
-      #flattenFolders: false # boolean. Flatten folders. Default: false.
+
+#- task: CopyFilesOverSSH@0
+#  inputs:
+#      sshEndpoint: 'newadmin_junctionappeurope'
+#      sourceFolder: '.'
+#      contents: '**' 
+#      targetFolder: '/home/newadmin/build'
+#    # Advanced
+#      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+#      cleanTargetFolder: true 
+#      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+#      #readyTimeout: '20000' 
+#      overwrite: true 
+#      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+#      #flattenFolders: false # boolean. Flatten folders. Default: false.
 
 - task: DownloadSecureFile@1
   displayName: 'download backendend'
@@ -209,24 +210,24 @@ steps:
 
 
 
-- task: CopyFilesOverSSH@0
-  inputs:
-      sshEndpoint: 'newadmin_junctionappafrica'
-      sourceFolder: '.'
-      contents: '**' 
-      targetFolder: '/home/newadmin/build'
+#- task: CopyFilesOverSSH@0
+ # inputs:
+  #    sshEndpoint: 'newadmin_junctionappafrica'
+   #   sourceFolder: '.'
+    #  contents: '**' 
+     # targetFolder: '/home/newadmin/build'
     # Advanced
       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-      cleanTargetFolder: true 
+      #cleanTargetFolder: true 
       #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
       #readyTimeout: '20000' 
-      overwrite: true 
+      #overwrite: true 
       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
       #flattenFolders: false # boolean. Flatten folders. Default: false.
 
 - task: SSH@0
   inputs:
-    sshEndpoint: 'newadmin_junctionappeurope'
+    sshEndpoint: 'newadmin_junctionappasia'
     runOptions: 'commands' 
-    commands: cd /home/newadmin/build && npm install &&  npm run build && cd backend &&#&& npm start
+    commands: mkdir /home/newadmin/testdir
     #interactiveSession: true
