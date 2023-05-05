@@ -126,9 +126,9 @@ steps:
 - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
   displayName: 'rename'
 
-# - script: |
-#     npm install
-#   displayName: 'install frontend'
+- script: |
+    npm install
+  displayName: 'install frontend'
 
 - script: |
     cd frontend && npm install
@@ -142,6 +142,9 @@ steps:
 
 - script: rm -rf ./frontend/node_modules
   displayName: 'rm frontend'
+
+- script: rm -rf ./node_modules
+  displayName: 'rm node_modules'
 
 - script: ls -R
   displayName: 'ls'
