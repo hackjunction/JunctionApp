@@ -21,62 +21,62 @@ steps:
 - script: ls -R
   displayName: 'ls'
 
-- task: DownloadSecureFile@1
-  displayName: 'download EU backendend'
-  inputs:
-    secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+# - task: DownloadSecureFile@1
+#   displayName: 'download EU backendend'
+#   inputs:
+#     secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
 
-- task: CopyFiles@2
-  displayName: 'copy EU backendend'
-  inputs:
-    SourceFolder: '$(Agent.TempDirectory)'
-    Contents: BACKEND_ENV_FILE_EU
-    TargetFolder: './backend'
+# - task: CopyFiles@2
+#   displayName: 'copy EU backendend'
+#   inputs:
+#     SourceFolder: '$(Agent.TempDirectory)'
+#     Contents: BACKEND_ENV_FILE_EU
+#     TargetFolder: './backend'
 
-- script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
-  displayName: 'rename eu .env'
-- task: DownloadSecureFile@1
-  displayName: 'download eu frontend'
-  inputs:
-    secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+# - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
+#   displayName: 'rename eu .env'
+# - task: DownloadSecureFile@1
+#   displayName: 'download eu frontend'
+#   inputs:
+#     secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
 
-- task: CopyFiles@2
-  displayName: 'copy eu frontend'
-  inputs:
-    SourceFolder: '$(Agent.TempDirectory)'
-    Contents: FRONTEND_ENV_FILE_EU
-    TargetFolder: './frontend'
+# - task: CopyFiles@2
+#   displayName: 'copy eu frontend'
+#   inputs:
+#     SourceFolder: '$(Agent.TempDirectory)'
+#     Contents: FRONTEND_ENV_FILE_EU
+#     TargetFolder: './frontend'
 
-- script: ls frontend -a
-  displayName: 'ls'
+# - script: ls frontend -a
+#   displayName: 'ls'
 
-- script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
-  displayName: 'rename eu .env'
+# - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+#   displayName: 'rename eu .env'
 
-- script: ls -a ./frontend
-  displayName: 'ls'
+# - script: ls -a ./frontend
+#   displayName: 'ls'
 
-- script: cat ./frontend/.env
-  displayName: 'cat'
+# - script: cat ./frontend/.env
+#   displayName: 'cat'
 
-- script: |
-    npm install
-  displayName: 'install frontend'
+# - script: |
+#     npm install
+#   displayName: 'install frontend'
 
-- script: |
-    cd frontend && npm install
-  displayName: 'npm setup front'
+# - script: |
+#     cd frontend && npm install
+#   displayName: 'npm setup front'
 
   
-- script: |
-    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
-  displayName: 'npm build front'
+# - script: |
+#     rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+#   displayName: 'npm build front'
 
-- script: rm -rf ./frontend/node_modules
-  displayName: 'rm frontend node_modules'
+# - script: rm -rf ./frontend/node_modules
+#   displayName: 'rm frontend node_modules'
 
-- script: ls -R
-  displayName: 'ls'
+# - script: ls -R
+#   displayName: 'ls'
 
 
 #- task: CopyFilesOverSSH@0
@@ -126,9 +126,9 @@ steps:
 - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
   displayName: 'rename'
 
-- script: |
-    npm install
-  displayName: 'install frontend'
+# - script: |
+#     npm install
+#   displayName: 'install frontend'
 
 - script: |
     cd frontend && npm install
