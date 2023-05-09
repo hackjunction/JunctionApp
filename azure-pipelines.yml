@@ -171,7 +171,7 @@ steps:
     inline: |
         ls && node -v && nvm use 12.20.1 
     #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
-    interpreterCommand: '/home/newadmin/build'
+    #interpreterCommand: '/home/newadmin/build'
     #interactiveSession: true
 
 - task: DownloadSecureFile@1
