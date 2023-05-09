@@ -14,6 +14,10 @@ steps:
     versionSpec: '12.20.1'
   displayName: 'Install Node.js'
 
+
+
+#EUROPE SETUP
+
 #- script: |
  #   npm install
   #displayName: 'npm install'
@@ -94,6 +98,10 @@ steps:
 #      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
 #      #flattenFolders: false # boolean. Flatten folders. Default: false.
 
+
+
+
+#ASIA SETUP
 - task: DownloadSecureFile@1
   displayName: 'download backendend'
   inputs:
@@ -126,43 +134,21 @@ steps:
 - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
   displayName: 'rename'
 
-# - script: |
-#     npm install
-#   displayName: 'install frontend'
-
-# - script: |
-#     cd frontend && npm install
-#   displayName: 'npm setup front'
-
   
-# - script: |
-#     rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
-#   displayName: 'npm build front'
-
-
-# - script: rm -rf ./frontend/node_modules
-#   displayName: 'rm frontend'
-
-# - script: rm -rf ./node_modules
-#   displayName: 'rm node_modules'
-
-- script: ls -R
-  displayName: 'ls'
-  
-# - task: CopyFilesOverSSH@0
-#   inputs:
-#       sshEndpoint: 'newadmin_junctionappasia'
-#       sourceFolder: '.'
-#       contents: '**' 
-#       targetFolder: '/home/newadmin/build'
-#     # Advanced
-#       #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-#       cleanTargetFolder: true 
-#       #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-#       #readyTimeout: '20000' 
-#       overwrite: true 
-#       #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
-#       #flattenFolders: false # boolean. Flatten folders. Default: false.
+- task: CopyFilesOverSSH@0
+  inputs:
+      sshEndpoint: 'newadmin_junctionappasia'
+      sourceFolder: '.'
+      contents: '**' 
+      targetFolder: '/home/newadmin/build'
+    # Advanced
+      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true 
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      #readyTimeout: '20000' 
+      overwrite: true 
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
       
 - task: SSH@0
   inputs:
