@@ -176,7 +176,7 @@ steps:
         cd build
         npm install
         npm run build
-        pm2 restart
+        pm2 restart index
         sudo systemctl restart nginx
     #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
     #interpreterCommand: '/home/newadmin/build'
