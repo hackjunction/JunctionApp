@@ -173,6 +173,10 @@ steps:
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm use 12.20.1
         node -v
+        npm install
+        npm run build
+        pm2 restart
+        sudo systemctl restart nginx
     #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
     #interpreterCommand: '/home/newadmin/build'
     #interactiveSession: true
