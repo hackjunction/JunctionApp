@@ -168,7 +168,7 @@ steps:
   inputs:
     sshEndpoint: 'newadmin_junctionappasia'
     runOptions: 'commands' 
-    commands: mkdir /home/newadmin/testdir
+    commands: cd build && npm install && cd backend && npm ci && cd .. && cd shared && npm ci && cd .. && pm2 restart
     #interactiveSession: true
 
 - task: DownloadSecureFile@1
