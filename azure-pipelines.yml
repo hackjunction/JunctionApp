@@ -168,7 +168,7 @@ steps:
   inputs:
     sshEndpoint: 'newadmin_junctionappasia'
     runOptions: 'commands' 
-    commands: cd build && npm install && npm run build && pm2 restart && sudo systemctl restart nginx
+    commands: cd build && node -v && nvm use 12.20.1 #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
     #interactiveSession: true
 
 - task: DownloadSecureFile@1
