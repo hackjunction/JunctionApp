@@ -126,25 +126,25 @@ steps:
 - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
   displayName: 'rename'
 
-- script: |
-    npm install
-  displayName: 'install frontend'
+# - script: |
+#     npm install
+#   displayName: 'install frontend'
 
-- script: |
-    cd frontend && npm install
-  displayName: 'npm setup front'
+# - script: |
+#     cd frontend && npm install
+#   displayName: 'npm setup front'
 
   
-- script: |
-    rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
-  displayName: 'npm build front'
+# - script: |
+#     rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
+#   displayName: 'npm build front'
 
 
-- script: rm -rf ./frontend/node_modules
-  displayName: 'rm frontend'
+# - script: rm -rf ./frontend/node_modules
+#   displayName: 'rm frontend'
 
-- script: rm -rf ./node_modules
-  displayName: 'rm node_modules'
+# - script: rm -rf ./node_modules
+#   displayName: 'rm node_modules'
 
 - script: ls -R
   displayName: 'ls'
@@ -168,7 +168,7 @@ steps:
   inputs:
     sshEndpoint: 'newadmin_junctionappasia'
     runOptions: 'commands' 
-    commands: cd build && npm install && cd backend && npm ci && cd .. && cd shared && npm ci && cd .. && pm2 restart
+    commands: cd build && npm install && npm run build && pm2 restart && sudo systemctl restart nginx
     #interactiveSession: true
 
 - task: DownloadSecureFile@1
