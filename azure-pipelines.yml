@@ -169,7 +169,12 @@ steps:
     sshEndpoint: 'newadmin_junctionappasia'
     runOptions: 'inline' 
     inline: |
-        w && echo $USER && cd build && ls && node -v && nvm use 12.20.1 
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm install 12.20.1
+        nvm use 12.20.1
+        node -v
     #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
     #interpreterCommand: '/home/newadmin/build'
     #interactiveSession: true
