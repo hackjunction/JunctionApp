@@ -164,6 +164,7 @@ steps:
         npm run build
         pm2 restart index
         sudo systemctl restart nginx
+    continueOnError: true
     #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
     #interpreterCommand: '/home/newadmin/build'
     #interactiveSession: true
