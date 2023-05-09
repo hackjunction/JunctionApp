@@ -173,6 +173,7 @@ steps:
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         nvm use 12.20.1
         node -v
+        cd build
         npm install
         npm run build
         pm2 restart
