@@ -84,7 +84,7 @@ steps:
 
 
 - task: CopyFilesOverSSH@0
- inputs:
+  inputs:
      sshEndpoint: 'newadmin_junctionappeurope'
      sourceFolder: '.'
      contents: '**' 
