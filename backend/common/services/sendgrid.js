@@ -39,11 +39,17 @@ const sendgridAddRecipientsToList = (listId, recipientIds) => {
 
 const SendgridService = {
     sendAcceptanceEmail: (event, user) => {
+
+
+        var header_image_url = null
+        if(typeof event.coverImage !== "undefined"){
+            header_image_url = event.coverImage.url
+        }
         const msg = SendgridService.buildTemplateMessage(
             user.email,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                header_image: event.coverImage.url,
+                header_image:  header_image_url,
                 subject: `Congratulations!`,
                 subtitle: `You've been accepted to ${event.name}!`,
                 body: `
@@ -69,11 +75,15 @@ const SendgridService = {
         return SendgridService.send(msg)
     },
     sendRejectionEmail: (event, user) => {
+        var header_image_url = null
+        if(typeof event.coverImage !== "undefined"){
+            header_image_url = event.coverImage.url
+        }
         const msg = SendgridService.buildTemplateMessage(
             user.email,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                header_image: event.coverImage.url,
+                header_image_url: header_image_url,
                 subject: `Oh-oh, bad news...`,
                 subtitle: `We couldn't give you a spot at ${event.name}.`,
                 body: `
@@ -100,13 +110,17 @@ const SendgridService = {
         return SendgridService.send(msg)
     },
     sendRegisteredEmail: (event, user) => {
+        var header_image_url = null
+        if(typeof event.coverImage !== "undefined"){
+            header_image_url = event.coverImage.url
+        }
         let msg
         if (event.eventType === EventTypes.physical.id) {
             msg = SendgridService.buildTemplateMessage(
                 user.email,
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
-                    header_image: event.coverImage.url,
+                    header_image: header_image_url,
                     subject: `Thanks for registering to ${event.name}!`,
                     subtitle: 'Awesome! Now just sit back and relax.',
                     body: `The application period ends <b>${moment(
@@ -123,7 +137,7 @@ const SendgridService = {
                 user.email,
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
-                    header_image: event.coverImage.url,
+                    header_image: header_image_url,
                     subject: `Thanks for registering to ${event.name}!`,
                     subtitle: `Thank you for registering to ${event.name}!`,
                     body: `You can modify your registration until the registration period ends <b>${moment(

@@ -6,13 +6,13 @@ const { updateMeetingGoogleInfo } = require('../../../modules/meeting/helpers')
 
 const TOKEN_PATH = `${__dirname}/token.json`
 const install = {
-        client_id: "758477701769-0bpsr9791j20j2s42e1lm1uta5fbih43.apps.googleusercontent.com",//global.gConfig.GOOGLE_CLIENT_ID,
-        project_id: "junction-calendar-375014",//global.gConfig.GOOGLE_PROJECT_ID,
-        auth_uri:"https://accounts.google.com/o/oauth2/auth", //global.gConfig.GOOGLE_AUTH_URI,
-        token_uri:"https://oauth2.googleapis.com/token", //global.gConfig.GOOGLE_TOKEN_URI,
-        auth_provider_x509_cert_url:"https://www.googleapis.com/oauth2/v1/certs", //global.gConfig.GOOGLE_AUTH_PROVIDER,
-        client_secret:"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
-        redirect_uris:["http://localhost","https://app.hackjunction.com"], //[ global.gConfig.GOOGLE_REDIRECT]
+        client_id: "752565208443-0g0ui7afokfi2b1t1von4qankq1vh62h.apps.googleusercontent.com",//"758477701769-hasb17jt161beprjr34kgqjma0sb815h.apps.googleusercontent.com",//global.gConfig.GOOGLE_CLIENT_ID,
+        project_id: "prod-calendar-386407",//"junction-calendar-375014",//global.gConfig.GOOGLE_PROJECT_ID,
+        auth_uri: "https://accounts.google.com/o/oauth2/auth",//"https://accounts.google.com/o/oauth2/auth", //global.gConfig.GOOGLE_AUTH_URI,
+        token_uri: "https://oauth2.googleapis.com/token",//"https://oauth2.googleapis.com/token", //global.gConfig.GOOGLE_TOKEN_URI,
+        auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",//"https://www.googleapis.com/oauth2/v1/certs", //global.gConfig.GOOGLE_AUTH_PROVIDER,
+        client_secret: "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",//"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", //global.gConfig.GOOGLE_CLIENT_SECRET,
+        redirect_uris:["http://localhost","https://app.hackjunction.com","https://eu.junctionplatform.com"]//["http://localhost","https://app.hackjunction.com"], //[ global.gConfig.GOOGLE_REDIRECT]
 }
 const credentialsJ = {
     installed: install
@@ -25,6 +25,7 @@ const credentialsJ = {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback, callbackParameter = null) {
+    console.log("authorizing")
     const { client_secret, client_id, redirect_uris } = credentials.installed
     const oAuth2Client = new google.auth.OAuth2(
         client_id,
@@ -33,28 +34,33 @@ function authorize(credentials, callback, callbackParameter = null) {
     )
 
     // Check if we have previously stored a token.
-    /*fs.readFile(TOKEN_PATH, (err, token) => {
+    fs.readFile(TOKEN_PATH, (err, token) => {
         if (err) {
             console.log('Error loading google calendar token file')
             return false
         }
+        console.log("got token",token)
         oAuth2Client.setCredentials(JSON.parse(token))
+        console.log("oAuth2Client, callbackParameter",callback(oAuth2Client, callbackParameter))
         callback(oAuth2Client, callbackParameter)
-    })*/
+    })
+
+    /*
     const token = {
-        access_token:"ya29.a0Aa4xrXOdNBsFXqQSSiMLbAWnKBaBfhWB342CzU-oTbyHcK52nCPe1XYaP9N4hnYFrR4a6fGpjpy6pB656Z073qwhUugmJGwefoUEuIB314vlKvnM6QjOjMJJCZ09blKY4q6mmS-pk8SFRdjfyxmHFC-jtgfGaCgYKATASARMSFQEjDvL9RjspRr9FOAM3oWebqAnbRw0163", //global.gConfig.GOOGLE_ACCESS_TOKEN,
-        refresh_token:"1//0cC5U4m6XKnh2CgYIARAAGAwSNwF-L9Irl9DukV1QMHGFK7BozAXfSA-fgfWD3at--Y_rNt1XVA6hQ0k5AeaALOGs9KeuHtZXW_0" ,//global.gConfig.GOOGLE_REFRESH_TOKEN,
+        access_token:"ya29.a0Ael9sCMoo8IabUn5UxLm0o0Hn02-tPd6zyfYQ_3oz3lfvbXv74tuNwiFaDuVBDYSpxXm3B5kevx6XBrXWLfKsgTmfmr7GK1GTZwp03vv0v21VYPoZfbNjhgNoeNn-uZNZpzFDLLLcEZSeZC9gD8gtxi595JAaCgYKARESARASFQF4udJhPMx_xWNBafEIZTOxqIDNag0163", //global.gConfig.GOOGLE_ACCESS_TOKEN,
+        refresh_token:"1//0cnu7b1wJjlcECgYIARAAGAwSNwF-L9Irtd583yuPmAaI4NpEfSqzdUfAiJHW05KC3rHwripIMUj9z2K65p1HZkOs9RjesuFdsFE",//global.gConfig.GOOGLE_REFRESH_TOKEN,
         scope:"https://www.googleapis.com/auth/calendar", //global.gConfig.GOOGLE_SCOPE,
         token_type:"Bearer", //global.gConfig.GOOGLE_TOKEN_TYPE,
-        expiry_date:"1667307274047", //global.gConfig.GOOGLE_EXPIRY_DATE
+        expiry_date:"1680256081541", //global.gConfig.GOOGLE_EXPIRY_DATE
     }
 
     oAuth2Client.setCredentials(JSON.parse(JSON.stringify(token)))
     callback(oAuth2Client, callbackParameter)
-
+    */
 }
 
 const insertEvent = (auth, eventInfo) => {
+    console.log("inserting")
     const calendar = google.calendar({ version: 'v3', auth })
     calendar.events.insert(
         {
@@ -66,10 +72,11 @@ const insertEvent = (auth, eventInfo) => {
         (err, res) => {
             if (err) {
                 console.log(
-                    `There was an error contacting the Calendar service: ${err}`,
+                    `There was an error contacting the Calendar service: ${err}`, res
                 )
                 // cancelMeeting(eventInfo.meetingId)
             } else {
+                console.log(res)
                 updateMeetingGoogleInfo(
                     eventInfo.meetingId,
                     res.data.id,
@@ -118,6 +125,7 @@ const deleteGoogleEvent = eventId => {
 }
 
 const createGoogleEvent = event => {
+    console.log("creating google event")
     try {
         const googleEvent = {
             summary: event.title + " ||  " + event.desc || 'Junction: meeting with challenge partner',
@@ -161,8 +169,10 @@ const createGoogleEvent = event => {
 
         console.log(credentialsJ)
         authorize(JSON.parse(JSON.stringify(credentialsJ)),insertEvent,eventInfo)
+        console.log("success")
         return true
     } catch (err) {
+        console.log("no meets for you")
         return false
     }
 }

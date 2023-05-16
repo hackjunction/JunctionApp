@@ -199,8 +199,10 @@ export default ({ event, user }) => {
     }
 
     const bookMeetingAction = (meeting, location, partiComment) => {
+        console.log("booking: ",meeting)
         setLoading(true)
         console.log(partiComment)
+        
         bookMeeting({
             variables: {
                 meetingId: meeting._id,
@@ -236,6 +238,7 @@ export default ({ event, user }) => {
     }
 
     const cancelMeetingAction = meeting => {
+        console.log("cancel: ",meeting)
         setLoading(true)
         cancelMeeting({
             variables: { meetingId: meeting._id },

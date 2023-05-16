@@ -42,7 +42,7 @@ export default ({ registration, onSubmit, onCancel }) => {
         if (errors.length > 0) {
             return
         }
-
+        console.log("change status", formValues.status)
         onSubmit(formValues)
     }, [formFields, formValues, onSubmit])
 

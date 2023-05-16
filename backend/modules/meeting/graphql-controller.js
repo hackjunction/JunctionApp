@@ -201,9 +201,11 @@ class MeetingContorller {
         const meetingToBook = await Meeting.findOne({ _id: meetingId })
         // return null if meeting already has attendees (already booked)
         if (!meetingToBook || meetingToBook.attendees.length !== 0) return null
+
         const attendeeProfiles = await UsersController.getUserProfiles(
             attendees,
         )
+        console.log("profiles are here: ", attendeeProfiles)
 
         let roomBookedSuccessfully = false
         if (location !== '' && location !== 'ONLINE') {
@@ -215,6 +217,7 @@ class MeetingContorller {
             )
         }
 
+        
         const newLocation =
             // eslint-disable-next-line no-nested-ternary
             location === 'ONLINE'
@@ -250,7 +253,7 @@ class MeetingContorller {
             meetingId,
             desc: partiComment,
         }
-
+        console.log("creating event",googleEvent)
         // create google calednar event and meets link
         createGoogleEvent(googleEvent)
 

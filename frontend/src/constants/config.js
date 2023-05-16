@@ -34,8 +34,7 @@ const settings = {
     ID_TOKEN_NAMESPACE: {
         required: true,
         value:
-            process.env.REACT_APP_ID_TOKEN_NAMESPACE ||
-            'https://app.hackjunction.com/',
+            process.env.ID_TOKEN_NAMESPACE || (process.env.NODE_ENV === 'development') ? 'https://app.hackjunction.com/' : 'https://eu.junctionplatform.com/',
     },
     IS_DEBUG: {
         default: process.env.NODE_ENV === 'development',

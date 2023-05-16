@@ -78,7 +78,7 @@ export default () => {
     ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
         'SuperAdmin'
     )
-    console.log(isPartner, "¤¤¤")
+    console.log(isPartner, "user is partner")
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
