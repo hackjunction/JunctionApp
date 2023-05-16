@@ -25,37 +25,37 @@ steps:
 - script: ls -R
   displayName: 'ls'
 
-# - task: DownloadSecureFile@1
-#   displayName: 'download EU backendend'
-#   inputs:
-#     secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+- task: DownloadSecureFile@1
+  displayName: 'download EU backendend'
+  inputs:
+    secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
 
-# - task: CopyFiles@2
-#   displayName: 'copy EU backendend'
-#   inputs:
-#     SourceFolder: '$(Agent.TempDirectory)'
-#     Contents: BACKEND_ENV_FILE_EU
-#     TargetFolder: './backend'
+- task: CopyFiles@2
+  displayName: 'copy EU backendend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: BACKEND_ENV_FILE_EU
+    TargetFolder: './backend'
 
-# - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
-#   displayName: 'rename eu .env'
-# - task: DownloadSecureFile@1
-#   displayName: 'download eu frontend'
-#   inputs:
-#     secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+- script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
+  displayName: 'rename eu .env'
+- task: DownloadSecureFile@1
+  displayName: 'download eu frontend'
+  inputs:
+    secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
 
-# - task: CopyFiles@2
-#   displayName: 'copy eu frontend'
-#   inputs:
-#     SourceFolder: '$(Agent.TempDirectory)'
-#     Contents: FRONTEND_ENV_FILE_EU
-#     TargetFolder: './frontend'
+- task: CopyFiles@2
+  displayName: 'copy eu frontend'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: FRONTEND_ENV_FILE_EU
+    TargetFolder: './frontend'
 
 # - script: ls frontend -a
 #   displayName: 'ls'
 
-# - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
-#   displayName: 'rename eu .env'
+- script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+  displayName: 'rename eu .env'
 
 # - script: ls -a ./frontend
 #   displayName: 'ls'
@@ -83,22 +83,39 @@ steps:
 #   displayName: 'ls'
 
 
-#- task: CopyFilesOverSSH@0
-#  inputs:
-#      sshEndpoint: 'newadmin_junctionappeurope'
-#      sourceFolder: '.'
-#      contents: '**' 
-#      targetFolder: '/home/newadmin/build'
-#    # Advanced
-#      #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-#      cleanTargetFolder: true 
-#      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-#      #readyTimeout: '20000' 
-#      overwrite: true 
-#      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
-#      #flattenFolders: false # boolean. Flatten folders. Default: false.
+- task: CopyFilesOverSSH@0
+ inputs:
+     sshEndpoint: 'newadmin_junctionappeurope'
+     sourceFolder: '.'
+     contents: '**' 
+     targetFolder: '/home/newadmin/build'
+   # Advanced
+     #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
+     cleanTargetFolder: true 
+     #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+     #readyTimeout: '20000' 
+     overwrite: true 
+     #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+     #flattenFolders: false # boolean. Flatten folders. Default: false.
 
-
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'newadmin_junctionappeurope'
+    runOptions: 'inline' 
+    inline: |
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm use 12.20.1
+        node -v
+        cd build
+        npm install
+        npm run build
+        pm2 restart index
+        sudo systemctl restart nginx
+    continueOnError: true
+    #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
+    #interpreterCommand: '/home/newadmin/build'
+    #interactiveSession: true
 
 
 #ASIA SETUP
