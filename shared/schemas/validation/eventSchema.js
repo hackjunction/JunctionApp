@@ -9,19 +9,23 @@ const cloudinaryImage = yup
     .default(null)
     .nullable()
 
-const address = yup.object().shape({
-    country: yup.string().required(),
-    addressLine: yup.string().required(),
-    addressLine2: yup.string(),
-    city: yup.string().required(),
-    postalCode: yup
-        .string()
-        .matches(/^[0-9]+$/, 'Invalid zipcode')
-        .min(5, 'Invalid zipcode')
-        .max(5, 'Invalid zipcode')
-        .required(),
-    venueName: yup.string(),
-})
+const address = yup
+    .object()
+    .shape({
+        country: yup.string().required(),
+        addressLine: yup.string().required(),
+        addressLine2: yup.string().required(),
+        city: yup.string().required(),
+        postalCode: yup
+            .string()
+            .matches(/^[0-9]+$/, 'Invalid zipcode')
+            .min(5, 'Invalid zipcode')
+            .max(5, 'Invalid zipcode')
+            .required(),
+        venueName: yup.string(),
+    })
+    .default(null)
+    .nullable()
 
 const track = yup.object().shape({
     name: yup.string().required(),
@@ -112,6 +116,7 @@ const meetingRoom = yup.object().shape({
 })
 
 export default yup.object().shape({
+    showLocation: yup.boolean(),
     name: yup.string().required('Event name is required'),
     slug: yup.string().required('Event must have a unique slug'),
     timezone: yup.string(),
@@ -123,7 +128,7 @@ export default yup.object().shape({
     reviewingStartTime: yup.date(),
     reviewingEndTime: yup.date(),
     finalsActive: yup.boolean(),
-    eventLocation: address.notRequired().nullable(true),
+    eventLocation: address,
     tracksEnabled: yup.boolean(),
     tracks: yup.array().of(track),
     challengesEnabled: yup.boolean(),
