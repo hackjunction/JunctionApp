@@ -229,7 +229,6 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="FAQ link"
-
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >

@@ -101,7 +101,7 @@ export default () => {
                                     if (value === 'physical') {
                                         await form.setFieldValue(
                                             'eventLocation',
-                                            form.values.eventLocation ?? {},
+                                            form.values.eventLocation ?? {}, //checks whether the eventLocation is null || undefined => if true, set it to an empty object
                                         )
                                     }
                                     form.setFieldValue(field.name, value)

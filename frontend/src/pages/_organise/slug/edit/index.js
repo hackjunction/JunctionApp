@@ -39,7 +39,7 @@ export default () => {
                         errorMessages: Object.keys(errors).map(
                             key => `${key}: ${errors[key].message}`,
                         ),
-                        persist: true,
+                        persist: false, // this could be the problem why errors messages persist? => solution: set to false
                     }),
                 )
             } else {
