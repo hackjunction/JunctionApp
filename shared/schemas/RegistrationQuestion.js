@@ -104,6 +104,9 @@ const RegistrationQuestionType = new GraphQLObjectType({
 const RegistrationQuestionInput = new GraphQLInputObjectType({
     name: 'RegistrationQuestionInput',
     fields: {
+        _id: {
+            type: GraphQLString, // This one was missing that leads to an error when updating the section
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },
