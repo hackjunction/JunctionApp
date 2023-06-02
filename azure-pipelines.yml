@@ -85,7 +85,7 @@ steps:
 
 - task: CopyFilesOverSSH@0
   inputs:
-     sshEndpoint: 'junctionapp_stag'
+     sshEndpoint: 'junctionapp_test'
      sourceFolder: '.'
      contents: '**' 
      targetFolder: '/home/azurejunction/build'
@@ -100,7 +100,7 @@ steps:
 
 - task: SSH@0
   inputs:
-    sshEndpoint: 'junctionapp_stag'
+    sshEndpoint: 'junctionapp_test'
     runOptions: 'inline' 
     inline: |
         export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
