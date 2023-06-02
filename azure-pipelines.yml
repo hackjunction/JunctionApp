@@ -82,7 +82,25 @@ steps:
 # - script: ls -R
 #   displayName: 'ls'
 
-https://www.notion.so/junctionhq/MongoDB-setup-with-Docker-8a74e7ef1d5c427e968e5bdc4bdbc0e7?pvs=4
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'junctionapp_test'
+    runOptions: 'inline' 
+    inline: |
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm use 12.20.1
+        node -v
+        cd build
+        npm install
+        npm run build
+        pm2 restart index
+        sudo systemctl restart nginx
+    continueOnError: true
+    #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
+    #interpreterCommand: '/home/newadmin/build'
+    #interactiveSession: true
+    
 - task: CopyFilesOverSSH@0
   inputs:
      sshEndpoint: 'junctionapp_test'
