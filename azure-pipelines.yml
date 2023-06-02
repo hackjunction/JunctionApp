@@ -82,7 +82,7 @@ steps:
 # - script: ls -R
 #   displayName: 'ls'
 
-
+https://www.notion.so/junctionhq/MongoDB-setup-with-Docker-8a74e7ef1d5c427e968e5bdc4bdbc0e7?pvs=4
 - task: CopyFilesOverSSH@0
   inputs:
      sshEndpoint: 'junctionapp_test'
