@@ -86,7 +86,7 @@
         "not IE 11",
         "maintained node versions"
     ],
-    "proxy": "http://localhost:2222",
+    "proxy": "http://127.0.0.1:2222",
     "engines": {
         "node": "12.3.1",
         "npm": "6.9.0"
