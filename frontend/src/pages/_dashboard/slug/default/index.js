@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid, Dialog } from '@material-ui/core'
 
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
@@ -22,17 +22,17 @@ import EventTimeline from 'pages/_events/slug/default/EventTimeline'
 import TimeLineBlock from './Blocks/TimeLineBlock'
 import AlertBlock from './Blocks/AlertBlock'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
+import ProjectDetail from 'components/projects/ProjectDetail'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
-import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
+import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
 
 
 export default ({ alerts }) => {
-    const dispatch = useDispatch()
+    const [selected, setSelected] = useState(false)
     const match = useRouteMatch()
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
@@ -40,6 +40,7 @@ export default ({ alerts }) => {
     const project_scores = useSelector(DashboardSelectors.projectScores) //To remove?
     console.log('projects', projects)
     console.log('project_scores', project_scores)
+    console.log('Match', match)
     const isPartner =
         user.userId == 'google-oauth2|108766439620242776277' ||
         (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
@@ -110,14 +111,27 @@ export default ({ alerts }) => {
                     <AlertBlock alerts={alerts} />
                 </div>
                 <EventOverBlock />
-                <ProjectsGrid
-                        projects={projects}
-                        event={event}
-                        onSelect={project =>
-                            dispatch(push(`${match.url}/view/${project._id}`))
-                        }
-                        showScore={true}
-                    />
+                { projects ? (
+                    <ProjectsGrid
+                            projects={projects}
+                            event={event}
+                            onSelect={setSelected}
+                            showScore={false}
+                        />
+                ) : null}
+                <Dialog
+                transitionDuration={0}
+                fullScreen
+                open={Boolean(selected)}
+                onClose={() => setSelected()}
+                >
+                  <ProjectDetail
+                      project={selected}
+                      event={event}
+                      onBack={() => setSelected()}
+                      showTableLocation={false}
+                  />
+                </Dialog>
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />

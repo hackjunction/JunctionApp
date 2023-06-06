@@ -16,19 +16,17 @@ const ProjectsGrid = ({
     showFullTeam = false,
     showScore = false,
     token = '',
-    idToken = '',
 }) => {
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
     const fetchData = useCallback(async () => {
         const nprojects = await Promise.all(
           projects.map(async project => {
-            if (!idToken) {
               return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
                 token,
                 event.slug,
                 project._id,
-              })
+              )
                     .then(score => {
                         if (score[0]) {
                             return Object.assign(score[0], project)
@@ -70,7 +68,6 @@ const ProjectsGrid = ({
       justify="center"
       >
             {sorted.map(project => {
-                console.log(project?.score)
                 return (
                     <ProjectsGridItem
                     project={project}
