@@ -1,14 +1,8 @@
 import React from 'react'
-// import React, {useState} from 'react'
-import { useRouteMatch } from 'react-router-dom'
-
 import { Box, Grid } from '@material-ui/core'
-// import { Typography, Box, Grid, Dialog } from '@material-ui/core'
-
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
-
 import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
 import ProjectBlock from './Blocks/ProjectBlock'
 import TeamStatusBlock from './Blocks/TeamStatusBlock'
@@ -24,8 +18,6 @@ import SocialMediaBlock from './Blocks/SocialMediaBlock'
 import EventTimeline from 'pages/_events/slug/default/EventTimeline'
 import TimeLineBlock from './Blocks/TimeLineBlock'
 import AlertBlock from './Blocks/AlertBlock'
-// import ProjectsGrid from 'components/projects/ProjectsGrid'
-// import ProjectDetail from 'components/projects/ProjectDetail'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
@@ -35,8 +27,6 @@ import * as UserSelectors from 'redux/user/selectors'
 
 
 export default ({ alerts }) => {
-    // const [selected, setSelected] = useState(false)
-    // const match = useRouteMatch()
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
@@ -111,31 +101,6 @@ export default ({ alerts }) => {
                 </div>
                 <EventOverBlock />
                 <ProjectSubmissionsBlock projects={projects} event={event}/>
-                {/* { projects ? (
-                    <Typography variant="h4">
-                        Your project submissions
-                    </Typography>) : null}
-                { projects ? (
-                    <ProjectsGrid
-                            projects={projects}
-                            event={event}
-                            onSelect={setSelected}
-                            showScore={false}
-                        />
-                ) : null}
-                <Dialog
-                transitionDuration={0}
-                fullScreen
-                open={Boolean(selected)}
-                onClose={() => setSelected()}
-                >
-                  <ProjectDetail
-                      project={selected}
-                      event={event}
-                      onBack={() => setSelected()}
-                      showTableLocation={false}
-                  />
-                </Dialog> */}
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />
