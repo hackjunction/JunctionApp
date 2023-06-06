@@ -1,7 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
+// import React, {useState} from 'react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { Typography, Box, Grid, Dialog } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
+// import { Typography, Box, Grid, Dialog } from '@material-ui/core'
 
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
@@ -13,6 +15,7 @@ import TeamStatusBlock from './Blocks/TeamStatusBlock'
 import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
 import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
 import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
+import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
 //import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
@@ -21,8 +24,8 @@ import SocialMediaBlock from './Blocks/SocialMediaBlock'
 import EventTimeline from 'pages/_events/slug/default/EventTimeline'
 import TimeLineBlock from './Blocks/TimeLineBlock'
 import AlertBlock from './Blocks/AlertBlock'
-import ProjectsGrid from 'components/projects/ProjectsGrid'
-import ProjectDetail from 'components/projects/ProjectDetail'
+// import ProjectsGrid from 'components/projects/ProjectsGrid'
+// import ProjectDetail from 'components/projects/ProjectDetail'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
@@ -32,15 +35,11 @@ import * as UserSelectors from 'redux/user/selectors'
 
 
 export default ({ alerts }) => {
-    const [selected, setSelected] = useState(false)
-    const match = useRouteMatch()
+    // const [selected, setSelected] = useState(false)
+    // const match = useRouteMatch()
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
-    const project_scores = useSelector(DashboardSelectors.projectScores) //To remove?
-    console.log('projects', projects)
-    console.log('project_scores', project_scores)
-    console.log('Match', match)
     const isPartner =
         user.userId == 'google-oauth2|108766439620242776277' ||
         (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
@@ -111,6 +110,11 @@ export default ({ alerts }) => {
                     <AlertBlock alerts={alerts} />
                 </div>
                 <EventOverBlock />
+                <ProjectSubmissionsBlock projects={projects} event={event}/>
+                {/* { projects ? (
+                    <Typography variant="h4">
+                        Your project submissions
+                    </Typography>) : null}
                 { projects ? (
                     <ProjectsGrid
                             projects={projects}
@@ -131,7 +135,7 @@ export default ({ alerts }) => {
                       onBack={() => setSelected()}
                       showTableLocation={false}
                   />
-                </Dialog>
+                </Dialog> */}
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />
