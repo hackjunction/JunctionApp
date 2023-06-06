@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { Box, Grid, Dialog } from '@material-ui/core'
+import { Typography, Box, Grid, Dialog } from '@material-ui/core'
 
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
