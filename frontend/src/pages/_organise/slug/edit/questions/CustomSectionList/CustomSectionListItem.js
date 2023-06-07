@@ -132,14 +132,16 @@ export default ({
                         />
                     </ListItem>
                     <ListItem>
-                        <ListItemText
-                            primary="Always shown?"
-                            secondary={
-                                !section.conditional
-                                    ? `Yes`
-                                    : `No (${section.conditional})`
-                            }
-                        />
+                        {section.conditional && (
+                            <ListItemText
+                                primary={`Conditional question: ${section.conditional}`}
+                            />
+                        )}
+                        {!section.conditional && (
+                            <ListItemText
+                                secondary={'No conditional question required'}
+                            />
+                        )}
                     </ListItem>
                 </List>
                 <Box p={1}>

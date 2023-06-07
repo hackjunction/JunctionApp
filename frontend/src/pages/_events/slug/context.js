@@ -46,6 +46,7 @@ const eventQuery = gql`
                 }
             }
             customQuestions {
+                conditional
                 label
                 name
                 description

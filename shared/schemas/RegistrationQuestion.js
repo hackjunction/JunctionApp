@@ -5,6 +5,7 @@ const {
     GraphQLBoolean,
     GraphQLNonNull,
     GraphQLInputObjectType,
+    GraphQLID,
 } = require('graphql')
 const RegistrationQuestionSettingsType = require('./RegistrationQuestionSettings')
     .graphql
@@ -104,6 +105,9 @@ const RegistrationQuestionType = new GraphQLObjectType({
 const RegistrationQuestionInput = new GraphQLInputObjectType({
     name: 'RegistrationQuestionInput',
     fields: {
+        _id: {
+            type: GraphQLID,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },
