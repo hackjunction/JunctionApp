@@ -6,14 +6,14 @@ import Footer from 'components/layouts/Footer'
 
 import Container from 'components/generic/Container'
 
-import { useMyEvents } from 'graphql/queries/events'
+// import { useMyEvents } from 'graphql/queries/events'
 
 export default () => {
-    const [events, loading] = useMyEvents()
+    // const [events, loading] = useMyEvents()
 
     return (
         <PageWrapper
-            loading={loading}
+            // loading={loading}
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
             render={() => (
