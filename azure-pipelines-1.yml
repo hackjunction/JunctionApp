@@ -34,3 +34,32 @@ stages:
         replaceExistingArchive: true
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
+
+  
+  - deployment: VMDeploy
+    displayName: Web deploy
+    environment:
+      name:  STAG
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Modify deployment script based on the app type
+                echo "Starting deployment script run"
+                
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop/**/target/*.zip'
+              destinationFolder: '/home/azurejunction/build' 
+              cleanDestinationFolder: true 
+              overwriteExistingFiles: true
+              #pathToSevenZipTool: # string. Path to 7z utility.
+              
+     
+
+      
