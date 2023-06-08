@@ -61,7 +61,7 @@ stages:
           - task: ExtractFiles@1
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              destinationFolder: '/japp' 
+              destinationFolder: '$(Pipeline.Workspace)/japp' 
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
