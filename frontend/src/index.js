@@ -14,7 +14,8 @@ import WebFont from 'webfontloader'
 import Notifier from './notifier'
 import configureStore, { history } from 'redux/configureStore'
 import config from 'constants/config'
-import theme from './material-ui-theme'
+// import theme from './material-ui-theme'
+import theme from './junctionTheme'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -37,7 +38,11 @@ if (process.env.NODE_ENV === 'development') {
 
 WebFont.load({
     google: {
-        families: ['Montserrat:400,400i,700,700i', 'Lato:400,400i,700,700i'],
+        families: [
+            'Montserrat:400,400i,700,700i',
+            'Lato:400,400i,700,700i',
+            'Inter:400,400i,700,700i',
+        ],
     },
 })
 
