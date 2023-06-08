@@ -13,6 +13,7 @@ import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
 
 import RequiresPermission from './hocs/RequiresPermission'
+import RequiresRole from 'hocs/RequiresRole'
 
 /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
@@ -101,7 +102,7 @@ const routes = [
     },
     {
         path: '/admin',
-        component: AdminRouter,
+        component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
         exact: false,
     },
 ]
