@@ -43,6 +43,11 @@ stages:
       resourceType: VirtualMachine
     strategy:
       runOnce:
+        preDeploy:
+            steps:
+            - download: current
+              artifact: drop
+            - script: echo initialize, cleanup, backup, install certs
         deploy:
           steps:
           - task: Bash@3
@@ -51,15 +56,29 @@ stages:
               script: |
                 # Modify deployment script based on the app type
                 echo "Starting deployment script run"
-          - download: current
-            artifact: drop
+               
+
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)\drop/$(Build.BuildId).zip'
-              destinationFolder: '/home/azurejunction/build' 
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              destinationFolder: '/japp' 
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
+
+        routeTraffic:
+          steps:
+          - script: echo routing traffic
+        postRouteTraffic:
+          steps:
+          - script: echo health check post-route traffic
+        on:
+          failure:
+            steps:
+            - script: echo Restore from backup! This is on failure
+          success:
+            steps:
+            - script: echo Notify! This is on success
               
      
 
