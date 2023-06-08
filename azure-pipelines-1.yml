@@ -51,10 +51,11 @@ stages:
               script: |
                 # Modify deployment script based on the app type
                 echo "Starting deployment script run"
-                
+          - download: current
+            artifact: drop
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop/**/target/*.zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)\drop/$(Build.BuildId).zip'
               destinationFolder: '/home/azurejunction/build' 
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
