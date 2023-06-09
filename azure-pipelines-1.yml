@@ -51,16 +51,6 @@ stages:
     - script: ls -Rn
       displayName: 'ls'
 
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '12.20.1'
-      displayName: 'Install Node.js'
-
-    - script: |
-        node -v
-        npm install
-        npm run build --if-present
-      displayName: 'npm install and build'
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -85,6 +75,7 @@ stages:
             - download: current
               artifact: drop
             - script: echo initialize, cleanup, backup, install certs
+        
         deploy:
           steps:
           - task: Bash@3
@@ -102,6 +93,18 @@ stages:
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
+
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                nvm use 12.20.1
+                node -v
+                npm install
+                npm run build
+              #pm2 restart index
+              #systemctl reload nginx
+             
 
         routeTraffic:
           steps:
