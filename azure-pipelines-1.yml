@@ -44,8 +44,11 @@ stages:
 
     - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
       displayName: 'rename eu .env'
-    
-    - script: ls -R
+
+    - script: ls -a ./frontend
+      displayName: 'ls' 
+
+    - script: ls -Rn
       displayName: 'ls'
 
     - task: NodeTool@0
