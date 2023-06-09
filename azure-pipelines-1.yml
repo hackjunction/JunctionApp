@@ -67,6 +67,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
+                nvm use 12.20.1
                 node -v
                 cd /home/azurejunction/azagent/_work/1/japp
                 npm install
