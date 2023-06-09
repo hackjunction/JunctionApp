@@ -21,6 +21,7 @@ stages:
         versionSpec: '12.20.1'
       displayName: 'Install Node.js'
     - script: |
+        node -v
         npm install
         npm run build --if-present
       displayName: 'npm install and build'
