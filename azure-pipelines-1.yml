@@ -50,6 +50,15 @@ stages:
 
     - script: ls -Rn
       displayName: 'ls'
+    
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          node -v
+          npm -v
+          npm install
+          npm run build
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
@@ -99,9 +108,11 @@ stages:
               targetType: 'inline'
               script: |
                 nvm use 12.20.1
-                node -v
-                npm install
-                npm run build
+              # node -v
+              # npm install
+              # echo installed
+              # npm run build
+              # echo build done
               #pm2 restart index
               #systemctl reload nginx
              
