@@ -113,14 +113,8 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                nvm use 12.20.1
-              # node -v
-              # npm install
-              # echo installed
-              # npm run build
-              # echo build done
-              #pm2 restart index
-              #systemctl reload nginx
+                pm2 restart index
+                sudo systemctl restart nginx
              
 
         routeTraffic:
