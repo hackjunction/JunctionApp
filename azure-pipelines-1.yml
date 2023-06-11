@@ -1,0 +1,347 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build_eu
+    steps:
+    
+    - task: DownloadSecureFile@1
+      displayName: 'download EU backendend'
+      inputs:
+        secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy EU backendend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: BACKEND_ENV_FILE_EU
+        TargetFolder: './backend'
+
+    - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
+      displayName: 'rename eu .env'
+    - task: DownloadSecureFile@1
+      displayName: 'download eu frontend'
+      inputs:
+        secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy eu frontend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: FRONTEND_ENV_FILE_EU
+        TargetFolder: './frontend'
+
+    - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+      displayName: 'rename eu .env'
+
+    - script: ls -a ./frontend
+      displayName: 'ls' 
+
+    - script: ls -Rn
+      displayName: 'ls'
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.20.1'
+      displayName: 'Install Node.js'
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          node -v
+          npm -v
+          npm install
+          npm run build
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop_eu
+  
+
+
+
+  - job: Build_asia
+    steps:
+    
+    - task: DownloadSecureFile@1
+      displayName: 'download ASIA backendend'
+      inputs:
+        secureFile: 'BACKEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy asia backendend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: BACKEND_ENV_FILE_ASIA
+        TargetFolder: './backend'
+
+    - script: mv ./backend/BACKEND_ENV_FILE_ASIA ./backend/.env
+      displayName: 'rename asia .env'
+    - task: DownloadSecureFile@1
+      displayName: 'download asia frontend'
+      inputs:
+        secureFile: 'FRONTEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy asia frontend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: FRONTEND_ENV_FILE_ASIA
+        TargetFolder: './frontend'
+
+    - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
+      displayName: 'rename asia .env'
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.20.1'
+      displayName: 'Install Node.js'
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          node -v
+          npm -v
+          npm install
+          npm run build
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop
+
+
+  - job: Build_africa
+    steps:
+    
+    - task: DownloadSecureFile@1
+      displayName: 'download africa backendend'
+      inputs:
+        secureFile: 'BACKEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy africa backendend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: BACKEND_ENV_FILE_AFRICA
+        TargetFolder: './backend'
+
+    - script: mv ./backend/BACKEND_ENV_FILE_AFRICA ./backend/.env
+      displayName: 'rename africa .env'
+    - task: DownloadSecureFile@1
+      displayName: 'download africa frontend'
+      inputs:
+        secureFile: 'FRONTEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy africa frontend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: FRONTEND_ENV_FILE_AFRICA
+        TargetFolder: './frontend'
+
+    - script: mv ./frontend/FRONTEND_ENV_FILE_AFRICA ./frontend/.env
+      displayName: 'rename africa .env'
+
+    - script: ls -a ./frontend
+      displayName: 'ls' 
+
+    - script: ls -Rn
+      displayName: 'ls'
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.20.1'
+      displayName: 'Install Node.js'
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          node -v
+          npm -v
+          npm install
+          npm run build
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop_africa
+
+
+  - deployment: VMDeploy
+    dependsOn: Build
+    displayName: DEPRLOY EU
+    environment:
+      name:  PROD
+      resourceType: VirtualMachine
+      tags: europe
+    strategy:
+      runOnce:
+        preDeploy:
+            steps:
+            - download: current
+              artifact: drop_eu
+            - script: echo initialize, cleanup, backup, install certs
+        
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Modify deployment script based on the app type
+                echo "Starting deployment script run"
+               
+
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop_eu/$(Build.BuildId).zip'
+              destinationFolder: '$(Pipeline.Workspace)/japp' 
+              cleanDestinationFolder: true 
+              overwriteExistingFiles: true
+              #pathToSevenZipTool: # string. Path to 7z utility.
+
+        routeTraffic:
+          steps:
+          - script: echo routing traffic
+        postRouteTraffic:
+          steps:
+          - script: echo health check post-route traffic
+        on:
+          failure:
+            steps:
+            - script: echo Restore from backup! This is on failure
+          success:
+            steps:
+            - script: echo Notify! This is on success
+              
+
+
+  - deployment: VMDeploy
+    dependsOn: Build
+    displayName: DEPRLOY ASIA
+    environment:
+      name:  PROD
+      resourceType: VirtualMachine
+      tags: asia
+    strategy:
+      runOnce:
+        preDeploy:
+            steps:
+            - download: current
+              artifact: drop_asia
+            - script: echo initialize, cleanup, backup, install certs
+        
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Modify deployment script based on the app type
+                echo "Starting deployment script run"
+               
+
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop_asia/$(Build.BuildId).zip'
+              destinationFolder: '$(Pipeline.Workspace)/japp' 
+              cleanDestinationFolder: true 
+              overwriteExistingFiles: true
+              #pathToSevenZipTool: # string. Path to 7z utility.
+
+        routeTraffic:
+          steps:
+          - script: echo routing traffic
+        postRouteTraffic:
+          steps:
+          - script: echo health check post-route traffic
+        on:
+          failure:
+            steps:
+            - script: echo Restore from backup! This is on failure
+          success:
+            steps:
+            - script: echo Notify! This is on success
+
+
+
+  - deployment: VMDeploy
+    dependsOn: Build
+    displayName: DEPRLOY AFRICA
+    environment:
+      name:  PROD
+      resourceType: VirtualMachine
+      tags: africa
+    strategy:
+      runOnce:
+        preDeploy:
+            steps:
+            - download: current
+              artifact: drop_africa
+            - script: echo initialize, cleanup, backup, install certs
+        
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Modify deployment script based on the app type
+                echo "Starting deployment script run"
+               
+
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop_africa/$(Build.BuildId).zip'
+              destinationFolder: '$(Pipeline.Workspace)/japp' 
+              cleanDestinationFolder: true 
+              overwriteExistingFiles: true
+              #pathToSevenZipTool: # string. Path to 7z utility.
+
+        routeTraffic:
+          steps:
+          - script: echo routing traffic
+        postRouteTraffic:
+          steps:
+          - script: echo health check post-route traffic
+        on:
+          failure:
+            steps:
+            - script: echo Restore from backup! This is on failure
+          success:
+            steps:
+            - script: echo Notify! This is on success
