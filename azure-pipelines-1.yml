@@ -201,7 +201,7 @@ stages:
       artifact: drop_africa
 
 
-  - deployment: VMDeploy
+  - deployment: VMDeploy EU
     dependsOn: Build
     displayName: DEPRLOY EU
     environment:
@@ -250,8 +250,8 @@ stages:
               
 
 
-  - deployment: VMDeploy
-    dependsOn: Build
+  - deployment: VMDeploy ASIA
+    dependsOn: VMDeploy EU
     displayName: DEPRLOY ASIA
     environment:
       name:  PROD
@@ -299,8 +299,8 @@ stages:
 
 
 
-  - deployment: VMDeploy
-    dependsOn: Build
+  - deployment: VMDeploy AFRICA
+    dependsOn: VMDeploy ASIA
     displayName: DEPRLOY AFRICA
     environment:
       name:  PROD
