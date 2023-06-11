@@ -51,6 +51,12 @@ stages:
     - script: ls -Rn
       displayName: 'ls'
     
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.20.1'
+      displayName: 'Install Node.js'
+
     - task: Bash@3
       inputs:
         targetType: 'inline'
