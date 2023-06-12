@@ -4,7 +4,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
 
-import useStyles from 'utils/styles'
+import junctionStyle from 'utils/styles'
 import {
     Card,
     CardActions,
@@ -22,7 +22,7 @@ import { Skeleton } from '@material-ui/lab'
 
 export default () => {
     // const [events, loading] = useMyEvents()
-    const classes = useStyles()
+    const classes = junctionStyle()
     return (
         <PageWrapper
             // loading={loading}

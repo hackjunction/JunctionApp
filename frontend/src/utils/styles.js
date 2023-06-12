@@ -1,7 +1,7 @@
 import theme from 'junctionTheme'
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles({
+const junctionStyle = makeStyles({
     w450: {
         maxWidth: '450px',
     },
@@ -43,4 +43,4 @@ const useStyles = makeStyles({
     },
 })
 
-export default useStyles
+export default junctionStyle
