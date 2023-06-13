@@ -212,8 +212,23 @@ stages:
       runOnce:
         preDeploy:
             steps:
-            - download: current
-              artifact: drop_eu
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current' 
+                #project: # string. Required when source == specific. Project. 
+                #definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
+                #specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
+                #buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
+                #branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
+                #pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
+                #tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
+                #allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
+                #allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
+                artifactName: drop_eu
+                #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
+                targetPath: '$(Pipeline.Workspace)/drop'
+
+
             - script: echo initialize, cleanup, backup, install certs
         
         deploy:
@@ -261,9 +276,21 @@ stages:
       runOnce:
         preDeploy:
             steps:
-            - download: current
-              artifact: drop_asia
-            - script: echo initialize, cleanup, backup, install certs
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current' 
+                #project: # string. Required when source == specific. Project. 
+                #definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
+                #specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
+                #buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
+                #branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
+                #pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
+                #tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
+                #allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
+                #allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
+                artifactName: drop_asia
+                #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
+                targetPath: '$(Pipeline.Workspace)/drop'
         
         deploy:
           steps:
@@ -310,9 +337,21 @@ stages:
       runOnce:
         preDeploy:
             steps:
-            - download: current
-              artifact: drop_africa
-            - script: echo initialize, cleanup, backup, install certs
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current' 
+                #project: # string. Required when source == specific. Project. 
+                #definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
+                #specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
+                #buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
+                #branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
+                #pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
+                #tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
+                #allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
+                #allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
+                artifactName: drop_africa
+                #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
+                targetPath: '$(Pipeline.Workspace)/drop'
         
         deploy:
           steps:
