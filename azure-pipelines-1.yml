@@ -134,7 +134,7 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
+      artifact: drop_asia
 
 
   - job: Build_africa
@@ -249,6 +249,13 @@ stages:
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
 
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                pm2 restart index
+                sudo systemctl restart nginx
+
         routeTraffic:
           steps:
           - script: echo routing traffic
@@ -267,6 +274,7 @@ stages:
 
   - deployment: VMDeploy_ASIA
     dependsOn: VMDeploy_EU
+    condition: succeededOrFailed()
     displayName: DEPRLOY ASIA
     environment:
       name:  PROD
@@ -310,6 +318,13 @@ stages:
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
 
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                pm2 restart index
+                sudo systemctl restart nginx
+
         routeTraffic:
           steps:
           - script: echo routing traffic
@@ -328,6 +343,7 @@ stages:
 
   - deployment: VMDeploy_AFRICA
     dependsOn: VMDeploy_ASIA
+    condition: succeededOrFailed()
     displayName: DEPRLOY AFRICA
     environment:
       name:  PROD
@@ -370,6 +386,13 @@ stages:
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
+
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                pm2 restart index
+                sudo systemctl restart nginx
 
         routeTraffic:
           steps:
