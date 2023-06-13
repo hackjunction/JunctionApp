@@ -56,7 +56,6 @@
         "pino-pretty": "^4.0.0",
         "react-helmet": "^6.1.0",
         "react-pdf": "^4.1.0",
-        "react-responsive-masonry": "^2.1.7",
         "uuid": "^8.3.2",
         "yup": "^0.29.1"
     },
