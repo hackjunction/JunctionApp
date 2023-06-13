@@ -80,6 +80,7 @@ stages:
 
 
   - job: Build_asia
+    dependsOn: Build_eu
     steps:
     
     - task: DownloadSecureFile@1
@@ -138,6 +139,7 @@ stages:
 
 
   - job: Build_africa
+    dependsOn: Build_asia
     steps:
     
     - task: DownloadSecureFile@1
