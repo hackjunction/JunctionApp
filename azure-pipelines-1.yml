@@ -101,7 +101,7 @@ stages:
                 artifactName: drop
                 #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
                 targetPath: '$(Pipeline.Workspace)/drop'
-            - download: current
+
 
             - script: echo initialize, cleanup, backup, install certs
         
