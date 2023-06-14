@@ -23,6 +23,7 @@ import SubmissionFormTab from './submission'
 import TimelineTab from './timeline'
 import MeetingRoomsTab from './meetingRooms'
 import OtherTab from './other'
+import HackerpackTab from './hackerpack'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 
@@ -146,6 +147,12 @@ export default () => {
                                     key: 'other',
                                     label: 'Miscellaneous',
                                     component: OtherTab,
+                                },
+                                {
+                                    path: '/hackerpack',
+                                    key: 'hackerpacks',
+                                    label: 'Hackerpack',
+                                    component: HackerpackTab,
                                 },
                             ]}
                             location={location}

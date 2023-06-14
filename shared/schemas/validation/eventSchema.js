@@ -43,6 +43,15 @@ const challenge = yup.object().shape({
     logo: cloudinaryImage,
 })
 
+const hackerpack = yup.object().shape({
+    name: yup.string().required(),
+    slug: yup.string(),
+    partner: yup.string(),
+    title: yup.string(),
+    description: yup.string(),
+    logo: cloudinaryImage,
+})
+
 const travelGrantConfig = yup.object().shape({
     enabled: yup.boolean().required(),
     budget: yup.number().integer().required(),
@@ -127,6 +136,8 @@ export default yup.object().shape({
     tracks: yup.array().of(track),
     challengesEnabled: yup.boolean(),
     challenges: yup.array().of(challenge).min(0),
+    hackerpacksEnabled: yup.boolean(),
+    hackerpacks: yup.array().of(hackerpack).min(0),
     travelGrantConfig,
     reviewMethod: yup.string(),
     overallReviewMethod: yup.string(),
