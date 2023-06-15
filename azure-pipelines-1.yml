@@ -80,7 +80,7 @@ stages:
     dependsOn: Build
     displayName: Web deploy
     environment:
-      name:  TEST
+      name:  STAGING
       resourceType: VirtualMachine
     strategy:
       runOnce:
