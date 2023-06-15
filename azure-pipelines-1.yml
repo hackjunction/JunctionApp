@@ -86,9 +86,12 @@ stages:
       runOnce:
         preDeploy:
             steps:
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current' 
+            - download: 'current'
+              artifact: 'drop'
+              target: '$(Pipeline.Workspace)/drop'
+            #- task: DownloadPipelineArtifact@2
+             # inputs:
+              #  buildType: 'current' 
                 #project: # string. Required when source == specific. Project. 
                 #definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
                 #specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
@@ -98,9 +101,9 @@ stages:
                 #tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
                 #allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
                 #allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
-                artifactName: drop
+               # artifactName: drop
                 #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
-                targetPath: '$(Pipeline.Workspace)/drop'
+                #targetPath: '$(Pipeline.Workspace)/drop'
 
 
             - script: echo initialize, cleanup, backup, install certs
