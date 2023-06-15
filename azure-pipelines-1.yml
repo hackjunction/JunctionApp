@@ -88,7 +88,7 @@ stages:
             steps:
             - download: 'current'
               artifact: 'drop'
-              target: '$(Pipeline.Workspace)/drop'
+ 
             #- task: DownloadPipelineArtifact@2
              # inputs:
               #  buildType: 'current' 
