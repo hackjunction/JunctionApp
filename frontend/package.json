@@ -51,16 +51,17 @@
         "react-i18next": "^11.5.0",
         "react-inlinesvg": "^1.2.0",
         "react-markdown": "^4.3.1",
+        "react-multi-carousel": "^2.8.4",
         "react-player": "^2.6.2",
         "react-qr-reader": "^2.2.1",
         "react-redux": "^7.2.0",
+        "react-responsive-masonry": "^2.1.7",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^3.4.3",
         "react-select": "^3.1.0",
         "react-swipeable-views": "0.13.9",
         "react-swipeable-views-utils": "0.13.9",
         "react-table": "^7.1.0",
-        "react-responsive-masonry": "^2.1.7",
         "recharts": "^1.8.5",
         "redux": "^4.0.5",
         "redux-devtools-extension": "^2.13.8",
@@ -70,6 +71,7 @@
         "remark-breaks": "^1.0.5",
         "reselect": "^4.0.0",
         "speakingurl": "^14.0.1",
+        "tailwindcss": "^1.9.6",
         "webfontloader": "^1.6.28",
         "yup": "^0.29.1"
     },
@@ -82,7 +84,9 @@
         "lint-fix": "eslint ./src --fix",
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
-        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint"
+        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint",
+        "build:tailwind": "npx tailwindcss build src/index.css -o src/tailwind.css",
+        "build:styles": "NODE_ENV=production npm run build:tailwind"
     },
     "browserslist": [
         "defaults",
@@ -101,6 +105,7 @@
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-prettier": "^3.4.0",
+        "postcss-cli": "^10.1.0",
         "prettier": "^2.3.2"
     }
 }

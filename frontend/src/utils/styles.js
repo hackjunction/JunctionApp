@@ -2,6 +2,9 @@ import theme from 'junctionTheme'
 import { makeStyles } from '@material-ui/core/styles'
 
 const junctionStyle = makeStyles({
+    wUnset: props => ({
+        width: `unset ${props.important ? '!important' : ''}`,
+    }),
     w450: {
         maxWidth: '450px',
     },

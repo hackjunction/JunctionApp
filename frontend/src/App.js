@@ -33,17 +33,16 @@ export default ({ history, location }) => {
     }, [location, history])
 
     useEffect(() => {
-        
         if (isAuthenticated) {
             if (isSessionExpired) {
                 setLoading(true)
-                console.log("renewing session now")
+                console.log('renewing session now')
                 dispatch(AuthActions.renewSession()).then(() => {
                     setLoading(false)
                 })
-             } else {
-                 setLoading(false)
-             }
+            } else {
+                setLoading(false)
+            }
         } else {
             setLoading(false)
         }
@@ -52,6 +51,9 @@ export default ({ history, location }) => {
     return (
         <ApolloProvider client={apolloClient(idToken)}>
             <ConnectedRouter history={history}>
+                <div className="tw-text-3xl tw-font-bold tw-underline">
+                    From app
+                </div>
                 <Suspense fallback={null}>
                     {!loading && (
                         <Switch>

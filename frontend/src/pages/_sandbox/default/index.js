@@ -40,6 +40,9 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <Container center>
+                    <div className="text-3xl font-bold underline some">
+                        Text
+                    </div>
                     <ResponsiveMasonry
                         columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
                     >

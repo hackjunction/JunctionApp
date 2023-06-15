@@ -17,6 +17,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from 'components/generic/Button'
 import { makeStyles } from '@material-ui/core/styles'
 
+import Carousel from 'react-multi-carousel'
+import 'react-multi-carousel/lib/styles.css'
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -53,7 +56,29 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function TeamCard() {
-    const classes = junctionStyle()
+    const responsive = {
+        superLargeDesktop: {
+            // the naming can be any, depends on you.
+            breakpoint: { max: 4000, min: 3000 },
+            items: 5,
+        },
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 3,
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: 2,
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 1,
+        },
+    }
+    const props = {
+        important: true,
+    }
+    const classes = junctionStyle(props)
     const classes2 = useStyles()
 
     return (
@@ -83,23 +108,27 @@ function TeamCard() {
                 >
                     Available roles
                 </Typography>
-                <Grid container className={classes.pb2}>
-                    <Grid item justifyContent="center" xs={4}>
-                        <Button color="outlined_button" variant="jOutlined">
-                            Designer
-                        </Button>
-                    </Grid>
-                    <Grid item justifyContent="center" xs={4}>
-                        <Button color="outlined_button" variant="jOutlined">
-                            Designer
-                        </Button>
-                    </Grid>
-                    <Grid item justifyContent="center" xs={4}>
-                        <Button color="outlined_button" variant="jOutlined">
-                            Designer
-                        </Button>
-                    </Grid>
-                </Grid>
+                <Carousel
+                    responsive={responsive}
+                    className={classes.pb2}
+                    itemClass={`${classes.wUnset}`}
+                >
+                    <Button color="outlined_button" variant="jOutlined">
+                        Designer
+                    </Button>
+                    <Button color="outlined_button" variant="jOutlined">
+                        WebDeveloper
+                    </Button>
+                    <Button color="outlined_button" variant="jOutlined">
+                        BusinessManager
+                    </Button>
+                    <Button color="outlined_button" variant="jOutlined">
+                        Industrial Consultant
+                    </Button>
+                    <Button color="outlined_button" variant="jOutlined">
+                        UXUI Designer
+                    </Button>
+                </Carousel>
                 <Typography
                     className={`${classes.pb2} ${classes.fs3}`}
                     variant="h6"

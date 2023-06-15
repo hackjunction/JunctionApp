@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import './i18n'
-
+import 'tailwind.css'
 import { CssBaseline } from '@material-ui/core'
-import { ThemeProvider } from '@material-ui/styles'
+import { StylesProvider, ThemeProvider } from '@material-ui/styles'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { CloudinaryContext } from 'cloudinary-react'
@@ -56,20 +56,22 @@ ReactDOM.render(
                 includeOwnBody={true}
                 cloudName={config.CLOUDINARY_CLOUD_NAME}
             >
-                <ThemeProvider theme={theme}>
-                    <SnackbarProvider
-                        maxSnack={3}
-                        autoHideDuration={1000}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                    >
-                        <Notifier />
-                        <CssBaseline />
-                        <App history={history} />
-                    </SnackbarProvider>
-                </ThemeProvider>
+                <StylesProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <SnackbarProvider
+                            maxSnack={3}
+                            autoHideDuration={1000}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                        >
+                            <Notifier />
+                            <CssBaseline />
+                            <App history={history} />
+                        </SnackbarProvider>
+                    </ThemeProvider>
+                </StylesProvider>
             </CloudinaryContext>
         </PersistGate>
     </Provider>,
