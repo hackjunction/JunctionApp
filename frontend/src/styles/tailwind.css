@@ -1,3 +1,31 @@
+.tw-container {
+  width: 100%
+}
+
+@media (min-width: 640px) {
+  .tw-container {
+    max-width: 640px
+  }
+}
+
+@media (min-width: 768px) {
+  .tw-container {
+    max-width: 768px
+  }
+}
+
+@media (min-width: 1024px) {
+  .tw-container {
+    max-width: 1024px
+  }
+}
+
+@media (min-width: 1280px) {
+  .tw-container {
+    max-width: 1280px
+  }
+}
+
 .tw-space-y-0 > :not(template) ~ :not(template) {
   --space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -19855,7 +19883,39 @@
           animation: bounce 1s infinite
 }
 
+/* Create here composite classes, after you finish you must run the command 'npm run build:tailwind' to build tailwind css to see the changes on the development enviroment
+
+Any custom css, create it here and do not make any updates to the tailwind.css file, since it will be deleted every time tailwind build is executed*/
+
 @media (min-width: 640px) {
+  .sm\:tw-container {
+    width: 100%
+  }
+
+  @media (min-width: 640px) {
+    .sm\:tw-container {
+      max-width: 640px
+    }
+  }
+
+  @media (min-width: 768px) {
+    .sm\:tw-container {
+      max-width: 768px
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sm\:tw-container {
+      max-width: 1024px
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .sm\:tw-container {
+      max-width: 1280px
+    }
+  }
+
   .sm\:tw-space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -39649,6 +39709,34 @@
 }
 
 @media (min-width: 768px) {
+  .md\:tw-container {
+    width: 100%
+  }
+
+  @media (min-width: 640px) {
+    .md\:tw-container {
+      max-width: 640px
+    }
+  }
+
+  @media (min-width: 768px) {
+    .md\:tw-container {
+      max-width: 768px
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .md\:tw-container {
+      max-width: 1024px
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .md\:tw-container {
+      max-width: 1280px
+    }
+  }
+
   .md\:tw-space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -59442,6 +59530,34 @@
 }
 
 @media (min-width: 1024px) {
+  .lg\:tw-container {
+    width: 100%
+  }
+
+  @media (min-width: 640px) {
+    .lg\:tw-container {
+      max-width: 640px
+    }
+  }
+
+  @media (min-width: 768px) {
+    .lg\:tw-container {
+      max-width: 768px
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lg\:tw-container {
+      max-width: 1024px
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .lg\:tw-container {
+      max-width: 1280px
+    }
+  }
+
   .lg\:tw-space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -79235,6 +79351,34 @@
 }
 
 @media (min-width: 1280px) {
+  .xl\:tw-container {
+    width: 100%
+  }
+
+  @media (min-width: 640px) {
+    .xl\:tw-container {
+      max-width: 640px
+    }
+  }
+
+  @media (min-width: 768px) {
+    .xl\:tw-container {
+      max-width: 768px
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .xl\:tw-container {
+      max-width: 1024px
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .xl\:tw-container {
+      max-width: 1280px
+    }
+  }
+
   .xl\:tw-space-y-0 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -99026,3 +99170,4 @@
             animation: bounce 1s infinite
   }
 }
+

@@ -51,9 +51,6 @@ export default ({ history, location }) => {
     return (
         <ApolloProvider client={apolloClient(idToken)}>
             <ConnectedRouter history={history}>
-                <div className="tw-text-3xl tw-font-bold tw-underline">
-                    From app
-                </div>
                 <Suspense fallback={null}>
                     {!loading && (
                         <Switch>

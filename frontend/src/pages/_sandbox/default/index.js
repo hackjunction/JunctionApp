@@ -40,7 +40,7 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <Container center>
-                    <div className="text-3xl font-bold underline some">
+                    <div className="tw-text-3xl tw-font-bold tw-underline">
                         Text
                     </div>
                     <ResponsiveMasonry

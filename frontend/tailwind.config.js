@@ -5,7 +5,14 @@ module.exports = {
     },
     prefix: 'tw-',
     purge: {
-        content: ['./src/*.js', './src/**/*.js', './src/**/**/*.js'],
+        content: [
+            './src/*.js',
+            './src/**/*.js',
+            './src/**/**/*.js',
+            './src/**/**/**/*.js',
+            './src/**/**/**/**/*.js',
+            './src/**/**/**/**/**/*.js',
+        ],
     },
     theme: {
         extend: {},
