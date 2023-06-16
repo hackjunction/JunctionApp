@@ -15,7 +15,11 @@ module.exports = {
         ],
     },
     theme: {
-        extend: {},
+        extend: {
+            spacing: {
+                '600px': '600px',
+            },
+        },
     },
     variants: {},
     plugins: [],

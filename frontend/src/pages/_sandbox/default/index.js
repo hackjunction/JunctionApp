@@ -40,13 +40,50 @@ export default () => {
             footer={() => <Footer />}
             render={() => (
                 <Container center>
-                    <div className="tw-text-3xl tw-font-bold tw-underline">
-                        Text
-                    </div>
                     <ResponsiveMasonry
                         columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
                     >
                         <Masonry>
+                            <div className="tw-bg-gray-100 tw-m-4 tw-text-left tw-h-600px">
+                                <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
+                                <div className="tw-p-4">
+                                    <div>
+                                        <Typography variant="h3" component="h3">
+                                            Team name
+                                        </Typography>
+                                        <Typography
+                                            className="tw-pb-2 tw-text-base"
+                                            variant="subtitle1"
+                                            color="secondary"
+                                            component="h6"
+                                        >
+                                            #Fazer
+                                        </Typography>
+                                    </div>
+                                    <div>Available roles</div>
+                                    <div>
+                                        <div className="tw-flex tw-gap-2">
+                                            <div>Role</div>
+                                            <div>Requirements</div>
+                                        </div>
+                                        <div className="tw-flex tw-gap-2">
+                                            <div>Role</div>
+                                            <div>Requirements</div>
+                                        </div>
+                                        <div className="tw-flex tw-gap-2">
+                                            <div>Role</div>
+                                            <div>Requirements</div>
+                                        </div>
+                                        <div>
+                                            <div>Extra roles</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button>See more</button>
+                                        <button>Apply</button>
+                                    </div>
+                                </div>
+                            </div>
                             <TeamCard />
                             <TeamCard />
                             <TeamCard />
