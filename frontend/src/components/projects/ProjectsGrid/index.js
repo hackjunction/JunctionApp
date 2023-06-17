@@ -21,12 +21,12 @@ const ProjectsGrid = ({
     const [sorted, setSorted] = useState(projects)
     const fetchData = useCallback(async () => {
         const nprojects = await Promise.all(
-            projects.map(async project => {
-                return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
-                    token,
-                    event.slug,
-                    project._id,
-                )
+          projects.map(async project => {
+              return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
+                token,
+                event.slug,
+                project._id,
+              )
                     .then(score => {
                         if (score[0]) {
                             return Object.assign(score[0], project)
@@ -58,17 +58,17 @@ const ProjectsGrid = ({
         }
     }, [fetchData, projects, showScore, sortField])
 
-    console.log(sorted)
     return (
-        <Grid
-            container
-            spacing={3}
-            direction="row"
-            alignItems="stretch"
-            justify="center"
-        >
-            {sorted.map(project => (
-                <ProjectsGridItem
+      <Grid
+      container
+      spacing={3}
+      direction="row"
+      alignItems="stretch"
+      justify="center"
+      >
+            {sorted.map(project => {
+                return (
+                    <ProjectsGridItem
                     project={project}
                     event={event}
                     showTableLocation={isOngoingEvent}
@@ -77,8 +77,8 @@ const ProjectsGrid = ({
                     score={project?.score}
                     message={project?.message}
                     showTags={true}
-                />
-            ))}
+                />)
+            })}
         </Grid>
     )
 }
