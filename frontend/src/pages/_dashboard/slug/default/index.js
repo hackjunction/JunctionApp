@@ -1,15 +1,17 @@
 import React from 'react'
+
 import { Box, Grid } from '@material-ui/core'
+
 import PageHeader from 'components/generic/PageHeader'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
+
 import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
 import ProjectBlock from './Blocks/ProjectBlock'
 import TeamStatusBlock from './Blocks/TeamStatusBlock'
 import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
 import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
 import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
-import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
 //import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
@@ -24,11 +26,9 @@ import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
-
 export default ({ alerts }) => {
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
-    const projects = useSelector(DashboardSelectors.projects)
     const isPartner =
         user.userId == 'google-oauth2|108766439620242776277' ||
         (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
@@ -99,7 +99,6 @@ export default ({ alerts }) => {
                     <AlertBlock alerts={alerts} />
                 </div>
                 <EventOverBlock />
-                <ProjectSubmissionsBlock projects={projects} event={event} />
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
                 <TravelGrantStatusBlock />
