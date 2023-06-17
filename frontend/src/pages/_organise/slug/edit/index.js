@@ -28,7 +28,6 @@ import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 
 export default () => {
     const dispatch = useDispatch()
-    // lhello
     const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
         onError: err => {
             const errors = err.graphQLErrors
@@ -39,7 +38,7 @@ export default () => {
                         errorMessages: Object.keys(errors).map(
                             key => `${key}: ${errors[key].message}`,
                         ),
-                        persist: true,
+                        persist: false,
                     }),
                 )
             } else {
