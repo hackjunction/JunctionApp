@@ -4,3 +4,5 @@ scripts/
 dump/
 build/
 docker-compose.yml
+.env
+*.env.example
