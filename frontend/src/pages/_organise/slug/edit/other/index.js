@@ -7,7 +7,6 @@ import EventTagsForm from './EventTagsForm'
 import WebhooksForm from './WebhooksForm'
 import MetaTagsForm from './MetaTagsForm'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
 import CertificateForm from './CertificateForm'
 import PageScriptsForm from './PageScriptsForm'
 
