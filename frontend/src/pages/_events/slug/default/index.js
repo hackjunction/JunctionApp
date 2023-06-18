@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react'
 
 import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+import { push, goBack } from 'connected-react-router'
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
@@ -124,7 +124,7 @@ export default () => {
             </Helmet>
             <EventHeroImage
                 event={event}
-                onBack={() => dispatch(push('/'))}
+                onBack={() => dispatch(goBack())}
                 alignRight
                 backgroundColor={event.theme.headerBackgroundColor}
             />
