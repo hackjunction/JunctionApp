@@ -14,11 +14,7 @@ import ContactPage from './pages/_contact'
 // import SandboxPage from './pages/_sandbox'
 
 import RequiresPermission from './hocs/RequiresPermission'
-<<<<<<< HEAD
 import RequiresRole from 'hocs/RequiresRole'
-=======
-import RequiresRole from './hocs/RequiresRole'
->>>>>>> 1431334f (Added routing auth verification for admin and sandbox routes)
 
 /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
