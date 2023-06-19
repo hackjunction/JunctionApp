@@ -44,49 +44,375 @@ export default () => {
                         columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
                     >
                         <Masonry>
-                            <div className="tw-bg-gray-100 tw-m-4 tw-text-left tw-h-600px">
+                            <div className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md">
                                 <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
-                                <div className="tw-p-4">
-                                    <div>
-                                        <Typography variant="h3" component="h3">
-                                            Team name
+                                <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                                    <div className="tw-flex tw-items-center tw-gap-4">
+                                        <Typography
+                                            className="tw-font-bold tw-tracking-tight"
+                                            variant="h3"
+                                            component="h3"
+                                        >
+                                            Explorers
                                         </Typography>
                                         <Typography
-                                            className="tw-pb-2 tw-text-base"
-                                            variant="subtitle1"
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h5"
                                             color="secondary"
-                                            component="h6"
+                                            component="h5"
                                         >
                                             #Fazer
                                         </Typography>
                                     </div>
-                                    <div>Available roles</div>
-                                    <div>
-                                        <div className="tw-flex tw-gap-2">
-                                            <div>Role</div>
-                                            <div>Requirements</div>
-                                        </div>
-                                        <div className="tw-flex tw-gap-2">
-                                            <div>Role</div>
-                                            <div>Requirements</div>
-                                        </div>
-                                        <div className="tw-flex tw-gap-2">
-                                            <div>Role</div>
-                                            <div>Requirements</div>
-                                        </div>
-                                        <div>
-                                            <div>Extra roles</div>
-                                        </div>
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Available roles
+                                    </Typography>
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        +3 more roles
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
                                     </div>
-                                    <div>
-                                        <button>See more</button>
-                                        <button>Apply</button>
+                                    <div className="tw-flex tw-gap-2 tw-justify-end">
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlined"
+                                        >
+                                            See more
+                                        </Button>
+                                        <Button variant="jContained">
+                                            Apply
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
+                            <div className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md">
+                                <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
+                                <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                                    <div className="tw-flex tw-items-center tw-gap-4">
+                                        <Typography
+                                            className="tw-font-bold tw-tracking-tight"
+                                            variant="h3"
+                                            component="h3"
+                                        >
+                                            Explorers
+                                        </Typography>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h5"
+                                            color="secondary"
+                                            component="h5"
+                                        >
+                                            #Fazer
+                                        </Typography>
+                                    </div>
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Available roles
+                                    </Typography>
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        +3 more roles
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                    </div>
+                                    <div className="tw-flex tw-gap-2 tw-justify-end">
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlined"
+                                        >
+                                            See more
+                                        </Button>
+                                        <Button variant="jContained">
+                                            Apply
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md">
+                                <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
+                                <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                                    <div className="tw-flex tw-items-center tw-gap-4">
+                                        <Typography
+                                            className="tw-font-bold tw-tracking-tight"
+                                            variant="h3"
+                                            component="h3"
+                                        >
+                                            Explorers
+                                        </Typography>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h5"
+                                            color="secondary"
+                                            component="h5"
+                                        >
+                                            #Fazer
+                                        </Typography>
+                                    </div>
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Available roles
+                                    </Typography>
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        UX designer
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        3+ years of experience
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            children={
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                    <Typography
+                                                        className="tw-text-lg tw-text-gray-600"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        +3 more roles
+                                                    </Typography>
+                                                </div>
+                                            }
+                                        ></Button>
+                                    </div>
+                                    <div className="tw-flex tw-gap-2 tw-justify-end">
+                                        <Button
+                                            color="outlined_button"
+                                            variant="jOutlined"
+                                        >
+                                            See more
+                                        </Button>
+                                        <Button variant="jContained">
+                                            Apply
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
                             <TeamCard />
                             <TeamCard />
                             <TeamCard />

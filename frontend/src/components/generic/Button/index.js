@@ -154,7 +154,7 @@ const variantStyles = (theme, props) => {
                 backgroundColor: 'transparent',
                 color: color.contrastText,
                 border: `2px solid ${color.dark}`,
-                borderRadius: '28px',
+                borderRadius: theme.spacing(4),
                 padding: theme.spacing(1, 2),
                 margin: 0,
             }
@@ -164,7 +164,7 @@ const variantStyles = (theme, props) => {
                 backgroundColor: color.main,
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
-                borderRadius: '28px',
+                borderRadius: theme.spacing(4),
                 padding: theme.spacing(1, 2),
                 margin: 0,
                 '&:hover': {
@@ -175,6 +175,17 @@ const variantStyles = (theme, props) => {
                     color: color.contrastText,
                     opacity: 0.5,
                 },
+            }
+        }
+        case 'jOutlinedBox': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `1px solid ${color.lightBorder}`,
+                borderRadius: theme.spacing(1),
+                padding: theme.spacing(2),
+                margin: 0,
+                width: '100%',
             }
         }
         default: {

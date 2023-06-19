@@ -73,6 +73,7 @@ const theme = createTheme({
             light: '#ffffff',
             dark: '#000000',
             contrastText: '#000000',
+            lightBorder: '#e2e8f0',
         },
     },
     typography: {
