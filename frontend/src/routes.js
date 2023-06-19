@@ -11,8 +11,10 @@ import HackerpackPage from './pages/_hackerpack'
 import PricingPage from './pages/_pricing'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
+// import SandboxPage from './pages/_sandbox'
 
 import RequiresPermission from './hocs/RequiresPermission'
+import RequiresRole from 'hocs/RequiresRole'
 
 /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
@@ -21,6 +23,7 @@ const AccountRouter = lazy(() => import('./pages/_account'))
 const RecruitmentRouter = lazy(() => import('./pages/_recruitment'))
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
+const SandboxRouter = lazy(() => import('./pages/_sandbox'))
 
 const routes = [
     {
@@ -101,7 +104,14 @@ const routes = [
     },
     {
         path: '/admin',
-        component: AdminRouter,
+        component: RequiresRole(AdminRouter, [AuthConstants.Roles.SUPER_ADMIN]),
+        exact: false,
+    },
+    {
+        path: '/sandbox',
+        component: RequiresRole(SandboxRouter, [
+            AuthConstants.Roles.SUPER_ADMIN,
+        ]),
         exact: false,
     },
 ]
