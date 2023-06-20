@@ -31,15 +31,15 @@ const settings = {
         required: false,
         value: process.env.REACT_APP_GOOGLE_ANALYTICS_ID,
     },
-    ID_TOKEN_NAMESPACE: {
+     ID_TOKEN_NAMESPACE: {
         required: true,
         value:
-            process.env.ID_TOKEN_NAMESPACE || (process.env.NODE_ENV === 'development') ? 'https://app.hackjunction.com/' : ((process.env.NODE_ENV === 'test') ? 'https://www.hackjunctiontest.com/' : 'https://eu.junctionplatform.com/'),
+            process.env.REACT_APP_ID_TOKEN_NAMESPACE || ((process.env.NODE_ENV === 'production') ? 'https://app.hackjunction.com/' : ((process.env.REACT_APP_ENVIRONMENT_TAG === 'test') ? 'https://www.hackjunctiontest.com/' : 'https://eu.junctionplatform.com/')),
     },
     IS_DEBUG: {
-        default: process.env.NODE_ENV === 'development' || process.env.ENVIRONMENT_TAG === 'Staging',
+        default: process.env.NODE_ENV === 'production' || process.env.REACT_APP_ENVIRONMENT_TAG === 'test',
         required: true,
-        value: process.env.IS_DEBUG,
+        value: process.env.REACT_APP_IS_DEBUG,
     },
     LOGO_DARK_URL: {
         required: true,
