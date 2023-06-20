@@ -34,10 +34,10 @@ const settings = {
     ID_TOKEN_NAMESPACE: {
         required: true,
         value:
-            process.env.ID_TOKEN_NAMESPACE || (process.env.NODE_ENV === 'development') ? 'https://app.hackjunction.com/' : 'https://eu.junctionplatform.com/',
+            process.env.ID_TOKEN_NAMESPACE || (process.env.NODE_ENV === 'development') ? 'https://app.hackjunction.com/' : ((process.env.NODE_ENV === 'test') ? 'https://www.hackjunctiontest.com/' : 'https://eu.junctionplatform.com/'),
     },
     IS_DEBUG: {
-        default: process.env.NODE_ENV === 'development',
+        default: process.env.NODE_ENV === 'development' || process.env.ENVIRONMENT_TAG === 'Staging',
         required: true,
         value: process.env.IS_DEBUG,
     },
