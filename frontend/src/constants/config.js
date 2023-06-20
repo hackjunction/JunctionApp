@@ -37,8 +37,9 @@ const settings = {
             process.env.ID_TOKEN_NAMESPACE || (process.env.NODE_ENV === 'development') ? 'https://app.hackjunction.com/' : 'https://eu.junctionplatform.com/',
     },
     IS_DEBUG: {
+        default: process.env.NODE_ENV === 'development',
         required: true,
-        value: process.env.NODE_ENV === 'development' || process.env.ENVIRONMENT_TAG === 'Staging',
+        value: process.env.IS_DEBUG,
     },
     LOGO_DARK_URL: {
         required: true,
