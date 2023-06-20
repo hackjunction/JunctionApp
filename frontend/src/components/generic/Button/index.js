@@ -155,7 +155,7 @@ const variantStyles = (theme, props) => {
                 color: color.contrastText,
                 border: `2px solid ${color.dark}`,
                 borderRadius: theme.spacing(4),
-                padding: theme.spacing(1, 2),
+                padding: theme.spacing(1, 4),
                 margin: 0,
             }
         }
@@ -165,7 +165,7 @@ const variantStyles = (theme, props) => {
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
                 borderRadius: theme.spacing(4),
-                padding: theme.spacing(1, 2),
+                padding: theme.spacing(1, 4),
                 margin: 0,
                 '&:hover': {
                     backgroundColor: color.main,

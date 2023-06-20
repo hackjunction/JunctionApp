@@ -56,151 +56,126 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function TeamCard() {
-    const responsive = {
-        superLargeDesktop: {
-            // the naming can be any, depends on you.
-            breakpoint: { max: 4000, min: 3000 },
-            items: 5,
-        },
-        desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 3,
-        },
-        tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 2,
-        },
-        mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 1,
-        },
-    }
-    const props = {
-        important: true,
-    }
-    const classes = junctionStyle(props)
-    const classes2 = useStyles()
-
     return (
-        <Card
-            className={`${classes.w450} ${classes.shadow1} ${classes.border1}`}
-        >
-            <CardContent className={`${classes.textAlignStart} ${classes.p3}`}>
-                <Typography
-                    className={`${classes.fs5} ${classes.pb2}`}
-                    variant="h4"
-                    component="h4"
-                >
-                    {'Pink unicorn'.toUpperCase()}
-                </Typography>
-                <Typography
-                    className={`${classes.pb2} ${classes.fs2half}`}
-                    variant="subtitle1"
-                    color="secondary"
-                    component="h6"
-                >
-                    #Fazer
-                </Typography>
-                <Typography
-                    className={`${classes.pb2} ${classes.fs3}`}
-                    variant="h6"
-                    component="h6"
-                >
-                    Available roles
-                </Typography>
-                <Carousel
-                    responsive={responsive}
-                    className={classes.pb2}
-                    itemClass={`${classes.wUnset}`}
-                >
-                    <Button color="outlined_button" variant="jOutlined">
-                        Designer
-                    </Button>
-                    <Button color="outlined_button" variant="jOutlined">
-                        WebDeveloper
-                    </Button>
-                    <Button color="outlined_button" variant="jOutlined">
-                        BusinessManager
-                    </Button>
-                    <Button color="outlined_button" variant="jOutlined">
-                        Industrial Consultant
-                    </Button>
-                    <Button color="outlined_button" variant="jOutlined">
-                        UXUI Designer
-                    </Button>
-                </Carousel>
-                <Typography
-                    className={`${classes.pb2} ${classes.fs3}`}
-                    variant="h6"
-                    component="h6"
-                >
-                    How to design more user friendly medical app experience ?
-                </Typography>
-                <Typography
-                    className={classes.fs2}
-                    variant="body2"
-                    component="p"
-                >
-                    Our idea is to design a digital solution for mobile phones,
-                    which would focus on helping teenagers access free therapy
-                    sessions. We believe that through empathetic design and a
-                    deep understanding of human psychology combined with design
-                    we can make a real change in the world.
-                </Typography>
-            </CardContent>
-            <CardActions className={classes.pxb3}>
-                <Button variant="jContained">Learn More</Button>
-            </CardActions>
-            <div className={classes2.root}>
-                <Accordion defaultExpanded>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1c-content"
-                        id="panel1c-header"
-                    >
-                        <div className={classes2.column}>
-                            <Typography className={classes2.heading}>
-                                Location
-                            </Typography>
-                        </div>
-                        <div className={classes2.column}>
-                            <Typography className={classes2.secondaryHeading}>
-                                Select trip destination
-                            </Typography>
-                        </div>
-                    </AccordionSummary>
-                    <AccordionDetails className={classes2.details}>
-                        <div className={classes2.column} />
-                        <div className={classes2.column}>
-                            <Chip label="Barbados" onDelete={() => {}} />
-                        </div>
-                        <div
-                            className={`
-                                                    ${classes2.column}
-                                                    ${classes2.helper},
-                                                `}
+        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-672px tw-flex tw-flex-col tw-justify-between">
+            <CardContent className="tw-flex tw-flex-col tw-p-0">
+                <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
+                <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                    <div className="tw-flex tw-items-center tw-gap-4">
+                        <Typography
+                            className="tw-font-bold tw-tracking-tight"
+                            variant="h3"
+                            component="h3"
                         >
-                            <Typography variant="caption">
-                                Select your destination of choice
-                                <br />
-                                <a
-                                    href="#secondary-heading-and-columns"
-                                    className={classes2.link}
-                                >
-                                    Learn more
-                                </a>
-                            </Typography>
-                        </div>
-                    </AccordionDetails>
-                    <Divider />
-                    <AccordionActions>
-                        <Button size="small">Cancel</Button>
-                        <Button size="small" color="primary">
-                            Save
-                        </Button>
-                    </AccordionActions>
-                </Accordion>
-            </div>
+                            Explorers
+                        </Typography>
+                        <Typography
+                            className="tw-tracking-tight tw-font-medium"
+                            variant="h5"
+                            color="secondary"
+                            component="h5"
+                        >
+                            #Fazer
+                        </Typography>
+                    </div>
+                    <Typography
+                        className="tw-tracking-tight tw-font-medium"
+                        variant="h5"
+                        component="h5"
+                    >
+                        Available roles
+                    </Typography>
+                    <div className="tw-flex tw-flex-col tw-gap-4">
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlinedBox"
+                            children={
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                    <Typography
+                                        className="tw-font-semibold"
+                                        variant="h6"
+                                        component="h6"
+                                    >
+                                        UX designer
+                                    </Typography>
+                                    <Typography
+                                        className="tw-text-lg tw-text-gray-600"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        3+ years of experience
+                                    </Typography>
+                                </div>
+                            }
+                        ></Button>
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlinedBox"
+                            children={
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                    <Typography
+                                        className="tw-font-semibold"
+                                        variant="h6"
+                                        component="h6"
+                                    >
+                                        UX designer
+                                    </Typography>
+                                    <Typography
+                                        className="tw-text-lg tw-text-gray-600"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        3+ years of experience
+                                    </Typography>
+                                </div>
+                            }
+                        ></Button>
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlinedBox"
+                            children={
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                    <Typography
+                                        className="tw-font-semibold"
+                                        variant="h6"
+                                        component="h6"
+                                    >
+                                        UX designer
+                                    </Typography>
+                                    <Typography
+                                        className="tw-text-lg tw-text-gray-600"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        3+ years of experience
+                                    </Typography>
+                                </div>
+                            }
+                        ></Button>
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlinedBox"
+                            children={
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                    <Typography
+                                        className="tw-text-lg tw-text-gray-600"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        +3 more roles
+                                    </Typography>
+                                </div>
+                            }
+                        ></Button>
+                    </div>
+                </div>
+            </CardContent>
+            <CardActions className="tw-flex tw-gap-2 tw-justify-start tw-px-4 tw-pb-4 tw-pt-0">
+                <Button variant="jContained">Apply</Button>
+                <Button color="outlined_button" variant="jOutlined">
+                    See more
+                </Button>
+            </CardActions>
         </Card>
     )
 }
