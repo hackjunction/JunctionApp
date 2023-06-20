@@ -17,6 +17,7 @@ const migrations = [
     require('./11-add-organization-to-event'),
     require('./12-add-timeline-to-event'),
     require('./13-set-eventLocation-null-where-not-exists'),
+    require('./14-add-faq-challenge_instructions-demoInstructions-to-event'),
 ]
 
 const run = async () => {
