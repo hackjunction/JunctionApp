@@ -12,14 +12,17 @@ import RankingsService from 'services/rankings'
 /** Update event with loading/error data */
 export const updateEvent = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
+    const promise = EventsService.getEventBySlugAsOrganiser(idToken, slug)
 
     dispatch({
         type: ActionTypes.UPDATE_EVENT,
-        promise: EventsService.getEventBySlugAsOrganiser(idToken, slug),
+        promise: promise,
         meta: {
             onFailure: e => console.log('Error updating event', e),
         },
     })
+
+    return promise
 }
 
 /** Submit edits to an event */
