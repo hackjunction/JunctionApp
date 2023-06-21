@@ -2,24 +2,30 @@ import FormControl from 'components/inputs/FormControl'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import { FastField, Field, Form, Formik } from 'formik'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import * as Yup from 'yup'
 import BottomBar from 'components/inputs/BottomBar'
 import Checkbox from '@material-ui/core/Checkbox'
 import {
     Box,
-    FormControlLabel,
+    List,
     InputLabel,
     MenuItem,
     Select,
+    TextField,
+    Typography,
+    CardContent,
+    Card,
 } from '@material-ui/core'
-import junctionStyle from 'utils/styles'
+
 import Button from 'components/generic/Button'
-import { ExtensionOutlined } from '@material-ui/icons'
+import Item from 'antd/lib/list/Item'
+import { isTeamComplete } from 'redux/dashboard/selectors'
 
 export default () => {
-    const classes = junctionStyle()
-    let [selectedRoles, setSelectedRoles] = useState([])
+    const [selectedRoles, setSelectedRoles] = useState([])
+    const [renderSelectedRoles, setRenderSelectedRoles] = useState(undefined)
+    const [disableSelect, setDisableSelect] = useState(false)
     const [roles, setRoles] = useState([
         {
             id: 1,
@@ -37,21 +43,42 @@ export default () => {
             description: '1 year of experience',
         },
     ])
+    const handleCheckboxChange = useCallback(e => {
+        if (e.target.checked) {
+            console.log(e)
+            setSelectedRoles(value => [...value, e.target.value])
+        } else {
+            setSelectedRoles(value =>
+                value.filter(item => item.role !== e.target.value),
+            )
+        }
+    }, [])
 
-    const handleCheckboxChange = useCallback(
-        (e, id) => {
-            if (e.target.checked) {
-                setSelectedRoles(value => [...value, e.target.value])
-            } else {
-                setSelectedRoles(value =>
-                    value.filter(item => item !== e.target.value),
-                )
-            }
-        },
-        [setSelectedRoles],
-    )
+    const addSelectedRoles = useCallback(() => {
+        setRenderSelectedRoles(1)
+        setDisableSelect(true)
+    }, [])
 
-    console.log(selectedRoles)
+    const renderListView = () => {
+        if (renderSelectedRoles)
+            return (
+                <List>
+                    {selectedRoles.map((item, index) => (
+                        <Card
+                            key={index}
+                            variant="outlined"
+                            style={{ maxWidth: 'max-content' }}
+                        >
+                            <CardContent>
+                                <Typography>{item}</Typography>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </List>
+            )
+    }
+    console.log(renderSelectedRoles)
+    console.log(disableSelect)
 
     return (
         <>
@@ -61,17 +88,18 @@ export default () => {
                     subheading="Fields marked with * are mandatory"
                 />
                 <Formik
-                    initialValues={{ roles: '' }}
+                    initialValues={{ roles: '', motivationMessage: '' }}
                     enableReinitialize={true}
                     onSubmit={values => console.log(values)}
                     validationSchema={Yup.object().shape({
-                        roles: Yup.string().required(),
+                        roles: Yup.array().required(),
+                        motivation: Yup.string().required(),
                     })}
                 >
                     {formikProps => (
                         <>
                             <FastField
-                                name="description"
+                                name="roles"
                                 render={({ field, form }) => (
                                     <Box
                                         sx={{
@@ -94,22 +122,22 @@ export default () => {
                                                 labelId="roles"
                                                 id="roles"
                                                 value={roles}
+                                                disabled={disableSelect}
                                             >
-                                                {roles.map(role => (
+                                                {roles.map(item => (
                                                     <MenuItem
-                                                        key={role.id}
-                                                        value={role.role}
+                                                        key={item.id}
+                                                        value={item.role}
                                                     >
                                                         <Checkbox
-                                                            value={role.role}
+                                                            value={item.role}
                                                             onChange={e =>
                                                                 handleCheckboxChange(
                                                                     e,
-                                                                    role.id,
                                                                 )
                                                             }
                                                         />
-                                                        {role.role}
+                                                        {item.role}
                                                     </MenuItem>
                                                 ))}
                                             </Select>
@@ -117,12 +145,49 @@ export default () => {
                                         <Button
                                             color="outlined_button"
                                             variant="outlined"
+                                            onClick={() => addSelectedRoles()}
                                         >
                                             Add selected role
                                         </Button>
                                     </Box>
                                 )}
                             />
+                            {renderSelectedRoles ? renderListView() : null}
+                            <FastField
+                                name="motivationMessage"
+                                render={({ field, form }) => (
+                                    <FormControl
+                                        touched={form.touched[field.name]}
+                                    >
+                                        <h3>Motivation*</h3>
+                                        <TextField
+                                            variant="filled"
+                                            multiline
+                                            minRows={8}
+                                            style={{ height: '200px' }}
+                                            placeholder="Briefly explain what motivates you to join this team"
+                                        />
+                                        <Typography>
+                                            *Your profile information is
+                                            automatically included in the
+                                            application.
+                                        </Typography>
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                paddingTop: '50px',
+                                                marginTop: '30px',
+                                            }}
+                                        >
+                                            <Button variant="theme_blue">
+                                                Apply
+                                            </Button>
+                                        </div>
+                                    </FormControl>
+                                )}
+                            />
+
                             <div style={{ height: '100px' }} />
                             <BottomBar
                                 onSubmit={formikProps.handleSubmit}

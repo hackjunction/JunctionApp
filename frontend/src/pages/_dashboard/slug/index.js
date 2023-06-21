@@ -392,7 +392,7 @@ export default () => {
                         },
                         {
                             key: 'apply',
-                            path: '/team/pinkunicorn/apply',
+                            path: '/apply',
                             component: ApplyPage,
                         },
                     ]}
