@@ -99,21 +99,19 @@ export default () => {
     // const [events, loading] = useMyEvents()
     const classes = junctionStyle()
     return (
-        <Container center>
-            <ResponsiveMasonry
-                columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3 }}
-            >
-                <Masonry>
-                    <TeamCard />
-                    <TeamCard />
-                    <TeamCard />
-                    <TeamCard />
-                    <TeamCard />
-                    <TeamCard />
-                    <TeamCard />
-                    <TeamCard />
-                </Masonry>
-            </ResponsiveMasonry>
-        </Container>
+        <ResponsiveMasonry
+            columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3 }}
+        >
+            <Masonry>
+                <TeamCard />
+                <TeamCard />
+                <TeamCard />
+                <TeamCard />
+                <TeamCard />
+                <TeamCard />
+                <TeamCard />
+                <TeamCard />
+            </Masonry>
+        </ResponsiveMasonry>
     )
 }

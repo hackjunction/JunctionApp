@@ -35,7 +35,9 @@ import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 import { forOwn } from 'lodash-es'
 import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
-import ConfigureTab from '../default/configure'
+import ConfigurePage from '../default/configure'
+import TeamCandidatesPage from './teamCandidates'
+import YourTeamPage from './yourTeam'
 
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
@@ -47,12 +49,56 @@ import TeamCard from 'components/cards/TeamCard'
 import JoinTeamPage from './joinTeam'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
+import PageHeader from 'components/generic/PageHeader'
 
 export default () => {
     const match = useRouteMatch()
     const location = useLocation()
-
+    const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
+
+    const loading = useSelector(OrganiserSelectors.eventLoading)
+    const { slug, _id } = event
+    const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
+        onError: err => {
+            const errors = err.graphQLErrors
+
+            if (errors) {
+                dispatch(
+                    SnackbarActions.error('Unable to save changes', {
+                        errorMessages: Object.keys(errors).map(
+                            key => `${key}: ${errors[key].message}`,
+                        ),
+                        persist: false, // this could be the problem why errors messages persist? => solution: set to false
+                    }),
+                )
+            } else {
+                dispatch(SnackbarActions.error('Unable to save changes'))
+            }
+        },
+        onCompleted: () => {
+            dispatch(OrganiserActions.updateEvent(slug)).then(() =>
+                dispatch(
+                    SnackbarActions.success(
+                        'Your changes were saved successfully',
+                    ),
+                ),
+            )
+        },
+    })
+
+    function onSubmit(values, actions) {
+        const changed = {}
+        forOwn(values, (value, field) => {
+            if (event[field] !== value) {
+                changed[field] = value
+            }
+        })
+        saveChanges({
+            variables: { _id, input: changed },
+        })
+        actions.setSubmitting(false)
+    }
 
     // const [events, loading] = useMyEvents()
     const classes = junctionStyle()
@@ -62,32 +108,46 @@ export default () => {
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
             render={() => (
-                <Container center>
-                    <MaterialTabsLayout
-                        transparent
-                        tabs={[
-                            {
-                                label: 'Join a team',
-                                key: 'joinTeam',
-                                path: '',
-                                component: JoinTeamPage,
-                            },
-                            {
-                                label: 'Your team',
-                                key: 'teamProfile',
-                                path: '/profile',
-                                component: ConfigureTab,
-                            },
-                            {
-                                label: 'Team candidates',
-                                key: 'candidates',
-                                path: '/candidates',
-                                component: ConfigureTab,
-                            },
-                        ]}
-                        baseRoute={match.url}
-                        location={location}
-                    />
+                <Container>
+                    <PageHeader heading="Team management" />
+                    <Formik
+                        initialValues={
+                            saveResult.data
+                                ? saveResult.data.updateEvent
+                                : event
+                        }
+                        enableReinitialize={true}
+                        onSubmit={onSubmit}
+                        validationSchema={yupSchema}
+                    >
+                        {formikProps => (
+                            <MaterialTabsLayout
+                                transparent
+                                tabs={[
+                                    {
+                                        label: 'Join a team',
+                                        key: 'joinTeam',
+                                        path: '',
+                                        component: JoinTeamPage,
+                                    },
+                                    {
+                                        label: 'Your team',
+                                        key: 'teamProfile',
+                                        path: '/profile',
+                                        component: YourTeamPage,
+                                    },
+                                    {
+                                        label: 'Team candidates',
+                                        key: 'candidates',
+                                        path: '/candidates',
+                                        component: TeamCandidatesPage,
+                                    },
+                                ]}
+                                baseRoute={match.url}
+                                location={location}
+                            />
+                        )}
+                    </Formik>
                 </Container>
             )}
         />
