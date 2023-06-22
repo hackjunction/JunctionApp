@@ -19,6 +19,12 @@ module.exports = {
             spacing: {
                 '600px': '600px',
                 '672px': '672px',
+                '576px': '576px',
+            },
+            minHeight: {
+                '600px': '600px',
+                '672px': '672px',
+                '576px': '576px',
             },
         },
     },

@@ -278,6 +278,18 @@
   margin-left: calc(672px * calc(1 - var(--space-x-reverse)))
 }
 
+.tw-space-y-576px > :not(template) ~ :not(template) {
+  --space-y-reverse: 0;
+  margin-top: calc(576px * calc(1 - var(--space-y-reverse)));
+  margin-bottom: calc(576px * var(--space-y-reverse))
+}
+
+.tw-space-x-576px > :not(template) ~ :not(template) {
+  --space-x-reverse: 0;
+  margin-right: calc(576px * var(--space-x-reverse));
+  margin-left: calc(576px * calc(1 - var(--space-x-reverse)))
+}
+
 .tw--space-y-1 > :not(template) ~ :not(template) {
   --space-y-reverse: 0;
   margin-top: calc(-0.25rem * calc(1 - var(--space-y-reverse)));
@@ -516,6 +528,18 @@
   --space-x-reverse: 0;
   margin-right: calc(-672px * var(--space-x-reverse));
   margin-left: calc(-672px * calc(1 - var(--space-x-reverse)))
+}
+
+.tw--space-y-576px > :not(template) ~ :not(template) {
+  --space-y-reverse: 0;
+  margin-top: calc(-576px * calc(1 - var(--space-y-reverse)));
+  margin-bottom: calc(-576px * var(--space-y-reverse))
+}
+
+.tw--space-x-576px > :not(template) ~ :not(template) {
+  --space-x-reverse: 0;
+  margin-right: calc(-576px * var(--space-x-reverse));
+  margin-left: calc(-576px * calc(1 - var(--space-x-reverse)))
 }
 
 .tw-space-y-reverse > :not(template) ~ :not(template) {
@@ -9969,6 +9993,10 @@
   height: 672px
 }
 
+.tw-h-576px {
+  height: 576px
+}
+
 .tw-h-full {
   height: 100%
 }
@@ -10181,6 +10209,10 @@
   margin: 672px
 }
 
+.tw-m-576px {
+  margin: 576px
+}
+
 .tw--m-1 {
   margin: -0.25rem
 }
@@ -10259,6 +10291,10 @@
 
 .tw--m-672px {
   margin: -672px
+}
+
+.tw--m-576px {
+  margin: -576px
 }
 
 .tw-my-0 {
@@ -10481,6 +10517,16 @@
   margin-right: 672px
 }
 
+.tw-my-576px {
+  margin-top: 576px;
+  margin-bottom: 576px
+}
+
+.tw-mx-576px {
+  margin-left: 576px;
+  margin-right: 576px
+}
+
 .tw--my-1 {
   margin-top: -0.25rem;
   margin-bottom: -0.25rem
@@ -10679,6 +10725,16 @@
 .tw--mx-672px {
   margin-left: -672px;
   margin-right: -672px
+}
+
+.tw--my-576px {
+  margin-top: -576px;
+  margin-bottom: -576px
+}
+
+.tw--mx-576px {
+  margin-left: -576px;
+  margin-right: -576px
 }
 
 .tw-mt-0 {
@@ -11033,6 +11089,22 @@
   margin-left: 672px
 }
 
+.tw-mt-576px {
+  margin-top: 576px
+}
+
+.tw-mr-576px {
+  margin-right: 576px
+}
+
+.tw-mb-576px {
+  margin-bottom: 576px
+}
+
+.tw-ml-576px {
+  margin-left: 576px
+}
+
 .tw--mt-1 {
   margin-top: -0.25rem
 }
@@ -11353,6 +11425,22 @@
   margin-left: -672px
 }
 
+.tw--mt-576px {
+  margin-top: -576px
+}
+
+.tw--mr-576px {
+  margin-right: -576px
+}
+
+.tw--mb-576px {
+  margin-bottom: -576px
+}
+
+.tw--ml-576px {
+  margin-left: -576px
+}
+
 .tw-max-h-full {
   max-height: 100%
 }
@@ -11435,6 +11523,18 @@
 
 .tw-min-h-screen {
   min-height: 100vh
+}
+
+.tw-min-h-600px {
+  min-height: 600px
+}
+
+.tw-min-h-672px {
+  min-height: 672px
+}
+
+.tw-min-h-576px {
+  min-height: 576px
 }
 
 .tw-min-w-0 {
@@ -11781,6 +11881,10 @@
   padding: 672px
 }
 
+.tw-p-576px {
+  padding: 576px
+}
+
 .tw-py-0 {
   padding-top: 0;
   padding-bottom: 0
@@ -11989,6 +12093,16 @@
 .tw-px-672px {
   padding-left: 672px;
   padding-right: 672px
+}
+
+.tw-py-576px {
+  padding-top: 576px;
+  padding-bottom: 576px
+}
+
+.tw-px-576px {
+  padding-left: 576px;
+  padding-right: 576px
 }
 
 .tw-pt-0 {
@@ -12325,6 +12439,22 @@
 
 .tw-pl-672px {
   padding-left: 672px
+}
+
+.tw-pt-576px {
+  padding-top: 576px
+}
+
+.tw-pr-576px {
+  padding-right: 576px
+}
+
+.tw-pb-576px {
+  padding-bottom: 576px
+}
+
+.tw-pl-576px {
+  padding-left: 576px
 }
 
 .tw-placeholder-transparent::-moz-placeholder {
@@ -16986,6 +17116,10 @@
   width: 672px
 }
 
+.tw-w-576px {
+  width: 576px
+}
+
 .tw-w-1\/2 {
   width: 50%
 }
@@ -17231,6 +17365,11 @@
   gap: 672px
 }
 
+.tw-gap-576px {
+  grid-gap: 576px;
+  gap: 576px
+}
+
 .tw-col-gap-0 {
   grid-column-gap: 0;
   -moz-column-gap: 0;
@@ -17355,6 +17494,12 @@
   grid-column-gap: 672px;
   -moz-column-gap: 672px;
        column-gap: 672px
+}
+
+.tw-col-gap-576px {
+  grid-column-gap: 576px;
+  -moz-column-gap: 576px;
+       column-gap: 576px
 }
 
 .tw-gap-x-0 {
@@ -17483,6 +17628,12 @@
        column-gap: 672px
 }
 
+.tw-gap-x-576px {
+  grid-column-gap: 576px;
+  -moz-column-gap: 576px;
+       column-gap: 576px
+}
+
 .tw-row-gap-0 {
   grid-row-gap: 0;
   row-gap: 0
@@ -17588,6 +17739,11 @@
   row-gap: 672px
 }
 
+.tw-row-gap-576px {
+  grid-row-gap: 576px;
+  row-gap: 576px
+}
+
 .tw-gap-y-0 {
   grid-row-gap: 0;
   row-gap: 0
@@ -17691,6 +17847,11 @@
 .tw-gap-y-672px {
   grid-row-gap: 672px;
   row-gap: 672px
+}
+
+.tw-gap-y-576px {
+  grid-row-gap: 576px;
+  row-gap: 576px
 }
 
 .tw-grid-flow-row {
@@ -18818,6 +18979,10 @@
   --transform-translate-x: 672px
 }
 
+.tw-translate-x-576px {
+  --transform-translate-x: 576px
+}
+
 .tw--translate-x-1 {
   --transform-translate-x: -0.25rem
 }
@@ -18896,6 +19061,10 @@
 
 .tw--translate-x-672px {
   --transform-translate-x: -672px
+}
+
+.tw--translate-x-576px {
+  --transform-translate-x: -576px
 }
 
 .tw--translate-x-full {
@@ -18998,6 +19167,10 @@
   --transform-translate-y: 672px
 }
 
+.tw-translate-y-576px {
+  --transform-translate-y: 576px
+}
+
 .tw--translate-y-1 {
   --transform-translate-y: -0.25rem
 }
@@ -19076,6 +19249,10 @@
 
 .tw--translate-y-672px {
   --transform-translate-y: -672px
+}
+
+.tw--translate-y-576px {
+  --transform-translate-y: -576px
 }
 
 .tw--translate-y-full {
@@ -19178,6 +19355,10 @@
   --transform-translate-x: 672px
 }
 
+.hover\:tw-translate-x-576px:hover {
+  --transform-translate-x: 576px
+}
+
 .hover\:tw--translate-x-1:hover {
   --transform-translate-x: -0.25rem
 }
@@ -19256,6 +19437,10 @@
 
 .hover\:tw--translate-x-672px:hover {
   --transform-translate-x: -672px
+}
+
+.hover\:tw--translate-x-576px:hover {
+  --transform-translate-x: -576px
 }
 
 .hover\:tw--translate-x-full:hover {
@@ -19358,6 +19543,10 @@
   --transform-translate-y: 672px
 }
 
+.hover\:tw-translate-y-576px:hover {
+  --transform-translate-y: 576px
+}
+
 .hover\:tw--translate-y-1:hover {
   --transform-translate-y: -0.25rem
 }
@@ -19436,6 +19625,10 @@
 
 .hover\:tw--translate-y-672px:hover {
   --transform-translate-y: -672px
+}
+
+.hover\:tw--translate-y-576px:hover {
+  --transform-translate-y: -576px
 }
 
 .hover\:tw--translate-y-full:hover {
@@ -19538,6 +19731,10 @@
   --transform-translate-x: 672px
 }
 
+.focus\:tw-translate-x-576px:focus {
+  --transform-translate-x: 576px
+}
+
 .focus\:tw--translate-x-1:focus {
   --transform-translate-x: -0.25rem
 }
@@ -19616,6 +19813,10 @@
 
 .focus\:tw--translate-x-672px:focus {
   --transform-translate-x: -672px
+}
+
+.focus\:tw--translate-x-576px:focus {
+  --transform-translate-x: -576px
 }
 
 .focus\:tw--translate-x-full:focus {
@@ -19718,6 +19919,10 @@
   --transform-translate-y: 672px
 }
 
+.focus\:tw-translate-y-576px:focus {
+  --transform-translate-y: 576px
+}
+
 .focus\:tw--translate-y-1:focus {
   --transform-translate-y: -0.25rem
 }
@@ -19796,6 +20001,10 @@
 
 .focus\:tw--translate-y-672px:focus {
   --transform-translate-y: -672px
+}
+
+.focus\:tw--translate-y-576px:focus {
+  --transform-translate-y: -576px
 }
 
 .focus\:tw--translate-y-full:focus {
@@ -20562,6 +20771,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: calc(672px * calc(1 - var(--space-x-reverse)))
   }
 
+  .sm\:tw-space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(576px * var(--space-y-reverse))
+  }
+
+  .sm\:tw-space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(576px * var(--space-x-reverse));
+    margin-left: calc(576px * calc(1 - var(--space-x-reverse)))
+  }
+
   .sm\:tw--space-y-1 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(-0.25rem * calc(1 - var(--space-y-reverse)));
@@ -20800,6 +21021,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --space-x-reverse: 0;
     margin-right: calc(-672px * var(--space-x-reverse));
     margin-left: calc(-672px * calc(1 - var(--space-x-reverse)))
+  }
+
+  .sm\:tw--space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(-576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(-576px * var(--space-y-reverse))
+  }
+
+  .sm\:tw--space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(-576px * var(--space-x-reverse));
+    margin-left: calc(-576px * calc(1 - var(--space-x-reverse)))
   }
 
   .sm\:tw-space-y-reverse > :not(template) ~ :not(template) {
@@ -30253,6 +30486,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     height: 672px
   }
 
+  .sm\:tw-h-576px {
+    height: 576px
+  }
+
   .sm\:tw-h-full {
     height: 100%
   }
@@ -30465,6 +30702,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin: 672px
   }
 
+  .sm\:tw-m-576px {
+    margin: 576px
+  }
+
   .sm\:tw--m-1 {
     margin: -0.25rem
   }
@@ -30543,6 +30784,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:tw--m-672px {
     margin: -672px
+  }
+
+  .sm\:tw--m-576px {
+    margin: -576px
   }
 
   .sm\:tw-my-0 {
@@ -30765,6 +31010,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-right: 672px
   }
 
+  .sm\:tw-my-576px {
+    margin-top: 576px;
+    margin-bottom: 576px
+  }
+
+  .sm\:tw-mx-576px {
+    margin-left: 576px;
+    margin-right: 576px
+  }
+
   .sm\:tw--my-1 {
     margin-top: -0.25rem;
     margin-bottom: -0.25rem
@@ -30963,6 +31218,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .sm\:tw--mx-672px {
     margin-left: -672px;
     margin-right: -672px
+  }
+
+  .sm\:tw--my-576px {
+    margin-top: -576px;
+    margin-bottom: -576px
+  }
+
+  .sm\:tw--mx-576px {
+    margin-left: -576px;
+    margin-right: -576px
   }
 
   .sm\:tw-mt-0 {
@@ -31317,6 +31582,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: 672px
   }
 
+  .sm\:tw-mt-576px {
+    margin-top: 576px
+  }
+
+  .sm\:tw-mr-576px {
+    margin-right: 576px
+  }
+
+  .sm\:tw-mb-576px {
+    margin-bottom: 576px
+  }
+
+  .sm\:tw-ml-576px {
+    margin-left: 576px
+  }
+
   .sm\:tw--mt-1 {
     margin-top: -0.25rem
   }
@@ -31637,6 +31918,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: -672px
   }
 
+  .sm\:tw--mt-576px {
+    margin-top: -576px
+  }
+
+  .sm\:tw--mr-576px {
+    margin-right: -576px
+  }
+
+  .sm\:tw--mb-576px {
+    margin-bottom: -576px
+  }
+
+  .sm\:tw--ml-576px {
+    margin-left: -576px
+  }
+
   .sm\:tw-max-h-full {
     max-height: 100%
   }
@@ -31719,6 +32016,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:tw-min-h-screen {
     min-height: 100vh
+  }
+
+  .sm\:tw-min-h-600px {
+    min-height: 600px
+  }
+
+  .sm\:tw-min-h-672px {
+    min-height: 672px
+  }
+
+  .sm\:tw-min-h-576px {
+    min-height: 576px
   }
 
   .sm\:tw-min-w-0 {
@@ -32065,6 +32374,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     padding: 672px
   }
 
+  .sm\:tw-p-576px {
+    padding: 576px
+  }
+
   .sm\:tw-py-0 {
     padding-top: 0;
     padding-bottom: 0
@@ -32273,6 +32586,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .sm\:tw-px-672px {
     padding-left: 672px;
     padding-right: 672px
+  }
+
+  .sm\:tw-py-576px {
+    padding-top: 576px;
+    padding-bottom: 576px
+  }
+
+  .sm\:tw-px-576px {
+    padding-left: 576px;
+    padding-right: 576px
   }
 
   .sm\:tw-pt-0 {
@@ -32609,6 +32932,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:tw-pl-672px {
     padding-left: 672px
+  }
+
+  .sm\:tw-pt-576px {
+    padding-top: 576px
+  }
+
+  .sm\:tw-pr-576px {
+    padding-right: 576px
+  }
+
+  .sm\:tw-pb-576px {
+    padding-bottom: 576px
+  }
+
+  .sm\:tw-pl-576px {
+    padding-left: 576px
   }
 
   .sm\:tw-placeholder-transparent::-moz-placeholder {
@@ -37270,6 +37609,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     width: 672px
   }
 
+  .sm\:tw-w-576px {
+    width: 576px
+  }
+
   .sm\:tw-w-1\/2 {
     width: 50%
   }
@@ -37515,6 +37858,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     gap: 672px
   }
 
+  .sm\:tw-gap-576px {
+    grid-gap: 576px;
+    gap: 576px
+  }
+
   .sm\:tw-col-gap-0 {
     grid-column-gap: 0;
     -moz-column-gap: 0;
@@ -37639,6 +37987,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     grid-column-gap: 672px;
     -moz-column-gap: 672px;
          column-gap: 672px
+  }
+
+  .sm\:tw-col-gap-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
   }
 
   .sm\:tw-gap-x-0 {
@@ -37767,6 +38121,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
          column-gap: 672px
   }
 
+  .sm\:tw-gap-x-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
+  }
+
   .sm\:tw-row-gap-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -37872,6 +38232,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     row-gap: 672px
   }
 
+  .sm\:tw-row-gap-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
+  }
+
   .sm\:tw-gap-y-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -37975,6 +38340,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .sm\:tw-gap-y-672px {
     grid-row-gap: 672px;
     row-gap: 672px
+  }
+
+  .sm\:tw-gap-y-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
   }
 
   .sm\:tw-grid-flow-row {
@@ -39102,6 +39472,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .sm\:tw-translate-x-576px {
+    --transform-translate-x: 576px
+  }
+
   .sm\:tw--translate-x-1 {
     --transform-translate-x: -0.25rem
   }
@@ -39180,6 +39554,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:tw--translate-x-672px {
     --transform-translate-x: -672px
+  }
+
+  .sm\:tw--translate-x-576px {
+    --transform-translate-x: -576px
   }
 
   .sm\:tw--translate-x-full {
@@ -39282,6 +39660,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .sm\:tw-translate-y-576px {
+    --transform-translate-y: 576px
+  }
+
   .sm\:tw--translate-y-1 {
     --transform-translate-y: -0.25rem
   }
@@ -39360,6 +39742,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:tw--translate-y-672px {
     --transform-translate-y: -672px
+  }
+
+  .sm\:tw--translate-y-576px {
+    --transform-translate-y: -576px
   }
 
   .sm\:tw--translate-y-full {
@@ -39462,6 +39848,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .sm\:hover\:tw-translate-x-576px:hover {
+    --transform-translate-x: 576px
+  }
+
   .sm\:hover\:tw--translate-x-1:hover {
     --transform-translate-x: -0.25rem
   }
@@ -39540,6 +39930,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:hover\:tw--translate-x-672px:hover {
     --transform-translate-x: -672px
+  }
+
+  .sm\:hover\:tw--translate-x-576px:hover {
+    --transform-translate-x: -576px
   }
 
   .sm\:hover\:tw--translate-x-full:hover {
@@ -39642,6 +40036,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .sm\:hover\:tw-translate-y-576px:hover {
+    --transform-translate-y: 576px
+  }
+
   .sm\:hover\:tw--translate-y-1:hover {
     --transform-translate-y: -0.25rem
   }
@@ -39720,6 +40118,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:hover\:tw--translate-y-672px:hover {
     --transform-translate-y: -672px
+  }
+
+  .sm\:hover\:tw--translate-y-576px:hover {
+    --transform-translate-y: -576px
   }
 
   .sm\:hover\:tw--translate-y-full:hover {
@@ -39822,6 +40224,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .sm\:focus\:tw-translate-x-576px:focus {
+    --transform-translate-x: 576px
+  }
+
   .sm\:focus\:tw--translate-x-1:focus {
     --transform-translate-x: -0.25rem
   }
@@ -39900,6 +40306,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:focus\:tw--translate-x-672px:focus {
     --transform-translate-x: -672px
+  }
+
+  .sm\:focus\:tw--translate-x-576px:focus {
+    --transform-translate-x: -576px
   }
 
   .sm\:focus\:tw--translate-x-full:focus {
@@ -40002,6 +40412,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .sm\:focus\:tw-translate-y-576px:focus {
+    --transform-translate-y: 576px
+  }
+
   .sm\:focus\:tw--translate-y-1:focus {
     --transform-translate-y: -0.25rem
   }
@@ -40080,6 +40494,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:focus\:tw--translate-y-672px:focus {
     --transform-translate-y: -672px
+  }
+
+  .sm\:focus\:tw--translate-y-576px:focus {
+    --transform-translate-y: -576px
   }
 
   .sm\:focus\:tw--translate-y-full:focus {
@@ -40777,6 +41195,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: calc(672px * calc(1 - var(--space-x-reverse)))
   }
 
+  .md\:tw-space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(576px * var(--space-y-reverse))
+  }
+
+  .md\:tw-space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(576px * var(--space-x-reverse));
+    margin-left: calc(576px * calc(1 - var(--space-x-reverse)))
+  }
+
   .md\:tw--space-y-1 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(-0.25rem * calc(1 - var(--space-y-reverse)));
@@ -41015,6 +41445,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --space-x-reverse: 0;
     margin-right: calc(-672px * var(--space-x-reverse));
     margin-left: calc(-672px * calc(1 - var(--space-x-reverse)))
+  }
+
+  .md\:tw--space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(-576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(-576px * var(--space-y-reverse))
+  }
+
+  .md\:tw--space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(-576px * var(--space-x-reverse));
+    margin-left: calc(-576px * calc(1 - var(--space-x-reverse)))
   }
 
   .md\:tw-space-y-reverse > :not(template) ~ :not(template) {
@@ -50468,6 +50910,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     height: 672px
   }
 
+  .md\:tw-h-576px {
+    height: 576px
+  }
+
   .md\:tw-h-full {
     height: 100%
   }
@@ -50680,6 +51126,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin: 672px
   }
 
+  .md\:tw-m-576px {
+    margin: 576px
+  }
+
   .md\:tw--m-1 {
     margin: -0.25rem
   }
@@ -50758,6 +51208,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:tw--m-672px {
     margin: -672px
+  }
+
+  .md\:tw--m-576px {
+    margin: -576px
   }
 
   .md\:tw-my-0 {
@@ -50980,6 +51434,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-right: 672px
   }
 
+  .md\:tw-my-576px {
+    margin-top: 576px;
+    margin-bottom: 576px
+  }
+
+  .md\:tw-mx-576px {
+    margin-left: 576px;
+    margin-right: 576px
+  }
+
   .md\:tw--my-1 {
     margin-top: -0.25rem;
     margin-bottom: -0.25rem
@@ -51178,6 +51642,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .md\:tw--mx-672px {
     margin-left: -672px;
     margin-right: -672px
+  }
+
+  .md\:tw--my-576px {
+    margin-top: -576px;
+    margin-bottom: -576px
+  }
+
+  .md\:tw--mx-576px {
+    margin-left: -576px;
+    margin-right: -576px
   }
 
   .md\:tw-mt-0 {
@@ -51532,6 +52006,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: 672px
   }
 
+  .md\:tw-mt-576px {
+    margin-top: 576px
+  }
+
+  .md\:tw-mr-576px {
+    margin-right: 576px
+  }
+
+  .md\:tw-mb-576px {
+    margin-bottom: 576px
+  }
+
+  .md\:tw-ml-576px {
+    margin-left: 576px
+  }
+
   .md\:tw--mt-1 {
     margin-top: -0.25rem
   }
@@ -51852,6 +52342,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: -672px
   }
 
+  .md\:tw--mt-576px {
+    margin-top: -576px
+  }
+
+  .md\:tw--mr-576px {
+    margin-right: -576px
+  }
+
+  .md\:tw--mb-576px {
+    margin-bottom: -576px
+  }
+
+  .md\:tw--ml-576px {
+    margin-left: -576px
+  }
+
   .md\:tw-max-h-full {
     max-height: 100%
   }
@@ -51934,6 +52440,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:tw-min-h-screen {
     min-height: 100vh
+  }
+
+  .md\:tw-min-h-600px {
+    min-height: 600px
+  }
+
+  .md\:tw-min-h-672px {
+    min-height: 672px
+  }
+
+  .md\:tw-min-h-576px {
+    min-height: 576px
   }
 
   .md\:tw-min-w-0 {
@@ -52280,6 +52798,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     padding: 672px
   }
 
+  .md\:tw-p-576px {
+    padding: 576px
+  }
+
   .md\:tw-py-0 {
     padding-top: 0;
     padding-bottom: 0
@@ -52488,6 +53010,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .md\:tw-px-672px {
     padding-left: 672px;
     padding-right: 672px
+  }
+
+  .md\:tw-py-576px {
+    padding-top: 576px;
+    padding-bottom: 576px
+  }
+
+  .md\:tw-px-576px {
+    padding-left: 576px;
+    padding-right: 576px
   }
 
   .md\:tw-pt-0 {
@@ -52824,6 +53356,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:tw-pl-672px {
     padding-left: 672px
+  }
+
+  .md\:tw-pt-576px {
+    padding-top: 576px
+  }
+
+  .md\:tw-pr-576px {
+    padding-right: 576px
+  }
+
+  .md\:tw-pb-576px {
+    padding-bottom: 576px
+  }
+
+  .md\:tw-pl-576px {
+    padding-left: 576px
   }
 
   .md\:tw-placeholder-transparent::-moz-placeholder {
@@ -57485,6 +58033,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     width: 672px
   }
 
+  .md\:tw-w-576px {
+    width: 576px
+  }
+
   .md\:tw-w-1\/2 {
     width: 50%
   }
@@ -57730,6 +58282,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     gap: 672px
   }
 
+  .md\:tw-gap-576px {
+    grid-gap: 576px;
+    gap: 576px
+  }
+
   .md\:tw-col-gap-0 {
     grid-column-gap: 0;
     -moz-column-gap: 0;
@@ -57854,6 +58411,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     grid-column-gap: 672px;
     -moz-column-gap: 672px;
          column-gap: 672px
+  }
+
+  .md\:tw-col-gap-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
   }
 
   .md\:tw-gap-x-0 {
@@ -57982,6 +58545,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
          column-gap: 672px
   }
 
+  .md\:tw-gap-x-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
+  }
+
   .md\:tw-row-gap-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -58087,6 +58656,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     row-gap: 672px
   }
 
+  .md\:tw-row-gap-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
+  }
+
   .md\:tw-gap-y-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -58190,6 +58764,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .md\:tw-gap-y-672px {
     grid-row-gap: 672px;
     row-gap: 672px
+  }
+
+  .md\:tw-gap-y-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
   }
 
   .md\:tw-grid-flow-row {
@@ -59317,6 +59896,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .md\:tw-translate-x-576px {
+    --transform-translate-x: 576px
+  }
+
   .md\:tw--translate-x-1 {
     --transform-translate-x: -0.25rem
   }
@@ -59395,6 +59978,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:tw--translate-x-672px {
     --transform-translate-x: -672px
+  }
+
+  .md\:tw--translate-x-576px {
+    --transform-translate-x: -576px
   }
 
   .md\:tw--translate-x-full {
@@ -59497,6 +60084,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .md\:tw-translate-y-576px {
+    --transform-translate-y: 576px
+  }
+
   .md\:tw--translate-y-1 {
     --transform-translate-y: -0.25rem
   }
@@ -59575,6 +60166,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:tw--translate-y-672px {
     --transform-translate-y: -672px
+  }
+
+  .md\:tw--translate-y-576px {
+    --transform-translate-y: -576px
   }
 
   .md\:tw--translate-y-full {
@@ -59677,6 +60272,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .md\:hover\:tw-translate-x-576px:hover {
+    --transform-translate-x: 576px
+  }
+
   .md\:hover\:tw--translate-x-1:hover {
     --transform-translate-x: -0.25rem
   }
@@ -59755,6 +60354,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:hover\:tw--translate-x-672px:hover {
     --transform-translate-x: -672px
+  }
+
+  .md\:hover\:tw--translate-x-576px:hover {
+    --transform-translate-x: -576px
   }
 
   .md\:hover\:tw--translate-x-full:hover {
@@ -59857,6 +60460,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .md\:hover\:tw-translate-y-576px:hover {
+    --transform-translate-y: 576px
+  }
+
   .md\:hover\:tw--translate-y-1:hover {
     --transform-translate-y: -0.25rem
   }
@@ -59935,6 +60542,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:hover\:tw--translate-y-672px:hover {
     --transform-translate-y: -672px
+  }
+
+  .md\:hover\:tw--translate-y-576px:hover {
+    --transform-translate-y: -576px
   }
 
   .md\:hover\:tw--translate-y-full:hover {
@@ -60037,6 +60648,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .md\:focus\:tw-translate-x-576px:focus {
+    --transform-translate-x: 576px
+  }
+
   .md\:focus\:tw--translate-x-1:focus {
     --transform-translate-x: -0.25rem
   }
@@ -60115,6 +60730,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:focus\:tw--translate-x-672px:focus {
     --transform-translate-x: -672px
+  }
+
+  .md\:focus\:tw--translate-x-576px:focus {
+    --transform-translate-x: -576px
   }
 
   .md\:focus\:tw--translate-x-full:focus {
@@ -60217,6 +60836,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .md\:focus\:tw-translate-y-576px:focus {
+    --transform-translate-y: 576px
+  }
+
   .md\:focus\:tw--translate-y-1:focus {
     --transform-translate-y: -0.25rem
   }
@@ -60295,6 +60918,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:focus\:tw--translate-y-672px:focus {
     --transform-translate-y: -672px
+  }
+
+  .md\:focus\:tw--translate-y-576px:focus {
+    --transform-translate-y: -576px
   }
 
   .md\:focus\:tw--translate-y-full:focus {
@@ -60992,6 +61619,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: calc(672px * calc(1 - var(--space-x-reverse)))
   }
 
+  .lg\:tw-space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(576px * var(--space-y-reverse))
+  }
+
+  .lg\:tw-space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(576px * var(--space-x-reverse));
+    margin-left: calc(576px * calc(1 - var(--space-x-reverse)))
+  }
+
   .lg\:tw--space-y-1 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(-0.25rem * calc(1 - var(--space-y-reverse)));
@@ -61230,6 +61869,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --space-x-reverse: 0;
     margin-right: calc(-672px * var(--space-x-reverse));
     margin-left: calc(-672px * calc(1 - var(--space-x-reverse)))
+  }
+
+  .lg\:tw--space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(-576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(-576px * var(--space-y-reverse))
+  }
+
+  .lg\:tw--space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(-576px * var(--space-x-reverse));
+    margin-left: calc(-576px * calc(1 - var(--space-x-reverse)))
   }
 
   .lg\:tw-space-y-reverse > :not(template) ~ :not(template) {
@@ -70683,6 +71334,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     height: 672px
   }
 
+  .lg\:tw-h-576px {
+    height: 576px
+  }
+
   .lg\:tw-h-full {
     height: 100%
   }
@@ -70895,6 +71550,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin: 672px
   }
 
+  .lg\:tw-m-576px {
+    margin: 576px
+  }
+
   .lg\:tw--m-1 {
     margin: -0.25rem
   }
@@ -70973,6 +71632,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:tw--m-672px {
     margin: -672px
+  }
+
+  .lg\:tw--m-576px {
+    margin: -576px
   }
 
   .lg\:tw-my-0 {
@@ -71195,6 +71858,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-right: 672px
   }
 
+  .lg\:tw-my-576px {
+    margin-top: 576px;
+    margin-bottom: 576px
+  }
+
+  .lg\:tw-mx-576px {
+    margin-left: 576px;
+    margin-right: 576px
+  }
+
   .lg\:tw--my-1 {
     margin-top: -0.25rem;
     margin-bottom: -0.25rem
@@ -71393,6 +72066,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .lg\:tw--mx-672px {
     margin-left: -672px;
     margin-right: -672px
+  }
+
+  .lg\:tw--my-576px {
+    margin-top: -576px;
+    margin-bottom: -576px
+  }
+
+  .lg\:tw--mx-576px {
+    margin-left: -576px;
+    margin-right: -576px
   }
 
   .lg\:tw-mt-0 {
@@ -71747,6 +72430,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: 672px
   }
 
+  .lg\:tw-mt-576px {
+    margin-top: 576px
+  }
+
+  .lg\:tw-mr-576px {
+    margin-right: 576px
+  }
+
+  .lg\:tw-mb-576px {
+    margin-bottom: 576px
+  }
+
+  .lg\:tw-ml-576px {
+    margin-left: 576px
+  }
+
   .lg\:tw--mt-1 {
     margin-top: -0.25rem
   }
@@ -72067,6 +72766,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: -672px
   }
 
+  .lg\:tw--mt-576px {
+    margin-top: -576px
+  }
+
+  .lg\:tw--mr-576px {
+    margin-right: -576px
+  }
+
+  .lg\:tw--mb-576px {
+    margin-bottom: -576px
+  }
+
+  .lg\:tw--ml-576px {
+    margin-left: -576px
+  }
+
   .lg\:tw-max-h-full {
     max-height: 100%
   }
@@ -72149,6 +72864,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:tw-min-h-screen {
     min-height: 100vh
+  }
+
+  .lg\:tw-min-h-600px {
+    min-height: 600px
+  }
+
+  .lg\:tw-min-h-672px {
+    min-height: 672px
+  }
+
+  .lg\:tw-min-h-576px {
+    min-height: 576px
   }
 
   .lg\:tw-min-w-0 {
@@ -72495,6 +73222,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     padding: 672px
   }
 
+  .lg\:tw-p-576px {
+    padding: 576px
+  }
+
   .lg\:tw-py-0 {
     padding-top: 0;
     padding-bottom: 0
@@ -72703,6 +73434,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .lg\:tw-px-672px {
     padding-left: 672px;
     padding-right: 672px
+  }
+
+  .lg\:tw-py-576px {
+    padding-top: 576px;
+    padding-bottom: 576px
+  }
+
+  .lg\:tw-px-576px {
+    padding-left: 576px;
+    padding-right: 576px
   }
 
   .lg\:tw-pt-0 {
@@ -73039,6 +73780,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:tw-pl-672px {
     padding-left: 672px
+  }
+
+  .lg\:tw-pt-576px {
+    padding-top: 576px
+  }
+
+  .lg\:tw-pr-576px {
+    padding-right: 576px
+  }
+
+  .lg\:tw-pb-576px {
+    padding-bottom: 576px
+  }
+
+  .lg\:tw-pl-576px {
+    padding-left: 576px
   }
 
   .lg\:tw-placeholder-transparent::-moz-placeholder {
@@ -77700,6 +78457,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     width: 672px
   }
 
+  .lg\:tw-w-576px {
+    width: 576px
+  }
+
   .lg\:tw-w-1\/2 {
     width: 50%
   }
@@ -77945,6 +78706,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     gap: 672px
   }
 
+  .lg\:tw-gap-576px {
+    grid-gap: 576px;
+    gap: 576px
+  }
+
   .lg\:tw-col-gap-0 {
     grid-column-gap: 0;
     -moz-column-gap: 0;
@@ -78069,6 +78835,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     grid-column-gap: 672px;
     -moz-column-gap: 672px;
          column-gap: 672px
+  }
+
+  .lg\:tw-col-gap-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
   }
 
   .lg\:tw-gap-x-0 {
@@ -78197,6 +78969,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
          column-gap: 672px
   }
 
+  .lg\:tw-gap-x-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
+  }
+
   .lg\:tw-row-gap-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -78302,6 +79080,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     row-gap: 672px
   }
 
+  .lg\:tw-row-gap-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
+  }
+
   .lg\:tw-gap-y-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -78405,6 +79188,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .lg\:tw-gap-y-672px {
     grid-row-gap: 672px;
     row-gap: 672px
+  }
+
+  .lg\:tw-gap-y-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
   }
 
   .lg\:tw-grid-flow-row {
@@ -79532,6 +80320,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .lg\:tw-translate-x-576px {
+    --transform-translate-x: 576px
+  }
+
   .lg\:tw--translate-x-1 {
     --transform-translate-x: -0.25rem
   }
@@ -79610,6 +80402,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:tw--translate-x-672px {
     --transform-translate-x: -672px
+  }
+
+  .lg\:tw--translate-x-576px {
+    --transform-translate-x: -576px
   }
 
   .lg\:tw--translate-x-full {
@@ -79712,6 +80508,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .lg\:tw-translate-y-576px {
+    --transform-translate-y: 576px
+  }
+
   .lg\:tw--translate-y-1 {
     --transform-translate-y: -0.25rem
   }
@@ -79790,6 +80590,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:tw--translate-y-672px {
     --transform-translate-y: -672px
+  }
+
+  .lg\:tw--translate-y-576px {
+    --transform-translate-y: -576px
   }
 
   .lg\:tw--translate-y-full {
@@ -79892,6 +80696,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .lg\:hover\:tw-translate-x-576px:hover {
+    --transform-translate-x: 576px
+  }
+
   .lg\:hover\:tw--translate-x-1:hover {
     --transform-translate-x: -0.25rem
   }
@@ -79970,6 +80778,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:hover\:tw--translate-x-672px:hover {
     --transform-translate-x: -672px
+  }
+
+  .lg\:hover\:tw--translate-x-576px:hover {
+    --transform-translate-x: -576px
   }
 
   .lg\:hover\:tw--translate-x-full:hover {
@@ -80072,6 +80884,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .lg\:hover\:tw-translate-y-576px:hover {
+    --transform-translate-y: 576px
+  }
+
   .lg\:hover\:tw--translate-y-1:hover {
     --transform-translate-y: -0.25rem
   }
@@ -80150,6 +80966,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:hover\:tw--translate-y-672px:hover {
     --transform-translate-y: -672px
+  }
+
+  .lg\:hover\:tw--translate-y-576px:hover {
+    --transform-translate-y: -576px
   }
 
   .lg\:hover\:tw--translate-y-full:hover {
@@ -80252,6 +81072,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .lg\:focus\:tw-translate-x-576px:focus {
+    --transform-translate-x: 576px
+  }
+
   .lg\:focus\:tw--translate-x-1:focus {
     --transform-translate-x: -0.25rem
   }
@@ -80330,6 +81154,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:focus\:tw--translate-x-672px:focus {
     --transform-translate-x: -672px
+  }
+
+  .lg\:focus\:tw--translate-x-576px:focus {
+    --transform-translate-x: -576px
   }
 
   .lg\:focus\:tw--translate-x-full:focus {
@@ -80432,6 +81260,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .lg\:focus\:tw-translate-y-576px:focus {
+    --transform-translate-y: 576px
+  }
+
   .lg\:focus\:tw--translate-y-1:focus {
     --transform-translate-y: -0.25rem
   }
@@ -80510,6 +81342,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .lg\:focus\:tw--translate-y-672px:focus {
     --transform-translate-y: -672px
+  }
+
+  .lg\:focus\:tw--translate-y-576px:focus {
+    --transform-translate-y: -576px
   }
 
   .lg\:focus\:tw--translate-y-full:focus {
@@ -81207,6 +82043,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: calc(672px * calc(1 - var(--space-x-reverse)))
   }
 
+  .xl\:tw-space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(576px * var(--space-y-reverse))
+  }
+
+  .xl\:tw-space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(576px * var(--space-x-reverse));
+    margin-left: calc(576px * calc(1 - var(--space-x-reverse)))
+  }
+
   .xl\:tw--space-y-1 > :not(template) ~ :not(template) {
     --space-y-reverse: 0;
     margin-top: calc(-0.25rem * calc(1 - var(--space-y-reverse)));
@@ -81445,6 +82293,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --space-x-reverse: 0;
     margin-right: calc(-672px * var(--space-x-reverse));
     margin-left: calc(-672px * calc(1 - var(--space-x-reverse)))
+  }
+
+  .xl\:tw--space-y-576px > :not(template) ~ :not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(-576px * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(-576px * var(--space-y-reverse))
+  }
+
+  .xl\:tw--space-x-576px > :not(template) ~ :not(template) {
+    --space-x-reverse: 0;
+    margin-right: calc(-576px * var(--space-x-reverse));
+    margin-left: calc(-576px * calc(1 - var(--space-x-reverse)))
   }
 
   .xl\:tw-space-y-reverse > :not(template) ~ :not(template) {
@@ -90898,6 +91758,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     height: 672px
   }
 
+  .xl\:tw-h-576px {
+    height: 576px
+  }
+
   .xl\:tw-h-full {
     height: 100%
   }
@@ -91110,6 +91974,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin: 672px
   }
 
+  .xl\:tw-m-576px {
+    margin: 576px
+  }
+
   .xl\:tw--m-1 {
     margin: -0.25rem
   }
@@ -91188,6 +92056,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw--m-672px {
     margin: -672px
+  }
+
+  .xl\:tw--m-576px {
+    margin: -576px
   }
 
   .xl\:tw-my-0 {
@@ -91410,6 +92282,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-right: 672px
   }
 
+  .xl\:tw-my-576px {
+    margin-top: 576px;
+    margin-bottom: 576px
+  }
+
+  .xl\:tw-mx-576px {
+    margin-left: 576px;
+    margin-right: 576px
+  }
+
   .xl\:tw--my-1 {
     margin-top: -0.25rem;
     margin-bottom: -0.25rem
@@ -91608,6 +92490,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .xl\:tw--mx-672px {
     margin-left: -672px;
     margin-right: -672px
+  }
+
+  .xl\:tw--my-576px {
+    margin-top: -576px;
+    margin-bottom: -576px
+  }
+
+  .xl\:tw--mx-576px {
+    margin-left: -576px;
+    margin-right: -576px
   }
 
   .xl\:tw-mt-0 {
@@ -91962,6 +92854,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: 672px
   }
 
+  .xl\:tw-mt-576px {
+    margin-top: 576px
+  }
+
+  .xl\:tw-mr-576px {
+    margin-right: 576px
+  }
+
+  .xl\:tw-mb-576px {
+    margin-bottom: 576px
+  }
+
+  .xl\:tw-ml-576px {
+    margin-left: 576px
+  }
+
   .xl\:tw--mt-1 {
     margin-top: -0.25rem
   }
@@ -92282,6 +93190,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     margin-left: -672px
   }
 
+  .xl\:tw--mt-576px {
+    margin-top: -576px
+  }
+
+  .xl\:tw--mr-576px {
+    margin-right: -576px
+  }
+
+  .xl\:tw--mb-576px {
+    margin-bottom: -576px
+  }
+
+  .xl\:tw--ml-576px {
+    margin-left: -576px
+  }
+
   .xl\:tw-max-h-full {
     max-height: 100%
   }
@@ -92364,6 +93288,18 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw-min-h-screen {
     min-height: 100vh
+  }
+
+  .xl\:tw-min-h-600px {
+    min-height: 600px
+  }
+
+  .xl\:tw-min-h-672px {
+    min-height: 672px
+  }
+
+  .xl\:tw-min-h-576px {
+    min-height: 576px
   }
 
   .xl\:tw-min-w-0 {
@@ -92710,6 +93646,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     padding: 672px
   }
 
+  .xl\:tw-p-576px {
+    padding: 576px
+  }
+
   .xl\:tw-py-0 {
     padding-top: 0;
     padding-bottom: 0
@@ -92918,6 +93858,16 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .xl\:tw-px-672px {
     padding-left: 672px;
     padding-right: 672px
+  }
+
+  .xl\:tw-py-576px {
+    padding-top: 576px;
+    padding-bottom: 576px
+  }
+
+  .xl\:tw-px-576px {
+    padding-left: 576px;
+    padding-right: 576px
   }
 
   .xl\:tw-pt-0 {
@@ -93254,6 +94204,22 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw-pl-672px {
     padding-left: 672px
+  }
+
+  .xl\:tw-pt-576px {
+    padding-top: 576px
+  }
+
+  .xl\:tw-pr-576px {
+    padding-right: 576px
+  }
+
+  .xl\:tw-pb-576px {
+    padding-bottom: 576px
+  }
+
+  .xl\:tw-pl-576px {
+    padding-left: 576px
   }
 
   .xl\:tw-placeholder-transparent::-moz-placeholder {
@@ -97915,6 +98881,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     width: 672px
   }
 
+  .xl\:tw-w-576px {
+    width: 576px
+  }
+
   .xl\:tw-w-1\/2 {
     width: 50%
   }
@@ -98160,6 +99130,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     gap: 672px
   }
 
+  .xl\:tw-gap-576px {
+    grid-gap: 576px;
+    gap: 576px
+  }
+
   .xl\:tw-col-gap-0 {
     grid-column-gap: 0;
     -moz-column-gap: 0;
@@ -98284,6 +99259,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     grid-column-gap: 672px;
     -moz-column-gap: 672px;
          column-gap: 672px
+  }
+
+  .xl\:tw-col-gap-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
   }
 
   .xl\:tw-gap-x-0 {
@@ -98412,6 +99393,12 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
          column-gap: 672px
   }
 
+  .xl\:tw-gap-x-576px {
+    grid-column-gap: 576px;
+    -moz-column-gap: 576px;
+         column-gap: 576px
+  }
+
   .xl\:tw-row-gap-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -98517,6 +99504,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     row-gap: 672px
   }
 
+  .xl\:tw-row-gap-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
+  }
+
   .xl\:tw-gap-y-0 {
     grid-row-gap: 0;
     row-gap: 0
@@ -98620,6 +99612,11 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   .xl\:tw-gap-y-672px {
     grid-row-gap: 672px;
     row-gap: 672px
+  }
+
+  .xl\:tw-gap-y-576px {
+    grid-row-gap: 576px;
+    row-gap: 576px
   }
 
   .xl\:tw-grid-flow-row {
@@ -99747,6 +100744,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .xl\:tw-translate-x-576px {
+    --transform-translate-x: 576px
+  }
+
   .xl\:tw--translate-x-1 {
     --transform-translate-x: -0.25rem
   }
@@ -99825,6 +100826,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw--translate-x-672px {
     --transform-translate-x: -672px
+  }
+
+  .xl\:tw--translate-x-576px {
+    --transform-translate-x: -576px
   }
 
   .xl\:tw--translate-x-full {
@@ -99927,6 +100932,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .xl\:tw-translate-y-576px {
+    --transform-translate-y: 576px
+  }
+
   .xl\:tw--translate-y-1 {
     --transform-translate-y: -0.25rem
   }
@@ -100005,6 +101014,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw--translate-y-672px {
     --transform-translate-y: -672px
+  }
+
+  .xl\:tw--translate-y-576px {
+    --transform-translate-y: -576px
   }
 
   .xl\:tw--translate-y-full {
@@ -100107,6 +101120,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .xl\:hover\:tw-translate-x-576px:hover {
+    --transform-translate-x: 576px
+  }
+
   .xl\:hover\:tw--translate-x-1:hover {
     --transform-translate-x: -0.25rem
   }
@@ -100185,6 +101202,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:hover\:tw--translate-x-672px:hover {
     --transform-translate-x: -672px
+  }
+
+  .xl\:hover\:tw--translate-x-576px:hover {
+    --transform-translate-x: -576px
   }
 
   .xl\:hover\:tw--translate-x-full:hover {
@@ -100287,6 +101308,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .xl\:hover\:tw-translate-y-576px:hover {
+    --transform-translate-y: 576px
+  }
+
   .xl\:hover\:tw--translate-y-1:hover {
     --transform-translate-y: -0.25rem
   }
@@ -100365,6 +101390,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:hover\:tw--translate-y-672px:hover {
     --transform-translate-y: -672px
+  }
+
+  .xl\:hover\:tw--translate-y-576px:hover {
+    --transform-translate-y: -576px
   }
 
   .xl\:hover\:tw--translate-y-full:hover {
@@ -100467,6 +101496,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-x: 672px
   }
 
+  .xl\:focus\:tw-translate-x-576px:focus {
+    --transform-translate-x: 576px
+  }
+
   .xl\:focus\:tw--translate-x-1:focus {
     --transform-translate-x: -0.25rem
   }
@@ -100545,6 +101578,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:focus\:tw--translate-x-672px:focus {
     --transform-translate-x: -672px
+  }
+
+  .xl\:focus\:tw--translate-x-576px:focus {
+    --transform-translate-x: -576px
   }
 
   .xl\:focus\:tw--translate-x-full:focus {
@@ -100647,6 +101684,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     --transform-translate-y: 672px
   }
 
+  .xl\:focus\:tw-translate-y-576px:focus {
+    --transform-translate-y: 576px
+  }
+
   .xl\:focus\:tw--translate-y-1:focus {
     --transform-translate-y: -0.25rem
   }
@@ -100725,6 +101766,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:focus\:tw--translate-y-672px:focus {
     --transform-translate-y: -672px
+  }
+
+  .xl\:focus\:tw--translate-y-576px:focus {
+    --transform-translate-y: -576px
   }
 
   .xl\:focus\:tw--translate-y-full:focus {
