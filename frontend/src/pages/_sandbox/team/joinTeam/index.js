@@ -100,7 +100,7 @@ export default () => {
     const classes = junctionStyle()
     return (
         <ResponsiveMasonry
-            columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3 }}
+            columnsCountBreakPoints={{ 350: 1, 750: 2, 1440: 3 }}
         >
             <Masonry>
                 <TeamCard />
