@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
 import { Email } from '@material-ui/icons'
-import TeamSocials from '../TeamSocials'
+import SocialLinks from '../../generic/SocialLinks'
 
 export default () => {
     const classes = junctionStyle()
@@ -21,8 +21,8 @@ export default () => {
                 <TeamDescription />
             </div>
             <TeamRoles maxRoles={9999} profileView />
-            <TeamMembers listView />
-            <TeamSocials />
+            <TeamMembers viewModeStyle="list" />
+            <SocialLinks />
             <div className="tw-flex tw-gap-4 tw-justify-start">
                 <Button variant="jContained">Edit</Button>
                 <Button color="outlined_button" variant="jOutlined">

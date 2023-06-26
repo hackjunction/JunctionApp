@@ -1,23 +1,52 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
 
-export default ({ listView = false }) => {
-    const styling = listView
-        ? {
-              borderStyle:
-                  'tw-border tw-border-solid tw-border-gray-300 tw-p-4',
-              imageSize: 'tw-w-16 tw-h-16',
-          }
-        : {
-              borderStyle: '',
-              imageSize: 'tw-w-24 tw-h-24',
-          }
+export default ({
+    viewMode = 'card',
+    userData = {
+        profile: {
+            profilePicture: '',
+            firstName: 'Alea',
+            lastName: 'Solano',
+            headline: 'Full Stack Developer',
+        },
+    },
+}) => {
+    const styling = {
+        borderStyle: '',
+        imageSize: '',
+        alignment: 'tw-items-center',
+        userProfile: {
+            backgroundImage: `url(${userData.profile.profilePicture})`,
+        },
+    }
+
+    console.log(userData)
+    switch (viewMode) {
+        case 'list':
+            styling.borderStyle =
+                'tw-border tw-border-solid tw-border-gray-300 tw-p-4'
+            styling.imageSize = 'tw-w-16 tw-h-16'
+            break
+        case 'profile':
+            styling.borderStyle = ''
+            styling.imageSize = 'tw-w-48 tw-h-48'
+            styling.alignment = 'tw-items-start tw-flex-col tw--mt-24'
+            break
+        case 'card':
+            styling.borderStyle = ''
+            styling.imageSize = 'tw-w-24 tw-h-24'
+            break
+        default:
+            break
+    }
     return (
         <div
-            className={`tw-flex tw-items-center tw-gap-4 tw-rounded-lg ${styling.borderStyle}`}
+            className={`tw-flex tw-gap-4 tw-h- tw-rounded-lg ${styling.borderStyle} ${styling.alignment}`}
         >
             <div
                 className={`tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize}`}
+                style={styling?.userProfile}
             ></div>
             <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">
                 <Typography
@@ -25,14 +54,14 @@ export default ({ listView = false }) => {
                     variant="h5"
                     component="h5"
                 >
-                    Alea Solano
+                    {userData.profile.firstName} {userData.profile.lastName}
                 </Typography>
                 <Typography
                     className="tw-tracking-tight tw-font-normal"
                     variant="h6"
                     component="h6"
                 >
-                    UX Designer
+                    {userData.profile.headline}
                 </Typography>
             </div>
         </div>

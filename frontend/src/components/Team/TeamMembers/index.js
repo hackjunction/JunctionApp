@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 import React from 'react'
 
-export default ({ listView = false }) => {
+export default ({ viewModeStyle = 'list' }) => {
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
             <Typography
@@ -12,9 +12,9 @@ export default ({ listView = false }) => {
             >
                 Team members
             </Typography>
-            <ParticipantPreview listView={listView} />
-            <ParticipantPreview listView={listView} />
-            <ParticipantPreview listView={listView} />
+            <ParticipantPreview viewMode={viewModeStyle} />
+            <ParticipantPreview viewMode={viewModeStyle} />
+            <ParticipantPreview viewMode={viewModeStyle} />
         </div>
     )
 }

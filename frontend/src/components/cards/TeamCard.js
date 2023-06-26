@@ -61,7 +61,7 @@ function TeamCard() {
     return (
         <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between">
             <CardContent className="tw-flex tw-flex-col tw-p-0">
-                <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
+                <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                     <TeamHeader />
                     <TeamRoles />

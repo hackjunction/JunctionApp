@@ -18,10 +18,16 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import BrushIcon from '@material-ui/icons/Brush'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import emblem_black from 'assets/logos/emblem_black.png'
+import { Email, LocationOn } from '@material-ui/icons'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import ParticipantPreview from 'components/Participant/ParticipantPreview'
+import SocialLinks from 'components/generic/SocialLinks'
+import Button from 'components/generic/Button'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { popupCenter } from 'utils/misc'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -84,6 +90,12 @@ const useStyles = makeStyles(theme => ({
     icon: {
         color: 'white',
     },
+    socialIcon: {
+        color: theme.palette.primary.main,
+        width: 'auto',
+        margin: '1rem',
+        cursor: 'pointer',
+    },
 }))
 
 export default ({ user = {} }) => {
@@ -111,110 +123,134 @@ export default ({ user = {} }) => {
     }, [_isFavorite, dispatch, user.userId])
 
     return (
-        <Box className={classes.wrapper}>
-            <Box className={classes.backButtonWrapper}>
+        <div className="tw-flex tw-flex-col tw-gap-2">
+            <div className="tw-flex tw-justify-between tw-items-center">
                 <MuiButton onClick={() => dispatch(goBack())}>
                     <ArrowBackIosIcon style={{ fontSize: '16px' }} />
                     Back
                 </MuiButton>
-            </Box>
-            <Box className={classes.avatarWrapper}>
-                <Avatar
-                    style={{ height: '300px', width: '300px' }}
-                    alt="Profile Picture"
-                    src={profile.profilePicture}
-                    imgProps={{
-                        onError: e => {
-                            e.target.src = emblem_black
-                        },
-                    }}
-                />
-                <Box className={classes.favoriteWrapper}>
-                    <Tooltip
-                        title={
-                            isFavorite
-                                ? 'Remove from favorites'
-                                : 'Add to favorites'
-                        }
-                        placement="right"
+                <Tooltip
+                    title={
+                        isFavorite
+                            ? 'Remove from favorites'
+                            : 'Add to favorites'
+                    }
+                    placement="right"
+                >
+                    <IconButton
+                        onClick={handleFavorite}
+                        aria-label="favorite"
+                        className={classes.margin}
                     >
-                        <IconButton
-                            onClick={handleFavorite}
-                            aria-label="favorite"
-                            className={classes.margin}
+                        <StarIcon
+                            className={classes.favoriteIcon}
+                            fontSize="large"
+                        />
+                    </IconButton>
+                </Tooltip>
+            </div>
+            <div className="tw-flex tw-flex-col tw-rounded-lg tw-shadow-md tw-bg-white">
+                <div className="tw-w-full tw-h-32 tw-rounded-lg tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500"></div>
+                <div className="tw-px-8 tw-pt-0 tw-pb-8 tw-flex tw-flex-col tw-gap-2 tw-rounded-lg">
+                    <ParticipantPreview viewMode="profile" userData={user} />
+                    <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-600">
+                        <LocationOn />
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
                         >
-                            <StarIcon
-                                className={classes.favoriteIcon}
-                                fontSize="large"
-                            />
-                        </IconButton>
-                    </Tooltip>
-                </Box>
-            </Box>
-            <Box className={classes.nameWrapper}>
-                <Typography variant="h6">{`${profile.firstName} ${profile.lastName}`}</Typography>
-                <Typography variant="subtitle1">{`${profile.email}`}</Typography>
-                <Typography variant="subtitle1">
-                    {profile.countryOfResidence}
-                </Typography>
-                <Typography variant="subtitle1">{profile.headline}</Typography>
-            </Box>
-            <Box className={classes.linksWrapper}>
-                {social.github && (
-                    <Tooltip title="GitHub" placement="bottom">
-                        <Box p={1}>
+                            {user.profile.countryOfResidence}
+                        </Typography>
+                    </div>
+
+                    {/* <SocialLinks viewMode="participant" /> */}
+                    <div className="tw-flex tw-content-center tw-justify-start">
+                        {social.github && (
+                            <Tooltip title="GitHub" placement="bottom">
+                                <Box p={1}>
+                                    <IconButton
+                                        onClick={() =>
+                                            window.open(social.github, '_blank')
+                                        }
+                                        aria-label="github"
+                                        className={classes.githubIcon}
+                                    >
+                                        <GitHubIcon
+                                            className={classes.icon}
+                                            fontSize="small"
+                                        />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        )}
+                        {social.linkedin && (
+                            <Tooltip title="LinkedIn" placement="bottom">
+                                <Box p={1}>
+                                    <IconButton
+                                        onClick={() =>
+                                            window.open(
+                                                social.linkedin,
+                                                '_blank',
+                                            )
+                                        }
+                                        aria-label="linkedin"
+                                        className={classes.linkedinIcon}
+                                    >
+                                        <LinkedInIcon
+                                            className={classes.icon}
+                                            fontSize="small"
+                                        />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        )}
+                        {social.portfolio && (
+                            <Tooltip title="Portfolio" placement="bottom">
+                                <Box p={1}>
+                                    <IconButton
+                                        onClick={() =>
+                                            window.open(
+                                                social.portfolio,
+                                                '_blank',
+                                            )
+                                        }
+                                        aria-label="portfolio"
+                                        className={classes.portfolioIcon}
+                                    >
+                                        <BrushIcon
+                                            className={classes.icon}
+                                            fontSize="small"
+                                        />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                        )}
+                        {profile.email && (
                             <IconButton
+                                color="primary"
+                                aria-label="Email"
+                                className="tw-p-0"
                                 onClick={() =>
-                                    window.open(social.github, '_blank')
+                                    popupCenter({
+                                        url: `mailto:${profile.email}`,
+                                        title: 'email',
+                                    })
                                 }
-                                aria-label="github"
-                                className={classes.githubIcon}
                             >
-                                <GitHubIcon
-                                    className={classes.icon}
-                                    fontSize="large"
-                                />
+                                <Email className={classes.socialIcon} />
                             </IconButton>
-                        </Box>
-                    </Tooltip>
-                )}
-                {social.linkedin && (
-                    <Tooltip title="LinkedIn" placement="bottom">
-                        <Box p={1}>
-                            <IconButton
-                                onClick={() =>
-                                    window.open(social.linkedin, '_blank')
-                                }
-                                aria-label="linkedin"
-                                className={classes.linkedinIcon}
-                            >
-                                <LinkedInIcon
-                                    className={classes.icon}
-                                    fontSize="large"
-                                />
-                            </IconButton>
-                        </Box>
-                    </Tooltip>
-                )}
-                {social.portfolio && (
-                    <Tooltip title="Portfolio" placement="bottom">
-                        <Box p={1}>
-                            <IconButton
-                                onClick={() =>
-                                    window.open(social.portfolio, '_blank')
-                                }
-                                aria-label="portfolio"
-                                className={classes.portfolioIcon}
-                            >
-                                <BrushIcon
-                                    className={classes.icon}
-                                    fontSize="large"
-                                />
-                            </IconButton>
-                        </Box>
-                    </Tooltip>
-                )}
-            </Box>
-        </Box>
+                        )}
+                    </div>
+
+                    {/* <div className="tw-flex tw-gap-4 tw-justify-start">
+                        <Button variant="jContained">Messages</Button>
+                        <Button color="outlined_button" variant="jOutlined">
+                            Share profile
+                        </Button>
+                    </div> */}
+                </div>
+            </div>
+        </div>
     )
 }
