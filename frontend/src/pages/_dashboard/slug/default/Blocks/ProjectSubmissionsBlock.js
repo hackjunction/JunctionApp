@@ -8,7 +8,7 @@ function ProjectSubmissionsBlock({ projects, event }) {
     const [selected, setSelected] = useState(false)
     return (
         <>
-            {projects && event && projects[0]?.event === event?._id ? (
+            {projects && event && projects[0].event === event._id ? (
                 <>
                     <Grid item xs={12}>
                         <GradientBox color="theme_white" p={3}>
