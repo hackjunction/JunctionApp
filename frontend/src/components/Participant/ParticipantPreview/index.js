@@ -16,12 +16,14 @@ export default ({
         borderStyle: '',
         imageSize: '',
         alignment: 'tw-items-center',
-        userProfile: {
-            backgroundImage: `url(${userData.profile.profilePicture})`,
-        },
     }
 
-    console.log(userData)
+    if (userData.profile.profilePicture !== '') {
+        styling.userProfile = {
+            backgroundImage: `url(${userData.profile.profilePicture})`,
+        }
+    }
+
     switch (viewMode) {
         case 'list':
             styling.borderStyle =
@@ -45,7 +47,7 @@ export default ({
             className={`tw-flex tw-gap-4 tw-h- tw-rounded-lg ${styling.borderStyle} ${styling.alignment}`}
         >
             <div
-                className={`tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize}`}
+                className={`tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize}`}
                 style={styling?.userProfile}
             ></div>
             <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">
