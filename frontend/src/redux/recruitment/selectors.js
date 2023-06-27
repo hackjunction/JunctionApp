@@ -12,7 +12,10 @@ export const eventsMap = createSelector(events, events =>
     }, {}),
 )
 
-export const searchResults = state => state.recruitment.searchResults.data
+export const searchResults = state => {
+    console.log("state",state)
+    return state.recruitment.searchResults.data
+}
 export const searchResultsCount = state => state.recruitment.searchResults.count
 export const searchResultsLoading = state =>
     state.recruitment.searchResults.loading

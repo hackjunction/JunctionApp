@@ -12,6 +12,7 @@ import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
 
 export default ({ items }) => {
+    console.log("items: ", items)
     const dispatch = useDispatch()
     const searchResults =
         items ?? useSelector(RecruitmentSelectors.searchResults)
@@ -25,6 +26,7 @@ export default ({ items }) => {
     const paginationEnabled = !items
     const isFavorited = !!items
     const { t } = useTranslation()
+    console.log("searchResults", searchResults, "items", items, "loading", loading, "filters", filters, "pageSize", pageSize, "page", page, "paginationEnabled", paginationEnabled, "isFavorited", isFavorited)
 
     useEffect(() => {
         dispatch(RecruitmentActions.updateSearchResults())
@@ -66,6 +68,7 @@ export default ({ items }) => {
                 return <Empty isEmpty emptyText={t('No_results_filter_')} />
             }
         }
+        console.log("filter: " )
         return (
             <Grid direction="row" alignItems="stretch" container spacing={2}>
                 {searchResults.map(user => (

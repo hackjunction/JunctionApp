@@ -47,6 +47,7 @@ const createUserProfile = asyncHandler(async (req, res) => {
 })
 
 const updateUserProfile = asyncHandler(async (req, res) => {
+    console.log("REQ",req)
     const updatedUserProfile = await UserProfileController.updateUserProfile(
         req.body,
         req.user.sub,

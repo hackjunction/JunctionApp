@@ -13,7 +13,11 @@ import {
     ListItemAvatar,
     Avatar,
 } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+
+import {
+    Add,
+    PersonAdd
+} from '@material-ui/icons'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
@@ -111,7 +115,7 @@ export default ({ isOpen, onClose, onAdded, organisers, slug }) => {
                             {organisers.indexOf(user.userId) === -1 ? (
                                 <ListItemSecondaryAction>
                                     <IconButton onClick={() => handleAdd(user)}>
-                                        <AddIcon />
+                                        <PersonAdd fontSize="medium"  />
                                     </IconButton>
                                 </ListItemSecondaryAction>
                             ) : (

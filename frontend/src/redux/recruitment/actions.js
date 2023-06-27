@@ -148,7 +148,7 @@ export const updateAdminRecruiters = () => (dispatch, getState) => {
 
 export const updateAdminSearchResults = query => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-
+    console.log("user query: ", query)
     dispatch({
         type: ActionTypes.ADMIN_UPDATE_SEARCH_RESULTS,
         promise: UserProfilesService.queryUsers(idToken, query),

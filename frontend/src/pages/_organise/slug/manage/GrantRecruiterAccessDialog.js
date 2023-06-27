@@ -18,6 +18,7 @@ import Button from 'components/generic/Button'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
@@ -31,28 +32,29 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ userId, onClose }) => {
+    
     const { t } = useTranslation()
     const dispatch = useDispatch()
-    const events = useSelector(RecruitmentSelectors.events)
 
     const classes = useStyles()
-    const [loading, setLoading] = useState(false)
-    const [selectedEvents, setSelectedEvents] = useState()
+    const [loading, setLoading] = useState()
     const [organisation, setOrganisation] = useState()
 
+    const event = useSelector(OrganiserSelectors.event)
+
     const handleGrantAccess = useCallback(async () => {
+        console.log("granting...")
         setLoading(true)
         try {
-            console.log(userId,
-                selectedEvents,
-                organisation.trim(),)
-            await dispatch(
-                RecruitmentActions.adminGrantRecruiterAccess(
-                    userId,
-                    selectedEvents,
-                    organisation.trim(),
-                ),
-            )
+            console.log(userId)
+            console.log(event)
+            // await dispatch(
+            //     RecruitmentActions.adminGrantRecruiterAccess(
+            //         userId,
+            //         selectedEvents,
+            //         organisation.trim(),
+            //     ),
+            // )
             dispatch(SnackbarActions.success('Success!'))
             onClose()
         } catch (e) {
@@ -60,7 +62,7 @@ export default ({ userId, onClose }) => {
         } finally {
             setLoading(false)
         }
-    }, [dispatch, userId, selectedEvents, organisation, onClose])
+    }, [dispatch, userId, event, organisation, onClose])
 
     return (
         <Dialog
@@ -72,18 +74,6 @@ export default ({ userId, onClose }) => {
                 {t('Grant_access_recruitment_')}
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <DialogContentText>{t('Recruiter_events_')}</DialogContentText>
-                <Select
-                    label="Choose events"
-                    value={selectedEvents}
-                    onChange={setSelectedEvents}
-                    isMulti={true}
-                    options={events.map(event => ({
-                        value: event._id,
-                        label: event.name,
-                    }))}
-                />
-                <Box mt={3} />
                 <DialogContentText>
                     {t('Which_organisation_')}
                 </DialogContentText>
@@ -106,7 +96,7 @@ export default ({ userId, onClose }) => {
                 <Box p={1} />
                 <Button
                     disabled={
-                        loading || !organisation || selectedEvents.length === 0
+                        loading || !organisation
                     }
                     strong
                     onClick={handleGrantAccess}

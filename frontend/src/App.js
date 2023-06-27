@@ -41,9 +41,9 @@ export default ({ history, location }) => {
                 dispatch(AuthActions.renewSession()).then(() => {
                     setLoading(false)
                 })
-             } else {
-                 setLoading(false)
-             }
+            } else {
+                setLoading(false)
+            }
         } else {
             setLoading(false)
         }

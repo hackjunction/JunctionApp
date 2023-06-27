@@ -25,7 +25,12 @@ const { store, persistor } = configureStore()
 
 /** Disable log statements in production */
 function noop() {}
+
+console.log("DEBUG", config.IS_DEBUG, process.env.NODE_ENV === 'development', process.env.ENVIRONMENT_TAG === 'Staging')
+console.log(process.env)
+console.log(config)
 if (!config.IS_DEBUG) {
+    
     console.log = noop
     console.warn = noop
 }

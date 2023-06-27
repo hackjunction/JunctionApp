@@ -9,6 +9,7 @@
         "prod": "better-npm-run forever:prod",
         "dev": "better-npm-run start:dev",
         "debug": "better-npm-run start:debug",
+        "only_build": "better-npm-run build",
         "build": "better-npm-run setup && better-npm-run build",
         "setup": "better-npm-run setup",
         "dev:frontend": "cd frontend && npm start",

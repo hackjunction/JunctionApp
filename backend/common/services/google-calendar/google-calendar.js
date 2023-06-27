@@ -39,9 +39,9 @@ function authorize(credentials, callback, callbackParameter = null) {
             console.log('Error loading google calendar token file')
             return false
         }
-        console.log("got token",token)
+        
         oAuth2Client.setCredentials(JSON.parse(token))
-        console.log("oAuth2Client, callbackParameter",callback(oAuth2Client, callbackParameter))
+        
         callback(oAuth2Client, callbackParameter)
     })
 
@@ -60,7 +60,7 @@ function authorize(credentials, callback, callbackParameter = null) {
 }
 
 const insertEvent = (auth, eventInfo) => {
-    console.log("inserting")
+
     const calendar = google.calendar({ version: 'v3', auth })
     calendar.events.insert(
         {
@@ -76,7 +76,7 @@ const insertEvent = (auth, eventInfo) => {
                 )
                 // cancelMeeting(eventInfo.meetingId)
             } else {
-                console.log(res)
+                console.log("(79) insert response:",res)
                 updateMeetingGoogleInfo(
                     eventInfo.meetingId,
                     res.data.id,
@@ -167,7 +167,7 @@ const createGoogleEvent = event => {
         
         })*/
 
-        console.log(credentialsJ)
+        console.log("(170, credentilas)",credentialsJ)
         authorize(JSON.parse(JSON.stringify(credentialsJ)),insertEvent,eventInfo)
         console.log("success")
         return true

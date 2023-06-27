@@ -235,6 +235,8 @@ export default RequiresPermission(() => {
         return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
+    console.log("sections",sections)
+
     const setNextStep = useCallback(
         (nextStep, values, path) => {
             const newFormData = path

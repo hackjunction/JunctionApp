@@ -354,7 +354,7 @@ export default () => {
                             label: 'Challenges',
                             component: ChallengesIndex,
                         },
-                        /*{
+                        {
                             key: 'checklist',
                             path: '/checklist',
                             exact: true,
@@ -362,7 +362,16 @@ export default () => {
                             hidden: !shownPages.hackerPack,
                             label: 'Checklist',
                             component: ChecklistPage,
-                        },*/
+                        },
+                        {
+                            key: 'map',
+                            path: '/map',
+                            exact: true,
+                            icon: <CheckBox />,
+                            hidden: !shownPages.hackerPack,
+                            label: 'Map',
+                            component: MapPage,
+                        },
                         /*
                         {
                             key: 'chat',

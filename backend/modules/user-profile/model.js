@@ -60,6 +60,7 @@ UserProfileSchema.post('save', (doc, next) => {
         } else {
             AuthController.grantRecruiterPermission(doc.userId)
         }
+        console.log("MATADATA",doc.recruiterEvents)
         AuthController.updateMetadata(doc.userId, {
             recruiterEvents: doc.recruiterEvents,
             recruiterOrganisation: doc.recruiterOrganisation,

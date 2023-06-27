@@ -87,6 +87,7 @@ const useStyles = makeStyles(theme => ({
 
 export default React.memo(
     ({ data }) => {
+        console.log("result card data: ",data)
         const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
             RecruitmentSelectors.actionHistoryByUser,
