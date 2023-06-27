@@ -288,7 +288,7 @@ const EventSchema = new mongoose.Schema({
     meetingRooms: {
         type: [MeetingRoomSchema.mongoose],
         default: [],
-        /*validate: [
+        /* validate: [
             function (val) {
                 if (!this.meetingsEnabled) {
                     return !val.length > 0
@@ -296,7 +296,7 @@ const EventSchema = new mongoose.Schema({
                 return true
             },
             'cant have meetingrooms if meetings are not enabled',
-        ],*/
+        ], */
     },
 })
 

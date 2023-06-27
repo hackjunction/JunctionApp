@@ -2,6 +2,7 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLInputObjectType,
+    GraphQLID,
 } = require('graphql')
 const mongoose = require('mongoose')
 
@@ -35,6 +36,9 @@ const EventTagType = new GraphQLObjectType({
 const EventTagInput = new GraphQLInputObjectType({
     name: 'EventTagInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         label: {
             type: GraphQLString,
         },

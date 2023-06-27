@@ -197,6 +197,13 @@ export default () => {
                 return null
         }
     }
+
+    const userLinks = [
+        { label: 'Portfolio', link: 'https://www.google.com' },
+        { label: 'LinkedIn', link: 'https://www.google.com' },
+        { label: 'Dribbble', link: 'https://www.google.com' },
+    ]
+
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <PageWrapper
@@ -204,204 +211,386 @@ export default () => {
                 wrapContent={false}
                 loading={loading}
                 render={() => (
-                    <Container center>
+                    <Container
+                        className="tw-text-left tw-flex tw-flex-col tw-gap-8 tw-mb-16"
+                        center
+                    >
                         <DetailTop user={user} />
-                        <Box mt={3} />
-                        <Grid container>
-                            <>
-                                <Grid item xs={9} md={8}>
-                                    <DetailSection label="Biography">
-                                        <Typography variant="body2">
+                        <div className="tw-grid tw-grid-cols-1   lg:tw-grid-cols-6 tw-gap-4">
+                            <div className="tw-flex tw-flex-col lg:tw-col-span-4 tw-gap-4">
+                                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Biography
+                                    </Typography>
+                                    <div>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
                                             {user.profile.biography}
                                         </Typography>
-                                    </DetailSection>
-                                </Grid>
-                            </>
-                            <Grid item xs={3} md={4}>
-                                <Box
-                                    p={2}
-                                    display="flex"
-                                    flexDirection="row"
-                                    flexWrap="wrap"
-                                    justifyContent="flex-start"
-                                >
-                                    <Box ml={0.5} mr={0.5} mb={0.5}>
-                                        {renderRecruitmentStatus()}
-                                    </Box>
-                                    <Box ml={0.5} mr={0.5} mb={0.5}>
-                                        {renderRelocationStatus()}
-                                    </Box>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <DetailSection label="Skills">
-                                    <Box>
-                                        {user.skills.map(skill => (
-                                            <SkillRating
-                                                showTooltip
-                                                data={skill}
-                                            />
-                                        ))}
-                                    </Box>
-                                </DetailSection>
-                                <DetailSection label="Spoken languages">
-                                    <Typography variant="body2">
-                                        {user.profile.spokenLanguages.join(
-                                            ', ',
-                                        )}
-                                    </Typography>
-                                </DetailSection>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <DetailSection label="Previous roles">
-                                    {user.roles.map(role => (
-                                        <Box mb={0.3}>
-                                            <Typography
-                                                className={classes.bold}
-                                                variant="body2"
-                                            >
-                                                {role.role}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                {Roles.getLabelForExperienceLevel(
-                                                    role.years,
-                                                )}
-                                            </Typography>
+                                    </div>
+                                    <div className="tw-flex tw-flex-wrap tw-gap-4">
+                                        <Box ml={0.5} mr={0.5} mb={0.5}>
+                                            {renderRecruitmentStatus()}
                                         </Box>
-                                    ))}
-                                </DetailSection>
-                                <DetailSection label="Education">
-                                    {typeof user.education !== 'undefined' ? (
-                                        user.education.university ? (
-                                            <>
+                                        <Box ml={0.5} mr={0.5} mb={0.5}>
+                                            {renderRelocationStatus()}
+                                        </Box>
+                                    </div>
+                                </div>
+                                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium tw-mb-4"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Basic information
+                                    </Typography>
+                                    <div>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            First name
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {user.profile.firstName}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            Last name
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {user.profile.lastName}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            Spoken languages
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {user.profile.spokenLanguages.join(
+                                                ', ',
+                                            )}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            Email
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {user.profile.email}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            Country of residence
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {user.profile.countryOfResidence}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            Nationality
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {user.profile.nationality}
+                                        </Typography>
+                                    </div>
+                                </div>
+                                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-12">
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h5"
+                                            component="h5"
+                                        >
+                                            Skills
+                                        </Typography>
+                                        <div className="tw-flex tw-flex-wrap tw-gap-2">
+                                            {user.skills.map(skillObj => (
                                                 <Typography
-                                                    className={classes.bold}
-                                                    variant="body2"
+                                                    className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
+                                                    variant="body1"
+                                                    component="p"
                                                 >
-                                                    {user.education.level},{' '}
-                                                    {user.education.degree}
+                                                    {skillObj.skill}
                                                 </Typography>
-                                                <Typography variant="body2">
-                                                    {user.education.university}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {user.education
-                                                        .graduationYear <
-                                                    new Date().getFullYear()
-                                                        ? `Graduation year: ${user.education.graduationYear}`
-                                                        : `Expected graduation year: ${user.education.graduationYear}`}
-                                                </Typography>
-                                            </>
-                                        ) : (
-                                            <Typography
-                                                className={classes.bold}
-                                                variant="body2"
-                                            >
-                                                {user.education.level}
-                                            </Typography>
-                                        )
-                                    ) : null}
-                                </DetailSection>
-                            </Grid>
-                            <Grid item xs={12} md={4} container>
-                                <Grid item xs={12} sm={6} md={12}>
-                                    <DetailSection label="Industries of interest">
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h5"
+                                            component="h5"
+                                        >
+                                            Education
+                                        </Typography>
+                                        {typeof user.education !==
+                                        'undefined' ? (
+                                            user.education.university ? (
+                                                <div className="tw-grid tw-grid-cols-12 tw-gap-4">
+                                                    <div className="tw-col-span-3">
+                                                        <Typography
+                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                            variant="h6"
+                                                            component="h6"
+                                                        >
+                                                            Degree
+                                                        </Typography>
+                                                        <Typography
+                                                            className="tw-text-lg"
+                                                            variant="body1"
+                                                            component="p"
+                                                        >
+                                                            {
+                                                                user.education
+                                                                    .degree
+                                                            }
+                                                        </Typography>
+                                                    </div>
+                                                    <div className="tw-col-span-2">
+                                                        <Typography
+                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                            variant="h6"
+                                                            component="h6"
+                                                        >
+                                                            Level
+                                                        </Typography>
+                                                        <Typography
+                                                            className="tw-text-lg"
+                                                            variant="body1"
+                                                            component="p"
+                                                        >
+                                                            {
+                                                                user.education
+                                                                    .level
+                                                            }
+                                                        </Typography>
+                                                    </div>
+                                                    <div className="tw-col-span-4">
+                                                        <Typography
+                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                            variant="h6"
+                                                            component="h6"
+                                                        >
+                                                            Institution
+                                                        </Typography>
+                                                        <Typography
+                                                            className="tw-text-lg"
+                                                            variant="body1"
+                                                            component="p"
+                                                        >
+                                                            {
+                                                                user.education
+                                                                    .university
+                                                            }
+                                                        </Typography>
+                                                    </div>
+                                                    <div className="tw-col-span-3">
+                                                        <Typography
+                                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                            variant="h6"
+                                                            component="h6"
+                                                        >
+                                                            Graduation year
+                                                        </Typography>
+                                                        <Typography
+                                                            className="tw-text-lg"
+                                                            variant="body1"
+                                                            component="p"
+                                                        >
+                                                            {user.education
+                                                                .graduationYear <
+                                                            new Date().getFullYear()
+                                                                ? `${user.education.graduationYear}`
+                                                                : `Expected ${user.education.graduationYear}`}
+                                                        </Typography>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="">
+                                                    <Typography
+                                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        Level
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        {user.education.level}
+                                                    </Typography>
+                                                </div>
+                                            )
+                                        ) : null}
+                                    </div>
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h5"
+                                            component="h5"
+                                        >
+                                            Experience
+                                        </Typography>
+                                        <div className="tw-flex tw-flex-wrap tw-gap-8">
+                                            {user.roles.map(role => (
+                                                <div className="">
+                                                    <Typography
+                                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                        variant="h6"
+                                                        component="h6"
+                                                    >
+                                                        {Roles.getLabelForExperienceLevel(
+                                                            role.years,
+                                                        )}
+                                                    </Typography>
+                                                    <Typography
+                                                        className="tw-text-lg"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        {role.role}
+                                                    </Typography>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="tw-flex tw-flex-col lg:tw-col-span-2 tw-gap-4">
+                                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8">
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Industries of interest
+                                    </Typography>
+                                    <ul className="tw-p-0 tw-flex tw-flex-col tw-gap-2">
                                         {user.industriesOfInterest.map(
                                             industry => (
-                                                <Box
+                                                <Typography
+                                                    className="tw-text-lg tw-p-2 tw-list-disc tw-list-inside"
+                                                    variant="body1"
+                                                    component="li"
                                                     key={industry}
-                                                    display="flex"
-                                                    flexDirection="row"
-                                                    alignItems="center"
-                                                    mb={1}
                                                 >
-                                                    <div
-                                                        className={
-                                                            classes.iconBlue
-                                                        }
-                                                    >
-                                                        <CheckIcon
-                                                            fontSize="inherit"
-                                                            style={{
-                                                                color: 'white',
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <Typography variant="body2">
-                                                        {industry}
-                                                    </Typography>
-                                                </Box>
+                                                    {industry}
+                                                </Typography>
                                             ),
                                         )}
-                                    </DetailSection>
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={12}>
-                                    <DetailSection label="Themes of interest">
+                                    </ul>
+                                </div>
+                                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8">
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        Themes of interest
+                                    </Typography>
+                                    <ul className="tw-p-0 tw-flex tw-flex-col tw-gap-2">
                                         {user.themesOfInterest.map(theme => (
-                                            <Box
+                                            <Typography
+                                                className="tw-text-lg tw-p-2 tw-list-disc tw-list-inside"
+                                                variant="body1"
+                                                component="li"
                                                 key={theme}
-                                                display="flex"
-                                                flexDirection="row"
-                                                alignItems="center"
-                                                mb={1}
                                             >
-                                                <div
-                                                    className={
-                                                        classes.iconPurple
-                                                    }
-                                                >
-                                                    <CheckIcon
-                                                        fontSize="inherit"
-                                                        style={{
-                                                            color: 'white',
-                                                        }}
-                                                    />
-                                                </div>
-                                                <Typography variant="body2">
-                                                    {theme}
-                                                </Typography>
-                                            </Box>
+                                                {theme}
+                                            </Typography>
                                         ))}
-                                    </DetailSection>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <DetailSection label="Message history">
-                                    <MessageHistory user={user} />
-                                </DetailSection>
-                            </Grid>
-                            {/*<Grid item xs={12}>
-                                <DetailSection label="Send message">
-                                    <FormControl
-                                        touched={true}
-                                        error={message.error}
-                                        hint={`Type a message for ${user.profile.firstName} here. They will receive an email notification with the message. Remember to add your contact information to continue the messaging on your prefered platform`}
+                                    </ul>
+                                </div>
+                                {/* <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8">
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
                                     >
-                                        <TextAreaInput
-                                            label="Your message"
-                                            placeholder={`Hi ${user.profile.firstName}! We're hiring, and I'm just reaching out to let you know that...`}
-                                            value={message.value}
-                                            onChange={message.onChange}
-                                        />
-                                    </FormControl>
-                                    <Box
-                                        mt={2}
-                                        display="flex"
-                                        flexDirection="row"
-                                        justifyContent="flex-end"
-                                    >
-                                        <Button
-                                            disabled={message.error}
-                                            onClick={handleSendMessage}
-                                            color="secondary"
-                                            variant="contained"
-                                        >
-                                            Send message
-                                        </Button>
-                                    </Box>
-                                </DetailSection>
-                                                    </Grid>*/}
-                        </Grid>
+                                        Links
+                                    </Typography>
+                                    <ul className="tw-p-0 tw-flex tw-flex-col tw-gap-2">
+                                        {userLinks.map(data => (
+                                            <div>
+                                                <Typography
+                                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    {data.label}
+                                                </Typography>
+                                                <Typography
+                                                    className="tw-text-lg"
+                                                    variant="body1"
+                                                    component="a"
+                                                >
+                                                    {data.link}
+                                                </Typography>
+                                            </div>
+                                        ))}
+                                    </ul>
+                                </div> */}
+                            </div>
+                        </div>
                     </Container>
                 )}
             />

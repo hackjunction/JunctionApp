@@ -124,7 +124,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                         flexDirection="column"
                         alignItems="center"
                     >
-                        <Box maxWidth="600px">
+                        <Box>
                             <Markdown
                                 source={section.description}
                                 light
@@ -132,10 +132,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                             />
                         </Box>
                         {section.conditional && (
-                            <Box
-                                maxWidth="600px"
-                                className={classes.radioGroupWrapper}
-                            >
+                            <Box className={classes.radioGroupWrapper}>
                                 <Typography
                                     style={{ textAlign: 'center' }}
                                     variant="subtitle1"
