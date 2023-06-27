@@ -126,6 +126,10 @@ router
     )
 
 router
+    .route('/:slug/teams')
+    .get(hasToken, hasRegisteredToEvent, getTeamsForEvent)
+
+router
     .route('/:slug/:code/members')
     .post(hasToken, hasRegisteredToEvent, isBefore.submissionsEndTime, joinTeam)
     .delete(

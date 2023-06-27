@@ -4,8 +4,16 @@ import React from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import theme from 'junctionTheme'
 
-export default ({ maxRoles = 3, profileView = false }) => {
-    const placeholder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+export default ({
+    maxRoles = 3,
+    profileView = false,
+    roles = [
+        {
+            role: 'UX designer',
+            experience: '3+ years',
+        },
+    ],
+}) => {
     let styling = profileView
         ? {
               masonryColumns: {
@@ -32,7 +40,7 @@ export default ({ maxRoles = 3, profileView = false }) => {
                 columnsCountBreakPoints={{ ...styling.masonryColumns }}
             >
                 <Masonry gutter={`${theme.spacing(2)}px`}>
-                    {placeholder.slice(0, maxRoles).map(i => {
+                    {roles.slice(0, maxRoles).map(item => {
                         return (
                             <Button
                                 color="outlined_button"
@@ -44,14 +52,14 @@ export default ({ maxRoles = 3, profileView = false }) => {
                                         variant="h6"
                                         component="h6"
                                     >
-                                        UX designer {i}
+                                        {item.role}
                                     </Typography>
                                     <Typography
                                         className="tw-text-lg tw-text-gray-600"
                                         variant="body1"
                                         component="p"
                                     >
-                                        3+ years of experience
+                                        {item.experience} of experience
                                     </Typography>
                                 </div>
                             </Button>
@@ -59,7 +67,7 @@ export default ({ maxRoles = 3, profileView = false }) => {
                     })}
                 </Masonry>
             </ResponsiveMasonry>
-            {placeholder.length > maxRoles && (
+            {roles.length > maxRoles && (
                 <Button color="outlined_button" variant="jOutlinedBox">
                     <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                         <Typography

@@ -16,11 +16,6 @@ export default () => {
                 path={`${match.url}/configure`}
                 component={ConfigurePage}
             />
-            {/* <Route
-                exact={true}
-                path={`${match.url}/team`}
-                component={TeamPage}
-            /> */}
             <Route
                 exact={false}
                 path={`${match.url}/:slug`}
