@@ -146,8 +146,6 @@ router
     .route('/:slug/:code/roles')
     .get(hasToken, hasRegisteredToEvent, getTeamRoles)
 
-// router.route('/:slug/:code').get(hasToken, hasRegisteredToEvent, getTeamByCode)
-
 router.route('/:slug/:code').get(hasToken, hasRegisteredToEvent, getTeamByCode)
 
 router
