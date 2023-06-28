@@ -36,7 +36,6 @@ export default () => {
         
 =======
         console.log('accessing recruitment', idTokenData)
->>>>>>> 03ba8db2acbfe224b1c993b8ed219266f788827f
         if (!idTokenData) {
             throw new Error(t('Invalid_token_'))
         }
