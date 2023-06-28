@@ -9,8 +9,7 @@ module.exports = {
     //     const res = await mongoose
     //         .model('Team')
     //         .updateMany(
-    //             { meetingsEnabled: { $exists: false } },
-    //             { $set: { meetingsEnabled: true } },
+    //             {  },
     //         )
     //     console.log('Done with meetingsEnabled', res.n, res.nModified)
     //     return Promise.resolve()
