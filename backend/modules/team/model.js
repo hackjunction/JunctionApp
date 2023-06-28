@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const shortid = require('shortid')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const Role = require('@hackjunction/shared/schemas/Role')
 
 const TeamSchema = new mongoose.Schema({
     event: {
@@ -23,6 +24,33 @@ const TeamSchema = new mongoose.Schema({
     complete: {
         type: Boolean,
         default: false,
+    },
+    // new
+    roles: {
+        type: [Role.mongoose],
+        required: false,
+        default: [],
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: false,
+        length: 30,
+    },
+    tagline: {
+        type: String,
+        required: true,
+        length: 60,
+    },
+    description: {
+        type: String,
+        required: true,
+        length: 300,
+    },
+    links: {
+        type: [String],
+        required: false,
+        default: [],
     },
 })
 
