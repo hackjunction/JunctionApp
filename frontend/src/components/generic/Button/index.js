@@ -149,6 +149,45 @@ const variantStyles = (theme, props) => {
                 },
             }
         }
+        case 'jOutlined': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`,
+                borderRadius: theme.spacing(4),
+                padding: theme.spacing(1, 4),
+                margin: 0,
+            }
+        }
+        case 'jContained': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `2px solid ${color.main}`,
+                borderRadius: theme.spacing(4),
+                padding: theme.spacing(1, 4),
+                margin: 0,
+                '&:hover': {
+                    backgroundColor: color.main,
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: color.dark,
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
+        case 'jOutlinedBox': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `1px solid ${color.lightBorder}`,
+                borderRadius: theme.spacing(1),
+                padding: theme.spacing(2),
+                margin: 0,
+                width: '100%',
+            }
+        }
         default: {
             return {
                 borderRadius: 0,

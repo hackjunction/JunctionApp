@@ -73,6 +73,19 @@ const getTeam = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const getTeamByCode = asyncHandler(async (req, res) => {
+    let team = await TeamController.getTeamByCode(
+        req.event._id,
+        req.params.code,
+    )
+    return res.status(200).json(team)
+})
+
+const getTeamRoles = asyncHandler(async (req, res) => {
+    const roles = await TeamController.getRoles(req.event._id, req.params.code)
+    return res.status(200).json(roles)
+})
+
 const getTeamsForEvent = asyncHandler(async (req, res) => {
     const teams = await TeamController.getTeamsForEvent(req.event._id)
     return res.status(200).json(teams)
@@ -124,6 +137,16 @@ router
         isBefore.submissionsEndTime,
         deleteTeam,
     )
+
+router
+    .route('/:slug/teams')
+    .get(hasToken, hasRegisteredToEvent, getTeamsForEvent)
+
+router
+    .route('/:slug/:code/roles')
+    .get(hasToken, hasRegisteredToEvent, getTeamRoles)
+
+router.route('/:slug/:code').get(hasToken, hasRegisteredToEvent, getTeamByCode)
 
 router
     .route('/:slug/:code/members')

@@ -51,9 +51,11 @@
         "react-i18next": "^11.5.0",
         "react-inlinesvg": "^1.2.0",
         "react-markdown": "^4.3.1",
+        "react-multi-carousel": "^2.8.4",
         "react-player": "^2.6.2",
         "react-qr-reader": "^2.2.1",
         "react-redux": "^7.2.0",
+        "react-responsive-masonry": "^2.1.7",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^3.4.3",
         "react-select": "^3.1.0",
@@ -69,19 +71,22 @@
         "remark-breaks": "^1.0.5",
         "reselect": "^4.0.0",
         "speakingurl": "^14.0.1",
+        "tailwindcss": "^1.9.6",
         "webfontloader": "^1.6.28",
         "yup": "^0.29.1"
     },
     "scripts": {
         "start": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/start.js",
-        "build": "node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
+        "build": "npm run build:styles node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
         "test": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/test.js",
         "eject": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/eject.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint ./src --fix",
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
-        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint"
+        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint",
+        "build:tailwind": "npx tailwindcss build src/styles/index.css -o src/styles/tailwind.css",
+        "build:styles": "NODE_ENV=production npm run build:tailwind"
     },
     "browserslist": [
         "defaults",
@@ -100,6 +105,7 @@
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-prettier": "^3.4.0",
+        "postcss-cli": "^10.1.0",
         "prettier": "^2.3.2"
     }
 }

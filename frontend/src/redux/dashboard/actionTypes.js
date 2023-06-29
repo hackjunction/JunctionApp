@@ -11,3 +11,5 @@ export const EDIT_PROFILES = 'dashboard/EDIT_PROFILES'
 export const EDIT_ANNOTATOR = 'dashboard/EDIT_ANNOTATOR'
 
 export const CLEAR_TEAM = 'dashboard/CLEAR_TEAM'
+
+export const UPDATE_TEAMS = 'dashboard/UPDATE_TEAMS'

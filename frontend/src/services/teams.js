@@ -67,4 +67,8 @@ TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
     )
 }
 
+TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug) => {
+    return _axios.get(`/teams/${eventSlug}/teams`, config(idToken))
+}
+
 export default TeamsService

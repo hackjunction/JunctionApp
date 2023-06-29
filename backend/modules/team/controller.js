@@ -10,6 +10,12 @@ const {
 
 const controller = {}
 
+controller.getRoles = (eventId, code) => {
+    return controller.getTeamByCode(eventId, code).then(team => {
+        return team.roles
+    })
+}
+
 controller.createTeam = (eventId, userId) => {
     const team = new Team({
         event: eventId,
@@ -74,7 +80,7 @@ controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
 controller.getTeamById = teamId => {
     return Team.findById(teamId).then(team => {
         if (!team) {
-            throw new NotFoundError('No team exists for this code and event')
+            throw new NotFoundError('No team exists for this Id')
         }
         return team
     })
