@@ -87,7 +87,6 @@ export default () => {
 
     const event = useSelector(DashboardSelectors.event)
     const teams = useSelector(DashboardSelectors.teams)
-    console.log(teams)
     // const loading = useSelector(DashboardSelectors.eventLoading)
     const { slug, _id } = event
 

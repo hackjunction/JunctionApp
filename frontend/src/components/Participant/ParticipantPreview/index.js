@@ -5,7 +5,7 @@ export default ({
     viewMode = 'card',
     userData = {
         profile: {
-            profilePicture: '',
+            avatar: '',
             firstName: 'Alea',
             lastName: 'Solano',
             headline: 'Full Stack Developer',
@@ -18,9 +18,9 @@ export default ({
         alignment: 'tw-items-center',
     }
 
-    if (userData.profile.profilePicture !== '') {
+    if (userData.profile.avatar !== '') {
         styling.userProfile = {
-            backgroundImage: `url(${userData.profile.profilePicture})`,
+            backgroundImage: `url(${userData.profile.avatar})`,
         }
     }
 

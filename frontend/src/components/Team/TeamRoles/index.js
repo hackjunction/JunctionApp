@@ -10,7 +10,7 @@ export default ({
     roles = [
         {
             role: 'UX designer',
-            experience: '3+ years',
+            years: 3,
         },
     ],
 }) => {
@@ -59,7 +59,7 @@ export default ({
                                         variant="body1"
                                         component="p"
                                     >
-                                        {item.experience} of experience
+                                        {item.years} of experience
                                     </Typography>
                                 </div>
                             </Button>

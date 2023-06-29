@@ -70,17 +70,6 @@ export default ({ viewMode = '' }) => {
                     className={classes.socialIcon}
                     size="2x"
                 />
-                <FontAwesomeIcon
-                    icon={['fas', 'envelope']}
-                    onClick={() =>
-                        popupCenter({
-                            url: `https://google.com`,
-                            title: 'test',
-                        })
-                    }
-                    className={classes.socialIcon}
-                    size="2x"
-                />
                 <IconButton
                     color="primary"
                     aria-label="Email"
