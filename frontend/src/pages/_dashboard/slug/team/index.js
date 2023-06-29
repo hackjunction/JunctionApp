@@ -92,13 +92,13 @@ export default () => {
                         tabs={[
                             {
                                 label: 'Join a team',
-                                key: 'joinTeam',
+                                key: 'teams',
                                 path: '',
                                 component: TeamsPage,
                             },
                             {
                                 label: 'Your team',
-                                key: 'teamProfile',
+                                key: 'profile',
                                 path: '/profile',
                                 component: ProfilePage,
                             },
