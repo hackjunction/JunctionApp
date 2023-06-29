@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
 module.exports = {
-    // index: 16,
-    // name: '16-add-new-fields-to-teams-info',
+    // index: 17,
+    // name: '17-add-new-fields-to-teams-info',
     // description: 'Add new fields to teams info',
     // run: async () => {
     //     const res = await mongoose
