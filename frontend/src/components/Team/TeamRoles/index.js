@@ -29,56 +29,68 @@ export default ({
           }
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
-            <Typography
-                className="tw-tracking-tight tw-font-medium"
-                variant="h5"
-                component="h5"
-            >
-                Available roles
-            </Typography>
-            <ResponsiveMasonry
-                columnsCountBreakPoints={{ ...styling.masonryColumns }}
-            >
-                <Masonry gutter={`${theme.spacing(2)}px`}>
-                    {roles.slice(0, maxRoles).map(item => {
-                        return (
-                            <Button
-                                color="outlined_button"
-                                variant="jOutlinedBox"
-                            >
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
-                                    <Typography
-                                        className="tw-font-semibold"
-                                        variant="h6"
-                                        component="h6"
+            {roles.length > 0 ? (
+                <>
+                    <Typography
+                        className="tw-tracking-tight tw-font-medium"
+                        variant="h5"
+                        component="h5"
+                    >
+                        Available roles
+                    </Typography>
+                    <ResponsiveMasonry
+                        columnsCountBreakPoints={{ ...styling.masonryColumns }}
+                    >
+                        <Masonry gutter={`${theme.spacing(2)}px`}>
+                            {roles.slice(0, maxRoles).map(item => {
+                                return (
+                                    <Button
+                                        color="outlined_button"
+                                        variant="jOutlinedBox"
                                     >
-                                        {item.role}
-                                    </Typography>
-                                    <Typography
-                                        className="tw-text-lg tw-text-gray-600"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        {item.years} of experience
-                                    </Typography>
-                                </div>
-                            </Button>
-                        )
-                    })}
-                </Masonry>
-            </ResponsiveMasonry>
-            {roles.length > maxRoles && (
-                <Button color="outlined_button" variant="jOutlinedBox">
-                    <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
-                        <Typography
-                            className="tw-text-lg tw-text-gray-600"
-                            variant="body1"
-                            component="p"
-                        >
-                            +3 more roles
-                        </Typography>
-                    </div>
-                </Button>
+                                        <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                            <Typography
+                                                className="tw-font-semibold"
+                                                variant="h6"
+                                                component="h6"
+                                            >
+                                                {item.role}
+                                            </Typography>
+                                            <Typography
+                                                className="tw-text-lg tw-text-gray-600"
+                                                variant="body1"
+                                                component="p"
+                                            >
+                                                {item.years} of experience
+                                            </Typography>
+                                        </div>
+                                    </Button>
+                                )
+                            })}
+                        </Masonry>
+                    </ResponsiveMasonry>
+                    {roles.length > maxRoles && (
+                        <Button color="outlined_button" variant="jOutlinedBox">
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                <Typography
+                                    className="tw-text-lg tw-text-gray-600"
+                                    variant="body1"
+                                    component="p"
+                                >
+                                    +3 more roles
+                                </Typography>
+                            </div>
+                        </Button>
+                    )}
+                </>
+            ) : (
+                <Typography
+                    className="tw-tracking-tight tw-font-medium"
+                    variant="h5"
+                    component="h5"
+                >
+                    No roles available
+                </Typography>
             )}
         </div>
     )

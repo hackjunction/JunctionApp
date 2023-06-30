@@ -5,7 +5,7 @@ export default ({ teamName = 'Test', teamChallenge = 'Test' }) => {
     return (
         <div className="tw-flex tw-items-center tw-gap-4">
             <Typography
-                className="tw-font-bold tw-tracking-tight"
+                className="tw-font-bold tw-tracking-tight tw-break-words-overflow"
                 variant="h3"
                 component="h3"
             >

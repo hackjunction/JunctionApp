@@ -62,10 +62,10 @@ function TeamCard({
         name: 'Test team',
         challenge: 'Hard',
         roles: [
-            { role: 'Frontend', experience: '3+ years' },
-            { role: 'Backend', experience: '3+ years' },
-            { role: 'Designer', experience: '3+ years' },
-            { role: 'Product Manager', experience: '3+ years' },
+            { role: 'Frontend', years: '3+ years' },
+            { role: 'Backend', years: '3+ years' },
+            { role: 'Designer', years: '3+ years' },
+            { role: 'Product Manager', years: '3+ years' },
         ],
     },
 }) {
