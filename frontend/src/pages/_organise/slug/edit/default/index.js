@@ -206,11 +206,15 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Link to challenge descriptions"
+                            hint={'Link to the descriptions of your challenge'}
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
                             <TextInput
                                 name="challenge_instructions"
+                                placeholder={
+                                    'https://hackjunction.com/challenges'
+                                }
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
@@ -227,11 +231,13 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="FAQ link"
+                            hint={"Link your event's FAQ page here"}
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
                             <TextInput
                                 name="faq"
+                                placeholder={'https://hackjunction.com/faq'}
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
@@ -248,11 +254,13 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Demo instruction link"
+                            hint={'Link your demo instruction here'}
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
                             <TextInput
                                 name="demoInstructions"
+                                placeholder={'https://hackjunction.com/demo'}
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
@@ -269,11 +277,15 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Privacy Policy for this event"
+                            hint={"Link to your event's Privacy Policy"}
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
                             <TextInput
                                 name="eventPrivacy"
+                                placeholder={
+                                    'https://www.hackjunction.com/policy'
+                                }
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
@@ -290,11 +302,15 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Terms and Conditions for this event"
+                            hint={"Link to your event's Terms and Conditions"}
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
                             <TextInput
                                 name="eventTerms"
+                                placeholder={
+                                    'https://www.hackjunction.com/terms'
+                                }
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
