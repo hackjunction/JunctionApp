@@ -119,12 +119,6 @@ export default () => {
                                     component: ScheduleTab,
                                 },
                                 {
-                                    path: '/timeline',
-                                    key: 'timeline',
-                                    label: 'Timeline',
-                                    component: TimelineTab,
-                                },
-                                {
                                     path: '/rooms',
                                     key: 'meetingRooms',
                                     label: 'Meeting Rooms',
