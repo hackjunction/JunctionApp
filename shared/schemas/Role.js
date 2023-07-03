@@ -17,6 +17,12 @@ const mongooseSchema = new mongoose.Schema({
         min: 1,
         max: 5,
     },
+    candidates: {
+        type: [String],
+    },
+    assigned: {
+        type: String,
+    },
 })
 
 const graphqlSchema = new GraphQLObjectType({
