@@ -2,6 +2,7 @@ import React from 'react'
 import { useRouteMatch } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import SlugPage from './slug'
+import TeamProfilePage from './slug/team/profile'
 
 export default () => {
     const match = useRouteMatch()

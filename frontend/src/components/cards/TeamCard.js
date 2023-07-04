@@ -21,6 +21,9 @@ import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'
 import TeamRoles from 'components/Team/TeamRoles'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
+import { useRouteMatch } from 'react-router'
 
 // const useStyles = makeStyles(theme => ({
 //     root: {
@@ -68,9 +71,17 @@ function TeamCard({
             { role: 'Product Manager', years: '3+ years' },
         ],
     },
+    onClick = () => {},
 }) {
+    const dispatch = useDispatch()
+    const teamId = teamData._id
+    const match = useRouteMatch()
+
     return (
-        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between">
+        <Card
+            onClick={onClick}
+            className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between"
+        >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">

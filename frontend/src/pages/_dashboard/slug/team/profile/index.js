@@ -26,7 +26,7 @@ export default () => {
                     <div>Challenge</div>
                     <div>challenge note</div>
                     <div>Select challenge</div>
-                    <FastField
+                    {/* <FastField
                         name="eventType"
                         render={({ field, form }) => (
                             <FormControl
@@ -61,7 +61,7 @@ export default () => {
                                 />
                             </FormControl>
                         )}
-                    />
+                    /> */}
                 </div>
                 <div>
                     <div>Team name</div>
