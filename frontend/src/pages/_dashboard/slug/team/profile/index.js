@@ -6,6 +6,14 @@ import Empty from 'components/generic/Empty'
 import React from 'react'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import { useSelector } from 'react-redux'
+import { FastField } from 'formik'
+import FormControl from 'components/inputs/FormControl'
+import Select from 'components/inputs/Select'
+import {
+    ReviewingMethods,
+    OverallReviewingMethods,
+    EventTypes,
+} from '@hackjunction/shared'
 
 export default () => {
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
@@ -18,6 +26,42 @@ export default () => {
                     <div>Challenge</div>
                     <div>challenge note</div>
                     <div>Select challenge</div>
+                    <FastField
+                        name="eventType"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Event type"
+                                hint="Is this a physical or online event?"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <Select
+                                    value={field.value}
+                                    onChange={async value => {
+                                        if (value === 'online') {
+                                            await form.setFieldValue(
+                                                'eventLocation',
+                                                null,
+                                            )
+                                        }
+                                        if (value === 'physical') {
+                                            await form.setFieldValue(
+                                                'eventLocation',
+                                                form.values.eventLocation ?? {}, //checks whether the eventLocation is null || undefined => if true, set it to an empty object
+                                            )
+                                        }
+                                        form.setFieldValue(field.name, value)
+                                    }}
+                                    options={Object.keys(EventTypes).map(
+                                        key => ({
+                                            label: EventTypes[key].label,
+                                            value: key,
+                                        }),
+                                    )}
+                                />
+                            </FormControl>
+                        )}
+                    />
                 </div>
                 <div>
                     <div>Team name</div>
