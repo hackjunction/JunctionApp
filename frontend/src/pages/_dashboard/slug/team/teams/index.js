@@ -59,49 +59,54 @@ export default () => {
     }, [])
     const event = useSelector(DashboardSelectors.event)
     const teams = useSelector(DashboardSelectors.teams)
+    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     const team = useSelector(DashboardSelectors.team)
     const { slug, _id } = event
-    console.log(teams)
 
     const [selected, setSelected] = useState(false)
-    const [teamSelected, setTeamSelected] = useState({})
+    // const [teamSelected, setTeamSelected] = useState({})
 
-    useEffect(() => {
-        teamSelected && console.log(teamSelected)
-    }, [teamSelected])
+    // useEffect(() => {
+    //     // setSelected(true)
+    // }, [selectedTeam])
 
     return (
         <>
-            <ResponsiveMasonry
-                columnsCountBreakPoints={{ 350: 1, 900: 2, 1440: 3 }}
-            >
-                <Masonry>
-                    {teams?.map(team => (
-                        <TeamCard
-                            key={team._id}
-                            teamData={team}
-                            onClick={() => {
-                                setSelected(true)
-                                setTeamSelected(team)
-                            }}
-                        />
-                    ))}
-                    <TeamCard />
-                    <TeamCard />
-                </Masonry>
-            </ResponsiveMasonry>
-            <Dialog
-                transitionDuration={0}
-                open={Boolean(selected)}
-                onClose={() => {
-                    setSelected(false)
-                    setTeamSelected({})
-                }}
-            >
-                <div className="tw-p-4">
-                    <TeamProfile />
+            {selected && selectedTeam && Object.keys(selectedTeam).length > 0 && (
+                <div>
+                    <Button
+                        color="outlined_button"
+                        variant="jOutlined"
+                        onClick={() => setSelected(false)}
+                    >
+                        Back
+                    </Button>
+                    <TeamProfile teamData={selectedTeam} />
                 </div>
-            </Dialog>
+            )}
+            {!selected && (
+                <ResponsiveMasonry
+                    columnsCountBreakPoints={{ 350: 1, 900: 2, 1440: 3 }}
+                >
+                    <Masonry>
+                        {teams?.map(team => (
+                            <TeamCard
+                                key={team._id}
+                                teamData={team}
+                                onClick={() => {
+                                    setSelected(true)
+                                    dispatch(
+                                        DashboardActions.updatedSelectedTeam(
+                                            slug,
+                                            team.code,
+                                        ),
+                                    )
+                                }}
+                            />
+                        ))}
+                    </Masonry>
+                </ResponsiveMasonry>
+            )}
         </>
     )
 }

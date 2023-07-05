@@ -42,9 +42,10 @@ export default ({
                         columnsCountBreakPoints={{ ...styling.masonryColumns }}
                     >
                         <Masonry gutter={`${theme.spacing(2)}px`}>
-                            {roles.slice(0, maxRoles).map(item => {
+                            {roles.slice(0, maxRoles).map((item, index) => {
                                 return (
                                     <Button
+                                        key={index}
                                         color="outlined_button"
                                         variant="jOutlinedBox"
                                     >

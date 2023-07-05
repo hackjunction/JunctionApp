@@ -65,22 +65,26 @@ function TeamCard({
         name: 'Test team',
         challenge: 'Hard',
         roles: [
-            { role: 'Frontend', years: '3+ years' },
-            { role: 'Backend', years: '3+ years' },
-            { role: 'Designer', years: '3+ years' },
-            { role: 'Product Manager', years: '3+ years' },
+            { role: 'Frontend', years: 1 },
+            { role: 'Backend', years: 2 },
+            { role: 'Designer', years: 3 },
+            { role: 'Product Manager', years: 4 },
         ],
     },
-    onClick = () => {},
+    onClick,
 }) {
-    const dispatch = useDispatch()
-    const teamId = teamData._id
-    const match = useRouteMatch()
+    const styling = {
+        cardHover: '',
+    }
+
+    if (onClick) {
+        styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-lg'
+    }
 
     return (
         <Card
             onClick={onClick}
-            className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between"
+            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
         >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>

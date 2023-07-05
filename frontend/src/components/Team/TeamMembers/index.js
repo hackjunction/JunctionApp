@@ -13,9 +13,10 @@ export default ({ viewModeStyle = 'list', teamMembers = [] }) => {
             >
                 Team members
             </Typography>
-            {teamMembers?.map(member => {
+            {teamMembers?.map((member, index) => {
                 return (
                     <ParticipantPreview
+                        key={index}
                         viewMode={viewModeStyle}
                         userData={member}
                     />
