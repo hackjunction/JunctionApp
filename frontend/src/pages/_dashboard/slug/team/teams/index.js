@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
@@ -11,6 +11,7 @@ import {
     CardActions,
     CardContent,
     Chip,
+    Dialog,
     Grid,
     Tab,
     Tabs,
@@ -49,80 +50,63 @@ import { Skeleton, TabPanel } from '@material-ui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
+import TeamProfile from 'components/Team/TeamProfile'
 
 export default () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(DashboardActions.updateTeams(slug))
     }, [])
-    // const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
-    //     onError: err => {
-    //         const errors = err.graphQLErrors
-
-    //         if (errors) {
-    //             dispatch(
-    //                 SnackbarActions.error('Unable to save changes', {
-    //                     errorMessages: Object.keys(errors).map(
-    //                         key => `${key}: ${errors[key].message}`,
-    //                     ),
-    //                     persist: false, // this could be the problem why errors messages persist? => solution: set to false
-    //                 }),
-    //             )
-    //         } else {
-    //             dispatch(SnackbarActions.error('Unable to save changes'))
-    //         }
-    //     },
-    //     onCompleted: () => {
-    //         dispatch(OrganiserActions.updateEvent(slug)).then(() =>
-    //             dispatch(
-    //                 SnackbarActions.success(
-    //                     'Your changes were saved successfully',
-    //                 ),
-    //             ),
-    //         )
-    //     },
-    // })
-    // const match = useRouteMatch()
-    // const location = useLocation()
-
     const event = useSelector(DashboardSelectors.event)
     const teams = useSelector(DashboardSelectors.teams)
-    console.log(teams)
-    // const loading = useSelector(DashboardSelectors.eventLoading)
+    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
+    const team = useSelector(DashboardSelectors.team)
     const { slug, _id } = event
 
-    // function onSubmit(values, actions) {
-    //     const changed = {}
-    //     forOwn(values, (value, field) => {
-    //         if (event[field] !== value) {
-    //             changed[field] = value
-    //         }
-    //     })
-    //     saveChanges({
-    //         variables: { _id, input: changed },
-    //     })
-    //     actions.setSubmitting(false)
-    // }
+    const [selected, setSelected] = useState(false)
+    // const [teamSelected, setTeamSelected] = useState({})
 
-    // const [events, loading] = useMyEvents()
-    // const classes = junctionStyle()
+    // useEffect(() => {
+    //     // setSelected(true)
+    // }, [selectedTeam])
+
     return (
-        <ResponsiveMasonry
-            columnsCountBreakPoints={{ 350: 1, 900: 2, 1440: 3 }}
-        >
-            <Masonry>
-                {teams?.map(team => (
-                    <TeamCard teamData={team} />
-                ))}
-                <TeamCard />
-                <TeamCard />
-                <TeamCard />
-                <TeamCard />
-                <TeamCard />
-                <TeamCard />
-                <TeamCard />
-                <TeamCard />
-            </Masonry>
-        </ResponsiveMasonry>
+        <>
+            {selected && selectedTeam && Object.keys(selectedTeam).length > 0 && (
+                <div>
+                    <Button
+                        color="outlined_button"
+                        variant="jOutlined"
+                        onClick={() => setSelected(false)}
+                    >
+                        Back
+                    </Button>
+                    <TeamProfile teamData={selectedTeam} />
+                </div>
+            )}
+            {!selected && (
+                <ResponsiveMasonry
+                    columnsCountBreakPoints={{ 350: 1, 900: 2, 1440: 3 }}
+                >
+                    <Masonry>
+                        {teams?.map(team => (
+                            <TeamCard
+                                key={team._id}
+                                teamData={team}
+                                onClick={() => {
+                                    setSelected(true)
+                                    dispatch(
+                                        DashboardActions.updatedSelectedTeam(
+                                            slug,
+                                            team.code,
+                                        ),
+                                    )
+                                }}
+                            />
+                        ))}
+                    </Masonry>
+                </ResponsiveMasonry>
+            )}
+        </>
     )
 }

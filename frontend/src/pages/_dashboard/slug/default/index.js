@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
-
 export default ({ alerts }) => {
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)

@@ -21,6 +21,9 @@ import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'
 import TeamRoles from 'components/Team/TeamRoles'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
+import { useRouteMatch } from 'react-router'
 
 // const useStyles = makeStyles(theme => ({
 //     root: {
@@ -62,15 +65,27 @@ function TeamCard({
         name: 'Test team',
         challenge: 'Hard',
         roles: [
-            { role: 'Frontend', experience: '3+ years' },
-            { role: 'Backend', experience: '3+ years' },
-            { role: 'Designer', experience: '3+ years' },
-            { role: 'Product Manager', experience: '3+ years' },
+            { role: 'Frontend', years: 1 },
+            { role: 'Backend', years: 2 },
+            { role: 'Designer', years: 3 },
+            { role: 'Product Manager', years: 4 },
         ],
     },
+    onClick,
 }) {
+    const styling = {
+        cardHover: '',
+    }
+
+    if (onClick) {
+        styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-lg'
+    }
+
     return (
-        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between">
+        <Card
+            onClick={onClick}
+            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
+        >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">

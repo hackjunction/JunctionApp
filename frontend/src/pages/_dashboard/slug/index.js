@@ -23,7 +23,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import DefaultPage from './default'
 import FinalistVotingPage from './finalist-voting'
 import TeamPage from './team'
-// import TeamPage from './team-bk'
+import TeamPageTemp from './team-bk'
 
 import ProjectPage from './project'
 import ReviewingPage from './reviewing'
@@ -303,12 +303,21 @@ export default () => {
                         {
                             key: 'team',
                             path: '/team',
-                            exact: true,
                             icon: <GroupIcon />,
                             label: t('Team_'),
                             locked: lockedPages.team,
                             lockedDescription: 'Team editing not open',
                             component: TeamPage,
+                        },
+                        {
+                            key: 'team-temp',
+                            path: '/team-temp',
+                            exact: true,
+                            icon: <GroupIcon />,
+                            label: t('TeamT_'),
+                            locked: lockedPages.team,
+                            lockedDescription: 'Team editing not open',
+                            component: TeamPageTemp,
                         },
                         {
                             key: 'project',

@@ -92,6 +92,7 @@ UserProfileSchema.plugin(publicFieldsPlugin, {
         'lastName',
         'email',
         'phoneNumber',
+        'headline',
     ],
 })
 

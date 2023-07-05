@@ -157,6 +157,25 @@ export const updateTeams = slug => async (dispatch, getState) => {
     })
 }
 
+export const updatedSelectedTeam =
+    (slug, code) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        if (!slug) return
+
+        dispatch({
+            type: ActionTypes.UPDATE_SELECTED_TEAM,
+            promise: TeamsService.getTeamWithMetaForEventParticipant(
+                idToken,
+                slug,
+                code,
+                true,
+            ),
+            meta: {
+                onFailure: e => console.log('Error updating selected team', e),
+            },
+        })
+    }
+
 export const updateTeam = slug => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 

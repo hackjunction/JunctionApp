@@ -10,18 +10,72 @@ import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
 import { Email } from '@material-ui/icons'
 import SocialLinks from '../../generic/SocialLinks'
+import { objToArr } from 'utils/dataModifiers'
 
-export default () => {
+export default ({
+    teamData = {
+        code: 'test-12',
+        name: 'Test Team',
+        complete: false,
+        members: [],
+        owner: 'auth0|something',
+        meta: {
+            'auth0|something': {
+                profile: {
+                    firstName: 'Test',
+                    lastName: 'User',
+                    email: 'testing@test.fake',
+                    avatar: 'https://picsum.photos/200',
+                    userId: 'auth0|something',
+                },
+                registration: {
+                    status: 'checkedIn',
+                },
+            },
+            'auth0|something-else': {
+                profile: {
+                    firstName: 'Test2',
+                    lastName: 'User2',
+                    email: 'dif@test.fake',
+                    avatar: 'https://picsum.photos/200',
+                    userId: 'auth0|something-else',
+                },
+                registration: {
+                    status: 'checkedIn',
+                },
+            },
+        },
+
+        roles: [
+            { role: 'UX Designer', years: 1 },
+            { role: 'Developer', years: 2 },
+            { role: 'Product Manager', years: 3 },
+        ],
+        tagline: 'This is a test team',
+        description: 'This is a test team description',
+        links: ['https://google.com'],
+        //TBA
+        challenge: 'Test',
+    },
+}) => {
+    const teamMembersArr = objToArr(teamData.meta, 0)
+
     const classes = junctionStyle()
     return (
         <div className="tw-flex tw-flex-col tw-gap-12">
             <div className="tw tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
             <div className="tw-flex tw-flex-col tw-gap-8">
-                <TeamHeader />
-                <TeamDescription />
+                <TeamHeader
+                    teamName={teamData.name}
+                    teamChallenge={teamData.challenge}
+                />
+                <TeamDescription
+                    teamTagline={teamData.tagline}
+                    teamDescription={teamData.description}
+                />
             </div>
-            <TeamRoles maxRoles={9999} profileView />
-            <TeamMembers viewModeStyle="list" />
+            <TeamRoles maxRoles={9999} profileView roles={teamData.roles} />
+            <TeamMembers viewModeStyle="list" teamMembers={teamMembersArr} />
             <SocialLinks />
             <div className="tw-flex tw-gap-4 tw-justify-start">
                 <Button variant="jContained">Edit</Button>

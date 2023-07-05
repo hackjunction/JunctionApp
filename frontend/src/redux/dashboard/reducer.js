@@ -26,6 +26,12 @@ const initialState = {
         error: false,
         updated: 0,
     },
+    selected_team: {
+        data: null,
+        loading: true,
+        error: false,
+        updated: 0,
+    },
     projects: {
         data: null,
         loading: true,
@@ -53,6 +59,7 @@ const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
 const updateProjectScoresHandler = buildHandler('project_scores')
 const updateTeamsHandler = buildHandler('teams')
+const updateSeletecTeamHandler = buildHandler('selected_team')
 
 const editRegistration = buildUpdatePath('registration.data')
 const editTeam = buildUpdatePath('team.data')
@@ -92,6 +99,9 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_TEAMS: {
             return updateTeamsHandler(state, action)
+        }
+        case ActionTypes.UPDATE_SELECTED_TEAM: {
+            return updateSeletecTeamHandler(state, action)
         }
         default:
             return state

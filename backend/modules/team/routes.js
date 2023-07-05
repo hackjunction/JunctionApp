@@ -78,6 +78,9 @@ const getTeamByCode = asyncHandler(async (req, res) => {
         req.event._id,
         req.params.code,
     )
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
     return res.status(200).json(team)
 })
 
@@ -115,7 +118,7 @@ router
         exportTeams,
     )
 
-/** User-facing routes */
+/** Participant-facing routes */
 router
     .route('/:slug')
     .get(hasToken, hasRegisteredToEvent, getTeam)
@@ -141,6 +144,10 @@ router
 router
     .route('/:slug/teams')
     .get(hasToken, hasRegisteredToEvent, getTeamsForEvent)
+
+router
+    .route('/:slug/teams/:code')
+    .get(hasToken, hasRegisteredToEvent, getTeamByCode)
 
 router
     .route('/:slug/:code/roles')
