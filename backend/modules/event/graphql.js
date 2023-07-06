@@ -170,6 +170,9 @@ const EventInput = new GraphQLInputObjectType({
         eventTerms: {
             type: GraphQLString,
         },
+        eventNewsletter: {
+            type: GraphQLString,
+        },
         eventTimeline: {
             type: EventTimelineInput,
         },
