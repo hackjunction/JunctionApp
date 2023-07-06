@@ -22,6 +22,20 @@ const createTeam = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const createNewTeam = asyncHandler(async (req, res) => {
+    console.log('From routes:', req.body)
+    let team = await TeamController.createNewTeam(
+        req.body,
+        req.event._id,
+        req.user.sub,
+    )
+    console.log('From routes+controller resolved:', team)
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
+    return res.status(200).json(team)
+})
+
 const deleteTeam = asyncHandler(async (req, res) => {
     const team = await TeamController.deleteTeam(req.event._id, req.user.sub)
     return res.status(200).json(team)
@@ -141,9 +155,28 @@ router
         deleteTeam,
     )
 
+// New team creation workflow
 router
     .route('/:slug/teams')
     .get(hasToken, hasRegisteredToEvent, getTeamsForEvent)
+    .post(
+        hasToken,
+        hasRegisteredToEvent,
+        isBefore.submissionsEndTime,
+        createNewTeam,
+    )
+    .patch(
+        hasToken,
+        hasRegisteredToEvent,
+        isBefore.submissionsEndTime,
+        editTeam,
+    )
+    .delete(
+        hasToken,
+        hasRegisteredToEvent,
+        isBefore.submissionsEndTime,
+        deleteTeam,
+    )
 
 router
     .route('/:slug/teams/:code')

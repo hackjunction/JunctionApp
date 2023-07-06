@@ -30,6 +30,14 @@ TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     )
 }
 
+TeamsService.createNewTeamForEvent = (idToken, eventSlug, data, populate) => {
+    return _axios.post(
+        `/teams/${eventSlug}/teams?populate=${populate}`,
+        data,
+        config(idToken),
+    )
+}
+
 TeamsService.deleteTeamForEvent = (idToken, eventSlug) => {
     return _axios.delete(`/teams/${eventSlug}`, config(idToken))
 }

@@ -20,6 +20,7 @@ const migrations = [
     require('./14-add-checklist-to-registration'),
     require('./15-add-meetingRooms-to-event'),
     require('./16-add-faq-challenge_instructions-demoInstructions-to-event'),
+    require('./17-add-new-fields-to-teams-info'),
 ]
 
 const run = async () => {

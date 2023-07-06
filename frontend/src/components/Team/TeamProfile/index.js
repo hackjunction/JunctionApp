@@ -46,10 +46,10 @@ export default ({
             },
         },
 
-        roles: [
-            { role: 'UX Designer', years: 1 },
-            { role: 'Developer', years: 2 },
-            { role: 'Product Manager', years: 3 },
+        teamRoles: [
+            { role: 'UX Designer' },
+            { role: 'Developer' },
+            { role: 'Product Manager' },
         ],
         tagline: 'This is a test team',
         description: 'This is a test team description',
@@ -74,7 +74,7 @@ export default ({
                     teamDescription={teamData.description}
                 />
             </div>
-            <TeamRoles maxRoles={9999} profileView roles={teamData.roles} />
+            <TeamRoles maxRoles={9999} profileView roles={teamData.teamRoles} />
             <TeamMembers viewModeStyle="list" teamMembers={teamMembersArr} />
             <SocialLinks />
             <div className="tw-flex tw-gap-4 tw-justify-start">

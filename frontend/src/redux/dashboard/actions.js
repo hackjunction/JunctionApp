@@ -207,6 +207,24 @@ export const createTeam = slug => async (dispatch, getState) => {
     return team
 }
 
+export const createNewTeam = (slug, data) => async (dispatch, getState) => {
+    console.log('createNewTeam action received:', slug, data)
+    const idToken = AuthSelectors.getIdToken(getState())
+    const team = await TeamsService.createNewTeamForEvent(
+        idToken,
+        slug,
+        data,
+        true,
+    )
+
+    dispatch({
+        type: ActionTypes.EDIT_TEAM,
+        payload: team,
+    })
+
+    return team
+}
+
 export const joinTeam = (slug, code) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 

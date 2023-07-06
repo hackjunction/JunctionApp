@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const shortid = require('shortid')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
-const Role = require('@hackjunction/shared/schemas/Role')
+const TeamRole = require('@hackjunction/shared/schemas/TeamRole')
 
 const teamCode = shortid.generate()
 
@@ -28,8 +28,8 @@ const TeamSchema = new mongoose.Schema({
         default: false,
     },
     // new
-    roles: {
-        type: [Role.mongoose],
+    teamRoles: {
+        type: [TeamRole.mongoose],
         required: false,
         default: [],
     },
@@ -38,24 +38,50 @@ const TeamSchema = new mongoose.Schema({
         required: true,
         unique: true,
         length: 30,
-        default: `Team-${teamCode}`,
+        default: `Team name-${teamCode}`,
     },
     tagline: {
         type: String,
         required: true,
         length: 60,
-        default: `Team-${teamCode}`,
+        default: `Team tagline-${teamCode}`,
     },
     description: {
         type: String,
         required: true,
         length: 300,
-        default: `Team-${teamCode}`,
+        default: `Team description-${teamCode}`,
     },
-    links: {
-        type: [String],
+    challenge: {
+        type: String,
         required: false,
-        default: [],
+        default: '',
+    },
+    ideaTitle: {
+        type: String,
+        required: true,
+        length: 30,
+        default: `Idea title-${teamCode}`,
+    },
+    ideaDescription: {
+        type: String,
+        required: true,
+        length: 300,
+        default: `Idea description-${teamCode}`,
+    },
+    email: {
+        type: String,
+        required: true,
+        length: 30,
+        default: 'test@test.com',
+    },
+    telegram: {
+        type: String,
+        required: false,
+    },
+    discord: {
+        type: String,
+        required: false,
     },
 })
 

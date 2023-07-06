@@ -25,6 +25,45 @@ controller.createTeam = (eventId, userId) => {
     return team.save()
 }
 
+controller.createNewTeam = (data, eventId, userId) => {
+    console.log('from controller:', data)
+    // return Promise.resolve()
+    const {
+        members,
+        teamRoles,
+        name,
+        tagline,
+        description,
+        challenge,
+        ideaTitle,
+        ideaDescription,
+        email,
+        telegram,
+        discord,
+    } = data
+    const team = new Team({
+        event: eventId,
+        owner: userId,
+        members,
+        teamRoles: teamRoles.map(role => ({
+            role,
+            candidates: [],
+            assigned: '',
+        })),
+        name,
+        tagline,
+        description,
+        challenge,
+        ideaTitle,
+        ideaDescription,
+        email,
+        telegram,
+        discord,
+    })
+
+    return team.save()
+}
+
 controller.deleteTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {
         if (team.owner !== userId) {

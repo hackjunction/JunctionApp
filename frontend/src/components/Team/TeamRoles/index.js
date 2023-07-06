@@ -10,7 +10,7 @@ export default ({
     roles = [
         {
             role: 'UX designer',
-            years: 3,
+            // years: 3,
         },
     ],
 }) => {
@@ -57,13 +57,13 @@ export default ({
                                             >
                                                 {item.role}
                                             </Typography>
-                                            <Typography
+                                            {/* <Typography
                                                 className="tw-text-lg tw-text-gray-600"
                                                 variant="body1"
                                                 component="p"
                                             >
                                                 {item.years} of experience
-                                            </Typography>
+                                            </Typography> */}
                                         </div>
                                     </Button>
                                 )
