@@ -1,85 +1,38 @@
-import FormControl from 'components/inputs/FormControl'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
-import { FastField, Field, Form, Formik } from 'formik'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import TextAreaInput from 'components/inputs/TextAreaInput'
+import { FastField, Field, Formik } from 'formik'
+import Select from 'components/inputs/Select'
+import React, { useCallback, useState } from 'react'
 import * as Yup from 'yup'
 import BottomBar from 'components/inputs/BottomBar'
-import Checkbox from '@material-ui/core/Checkbox'
 import {
     Box,
     List,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
     Typography,
     CardContent,
     Card,
+    Grid,
 } from '@material-ui/core'
 
 import Button from 'components/generic/Button'
-import Item from 'antd/lib/list/Item'
-import { isTeamComplete } from 'redux/dashboard/selectors'
+
+export const roles = [
+    {
+        label: 'Manager',
+        value: 'Manager',
+    },
+    {
+        label: 'Software Developer',
+        value: 'Software Developer',
+    },
+    {
+        label: 'UI/UX Designer',
+        value: 'UI/UX Designer',
+    },
+]
 
 export default () => {
-    const [selectedRoles, setSelectedRoles] = useState([])
-    const [renderSelectedRoles, setRenderSelectedRoles] = useState(undefined)
-    const [disableSelect, setDisableSelect] = useState(false)
-    const [roles, setRoles] = useState([
-        {
-            id: 1,
-            role: 'Manager',
-            description: '2-3 years of experience',
-        },
-        {
-            id: 2,
-            role: 'UX Designer',
-            description: '5 years of experience',
-        },
-        {
-            id: 3,
-            role: 'Engineer',
-            description: '1 year of experience',
-        },
-    ])
-    const handleCheckboxChange = useCallback(e => {
-        if (e.target.checked) {
-            console.log(e)
-            setSelectedRoles(value => [...value, e.target.value])
-        } else {
-            setSelectedRoles(value =>
-                value.filter(item => item.role !== e.target.value),
-            )
-        }
-    }, [])
-
-    const addSelectedRoles = useCallback(() => {
-        setRenderSelectedRoles(1)
-        setDisableSelect(true)
-    }, [])
-
-    const renderListView = () => {
-        if (renderSelectedRoles)
-            return (
-                <List>
-                    {selectedRoles.map((item, index) => (
-                        <Card
-                            key={index}
-                            variant="outlined"
-                            style={{ maxWidth: 'max-content' }}
-                        >
-                            <CardContent>
-                                <Typography>{item}</Typography>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </List>
-            )
-    }
-    console.log(renderSelectedRoles)
-    console.log(disableSelect)
-
     return (
         <>
             <Container>
@@ -88,9 +41,9 @@ export default () => {
                     subheading="Fields marked with * are mandatory"
                 />
                 <Formik
-                    initialValues={{ roles: '', motivationMessage: '' }}
+                    initialValues={{ roles: roles, motivationMessage: '' }}
                     enableReinitialize={true}
-                    onSubmit={values => console.log(values)}
+                    onSubmit={() => console.log('submitted')}
                     validationSchema={Yup.object().shape({
                         roles: Yup.array().required(),
                         motivation: Yup.string().required(),
@@ -98,96 +51,69 @@ export default () => {
                 >
                     {formikProps => (
                         <>
-                            <FastField
-                                name="roles"
-                                render={({ field, form }) => (
-                                    <Box
-                                        sx={{
-                                            maxWidth: 845,
-                                            display: 'flex',
-                                            alignContent: 'center',
-                                            alignItems: 'flex-end',
-                                        }}
-                                    >
-                                        <FormControl
-                                            touched={form.touched[field.name]}
-                                        >
-                                            <h2>PINK UNICORN #Fazer</h2>
-                                            <InputLabel id="roles-descrption">
-                                                Role(s) applied for*
-                                            </InputLabel>
-                                            <Select
-                                                multiple
-                                                className="width"
-                                                labelId="roles"
-                                                id="roles"
-                                                value={roles}
-                                                disabled={disableSelect}
-                                            >
-                                                {roles.map(item => (
-                                                    <MenuItem
-                                                        key={item.id}
-                                                        value={item.role}
-                                                    >
-                                                        <Checkbox
-                                                            value={item.role}
-                                                            onChange={e =>
-                                                                handleCheckboxChange(
-                                                                    e,
-                                                                )
-                                                            }
-                                                        />
-                                                        {item.role}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        <Button
-                                            color="outlined_button"
-                                            variant="outlined"
-                                            onClick={() => addSelectedRoles()}
-                                        >
-                                            Add selected role
-                                        </Button>
-                                    </Box>
-                                )}
-                            />
-                            {renderSelectedRoles ? renderListView() : null}
-                            <FastField
-                                name="motivationMessage"
-                                render={({ field, form }) => (
-                                    <FormControl
-                                        touched={form.touched[field.name]}
-                                    >
-                                        <h3>Motivation*</h3>
-                                        <TextField
-                                            variant="filled"
-                                            multiline
-                                            minRows={8}
-                                            style={{ height: '200px' }}
-                                            placeholder="Briefly explain what motivates you to join this team"
+                            <Box
+                                style={{
+                                    display: 'flex',
+                                }}
+                            >
+                                <h1>Explorers</h1>
+                                <h3>#Fazer</h3>
+                            </Box>
+                            <h2>Role/s applied for*</h2>
+                            <Grid item xs={12}>
+                                <FastField
+                                    name="roles"
+                                    render={({ field, form }) => (
+                                        <Select
+                                            label={`
+                                                'Choose the role/s to apply for'`}
+                                            value={field.value}
+                                            options={roles}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
+                                            }
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
+                                            isMulti
                                         />
-                                        <Typography>
-                                            *Your profile information is
-                                            automatically included in the
-                                            application.
-                                        </Typography>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                paddingTop: '50px',
-                                                marginTop: '30px',
-                                            }}
-                                        >
-                                            <Button variant="theme_blue">
-                                                Apply
-                                            </Button>
-                                        </div>
-                                    </FormControl>
-                                )}
-                            />
+                                    )}
+                                />
+                            </Grid>
 
+                            <Grid item xs={12}>
+                                <Box>
+                                    <h2>Motivation*</h2>
+                                    <Field
+                                        name="motivationMessage"
+                                        render={({ field, form }) => (
+                                            <TextAreaInput
+                                                value={field.value}
+                                                placeholder={`Briefly explain what motivates you to join this team`}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value,
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name,
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                    <Typography>
+                                        *Your profile information is
+                                        automatically included in the
+                                        application
+                                    </Typography>
+                                </Box>
+                            </Grid>
                             <div style={{ height: '100px' }} />
                             <BottomBar
                                 onSubmit={formikProps.handleSubmit}
