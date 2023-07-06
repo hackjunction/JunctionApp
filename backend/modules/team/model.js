@@ -3,8 +3,6 @@ const shortid = require('shortid')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const TeamRole = require('@hackjunction/shared/schemas/TeamRole')
 
-const teamCode = shortid.generate()
-
 const TeamSchema = new mongoose.Schema({
     event: {
         type: mongoose.Schema.Types.ObjectId,
@@ -21,7 +19,7 @@ const TeamSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        default: teamCode,
+        default: shortid.generate(),
     },
     complete: {
         type: Boolean,
@@ -38,19 +36,19 @@ const TeamSchema = new mongoose.Schema({
         required: true,
         unique: true,
         length: 30,
-        default: `Team name-${teamCode}`,
+        default: `Team ${shortid.generate()}`,
     },
     tagline: {
         type: String,
         required: true,
         length: 60,
-        default: `Team tagline-${teamCode}`,
+        default: `Team tagline`,
     },
     description: {
         type: String,
         required: true,
         length: 300,
-        default: `Team description-${teamCode}`,
+        default: `Team description`,
     },
     challenge: {
         type: String,
@@ -61,13 +59,13 @@ const TeamSchema = new mongoose.Schema({
         type: String,
         required: true,
         length: 30,
-        default: `Idea title-${teamCode}`,
+        default: `Idea title`,
     },
     ideaDescription: {
         type: String,
         required: true,
         length: 300,
-        default: `Idea description-${teamCode}`,
+        default: `Idea description`,
     },
     email: {
         type: String,
