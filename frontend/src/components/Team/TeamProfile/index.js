@@ -57,6 +57,8 @@ export default ({
         //TBA
         challenge: 'Test',
     },
+    onClickLeave,
+    onClickEdit,
 }) => {
     const teamMembersArr = objToArr(teamData.meta, 0)
 
@@ -74,12 +76,22 @@ export default ({
                     teamDescription={teamData.description}
                 />
             </div>
-            <TeamRoles maxRoles={9999} profileView roles={teamData.teamRoles} />
+            <TeamRoles
+                maxRoles={9999}
+                profileView
+                teamRoles={teamData.teamRoles}
+            />
             <TeamMembers viewModeStyle="list" teamMembers={teamMembersArr} />
             <SocialLinks />
             <div className="tw-flex tw-gap-4 tw-justify-start">
-                <Button variant="jContained">Edit</Button>
-                <Button color="outlined_button" variant="jOutlined">
+                <Button onClick={onClickEdit} variant="jContained">
+                    Edit
+                </Button>
+                <Button
+                    onClick={onClickLeave}
+                    color="outlined_button"
+                    variant="jOutlined"
+                >
                     Leave the team
                 </Button>
             </div>

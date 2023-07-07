@@ -42,8 +42,12 @@ TeamsService.deleteTeamForEvent = (idToken, eventSlug) => {
     return _axios.delete(`/teams/${eventSlug}`, config(idToken))
 }
 
-TeamsService.editTeamForEvent = (idToken, eventSlug, edits) => {
-    return _axios.patch(`/teams/${eventSlug}`, edits, config(idToken))
+TeamsService.editTeamForEvent = (idToken, eventSlug, edits, populate) => {
+    return _axios.patch(
+        `/teams/${eventSlug}?populate=${populate}`,
+        edits,
+        config(idToken),
+    )
 }
 
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode, populate) => {

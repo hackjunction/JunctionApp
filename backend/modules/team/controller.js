@@ -27,7 +27,7 @@ controller.createTeam = (eventId, userId) => {
 
 controller.createNewTeam = (data, eventId, userId) => {
     console.log('from controller:', data)
-    // return Promise.resolve()
+    // TODO abstract this deconstruction
     const {
         members,
         teamRoles,
@@ -47,7 +47,6 @@ controller.createNewTeam = (data, eventId, userId) => {
         members,
         teamRoles: teamRoles.map(role => ({
             role,
-            candidates: [],
             assigned: '',
         })),
         name,
@@ -82,6 +81,7 @@ controller.editTeam = (eventId, userId, edits) => {
                 'Only the team owner can edit a team.',
             )
         }
+        console.log('from controller:', edits)
         return Team.updateAllowed(team, edits)
     })
 }
@@ -100,7 +100,11 @@ controller.joinTeam = (eventId, userId, code) => {
 controller.leaveTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {
         team.members = team.members.filter(member => member !== userId)
-        return team.save()
+        if (team.members.length === 0) {
+            controller.deleteTeam(eventId, userId)
+        } else {
+            return team.save()
+        }
     })
 }
 
@@ -233,6 +237,7 @@ controller.getTeamsForEvent = eventId => {
     return Team.find({
         event: eventId,
     })
+    // TODO make the code not visible to participants on Redux store
 }
 
 controller.getTeamStatsForEvent = async eventId => {

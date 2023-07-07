@@ -42,11 +42,14 @@ const deleteTeam = asyncHandler(async (req, res) => {
 })
 
 const editTeam = asyncHandler(async (req, res) => {
-    const team = await TeamController.editTeam(
+    let team = await TeamController.editTeam(
         req.event._id,
         req.user.sub,
         req.body,
     )
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
     return res.status(200).json(team)
 })
 
@@ -164,18 +167,6 @@ router
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
         createNewTeam,
-    )
-    .patch(
-        hasToken,
-        hasRegisteredToEvent,
-        isBefore.submissionsEndTime,
-        editTeam,
-    )
-    .delete(
-        hasToken,
-        hasRegisteredToEvent,
-        isBefore.submissionsEndTime,
-        deleteTeam,
     )
 
 router
