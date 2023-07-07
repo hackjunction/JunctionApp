@@ -32,9 +32,8 @@ import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
 import CalendarPage from './calendar'
-import ChecklistPage from './checklist'
-import MapPage from './map'
 import RecruitmentPage from './partnerrecruitment'
+import ApplyPage from './apply'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -402,6 +401,11 @@ export default () => {
                             icon: <EventIcon />,
                             label: 'Meetings',
                             component: CalendarPage,
+                        },
+                        {
+                            key: 'apply',
+                            path: '/apply',
+                            component: ApplyPage,
                         },
                     ]}
                 />
