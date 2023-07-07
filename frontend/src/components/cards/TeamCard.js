@@ -64,14 +64,16 @@ function TeamCard({
     teamData = {
         name: 'Test team',
         challenge: 'Hard',
-        roles: [
-            { role: 'Frontend', years: 1 },
-            { role: 'Backend', years: 2 },
-            { role: 'Designer', years: 3 },
-            { role: 'Product Manager', years: 4 },
+        teamRoles: [
+            { role: 'Frontend' },
+            { role: 'Backend' },
+            { role: 'Designer' },
+            { role: 'Product Manager' },
         ],
     },
     onClick,
+    onClickSeeMore = onClick,
+    onClickApply,
 }) {
     const styling = {
         cardHover: '',
@@ -93,12 +95,27 @@ function TeamCard({
                         teamName={teamData.name}
                         teamChallenge={teamData.challenge}
                     />
-                    <TeamRoles roles={teamData.roles} />
+                    <TeamRoles teamRoles={teamData.teamRoles} />
                 </div>
             </CardContent>
             <CardActions className="tw-flex tw-gap-2 tw-justify-start tw-px-4 tw-pb-4 tw-pt-0">
-                <Button variant="jContained">Apply</Button>
-                <Button color="outlined_button" variant="jOutlined">
+                <Button
+                    onClick={e => {
+                        onClickApply()
+                        e.stopPropagation()
+                    }}
+                    variant="jContained"
+                >
+                    Apply
+                </Button>
+                <Button
+                    onClick={e => {
+                        onClickSeeMore()
+                        e.stopPropagation()
+                    }}
+                    color="outlined_button"
+                    variant="jOutlined"
+                >
                     See more
                 </Button>
             </CardActions>

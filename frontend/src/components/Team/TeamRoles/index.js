@@ -7,10 +7,9 @@ import theme from 'junctionTheme'
 export default ({
     maxRoles = 3,
     profileView = false,
-    roles = [
+    teamRoles = [
         {
             role: 'UX designer',
-            // years: 3,
         },
     ],
 }) => {
@@ -29,7 +28,7 @@ export default ({
           }
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
-            {roles.length > 0 ? (
+            {teamRoles.length > 0 ? (
                 <>
                     <Typography
                         className="tw-tracking-tight tw-font-medium"
@@ -42,7 +41,7 @@ export default ({
                         columnsCountBreakPoints={{ ...styling.masonryColumns }}
                     >
                         <Masonry gutter={`${theme.spacing(2)}px`}>
-                            {roles.slice(0, maxRoles).map((item, index) => {
+                            {teamRoles.slice(0, maxRoles).map((item, index) => {
                                 return (
                                     <Button
                                         key={index}
@@ -51,7 +50,7 @@ export default ({
                                     >
                                         <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                                             <Typography
-                                                className="tw-font-semibold"
+                                                className="tw-font-semibold tw-text-left"
                                                 variant="h6"
                                                 component="h6"
                                             >
@@ -70,7 +69,7 @@ export default ({
                             })}
                         </Masonry>
                     </ResponsiveMasonry>
-                    {roles.length > maxRoles && (
+                    {teamRoles.length > maxRoles && (
                         <Button color="outlined_button" variant="jOutlinedBox">
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                                 <Typography

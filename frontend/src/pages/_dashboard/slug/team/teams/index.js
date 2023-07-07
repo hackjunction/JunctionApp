@@ -51,6 +51,7 @@ import TeamCard from 'components/cards/TeamCard'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
 import TeamProfile from 'components/Team/TeamProfile'
+import Apply from 'components/Team/Apply'
 
 export default () => {
     const dispatch = useDispatch()
@@ -64,7 +65,8 @@ export default () => {
     const { slug, _id } = event
 
     const [selected, setSelected] = useState(false)
-    // const [teamSelected, setTeamSelected] = useState({})
+    const [applying, setApplying] = useState(false)
+    // const [teamSelected, setTeamSelected] = useState()
 
     // useEffect(() => {
     //     // setSelected(true)
@@ -72,6 +74,18 @@ export default () => {
 
     return (
         <>
+            {applying && selectedTeam && Object.keys(selectedTeam).length > 0 && (
+                <div>
+                    <Button
+                        color="outlined_button"
+                        variant="jOutlined"
+                        onClick={() => setApplying(false)}
+                    >
+                        Back
+                    </Button>
+                    <Apply />
+                </div>
+            )}
             {selected && selectedTeam && Object.keys(selectedTeam).length > 0 && (
                 <div>
                     <Button
@@ -84,7 +98,7 @@ export default () => {
                     <TeamProfile teamData={selectedTeam} />
                 </div>
             )}
-            {!selected && (
+            {!selected && !applying && (
                 <ResponsiveMasonry
                     columnsCountBreakPoints={{ 350: 1, 900: 2, 1440: 3 }}
                 >
@@ -93,6 +107,15 @@ export default () => {
                             <TeamCard
                                 key={team._id}
                                 teamData={team}
+                                onClickApply={() => {
+                                    setApplying(true)
+                                    dispatch(
+                                        DashboardActions.updatedSelectedTeam(
+                                            slug,
+                                            team.code,
+                                        ),
+                                    )
+                                }}
                                 onClick={() => {
                                     setSelected(true)
                                     dispatch(
