@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const shortid = require('shortid')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const TeamRole = require('@hackjunction/shared/schemas/TeamRole')
 
 const TeamSchema = new mongoose.Schema({
     event: {
@@ -18,11 +19,67 @@ const TeamSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        default: shortid.generate,
+        default: shortid.generate(),
     },
     complete: {
         type: Boolean,
         default: false,
+    },
+    // new
+    teamRoles: {
+        type: [TeamRole.mongoose],
+        required: false,
+        default: [],
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+        length: 30,
+        default: `Team ${shortid.generate()}`,
+    },
+    tagline: {
+        type: String,
+        required: true,
+        length: 60,
+        default: `Team tagline`,
+    },
+    description: {
+        type: String,
+        required: true,
+        length: 300,
+        default: `Team description`,
+    },
+    challenge: {
+        type: String,
+        required: false,
+        default: '',
+    },
+    ideaTitle: {
+        type: String,
+        required: true,
+        length: 30,
+        default: `Idea title`,
+    },
+    ideaDescription: {
+        type: String,
+        required: true,
+        length: 300,
+        default: `Idea description`,
+    },
+    email: {
+        type: String,
+        required: true,
+        length: 30,
+        default: 'test@test.com',
+    },
+    telegram: {
+        type: String,
+        required: false,
+    },
+    discord: {
+        type: String,
+        required: false,
     },
 })
 

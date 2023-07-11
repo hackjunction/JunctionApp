@@ -30,12 +30,24 @@ TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     )
 }
 
+TeamsService.createNewTeamForEvent = (idToken, eventSlug, data, populate) => {
+    return _axios.post(
+        `/teams/${eventSlug}/teams?populate=${populate}`,
+        data,
+        config(idToken),
+    )
+}
+
 TeamsService.deleteTeamForEvent = (idToken, eventSlug) => {
     return _axios.delete(`/teams/${eventSlug}`, config(idToken))
 }
 
-TeamsService.editTeamForEvent = (idToken, eventSlug, edits) => {
-    return _axios.patch(`/teams/${eventSlug}`, edits, config(idToken))
+TeamsService.editTeamForEvent = (idToken, eventSlug, edits, populate) => {
+    return _axios.patch(
+        `/teams/${eventSlug}?populate=${populate}`,
+        edits,
+        config(idToken),
+    )
 }
 
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode, populate) => {
@@ -63,6 +75,22 @@ TeamsService.removeMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
 TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
     return _axios.get(
         `/teams/${eventSlug}?populate=${populate}`,
+        config(idToken),
+    )
+}
+
+TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug) => {
+    return _axios.get(`/teams/${eventSlug}/teams`, config(idToken))
+}
+
+TeamsService.getTeamWithMetaForEventParticipant = (
+    idToken,
+    eventSlug,
+    teamCode,
+    populate = true,
+) => {
+    return _axios.get(
+        `/teams/${eventSlug}/teams/${teamCode}?populate=${populate}`,
         config(idToken),
     )
 }

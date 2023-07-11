@@ -22,17 +22,34 @@ const createTeam = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const createNewTeam = asyncHandler(async (req, res) => {
+    console.log('From routes:', req.body)
+    let team = await TeamController.createNewTeam(
+        req.body,
+        req.event._id,
+        req.user.sub,
+    )
+    console.log('From routes+controller resolved:', team)
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
+    return res.status(200).json(team)
+})
+
 const deleteTeam = asyncHandler(async (req, res) => {
     const team = await TeamController.deleteTeam(req.event._id, req.user.sub)
     return res.status(200).json(team)
 })
 
 const editTeam = asyncHandler(async (req, res) => {
-    const team = await TeamController.editTeam(
+    let team = await TeamController.editTeam(
         req.event._id,
         req.user.sub,
         req.body,
     )
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
     return res.status(200).json(team)
 })
 
@@ -73,6 +90,22 @@ const getTeam = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const getTeamByCode = asyncHandler(async (req, res) => {
+    let team = await TeamController.getTeamByCode(
+        req.event._id,
+        req.params.code,
+    )
+    if (req.query.populate === 'true') {
+        team = await TeamController.attachMeta(team)
+    }
+    return res.status(200).json(team)
+})
+
+const getTeamRoles = asyncHandler(async (req, res) => {
+    const roles = await TeamController.getRoles(req.event._id, req.params.code)
+    return res.status(200).json(roles)
+})
+
 const getTeamsForEvent = asyncHandler(async (req, res) => {
     const teams = await TeamController.getTeamsForEvent(req.event._id)
     return res.status(200).json(teams)
@@ -102,7 +135,7 @@ router
         exportTeams,
     )
 
-/** User-facing routes */
+/** Participant-facing routes */
 router
     .route('/:slug')
     .get(hasToken, hasRegisteredToEvent, getTeam)
@@ -124,6 +157,27 @@ router
         isBefore.submissionsEndTime,
         deleteTeam,
     )
+
+// New team creation workflow
+router
+    .route('/:slug/teams')
+    .get(hasToken, hasRegisteredToEvent, getTeamsForEvent)
+    .post(
+        hasToken,
+        hasRegisteredToEvent,
+        isBefore.submissionsEndTime,
+        createNewTeam,
+    )
+
+router
+    .route('/:slug/teams/:code')
+    .get(hasToken, hasRegisteredToEvent, getTeamByCode)
+
+router
+    .route('/:slug/:code/roles')
+    .get(hasToken, hasRegisteredToEvent, getTeamRoles)
+
+router.route('/:slug/:code').get(hasToken, hasRegisteredToEvent, getTeamByCode)
 
 router
     .route('/:slug/:code/members')

@@ -144,6 +144,38 @@ export const createRegistration =
         return registration
     }
 
+export const updateTeams = slug => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+    if (!slug) return
+
+    dispatch({
+        type: ActionTypes.UPDATE_TEAMS,
+        promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug),
+        meta: {
+            onFailure: e => console.log('Error updating teams', e),
+        },
+    })
+}
+
+export const updatedSelectedTeam =
+    (slug, code) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        if (!slug) return
+
+        dispatch({
+            type: ActionTypes.UPDATE_SELECTED_TEAM,
+            promise: TeamsService.getTeamWithMetaForEventParticipant(
+                idToken,
+                slug,
+                code,
+                true,
+            ),
+            meta: {
+                onFailure: e => console.log('Error updating selected team', e),
+            },
+        })
+    }
+
 export const updateTeam = slug => (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
@@ -166,6 +198,36 @@ export const updateTeam = slug => (dispatch, getState) => {
 export const createTeam = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     const team = await TeamsService.createTeamForEvent(idToken, slug, true)
+
+    dispatch({
+        type: ActionTypes.EDIT_TEAM,
+        payload: team,
+    })
+
+    return team
+}
+
+export const editTeam = (slug, data) => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+    const team = await TeamsService.editTeamForEvent(idToken, slug, data, true)
+
+    dispatch({
+        type: ActionTypes.EDIT_TEAM,
+        payload: team,
+    })
+
+    return team
+}
+
+export const createNewTeam = (slug, data) => async (dispatch, getState) => {
+    console.log('createNewTeam action received:', slug, data)
+    const idToken = AuthSelectors.getIdToken(getState())
+    const team = await TeamsService.createNewTeamForEvent(
+        idToken,
+        slug,
+        data,
+        true,
+    )
 
     dispatch({
         type: ActionTypes.EDIT_TEAM,

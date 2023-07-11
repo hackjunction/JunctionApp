@@ -10,10 +10,54 @@ const {
 
 const controller = {}
 
+controller.getRoles = (eventId, code) => {
+    return controller.getTeamByCode(eventId, code).then(team => {
+        return team.roles
+    })
+}
+
 controller.createTeam = (eventId, userId) => {
     const team = new Team({
         event: eventId,
         owner: userId,
+    })
+
+    return team.save()
+}
+
+controller.createNewTeam = (data, eventId, userId) => {
+    console.log('from controller:', data)
+    // TODO abstract this deconstruction
+    const {
+        members,
+        teamRoles,
+        name,
+        tagline,
+        description,
+        challenge,
+        ideaTitle,
+        ideaDescription,
+        email,
+        telegram,
+        discord,
+    } = data
+    const team = new Team({
+        event: eventId,
+        owner: userId,
+        members,
+        teamRoles: teamRoles.map(role => ({
+            role,
+            assigned: '',
+        })),
+        name,
+        tagline,
+        description,
+        challenge,
+        ideaTitle,
+        ideaDescription,
+        email,
+        telegram,
+        discord,
     })
 
     return team.save()
@@ -37,6 +81,7 @@ controller.editTeam = (eventId, userId, edits) => {
                 'Only the team owner can edit a team.',
             )
         }
+        console.log('from controller:', edits)
         return Team.updateAllowed(team, edits)
     })
 }
@@ -55,7 +100,11 @@ controller.joinTeam = (eventId, userId, code) => {
 controller.leaveTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {
         team.members = team.members.filter(member => member !== userId)
-        return team.save()
+        if (team.members.length === 0) {
+            controller.deleteTeam(eventId, userId)
+        } else {
+            return team.save()
+        }
     })
 }
 
@@ -74,7 +123,7 @@ controller.removeMemberFromTeam = (eventId, userId, userToRemove) => {
 controller.getTeamById = teamId => {
     return Team.findById(teamId).then(team => {
         if (!team) {
-            throw new NotFoundError('No team exists for this code and event')
+            throw new NotFoundError('No team exists for this Id')
         }
         return team
     })
@@ -188,6 +237,7 @@ controller.getTeamsForEvent = eventId => {
     return Team.find({
         event: eventId,
     })
+    // TODO make the code not visible to participants on Redux store
 }
 
 controller.getTeamStatsForEvent = async eventId => {
