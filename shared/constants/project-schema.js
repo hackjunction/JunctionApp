@@ -60,7 +60,6 @@ const buildProjectSchema = event => {
         schema.location = yup
             .string()
             .max(100)
-            .required()
             .label('Table location')
     }
 
