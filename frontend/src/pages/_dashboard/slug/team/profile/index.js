@@ -22,6 +22,7 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import JobRoleInput from 'components/inputs/JobRoleInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import BottomBar from 'components/inputs/BottomBar'
+import TeamCreateEditForm from 'components/Team/TeamCreateEditForm'
 
 export default () => {
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
@@ -128,7 +129,9 @@ export default () => {
         [dispatch, event.slug],
     )
 
-    const teamData = {}
+    let teamData
+
+    hasTeam ? (teamData = team) : (teamData = {})
 
     let formikSubmitAction
 
@@ -142,303 +145,6 @@ export default () => {
         default:
             break
     }
-
-    const createEditForm = initialData => (
-        <Formik initialValues={initialData} onSubmit={formikSubmitAction}>
-            {formikProps => (
-                <div>
-                    <div>
-                        {challengeOptions && (
-                            <FastField name="challenge">
-                                {({ field, form }) => (
-                                    <FormControl
-                                        label="Challenge"
-                                        touched={
-                                            form.touched[field.name] ||
-                                            formikProps.submitCount > 0
-                                        }
-                                        error={form.errors[field.name]}
-                                    >
-                                        <Select
-                                            label="Select challenge"
-                                            options={challengeOptions}
-                                            value={field.value}
-                                            onChange={value =>
-                                                form.setFieldValue(
-                                                    field.name,
-                                                    value,
-                                                )
-                                            }
-                                            onBlur={() =>
-                                                form.setFieldTouched(field.name)
-                                            }
-                                        />
-                                    </FormControl>
-                                )}
-                            </FastField>
-                        )}
-                    </div>
-                    <div>
-                        <FastField name="name">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Team name"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        placeholder="Awesome team"
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="tagline">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Team tagline"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        placeholder="Solving problems with code"
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="description">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Brief description about your team"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextAreaInput
-                                        placeholder={`Our team ${form.values.name} is...`}
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="ideaTitle">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label=" Title of the idea explored by your team"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        placeholder="Great idea 1.0"
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="ideaDescription">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Brief explanation of the idea explored by your team"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextAreaInput
-                                        placeholder={`Our team ${form.values.teamName} is working on...`}
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="teamRoles">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Avaialble roles in your team"
-                                    error={form.errors[field.name]}
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                >
-                                    <Select
-                                        options="role"
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        isMulti
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="email">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Team's contact email"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        placeholder="team.email@email.com"
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <div>
-                        <FastField name="telegram">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Team's Telegram"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        placeholder="Your team's Telegram"
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                        <FastField name="discord">
-                            {({ field, form }) => (
-                                <FormControl
-                                    label="Team's Discord"
-                                    touched={
-                                        form.touched[field.name] ||
-                                        formikProps.submitCount > 0
-                                    }
-                                    error={form.errors[field.name]}
-                                >
-                                    <TextInput
-                                        value={field.value}
-                                        onChange={value =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                value,
-                                            )
-                                        }
-                                        onBlur={() =>
-                                            form.setFieldTouched(field.name)
-                                        }
-                                        placeholder="Your team's Discord"
-                                    />
-                                </FormControl>
-                            )}
-                        </FastField>
-                    </div>
-                    <BottomBar
-                        onSubmit={formikProps.handleSubmit}
-                        errors={formikProps.errors}
-                        dirty={formikProps.dirty}
-                        loading={formikProps.isSubmitting}
-                    />
-                </div>
-            )}
-        </Formik>
-    )
 
     useEffect(() => {
         console.log('current status:', status)
@@ -465,8 +171,15 @@ export default () => {
                     onCreate={() => setStatus('create')}
                 />
             )}
-            {!hasTeam && status === 'create' && createEditForm(teamData)}
-            {hasTeam && status === 'edit' && createEditForm(team)}
+            {((!hasTeam && status === 'create') ||
+                (hasTeam && status === 'edit')) && (
+                <TeamCreateEditForm
+                    initialData={teamData}
+                    formikSubmitAction={formikSubmitAction}
+                    challengeOptions={challengeOptions}
+                    key={`${status}-team`}
+                />
+            )}
         </>
     )
 }

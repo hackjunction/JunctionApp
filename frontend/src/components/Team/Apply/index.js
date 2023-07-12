@@ -32,7 +32,18 @@ export const roles = [
     },
 ]
 
-export default () => {
+export default ({
+    teamRolesData = [
+        {
+            role: 'Test1',
+            _id: '1',
+        },
+        {
+            role: 'Test2',
+            _id: '2',
+        },
+    ],
+}) => {
     return (
         <>
             <Container>
@@ -44,10 +55,6 @@ export default () => {
                     initialValues={{ roles: roles, motivationMessage: '' }}
                     enableReinitialize={true}
                     onSubmit={() => console.log('submitted')}
-                    validationSchema={Yup.object().shape({
-                        roles: Yup.array().required(),
-                        motivation: Yup.string().required(),
-                    })}
                 >
                     {formikProps => (
                         <>
@@ -65,8 +72,7 @@ export default () => {
                                     name="roles"
                                     render={({ field, form }) => (
                                         <Select
-                                            label={`
-                                                'Choose the role/s to apply for'`}
+                                            label="Choose the role/s to apply for"
                                             value={field.value}
                                             options={roles}
                                             onChange={value =>

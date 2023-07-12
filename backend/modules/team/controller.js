@@ -26,7 +26,6 @@ controller.createTeam = (eventId, userId) => {
 }
 
 controller.createNewTeam = (data, eventId, userId) => {
-    console.log('from controller:', data)
     // TODO abstract this deconstruction
     const {
         members,
@@ -47,7 +46,6 @@ controller.createNewTeam = (data, eventId, userId) => {
         members,
         teamRoles: teamRoles.map(role => ({
             role,
-            assigned: '',
         })),
         name,
         tagline,
@@ -81,7 +79,33 @@ controller.editTeam = (eventId, userId, edits) => {
                 'Only the team owner can edit a team.',
             )
         }
-        console.log('from controller:', edits)
+        if (edits.teamRoles && edits.teamRoles.length > 0) {
+            if (typeof edits.teamRoles[0] === 'object') {
+                edits.teamRoles = [...team.teamRoles]
+            } else {
+                const currentTeamRoles = team.teamRoles.map(role => {
+                    return role.role
+                })
+                const compareRolesToAdd = _.difference(
+                    edits.teamRoles,
+                    currentTeamRoles,
+                )
+                const compareRolesToRemove = _.difference(
+                    currentTeamRoles,
+                    edits.teamRoles,
+                )
+                edits.teamRoles = [
+                    ..._.reject(team.teamRoles, role =>
+                        _.includes(compareRolesToRemove, role.role),
+                    ),
+                    ..._.filter(edits.teamRoles, role =>
+                        _.includes(compareRolesToAdd, role),
+                    ).map(role => ({ role })),
+                ]
+            }
+        } else {
+            edits.teamRoles = []
+        }
         return Team.updateAllowed(team, edits)
     })
 }
