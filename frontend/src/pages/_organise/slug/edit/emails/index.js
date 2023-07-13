@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography, Box } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
@@ -21,7 +21,9 @@ export default () => {
                             touched={form.touched[field.name]}
                         >
                             <Grid item xs={12} md={6}>
-                                <Typography variant="body1">Sender Email</Typography>
+                                <Box mb={1}>
+                                    <Typography variant="body1">Sender Email</Typography>
+                                </Box>
                                 <TextInput
                                     // @ts-ignore
                                     name="senderEmail"
@@ -34,7 +36,9 @@ export default () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="body1">Sender Name</Typography>
+                                <Box mb={1} mt={1}>
+                                    <Typography variant="body1">Sender Name</Typography>
+                                </Box>
                                 <TextInput
                                     // @ts-ignore
                                     name="senderName"
@@ -61,7 +65,9 @@ export default () => {
                             touched={form.touched[field.name]}
                         >
                             <Grid item xs={12} md={6}>
-                                <Typography variant="body1">Title</Typography>
+                                <Box mb={1}>
+                                    <Typography variant="body1">Title</Typography>
+                                </Box>
                                 <TextInput
                                     // @ts-ignore
                                     name="acceptanceEmailTitle"
@@ -74,7 +80,9 @@ export default () => {
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="body1">Subtitle</Typography>
+                                <Box mb={1} mt={1}>
+                                    <Typography variant="body1">Subtitle</Typography>
+                                </Box>
                                 <TextInput
                                     // @ts-ignore
                                     name="acceptanceEmailSubtitle"
@@ -87,7 +95,9 @@ export default () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant="body1">Body</Typography>
+                                <Box mb={1} mt={1}>
+                                    <Typography variant="body1">Body</Typography>
+                                </Box>
                                 <TextAreaInput
                                     // @ts-ignore
                                     name="acceptanceEmailBody"
@@ -103,12 +113,6 @@ export default () => {
                     )}
                 />
             </Grid>
-
-
-
-
-
-
         </Grid>
     )
 }
