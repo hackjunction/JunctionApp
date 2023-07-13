@@ -113,6 +113,65 @@ export default () => {
                     )}
                 />
             </Grid>
+            <Grid item xs={12}>
+                <FastField
+                    name="rejectionEmail"
+                    render={({ field, form }) => (
+                        <FormControl
+                            label="Rejection Email"
+                            hint="Email sent to the participant when their registration is rejected"
+                            error={form.errors[field.name]}
+                            touched={form.touched[field.name]}
+                        >
+                            <Grid item xs={12} md={6}>
+                                <Box mb={1}>
+                                    <Typography variant="body1">Title</Typography>
+                                </Box>
+                                <TextInput
+                                    // @ts-ignore
+                                    name="rejectionEmailTitle"
+                                    placeholder="Email title or subject"
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Box mb={1} mt={1}>
+                                    <Typography variant="body1">Subtitle</Typography>
+                                </Box>
+                                <TextInput
+                                    // @ts-ignore
+                                    name="rejectionEmailSubtitle"
+                                    placeholder="Email subtitle"
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box mb={1} mt={1}>
+                                    <Typography variant="body1">Body</Typography>
+                                </Box>
+                                <TextAreaInput
+                                    // @ts-ignore
+                                    name="rejectionEmailBody"
+                                    placeholder="Email body"
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
+                                />
+                            </Grid>
+                        </FormControl>
+                    )}
+                />
+            </Grid>
         </Grid>
     )
 }
