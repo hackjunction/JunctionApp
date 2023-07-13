@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
@@ -20,26 +20,32 @@ export default () => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <TextInput
-                                // @ts-ignore
-                                name="senderEmail"
-                                placeholder="Sender email"
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                                onBlur={() => form.setFieldTouched(field.name)}
-                            />
-                            <TextInput
-                                // @ts-ignore
-                                name="senderName"
-                                placeholder="Sender name"
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                                onBlur={() => form.setFieldTouched(field.name)}
-                            />
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="body1">Sender Email</Typography>
+                                <TextInput
+                                    // @ts-ignore
+                                    name="senderEmail"
+                                    placeholder="Sender's email"
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="body1">Sender Name</Typography>
+                                <TextInput
+                                    // @ts-ignore
+                                    name="senderName"
+                                    placeholder="Sender's name"
+                                    value={field.value}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    onBlur={() => form.setFieldTouched(field.name)}
+                                />
+                            </Grid>
                         </FormControl>
                     )}
                 />
