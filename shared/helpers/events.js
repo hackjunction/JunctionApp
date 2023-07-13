@@ -108,7 +108,7 @@ const EventHelpers = {
         }
         return EventStatuses.FINISHED.id
     },
-    areMeetingsEnabled: (event) => {
+    areMeetingsEnabled: event => {
         if (!event) return true
         return event.meetingsEnabled
     },

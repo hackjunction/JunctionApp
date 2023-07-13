@@ -48,7 +48,7 @@ export default () => {
                                     touched={form.touched[field.name]}
                                 >
                                     <HackerpackForm
-                                        value={field}
+                                        value={field.value}
                                         onChange={value => {
                                             form.setFieldValue(
                                                 field.name,

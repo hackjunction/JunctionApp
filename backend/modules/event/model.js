@@ -7,6 +7,7 @@ const {
 } = require('@hackjunction/shared')
 // const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
+const HackerpackSchema = require('@hackjunction/shared/schemas/Hackerpack')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const Certificate = require('@hackjunction/shared/schemas/Certificate')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
@@ -135,6 +136,11 @@ const EventSchema = new mongoose.Schema({
             },
             'must have at least one item if challenges are enabled',
         ],
+    },
+    hackerpacksEnabled: false,
+    hackerpacks: {
+        type: [HackerpackSchema.mongoose],
+        default: [],
     },
     allowProjectSubmissionsPerChallenge: {
         type: Boolean,
