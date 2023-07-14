@@ -121,6 +121,36 @@ controller.joinTeam = (eventId, userId, code) => {
     })
 }
 
+controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
+    // const team = controller.getTeam(eventId, applicationData.teamId)
+    console.log('Application data:', applicationData)
+    console.log('User id:', userId)
+    console.log('Event id:', eventId)
+    console.log('Code:', code)
+    return controller
+        .getTeamByCode(eventId, code)
+        .then(team => {
+            console.log('team before action', team)
+            if (
+                !_.includes(team.members, userId) &&
+                !_.includes(
+                    team.candidates.map(candidate => candidate.userId),
+                    userId,
+                ) &&
+                team.owner !== userId
+            ) {
+                team.candidates = team.candidates.concat(applicationData)
+                return team
+            } else {
+                throw new NotFoundError('You are already in this team')
+            }
+        })
+        .then(team => {
+            console.log('team after action', team)
+        })
+    return 'test'
+}
+
 controller.leaveTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {
         team.members = team.members.filter(member => member !== userId)

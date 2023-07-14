@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const { GraphQLObjectType, GraphQLString, GraphQLList } = require('graphql')
 const Roles = require('../constants/roles')
+// const Candidate = require('./Candidate')
 
 const mongooseSchema = new mongoose.Schema({
     role: {
@@ -12,14 +13,14 @@ const mongooseSchema = new mongoose.Schema({
             message: props => `${props.value} is not a valid role`,
         },
     },
-    candidates: {
-        type: [String],
-        default: [],
-    },
-    assigned: {
-        type: String,
-        default: '',
-    },
+    // candidates: {
+    //     type: [Candidate.mongoose],
+    //     default: [],
+    // },
+    // assigned: {
+    //     type: [String],
+    //     default: [],
+    // },
 })
 
 const graphqlSchema = new GraphQLObjectType({

@@ -25,20 +25,18 @@ export default () => {
     return (
         <>
             {hasTeam && candidateList > 0 ? (
+                // TODO Make into component
                 <ResponsiveMasonry
                     columnsCountBreakPoints={{ 350: 1, 750: 2, 1440: 3 }}
                 >
                     <Masonry>
-                        <CandidateCard />
-                        <CandidateCard />
-                        <CandidateCard />
-                        <CandidateCard />
-                        <CandidateCard />
-                        <CandidateCard />
-                        <CandidateCard />
+                        {candidateList.map(candidate => (
+                            <CandidateCard candidateData={candidate} />
+                        ))}
                     </Masonry>
                 </ResponsiveMasonry>
             ) : (
+                // TODO make prop to show different message when there are no candidates or teams to join
                 <NoTeam />
             )}
         </>

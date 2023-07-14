@@ -22,6 +22,7 @@ TeamsService.exportTeams = (idToken, eventSlug, teamIds) => {
     )
 }
 
+//TODO createTeamForEvent is deprecated and to be removed in the future
 TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     return _axios.post(
         `/teams/${eventSlug}?populate=${populate}`,
@@ -30,6 +31,7 @@ TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     )
 }
 
+// TODO: When createTeamForEvent is removed, rename this to createTeamForEvent
 TeamsService.createNewTeamForEvent = (idToken, eventSlug, data, populate) => {
     return _axios.post(
         `/teams/${eventSlug}/teams?populate=${populate}`,
@@ -46,6 +48,19 @@ TeamsService.editTeamForEvent = (idToken, eventSlug, edits, populate) => {
     return _axios.patch(
         `/teams/${eventSlug}?populate=${populate}`,
         edits,
+        config(idToken),
+    )
+}
+
+TeamsService.candidateApplyToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    applicationData,
+) => {
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}`,
+        applicationData,
         config(idToken),
     )
 }

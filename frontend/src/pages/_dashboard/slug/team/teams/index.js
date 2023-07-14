@@ -83,7 +83,7 @@ export default () => {
                     >
                         Back
                     </Button>
-                    <Apply />
+                    <Apply teamRolesData={selectedTeam.teamRoles} />
                 </div>
             )}
             {selected && selectedTeam && Object.keys(selectedTeam).length > 0 && (
@@ -110,7 +110,7 @@ export default () => {
                                 onClickApply={() => {
                                     setApplying(true)
                                     dispatch(
-                                        DashboardActions.updatedSelectedTeam(
+                                        DashboardActions.updateSelectedTeam(
                                             slug,
                                             team.code,
                                         ),
@@ -119,7 +119,7 @@ export default () => {
                                 onClick={() => {
                                     setSelected(true)
                                     dispatch(
-                                        DashboardActions.updatedSelectedTeam(
+                                        DashboardActions.updateSelectedTeam(
                                             slug,
                                             team.code,
                                         ),

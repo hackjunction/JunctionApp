@@ -101,6 +101,21 @@ const getTeamByCode = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const getTeamById = asyncHandler(async (req, res) => {
+    let team = await TeamController.getTeamById(req.params.teamId)
+    return res.status(200).json(team)
+})
+
+const candidateApplyToTeam = asyncHandler(async (req, res) => {
+    let team = await TeamController.candidateApplyToTeam(
+        req.event._id,
+        req.user.sub,
+        req.params.code,
+        req.body,
+    )
+    return res.status(200).json(team)
+})
+
 const getTeamRoles = asyncHandler(async (req, res) => {
     const roles = await TeamController.getRoles(req.event._id, req.params.code)
     return res.status(200).json(roles)
@@ -172,6 +187,12 @@ router
 router
     .route('/:slug/teams/:code')
     .get(hasToken, hasRegisteredToEvent, getTeamByCode)
+    .patch(
+        hasToken,
+        hasRegisteredToEvent,
+        isBefore.submissionsEndTime,
+        candidateApplyToTeam,
+    )
 
 router
     .route('/:slug/:code/roles')

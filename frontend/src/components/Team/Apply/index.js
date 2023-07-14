@@ -5,7 +5,12 @@ import { FastField, Field, Formik } from 'formik'
 import Select from 'components/inputs/Select'
 import React, { useCallback, useState } from 'react'
 import * as Yup from 'yup'
+import * as UserSelectors from 'redux/user/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 import BottomBar from 'components/inputs/BottomBar'
+import _ from 'lodash'
 import {
     Box,
     List,
@@ -16,21 +21,22 @@ import {
 } from '@material-ui/core'
 
 import Button from 'components/generic/Button'
+import { useDispatch, useSelector } from 'react-redux'
 
-export const roles = [
-    {
-        label: 'Manager',
-        value: 'Manager',
-    },
-    {
-        label: 'Software Developer',
-        value: 'Software Developer',
-    },
-    {
-        label: 'UI/UX Designer',
-        value: 'UI/UX Designer',
-    },
-]
+// export const roles = [
+//     {
+//         label: 'Manager',
+//         value: 'Manager',
+//     },
+//     {
+//         label: 'Software Developer',
+//         value: 'Software Developer',
+//     },
+//     {
+//         label: 'UI/UX Designer',
+//         value: 'UI/UX Designer',
+//     },
+// ]
 
 export default ({
     teamRolesData = [
@@ -44,6 +50,56 @@ export default ({
         },
     ],
 }) => {
+    const dispatch = useDispatch()
+    const roles = [
+        {
+            label: 'Open application',
+            value: 'Open application',
+        },
+        ...teamRolesData.map(role => ({
+            label: role.role,
+            value: role.role,
+        })),
+    ]
+    const userProfile = useSelector(UserSelectors.userProfile)
+    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
+    const event = useSelector(DashboardSelectors.event)
+
+    const handleApply = useCallback(
+        (values, formikBag) => {
+            const submittionData = {}
+            submittionData.roles = _.filter(teamRolesData, role =>
+                _.includes(values.roles, role.role),
+            )
+            submittionData.motivation = values.motivation
+            submittionData.userId = userProfile.userId
+            console.log('Submission data:', submittionData)
+            console.log('Values:', values)
+            console.log('FormikBag:', formikBag)
+            dispatch(
+                DashboardActions.candidateApplyToTeam(
+                    event.slug,
+                    selectedTeam.code,
+                    submittionData,
+                ),
+            )
+                .then(() => {
+                    dispatch(SnackbarActions.success('Created new team'))
+                })
+                .catch(err => {
+                    dispatch(
+                        SnackbarActions.error(
+                            'Something went wrong... please try again.',
+                        ),
+                    )
+                })
+                .finally(() => {
+                    console.log('Finally')
+                })
+        },
+        [dispatch, userProfile],
+    )
+
     return (
         <>
             <Container>
@@ -52,9 +108,9 @@ export default ({
                     subheading="Fields marked with * are mandatory"
                 />
                 <Formik
-                    initialValues={{ roles: roles, motivationMessage: '' }}
+                    initialValues={{ roles: roles, motivation: '' }}
                     enableReinitialize={true}
-                    onSubmit={() => console.log('submitted')}
+                    onSubmit={handleApply}
                 >
                     {formikProps => (
                         <>
@@ -94,7 +150,7 @@ export default ({
                                 <Box>
                                     <h2>Motivation*</h2>
                                     <Field
-                                        name="motivationMessage"
+                                        name="motivation"
                                         render={({ field, form }) => (
                                             <TextAreaInput
                                                 value={field.value}

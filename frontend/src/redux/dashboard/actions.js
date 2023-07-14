@@ -157,7 +157,7 @@ export const updateTeams = slug => async (dispatch, getState) => {
     })
 }
 
-export const updatedSelectedTeam =
+export const updateSelectedTeam =
     (slug, code) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         if (!slug) return
@@ -195,6 +195,7 @@ export const updateTeam = slug => (dispatch, getState) => {
     })
 }
 
+// TODO createTeam action to be depreciated and deleted, replaced by createNewTeam
 export const createTeam = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     const team = await TeamsService.createTeamForEvent(idToken, slug, true)
@@ -219,6 +220,7 @@ export const editTeam = (slug, data) => async (dispatch, getState) => {
     return team
 }
 
+//TODO when createTeam is deleted, rename this to createTeam
 export const createNewTeam = (slug, data) => async (dispatch, getState) => {
     console.log('createNewTeam action received:', slug, data)
     const idToken = AuthSelectors.getIdToken(getState())
@@ -249,6 +251,25 @@ export const joinTeam = (slug, code) => async (dispatch, getState) => {
 
     return team
 }
+
+export const candidateApplyToTeam =
+    (slug, code, applicationData) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+
+        const team = await TeamsService.candidateApplyToTeam(
+            idToken,
+            slug,
+            code,
+            applicationData,
+        )
+
+        dispatch({
+            type: ActionTypes.EDIT_TEAM,
+            payload: team,
+        })
+
+        return team
+    }
 
 export const leaveTeam = (slug, code) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())

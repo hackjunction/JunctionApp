@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const TeamRole = require('./TeamRole')
 
 const mongooseSchema = new mongoose.Schema({
     userId: {
@@ -6,8 +7,9 @@ const mongooseSchema = new mongoose.Schema({
         required: true,
     },
     roles: {
-        type: [String],
+        type: [TeamRole.mongoose],
         required: true,
+        default: [],
     },
     motivation: {
         type: String,
