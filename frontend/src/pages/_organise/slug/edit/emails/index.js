@@ -12,7 +12,7 @@ export default () => {
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <FastField
-                    name="sender"
+                    name="senderEmail"
                     render={({ field, form }) => (
                         <FormControl
                             label="Sender"
@@ -25,7 +25,6 @@ export default () => {
                                     <Typography variant="body1">Sender Email</Typography>
                                 </Box>
                                 <TextInput
-                                    // @ts-ignore
                                     name="senderEmail"
                                     placeholder="Sender's email"
                                     value={field.value}
@@ -35,28 +34,32 @@ export default () => {
                                     onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Sender Name</Typography>
-                                </Box>
-                                <TextInput
-                                    // @ts-ignore
-                                    name="senderName"
-                                    placeholder="Sender's name"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
+                            <FastField
+                                name="senderName"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12} md={6}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Sender Name</Typography>
+                                        </Box>
+                                        <TextInput
+                                            name="senderName"
+                                            placeholder="Sender's name"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="acceptanceEmail"
+                    name="acceptanceEmailTitle"
                     render={({ field, form }) => (
                         <FormControl
                             label="Acceptance Email"
@@ -69,7 +72,6 @@ export default () => {
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
                                 <TextInput
-                                    // @ts-ignore
                                     name="acceptanceEmailTitle"
                                     placeholder="Email title or subject"
                                     value={field.value}
@@ -79,43 +81,51 @@ export default () => {
                                     onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Subtitle</Typography>
-                                </Box>
-                                <TextInput
-                                    // @ts-ignore
-                                    name="acceptanceEmailSubtitle"
-                                    placeholder="Email subtitle"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Body</Typography>
-                                </Box>
-                                <TextAreaInput
-                                    // @ts-ignore
-                                    name="acceptanceEmailBody"
-                                    placeholder="Email body"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
+                            <FastField
+                                name="acceptanceEmailSubtitle"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12} md={6}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Subtitle</Typography>
+                                        </Box>
+                                        <TextInput
+                                            name="acceptanceEmailSubtitle"
+                                            placeholder="Email subtitle"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <FastField
+                                name="acceptanceEmailBody"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Body</Typography>
+                                        </Box>
+                                        <TextAreaInput
+                                            name="acceptanceEmailBody"
+                                            placeholder="Email body"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="rejectionEmail"
+                    name="rejectionEmailTitle"
                     render={({ field, form }) => (
                         <FormControl
                             label="Rejection Email"
@@ -128,7 +138,6 @@ export default () => {
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
                                 <TextInput
-                                    // @ts-ignore
                                     name="rejectionEmailTitle"
                                     placeholder="Email title or subject"
                                     value={field.value}
@@ -138,43 +147,51 @@ export default () => {
                                     onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Subtitle</Typography>
-                                </Box>
-                                <TextInput
-                                    // @ts-ignore
-                                    name="rejectionEmailSubtitle"
-                                    placeholder="Email subtitle"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Body</Typography>
-                                </Box>
-                                <TextAreaInput
-                                    // @ts-ignore
-                                    name="rejectionEmailBody"
-                                    placeholder="Email body"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
+                            <FastField
+                                name="rejectionEmailSubtitle"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12} md={6}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Subtitle</Typography>
+                                        </Box>
+                                        <TextInput
+                                            name="rejectionEmailSubtitle"
+                                            placeholder="Email subtitle"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <FastField
+                                name="rejectionEmailBody"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Body</Typography>
+                                        </Box>
+                                        <TextAreaInput
+                                            name="rejectionEmailBody"
+                                            placeholder="Email body"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
                         </FormControl>
                     )}
                 />
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="registrationEmail"
+                    name="registrationEmailTitle"
                     render={({ field, form }) => (
                         <FormControl
                             label="Registration Email"
@@ -187,7 +204,6 @@ export default () => {
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
                                 <TextInput
-                                    // @ts-ignore
                                     name="registrationEmailTitle"
                                     placeholder="Email title or subject"
                                     value={field.value}
@@ -197,40 +213,49 @@ export default () => {
                                     onBlur={() => form.setFieldTouched(field.name)}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Subtitle</Typography>
-                                </Box>
-                                <TextInput
-                                    // @ts-ignore
-                                    name="registrationEmailSubtitle"
-                                    placeholder="Email subtitle"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box mb={1} mt={1}>
-                                    <Typography variant="body1">Body</Typography>
-                                </Box>
-                                <TextAreaInput
-                                    // @ts-ignore
-                                    name="registrationEmailBody"
-                                    placeholder="Email body"
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() => form.setFieldTouched(field.name)}
-                                />
-                            </Grid>
+                            <FastField
+                                name="registrationEmailSubtitle"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12} md={6}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Subtitle</Typography>
+                                        </Box>
+                                        <TextInput
+                                            name="registrationEmailSubtitle"
+                                            placeholder="Email subtitle"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <FastField
+                                name="registrationEmailBody"
+                                render={({ field, form }) => (
+                                    <Grid item xs={12}>
+                                        <Box mb={1} mt={1}>
+                                            <Typography variant="body1">Body</Typography>
+                                        </Box>
+                                        <TextAreaInput
+                                            name="registrationEmailBody"
+                                            placeholder="Email body"
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(field.name, value)
+                                            }
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                    </Grid>
+                                )}
+                            />
                         </FormControl>
                     )}
                 />
             </Grid>
-        </Grid>
+
+        </Grid >
     )
 }
