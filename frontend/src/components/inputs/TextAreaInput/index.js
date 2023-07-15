@@ -6,7 +6,7 @@ const TextAreaInput = React.memo(
     ({
         disabled,
         label,
-        name
+        name,
         onBlur,
         onChange = () => { },
         placeholder = '',
