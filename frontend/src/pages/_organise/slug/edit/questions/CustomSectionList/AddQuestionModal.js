@@ -13,11 +13,13 @@ import {
 } from '@material-ui/core'
 
 import Dropdown from '../../submission/components/section/Dropdown'
-import BooleanInput from 'components/inputs/BooleanInput'
+// import BooleanInput from 'components/inputs/BooleanInput'
+import Switch from '../../submission/components/Switch'
 // import TextInput from 'components/inputs/TextInput'
 import TextInput from '../../submission/components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import Checkbox from '../../submission/components/section/Checkbox'
+import EditableOptions from '../../submission/components/EditableOptions'
 
 const initialData = {
     label: '',
@@ -171,24 +173,31 @@ export default ({
                         <Typography variant="body1" className={classes.label}>
                             Options to choose from
                         </Typography>
-                        <TextInput
-                            placeholder="Zebra,Hippopotamus,Giraffe"
-                            value={
+                        <EditableOptions
+                            options={
                                 data.settings.options
-                                    ? data.settings.options.join(',')
-                                    : ''
+                                    ? data.settings.options
+                                    : []
                             }
-                            onChange={value =>
+                            handleAddOption={value =>
                                 handleChange('settings', {
                                     ...data.settings,
-                                    options: value
-                                        .split(',')
-                                        .map(item => item.trim()),
+                                    options: [...data.settings.options, value],
                                 })
                             }
+                            handleEdit={(index, value) => {
+                                const updatedOptions = [
+                                    ...data.settings.options,
+                                ]
+                                updatedOptions[index] = value
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    options: updatedOptions,
+                                })
+                            }}
                         />
                         <Typography variant="caption" paragraph>
-                            Enter options to choose from, separated by a comma
+                            Enter options to choose
                         </Typography>
                         {renderPlaceholderInput()}
                     </>
@@ -201,14 +210,16 @@ export default ({
                         <Typography variant="body1" className={classes.label}>
                             Default value
                         </Typography>
-                        <BooleanInput
-                            value={data.settings.default || false}
+                        <Switch
+                            checked={data.settings.default || false}
                             onChange={value =>
                                 handleChange('settings', {
                                     ...data.settings,
                                     default: value,
                                 })
                             }
+                            checkedText="Yes"
+                            uncheckedText="No"
                         />
                         <Typography variant="caption" paragraph>
                             Is this field checked/yes by default?
@@ -231,8 +242,8 @@ export default ({
                                     maxSize: parseInt(value, 10), // parse value to integer
                                 })
                             }
+                            width="tw-w-1/4"
                         />
-
                         <Typography variant="caption" paragraph>
                             Maximum file size in megabytes
                         </Typography>
@@ -354,9 +365,11 @@ export default ({
                 <Typography variant="body1" className={classes.label}>
                     Is this question required?
                 </Typography>
-                <BooleanInput
-                    value={data.fieldRequired}
+                <Switch
+                    checked={data.fieldRequired}
                     onChange={value => handleChange('fieldRequired', value)}
+                    checkedText="Yes"
+                    uncheckedText="No"
                 />
                 <Typography variant="caption" paragraph>
                     Users will not be able to submit the form without answering
