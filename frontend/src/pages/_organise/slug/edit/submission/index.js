@@ -1,84 +1,61 @@
-import React from 'react'
-
-import { Grid } from '@material-ui/core'
-import { FastField } from 'formik'
-
-import FormControl from 'components/inputs/FormControl'
-import TextInput from 'components/inputs/TextInput'
-import TextAreaInput from 'components/inputs/TextAreaInput'
+import React, { useState } from 'react'
+import { useFormikContext } from 'formik'
+import Section from './section'
+import BottomBar from 'components/inputs/BottomBar'
 
 export default () => {
+    const [sections, setSections] = useState([1])
+    const [hasChanges, setHasChanges] = useState(false)
+    const [errors, setErrors] = useState({})
+    const [loading, setLoading] = useState(false)
+    const { ...formikProps } = useFormikContext()
+
+    const handleAddSection = () => {
+        setSections([...sections, sections.length + 1])
+        setHasChanges(true)
+    }
+
+    const handleRemoveSection = index => {
+        setSections(sections.filter((_, i) => i !== index))
+        setHasChanges(true)
+    }
+
+    const onSubmit = () => {
+        // save changes
+        setHasChanges(false)
+        setLoading(false)
+    }
+
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <FastField
-                    name="demoLabel"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Demo label"
-                            hint="Demo label"
-                            error={form.errors[field.name]}
-                            touched={form.touched[field.name]}
-                        >
-                            <TextInput
-                                name="demoLabel"
-                                placeholder="Demo URL"
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                                onBlur={() => form.setFieldTouched(field.name)}
-                            />
-                        </FormControl>
-                    )}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <FastField
-                    name="demoHint"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Demo Hint"
-                            hint="Hint message you want to have displayed on the submission form"
-                            error={form.errors[field.name]}
-                            touched={form.touched[field.name]}
-                        >
-                            <TextAreaInput
-                                name="demoHint"
-                                placeholder="Add the link of the working version of your project. Depending on the event, this could be a link to an API, a link to file or a presentation. Make sure the link is accessible for humans, as well as machines!"
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                                onBlur={() => form.setFieldTouched(field.name)}
-                            />
-                        </FormControl>
-                    )}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <FastField
-                    name="demoPlaceholder"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Demo Placeholder"
-                            hint="Placeholder message you want to have displayed on the submission form"
-                            error={form.errors[field.name]}
-                            touched={form.touched[field.name]}
-                        >
-                            <TextInput
-                                name="demoPlaceholder"
-                                placeholder="https://.."
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                                onBlur={() => form.setFieldTouched(field.name)}
-                            />
-                        </FormControl>
-                    )}
-                />
-            </Grid>
-        </Grid>
+        <>
+            <h1>
+                <span className="tw-text-gray-800 tw-font-bold tw-text-2xl">
+                    Submission form builder
+                </span>
+            </h1>
+            {sections.map((_, index) => (
+                <div key={index} className="tw-mt-4">
+                    <Section
+                        onRemove={() => handleRemoveSection(index)}
+                        fieldName={`section_${index}`}
+                        onChange={() => setHasChanges(true)}
+                        {...formikProps}
+                    />
+                </div>
+            ))}
+            <button
+                className="tw-mt-4 tw-bg-blue-500 tw-text-white tw-rounded-lg tw-px-4 tw-py-2 tw-cursor-pointer tw-shadow-md hover:tw-bg-blue-600"
+                onClick={handleAddSection}
+            >
+                Add Section
+            </button>
+            <BottomBar
+                errors={errors}
+                dirty={hasChanges}
+                onSubmit={onSubmit}
+                loading={loading}
+                submitLabel="Apply Changes"
+            />
+        </>
     )
 }

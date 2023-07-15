@@ -12,10 +12,12 @@ import {
     DialogActions,
 } from '@material-ui/core'
 
-import Select from 'components/inputs/Select'
+import Dropdown from '../../submission/components/section/Dropdown'
 import BooleanInput from 'components/inputs/BooleanInput'
-import TextInput from 'components/inputs/TextInput'
+// import TextInput from 'components/inputs/TextInput'
+import TextInput from '../../submission/components/inputs/TextInput'
 import Button from 'components/generic/Button'
+import Checkbox from '../../submission/components/section/Checkbox'
 
 const initialData = {
     label: '',
@@ -56,6 +58,28 @@ export default ({
     }
 
     const validate = () => {
+        if (data.fieldType === 'attachment') {
+            // assuming 'attachment' is the type requiring maxSize
+            if (
+                data.settings.maxSize === undefined ||
+                data.settings.maxSize === null
+            ) {
+                return 'Max size is required for attachment type'
+            }
+
+            if (typeof data.settings.maxSize !== 'number') {
+                return 'Max size must be a number'
+            }
+
+            if (!Number.isInteger(data.settings.maxSize)) {
+                return 'Max size must be an integer'
+            }
+
+            if (data.settings.maxSize <= 0) {
+                return 'Max size must be greater than 0'
+            }
+        }
+
         if (isEmpty(data.label)) {
             return 'Label is required'
         }
@@ -192,6 +216,45 @@ export default ({
                     </>
                 )
             }
+            case 'attachment': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Maximum file size
+                        </Typography>
+                        <TextInput
+                            placeholder="10"
+                            value={data.settings.maxSize || ''}
+                            onChange={value =>
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    maxSize: parseInt(value, 10), // parse value to integer
+                                })
+                            }
+                        />
+
+                        <Typography variant="caption" paragraph>
+                            Maximum file size in megabytes
+                        </Typography>
+                        <Typography variant="body1" className={classes.label}>
+                            Allowed file types
+                        </Typography>
+                        <Checkbox
+                            options={['pdf', 'docx', 'jpg', 'png', 'gif']} // Add all the file types you want to allow
+                            selectedOptions={data.settings.allowedTypes || []}
+                            onChange={value =>
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    allowedTypes: value,
+                                })
+                            }
+                        />
+                        <Typography variant="caption" paragraph>
+                            Allowed file types, select multiple options
+                        </Typography>
+                    </>
+                )
+            }
             default:
                 return renderPlaceholderInput()
         }
@@ -236,39 +299,44 @@ export default ({
                     and be written in camelCase: e.g. letterOfMotivation. This
                     field will not be visible to the end-user.
                 </Typography>
-                <Typography variant="body1" className={classes.label}>
-                    Question type
-                </Typography>
-                <Select
-                    value={data.fieldType}
-                    onChange={value => handleChange('fieldType', value)}
-                    placeholder="Choose one"
-                    options={[
-                        {
-                            value: 'text',
-                            label: 'Short text',
-                        },
-                        {
-                            value: 'textarea',
-                            label: 'Long text',
-                        },
-                        {
-                            value: 'boolean',
-                            label: 'Yes / No',
-                        },
-                        {
-                            value: 'single-choice',
-                            label: 'Single choice',
-                        },
-                        {
-                            value: 'multiple-choice',
-                            label: 'Multiple choice',
-                        },
-                    ]}
-                />
+                <div className="tw-flex tw-space-x-2 tw-items-center">
+                    <Typography variant="body1" className={classes.label}>
+                        Question type:
+                    </Typography>
+                    <Dropdown
+                        value={data.fieldType}
+                        onChange={value => handleChange('fieldType', value)}
+                        placeholder="Choose one"
+                        options={[
+                            {
+                                value: 'text',
+                                label: 'Short text',
+                            },
+                            {
+                                value: 'textarea',
+                                label: 'Long text',
+                            },
+                            {
+                                value: 'attachment',
+                                label: 'Attachment',
+                            },
+                            {
+                                value: 'boolean',
+                                label: 'Yes / No',
+                            },
+                            {
+                                value: 'single-choice',
+                                label: 'Single choice',
+                            },
+                            {
+                                value: 'multiple-choice',
+                                label: 'Multiple choice',
+                            },
+                        ]}
+                    />
+                </div>
                 <Typography variant="caption" paragraph>
-                    Which kind of answer do you want? Choose a type and you will
-                    be presented with any available additional options
+                    Choose question type to put in the submission form
                 </Typography>
                 {renderFieldTypeOptions()}
                 <Typography variant="body1" className={classes.label}>
