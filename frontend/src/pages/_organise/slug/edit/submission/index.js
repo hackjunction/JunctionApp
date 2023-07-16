@@ -1,29 +1,17 @@
 import React, { useState } from 'react'
 import { useFormikContext } from 'formik'
 import Section from './section'
-import BottomBar from 'components/inputs/BottomBar'
 
 export default () => {
     const [sections, setSections] = useState([1])
-    const [hasChanges, setHasChanges] = useState(false)
-    const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
     const { ...formikProps } = useFormikContext()
 
     const handleAddSection = () => {
         setSections([...sections, sections.length + 1])
-        setHasChanges(true)
     }
 
     const handleRemoveSection = index => {
         setSections(sections.filter((_, i) => i !== index))
-        setHasChanges(true)
-    }
-
-    const onSubmit = () => {
-        // save changes
-        setHasChanges(false)
-        setLoading(false)
     }
 
     return (
@@ -38,7 +26,6 @@ export default () => {
                     <Section
                         onRemove={() => handleRemoveSection(index)}
                         fieldName={`section_${index}`}
-                        onChange={() => setHasChanges(true)}
                         {...formikProps}
                     />
                 </div>
@@ -49,13 +36,6 @@ export default () => {
             >
                 Add Section
             </button>
-            <BottomBar
-                errors={errors}
-                dirty={hasChanges}
-                onSubmit={onSubmit}
-                loading={loading}
-                submitLabel="Apply Changes"
-            />
         </>
     )
 }

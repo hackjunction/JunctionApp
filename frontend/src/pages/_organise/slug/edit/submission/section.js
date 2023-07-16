@@ -36,25 +36,56 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
     ])
 
     const inputConfig = {
-        option1: { component: TextInput },
-        option2: { component: FileInput },
-        option3: { component: UrlInput },
-        option4: {
-            component: BooleanSwitch,
-            value: booleanChecked,
-            onChange: handleBooleanChange,
-            text: text,
-            setText: setText,
+        text: {
+            component: TextInput,
+            placeholder: 'Placeholder',
         },
-        option5: {
+        file: {
+            component: FileInput,
+            placeholder: 'Placeholder',
+        },
+        url: {
+            component: UrlInput,
+            placeholder: 'Placeholder',
+        },
+        boolean: {
+            component: BooleanSwitch,
+            checked: booleanChecked,
+            onChange: handleBooleanChange,
+        },
+        singleChoice: {
             component: EditableOptions,
             options: singleChoiceOptions,
-            setOptions: setSingleChoiceOptions,
+            handleAddOption: option => {
+                setSingleChoiceOptions([...singleChoiceOptions, option])
+            },
+            handleEdit: (index, option) => {
+                const newOptions = singleChoiceOptions.slice()
+                newOptions[index] = option
+                setSingleChoiceOptions(newOptions)
+            },
+            handleDelete: index => {
+                const newOptions = singleChoiceOptions.slice()
+                newOptions.splice(index, 1)
+                setSingleChoiceOptions(newOptions)
+            },
         },
-        option6: {
+        multiChoice: {
             component: EditableOptions,
             options: multiChoiceOptions,
-            setOptions: setMultiChoiceOptions,
+            handleAddOption: option => {
+                setMultiChoiceOptions([...multiChoiceOptions, option])
+            },
+            handleEdit: (index, option) => {
+                const newOptions = multiChoiceOptions.slice()
+                newOptions[index] = option
+                setMultiChoiceOptions(newOptions)
+            },
+            handleDelete: index => {
+                const newOptions = multiChoiceOptions.slice()
+                newOptions.splice(index, 1)
+                setMultiChoiceOptions(newOptions)
+            },
         },
     }
 
@@ -115,10 +146,19 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
                     <div className="tw-w-full sm:tw-w-1/5 tw-flex tw-flex-col tw-gap-4">
                         <Dropdown
                             value={dropdownValue}
-                            onChange={e => {
-                                setDropdownValue(e.target.value)
-                                onChange()
-                            }}
+                            onChange={setDropdownValue}
+                            placeholder="Input type"
+                            options={[
+                                { value: 'text', label: 'Text' },
+                                { value: 'file', label: 'File' },
+                                { value: 'url', label: 'URL' },
+                                { value: 'boolean', label: 'Boolean' },
+                                {
+                                    value: 'singleChoice',
+                                    label: 'Single Choice',
+                                },
+                                { value: 'multiChoice', label: 'Multi Choice' },
+                            ]}
                         />
 
                         <RemoveButton onRemove={onRemove} />

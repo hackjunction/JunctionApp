@@ -13,9 +13,7 @@ import {
 } from '@material-ui/core'
 
 import Dropdown from '../../submission/components/section/Dropdown'
-// import BooleanInput from 'components/inputs/BooleanInput'
 import Switch from '../../submission/components/Switch'
-// import TextInput from 'components/inputs/TextInput'
 import TextInput from '../../submission/components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import Checkbox from '../../submission/components/section/Checkbox'
@@ -24,7 +22,9 @@ import EditableOptions from '../../submission/components/EditableOptions'
 const initialData = {
     label: '',
     hint: '',
-    settings: {},
+    settings: {
+        options: [],
+    },
     fieldRequired: false,
     fieldType: 'text',
 }
@@ -60,8 +60,8 @@ export default ({
     }
 
     const validate = () => {
+        // ! This only apply to the submission form, not the registration form
         if (data.fieldType === 'attachment') {
-            // assuming 'attachment' is the type requiring maxSize
             if (
                 data.settings.maxSize === undefined ||
                 data.settings.maxSize === null
@@ -79,6 +79,9 @@ export default ({
 
             if (data.settings.maxSize <= 0) {
                 return 'Max size must be greater than 0'
+            }
+            if (data.settings.maxSize > 100) {
+                return 'Max size must be less than 100'
             }
         }
 
@@ -195,6 +198,16 @@ export default ({
                                     options: updatedOptions,
                                 })
                             }}
+                            handleDelete={index => {
+                                const updatedOptions = [
+                                    ...data.settings.options,
+                                ]
+                                updatedOptions.splice(index, 1)
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    options: updatedOptions,
+                                })
+                            }}
                         />
                         <Typography variant="caption" paragraph>
                             Enter options to choose
@@ -227,6 +240,8 @@ export default ({
                     </>
                 )
             }
+
+            // ! This only apply to the submission form, not the registration form
             case 'attachment': {
                 return (
                     <>
@@ -262,6 +277,28 @@ export default ({
                         />
                         <Typography variant="caption" paragraph>
                             Allowed file types, select multiple options
+                        </Typography>
+                    </>
+                )
+            }
+            case 'Link': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Link
+                        </Typography>
+                        <TextInput
+                            placeholder="https://www.google.com"
+                            value={data.settings.link || ''}
+                            onChange={value =>
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    link: value,
+                                })
+                            }
+                        />
+                        <Typography variant="caption" paragraph>
+                            Enter the link
                         </Typography>
                     </>
                 )
@@ -328,6 +365,10 @@ export default ({
                                 label: 'Long text',
                             },
                             {
+                                value: 'link',
+                                label: 'Link',
+                            },
+                            {
                                 value: 'attachment',
                                 label: 'Attachment',
                             },
@@ -362,15 +403,18 @@ export default ({
                     Add an optional help text to show under the question label -
                     just like the one you're reading right now
                 </Typography>
-                <Typography variant="body1" className={classes.label}>
-                    Is this question required?
-                </Typography>
-                <Switch
-                    checked={data.fieldRequired}
-                    onChange={value => handleChange('fieldRequired', value)}
-                    checkedText="Yes"
-                    uncheckedText="No"
-                />
+                <div className="tw-flex tw-space-x-2 tw-items-center">
+                    <Typography variant="body1" className={classes.label}>
+                        Required?
+                    </Typography>
+                    <Switch
+                        checked={data.fieldRequired}
+                        onChange={value => handleChange('fieldRequired', value)}
+                        checkedText="Yes"
+                        uncheckedText="No"
+                    />
+                </div>
+
                 <Typography variant="caption" paragraph>
                     Users will not be able to submit the form without answering
                     this question, if it is required.
