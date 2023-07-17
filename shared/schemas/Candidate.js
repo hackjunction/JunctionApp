@@ -14,6 +14,9 @@ const mongooseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    headline: {
+        type: String,
+    },
     avatar: {
         type: String,
         required: false,
