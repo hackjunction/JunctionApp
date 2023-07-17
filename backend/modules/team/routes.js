@@ -122,7 +122,10 @@ const getTeamRoles = asyncHandler(async (req, res) => {
 })
 
 const getTeamsForEvent = asyncHandler(async (req, res) => {
-    const teams = await TeamController.getTeamsForEvent(req.event._id)
+    const teams = await TeamController.getTeamsForEvent(
+        req.event._id,
+        req.user.sub,
+    )
     return res.status(200).json(teams)
 })
 

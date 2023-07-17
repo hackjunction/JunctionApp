@@ -20,7 +20,8 @@ const TeamSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        default: shortid.generate(),
+        unique: true,
+        default: () => shortid.generate(),
     },
     complete: {
         type: Boolean,
@@ -42,7 +43,7 @@ const TeamSchema = new mongoose.Schema({
         required: true,
         unique: true,
         length: 30,
-        default: `Team ${shortid.generate()}`,
+        default: `Team ${() => shortid.generate()}`,
     },
     tagline: {
         type: String,

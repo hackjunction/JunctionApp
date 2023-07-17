@@ -55,14 +55,14 @@ import Apply from 'components/Team/Apply'
 
 export default () => {
     const dispatch = useDispatch()
+    const event = useSelector(DashboardSelectors.event)
+    const { slug, _id } = event
     useEffect(() => {
         dispatch(DashboardActions.updateTeams(slug))
     }, [])
-    const event = useSelector(DashboardSelectors.event)
     const teams = useSelector(DashboardSelectors.teams)
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
-    const team = useSelector(DashboardSelectors.team)
-    const { slug, _id } = event
+    // const team = useSelector(DashboardSelectors.team)
 
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)

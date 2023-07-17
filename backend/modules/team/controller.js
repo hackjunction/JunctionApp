@@ -28,7 +28,6 @@ controller.createTeam = (eventId, userId) => {
 controller.createNewTeam = (data, eventId, userId) => {
     // TODO abstract this deconstruction
     const {
-        members,
         teamRoles,
         name,
         tagline,
@@ -43,7 +42,6 @@ controller.createNewTeam = (data, eventId, userId) => {
     const team = new Team({
         event: eventId,
         owner: userId,
-        members,
         teamRoles: teamRoles.map(role => ({
             role,
         })),
@@ -57,6 +55,7 @@ controller.createNewTeam = (data, eventId, userId) => {
         telegram,
         discord,
     })
+    console.log('On team creation', team)
 
     return team.save()
 }
@@ -123,32 +122,28 @@ controller.joinTeam = (eventId, userId, code) => {
 
 controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
     // const team = controller.getTeam(eventId, applicationData.teamId)
-    console.log('Application data:', applicationData)
-    console.log('User id:', userId)
-    console.log('Event id:', eventId)
-    console.log('Code:', code)
-    return controller
-        .getTeamByCode(eventId, code)
-        .then(team => {
-            console.log('team before action', team)
-            if (
-                !_.includes(team.members, userId) &&
-                !_.includes(
-                    team.candidates.map(candidate => candidate.userId),
-                    userId,
-                ) &&
-                team.owner !== userId
-            ) {
-                team.candidates = team.candidates.concat(applicationData)
-                return team
-            } else {
-                throw new NotFoundError('You are already in this team')
-            }
-        })
-        .then(team => {
+    return controller.getTeamByCode(eventId, code).then(team => {
+        console.log('team before action', team)
+        if (
+            !_.includes(team.members, userId) &&
+            !_.includes(
+                team.candidates.map(candidate => candidate.userId),
+                userId,
+            ) &&
+            team.owner !== userId
+        ) {
+            team.candidates = team.candidates.concat(applicationData)
             console.log('team after action', team)
-        })
-    return 'test'
+            return team.save()
+        } else {
+            console.log('Application data:', applicationData)
+            console.log('User id:', userId)
+            console.log('Event id:', eventId)
+            console.log('Code:', code)
+            console.log('Something when wrong')
+            throw new NotFoundError('You are already in this team')
+        }
+    })
 }
 
 controller.leaveTeam = (eventId, userId) => {
@@ -287,10 +282,28 @@ controller.attachMeta = async team => {
     return result
 }
 
-controller.getTeamsForEvent = eventId => {
+controller.attachUserApplicant = (teams, userId) => {
+    return teams.map(team => {
+        if (
+            team.candidates.length > 0 &&
+            _.includes(
+                team.candidates.map(candidate => candidate.userId),
+                userId,
+            )
+        ) {
+            const result = team.toJSON()
+            result.userIsApplicant = true
+            return result
+        } else {
+            return team
+        }
+    })
+}
+
+controller.getTeamsForEvent = (eventId, userId) => {
     return Team.find({
         event: eventId,
-    })
+    }).then(teams => controller.attachUserApplicant(teams, userId))
     // TODO make the code not visible to participants on Redux store
 }
 

@@ -6,6 +6,18 @@ const mongooseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+    },
+    avatar: {
+        type: String,
+        required: false,
+    },
     roles: {
         type: [TeamRole.mongoose],
         required: true,

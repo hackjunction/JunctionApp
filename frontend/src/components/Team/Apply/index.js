@@ -73,6 +73,10 @@ export default ({
             )
             submittionData.motivation = values.motivation
             submittionData.userId = userProfile.userId
+            submittionData.avatar = userProfile.avatar
+            submittionData.firstName = userProfile.firstName
+            submittionData.lastName = userProfile.lastName
+            submittionData.headline = userProfile.headline
             console.log('Submission data:', submittionData)
             console.log('Values:', values)
             console.log('FormikBag:', formikBag)
@@ -84,7 +88,7 @@ export default ({
                 ),
             )
                 .then(() => {
-                    dispatch(SnackbarActions.success('Created new team'))
+                    dispatch(SnackbarActions.success('Created new application'))
                 })
                 .catch(err => {
                     dispatch(

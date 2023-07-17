@@ -20,11 +20,10 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const event = useSelector(DashboardSelectors.event)
 
-    const candidateList = team.teamRoles?.map(role => role.candidates)
-    console.log(candidateList)
+    const candidateList = team.candidates
     return (
         <>
-            {hasTeam && candidateList > 0 ? (
+            {hasTeam && candidateList.length > 0 ? (
                 // TODO Make into component
                 <ResponsiveMasonry
                     columnsCountBreakPoints={{ 350: 1, 750: 2, 1440: 3 }}
@@ -37,7 +36,9 @@ export default () => {
                 </ResponsiveMasonry>
             ) : (
                 // TODO make prop to show different message when there are no candidates or teams to join
-                <NoTeam />
+                <>
+                    <div>No applications yet</div>
+                </>
             )}
         </>
     )

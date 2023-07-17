@@ -62,6 +62,7 @@ import { useRouteMatch } from 'react-router'
 
 function TeamCard({
     teamData = {
+        userIsApplicant: false,
         name: 'Test team',
         challenge: 'Hard',
         teamRoles: [
@@ -95,6 +96,7 @@ function TeamCard({
                         teamName={teamData.name}
                         teamChallenge={teamData.challenge}
                     />
+                    {teamData.userIsApplicant && <div>Applied</div>}
                     <TeamRoles teamRoles={teamData.teamRoles} />
                 </div>
             </CardContent>
