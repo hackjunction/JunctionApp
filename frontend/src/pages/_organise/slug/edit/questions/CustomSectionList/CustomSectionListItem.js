@@ -18,6 +18,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from 'components/generic/Button'
 import Markdown from 'components/generic/Markdown'
 import AddQuestionModal from './AddQuestionModal'
+import TextInput from '../../submission/components/inputs/TextInput'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -157,63 +158,18 @@ export default ({
                                     secondary={question.fieldType}
                                 />
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails className={classes.details}>
-                                <List>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary="Field type"
-                                            secondary={question.fieldType}
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary="Machine name"
-                                            secondary={question.name}
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary="Placeholder"
-                                            secondary={question.placeholder}
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText
-                                            primary="Settings"
-                                            secondary={
-                                                <ul>
-                                                    {question.settings
-                                                        .default && (
-                                                        <li>
-                                                            <strong>
-                                                                Default:{' '}
-                                                            </strong>
-                                                            {
-                                                                question
-                                                                    .settings
-                                                                    .default
-                                                            }
-                                                        </li>
-                                                    )}
-                                                    {question.settings
-                                                        .options &&
-                                                        question.settings
-                                                            .options.length >
-                                                            0 && (
-                                                            <li>
-                                                                <strong>
-                                                                    Options:{' '}
-                                                                </strong>
-                                                                {question.settings.options.join(
-                                                                    ', ',
-                                                                )}
-                                                            </li>
-                                                        )}
-                                                </ul>
-                                            }
-                                        />
-                                    </ListItem>
-                                </List>
+                            {/* Display preview for the form https://www.figma.com/file/F0PvYOStjKVp6Vck3cw9gk/Junction?type=design&node-id=733-16420&mode=design&t=RDGTSCWd9ndyhd2G-0*/}
+                            {/* This will need more work, but you can develop base on this:
+                                    - It will get the question type and display the correct input
+                                    - There are many different types of inputs that available in the submission/components/inputs folder
+                             */}
+                            <ExpansionPanelDetails>
+                                <Box width="100%">
+                                    <Typography variant="h5">
+                                        {question.label}
+                                    </Typography>
+                                    <TextInput />
+                                </Box>
                             </ExpansionPanelDetails>
                             <Divider />
                             <ExpansionPanelActions>

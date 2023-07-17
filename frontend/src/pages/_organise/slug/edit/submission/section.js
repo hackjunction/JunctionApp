@@ -4,12 +4,12 @@ import { Field } from 'formik'
 import TextInput from './components/inputs/TextInput'
 import FileInput from './components/inputs/FileInput'
 import UrlInput from './components/inputs/UrlInput'
-import BooleanSwitch from './components/inputs/BooleanSwitch'
 import EditableOptions from './components/EditableOptions'
 import EditableText from './components/section/EditableText'
-import SectionSwitch from './components/section/SectionSwitch'
 import Dropdown from './components/section/Dropdown'
 import RemoveButton from './components/section/RemoveButton'
+import BooleanInput from './components/inputs/BooleanInput'
+import Switch from './components/Switch'
 
 const Section = ({ onRemove, fieldName, onChange, ...props }) => {
     const [checked, setChecked] = React.useState(false)
@@ -17,7 +17,6 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
     const [heading, setHeading] = React.useState('Heading')
     const [subHeading, setSubHeading] = React.useState('Sub Heading')
 
-    const [text, setText] = useState('Text')
     const [booleanChecked, setBooleanChecked] = React.useState(false)
 
     const handleBooleanChange = event => {
@@ -49,7 +48,7 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
             placeholder: 'Placeholder',
         },
         boolean: {
-            component: BooleanSwitch,
+            component: BooleanInput,
             checked: booleanChecked,
             onChange: handleBooleanChange,
         },
@@ -138,9 +137,11 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
                 <div className="tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-gap-4 tw-justify-between">
                     <div className="tw-w-full sm:tw-w-4/5 tw-flex tw-flex-col tw-gap-4">
                         {renderInput(dropdownValue)}
-                        <SectionSwitch
-                            checked={checked}
+                        <Switch
                             onChange={setChecked}
+                            checked={checked}
+                            checkedText="Yes"
+                            uncheckedText="No"
                         />
                     </div>
                     <div className="tw-w-full sm:tw-w-1/5 tw-flex tw-flex-col tw-gap-4">

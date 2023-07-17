@@ -84,7 +84,7 @@ export default ({
                 return 'Max size must be less than 100'
             }
         }
-
+        // ! ----------------------------------------------------------------
         if (isEmpty(data.label)) {
             return 'Label is required'
         }
@@ -281,6 +281,7 @@ export default ({
                     </>
                 )
             }
+            // ! ----------------------------------------------------------------
             case 'Link': {
                 return (
                     <>

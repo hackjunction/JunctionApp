@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { useFormikContext } from 'formik'
 import Section from './section'
 
 export default () => {
     const [sections, setSections] = useState([1])
-    const { ...formikProps } = useFormikContext()
 
     const handleAddSection = () => {
         setSections([...sections, sections.length + 1])
@@ -24,9 +22,9 @@ export default () => {
             {sections.map((_, index) => (
                 <div key={index} className="tw-mt-4">
                     <Section
+                        onChange={() => {}}
                         onRemove={() => handleRemoveSection(index)}
                         fieldName={`section_${index}`}
-                        {...formikProps}
                     />
                 </div>
             ))}
