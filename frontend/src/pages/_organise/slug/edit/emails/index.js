@@ -12,7 +12,7 @@ export default () => {
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <FastField
-                    name="senderEmail"
+                    name="emailConfig.senderEmail"
                     render={({ field, form }) => (
                         <FormControl
                             label="Sender"
@@ -25,7 +25,7 @@ export default () => {
                                     <Typography variant="body1">Sender Email</Typography>
                                 </Box>
                                 <TextInput
-                                    name="senderEmail"
+                                    name="emailConfig.senderEmail"
                                     placeholder="Sender's email"
                                     value={field.value}
                                     onChange={value =>
@@ -35,14 +35,14 @@ export default () => {
                                 />
                             </Grid>
                             <FastField
-                                name="senderName"
+                                name="emailConfig.senderName"
                                 render={({ field, form }) => (
                                     <Grid item xs={12} md={6}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Sender Name</Typography>
                                         </Box>
                                         <TextInput
-                                            name="senderName"
+                                            name="emailConfig.senderName"
                                             placeholder="Sender's name"
                                             value={field.value}
                                             onChange={value =>
@@ -59,7 +59,7 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="acceptanceEmailTitle"
+                    name="emailConfig.acceptanceEmail.title"
                     render={({ field, form }) => (
                         <FormControl
                             label="Acceptance Email"
@@ -72,7 +72,7 @@ export default () => {
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
                                 <TextInput
-                                    name="acceptanceEmailTitle"
+                                    name="emailConfig.acceptanceEmail.title"
                                     placeholder="Email title or subject"
                                     value={field.value}
                                     onChange={value =>
@@ -82,14 +82,14 @@ export default () => {
                                 />
                             </Grid>
                             <FastField
-                                name="acceptanceEmailSubtitle"
+                                name="emailConfig.acceptanceEmail.subtitle"
                                 render={({ field, form }) => (
                                     <Grid item xs={12} md={6}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Subtitle</Typography>
                                         </Box>
                                         <TextInput
-                                            name="acceptanceEmailSubtitle"
+                                            name="emailConfig.acceptanceEmail.subtitle"
                                             placeholder="Email subtitle"
                                             value={field.value}
                                             onChange={value =>
@@ -101,14 +101,14 @@ export default () => {
                                 )}
                             />
                             <FastField
-                                name="acceptanceEmailBody"
+                                name="emailConfig.acceptanceEmail.body"
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Body</Typography>
                                         </Box>
                                         <TextAreaInput
-                                            name="acceptanceEmailBody"
+                                            name="emailConfig.acceptanceEmail.body"
                                             placeholder="Email body"
                                             value={field.value}
                                             onChange={value =>
@@ -125,7 +125,7 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="rejectionEmailTitle"
+                    name="emailConfig.rejectionEmail.title"
                     render={({ field, form }) => (
                         <FormControl
                             label="Rejection Email"
@@ -138,7 +138,7 @@ export default () => {
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
                                 <TextInput
-                                    name="rejectionEmailTitle"
+                                    name="emailConfig.rejectionEmail.title"
                                     placeholder="Email title or subject"
                                     value={field.value}
                                     onChange={value =>
@@ -148,14 +148,14 @@ export default () => {
                                 />
                             </Grid>
                             <FastField
-                                name="rejectionEmailSubtitle"
+                                name="emailConfig.rejectionEmail.subtitle"
                                 render={({ field, form }) => (
                                     <Grid item xs={12} md={6}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Subtitle</Typography>
                                         </Box>
                                         <TextInput
-                                            name="rejectionEmailSubtitle"
+                                            name="emailConfig.rejectionEmail.subtitle"
                                             placeholder="Email subtitle"
                                             value={field.value}
                                             onChange={value =>
@@ -167,14 +167,14 @@ export default () => {
                                 )}
                             />
                             <FastField
-                                name="rejectionEmailBody"
+                                name="emailConfig.rejectionEmail.body"
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Body</Typography>
                                         </Box>
                                         <TextAreaInput
-                                            name="rejectionEmailBody"
+                                            name="emailConfig.rejectionEmail.body"
                                             placeholder="Email body"
                                             value={field.value}
                                             onChange={value =>
@@ -191,7 +191,7 @@ export default () => {
             </Grid>
             <Grid item xs={12}>
                 <FastField
-                    name="registrationEmailTitle"
+                    name="emailConfig.registrationEmail.title"
                     render={({ field, form }) => (
                         <FormControl
                             label="Registration Email"
@@ -204,7 +204,7 @@ export default () => {
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
                                 <TextInput
-                                    name="registrationEmailTitle"
+                                    name="emailConfig.registrationEmail.title"
                                     placeholder="Email title or subject"
                                     value={field.value}
                                     onChange={value =>
@@ -214,14 +214,14 @@ export default () => {
                                 />
                             </Grid>
                             <FastField
-                                name="registrationEmailSubtitle"
+                                name="emailConfig.registrationEmail.subtitle"
                                 render={({ field, form }) => (
                                     <Grid item xs={12} md={6}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Subtitle</Typography>
                                         </Box>
                                         <TextInput
-                                            name="registrationEmailSubtitle"
+                                            name="emailConfig.registrationEmail.subtitle"
                                             placeholder="Email subtitle"
                                             value={field.value}
                                             onChange={value =>
@@ -233,14 +233,14 @@ export default () => {
                                 )}
                             />
                             <FastField
-                                name="registrationEmailBody"
+                                name="emailConfig.registrationEmail.body"
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Body</Typography>
                                         </Box>
                                         <TextAreaInput
-                                            name="registrationEmailBody"
+                                            name="emailConfig.registrationEmail.body"
                                             placeholder="Email body"
                                             value={field.value}
                                             onChange={value =>
