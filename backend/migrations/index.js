@@ -21,6 +21,7 @@ const migrations = [
     require('./15-add-meetingRooms-to-event'),
     require('./16-add-faq-challenge_instructions-demoInstructions-to-event'),
     require('./17-add-event-newsletter-link-to-event'),
+    require('./18-add-emailConfig-to-event'),
 ]
 
 const run = async () => {
