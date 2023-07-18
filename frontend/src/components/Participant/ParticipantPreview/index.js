@@ -5,7 +5,7 @@ export default ({
     viewMode = 'card',
     userData = {
         profile: {
-            avatar: '',
+            avatar: 'https://picsum.photos/200',
             firstName: 'Alea',
             lastName: 'Solano',
             headline: 'Full Stack Developer',

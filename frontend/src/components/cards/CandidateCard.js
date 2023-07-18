@@ -5,13 +5,6 @@ import {
     CardContent,
     CardActions,
     Typography,
-    Grid,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Divider,
-    AccordionActions,
-    Chip,
     FormControl,
     FormLabel,
     RadioGroup,
@@ -19,31 +12,26 @@ import {
     Radio,
 } from '@material-ui/core'
 
-import FormControlJunction from 'components/inputs/FormControl'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from 'components/generic/Button'
-import { makeStyles } from '@material-ui/core/styles'
-
-import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
-import BooleanInput from 'components/inputs/BooleanInput'
 
 import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 import { FastField, Field, Form, Formik, useFormik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
-import { useMutation } from '@apollo/client'
-import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { forOwn } from 'lodash-es'
+import { useDispatch } from 'react-redux'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 
-function CandidateCard({ candidateData = {} }) {
-    console.log('candidateData', candidateData)
+function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
     const classes = junctionStyle()
     const dispatch = useDispatch()
     const [value, setValue] = useState('female')
+    let candidateProfile = {
+        profile: {
+            firstName: candidateData.firstName || 'Jock',
+            lastName: candidateData.lastName || 'Doce',
+            headline: candidateData.headline || 'Software Engineer',
+            avatar: candidateData.avatar || 'https://i.pravatar.cc/300',
+        },
+    }
 
     const handleChange = event => {
         setValue(event.target.value)
@@ -111,8 +99,12 @@ function CandidateCard({ candidateData = {} }) {
     return (
         <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-flex tw-flex-col tw-justify-between tw-min-h-576px">
             <CardContent className="tw-flex tw-flex-col tw-items-start tw-p-4 tw-gap-6">
-                <ParticipantPreview />
-                <Button color="outlined_button" variant="jOutlined">
+                <ParticipantPreview userData={candidateProfile} />
+                <Button
+                    onClick={onViewApplication}
+                    color="outlined_button"
+                    variant="jOutlined"
+                >
                     Full application
                 </Button>
                 {candidateData.roles?.length > 0 && (
@@ -176,7 +168,9 @@ function CandidateCard({ candidateData = {} }) {
                                         variant="body1"
                                         component="p"
                                     >
-                                        Applied to 3 more roles
+                                        {`Applied to ${
+                                            candidateData.roles?.length - 3
+                                        } more roles`}
                                     </Typography>
                                 </div>
                             </Button>

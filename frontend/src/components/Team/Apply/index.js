@@ -72,6 +72,7 @@ export default ({
                 _.includes(values.roles, role.role),
             )
             submittionData.motivation = values.motivation
+            //TODO Make all this data dynamically fetched from the user profile in the backend
             submittionData.userId = userProfile.userId
             submittionData.avatar = userProfile.avatar
             submittionData.firstName = userProfile.firstName

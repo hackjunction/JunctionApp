@@ -7,6 +7,8 @@ import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
 import TeamsService from 'services/teams'
+import UserProfilesService from 'services/userProfiles'
+
 import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
@@ -252,6 +254,17 @@ export const joinTeam = (slug, code) => async (dispatch, getState) => {
     return team
 }
 
+export const getCandidateProfileById = userId => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+    const user = await UserProfilesService.getUserProfileById(idToken, userId)
+    console.log('getUserProfileById action received:', user)
+    dispatch({
+        type: ActionTypes.GET_CANDIDATE_PROFILE,
+        payload: user,
+    })
+    return user
+}
+
 export const candidateApplyToTeam =
     (slug, code, applicationData) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
@@ -461,3 +474,37 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
         return err
     }
 }
+
+// TODO Create action to fill candidates information dynamically
+
+// export const updateCandidateProfiles =
+//     (userIds) => async (dispatch, getState) => {
+
+//         dispatch({
+//             type: ActionTypes.UPDATE_ORGANISERS,
+//             promise: UserProfilesService.getPublicUserProfiles(userIds),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error updating event organisers', e),
+//             },
+//         })
+//     }
+
+//     export const candidateApplyToTeam =
+//     (slug, code, applicationData) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
+
+//         const team = await TeamsService.candidateApplyToTeam(
+//             idToken,
+//             slug,
+//             code,
+//             applicationData,
+//         )
+
+//         dispatch({
+//             type: ActionTypes.EDIT_TEAM,
+//             payload: team,
+//         })
+
+//         return team
+//     }

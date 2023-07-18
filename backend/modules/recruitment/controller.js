@@ -139,7 +139,9 @@ controller.createRecruitmentProfile = async (
             countryOfResidence: userProfile.countryOfResidence,
             dateOfBirth: userProfile.dateOfBirth,
             spokenLanguages: userProfile.spokenLanguages,
+            // TODO remove profilePicture and replace with avatar property
             profilePicture: userProfile.avatar || null,
+            avatar: userProfile.avatar || null,
             headline: userProfile.headline,
             biography: userProfile.biography,
         },

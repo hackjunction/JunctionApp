@@ -17,6 +17,20 @@ controller.getUserProfile = userId => {
     })
 }
 
+controller.getUserProfileById = userId => {
+    return UserProfile.findOne({
+        userId,
+    }).then(userProfile => {
+        if (!userProfile) {
+            throw new NotFoundError(
+                `UserProfile with id ${userId} does not exist`,
+            )
+        }
+        console.log('userProfile from controller', userProfile)
+        return userProfile
+    })
+}
+
 controller.getUserProfiles = userIds => {
     return UserProfile.find({
         userId: {
