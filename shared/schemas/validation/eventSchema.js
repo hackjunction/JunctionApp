@@ -110,6 +110,20 @@ const meetingRoom = yup.object().shape({
     ),
 })
 
+const emailTemplate = yup.object().shape({
+    title: yup.string().max(100, 'Must be less than 100 characters'),
+    subtitle: yup.string().max(100, 'Must be less than 100 characters'),
+    body: yup.string().max(5000, 'Must be less than 5000 characters'),
+})
+
+const emailConfig = yup.object().shape({
+    senderEmail: yup.string().email('Must be a valid email'),
+    senderName: yup.string().max(100, 'Must be less than 100 characters'),
+    acceptanceEmail: emailTemplate,
+    rejectionEmail: emailTemplate,
+    registrationEmail: emailTemplate,
+})
+
 export default yup.object().shape({
     name: yup.string().required('Event name is required'),
     slug: yup.string().required('Event must have a unique slug'),
@@ -149,6 +163,7 @@ export default yup.object().shape({
     eventPrivacy: yup.string(),
     eventTerms: yup.string(),
     eventTimeline,
+    emailConfig,
     demoPlaceholder: yup.string(),
     metaDescription: yup.string(),
     finalists: yup.array().of(yup.string()),
