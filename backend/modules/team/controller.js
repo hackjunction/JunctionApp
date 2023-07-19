@@ -134,7 +134,7 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
         )
         if (!_.includes([team.owner].concat(team.members), userId)) {
             throw new InsufficientPrivilegesError(
-                'Only the team owner can accept candidates',
+                'Only the team members can accept candidates',
             )
         }
         team.members = team.members.concat(candidateId)
@@ -142,6 +142,20 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
             candidate => candidate.userId !== candidateId,
         )
         console.log('team after action on controller', team)
+        return team.save()
+    })
+}
+
+controller.declineCandidateToTeam = (eventId, userId, code, candidateId) => {
+    return controller.getTeamByCode(eventId, code).then(team => {
+        if (!_.includes([team.owner].concat(team.members), userId)) {
+            throw new InsufficientPrivilegesError(
+                'Only the team members can reject candidates',
+            )
+        }
+        team.candidates = team.candidates.filter(
+            candidate => candidate.userId !== candidateId,
+        )
         return team.save()
     })
 }

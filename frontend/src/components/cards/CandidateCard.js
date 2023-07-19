@@ -107,6 +107,16 @@ function CandidateCard(
         [dispatch, candidateProfile],
     )
 
+    const handleDecline = () => {
+        dispatch(
+            DashboardActions.declineCandidateToTeam(
+                slug,
+                code,
+                candidateProfile.profile.userId,
+            ),
+        )
+    }
+
     const formik = useFormik({
         initialValues: {
             roles: rolesToRender || [],
@@ -200,7 +210,11 @@ function CandidateCard(
                 <Button variant="jContained" onClick={formik.submitForm}>
                     Accept
                 </Button>
-                <Button color="outlined_button" variant="jOutlined">
+                <Button
+                    onClick={handleDecline}
+                    color="outlined_button"
+                    variant="jOutlined"
+                >
                     Decline
                 </Button>
             </CardActions>

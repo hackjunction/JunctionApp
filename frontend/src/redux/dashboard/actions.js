@@ -303,6 +303,25 @@ export const acceptCandidateToTeam =
         return team
     }
 
+export const declineCandidateToTeam =
+    (slug, code, userId) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+
+        const team = await TeamsService.declineCandidateToTeam(
+            idToken,
+            slug,
+            code,
+            userId,
+        )
+
+        dispatch({
+            type: ActionTypes.EDIT_TEAM,
+            payload: team,
+        })
+
+        return team
+    }
+
 export const leaveTeam = (slug, code) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
