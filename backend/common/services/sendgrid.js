@@ -42,16 +42,16 @@ const SendgridService = {
 
 
         var header_image_url = null
-        if(typeof event.coverImage !== "undefined"){
+        if (typeof event.coverImage !== "undefined") {
             header_image_url = event.coverImage.url
         }
         const msg = SendgridService.buildTemplateMessage(
             user.email,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                header_image:  header_image_url,
-                subject: `Congratulations!`,
-                subtitle: `You've been accepted to ${event.name}!`,
+                header_image: header_image_url,
+                subject: event.emailConfig.acceptanceEmail.title || `Congratulations!`,
+                subtitle: event.emailConfig.acceptanceEmail.subtitle || `You've been accepted to ${event.name}!`,
                 body: `
                     <p>
                         After your celebratory dance, please remember to confirm your spot <strong>A.S.A.P</strong> so that
@@ -76,7 +76,7 @@ const SendgridService = {
     },
     sendRejectionEmail: (event, user) => {
         var header_image_url = null
-        if(typeof event.coverImage !== "undefined"){
+        if (typeof event.coverImage !== "undefined") {
             header_image_url = event.coverImage.url
         }
         const msg = SendgridService.buildTemplateMessage(
@@ -84,8 +84,8 @@ const SendgridService = {
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
                 header_image_url: header_image_url,
-                subject: `Oh-oh, bad news...`,
-                subtitle: `We couldn't give you a spot at ${event.name}.`,
+                subject: event.emailConfig.rejectionEmail.title || `Oh-oh, bad news...`,
+                subtitle: event.emailConfig.rejectionEmail.subtitle || `We couldn't give you a spot at ${event.name}.`,
                 body: `
                     <p>
                         Thank you very much for applying to ${event.name}, but we're sad to inform you
@@ -111,7 +111,7 @@ const SendgridService = {
     },
     sendRegisteredEmail: (event, user) => {
         var header_image_url = null
-        if(typeof event.coverImage !== "undefined"){
+        if (typeof event.coverImage !== "undefined") {
             header_image_url = event.coverImage.url
         }
         let msg
@@ -121,8 +121,8 @@ const SendgridService = {
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
                     header_image: header_image_url,
-                    subject: `Thanks for registering to ${event.name}!`,
-                    subtitle: 'Awesome! Now just sit back and relax.',
+                    subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
+                    subtitle: event.emailConfig.registrationEmail.subtitle || 'Awesome! Now just sit back and relax.',
                     body: `The application period ends <b>${moment(
                         event.registrationEndTime,
                     ).format(
@@ -138,8 +138,8 @@ const SendgridService = {
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
                     header_image: header_image_url,
-                    subject: `Thanks for registering to ${event.name}!`,
-                    subtitle: `Thank you for registering to ${event.name}!`,
+                    subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
+                    subtitle: event.emailConfig.registrationEmail.subtitle || `Thank you for registering to ${event.name}!`,
                     body: `You can modify your registration until the registration period ends <b>${moment(
                         event.registrationEndTime,
                     ).format(
@@ -342,8 +342,8 @@ const SendgridService = {
             to,
             //TODO: from email and name should be customazible
             from: {
-                name: global.gConfig.SENDGRID_FROM_NAME,
-                email: global.gConfig.SENDGRID_FROM_EMAIL,
+                name: event.emailConfig.senderName || global.gConfig.SENDGRID_FROM_NAME,
+                email: event.emailConfig.senderEmail || global.gConfig.SENDGRID_FROM_EMAIL,
             },
             replyTo: data.reply_to,
             templateId,
