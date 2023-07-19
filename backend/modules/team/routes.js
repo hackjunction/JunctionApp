@@ -116,6 +116,18 @@ const candidateApplyToTeam = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const acceptCandidateToTeam = asyncHandler(async (req, res) => {
+    console.log('Params:', req.params)
+    const team = await TeamController.acceptCandidateToTeam(
+        req.event._id,
+        req.user.sub,
+        req.params.code,
+        req.params.candidateId,
+    )
+    console.log('Team after candidate is accepted:', team)
+    return res.status(200).json(team)
+})
+
 const getTeamRoles = asyncHandler(async (req, res) => {
     const roles = await TeamController.getRoles(req.event._id, req.params.code)
     return res.status(200).json(roles)
@@ -195,6 +207,15 @@ router
         hasRegisteredToEvent,
         isBefore.submissionsEndTime,
         candidateApplyToTeam,
+    )
+
+router
+    .route('/:slug/teams/:code/accept/:candidateId')
+    .patch(
+        hasToken,
+        hasRegisteredToEvent,
+        isBefore.submissionsEndTime,
+        acceptCandidateToTeam,
     )
 
 router

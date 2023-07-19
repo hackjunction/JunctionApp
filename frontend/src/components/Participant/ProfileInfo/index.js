@@ -2,9 +2,9 @@ import { Roles, Misc } from '@hackjunction/shared'
 import { Box, Chip, Typography } from '@material-ui/core'
 import React from 'react'
 
-const index = ({ user = {} }) => {
+export default ({ user = {} }) => {
     const renderRecruitmentStatus = () => {
-        switch (user.recruitmentOptions.status) {
+        switch (user.recruitmentOptions?.status) {
             case Misc.recruitmentStatuses.items['actively-looking'].id:
                 return (
                     <Chip
@@ -35,7 +35,7 @@ const index = ({ user = {} }) => {
     }
 
     const renderRelocationStatus = () => {
-        switch (user.recruitmentOptions.relocation) {
+        switch (user.recruitmentOptions?.relocation) {
             case Misc.relocationOptions.items['looking-for-change'].id:
                 return (
                     <Chip
@@ -78,32 +78,38 @@ const index = ({ user = {} }) => {
 
     return (
         <>
-            <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
-                <Typography
-                    className="tw-tracking-tight tw-font-medium"
-                    variant="h5"
-                    component="h5"
-                >
-                    Biography
-                </Typography>
-                <div>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.biography}
-                    </Typography>
+            {(user.profile.biography || user.recruitmentOptions) && (
+                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
+                    {user.profile.biography && (
+                        <div>
+                            <Typography
+                                className="tw-tracking-tight tw-font-medium"
+                                variant="h5"
+                                component="h5"
+                            >
+                                Biography
+                            </Typography>
+                            <Typography
+                                className="tw-text-lg"
+                                variant="body1"
+                                component="p"
+                            >
+                                {user.profile.biography}
+                            </Typography>
+                        </div>
+                    )}
+                    {user.recruitmentOptions && (
+                        <div className="tw-flex tw-flex-wrap tw-gap-4">
+                            <Box ml={0.5} mr={0.5} mb={0.5}>
+                                {renderRecruitmentStatus()}
+                            </Box>
+                            <Box ml={0.5} mr={0.5} mb={0.5}>
+                                {renderRelocationStatus()}
+                            </Box>
+                        </div>
+                    )}
                 </div>
-                <div className="tw-flex tw-flex-wrap tw-gap-4">
-                    <Box ml={0.5} mr={0.5} mb={0.5}>
-                        {renderRecruitmentStatus()}
-                    </Box>
-                    <Box ml={0.5} mr={0.5} mb={0.5}>
-                        {renderRelocationStatus()}
-                    </Box>
-                </div>
-            </div>
+            )}
             <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
                 <Typography
                     className="tw-tracking-tight tw-font-medium tw-mb-4"
@@ -112,257 +118,280 @@ const index = ({ user = {} }) => {
                 >
                     Basic information
                 </Typography>
-                <div>
-                    <Typography
-                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                        variant="h6"
-                        component="h6"
-                    >
-                        First name
-                    </Typography>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.firstName}
-                    </Typography>
-                </div>
-                <div>
-                    <Typography
-                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                        variant="h6"
-                        component="h6"
-                    >
-                        Last name
-                    </Typography>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.lastName}
-                    </Typography>
-                </div>
-                <div>
-                    <Typography
-                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                        variant="h6"
-                        component="h6"
-                    >
-                        Spoken languages
-                    </Typography>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.spokenLanguages.join(', ')}
-                    </Typography>
-                </div>
-                <div>
-                    <Typography
-                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                        variant="h6"
-                        component="h6"
-                    >
-                        Email
-                    </Typography>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.email}
-                    </Typography>
-                </div>
-                <div>
-                    <Typography
-                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                        variant="h6"
-                        component="h6"
-                    >
-                        Country of residence
-                    </Typography>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.countryOfResidence}
-                    </Typography>
-                </div>
-                <div>
-                    <Typography
-                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                        variant="h6"
-                        component="h6"
-                    >
-                        Nationality
-                    </Typography>
-                    <Typography
-                        className="tw-text-lg"
-                        variant="body1"
-                        component="p"
-                    >
-                        {user.profile.nationality}
-                    </Typography>
-                </div>
+                {user.profile.firstName && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                            variant="h6"
+                            component="h6"
+                        >
+                            First name
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.firstName}
+                        </Typography>
+                    </div>
+                )}
+                {user.profile.lastName && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                            variant="h6"
+                            component="h6"
+                        >
+                            Last name
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.lastName}
+                        </Typography>
+                    </div>
+                )}
+                {user.profile.spokenLanguages.length > 0 && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                            variant="h6"
+                            component="h6"
+                        >
+                            Spoken languages
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.spokenLanguages.join(', ')}
+                        </Typography>
+                    </div>
+                )}
+                {user.profile.email && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                            variant="h6"
+                            component="h6"
+                        >
+                            Email
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.email}
+                        </Typography>
+                    </div>
+                )}
+                {user.profile.countryOfResidence && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                            variant="h6"
+                            component="h6"
+                        >
+                            Country of residence
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.countryOfResidence}
+                        </Typography>
+                    </div>
+                )}
+                {user.profile.nationality && (
+                    <div>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                            variant="h6"
+                            component="h6"
+                        >
+                            Nationality
+                        </Typography>
+                        <Typography
+                            className="tw-text-lg"
+                            variant="body1"
+                            component="p"
+                        >
+                            {user.profile.nationality}
+                        </Typography>
+                    </div>
+                )}
             </div>
-            <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-12">
-                <div className="tw-flex tw-flex-col tw-gap-4">
-                    <Typography
-                        className="tw-tracking-tight tw-font-medium"
-                        variant="h5"
-                        component="h5"
-                    >
-                        Skills
-                    </Typography>
-                    <div className="tw-flex tw-flex-wrap tw-gap-2">
-                        {user.skills.map(skillObj => (
+            {(user.skills?.length > 0 ||
+                user.education ||
+                user.roles?.length > 0) && (
+                <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-12">
+                    {user.skills?.length > 0 && (
+                        <div className="tw-flex tw-flex-col tw-gap-4">
                             <Typography
-                                className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
-                                variant="body1"
-                                component="p"
+                                className="tw-tracking-tight tw-font-medium"
+                                variant="h5"
+                                component="h5"
                             >
-                                {skillObj.skill}
+                                Skills
                             </Typography>
-                        ))}
-                    </div>
-                </div>
-                <div className="tw-flex tw-flex-col tw-gap-4">
-                    <Typography
-                        className="tw-tracking-tight tw-font-medium"
-                        variant="h5"
-                        component="h5"
-                    >
-                        Education
-                    </Typography>
-                    {typeof user.education !== 'undefined' ? (
-                        user.education.university ? (
-                            <div className="tw-grid tw-grid-cols-12 tw-gap-4">
-                                <div className="tw-col-span-3">
+                            <div className="tw-flex tw-flex-wrap tw-gap-2">
+                                {user.skills.map(skillObj => (
                                     <Typography
-                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                        variant="h6"
-                                        component="h6"
-                                    >
-                                        Degree
-                                    </Typography>
-                                    <Typography
-                                        className="tw-text-lg"
+                                        className="tw-text-lg tw-p-2 tw-rounded-lg tw-border tw-border-solid tw-border-gray-300"
                                         variant="body1"
                                         component="p"
                                     >
-                                        {user.education.degree}
+                                        {skillObj.skill}
                                     </Typography>
-                                </div>
-                                <div className="tw-col-span-2">
-                                    <Typography
-                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                        variant="h6"
-                                        component="h6"
-                                    >
-                                        Level
-                                    </Typography>
-                                    <Typography
-                                        className="tw-text-lg"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        {user.education.level}
-                                    </Typography>
-                                </div>
-                                <div className="tw-col-span-4">
-                                    <Typography
-                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                        variant="h6"
-                                        component="h6"
-                                    >
-                                        Institution
-                                    </Typography>
-                                    <Typography
-                                        className="tw-text-lg"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        {user.education.university}
-                                    </Typography>
-                                </div>
-                                <div className="tw-col-span-3">
-                                    <Typography
-                                        className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                        variant="h6"
-                                        component="h6"
-                                    >
-                                        Graduation year
-                                    </Typography>
-                                    <Typography
-                                        className="tw-text-lg"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        {user.education.graduationYear <
-                                        new Date().getFullYear()
-                                            ? `${user.education.graduationYear}`
-                                            : `Expected ${user.education.graduationYear}`}
-                                    </Typography>
-                                </div>
+                                ))}
                             </div>
-                        ) : (
-                            <div className="">
-                                <Typography
-                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                    variant="h6"
-                                    component="h6"
-                                >
-                                    Level
-                                </Typography>
-                                <Typography
-                                    className="tw-text-lg"
-                                    variant="body1"
-                                    component="p"
-                                >
-                                    {user.education.level}
-                                </Typography>
-                            </div>
-                        )
-                    ) : null}
-                </div>
-                <div className="tw-flex tw-flex-col tw-gap-4">
-                    <Typography
-                        className="tw-tracking-tight tw-font-medium"
-                        variant="h5"
-                        component="h5"
-                    >
-                        Experience
-                    </Typography>
-                    <div className="tw-flex tw-flex-wrap tw-gap-8">
-                        {user.roles.map(role => (
-                            <div className="">
-                                <Typography
-                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
-                                    variant="h6"
-                                    component="h6"
-                                >
-                                    {Roles.getLabelForExperienceLevel(
-                                        role.years,
+                        </div>
+                    )}
+                    {user.education && (
+                        <div className="tw-flex tw-flex-col tw-gap-4">
+                            <Typography
+                                className="tw-tracking-tight tw-font-medium"
+                                variant="h5"
+                                component="h5"
+                            >
+                                Education
+                            </Typography>
+                            {typeof user.education !== 'undefined' ? (
+                                <div className="tw-grid tw-grid-cols-12 tw-gap-4">
+                                    {user.education.university ? (
+                                        <>
+                                            <div className="tw-col-span-3">
+                                                <Typography
+                                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    Degree
+                                                </Typography>
+                                                <Typography
+                                                    className="tw-text-lg"
+                                                    variant="body1"
+                                                    component="p"
+                                                >
+                                                    {user.education.degree}
+                                                </Typography>
+                                            </div>
+                                            <div className="tw-col-span-2">
+                                                <Typography
+                                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    Level
+                                                </Typography>
+                                                <Typography
+                                                    className="tw-text-lg"
+                                                    variant="body1"
+                                                    component="p"
+                                                >
+                                                    {user.education.level}
+                                                </Typography>
+                                            </div>
+                                            <div className="tw-col-span-4">
+                                                <Typography
+                                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    Institution
+                                                </Typography>
+                                                <Typography
+                                                    className="tw-text-lg"
+                                                    variant="body1"
+                                                    component="p"
+                                                >
+                                                    {user.education.university}
+                                                </Typography>
+                                            </div>
+                                            <div className="tw-col-span-3">
+                                                <Typography
+                                                    className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    Graduation year
+                                                </Typography>
+                                                <Typography
+                                                    className="tw-text-lg"
+                                                    variant="body1"
+                                                    component="p"
+                                                >
+                                                    {user.education
+                                                        .graduationYear <
+                                                    new Date().getFullYear()
+                                                        ? `${user.education.graduationYear}`
+                                                        : `Expected ${user.education.graduationYear}`}
+                                                </Typography>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Typography
+                                                className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                                variant="h6"
+                                                component="h6"
+                                            >
+                                                Level
+                                            </Typography>
+                                            <Typography
+                                                className="tw-text-lg"
+                                                variant="body1"
+                                                component="p"
+                                            >
+                                                {user.education.level}
+                                            </Typography>
+                                        </>
                                     )}
-                                </Typography>
-                                <Typography
-                                    className="tw-text-lg"
-                                    variant="body1"
-                                    component="p"
-                                >
-                                    {role.role}
-                                </Typography>
+                                </div>
+                            ) : null}
+                        </div>
+                    )}
+                    {user.roles?.length > 0 && (
+                        <div className="tw-flex tw-flex-col tw-gap-4">
+                            <Typography
+                                className="tw-tracking-tight tw-font-medium"
+                                variant="h5"
+                                component="h5"
+                            >
+                                Experience
+                            </Typography>
+                            <div className="tw-flex tw-flex-wrap tw-gap-8">
+                                {user.roles.map(role => (
+                                    <div className="">
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-normal tw-text-gray-600"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            {Roles.getLabelForExperienceLevel(
+                                                role.years,
+                                            )}
+                                        </Typography>
+                                        <Typography
+                                            className="tw-text-lg"
+                                            variant="body1"
+                                            component="p"
+                                        >
+                                            {role.role}
+                                        </Typography>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    )}
                 </div>
-            </div>
+            )}
         </>
     )
 }
-
-export default index

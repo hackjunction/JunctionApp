@@ -65,6 +65,19 @@ TeamsService.candidateApplyToTeam = (
     )
 }
 
+TeamsService.acceptCandidateToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    candidateId,
+) => {
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}/accept/${candidateId}`,
+        {},
+        config(idToken),
+    )
+}
+
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode, populate) => {
     return _axios.post(
         `/teams/${eventSlug}/${teamCode}/members?populate=${populate}`,

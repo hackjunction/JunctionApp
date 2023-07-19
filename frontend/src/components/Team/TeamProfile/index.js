@@ -60,7 +60,7 @@ export default ({
     onClickLeave,
     onClickEdit,
 }) => {
-    const teamMembersArr = objToArr(teamData.meta, 0)
+    const teamMembersArr = [...objToArr(teamData.meta)]
 
     const classes = junctionStyle()
     return (

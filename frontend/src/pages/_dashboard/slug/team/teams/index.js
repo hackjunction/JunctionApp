@@ -72,6 +72,8 @@ export default () => {
     //     // setSelected(true)
     // }, [selectedTeam])
 
+    //TODO Add a loading state
+
     return (
         <>
             {applying && selectedTeam && Object.keys(selectedTeam).length > 0 && (

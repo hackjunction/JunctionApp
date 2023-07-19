@@ -47,7 +47,6 @@ export default () => {
 
     const handleLeave = useCallback(() => {
         setLoading(true)
-        setStatus('')
         dispatch(DashboardActions.leaveTeam(slug, team.code))
             .then(() => {
                 dispatch(SnackbarActions.success('Left team ' + team?.code))
@@ -60,6 +59,7 @@ export default () => {
                 )
             })
             .finally(() => {
+                setStatus('')
                 setLoading(false)
             })
     }, [slug, team?.code, dispatch])
@@ -156,25 +156,26 @@ export default () => {
 
     return (
         <>
-            {hasTeam ? (
-                <>
-                    <button onClick={handleLeave}>Leave team</button>
-                    <button onClick={handleDelete}>Delete team</button>
-                    {console.log('team after completed:', team)}
-                    <TeamProfile
-                        teamData={team}
-                        onClickLeave={handleLeave}
-                        onClickEdit={() => {
-                            setStatus('edit')
-                        }}
+            {status === '' &&
+                (hasTeam ? (
+                    <>
+                        <button onClick={handleLeave}>Leave team</button>
+                        <button onClick={handleDelete}>Delete team</button>
+                        {console.log('team after completed:', team)}
+                        <TeamProfile
+                            teamData={team}
+                            onClickLeave={handleLeave}
+                            onClickEdit={() => {
+                                setStatus('edit')
+                            }}
+                        />
+                    </>
+                ) : (
+                    <NoTeam
+                        eventData={event}
+                        onCreate={() => setStatus('create')}
                     />
-                </>
-            ) : (
-                <NoTeam
-                    eventData={event}
-                    onCreate={() => setStatus('create')}
-                />
-            )}
+                ))}
             {((!hasTeam && status === 'create') ||
                 (hasTeam && status === 'edit')) && (
                 <TeamCreateEditForm

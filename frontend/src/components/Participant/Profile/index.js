@@ -4,7 +4,7 @@ import ProfileTop from '../ProfileTop'
 import ProfileInfo from '../ProfileInfo'
 import ProfileSide from '../ProfileSide'
 
-const index = ({ user = {}, children }) => {
+export default ({ user = {}, children = null }) => {
     return (
         <Container
             className="tw-text-left tw-flex tw-flex-col tw-gap-8 tw-mb-16"
@@ -23,5 +23,3 @@ const index = ({ user = {}, children }) => {
         </Container>
     )
 }
-
-export default index

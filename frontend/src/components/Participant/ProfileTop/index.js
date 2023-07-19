@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import _ from 'lodash'
 
 import { goBack } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
@@ -24,6 +25,7 @@ import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
+import RecruitmentFavorites from 'components/Participant/RecruitmentFavorites'
 import SocialLinks from 'components/generic/SocialLinks'
 import Button from 'components/generic/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -99,34 +101,35 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ user = {} }) => {
-    const dispatch = useDispatch()
-    const actionHistory = useSelector(RecruitmentSelectors.actionHistory)
-    const isFavorite =
-        actionHistory.filter(
-            action => action.user === user.userId && action.type === 'favorite',
-        ).length !== 0
+    // const dispatch = useDispatch()
+    // const actionHistory = useSelector(RecruitmentSelectors.actionHistory)
+    // const isFavorite =
+    //     actionHistory.filter(
+    //         action => action.user === user.userId && action.type === 'favorite',
+    //     ).length !== 0
 
     //Toggle favorited state locally for instant feedback on favorite action
-    const [_isFavorite, setIsFavorite] = useState(isFavorite)
-    const classes = useStyles({ isFavorite: _isFavorite })
+    // const [_isFavorite, setIsFavorite] = useState(isFavorite)
+    // const classes = useStyles({ isFavorite: _isFavorite })
+    const classes = useStyles()
     const { profile = {}, social = {} } = user
 
-    const handleFavorite = useCallback(async () => {
-        setIsFavorite(!_isFavorite)
-        const { error } = await dispatch(
-            RecruitmentActions.toggleFavorite(user.userId, _isFavorite),
-        )
-        if (error) {
-            dispatch(SnackbarActions.error('Something went wrong...'))
-            setIsFavorite(_isFavorite)
-        }
-    }, [_isFavorite, dispatch, user.userId])
+    // const handleFavorite = useCallback(async () => {
+    //     setIsFavorite(!_isFavorite)
+    //     const { error } = await dispatch(
+    //         RecruitmentActions.toggleFavorite(user.userId, _isFavorite),
+    //     )
+    //     if (error) {
+    //         dispatch(SnackbarActions.error('Something went wrong...'))
+    //         setIsFavorite(_isFavorite)
+    //     }
+    // }, [_isFavorite, dispatch, user.userId])
 
     console.log(user)
 
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-flex tw-justify-between tw-items-center">
+            {/* <div className="tw-flex tw-justify-between tw-items-center">
                 <MuiButton onClick={() => dispatch(goBack())}>
                     <ArrowBackIosIcon style={{ fontSize: '16px' }} />
                     Back
@@ -150,100 +153,108 @@ export default ({ user = {} }) => {
                         />
                     </IconButton>
                 </Tooltip>
-            </div>
+            </div> */}
+            {/* <RecruitmentFavorites user={user} /> */}
             <div className="tw-flex tw-flex-col tw-rounded-lg tw-shadow-md tw-bg-white">
                 <div className="tw-w-full tw-h-32 tw-rounded-lg tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500"></div>
                 <div className="tw-px-8 tw-pt-0 tw-pb-8 tw-flex tw-flex-col tw-gap-2 tw-rounded-lg">
                     <ParticipantPreview viewMode="profile" userData={user} />
-                    <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-600">
-                        <LocationOn />
-                        <Typography
-                            className="tw-text-lg"
-                            variant="body1"
-                            component="p"
-                        >
-                            {user.profile.countryOfResidence}
-                        </Typography>
-                    </div>
+                    {user.profile.countryOfResidence && (
+                        <div className="tw-flex tw-items-center tw-gap-2 tw-text-gray-600">
+                            <LocationOn />
+                            <Typography
+                                className="tw-text-lg"
+                                variant="body1"
+                                component="p"
+                            >
+                                {user.profile.countryOfResidence}
+                            </Typography>
+                        </div>
+                    )}
 
                     {/* <SocialLinks viewMode="participant" /> */}
-                    <div className="tw-flex tw-content-center tw-justify-start">
-                        {social.github && (
-                            <Tooltip title="GitHub" placement="bottom">
-                                <Box p={1}>
-                                    <IconButton
-                                        onClick={() =>
-                                            window.open(social.github, '_blank')
-                                        }
-                                        aria-label="github"
-                                        className={classes.githubIcon}
-                                    >
-                                        <GitHubIcon
-                                            className={classes.icon}
-                                            fontSize="small"
-                                        />
-                                    </IconButton>
-                                </Box>
-                            </Tooltip>
-                        )}
-                        {social.linkedin && (
-                            <Tooltip title="LinkedIn" placement="bottom">
-                                <Box p={1}>
-                                    <IconButton
-                                        onClick={() =>
-                                            window.open(
-                                                social.linkedin,
-                                                '_blank',
-                                            )
-                                        }
-                                        aria-label="linkedin"
-                                        className={classes.linkedinIcon}
-                                    >
-                                        <LinkedInIcon
-                                            className={classes.icon}
-                                            fontSize="small"
-                                        />
-                                    </IconButton>
-                                </Box>
-                            </Tooltip>
-                        )}
-                        {social.portfolio && (
-                            <Tooltip title="Portfolio" placement="bottom">
-                                <Box p={1}>
-                                    <IconButton
-                                        onClick={() =>
-                                            window.open(
-                                                social.portfolio,
-                                                '_blank',
-                                            )
-                                        }
-                                        aria-label="portfolio"
-                                        className={classes.portfolioIcon}
-                                    >
-                                        <BrushIcon
-                                            className={classes.icon}
-                                            fontSize="small"
-                                        />
-                                    </IconButton>
-                                </Box>
-                            </Tooltip>
-                        )}
-                        {profile.email && (
-                            <IconButton
-                                color="primary"
-                                aria-label="Email"
-                                className="tw-p-0"
-                                onClick={() =>
-                                    popupCenter({
-                                        url: `mailto:${profile.email}`,
-                                        title: 'email',
-                                    })
-                                }
-                            >
-                                <Email className={classes.socialIcon} />
-                            </IconButton>
-                        )}
-                    </div>
+                    {(profile.email || !_.isEmpty(social)) && (
+                        <div className="tw-flex tw-content-center tw-justify-start">
+                            {social.github && (
+                                <Tooltip title="GitHub" placement="bottom">
+                                    <Box p={1}>
+                                        <IconButton
+                                            onClick={() =>
+                                                window.open(
+                                                    social.github,
+                                                    '_blank',
+                                                )
+                                            }
+                                            aria-label="github"
+                                            className={classes.githubIcon}
+                                        >
+                                            <GitHubIcon
+                                                className={classes.icon}
+                                                fontSize="small"
+                                            />
+                                        </IconButton>
+                                    </Box>
+                                </Tooltip>
+                            )}
+                            {social.linkedin && (
+                                <Tooltip title="LinkedIn" placement="bottom">
+                                    <Box p={1}>
+                                        <IconButton
+                                            onClick={() =>
+                                                window.open(
+                                                    social.linkedin,
+                                                    '_blank',
+                                                )
+                                            }
+                                            aria-label="linkedin"
+                                            className={classes.linkedinIcon}
+                                        >
+                                            <LinkedInIcon
+                                                className={classes.icon}
+                                                fontSize="small"
+                                            />
+                                        </IconButton>
+                                    </Box>
+                                </Tooltip>
+                            )}
+                            {social.portfolio && (
+                                <Tooltip title="Portfolio" placement="bottom">
+                                    <Box p={1}>
+                                        <IconButton
+                                            onClick={() =>
+                                                window.open(
+                                                    social.portfolio,
+                                                    '_blank',
+                                                )
+                                            }
+                                            aria-label="portfolio"
+                                            className={classes.portfolioIcon}
+                                        >
+                                            <BrushIcon
+                                                className={classes.icon}
+                                                fontSize="small"
+                                            />
+                                        </IconButton>
+                                    </Box>
+                                </Tooltip>
+                            )}
+                            {profile.email && (
+                                <IconButton
+                                    color="primary"
+                                    aria-label="Email"
+                                    className="tw-p-0"
+                                    onClick={() =>
+                                        popupCenter({
+                                            url: `mailto:${profile.email}`,
+                                            title: 'email',
+                                        })
+                                    }
+                                >
+                                    <Email className={classes.socialIcon} />
+                                </IconButton>
+                            )}
+                        </div>
+                    )}
 
                     {/* <div className="tw-flex tw-gap-4 tw-justify-start">
                         <Button variant="jContained">Messages</Button>

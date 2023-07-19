@@ -120,6 +120,32 @@ controller.joinTeam = (eventId, userId, code) => {
     })
 }
 
+controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
+    console.log('eventId', eventId)
+    console.log('userId', userId)
+    console.log('code', code)
+    console.log('candidateId', candidateId)
+    return controller.getTeamByCode(eventId, code).then(team => {
+        console.log('is user owner', team.owner === userId)
+        console.log('is user member', _.includes(team.members, userId))
+        console.log(
+            'can it proceed?',
+            team.owner !== userId || !_.includes(team.members, userId),
+        )
+        if (!_.includes([team.owner].concat(team.members), userId)) {
+            throw new InsufficientPrivilegesError(
+                'Only the team owner can accept candidates',
+            )
+        }
+        team.members = team.members.concat(candidateId)
+        team.candidates = team.candidates.filter(
+            candidate => candidate.userId !== candidateId,
+        )
+        console.log('team after action on controller', team)
+        return team.save()
+    })
+}
+
 controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
     // const team = controller.getTeam(eventId, applicationData.teamId)
     return controller.getTeamByCode(eventId, code).then(team => {
@@ -149,7 +175,7 @@ controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
 controller.leaveTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {
         team.members = team.members.filter(member => member !== userId)
-        if (team.members.length === 0) {
+        if (team.members.length === 0 && team.owner === userId) {
             controller.deleteTeam(eventId, userId)
         } else {
             return team.save()

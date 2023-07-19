@@ -1,6 +1,7 @@
 const { UserProfile } = require('./model')
 const { NotFoundError } = require('../../common/errors/errors')
 const UserProfileHelpers = require('./helpers')
+const userProfileUtils = require('../../common/utils/userProfileUtils')
 
 const controller = {}
 
@@ -26,8 +27,7 @@ controller.getUserProfileById = userId => {
                 `UserProfile with id ${userId} does not exist`,
             )
         }
-        console.log('userProfile from controller', userProfile)
-        return userProfile
+        return userProfileUtils.publicProfileBuilder(userProfile)
     })
 }
 

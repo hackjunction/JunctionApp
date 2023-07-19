@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import junctionStyle from 'utils/styles'
 import {
     Card,
@@ -15,12 +15,18 @@ import {
 import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardActions from 'redux/dashboard/actions'
 import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 import { FastField, Field, Form, Formik, useFormik } from 'formik'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 
-function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
+function CandidateCard(
+    { candidateData = {}, onViewApplication = () => {} },
+    onClickApply = () => {},
+) {
+    console.log('candidateData', candidateData)
     const classes = junctionStyle()
     const dispatch = useDispatch()
     const [value, setValue] = useState('female')
@@ -30,15 +36,15 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
             lastName: candidateData.lastName || 'Doce',
             headline: candidateData.headline || 'Software Engineer',
             avatar: candidateData.avatar || 'https://i.pravatar.cc/300',
+            userId: candidateData.userId || '123',
+            _id: candidateData._id || '123',
         },
     }
 
-    const handleChange = event => {
-        setValue(event.target.value)
-    }
-
-    // const event = useSelector(OrganiserSelectors.event)
-    // const { slug, _id } = event
+    const event = useSelector(DashboardSelectors.event)
+    const team = useSelector(DashboardSelectors.team)
+    const { slug } = event
+    const { code } = team
     // const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
     //     onError: err => {
     //         const errors = err.graphQLErrors
@@ -81,19 +87,31 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
     // }
     let rolesToRender = []
 
-    if (candidateData.roles?.length > 3) {
+    //TODO generate the open application role from the backend
+    if (candidateData.roles?.length > 0) {
         rolesToRender.push(...candidateData.roles?.slice(0, 3))
     } else {
-        rolesToRender.push(...candidateData.roles)
+        rolesToRender.push({ role: 'Open application' })
     }
+
+    const handleApply = useCallback(
+        (values, formikBag) => {
+            dispatch(
+                DashboardActions.acceptCandidateToTeam(
+                    slug,
+                    code,
+                    candidateProfile.profile.userId,
+                ),
+            )
+        },
+        [dispatch, candidateProfile],
+    )
 
     const formik = useFormik({
         initialValues: {
             roles: rolesToRender || [],
         },
-        onSubmit: values => {
-            alert(JSON.stringify(values, null, 2))
-        },
+        onSubmit: handleApply,
     })
 
     return (
@@ -107,7 +125,7 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
                 >
                     Full application
                 </Button>
-                {candidateData.roles?.length > 0 && (
+                {rolesToRender.length > 0 && (
                     <div className="tw-flex tw-flex-col tw-gap-4 tw-w-full">
                         <form onSubmit={formik.handleSubmit}>
                             <FormControl
@@ -128,7 +146,7 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
                                     onChange={formik.handleChange}
                                     className="tw-flex tw-flex-col tw-gap-4"
                                 >
-                                    {candidateData.roles.map((role, i) => (
+                                    {rolesToRender.map(role => (
                                         <FormControlLabel
                                             value={role.role}
                                             control={

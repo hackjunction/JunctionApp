@@ -91,6 +91,7 @@ const TeamSchema = new mongoose.Schema({
 })
 
 TeamSchema.pre('save', async function (next) {
+    if (this.code) return next()
     let code = shortid.generate()
     let isCodeUnique = false
 
