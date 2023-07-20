@@ -52,6 +52,7 @@ import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
 import TeamProfile from 'components/Team/TeamProfile'
 import Apply from 'components/Team/Apply'
+import Filter from 'components/Team/Filter'
 
 export default () => {
     const dispatch = useDispatch()
@@ -66,16 +67,21 @@ export default () => {
 
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
-    // const [teamSelected, setTeamSelected] = useState()
+    const [challengeFilter, setChallengeFilter] = useState('All challenges')
 
-    // useEffect(() => {
-    //     // setSelected(true)
-    // }, [selectedTeam])
-
-    //TODO Add a loading state
+    let teamCards = []
+    if (challengeFilter !== 'All challenges') {
+        teamCards = teams.filter(team => team.challenge === challengeFilter)
+    } else {
+        teamCards = teams
+    }
 
     return (
         <>
+            <Filter
+                noFilterOption="All challenges"
+                filterArray={event.challenges.map(challenge => challenge.name)}
+            />
             {applying && selectedTeam && Object.keys(selectedTeam).length > 0 && (
                 <div>
                     <Button

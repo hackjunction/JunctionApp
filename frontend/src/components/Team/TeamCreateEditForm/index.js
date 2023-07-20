@@ -7,10 +7,12 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import BottomBar from 'components/inputs/BottomBar'
 
 import React from 'react'
+import Button from 'components/generic/Button'
 
 export default ({
     initialData = {},
     formikSubmitAction = () => {},
+    onBack = () => {},
     challengeOptions,
 }) => {
     console.log(initialData)
@@ -19,7 +21,16 @@ export default ({
         <Formik initialValues={initialData} onSubmit={formikSubmitAction}>
             {formikProps => (
                 <div>
-                    <div>
+                    <div className="tw-pb-4">
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlined"
+                            onClick={onBack}
+                        >
+                            Back
+                        </Button>
+                    </div>
+                    <div className="tw-pb-4">
                         {challengeOptions && (
                             <FastField name="challenge">
                                 {({ field, form }) => (
@@ -50,7 +61,7 @@ export default ({
                             </FastField>
                         )}
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="name">
                             {({ field, form }) => (
                                 <FormControl
@@ -78,7 +89,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="tagline">
                             {({ field, form }) => (
                                 <FormControl
@@ -106,7 +117,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="description">
                             {({ field, form }) => (
                                 <FormControl
@@ -134,7 +145,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="ideaTitle">
                             {({ field, form }) => (
                                 <FormControl
@@ -162,7 +173,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="ideaDescription">
                             {({ field, form }) => (
                                 <FormControl
@@ -190,7 +201,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="teamRoles">
                             {({ field, form }) => (
                                 <FormControl
@@ -220,7 +231,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="email">
                             {({ field, form }) => (
                                 <FormControl
@@ -248,7 +259,7 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    <div>
+                    <div className="tw-pb-4">
                         <FastField name="telegram">
                             {({ field, form }) => (
                                 <FormControl
@@ -275,6 +286,8 @@ export default ({
                                 </FormControl>
                             )}
                         </FastField>
+                    </div>
+                    <div className="tw-pb-4">
                         <FastField name="discord">
                             {({ field, form }) => (
                                 <FormControl

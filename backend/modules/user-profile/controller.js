@@ -18,7 +18,7 @@ controller.getUserProfile = userId => {
     })
 }
 
-controller.getUserProfileById = userId => {
+controller.getUserPublicProfileById = userId => {
     return UserProfile.findOne({
         userId,
     }).then(userProfile => {

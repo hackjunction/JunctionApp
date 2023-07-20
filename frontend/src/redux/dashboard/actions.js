@@ -256,8 +256,10 @@ export const joinTeam = (slug, code) => async (dispatch, getState) => {
 
 export const getCandidateProfileById = userId => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-    const user = await UserProfilesService.getUserProfileById(idToken, userId)
-    console.log('getUserProfileById action received:', user)
+    const user = await UserProfilesService.getUserPublicProfileById(
+        idToken,
+        userId,
+    )
     dispatch({
         type: ActionTypes.GET_CANDIDATE_PROFILE,
         payload: user,

@@ -94,9 +94,7 @@ export default () => {
                     </ResponsiveMasonry>
                 ) : (
                     // TODO make prop to show different message when there are no candidates or teams to join
-                    <>
-                        <div>No applications yet</div>
-                    </>
+                    <div>No applications yet</div>
                 ))}
             {selected &&
                 !loadingCandidate &&

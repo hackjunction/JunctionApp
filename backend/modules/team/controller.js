@@ -121,29 +121,57 @@ controller.joinTeam = (eventId, userId, code) => {
 }
 
 controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
-    console.log('eventId', eventId)
-    console.log('userId', userId)
-    console.log('code', code)
-    console.log('candidateId', candidateId)
-    return controller.getTeamByCode(eventId, code).then(team => {
-        console.log('is user owner', team.owner === userId)
-        console.log('is user member', _.includes(team.members, userId))
-        console.log(
-            'can it proceed?',
-            team.owner !== userId || !_.includes(team.members, userId),
-        )
-        if (!_.includes([team.owner].concat(team.members), userId)) {
-            throw new InsufficientPrivilegesError(
-                'Only the team members can accept candidates',
+    const teamsToSave = []
+    let teamToReturn
+    return controller
+        .getTeamByCode(eventId, code)
+        .then(team => {
+            if (!_.includes([team.owner].concat(team.members), userId)) {
+                throw new InsufficientPrivilegesError(
+                    'Only the team members can accept candidates',
+                )
+            }
+            team.members = team.members.concat(candidateId)
+            team.candidates = team.candidates.filter(
+                candidate => candidate.userId !== candidateId,
             )
-        }
-        team.members = team.members.concat(candidateId)
-        team.candidates = team.candidates.filter(
-            candidate => candidate.userId !== candidateId,
-        )
-        console.log('team after action on controller', team)
-        return team.save()
-    })
+            teamsToSave.push(team)
+            teamToReturn = team
+        })
+        .then(() => {
+            return controller
+                .getTeamsForEvent(eventId)
+                .then(teams => {
+                    return teams.filter(
+                        team =>
+                            _.includes(
+                                team.candidates.map(
+                                    candidate => candidate.userId,
+                                ),
+                                candidateId,
+                            ) && team.code !== code,
+                    )
+                })
+                .then(teams => {
+                    if (teams.length === 0) {
+                        return
+                    }
+                    return teams.map(team => {
+                        team.candidates = team.candidates.filter(
+                            candidate => candidate.userId !== candidateId,
+                        )
+                        teamsToSave.push(team)
+                        return team
+                    })
+                })
+        })
+        .then(() => {
+            return Promise.all(teamsToSave.map(team => team.save())).then(
+                () => {
+                    return teamToReturn
+                },
+            )
+        })
 }
 
 controller.declineCandidateToTeam = (eventId, userId, code, candidateId) => {
@@ -161,9 +189,7 @@ controller.declineCandidateToTeam = (eventId, userId, code, candidateId) => {
 }
 
 controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
-    // const team = controller.getTeam(eventId, applicationData.teamId)
     return controller.getTeamByCode(eventId, code).then(team => {
-        console.log('team before action', team)
         if (
             !_.includes(team.members, userId) &&
             !_.includes(
@@ -173,14 +199,8 @@ controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
             team.owner !== userId
         ) {
             team.candidates = team.candidates.concat(applicationData)
-            console.log('team after action', team)
             return team.save()
         } else {
-            console.log('Application data:', applicationData)
-            console.log('User id:', userId)
-            console.log('Event id:', eventId)
-            console.log('Code:', code)
-            console.log('Something when wrong')
             throw new NotFoundError('You are already in this team')
         }
     })
@@ -343,7 +363,12 @@ controller.attachUserApplicant = (teams, userId) => {
 controller.getTeamsForEvent = (eventId, userId) => {
     return Team.find({
         event: eventId,
-    }).then(teams => controller.attachUserApplicant(teams, userId))
+    }).then(teams => {
+        if (userId) {
+            return controller.attachUserApplicant(teams, userId)
+        }
+        return teams
+    })
     // TODO make the code not visible to participants on Redux store
 }
 

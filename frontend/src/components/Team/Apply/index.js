@@ -181,7 +181,7 @@ export default ({
                                     </Typography>
                                 </Box>
                             </Grid>
-                            <div style={{ height: '100px' }} />
+                            <div className="tw-h-24" />
                             <BottomBar
                                 onSubmit={formikProps.handleSubmit}
                                 errors={formikProps.errors}

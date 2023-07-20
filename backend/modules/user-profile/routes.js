@@ -14,8 +14,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
     return res.status(200).json(userProfile)
 })
 
-const getUserProfileById = asyncHandler(async (req, res) => {
-    const userProfile = await UserProfileController.getUserProfileById(
+const getUserPublicProfileById = asyncHandler(async (req, res) => {
+    const userProfile = await UserProfileController.getUserPublicProfileById(
         req.params.userId,
     )
     console.log('From routes:', userProfile)
@@ -87,7 +87,7 @@ router
     .post(hasToken, createUserProfile)
     .patch(hasToken, updateUserProfile)
 
-router.route('/:userId').get(hasToken, getUserProfileById)
+router.route('/:userId').get(hasToken, getUserPublicProfileById)
 
 router.route('/public').get(getUserProfilesPublic)
 router.route('/public/team/:teamId').get(getUserProfilesByTeamPublic)

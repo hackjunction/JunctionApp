@@ -64,24 +64,24 @@ export default () => {
             })
     }, [slug, team?.code, dispatch])
 
-    const handleDelete = useCallback(() => {
-        setLoading(true)
-        dispatch(DashboardActions.deleteTeam(slug))
-            .then(() => {
-                dispatch(SnackbarActions.success('Deleted team ' + team?.code))
-            })
-            .catch(err => {
-                dispatch(
-                    SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
-                )
-            })
-            .finally(() => {
-                setStatus('')
-                setLoading(false)
-            })
-    }, [dispatch, slug, team?.code])
+    // const handleDelete = useCallback(() => {
+    //     setLoading(true)
+    //     dispatch(DashboardActions.deleteTeam(slug))
+    //         .then(() => {
+    //             dispatch(SnackbarActions.success('Deleted team ' + team?.code))
+    //         })
+    //         .catch(err => {
+    //             dispatch(
+    //                 SnackbarActions.error(
+    //                     'Something went wrong... please try again.',
+    //                 ),
+    //             )
+    //         })
+    //         .finally(() => {
+    //             setStatus('')
+    //             setLoading(false)
+    //         })
+    // }, [dispatch, slug, team?.code])
 
     const handleCreate = useCallback(
         (values, formikBag) => {
@@ -159,8 +159,8 @@ export default () => {
             {status === '' &&
                 (hasTeam ? (
                     <>
-                        <button onClick={handleLeave}>Leave team</button>
-                        <button onClick={handleDelete}>Delete team</button>
+                        {/* <button onClick={handleLeave}>Leave team</button> */}
+                        {/* <button onClick={handleDelete}>Delete team</button> */}
                         {console.log('team after completed:', team)}
                         <TeamProfile
                             teamData={team}
@@ -178,12 +178,15 @@ export default () => {
                 ))}
             {((!hasTeam && status === 'create') ||
                 (hasTeam && status === 'edit')) && (
-                <TeamCreateEditForm
-                    initialData={teamData}
-                    formikSubmitAction={formikSubmitAction}
-                    challengeOptions={challengeOptions}
-                    key={`${status}-team`}
-                />
+                <div className="tw-mb-16">
+                    <TeamCreateEditForm
+                        initialData={teamData}
+                        formikSubmitAction={formikSubmitAction}
+                        onBack={() => setStatus('')}
+                        challengeOptions={challengeOptions}
+                        key={`${status}-team`}
+                    />
+                </div>
             )}
         </>
     )
