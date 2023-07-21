@@ -140,7 +140,6 @@ export const isTeamValid = createSelector(team, team => {
 })
 
 export const lockedPages = createSelector(event, event => {
-    console.log('event', event)
     return {
         submissions: !EventHelpers.isSubmissionsOpen(event, moment),
         reviewing: EventHelpers.isVotingPast(event, moment),
@@ -172,7 +171,7 @@ export const shownPages = createSelector(
                 (registration?.travelGrant ?? 0) > 0,
             finalistVoting:
                 registration?.status === STATUSES.checkedIn.id &&
-                event.overallReviewMethod !== 'noOverallWinner',
+                event?.overallReviewMethod !== 'noOverallWinner',
             hackerPack:
                 [
                     STATUSES.checkedIn.id,

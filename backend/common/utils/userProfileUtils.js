@@ -1,3 +1,5 @@
+//TODO move this code into the user profile helpers
+
 const userProfileUtils = {
     publicProfileBuilder: profileData => {
         return {

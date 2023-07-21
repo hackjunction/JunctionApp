@@ -281,6 +281,9 @@ export const candidateApplyToTeam =
         dispatch({
             type: ActionTypes.EDIT_TEAM,
             payload: team,
+            meta: {
+                onFailure: e => console.log('Error applying to team', e),
+            },
         })
 
         return team

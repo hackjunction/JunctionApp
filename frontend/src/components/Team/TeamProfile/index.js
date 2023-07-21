@@ -13,6 +13,7 @@ import SocialLinks from '../../generic/SocialLinks'
 import { objToArr } from 'utils/dataModifiers'
 
 export default ({
+    enableActions = true,
     teamData = {
         code: 'test-12',
         name: 'Test Team',
@@ -59,6 +60,7 @@ export default ({
     },
     onClickLeave,
     onClickEdit,
+    onRoleClick = () => {},
 }) => {
     const teamMembersArr = [...objToArr(teamData.meta)]
 
@@ -80,21 +82,25 @@ export default ({
                 maxRoles={9999}
                 profileView
                 teamRoles={teamData.teamRoles}
+                onRoleClick={onRoleClick}
             />
             <TeamMembers viewModeStyle="list" teamMembers={teamMembersArr} />
             <SocialLinks />
-            <div className="tw-flex tw-gap-4 tw-justify-start">
-                <Button onClick={onClickEdit} variant="jContained">
-                    Edit
-                </Button>
-                <Button
-                    onClick={onClickLeave}
-                    color="outlined_button"
-                    variant="jOutlined"
-                >
-                    Leave the team
-                </Button>
-            </div>
+            {enableActions && (
+                <div className="tw-flex tw-gap-4 tw-justify-start">
+                    <Button onClick={onClickEdit} variant="jContained">
+                        Edit
+                    </Button>
+                    <Button
+                        onClick={onClickLeave}
+                        color="outlined_button"
+                        variant="jOutlined"
+                    >
+                        Leave the team
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }
+//TODO fix issue that doesn't let team owners leave their own team

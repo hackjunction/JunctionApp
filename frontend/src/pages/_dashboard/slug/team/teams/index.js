@@ -58,16 +58,23 @@ export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const { slug, _id } = event
+    //TODO update teams after application is submitted
     useEffect(() => {
         dispatch(DashboardActions.updateTeams(slug))
     }, [])
     const teams = useSelector(DashboardSelectors.teams)
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     // const team = useSelector(DashboardSelectors.team)
-
+    // TODO add a method to disable the apply button if the user is already in a team
+    //TODO add a conditional rendering to show a 'no teams' message if there are no teams to render
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
+
+    const onFilterChange = filter => {
+        console.log('filter from page', filter)
+        setChallengeFilter(filter)
+    }
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
@@ -76,67 +83,90 @@ export default () => {
         teamCards = teams
     }
 
+    //TODO move any async calls from the Apply from into this page
+
     return (
         <>
-            <Filter
-                noFilterOption="All challenges"
-                filterArray={event.challenges.map(challenge => challenge.name)}
-            />
             {applying && selectedTeam && Object.keys(selectedTeam).length > 0 && (
                 <div>
-                    <Button
-                        color="outlined_button"
-                        variant="jOutlined"
-                        onClick={() => setApplying(false)}
-                    >
-                        Back
-                    </Button>
-                    <Apply teamRolesData={selectedTeam.teamRoles} />
+                    <div className="tw-mb-4">
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlined"
+                            onClick={() => setApplying(false)}
+                        >
+                            Back
+                        </Button>
+                    </div>
+                    <Apply
+                        teamRolesData={selectedTeam.teamRoles}
+                        afterSubmitAction={() => setApplying(false)}
+                    />
                 </div>
             )}
             {selected && selectedTeam && Object.keys(selectedTeam).length > 0 && (
                 <div>
-                    <Button
-                        color="outlined_button"
-                        variant="jOutlined"
-                        onClick={() => setSelected(false)}
-                    >
-                        Back
-                    </Button>
-                    <TeamProfile teamData={selectedTeam} />
+                    <div className="tw-mb-4">
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlined"
+                            onClick={() => setSelected(false)}
+                        >
+                            Back
+                        </Button>
+                    </div>
+                    <TeamProfile
+                        teamData={selectedTeam}
+                        enableActions={false}
+                        onRoleClick={() => {
+                            setApplying(true)
+                            setSelected(false)
+                        }}
+                    />
                 </div>
             )}
             {!selected && !applying && (
-                <ResponsiveMasonry
-                    columnsCountBreakPoints={{ 350: 1, 900: 2, 1440: 3 }}
-                >
-                    <Masonry>
-                        {teams?.map(team => (
-                            <TeamCard
-                                key={team._id}
-                                teamData={team}
-                                onClickApply={() => {
-                                    setApplying(true)
-                                    dispatch(
-                                        DashboardActions.updateSelectedTeam(
-                                            slug,
-                                            team.code,
-                                        ),
-                                    )
-                                }}
-                                onClick={() => {
-                                    setSelected(true)
-                                    dispatch(
-                                        DashboardActions.updateSelectedTeam(
-                                            slug,
-                                            team.code,
-                                        ),
-                                    )
-                                }}
-                            />
-                        ))}
-                    </Masonry>
-                </ResponsiveMasonry>
+                <>
+                    <div className="tw-mb-4">
+                        <Filter
+                            noFilterOption="All challenges"
+                            filterArray={event.challenges.map(
+                                challenge => challenge.name,
+                            )}
+                            onChange={onFilterChange}
+                        />
+                    </div>
+                    <ResponsiveMasonry
+                        columnsCountBreakPoints={{ 600: 1, 800: 2, 1440: 3 }}
+                    >
+                        <Masonry>
+                            {teamCards?.map(team => (
+                                <TeamCard
+                                    key={team._id}
+                                    teamData={team}
+                                    onClickApply={() => {
+                                        setApplying(true)
+                                        dispatch(
+                                            DashboardActions.updateSelectedTeam(
+                                                slug,
+                                                team.code,
+                                            ),
+                                        )
+                                    }}
+                                    onClick={() => {
+                                        setSelected(true)
+                                        dispatch(
+                                            DashboardActions.updateSelectedTeam(
+                                                slug,
+                                                team.code,
+                                            ),
+                                        )
+                                    }}
+                                />
+                            ))}
+                        </Masonry>
+                    </ResponsiveMasonry>
+                </>
             )}
         </>
     )

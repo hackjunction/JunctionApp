@@ -189,22 +189,82 @@ controller.declineCandidateToTeam = (eventId, userId, code, candidateId) => {
 }
 
 controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
+    // const applicationSchema = yup.object().shape({
+
+    // const validatedData = await UserProfileHelpers.validate(data)
+
     return controller.getTeamByCode(eventId, code).then(team => {
         if (
-            !_.includes(team.members, userId) &&
-            !_.includes(
+            !applicationData.roles ||
+            applicationData.roles.length === 0 ||
+            applicationData.length === 0
+        ) {
+            console.log(
+                'Throwing error because no roles, with:',
+                applicationData,
+            )
+            throw new ForbiddenError(
+                'You must select at least one role and write your motivation to join',
+            )
+        }
+        if (
+            _.includes(team.members, userId) ||
+            _.includes(
                 team.candidates.map(candidate => candidate.userId),
                 userId,
-            ) &&
-            team.owner !== userId
+            ) ||
+            team.owner === userId
         ) {
-            team.candidates = team.candidates.concat(applicationData)
-            return team.save()
-        } else {
+            console.log(
+                'Throwing error because user is part of team, with:',
+                applicationData,
+            )
+
             throw new NotFoundError('You are already in this team')
         }
+        team.candidates = team.candidates.concat(applicationData)
+        console.log('Saving team with:', team)
+        return team.save()
     })
+
+    //TODO delete unused code
+
+    // return controller.getTeamByCode(eventId, code).then(team => {
+    //     if (
+    //         !_.includes(team.members, userId) &&
+    //         !_.includes(
+    //             team.candidates.map(candidate => candidate.userId),
+    //             userId,
+    //         ) &&
+    //         team.owner !== userId
+    //     ) {
+    //         team.candidates = team.candidates.concat(applicationData)
+    //         return team.save()
+    //     } else {
+    //         throw new NotFoundError('You are already in this team')
+    //     }
+    // })
 }
+
+// controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
+//     if (!applicationData.roles || applicationData.roles.length === 0 || applicationData.motivation === '') {
+//         throw new ForbiddenError('You must select at least one role and write your motivation to join')
+//     }
+//     return controller.getTeamByCode(eventId, code).then(team => {
+//         if (
+//             _.includes(team.members, userId) ||
+//             _.includes(
+//                 team.candidates.map(candidate => candidate.userId),
+//                 userId,
+//             ) ||
+//             team.owner === userId
+//         ) {
+//             throw new NotFoundError('You are already in this team')
+//         }
+//         team.candidates = team.candidates.concat(applicationData)
+//         return team.save()
+//     })
+// }
 
 controller.leaveTeam = (eventId, userId) => {
     return controller.getTeam(eventId, userId).then(team => {

@@ -18,7 +18,11 @@ export default ({
     console.log(initialData)
     console.log(challengeOptions)
     return (
-        <Formik initialValues={initialData} onSubmit={formikSubmitAction}>
+        <Formik
+            initialValues={initialData}
+            enableReinitialize={true}
+            onSubmit={formikSubmitAction}
+        >
             {formikProps => (
                 <div>
                     <div className="tw-pb-4">

@@ -5,6 +5,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import theme from 'junctionTheme'
 
 export default ({
+    onRoleClick = () => {},
     maxRoles = 3,
     profileView = false,
     teamRoles = [
@@ -49,6 +50,7 @@ export default ({
                                             key={index}
                                             color="outlined_button"
                                             variant="jOutlinedBox"
+                                            onClick={onRoleClick}
                                         >
                                             <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                                                 <Typography
@@ -58,13 +60,6 @@ export default ({
                                                 >
                                                     {item.role}
                                                 </Typography>
-                                                {/* <Typography
-                                                className="tw-text-lg tw-text-gray-600"
-                                                variant="body1"
-                                                component="p"
-                                            >
-                                                {item.years} of experience
-                                            </Typography> */}
                                             </div>
                                         </Button>
                                     )
@@ -79,7 +74,9 @@ export default ({
                                     variant="body1"
                                     component="p"
                                 >
-                                    +3 more roles
+                                    {`${
+                                        teamRoles.length - maxRoles
+                                    } more roles`}
                                 </Typography>
                             </div>
                         </Button>

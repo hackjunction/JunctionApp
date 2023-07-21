@@ -159,9 +159,6 @@ export default () => {
             {status === '' &&
                 (hasTeam ? (
                     <>
-                        {/* <button onClick={handleLeave}>Leave team</button> */}
-                        {/* <button onClick={handleDelete}>Delete team</button> */}
-                        {console.log('team after completed:', team)}
                         <TeamProfile
                             teamData={team}
                             onClickLeave={handleLeave}

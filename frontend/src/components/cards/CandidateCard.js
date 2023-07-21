@@ -32,12 +32,12 @@ function CandidateCard(
     const [value, setValue] = useState('female')
     let candidateProfile = {
         profile: {
-            firstName: candidateData.firstName || 'Jock',
-            lastName: candidateData.lastName || 'Doce',
-            headline: candidateData.headline || 'Software Engineer',
-            avatar: candidateData.avatar || 'https://i.pravatar.cc/300',
-            userId: candidateData.userId || '123',
-            _id: candidateData._id || '123',
+            firstName: candidateData.firstName || '',
+            lastName: candidateData.lastName || '',
+            headline: candidateData.headline || '',
+            avatar: candidateData.avatar || '',
+            userId: candidateData.userId || '',
+            _id: candidateData._id || '',
         },
     }
 
@@ -45,6 +45,7 @@ function CandidateCard(
     const team = useSelector(DashboardSelectors.team)
     const { slug } = event
     const { code } = team
+
     // const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
     //     onError: err => {
     //         const errors = err.graphQLErrors
@@ -85,6 +86,8 @@ function CandidateCard(
     //     })
     //     actions.setSubmitting(false)
     // }
+
+    //TODO make rolesToRender and anything related to how they render into a components for CandidateCard and for candidates page
     let rolesToRender = []
 
     //TODO generate the open application role from the backend
@@ -94,7 +97,7 @@ function CandidateCard(
         rolesToRender.push({ role: 'Open application' })
     }
 
-    const handleApply = useCallback(
+    const handleAccept = useCallback(
         (values, formikBag) => {
             dispatch(
                 DashboardActions.acceptCandidateToTeam(
@@ -121,7 +124,7 @@ function CandidateCard(
         initialValues: {
             roles: rolesToRender || [],
         },
-        onSubmit: handleApply,
+        onSubmit: handleAccept,
     })
 
     return (

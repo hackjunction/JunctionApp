@@ -6,6 +6,7 @@ import ProfileSide from '../ProfileSide'
 
 export default ({ user = {}, children = null }) => {
     return (
+        //TODO make boxes adjust if there the side or info components are empty
         <Container
             className="tw-text-left tw-flex tw-flex-col tw-gap-8 tw-mb-16"
             center
