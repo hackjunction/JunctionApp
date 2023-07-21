@@ -84,7 +84,7 @@ export default () => {
     }
 
     //TODO move any async calls from the Apply from into this page
-
+    //TODO add a method to edit or withdraw an application
     return (
         <>
             {applying && selectedTeam && Object.keys(selectedTeam).length > 0 && (
