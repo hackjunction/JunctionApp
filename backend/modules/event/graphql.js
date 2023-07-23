@@ -30,6 +30,8 @@ const {
     RegistrationSectionInput,
     EventTag,
     EventTagInput,
+    EventRecruiters,
+    EventRecruitersInput,
     RegistrationConfig,
     RegistrationConfigInput,
     EventTheme,
@@ -142,6 +144,9 @@ const EventInput = new GraphQLInputObjectType({
         },
         organisers: {
             type: GraphQLList(GraphQLString),
+        },
+        recruiters: {
+            type: GraphQLList(EventRecruitersInput),
         },
         organizations: {
             type: GraphQLList(GraphQLID),
@@ -293,6 +298,9 @@ const EventType = new GraphQLObjectType({
             },
             organisers: {
                 type: GraphQLList(GraphQLString),
+            },
+            recruiters: {
+                type: GraphQLList(EventRecruiters),
             },
             organizations: {
                 type: GraphQLList(OrganizationType),

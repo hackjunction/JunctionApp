@@ -21,6 +21,7 @@ const getUserProfilesPublic = asyncHandler(async (req, res) => {
     return res.status(200).json(userProfiles)
 })
 
+
 const getUserProfilesByTeamPublic = asyncHandler(async (req, res) => {
     const teamMembers = await TeamController.getTeamMembers(req.params.teamId)
     const userProfiles = await UserProfileController.getUserProfilesPublic(
@@ -47,7 +48,6 @@ const createUserProfile = asyncHandler(async (req, res) => {
 })
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-    console.log("REQ",req)
     const updatedUserProfile = await UserProfileController.updateUserProfile(
         req.body,
         req.user.sub,
@@ -65,11 +65,37 @@ const getRecruiters = asyncHandler(async (req, res) => {
     return res.status(200).json(users)
 })
 
+
 const updateRecruiter = asyncHandler(async (req, res) => {
     const user = await UserProfileController.updateRecruiter(
         req.body.recruiterId,
+        req.body.event,
+        req.body.organisation,
+    )
+    return res.status(200).json(user)
+})
+
+const deleteRecruiter = asyncHandler(async (req, res) => {
+    const user = await UserProfileController.deleteRecruiter(
+        req.body.recruiterId,
+        req.body.event,
+    )
+    return res.status(200).json(user)
+})
+
+const updateRecruitersAdmin = asyncHandler(async (req, res) => {
+    const user = await UserProfileController.updateRecruitersAdmin(
+        req.body.recruiterId,
         req.body.events,
         req.body.organisation,
+    )
+    return res.status(200).json(user)
+})
+
+const deleteRecruitersAdmin = asyncHandler(async (req, res) => {
+    console.log(hasPermission(Auth.Permissions.MANAGE_RECRUITMENT))
+    const user = await UserProfileController.deleteRecruitersAdmin(
+        req.body.recruiterId,
     )
     return res.status(200).json(user)
 })
@@ -92,18 +118,64 @@ router.get(
 
 router.get('/search/:terms', hasToken, searchUsers)
 
+
 router
     .get(
         '/recruiters',
         hasToken,
-        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
         getRecruiters,
     )
     .patch(
         '/recruiters',
         hasToken,
-        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
         updateRecruiter,
     )
+
+
+
+router
+    .get(
+        '/recruiters',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        getRecruiters,
+    )
+    .patch(
+        '/recruiters/delete',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        deleteRecruiter,
+    )
+
+router
+    .get(
+        '/recruiters/admin',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        getRecruiters,
+    )
+    .patch(
+        '/recruiters/admin',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        updateRecruitersAdmin,
+    )
+
+router
+    .get(
+        '/recruiters/admin',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        getRecruiters,
+    )
+    .patch(
+        '/recruiters/admin/delete',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        deleteRecruitersAdmin,
+    )
+
 
 module.exports = router

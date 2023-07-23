@@ -17,7 +17,7 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
         )
     })
 }
-
+//TODO: debug this shitshow, good luck :-)
 controller.queryProfiles = async (query = {}, user) => {
     let userQuery = {}
     let pagination = {}
@@ -33,7 +33,9 @@ controller.queryProfiles = async (query = {}, user) => {
         }
         console.log(34)
     } else if (query.filters && query.filters.length) {
+
         const whereFields = query.filters.map(filter => {
+            //console.log("query.filter", filter.value)
             const formatted = MongoUtils.ensureObjectId(filter.value)
             return {
                 [filter.field]: {
@@ -43,14 +45,14 @@ controller.queryProfiles = async (query = {}, user) => {
             }
         })
         userQuery = { $and: whereFields }
-        console.log(45)
+        //console.log(45)
     }
     if (query.pagination) {
         pagination = {
             skip: query.pagination.page_size * query.pagination.page,
             limit: query.pagination.page_size,
         }
-        console.log(51)
+        //console.log(51)
     }
 
     // Set event filters based on recruiter scope
@@ -71,7 +73,7 @@ controller.queryProfiles = async (query = {}, user) => {
         registrations: {
             $elemMatch: {
                 event: {
-                    $in: MongoUtils.ensureObjectId(user.recruiter_events),
+                    $in: MongoUtils.ensureObjectId(user.recruiter_events.map(e => e.eventId)),
                 },
             },
         },
@@ -107,15 +109,15 @@ controller.queryProfiles = async (query = {}, user) => {
     } */
     // Set defaultfilters (consent & recruiter scope)
     if (userQuery.$and) {
-        console.log(107)
+        //console.log(107)
         userQuery.$and = userQuery.$and.concat([consentFilter, eventFilter])
     } else {
         userQuery.$and = [eventFilter]
-        console.log(110)
+        //console.log(110)
     }
     // userQuery.$and = userQuery.$and.concat([matcher])
     // console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
-    //console.log("query",userQuery, "pag", pagination, "reg",userQuery.registrations)
+    //console.log("query", userQuery, "pag", pagination, "reg", JSON.stringify(userQuery.registrations))
     return UserController.queryProfiles({
         query: userQuery,
         pagination,
@@ -125,7 +127,7 @@ controller.queryProfiles = async (query = {}, user) => {
                 return controller.createRecruitmentProfile(profile, false)
             }),
         ).then(profiles => {
-          
+
             return { data: profiles, count: results.count }
         })
     })

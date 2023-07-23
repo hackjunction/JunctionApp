@@ -124,7 +124,6 @@ controller.revokeRecruiterPermission = async userId => {
 controller.updateMetadata = async (userId, updates) => {
     const user = await auth0.getUser({ id: userId })
     const metadata = { ...user.user_metadata, ...updates }
-    console.log("AUTH UPDATE METADATA", metadata, updates)
     const updatedUser = await auth0.updateUserMetadata({ id: userId }, metadata)
     return updatedUser
 }

@@ -6,6 +6,7 @@ const Challenge = require('./Challenge')
 const CloudinaryImage = require('./CloudinaryImage')
 const Education = require('./Education')
 const EventTag = require('./EventTag')
+const EventRecruiters = require('./Recruiter')
 const IBANAccount = require('./IBANAccount')
 const LegalName = require('./LegalName')
 const PhoneNumber = require('./PhoneNumber')
@@ -14,6 +15,7 @@ const RegistrationConfig = require('./RegistrationConfig')
 const RegistrationQuestion = require('./RegistrationQuestion')
 const RegistrationQuestionSettings = require('./RegistrationQuestionSettings')
 const RegistrationSection = require('./RegistrationSection')
+const RecruiterEvents = require('./RecruiterEvents')
 const Role = require('./Role')
 const Skill = require('./Skill')
 const TeamOptions = require('./TeamOptions')
@@ -43,6 +45,8 @@ const SharedSchema = new GraphQLSchema({
         Education.graphql,
         EventTag.graphql,
         EventTag.graphqlInput,
+        EventRecruiters.graphql,
+        EventRecruiters.graphqlInput,
         IBANAccount.graphql,
         LegalName.graphql,
         PhoneNumber.graphql,
@@ -53,6 +57,8 @@ const SharedSchema = new GraphQLSchema({
         RegistrationQuestionSettings.graphql,
         RegistrationSection.graphql,
         RegistrationSection.graphqlInput,
+        RecruiterEvents.graphql,
+        RecruiterEvents.graphqlInput,
         Role.graphql,
         Skill.graphql,
         TeamOptions.graphql,

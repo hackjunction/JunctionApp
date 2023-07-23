@@ -4,14 +4,14 @@ const router = express.Router()
 const asyncHandler = require('express-async-handler')
 const { Auth } = require('@hackjunction/shared')
 const RecruitmentController = require('./controller')
+const AuthController = require('../auth/controller')
 
 const { hasToken } = require('../../common/middleware/token')
 const { hasPermission } = require('../../common/middleware/permissions')
 
+
 const queryUsers = asyncHandler(async (req, res) => {
-    console.log("rec users", req)
     const users = await RecruitmentController.queryProfiles(req.body, req.user)
-    
     return res.status(200).json(users)
 })
 

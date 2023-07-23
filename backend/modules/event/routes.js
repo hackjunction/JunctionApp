@@ -68,6 +68,36 @@ const deleteEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(deletedEvent)
 })
 
+
+const getRecruiters = asyncHandler(async (req, res) => {
+    const event = await EventController.getEventBySlug(req.params.slug)
+    const recruiterIds = event.recruiters.map(recruiter => recruiter.recruiterId)
+    const userProfiles = await UserProfileController.getUserProfiles(recruiterIds)
+    return res.status(200).json(userProfiles)
+})
+
+const addRecruiter = asyncHandler(async (req, res) => {
+    const eventData = await EventController.getEventBySlug(req.params.slug)
+    await AuthController.grantRecruiterPermission(req.params.recruiterId)
+
+    const event = await EventController.addRecruiter(
+        eventData,
+        req.params.recruiterId,
+        req.body.organization,
+    )
+    return res.status(200).json(event.recruiters)
+})
+
+const removeRecruiter = asyncHandler(async (req, res) => {
+    const eventData = await EventController.getEventBySlug(req.params.slug)
+    await AuthController.revokeRecruiterPermission(req.params.recruiterId)
+    const event = await EventController.removeRecruiter(
+        eventData,
+        req.params.recruiterId,
+    )
+    return res.status(200).json(event.recruiters)
+})
+
 const getOrganisers = asyncHandler(async (req, res) => {
     const event = await EventController.getEventBySlug(req.params.slug)
     const userIds = _.concat(event.owner, event.organisers)
@@ -297,6 +327,29 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         removeOrganiser,
+    )
+
+/** Get recruiters for single event */
+router.get(
+    '/recruiters/:slug',
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    getRecruiters,
+)
+
+/** Add or remove recruiters from event */
+router
+    .route('/recruiters/:slug/:recruiterId')
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        addRecruiter,
+    )
+    .delete(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        removeRecruiter,
     )
 
 /** Unapproved */

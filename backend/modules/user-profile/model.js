@@ -4,6 +4,7 @@ const Shared = require('@hackjunction/shared')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const publicFieldsPlugin = require('../../common/plugins/publicFields')
 const AuthController = require('../auth/controller')
+const RecruiterEventSchema = require('@hackjunction/shared/schemas/RecruiterEvents')
 
 const { RegistrationFields } = Shared
 
@@ -22,7 +23,7 @@ const UserProfileSchema = new mongoose.Schema({
         default: [],
     },
     recruiterEvents: {
-        type: Array,
+        type: [RecruiterEventSchema.mongoose],
         required: false,
         default: [],
         set(recruiterEvents) {
@@ -60,7 +61,6 @@ UserProfileSchema.post('save', (doc, next) => {
         } else {
             AuthController.grantRecruiterPermission(doc.userId)
         }
-        console.log("MATADATA",doc.recruiterEvents)
         AuthController.updateMetadata(doc.userId, {
             recruiterEvents: doc.recruiterEvents,
             recruiterOrganisation: doc.recruiterOrganisation,
