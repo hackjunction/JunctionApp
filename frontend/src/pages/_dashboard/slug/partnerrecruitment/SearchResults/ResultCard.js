@@ -87,7 +87,8 @@ const useStyles = makeStyles(theme => ({
 
 export default React.memo(
     ({ data }) => {
-        const dispatch = useDispatch()
+        // console.log("result card data: ",data)
+        // const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
             RecruitmentSelectors.actionHistoryByUser,
         )
@@ -95,43 +96,44 @@ export default React.memo(
         const isFavorite =
             findIndex(userHistory, action => action.type === 'favorite') !== -1
 
-        // Toggle the favorited state locally for immediate feedback on favorite action
+        // // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
         const classes = useStyles({ isFavorite: _isFavorite })
 
-        useEffect(() => {
-            setIsFavorite(isFavorite)
-        }, [isFavorite])
+        // useEffect(() => {
+        //     setIsFavorite(isFavorite)
+        // }, [isFavorite])
 
         const handleFavorite = useCallback(
-            async e => {
-                e.stopPropagation()
-                setIsFavorite(!_isFavorite)
-                dispatch(
-                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite),
-                ).then(({ error }) => {
-                    if (error) {
-                        dispatch(
-                            SnackbarActions.error('Something went wrong...'),
-                        )
-                        setIsFavorite(_isFavorite)
-                    }
-                })
-            },
-            [_isFavorite, data.userId, dispatch],
+            () => console.log("add to favourite"), [_isFavorite, data.userId,]
+            //     async e => {
+            //         e.stopPropagation()
+            //         setIsFavorite(!_isFavorite)
+            //         dispatch(
+            //             RecruitmentActions.toggleFavorite(data.userId, _isFavorite),
+            //         ).then(({ error }) => {
+            //             if (error) {
+            //                 dispatch(
+            //                     SnackbarActions.error('Something went wrong...'),
+            //                 )
+            //                 setIsFavorite(_isFavorite)
+            //             }
+            //         })
+            //     },
+            //     [_isFavorite, data.userId, dispatch],
         )
 
         return (
             <Paper
                 className={classes.root}
-                onClick={() => dispatch(push(`/recruitment/${data.userId}`))}
+            // onClick={() => dispatch(push(`/recruitment/${data.userId}`))}
             >
                 <Box className={classes.iconRight}>
                     <Tooltip
-                        title={
-                            _isFavorite
-                                ? 'Remove from favorites'
-                                : 'Add to favorites'
+                        title={'TODO: Add to favorites'
+                            // _isFavorite
+                            //     ? 'Remove from favorites'
+                            //     : 'Add to favorites'
                         }
                     >
                         <IconButton onClick={handleFavorite}>
@@ -164,7 +166,7 @@ export default React.memo(
                     </Box>
 
                     <Box>
-                        {sortBy(data.skills, skill => -1 * skill.level)
+                        {/*sortBy(data.skills, skill => -1 * skill.level)
                             .map(item => (
                                 <SkillRating
                                     data={item}
@@ -172,7 +174,7 @@ export default React.memo(
                                     small
                                 />
                             ))
-                            .slice(0, 3)}
+                            .slice(0, 3)*/}
                     </Box>
                 </div>
                 <Box className={classes.bottomWrapper}>

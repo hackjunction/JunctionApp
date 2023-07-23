@@ -38,6 +38,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as OrganiserActions from 'redux/organiser/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
 
 import { useTranslation } from 'react-i18next'
 import { CheckBox } from '@material-ui/icons'
@@ -77,7 +78,9 @@ export default () => {
         'Recruiter'
     ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
         'SuperAdmin'
-    )
+    ) && useSelector(UserSelectors.userProfileRecruiterEvents)?.map(e => e.eventId).includes(event?._id)
+
+
     console.log(isPartner, "user is partner")
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
@@ -233,7 +236,7 @@ export default () => {
                         label: 'Meetings',
                         component: CalendarPage,
                     },
-                    {
+                    {//TODO: wtf is this? move recrytool to be part of the app, not some useles framing
                         key: 'recruitment',
                         path: '/recruitment',
                         exact: true,
@@ -354,6 +357,7 @@ export default () => {
                             label: 'Challenges',
                             component: ChallengesIndex,
                         },
+                        /*
                         {
                             key: 'checklist',
                             path: '/checklist',
@@ -372,7 +376,6 @@ export default () => {
                             label: 'Map',
                             component: MapPage,
                         },
-                        /*
                         {
                             key: 'chat',
                             path: '/chat',

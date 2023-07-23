@@ -55,6 +55,10 @@ export default () => {
                     event.organisers,
                 ),
             )
+            dispatch(OrganiserActions.updateRecruitersForEvent(
+                event.recruiters
+            ),
+            )
             dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
             dispatch(OrganiserActions.updateTeamsForEvent(slug))
             dispatch(OrganiserActions.updateFilterGroups(slug))
@@ -64,7 +68,6 @@ export default () => {
             dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
-    console.log('event', event.published, event.approved)
     return (
         <PageWrapper loading={loading} error={error}>
             <SidebarLayout

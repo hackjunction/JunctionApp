@@ -13,8 +13,8 @@ import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
 
 export default ({ items }) => {
+    // console.log("items: ", items)
     const dispatch = useDispatch()
-    const match = useRouteMatch()
     const searchResults =
         items ?? useSelector(RecruitmentSelectors.searchResults)
     const searchResultsCount = useSelector(
@@ -26,11 +26,10 @@ export default ({ items }) => {
     const page = useSelector(RecruitmentSelectors.page)
     const paginationEnabled = !items
     const isFavorited = !!items
-    const { slug } = match.params
     const { t } = useTranslation()
+    console.log("searchResults", searchResults, "items", items, "loading", loading, "filters", filters, "pageSize", pageSize, "page", page, "paginationEnabled", paginationEnabled, "isFavorited", isFavorited)
 
     useEffect(() => {
-        dispatch(DashboardActions.updateEvent(slug))
         dispatch(RecruitmentActions.updateSearchResults())
     }, [pageSize, page, filters, dispatch])
 
@@ -70,6 +69,7 @@ export default ({ items }) => {
                 return <Empty isEmpty emptyText={t('No_results_filter_')} />
             }
         }
+        console.log("filter: ")
         return (
             <Grid direction="row" alignItems="stretch" container spacing={2}>
                 {searchResults.map(user => (
@@ -84,7 +84,7 @@ export default ({ items }) => {
                         md={4}
                         lg={3}
                     >
-                        <ResultCard data={user} />
+                        <ResultCard data={/*user*/ searchResults[0]} />
                     </Grid>
                 ))}
             </Grid>
@@ -111,12 +111,12 @@ export default ({ items }) => {
                         flexDirection="row"
                         justifyContent="flex-end"
                     >
-                        <Pagination />
+                        {/* <Pagination /> */}
                     </Box>
                 </Box>
             )}
             {renderLoading()}
-            {renderResults()}
+            {/* {renderResults()} */}
             {paginationEnabled && (
                 <Box
                     p={2}
@@ -124,7 +124,7 @@ export default ({ items }) => {
                     flexDirection="row"
                     justifyContent="flex-end"
                 >
-                    <Pagination />
+                    {/* <Pagination /> */}
                 </Box>
             )}
         </>

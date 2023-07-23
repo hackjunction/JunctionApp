@@ -164,11 +164,12 @@ const variantStyles = (theme, props) => {
                 backgroundColor: color.main,
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
-                borderRadius: theme.spacing(4),
+                borderRadius: theme.spacing(2),
                 padding: theme.spacing(1, 4),
                 margin: 0,
                 '&:hover': {
-                    backgroundColor: color.main,
+                    backgroundColor: color.dark,
+                    border: `2px solid ${color.dark}`,
                 },
                 '&.Mui-disabled': {
                     backgroundColor: color.dark,

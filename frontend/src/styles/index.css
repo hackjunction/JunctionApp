@@ -5,3 +5,6 @@
 
 Any custom css, create it here and do not make any updates to the tailwind.css file, since it will be deleted every time tailwind build is executed*/
 
+.tw-rounded-02rem {
+    border-radius: 0.2rem
+}

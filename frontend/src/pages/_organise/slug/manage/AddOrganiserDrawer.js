@@ -115,7 +115,7 @@ export default ({ isOpen, onClose, onAdded, organisers, slug }) => {
                             {organisers.indexOf(user.userId) === -1 ? (
                                 <ListItemSecondaryAction>
                                     <IconButton onClick={() => handleAdd(user)}>
-                                        <PersonAdd fontSize="medium"  />
+                                        <PersonAdd fontSize="medium" />
                                     </IconButton>
                                 </ListItemSecondaryAction>
                             ) : (

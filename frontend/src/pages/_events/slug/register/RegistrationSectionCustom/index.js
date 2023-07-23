@@ -48,10 +48,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
-    console.log('section', section)
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
-    console.log("section",section)
+    console.log("section", section)
     const [visible, setVisible] = useState(!section.conditional)
 
     const { initialValues, validationSchema } = useMemo(() => {

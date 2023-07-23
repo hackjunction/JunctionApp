@@ -103,29 +103,29 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
             realItems.length > 0
                 ? realItems
                 : [
-                      {
-                          date: moment(event.registrationStartTime).format(
-                              dateString,
-                          ),
-                          dateValue: moment(event.registrationStartTime).unix(),
-                          completed: moment(
-                              event.registrationStartTime,
-                          ).isBefore(),
-                          title: 'Application period begins',
-                          active: true,
-                      },
-                      {
-                          date: moment(event.registrationEndTime).format(
-                              dateString,
-                          ),
-                          dateValue: moment(event.registrationEndTime).unix(),
-                          completed: moment(
-                              event.registrationEndTime,
-                          ).isBefore(),
-                          title: 'Application period ends',
-                          active: true,
-                      },
-                  ]
+                    {
+                        date: moment(event.registrationStartTime).format(
+                            dateString,
+                        ),
+                        dateValue: moment(event.registrationStartTime).unix(),
+                        completed: moment(
+                            event.registrationStartTime,
+                        ).isBefore(),
+                        title: 'Application period begins',
+                        active: true,
+                    },
+                    {
+                        date: moment(event.registrationEndTime).format(
+                            dateString,
+                        ),
+                        dateValue: moment(event.registrationEndTime).unix(),
+                        completed: moment(
+                            event.registrationEndTime,
+                        ).isBefore(),
+                        title: 'Application period ends',
+                        active: true,
+                    },
+                ]
 
         if (realItems.length < 1) {
             if (

@@ -59,20 +59,20 @@ const useStyles = makeStyles(theme => ({
 
 function TeamCard() {
     return (
-        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between">
+        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-600px tw-max-w-md tw-flex tw-flex-col tw-justify-between">
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
-                <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
-                    <TeamHeader />
-                    <TeamRoles />
-                </div>
+                <TeamHeader />
+                <TeamRoles />
             </CardContent>
-            <CardActions className="tw-flex tw-gap-2 tw-justify-start tw-px-4 tw-pb-4 tw-pt-0">
-                <Button variant="jContained">Apply</Button>
-                <Button color="outlined_button" variant="jOutlined">
-                    See more
-                </Button>
-            </CardActions>
+            <div className="tw-flex tw-content-center ">
+                <CardActions className="tw-flex tw-gap-2 tw-justify-start tw-px-4 tw-pb-4 tw-pt-0">
+                    <Button variant="jContained">Apply</Button>
+                    <Button color="outlined_button" variant="jOutlined">
+                        See more
+                    </Button>
+                </CardActions>
+            </div>
         </Card>
     )
 }

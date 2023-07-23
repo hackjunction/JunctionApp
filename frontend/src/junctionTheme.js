@@ -1,5 +1,7 @@
 import { createTheme } from '@material-ui/core/styles'
-
+import HankenGrotesk_Regular from './assets/fonts/static/HankenGrotesk-Regular.ttf'
+import hanken from './assets/fonts/HankenGrotesk-Regular.ttf'
+import AkzidenzGroteskPro from './assets/fonts/AkzidenzGroteskPro-Regular.ttf'
 const titleFont = ['"Inter"', 'sans-serif'].join(',')
 const bodyFont = ['"Inter"', 'sans-serif'].join(',')
 
@@ -7,15 +9,27 @@ const theme = createTheme({
     palette: {
         primary: {
             main: '#0045B6',
+            dark: '#003180',
         },
         secondary: {
             main: '#FF9500',
+            dark: '#c37200',
         },
-        theme_success: {
-            main: '#8BC34A',
+        success: {
+            main: '#4CB9A3',
             light: '#bef67a',
             dark: '#5a9216',
             contrastText: '#ffffff',
+        },
+        error: {
+            main: '#EF6D6D',
+            dark: '#a81212',
+            contrastText: '#ffffff',
+        },
+        warning: {
+            main: '#EAB059',
+            contrastText: '#ffffff',
+
         },
         theme_black: {
             main: '#232323',

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -39,33 +39,38 @@ import TextInput from 'components/inputs/TextInput'
 import UserProfilesService from 'services/userProfiles'
 
 export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
-   
+
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [results, setResults] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [loading, setLoading] = useState(false)
-    const [dialogOpen, setDialogOpen] = useState(false)
-    const [openedItemId, setOpenedItemId] = useState("");
+    const [organizationDialogOpen, setOrganizationDialogOpen] = useState(false)
+    const [openedItemId, setOpenedItemId] = useState("")
     const [organization, setOrganisation] = useState("")
 
-    //const handleDialogOpen = () => setDialogOpen(!dialogOpen)
+    //const handleDialogOpen = () => setOrganizationDialogOpen(!dialogOpen)
 
-    const handleDialogOpen = orgEvent => {
-        let clickedItemId = orgEvent.currentTarget.id;
-        console.log(clickedItemId, orgEvent)
+    useEffect(() => {
+        setOrganisation("")
+        setOrganizationDialogOpen(false)
+        setOpenedItemId("")
+    }, [onClose])
+
+    const handleOrganizationDialogOpen = orgEvent => {
+        let clickedItemId = orgEvent.currentTarget.id
         setOrganisation("")
         if (openedItemId === clickedItemId) {
-            setDialogOpen(false)
+            setOrganizationDialogOpen(false)
             setOpenedItemId("")
         } else {
             setOpenedItemId(clickedItemId)
-            setDialogOpen(true)
+            setOrganizationDialogOpen(true)
         }
         //setOpen(!open);
-      };
+    }
 
-    const handleDialogClose = () => setDialogOpen(false)
+    const handleOrganizationDialogClose = () => setOrganizationDialogOpen(false)
 
     const handleSearch = useCallback(() => {
         UserProfilesService.queryUsers(idToken, searchValue)
@@ -85,8 +90,8 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
     }, [searchValue, idToken, dispatch])
 
     const handleGrantAccess = useCallback(
-        user => {
-            console.log(user, organization)
+
+        (user, organization) => {
             onGrant(user.userId, organization)
             setOrganisation("")
             setOpenedItemId("")
@@ -95,30 +100,6 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
         [onGrant, onClose],
     )
 
-    const handleGrant = useCallback(async () => {
-        console.log("grantting access...")
-        setLoading(true)
-        try {
-            console.log(openedItemId,
-                         //selectedEvents,
-                         organization.trim(),
-                         slug)
-            // await dispatch(
-            //     RecruitmentActions.adminGrantRecruiterAccess(
-            //         openedItemId,
-            //         //selectedEvents,
-            //         organisation.trim(),
-            //     ),
-            // )
-            dispatch(SnackbarActions.success('Success!'))
-            onClose()
-        } catch (e) {
-            dispatch(SnackbarActions.error('Something went wrong...'))
-        } finally {
-            setLoading(false)
-        }
-     }, [dispatch, openedItemId, /*selectedEvents,*/ organization, onClose])
-    
     return (
         <Drawer anchor="right" onClose={onClose} open={isOpen}>
             <Box width="500px" p={3}>
@@ -142,96 +123,94 @@ export default ({ isOpen, onClose, onGrant, recruiters, slug }) => {
                 <Box p={1} />
                 <List>
                     {results.map(user => (
-                        
+
                         <ListItem key={user.userId}>
                             <Grid
-                            container
-                            direction="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"        
+                                container
+                                direction="column"
+                                justifyContent="flex-start"
+                                alignItems="flex-start"
                             >
-                            <Grid item>
-                                
-                                <ListItemAvatar>
-                                    <Avatar
-                                        alt={'User avatar image'}
-                                        src={user ? user.avatar : ''}
-                                    />
-                                </ListItemAvatar>
+                                <Grid item>
 
-                                <ListItemText
-                                    primary={`${user.firstName} ${user.lastName}`}
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                component="p"
-                                                variant="body2"
-                                            >
-                                                E-mail:{' '}
-                                                <strong>{user.email}</strong>
-                                            </Typography>
-                                            <Typography
-                                                component="p"
-                                                variant="body2"
-                                            >
-                                                Account created:{' '}
-                                                <strong>
-                                                    {new Date(
-                                                        user.createdAt,
-                                                    ).toLocaleString()}
-                                                </strong>
-                                            </Typography>
-                                        </React.Fragment>
-                                    }
-                                />
-                                {recruiters.indexOf(user.userId) === -1 ? (
-                                    <ListItemSecondaryAction id = {user.userId} onClick={handleDialogOpen}>
-                                        {dialogOpen ? <ExpandLess /> : <ExpandMore />}
-                                    </ListItemSecondaryAction>
-                                ) : (
-                                    <ListItemSecondaryAction>
-                                        <Typography variant="button">
-                                            Added
-                                        </Typography>
-                                    </ListItemSecondaryAction>
-                                )}
-                               
-                            </Grid>
-                            <Grid item>
-                                
-                                    <Collapse in={openedItemId === user.userId} unmountOnExit>
-                                 
-                                    <Grid
-                                        container
-                                        direction="row"
-                                        justifyContent="space-between"
-                                        alignItems="center"        
-                                        >
-                                        <Grid item>
-                                        <TextInput
-                                            value={organization}
-                                            onChange={setOrganisation}
-                                            label="Organisation"
-                                            placeholder="BigCorp Ltd."
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={'User avatar image'}
+                                            src={user ? user.avatar : ''}
                                         />
-                                            
-                                        </Grid>
-                                        <Grid item>
-                                            <IconButton  disabled={
-                                                    loading || !organization 
-                                                    } 
-                                                    onClick={() => handleGrantAccess(user)}>
-                                                <PersonAdd fontSize="medium"  />
-                                            </IconButton>
-                                            
+                                    </ListItemAvatar>
 
+                                    <ListItemText
+                                        primary={`${user.firstName} ${user.lastName}`}
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="p"
+                                                    variant="body2"
+                                                >
+                                                    E-mail:{' '}
+                                                    <strong>{user.email}</strong>
+                                                </Typography>
+                                                <Typography
+                                                    component="p"
+                                                    variant="body2"
+                                                >
+                                                    Account created:{' '}
+                                                    <strong>
+                                                        {new Date(
+                                                            user.createdAt,
+                                                        ).toLocaleString()}
+                                                    </strong>
+                                                </Typography>
+                                            </React.Fragment>
+                                        }
+                                    />
+                                    {recruiters.map(x => x.recruiterId).indexOf(user.userId) === -1 ? (
+                                        <ListItemSecondaryAction id={user.userId} onClick={handleOrganizationDialogOpen}>
+                                            {organizationDialogOpen ? <ExpandLess /> : <ExpandMore />}
+                                        </ListItemSecondaryAction>
+                                    ) : (
+                                        <ListItemSecondaryAction>
+                                            <Typography variant="button">
+                                                Added
+                                            </Typography>
+                                        </ListItemSecondaryAction>
+                                    )}
+
+                                </Grid>
+                                <Grid item>
+
+                                    <Collapse in={openedItemId === user.userId} unmountOnExit>
+
+                                        <Grid
+                                            container
+                                            direction="row"
+                                            justifyContent="space-between"
+                                            alignItems="center"
+                                        >
+                                            <Grid item>
+                                                <TextInput
+                                                    value={organization}
+                                                    onChange={setOrganisation}
+
+                                                    placeholder="BigCorp Ltd."
+                                                />
+
+                                            </Grid>
+                                            <Grid item>
+                                                <IconButton disabled={
+                                                    loading || !organization
+                                                }
+                                                    onClick={() => handleGrantAccess(user, organization)}>
+                                                    <PersonAdd fontSize="medium" />
+                                                </IconButton>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>    
-                               
+
                                     </Collapse>
-                              
+
+                                </Grid>
                             </Grid>
-                        </Grid>
                         </ListItem>
                     ))}
                 </List>

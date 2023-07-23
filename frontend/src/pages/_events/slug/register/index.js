@@ -235,22 +235,21 @@ export default RequiresPermission(() => {
         return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
-    console.log("sections",sections)
 
     const setNextStep = useCallback(
         (nextStep, values, path) => {
             const newFormData = path
                 ? {
-                      ...formData,
-                      [path]: {
-                          ...formData[path],
-                          ...values,
-                      },
-                  }
+                    ...formData,
+                    [path]: {
+                        ...formData[path],
+                        ...values,
+                    },
+                }
                 : {
-                      ...formData,
-                      ...values,
-                  }
+                    ...formData,
+                    ...values,
+                }
             editRegistration(newFormData)
             setFormData(newFormData)
             setActiveStep(nextStep)

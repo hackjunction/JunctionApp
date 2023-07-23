@@ -9,8 +9,11 @@ export const UPDATE_GAVEL_ANNOTATORS = 'organiser/UPDATE_GAVEL_ANNOTATORS'
 export const UPDATE_RANKINGS = 'organiser/UPDATE_RANKINGS'
 
 export const REMOVE_ORGANISER = 'organiser/REMOVE_ORGANISER'
-
 export const ADD_ORGANISER = 'organiser/ADD_ORGANISER'
+
+export const UPDATE_EVENT_RERUITERS = 'organiser/UPDATE_EVENT_RERUITERS'
+export const REMOVE_EVENT_RECRUITER = 'organiser/REMOVE_EVENT_RECRUITER'
+export const ADD_EVENT_RECRUITER = 'organiser/ADD_EVENT_RECRUITER'
 
 export const EDIT_REGISTRATION = 'organiser/EDIT_REGISTRATION'
 export const EDIT_EVENT = 'organiser/EDIT_EVENT'
