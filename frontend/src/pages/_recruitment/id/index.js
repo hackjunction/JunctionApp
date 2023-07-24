@@ -29,6 +29,8 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
+import ProfileViewActions from 'components/Recruitment/ProfileViewActions'
+import RecruitmentFavorites from 'components/Participant/RecruitmentFavorites'
 
 const useStyles = makeStyles(theme => ({
     iconBlue: {
@@ -214,21 +216,10 @@ export default () => {
                 wrapContent={false}
                 loading={loading}
                 render={() => (
-                    // <Container
-                    //     className="tw-text-left tw-flex tw-flex-col tw-gap-8 tw-mb-16"
-                    //     center
-                    // >
-                    //     <ProfileTop user={user} />
-                    //     <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-6 tw-gap-4">
-                    //         <div className="tw-flex tw-flex-col lg:tw-col-span-4 tw-gap-4">
-                    //             <ProfileInfo user={user} />
-                    //         </div>
-                    //         <div className="tw-flex tw-flex-col lg:tw-col-span-2 tw-gap-4">
-                    //             <ProfileSide user={user} />
-                    //         </div>
-                    //     </div>
-                    // </Container>
-                    <Profile user={user} />
+                    <>
+                        <RecruitmentFavorites user={user} />
+                        <Profile user={user} />
+                    </>
                 )}
             />
         </Dialog>
