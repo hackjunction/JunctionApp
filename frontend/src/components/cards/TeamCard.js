@@ -75,6 +75,7 @@ function TeamCard({
     onClick,
     onClickSeeMore = onClick,
     onClickApply,
+    disableActions = false,
 }) {
     const styling = {
         cardHover: '',
@@ -107,6 +108,7 @@ function TeamCard({
                         e.stopPropagation()
                     }}
                     variant="jContained"
+                    disabled={teamData.userIsApplicant || disableActions}
                 >
                     Apply
                 </Button>

@@ -42,9 +42,6 @@ controller.createNewTeam = (data, eventId, userId) => {
     const team = new Team({
         event: eventId,
         owner: userId,
-        teamRoles: teamRoles.map(role => ({
-            role,
-        })),
         name,
         tagline,
         description,
@@ -55,6 +52,13 @@ controller.createNewTeam = (data, eventId, userId) => {
         telegram,
         discord,
     })
+    if (teamRoles && teamRoles.length > 0) {
+        team.teamRoles = teamRoles.map(role => ({
+            role,
+        }))
+    } else {
+        team.teamRoles = []
+    }
     console.log('On team creation', team)
 
     return team.save()
@@ -193,6 +197,7 @@ controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
 
     // const validatedData = await UserProfileHelpers.validate(data)
 
+    console.log('Validating application data:', applicationData)
     return controller.getTeamByCode(eventId, code).then(team => {
         if (
             !applicationData.roles ||

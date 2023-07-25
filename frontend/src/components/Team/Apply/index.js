@@ -48,11 +48,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     }, [teamRolesData])
 
     const applicationSchema = {
-        roles: yup
-            .array()
-            .of(yup.string())
-            .required('Add at least one role')
-            .nullable(),
+        roles: yup.array().of(yup.string()).required('Add at least one role'),
         motivation: yup.string().max(1000).required('Add a motivation'),
     }
 
@@ -111,12 +107,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                     subheading="Fields marked with * are mandatory"
                 />
                 <Formik
-                    validationSchema={props => {
-                        return yup.lazy(values => {
-                            console.log('values', values)
-                            return yup.object().shape(applicationSchema)
-                        })
-                    }}
+                    validationSchema={yup.object().shape(applicationSchema)}
                     initialValues={{ roles: [], motivation: '' }}
                     enableReinitialize={true}
                     onSubmit={handleApply}

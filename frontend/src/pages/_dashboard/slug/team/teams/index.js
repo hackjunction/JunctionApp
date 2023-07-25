@@ -64,7 +64,7 @@ export default () => {
     }, [])
     const teams = useSelector(DashboardSelectors.teams)
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
-    // const team = useSelector(DashboardSelectors.team)
+    const hasTeam = useSelector(DashboardSelectors.hasTeam)
     // TODO add a method to disable the apply button if the user is already in a team
     //TODO add a conditional rendering to show a 'no teams' message if there are no teams to render
     const [selected, setSelected] = useState(false)
@@ -119,8 +119,10 @@ export default () => {
                         teamData={selectedTeam}
                         enableActions={false}
                         onRoleClick={() => {
-                            setApplying(true)
-                            setSelected(false)
+                            if (!hasTeam) {
+                                setApplying(true)
+                                setSelected(false)
+                            }
                         }}
                     />
                 </div>
@@ -136,36 +138,45 @@ export default () => {
                             onChange={onFilterChange}
                         />
                     </div>
-                    <ResponsiveMasonry
-                        columnsCountBreakPoints={{ 600: 1, 800: 2, 1440: 3 }}
-                    >
-                        <Masonry>
-                            {teamCards?.map(team => (
-                                <TeamCard
-                                    key={team._id}
-                                    teamData={team}
-                                    onClickApply={() => {
-                                        setApplying(true)
-                                        dispatch(
-                                            DashboardActions.updateSelectedTeam(
-                                                slug,
-                                                team.code,
-                                            ),
-                                        )
-                                    }}
-                                    onClick={() => {
-                                        setSelected(true)
-                                        dispatch(
-                                            DashboardActions.updateSelectedTeam(
-                                                slug,
-                                                team.code,
-                                            ),
-                                        )
-                                    }}
-                                />
-                            ))}
-                        </Masonry>
-                    </ResponsiveMasonry>
+                    {teamCards.length > 0 ? (
+                        <ResponsiveMasonry
+                            columnsCountBreakPoints={{
+                                600: 1,
+                                800: 2,
+                                1440: 3,
+                            }}
+                        >
+                            <Masonry>
+                                {teamCards?.map(team => (
+                                    <TeamCard
+                                        key={team._id}
+                                        teamData={team}
+                                        disableActions={hasTeam}
+                                        onClickApply={() => {
+                                            setApplying(true)
+                                            dispatch(
+                                                DashboardActions.updateSelectedTeam(
+                                                    slug,
+                                                    team.code,
+                                                ),
+                                            )
+                                        }}
+                                        onClick={() => {
+                                            setSelected(true)
+                                            dispatch(
+                                                DashboardActions.updateSelectedTeam(
+                                                    slug,
+                                                    team.code,
+                                                ),
+                                            )
+                                        }}
+                                    />
+                                ))}
+                            </Masonry>
+                        </ResponsiveMasonry>
+                    ) : (
+                        <div>No teams found</div>
+                    )}
                 </>
             )}
         </>

@@ -55,6 +55,9 @@ export default ({
         tagline: 'This is a test team',
         description: 'This is a test team description',
         links: ['https://google.com'],
+        discord: null,
+        telegram: null,
+        email: null,
         //TBA
         challenge: 'Test',
     },
@@ -85,7 +88,51 @@ export default ({
                 onRoleClick={onRoleClick}
             />
             <TeamMembers viewModeStyle="list" teamMembers={teamMembersArr} />
-            <SocialLinks />
+            <div className="tw-flex tw-content-center tw-justify-start">
+                {teamData?.discord && (
+                    <FontAwesomeIcon
+                        icon={['fab', 'discord']}
+                        onClick={() =>
+                            popupCenter({
+                                url: teamData.discord,
+                                title: 'Discord',
+                            })
+                        }
+                        className={classes.socialIcon}
+                        size="2x"
+                    />
+                )}
+                {teamData?.telegram && (
+                    <FontAwesomeIcon
+                        icon={['fab', 'telegram']}
+                        onClick={() =>
+                            popupCenter({
+                                url: teamData.telegram,
+                                title: 'Telegram',
+                            })
+                        }
+                        className={classes.socialIcon}
+                        size="2x"
+                    />
+                )}
+                {teamData?.email && (
+                    <IconButton
+                        color="primary"
+                        aria-label="Email"
+                        className="tw-p-0"
+                        onClick={() =>
+                            popupCenter({
+                                url: `mailto:${teamData.email}`,
+                                title: 'email',
+                            })
+                        }
+                    >
+                        <Email className={classes.socialIcon} />
+                    </IconButton>
+                )}
+            </div>
+            {/* TODO add socialLinks component from Damilare (@mrprotocoll) */}
+            {/* <SocialLinks /> */}
             {enableActions && (
                 <div className="tw-flex tw-gap-4 tw-justify-start">
                     <Button onClick={onClickEdit} variant="jContained">
