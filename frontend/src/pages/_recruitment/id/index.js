@@ -29,7 +29,7 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
-import ProfileViewActions from 'components/Recruitment/ProfileViewActions'
+// import ProfileViewActions from 'components/Recruitment/ProfileViewActions'
 import RecruitmentFavorites from 'components/Participant/RecruitmentFavorites'
 
 const useStyles = makeStyles(theme => ({

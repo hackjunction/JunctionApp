@@ -5,9 +5,23 @@ import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import BottomBar from 'components/inputs/BottomBar'
+import * as yup from 'yup'
 
 import React from 'react'
 import Button from 'components/generic/Button'
+
+const TeamSchema = {
+    challenge: yup.string().required('One challenge is required'),
+    name: yup.string().required('Team name is required'),
+    tagline: yup.string().required('Team tagline is required'),
+    description: yup.string().required('Team description is required'),
+    ideaTitle: yup.string().required('Idea title is required'),
+    ideaDescription: yup.string().required('Idea description is required'),
+    email: yup
+        .string()
+        .email('Invalid email address')
+        .required('A contact email is required'),
+}
 
 export default ({
     initialData = {},
@@ -19,6 +33,12 @@ export default ({
     console.log(challengeOptions)
     return (
         <Formik
+            validationSchema={props => {
+                return yup.lazy(values => {
+                    console.log('values', values)
+                    return yup.object().shape(TeamSchema)
+                })
+            }}
             initialValues={initialData}
             enableReinitialize={true}
             onSubmit={formikSubmitAction}
@@ -35,11 +55,12 @@ export default ({
                         </Button>
                     </div>
                     <div className="tw-pb-4">
-                        {challengeOptions && (
+                        {challengeOptions && challengeOptions.length > 0 && (
                             <FastField name="challenge">
                                 {({ field, form }) => (
                                     <FormControl
                                         label="Challenge"
+                                        hint="Select one of the challenges"
                                         touched={
                                             form.touched[field.name] ||
                                             formikProps.submitCount > 0
@@ -70,6 +91,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Team name"
+                                    hint="Write a name for your team"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -98,6 +120,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Team tagline"
+                                    hint="Write a tagline for your team"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -126,6 +149,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Brief description about your team"
+                                    hint="Write a description for your team"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -154,6 +178,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label=" Title of the idea explored by your team"
+                                    hint="Write a title for your idea"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -182,6 +207,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Brief explanation of the idea explored by your team"
+                                    hint="Explain your idea in a few sentences"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -240,6 +266,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Team's contact email"
+                                    hint="Your team must have at least an email, a discord or a telegram challenge"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0

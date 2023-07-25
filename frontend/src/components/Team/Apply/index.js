@@ -56,6 +56,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
         motivation: yup.string().max(1000).required('Add a motivation'),
     }
 
+    // TODO remove any redux calls from this component and pass the data as props
     const userProfile = useSelector(UserSelectors.userProfile)
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     const event = useSelector(DashboardSelectors.event)

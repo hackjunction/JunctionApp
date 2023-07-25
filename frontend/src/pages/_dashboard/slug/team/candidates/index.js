@@ -113,7 +113,7 @@ export default () => {
             ),
         )
     } else {
-        candidateCards = team.candidates
+        candidateCards = team?.candidates || []
     }
 
     const handleAccept = useCallback(
