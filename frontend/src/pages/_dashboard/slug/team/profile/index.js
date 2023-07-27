@@ -25,17 +25,21 @@ import BottomBar from 'components/inputs/BottomBar'
 import TeamCreateEditForm from 'components/Team/TeamCreateEditForm'
 
 export default () => {
+    const dispatch = useDispatch()
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const team = useSelector(DashboardSelectors.team)
     const event = useSelector(DashboardSelectors.event)
-    const dispatch = useDispatch()
+    const { slug, challengesEnabled, challenges } = event
+    useEffect(() => {
+        dispatch(DashboardActions.updateTeam(slug))
+    }, [])
     const [status, setStatus] = useState('')
     const [loading, setLoading] = useState(false)
     // const [editing, setEditing] = useState(false)
 
     const challengeOptions = useMemo(() => {
-        if (!event.challengesEnabled || !event.challenges) return null
-        return event.challenges.map(challenge => ({
+        if (!challengesEnabled || !challenges) return null
+        return challenges.map(challenge => ({
             label: `${challenge.name} (${challenge.partner})`,
             value: challenge.slug,
         }))
@@ -43,8 +47,7 @@ export default () => {
 
     const handleLeave = useCallback(() => {
         setLoading(true)
-        setStatus('')
-        dispatch(DashboardActions.leaveTeam(event.slug, team.code))
+        dispatch(DashboardActions.leaveTeam(slug, team.code))
             .then(() => {
                 dispatch(SnackbarActions.success('Left team ' + team?.code))
             })
@@ -56,35 +59,36 @@ export default () => {
                 )
             })
             .finally(() => {
-                setLoading(false)
-            })
-    }, [event.slug, team?.code, dispatch])
-
-    const handleDelete = useCallback(() => {
-        setLoading(true)
-        dispatch(DashboardActions.deleteTeam(event.slug))
-            .then(() => {
-                dispatch(SnackbarActions.success('Deleted team ' + team?.code))
-            })
-            .catch(err => {
-                dispatch(
-                    SnackbarActions.error(
-                        'Something went wrong... please try again.',
-                    ),
-                )
-            })
-            .finally(() => {
                 setStatus('')
                 setLoading(false)
             })
-    }, [dispatch, event.slug, team?.code])
+    }, [slug, team?.code, dispatch])
+
+    // const handleDelete = useCallback(() => {
+    //     setLoading(true)
+    //     dispatch(DashboardActions.deleteTeam(slug))
+    //         .then(() => {
+    //             dispatch(SnackbarActions.success('Deleted team ' + team?.code))
+    //         })
+    //         .catch(err => {
+    //             dispatch(
+    //                 SnackbarActions.error(
+    //                     'Something went wrong... please try again.',
+    //                 ),
+    //             )
+    //         })
+    //         .finally(() => {
+    //             setStatus('')
+    //             setLoading(false)
+    //         })
+    // }, [dispatch, slug, team?.code])
 
     const handleCreate = useCallback(
         (values, formikBag) => {
             console.log('submitted with:', values)
             console.log('formikBag:', formikBag)
             setLoading(true)
-            dispatch(DashboardActions.createNewTeam(event.slug, values))
+            dispatch(DashboardActions.createNewTeam(slug, values))
                 .then(() => {
                     dispatch(SnackbarActions.success('Created new team'))
                 })
@@ -100,7 +104,7 @@ export default () => {
                     setLoading(false)
                 })
         },
-        [dispatch, event.slug],
+        [dispatch, slug],
     )
 
     const handleEdit = useCallback(
@@ -108,7 +112,7 @@ export default () => {
             console.log('submitted with:', values)
             console.log('formikBag:', formikBag)
             setLoading(true)
-            dispatch(DashboardActions.editTeam(event.slug, values))
+            dispatch(DashboardActions.editTeam(slug, values))
                 .then(() => {
                     dispatch(
                         SnackbarActions.success('Successfully edited team'),
@@ -126,7 +130,7 @@ export default () => {
                     setLoading(false)
                 })
         },
-        [dispatch, event.slug],
+        [dispatch, slug],
     )
 
     let teamData
@@ -152,33 +156,34 @@ export default () => {
 
     return (
         <>
-            {hasTeam ? (
-                <>
-                    <button onClick={handleLeave}>Leave team</button>
-                    <button onClick={handleDelete}>Delete team</button>
-                    {console.log('team after completed:', team)}
-                    <TeamProfile
-                        teamData={team}
-                        onClickLeave={handleLeave}
-                        onClickEdit={() => {
-                            setStatus('edit')
-                        }}
+            {status === '' &&
+                (hasTeam ? (
+                    <>
+                        <TeamProfile
+                            teamData={team}
+                            onClickLeave={handleLeave}
+                            onClickEdit={() => {
+                                setStatus('edit')
+                            }}
+                        />
+                    </>
+                ) : (
+                    <NoTeam
+                        eventData={event}
+                        onCreate={() => setStatus('create')}
                     />
-                </>
-            ) : (
-                <NoTeam
-                    eventData={event}
-                    onCreate={() => setStatus('create')}
-                />
-            )}
+                ))}
             {((!hasTeam && status === 'create') ||
                 (hasTeam && status === 'edit')) && (
-                <TeamCreateEditForm
-                    initialData={teamData}
-                    formikSubmitAction={formikSubmitAction}
-                    challengeOptions={challengeOptions}
-                    key={`${status}-team`}
-                />
+                <div className="tw-mb-16">
+                    <TeamCreateEditForm
+                        initialData={teamData}
+                        formikSubmitAction={formikSubmitAction}
+                        onBack={() => setStatus('')}
+                        challengeOptions={challengeOptions}
+                        key={`${status}-team`}
+                    />
+                </div>
             )}
         </>
     )

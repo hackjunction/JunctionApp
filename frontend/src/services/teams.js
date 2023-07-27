@@ -65,6 +65,33 @@ TeamsService.candidateApplyToTeam = (
     )
 }
 
+TeamsService.acceptCandidateToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    candidateId,
+) => {
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}/accept/${candidateId}`,
+        {},
+        config(idToken),
+    )
+}
+
+TeamsService.declineCandidateToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    candidateId,
+) => {
+    console.log('Sending')
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}/decline/${candidateId}`,
+        {},
+        config(idToken),
+    )
+}
+
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode, populate) => {
     return _axios.post(
         `/teams/${eventSlug}/${teamCode}/members?populate=${populate}`,

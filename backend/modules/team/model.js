@@ -20,7 +20,8 @@ const TeamSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        default: shortid.generate(),
+        unique: true,
+        // default: generateUniqueCode,
     },
     complete: {
         type: Boolean,
@@ -42,7 +43,7 @@ const TeamSchema = new mongoose.Schema({
         required: true,
         unique: true,
         length: 30,
-        default: `Team ${shortid.generate()}`,
+        default: `Team ${() => shortid.generate()}`,
     },
     tagline: {
         type: String,
@@ -87,6 +88,28 @@ const TeamSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+})
+
+TeamSchema.pre('save', async function (next) {
+    if (this.code) return next()
+    let code = shortid.generate()
+    let isCodeUnique = false
+
+    while (!isCodeUnique) {
+        // Check if the generated code already exists in the database
+        const existingTeam = await mongoose.model('Team').findOne({ code })
+
+        if (!existingTeam) {
+            isCodeUnique = true
+        } else {
+            // If code is not unique, generate a new one and repeat the process
+            code = shortid.generate()
+        }
+    }
+
+    this.code = code
+
+    next()
 })
 
 /** Removed locked property and added complete */

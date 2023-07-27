@@ -5,7 +5,7 @@ export default ({
     viewMode = 'card',
     userData = {
         profile: {
-            profilePicture: '',
+            avatar: 'https://picsum.photos/200',
             firstName: 'Alea',
             lastName: 'Solano',
             headline: 'Full Stack Developer',
@@ -19,9 +19,9 @@ export default ({
     }
     console.log(userData)
 
-    if (userData.profile.profilePicture !== '') {
+    if (userData.profile.avatar !== '') {
         styling.userProfile = {
-            backgroundImage: `url(${userData.profile.profilePicture})`,
+            backgroundImage: `url(${userData.profile.avatar})`,
         }
     }
 
