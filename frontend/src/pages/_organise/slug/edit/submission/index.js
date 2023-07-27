@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Section from './section'
+// import { Formik } from 'formik'
 
 export default () => {
     const [sections, setSections] = useState([1])
@@ -8,6 +9,7 @@ export default () => {
         setSections([...sections, sections.length + 1])
     }
 
+    // TODO fix issue where removing a section is removing the wrong element because current method uses index instead of a unique identifier
     const handleRemoveSection = index => {
         setSections(sections.filter((_, i) => i !== index))
     }
@@ -24,7 +26,7 @@ export default () => {
                     <Section
                         onChange={() => {}}
                         onRemove={() => handleRemoveSection(index)}
-                        fieldName={`section_${index}`}
+                        fieldName={`form_submission_${index}`}
                     />
                 </div>
             ))}

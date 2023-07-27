@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 
 const TextInput = React.memo(
     ({
@@ -13,8 +13,13 @@ const TextInput = React.memo(
         type = 'text',
         width = 'tw-w-full',
     }) => {
+        // const [fieldPlaceholder, setFieldPlaceholder] = useState('placeholder')
+
         const handleChange = useCallback(
             e => {
+                // console.log(e)
+                // console.log(e.target)
+                // console.log(e.target.value)
                 onChange(e.target.value)
             },
             [onChange],

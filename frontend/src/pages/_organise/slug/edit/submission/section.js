@@ -11,13 +11,24 @@ import RemoveButton from './components/section/RemoveButton'
 import BooleanInput from './components/inputs/BooleanInput'
 import Switch from './components/Switch'
 
-const Section = ({ onRemove, fieldName, onChange, ...props }) => {
-    const [checked, setChecked] = React.useState(false)
-    const [dropdownValue, setDropdownValue] = React.useState('option1')
-    const [heading, setHeading] = React.useState('Heading')
-    const [subHeading, setSubHeading] = React.useState('Sub Heading')
+const Section = ({
+    initialData = {
+        heading: 'Heading',
+        subHeading: 'Sub heading',
+        fieldType: 'text',
+        values: ['initial value'],
+    },
+    onRemove,
+    fieldName,
+    onChange,
+    ...props
+}) => {
+    const [checked, setChecked] = useState(false)
+    const [fieldType, setFieldType] = useState(initialData.fieldType)
+    const [heading, setHeading] = useState(initialData.heading)
+    const [subHeading, setSubHeading] = useState(initialData.subHeading)
 
-    const [booleanChecked, setBooleanChecked] = React.useState(false)
+    const [booleanChecked, setBooleanChecked] = useState(false)
 
     const handleBooleanChange = event => {
         setBooleanChecked(event.target.checked)
@@ -88,8 +99,8 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
         },
     }
 
-    const renderInput = dropdownValue => {
-        const inputProps = inputConfig[dropdownValue]
+    const renderInput = fieldType => {
+        const inputProps = inputConfig[fieldType]
         if (!inputProps) return null
 
         const InputComponent = inputProps.component
@@ -101,10 +112,12 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
                     <InputComponent
                         {...inputProps}
                         {...field}
-                        onChange={e => {
-                            form.setFieldValue(fieldName, e.target.value)
-                            if (inputProps.onChange)
-                                inputProps.onChange(e.target.value)
+                        onChange={value => {
+                            // console.log(e)
+                            form.setFieldValue(fieldName, value)
+                            if (inputProps.onChange) {
+                                inputProps.onChange(value)
+                            }
                         }}
                         onBlur={form.handleBlur}
                     />
@@ -136,7 +149,7 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
                 />
                 <div className="tw-flex tw-flex-col sm:tw-flex-row tw-items-center tw-gap-4 tw-justify-between">
                     <div className="tw-w-full sm:tw-w-4/5 tw-flex tw-flex-col tw-gap-4">
-                        {renderInput(dropdownValue)}
+                        {renderInput(fieldType)}
                         <Switch
                             onChange={setChecked}
                             checked={checked}
@@ -146,8 +159,8 @@ const Section = ({ onRemove, fieldName, onChange, ...props }) => {
                     </div>
                     <div className="tw-w-full sm:tw-w-1/5 tw-flex tw-flex-col tw-gap-4">
                         <Dropdown
-                            value={dropdownValue}
-                            onChange={setDropdownValue}
+                            value={fieldType}
+                            onChange={setFieldType}
                             placeholder="Input type"
                             options={[
                                 { value: 'text', label: 'Text' },
