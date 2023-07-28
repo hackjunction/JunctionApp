@@ -4,3 +4,7 @@ scripts/
 dump/
 build/
 docker-compose.yml
+.env
+*.env.example
+azure-pipelines-1.yml
+azure-pipelines.yml
