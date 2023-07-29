@@ -59,37 +59,37 @@ export default ({ items }) => {
         return null
     }
 
-    const renderResults = () => {
-        if (searchResults.length === 0 && !loading) {
-            if (isFavorited) {
-                return <Empty isEmpty emptyText={t('No_favorites')} />
-            } else if (filters.textSearch) {
-                return <Empty isEmpty emptyText={t('No_results_')} />
-            } else {
-                return <Empty isEmpty emptyText={t('No_results_filter_')} />
-            }
-        }
-        console.log("filter: ")
-        return (
-            <Grid direction="row" alignItems="stretch" container spacing={2}>
-                {searchResults.map(user => (
-                    <Grid
-                        direction="row"
-                        alignItems="stretch"
-                        container
-                        key={`item-${user.userId}`}
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                    >
-                        <ResultCard data={/*user*/ searchResults[0]} />
-                    </Grid>
-                ))}
-            </Grid>
-        )
-    }
+    // const renderResults = () => {
+    //     if (searchResults.length === 0 && !loading) {
+    //         if (isFavorited) {
+    //             return <Empty isEmpty emptyText={t('No_favorites')} />
+    //         } else if (filters.textSearch) {
+    //             return <Empty isEmpty emptyText={t('No_results_')} />
+    //         } else {
+    //             return <Empty isEmpty emptyText={t('No_results_filter_')} />
+    //         }
+    //     }
+    //     console.log("filter: ")
+    //     return (
+    //         <Grid direction="row" alignItems="stretch" container spacing={2}>
+    //             {searchResults.map(user => (
+    //                 <Grid
+    //                     direction="row"
+    //                     alignItems="stretch"
+    //                     container
+    //                     key={`item-${user.userId}`}
+    //                     item
+    //                     xs={12}
+    //                     sm={6}
+    //                     md={4}
+    //                     lg={3}
+    //                 >
+    //                     <ResultCard data={/*user*/ searchResults[0]} />
+    //                 </Grid>
+    //             ))}
+    //         </Grid>
+    //     )
+    // }
 
     return (
         <>

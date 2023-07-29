@@ -114,7 +114,7 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_ORGANISERS: {
             return organisersHandler(state, action)
         }
-        case ActionTypes.UPDATE_EVENT_RERUITERS: {
+        case ActionTypes.UPDATE_EVENT_RECRUITERS: {
             return eventRecruitersHandler(state, action)
         }
         case ActionTypes.UPDATE_REGISTRATIONS: {

@@ -114,7 +114,7 @@ export const updateRecruitersForEvent =
         })
 
         dispatch({
-            type: ActionTypes.UPDATE_EVENT_RERUITERS,
+            type: ActionTypes.UPDATE_EVENT_RECRUITERS,
             promise: UserProfilesService.getPublicUserProfiles(userIds),
             meta: {
                 onFailure: e => console.log('Error updating recruiters for this event', e),

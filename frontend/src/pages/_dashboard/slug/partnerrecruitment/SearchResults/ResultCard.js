@@ -16,7 +16,6 @@ import { KeyboardArrowDown } from '@material-ui/icons/'
 import StarIcon from '@material-ui/icons/Star'
 
 import { sortBy } from 'lodash-es'
-import SkillRating from './SkillRating'
 import emblem_black from 'assets/logos/emblem_black.png'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'

@@ -4,7 +4,6 @@ const router = express.Router()
 const asyncHandler = require('express-async-handler')
 const { Auth } = require('@hackjunction/shared')
 const RecruitmentController = require('./controller')
-const AuthController = require('../auth/controller')
 
 const { hasToken } = require('../../common/middleware/token')
 const { hasPermission } = require('../../common/middleware/permissions')

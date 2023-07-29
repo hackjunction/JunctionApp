@@ -1,5 +1,5 @@
 import * as ActionTypes from './actionTypes'
-import { buildHandler, buildUpdatePath } from 'redux/utils'
+import { buildHandler } from 'redux/utils'
 
 const initialState = {
     events: {
