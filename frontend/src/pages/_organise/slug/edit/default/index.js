@@ -16,6 +16,7 @@ import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'
 import { push } from 'connected-react-router'
 import { defaultEventStyles } from './const'
+import Timeline from '../timeline'
 
 const themeFields = [
     {
@@ -344,6 +345,7 @@ export default () => {
                     )}
                 />
             </Grid>
+            <Timeline />
             <Grid item xs={12}>
                 <Typography variant="h5">Event page customization</Typography>
             </Grid>
