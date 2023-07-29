@@ -24,6 +24,8 @@ const {
     TrackInput,
     Challenge,
     ChallengeInput,
+    Hackerpack,
+    HackerpackInput,
     TravelGrantConfig,
     TravelGrantConfigInput,
     RegistrationSection,
@@ -113,6 +115,12 @@ const EventInput = new GraphQLInputObjectType({
         },
         challenges: {
             type: GraphQLList(ChallengeInput),
+        },
+        hackerpacksEnabled: {
+            type: GraphQLBoolean,
+        },
+        hackerpacks: {
+            type: GraphQLList(HackerpackInput),
         },
         travelGrantConfig: {
             type: TravelGrantConfigInput,
@@ -279,6 +287,12 @@ const EventType = new GraphQLObjectType({
             },
             challenges: {
                 type: GraphQLList(Challenge),
+            },
+            hackerpacksEnabled: {
+                type: GraphQLBoolean,
+            },
+            hackerpacks: {
+                type: GraphQLList(Hackerpack),
             },
             travelGrantConfig: {
                 type: TravelGrantConfig,

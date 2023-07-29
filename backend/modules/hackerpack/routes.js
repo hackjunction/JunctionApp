@@ -16,14 +16,14 @@ const getFullHackerpack = asyncHandler(async (req, res) => {
 
 const getHackerpack = asyncHandler(async (req, res) => {
     const Hackerpack = await HackerpackController.getHackerpackBySlug(
-        req.params.slug
+        req.params.slug,
     )
     return res.status(200).json(Hackerpack)
 })
 
 const deleteHackerpack = asyncHandler(async (req, res) => {
     const Hackerpack = await HackerpackController.deleteHackerpack(
-        req.params.slug
+        req.params.slug,
     )
     return res.status(200).json(Hackerpack)
 })
@@ -45,7 +45,7 @@ const createHackerpack = asyncHandler(async (req, res) => {
 const updateHackerpack = asyncHandler(async (req, res) => {
     const updatedHackerpack = await HackerpackController.updateHackerpack(
         req.params.slug,
-        req.body
+        req.body,
     )
     return res.status(200).json(updatedHackerpack)
 })
