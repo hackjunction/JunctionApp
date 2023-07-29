@@ -15,12 +15,10 @@ import {
 import getSlug from 'speakingurl'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import EditIcon from '@material-ui/icons/Edit'
-import SaveIcon from '@material-ui/icons/Save'
-import CloseIcon from '@material-ui/icons/Close'
-import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import ImageUpload from 'components/inputs/ImageUpload'
+import TextInput from 'components/inputs/TextInput'
 
 export default ({ value, onChange }) => {
     console.log(value)
@@ -29,13 +27,7 @@ export default ({ value, onChange }) => {
     const [partner, setPartner] = useState(undefined)
     const [partnerEmail, setPartnerEmail] = useState(undefined)
     const [title, setTitle] = useState(undefined)
-    const [subtitle, setSubtitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
-    const [insights, setInsights] = useState(undefined)
-    const [resources, setResources] = useState(undefined)
-    const [prizes, setPrizes] = useState(undefined)
-    const [criteria, setCriteria] = useState(undefined)
-    const [companyInfo, setCompanyInfo] = useState(undefined)
     const [logo, setLogo] = useState(undefined)
 
     const [editIndex, setEditIndex] = useState(-1)
@@ -71,13 +63,7 @@ export default ({ value, onChange }) => {
             setPartnerEmail(value[index].partnerEmail)
             setSlug(value[index].slug)
             setTitle(value[index].title)
-            setSubtitle(value[index].subtitle)
             setDescription(value[index].description)
-            setInsights(value[index].insights)
-            setResources(value[index].resources)
-            setPrizes(value[index].prizes)
-            setCriteria(value[index].criteria)
-            setCompanyInfo(value[index].companyInfo)
             setLogo(value[index].logo)
         },
         [value],
@@ -90,13 +76,7 @@ export default ({ value, onChange }) => {
         setPartner(undefined)
         setPartnerEmail(undefined)
         setTitle(undefined)
-        setSubtitle(undefined)
         setDescription(undefined)
-        setInsights(undefined)
-        setResources(undefined)
-        setPrizes(undefined)
-        setCriteria(undefined)
-        setCompanyInfo(undefined)
         setLogo(undefined)
     }, [])
 
@@ -112,13 +92,7 @@ export default ({ value, onChange }) => {
                             partnerEmail,
                             slug,
                             title,
-                            subtitle,
                             description,
-                            insights,
-                            resources,
-                            prizes,
-                            criteria,
-                            companyInfo: companyInfo,
                             logo,
                         }
                     }
@@ -133,13 +107,7 @@ export default ({ value, onChange }) => {
                     partnerEmail,
                     slug,
                     title,
-                    subtitle,
                     description,
-                    insights,
-                    resources,
-                    prizes,
-                    criteria,
-                    companyInfo: companyInfo,
                     logo,
                 }),
             )
@@ -155,13 +123,7 @@ export default ({ value, onChange }) => {
         partnerEmail,
         slug,
         title,
-        subtitle,
         description,
-        insights,
-        resources,
-        prizes,
-        criteria,
-        companyInfo,
         logo,
     ])
 
@@ -171,29 +133,29 @@ export default ({ value, onChange }) => {
             partnerEmail &&
             name &&
             slug &&
-            value.filter((challenge, index) => {
+            value.filter((hackerpack, index) => {
                 return (
                     index !== editIndex &&
-                    (challenge.name === name || challenge.slug === slug)
+                    (hackerpack.name === name || hackerpack.slug === slug)
                 )
             }).length === 0
         )
     }, [editIndex, name, partner, partnerEmail, slug, value])
 
-    const renderListItem = (challenge, index) => {
+    const renderListItem = (hackerpack, index) => {
         return (
-            <ListItem key={challenge.slug || challenge.name} divider>
+            <ListItem key={hackerpack.slug || hackerpack.name} divider>
                 <ListItemText
-                    primary={`${challenge.name} by ${challenge.partner}`}
-                    secondary={challenge.slug}
+                    primary={`${hackerpack.name} by ${hackerpack.partner}`}
+                    secondary={hackerpack.slug}
                 />
                 <ListItemSecondaryAction>
-                    <Tooltip title="Edit challenge">
+                    <Tooltip title="Edit hackerpack">
                         <IconButton onClick={() => handleEditStart(index)}>
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Remove challenge">
+                    <Tooltip title="Remove hackerpack">
                         <IconButton onClick={() => handleRemove(index)}>
                             <HighlightOffIcon />
                         </IconButton>
@@ -207,12 +169,12 @@ export default ({ value, onChange }) => {
         <>
             <Grid item xs={12}>
                 <TextInput
-                    label="Challenge name"
+                    label="Hackerpack name"
                     value={name}
                     onChange={handleNameChange}
                 />
                 <Typography variant="caption">
-                    The unique publicly visible name of the challenge.
+                    The unique publicly visible name of the hackerpack.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -222,8 +184,8 @@ export default ({ value, onChange }) => {
                     onChange={setSlug}
                 />
                 <Typography variant="caption">
-                    A unique slug for the challenge. This will be used in e.g.
-                    url paths related to this challenge.
+                    A unique slug for the hackerpack. This will be used in e.g.
+                    url paths related to this hackerpack.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -233,7 +195,7 @@ export default ({ value, onChange }) => {
                     onChange={setPartner}
                 />
                 <Typography variant="caption">
-                    Who is the partner responsible for this challenge?
+                    Who is the partner responsible for this hackerpack?
                 </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -250,22 +212,12 @@ export default ({ value, onChange }) => {
             </Grid>
             <Grid item xs={12}>
                 <TextInput
-                    label="Challenge title"
+                    label="Hackerpack title"
                     value={title}
                     onChange={setTitle}
                 />
                 <Typography variant="caption">
                     Title. Displayed in the event list.
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <TextInput
-                    label="Subtitle"
-                    value={subtitle}
-                    onChange={setSubtitle}
-                />
-                <Typography variant="caption">
-                    Subtitle. Displayed below title.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -277,58 +229,8 @@ export default ({ value, onChange }) => {
                     placeholder="Description goes here"
                 />
                 <Typography variant="caption">
-                    Challenge description.
+                    Hackerpack description.
                 </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h5">Insights</Typography>
-                <MarkdownInput
-                    label="Insights"
-                    value={insights}
-                    onChange={setInsights}
-                    placeholder="Insights go here"
-                />
-                <Typography variant="caption">Challenge insights.</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h5">Resources</Typography>
-                <MarkdownInput
-                    label="Resources"
-                    value={resources}
-                    onChange={setResources}
-                    placeholder="Resource go here"
-                />
-                <Typography variant="caption">Challenge resources.</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h5">Prizes</Typography>
-                <MarkdownInput
-                    label="Prizes"
-                    value={prizes}
-                    onChange={setPrizes}
-                    placeholder="Prizes go here"
-                />
-                <Typography variant="caption">Challenge Prizes.</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h5">Criteria</Typography>
-                <MarkdownInput
-                    label="Criteria"
-                    value={criteria}
-                    onChange={setCriteria}
-                    placeholder="Criteria go here"
-                />
-                <Typography variant="caption">Challenge criteria.</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h5">Company Info</Typography>
-                <MarkdownInput
-                    label="Company Info"
-                    value={companyInfo}
-                    onChange={setCompanyInfo}
-                    placeholder="Company info goes here"
-                />
-                <Typography variant="caption">Company Info</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h5">Logo</Typography>
@@ -336,15 +238,14 @@ export default ({ value, onChange }) => {
                     <ImageUpload
                         value={logo}
                         onChange={setLogo}
-                        uploadUrl={`/api/upload/challenges/${slug}/logo`}
+                        uploadUrl={`/api/upload/hackerpack/${slug}/icon/`}
                         resizeMode="contain"
                     />
                 </Box>
                 <Typography variant="caption">
-                    Challenge description.
+                    Hackerpack description.
                 </Typography>
             </Grid>
-
             <Grid item xs={12}>
                 <Box
                     display="inline-flex"
@@ -390,7 +291,7 @@ export default ({ value, onChange }) => {
                         color="theme_turquoise"
                         variant="contained"
                     >
-                        Add challenge
+                        Add hackerpack
                     </Button>
                 </Box>
             </Grid>
