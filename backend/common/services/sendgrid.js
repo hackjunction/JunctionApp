@@ -37,6 +37,31 @@ const sendgridAddRecipientsToList = (listId, recipientIds) => {
     })
 }
 
+// A function that takes in the email body as a string and replaces the tags with corresponding dynamic information
+const replaceBodyTags = (str, event, user) => {
+    const data = {
+        "{USER_ID}": user.userId,
+        "{FIRST_NAME}": user.firstName,
+        "{LAST_NAME}": user.lastName,
+        "{EVENT_NAME}": event.name,
+        "{REGISTRATION_START_TIME}": moment(event.registrationStartTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{REGISTRATION_END_TIME}": moment(event.registrationEndTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{SUBMISSION_START_TIME}": moment(event.submissionStartTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{SUBMISSION_END_TIME}": moment(event.submissionEndTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{REVIEW_START_TIME}": moment(event.reviewStartTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{REVIEW_END_TIME}": moment(event.reviewEndTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{EVENT_START_TIME}": moment(event.startTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{EVENT_END_TIME}": moment(event.endTime).format('MMMM Do YYYY, h:mm:ss a'),
+        "{CURRENT_TIME}": moment().format('MMMM Do YYYY, h:mm:ss a'),
+    }
+
+    for (const key in data) {
+        str = str.replace(new RegExp(key, 'g'), data[key]) // Replace all instances of the tag with the corresponding data
+    }
+
+    return str
+}
+
 const SendgridService = {
     sendAcceptanceEmail: (event, user) => {
 
