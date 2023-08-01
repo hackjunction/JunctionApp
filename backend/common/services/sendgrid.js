@@ -77,7 +77,8 @@ const SendgridService = {
                 header_image: header_image_url,
                 subject: event.emailConfig.acceptanceEmail.title || `Congratulations!`,
                 subtitle: event.emailConfig.acceptanceEmail.subtitle || `You've been accepted to ${event.name}!`,
-                body: `
+                body: replaceBodyTags(event.emailConfig.acceptanceEmail.body, event, user),
+                /* body: `
                     <p>
                         After your celebratory dance, please remember to confirm your spot <strong>A.S.A.P</strong> so that
                         we know you're coming. You can do this by logging into the Event Dashboard (link below) with the same 
@@ -89,7 +90,7 @@ const SendgridService = {
                         If something has come up, and you won't be able to join the event, please go ahead and
                         cancel your spot in the Event Dashboard so that we can give it to the next hacker in line. 
                     </p>
-                `,
+                `, */
                 cta_text: 'Event dashboard',
                 cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
                 // event_name: event.name,
@@ -111,7 +112,8 @@ const SendgridService = {
                 header_image_url: header_image_url,
                 subject: event.emailConfig.rejectionEmail.title || `Oh-oh, bad news...`,
                 subtitle: event.emailConfig.rejectionEmail.subtitle || `We couldn't give you a spot at ${event.name}.`,
-                body: `
+                body: replaceBodyTags(event.emailConfig.rejectionEmail.body, event, user),
+                /* body: `
                     <p>
                         Thank you very much for applying to ${event.name}, but we're sad to inform you
                         that we weren't able to accept you this time. We'd love to be able to accept all
@@ -129,7 +131,7 @@ const SendgridService = {
                         We host tons of events around the year and around the globe and it would be amazing to see you at
                         one of them. Check out the full event calendar here <a href="${global.gConfig.CALENDAR_URL}">here</a>.
                     </p>
-                `,
+                `, */
             },
         )
         return SendgridService.send(msg)
@@ -148,11 +150,12 @@ const SendgridService = {
                     header_image: header_image_url,
                     subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
                     subtitle: event.emailConfig.registrationEmail.subtitle || 'Awesome! Now just sit back and relax.',
-                    body: `The application period ends <b>${moment(
+                    body: replaceBodyTags(event.emailConfig.registrationEmail.body, event, user),
+                    /* body: `The application period ends <b>${moment(
                         event.registrationEndTime,
                     ).format(
                         'MMMM Do',
-                    )}</b>, and we'll be able to process all of the applications shortly after that. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
+                    )}</b>, and we'll be able to process all of the applications shortly after that. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`, */
                     cta_text: 'Event dashboard',
                     cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
                 },
