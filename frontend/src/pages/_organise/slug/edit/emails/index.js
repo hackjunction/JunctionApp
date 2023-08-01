@@ -20,7 +20,7 @@ export default () => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12}>
                                 <Box mb={1}>
                                     <Typography variant="body1">Sender Email</Typography>
                                 </Box>
@@ -37,7 +37,7 @@ export default () => {
                             <FastField
                                 name="emailConfig.senderName"
                                 render={({ field, form }) => (
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Sender Name</Typography>
                                         </Box>
@@ -67,7 +67,7 @@ export default () => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12}>
                                 <Box mb={1}>
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
@@ -84,7 +84,7 @@ export default () => {
                             <FastField
                                 name="emailConfig.acceptanceEmail.subtitle"
                                 render={({ field, form }) => (
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Subtitle</Typography>
                                         </Box>
@@ -133,7 +133,7 @@ export default () => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12}>
                                 <Box mb={1}>
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
@@ -150,7 +150,7 @@ export default () => {
                             <FastField
                                 name="emailConfig.rejectionEmail.subtitle"
                                 render={({ field, form }) => (
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Subtitle</Typography>
                                         </Box>
@@ -199,7 +199,7 @@ export default () => {
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12}>
                                 <Box mb={1}>
                                     <Typography variant="body1">Title</Typography>
                                 </Box>
@@ -216,7 +216,7 @@ export default () => {
                             <FastField
                                 name="emailConfig.registrationEmail.subtitle"
                                 render={({ field, form }) => (
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
                                             <Typography variant="body1">Subtitle</Typography>
                                         </Box>
