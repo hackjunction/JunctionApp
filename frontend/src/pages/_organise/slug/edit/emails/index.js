@@ -1,11 +1,14 @@
 import React from 'react'
 
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box, DialogActions } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
+import Button from 'components/generic/Button'
+
+
 
 export default () => {
     return (
@@ -122,6 +125,19 @@ export default () => {
                         </FormControl>
                     )}
                 />
+                <Grid item xs={12}>
+                    <Box mt={1}>
+                        <Button
+                            // loading={loading}
+                            variant="contained"
+                            color="primary"
+                        // onClick={handleTestEmail}
+                        >
+                            Send to yourself
+                            {/* {t('Send_yourself_')} */}
+                        </Button>
+                    </Box>
+                </Grid>
             </Grid>
             <Grid item xs={12}>
                 <FastField
@@ -188,6 +204,19 @@ export default () => {
                         </FormControl>
                     )}
                 />
+                <Grid item xs={12}>
+                    <Box mt={1}>
+                        <Button
+                            // loading={loading}
+                            variant="contained"
+                            color="primary"
+                        // onClick={handleTestEmail}
+                        >
+                            Send to yourself
+                            {/* {t('Send_yourself_')} */}
+                        </Button>
+                    </Box>
+                </Grid>
             </Grid>
             <Grid item xs={12}>
                 <FastField
@@ -254,8 +283,34 @@ export default () => {
                         </FormControl>
                     )}
                 />
+                <Grid item xs={12}>
+                    <Box mt={1}>
+                        <Button
+                            // loading={loading}
+                            variant="contained"
+                            color="primary"
+                        // onClick={handleTestEmail}
+                        >
+                            Send to yourself
+                            {/* {t('Send_yourself_')} */}
+                        </Button>
+                    </Box>
+                </Grid>
             </Grid>
 
+            <Grid item xs={12}>
+                <Box mt={1}>
+                    <Button
+                        // loading={loading}
+                        variant="contained"
+                        color="primary"
+                    // onClick={handleTestEmail}
+                    >
+                        Send to yourself
+                        {/* {t('Send_yourself_')} */}
+                    </Button>
+                </Box>
+            </Grid>
         </Grid >
     )
 }
