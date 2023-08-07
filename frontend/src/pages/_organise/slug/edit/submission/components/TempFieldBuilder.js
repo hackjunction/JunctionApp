@@ -310,18 +310,6 @@ export default ({
     }
 
     return (
-        // <Dialog
-        //     fullWidth
-        //     maxWidth="md"
-        //     open={visible || editing}
-        //     onClose={handleCancel}
-        //     aria-labelledby="form-dialog-title"
-        // >
-        //     <DialogTitle id="form-dialog-title">
-        //         {editing
-        //             ? `Edit ${data.label}`
-        //             : `Add a new question under ${sectionName}`}
-        //     </DialogTitle>
         <>
             <div>
                 <Typography variant="body1" className={classes.label}>
@@ -440,6 +428,5 @@ export default ({
                 </Button>
             </div>
         </>
-        // </Dialog>
     )
 }

@@ -1,17 +1,37 @@
 import React, { useState } from 'react'
 import Section from './section'
-import { FastField } from 'formik'
+import {
+    ErrorMessage,
+    FastField,
+    Field,
+    FieldArray,
+    Form,
+    Formik,
+    useFormikContext,
+} from 'formik'
 import FormControl from 'components/inputs/FormControl'
 import CustomSectionList from '../questions/CustomSectionList'
 import CustomSectionListItem from '../questions/CustomSectionList/CustomSectionListItem'
 import TempFieldBuilder from './components/TempFieldBuilder'
-// import { Formik } from 'formik'
+import AltSection from './AltSection'
+
+const initialValues = {
+    friends: [
+        {
+            name: '',
+            email: '',
+        },
+    ],
+}
 
 export default () => {
     const [sections, setSections] = useState([1])
-
+    const formikCont = useFormikContext()
+    console.log('From submission page, complete formikContext:', formikCont)
+    const { values } = formikCont
     const handleAddSection = () => {
         setSections([...sections, sections.length + 1])
+        console.log(sections)
     }
 
     // TODO fix issue where removing a section is removing the wrong element because current method uses index instead of a unique identifier
@@ -26,7 +46,7 @@ export default () => {
                     Submission form builder
                 </span>
             </h1>
-            {sections.map((_, index) => (
+            {/* {sections.map((_, index) => (
                 <div key={index} className="tw-mt-4">
                     <Section
                         onChange={() => {}}
@@ -34,7 +54,7 @@ export default () => {
                         fieldName={`form_submission_${index}`}
                     />
                 </div>
-            ))}
+            ))} */}
             {/* <FastField
                 name="submissionFormFields"
                 render={({ field, form }) => (
@@ -76,9 +96,94 @@ export default () => {
                 // isFirst={index === 0}
                 // isLast={index === sections.length - 1}
             /> */}
-            <FastField name="submissionFormFields">
-                {({ field, form }) => <TempFieldBuilder />}
-            </FastField>
+            {/* <Field name="submissionFormFields"> */}
+            {/* <Formik
+                initialValues={initialValues}
+                onSubmit={async values => {
+                    await new Promise(r => setTimeout(r, 500))
+                    alert(JSON.stringify(values, null, 2))
+                }}
+            >
+                {({ values }) => (
+                    <Form> */}
+            <FieldArray name="friends">
+                {({ insert, remove, push }) => (
+                    <div>
+                        {values.friends.length > 0 &&
+                            values.friends.map((friend, index) => (
+                                <div className="row" key={index}>
+                                    <div className="col">
+                                        <label
+                                            htmlFor={`friends.${index}.name`}
+                                        >
+                                            Name
+                                        </label>
+                                        <Field
+                                            name={`friends.${index}.name`}
+                                            placeholder="Jane Doe"
+                                            type="text"
+                                        />
+                                        <ErrorMessage
+                                            name={`friends.${index}.name`}
+                                            component="div"
+                                            className="field-error"
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <label
+                                            htmlFor={`friends.${index}.email`}
+                                        >
+                                            Email
+                                        </label>
+                                        <Field
+                                            name={`friends.${index}.email`}
+                                            placeholder="jane@acme.com"
+                                            type="email"
+                                        />
+                                        <ErrorMessage
+                                            name={`friends.${index}.name`}
+                                            component="div"
+                                            className="field-error"
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <button
+                                            type="button"
+                                            className="secondary"
+                                            onClick={() => remove(index)}
+                                        >
+                                            X
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={() => push({ name: '', email: '' })}
+                        >
+                            Add Friend
+                        </button>
+                    </div>
+                )}
+            </FieldArray>
+            <button type="submit">Invite</button>
+            {/* </Form>
+                )}
+            </Formik> */}
+            {/* // sections.map((_, index) => (
+                //     <div>
+                //         <TempFieldBuilder />
+                //         <AltSection
+                //             onChange={() => {}}
+                //             onRemove={() => handleRemoveSection(index)}
+                //             fieldName={`form_submission_${index}`}
+                //             field={field}
+                //             form={form}
+                //         />
+                //     </div>
+                // )) */}
+            {/* </Field> */}
             {/* render={({ field, form }) => (
                         <FormControl
                             label="Custom questions"
