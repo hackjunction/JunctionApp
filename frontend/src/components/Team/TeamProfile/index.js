@@ -82,7 +82,7 @@ export default ({
                 />
             </div>
             <TeamRoles
-                maxRoles={9999}
+                maxRoles={10}
                 profileView
                 teamRoles={teamData.teamRoles}
                 onRoleClick={onRoleClick}

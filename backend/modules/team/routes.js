@@ -113,6 +113,7 @@ const candidateApplyToTeam = asyncHandler(async (req, res) => {
         req.params.code,
         req.body,
     )
+    console.log('Team after candidate applies and from Routes:', team)
     return res.status(200).json(team)
 })
 

@@ -193,10 +193,6 @@ controller.declineCandidateToTeam = (eventId, userId, code, candidateId) => {
 }
 
 controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
-    // const applicationSchema = yup.object().shape({
-
-    // const validatedData = await UserProfileHelpers.validate(data)
-
     console.log('Validating application data:', applicationData)
     return controller.getTeamByCode(eventId, code).then(team => {
         if (
@@ -227,7 +223,6 @@ controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
 
             throw new NotFoundError('You are already in this team')
         }
-        console.log('Adding application data:', applicationData)
         team.candidates = team.candidates.concat(applicationData)
         console.log('Saving team with:', team)
         return team.save()
