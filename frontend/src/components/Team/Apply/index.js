@@ -17,21 +17,6 @@ import Button from 'components/generic/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'
 
-// export const roles = [
-//     {
-//         label: 'Manager',
-//         value: 'Manager',
-//     },
-//     {
-//         label: 'Software Developer',
-//         value: 'Software Developer',
-//     },
-//     {
-//         label: 'UI/UX Designer',
-//         value: 'UI/UX Designer',
-//     },
-// ]
-
 export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     const dispatch = useDispatch()
     const roles = useMemo(() => {
@@ -61,9 +46,10 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
         (values, formikBag) => {
             formikBag.setSubmitting(true)
             const submittionData = {}
-            submittionData.roles = _.filter(teamRolesData, role =>
-                _.includes(values.roles, role.role),
-            )
+            // submittionData.roles = _.filter(teamRolesData, role =>
+            //     _.includes(values.roles, role.role),
+            // )
+            submittionData.roles = values.roles
             submittionData.motivation = values.motivation
             //TODO Make all this data dynamically fetched from the user profile in the backend
             submittionData.userId = userProfile.userId
@@ -71,9 +57,9 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
             submittionData.firstName = userProfile.firstName
             submittionData.lastName = userProfile.lastName
             submittionData.headline = userProfile.headline
-            console.log('Submission data:', submittionData)
-            console.log('Values:', values)
-            console.log('FormikBag:', formikBag)
+            // console.log('Submission data:', submittionData)
+            // console.log('Values:', values)
+            // console.log('FormikBag:', formikBag)
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
@@ -120,8 +106,10 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                                     display: 'flex',
                                 }}
                             >
-                                <h1>Explorers</h1>
-                                <h3>#Fazer</h3>
+                                <h1>{selectedTeam.name}</h1>
+                                {selectedTeam?.challenge && (
+                                    <h3>#{selectedTeam.challenge}</h3>
+                                )}
                             </Box>
                             {/* <h2>Role/s applied for*</h2> */}
                             <Grid item xs={12}>

@@ -53,6 +53,7 @@ import BottomBar from 'components/inputs/BottomBar'
 import TeamProfile from 'components/Team/TeamProfile'
 import Apply from 'components/Team/Apply'
 import Filter from 'components/Team/Filter'
+import JoinTeamByCode from 'components/Team/JoinTeamByCode'
 
 export default () => {
     const dispatch = useDispatch()
@@ -69,6 +70,7 @@ export default () => {
     //TODO add a conditional rendering to show a 'no teams' message if there are no teams to render
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
+    const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
 
     const onFilterChange = filter => {
@@ -129,7 +131,14 @@ export default () => {
             )}
             {!selected && !applying && (
                 <>
-                    <div className="tw-mb-4">
+                    <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlined"
+                            onClick={() => setJoinByCode(!joinByCode)}
+                        >
+                            Join team using a code
+                        </Button>
                         <Filter
                             noFilterOption="All challenges"
                             filterArray={event.challenges.map(
@@ -138,6 +147,20 @@ export default () => {
                             onChange={onFilterChange}
                         />
                     </div>
+                    {joinByCode && (
+                        <div className="tw-bg-white tw-p-4 tw-text-left tw-rounded-lg tw-shadow-md tw-flex tw-justify-center tw-items-center tw-gap-4">
+                            <JoinTeamByCode />
+                            <div>
+                                <Button
+                                    color="outlined_button"
+                                    variant="jOutlined"
+                                    onClick={() => setJoinByCode(false)}
+                                >
+                                    Close
+                                </Button>
+                            </div>
+                        </div>
+                    )}
                     {teamCards.length > 0 ? (
                         <ResponsiveMasonry
                             columnsCountBreakPoints={{

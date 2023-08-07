@@ -227,6 +227,7 @@ controller.candidateApplyToTeam = (eventId, userId, code, applicationData) => {
 
             throw new NotFoundError('You are already in this team')
         }
+        console.log('Adding application data:', applicationData)
         team.candidates = team.candidates.concat(applicationData)
         console.log('Saving team with:', team)
         return team.save()
