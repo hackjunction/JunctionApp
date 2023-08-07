@@ -34,6 +34,9 @@ const contactMessageParams = () =>
 router.route('/:slug/preview').post(
     celebrate({
         body: {
+            from: Joi.object({
+                email: Joi.string().email().required(),
+            }).optional(),
             to: Joi.string().email(),
             params: messageParams().required(),
         },
@@ -42,8 +45,8 @@ router.route('/:slug/preview').post(
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const { to, params } = req.body
-        await EmailTaskController.sendPreviewEmail(to, params)
+        const { from, to, params } = req.body
+        await EmailTaskController.sendPreviewEmail(from, to, params)
         return res.status(status.OK).json({ message: 'success' })
     }),
 )
