@@ -19,12 +19,9 @@ import FormControl from 'components/inputs/FormControl'
 
 export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     const dispatch = useDispatch()
+    teamRolesData.unshift({ role: 'Open application' })
     const roles = useMemo(() => {
         return [
-            {
-                label: 'Open application',
-                value: 'Open application',
-            },
             ...teamRolesData.map(role => ({
                 label: role.role,
                 value: role.role,
@@ -46,10 +43,9 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
         (values, formikBag) => {
             formikBag.setSubmitting(true)
             const submittionData = {}
-            // submittionData.roles = _.filter(teamRolesData, role =>
-            //     _.includes(values.roles, role.role),
-            // )
-            submittionData.roles = values.roles
+            submittionData.roles = _.filter(teamRolesData, role =>
+                _.includes(values.roles, role.role),
+            )
             submittionData.motivation = values.motivation
             //TODO Make all this data dynamically fetched from the user profile in the backend
             submittionData.userId = userProfile.userId
@@ -57,9 +53,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
             submittionData.firstName = userProfile.firstName
             submittionData.lastName = userProfile.lastName
             submittionData.headline = userProfile.headline
-            // console.log('Submission data:', submittionData)
-            // console.log('Values:', values)
-            // console.log('FormikBag:', formikBag)
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
