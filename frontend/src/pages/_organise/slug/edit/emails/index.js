@@ -24,20 +24,52 @@ export default () => {
     const { t } = useTranslation()
     const { values } = useFormikContext()
 
-    const handleTestEmail = useCallback(async (values) => {
+    const handleTestEmail = useCallback(async (values, emailType) => {
         console.log('Event')
         setLoading(true)
 
-        const from = {
-            name: values.emailConfig.senderName,
-            email: values.emailConfig.senderEmail,
-        }
-        const params = {
+        const acceptanceEmailParams = {
             subject: values.emailConfig.acceptanceEmail.title,
             subtitle: values.emailConfig.acceptanceEmail.subtitle,
             body: values.emailConfig.acceptanceEmail.body,
         }
+        const rejectionEmailParams = {
+            subject: values.emailConfig.rejectionEmail.title,
+            subtitle: values.emailConfig.rejectionEmail.subtitle,
+            body: values.emailConfig.rejectionEmail.body,
+        }
+        const registrationEmailParams = {
+            subject: values.emailConfig.registrationEmail.title,
+            subtitle: values.emailConfig.registrationEmail.subtitle,
+            body: values.emailConfig.registrationEmail.body,
+        }
+
+        let params = {}
+
+        switch (emailType) {
+            case 'acceptanceEmail':
+                params = acceptanceEmailParams
+                break
+            case 'rejectionEmail':
+                params = rejectionEmailParams
+                break
+            case 'registrationEmail':
+                params = registrationEmailParams
+                break
+            default:
+                params = acceptanceEmailParams
+        }
+
         const senderEmail = values.emailConfig.senderEmail // email to send to oneself
+        const from = {
+            name: values.emailConfig.senderName,
+            email: senderEmail,
+        }
+        /* const params = {
+            subject: values.emailConfig.acceptanceEmail.title,
+            subtitle: values.emailConfig.acceptanceEmail.subtitle,
+            body: values.emailConfig.acceptanceEmail.body,
+        } */
 
         await EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: senderEmail, params, from })
             .then(() => {
