@@ -34,20 +34,20 @@ const contactMessageParams = () =>
 router.route('/:slug/preview').post(
     celebrate({
         body: {
+            to: Joi.string().email(),
+            params: messageParams().required(),
             from: Joi.object({
                 email: Joi.string().email().required(),
                 name: Joi.string().required(),
             }).optional(),
-            to: Joi.string().email(),
-            params: messageParams().required(),
         },
     }),
     hasToken,
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const { from, to, params } = req.body
-        await EmailTaskController.sendPreviewEmail(from, to, params)
+        const { to, params, from } = req.body
+        await EmailTaskController.sendPreviewEmail(to, params, from)
         return res.status(status.OK).json({ message: 'success' })
     }),
 )
