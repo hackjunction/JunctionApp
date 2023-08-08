@@ -36,6 +36,7 @@ router.route('/:slug/preview').post(
         body: {
             from: Joi.object({
                 email: Joi.string().email().required(),
+                name: Joi.string().required(),
             }).optional(),
             to: Joi.string().email(),
             params: messageParams().required(),
