@@ -24,11 +24,29 @@ export default () => {
     const { t } = useTranslation()
     const { values } = useFormikContext()
 
+    // function to extract email params from formik values
+    const extractEmailParams = (emailConfig, type) => {
+        return {
+            subject: emailConfig[type].title,
+            subtitle: emailConfig[type].subtitle,
+            body: emailConfig[type].body,
+        }
+    }
+
     const handleTestEmail = useCallback(async (values, emailType) => {
-        console.log('Event')
         setLoading(true)
 
-        const acceptanceEmailParams = {
+        let params
+        switch (emailType) {
+            case 'acceptanceEmail':
+            case 'rejectionEmail':
+            case 'registrationEmail':
+                params = extractEmailParams(values.emailConfig, emailType)
+                break
+            default:
+                params = extractEmailParams(values.emailConfig, 'acceptanceEmail')
+        }
+        /* const acceptanceEmailParams = {
             subject: values.emailConfig.acceptanceEmail.title,
             subtitle: values.emailConfig.acceptanceEmail.subtitle,
             body: values.emailConfig.acceptanceEmail.body,
@@ -43,10 +61,10 @@ export default () => {
             subtitle: values.emailConfig.registrationEmail.subtitle,
             body: values.emailConfig.registrationEmail.body,
         }
+ 
+        let params = {} */
 
-        let params = {}
-
-        switch (emailType) {
+        /* switch (emailType) {
             case 'acceptanceEmail':
                 params = acceptanceEmailParams
                 break
@@ -58,7 +76,7 @@ export default () => {
                 break
             default:
                 params = acceptanceEmailParams
-        }
+        } */
 
         const senderEmail = values.emailConfig.senderEmail // email to send to oneself
         const from = {
