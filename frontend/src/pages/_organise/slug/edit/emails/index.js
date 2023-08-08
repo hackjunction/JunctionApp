@@ -339,20 +339,6 @@ export default () => {
                     </Box>
                 </Grid>
             </Grid>
-
-            <Grid item xs={12}>
-                <Box mt={1}>
-                    <Button
-                        // loading={loading}
-                        variant="contained"
-                        color="primary"
-                    // onClick={handleTestEmail}
-                    >
-                        Send to yourself
-                        {/* {t('Send_yourself_')} */}
-                    </Button>
-                </Box>
-            </Grid>
         </Grid >
     )
 }
