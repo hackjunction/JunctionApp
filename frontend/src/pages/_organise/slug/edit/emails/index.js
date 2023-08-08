@@ -251,13 +251,12 @@ export default () => {
                 <Grid item xs={12}>
                     <Box mt={1}>
                         <Button
-                            // loading={loading}
+                            loading={loading}
                             variant="contained"
                             color="primary"
-                        // onClick={handleTestEmail}
+                            onClick={() => handleTestEmail(values)}
                         >
-                            Send to yourself
-                            {/* {t('Send_yourself_')} */}
+                            {t('Send_yourself_')}
                         </Button>
                     </Box>
                 </Grid>
@@ -330,13 +329,12 @@ export default () => {
                 <Grid item xs={12}>
                     <Box mt={1}>
                         <Button
-                            // loading={loading}
+                            loading={loading}
                             variant="contained"
                             color="primary"
-                        // onClick={handleTestEmail}
+                            onClick={() => handleTestEmail(values)}
                         >
-                            Send to yourself
-                            {/* {t('Send_yourself_')} */}
+                            {t('Send_yourself_')}
                         </Button>
                     </Box>
                 </Grid>
