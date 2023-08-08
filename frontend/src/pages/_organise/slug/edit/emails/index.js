@@ -190,7 +190,7 @@ export default () => {
                             loading={loading}
                             variant="contained"
                             color="primary"
-                            onClick={() => handleTestEmail(values)}
+                            onClick={() => handleTestEmail(values, 'acceptanceEmail')}
                         >
                             {t('Send_yourself_')}
                         </Button>
@@ -268,7 +268,7 @@ export default () => {
                             loading={loading}
                             variant="contained"
                             color="primary"
-                            onClick={() => handleTestEmail(values)}
+                            onClick={() => handleTestEmail(values, 'rejectionEmail')}
                         >
                             {t('Send_yourself_')}
                         </Button>
@@ -346,7 +346,7 @@ export default () => {
                             loading={loading}
                             variant="contained"
                             color="primary"
-                            onClick={() => handleTestEmail(values)}
+                            onClick={() => handleTestEmail(values, 'registrationEmail')}
                         >
                             {t('Send_yourself_')}
                         </Button>
