@@ -12,7 +12,7 @@ function config(idToken) {
 
 const BASE_ROUTE = '/email'
 
-EmailService.sendPreviewEmail = (idToken, slug, from = {}, to, params) => {
+EmailService.sendPreviewEmail = ({ idToken, slug, from = {}, to, params }) => {
     const data = {
         from,
         to,
