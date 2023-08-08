@@ -5,11 +5,11 @@ import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import BottomBar from 'components/inputs/BottomBar'
+
 import * as yup from 'yup'
 
 import React from 'react'
 import Button from 'components/generic/Button'
-import regexUtils from 'utils/regexUtils'
 import { Typography } from '@material-ui/core'
 
 export default ({
@@ -22,15 +22,11 @@ export default ({
         name: yup.string().required('Team name is required'),
         tagline: yup.string().required('Team tagline is required'),
         description: yup.string().required('Team description is required'),
-        ideaTitle: yup.string().required('Idea title is required'),
-        ideaDescription: yup.string().required('Idea description is required'),
+        ideaTitle: yup.string(),
+        ideaDescription: yup.string(),
         email: yup.string().email('Invalid email address'),
-        discord: yup
-            .string()
-            .matches(regexUtils.urlRegex, 'Invalid discord url'),
-        telegram: yup
-            .string()
-            .matches(regexUtils.urlRegex, 'Invalid telegram url'),
+        discord: yup.string('Invalid discord url'),
+        telegram: yup.string('Invalid telegram url'),
     }
 
     if (challengeOptions && challengeOptions.length > 0) {

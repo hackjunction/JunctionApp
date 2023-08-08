@@ -17,29 +17,11 @@ import Button from 'components/generic/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'
 
-// export const roles = [
-//     {
-//         label: 'Manager',
-//         value: 'Manager',
-//     },
-//     {
-//         label: 'Software Developer',
-//         value: 'Software Developer',
-//     },
-//     {
-//         label: 'UI/UX Designer',
-//         value: 'UI/UX Designer',
-//     },
-// ]
-
 export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     const dispatch = useDispatch()
+    teamRolesData.unshift({ role: 'Open application' })
     const roles = useMemo(() => {
         return [
-            {
-                label: 'Open application',
-                value: 'Open application',
-            },
             ...teamRolesData.map(role => ({
                 label: role.role,
                 value: role.role,
@@ -71,9 +53,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
             submittionData.firstName = userProfile.firstName
             submittionData.lastName = userProfile.lastName
             submittionData.headline = userProfile.headline
-            console.log('Submission data:', submittionData)
-            console.log('Values:', values)
-            console.log('FormikBag:', formikBag)
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
@@ -120,8 +99,10 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                                     display: 'flex',
                                 }}
                             >
-                                <h1>Explorers</h1>
-                                <h3>#Fazer</h3>
+                                <h1>{selectedTeam.name}</h1>
+                                {selectedTeam?.challenge && (
+                                    <h3>#{selectedTeam.challenge}</h3>
+                                )}
                             </Box>
                             {/* <h2>Role/s applied for*</h2> */}
                             <Grid item xs={12}>

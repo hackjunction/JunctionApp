@@ -270,7 +270,8 @@ export const getCandidateProfileById = userId => async (dispatch, getState) => {
 export const candidateApplyToTeam =
     (slug, code, applicationData) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
-
+        console.log('submitted with:', applicationData)
+        // if (applicationData.roles)
         const team = await TeamsService.candidateApplyToTeam(
             idToken,
             slug,
