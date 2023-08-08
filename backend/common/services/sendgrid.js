@@ -334,8 +334,9 @@ const SendgridService = {
 
         return SendgridService.sendGenericEmail(user.email, params)
     },
-    sendGenericEmail: (to, params) => {
+    sendGenericEmail: (from = {}, to, params) => {
         const msg = SendgridService.buildTemplateMessage(
+            from,
             to,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
@@ -364,15 +365,23 @@ const SendgridService = {
         )
         return SendgridService.send(msg)
     },
-    buildTemplateMessage: (to, templateId, data) => {
-
+    buildTemplateMessage: (from, to, templateId, data) => {
         return {
             to,
             //TODO: from email and name should be customazible
+            /* from: {
+                // name: event.emailConfig.senderName || global.gConfig.SENDGRID_FROM_NAME,
+                // email: event.emailConfig.senderEmail || global.gConfig.SENDGRID_FROM_EMAIL,
+                // name: 'David Amebley is Sender(Sendgrid)',
+                name: data.senderName || global.gConfig.SENDGRID_FROM_NAME,
+                // email: 'david.amebley@hackjunction.com'
+                email: data.senderEmail || global.gConfig.SENDGRID_FROM_EMAIL,
+            }, */
             from: {
-                name: event.emailConfig.senderName || global.gConfig.SENDGRID_FROM_NAME,
-                email: event.emailConfig.senderEmail || global.gConfig.SENDGRID_FROM_EMAIL,
+                name: from.name || global.gConfig.SENDGRID_FROM_NAME,
+                email: from.email || global.gConfig.SENDGRID_FROM_EMAIL,
             },
+            body: data.body,
             replyTo: data.reply_to,
             templateId,
             dynamic_template_data: data,
