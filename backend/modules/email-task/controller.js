@@ -260,8 +260,8 @@ controller.deliverEmailTask = async task => {
     return task.save()
 }
 
-controller.sendPreviewEmail = async (from = {}, to, msgParams) => {
-    return SendgridService.sendGenericEmail(from, to, msgParams).catch(() => { })
+controller.sendPreviewEmail = async (to, msgParams, from = {}) => {
+    return SendgridService.sendGenericEmail(to, msgParams, from).catch(() => { })
 }
 
 controller.sendContactEmail = async msgParams => {
