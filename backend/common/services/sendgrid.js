@@ -334,9 +334,8 @@ const SendgridService = {
 
         return SendgridService.sendGenericEmail(user.email, params)
     },
-    sendGenericEmail: (from = {}, to, params) => {
+    sendGenericEmail: (to, params, from = {}) => {
         const msg = SendgridService.buildTemplateMessage(
-            from,
             to,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
@@ -348,6 +347,7 @@ const SendgridService = {
                 cta_link: params.cta_link,
                 reply_to: params.reply_to,
             },
+            from
         )
         console.log('sending', msg)
         return SendgridService.send(msg)
@@ -365,7 +365,7 @@ const SendgridService = {
         )
         return SendgridService.send(msg)
     },
-    buildTemplateMessage: (from, to, templateId, data) => {
+    buildTemplateMessage: (to, templateId, data, from = {}) => {
         return {
             to,
             //TODO: from email and name should be customazible
