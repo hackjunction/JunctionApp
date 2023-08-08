@@ -39,7 +39,7 @@ export default () => {
         }
         const senderEmail = values.emailConfig.senderEmail // email to send to oneself
 
-        await EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, from, to: senderEmail, params })
+        await EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: senderEmail, params, from })
             .then(() => {
                 dispatch(
                     SnackbarActions.success(
