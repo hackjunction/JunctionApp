@@ -1,16 +1,61 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Grid, Typography, Box, DialogActions } from '@material-ui/core'
-import { FastField } from 'formik'
+import { Grid, Typography, Box } from '@material-ui/core'
+import { FastField, useFormikContext } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import Button from 'components/generic/Button'
-
-
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
+import EmailService from 'services/email'
+import { useTranslation } from 'react-i18next'
 
 export default () => {
+    const dispatch = useDispatch()
+    const idToken = useSelector(AuthSelectors.getIdToken)
+    const user = useSelector(UserSelectors.userProfile)
+    const event = useSelector(OrganiserSelectors.event)
+    const [loading, setLoading] = useState(false)
+    const { t } = useTranslation()
+    const { values } = useFormikContext()
+
+    const handleTestEmail = useCallback(async (values) => {
+        console.log('Event')
+        setLoading(true)
+
+        const from = {
+            name: values.emailConfig.senderName,
+            email: values.emailConfig.senderEmail,
+        }
+        const params = {
+            subject: values.emailConfig.acceptanceEmail.title,
+            subtitle: values.emailConfig.acceptanceEmail.subtitle,
+            body: values.emailConfig.acceptanceEmail.body,
+        }
+        const senderEmail = values.emailConfig.senderEmail // email to send to oneself
+
+        await EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, from, to: senderEmail, params })
+            .then(() => {
+                dispatch(
+                    SnackbarActions.success(
+                        t('Test_email_sent_', { user: senderEmail }),
+                    ),
+                )
+            })
+            .catch(err => {
+                dispatch(SnackbarActions.error(t('Something_wrong_')))
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+        return null
+    }, [idToken, event.slug, user.email, dispatch, t])
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -128,13 +173,12 @@ export default () => {
                 <Grid item xs={12}>
                     <Box mt={1}>
                         <Button
-                            // loading={loading}
+                            loading={loading}
                             variant="contained"
                             color="primary"
-                        // onClick={handleTestEmail}
+                            onClick={() => handleTestEmail(values)}
                         >
-                            Send to yourself
-                            {/* {t('Send_yourself_')} */}
+                            {t('Send_yourself_')}
                         </Button>
                     </Box>
                 </Grid>
