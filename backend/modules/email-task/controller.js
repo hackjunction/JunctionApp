@@ -260,8 +260,28 @@ controller.deliverEmailTask = async task => {
     return task.save()
 }
 
-controller.sendPreviewEmail = async (to, msgParams, from = {}) => {
-    return SendgridService.sendGenericEmail(to, msgParams, from).catch(() => { })
+controller.sendPreviewEmail = async (to, msgParams, from = {}, eventSlug) => {
+    // Fetch the userId using the provided email
+    const userId = await UserController.getUserIdByEmail(to)
+
+    // Fetch the required 'event' and 'user' data using the eventSlug and userId
+    const [event, user] = await Promise.all([
+        EventController.getEventBySlug(eventSlug),
+        UserController.getUserProfile(userId),
+    ])
+
+    // Check if user is available.
+    if (!user) {
+        throw new Error('User data not found.')
+    }
+
+    // Check if event is available.
+    if (!event) {
+        throw new Error('Event data not found.')
+    }
+
+
+    return SendgridService.sendGenericEmail(to, msgParams, from, event, user).catch(() => { })
 }
 
 controller.sendContactEmail = async msgParams => {
