@@ -39,6 +39,18 @@ const sendgridAddRecipientsToList = (listId, recipientIds) => {
 
 // A function that takes in the email body as a string and replaces the tags with corresponding dynamic information
 const replaceBodyTags = (str, event, user) => {
+    if (typeof str !== 'string' || !str.length) {
+        throw new Error("Expected body ('str') to be a string")
+    }
+
+    if (!event || typeof event !== 'object') {
+        throw new Error("Expected 'event' to be an object")
+    }
+
+    if (!user || typeof user !== 'object') {
+        throw new Error("User object is missing or not an object")
+    }
+
     const data = {
         "{USER_ID}": user.userId,
         "{FIRST_NAME}": user.firstName,
@@ -54,9 +66,17 @@ const replaceBodyTags = (str, event, user) => {
         "{EVENT_END_TIME}": moment(event.endTime).format('MMMM Do YYYY, h:mm:ss a'),
         "{CURRENT_TIME}": moment().format('MMMM Do YYYY, h:mm:ss a'),
     }
-
-    for (const key in data) {
-        str = str.replace(new RegExp(key, 'g'), data[key]) // Replace all instances of the tag with the corresponding data
+    try {
+        for (const key in data) {
+            if (data[key] === null || data[key] === undefined) {
+                console.error(`Data for key ${key} is missing or undefined`)
+                continue    // We skip this replacement if the data is missing
+            }
+            str = str.replace(new RegExp(key, 'g'), data[key]) // Replace all instances of the tag with the corresponding data
+        }
+    } catch (err) {
+        console.error("Error replacing body tags:", err)
+        return str
     }
 
     return str
@@ -294,7 +314,7 @@ const SendgridService = {
 
         return SendgridService.sendGenericEmail(user.email, params)
     },
-    sendGenericEmail: (to, params, from = {}) => {
+    sendGenericEmail: (to, params, from = {}, event, user) => {
         const msg = SendgridService.buildTemplateMessage(
             to,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
@@ -302,7 +322,7 @@ const SendgridService = {
                 subject: params.subject,
                 subtitle: params.subtitle,
                 header_image: params.header_image,
-                body: params.body,
+                body: replaceBodyTags(params.body, event, user),
                 cta_text: params.cta_text,
                 cta_link: params.cta_link,
                 reply_to: params.reply_to,
