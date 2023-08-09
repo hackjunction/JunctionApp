@@ -20,7 +20,11 @@ export default () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(OrganiserSelectors.event)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState({
+        acceptanceEmail: false,
+        rejectionEmail: false,
+        registrationEmail: false,
+    })
     const { t } = useTranslation()
     const { values } = useFormikContext()
 
@@ -34,7 +38,7 @@ export default () => {
     }
 
     const handleTestEmail = useCallback(async (values, emailType) => {
-        setLoading(true)
+        setLoading(prevState => ({ ...prevState, [emailType]: true }))
 
         let params
         switch (emailType) {
@@ -65,7 +69,7 @@ export default () => {
                 dispatch(SnackbarActions.error(t('Something_wrong_')))
             })
             .finally(() => {
-                setLoading(false)
+                setLoading(prevState => ({ ...prevState, [emailType]: false }))
             })
         return null
     }, [idToken, event.slug, user.email, dispatch, t])
@@ -187,7 +191,7 @@ export default () => {
                 <Grid item xs={12}>
                     <Box mt={1}>
                         <Button
-                            loading={loading}
+                            loading={loading.acceptanceEmail}
                             variant="contained"
                             color="primary"
                             onClick={() => handleTestEmail(values, 'acceptanceEmail')}
@@ -265,7 +269,7 @@ export default () => {
                 <Grid item xs={12}>
                     <Box mt={1}>
                         <Button
-                            loading={loading}
+                            loading={loading.rejectionEmail}
                             variant="contained"
                             color="primary"
                             onClick={() => handleTestEmail(values, 'rejectionEmail')}
@@ -343,7 +347,7 @@ export default () => {
                 <Grid item xs={12}>
                     <Box mt={1}>
                         <Button
-                            loading={loading}
+                            loading={loading.registrationEmail}
                             variant="contained"
                             color="primary"
                             onClick={() => handleTestEmail(values, 'registrationEmail')}
