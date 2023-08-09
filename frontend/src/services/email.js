@@ -17,6 +17,7 @@ EmailService.sendPreviewEmail = ({ idToken, slug, to, params, from = {} }) => {
         to,
         params,
         from,
+        eventSlug: slug,
     }
     return _axios.post(`${BASE_ROUTE}/${slug}/preview`, data, config(idToken))
 }
