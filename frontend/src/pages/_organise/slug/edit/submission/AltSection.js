@@ -11,15 +11,13 @@ import RemoveButton from './components/section/RemoveButton'
 import BooleanInput from './components/inputs/BooleanInput'
 import Switch from './components/Switch'
 
-const AltSection = ({
+const Section = ({
     initialData = {
         heading: 'Heading',
         subHeading: 'Sub heading',
         fieldType: 'text',
         values: ['initial value'],
     },
-    field,
-    form,
     onRemove,
     fieldName,
     onChange,
@@ -109,18 +107,22 @@ const AltSection = ({
         delete inputProps.component
 
         return (
-            <InputComponent
-                {...inputProps}
-                {...field}
-                onChange={value => {
-                    // console.log(e)
-                    form.setFieldValue(fieldName, value)
-                    if (inputProps.onChange) {
-                        inputProps.onChange(value)
-                    }
-                }}
-                onBlur={form.handleBlur}
-            />
+            <Field name={fieldName}>
+                {({ field, form }) => (
+                    <InputComponent
+                        {...inputProps}
+                        {...field}
+                        onChange={value => {
+                            // console.log(e)
+                            form.setFieldValue(fieldName, value)
+                            if (inputProps.onChange) {
+                                inputProps.onChange(value)
+                            }
+                        }}
+                        onBlur={form.handleBlur}
+                    />
+                )}
+            </Field>
         )
     }
 
@@ -181,4 +183,4 @@ const AltSection = ({
     )
 }
 
-export default AltSection
+export default Section
