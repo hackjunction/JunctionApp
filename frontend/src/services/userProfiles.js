@@ -34,6 +34,10 @@ UserProfilesService.editUserProfile = (idToken, data) => {
     return _axios.patch('/user-profiles/', data, config(idToken))
 }
 
+UserProfilesService.getUserPublicProfileById = (idToken, userId) => {
+    return _axios.get('/user-profiles/' + userId, config(idToken))
+}
+
 // UserProfilesService.getUsersByEmail = (email, idToken) => {
 //     return _axios.get('/user-profiles/search', {
 //         params: { email },

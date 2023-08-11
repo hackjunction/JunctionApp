@@ -155,6 +155,15 @@ const EventInput = new GraphQLInputObjectType({
         demoHint: {
             type: GraphQLString,
         },
+        challenge_instructions: {
+            type: GraphQLString,
+        },
+        faq: {
+            type: GraphQLString,
+        },
+        demoInstructions: {
+            type: GraphQLString,
+        },
         eventPrivacy: {
             type: GraphQLString,
         },

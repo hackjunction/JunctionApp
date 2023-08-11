@@ -5,6 +5,7 @@ const UserController = require('../user-profile/controller')
 const Registration = require('../registration/model')
 const EmailTaskController = require('../email-task/controller')
 const RegistrationController = require('../registration/controller')
+const userProfileUtils = require('../../common/utils/userProfileUtils')
 
 const controller = {}
 
@@ -128,36 +129,39 @@ controller.createRecruitmentProfile = async (
     eager = false,
     recruiterId = null,
 ) => {
-    const profile = {
-        userId: userProfile.userId,
-        profile: {
-            firstName: userProfile.firstName,
-            lastName: userProfile.lastName,
-            email: userProfile.email,
-            gender: userProfile.gender,
-            nationality: userProfile.nationality,
-            countryOfResidence: userProfile.countryOfResidence,
-            dateOfBirth: userProfile.dateOfBirth,
-            spokenLanguages: userProfile.spokenLanguages,
-            profilePicture: userProfile.avatar || null,
-            headline: userProfile.headline,
-            biography: userProfile.biography,
-        },
-        skills: userProfile.skills,
-        roles: userProfile.roles,
-        industriesOfInterest: userProfile.industriesOfInterest,
-        themesOfInterest: userProfile.themesOfInterest,
-        education: userProfile.education,
-        social: {
-            github: userProfile.github,
-            linkedin: userProfile.linkedin,
-            portfolio: userProfile.portfolio,
-            curriculumVitae: userProfile.curriculumVitae,
-        },
-        recruitmentOptions: userProfile.recruitmentOptions,
-        registrations: userProfile.registrations,
-    }
-
+    //TODO after the recruitmentProfileBuilder is tested, remove the commented code below
+    // const profile = {
+    //     userId: userProfile.userId,
+    //     profile: {
+    //         firstName: userProfile.firstName,
+    //         lastName: userProfile.lastName,
+    //         email: userProfile.email,
+    //         gender: userProfile.gender,
+    //         nationality: userProfile.nationality,
+    //         countryOfResidence: userProfile.countryOfResidence,
+    //         dateOfBirth: userProfile.dateOfBirth,
+    //         spokenLanguages: userProfile.spokenLanguages,
+    //         // TODO remove profilePicture and replace with avatar property
+    //         profilePicture: userProfile.avatar || null,
+    //         avatar: userProfile.avatar || null,
+    //         headline: userProfile.headline,
+    //         biography: userProfile.biography,
+    //     },
+    //     skills: userProfile.skills,
+    //     roles: userProfile.roles,
+    //     industriesOfInterest: userProfile.industriesOfInterest,
+    //     themesOfInterest: userProfile.themesOfInterest,
+    //     education: userProfile.education,
+    //     social: {
+    //         github: userProfile.github,
+    //         linkedin: userProfile.linkedin,
+    //         portfolio: userProfile.portfolio,
+    //         curriculumVitae: userProfile.curriculumVitae,
+    //     },
+    //     recruitmentOptions: userProfile.recruitmentOptions,
+    //     registrations: userProfile.registrations,
+    // }
+    const profile = userProfileUtils.recruitmentProfileBuilder(userProfile)
     if (eager) {
         profile.previousEvents = await Registration.find({
             user: userProfile.userId,

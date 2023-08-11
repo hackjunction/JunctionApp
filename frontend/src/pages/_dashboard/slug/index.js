@@ -23,6 +23,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import DefaultPage from './default'
 import FinalistVotingPage from './finalist-voting'
 import TeamPage from './team'
+
 import ProjectPage from './project'
 import ReviewingPage from './reviewing'
 import TravelGrantPage from './travel-grant'
@@ -30,9 +31,8 @@ import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
 import CalendarPage from './calendar'
-import ChecklistPage from './checklist'
-import MapPage from './map'
 import RecruitmentPage from './partnerrecruitment'
+import ApplyPage from '../../../components/Team/Apply'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -73,12 +73,10 @@ export default () => {
 
     const event = useSelector(DashboardSelectors.event)
 
-    const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-        'Recruiter'
-    ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-        'SuperAdmin'
-    )
-    console.log(isPartner, "user is partner")
+    const isPartner =
+        useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
+        !useSelector(AuthSelectors.idTokenData)?.roles?.includes('SuperAdmin')
+    console.log(isPartner, 'user is partner')
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
@@ -100,6 +98,7 @@ export default () => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
+        // dispatch(DashboardActions.updateTeams(slug))
         //TODO dont use OrganiserSelectors here
         dispatch(OrganiserActions.updateProjects(slug))
         dispatch(OrganiserActions.updateGavelProjects(slug))
@@ -165,83 +164,7 @@ export default () => {
             loading={eventLoading || registrationLoading || alertsLoading}
             wrapContent={false}
         >
-            {isPartner ? (<SidebarLayout
-                baseRoute={match.url}
-                location={location}
-                sidebarTopContent={
-                    <div className={classes.sidebarTop}>
-                        <Image
-                            className={classes.sidebarLogo}
-                            publicId={
-                                event && event.logo ? event.logo.publicId : ''
-                            }
-                            transformation={{
-                                width: 200,
-                            }}
-                        />
-                    </div>
-                }
-                topContent={<BasicNavBar />}
-                routes={[
-                    {
-                        key: 'dashboard',
-                        path: '',
-                        exact: true,
-                        icon: (
-                            <Badge badgeContent={alertCount} color="primary">
-                                <DashboardIcon />
-                            </Badge>
-                        ),
-                        label: t('Dashboard_'),
-                        component: () => {
-                            setAlertCount(0)
-                            return DefaultPage({ alerts })
-                        },
-                    },
-                    {
-                        key: 'hackerpack',
-                        path: '/hackerpack',
-                        exact: true,
-                        icon: <AmpStoriesIcon />,
-                        hidden: !shownPages.hackerPack,
-                        label: t('Hackerpack_'),
-                        component: HackerpackPage,
-                    },
-                    {
-                        key: 'challenges',
-                        path: '/challenges',
-                        exact: true,
-                        icon: <FormatListBulletedIcon />,
-                        label: 'Challenges',
-                        component: ChallengesIndex,
-                    },
-                    /*
-                    {
-                        key: 'chat',
-                        path: '/chat',
-                        exact: true,
-                        icon: <QuestionAnswerSharp />,
-                        label: 'Chat',
-                        component: Chat,
-                    }, */
-                    {
-                        key: 'calendar',
-                        path: '/calendar',
-                        exact: true,
-                        hidden: !shownPages.meetings,
-                        icon: <EventIcon />,
-                        label: 'Meetings',
-                        component: CalendarPage,
-                    },
-                    {
-                        key: 'recruitment',
-                        path: '/recruitment',
-                        exact: true,
-                        label: 'Recruitment',
-                        component: RecruitmentPage,
-                    },
-                ]}
-            />) : (
+            {isPartner ? (
                 <SidebarLayout
                     baseRoute={match.url}
                     location={location}
@@ -250,7 +173,9 @@ export default () => {
                             <Image
                                 className={classes.sidebarLogo}
                                 publicId={
-                                    event && event.logo ? event.logo.publicId : ''
+                                    event && event.logo
+                                        ? event.logo.publicId
+                                        : ''
                                 }
                                 transformation={{
                                     width: 200,
@@ -265,7 +190,93 @@ export default () => {
                             path: '',
                             exact: true,
                             icon: (
-                                <Badge badgeContent={alertCount} color="primary">
+                                <Badge
+                                    badgeContent={alertCount}
+                                    color="primary"
+                                >
+                                    <DashboardIcon />
+                                </Badge>
+                            ),
+                            label: t('Dashboard_'),
+                            component: () => {
+                                setAlertCount(0)
+                                return DefaultPage({ alerts })
+                            },
+                        },
+                        {
+                            key: 'hackerpack',
+                            path: '/hackerpack',
+                            exact: true,
+                            icon: <AmpStoriesIcon />,
+                            hidden: !shownPages.hackerPack,
+                            label: t('Hackerpack_'),
+                            component: HackerpackPage,
+                        },
+                        {
+                            key: 'challenges',
+                            path: '/challenges',
+                            exact: true,
+                            icon: <FormatListBulletedIcon />,
+                            label: 'Challenges',
+                            component: ChallengesIndex,
+                        },
+                        /*
+                    {
+                        key: 'chat',
+                        path: '/chat',
+                        exact: true,
+                        icon: <QuestionAnswerSharp />,
+                        label: 'Chat',
+                        component: Chat,
+                    }, */
+                        {
+                            key: 'calendar',
+                            path: '/calendar',
+                            exact: true,
+                            hidden: !shownPages.meetings,
+                            icon: <EventIcon />,
+                            label: 'Meetings',
+                            component: CalendarPage,
+                        },
+                        {
+                            key: 'recruitment',
+                            path: '/recruitment',
+                            exact: true,
+                            label: 'Recruitment',
+                            component: RecruitmentPage,
+                        },
+                    ]}
+                />
+            ) : (
+                <SidebarLayout
+                    baseRoute={match.url}
+                    location={location}
+                    sidebarTopContent={
+                        <div className={classes.sidebarTop}>
+                            <Image
+                                className={classes.sidebarLogo}
+                                publicId={
+                                    event && event.logo
+                                        ? event.logo.publicId
+                                        : ''
+                                }
+                                transformation={{
+                                    width: 200,
+                                }}
+                            />
+                        </div>
+                    }
+                    topContent={<BasicNavBar />}
+                    routes={[
+                        {
+                            key: 'dashboard',
+                            path: '',
+                            exact: true,
+                            icon: (
+                                <Badge
+                                    badgeContent={alertCount}
+                                    color="primary"
+                                >
                                     <DashboardIcon />
                                 </Badge>
                             ),
@@ -290,7 +301,6 @@ export default () => {
                         {
                             key: 'team',
                             path: '/team',
-                            exact: true,
                             icon: <GroupIcon />,
                             label: t('Team_'),
                             locked: lockedPages.team,
@@ -382,7 +392,8 @@ export default () => {
                             component: CalendarPage,
                         },
                     ]}
-                />)}
+                />
+            )}
         </PageWrapper>
     )
 }

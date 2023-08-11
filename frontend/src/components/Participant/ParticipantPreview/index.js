@@ -5,7 +5,7 @@ export default ({
     viewMode = 'card',
     userData = {
         profile: {
-            profilePicture: '',
+            avatar: 'https://picsum.photos/200',
             firstName: 'Alea',
             lastName: 'Solano',
             headline: 'Full Stack Developer',
@@ -17,10 +17,11 @@ export default ({
         imageSize: '',
         alignment: 'tw-items-center',
     }
+    console.log(userData)
 
-    if (userData.profile.profilePicture !== '') {
+    if (userData.profile.avatar !== '') {
         styling.userProfile = {
-            backgroundImage: `url(${userData.profile.profilePicture})`,
+            backgroundImage: `url(${userData.profile.avatar})`,
         }
     }
 
@@ -47,7 +48,7 @@ export default ({
             className={`tw-flex tw-gap-4 tw-h- tw-rounded-lg ${styling.borderStyle} ${styling.alignment}`}
         >
             <div
-                className={`tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize}`}
+                className={`tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize} tw-bg-cover`}
                 style={styling?.userProfile}
             ></div>
             <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">

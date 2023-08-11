@@ -48,6 +48,9 @@ const UploadHelper = {
     generateProjectTag: (slug, teamCode) => {
         return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`
     },
+    generateTeamTag: (slug, teamCode) => {
+        return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}-profile`
+    },
     generateTravelGrantTag: (slug, userId) => {
         return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`
     },
@@ -88,6 +91,24 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateUserTag(userId),
+            },
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 2 * 1024 * 1024 },
+        }).single('image')
+    },
+
+    uploadTeamBackgroundImage: (slug, teamCode) => {
+        const storage = createStorageWithPath(
+            `${slug}/team/${teamCode}`,
+            {
+                width: 480,
+                height: 300,
+                crop: 'fill',
+            },
+            {
+                tag: UploadHelper.generateTeamTag(slug),
             },
         )
         return multer({

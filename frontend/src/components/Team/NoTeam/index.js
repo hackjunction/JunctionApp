@@ -1,8 +1,16 @@
 import { Typography } from '@material-ui/core'
 import Button from 'components/generic/Button'
+import { push } from 'connected-react-router'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
-export default () => {
+export default ({
+    eventData = {
+        slug: 'test-slug-value',
+    },
+    onCreate,
+}) => {
+    const dispatch = useDispatch()
     return (
         <div className="tw-flex tw-flex-col tw-gap-32 tw-py-12">
             <Typography className="tw-text-lg" variant="body1" component="p">
@@ -10,10 +18,18 @@ export default () => {
                 an existing team.
             </Typography>
             <div className="tw-flex tw-gap-4 tw-justify-start">
-                <Button color="outlined_button" variant="jOutlined">
+                <Button
+                    onClick={() => {
+                        dispatch(push(`/dashboard/${eventData.slug}/team`))
+                    }}
+                    color="outlined_button"
+                    variant="jOutlined"
+                >
                     Join a team
                 </Button>
-                <Button variant="jContained">Create a team</Button>
+                <Button onClick={onCreate} variant="jContained">
+                    Create a team
+                </Button>
             </div>
         </div>
     )
