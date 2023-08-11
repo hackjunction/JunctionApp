@@ -62,6 +62,7 @@ import { useRouteMatch } from 'react-router'
 
 function TeamCard({
     teamData = {
+        userIsApplicant: false,
         name: 'Test team',
         challenge: 'Hard',
         teamRoles: [
@@ -74,6 +75,7 @@ function TeamCard({
     onClick,
     onClickSeeMore = onClick,
     onClickApply,
+    disableActions = false,
 }) {
     const styling = {
         cardHover: '',
@@ -86,7 +88,7 @@ function TeamCard({
     return (
         <Card
             onClick={onClick}
-            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-672px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
+            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-576px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
         >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
@@ -95,6 +97,7 @@ function TeamCard({
                         teamName={teamData.name}
                         teamChallenge={teamData.challenge}
                     />
+                    {teamData.userIsApplicant && <div>Applied</div>}
                     <TeamRoles teamRoles={teamData.teamRoles} />
                 </div>
             </CardContent>
@@ -105,6 +108,7 @@ function TeamCard({
                         e.stopPropagation()
                     }}
                     variant="jContained"
+                    disabled={teamData.userIsApplicant || disableActions}
                 >
                     Apply
                 </Button>

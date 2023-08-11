@@ -5,6 +5,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import theme from 'junctionTheme'
 
 export default ({
+    onRoleClick = () => {},
     maxRoles = 3,
     profileView = false,
     teamRoles = [
@@ -28,7 +29,7 @@ export default ({
           }
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
-            {teamRoles.length > 0 ? (
+            {teamRoles?.length > 0 ? (
                 <>
                     <Typography
                         className="tw-tracking-tight tw-font-medium"
@@ -41,35 +42,31 @@ export default ({
                         columnsCountBreakPoints={{ ...styling.masonryColumns }}
                     >
                         <Masonry gutter={`${theme.spacing(2)}px`}>
-                            {teamRoles.slice(0, maxRoles).map((item, index) => {
-                                return (
-                                    <Button
-                                        key={index}
-                                        color="outlined_button"
-                                        variant="jOutlinedBox"
-                                    >
-                                        <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
-                                            <Typography
-                                                className="tw-font-semibold tw-text-left"
-                                                variant="h6"
-                                                component="h6"
-                                            >
-                                                {item.role}
-                                            </Typography>
-                                            {/* <Typography
-                                                className="tw-text-lg tw-text-gray-600"
-                                                variant="body1"
-                                                component="p"
-                                            >
-                                                {item.years} of experience
-                                            </Typography> */}
-                                        </div>
-                                    </Button>
-                                )
-                            })}
+                            {teamRoles
+                                ?.slice(0, maxRoles)
+                                .map((item, index) => {
+                                    return (
+                                        <Button
+                                            key={index}
+                                            color="outlined_button"
+                                            variant="jOutlinedBox"
+                                            onClick={onRoleClick}
+                                        >
+                                            <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                                <Typography
+                                                    className="tw-font-semibold tw-text-left"
+                                                    variant="h6"
+                                                    component="h6"
+                                                >
+                                                    {item.role}
+                                                </Typography>
+                                            </div>
+                                        </Button>
+                                    )
+                                })}
                         </Masonry>
                     </ResponsiveMasonry>
-                    {teamRoles.length > maxRoles && (
+                    {teamRoles?.length > maxRoles && (
                         <Button color="outlined_button" variant="jOutlinedBox">
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                                 <Typography
@@ -77,7 +74,9 @@ export default ({
                                     variant="body1"
                                     component="p"
                                 >
-                                    +3 more roles
+                                    {`${
+                                        teamRoles.length - maxRoles
+                                    } more roles`}
                                 </Typography>
                             </div>
                         </Button>

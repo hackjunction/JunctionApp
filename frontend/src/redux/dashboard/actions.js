@@ -7,6 +7,8 @@ import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
 import TeamsService from 'services/teams'
+import UserProfilesService from 'services/userProfiles'
+
 import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
@@ -157,7 +159,7 @@ export const updateTeams = slug => async (dispatch, getState) => {
     })
 }
 
-export const updatedSelectedTeam =
+export const updateSelectedTeam =
     (slug, code) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         if (!slug) return
@@ -195,6 +197,7 @@ export const updateTeam = slug => (dispatch, getState) => {
     })
 }
 
+// TODO createTeam action to be depreciated and deleted, replaced by createNewTeam
 export const createTeam = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     const team = await TeamsService.createTeamForEvent(idToken, slug, true)
@@ -219,6 +222,7 @@ export const editTeam = (slug, data) => async (dispatch, getState) => {
     return team
 }
 
+//TODO when createTeam is deleted, rename this to createTeam
 export const createNewTeam = (slug, data) => async (dispatch, getState) => {
     console.log('createNewTeam action received:', slug, data)
     const idToken = AuthSelectors.getIdToken(getState())
@@ -249,6 +253,80 @@ export const joinTeam = (slug, code) => async (dispatch, getState) => {
 
     return team
 }
+
+export const getCandidateProfileById = userId => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+    const user = await UserProfilesService.getUserPublicProfileById(
+        idToken,
+        userId,
+    )
+    dispatch({
+        type: ActionTypes.GET_CANDIDATE_PROFILE,
+        payload: user,
+    })
+    return user
+}
+
+export const candidateApplyToTeam =
+    (slug, code, applicationData) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        console.log('submitted with:', applicationData)
+        // if (applicationData.roles)
+        const team = await TeamsService.candidateApplyToTeam(
+            idToken,
+            slug,
+            code,
+            applicationData,
+        )
+
+        dispatch({
+            type: ActionTypes.EDIT_TEAM,
+            payload: team,
+            meta: {
+                onFailure: e => console.log('Error applying to team', e),
+            },
+        })
+
+        return team
+    }
+
+export const acceptCandidateToTeam =
+    (slug, code, userId) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        // const team = await TeamsService.editTeam(idToken, slug, code, userId)
+        const team = await TeamsService.acceptCandidateToTeam(
+            idToken,
+            slug,
+            code,
+            userId,
+        )
+
+        dispatch({
+            type: ActionTypes.EDIT_TEAM,
+            payload: team,
+        })
+
+        return team
+    }
+
+export const declineCandidateToTeam =
+    (slug, code, userId) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+
+        const team = await TeamsService.declineCandidateToTeam(
+            idToken,
+            slug,
+            code,
+            userId,
+        )
+
+        dispatch({
+            type: ActionTypes.EDIT_TEAM,
+            payload: team,
+        })
+
+        return team
+    }
 
 export const leaveTeam = (slug, code) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
@@ -440,3 +518,37 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
         return err
     }
 }
+
+// TODO Create action to fill candidates information dynamically
+
+// export const updateCandidateProfiles =
+//     (userIds) => async (dispatch, getState) => {
+
+//         dispatch({
+//             type: ActionTypes.UPDATE_ORGANISERS,
+//             promise: UserProfilesService.getPublicUserProfiles(userIds),
+//             meta: {
+//                 onFailure: e =>
+//                     console.log('Error updating event organisers', e),
+//             },
+//         })
+//     }
+
+//     export const candidateApplyToTeam =
+//     (slug, code, applicationData) => async (dispatch, getState) => {
+//         const idToken = AuthSelectors.getIdToken(getState())
+
+//         const team = await TeamsService.candidateApplyToTeam(
+//             idToken,
+//             slug,
+//             code,
+//             applicationData,
+//         )
+
+//         dispatch({
+//             type: ActionTypes.EDIT_TEAM,
+//             payload: team,
+//         })
+
+//         return team
+//     }

@@ -5,7 +5,7 @@ export default ({
     viewMode = 'card',
     userData = {
         profile: {
-            avatar: '',
+            avatar: 'https://picsum.photos/200',
             firstName: 'Alea',
             lastName: 'Solano',
             headline: 'Full Stack Developer',
@@ -17,6 +17,7 @@ export default ({
         imageSize: '',
         alignment: 'tw-items-center',
     }
+    console.log(userData)
 
     if (userData.profile.avatar !== '') {
         styling.userProfile = {
