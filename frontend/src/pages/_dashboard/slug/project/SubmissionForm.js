@@ -25,6 +25,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
+import RegistrationSectionCustom from 'pages/_events/slug/register/RegistrationSectionCustom'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -44,6 +45,9 @@ const SubmissionForm = props => {
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
 
     const [project, setProject] = useState(null)
+    //DELETE LATER new code to handle custom questions
+    const [activeStep, setActiveStep] = useState(0)
+
     const [projectStatus, setProjectStatus] = useState('')
 
     useEffect(() => {
@@ -91,6 +95,20 @@ const SubmissionForm = props => {
         }
         return (
             <>
+                {event.submissionFormQuestions?.length > 0 &&
+                    event.submissionFormQuestions.map((section, index) => (
+                        <RegistrationSectionCustom
+                            isActive={activeStep === index}
+                            section={section}
+                            // data={formData}
+                            // onPrev={setPrevStep}
+                            // prevLabel={prevStep ? prevStep.label : null}
+                            // onNext={(values, path) => {
+                            //     setNextStep(index + 1, values, path)
+                            // }}
+                            // nextLabel={nextStep ? nextStep.label : 'Finish'}
+                        />
+                    ))}
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <GradientBox p={3} color="theme_white">

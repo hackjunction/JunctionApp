@@ -298,6 +298,10 @@ const EventSchema = new mongoose.Schema({
             'cant have meetingrooms if meetings are not enabled',
         ], */
     },
+    /* DELETE AFTER: Test section */
+    submissionFormQuestions: {
+        type: [RegistrationSectionSchema.mongoose],
+    },
 })
 
 EventSchema.index(

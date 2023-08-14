@@ -200,6 +200,10 @@ const EventInput = new GraphQLInputObjectType({
         meetingRooms: {
             type: GraphQLList(MeetingRoomInput),
         },
+        /** DELETE LATER: test area */
+        submissionFormQuestions: {
+            type: GraphQLList(RegistrationSectionInput),
+        },
     },
 })
 
@@ -384,6 +388,10 @@ const EventType = new GraphQLObjectType({
                 type: require('../registration/graphql').Types.RegistrationType,
             },
             */
+            /** DELETE LATER: test area */
+            submissionFormQuestions: {
+                type: GraphQLList(RegistrationSection),
+            },
         }
     },
 })
