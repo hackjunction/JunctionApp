@@ -25,6 +25,8 @@ const RegistrationQuestion = ({
     autoFocus,
     isCustom,
 }) => {
+    console.log('form from registration question', form)
+    console.log('field from registration question', field)
     const renderInput = () => {
         switch (config.fieldType.id) {
             case fieldTypes.URL.id:
@@ -401,6 +403,7 @@ const RegistrationQuestion = ({
         }
     }
 
+    //TODO add custom field types here for URL and file upload
     const renderCustomInput = () => {
         switch (config.fieldType) {
             case 'text':

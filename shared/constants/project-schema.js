@@ -30,6 +30,14 @@ const ProjectSchema = {
         .oneOf(ProjectStatuses)
         .default('draft')
         .label('Status'),
+    // DELETE AFTER testing area
+    submissionFormAnswers: yup.array().of(
+        yup.object().shape({
+            section: yup.string(),
+            key: yup.string(),
+            value: yup.string(),
+        }),
+    ),
 }
 
 const buildProjectSchema = event => {

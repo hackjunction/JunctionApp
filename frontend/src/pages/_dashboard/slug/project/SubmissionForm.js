@@ -26,6 +26,7 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 import RegistrationSectionCustom from 'pages/_events/slug/register/RegistrationSectionCustom'
+import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -89,15 +90,86 @@ const SubmissionForm = props => {
     const locationEnabled = useMemo(() => {
         return event.eventType === EventTypes.physical.id
     }, [event])
+
+    const valuesFormatter = values => {
+        const formData = { ...values }
+
+        if (event.submissionFormQuestions.length > 0) {
+            formData['submissionFormAnswers'] = []
+            event.submissionFormQuestions.forEach(section => {
+                const sec = section.name
+                section.questions.forEach(question => {
+                    const que = question.name
+                    const value = values[que]
+                    delete formData[que]
+                    const custom = {
+                        section: sec,
+                        key: que,
+                        value: value + '',
+                    }
+                    formData['submissionFormAnswers'].push(custom)
+                })
+            })
+            console.log('formData', formData)
+        }
+        return formData
+    }
+
     const renderForm = formikProps => {
+        console.log('Submission form formik props:', formikProps)
+        // const formData = { ...formikProps.values }
+
+        // if (event.submissionFormQuestions.length > 0) {
+        //     formData['SubmissionFormAnswers'] = []
+        //     event.submissionFormQuestions.forEach(section => {
+        //         const sec = section.name
+        //         section.questions.forEach(question => {
+        //             const que = question.name
+        //             const value = formikProps.values[que]
+        //             delete formData[que]
+        //             const custom = {
+        //                 section: sec,
+        //                 key: que,
+        //                 value: value + '',
+        //             }
+        //             formData['SubmissionFormAnswers'].push(custom)
+        //         })
+        //     })
+        //     console.log('formData', formData)
+        // }
+        // valuesFormatter(formikProps.values)
         if (projectLoading) {
             return <PageWrapper loading />
         }
         return (
             <>
+                {project &&
+                    project.submissionFormAnswers?.length > 0 &&
+                    project.submissionFormAnswers.map((answer, index) => (
+                        <div>
+                            <h2>{answer.section}</h2>
+                            <p>{answer.key}</p>
+                            <p>{answer.value}</p>
+                        </div>
+                    ))}
                 {event.submissionFormQuestions?.length > 0 &&
                     event.submissionFormQuestions.map((section, index) => (
-                        <RegistrationSectionCustom
+                        <div>
+                            <h2>{section.name}</h2>
+                            {section.questions.map((question, index) => (
+                                <FastField name={question.name}>
+                                    {props => (
+                                        <RegistrationQuestion
+                                            autoFocus={index === 0}
+                                            config={question}
+                                            isCustom={true}
+                                            field={props.field}
+                                            form={props.form}
+                                        />
+                                    )}
+                                </FastField>
+                            ))}
+                            {/* <RegistrationSectionCustom
                             isActive={activeStep === index}
                             section={section}
                             // data={formData}
@@ -107,7 +179,8 @@ const SubmissionForm = props => {
                             //     setNextStep(index + 1, values, path)
                             // }}
                             // nextLabel={nextStep ? nextStep.label : 'Finish'}
-                        />
+                        /> */}
+                        </div>
                     ))}
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -611,7 +684,6 @@ const SubmissionForm = props => {
             }}
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
-                //console.log('values are!', values)
                 if (!values.privacy) {
                     if (!values.hiddenMembers.includes(idTokenData.sub)) {
                         values.hiddenMembers.push(idTokenData.sub)
@@ -620,11 +692,15 @@ const SubmissionForm = props => {
                     const index = values.hiddenMembers.indexOf(idTokenData.sub)
                     if (index !== -1) values.hiddenMembers.splice(index, 1)
                 }
-                //console.log('sending', values)
+                console.log('sending', values)
                 let res
                 if (project) {
                     res = await dispatch(
-                        DashboardActions.editProject(event.slug, values),
+                        DashboardActions.editProject(
+                            event.slug,
+                            valuesFormatter(values),
+                        ),
+                        // DashboardActions.editProject(event.slug, values),
                     )
                 } else {
                     res = await dispatch(

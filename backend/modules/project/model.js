@@ -5,6 +5,8 @@ const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryIm
 const AchievementSchema = require('../../common/schemas/Achievement')
 const GavelController = require('../reviewing/gavel/controller')
 const WebhookService = require('../../common/services/webhook')
+const CustomAnswer = require('@hackjunction/shared/schemas/CustomAnswer')
+// const AnswersSchema = require('@hackjunction/shared/schemas/Answers')
 
 const ProjectSchema = new mongoose.Schema({
     event: {
@@ -64,6 +66,9 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
     },
     achievements: [AchievementSchema],
+    submissionFormAnswers: {
+        type: [CustomAnswer.mongoose],
+    },
 })
 
 ProjectSchema.set('timestamps', true)

@@ -418,7 +418,7 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
 
 export const editProject = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-
+    console.log('From dashboard actions, edit project data: ', data)
     await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
     return dispatch({
         type: ActionTypes.UPDATE_PROJECTS,
