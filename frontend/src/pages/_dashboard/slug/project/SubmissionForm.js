@@ -27,6 +27,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 import RegistrationSectionCustom from 'pages/_events/slug/register/RegistrationSectionCustom'
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
+import SubmissionFormCustomInput from 'components/inputs/SubmissionFormCustomInput'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -71,6 +72,21 @@ const SubmissionForm = props => {
         ...project,
     }
 
+    if (project && project.submissionFormAnswers?.length > 0) {
+        event.submissionFormQuestions.forEach(section => {
+            section.questions.forEach(question => {
+                const answerObject = project.submissionFormAnswers.find(
+                    answer =>
+                        answer.key === question.name &&
+                        answer.section === section.name,
+                )
+                initialValues[question.name] = answerObject
+                    ? answerObject.value
+                    : ''
+            })
+        })
+    }
+
     const trackOptions = useMemo(() => {
         if (!event.tracksEnabled || !event.tracks) return null
         return event.tracks.map(track => ({
@@ -93,7 +109,6 @@ const SubmissionForm = props => {
 
     const valuesFormatter = values => {
         const formData = { ...values }
-
         if (event.submissionFormQuestions.length > 0) {
             formData['submissionFormAnswers'] = []
             event.submissionFormQuestions.forEach(section => {
@@ -117,71 +132,11 @@ const SubmissionForm = props => {
 
     const renderForm = formikProps => {
         console.log('Submission form formik props:', formikProps)
-        // const formData = { ...formikProps.values }
-
-        // if (event.submissionFormQuestions.length > 0) {
-        //     formData['SubmissionFormAnswers'] = []
-        //     event.submissionFormQuestions.forEach(section => {
-        //         const sec = section.name
-        //         section.questions.forEach(question => {
-        //             const que = question.name
-        //             const value = formikProps.values[que]
-        //             delete formData[que]
-        //             const custom = {
-        //                 section: sec,
-        //                 key: que,
-        //                 value: value + '',
-        //             }
-        //             formData['SubmissionFormAnswers'].push(custom)
-        //         })
-        //     })
-        //     console.log('formData', formData)
-        // }
-        // valuesFormatter(formikProps.values)
         if (projectLoading) {
             return <PageWrapper loading />
         }
         return (
             <>
-                {project &&
-                    project.submissionFormAnswers?.length > 0 &&
-                    project.submissionFormAnswers.map((answer, index) => (
-                        <div>
-                            <h2>{answer.section}</h2>
-                            <p>{answer.key}</p>
-                            <p>{answer.value}</p>
-                        </div>
-                    ))}
-                {event.submissionFormQuestions?.length > 0 &&
-                    event.submissionFormQuestions.map((section, index) => (
-                        <div>
-                            <h2>{section.name}</h2>
-                            {section.questions.map((question, index) => (
-                                <FastField name={question.name}>
-                                    {props => (
-                                        <RegistrationQuestion
-                                            autoFocus={index === 0}
-                                            config={question}
-                                            isCustom={true}
-                                            field={props.field}
-                                            form={props.form}
-                                        />
-                                    )}
-                                </FastField>
-                            ))}
-                            {/* <RegistrationSectionCustom
-                            isActive={activeStep === index}
-                            section={section}
-                            // data={formData}
-                            // onPrev={setPrevStep}
-                            // prevLabel={prevStep ? prevStep.label : null}
-                            // onNext={(values, path) => {
-                            //     setNextStep(index + 1, values, path)
-                            // }}
-                            // nextLabel={nextStep ? nextStep.label : 'Finish'}
-                        /> */}
-                        </div>
-                    ))}
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <GradientBox p={3} color="theme_white">
@@ -585,6 +540,44 @@ const SubmissionForm = props => {
                             />
                         </Grid>
                     )}
+                    {/* {event.submissionFormQuestions?.length > 0 &&
+                        event.submissionFormQuestions.map((section, index) => (
+                            <Grid item xs={12}>
+                                <h2>{section.label}</h2>
+                                <p>{section.description}</p>
+                                {section.questions.map((question, index) => (
+                                    <FastField name={question.name}>
+                                        {props => {
+                                            return (
+                                                <RegistrationQuestion
+                                                    config={question}
+                                                    isCustom={true}
+                                                    field={props.field}
+                                                    form={props.form}
+                                                />
+                                            )
+                                        }}
+                                    </FastField>
+                                ))}
+                            </Grid>
+                        ))} */}
+                    {event.submissionFormQuestions?.length > 0 &&
+                        event.submissionFormQuestions.map(section => (
+                            <SubmissionFormCustomInput
+                                section={section}
+                                sectionAnswers={
+                                    project
+                                        ? project.submissionFormAnswers.find(
+                                              answer =>
+                                                  answer.section ===
+                                                      section.name &&
+                                                  answer.value,
+                                          )
+                                        : null
+                                }
+                                key={section.name}
+                            />
+                        ))}
                     <Grid item xs={12}>
                         <Box
                             style={{

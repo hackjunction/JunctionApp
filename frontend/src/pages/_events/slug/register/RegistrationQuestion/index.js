@@ -25,6 +25,7 @@ const RegistrationQuestion = ({
     autoFocus,
     isCustom,
 }) => {
+    console.log('config', config)
     console.log('form from registration question', form)
     console.log('field from registration question', field)
     const renderInput = () => {
@@ -407,7 +408,6 @@ const RegistrationQuestion = ({
     const renderCustomInput = () => {
         switch (config.fieldType) {
             case 'text':
-                console.log('config', config)
                 return (
                     <FormControl
                         label={config.label}
@@ -428,7 +428,6 @@ const RegistrationQuestion = ({
                     </FormControl>
                 )
             case 'textarea':
-                console.log('config', config)
                 return (
                     <FormControl
                         label={config.label}
