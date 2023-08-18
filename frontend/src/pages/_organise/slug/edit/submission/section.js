@@ -13,10 +13,10 @@ import Switch from './components/Switch'
 
 const Section = ({
     initialData = {
-        heading: 'Heading',
-        subHeading: 'Sub heading',
+        label: 'A label',
+        hint: 'A hint',
         fieldType: 'text',
-        values: ['initial value'],
+        placeholder: 'A placeholder',
     },
     onRemove,
     fieldName,
@@ -25,8 +25,8 @@ const Section = ({
 }) => {
     const [checked, setChecked] = useState(false)
     const [fieldType, setFieldType] = useState(initialData.fieldType)
-    const [heading, setHeading] = useState(initialData.heading)
-    const [subHeading, setSubHeading] = useState(initialData.subHeading)
+    const [label, setLabel] = useState(initialData.label)
+    const [hint, setHint] = useState(initialData.hint)
 
     const [booleanChecked, setBooleanChecked] = useState(false)
 
@@ -113,7 +113,6 @@ const Section = ({
                         {...inputProps}
                         {...field}
                         onChange={value => {
-                            // console.log(e)
                             form.setFieldValue(fieldName, value)
                             if (inputProps.onChange) {
                                 inputProps.onChange(value)
@@ -130,18 +129,18 @@ const Section = ({
         <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
             <div className="tw-flex tw-flex-col">
                 <EditableText
-                    value={heading}
+                    value={label}
                     save={value => {
-                        setHeading(value)
+                        setLabel(value)
                         onChange()
                     }}
                     className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
                     type="heading"
                 />
                 <EditableText
-                    value={subHeading}
+                    value={hint}
                     save={value => {
-                        setSubHeading(value)
+                        setHint(value)
                         onChange()
                     }}
                     className="tw-text-gray-500 tw-italic tw-my-1"

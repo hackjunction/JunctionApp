@@ -19,6 +19,7 @@ import Button from 'components/generic/Button'
 import Markdown from 'components/generic/Markdown'
 import AddQuestionModal from './AddQuestionModal'
 import TextInput from '../../submission/components/inputs/TextInput'
+import Section from '../../submission/section'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -147,66 +148,98 @@ export default ({
                 </List>
                 <Box p={1}>
                     {questions.map((question, index) => (
-                        <ExpansionPanel key={question.name}>
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1c-content"
-                                id="panel1c-header"
-                            >
-                                <ListItemText
-                                    primary={question.label}
-                                    secondary={question.fieldType}
-                                />
-                            </ExpansionPanelSummary>
-                            {/* Display preview for the form https://www.figma.com/file/F0PvYOStjKVp6Vck3cw9gk/Junction?type=design&node-id=733-16420&mode=design&t=RDGTSCWd9ndyhd2G-0*/}
-                            {/* This will need more work, but you can develop base on this:
+                        <>
+                            <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+                                <div className="tw-flex tw-flex-col">
+                                    <Typography
+                                        className="tw-tracking-tight tw-font-medium"
+                                        variant="h5"
+                                        component="h5"
+                                    >
+                                        {question.label}
+                                    </Typography>
+                                    <Typography
+                                        className="tw-text-lg"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        {question.hint}
+                                    </Typography>
+                                    <Typography
+                                        className="tw-text-lg"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        {question.fieldType}
+                                    </Typography>
+                                </div>
+                            </div>
+                            <ExpansionPanel key={question.name}>
+                                <ExpansionPanelSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1c-content"
+                                    id="panel1c-header"
+                                >
+                                    <ListItemText
+                                        primary={question.label}
+                                        secondary={question.fieldType}
+                                    />
+                                </ExpansionPanelSummary>
+                                {/* Display preview for the form https://www.figma.com/file/F0PvYOStjKVp6Vck3cw9gk/Junction?type=design&node-id=733-16420&mode=design&t=RDGTSCWd9ndyhd2G-0*/}
+                                {/* This will need more work, but you can develop base on this:
                                     - It will get the question type and display the correct input
                                     - There are many different types of inputs that available in the submission/components/inputs folder
                              */}
-                            <ExpansionPanelDetails>
-                                <Box width="100%">
-                                    <Typography variant="h5">
-                                        {question.label}
-                                    </Typography>
-                                    <TextInput />
-                                </Box>
-                            </ExpansionPanelDetails>
-                            <Divider />
-                            <ExpansionPanelActions>
-                                <Button
-                                    color="error"
-                                    onClick={() =>
-                                        handleQuestionRemove(question, index)
-                                    }
-                                >
-                                    Remove question
-                                </Button>
-                                <Button
-                                    color="theme_turquoise"
-                                    onClick={() => setEditing(question)}
-                                >
-                                    Edit question
-                                </Button>
-                                <Button
-                                    color="theme_turquoise"
-                                    disabled={index === 0}
-                                    onClick={() =>
-                                        handleQuestionUp(question, index)
-                                    }
-                                >
-                                    Move up
-                                </Button>
-                                <Button
-                                    color="theme_turquoise"
-                                    disabled={index === questions.length - 1}
-                                    onClick={() =>
-                                        handleQuestionDown(question, index)
-                                    }
-                                >
-                                    Move down
-                                </Button>
-                            </ExpansionPanelActions>
-                        </ExpansionPanel>
+                                <ExpansionPanelDetails>
+                                    <Box width="100%">
+                                        <Typography variant="h5">
+                                            {question.label}
+                                        </Typography>
+                                        <TextInput />
+                                    </Box>
+                                </ExpansionPanelDetails>
+                                <Divider />
+                                <ExpansionPanelActions>
+                                    <Button
+                                        color="error"
+                                        onClick={() =>
+                                            handleQuestionRemove(
+                                                question,
+                                                index,
+                                            )
+                                        }
+                                    >
+                                        Remove question
+                                    </Button>
+                                    <Button
+                                        color="theme_turquoise"
+                                        onClick={() => setEditing(question)}
+                                    >
+                                        Edit question
+                                    </Button>
+                                    <Button
+                                        color="theme_turquoise"
+                                        disabled={index === 0}
+                                        onClick={() =>
+                                            handleQuestionUp(question, index)
+                                        }
+                                    >
+                                        Move up
+                                    </Button>
+                                    <Button
+                                        color="theme_turquoise"
+                                        disabled={
+                                            index === questions.length - 1
+                                        }
+                                        onClick={() =>
+                                            handleQuestionDown(question, index)
+                                        }
+                                    >
+                                        Move down
+                                    </Button>
+                                </ExpansionPanelActions>
+                            </ExpansionPanel>
+                        </>
                     ))}
                 </Box>
                 <Box
