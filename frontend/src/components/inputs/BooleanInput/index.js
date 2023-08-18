@@ -19,17 +19,14 @@ const BooleanInput = ({ value, onChange, alignCenter = false }) => {
     const [isYesChecked, setYesChecked] = useState(false)
     const [isNoChecked, setNoChecked] = useState(false)
 
-    console.log('value bool', value)
-
     useEffect(() => {
         if (typeof value !== 'undefined') {
-            console.log('how?', value)
             setYesChecked(value)
             setNoChecked(!value)
         }
     }, [value])
 
-    // Probably could be done better. Value came as string for some reason, and didn't have time to debug it
+    // TODO Probably could be done better. Value came as string for some reason, and didn't have time to debug it
     const handleChange = useCallback(
         e => {
             switch (e.target.value) {

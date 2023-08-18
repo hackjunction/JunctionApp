@@ -4,10 +4,15 @@ import { Box, Grid, Typography } from '@material-ui/core'
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
 import BooleanInput from '../BooleanInput'
 
-export default ({ section, sectionAnswers }) => {
-    const [visible, setVisible] = useState(
-        !section.conditional || sectionAnswers,
-    )
+export default ({ section, sectionAnswers = undefined }) => {
+    const [visible, setVisible] = useState(true)
+
+    useEffect(() => {
+        setVisible(
+            !section.conditional ||
+                (!!sectionAnswers && !!sectionAnswers.value),
+        )
+    }, [sectionAnswers])
 
     const formikCont = useFormikContext()
 
@@ -19,7 +24,6 @@ export default ({ section, sectionAnswers }) => {
         }
     }, [visible])
 
-    console.log('formik context in component', formikCont)
     return (
         <>
             <Grid item xs={12}>

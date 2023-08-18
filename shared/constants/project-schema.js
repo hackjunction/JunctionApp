@@ -32,16 +32,37 @@ const ProjectSchema = {
         .label('Status'),
     // DELETE AFTER testing area
     submissionFormAnswers: yup.array().of(
-        yup.object().shape({
-            section: yup.string(),
-            key: yup.string(),
-            value: yup.string(),
-        }),
+        yup
+            .object()
+            .shape({
+                section: yup.string(),
+                key: yup.string(),
+                value: yup.string(),
+            })
+            .label('Submission form answers'),
     ),
 }
 
 const buildProjectSchema = event => {
     const schema = { ...ProjectSchema }
+
+    if (
+        event.submissionFormQuestions &&
+        event.submissionFormQuestions.length > 0
+    ) {
+        event.submissionFormQuestions.map(section => {
+            section.questions.map(question => {
+                if (question.fieldRequired && !section.conditional) {
+                    schema[question.name] = yup
+                        .string()
+                        .required()
+                        .label(question.label)
+                } else {
+                    schema[question.name] = yup.string().label(question.label)
+                }
+            })
+        })
+    }
 
     if (event.tracksEnabled) {
         schema.track = yup

@@ -15,7 +15,7 @@ import BooleanInput from 'components/inputs/BooleanInput'
 import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import TeamOptionInput from 'components/inputs/TeamOptionInput'
 const { fieldTypes } = RegistrationFields
-// TODO URL-input
+// TODO URL-input and file upload
 
 const RegistrationQuestion = ({
     field,
@@ -25,9 +25,6 @@ const RegistrationQuestion = ({
     autoFocus,
     isCustom,
 }) => {
-    console.log('config', config)
-    console.log('form from registration question', form)
-    console.log('field from registration question', field)
     const renderInput = () => {
         switch (config.fieldType.id) {
             case fieldTypes.URL.id:
@@ -448,7 +445,6 @@ const RegistrationQuestion = ({
                     </FormControl>
                 )
             case 'boolean':
-                //console.log('f value', field.value)
                 return (
                     <FormControl
                         label={config.label}

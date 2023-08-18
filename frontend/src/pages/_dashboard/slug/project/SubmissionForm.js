@@ -28,6 +28,7 @@ import { useTranslation } from 'react-i18next'
 import RegistrationSectionCustom from 'pages/_events/slug/register/RegistrationSectionCustom'
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
 import SubmissionFormCustomInput from 'components/inputs/SubmissionFormCustomInput'
+import BottomBar from 'components/inputs/BottomBar'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -42,14 +43,9 @@ const SubmissionForm = props => {
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const { t } = useTranslation()
-
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
-
     const [project, setProject] = useState(null)
-    //DELETE LATER new code to handle custom questions
-    const [activeStep, setActiveStep] = useState(0)
-
     const [projectStatus, setProjectStatus] = useState('')
 
     useEffect(() => {
@@ -131,7 +127,6 @@ const SubmissionForm = props => {
     }
 
     const renderForm = formikProps => {
-        console.log('Submission form formik props:', formikProps)
         if (projectLoading) {
             return <PageWrapper loading />
         }
@@ -566,14 +561,13 @@ const SubmissionForm = props => {
                             <SubmissionFormCustomInput
                                 section={section}
                                 sectionAnswers={
-                                    project
-                                        ? project.submissionFormAnswers.find(
-                                              answer =>
-                                                  answer.section ===
-                                                      section.name &&
-                                                  answer.value,
-                                          )
-                                        : null
+                                    project &&
+                                    project.submissionFormAnswers.length > 0 &&
+                                    project.submissionFormAnswers.find(
+                                        answer =>
+                                            answer.section === section.name &&
+                                            answer.value,
+                                    )
                                 }
                                 key={section.name}
                             />
@@ -638,7 +632,7 @@ const SubmissionForm = props => {
                             )}
                         />
                     </Grid>
-                    {Object.keys(formikProps.errors).length > 0 && (
+                    {/* {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <ErrorsBox errors={formikProps.errors} />
                         </Grid>
@@ -661,7 +655,16 @@ const SubmissionForm = props => {
                                 {t('Save_changes_')}
                             </Button>
                         </Box>
-                    </Grid>
+                    </Grid> */}
+                    <BottomBar
+                        onSubmit={() => {
+                            formikProps.submitForm()
+                            handleProjectSelected(undefined)
+                        }}
+                        errors={formikProps.errors}
+                        dirty={formikProps.dirty}
+                        loading={formikProps.isSubmitting}
+                    />
                 </Grid>
             </>
         )
@@ -669,6 +672,7 @@ const SubmissionForm = props => {
     return (
         <Formik
             enableReinitialize
+            validateOnMount
             initialValues={initialValues}
             validationSchema={props => {
                 return yup.lazy(values => {
@@ -685,7 +689,6 @@ const SubmissionForm = props => {
                     const index = values.hiddenMembers.indexOf(idTokenData.sub)
                     if (index !== -1) values.hiddenMembers.splice(index, 1)
                 }
-                console.log('sending', values)
                 let res
                 if (project) {
                     res = await dispatch(
@@ -697,7 +700,11 @@ const SubmissionForm = props => {
                     )
                 } else {
                     res = await dispatch(
-                        DashboardActions.createProject(event.slug, values),
+                        DashboardActions.createProject(
+                            event.slug,
+                            valuesFormatter(values),
+                        ),
+                        // DashboardActions.createProject(event.slug, values),
                     )
                 }
 
