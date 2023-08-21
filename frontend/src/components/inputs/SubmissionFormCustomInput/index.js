@@ -16,6 +16,8 @@ export default ({ section, sectionAnswers = undefined }) => {
 
     const formikCont = useFormikContext()
 
+    // console.log('Formik context from submission page', formikCont)
+
     useEffect(() => {
         if (visible === false) {
             section.questions.map(question => {

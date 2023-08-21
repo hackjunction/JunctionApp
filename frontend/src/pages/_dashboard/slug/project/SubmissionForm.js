@@ -68,6 +68,23 @@ const SubmissionForm = props => {
         ...project,
     }
 
+    console.log('Project saved answers', project?.submissionFormAnswers)
+    console.log(
+        'Event submission form questions',
+        event?.submissionFormQuestions,
+    )
+
+    if (project && project.submissionFormAnswers?.length > 0) {
+        project.submissionFormAnswers.forEach(question => {
+            event.submissionFormQuestions.forEach(section => {
+                // console.log(
+                //     'section answer exist test',
+                //     section.questions.find(q => q.name === question.key),
+                // )
+            })
+        })
+    }
+
     if (project && project.submissionFormAnswers?.length > 0) {
         event.submissionFormQuestions.forEach(section => {
             section.questions.forEach(question => {

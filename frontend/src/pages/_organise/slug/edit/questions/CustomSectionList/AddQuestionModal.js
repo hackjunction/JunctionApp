@@ -18,6 +18,7 @@ import TextInput from '../../submission/components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import Checkbox from '../../submission/components/section/Checkbox'
 import EditableOptions from '../../submission/components/EditableOptions'
+import { generateSlug } from 'utils/dataModifiers'
 
 const initialData = {
     label: '',
@@ -139,10 +140,24 @@ export default ({
         reset()
     }
 
+    // const removeNumbers = str => {
+    //     return str.replace(/[0-9]/g, 'v')
+    // }
+
+    // const generateSlug = str => {
+    //     return getSlug(removeNumbers(str))
+    // }
+
     const handleChange = useCallback(
         (field, value) => {
+            const newData = { ...data }
+
+            if (field === 'label') {
+                newData.name = generateSlug(value, 'v')
+            }
+
             setData({
-                ...data,
+                ...newData,
                 [field]: value,
             })
         },
@@ -331,7 +346,8 @@ export default ({
                     value={data.label}
                     onChange={value => handleChange('label', value)}
                 />
-                <Typography variant="caption" paragraph>
+                {/* DELETE AFTER unnecesary section for field name generation */}
+                {/* <Typography variant="caption" paragraph>
                     The name of your question
                 </Typography>
                 <Typography variant="body1" className={classes.label}>
@@ -347,7 +363,7 @@ export default ({
                     A unique machine-readable name. This should be only letters,
                     and be written in camelCase: e.g. letterOfMotivation. This
                     field will not be visible to the end-user.
-                </Typography>
+                </Typography> */}
                 <div className="tw-flex tw-space-x-2 tw-items-center">
                     <Typography variant="body1" className={classes.label}>
                         Question type:
