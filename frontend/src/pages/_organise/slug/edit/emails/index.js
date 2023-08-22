@@ -184,7 +184,11 @@ export default () => {
                                             }
                                             onBlur={() => form.setFieldTouched(field.name)}
                                         />
-
+                                        <Box mt={1}>
+                                            <Typography variant="caption" color="textSecondary">
+                                                {PLACEHOLDERS_HINT}
+                                            </Typography>
+                                        </Box>
                                     </Grid>
                                 )}
                             />
@@ -263,6 +267,11 @@ export default () => {
                                             }
                                             onBlur={() => form.setFieldTouched(field.name)}
                                         />
+                                        <Box mt={1}>
+                                            <Typography variant="caption" color="textSecondary">
+                                                {PLACEHOLDERS_HINT}
+                                            </Typography>
+                                        </Box>
                                     </Grid>
                                 )}
                             />
@@ -341,6 +350,11 @@ export default () => {
                                             }
                                             onBlur={() => form.setFieldTouched(field.name)}
                                         />
+                                        <Box mt={1}>
+                                            <Typography variant="caption" color="textSecondary">
+                                                {PLACEHOLDERS_HINT}
+                                            </Typography>
+                                        </Box>
                                     </Grid>
                                 )}
                             />
