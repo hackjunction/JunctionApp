@@ -57,6 +57,9 @@ export default () => {
             email: senderEmail,
         }
 
+        const PLACEHOLDERS_HINT = "You can use the following placeholders: {USER_ID}, {FIRST_NAME}, {LAST_NAME}, {EVENT_NAME}, {REGISTRATION_START_TIME}, {REGISTRATION_END_TIME}, {SUBMISSION_START_TIME}, {SUBMISSION_END_TIME}, {REVIEW_START_TIME}, {REVIEW_END_TIME}, {EVENT_START_TIME}, {EVENT_END_TIME}, {CURRENT_TIME}. For example, to greet the user with their first name, you can use 'Hi {FIRST_NAME}, ...' in the email body. If you want to use the current time, you can use {CURRENT_TIME} in the email body. The time placeholders will be replaced with the time in the timezone of the event."
+
+
         await EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: senderEmail, params, from })
             .then(() => {
                 dispatch(
