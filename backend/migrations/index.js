@@ -20,8 +20,12 @@ const migrations = [
     require('./14-add-checklist-to-registration'),
     require('./15-add-meetingRooms-to-event'),
     require('./16-add-faq-challenge_instructions-demoInstructions-to-event'),
-    require('./17-add-event-newsletter-link-to-event'),
-    require('./18-add-emailConfig-to-event'),
+    require('./17-add-specific-hackerpacks-to-event'),
+    require('./18-add-event-newsletter-link-to-event'),
+    require('./19-add-emailConfig-to-event'),
+
+
+
 ]
 
 const run = async () => {
