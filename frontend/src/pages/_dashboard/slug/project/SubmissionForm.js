@@ -121,6 +121,7 @@ const SubmissionForm = props => {
     }, [event])
 
     const valuesFormatter = values => {
+        console.log('values', values)
         const formData = { ...values }
         if (event.submissionFormQuestions.length > 0) {
             formData['submissionFormAnswers'] = []
@@ -129,7 +130,6 @@ const SubmissionForm = props => {
                 section.questions.forEach(question => {
                     const que = question.name
                     const value = values[que]
-                    delete formData[que]
                     const custom = {
                         section: sec,
                         key: que,

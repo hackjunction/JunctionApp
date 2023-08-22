@@ -8,7 +8,7 @@ import Button from 'components/generic/Button'
 import AddSectionModal from './AddSectionModal'
 import CustomSectionListItem from './CustomSectionListItem'
 
-export default ({ sections = [], onChange }) => {
+export default ({ sections = [], onChange, projectsExist = false }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [editing, setEditing] = useState()
     const reservedNames = useMemo(() => {
@@ -17,6 +17,7 @@ export default ({ sections = [], onChange }) => {
         return sectionNames.concat(questionNames)
     }, [sections])
 
+    console.log('Do projects exist?', projectsExist)
     const handleAdd = useCallback(
         section => {
             const newValue = sections.concat(section)
@@ -40,11 +41,16 @@ export default ({ sections = [], onChange }) => {
 
     const handleRemove = useCallback(
         (section, index) => {
+            if (projectsExist) {
+                return alert(
+                    'Participants have submitted projects already so you cannot remove questions anymore.',
+                )
+            }
             const newValue = sections.slice()
             newValue.splice(index, 1)
             onChange(newValue)
         },
-        [onChange, sections],
+        [onChange, sections, projectsExist],
     )
 
     const handleMoveUp = useCallback(
@@ -101,7 +107,7 @@ export default ({ sections = [], onChange }) => {
     const renderList = () => {
         return sections.map((section, index) => (
             <CustomSectionListItem
-                key={section.label}
+                key={section.name}
                 section={section}
                 onChange={section => handleChange(section, index)}
                 onRemove={() => handleRemove(section, index)}

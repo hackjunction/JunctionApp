@@ -140,19 +140,11 @@ export default ({
         reset()
     }
 
-    // const removeNumbers = str => {
-    //     return str.replace(/[0-9]/g, 'v')
-    // }
-
-    // const generateSlug = str => {
-    //     return getSlug(removeNumbers(str))
-    // }
-
     const handleChange = useCallback(
         (field, value) => {
             const newData = { ...data }
 
-            if (field === 'label') {
+            if (field === 'label' && !editing) {
                 newData.name = generateSlug(value, 'v')
             }
 

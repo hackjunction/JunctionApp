@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     ErrorMessage,
     FastField,
@@ -16,12 +16,23 @@ import CustomSectionList from '../questions/CustomSectionList'
 import CustomSectionListItem from '../questions/CustomSectionList/CustomSectionListItem'
 import TempFieldBuilder from './components/TempFieldBuilder'
 import Section from './section'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import { useSelector } from 'react-redux'
 
 export default () => {
     const formikCont = useFormikContext()
     const { values } = formikCont
+    const [projectsExist, setProjectsExist] = useState(false)
 
-    console.log('Formik context from submission page', formikCont)
+    const projects = useSelector(OrganiserSelectors.projects)
+
+    useEffect(() => {
+        if (projects && projects.length > 0 && !projectsExist) {
+            console.log('projects exist')
+            setProjectsExist(true)
+        }
+    }, [projects])
+
     return (
         <>
             <Grid container spacing={3}>
@@ -38,6 +49,7 @@ export default () => {
                                     onChange={value =>
                                         form.setFieldValue(field.name, value)
                                     }
+                                    projectsExist={projectsExist}
                                 />
                             </FormControl>
                         )}

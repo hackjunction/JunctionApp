@@ -77,6 +77,7 @@ export default ({
     }
 
     const handleAdd = () => {
+        console.log('After handling add:', data)
         const error = validate()
         if (error) {
             window.alert(error)
@@ -115,7 +116,7 @@ export default ({
         (field, value) => {
             const newData = { ...data }
 
-            if (field === 'label') {
+            if (field === 'label' && !editing) {
                 newData.name = generateSlug(value, 's')
             }
 
