@@ -50,6 +50,7 @@ const hackerpack = yup.object().shape({
     title: yup.string(),
     description: yup.string(),
     logo: cloudinaryImage,
+    link: yup.string(),
 })
 
 const travelGrantConfig = yup.object().shape({

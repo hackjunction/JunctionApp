@@ -17,7 +17,9 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Does this event have hackerpacks?"
-                            hint={'Hackerpacks'}
+                            hint={
+                                'Hackerpacks are software provided by you or your partners, used by your participants. Hackepacks are a great way to showcase the tools companies can offer. This way participants get familiar with the company and their tools, and companies get visibility and users. Hackerpack consists of title, description, logo and link to the tool, which can be e.g. a sandbox environment, API, free trial or anything else!'
+                            }
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
