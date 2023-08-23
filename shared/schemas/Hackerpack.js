@@ -28,6 +28,9 @@ const HackerpackSchema = new mongoose.Schema({
         type: String,
     },
     logo: CloudinaryImageSchema.mongoose,
+    link: {
+        type: String,
+    },
 })
 
 const HackerpackType = new GraphQLObjectType({
@@ -53,6 +56,9 @@ const HackerpackType = new GraphQLObjectType({
         },
         logo: {
             type: CloudinaryImageSchema.graphql,
+        },
+        link: {
+            type: GraphQLString,
         },
     },
 })
@@ -83,6 +89,9 @@ const HackerpackInput = new GraphQLInputObjectType({
         },
         logo: {
             type: CloudinaryImageSchema.graphqlInput,
+        },
+        link: {
+            type: GraphQLString,
         },
     },
 })

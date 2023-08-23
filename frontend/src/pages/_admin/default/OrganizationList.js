@@ -45,6 +45,7 @@ export default ({ data = [] }) => {
             if (org) setOrganization(org)
         })
     }, [])
+    console.log(organization)
 
     const handleRemove = useCallback(
         slug => {
