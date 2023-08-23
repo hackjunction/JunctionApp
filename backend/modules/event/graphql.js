@@ -47,6 +47,74 @@ const {
 
 const Organization = require('../organization/model')
 
+// A function to generate the fields for the email template
+function emailTemplateFields() {
+    return {
+        title: {
+            type: GraphQLString,
+        },
+        subtitle: {
+            type: GraphQLString,
+        },
+        body: {
+            type: GraphQLString,
+        },
+    }
+}
+
+const EmailTemplateInput = new GraphQLInputObjectType({
+    name: 'EmailTemplateInput',
+    fields: emailTemplateFields,
+})
+
+const EmailTemplateType = new GraphQLObjectType({
+    name: 'EmailTemplateType',
+    fields: emailTemplateFields,
+})
+
+const EmailConfigInput = new GraphQLInputObjectType({
+    name: 'EmailConfigInput',
+    fields: {
+        senderName: {
+            type: GraphQLString,
+        },
+        senderEmail: {
+            type: GraphQLString,
+        },
+        acceptanceEmail: {
+            type: EmailTemplateInput,
+        },
+        rejectionEmail: {
+            type: EmailTemplateInput,
+        },
+        registrationEmail: {
+            type: EmailTemplateInput,
+        },
+    },
+})
+
+const EmailConfigType = new GraphQLObjectType({
+    name: 'EmailConfigType',
+    fields: {
+        senderName: {
+            type: GraphQLString,
+        },
+        senderEmail: {
+            type: GraphQLString,
+        },
+        acceptanceEmail: {
+            type: EmailTemplateType,
+        },
+        rejectionEmail: {
+            type: EmailTemplateType,
+        },
+        registrationEmail: {
+            type: EmailTemplateType,
+        },
+    },
+})
+
+
 const EventInput = new GraphQLInputObjectType({
     name: 'EventInput',
     fields: {
@@ -178,8 +246,14 @@ const EventInput = new GraphQLInputObjectType({
         eventTerms: {
             type: GraphQLString,
         },
+        eventNewsletter: {
+            type: GraphQLString,
+        },
         eventTimeline: {
             type: EventTimelineInput,
+        },
+        emailConfig: {
+            type: EmailConfigInput,
         },
         demoPlaceholder: {
             type: GraphQLString,
@@ -329,6 +403,15 @@ const EventType = new GraphQLObjectType({
             demoHint: {
                 type: GraphQLString,
             },
+            challenge_instructions: {
+                type: GraphQLString,
+            },
+            faq: {
+                type: GraphQLString,
+            },
+            demoInstructions: {
+                type: GraphQLString,
+            },
             eventPrivacy: {
                 type: GraphQLString,
             },
@@ -340,6 +423,9 @@ const EventType = new GraphQLObjectType({
             },
             eventTimeline: {
                 type: EventTimeline,
+            },
+            emailConfig: {
+                type: EmailConfigType,
             },
             demoPlaceholder: {
                 type: GraphQLString,
@@ -575,7 +661,7 @@ const Resolvers = {
                 .controller('Registration')
                 .getByIdAndUser(parent._id, context.userId)
         },
-
+ 
          */
     },
 }
