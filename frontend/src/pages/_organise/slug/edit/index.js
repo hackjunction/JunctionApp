@@ -137,16 +137,16 @@ export default () => {
                                     component: SubmissionFormTab,
                                 },
                                 {
-                                    path: '/hackerpack',
-                                    key: 'hackerpacks',
-                                    label: 'Hackerpack',
-                                    component: HackerpackTab,
-                                },
-                                {
                                     path: '/other',
                                     key: 'other',
                                     label: 'Miscellaneous',
                                     component: OtherTab,
+                                },
+                                {
+                                    path: '/hackerpack',
+                                    key: 'hackerpacks',
+                                    label: 'Hackerpack',
+                                    component: HackerpackTab,
                                 },
                             ]}
                             location={location}
