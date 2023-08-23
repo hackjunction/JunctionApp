@@ -101,7 +101,7 @@ export default ({ alerts }) => {
                 <ProjectSubmissionsBlock projects={projects} event={event} />
                 <ReviewingPeriodBlock />
                 <RegistrationStatusBlock />
-                <TravelGrantStatusBlock />
+                {/*<TravelGrantStatusBlock />*/}
                 {/* <VisaInvitationBlock /> */}
                 <CertificateBlock />
                 <ProjectBlock />
