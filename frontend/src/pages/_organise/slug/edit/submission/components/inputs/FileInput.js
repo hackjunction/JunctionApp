@@ -33,7 +33,12 @@ const FileInput = () => {
                         SVG, PNG, JPG or GIF (MAX. 800x400px)
                     </p>
                 </div>
-                <input id="dropzone-file" type="file" className="tw-hidden" />
+                <input
+                    id="dropzone-file"
+                    type="file"
+                    className="tw-hidden"
+                    onChange={e => console.log(e)}
+                />
             </label>
         </div>
     )

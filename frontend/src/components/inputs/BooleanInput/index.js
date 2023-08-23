@@ -19,8 +19,29 @@ const BooleanInput = ({ value, onChange, alignCenter = false }) => {
     const [isYesChecked, setYesChecked] = useState(false)
     const [isNoChecked, setNoChecked] = useState(false)
 
+    const strBoolToBoolean = (string, stateChanged = false) => {
+        switch (string) {
+            case 'true':
+                setYesChecked(true)
+                setNoChecked(false)
+                if (stateChanged) onChange(true)
+                break
+            case 'false':
+                setNoChecked(true)
+                setYesChecked(false)
+                if (stateChanged) onChange(false)
+                break
+            default:
+                console.log('error')
+        }
+    }
+
     useEffect(() => {
         if (typeof value !== 'undefined') {
+            if (typeof value === 'string') {
+                strBoolToBoolean(value)
+                return
+            }
             setYesChecked(value)
             setNoChecked(!value)
         }
@@ -29,20 +50,7 @@ const BooleanInput = ({ value, onChange, alignCenter = false }) => {
     // TODO Probably could be done better. Value came as string for some reason, and didn't have time to debug it
     const handleChange = useCallback(
         e => {
-            switch (e.target.value) {
-                case 'true':
-                    setYesChecked(true)
-                    setNoChecked(false)
-                    onChange(true)
-                    break
-                case 'false':
-                    setNoChecked(true)
-                    setYesChecked(false)
-                    onChange(false)
-                    break
-                default:
-                    console.log('error')
-            }
+            strBoolToBoolean(e.target.value, true)
         },
         [onChange],
     )

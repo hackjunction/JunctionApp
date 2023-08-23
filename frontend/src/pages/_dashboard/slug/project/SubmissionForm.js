@@ -133,7 +133,7 @@ const SubmissionForm = props => {
                     const custom = {
                         section: sec,
                         key: que,
-                        value: value + '',
+                        value: value,
                     }
                     formData['submissionFormAnswers'].push(custom)
                 })

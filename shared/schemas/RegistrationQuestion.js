@@ -72,6 +72,12 @@ const RegistrationQuestionSchema = new mongoose.Schema({
                 return ['boolean', 'checkbox'].indexOf(this.fieldType) !== -1
             },
         },
+        maxSize: {
+            type: Number,
+        },
+        allowedTypes: {
+            type: [String],
+        },
     },
 })
 

@@ -14,6 +14,7 @@ import EducationInput from 'components/inputs/EducationInput'
 import BooleanInput from 'components/inputs/BooleanInput'
 import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import TeamOptionInput from 'components/inputs/TeamOptionInput'
+import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
 const { fieldTypes } = RegistrationFields
 // TODO URL-input and file upload
 
@@ -405,6 +406,7 @@ const RegistrationQuestion = ({
     const renderCustomInput = () => {
         switch (config.fieldType) {
             case 'text':
+            case 'link':
                 return (
                     <FormControl
                         label={config.label}
@@ -507,6 +509,18 @@ const RegistrationQuestion = ({
                             onBlur={() => form.setFieldTouched(field.name)}
                             isMulti={true}
                         />
+                    </FormControl>
+                )
+            case 'attachment':
+                return (
+                    <FormControl
+                        label={config.label}
+                        hint={config.hint}
+                        touched={form.touched[field.name]}
+                        error={form.errors[field.name]}
+                    >
+                        {/* TODO component for file input needs to be linked to the formik fields */}
+                        <FileInput />
                     </FormControl>
                 )
             default:
