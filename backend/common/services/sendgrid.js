@@ -37,76 +37,46 @@ const sendgridAddRecipientsToList = (listId, recipientIds) => {
     })
 }
 
-// A function that takes in the email body as a string and replaces the tags with corresponding dynamic information
-const replaceBodyTags = (str, event, user) => {
-    if (typeof str !== 'string' || !str.length) {
-        throw new Error("Expected body ('str') to be a string")
-    }
-
-    if (!event || typeof event !== 'object') {
-        throw new Error("Expected 'event' to be an object")
-    }
-
-    if (!user || typeof user !== 'object') {
-        throw new Error("User object is missing or not an object")
-    }
-
-    const data = {
-        "{USER_ID}": user.userId,
-        "{FIRST_NAME}": user.firstName,
-        "{LAST_NAME}": user.lastName,
-        "{EVENT_NAME}": event.name,
-        "{REGISTRATION_START_TIME}": moment(event.registrationStartTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{REGISTRATION_END_TIME}": moment(event.registrationEndTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{SUBMISSION_START_TIME}": moment(event.submissionStartTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{SUBMISSION_END_TIME}": moment(event.submissionEndTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{REVIEW_START_TIME}": moment(event.reviewStartTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{REVIEW_END_TIME}": moment(event.reviewEndTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{EVENT_START_TIME}": moment(event.startTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{EVENT_END_TIME}": moment(event.endTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{CURRENT_TIME}": moment().format('MMMM Do YYYY, h:mm:ss a'),
-    }
-    try {
-        for (const key in data) {
-            if (data[key] === null || data[key] === undefined) {
-                console.error(`Data for key ${key} is missing or undefined`)
-                continue    // We skip this replacement if the data is missing
-            }
-            str = str.replace(new RegExp(key, 'g'), data[key]) // Replace all instances of the tag with the corresponding data
-        }
-    } catch (err) {
-        console.error("Error replacing body tags:", err)
-        return str
-    }
-
-    return str
-}
-
 const SendgridService = {
     sendAcceptanceEmail: (event, user) => {
 
 
         var header_image_url = null
-        if (typeof event.coverImage !== "undefined") {
+        if(typeof event.coverImage !== "undefined"){
             header_image_url = event.coverImage.url
         }
         const msg = SendgridService.buildTemplateMessage(
             user.email,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                header_image: header_image_url,
-                subject: event.emailConfig.acceptanceEmail.title || `Congratulations!`,
-                subtitle: event.emailConfig.acceptanceEmail.subtitle || `You've been accepted to ${event.name}!`,
-                body: replaceBodyTags(event.emailConfig.acceptanceEmail.body, event, user),
+                header_image:  header_image_url,
+                subject: `Congratulations!`,
+                subtitle: `You've been accepted to ${event.name}!`,
+                body: `
+                    <p>
+                        After your celebratory dance, please remember to confirm your spot <strong>A.S.A.P</strong> so that
+                        we know you're coming. You can do this by logging into the Event Dashboard (link below) with the same 
+                        account you used when filling the registration form. Please note: you'll need to use the same login
+                        method as last time, which in your case was <strong>${user.userId.split('|')[0]
+                    }</strong>
+                    </p>
+                    <p>
+                        If something has come up, and you won't be able to join the event, please go ahead and
+                        cancel your spot in the Event Dashboard so that we can give it to the next hacker in line. 
+                    </p>
+                `,
                 cta_text: 'Event dashboard',
                 cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                // event_name: event.name,
+                // first_name: user.firstName,
+                // dashboard_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
             },
         )
         return SendgridService.send(msg)
     },
     sendRejectionEmail: (event, user) => {
         var header_image_url = null
-        if (typeof event.coverImage !== "undefined") {
+        if(typeof event.coverImage !== "undefined"){
             header_image_url = event.coverImage.url
         }
         const msg = SendgridService.buildTemplateMessage(
@@ -114,16 +84,34 @@ const SendgridService = {
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
                 header_image_url: header_image_url,
-                subject: event.emailConfig.rejectionEmail.title || `Oh-oh, bad news...`,
-                subtitle: event.emailConfig.rejectionEmail.subtitle || `We couldn't give you a spot at ${event.name}.`,
-                body: replaceBodyTags(event.emailConfig.rejectionEmail.body, event, user),
+                subject: `Oh-oh, bad news...`,
+                subtitle: `We couldn't give you a spot at ${event.name}.`,
+                body: `
+                    <p>
+                        Thank you very much for applying to ${event.name}, but we're sad to inform you
+                        that we weren't able to accept you this time. We'd love to be able to accept all
+                        of our applicants, but unfortunately that's not usually possible. We received a great number of 
+                        high-quality applications, so the final decisions were very difficult to make.
+                    </p>
+                    <p>
+                        One thing to note if you applied as a team: team members had the opportunity to also apply
+                        as an individual should their team as a whole not get accepted. So, it is possible that some
+                        members of your team have been accepted, but this just means that they we're accepted separately,
+                        as individuals.
+                    </p>
+                    <p>
+                        As a final note, don't feel discouraged and make sure to apply to one of our many other events.
+                        We host tons of events around the year and around the globe and it would be amazing to see you at
+                        one of them. Check out the full event calendar here <a href="${global.gConfig.CALENDAR_URL}">here</a>.
+                    </p>
+                `,
             },
         )
         return SendgridService.send(msg)
     },
     sendRegisteredEmail: (event, user) => {
         var header_image_url = null
-        if (typeof event.coverImage !== "undefined") {
+        if(typeof event.coverImage !== "undefined"){
             header_image_url = event.coverImage.url
         }
         let msg
@@ -133,9 +121,13 @@ const SendgridService = {
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
                     header_image: header_image_url,
-                    subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
-                    subtitle: event.emailConfig.registrationEmail.subtitle || 'Awesome! Now just sit back and relax.',
-                    body: replaceBodyTags(event.emailConfig.registrationEmail.body, event, user),
+                    subject: `Thanks for registering to ${event.name}!`,
+                    subtitle: 'Awesome! Now just sit back and relax.',
+                    body: `The application period ends <b>${moment(
+                        event.registrationEndTime,
+                    ).format(
+                        'MMMM Do',
+                    )}</b>, and we'll be able to process all of the applications shortly after that. <br /> <br /> We'll send you an email once we've made the decision, but in the meantime you can click the link below to access your event dashboard, where you'll be able to see your registration status in real-time. If you're applying as a team, the event dashboard is where you can create and manage your team as well.`,
                     cta_text: 'Event dashboard',
                     cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
                 },
@@ -146,8 +138,8 @@ const SendgridService = {
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
                     header_image: header_image_url,
-                    subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
-                    subtitle: event.emailConfig.registrationEmail.subtitle || `Thank you for registering to ${event.name}!`,
+                    subject: `Thanks for registering to ${event.name}!`,
+                    subtitle: `Thank you for registering to ${event.name}!`,
                     body: `You can modify your registration until the registration period ends <b>${moment(
                         event.registrationEndTime,
                     ).format(
@@ -314,7 +306,7 @@ const SendgridService = {
 
         return SendgridService.sendGenericEmail(user.email, params)
     },
-    sendGenericEmail: (to, params, from = {}, event, user) => {
+    sendGenericEmail: (to, params) => {
         const msg = SendgridService.buildTemplateMessage(
             to,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
@@ -322,12 +314,11 @@ const SendgridService = {
                 subject: params.subject,
                 subtitle: params.subtitle,
                 header_image: params.header_image,
-                body: replaceBodyTags(params.body, event, user),
+                body: params.body,
                 cta_text: params.cta_text,
                 cta_link: params.cta_link,
                 reply_to: params.reply_to,
             },
-            from
         )
         console.log('sending', msg)
         return SendgridService.send(msg)
@@ -345,14 +336,15 @@ const SendgridService = {
         )
         return SendgridService.send(msg)
     },
-    buildTemplateMessage: (to, templateId, data, from = {}) => {
+    buildTemplateMessage: (to, templateId, data) => {
+
         return {
             to,
+            //TODO: from email and name should be customazible
             from: {
-                name: from.name || global.gConfig.SENDGRID_FROM_NAME,
-                email: from.email || global.gConfig.SENDGRID_FROM_EMAIL,
+                name: global.gConfig.SENDGRID_FROM_NAME,
+                email: global.gConfig.SENDGRID_FROM_EMAIL,
             },
-            body: data.body,
             replyTo: data.reply_to,
             templateId,
             dynamic_template_data: data,
