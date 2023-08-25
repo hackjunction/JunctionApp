@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
 module.exports = {
-    index: 18,
-    name: '18-add-emailConfig-to-event',
+    index: 19,
+    name: '19-add-emailConfig-to-event',
     description: 'Add emailConfig to event',
     run: async () => {
         // Update emailConfig field

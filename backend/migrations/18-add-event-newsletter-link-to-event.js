@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
 module.exports = {
-    index: 17,
-    name: '17-add-event-newsletter-link-to-event',
+    index: 18,
+    name: '18-add-event-newsletter-link-to-event',
     description: 'Add event newsletter link to event',
     run: async () => {
         // Update newsletter field
