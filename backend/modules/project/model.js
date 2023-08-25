@@ -26,11 +26,11 @@ const ProjectSchema = new mongoose.Schema({
     },
     punchline: {
         type: String,
-        required: true,
+        // required: true,
     },
     description: {
         type: String,
-        required: true,
+        // required: true,
     },
     technologies: [String],
     source: {
@@ -38,7 +38,7 @@ const ProjectSchema = new mongoose.Schema({
     },
     sourcePublic: {
         type: Boolean,
-        required: true,
+        // required: true,
         default: true,
     },
     demo: {
@@ -71,10 +71,10 @@ const ProjectSchema = new mongoose.Schema({
         type: [CustomAnswer.mongoose],
     },
     // TODO default fields
-    enabledFields: {
-        type: [String],
-        default: ProjectDefaultFields,
-    },
+    // enabledFields: {
+    //     type: [String],
+    //     default: ProjectDefaultFields,
+    // },
 })
 
 ProjectSchema.set('timestamps', true)

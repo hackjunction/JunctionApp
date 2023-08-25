@@ -304,5 +304,19 @@
     "Past_events_all_": "See All Past Events",
     "Pricing_": "Pricing",
     "Event_newsletter_": "One more thing...",
-    "Join_event_newsletter_": "While Junction's newsletter is great, you could also sign up to the event organizer's newsletter to receive news about future hackathons they organise. How does that sound?"
+    "Join_event_newsletter_": "While Junction's newsletter is great, you could also sign up to the event organizer's newsletter to receive news about future hackathons they organise. How does that sound?",
+    "submission_form_name_hint":"Name",
+    "submission_form_images_hint":"Images",
+    "submission_form_punchline_hint":"Punchline",
+    "submission_form_description_hint":"Description",
+    "submission_form_track_hint":"Track",
+    "submission_form_challenges_hint":"Challenges",
+    "submission_form_technologies_hint":"Technologies",
+    "submission_form_video_hint":"Video",
+    "submission_form_demo_hint":"Demo",
+    "submission_form_source_hint":"Source",
+    "submission_form_sourcePublic_hint":"Source public",
+    "submission_form_location_hint":"Location",
+    "submission_form_privacy_hint":"Privacy",
+    "submission_form_status_hint":"Status"
 }

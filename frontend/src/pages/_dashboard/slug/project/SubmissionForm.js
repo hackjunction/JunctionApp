@@ -29,6 +29,22 @@ import RegistrationSectionCustom from 'pages/_events/slug/register/RegistrationS
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
 import SubmissionFormCustomInput from 'components/inputs/SubmissionFormCustomInput'
 import BottomBar from 'components/inputs/BottomBar'
+import NameField from 'components/projects/ProjectSubmissionFields/NameField'
+import ImagesField from 'components/projects/ProjectSubmissionFields/ImagesField'
+import PrivacyField from 'components/projects/ProjectSubmissionFields/PrivacyField'
+import _ from 'lodash'
+import PunchlineField from 'components/projects/ProjectSubmissionFields/PunchlineField'
+import DescriptionField from 'components/projects/ProjectSubmissionFields/DescriptionField'
+import TrackField from 'components/projects/ProjectSubmissionFields/TrackField'
+import ChallengesField from 'components/projects/ProjectSubmissionFields/ChallengesField'
+import TechnologiesField from 'components/projects/ProjectSubmissionFields/TechnologiesField'
+import VideoField from 'components/projects/ProjectSubmissionFields/VideoField'
+import DemoField from 'components/projects/ProjectSubmissionFields/DemoField'
+import SourceField from 'components/projects/ProjectSubmissionFields/SourceField'
+import SourcePublicField from 'components/projects/ProjectSubmissionFields/SourcePublicField'
+import LocationField from 'components/projects/ProjectSubmissionFields/LocationField'
+import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
+import ProjectFieldsComponents from 'constants/projectFields'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -67,12 +83,6 @@ const SubmissionForm = props => {
                 : true,
         ...project,
     }
-
-    console.log('Project saved answers', project?.submissionFormAnswers)
-    console.log(
-        'Event submission form questions',
-        event?.submissionFormQuestions,
-    )
 
     if (project && project.submissionFormAnswers?.length > 0) {
         project.submissionFormAnswers.forEach(question => {
@@ -143,6 +153,89 @@ const SubmissionForm = props => {
         return formData
     }
 
+    // const ChallengeFieldTest = (props, settings) => {
+    //     const { challengeOptions } = settings
+    //     return (
+    //         <Grid item xs={12}>
+    //             <FastField
+    //                 name="challenges"
+    //                 render={({ field, form }) => (
+    //                     <FormControl
+    //                         label="Challenges"
+    //                         hint="Which partner challenges do you want to submit your project in? You can choose up to 5. Note: make sure you read the event guidelines about how many challenges you can set here!"
+    //                         touched={
+    //                             form.touched[field.name] ||
+    //                             props.submitCount > 0
+    //                         }
+    //                         error={form.errors[field.name]}
+    //                     >
+    //                         <Select
+    //                             label="Challenges"
+    //                             options={challengeOptions}
+    //                             value={field.value}
+    //                             onChange={value =>
+    //                                 form.setFieldValue(field.name, value)
+    //                             }
+    //                             onBlur={() => form.setFieldTouched(field.name)}
+    //                             isMulti
+    //                         />
+    //                     </FormControl>
+    //                 )}
+    //             />
+    //         </Grid>
+    //     )
+    // }
+
+    const enabledFieldProcessor = (defaultFields, enabledFields) => {
+        return _.intersection(
+            Object.keys(defaultFields).filter(
+                key => defaultFields[key] === true,
+            ),
+            enabledFields,
+        )
+    }
+
+    const renderDefaultFields = (
+        defaultFields,
+        eventEnabledFields,
+        props,
+        settings = {
+            trackOptions,
+            locationEnabled,
+            challengeOptions,
+            event,
+        },
+    ) => {
+        const fieldList = enabledFieldProcessor(
+            defaultFields,
+            eventEnabledFields,
+        )
+        // const fieldList = _.intersection(
+        //     Object.keys(ProjectFieldsComponents),
+        //     eventEnabledFields,
+        // )
+        return fieldList.map(field => {
+            return ProjectFieldsComponents[field](props, settings)
+        })
+    }
+
+    // const obj = {
+    //     name: props => <NameField props={props} />,
+    //     images: props => <ImagesField props={props} />,
+    //     punchline: props => <PunchlineField props={props} />,
+    //     description: props => <DescriptionField props={props} />,
+    //     track: props => <TrackField props={props} settings={settings} />,
+    //     challenges: props => <ChallengesField props={props} />,
+    //     technologies: props => <TechnologiesField props={props} />,
+    //     video: props => <VideoField props={props} />,
+    //     demo: props => <DemoField props={props} />,
+    //     source: props => <SourceField props={props} />,
+    //     sourcePublic: props => <SourcePublicField props={props} />,
+    //     location: props => <LocationField props={props} />,
+    //     privacy: props => <PrivacyField props={props} />,
+    //     status: props => <StatusField props={props} />,
+    // }
+
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -173,7 +266,50 @@ const SubmissionForm = props => {
                             </Typography>
                         </GradientBox>
                     </Grid>
-                    <Grid item xs={12}>
+                    <NameField props={formikProps} />
+                    {/* <NameField props={formikProps} />
+                    <ImagesField props={formikProps} />
+                    <PunchlineField props={formikProps} />
+                    <DescriptionField props={formikProps} />
+                    <TrackField
+                        props={formikProps}
+                        settings={{ trackOptions }}
+                    />
+                    <ChallengesField
+                        props={formikProps}
+                        settings={{ challengeOptions }}
+                    />
+                    <TechnologiesField props={formikProps} />
+                    <VideoField props={formikProps} />
+                    <DemoField props={formikProps} settings={{ event }} />
+                    <SourceField props={formikProps} />
+                    <SourcePublicField />
+                    <PrivacyField props={formikProps} />
+                    <StatusField props={formikProps} /> */}
+
+                    {renderDefaultFields(
+                        event.submissionFormDefaultFields,
+                        event.submissionFormEnabledFields,
+                        formikProps,
+                    )}
+
+                    {/* 'name',
+                        'images',
+                        'punchline',
+                        'description',
+                        'track',
+                        'challenges',
+                        'technologies',
+                        'video',
+                        'demo',
+                        'source',
+                        'sourcePublic',
+                        'location',
+                        'privacy',
+                        'status', */}
+
+                    {/* {ChallengeFieldTest(formikProps, { challengeOptions })} */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="name"
                             render={({ field, form }) => (
@@ -202,8 +338,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="images"
                             render={({ field, form }) => (
@@ -225,8 +361,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="punchline"
                             render={({ field, form }) => (
@@ -255,8 +391,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="description"
                             render={({ field, form }) => (
@@ -292,8 +428,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    {trackOptions && (
+                    </Grid> */}
+                    {/* {trackOptions && (
                         <Grid item xs={12}>
                             <FastField
                                 name="track"
@@ -325,42 +461,55 @@ const SubmissionForm = props => {
                                 )}
                             />
                         </Grid>
-                    )}
-                    {challengeOptions && (
+                    )} */}
+                    {/* {challengeOptions && (
                         <Grid item xs={12}>
                             <FastField
                                 name="challenges"
-                                render={({ field, form }) => (
-                                    <FormControl
-                                        label="Challenges"
-                                        hint="Which partner challenges do you want to submit your project in? You can choose up to 5. Note: make sure you read the event guidelines about how many challenges you can set here!"
-                                        touched={
-                                            form.touched[field.name] ||
-                                            formikProps.submitCount > 0
-                                        }
-                                        error={form.errors[field.name]}
-                                    >
-                                        <Select
+                                render={({ field, form }) => {
+                                    console.log(challengeOptions)
+                                    console.log(
+                                        'Field data from challenge field',
+                                        field.value,
+                                    )
+                                    console.log(
+                                        'Form data from challenge field',
+                                        form,
+                                    )
+                                    return (
+                                        <FormControl
                                             label="Challenges"
-                                            options={challengeOptions}
-                                            value={field.value}
-                                            onChange={value =>
-                                                form.setFieldValue(
-                                                    field.name,
-                                                    value,
-                                                )
+                                            hint="Which partner challenges do you want to submit your project in? You can choose up to 5. Note: make sure you read the event guidelines about how many challenges you can set here!"
+                                            touched={
+                                                form.touched[field.name] ||
+                                                formikProps.submitCount > 0
                                             }
-                                            onBlur={() =>
-                                                form.setFieldTouched(field.name)
-                                            }
-                                            isMulti
-                                        />
-                                    </FormControl>
-                                )}
+                                            error={form.errors[field.name]}
+                                        >
+                                            <Select
+                                                label="Challenges"
+                                                options={challengeOptions}
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value,
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name,
+                                                    )
+                                                }
+                                                isMulti
+                                            />
+                                        </FormControl>
+                                    )
+                                }}
                             />
                         </Grid>
-                    )}
-                    <Grid item xs={12}>
+                    )} */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="technologies"
                             render={({ field, form }) => (
@@ -391,8 +540,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="video"
                             render={({ field, form }) => (
@@ -421,8 +570,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="demo"
                             render={({ field, form }) => (
@@ -463,8 +612,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="source"
                             render={({ field, form }) => (
@@ -493,8 +642,8 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="sourcePublic"
                             render={({ field, form }) => {
@@ -519,8 +668,8 @@ const SubmissionForm = props => {
                                 )
                             }}
                         />
-                    </Grid>
-                    {locationEnabled && (
+                    </Grid> */}
+                    {/* {locationEnabled && (
                         <Grid item xs={12}>
                             <FastField
                                 name="location"
@@ -551,7 +700,11 @@ const SubmissionForm = props => {
                                 )}
                             />
                         </Grid>
-                    )}
+                    )} */}
+                    {/* <LocationField
+                        props={formikProps}
+                        settings={{ locationEnabled }}
+                    /> */}
                     {/* {event.submissionFormQuestions?.length > 0 &&
                         event.submissionFormQuestions.map((section, index) => (
                             <Grid item xs={12}>
@@ -589,7 +742,7 @@ const SubmissionForm = props => {
                                 key={section.name}
                             />
                         ))}
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <Box
                             style={{
                                 display: 'flex',
@@ -622,8 +775,8 @@ const SubmissionForm = props => {
                                 )}
                             />
                         </Box>
-                    </Grid>
-                    <Grid item xs={12}>
+                    </Grid> */}
+                    {/* <Grid item xs={12}>
                         <FastField
                             name="status"
                             render={({ field, form }) => (
@@ -648,7 +801,7 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
                     {/* {Object.keys(formikProps.errors).length > 0 && (
                         <Grid item xs={12}>
                             <ErrorsBox errors={formikProps.errors} />
@@ -673,6 +826,7 @@ const SubmissionForm = props => {
                             </Button>
                         </Box>
                     </Grid> */}
+                    <StatusField props={formikProps} />
                     <BottomBar
                         onSubmit={() => {
                             formikProps.submitForm()

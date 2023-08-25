@@ -4,6 +4,7 @@ const ProjectStatuses = require('./project-statuses')
 
 /** The user editable fields and their validation rules for a Project */
 // TODO: Add tracks and challenges
+// TODO make fields optional based on event project fields
 const ProjectSchema = {
     name: yup.string().required().max(100).label('Project name'),
     punchline: yup.string().required().max(300).label('Punchline'),

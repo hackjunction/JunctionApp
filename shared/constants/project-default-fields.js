@@ -1,19 +1,18 @@
 const ProjectDefaultFields = [
-    'name',
+    // 'name',
+    'images',
     'punchline',
     'description',
+    'track',
+    'challenges',
     'technologies',
+    'video',
+    'demo',
     'source',
     'sourcePublic',
-    'demo',
-    'images',
-    'challenges',
-    'track',
     'location',
-    'hiddenMembers',
-    'video',
-    'status',
-    'achievements',
+    'privacy',
+    // 'status',
 ]
 
 module.exports = ProjectDefaultFields
