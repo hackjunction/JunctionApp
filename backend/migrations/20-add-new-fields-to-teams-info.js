@@ -3,8 +3,8 @@ const Promise = require('bluebird')
 const shortid = require('shortid')
 
 module.exports = {
-    index: 17,
-    name: '17-add-new-fields-to-teams-info',
+    index: 20,
+    name: '20-add-new-fields-to-teams-info',
     description: 'Add new fields to teams info',
     run: async () => {
         const teamRolesField = await mongoose
@@ -117,7 +117,7 @@ module.exports = {
             teamDiscordField.n,
             teamDiscordField.nModified,
         )
-        console.log('Done with migration 17')
+        console.log('Done with migration 20')
         return Promise.resolve()
     },
 }
