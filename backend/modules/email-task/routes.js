@@ -36,14 +36,19 @@ router.route('/:slug/preview').post(
         body: {
             to: Joi.string().email(),
             params: messageParams().required(),
+            from: Joi.object({
+                email: Joi.string().email().required(),
+                name: Joi.string().required(),
+            }).optional(),
+            eventSlug: Joi.string().required(),
         },
     }),
     hasToken,
     hasPermission(Auth.Permissions.MANAGE_EVENT),
     isEventOrganiser,
     asyncHandler(async (req, res) => {
-        const { to, params } = req.body
-        await EmailTaskController.sendPreviewEmail(to, params)
+        const { to, params, from, eventSlug } = req.body
+        await EmailTaskController.sendPreviewEmail(to, params, from, eventSlug)
         return res.status(status.OK).json({ message: 'success' })
     }),
 )
