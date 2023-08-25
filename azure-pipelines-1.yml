@@ -125,6 +125,11 @@ stages:
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
               #pathToSevenZipTool: # string. Path to 7z utility.
+              
+          - task: DeleteFiles@1
+            inputs:
+              SourceFolder: '$(Pipeline.Workspace)/drop' 
+              Contents: '$(Build.BuildId).zip'
 
           - task: Bash@3
             inputs:
