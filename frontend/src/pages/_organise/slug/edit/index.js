@@ -16,7 +16,6 @@ import BottomBar from 'components/inputs/BottomBar'
 
 import DefaultTab from './default'
 import ConfigurationTab from './configuration'
-import EmailsTab from './emails'
 import ChallengesTab from './challenges'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
@@ -106,12 +105,6 @@ export default () => {
                                     key: 'configuration',
                                     label: 'Configuration',
                                     component: ConfigurationTab,
-                                },
-                                {
-                                    path: '/emails',
-                                    key: 'emails',
-                                    label: 'Emails',
-                                    component: EmailsTab,
                                 },
                                 {
                                     path: '/challenges',

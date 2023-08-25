@@ -12,12 +12,10 @@ function config(idToken) {
 
 const BASE_ROUTE = '/email'
 
-EmailService.sendPreviewEmail = ({ idToken, slug, to, params, from = {} }) => {
+EmailService.sendPreviewEmail = (idToken, slug, to, params) => {
     const data = {
         to,
         params,
-        from,
-        eventSlug: slug,
     }
     return _axios.post(`${BASE_ROUTE}/${slug}/preview`, data, config(idToken))
 }
