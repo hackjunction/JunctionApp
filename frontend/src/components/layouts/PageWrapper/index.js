@@ -54,7 +54,6 @@ const PageWrapper = ({
                 </Box>
             )
         }
-
         return typeof render === 'function' ? render() : children
     }
     return (

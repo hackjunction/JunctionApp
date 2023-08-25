@@ -1,7 +1,5 @@
 import React from 'react'
 import UserMenu from 'components/UserMenu'
-import LanguageMenu from 'components/LanguageMenu'
-
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -37,10 +35,7 @@ const BasicNavBar = ({ text }) => {
                 <Typography variant="button" style={{ paddingLeft: '50px' }}>
                     {text}
                 </Typography>
-                <div className={classes.inner}>
-                    <UserMenu />
-                    <LanguageMenu />
-                </div>
+                <UserMenu />
             </div>
         </div>
     )

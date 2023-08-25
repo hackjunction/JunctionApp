@@ -184,7 +184,7 @@ export default () => {
                             />
                         </div>
                     }
-                    topContent={<BasicNavBar />}
+                    topContent={<BasicNavBar text={event.name} />}
                     routes={[
                         {
                             key: 'dashboard',
@@ -267,7 +267,7 @@ export default () => {
                             />
                         </div>
                     }
-                    topContent={<BasicNavBar />}
+                    topContent={<BasicNavBar text={event.name} />}
                     routes={[
                         {
                             key: 'dashboard',
