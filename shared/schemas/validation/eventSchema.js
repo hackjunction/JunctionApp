@@ -43,6 +43,16 @@ const challenge = yup.object().shape({
     logo: cloudinaryImage,
 })
 
+const hackerpack = yup.object().shape({
+    name: yup.string().required(),
+    slug: yup.string(),
+    partner: yup.string(),
+    title: yup.string(),
+    description: yup.string(),
+    logo: cloudinaryImage,
+    link: yup.string(),
+})
+
 const travelGrantConfig = yup.object().shape({
     enabled: yup.boolean().required(),
     budget: yup.number().integer().required(),
@@ -110,6 +120,20 @@ const meetingRoom = yup.object().shape({
     ),
 })
 
+const emailTemplate = yup.object().shape({
+    title: yup.string().max(100, 'Must be less than 100 characters'),
+    subtitle: yup.string().max(100, 'Must be less than 100 characters'),
+    body: yup.string().max(5000, 'Must be less than 5000 characters'),
+})
+
+const emailConfig = yup.object().shape({
+    senderEmail: yup.string().email('Must be a valid email'),
+    senderName: yup.string().max(100, 'Must be less than 100 characters'),
+    acceptanceEmail: emailTemplate,
+    rejectionEmail: emailTemplate,
+    registrationEmail: emailTemplate,
+})
+
 export default yup.object().shape({
     name: yup.string().required('Event name is required'),
     slug: yup.string().required('Event must have a unique slug'),
@@ -127,6 +151,8 @@ export default yup.object().shape({
     tracks: yup.array().of(track),
     challengesEnabled: yup.boolean(),
     challenges: yup.array().of(challenge).min(0),
+    hackerpacksEnabled: yup.boolean(),
+    hackerpacks: yup.array().of(hackerpack).min(0),
     travelGrantConfig,
     reviewMethod: yup.string(),
     overallReviewMethod: yup.string(),
@@ -149,6 +175,7 @@ export default yup.object().shape({
     eventPrivacy: yup.string(),
     eventTerms: yup.string(),
     eventTimeline,
+    emailConfig,
     demoPlaceholder: yup.string(),
     metaDescription: yup.string(),
     finalists: yup.array().of(yup.string()),

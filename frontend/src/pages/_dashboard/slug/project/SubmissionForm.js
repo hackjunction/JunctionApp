@@ -817,7 +817,7 @@ const SubmissionForm = props => {
                                 fullWidth
                                 disabled={
                                     Object.keys(formikProps.errors).length >
-                                        0 || formikProps.isSubmitting
+                                    0 || formikProps.isSubmitting
                                 }
                                 color="theme_turquoise"
                                 variant="contained"
