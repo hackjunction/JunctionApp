@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux'
 import BooleanInput from 'components/inputs/BooleanInput'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
+import EditableText from './components/section/EditableText'
 
 export default () => {
     const { t } = useTranslation()
@@ -53,88 +54,21 @@ export default () => {
 
     return (
         <>
+            <FastField name="test">
+                {({ field, form }) => {
+                    return (
+                        <EditableText
+                            value={field.value || 'this'}
+                            save={value =>
+                                form.setFieldValue(field.name, value)
+                            }
+                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                            type="heading"
+                        />
+                    )
+                }}
+            </FastField>
             <div>
-                {/* <FieldArray
-                    name="submissionFormEnabledFields"
-                    render={arrayHelpers => (
-                        <div>
-                            {event && event.submissionFormEnabledFields ? (
-                                event.submissionFormEnabledFields.map(
-                                    (field, index) => (
-                                        <div key={index}>
-                                            <Field name={field} />
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    arrayHelpers.remove(index)
-                                                } // remove a friend from the list
-                                            >
-                                                -
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    arrayHelpers.insert(
-                                                        index,
-                                                        '',
-                                                    )
-                                                } // insert an empty string at a position
-                                            >
-                                                +
-                                            </button>
-                                        </div>
-                                    ),
-                                )
-                            ) : (
-                                <button
-                                    type="button"
-                                    onClick={() => arrayHelpers.push('')}
-                                >
-                                    Add a friend
-                                </button>
-                            )}
-                            <div>
-                                <button type="submit">Submit</button>
-                            </div>
-                        </div>
-                    )}
-                /> */}
-
-                {/* <FieldArray name="friends">
-                    {({ insert, remove, push }) => (
-                        <div>
-                            {event &&
-                                event.submissionFormEnabledFields &&
-                                event.submissionFormEnabledFields.map(
-                                    (field, index) => (
-                                        <div className="row" key={index}>
-                                            <span>{field}</span>
-                                            <Field
-                                                name={field}
-                                                type="boolean"
-                                            />
-
-                                            <button
-                                                type="button"
-                                                className="secondary"
-                                                onClick={() => remove(index)}
-                                            >
-                                                X
-                                            </button>
-                                        </div>
-                                    ),
-                                )}
-                            <button
-                                type="button"
-                                className="secondary"
-                                onClick={() => push({ fieldTest: true })}
-                            >
-                                Add Friend
-                            </button>
-                        </div>
-                    )}
-                </FieldArray> */}
-
                 {event &&
                     event.submissionFormEnabledFields &&
                     event.submissionFormEnabledFields.length > 0 &&

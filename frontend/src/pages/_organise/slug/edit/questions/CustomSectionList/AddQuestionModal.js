@@ -338,24 +338,6 @@ export default ({
                     value={data.label}
                     onChange={value => handleChange('label', value)}
                 />
-                {/* DELETE AFTER unnecesary section for field name generation */}
-                {/* <Typography variant="caption" paragraph>
-                    The name of your question
-                </Typography>
-                <Typography variant="body1" className={classes.label}>
-                    Machine name
-                </Typography>
-                <TextInput
-                    placeholder="favoriteAnimal"
-                    disabled={editing}
-                    value={data.name}
-                    onChange={value => handleChange('name', value)}
-                />
-                <Typography variant="caption" paragraph>
-                    A unique machine-readable name. This should be only letters,
-                    and be written in camelCase: e.g. letterOfMotivation. This
-                    field will not be visible to the end-user.
-                </Typography> */}
                 <div className="tw-flex tw-space-x-2 tw-items-center">
                     <Typography variant="body1" className={classes.label}>
                         Question type:

@@ -16,6 +16,8 @@ const FIELD_TYPES = [
     'text',
     'textarea',
     'boolean',
+    'link',
+    'attachment',
     'single-choice',
     'multiple-choice',
     'checkbox',

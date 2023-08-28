@@ -20,6 +20,11 @@ import Markdown from 'components/generic/Markdown'
 import AddQuestionModal from './AddQuestionModal'
 import TextInput from '../../submission/components/inputs/TextInput'
 import Section from '../../submission/section'
+import EditableText from '../../submission/components/section/EditableText'
+import Dropdown from '../../submission/components/section/Dropdown'
+import Switch from '../../submission/components/Switch'
+import EditableOptions from '../../submission/components/EditableOptions'
+import Checkbox from '../../submission/components/section/Checkbox'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -41,6 +46,7 @@ export default ({
     onEdit,
     onMoveDown,
     onMoveUp,
+    index,
     isFirst,
     isLast,
 }) => {
@@ -49,6 +55,187 @@ export default ({
     const [editing, setEditing] = useState(undefined)
     const questions = section.questions || []
     const reservedNames = questions.map(q => q.name)
+
+    const renderPlaceholderInput = question => {
+        return (
+            <>
+                <Typography variant="body1" className={classes.label}>
+                    Placeholder
+                </Typography>
+                <TextInput
+                    placeholder="Your favorite animal here"
+                    value={question.placeholder}
+                    onChange={value =>
+                        onChange({ ...question, placeholder: value })
+                    }
+                />
+                <Typography variant="caption" paragraph>
+                    Text to show in the field if it's empty
+                </Typography>
+            </>
+        )
+    }
+
+    const renderFieldTypeOptions = question => {
+        switch (question.fieldType) {
+            case 'multiple-choice':
+            case 'single-choice': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Options to choose from
+                        </Typography>
+                        <EditableOptions
+                            options={
+                                question.settings.options
+                                    ? question.settings.options
+                                    : []
+                            }
+                            handleAddOption={value =>
+                                handleEdit({
+                                    ...question,
+                                    settings: {
+                                        options: [
+                                            ...question.settings.options,
+                                            value,
+                                        ],
+                                    },
+                                })
+                            }
+                            handleEdit={(index, value) => {
+                                console.log(index, value)
+                                const updatedOptions = [
+                                    ...question.settings.options,
+                                ]
+                                updatedOptions[index] = value
+                                handleEdit({
+                                    ...question,
+                                    settings: {
+                                        options: updatedOptions,
+                                    },
+                                })
+                            }}
+                            handleDelete={index => {
+                                console.log(index)
+                                const updatedOptions = [
+                                    ...question.settings.options,
+                                ]
+                                updatedOptions.splice(index, 1)
+                                handleEdit({
+                                    ...question,
+                                    settings: {
+                                        options: updatedOptions,
+                                    },
+                                })
+                            }}
+                        />
+                        <Typography variant="caption" paragraph>
+                            Enter options to choose
+                        </Typography>
+                        {renderPlaceholderInput(question)}
+                    </>
+                )
+            }
+            case 'checkbox':
+            case 'boolean': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Default value
+                        </Typography>
+                        <Switch
+                            checked={question.settings.default || false}
+                            onChange={value =>
+                                handleEdit({
+                                    ...question,
+                                    settings: {
+                                        default: value,
+                                    },
+                                })
+                            }
+                            checkedText="Yes"
+                            uncheckedText="No"
+                        />
+                        <Typography variant="caption" paragraph>
+                            Is this field checked/yes by default?
+                        </Typography>
+                    </>
+                )
+            }
+
+            // // ! This only apply to the submission form, not the registration form
+            case 'attachment': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Maximum file size
+                        </Typography>
+                        <TextInput
+                            placeholder="10"
+                            value={question.settings.maxSize || ''}
+                            onChange={value =>
+                                handleEdit({
+                                    ...question,
+                                    settings: {
+                                        maxSize: parseInt(value, 10),
+                                    }, // parse value to integer
+                                })
+                            }
+                            width="tw-w-1/4"
+                        />
+                        <Typography variant="caption" paragraph>
+                            Maximum file size in megabytes
+                        </Typography>
+                        <Typography variant="body1" className={classes.label}>
+                            Allowed file types
+                        </Typography>
+                        <Checkbox
+                            options={['pdf', 'docx', 'jpg', 'png', 'gif']} // Add all the file types you want to allow
+                            selectedOptions={
+                                question.settings.allowedTypes || []
+                            }
+                            onChange={value =>
+                                handleEdit({
+                                    ...question,
+                                    settings: {
+                                        allowedTypes: value,
+                                    },
+                                })
+                            }
+                        />
+                        <Typography variant="caption" paragraph>
+                            Allowed file types, select multiple options
+                        </Typography>
+                    </>
+                )
+            }
+            // // ! ----------------------------------------------------------------
+            case 'link': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Link
+                        </Typography>
+                        <TextInput
+                            placeholder="https://www.google.com"
+                            value={question.placeholder || ''}
+                            onChange={value =>
+                                handleEdit({
+                                    ...question,
+                                    placeholder: value,
+                                })
+                            }
+                        />
+                        <Typography variant="caption" paragraph>
+                            Enter the link
+                        </Typography>
+                    </>
+                )
+            }
+            default:
+                return renderPlaceholderInput(question)
+        }
+    }
 
     const handleAdd = useCallback(
         question => {
@@ -122,49 +309,57 @@ export default ({
     return (
         <>
             <Box className={classes.wrapper}>
-                <Typography variant="h6">{section.label}</Typography>
-                <List>
-                    <ListItem>
-                        <ListItemText
-                            secondary={
-                                <Box className={classes.descriptionWrapper}>
-                                    <Markdown source={section.description} />
-                                </Box>
+                {index >= 0 && (
+                    <>
+                        <EditableText
+                            value={section.label}
+                            save={value =>
+                                onChange({ ...section, label: value }, index)
                             }
+                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                            type="heading"
                         />
-                    </ListItem>
-                    <ListItem>
-                        {section.conditional && (
-                            <ListItemText
-                                primary={`Conditional question: ${section.conditional}`}
-                            />
-                        )}
-                        {!section.conditional && (
-                            <ListItemText
-                                secondary={'No conditional question required'}
-                            />
-                        )}
-                    </ListItem>
-                </List>
+                        <EditableText
+                            value={section.description}
+                            save={value =>
+                                onChange(
+                                    { ...section, description: value },
+                                    index,
+                                )
+                            }
+                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                            type="default"
+                        />
+                    </>
+                )}
                 <Box p={1}>
                     {questions.map((question, index) => (
                         <>
                             <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
                                 <div className="tw-flex tw-flex-col">
-                                    <Typography
-                                        className="tw-tracking-tight tw-font-medium"
-                                        variant="h5"
-                                        component="h5"
-                                    >
-                                        {question.label}
-                                    </Typography>
-                                    <Typography
-                                        className="tw-text-lg"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        {question.hint}
-                                    </Typography>
+                                    <EditableText
+                                        value={question.label}
+                                        save={value =>
+                                            handleEdit({
+                                                ...question,
+                                                label: value,
+                                            })
+                                        }
+                                        className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                                        type="default"
+                                    />
+                                    <EditableText
+                                        value={question.hint}
+                                        save={value =>
+                                            handleEdit({
+                                                ...question,
+                                                hint: value,
+                                            })
+                                        }
+                                        className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                                        type="default"
+                                    />
+
                                     <Typography
                                         className="tw-text-lg"
                                         variant="body1"
@@ -172,34 +367,62 @@ export default ({
                                     >
                                         {question.fieldType}
                                     </Typography>
-                                </div>
-                            </div>
-                            <ExpansionPanel key={question.name}>
-                                <ExpansionPanelSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1c-content"
-                                    id="panel1c-header"
-                                >
-                                    <ListItemText
-                                        primary={question.label}
-                                        secondary={question.fieldType}
+                                    <Dropdown
+                                        value={question.fieldType}
+                                        onChange={value =>
+                                            handleEdit({
+                                                ...question,
+                                                fieldType: value,
+                                            })
+                                        }
+                                        placeholder="Input type"
+                                        options={[
+                                            {
+                                                value: 'text',
+                                                label: 'Short text',
+                                            },
+                                            {
+                                                value: 'textarea',
+                                                label: 'Long text',
+                                            },
+                                            {
+                                                value: 'link',
+                                                label: 'Link',
+                                            },
+                                            {
+                                                value: 'attachment',
+                                                label: 'Attachment',
+                                            },
+                                            {
+                                                value: 'boolean',
+                                                label: 'Yes / No',
+                                            },
+                                            {
+                                                value: 'single-choice',
+                                                label: 'Single choice',
+                                            },
+                                            {
+                                                value: 'multiple-choice',
+                                                label: 'Multiple choice',
+                                            },
+                                        ]}
                                     />
-                                </ExpansionPanelSummary>
-                                {/* Display preview for the form https://www.figma.com/file/F0PvYOStjKVp6Vck3cw9gk/Junction?type=design&node-id=733-16420&mode=design&t=RDGTSCWd9ndyhd2G-0*/}
-                                {/* This will need more work, but you can develop base on this:
-                                    - It will get the question type and display the correct input
-                                    - There are many different types of inputs that available in the submission/components/inputs folder
-                             */}
-                                <ExpansionPanelDetails>
-                                    <Box width="100%">
-                                        <Typography variant="h5">
-                                            {question.label}
-                                        </Typography>
-                                        <TextInput />
-                                    </Box>
-                                </ExpansionPanelDetails>
-                                <Divider />
-                                <ExpansionPanelActions>
+                                    <p>Required</p>
+                                    <Switch
+                                        checked={question.fieldRequired}
+                                        onChange={value =>
+                                            handleEdit({
+                                                ...question,
+                                                fieldRequired: value,
+                                            })
+                                        }
+                                        checkedText="Yes"
+                                        uncheckedText="No"
+                                    />
+                                    <p>Field render</p>
+                                    {renderFieldTypeOptions(question)}
+                                </div>
+                                <div>
                                     <Button
                                         color="error"
                                         onClick={() =>
@@ -237,8 +460,8 @@ export default ({
                                     >
                                         Move down
                                     </Button>
-                                </ExpansionPanelActions>
-                            </ExpansionPanel>
+                                </div>
+                            </div>
                         </>
                     ))}
                 </Box>

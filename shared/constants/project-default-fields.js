@@ -1,5 +1,4 @@
 const ProjectDefaultFields = [
-    // 'name',
     'images',
     'punchline',
     'description',
@@ -12,7 +11,6 @@ const ProjectDefaultFields = [
     'sourcePublic',
     'location',
     'privacy',
-    // 'status',
 ]
 
 module.exports = ProjectDefaultFields

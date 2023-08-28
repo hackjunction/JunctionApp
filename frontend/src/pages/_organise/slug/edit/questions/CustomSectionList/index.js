@@ -7,6 +7,7 @@ import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'
 import AddSectionModal from './AddSectionModal'
 import CustomSectionListItem from './CustomSectionListItem'
+import EditableText from '../../submission/components/section/EditableText'
 
 export default ({ sections = [], onChange, projectsExist = false }) => {
     const [modalOpen, setModalOpen] = useState(false)
@@ -105,19 +106,49 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
     }
 
     const renderList = () => {
-        return sections.map((section, index) => (
-            <CustomSectionListItem
-                key={section.name}
-                section={section}
-                onChange={section => handleChange(section, index)}
-                onRemove={() => handleRemove(section, index)}
-                onMoveUp={() => handleMoveUp(section, index)}
-                onMoveDown={() => handleMoveDown(section, index)}
-                onEdit={() => setEditing(section)}
-                isFirst={index === 0}
-                isLast={index === sections.length - 1}
-            />
-        ))
+        return sections.map((section, index) => {
+            console.log(section)
+            return (
+                <>
+                    {/* <div className="tw-flex tw-flex-col">
+                        <EditableText
+                            value={section.label}
+                            save={value =>
+                                handleChange(
+                                    { ...section, label: value },
+                                    index,
+                                )
+                            }
+                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                            type="heading"
+                        />
+                        <EditableText
+                            value={section.description}
+                            save={value =>
+                                handleChange(
+                                    { ...section, description: value },
+                                    index,
+                                )
+                            }
+                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                            type="heading"
+                        />
+                    </div> */}
+                    <CustomSectionListItem
+                        key={section.name}
+                        section={section}
+                        index
+                        onChange={section => handleChange(section, index)}
+                        onRemove={() => handleRemove(section, index)}
+                        onMoveUp={() => handleMoveUp(section, index)}
+                        onMoveDown={() => handleMoveDown(section, index)}
+                        onEdit={() => setEditing(section)}
+                        isFirst={index === 0}
+                        isLast={index === sections.length - 1}
+                    />
+                </>
+            )
+        })
     }
 
     return (
