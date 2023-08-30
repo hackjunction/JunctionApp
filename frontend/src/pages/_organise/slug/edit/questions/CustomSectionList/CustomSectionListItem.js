@@ -17,14 +17,24 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import Button from 'components/generic/Button'
 import Markdown from 'components/generic/Markdown'
-import AddQuestionModal from './AddQuestionModal'
+// import AddQuestionModal from './AddQuestionModal'
 import TextInput from '../../submission/components/inputs/TextInput'
-import Section from '../../submission/section'
+// import Section from '../../submission/section'
 import EditableText from '../../submission/components/section/EditableText'
 import Dropdown from '../../submission/components/section/Dropdown'
 import Switch from '../../submission/components/Switch'
 import EditableOptions from '../../submission/components/EditableOptions'
 import Checkbox from '../../submission/components/section/Checkbox'
+import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    faArrowAltCircleDown,
+    faArrowAltCircleUp,
+    faPencilAlt,
+    faPlusCircle,
+    faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons'
+import Empty from 'components/generic/Empty'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -43,36 +53,37 @@ export default ({
     section,
     onChange,
     onRemove,
-    onEdit,
+    // onEdit,
     onMoveDown,
     onMoveUp,
     index,
     isFirst,
     isLast,
+    projectsExist = false,
 }) => {
+    const { t } = useTranslation()
     const classes = useStyles()
-    const [modalOpen, setModalOpen] = useState(false)
-    const [editing, setEditing] = useState(undefined)
+    // const [modalOpen, setModalOpen] = useState(false)
+    // const [editing, setEditing] = useState(undefined)
     const questions = section.questions || []
-    const reservedNames = questions.map(q => q.name)
+    // const reservedNames = questions.map(q => q.name)
 
     const renderPlaceholderInput = question => {
         return (
-            <>
-                <Typography variant="body1" className={classes.label}>
-                    Placeholder
-                </Typography>
-                <TextInput
-                    placeholder="Your favorite animal here"
-                    value={question.placeholder}
-                    onChange={value =>
-                        onChange({ ...question, placeholder: value })
-                    }
-                />
-                <Typography variant="caption" paragraph>
-                    Text to show in the field if it's empty
-                </Typography>
-            </>
+            <EditableText
+                value={
+                    question.placeholder ||
+                    t(`submission_form_customization_question_placeholder`)
+                }
+                save={value =>
+                    handleEdit({
+                        ...question,
+                        placeholder: value,
+                    })
+                }
+                className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                type="default"
+            />
         )
     }
 
@@ -81,7 +92,7 @@ export default ({
             case 'multiple-choice':
             case 'single-choice': {
                 return (
-                    <>
+                    <div className=" tw-flex tw-flex-col tw-gap-2">
                         <Typography variant="body1" className={classes.label}>
                             Options to choose from
                         </Typography>
@@ -129,17 +140,13 @@ export default ({
                                 })
                             }}
                         />
-                        <Typography variant="caption" paragraph>
-                            Enter options to choose
-                        </Typography>
-                        {renderPlaceholderInput(question)}
-                    </>
+                    </div>
                 )
             }
             case 'checkbox':
             case 'boolean': {
                 return (
-                    <>
+                    <div className=" tw-flex tw-flex-col tw-gap-2">
                         <Typography variant="body1" className={classes.label}>
                             Default value
                         </Typography>
@@ -159,14 +166,13 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Is this field checked/yes by default?
                         </Typography>
-                    </>
+                    </div>
                 )
             }
 
-            // // ! This only apply to the submission form, not the registration form
             case 'attachment': {
                 return (
-                    <>
+                    <div className=" tw-flex tw-flex-col tw-gap-2">
                         <Typography variant="body1" className={classes.label}>
                             Maximum file size
                         </Typography>
@@ -206,19 +212,19 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Allowed file types, select multiple options
                         </Typography>
-                    </>
+                    </div>
                 )
             }
             // // ! ----------------------------------------------------------------
             case 'link': {
                 return (
-                    <>
+                    <div className=" tw-flex tw-flex-col tw-gap-2">
                         <Typography variant="body1" className={classes.label}>
-                            Link
+                            Link placeholder
                         </Typography>
                         <TextInput
                             placeholder="https://www.google.com"
-                            value={question.placeholder || ''}
+                            value={question.placeholder}
                             onChange={value =>
                                 handleEdit({
                                     ...question,
@@ -229,7 +235,7 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Enter the link
                         </Typography>
-                    </>
+                    </div>
                 )
             }
             default:
@@ -261,7 +267,7 @@ export default ({
                 ...section,
                 questions: newQuestions,
             })
-            setEditing(undefined)
+            // setEditing(undefined)
         },
         [onChange, questions, section],
     )
@@ -296,6 +302,11 @@ export default ({
 
     const handleQuestionRemove = useCallback(
         (question, index) => {
+            if (projectsExist) {
+                return alert(
+                    t(`submission_form_customization_prevent_delete_question`),
+                )
+            }
             const newItems = questions.slice()
             newItems.splice(index, 1)
             onChange({
@@ -307,191 +318,281 @@ export default ({
     )
 
     return (
-        <>
-            <Box className={classes.wrapper}>
-                {index >= 0 && (
-                    <>
-                        <EditableText
-                            value={section.label}
-                            save={value =>
-                                onChange({ ...section, label: value }, index)
-                            }
-                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                            type="heading"
-                        />
-                        <EditableText
-                            value={section.description}
-                            save={value =>
-                                onChange(
-                                    { ...section, description: value },
-                                    index,
-                                )
-                            }
-                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                            type="default"
-                        />
-                    </>
-                )}
-                <Box p={1}>
-                    {questions.map((question, index) => (
-                        <>
-                            <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
-                                <div className="tw-flex tw-flex-col">
-                                    <EditableText
-                                        value={question.label}
-                                        save={value =>
-                                            handleEdit({
-                                                ...question,
-                                                label: value,
-                                            })
-                                        }
-                                        className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                                        type="default"
-                                    />
-                                    <EditableText
-                                        value={question.hint}
-                                        save={value =>
-                                            handleEdit({
-                                                ...question,
-                                                hint: value,
-                                            })
-                                        }
-                                        className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                                        type="default"
-                                    />
-
-                                    <Typography
-                                        className="tw-text-lg"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        {question.fieldType}
-                                    </Typography>
-                                    <Dropdown
-                                        value={question.fieldType}
-                                        onChange={value =>
-                                            handleEdit({
-                                                ...question,
-                                                fieldType: value,
-                                            })
-                                        }
-                                        placeholder="Input type"
-                                        options={[
-                                            {
-                                                value: 'text',
-                                                label: 'Short text',
-                                            },
-                                            {
-                                                value: 'textarea',
-                                                label: 'Long text',
-                                            },
-                                            {
-                                                value: 'link',
-                                                label: 'Link',
-                                            },
-                                            {
-                                                value: 'attachment',
-                                                label: 'Attachment',
-                                            },
-                                            {
-                                                value: 'boolean',
-                                                label: 'Yes / No',
-                                            },
-                                            {
-                                                value: 'single-choice',
-                                                label: 'Single choice',
-                                            },
-                                            {
-                                                value: 'multiple-choice',
-                                                label: 'Multiple choice',
-                                            },
-                                        ]}
-                                    />
-                                    <p>Required</p>
-                                    <Switch
-                                        checked={question.fieldRequired}
-                                        onChange={value =>
-                                            handleEdit({
-                                                ...question,
-                                                fieldRequired: value,
-                                            })
-                                        }
-                                        checkedText="Yes"
-                                        uncheckedText="No"
-                                    />
-                                    <p>Field render</p>
-                                    {renderFieldTypeOptions(question)}
+        <Box className="tw-p-4 tw-rounded-md tw-flex tw-flex-col tw-gap-4 tw-bg-white tw-shadow-md">
+            {index >= 0 && (
+                <div className=" tw-flex tw-flex-col tw-gap-2">
+                    <EditableText
+                        value={section.label}
+                        save={value =>
+                            onChange({ ...section, label: value }, index)
+                        }
+                        className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                        type="heading"
+                    />
+                    <EditableText
+                        value={
+                            section.description ||
+                            t(
+                                `submission_form_customization_section_description`,
+                            )
+                        }
+                        save={value =>
+                            onChange({ ...section, description: value }, index)
+                        }
+                        className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                        type="paragraph"
+                    />
+                </div>
+            )}
+            <Box p={1} className="tw-flex tw-flex-col tw-gap-4">
+                {questions.length > 0 ? (
+                    questions.map((question, index) => (
+                        <div className="tw-p-4 tw-bg-white tw-rounded-lg tw-shadow-md">
+                            <div className="tw-flex tw-flex-col tw-gap-8">
+                                <div className="tw-flex tw-justify-between tw-gap-2">
+                                    <div className="tw-flex tw-flex-col tw-gap-4">
+                                        <div className="tw-flex tw-flex-col tw-gap-2">
+                                            <EditableText
+                                                value={question.label}
+                                                save={value =>
+                                                    handleEdit({
+                                                        ...question,
+                                                        label: value,
+                                                    })
+                                                }
+                                                className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                                                type="subheading"
+                                            />
+                                            <EditableText
+                                                value={
+                                                    question.hint ||
+                                                    t(
+                                                        `submission_form_customization_question_hint`,
+                                                    )
+                                                }
+                                                save={value =>
+                                                    handleEdit({
+                                                        ...question,
+                                                        hint: value,
+                                                    })
+                                                }
+                                                className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
+                                                type="paragraph"
+                                            />
+                                        </div>
+                                        {renderFieldTypeOptions(question)}
+                                    </div>
+                                    <div className="tw-flex tw-flex-col tw-gap-2">
+                                        <Dropdown
+                                            value={question.fieldType}
+                                            onChange={value =>
+                                                handleEdit({
+                                                    ...question,
+                                                    fieldType: value,
+                                                })
+                                            }
+                                            placeholder="Input type"
+                                            options={[
+                                                {
+                                                    value: 'text',
+                                                    label: 'Short text',
+                                                },
+                                                {
+                                                    value: 'textarea',
+                                                    label: 'Long text',
+                                                },
+                                                {
+                                                    value: 'link',
+                                                    label: 'Link',
+                                                },
+                                                {
+                                                    value: 'attachment',
+                                                    label: 'Attachment',
+                                                },
+                                                {
+                                                    value: 'boolean',
+                                                    label: 'Yes / No',
+                                                },
+                                                {
+                                                    value: 'single-choice',
+                                                    label: 'Single choice',
+                                                },
+                                                {
+                                                    value: 'multiple-choice',
+                                                    label: 'Multiple choice',
+                                                },
+                                            ]}
+                                        />
+                                        <div className="tw-flex tw-gap-2">
+                                            <p>Required field?</p>
+                                            <Switch
+                                                checked={question.fieldRequired}
+                                                onChange={value =>
+                                                    handleEdit({
+                                                        ...question,
+                                                        fieldRequired: value,
+                                                    })
+                                                }
+                                                checkedText="Yes"
+                                                uncheckedText="No"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
+                                <div className="tw-flex tw-items-center tw-gap-2 tw-flex-wrap">
                                     <Button
-                                        color="error"
+                                        color="theme_red"
+                                        variant="jIconText"
                                         onClick={() =>
                                             handleQuestionRemove(
                                                 question,
                                                 index,
                                             )
                                         }
+                                        startIcon={
+                                            <FontAwesomeIcon
+                                                icon={faTrashAlt}
+                                                size="lg"
+                                            />
+                                        }
                                     >
-                                        Remove question
+                                        {t(
+                                            `submission_form_customization_question_remove`,
+                                        )}
                                     </Button>
+                                    {/* <Button
+                                            color="theme_black"
+                                            variant="jIconText"
+                                            onClick={() => setEditing(question)}
+                                            startIcon={
+                                                <FontAwesomeIcon
+                                                    icon={faPencilAlt}
+                                                    size="lg"
+                                                />
+                                            }
+                                        >
+                                            {t(
+                                                `submission_form_customization_question_edit`,
+                                            )}
+                                        </Button> */}
                                     <Button
-                                        color="theme_turquoise"
-                                        onClick={() => setEditing(question)}
-                                    >
-                                        Edit question
-                                    </Button>
-                                    <Button
-                                        color="theme_turquoise"
-                                        disabled={index === 0}
+                                        color="theme_black"
+                                        variant="jIconText"
                                         onClick={() =>
                                             handleQuestionUp(question, index)
                                         }
+                                        startIcon={
+                                            <FontAwesomeIcon
+                                                icon={faArrowAltCircleUp}
+                                                size="lg"
+                                            />
+                                        }
                                     >
-                                        Move up
+                                        {t(
+                                            `submission_form_customization_question_move_up`,
+                                        )}
                                     </Button>
                                     <Button
-                                        color="theme_turquoise"
-                                        disabled={
-                                            index === questions.length - 1
-                                        }
+                                        color="theme_black"
+                                        variant="jIconText"
                                         onClick={() =>
                                             handleQuestionDown(question, index)
                                         }
+                                        startIcon={
+                                            <FontAwesomeIcon
+                                                icon={faArrowAltCircleDown}
+                                                size="lg"
+                                            />
+                                        }
                                     >
-                                        Move down
+                                        {t(
+                                            `submission_form_customization_question_move_down`,
+                                        )}
                                     </Button>
                                 </div>
                             </div>
-                        </>
-                    ))}
-                </Box>
-                <Box
-                    p={1}
-                    display="flex"
-                    flexDirection="row"
-                    flexWrap="wrap"
-                    justifyContent="flex-end"
+                        </div>
+                    ))
+                ) : (
+                    <div>
+                        <Empty isEmpty emptyText="Click on 'Add question'" />
+                    </div>
+                )}
+            </Box>
+            <Box
+                p={1}
+                display="flex"
+                flexDirection="row"
+                flexWrap="wrap"
+                justifyContent="flex-end"
+                alignItems="center"
+            >
+                <Button
+                    color="theme_red"
+                    variant="jIconText"
+                    onClick={onRemove}
+                    startIcon={<FontAwesomeIcon icon={faTrashAlt} size="lg" />}
                 >
-                    <Button color="error" onClick={onRemove}>
-                        Remove section
-                    </Button>
-                    <Button
-                        color="theme_turquoise"
-                        onClick={() => setModalOpen(true)}
+                    {t(`submission_form_customization_section_remove`)}
+                </Button>
+                <Button
+                    color="primary"
+                    variant="jIconText"
+                    // onClick={() => setModalOpen(true)}
+                    onClick={() =>
+                        handleAdd({
+                            label: 'New question - click here to edit the question name',
+                            name: `${section.name}_question_${
+                                questions.length + 1
+                            }`,
+                            fieldType: 'text',
+                            fieldRequired: false,
+                            settings: {
+                                options: [],
+                            },
+                        })
+                    }
+                    startIcon={
+                        <FontAwesomeIcon icon={faPlusCircle} size="lg" />
+                    }
+                >
+                    {t(`submission_form_customization_question_add`)}
+                </Button>
+                {/* <Button
+                        color="theme_black"
+                        variant="jIconText"
+                        onClick={onEdit}
+                        startIcon={
+                            <FontAwesomeIcon icon={faPencilAlt} size="lg" />
+                        }
                     >
-                        Add a question
-                    </Button>
-                    <Button color="theme_turquoise" onClick={onEdit}>
-                        Edit section
-                    </Button>
-                    <Button color="theme_turquoise" onClick={onMoveUp}>
-                        Move up
-                    </Button>
-                    <Button color="theme_turquoise" onClick={onMoveDown}>
-                        Move down
-                    </Button>
-                </Box>
-                <AddQuestionModal
+                        {t(`submission_form_customization_section_edit`)}
+                    </Button> */}
+                <Button
+                    color="theme_black"
+                    variant="jIconText"
+                    onClick={onMoveUp}
+                    startIcon={
+                        <FontAwesomeIcon icon={faArrowAltCircleUp} size="lg" />
+                    }
+                >
+                    {t(`submission_form_customization_section_move_up`)}
+                </Button>
+                <Button
+                    color="theme_black"
+                    variant="jIconText"
+                    onClick={onMoveDown}
+                    startIcon={
+                        <FontAwesomeIcon
+                            icon={faArrowAltCircleDown}
+                            size="lg"
+                        />
+                    }
+                >
+                    {t(`submission_form_customization_section_move_down`)}
+                </Button>
+            </Box>
+            {/* <AddQuestionModal
                     sectionName={section.label}
                     visible={modalOpen}
                     onVisibleChange={setModalOpen}
@@ -500,8 +601,7 @@ export default ({
                     onEditDone={question => handleEdit(question)}
                     onEditCancel={() => setEditing(undefined)}
                     editing={editing}
-                />
-            </Box>
-        </>
+                /> */}
+        </Box>
     )
 }

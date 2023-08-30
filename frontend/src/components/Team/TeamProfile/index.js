@@ -58,14 +58,15 @@ export default ({
         discord: null,
         telegram: null,
         email: null,
-        //TBA
         challenge: 'Test',
     },
     onClickLeave,
+    onClickDelete = () => {},
     onClickEdit,
     onRoleClick = () => {},
 }) => {
     const teamMembersArr = [...objToArr(teamData.meta)]
+    const membersCount = teamData.members.length
 
     const classes = junctionStyle()
     return (
@@ -139,11 +140,15 @@ export default ({
                         Edit
                     </Button>
                     <Button
-                        onClick={onClickLeave}
+                        onClick={
+                            membersCount > 0 ? onClickLeave : onClickDelete
+                        }
                         color="outlined_button"
                         variant="jOutlined"
                     >
-                        Leave the team
+                        {membersCount > 0
+                            ? 'Leave the team'
+                            : 'Delete the team'}
                     </Button>
                 </div>
             )}

@@ -15,6 +15,7 @@ import BooleanInput from 'components/inputs/BooleanInput'
 import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import TeamOptionInput from 'components/inputs/TeamOptionInput'
 import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
+import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
 const { fieldTypes } = RegistrationFields
 // TODO URL-input and file upload
 
@@ -402,7 +403,6 @@ const RegistrationQuestion = ({
         }
     }
 
-    //TODO add custom field types here for URL and file upload
     const renderCustomInput = () => {
         switch (config.fieldType) {
             case 'text':
@@ -414,7 +414,17 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <TextInput
+                        <input
+                            autoFocus={autoFocus}
+                            onBlur={() => form.setFieldTouched(field.name)}
+                            onChange={e =>
+                                form.setFieldValue(field.name, e.target.value)
+                            }
+                            placeholder={config.placeholder}
+                            value={field.value}
+                            className={`tw-rounded-md tw-w-full tw-max-h-full tw-bg-gray-100 tw-border-gray-300 tw-px-2 tw-py-4 tw-items-start tw-justify-start tw-text-gray-800 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300`}
+                        />
+                        {/* <TextInput
                             autoFocus={autoFocus}
                             name={field.name}
                             value={field.value}
@@ -423,7 +433,7 @@ const RegistrationQuestion = ({
                             }
                             placeholder={config.placeholder}
                             onBlur={() => form.setFieldTouched(field.name)}
-                        />
+                        /> */}
                     </FormControl>
                 )
             case 'textarea':
@@ -446,7 +456,7 @@ const RegistrationQuestion = ({
                         />
                     </FormControl>
                 )
-            case 'boolean':
+            case 'boolean': {
                 return (
                     <FormControl
                         label={config.label}
@@ -454,16 +464,28 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <BooleanInput
+                        {console.log('from reg question bool', field.value)}
+                        {Boolean(field.value)}
+                        {console.log('is bool type', typeof field.name)}
+                        <Switch
+                            checked={field.value}
+                            onChange={value =>
+                                form.setFieldValue(field.name, value)
+                            }
+                            checkedText="Yes"
+                            uncheckedText="No"
+                        />
+                        {/* <BooleanInput
                             autoFocus={autoFocus}
                             value={field.value}
                             onChange={value =>
                                 form.setFieldValue(field.name, value)
                             }
                             onBlur={() => form.setFieldTouched(field.name)}
-                        />
+                        /> */}
                     </FormControl>
                 )
+            }
             case 'single-choice':
                 return (
                     <FormControl
@@ -472,19 +494,23 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <Select
-                            autoFocus={autoFocus}
-                            label={'Choose one'}
-                            options={config.settings.options.map(option => ({
-                                value: option,
-                                label: option,
-                            }))}
-                            value={field.value}
-                            onChange={items =>
-                                form.setFieldValue(field.name, items)
-                            }
-                            onBlur={() => form.setFieldTouched(field.name)}
-                        />
+                        <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
+                            <Select
+                                autoFocus={autoFocus}
+                                label={'Choose one'}
+                                options={config.settings.options.map(
+                                    option => ({
+                                        value: option,
+                                        label: option,
+                                    }),
+                                )}
+                                value={field.value}
+                                onChange={items =>
+                                    form.setFieldValue(field.name, items)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                            />
+                        </div>
                     </FormControl>
                 )
             case 'multiple-choice':
@@ -495,20 +521,24 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        <Select
-                            autoFocus={autoFocus}
-                            label={'Choose many'}
-                            options={config.settings.options.map(option => ({
-                                value: option,
-                                label: option,
-                            }))}
-                            value={field.value}
-                            onChange={items =>
-                                form.setFieldValue(field.name, items)
-                            }
-                            onBlur={() => form.setFieldTouched(field.name)}
-                            isMulti={true}
-                        />
+                        <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
+                            <Select
+                                autoFocus={autoFocus}
+                                label={'Choose many'}
+                                options={config.settings.options.map(
+                                    option => ({
+                                        value: option,
+                                        label: option,
+                                    }),
+                                )}
+                                value={field.value}
+                                onChange={items =>
+                                    form.setFieldValue(field.name, items)
+                                }
+                                onBlur={() => form.setFieldTouched(field.name)}
+                                isMulti={true}
+                            />
+                        </div>
                     </FormControl>
                 )
             case 'attachment':

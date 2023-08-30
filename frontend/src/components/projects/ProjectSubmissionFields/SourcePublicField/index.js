@@ -3,6 +3,7 @@ import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
 import React from 'react'
 import BooleanInput from 'components/inputs/BooleanInput'
+import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
 
 const SourcePublicField = () => {
     return (
@@ -17,12 +18,20 @@ const SourcePublicField = () => {
                             touched={true}
                             error={form.errors[field.name]}
                         >
-                            <BooleanInput
+                            <Switch
+                                checked={field.value || false}
+                                onChange={value =>
+                                    form.setFieldValue(field.name, value)
+                                }
+                                checkedText="Yes"
+                                uncheckedText="No"
+                            />
+                            {/* <BooleanInput
                                 value={field.value}
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
                                 }
-                            />
+                            /> */}
                         </FormControl>
                     )
                 }}

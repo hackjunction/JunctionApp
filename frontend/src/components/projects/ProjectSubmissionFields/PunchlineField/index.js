@@ -12,7 +12,7 @@ const PunchlineField = ({ props }) => {
                 render={({ field, form }) => (
                     <FormControl
                         label="Punchline"
-                        hint="A short and sweet description of what your project is about. Max 300 characters."
+                        hint="What's the most important thing about your project?"
                         touched={
                             form.touched[field.name] || props.submitCount > 0
                         }

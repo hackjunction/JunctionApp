@@ -297,12 +297,9 @@ export default ({
                         </Typography>
                         <TextInput
                             placeholder="https://www.google.com"
-                            value={data.settings.link || ''}
+                            value={data.placeholder}
                             onChange={value =>
-                                handleChange('settings', {
-                                    ...data.settings,
-                                    link: value,
-                                })
+                                handleChange('placeholder', value)
                             }
                         />
                         <Typography variant="caption" paragraph>

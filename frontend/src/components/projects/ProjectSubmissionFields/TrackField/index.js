@@ -21,17 +21,22 @@ const TrackField = ({ props, settings }) => {
                                 }
                                 error={form.errors[field.name]}
                             >
-                                <Select
-                                    label="Track"
-                                    options={trackOptions}
-                                    value={field.value}
-                                    onChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    onBlur={() =>
-                                        form.setFieldTouched(field.name)
-                                    }
-                                />
+                                <div className="tw-bg-gray-100 tw-p-2 tw-rounded-md tw-border-gray-300 tw-border-solid tw-transition-all tw-duration-400 tw-border-2 hover:tw-bg-gray-300">
+                                    <Select
+                                        label="Track"
+                                        options={trackOptions}
+                                        value={field.value}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
+                                    />
+                                </div>
                             </FormControl>
                         )}
                     />

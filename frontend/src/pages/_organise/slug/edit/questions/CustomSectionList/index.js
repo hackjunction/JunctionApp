@@ -8,17 +8,22 @@ import Button from 'components/generic/Button'
 import AddSectionModal from './AddSectionModal'
 import CustomSectionListItem from './CustomSectionListItem'
 import EditableText from '../../submission/components/section/EditableText'
+import { useTranslation } from 'react-i18next'
 
 export default ({ sections = [], onChange, projectsExist = false }) => {
-    const [modalOpen, setModalOpen] = useState(false)
-    const [editing, setEditing] = useState()
-    const reservedNames = useMemo(() => {
-        const sectionNames = sections.map(s => s.name)
-        const questionNames = Object.keys(RegistrationFields.getFields())
-        return sectionNames.concat(questionNames)
-    }, [sections])
+    const { t } = useTranslation()
+    // const [modalOpen, setModalOpen] = useState(false)
+    // const [editing, setEditing] = useState()
+    // const reservedNames = useMemo(() => {
+    //     const sectionNames = sections.map(s => s.name)
+    //     const questionNames = Object.keys(RegistrationFields.getFields())
+    //     const customQuestionNames = sections
+    //         .map(s => s?.questions)
+    //         .flat()
+    //         .map(q => q?.name)
+    //     return [...sectionNames, ...questionNames, ...customQuestionNames]
+    // }, [sections])
 
-    console.log('Do projects exist?', projectsExist)
     const handleAdd = useCallback(
         section => {
             const newValue = sections.concat(section)
@@ -44,7 +49,7 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
         (section, index) => {
             if (projectsExist) {
                 return alert(
-                    'Participants have submitted projects already so you cannot remove questions anymore.',
+                    t(`submission_form_customization_prevent_delete_section`),
                 )
             }
             const newValue = sections.slice()
@@ -85,14 +90,20 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
                 return s
             })
             onChange(newValue)
-            setEditing(undefined)
+            // setEditing(undefined)
         },
         [onChange, sections],
     )
 
     const renderAdd = () => (
         <Button
-            onClick={() => setModalOpen(true)}
+            // onClick={() => setModalOpen(true)}
+            onClick={() =>
+                handleAdd({
+                    label: 'New section - click here to edit the name of this section',
+                    name: `section_${sections.length + 1}`,
+                })
+            }
             fullWidth
             color="primary"
             variant="contained"
@@ -106,54 +117,32 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
     }
 
     const renderList = () => {
-        return sections.map((section, index) => {
-            console.log(section)
-            return (
-                <>
-                    {/* <div className="tw-flex tw-flex-col">
-                        <EditableText
-                            value={section.label}
-                            save={value =>
-                                handleChange(
-                                    { ...section, label: value },
-                                    index,
-                                )
-                            }
-                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                            type="heading"
+        return (
+            <Box className="tw-flex tw-flex-col tw-gap-4">
+                {sections.map((section, index) => {
+                    return (
+                        <CustomSectionListItem
+                            key={section.name}
+                            section={section}
+                            index
+                            onChange={section => handleChange(section, index)}
+                            onRemove={() => handleRemove(section, index)}
+                            onMoveUp={() => handleMoveUp(section, index)}
+                            onMoveDown={() => handleMoveDown(section, index)}
+                            // onEdit={() => setEditing(section)}
+                            isFirst={index === 0}
+                            isLast={index === sections.length - 1}
+                            projectsExist={projectsExist}
                         />
-                        <EditableText
-                            value={section.description}
-                            save={value =>
-                                handleChange(
-                                    { ...section, description: value },
-                                    index,
-                                )
-                            }
-                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                            type="heading"
-                        />
-                    </div> */}
-                    <CustomSectionListItem
-                        key={section.name}
-                        section={section}
-                        index
-                        onChange={section => handleChange(section, index)}
-                        onRemove={() => handleRemove(section, index)}
-                        onMoveUp={() => handleMoveUp(section, index)}
-                        onMoveDown={() => handleMoveDown(section, index)}
-                        onEdit={() => setEditing(section)}
-                        isFirst={index === 0}
-                        isLast={index === sections.length - 1}
-                    />
-                </>
-            )
-        })
+                    )
+                })}
+            </Box>
+        )
     }
 
     return (
         <>
-            <AddSectionModal
+            {/* <AddSectionModal
                 visible={modalOpen}
                 onVisibleChange={setModalOpen}
                 onSubmit={handleAdd}
@@ -161,7 +150,7 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
                 editing={editing}
                 onEditDone={section => handleEditDone(section)}
                 onEditCancel={() => setEditing(undefined)}
-            />
+            /> */}
             {sections.length === 0 ? renderEmpty() : renderList()}
             <Box
                 display="flex"

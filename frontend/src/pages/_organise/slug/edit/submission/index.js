@@ -8,7 +8,7 @@ import {
     Formik,
     useFormikContext,
 } from 'formik'
-import { Grid } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 
 import FormControl from 'components/inputs/FormControl'
 import CustomSectionList from '../questions/CustomSectionList'
@@ -22,11 +22,12 @@ import BooleanInput from 'components/inputs/BooleanInput'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import EditableText from './components/section/EditableText'
+import Switch from './components/Switch'
 
 export default () => {
     const { t } = useTranslation()
-    const formikCont = useFormikContext()
-    const { values } = formikCont
+    // const formikCont = useFormikContext()
+    // const { values } = formikCont
     const [projectsExist, setProjectsExist] = useState(false)
 
     const projects = useSelector(OrganiserSelectors.projects)
@@ -34,7 +35,6 @@ export default () => {
 
     useEffect(() => {
         if (projects && projects.length > 0 && !projectsExist) {
-            console.log('projects exist')
             setProjectsExist(true)
         }
     }, [projects])
@@ -54,62 +54,67 @@ export default () => {
 
     return (
         <>
-            <FastField name="test">
-                {({ field, form }) => {
-                    return (
-                        <EditableText
-                            value={field.value || 'this'}
-                            save={value =>
-                                form.setFieldValue(field.name, value)
-                            }
-                            className="tw-text-xl tw-font-bold tw-text-gray-800 tw-my-1"
-                            type="heading"
-                        />
-                    )
-                }}
-            </FastField>
-            <div>
-                {event &&
-                    event.submissionFormEnabledFields &&
-                    event.submissionFormEnabledFields.length > 0 &&
-                    renderDefaultFields &&
-                    renderDefaultFields.map((formField, index) => (
-                        <div key={index}>
-                            <FastField
-                                name={`submissionFormDefaultFields.${formField}`}
-                                render={({ field, form }) => {
-                                    return (
-                                        <FormControl
-                                            label={formField}
-                                            hint={t(
-                                                `submission_form_${formField}_hint`,
-                                            )}
-                                            touched={true}
-                                            error={form.errors[field.name]}
-                                        >
-                                            <BooleanInput
-                                                value={field.value}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value,
-                                                    )
-                                                }
-                                            />
-                                        </FormControl>
-                                    )
-                                }}
-                            />
-                        </div>
-                    ))}
-            </div>
-            <Grid container spacing={3}>
+            <Grid container spacing={8}>
+                <Grid item xs={12} className="tw-flex tw-flex-col tw-gap-2">
+                    <Typography
+                        className="tw-font-bold tw-tracking-tight"
+                        variant="h4"
+                        component="h4"
+                    >
+                        {t(`submission_form_customization_title`)}
+                    </Typography>
+                    <Typography variant="p" component="p">
+                        {t(`submission_form_customization_subtitle`)}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <div className="tw-flex tw-flex-col tw-gap-2">
+                        {event &&
+                            event.submissionFormEnabledFields &&
+                            event.submissionFormEnabledFields.length > 0 &&
+                            renderDefaultFields &&
+                            renderDefaultFields.map((formField, index) => (
+                                <FastField
+                                    name={`submissionFormDefaultFields.${formField}`}
+                                    render={({ field, form }) => {
+                                        return (
+                                            <div className="tw-px-4 tw-gap-4 tw-pb-4 tw-pt-6 tw-rounded-md tw-shadow-md tw-bg-white tw-w-full tw-flex tw-justify-between tw-items-center ">
+                                                <FormControl
+                                                    label={formField}
+                                                    hint={t(
+                                                        `submission_form_${formField}_hint`,
+                                                    )}
+                                                    touched={true}
+                                                    error={
+                                                        form.errors[field.name]
+                                                    }
+                                                ></FormControl>
+                                                <Switch
+                                                    checked={
+                                                        field.value || false
+                                                    }
+                                                    onChange={value =>
+                                                        form.setFieldValue(
+                                                            field.name,
+                                                            value,
+                                                        )
+                                                    }
+                                                    checkedText="Enabled"
+                                                    uncheckedText="Disabled"
+                                                />
+                                            </div>
+                                        )
+                                    }}
+                                />
+                            ))}
+                    </div>
+                </Grid>
                 <Grid item xs={12}>
                     <FastField
                         name="submissionFormQuestions"
                         render={({ field, form }) => (
                             <FormControl
-                                label="Submission form builder"
+                                label="Custom questions for project submission"
                                 hint="Add custom questions to the project submission form. These questions will be asked to the user when they submit a project."
                             >
                                 <CustomSectionList
@@ -125,7 +130,7 @@ export default () => {
                 </Grid>
             </Grid>
             {/* DELETE AFTER testing area  */}
-            <button onClick={() => console.log(values)}>Test</button>
+            {/* <button onClick={() => console.log(values)}>Test</button> */}
         </>
     )
 }

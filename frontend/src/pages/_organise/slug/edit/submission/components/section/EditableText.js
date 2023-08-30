@@ -2,6 +2,8 @@ import React from 'react'
 
 const typeToClass = {
     heading: 'tw-text-xl tw-font-bold',
+    subheading: 'tw-text-lg tw-font-bold',
+    paragraph: 'tw-text-base',
     default: 'tw-text-gray-500 tw-italic',
 }
 

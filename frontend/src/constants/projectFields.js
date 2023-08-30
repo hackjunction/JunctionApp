@@ -2,7 +2,7 @@ import React from 'react'
 
 import NameField from 'components/projects/ProjectSubmissionFields/NameField'
 import ImagesField from 'components/projects/ProjectSubmissionFields/ImagesField'
-import PunchlineField from 'components/projects/ProjectSubmissionFields/DescriptionField'
+import PunchlineField from 'components/projects/ProjectSubmissionFields/PunchlineField'
 import DescriptionField from 'components/projects/ProjectSubmissionFields/DescriptionField'
 import TrackField from 'components/projects/ProjectSubmissionFields/TrackField'
 import ChallengesField from 'components/projects/ProjectSubmissionFields/ChallengesField'

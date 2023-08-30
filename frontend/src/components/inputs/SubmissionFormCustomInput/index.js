@@ -33,31 +33,31 @@ export default ({ section, sectionAnswers = undefined }) => {
                 <p>{section.description}</p>
 
                 {section.conditional && (
-                    <Box
-                    // className={classes.radioGroupWrapper}
-                    >
+                    <Box>
                         <Typography variant="subtitle1">
                             {section.conditional}
                         </Typography>
                         <BooleanInput value={visible} onChange={setVisible} />
                     </Box>
                 )}
-                {visible &&
-                    section.questions.map((question, index) => (
-                        <FastField name={question.name}>
-                            {props => {
-                                return (
-                                    <RegistrationQuestion
-                                        config={question}
-                                        isCustom={true}
-                                        field={props.field}
-                                        form={props.form}
-                                        key={question.name}
-                                    />
-                                )
-                            }}
-                        </FastField>
-                    ))}
+                <div className="tw-flex tw-flex-col tw-gap-6">
+                    {visible &&
+                        section.questions.map((question, index) => (
+                            <FastField name={question.name}>
+                                {props => {
+                                    return (
+                                        <RegistrationQuestion
+                                            config={question}
+                                            isCustom={true}
+                                            field={props.field}
+                                            form={props.form}
+                                            key={question.name}
+                                        />
+                                    )
+                                }}
+                            </FastField>
+                        ))}
+                </div>
             </Grid>
         </>
     )

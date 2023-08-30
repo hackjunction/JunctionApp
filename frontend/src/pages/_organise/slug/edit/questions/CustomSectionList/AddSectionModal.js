@@ -148,7 +148,7 @@ export default ({
                     value={data.label}
                     onChange={value => handleChange('label', value)}
                 />
-                <Typography variant="caption" gutterBottom>
+                {/* <Typography variant="caption" gutterBottom>
                     The displayed name of your section
                 </Typography>
                 <Typography variant="body1" className={classes.label}>
@@ -158,7 +158,7 @@ export default ({
                     placeholder="my-custom-section"
                     value={data.name}
                     onChange={value => handleChange('name', value)}
-                />
+                /> */}
                 <Typography variant="caption" gutterBottom>
                     A machine-readable name for the section
                 </Typography>

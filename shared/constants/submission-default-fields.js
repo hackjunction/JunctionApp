@@ -1,5 +1,4 @@
 const SubmissionDefaultFields = {
-    // name: true,
     images: true,
     punchline: true,
     description: true,
@@ -12,7 +11,6 @@ const SubmissionDefaultFields = {
     sourcePublic: true,
     location: true,
     privacy: true,
-    // status: true,
 }
 
 module.exports = SubmissionDefaultFields

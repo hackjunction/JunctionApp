@@ -1,6 +1,9 @@
 import React from 'react'
 
 const Switch = ({ onChange, checked, checkedText, uncheckedText }) => {
+    if (typeof checked === 'string') {
+        checked = JSON.parse(checked)
+    }
     return (
         <div className="tw-flex tw-items-center tw-space-x-4">
             <div
