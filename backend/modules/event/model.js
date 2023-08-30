@@ -289,7 +289,8 @@ const EventSchema = new mongoose.Schema({
                 validator: function (v) {
                     return /\S+@\S+\.\S+/.test(v)
                 },
-                message: (props) => `${props.value} is not a valid email address!`
+                message: props =>
+                    `${props.value} is not a valid email address!`,
             },
         },
         senderName: {
@@ -376,17 +377,7 @@ const EventSchema = new mongoose.Schema({
     meetingRooms: {
         type: [MeetingRoomSchema.mongoose],
         default: [],
-        /* validate: [
-            function (val) {
-                if (!this.meetingsEnabled) {
-                    return !val.length > 0
-                }
-                return true
-            },
-            'cant have meetingrooms if meetings are not enabled',
-        ], */
     },
-    /* DELETE AFTER: Test section */
     submissionFormQuestions: {
         type: [RegistrationSectionSchema.mongoose],
     },

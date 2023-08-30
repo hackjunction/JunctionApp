@@ -1,6 +1,5 @@
 import { Grid } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
-import TextInput from 'components/inputs/TextInput'
 import { FastField } from 'formik'
 import React from 'react'
 

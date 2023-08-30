@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FastField, useFormikContext } from 'formik'
 import { Box, Grid, Typography } from '@material-ui/core'
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
-import BooleanInput from '../BooleanInput'
+import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
 
 export default ({ section, sectionAnswers = undefined }) => {
     const [visible, setVisible] = useState(true)
@@ -15,8 +15,6 @@ export default ({ section, sectionAnswers = undefined }) => {
     }, [sectionAnswers])
 
     const formikCont = useFormikContext()
-
-    // console.log('Formik context from submission page', formikCont)
 
     useEffect(() => {
         if (visible === false) {
@@ -37,7 +35,12 @@ export default ({ section, sectionAnswers = undefined }) => {
                         <Typography variant="subtitle1">
                             {section.conditional}
                         </Typography>
-                        <BooleanInput value={visible} onChange={setVisible} />
+                        <Switch
+                            checked={visible}
+                            onChange={setVisible}
+                            checkedText="Yes"
+                            uncheckedText="No"
+                        />
                     </Box>
                 )}
                 <div className="tw-flex tw-flex-col tw-gap-6">

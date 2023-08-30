@@ -1,25 +1,9 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import {
-    Box,
-    Typography,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ExpansionPanelActions,
-    Divider,
-    ListItemText,
-    ListItem,
-    List,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
+import { Box, Typography } from '@material-ui/core'
 import Button from 'components/generic/Button'
-import Markdown from 'components/generic/Markdown'
-// import AddQuestionModal from './AddQuestionModal'
 import TextInput from '../../submission/components/inputs/TextInput'
-// import Section from '../../submission/section'
 import EditableText from '../../submission/components/section/EditableText'
 import Dropdown from '../../submission/components/section/Dropdown'
 import Switch from '../../submission/components/Switch'
@@ -30,7 +14,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faArrowAltCircleDown,
     faArrowAltCircleUp,
-    faPencilAlt,
     faPlusCircle,
     faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons'
@@ -53,20 +36,14 @@ export default ({
     section,
     onChange,
     onRemove,
-    // onEdit,
     onMoveDown,
     onMoveUp,
     index,
-    isFirst,
-    isLast,
     projectsExist = false,
 }) => {
     const { t } = useTranslation()
     const classes = useStyles()
-    // const [modalOpen, setModalOpen] = useState(false)
-    // const [editing, setEditing] = useState(undefined)
     const questions = section.questions || []
-    // const reservedNames = questions.map(q => q.name)
 
     const renderPlaceholderInput = question => {
         return (
@@ -267,7 +244,6 @@ export default ({
                 ...section,
                 questions: newQuestions,
             })
-            // setEditing(undefined)
         },
         [onChange, questions, section],
     )
@@ -460,21 +436,6 @@ export default ({
                                             `submission_form_customization_question_remove`,
                                         )}
                                     </Button>
-                                    {/* <Button
-                                            color="theme_black"
-                                            variant="jIconText"
-                                            onClick={() => setEditing(question)}
-                                            startIcon={
-                                                <FontAwesomeIcon
-                                                    icon={faPencilAlt}
-                                                    size="lg"
-                                                />
-                                            }
-                                        >
-                                            {t(
-                                                `submission_form_customization_question_edit`,
-                                            )}
-                                        </Button> */}
                                     <Button
                                         color="theme_black"
                                         variant="jIconText"
@@ -538,7 +499,6 @@ export default ({
                 <Button
                     color="primary"
                     variant="jIconText"
-                    // onClick={() => setModalOpen(true)}
                     onClick={() =>
                         handleAdd({
                             label: 'New question - click here to edit the question name',
@@ -558,16 +518,6 @@ export default ({
                 >
                     {t(`submission_form_customization_question_add`)}
                 </Button>
-                {/* <Button
-                        color="theme_black"
-                        variant="jIconText"
-                        onClick={onEdit}
-                        startIcon={
-                            <FontAwesomeIcon icon={faPencilAlt} size="lg" />
-                        }
-                    >
-                        {t(`submission_form_customization_section_edit`)}
-                    </Button> */}
                 <Button
                     color="theme_black"
                     variant="jIconText"
@@ -592,16 +542,6 @@ export default ({
                     {t(`submission_form_customization_section_move_down`)}
                 </Button>
             </Box>
-            {/* <AddQuestionModal
-                    sectionName={section.label}
-                    visible={modalOpen}
-                    onVisibleChange={setModalOpen}
-                    reservedNames={reservedNames}
-                    onSubmit={handleAdd}
-                    onEditDone={question => handleEdit(question)}
-                    onEditCancel={() => setEditing(undefined)}
-                    editing={editing}
-                /> */}
         </Box>
     )
 }

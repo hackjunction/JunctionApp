@@ -1,5 +1,4 @@
 import { Box, Grid } from '@material-ui/core'
-import BooleanInput from 'components/inputs/BooleanInput'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
 import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
@@ -35,12 +34,6 @@ const PrivacyField = ({ props }) => {
                                 checkedText="Yes"
                                 uncheckedText="No"
                             />
-                            {/* <BooleanInput
-                                value={field.value}
-                                onChange={value =>
-                                    form.setFieldValue(field.name, value)
-                                }
-                            /> */}
                         </FormControl>
                     )}
                 />

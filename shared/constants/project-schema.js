@@ -31,7 +31,6 @@ const ProjectSchema = {
         .oneOf(ProjectStatuses)
         .default('draft')
         .label('Status'),
-    // DELETE AFTER testing area
     submissionFormAnswers: yup.array().of(
         yup
             .object()
@@ -97,10 +96,7 @@ const buildProjectSchema = event => {
     }
 
     if (event.eventType === EventTypes.physical.id) {
-        schema.location = yup
-            .string()
-            .max(100)
-            .label('Table location')
+        schema.location = yup.string().max(100).label('Table location')
     }
 
     return schema

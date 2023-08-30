@@ -2,22 +2,11 @@ import React, { useMemo, useState, useEffect } from 'react'
 
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
-import { Formik, FastField } from 'formik'
+import { Formik } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
 import { Grid, Box, Typography } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
-
-import FormControl from 'components/inputs/FormControl'
-import TextInput from 'components/inputs/TextInput'
-import TextAreaInput from 'components/inputs/TextAreaInput'
-import MarkdownInput from 'components/inputs/MarkdownInput'
-import BooleanInput from 'components/inputs/BooleanInput'
-import Select from 'components/inputs/Select'
-import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
-import ErrorsBox from 'components/generic/ErrorsBox'
-import ProjectImages from './ProjectImages'
-import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -25,27 +14,12 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
-import RegistrationSectionCustom from 'pages/_events/slug/register/RegistrationSectionCustom'
-import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
 import SubmissionFormCustomInput from 'components/inputs/SubmissionFormCustomInput'
 import BottomBar from 'components/inputs/BottomBar'
 import NameField from 'components/projects/ProjectSubmissionFields/NameField'
-import ImagesField from 'components/projects/ProjectSubmissionFields/ImagesField'
-import PrivacyField from 'components/projects/ProjectSubmissionFields/PrivacyField'
 import _ from 'lodash'
-import PunchlineField from 'components/projects/ProjectSubmissionFields/PunchlineField'
-import DescriptionField from 'components/projects/ProjectSubmissionFields/DescriptionField'
-import TrackField from 'components/projects/ProjectSubmissionFields/TrackField'
-import ChallengesField from 'components/projects/ProjectSubmissionFields/ChallengesField'
-import TechnologiesField from 'components/projects/ProjectSubmissionFields/TechnologiesField'
-import VideoField from 'components/projects/ProjectSubmissionFields/VideoField'
-import DemoField from 'components/projects/ProjectSubmissionFields/DemoField'
-import SourceField from 'components/projects/ProjectSubmissionFields/SourceField'
-import SourcePublicField from 'components/projects/ProjectSubmissionFields/SourcePublicField'
-import LocationField from 'components/projects/ProjectSubmissionFields/LocationField'
 import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
 import ProjectFieldsComponents from 'constants/projectFields'
-import Section from 'pages/_organise/slug/edit/submission/section'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -85,17 +59,6 @@ const SubmissionForm = props => {
         ...project,
     }
 
-    // if (project && project.submissionFormAnswers?.length > 0) {
-    //     project.submissionFormAnswers.forEach(question => {
-    //         event.submissionFormQuestions.forEach(section => {
-    //             // console.log(
-    //             //     'section answer exist test',
-    //             //     section.questions.find(q => q.name === question.key),
-    //             // )
-    //         })
-    //     })
-    // }
-
     if (project && project.submissionFormAnswers?.length > 0) {
         event.submissionFormQuestions.forEach(section => {
             section.questions.forEach(question => {
@@ -132,7 +95,6 @@ const SubmissionForm = props => {
     }, [event])
 
     const valuesFormatter = values => {
-        console.log('values', values)
         const formData = { ...values }
         if (event.submissionFormQuestions.length > 0) {
             formData['submissionFormAnswers'] = []
@@ -149,43 +111,9 @@ const SubmissionForm = props => {
                     formData['submissionFormAnswers'].push(custom)
                 })
             })
-            console.log('formData', formData)
         }
         return formData
     }
-
-    // const ChallengeFieldTest = (props, settings) => {
-    //     const { challengeOptions } = settings
-    //     return (
-    //         <Grid item xs={12}>
-    //             <FastField
-    //                 name="challenges"
-    //                 render={({ field, form }) => (
-    //                     <FormControl
-    //                         label="Challenges"
-    //                         hint="Which partner challenges do you want to submit your project in? You can choose up to 5. Note: make sure you read the event guidelines about how many challenges you can set here!"
-    //                         touched={
-    //                             form.touched[field.name] ||
-    //                             props.submitCount > 0
-    //                         }
-    //                         error={form.errors[field.name]}
-    //                     >
-    //                         <Select
-    //                             label="Challenges"
-    //                             options={challengeOptions}
-    //                             value={field.value}
-    //                             onChange={value =>
-    //                                 form.setFieldValue(field.name, value)
-    //                             }
-    //                             onBlur={() => form.setFieldTouched(field.name)}
-    //                             isMulti
-    //                         />
-    //                     </FormControl>
-    //                 )}
-    //             />
-    //         </Grid>
-    //     )
-    // }
 
     const enabledFieldProcessor = (defaultFields, enabledFields) => {
         return _.intersection(
@@ -211,31 +139,10 @@ const SubmissionForm = props => {
             defaultFields,
             eventEnabledFields,
         )
-        // const fieldList = _.intersection(
-        //     Object.keys(ProjectFieldsComponents),
-        //     eventEnabledFields,
-        // )
         return fieldList.map(field => {
             return ProjectFieldsComponents[field](props, settings)
         })
     }
-
-    // const obj = {
-    //     name: props => <NameField props={props} />,
-    //     images: props => <ImagesField props={props} />,
-    //     punchline: props => <PunchlineField props={props} />,
-    //     description: props => <DescriptionField props={props} />,
-    //     track: props => <TrackField props={props} settings={settings} />,
-    //     challenges: props => <ChallengesField props={props} />,
-    //     technologies: props => <TechnologiesField props={props} />,
-    //     video: props => <VideoField props={props} />,
-    //     demo: props => <DemoField props={props} />,
-    //     source: props => <SourceField props={props} />,
-    //     sourcePublic: props => <SourcePublicField props={props} />,
-    //     location: props => <LocationField props={props} />,
-    //     privacy: props => <PrivacyField props={props} />,
-    //     status: props => <StatusField props={props} />,
-    // }
 
     const renderForm = formikProps => {
         if (projectLoading) {
@@ -243,9 +150,6 @@ const SubmissionForm = props => {
         }
         return (
             <Box className="tw-flex tw-flex-col tw-gap-4">
-                <button onClick={() => console.log(formikProps.values)}>
-                    Test
-                </button>
                 <GradientBox p={3} color="theme_white">
                     <Typography variant="overline" gutterBottom>
                         This projects status is:
@@ -263,7 +167,6 @@ const SubmissionForm = props => {
                         want this project to be graded!
                     </Typography>
                 </GradientBox>
-                {/* <Section /> */}
                 <Box className="tw-p-6 tw-rounded-md tw-flex tw-flex-col tw-gap-4 tw-bg-white tw-shadow-md">
                     <Grid container spacing={6}>
                         <Grid item xs={12}></Grid>
@@ -336,7 +239,6 @@ const SubmissionForm = props => {
                             event.slug,
                             valuesFormatter(values),
                         ),
-                        // DashboardActions.editProject(event.slug, values),
                     )
                 } else {
                     res = await dispatch(
@@ -344,7 +246,6 @@ const SubmissionForm = props => {
                             event.slug,
                             valuesFormatter(values),
                         ),
-                        // DashboardActions.createProject(event.slug, values),
                     )
                 }
 

@@ -1,28 +1,14 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 
-import { RegistrationFields } from '@hackjunction/shared'
 import { Box } from '@material-ui/core'
 
 import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'
-import AddSectionModal from './AddSectionModal'
 import CustomSectionListItem from './CustomSectionListItem'
-import EditableText from '../../submission/components/section/EditableText'
 import { useTranslation } from 'react-i18next'
 
 export default ({ sections = [], onChange, projectsExist = false }) => {
     const { t } = useTranslation()
-    // const [modalOpen, setModalOpen] = useState(false)
-    // const [editing, setEditing] = useState()
-    // const reservedNames = useMemo(() => {
-    //     const sectionNames = sections.map(s => s.name)
-    //     const questionNames = Object.keys(RegistrationFields.getFields())
-    //     const customQuestionNames = sections
-    //         .map(s => s?.questions)
-    //         .flat()
-    //         .map(q => q?.name)
-    //     return [...sectionNames, ...questionNames, ...customQuestionNames]
-    // }, [sections])
 
     const handleAdd = useCallback(
         section => {
@@ -90,14 +76,12 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
                 return s
             })
             onChange(newValue)
-            // setEditing(undefined)
         },
         [onChange, sections],
     )
 
     const renderAdd = () => (
         <Button
-            // onClick={() => setModalOpen(true)}
             onClick={() =>
                 handleAdd({
                     label: 'New section - click here to edit the name of this section',
@@ -129,7 +113,6 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
                             onRemove={() => handleRemove(section, index)}
                             onMoveUp={() => handleMoveUp(section, index)}
                             onMoveDown={() => handleMoveDown(section, index)}
-                            // onEdit={() => setEditing(section)}
                             isFirst={index === 0}
                             isLast={index === sections.length - 1}
                             projectsExist={projectsExist}
@@ -142,15 +125,6 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
 
     return (
         <>
-            {/* <AddSectionModal
-                visible={modalOpen}
-                onVisibleChange={setModalOpen}
-                onSubmit={handleAdd}
-                reservedNames={reservedNames}
-                editing={editing}
-                onEditDone={section => handleEditDone(section)}
-                onEditCancel={() => setEditing(undefined)}
-            /> */}
             {sections.length === 0 ? renderEmpty() : renderList()}
             <Box
                 display="flex"

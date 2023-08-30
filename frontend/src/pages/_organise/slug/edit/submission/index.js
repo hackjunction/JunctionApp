@@ -1,33 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import {
-    ErrorMessage,
-    FastField,
-    Field,
-    FieldArray,
-    Form,
-    Formik,
-    useFormikContext,
-} from 'formik'
+import { FastField } from 'formik'
 import { Grid, Typography } from '@material-ui/core'
-
 import FormControl from 'components/inputs/FormControl'
 import CustomSectionList from '../questions/CustomSectionList'
-
-import CustomSectionListItem from '../questions/CustomSectionList/CustomSectionListItem'
-import TempFieldBuilder from './components/TempFieldBuilder'
-import Section from './section'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useSelector } from 'react-redux'
-import BooleanInput from 'components/inputs/BooleanInput'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
-import EditableText from './components/section/EditableText'
 import Switch from './components/Switch'
 
 export default () => {
     const { t } = useTranslation()
-    // const formikCont = useFormikContext()
-    // const { values } = formikCont
     const [projectsExist, setProjectsExist] = useState(false)
 
     const projects = useSelector(OrganiserSelectors.projects)
@@ -129,8 +112,6 @@ export default () => {
                     />
                 </Grid>
             </Grid>
-            {/* DELETE AFTER testing area  */}
-            {/* <button onClick={() => console.log(values)}>Test</button> */}
         </>
     )
 }
