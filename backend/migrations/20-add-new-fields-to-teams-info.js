@@ -117,11 +117,7 @@ module.exports = {
             teamDiscordField.n,
             teamDiscordField.nModified,
         )
-<<<<<<< HEAD
-        console.log('Done with migration 17')
-=======
         console.log('Done with migration 20')
->>>>>>> 8b7255ce63e3e6e711c3e4ff9ec5bbedd5b56b54
         return Promise.resolve()
     },
 }
