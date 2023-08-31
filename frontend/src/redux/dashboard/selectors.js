@@ -7,7 +7,6 @@ import {
     EventTypes,
     RegistrationStatuses,
     ReviewingMethods,
-    // RegistrationTravelGrantStatuses as TravelGrantStatuses
 } from '@hackjunction/shared'
 
 export const event = state => state.dashboard.event.data
@@ -36,14 +35,6 @@ export const selectedTeamLoading = state =>
 export const selectedTeamError = state => state.dashboard.selected_team.error
 export const selectedTeamUpdated = state =>
     state.dashboard.selected_team.updated
-
-// export const selectedCandidate = state => state.dashboard.selected_user.data
-// export const selectedCandidateLoading = state =>
-//     state.dashboard.selected_user.loading
-// export const selectedCandidateError = state =>
-//     state.dashboard.selected_user.error
-// export const selectedCandidateUpdated = state =>
-//     state.dashboard.selected_user.updated
 
 export const projects = state => state.dashboard.projects.data
 export const projectsLoading = state => state.dashboard.projects.loading

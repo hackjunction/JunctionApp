@@ -149,10 +149,6 @@ export default () => {
             break
     }
 
-    useEffect(() => {
-        console.log('current status:', status)
-    }, [status])
-
     return (
         <>
             {status === '' &&

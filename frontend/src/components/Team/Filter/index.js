@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Select from 'components/inputs/Select'
 import Button from 'components/generic/Button'
 
-export default ({ filterArray = [], noFilterOption = 'All', onChange }) => {
+export default ({
+    filterArray = [],
+    noFilterOption = 'All',
+    onChange = arg => {},
+}) => {
     const [filter, setFilter] = useState(noFilterOption)
     const formatedFilterArray = [
         { value: noFilterOption, label: noFilterOption },
@@ -11,7 +15,6 @@ export default ({ filterArray = [], noFilterOption = 'All', onChange }) => {
     ]
 
     const handleChange = event => {
-        // console.log('filter event from component', event.target.value)
         setFilter(event.target.value)
     }
 
@@ -19,12 +22,9 @@ export default ({ filterArray = [], noFilterOption = 'All', onChange }) => {
         setFilter(noFilterOption)
     }
 
-    if (onChange) {
-        useEffect(() => {
-            console.log('filter component', filter)
-            onChange(filter)
-        }, [filter])
-    }
+    useEffect(() => {
+        onChange(filter)
+    }, [filter])
 
     return (
         <div className="tw-justify-end tw-flex tw-items-center tw-gap-2">

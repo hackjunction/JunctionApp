@@ -1,29 +1,20 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
 
-export default ({
-    viewMode = 'card',
-    userData = {
-        profile: {
-            avatar: 'https://picsum.photos/200',
-            firstName: 'Alea',
-            lastName: 'Solano',
-            headline: 'Full Stack Developer',
-        },
-    },
-}) => {
+export default ({ viewMode = 'card', userData = {} }) => {
     const styling = {
         borderStyle: '',
         imageSize: '',
         alignment: 'tw-items-center',
     }
-    console.log(userData)
 
     if (userData.profile.avatar !== '') {
         styling.userProfile = {
             backgroundImage: `url(${userData.profile.avatar})`,
         }
     }
+
+    console.log('User data on participant preview', userData)
 
     switch (viewMode) {
         case 'list':

@@ -19,14 +19,93 @@ export default ({
     challengeOptions = [],
 }) => {
     const TeamSchema = {
-        name: yup.string().required('Team name is required'),
-        tagline: yup.string().required('Team tagline is required'),
-        description: yup.string().required('Team description is required'),
-        ideaTitle: yup.string(),
-        ideaDescription: yup.string(),
-        email: yup.string().email('Invalid email address'),
-        discord: yup.string('Invalid discord url'),
-        telegram: yup.string('Invalid telegram url'),
+        name: yup
+            .string()
+            .min(
+                3,
+                ({ min }) => `The name must have at least ${min} characters`,
+            )
+            .max(50, ({ max }) => `The name can have up to ${max} characters`)
+            .required('Team name is required'),
+        subtitle: yup
+            .string()
+            .min(
+                3,
+                ({ min }) =>
+                    `The subtitle must have at least ${min} characters`,
+            )
+            .max(
+                100,
+                ({ max }) => `The subtitle can have up to ${max} characters`,
+            ),
+        description: yup
+            .string()
+            .min(
+                3,
+                ({ min }) =>
+                    `The description must have at least ${min} characters`,
+            )
+            .max(
+                300,
+                ({ max }) => `The description can have up to ${max} characters`,
+            )
+            .required('Team description is required'),
+        ideaTitle: yup
+            .string()
+            .min(
+                3,
+                ({ min }) =>
+                    `The title of your idea must have at least ${min} characters`,
+            )
+            .max(
+                50,
+                ({ max }) =>
+                    `The title of your idea can have up to ${max} characters`,
+            ),
+        ideaDescription: yup
+            .string()
+            .when('ideaTitle', {
+                is: title => title && title.length > 0,
+                then: yup
+                    .string()
+                    .required(
+                        'If you have an idea title, description for the idea is required',
+                    ),
+            })
+            .min(
+                3,
+                ({ min }) =>
+                    `The description of your idea must have at least ${min} characters`,
+            )
+            .max(
+                300,
+                ({ max }) =>
+                    `The description of your idea can have up to ${max} characters`,
+            ),
+        email: yup
+            .string()
+            .when(['discord', 'telegram'], {
+                is: (discord, telegram) => !discord && !telegram,
+                then: yup.string().required('One contact option is required.'),
+            })
+            .min(
+                3,
+                ({ min }) => `The email must have at least ${min} characters`,
+            )
+            .max(100, ({ max }) => `The email can have up to ${max} characters`)
+            .email('Invalid email address'),
+        discord: yup
+            .string('Invalid discord url')
+            .max(
+                50,
+                ({ max }) => `Discord links can have up to ${max} characters`,
+            ),
+        telegram: yup
+            .string('Invalid telegram url')
+            .max(
+                50,
+                ({ max }) => `Telegram links can have up to ${max} characters`,
+            ),
     }
 
     if (challengeOptions && challengeOptions.length > 0) {
@@ -37,24 +116,7 @@ export default ({
 
     return (
         <Formik
-            validationSchema={yup
-                .object()
-                .shape(TeamSchema)
-                .test({
-                    name: 'contact-options',
-                    test: values => {
-                        if (
-                            !values.email &&
-                            !values.telegram &&
-                            !values.discord
-                        ) {
-                            throw new yup.ValidationError(
-                                'At least one contact option is required. Either email, telegram or discord.',
-                            )
-                        }
-                        return true
-                    },
-                })}
+            validationSchema={yup.object().shape(TeamSchema)}
             initialValues={initialData}
             enableReinitialize={true}
             onSubmit={formikSubmitAction}
@@ -148,11 +210,11 @@ export default ({
                         </FastField>
                     </div>
                     <div>
-                        <FastField name="tagline">
+                        <FastField name="subtitle">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team tagline *"
-                                    hint="Write a tagline for your team"
+                                    label="Team subtitle"
+                                    hint="Write a subtitle for your team"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -380,7 +442,12 @@ export default ({
                     </div>
                     <BottomBar
                         onSubmit={formikProps.handleSubmit}
-                        errors={formikProps.errors}
+                        errors={
+                            formikProps.touched?.name &&
+                            formikProps.touched?.description
+                                ? formikProps.errors
+                                : {}
+                        }
                         dirty={formikProps.dirty}
                         loading={formikProps.isSubmitting}
                     />

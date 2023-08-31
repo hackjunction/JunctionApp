@@ -73,11 +73,6 @@ export default () => {
     const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
 
-    const onFilterChange = filter => {
-        console.log('filter from page', filter)
-        setChallengeFilter(filter)
-    }
-
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
         teamCards = teams.filter(team => team.challenge === challengeFilter)
@@ -132,19 +127,23 @@ export default () => {
             {!selected && !applying && (
                 <>
                     <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
-                        <Button
-                            color="outlined_button"
-                            variant="jOutlined"
-                            onClick={() => setJoinByCode(!joinByCode)}
-                        >
-                            Join team using a code
-                        </Button>
+                        {!hasTeam ? (
+                            <Button
+                                color="outlined_button"
+                                variant="jOutlined"
+                                onClick={() => setJoinByCode(!joinByCode)}
+                            >
+                                Join team using a code
+                            </Button>
+                        ) : (
+                            <span></span>
+                        )}
                         <Filter
                             noFilterOption="All challenges"
                             filterArray={event.challenges.map(
                                 challenge => challenge.name,
                             )}
-                            onChange={onFilterChange}
+                            onChange={setChallengeFilter}
                         />
                     </div>
                     {joinByCode && (

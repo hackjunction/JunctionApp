@@ -1,4 +1,4 @@
-import { IconButton, Typography } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import Button from 'components/generic/Button'
 import React from 'react'
 import TeamHeader from '../TeamHeader'
@@ -9,57 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
 import { Email } from '@material-ui/icons'
-import SocialLinks from '../../generic/SocialLinks'
 import { objToArr } from 'utils/dataModifiers'
+
+// TODO add socialLinks component from Damilare (@mrprotocoll)
 
 export default ({
     enableActions = true,
-    teamData = {
-        code: 'test-12',
-        name: 'Test Team',
-        complete: false,
-        members: [],
-        owner: 'auth0|something',
-        meta: {
-            'auth0|something': {
-                profile: {
-                    firstName: 'Test',
-                    lastName: 'User',
-                    email: 'testing@test.fake',
-                    avatar: 'https://picsum.photos/200',
-                    userId: 'auth0|something',
-                },
-                registration: {
-                    status: 'checkedIn',
-                },
-            },
-            'auth0|something-else': {
-                profile: {
-                    firstName: 'Test2',
-                    lastName: 'User2',
-                    email: 'dif@test.fake',
-                    avatar: 'https://picsum.photos/200',
-                    userId: 'auth0|something-else',
-                },
-                registration: {
-                    status: 'checkedIn',
-                },
-            },
-        },
-
-        teamRoles: [
-            { role: 'UX Designer' },
-            { role: 'Developer' },
-            { role: 'Product Manager' },
-        ],
-        tagline: 'This is a test team',
-        description: 'This is a test team description',
-        links: ['https://google.com'],
-        discord: null,
-        telegram: null,
-        email: null,
-        challenge: 'Test',
-    },
+    teamData = {},
     onClickLeave,
     onClickDelete = () => {},
     onClickEdit,
@@ -67,7 +23,6 @@ export default ({
 }) => {
     const teamMembersArr = [...objToArr(teamData.meta)]
     const membersCount = teamData.members.length
-
     const classes = junctionStyle()
     return (
         <div className="tw-flex tw-flex-col tw-gap-12">
@@ -76,10 +31,13 @@ export default ({
                 <TeamHeader
                     teamName={teamData.name}
                     teamChallenge={teamData.challenge}
+                    teamCode={enableActions ? teamData.code : null}
                 />
                 <TeamDescription
-                    teamTagline={teamData.tagline}
+                    teamSubtitle={teamData.subtitle}
                     teamDescription={teamData.description}
+                    teamIdea={teamData?.ideaTitle}
+                    teamIdeaDescription={teamData?.ideaDescription}
                 />
             </div>
             <TeamRoles
@@ -133,23 +91,28 @@ export default ({
                 )}
             </div>
             {/* TODO add socialLinks component from Damilare (@mrprotocoll) */}
-            {/* <SocialLinks /> */}
             {enableActions && (
                 <div className="tw-flex tw-gap-4 tw-justify-start">
                     <Button onClick={onClickEdit} variant="jContained">
                         Edit
                     </Button>
-                    <Button
-                        onClick={
-                            membersCount > 0 ? onClickLeave : onClickDelete
-                        }
-                        color="outlined_button"
-                        variant="jOutlined"
-                    >
-                        {membersCount > 0
-                            ? 'Leave the team'
-                            : 'Delete the team'}
-                    </Button>
+                    {membersCount > 0 ? (
+                        <Button
+                            onClick={onClickLeave}
+                            color="outlined_button"
+                            variant="jOutlined"
+                        >
+                            Leave the team
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={onClickDelete}
+                            color="outlined_button"
+                            variant="jOutlined"
+                        >
+                            Delete the team
+                        </Button>
+                    )}
                 </div>
             )}
         </div>
