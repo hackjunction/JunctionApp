@@ -43,6 +43,8 @@ const {
     MeetingRoom,
     MeetingRoomInput,
     EventPageScript,
+    SubmissionDefaultFieldsInput,
+    SubmissionDefaultFields,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -282,6 +284,16 @@ const EventInput = new GraphQLInputObjectType({
         meetingRooms: {
             type: GraphQLList(MeetingRoomInput),
         },
+        /** DELETE LATER: test area */
+        submissionFormQuestions: {
+            type: GraphQLList(RegistrationSectionInput),
+        },
+        submissionFormEnabledFields: {
+            type: GraphQLList(GraphQLString),
+        },
+        submissionFormDefaultFields: {
+            type: SubmissionDefaultFieldsInput,
+        },
     },
 })
 
@@ -484,6 +496,16 @@ const EventType = new GraphQLObjectType({
                 type: require('../registration/graphql').Types.RegistrationType,
             },
             */
+            /** DELETE LATER: test area */
+            submissionFormQuestions: {
+                type: GraphQLList(RegistrationSection),
+            },
+            submissionFormEnabledFields: {
+                type: GraphQLList(GraphQLString),
+            },
+            submissionFormDefaultFields: {
+                type: SubmissionDefaultFields,
+            },
         }
     },
 })

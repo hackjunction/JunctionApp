@@ -725,8 +725,7 @@ const FieldProps = {
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
-        hint:
-            "",
+        hint: '',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         copyToUserProfile: false,
@@ -1469,6 +1468,7 @@ const Helpers = {
             return question.settings.default || false
         }
     },
+    // TODO add submission form customization
     getDefaultValuesFromConfig: (
         config,
         customQuestions,

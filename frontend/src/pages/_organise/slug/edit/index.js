@@ -65,6 +65,8 @@ export default () => {
     const { slug, _id } = event
 
     function onSubmit(values, actions) {
+        console.log('Values on submit from edit:', values)
+        console.log('Actions on submit from edit:', actions)
         const changed = {}
         forOwn(values, (value, field) => {
             if (event[field] !== value) {
@@ -144,16 +146,16 @@ export default () => {
                                     component: SubmissionFormTab,
                                 },
                                 {
-                                    path: '/other',
-                                    key: 'other',
-                                    label: 'Miscellaneous',
-                                    component: OtherTab,
-                                },
-                                {
                                     path: '/hackerpack',
                                     key: 'hackerpacks',
                                     label: 'Hackerpack',
                                     component: HackerpackTab,
+                                },
+                                {
+                                    path: '/other',
+                                    key: 'other',
+                                    label: 'Miscellaneous',
+                                    component: OtherTab,
                                 },
                             ]}
                             location={location}

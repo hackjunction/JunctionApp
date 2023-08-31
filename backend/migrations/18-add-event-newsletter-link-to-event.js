@@ -11,9 +11,13 @@ module.exports = {
             .model('Event')
             .updateMany(
                 { newsletter: { $exists: false } },
-                { $set: { newsletter: "" } },
+                { $set: { newsletter: '' } },
             )
-        console.log('Done updating newsletter field', resNewsletter.n, resNewsletter.nModified)
+        console.log(
+            'Done updating newsletter field',
+            resNewsletter.n,
+            resNewsletter.nModified,
+        )
 
         return Promise.resolve()
     },

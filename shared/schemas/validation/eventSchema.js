@@ -50,6 +50,7 @@ const hackerpack = yup.object().shape({
     title: yup.string(),
     description: yup.string(),
     logo: cloudinaryImage,
+    link: yup.string(),
 })
 
 const travelGrantConfig = yup.object().shape({
@@ -182,4 +183,5 @@ export default yup.object().shape({
     approved: yup.boolean(),
     theme: eventTheme,
     meetingRooms: yup.array().of(meetingRoom),
+    submissionFormQuestions: yup.array().of(registrationSection),
 })

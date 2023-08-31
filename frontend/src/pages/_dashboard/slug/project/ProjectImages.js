@@ -15,9 +15,11 @@ const useStyles = makeStyles(theme => ({
         padding: '1px',
     },
     block: {
-        background: 'gray',
+        backgroundColor: '#f7fafc',
+        border: `2px solid #e2e8f0`,
         position: 'relative',
         paddingTop: '50%',
+        borderRadius: '6px',
     },
 }))
 
