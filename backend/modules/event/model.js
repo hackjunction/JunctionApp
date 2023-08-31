@@ -7,6 +7,7 @@ const {
 } = require('@hackjunction/shared')
 // const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
+const HackerpackSchema = require('@hackjunction/shared/schemas/Hackerpack')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const Certificate = require('@hackjunction/shared/schemas/Certificate')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
@@ -24,6 +25,9 @@ const EventPageScriptSchema = require('@hackjunction/shared/schemas/EventPageScr
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../upload/helper')
+const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
+const SubmissionDefaultFieldsSchema = require('@hackjunction/shared/schemas/SubmissionDefaultFields')
+const SubmissionDefaultFields = require('@hackjunction/shared/constants/submission-default-fields')
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -135,6 +139,11 @@ const EventSchema = new mongoose.Schema({
             },
             'must have at least one item if challenges are enabled',
         ],
+    },
+    hackerpacksEnabled: false,
+    hackerpacks: {
+        type: [HackerpackSchema.mongoose],
+        default: [],
     },
     allowProjectSubmissionsPerChallenge: {
         type: Boolean,
@@ -271,6 +280,86 @@ const EventSchema = new mongoose.Schema({
     eventNewsletter: {
         type: String,
     },
+    emailConfig: {
+        senderEmail: {
+            type: String,
+            default: '',
+            trim: true,
+            validate: {
+                validator: function (v) {
+                    return /\S+@\S+\.\S+/.test(v)
+                },
+                message: props =>
+                    `${props.value} is not a valid email address!`,
+            },
+        },
+        senderName: {
+            type: String,
+            default: '',
+            trim: true,
+            maxLength: 100,
+        },
+        acceptanceEmail: {
+            title: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            subtitle: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            body: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 5000,
+            },
+        },
+        rejectionEmail: {
+            title: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            subtitle: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            body: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 5000,
+            },
+        },
+        registrationEmail: {
+            title: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            subtitle: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            body: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 5000,
+            },
+        },
+    },
     frontPagePriority: {
         type: Number,
         default: 0,
@@ -288,15 +377,17 @@ const EventSchema = new mongoose.Schema({
     meetingRooms: {
         type: [MeetingRoomSchema.mongoose],
         default: [],
-        /* validate: [
-            function (val) {
-                if (!this.meetingsEnabled) {
-                    return !val.length > 0
-                }
-                return true
-            },
-            'cant have meetingrooms if meetings are not enabled',
-        ], */
+    },
+    submissionFormQuestions: {
+        type: [RegistrationSectionSchema.mongoose],
+    },
+    submissionFormEnabledFields: {
+        type: [String],
+        default: ProjectDefaultFields,
+    },
+    submissionFormDefaultFields: {
+        type: SubmissionDefaultFieldsSchema.mongoose,
+        default: SubmissionDefaultFields,
     },
 })
 

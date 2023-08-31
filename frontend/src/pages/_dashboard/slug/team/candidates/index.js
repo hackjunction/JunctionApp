@@ -44,13 +44,6 @@ export default () => {
     const [candidateId, setCandidateId] = useState('')
     const [candidateSelectedData, setCandidateSelectedData] = useState({})
 
-    // const candidateList = team.candidates || []
-    // if (team.candidates?.length > 0) {
-    //     const userIds = team.candidates.map(candidate => candidate.userId)
-    // }
-
-    // let candidateSelectedData
-
     const fetchCandidateData = async CandidateUserId => {
         return await dispatch(
             DashboardActions.getCandidateProfileById(CandidateUserId),
@@ -74,16 +67,20 @@ export default () => {
                         ...candidateApplication,
                     }),
                 )
-                .catch(err => console.log(err))
+                .catch(err =>
+                    dispatch(
+                        SnackbarActions.error(
+                            'Failed to load the candidates, try reloading the page.',
+                        ),
+                    ),
+                )
                 .finally(() => {
                     setLoadingCandidate(false)
                 })
         }
     }, [candidateId])
 
-    useEffect(() => {
-        console.log('candidateSelectedData', candidateSelectedData)
-    }, [candidateSelectedData])
+    useEffect(() => {}, [candidateSelectedData])
 
     const onBack = () => {
         setSelected(false)
@@ -100,10 +97,8 @@ export default () => {
     const [roleFilter, setRoleFilter] = useState('All roles')
 
     const onFilterChange = filter => {
-        console.log('filter from page', filter)
         setRoleFilter(filter)
     }
-    // team.candidates
     let candidateCards = []
     if (roleFilter !== 'All roles') {
         candidateCards = team.candidates.filter(candidate =>

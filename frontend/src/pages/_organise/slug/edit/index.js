@@ -16,6 +16,7 @@ import BottomBar from 'components/inputs/BottomBar'
 
 import DefaultTab from './default'
 import ConfigurationTab from './configuration'
+import EmailsTab from './emails'
 import ChallengesTab from './challenges'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
@@ -23,6 +24,7 @@ import SubmissionFormTab from './submission'
 import TimelineTab from './timeline'
 import MeetingRoomsTab from './meetingRooms'
 import OtherTab from './other'
+import HackerpackTab from './hackerpack'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 
@@ -63,6 +65,8 @@ export default () => {
     const { slug, _id } = event
 
     function onSubmit(values, actions) {
+        console.log('Values on submit from edit:', values)
+        console.log('Actions on submit from edit:', actions)
         const changed = {}
         forOwn(values, (value, field) => {
             if (event[field] !== value) {
@@ -106,6 +110,12 @@ export default () => {
                                     component: ConfigurationTab,
                                 },
                                 {
+                                    path: '/emails',
+                                    key: 'emails',
+                                    label: 'Emails',
+                                    component: EmailsTab,
+                                },
+                                {
                                     path: '/challenges',
                                     key: 'challenges',
                                     label: 'Challenges',
@@ -116,12 +126,6 @@ export default () => {
                                     key: 'schedule',
                                     label: 'Schedule',
                                     component: ScheduleTab,
-                                },
-                                {
-                                    path: '/timeline',
-                                    key: 'timeline',
-                                    label: 'Timeline',
-                                    component: TimelineTab,
                                 },
                                 {
                                     path: '/rooms',
@@ -140,6 +144,12 @@ export default () => {
                                     key: 'submission',
                                     label: 'Submission form',
                                     component: SubmissionFormTab,
+                                },
+                                {
+                                    path: '/hackerpack',
+                                    key: 'hackerpacks',
+                                    label: 'Hackerpack',
+                                    component: HackerpackTab,
                                 },
                                 {
                                     path: '/other',

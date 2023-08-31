@@ -423,6 +423,9 @@ export default function IntegrationReactSelect({
             return ''
         }
         if (isMulti) {
+            if (typeof value === 'string') {
+                value = value.split(',')
+            }
             return value
                 .map(item => {
                     const itemValue =

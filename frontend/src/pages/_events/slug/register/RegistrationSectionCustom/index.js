@@ -156,7 +156,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                                         key={question.name}
                                         className={classes.question}
                                     >
-                                        <div className={classes.questionInner}>
+                                        {/* <div className={classes.questionInner}>
                                             <FastField
                                                 autoFocus={index === 0}
                                                 name={question.name}
@@ -164,6 +164,19 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                                                 config={question}
                                                 isCustom={true}
                                             />
+                                        </div> */}
+                                        <div className={classes.questionInner}>
+                                            <FastField name={question.name}>
+                                                {props => (
+                                                    <RegistrationQuestion
+                                                        autoFocus={index === 0}
+                                                        config={question}
+                                                        isCustom={true}
+                                                        field={props.field}
+                                                        form={props.form}
+                                                    />
+                                                )}
+                                            </FastField>
                                         </div>
                                     </Grid>
                                 ))}

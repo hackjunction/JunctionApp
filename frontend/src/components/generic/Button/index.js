@@ -159,6 +159,16 @@ const variantStyles = (theme, props) => {
                 margin: 0,
             }
         }
+        case 'jIconText': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.main,
+                padding: theme.spacing(1, 4),
+                margin: 0,
+                fontWeight: 'fontWeightRegular',
+                fontSize: theme.spacing(1, 4),
+            }
+        }
         case 'jContained': {
             return {
                 backgroundColor: color.main,
