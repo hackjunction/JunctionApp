@@ -173,6 +173,36 @@ router.post(
 )
 
 /**
+ * Upload background image for a team
+ */
+
+router.post(
+    '/:slug/team/:code',
+    hasToken,
+    hasRegisteredToEvent,
+    (req, res, next) => {
+        helper.uploadTeamBackgroundImage(req.event.slug, req.team.code)(
+            req,
+            res,
+            function (err) {
+                if (err) {
+                    if (err.code === 'LIMIT_FILE_SIZE') {
+                        next(new ForbiddenError(err.message))
+                    } else {
+                        next(err)
+                    }
+                } else {
+                    res.status(200).json({
+                        url: req.file.secure_url || req.file.url,
+                        publicId: req.file.public_id,
+                    })
+                }
+            },
+        )
+    },
+)
+
+/**
  * Upload a logo for a challenge
  */
 router.post(
@@ -197,7 +227,6 @@ router.post(
         })
     },
 )
-
 
 /**
  * Upload icon for a hackerpack partner

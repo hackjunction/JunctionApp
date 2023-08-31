@@ -1,42 +1,43 @@
 import React from 'react'
-
-import { useSelector } from 'react-redux'
-import { Box } from '@material-ui/core'
-
+import { useRouteMatch, useLocation } from 'react-router'
+import CandidatesPage from './candidates'
+import ProfilePage from './profile'
+import Container from 'components/generic/Container'
+import TeamsPage from './teams'
+import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageHeader from 'components/generic/PageHeader'
-import PageWrapper from 'components/layouts/PageWrapper'
-
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-
-import JoinTeam from './JoinTeam'
-import EditTeam from './EditTeam'
-
-import { useTranslation } from 'react-i18next'
 
 export default () => {
-    const { t } = useTranslation()
-
-    const event = useSelector(DashboardSelectors.event)
-    const hasTeam = useSelector(DashboardSelectors.hasTeam)
-    const teamLoading = useSelector(DashboardSelectors.teamLoading)
-    const eventLoading = useSelector(DashboardSelectors.eventLoading)
-    const loading = teamLoading || eventLoading
+    const match = useRouteMatch()
+    const location = useLocation()
     return (
-        <Box>
-            <PageHeader
-                heading="Team"
-                subheading={
-                    loading
-                        ? ''
-                        : t('Team_configure_', {
-                              event: event.name,
-                          })
-                }
+        <Container>
+            <PageHeader heading="Team management" />
+            <MaterialTabsLayout
+                transparent
+                tabs={[
+                    {
+                        label: 'Join a team',
+                        key: 'teams',
+                        path: '',
+                        component: TeamsPage,
+                    },
+                    {
+                        label: 'Your team',
+                        key: 'profile',
+                        path: '/profile',
+                        component: ProfilePage,
+                    },
+                    {
+                        label: 'Team candidates',
+                        key: 'candidates',
+                        path: '/candidates',
+                        component: CandidatesPage,
+                    },
+                ]}
+                baseRoute={match.url}
+                location={location}
             />
-            <Box mt={2} />
-            <PageWrapper loading={loading}>
-                {hasTeam ? <EditTeam /> : <JoinTeam />}
-            </PageWrapper>
-        </Box>
+        </Container>
     )
 }

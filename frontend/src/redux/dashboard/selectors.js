@@ -25,6 +25,26 @@ export const teamLoading = state => state.dashboard.team.loading
 export const teamError = state => state.dashboard.team.error
 export const teamUpdated = state => state.dashboard.team.updated
 
+export const teams = state => state.dashboard.teams.data
+export const teamsLoading = state => state.dashboard.teams.loading
+export const teamsError = state => state.dashboard.teams.error
+export const teamsUpdated = state => state.dashboard.teams.updated
+
+export const selectedTeam = state => state.dashboard.selected_team.data
+export const selectedTeamLoading = state =>
+    state.dashboard.selected_team.loading
+export const selectedTeamError = state => state.dashboard.selected_team.error
+export const selectedTeamUpdated = state =>
+    state.dashboard.selected_team.updated
+
+// export const selectedCandidate = state => state.dashboard.selected_user.data
+// export const selectedCandidateLoading = state =>
+//     state.dashboard.selected_user.loading
+// export const selectedCandidateError = state =>
+//     state.dashboard.selected_user.error
+// export const selectedCandidateUpdated = state =>
+//     state.dashboard.selected_user.updated
+
 export const projects = state => state.dashboard.projects.data
 export const projectsLoading = state => state.dashboard.projects.loading
 export const projectsError = state => state.dashboard.projects.error
@@ -120,7 +140,6 @@ export const isTeamValid = createSelector(team, team => {
 })
 
 export const lockedPages = createSelector(event, event => {
-    console.log('event', event)
     return {
         submissions: !EventHelpers.isSubmissionsOpen(event, moment),
         reviewing: EventHelpers.isVotingPast(event, moment),
@@ -152,7 +171,7 @@ export const shownPages = createSelector(
                 (registration?.travelGrant ?? 0) > 0,
             finalistVoting:
                 registration?.status === STATUSES.checkedIn.id &&
-                event.overallReviewMethod !== 'noOverallWinner',
+                event?.overallReviewMethod !== 'noOverallWinner',
             hackerPack:
                 [
                     STATUSES.checkedIn.id,
