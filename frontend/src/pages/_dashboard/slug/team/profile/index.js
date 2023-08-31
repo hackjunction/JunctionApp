@@ -35,7 +35,6 @@ export default () => {
     }, [])
     const [status, setStatus] = useState('')
     const [loading, setLoading] = useState(false)
-    // const [editing, setEditing] = useState(false)
 
     const challengeOptions = useMemo(() => {
         if (!challengesEnabled || !challenges) return null
@@ -64,24 +63,24 @@ export default () => {
             })
     }, [slug, team?.code, dispatch])
 
-    // const handleDelete = useCallback(() => {
-    //     setLoading(true)
-    //     dispatch(DashboardActions.deleteTeam(slug))
-    //         .then(() => {
-    //             dispatch(SnackbarActions.success('Deleted team ' + team?.code))
-    //         })
-    //         .catch(err => {
-    //             dispatch(
-    //                 SnackbarActions.error(
-    //                     'Something went wrong... please try again.',
-    //                 ),
-    //             )
-    //         })
-    //         .finally(() => {
-    //             setStatus('')
-    //             setLoading(false)
-    //         })
-    // }, [dispatch, slug, team?.code])
+    const handleDelete = useCallback(() => {
+        setLoading(true)
+        dispatch(DashboardActions.deleteTeam(slug))
+            .then(() => {
+                dispatch(SnackbarActions.success('Deleted team ' + team?.code))
+            })
+            .catch(err => {
+                dispatch(
+                    SnackbarActions.error(
+                        'Something went wrong... please try again.',
+                    ),
+                )
+            })
+            .finally(() => {
+                setStatus('')
+                setLoading(false)
+            })
+    }, [dispatch, slug, team?.code])
 
     const handleCreate = useCallback(
         (values, formikBag) => {
@@ -165,6 +164,7 @@ export default () => {
                             onClickEdit={() => {
                                 setStatus('edit')
                             }}
+                            onClickDelete={handleDelete}
                         />
                     </>
                 ) : (

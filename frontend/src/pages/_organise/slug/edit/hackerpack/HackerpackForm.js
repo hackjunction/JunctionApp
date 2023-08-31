@@ -19,6 +19,7 @@ import Button from 'components/generic/Button'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import TextInput from 'components/inputs/TextInput'
+import { OutboundLink } from 'react-ga'
 
 export default ({ value, onChange }) => {
     console.log(value)
@@ -29,6 +30,7 @@ export default ({ value, onChange }) => {
     const [title, setTitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
     const [logo, setLogo] = useState(undefined)
+    const [link, setLink] = useState(undefined)
 
     const [editIndex, setEditIndex] = useState(-1)
     const [editing, setEditing] = useState(false)
@@ -65,6 +67,7 @@ export default ({ value, onChange }) => {
             setTitle(value[index].title)
             setDescription(value[index].description)
             setLogo(value[index].logo)
+            setLink(value[index].link)
         },
         [value],
     )
@@ -78,6 +81,7 @@ export default ({ value, onChange }) => {
         setTitle(undefined)
         setDescription(undefined)
         setLogo(undefined)
+        setLink(undefined)
     }, [])
 
     const handleEditDone = useCallback(() => {
@@ -94,6 +98,7 @@ export default ({ value, onChange }) => {
                             title,
                             description,
                             logo,
+                            link,
                         }
                     }
                     return item
@@ -109,6 +114,7 @@ export default ({ value, onChange }) => {
                     title,
                     description,
                     logo,
+                    link,
                 }),
             )
         }
@@ -125,6 +131,7 @@ export default ({ value, onChange }) => {
         title,
         description,
         logo,
+        link,
     ])
 
     const isValid = useMemo(() => {
@@ -150,6 +157,15 @@ export default ({ value, onChange }) => {
                     secondary={hackerpack.slug}
                 />
                 <ListItemSecondaryAction>
+                    <OutboundLink
+                        eventLabel={hackerpack.partner}
+                        to={hackerpack.link}
+                        target="_blank"
+                    >
+                        <Button color="theme_turquoise" variant="contained">
+                            Link
+                        </Button>
+                    </OutboundLink>
                     <Tooltip title="Edit hackerpack">
                         <IconButton onClick={() => handleEditStart(index)}>
                             <EditIcon />
@@ -245,6 +261,13 @@ export default ({ value, onChange }) => {
                 <Typography variant="caption">
                     Hackerpack description.
                 </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <TextInput
+                    label="Hackperpack link"
+                    value={link}
+                    onChange={setLink}
+                />
             </Grid>
             <Grid item xs={12}>
                 <Box

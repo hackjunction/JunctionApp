@@ -125,8 +125,6 @@ export default ({ user = {} }) => {
     //     }
     // }, [_isFavorite, dispatch, user.userId])
 
-    console.log(user)
-
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
             {/* <div className="tw-flex tw-justify-between tw-items-center">

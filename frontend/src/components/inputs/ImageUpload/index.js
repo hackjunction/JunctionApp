@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         width: '100%',
         height: '100%',
-        background: 'gray',
+        background: '#f7fafc',
     },
     emptyWrapper: {
         position: 'absolute',
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
     emptyWrapperText: {
         textAlign: 'center',
-        color: 'white',
+        color: 'black',
         userSelect: 'none',
     },
     image: ({ resizeMode }) => ({
@@ -138,7 +138,7 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
     const renderLoading = () => {
         return (
             <Box className={classes.emptyWrapper}>
-                <CircularProgress size={24} style={{ color: 'white' }} />
+                <CircularProgress size={24} style={{ color: 'black' }} />
             </Box>
         )
     }
@@ -151,11 +151,11 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                         className={classes.imageOverlayButton}
                         onClick={handleRemove}
                     >
-                        <DeleteIcon style={{ color: 'white' }} />
+                        <DeleteIcon style={{ color: 'black' }} />
                         <Box p={1} />
                         <Typography
                             variant="button"
-                            style={{ color: 'white', userSelect: 'none' }}
+                            style={{ color: 'black', userSelect: 'none' }}
                         >
                             Remove image
                         </Typography>
@@ -164,11 +164,11 @@ export default ({ value, onChange, uploadUrl, resizeMode = 'contain' }) => {
                         className={classes.imageOverlayButton}
                         onClick={() => window.open(value.url, '_blank')}
                     >
-                        <VisibilityIcon style={{ color: 'white' }} />
+                        <VisibilityIcon style={{ color: 'black' }} />
                         <Box p={1} />
                         <Typography
                             variant="button"
-                            style={{ color: 'white', userSelect: 'none' }}
+                            style={{ color: 'black', userSelect: 'none' }}
                         >
                             View original
                         </Typography>

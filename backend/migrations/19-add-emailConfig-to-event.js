@@ -7,37 +7,38 @@ module.exports = {
     description: 'Add emailConfig to event',
     run: async () => {
         // Update emailConfig field
-        const resEmailConfig = await mongoose
-            .model('Event')
-            .updateMany(
-                { emailConfig: { $exists: false } },
-                {
-                    $set: {
-                        emailConfig: {
-                            senderName: "",
-                            senderEmail: "",
-                            acceptanceEmail: {
-                                title: "",
-                                subtitle: "",
-                                body: "",
-                            },
-                            rejectionEmail: {
-                                title: "",
-                                subtitle: "",
-                                body: "",
-                            },
-                            registrationEmail: {
-                                title: "",
-                                subtitle: "",
-                                body: "",
-                            },
-                        }
-                    }
+        const resEmailConfig = await mongoose.model('Event').updateMany(
+            { emailConfig: { $exists: false } },
+            {
+                $set: {
+                    emailConfig: {
+                        senderName: '',
+                        senderEmail: '',
+                        acceptanceEmail: {
+                            title: '',
+                            subtitle: '',
+                            body: '',
+                        },
+                        rejectionEmail: {
+                            title: '',
+                            subtitle: '',
+                            body: '',
+                        },
+                        registrationEmail: {
+                            title: '',
+                            subtitle: '',
+                            body: '',
+                        },
+                    },
                 },
-            )
-        console.log('Done updating emailConfig field', resEmailConfig.n, resEmailConfig.nModified)
+            },
+        )
+        console.log(
+            'Done updating emailConfig field',
+            resEmailConfig.n,
+            resEmailConfig.nModified,
+        )
 
         return Promise.resolve()
     },
-
 }

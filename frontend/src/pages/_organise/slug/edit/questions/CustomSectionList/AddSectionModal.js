@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import Button from 'components/generic/Button'
 import TextInput from 'components/inputs/TextInput'
+import { generateSlug } from 'utils/dataModifiers'
 
 const useStyles = makeStyles(theme => ({
     label: {
@@ -76,6 +77,7 @@ export default ({
     }
 
     const handleAdd = () => {
+        console.log('After handling add:', data)
         const error = validate()
         if (error) {
             window.alert(error)
@@ -112,8 +114,14 @@ export default ({
 
     const handleChange = useCallback(
         (field, value) => {
+            const newData = { ...data }
+
+            if (field === 'label' && !editing) {
+                newData.name = generateSlug(value, 's')
+            }
+
             setData({
-                ...data,
+                ...newData,
                 [field]: value,
             })
         },
@@ -140,7 +148,7 @@ export default ({
                     value={data.label}
                     onChange={value => handleChange('label', value)}
                 />
-                <Typography variant="caption" gutterBottom>
+                {/* <Typography variant="caption" gutterBottom>
                     The displayed name of your section
                 </Typography>
                 <Typography variant="body1" className={classes.label}>
@@ -150,7 +158,7 @@ export default ({
                     placeholder="my-custom-section"
                     value={data.name}
                     onChange={value => handleChange('name', value)}
-                />
+                /> */}
                 <Typography variant="caption" gutterBottom>
                     A machine-readable name for the section
                 </Typography>
