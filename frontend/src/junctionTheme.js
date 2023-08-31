@@ -20,6 +20,13 @@ const theme = createTheme({
         theme_black: {
             main: '#232323',
         },
+        theme_red: {
+            main: '#ff5b5b',
+        },
+        theme_gray: {
+            base: '#f7fafc',
+            dark: '#e2e8f0',
+        },
         theme_orange: {
             main: '#f58532',
             light: '#ffb661',

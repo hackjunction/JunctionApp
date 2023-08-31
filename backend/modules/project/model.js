@@ -5,6 +5,9 @@ const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryIm
 const AchievementSchema = require('../../common/schemas/Achievement')
 const GavelController = require('../reviewing/gavel/controller')
 const WebhookService = require('../../common/services/webhook')
+const CustomAnswer = require('@hackjunction/shared/schemas/CustomAnswer')
+const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
+// const AnswersSchema = require('@hackjunction/shared/schemas/Answers')
 
 const ProjectSchema = new mongoose.Schema({
     event: {
@@ -23,11 +26,11 @@ const ProjectSchema = new mongoose.Schema({
     },
     punchline: {
         type: String,
-        required: true,
+        // required: true,
     },
     description: {
         type: String,
-        required: true,
+        // required: true,
     },
     technologies: [String],
     source: {
@@ -35,7 +38,7 @@ const ProjectSchema = new mongoose.Schema({
     },
     sourcePublic: {
         type: Boolean,
-        required: true,
+        // required: true,
         default: true,
     },
     demo: {
@@ -64,6 +67,14 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
     },
     achievements: [AchievementSchema],
+    submissionFormAnswers: {
+        type: [CustomAnswer.mongoose],
+    },
+    // TODO default fields
+    // enabledFields: {
+    //     type: [String],
+    //     default: ProjectDefaultFields,
+    // },
 })
 
 ProjectSchema.set('timestamps', true)

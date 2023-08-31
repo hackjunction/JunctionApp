@@ -4,17 +4,28 @@ import { Helmet } from 'react-helmet'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
+import { useRouteMatch, useLocation } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 import HackerpackService from 'services/hackerpack'
 import config from 'constants/config'
+import EventsService from 'services/events'
 export default () => {
+    const match = useRouteMatch()
+
+    const { slug } = match.params
+    const event = useSelector(DashboardSelectors.event)
+
     const [hackerpack, setHackerpack] = useState([])
 
     useEffect(() => {
-        HackerpackService.getFullHackerpack().then(pack => {
-            if (pack) setHackerpack(pack)
-        })
-    }, [])
+        if (event) {
+            setHackerpack(event.hackerpacks)
+        }
+    }, [event, slug])
+
+    console.log(hackerpack)
 
     return (
         <>
@@ -65,10 +76,12 @@ export default () => {
             />
             <PageWrapper loading={false}>
                 <Divider variant="middle" />
-                {hackerpack.map(company => (
-                    <HackerpackDetail partner={company} redeemable={true} />
+                {hackerpack.map(hackerpack => (
+                    <HackerpackDetail
+                        hackerpack={hackerpack}
+                        redeemable={true}
+                    />
                 ))}
-
             </PageWrapper>
         </>
     )

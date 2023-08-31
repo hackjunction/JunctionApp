@@ -150,10 +150,7 @@ const clearAchievements = asyncHandler(async (req, res) => {
 
 // Approve
 const approveEvent = asyncHandler(async (req, res) => {
-    const event = await EventController.approveEvent(
-        req.event,
-        req.body,
-    )
+    const event = await EventController.approveEvent(req.event, req.body)
     return res.status(200).json(event)
 })
 

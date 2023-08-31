@@ -151,8 +151,8 @@ export default ({
                         <FastField name="tagline">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Team subtitle *"
-                                    hint="Write a subtitle for your team"
+                                    label="Team tagline *"
+                                    hint="Write a tagline for your team"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -209,7 +209,7 @@ export default ({
                         <FastField name="ideaTitle">
                             {({ field, form }) => (
                                 <FormControl
-                                    label=" Title of the idea explored by your team *"
+                                    label=" Title of the idea explored by your team"
                                     hint="Write a title for your idea"
                                     touched={
                                         form.touched[field.name] ||
@@ -238,7 +238,7 @@ export default ({
                         <FastField name="ideaDescription">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Brief explanation of the idea explored by your team *"
+                                    label="Brief explanation of the idea explored by your team"
                                     hint="Explain your idea in a few sentences"
                                     touched={
                                         form.touched[field.name] ||

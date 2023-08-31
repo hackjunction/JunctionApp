@@ -114,7 +114,7 @@ export default ({ visible, userIds = [], onClose }) => {
     const handleTestEmail = useCallback(() => {
         if (!validate()) return
         setLoading(true)
-        EmailService.sendPreviewEmail(idToken, event.slug, user.email, params)
+        EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: user.email, params: params })
             .then(() => {
                 dispatch(
                     SnackbarActions.success(

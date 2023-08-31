@@ -21,9 +21,9 @@ import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import ImageUpload from 'components/inputs/ImageUpload'
-import { SettingsBrightnessSharp } from '@material-ui/icons'
 
 export default ({ value, onChange }) => {
+    console.log(value)
     const [name, setName] = useState(undefined)
     const [slug, setSlug] = useState(undefined)
     const [partner, setPartner] = useState(undefined)

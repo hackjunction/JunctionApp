@@ -46,6 +46,7 @@ import Badge from '@material-ui/core/Badge'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
+import hackerpack from './hackerpack'
 // import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({
@@ -84,6 +85,7 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
+
     const { slug } = match.params
 
     // Set up browser notifications

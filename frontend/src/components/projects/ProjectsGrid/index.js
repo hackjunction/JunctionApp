@@ -58,7 +58,6 @@ const ProjectsGrid = ({
         }
     }, [fetchData, projects, showScore, sortField])
 
-    console.log(sorted)
     return (
         <Grid
             container

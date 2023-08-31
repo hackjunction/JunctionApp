@@ -24,6 +24,7 @@ function buildController(key, context) {
             return new AlertController(user)
         case 'Meeting':
             return new MeetingController(user)
+        // TODO: Implement Team controller for graphql
         // case 'Team':
         //     return new TeamController(user)
         default: {

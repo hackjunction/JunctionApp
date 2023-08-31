@@ -11,7 +11,6 @@ import Markdown from 'components/generic/Markdown'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
-
 import ReactPlayer from 'react-player'
 
 import ProjectTeam from './ProjectTeam'
@@ -143,6 +142,78 @@ const ProjectDetail = ({
         ))
     }
 
+    const submissionFormAnswersArray = []
+
+    // if (project.submissionFormAnswers) {
+    //     const te = project.submissionFormAnswers.reduce((result, current) => {
+    //         console.log('result log from reducer', result)
+    //         const checkSection = result.find(
+    //             answer => current.section === answer.section,
+    //         )
+
+    //         console.log('checkSetion value after find', checkSection)
+
+    //         if (checkSection) {
+    //             checkSection.questions.push({
+    //                 key: current.key,
+    //                 value: current.value,
+    //             })
+    //         } else {
+    //             result.push({
+    //                 section: current.section,
+    //                 questions: [
+    //                     {
+    //                         key: current.key,
+    //                         value: current.value,
+    //                     },
+    //                 ],
+    //             })
+    //         }
+    //         console.log('Results after logic is implemented', [
+    //             checkSection,
+    //             result,
+    //         ])
+    //         return result
+    //     }, [])
+    //     console.log('Reducer function test', te)
+    //     submissionFormAnswersArray = [...te]
+    // }
+
+    // console.log('Submission form answers formatted', submissionFormAnswersArray)
+
+    if (project.submissionFormAnswers && event.submissionFormQuestions) {
+        console.log('Event questions', event.submissionFormQuestions)
+        console.log('Project answers', project.submissionFormAnswers)
+        event.submissionFormQuestions.map(section => {
+            const sectionGroup = {
+                section: section.label,
+                answers: [],
+            }
+            section.questions.map(question => {
+                const questionAnswer = project.submissionFormAnswers.find(
+                    answer =>
+                        answer.key === question.name &&
+                        answer.section === section.name &&
+                        answer.value,
+                )
+
+                if (questionAnswer) {
+                    sectionGroup.answers.push({
+                        question: questionAnswer.label,
+                        value: questionAnswer.value,
+                    })
+                }
+                return
+            })
+
+            submissionFormAnswersArray.push(sectionGroup)
+        })
+        console.log(
+            'Submission form answers formatter',
+            submissionFormAnswersArray,
+        )
+    }
+
     const statusTag = status => {
         switch (status) {
             case 'final':
@@ -163,6 +234,7 @@ const ProjectDetail = ({
                 return null
         }
     }
+    console.log('Project data from projectDetail component', project)
 
     return (
         <>
@@ -290,6 +362,32 @@ const ProjectDetail = ({
                         <Box mt={5} mb={5}>
                             <Markdown source={project.description} />
                         </Box>
+                        {submissionFormAnswersArray?.length > 0 &&
+                            submissionFormAnswersArray.map((section, index) => {
+                                if (section.answers?.length > 0) {
+                                    return (
+                                        <Box mb={3} key={index}>
+                                            <Typography
+                                                variant="h6"
+                                                className={classes.sectionTitle}
+                                            >
+                                                {section.section}
+                                            </Typography>
+                                            {section.answers.length > 0 &&
+                                                section.answers.map(answer => (
+                                                    <>
+                                                        <Typography variant="subtitle1">
+                                                            {answer.question}
+                                                        </Typography>
+                                                        <Typography variant="subtitle1">
+                                                            {answer.value}
+                                                        </Typography>
+                                                    </>
+                                                ))}
+                                        </Box>
+                                    )
+                                }
+                            })}
                         {showTableLocation && project.location && (
                             <Box mb={3}>
                                 <Typography

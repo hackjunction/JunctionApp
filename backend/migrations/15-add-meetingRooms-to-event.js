@@ -5,17 +5,6 @@ module.exports = {
     index: 15,
     name: '04-add-meetingRooms-to-event',
     description: 'Add meeting rooms in to event',
-    /*run: async () => {
-        const res = await mongoose
-            .model('Event')
-            .updateMany(
-                { meetingRooms: { $exists: false } },
-                { $set: { meetingRooms: [] } },
-            )
-        console.log('Done with meetingrooms', res.n, res.nModified)
-
-        return Promise.resolve()
-    },*/
     run: async () => {
         const res = await mongoose
             .model('Event')

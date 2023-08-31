@@ -121,6 +121,15 @@ controller.getUsersByEmail = email => {
     return UserProfile.find({ email })
 }
 
+// a function to get the user id by email
+controller.getUserIdByEmail = async (email) => {
+    const profiles = await controller.getUsersByEmail(email)
+    if (profiles.length === 0) {
+        throw new NotFoundError(`User profile with email ${email} does not exist`)
+    }
+    return profiles[0].userId
+}
+
 controller.searchUsers = terms => {
     return UserProfile.find({ $text: { $search: terms } }).limit(25)
 }
