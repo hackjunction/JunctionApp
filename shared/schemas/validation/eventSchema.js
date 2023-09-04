@@ -87,6 +87,11 @@ const registrationConfig = yup.object().shape({
     requiredFields: yup.array().of(yup.string()),
 })
 
+const recruiter = yup.object().shape({
+    recruiterId: yup.string().required(),
+    organization: yup.string()
+})
+
 const eventTimeline = yup.object().shape({
     items: yup.array().of(
         yup.object().shape({
@@ -168,6 +173,7 @@ export default yup.object().shape({
     galleryOpen: yup.boolean(),
     owner: yup.string(),
     organisers: yup.array().of(yup.string()),
+    recruiters: yup.array().of(recruiter),
     organizations: yup.array().of(yup.string()),
     registrationConfig,
     demoLabel: yup.string(),

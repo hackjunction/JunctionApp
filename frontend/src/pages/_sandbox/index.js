@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import DefaultPage from './default'
 import TeamPage from './team'
 import ConfigurePage from './default/configure'
+import FilesPage from './files'
 
 export default () => {
     const match = useRouteMatch()

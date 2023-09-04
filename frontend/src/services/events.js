@@ -63,6 +63,25 @@ EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
     )
 }
 
+EventsService.getEventRecruiters = (idToken, slug) => {
+    return _axios.get(`${BASE_ROUTE}/recruiters/${slug}`, config(idToken))
+}
+
+EventsService.addRecruiterToEvent = (idToken, slug, recruiterId, organization) => {
+    return _axios.post(
+        `${BASE_ROUTE}/recruiters/${slug}/${recruiterId}`,
+        { organization: organization },
+        config(idToken),
+    )
+}
+
+EventsService.removeRecruiterFromEvent = (idToken, slug, recruiterId) => {
+    return _axios.delete(
+        `${BASE_ROUTE}/recruiters/${slug}/${recruiterId}`,
+        config(idToken),
+    )
+}
+
 EventsService.getOrganizations = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/organizations/${slug}`, config(idToken))
 }

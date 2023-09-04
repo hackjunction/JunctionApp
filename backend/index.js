@@ -66,7 +66,10 @@ app.use(require('./common/errors/errorHandler'))
 
 /* Database connection */
 require('./misc/db').connect()
+//let gfs = require('./misc/db').gfs
 
+// const storage = require('./misc/gridfs').storage
+// const upload = require('./misc/gridfs').upload
 const migrations = require('./migrations/index')
 
 /** A clone of the npm library throng, with a minor edit. See the file for details. */
@@ -91,10 +94,19 @@ throng({
         httpServer.listen(PORT, () => {
             logger.info(
                 `Worker ${process.pid} started, listening on port ${httpServer.address().port}`,
-                
+
             )
+
         })
+
+
+
+
+
     },
+
+
+
     /** This is run only if the master function errors out, which means the
      *  server could not start properly. Workers are automatically revived on failure, if e.g.
      *  the app crashes or runs out of memory while processing a request.

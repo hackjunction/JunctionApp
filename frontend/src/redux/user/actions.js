@@ -58,6 +58,25 @@ export const setRegistration = (registration, eventId) => dispatch => {
     })
 }
 
+export const setAccessRight = (accessRight, eventId) => dispatch => {
+    dispatch({
+        type: ActionTypes.SET_ACCESSRIGHT,
+        payload: {
+            accessRight,
+            eventId,
+        },
+    })
+}
+
+export const organizerEvents = (organizerEvents) => dispatch => {
+    dispatch({
+        type: ActionTypes.ORGANIZER_EVENTS,
+        payload: {
+            organizerEvents
+        },
+    })
+}
+
 // export const getUserProfile = () => (dispatch, getState) => {
 //     const state = getState();
 //     const idToken = AuthSelectors.getIdToken(state);

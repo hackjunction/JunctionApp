@@ -25,8 +25,10 @@ library.add(fab)
 const { store, persistor } = configureStore()
 
 /** Disable log statements in production */
-function noop() {}
+function noop() { }
+
 if (!config.IS_DEBUG) {
+
     console.log = noop
     console.warn = noop
 }

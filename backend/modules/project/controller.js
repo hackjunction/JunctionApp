@@ -72,9 +72,8 @@ controller.generateChallengeLink = async (event, challengeSlug) => {
     //    console.log('inhere challenge :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${
-            event.slug
-        }/challenge/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
+            }/challenge/${encodeURIComponent(hashed)}`,
     }
 }
 
@@ -83,9 +82,8 @@ controller.generateTrackLink = async (event, trackSlug) => {
     //    console.log('inhere track  :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${
-            event.slug
-        }/tracks/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
+            }/tracks/${encodeURIComponent(hashed)}`,
     }
 }
 

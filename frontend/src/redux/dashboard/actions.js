@@ -1,8 +1,10 @@
 import { push } from 'connected-react-router'
+import { useQuery } from '@apollo/client'
 
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from '../auth/selectors'
 import * as DashboardSelectors from './selectors'
+import { useActiveEvents, usePastEvents, GET_ACTIVE_EVENTS, GET_PAST_EVENTS } from 'graphql/queries/events'
 import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
@@ -552,3 +554,24 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
 
 //         return team
 //     }
+export const activeEvents = (activeEvents) => dispatch => {
+    console.log("action activeEvents", activeEvents)
+    dispatch({
+        type: ActionTypes.ACTIVE_EVENTS,
+        payload: {
+            activeEvents
+        },
+    })
+}
+
+export const pastEvents = (pastEvents) => dispatch => {
+    console.log("action pastEvents", pastEvents)
+    dispatch({
+        type: ActionTypes.PAST_EVENTS,
+        payload: {
+            pastEvents
+        },
+    })
+}
+
+

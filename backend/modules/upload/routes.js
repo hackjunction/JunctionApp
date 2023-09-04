@@ -1,6 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
+<<<<<<< HEAD
 const ObjectId = require('mongodb').ObjectId
+=======
+const {
+    GridFsStorage
+} = require("multer-gridfs-storage")
+const ObjectId = require('mongodb').ObjectId
+
+>>>>>>> dashboard-feature
 
 const router = express.Router()
 const { Auth } = require('@hackjunction/shared')
@@ -12,6 +20,14 @@ const { ForbiddenError, NotFoundError } = require('../../common/errors/errors')
 
 const storage = require('../../misc/gridfs').storage
 const upload = require('../../misc/gridfs').upload
+
+const storage = require('../../misc/gridfs').storage
+const upload = require('../../misc/gridfs').upload
+
+// console.log(mongoose.connections[0].db)
+// let gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+//     bucketName: "uploads"
+// })
 
 const {
     isEventOrganiser,
@@ -274,7 +290,7 @@ router.post('/banner/:slug/icon', hasToken, (req, res, next) => {
 /**
  * Upload icon for an organization
  */
-router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
+router.post('/organization/:slug/icon', (req, res, next) => {
     helper.uploadOrganizationIcon(req.params.slug)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {
@@ -328,10 +344,10 @@ router.delete('/files/:id', (req, res, next) => {
     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
         bucketName: "uploads"
     })
-    // console.log(req.params.id)
+    console.log(req.params.id)
     gfs.delete(ObjectId(req.params.id), (err, data) => {
         if (err) {
-            next(err)
+            return res.status(404).json({ err: err })
         }
 
         res.status(200).json({
