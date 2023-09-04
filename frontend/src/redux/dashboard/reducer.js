@@ -41,6 +41,7 @@ const initialState = {
 }
 
 const updateEventHandler = buildHandler('event')
+const publicEventsHandler = buildHandler('publicEvents')
 const updateRegistrationHandler = buildHandler('registration')
 const updateTeamHandler = buildHandler('team')
 const updateProjectsHandler = buildHandler('projects', '_id')
@@ -82,6 +83,21 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.CLEAR_TEAM: {
             return editTeam(state, initialState.team.data)
+        }
+        case ActionTypes.ACTIVE_EVENTS: {
+            console.log("ACTIVE_EVENTS", state, action.payload)
+            return {
+                ...state,
+                activeEvents: action.payload.activeEvents
+            }
+
+        }
+        case ActionTypes.PAST_EVENTS: {
+            return {
+                ...state,
+                pastEvents: action.payload.pastEvents
+            }
+
         }
         default:
             return state

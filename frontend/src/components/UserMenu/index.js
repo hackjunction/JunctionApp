@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
 import MenuIcon from '@material-ui/icons/Menu'
+import JunctionTheme from 'junctionTheme.js'
 import LanguageMenu from 'components/LanguageMenu'
 import { useMyProfilePreview } from 'graphql/queries/userProfile'
 
@@ -63,6 +64,7 @@ export default () => {
     const hasRecruiterAccess = useSelector(AuthSelectors.hasRecruiterAccess)
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null)
+    const color = JunctionTheme.palette
 
     const handleMenuOpen = e => {
         setAnchorEl(e.currentTarget)
@@ -78,11 +80,10 @@ export default () => {
                 <MenuIcon
                     fontSize="large"
                     onClick={handleMenuOpen}
-                    className={`${classes.hamburger} ${
-                        anchorEl
-                            ? classes.hamburgerOpen
-                            : classes.hamburgerClosed
-                    }`}
+                    className={`${classes.hamburger} ${anchorEl
+                        ? classes.hamburgerOpen
+                        : classes.hamburgerClosed
+                        }`}
                 />
 
                 <Popover
@@ -176,9 +177,8 @@ export default () => {
             <MenuIcon
                 fontSize="large"
                 onClick={handleMenuOpen}
-                className={`${classes.hamburger} ${
-                    anchorEl ? classes.hamburgerOpen : classes.hamburgerClosed
-                }`}
+                className={`${classes.hamburger} ${anchorEl ? classes.hamburgerOpen : classes.hamburgerClosed
+                    }`}
             />
 
             <Popover
@@ -197,52 +197,61 @@ export default () => {
                     paper: classes.menuBox,
                 }}
             >
-                <Box className={classes.menuBox}>
-                    <Grid container spacing={0}>
-                        <Grid item xs={6}>
-                            <ListItem button>
-                                <ListItemText
-                                    primary={t('Dashboard_')}
-                                    onClick={() => dispatch(push('/account'))}
-                                />
-                            </ListItem>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <ListItem
-                                button
-                                onClick={() => dispatch(push('/logout'))}
-                            >
-                                <ListItemText primary={t('Log_out_')} />
-                            </ListItem>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ListItem button>
-                                <ListItemText
-                                    primary={t('Edit_profile_')}
-                                    onClick={() =>
-                                        dispatch(push('/account/profile'))
-                                    }
-                                />
-                            </ListItem>
-                        </Grid>
-                        {renderEventItems()}
-                        {renderOtherItems()}
+                <div className='tw-border-8 tw-border-white'>
+                    <Box className={classes.menuBox}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={6}>
+                                <ListItem button>
+                                    <ListItemText
+                                        primary={t('Dashboard_')}
+                                        onClick={() => dispatch(push('/account'))}
+                                    />
+                                </ListItem>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <ListItem
+                                    button
+                                    onClick={() => dispatch(push('/logout'))}
+                                >
+                                    <ListItemText primary={t('Log_out_')} />
+                                </ListItem>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ListItem button>
+                                    <ListItemText
+                                        primary={t('Edit_profile_')}
+                                        onClick={() =>
+                                            dispatch(push('/account/profile'))
+                                        }
+                                    />
+                                </ListItem>
+                            </Grid>
+                            {renderEventItems()}
+                            {renderOtherItems()}
 
-                        <Grid item xs={12}>
-                            <Divider variant="middle" />
+                            <Grid item xs={12}>
+                                <Divider variant="middle" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <LanguageMenu />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <LanguageMenu />
-                        </Grid>
-                    </Grid>
-                </Box>
+                    </Box>
+                </div>
             </Popover>
-            <Avatar
-                className={classes.avatar}
-                src={profile?.avatar}
-                alt="Avatar"
-                style={{ width: '33px', height: '33px' }}
-            />
+            <div className='tw-ml-16 tw-rounded-full tw-border-8 tw-border-white'>
+                <Avatar
+                    className='tw-ml-16 tw-rounded-full tw-border-8 tw-border-white'//TODO: what is wrong with the border
+                    src={profile?.avatar}
+                    alt="Avatar"
+                    style={{
+                        width: '50px',
+                        height: '50px',
+                        border: `2px solid ${color['primary'].main}`,
+                        borderRadius: '50%',
+                    }}
+                />
+            </div>
         </Box>
     )
 }

@@ -113,6 +113,18 @@ const variantStyles = (theme, props) => {
                 margin: theme.spacing(3),
             }
         }
+        case 'outlined-small': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`,
+                borderRadius: '28px',
+                height: '2em',
+                width: '10em',
+                fontSize: '10px',
+                margin: theme.spacing(3),
+            }
+        }
         case 'contained-large': {
             return {
                 backgroundColor: color.main,

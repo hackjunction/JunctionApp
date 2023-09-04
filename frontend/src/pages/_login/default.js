@@ -16,7 +16,9 @@ export default () => {
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
 
     const handleLogin = useCallback(async () => {
+        console.log("useLocation", location)
         const nextRoute = location?.state?.nextRoute ?? '/'
+        console.log("nextRoute", nextRoute)
         // TODO sleep???
         await MiscUtils.sleep(1000)
         if (isAuthenticated) {

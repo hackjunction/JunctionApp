@@ -166,6 +166,7 @@ const Markdown = React.memo(
                                     <Typography
                                         className={classes.hyperlink}
                                         display="inline"
+                                        component={'span'}
                                         variant="body1"
                                         color="primary"
                                     >
@@ -179,6 +180,7 @@ const Markdown = React.memo(
                                     <Typography
                                         className={classes.hyperlink}
                                         display="inline"
+                                        component={'span'}
                                         variant="body1"
                                         color="primary"
                                     >

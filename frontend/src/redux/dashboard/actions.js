@@ -1,8 +1,10 @@
 import { push } from 'connected-react-router'
+import { useQuery } from '@apollo/client'
 
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from '../auth/selectors'
 import * as DashboardSelectors from './selectors'
+import { useActiveEvents, usePastEvents, GET_ACTIVE_EVENTS, GET_PAST_EVENTS } from 'graphql/queries/events'
 import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
@@ -378,3 +380,80 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
         return err
     }
 }
+
+export const activeEvents = (activeEvents) => dispatch => {
+    console.log("action activeEvents", activeEvents)
+    dispatch({
+        type: ActionTypes.ACTIVE_EVENTS,
+        payload: {
+            activeEvents
+        },
+    })
+}
+
+export const pastEvents = (pastEvents) => dispatch => {
+    console.log("action pastEvents", pastEvents)
+    dispatch({
+        type: ActionTypes.PAST_EVENTS,
+        payload: {
+            pastEvents
+        },
+    })
+}
+
+// export const activeEvents = () => async (dispatch, getState) => {
+
+
+//     const { data, loading, error } = useQuery(GET_ACTIVE_EVENTS, {
+//         variables: {
+//         },
+//     })
+//     console.log("data", data)
+
+
+
+//     dispatch({
+//         type: ActionTypes.ACTIVE_EVENTS,
+//         payload: data,
+//     })
+
+
+
+
+    // try {
+    //     const [events, loading, error] = useActiveEvents({})
+    //     dispatch({
+    //         type: ActionTypes.ACTIVE_EVENTS,
+    //         payload: events,
+    //     })
+    // } catch (err) {
+    //     console.log(err)
+    //     return err
+    // }
+//}
+
+// export const pastEvents = () => async (dispatch, getState) => {
+
+//     const { data, loading, error } = useQuery(GET_PAST_EVENTS, {
+//         variables: {
+//             limit: 3,
+//         },
+//     })
+//     console.log("usePastEvents", data)
+
+//     dispatch({
+//         type: ActionTypes.PAST_EVENTS,
+//         payload: data,
+//     })
+
+    // try {
+    //     const [events, loading, error] = usePastEvents({})
+    //     dispatch({
+    //         type: ActionTypes.PAST_EVENTS,
+    //         payload: events,
+    //     })
+    // } catch (err) {
+    //     console.log(err)
+    //     return err
+    // }
+//}

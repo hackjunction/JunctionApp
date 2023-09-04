@@ -8,3 +8,6 @@ export const registrations = state => state.user.registrations
 export const registrationsLoading = state => state.user.registrationsLoading
 export const registrationsError = state => state.user.registrationsError
 export const userProfileRecruiterEvents = state => state.user.profile.recruiterEvents
+export const userProfileRegistrations = state => state.user.profile.registrations
+export const userAccessRight = state => state.user.accessRight
+export const organizerEvents = state => state.user.organizerEvents

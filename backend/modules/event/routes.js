@@ -78,7 +78,7 @@ const getRecruiters = asyncHandler(async (req, res) => {
 
 const addRecruiter = asyncHandler(async (req, res) => {
     const eventData = await EventController.getEventBySlug(req.params.slug)
-    await AuthController.grantRecruiterPermission(req.params.recruiterId)
+    const authRole = await AuthController.grantRecruiterPermission(req.params.recruiterId)
 
     const event = await EventController.addRecruiter(
         eventData,
@@ -90,7 +90,7 @@ const addRecruiter = asyncHandler(async (req, res) => {
 
 const removeRecruiter = asyncHandler(async (req, res) => {
     const eventData = await EventController.getEventBySlug(req.params.slug)
-    await AuthController.revokeRecruiterPermission(req.params.recruiterId)
+    await AuthController.revokeRecruiterPermission(req.params.recruiterId)//TODO: remove roles and permissions from app_metadata
     const event = await EventController.removeRecruiter(
         eventData,
         req.params.recruiterId,
