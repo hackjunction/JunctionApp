@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
 module.exports = {
-    index: 17,
-    name: '17-add-recruiters-to-event',
+    index: 21,
+    name: '21-add-recruiters-to-event',
     description: 'Add recruiters in to event, add recruiter events to user profioles and removo recruiter organisations',
 
     run: async () => {
