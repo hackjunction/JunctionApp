@@ -109,9 +109,7 @@ export default ({
     }
 
     if (challengeOptions && challengeOptions.length > 0) {
-        TeamSchema.challenge = yup
-            .string()
-            .required('One challenge is required')
+        TeamSchema.challenge = yup.string().required('A challenge is required')
     }
 
     return (
@@ -148,8 +146,8 @@ export default ({
                             Fields marked with * are required
                         </Typography>
                     </div>
-                    <div>
-                        {challengeOptions && challengeOptions.length > 0 && (
+                    {challengeOptions && challengeOptions.length > 0 && (
+                        <div>
                             <FastField name="challenge">
                                 {({ field, form }) => (
                                     <FormControl
@@ -178,8 +176,8 @@ export default ({
                                     </FormControl>
                                 )}
                             </FastField>
-                        )}
-                    </div>
+                        </div>
+                    )}
                     <div>
                         <FastField name="name">
                             {({ field, form }) => (
@@ -360,7 +358,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Team's contact email"
-                                    hint="Your team must have at least an email, a discord or a telegram challenge"
+                                    hint="Your team must have at least an email, a discord or a telegram channel"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0

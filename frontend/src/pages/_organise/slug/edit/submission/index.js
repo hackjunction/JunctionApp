@@ -32,7 +32,6 @@ export default () => {
             Object.keys(event.submissionFormDefaultFields),
             event.submissionFormEnabledFields,
         )
-        console.log('renderDefaultFields', renderDefaultFields)
     }
 
     return (

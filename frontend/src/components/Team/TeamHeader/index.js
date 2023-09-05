@@ -1,15 +1,27 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 export default ({
-    teamName = 'Test',
-    teamChallenge = 'Test',
-    teamCode = '',
+    teamName,
+    teamChallenge = null,
+    teamCode,
     viewMode = 'profile',
 }) => {
     const styling = {
         teamNameTypography: '',
         teamChallengeTypography: '',
+    }
+
+    let challengeName = null
+    const event = useSelector(DashboardSelectors.event)
+
+    if (teamChallenge && typeof teamChallenge === 'string') {
+        const challengeDetails = event.challenges.find(
+            challenge => challenge._id === teamChallenge,
+        )
+        challengeName = challengeDetails?.name
     }
 
     switch (viewMode) {
@@ -27,7 +39,7 @@ export default ({
 
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-flex tw-justify-between tw-items-center tw-gap-4">
+            <div className="tw-flex tw-items-center tw-gap-4">
                 <Typography
                     className="tw-font-bold tw-tracking-tight tw-break-words-overflow"
                     variant={styling.teamNameTypography}
@@ -35,14 +47,16 @@ export default ({
                 >
                     {teamName}
                 </Typography>
-                <Typography
-                    className="tw-tracking-tight tw-font-medium"
-                    variant={styling.teamChallengeTypography}
-                    color="secondary"
-                    component={styling.teamChallengeTypography}
-                >
-                    #{teamChallenge}
-                </Typography>
+                {challengeName && (
+                    <Typography
+                        className="tw-tracking-tight tw-font-medium"
+                        variant={styling.teamChallengeTypography}
+                        color="secondary"
+                        component={styling.teamChallengeTypography}
+                    >
+                        #{challengeName}
+                    </Typography>
+                )}
             </div>
             {teamCode && (
                 <Typography

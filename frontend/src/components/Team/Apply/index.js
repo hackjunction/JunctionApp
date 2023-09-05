@@ -39,6 +39,21 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     const event = useSelector(DashboardSelectors.event)
 
+    const challengeLabel = useMemo(() => {
+        if (
+            !selectedTeam?.challenge ||
+            !event?.challenges ||
+            event.challenges.length < 1
+        )
+            return null
+        const challenge = event.challenges.find(
+            challenge => challenge._id === selectedTeam.challenge,
+        )
+        return challenge?.name
+    }, [selectedTeam, event])
+
+    console.log('Rendering challenge label:', challengeLabel)
+
     const handleApply = useCallback(
         (values, formikBag) => {
             formikBag.setSubmitting(true)

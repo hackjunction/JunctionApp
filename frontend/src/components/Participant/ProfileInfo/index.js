@@ -78,7 +78,7 @@ export default ({ user = {} }) => {
 
     return (
         <>
-            {(user.profile.biography || user.recruitmentOptions) && (
+            {(user.profile?.biography || user?.recruitmentOptions) && (
                 <div className="tw-rounded-lg tw-shadow-md tw-bg-white tw-p-8 tw-flex tw-flex-col tw-gap-4">
                     {user.profile.biography && (
                         <div>
@@ -154,7 +154,7 @@ export default ({ user = {} }) => {
                         </Typography>
                     </div>
                 )}
-                {user.profile.spokenLanguages.length > 0 && (
+                {user.profile.spokenLanguages?.length > 0 && (
                     <div>
                         <Typography
                             className="tw-tracking-tight tw-font-normal tw-text-gray-600"

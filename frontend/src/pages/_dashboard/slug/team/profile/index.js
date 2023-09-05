@@ -40,7 +40,7 @@ export default () => {
         if (!challengesEnabled || !challenges) return null
         return challenges.map(challenge => ({
             label: `${challenge.name} (${challenge.partner})`,
-            value: challenge.slug,
+            value: challenge._id,
         }))
     }, [event])
 

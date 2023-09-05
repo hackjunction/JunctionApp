@@ -24,6 +24,7 @@ import TeamRoles from 'components/Team/TeamRoles'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { useRouteMatch } from 'react-router'
+import Markdown from 'components/generic/Markdown'
 
 function TeamCard({
     teamData = {},
@@ -43,7 +44,7 @@ function TeamCard({
     return (
         <Card
             onClick={onClick}
-            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-576px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
+            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-600px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
         >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
@@ -54,20 +55,48 @@ function TeamCard({
                         teamChallenge={teamData.challenge}
                     />
                     {teamData.userIsApplicant && <div>Applied</div>}
+                    {teamData?.ideaTitle && teamData?.ideaDescription && (
+                        <div className="tw-flex tw-flex-col tw-gap-2">
+                            <div className="tw-flex tw-gap-2">
+                                <Typography variant="body1" component="p">
+                                    Working on:
+                                </Typography>
+                                <Typography
+                                    className="tw-font-semibold"
+                                    variant="body1"
+                                    component="p"
+                                >
+                                    {teamData.ideaTitle}
+                                </Typography>
+                            </div>
+                            <div className="tw-flex tw-gap-2">
+                                <Typography variant="body1" component="p">
+                                    {teamData.ideaDescription.length > 50
+                                        ? `${teamData.ideaDescription.substr(
+                                              0,
+                                              50,
+                                          )}...`
+                                        : teamData.ideaDescription}
+                                </Typography>
+                            </div>
+                        </div>
+                    )}
                     <TeamRoles teamRoles={teamData.teamRoles} />
                 </div>
             </CardContent>
-            <CardActions className="tw-flex tw-gap-2 tw-justify-start tw-px-4 tw-pb-4 tw-pt-0">
-                <Button
-                    onClick={e => {
-                        onClickApply()
-                        e.stopPropagation()
-                    }}
-                    variant="jContained"
-                    disabled={teamData.userIsApplicant || disableActions}
-                >
-                    Apply
-                </Button>
+            <CardActions className="tw-flex tw-justify-end tw-items-center tw-px-4 tw-pb-4 tw-pt-0">
+                {disableActions ? null : (
+                    <Button
+                        onClick={e => {
+                            onClickApply()
+                            e.stopPropagation()
+                        }}
+                        variant="jContained"
+                        disabled={teamData.userIsApplicant}
+                    >
+                        Apply
+                    </Button>
+                )}
                 <Button
                     onClick={e => {
                         onClickSeeMore()

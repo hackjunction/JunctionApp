@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import junctionStyle from 'utils/styles'
 import {
     Card,
@@ -30,16 +30,36 @@ function CandidateCard(
     const classes = junctionStyle()
     const dispatch = useDispatch()
     const [value, setValue] = useState('female')
+    const [loading, setLoading] = useState(false)
+
+    const fetchCandidateData = async CandidateUserId => {
+        setLoading(true)
+        return await dispatch(
+            DashboardActions.getCandidateProfileById(CandidateUserId),
+        )
+    }
+
     let candidateProfile = {
         profile: {
-            firstName: candidateData.firstName || '',
-            lastName: candidateData.lastName || '',
-            headline: candidateData.headline || '',
-            avatar: candidateData.avatar || '',
-            userId: candidateData.userId || '',
-            _id: candidateData._id || '',
+            firstName: candidateData?.firstName || '',
+            lastName: candidateData?.lastName || '',
+            headline: candidateData?.headline || '',
+            avatar: candidateData?.avatar || '',
+            userId: candidateData?.userId || '',
+            _id: candidateData?._id || '',
         },
     }
+
+    useEffect(() => {
+        fetchCandidateData(candidateData.userId)
+            .then(data => (candidateProfile = { profile: { ...data.profile } }))
+            .catch(err => {
+                console.log('err', err)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [candidateData])
 
     const event = useSelector(DashboardSelectors.event)
     const team = useSelector(DashboardSelectors.team)
@@ -128,8 +148,8 @@ function CandidateCard(
     })
 
     return (
-        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-flex tw-flex-col tw-justify-between tw-min-h-576px">
-            <CardContent className="tw-flex tw-flex-col tw-items-start tw-p-4 tw-gap-6">
+        <Card className="tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-flex tw-flex-col tw-justify-between tw-h-576px">
+            <CardContent className="tw-flex tw-flex-col tw-justify-between tw-items-start tw-p-4 tw-gap-6">
                 <ParticipantPreview userData={candidateProfile} />
                 <Button
                     onClick={onViewApplication}

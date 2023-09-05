@@ -73,6 +73,8 @@ export default () => {
     const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
 
+    console.log('challenge data:', event.challenges)
+
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
         teamCards = teams.filter(team => team.challenge === challengeFilter)
@@ -140,9 +142,10 @@ export default () => {
                         )}
                         <Filter
                             noFilterOption="All challenges"
-                            filterArray={event.challenges.map(
-                                challenge => challenge.name,
-                            )}
+                            filterArray={event.challenges.map(challenge => ({
+                                label: challenge.name,
+                                value: challenge._id,
+                            }))}
                             onChange={setChallengeFilter}
                         />
                     </div>

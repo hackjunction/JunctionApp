@@ -11,7 +11,7 @@ export default ({
     const [filter, setFilter] = useState(noFilterOption)
     const formatedFilterArray = [
         { value: noFilterOption, label: noFilterOption },
-        ...filterArray.map(option => ({ value: option, label: option })),
+        ...filterArray,
     ]
 
     const handleChange = event => {

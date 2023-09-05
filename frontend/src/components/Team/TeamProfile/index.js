@@ -10,6 +10,8 @@ import junctionStyle from 'utils/styles'
 import { popupCenter } from 'utils/misc'
 import { Email } from '@material-ui/icons'
 import { objToArr } from 'utils/dataModifiers'
+// import * as DashboardSelectors from 'redux/dashboard/selectors'
+// import { useSelector } from 'react-redux'
 
 // TODO add socialLinks component from Damilare (@mrprotocoll)
 
@@ -21,8 +23,20 @@ export default ({
     onClickEdit,
     onRoleClick = () => {},
 }) => {
+    // const event = useSelector(DashboardSelectors.event)
+    // let challengeName = null
+
+    // if (teamData.challenge && typeof teamData.challenge === 'string') {
+    //     ;({ name: challengeName } = event.challenges.find(
+    //         challenge => challenge._id === teamData.challenge,
+    //     ))
+    // }
+    console.log('teamData', teamData)
+
     const teamMembersArr = [...objToArr(teamData.meta)]
     const membersCount = teamData.members.length
+
+    console.log('teamMembersArr', teamMembersArr)
     const classes = junctionStyle()
     return (
         <div className="tw-flex tw-flex-col tw-gap-12">
@@ -31,6 +45,7 @@ export default ({
                 <TeamHeader
                     teamName={teamData.name}
                     teamChallenge={teamData.challenge}
+                    // teamChallenge={challengeName}
                     teamCode={enableActions ? teamData.code : null}
                 />
                 <TeamDescription

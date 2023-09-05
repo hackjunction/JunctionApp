@@ -6,7 +6,7 @@ import theme from 'junctionTheme'
 
 export default ({
     onRoleClick = () => {},
-    maxRoles = 3,
+    maxRoles = 2,
     profileView = false,
     teamRoles = [
         {
@@ -14,7 +14,7 @@ export default ({
         },
     ],
 }) => {
-    let styling = profileView
+    const styling = profileView
         ? {
               masonryColumns: {
                   350: 1,
@@ -27,14 +27,17 @@ export default ({
                   350: 1,
               },
           }
+
+    const hiddenRolesCount = teamRoles?.length - maxRoles
+
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
             {teamRoles?.length > 0 ? (
                 <>
                     <Typography
-                        className="tw-tracking-tight tw-font-medium"
-                        variant="h5"
-                        component="h5"
+                        className="tw-tracking-tight"
+                        variant="h6"
+                        component="h6"
                     >
                         Available roles
                     </Typography>
@@ -55,8 +58,8 @@ export default ({
                                             <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                                                 <Typography
                                                     className="tw-font-semibold tw-text-left"
-                                                    variant="h6"
-                                                    component="h6"
+                                                    variant="body1"
+                                                    component="p"
                                                 >
                                                     {item.role}
                                                 </Typography>
@@ -66,17 +69,17 @@ export default ({
                                 })}
                         </Masonry>
                     </ResponsiveMasonry>
-                    {teamRoles?.length > maxRoles && (
+                    {hiddenRolesCount > 0 && (
                         <Button color="outlined_button" variant="jOutlinedBox">
                             <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
                                 <Typography
-                                    className="tw-text-lg tw-text-gray-600"
+                                    className="tw-text-gray-600"
                                     variant="body1"
                                     component="p"
                                 >
-                                    {`${
-                                        teamRoles.length - maxRoles
-                                    } more roles`}
+                                    {`${hiddenRolesCount} more role${
+                                        hiddenRolesCount === 1 ? '' : 's'
+                                    } available`}
                                 </Typography>
                             </div>
                         </Button>
@@ -84,9 +87,9 @@ export default ({
                 </>
             ) : (
                 <Typography
-                    className="tw-tracking-tight tw-font-medium"
-                    variant="h5"
-                    component="h5"
+                    className="tw-text-gray-600"
+                    variant="body1"
+                    component="p"
                 >
                     No roles available
                 </Typography>

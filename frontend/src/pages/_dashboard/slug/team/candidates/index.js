@@ -52,6 +52,7 @@ export default () => {
 
     useEffect(() => {
         if (candidateId) {
+            setLoadingCandidate(true)
             const getApplication = team.candidates.find(
                 candidate => candidate.userId === candidateId,
             )
@@ -59,7 +60,6 @@ export default () => {
                 rolesApplied: getApplication.roles,
                 motivation: getApplication.motivation,
             }
-            setLoadingCandidate(true)
             fetchCandidateData(candidateId)
                 .then(data =>
                     setCandidateSelectedData({
@@ -79,8 +79,6 @@ export default () => {
                 })
         }
     }, [candidateId])
-
-    useEffect(() => {}, [candidateSelectedData])
 
     const onBack = () => {
         setSelected(false)
