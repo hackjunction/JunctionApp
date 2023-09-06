@@ -18,6 +18,8 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import ErrorsBox from 'components/generic/ErrorsBox'
 import ProjectImages from './ProjectImages'
 import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
+import ProjectsService from 'services/projects'
+import { useDebounce } from 'hooks/customHooks'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -38,6 +40,7 @@ const SubmissionForm = props => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
+    const idToken = useSelector(AuthSelectors.getIdToken)
     const { t } = useTranslation()
 
     const projects = useSelector(DashboardSelectors.projects)
@@ -45,6 +48,13 @@ const SubmissionForm = props => {
 
     const [project, setProject] = useState(null)
     const [projectStatus, setProjectStatus] = useState('')
+
+    const [projectName, setProjectName] = useState(project?.name || '')
+    const debouncedProjectName = useDebounce(projectName, 300)
+    const [projectValidity, setProjectValidity] = useState({
+        errors: {},
+        state: 'initial',
+    })
 
     useEffect(() => {
         if (projects && projects.length && id) {
@@ -55,6 +65,40 @@ const SubmissionForm = props => {
             setProject(null)
         }
     }, [id, projects])
+
+    useEffect(() => {
+        setProjectValidity({
+            errors: {},
+            state: 'initial',
+        })
+
+        if (debouncedProjectName && debouncedProjectName === project?.name)
+            return
+
+        validateProject()
+    }, [debouncedProjectName])
+
+    const validateProject = async () => {
+        setProjectValidity({
+            errors: {},
+            state: 'loading',
+        })
+        const result = await ProjectsService.validateProject(
+            idToken,
+            event.slug,
+            {
+                projectName: debouncedProjectName,
+            },
+        )
+        const errors = Object.entries(result)
+            .filter(([, isInvalid]) => !!isInvalid)
+            .reduce(
+                (acc, [key, isInvalid]) => ({ ...acc, [key]: isInvalid }),
+                {},
+            )
+
+        setProjectValidity({ errors, state: 'loaded' })
+    }
 
     const initialValues = {
         sourcePublic: true,
@@ -131,12 +175,13 @@ const SubmissionForm = props => {
                                     <TextInput
                                         placeholder="Awesome-o 3000"
                                         value={field.value}
-                                        onChange={value =>
+                                        onChange={value => {
                                             form.setFieldValue(
                                                 field.name,
                                                 value,
                                             )
-                                        }
+                                            setProjectName(value)
+                                        }}
                                         onBlur={() =>
                                             form.setFieldTouched(field.name)
                                         }
@@ -144,6 +189,20 @@ const SubmissionForm = props => {
                                 </FormControl>
                             )}
                         />
+                        {projectValidity.state === 'loaded' &&
+                            !!Object.keys(projectValidity.errors).length && (
+                                <GradientBox p={3} mt={1} color="theme_white">
+                                    {projectValidity.errors
+                                        .isProjectNameTaken && (
+                                        <Typography variant="body1">
+                                            🤯 There is already a project
+                                            created with this name. Please
+                                            choose another one to make your
+                                            project stand out!
+                                        </Typography>
+                                    )}
+                                </GradientBox>
+                            )}
                     </Grid>
                     <Grid item xs={12}>
                         <FastField
@@ -569,7 +628,7 @@ const SubmissionForm = props => {
                                 fullWidth
                                 disabled={
                                     Object.keys(formikProps.errors).length >
-                                    0 || formikProps.isSubmitting
+                                        0 || formikProps.isSubmitting
                                 }
                                 color="theme_turquoise"
                                 variant="contained"
