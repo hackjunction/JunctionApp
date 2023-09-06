@@ -187,7 +187,7 @@ controller.attachMeta = async team => {
 controller.getTeamsForEvent = eventId => {
     return Team.find({
         event: eventId,
-    })
+    }).sort({ createdAt: 'desc' })
 }
 
 controller.getTeamStatsForEvent = async eventId => {

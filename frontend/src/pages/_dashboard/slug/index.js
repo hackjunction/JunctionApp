@@ -46,6 +46,7 @@ import Badge from '@material-ui/core/Badge'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
+import hackerpack from './hackerpack'
 // import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({
@@ -73,12 +74,10 @@ export default () => {
 
     const event = useSelector(DashboardSelectors.event)
 
-    const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-        'Recruiter'
-    ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-        'SuperAdmin'
-    )
-    console.log(isPartner, "user is partner")
+    const isPartner =
+        useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
+        !useSelector(AuthSelectors.idTokenData)?.roles?.includes('SuperAdmin')
+    console.log(isPartner, 'user is partner')
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,
@@ -86,6 +85,7 @@ export default () => {
     const team = useSelector(DashboardSelectors.team)
     const lockedPages = useSelector(DashboardSelectors.lockedPages)
     const shownPages = useSelector(DashboardSelectors.shownPages)
+
     const { slug } = match.params
 
     // Set up browser notifications
@@ -165,83 +165,7 @@ export default () => {
             loading={eventLoading || registrationLoading || alertsLoading}
             wrapContent={false}
         >
-            {isPartner ? (<SidebarLayout
-                baseRoute={match.url}
-                location={location}
-                sidebarTopContent={
-                    <div className={classes.sidebarTop}>
-                        <Image
-                            className={classes.sidebarLogo}
-                            publicId={
-                                event && event.logo ? event.logo.publicId : ''
-                            }
-                            transformation={{
-                                width: 200,
-                            }}
-                        />
-                    </div>
-                }
-                topContent={<BasicNavBar />}
-                routes={[
-                    {
-                        key: 'dashboard',
-                        path: '',
-                        exact: true,
-                        icon: (
-                            <Badge badgeContent={alertCount} color="primary">
-                                <DashboardIcon />
-                            </Badge>
-                        ),
-                        label: t('Dashboard_'),
-                        component: () => {
-                            setAlertCount(0)
-                            return DefaultPage({ alerts })
-                        },
-                    },
-                    {
-                        key: 'hackerpack',
-                        path: '/hackerpack',
-                        exact: true,
-                        icon: <AmpStoriesIcon />,
-                        hidden: !shownPages.hackerPack,
-                        label: t('Hackerpack_'),
-                        component: HackerpackPage,
-                    },
-                    {
-                        key: 'challenges',
-                        path: '/challenges',
-                        exact: true,
-                        icon: <FormatListBulletedIcon />,
-                        label: 'Challenges',
-                        component: ChallengesIndex,
-                    },
-                    /*
-                    {
-                        key: 'chat',
-                        path: '/chat',
-                        exact: true,
-                        icon: <QuestionAnswerSharp />,
-                        label: 'Chat',
-                        component: Chat,
-                    }, */
-                    {
-                        key: 'calendar',
-                        path: '/calendar',
-                        exact: true,
-                        hidden: !shownPages.meetings,
-                        icon: <EventIcon />,
-                        label: 'Meetings',
-                        component: CalendarPage,
-                    },
-                    {
-                        key: 'recruitment',
-                        path: '/recruitment',
-                        exact: true,
-                        label: 'Recruitment',
-                        component: RecruitmentPage,
-                    },
-                ]}
-            />) : (
+            {isPartner ? (
                 <SidebarLayout
                     baseRoute={match.url}
                     location={location}
@@ -250,7 +174,9 @@ export default () => {
                             <Image
                                 className={classes.sidebarLogo}
                                 publicId={
-                                    event && event.logo ? event.logo.publicId : ''
+                                    event && event.logo
+                                        ? event.logo.publicId
+                                        : ''
                                 }
                                 transformation={{
                                     width: 200,
@@ -265,7 +191,93 @@ export default () => {
                             path: '',
                             exact: true,
                             icon: (
-                                <Badge badgeContent={alertCount} color="primary">
+                                <Badge
+                                    badgeContent={alertCount}
+                                    color="primary"
+                                >
+                                    <DashboardIcon />
+                                </Badge>
+                            ),
+                            label: t('Dashboard_'),
+                            component: () => {
+                                setAlertCount(0)
+                                return DefaultPage({ alerts })
+                            },
+                        },
+                        {
+                            key: 'hackerpack',
+                            path: '/hackerpack',
+                            exact: true,
+                            icon: <AmpStoriesIcon />,
+                            hidden: !shownPages.hackerPack,
+                            label: t('Hackerpack_'),
+                            component: HackerpackPage,
+                        },
+                        {
+                            key: 'challenges',
+                            path: '/challenges',
+                            exact: true,
+                            icon: <FormatListBulletedIcon />,
+                            label: 'Challenges',
+                            component: ChallengesIndex,
+                        },
+                        /*
+                    {
+                        key: 'chat',
+                        path: '/chat',
+                        exact: true,
+                        icon: <QuestionAnswerSharp />,
+                        label: 'Chat',
+                        component: Chat,
+                    }, */
+                        {
+                            key: 'calendar',
+                            path: '/calendar',
+                            exact: true,
+                            hidden: !shownPages.meetings,
+                            icon: <EventIcon />,
+                            label: 'Meetings',
+                            component: CalendarPage,
+                        },
+                        {
+                            key: 'recruitment',
+                            path: '/recruitment',
+                            exact: true,
+                            label: 'Recruitment',
+                            component: RecruitmentPage,
+                        },
+                    ]}
+                />
+            ) : (
+                <SidebarLayout
+                    baseRoute={match.url}
+                    location={location}
+                    sidebarTopContent={
+                        <div className={classes.sidebarTop}>
+                            <Image
+                                className={classes.sidebarLogo}
+                                publicId={
+                                    event && event.logo
+                                        ? event.logo.publicId
+                                        : ''
+                                }
+                                transformation={{
+                                    width: 200,
+                                }}
+                            />
+                        </div>
+                    }
+                    topContent={<BasicNavBar />}
+                    routes={[
+                        {
+                            key: 'dashboard',
+                            path: '',
+                            exact: true,
+                            icon: (
+                                <Badge
+                                    badgeContent={alertCount}
+                                    color="primary"
+                                >
                                     <DashboardIcon />
                                 </Badge>
                             ),
@@ -382,7 +394,8 @@ export default () => {
                             component: CalendarPage,
                         },
                     ]}
-                />)}
+                />
+            )}
         </PageWrapper>
     )
 }

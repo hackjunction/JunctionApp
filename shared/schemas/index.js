@@ -3,6 +3,7 @@ const { GraphQLSchema, printSchema } = require('graphql')
 const Address = require('./Address')
 const Answers = require('./Answers')
 const Challenge = require('./Challenge')
+const Hackerpack = require('./Hackerpack')
 const CloudinaryImage = require('./CloudinaryImage')
 const Education = require('./Education')
 const EventTag = require('./EventTag')
@@ -38,6 +39,8 @@ const SharedSchema = new GraphQLSchema({
         Answers.graphql,
         Challenge.graphql,
         Challenge.graphqlInput,
+        Hackerpack.graphql,
+        Hackerpack.graphqlInput,
         CloudinaryImage.graphql,
         CloudinaryImage.graphqlInput,
         Education.graphql,
