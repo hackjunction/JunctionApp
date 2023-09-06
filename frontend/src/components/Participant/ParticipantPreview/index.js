@@ -8,8 +8,8 @@ import { set } from 'react-ga'
 import { useDispatch } from 'react-redux'
 import * as DashboardActions from 'redux/dashboard/actions'
 
-export default ({ viewMode = 'card', userData = {} }) => {
-    const [userProfile, setUserProfile] = useState(null)
+export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
+    const [userProfile, setUserProfile] = useState(userData)
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -29,6 +29,7 @@ export default ({ viewMode = 'card', userData = {} }) => {
                     console.log(err)
                 })
                 .finally(() => {
+                    console.log('Fetched at preview', userProfile)
                     setLoading(false)
                 })
         }
@@ -38,12 +39,13 @@ export default ({ viewMode = 'card', userData = {} }) => {
         borderStyle: '',
         imageSize: '',
         alignment: 'tw-items-center',
+        userProfile: {},
     }
-
-    if (userData.profile.avatar !== '') {
+    if (userProfile.profile.avatar) {
         styling.userProfile = {
-            backgroundImage: `url(${userData.profile.avatar})`,
+            backgroundImage: `url(${userProfile.profile.avatar})`,
         }
+        console.log('userProfile profile avatar', userProfile.profile.avatar)
     }
 
     // console.log('User data on participant preview', userData)
@@ -95,7 +97,7 @@ export default ({ viewMode = 'card', userData = {} }) => {
                         </Typography>
                     </div>
                 </div>
-                {!visible && viewMode !== 'profile' && (
+                {enabledView && !visible && viewMode === 'list' && (
                     <Button
                         color="outlined_button"
                         variant="jOutlined"

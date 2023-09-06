@@ -64,10 +64,10 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
             submittionData.motivation = values.motivation
             //TODO Make all this data dynamically fetched from the user profile in the backend
             submittionData.userId = userProfile.userId
-            submittionData.avatar = userProfile.avatar
-            submittionData.firstName = userProfile.firstName
-            submittionData.lastName = userProfile.lastName
-            submittionData.headline = userProfile.headline
+            // submittionData.avatar = userProfile.avatar
+            // submittionData.firstName = userProfile.firstName
+            // submittionData.lastName = userProfile.lastName
+            // submittionData.headline = userProfile.headline
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,

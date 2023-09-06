@@ -3,7 +3,11 @@ import ParticipantPreview from 'components/Participant/ParticipantPreview'
 import team from 'pages/_dashboard/slug/team'
 import React from 'react'
 
-export default ({ viewModeStyle = 'list', teamMembers = [] }) => {
+export default ({
+    viewModeStyle = 'list',
+    teamMembers = [],
+    enabledTeamMemberView = false,
+}) => {
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
             <Typography
@@ -19,6 +23,7 @@ export default ({ viewModeStyle = 'list', teamMembers = [] }) => {
                         key={index}
                         viewMode={viewModeStyle}
                         userData={member}
+                        enabledView={enabledTeamMemberView}
                     />
                 )
             })}

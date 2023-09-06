@@ -22,14 +22,10 @@ import { FastField, Field, Form, Formik, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 
-function CandidateCard(
-    { candidateData = {}, onViewApplication = () => {} },
-    onClickApply = () => {},
-) {
+function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
     console.log('candidateData', candidateData)
     const classes = junctionStyle()
     const dispatch = useDispatch()
-    const [value, setValue] = useState('female')
     const [loading, setLoading] = useState(false)
 
     const fetchCandidateData = async CandidateUserId => {
@@ -50,13 +46,23 @@ function CandidateCard(
         },
     }
 
+    console.log('candidateProfile', candidateProfile)
+
     useEffect(() => {
+        setLoading(true)
         fetchCandidateData(candidateData.userId)
-            .then(data => (candidateProfile = { profile: { ...data.profile } }))
+            .then(
+                data =>
+                    (candidateProfile = {
+                        ...candidateData,
+                        profile: { ...data.profile },
+                    }),
+            )
             .catch(err => {
                 console.log('err', err)
             })
             .finally(() => {
+                console.log('Fetched', candidateProfile)
                 setLoading(false)
             })
     }, [candidateData])
@@ -65,47 +71,6 @@ function CandidateCard(
     const team = useSelector(DashboardSelectors.team)
     const { slug } = event
     const { code } = team
-
-    // const [saveChanges, saveResult] = useMutation(UPDATE_EVENT, {
-    //     onError: err => {
-    //         const errors = err.graphQLErrors
-
-    //         if (errors) {
-    //             dispatch(
-    //                 SnackbarActions.error('Unable to save changes', {
-    //                     errorMessages: Object.keys(errors).map(
-    //                         key => `${key}: ${errors[key].message}`,
-    //                     ),
-    //                     persist: false, // this could be the problem why errors messages persist? => solution: set to false
-    //                 }),
-    //             )
-    //         } else {
-    //             dispatch(SnackbarActions.error('Unable to save changes'))
-    //         }
-    //     },
-    //     onCompleted: () => {
-    //         dispatch(OrganiserActions.updateEvent(slug)).then(() =>
-    //             dispatch(
-    //                 SnackbarActions.success(
-    //                     'Your changes were saved successfully',
-    //                 ),
-    //             ),
-    //         )
-    //     },
-    // })
-
-    // function onSubmit(values, actions) {
-    //     const changed = {}
-    //     forOwn(values, (value, field) => {
-    //         if (event[field] !== value) {
-    //             changed[field] = value
-    //         }
-    //     })
-    //     saveChanges({
-    //         variables: { _id, input: changed },
-    //     })
-    //     actions.setSubmitting(false)
-    // }
 
     //TODO make rolesToRender and anything related to how they render into a components for CandidateCard and for candidates page
     let rolesToRender = []

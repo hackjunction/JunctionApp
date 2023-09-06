@@ -11,8 +11,8 @@ export default ({ user = {}, children = null }) => {
     }
 
     if (
-        user.industriesOfInterest.length > 0 ||
-        user.themesOfInterest.length > 0
+        user.industriesOfInterest?.length > 0 ||
+        user.themesOfInterest?.length > 0
     ) {
         styling.columnStyle = 'lg:tw-col-span-4'
         styling.renderSide = true
