@@ -4,18 +4,7 @@ const TeamRole = require('./TeamRole')
 const mongooseSchema = new mongoose.Schema({
     userId: {
         type: String,
-    },
-    firstName: {
-        type: String,
-    },
-    lastName: {
-        type: String,
-    },
-    headline: {
-        type: String,
-    },
-    avatar: {
-        type: String,
+        required: true,
     },
     roles: {
         type: [TeamRole.mongoose],

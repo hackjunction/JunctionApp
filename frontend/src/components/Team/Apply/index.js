@@ -1,7 +1,7 @@
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import TextAreaInput from 'components/inputs/TextAreaInput'
-import { FastField, Field, Formik } from 'formik'
+import { Field, Formik } from 'formik'
 import Select from 'components/inputs/Select'
 import React, { useCallback, useMemo, useState } from 'react'
 import * as yup from 'yup'
@@ -31,7 +31,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
 
     const applicationSchema = {
         roles: yup.array().of(yup.string()).required('Add at least one role'),
-        motivation: yup.string().max(1000).required('Add a motivation'),
+        motivation: yup.string().min(3).max(300).required('Add a motivation'),
     }
 
     // TODO remove any redux calls from this component and pass the data as props
@@ -62,12 +62,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                 _.includes(values.roles, role.role),
             )
             submittionData.motivation = values.motivation
-            //TODO Make all this data dynamically fetched from the user profile in the backend
             submittionData.userId = userProfile.userId
-            // submittionData.avatar = userProfile.avatar
-            // submittionData.firstName = userProfile.firstName
-            // submittionData.lastName = userProfile.lastName
-            // submittionData.headline = userProfile.headline
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
@@ -108,7 +103,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                 >
                     {formikProps => (
                         <>
-                            {console.log(formikProps)}
                             <Box
                                 style={{
                                     display: 'flex',
@@ -116,10 +110,18 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                             >
                                 <h1>{selectedTeam.name}</h1>
                                 {selectedTeam?.challenge && (
-                                    <h3>#{selectedTeam.challenge}</h3>
+                                    <h3>
+                                        #
+                                        {
+                                            event.challenges.find(
+                                                challenge =>
+                                                    challenge._id ===
+                                                    selectedTeam.challenge,
+                                            ).name
+                                        }
+                                    </h3>
                                 )}
                             </Box>
-                            {/* <h2>Role/s applied for*</h2> */}
                             <Grid item xs={12}>
                                 <Field
                                     name="roles"
@@ -157,9 +159,8 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
 
                             <Grid item xs={12}>
                                 <Box>
-                                    <h2>Motivation*</h2>
                                     <Field
-                                        name="motivation"
+                                        name="motivation *"
                                         render={({ field, form }) => (
                                             <FormControl
                                                 label="Motivation *"
