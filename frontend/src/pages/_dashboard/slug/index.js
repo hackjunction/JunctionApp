@@ -23,6 +23,7 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import DefaultPage from './default'
 import FinalistVotingPage from './finalist-voting'
 import TeamPage from './team'
+
 import ProjectPage from './project'
 import ReviewingPage from './reviewing'
 import TravelGrantPage from './travel-grant'
@@ -30,9 +31,8 @@ import EventIDPage from './event-id'
 import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
 import CalendarPage from './calendar'
-import ChecklistPage from './checklist'
-import MapPage from './map'
 import RecruitmentPage from './partnerrecruitment'
+import ApplyPage from '../../../components/Team/Apply'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -100,6 +100,7 @@ export default () => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
+        // dispatch(DashboardActions.updateTeams(slug))
         //TODO dont use OrganiserSelectors here
         dispatch(OrganiserActions.updateProjects(slug))
         dispatch(OrganiserActions.updateGavelProjects(slug))
@@ -302,7 +303,6 @@ export default () => {
                         {
                             key: 'team',
                             path: '/team',
-                            exact: true,
                             icon: <GroupIcon />,
                             label: t('Team_'),
                             locked: lockedPages.team,

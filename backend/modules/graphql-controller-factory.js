@@ -5,6 +5,7 @@ const OrganizationController = require('./organization/graphql-controller')
 const MessageController = require('./message/graphql-controller')
 const AlertController = require('./alert/graphql-controller')
 const MeetingController = require('./meeting/graphql-controller')
+// const TeamController = require('./team/graphql-controller')
 
 function buildController(key, context) {
     const user = context.req && context.req.user
@@ -23,6 +24,9 @@ function buildController(key, context) {
             return new AlertController(user)
         case 'Meeting':
             return new MeetingController(user)
+        // TODO: Implement Team controller for graphql
+        // case 'Team':
+        //     return new TeamController(user)
         default: {
             throw new Error(`No controller specified for key ${key}!`)
         }

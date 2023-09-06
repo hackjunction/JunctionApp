@@ -12,15 +12,20 @@ import {
     DialogActions,
 } from '@material-ui/core'
 
-import Select from 'components/inputs/Select'
-import BooleanInput from 'components/inputs/BooleanInput'
-import TextInput from 'components/inputs/TextInput'
+import Dropdown from '../../submission/components/section/Dropdown'
+import Switch from '../../submission/components/Switch'
+import TextInput from '../../submission/components/inputs/TextInput'
 import Button from 'components/generic/Button'
+import Checkbox from '../../submission/components/section/Checkbox'
+import EditableOptions from '../../submission/components/EditableOptions'
+import { generateSlug } from 'utils/dataModifiers'
 
 const initialData = {
     label: '',
     hint: '',
-    settings: {},
+    settings: {
+        options: [],
+    },
     fieldRequired: false,
     fieldType: 'text',
 }
@@ -56,6 +61,31 @@ export default ({
     }
 
     const validate = () => {
+        // ! This only apply to the submission form, not the registration form
+        if (data.fieldType === 'attachment') {
+            if (
+                data.settings.maxSize === undefined ||
+                data.settings.maxSize === null
+            ) {
+                return 'Max size is required for attachment type'
+            }
+
+            if (typeof data.settings.maxSize !== 'number') {
+                return 'Max size must be a number'
+            }
+
+            if (!Number.isInteger(data.settings.maxSize)) {
+                return 'Max size must be an integer'
+            }
+
+            if (data.settings.maxSize <= 0) {
+                return 'Max size must be greater than 0'
+            }
+            if (data.settings.maxSize > 100) {
+                return 'Max size must be less than 100'
+            }
+        }
+        // ! ----------------------------------------------------------------
         if (isEmpty(data.label)) {
             return 'Label is required'
         }
@@ -112,8 +142,14 @@ export default ({
 
     const handleChange = useCallback(
         (field, value) => {
+            const newData = { ...data }
+
+            if (field === 'label' && !editing) {
+                newData.name = generateSlug(value, 'v')
+            }
+
             setData({
-                ...data,
+                ...newData,
                 [field]: value,
             })
         },
@@ -147,24 +183,41 @@ export default ({
                         <Typography variant="body1" className={classes.label}>
                             Options to choose from
                         </Typography>
-                        <TextInput
-                            placeholder="Zebra,Hippopotamus,Giraffe"
-                            value={
+                        <EditableOptions
+                            options={
                                 data.settings.options
-                                    ? data.settings.options.join(',')
-                                    : ''
+                                    ? data.settings.options
+                                    : []
                             }
-                            onChange={value =>
+                            handleAddOption={value =>
                                 handleChange('settings', {
                                     ...data.settings,
-                                    options: value
-                                        .split(',')
-                                        .map(item => item.trim()),
+                                    options: [...data.settings.options, value],
                                 })
                             }
+                            handleEdit={(index, value) => {
+                                const updatedOptions = [
+                                    ...data.settings.options,
+                                ]
+                                updatedOptions[index] = value
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    options: updatedOptions,
+                                })
+                            }}
+                            handleDelete={index => {
+                                const updatedOptions = [
+                                    ...data.settings.options,
+                                ]
+                                updatedOptions.splice(index, 1)
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    options: updatedOptions,
+                                })
+                            }}
                         />
                         <Typography variant="caption" paragraph>
-                            Enter options to choose from, separated by a comma
+                            Enter options to choose
                         </Typography>
                         {renderPlaceholderInput()}
                     </>
@@ -177,17 +230,80 @@ export default ({
                         <Typography variant="body1" className={classes.label}>
                             Default value
                         </Typography>
-                        <BooleanInput
-                            value={data.settings.default || false}
+                        <Switch
+                            checked={data.settings.default || false}
                             onChange={value =>
                                 handleChange('settings', {
                                     ...data.settings,
                                     default: value,
                                 })
                             }
+                            checkedText="Yes"
+                            uncheckedText="No"
                         />
                         <Typography variant="caption" paragraph>
                             Is this field checked/yes by default?
+                        </Typography>
+                    </>
+                )
+            }
+
+            // ! This only apply to the submission form, not the registration form
+            case 'attachment': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Maximum file size
+                        </Typography>
+                        <TextInput
+                            placeholder="10"
+                            value={data.settings.maxSize || ''}
+                            onChange={value =>
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    maxSize: parseInt(value, 10), // parse value to integer
+                                })
+                            }
+                            width="tw-w-1/4"
+                        />
+                        <Typography variant="caption" paragraph>
+                            Maximum file size in megabytes
+                        </Typography>
+                        <Typography variant="body1" className={classes.label}>
+                            Allowed file types
+                        </Typography>
+                        <Checkbox
+                            options={['pdf', 'docx', 'jpg', 'png', 'gif']} // Add all the file types you want to allow
+                            selectedOptions={data.settings.allowedTypes || []}
+                            onChange={value =>
+                                handleChange('settings', {
+                                    ...data.settings,
+                                    allowedTypes: value,
+                                })
+                            }
+                        />
+                        <Typography variant="caption" paragraph>
+                            Allowed file types, select multiple options
+                        </Typography>
+                    </>
+                )
+            }
+            // ! ----------------------------------------------------------------
+            case 'Link': {
+                return (
+                    <>
+                        <Typography variant="body1" className={classes.label}>
+                            Link
+                        </Typography>
+                        <TextInput
+                            placeholder="https://www.google.com"
+                            value={data.placeholder}
+                            onChange={value =>
+                                handleChange('placeholder', value)
+                            }
+                        />
+                        <Typography variant="caption" paragraph>
+                            Enter the link
                         </Typography>
                     </>
                 )
@@ -219,56 +335,48 @@ export default ({
                     value={data.label}
                     onChange={value => handleChange('label', value)}
                 />
+                <div className="tw-flex tw-space-x-2 tw-items-center">
+                    <Typography variant="body1" className={classes.label}>
+                        Question type:
+                    </Typography>
+                    <Dropdown
+                        value={data.fieldType}
+                        onChange={value => handleChange('fieldType', value)}
+                        placeholder="Choose one"
+                        options={[
+                            {
+                                value: 'text',
+                                label: 'Short text',
+                            },
+                            {
+                                value: 'textarea',
+                                label: 'Long text',
+                            },
+                            {
+                                value: 'link',
+                                label: 'Link',
+                            },
+                            {
+                                value: 'attachment',
+                                label: 'Attachment',
+                            },
+                            {
+                                value: 'boolean',
+                                label: 'Yes / No',
+                            },
+                            {
+                                value: 'single-choice',
+                                label: 'Single choice',
+                            },
+                            {
+                                value: 'multiple-choice',
+                                label: 'Multiple choice',
+                            },
+                        ]}
+                    />
+                </div>
                 <Typography variant="caption" paragraph>
-                    The name of your question
-                </Typography>
-                <Typography variant="body1" className={classes.label}>
-                    Machine name
-                </Typography>
-                <TextInput
-                    placeholder="favorite-animal"
-                    disabled={editing}
-                    value={data.name}
-                    onChange={value => handleChange('name', value)}
-                />
-                <Typography variant="caption" paragraph>
-                    A unique machine-readable name. This should be only letters,
-                    and be written in snake-case: e.g. letter-of-motivation.
-                    This field will not be visible to the end-user.
-                </Typography>
-                <Typography variant="body1" className={classes.label}>
-                    Question type
-                </Typography>
-                <Select
-                    value={data.fieldType}
-                    onChange={value => handleChange('fieldType', value)}
-                    placeholder="Choose one"
-                    options={[
-                        {
-                            value: 'text',
-                            label: 'Short text',
-                        },
-                        {
-                            value: 'textarea',
-                            label: 'Long text',
-                        },
-                        {
-                            value: 'boolean',
-                            label: 'Yes / No',
-                        },
-                        {
-                            value: 'single-choice',
-                            label: 'Single choice',
-                        },
-                        {
-                            value: 'multiple-choice',
-                            label: 'Multiple choice',
-                        },
-                    ]}
-                />
-                <Typography variant="caption" paragraph>
-                    Which kind of answer do you want? Choose a type and you will
-                    be presented with any available additional options
+                    Choose question type to put in the submission form
                 </Typography>
                 {renderFieldTypeOptions()}
                 <Typography variant="body1" className={classes.label}>
@@ -283,13 +391,18 @@ export default ({
                     Add an optional help text to show under the question label -
                     just like the one you're reading right now
                 </Typography>
-                <Typography variant="body1" className={classes.label}>
-                    Is this question required?
-                </Typography>
-                <BooleanInput
-                    value={data.fieldRequired}
-                    onChange={value => handleChange('fieldRequired', value)}
-                />
+                <div className="tw-flex tw-space-x-2 tw-items-center">
+                    <Typography variant="body1" className={classes.label}>
+                        Required?
+                    </Typography>
+                    <Switch
+                        checked={data.fieldRequired}
+                        onChange={value => handleChange('fieldRequired', value)}
+                        checkedText="Yes"
+                        uncheckedText="No"
+                    />
+                </div>
+
                 <Typography variant="caption" paragraph>
                     Users will not be able to submit the form without answering
                     this question, if it is required.

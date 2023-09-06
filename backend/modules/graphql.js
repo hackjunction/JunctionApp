@@ -14,6 +14,7 @@ const Organization = require('./organization/graphql')
 const Meeting = require('./meeting/graphql')
 const Message = require('./message/graphql')
 const Alert = require('./alert/graphql')
+// const Team = require('./team/graphql')
 
 const buildGetController = require('./graphql-controller-factory')
 const { verifyWsToken } = require('../misc/jwt')
@@ -27,6 +28,7 @@ module.exports = app => {
         Message,
         Alert,
         Meeting,
+        // Team,
     ]
     const executableSchemas = modules.map(
         ({ QueryType, MutationType, SubscriptionType, Resolvers }) => {
@@ -77,7 +79,8 @@ module.exports = app => {
     const server = new ApolloServer({
         schema,
         playground: false,
-        introspection: false,
+        // TODO make instrospection false in production
+        introspection: true,
         context: ({ req, res }) => ({
             req,
             res,

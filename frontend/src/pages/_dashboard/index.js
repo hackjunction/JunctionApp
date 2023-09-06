@@ -12,7 +12,6 @@ export default () => {
                 path={`${match.path}/:slug`}
                 component={SlugPage}
             />
-
             {/* For all other routes, redirect outta here */}
             <Redirect to="/" />
         </Switch>

@@ -16,6 +16,8 @@ const FIELD_TYPES = [
     'text',
     'textarea',
     'boolean',
+    'link',
+    'attachment',
     'single-choice',
     'multiple-choice',
     'checkbox',
@@ -71,6 +73,12 @@ const RegistrationQuestionSchema = new mongoose.Schema({
             required() {
                 return ['boolean', 'checkbox'].indexOf(this.fieldType) !== -1
             },
+        },
+        maxSize: {
+            type: Number,
+        },
+        allowedTypes: {
+            type: [String],
         },
     },
 })

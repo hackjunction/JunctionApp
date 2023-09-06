@@ -1,0 +1,11 @@
+@tailwind components;
+@tailwind utilities;
+
+/* Create below composite classes, after you finish, from the /frontend directory, you must run the command 'npm run build:tailwind' to build tailwind css to see the changes on the development enviroment
+
+Any custom css, create it here and do not make any updates to the tailwind.css file, since it will be deleted every time tailwind build is executed*/
+
+.tw-break-words-overflow {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}

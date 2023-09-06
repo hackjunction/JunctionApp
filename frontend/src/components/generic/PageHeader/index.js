@@ -11,13 +11,23 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const PageHeader = ({ heading, subheading }) => {
+const PageHeader = ({ heading, subheading = null }) => {
     const classes = useStyles()
     return (
         <Box pb={2} pt={2}>
-            <Typography variant="h3">{heading}</Typography>
+            <Typography
+                className="tw-font-bold tw-tracking-tight"
+                variant="h3"
+                component="h3"
+            >
+                {heading}
+            </Typography>
             {subheading && (
-                <Typography variant="subtitle1" className={classes.subheading}>
+                <Typography
+                    className="tw-text-lg tw-text-gray-600"
+                    variant="body1"
+                    component="p"
+                >
                     {subheading}
                 </Typography>
             )}
