@@ -28,41 +28,23 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
 
-    const fetchCandidateData = async CandidateUserId => {
-        setLoading(true)
-        return await dispatch(
-            DashboardActions.getCandidateProfileById(CandidateUserId),
-        )
-    }
-
     let candidateProfile = {
         profile: {
-            firstName: candidateData?.firstName || '',
-            lastName: candidateData?.lastName || '',
-            headline: candidateData?.headline || '',
-            avatar: candidateData?.avatar || '',
-            userId: candidateData?.userId || '',
-            _id: candidateData?._id || '',
+            userId: candidateData?.userId,
+            _id: candidateData?._id,
         },
     }
 
-    console.log('candidateProfile', candidateProfile)
-
     useEffect(() => {
         setLoading(true)
-        fetchCandidateData(candidateData.userId)
-            .then(
-                data =>
-                    (candidateProfile = {
-                        ...candidateData,
-                        profile: { ...data.profile },
-                    }),
-            )
+        dispatch(
+            DashboardActions.getCandidateProfileById(candidateData?.userId),
+        )
+            .then(data => (candidateProfile.profile = { ...data.profile }))
             .catch(err => {
                 console.log('err', err)
             })
             .finally(() => {
-                console.log('Fetched', candidateProfile)
                 setLoading(false)
             })
     }, [candidateData])

@@ -85,15 +85,15 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
                             variant="h5"
                             component="h5"
                         >
-                            {userData.profile.firstName}{' '}
-                            {userData.profile.lastName}
+                            {userProfile.profile.firstName}{' '}
+                            {userProfile.profile.lastName}
                         </Typography>
                         <Typography
                             className="tw-tracking-tight tw-font-normal"
                             variant="h6"
                             component="h6"
                         >
-                            {userData.profile.headline}
+                            {userProfile.profile.headline}
                         </Typography>
                     </div>
                 </div>

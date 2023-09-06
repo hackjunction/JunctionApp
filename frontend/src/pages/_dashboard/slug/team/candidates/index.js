@@ -44,11 +44,11 @@ export default () => {
     const [candidateId, setCandidateId] = useState('')
     const [candidateSelectedData, setCandidateSelectedData] = useState({})
 
-    const fetchCandidateData = async CandidateUserId => {
-        return await dispatch(
-            DashboardActions.getCandidateProfileById(CandidateUserId),
-        )
-    }
+    // const fetchCandidateData = async CandidateUserId => {
+    //     return await dispatch(
+    //         DashboardActions.getCandidateProfileById(CandidateUserId),
+    //     )
+    // }
 
     useEffect(() => {
         if (candidateId) {
@@ -60,7 +60,7 @@ export default () => {
                 rolesApplied: getApplication.roles,
                 motivation: getApplication.motivation,
             }
-            fetchCandidateData(candidateId)
+            dispatch(DashboardActions.getCandidateProfileById(candidateId))
                 .then(data =>
                     setCandidateSelectedData({
                         ...data,
@@ -108,6 +108,7 @@ export default () => {
     } else {
         candidateCards = team?.candidates || []
     }
+    console.log('candidateCards', candidateCards)
 
     const handleAccept = useCallback(
         (values, formikBag) => {
