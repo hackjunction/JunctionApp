@@ -1,21 +1,13 @@
 import CandidateCard from 'components/cards/CandidateCard'
-import { Formik, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
-import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 import { useDispatch, useSelector } from 'react-redux'
-import { useMutation } from '@apollo/client'
-import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
-import { forOwn } from 'lodash-es'
-import NoTeam from 'components/Team/NoTeam'
-import { set } from 'react-ga'
 import Profile from 'components/Participant/Profile'
 import Button from 'components/generic/Button'
 import Filter from 'components/Team/Filter'
@@ -43,12 +35,6 @@ export default () => {
     const [loadingCandidate, setLoadingCandidate] = useState(false)
     const [candidateId, setCandidateId] = useState('')
     const [candidateSelectedData, setCandidateSelectedData] = useState({})
-
-    // const fetchCandidateData = async CandidateUserId => {
-    //     return await dispatch(
-    //         DashboardActions.getCandidateProfileById(CandidateUserId),
-    //     )
-    // }
 
     useEffect(() => {
         if (candidateId) {
@@ -108,7 +94,6 @@ export default () => {
     } else {
         candidateCards = team?.candidates || []
     }
-    console.log('candidateCards', candidateCards)
 
     const handleAccept = useCallback(
         (values, formikBag) => {

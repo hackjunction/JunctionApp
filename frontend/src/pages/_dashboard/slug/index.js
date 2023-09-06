@@ -12,7 +12,6 @@ import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import StarRateIcon from '@material-ui/icons/StarRate'
 import HowToVoteIcon from '@material-ui/icons/HowToVote'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
-import { QuestionAnswerSharp } from '@material-ui/icons'
 import EventIcon from '@material-ui/icons/Event'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
@@ -32,7 +31,6 @@ import HackerpackPage from './hackerpack'
 import ChallengesIndex from './challenges'
 import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
-import ApplyPage from '../../../components/Team/Apply'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -40,14 +38,10 @@ import * as OrganiserActions from 'redux/organiser/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
-import { CheckBox } from '@material-ui/icons'
-import { Alerts } from 'components/messaging/alerts'
 import Badge from '@material-ui/core/Badge'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
-import hackerpack from './hackerpack'
-// import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
@@ -77,7 +71,6 @@ export default () => {
     const isPartner =
         useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
         !useSelector(AuthSelectors.idTokenData)?.roles?.includes('SuperAdmin')
-    console.log(isPartner, 'user is partner')
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
         DashboardSelectors.registrationLoading,

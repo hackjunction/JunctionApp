@@ -17,13 +17,11 @@ import 'react-multi-carousel/lib/styles.css'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
-import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
-import { FastField, Field, Form, Formik, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
 
 function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
-    console.log('candidateData', candidateData)
     const classes = junctionStyle()
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)

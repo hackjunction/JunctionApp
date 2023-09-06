@@ -1,27 +1,10 @@
-import { Typography } from '@material-ui/core'
 import NoTeam from 'components/Team/NoTeam'
 import TeamProfile from 'components/Team/TeamProfile'
-import Button from 'components/generic/Button'
-import Empty from 'components/generic/Empty'
 import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useDispatch, useSelector } from 'react-redux'
-import { FastField, Formik } from 'formik'
-import FormControl from 'components/inputs/FormControl'
-import Select from 'components/inputs/Select'
-import {
-    ReviewingMethods,
-    OverallReviewingMethods,
-    EventTypes,
-} from '@hackjunction/shared'
-import * as yup from 'yup'
-import TextInput from 'components/inputs/TextInput'
-import TextAreaInput from 'components/inputs/TextAreaInput'
-import JobRoleInput from 'components/inputs/JobRoleInput'
-import ImageUpload from 'components/inputs/ImageUpload'
-import BottomBar from 'components/inputs/BottomBar'
 import TeamCreateEditForm from 'components/Team/TeamCreateEditForm'
 
 export default () => {
@@ -84,8 +67,6 @@ export default () => {
 
     const handleCreate = useCallback(
         (values, formikBag) => {
-            console.log('submitted with:', values)
-            console.log('formikBag:', formikBag)
             setLoading(true)
             dispatch(DashboardActions.createNewTeam(slug, values))
                 .then(() => {

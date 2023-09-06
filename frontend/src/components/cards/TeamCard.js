@@ -1,30 +1,9 @@
 import React from 'react'
-import junctionStyle from 'utils/styles'
-import {
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Grid,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Divider,
-    AccordionActions,
-    Chip,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Card, CardContent, CardActions, Typography } from '@material-ui/core'
 import Button from 'components/generic/Button'
-import { makeStyles } from '@material-ui/core/styles'
-
-import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'
 import TeamRoles from 'components/Team/TeamRoles'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { useRouteMatch } from 'react-router'
-import Markdown from 'components/generic/Markdown'
 
 function TeamCard({
     teamData = {},

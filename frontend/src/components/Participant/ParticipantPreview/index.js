@@ -45,7 +45,6 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
         styling.userProfile = {
             backgroundImage: `url(${userProfile.profile.avatar})`,
         }
-        console.log('userProfile profile avatar', userProfile.profile.avatar)
     }
 
     // console.log('User data on participant preview', userData)
