@@ -93,7 +93,7 @@ export default () => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
-        // dispatch(DashboardActions.updateTeams(slug))
+        dispatch(DashboardActions.updateTeams(slug))
         //TODO dont use OrganiserSelectors here
         dispatch(OrganiserActions.updateProjects(slug))
         dispatch(OrganiserActions.updateGavelProjects(slug))

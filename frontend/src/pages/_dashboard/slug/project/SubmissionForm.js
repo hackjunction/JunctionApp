@@ -150,6 +150,9 @@ const SubmissionForm = props => {
         }
         return (
             <Box className="tw-flex tw-flex-col tw-gap-4">
+                <button onClick={() => console.log(formikProps.values)}>
+                    test
+                </button>
                 <GradientBox p={3} color="theme_white">
                     <Typography variant="overline" gutterBottom>
                         This projects status is:

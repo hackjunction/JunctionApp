@@ -27,7 +27,6 @@ export default ({ event, showFullTeam }) => {
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    console.log('project :>> ', project)
     const [validToken, setValidToken] = useState(false)
 
     useEffect(() => {
