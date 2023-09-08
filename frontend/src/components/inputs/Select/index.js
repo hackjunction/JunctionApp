@@ -375,8 +375,6 @@ export default function IntegrationReactSelect({
                     return SelectOptions.INDUSTRIES
                 case 'language':
                     return SelectOptions.LANGUAGES
-                case 'participationType':
-                    return SelectOptions.PARTICIPATION_TYPES
                 case 'role':
                     return SelectOptions.ROLES
                 case 'skill':

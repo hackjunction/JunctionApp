@@ -145,30 +145,6 @@ const RegistrationQuestion = ({
                         />
                     </FormControl>
                 )
-            case fieldTypes.PARTICIPATION_TYPE.id:
-                return (
-                    <FormControl
-                        autoFocus={autoFocus}
-                        label={config.label}
-                        hint={config.hint}
-                        touched={form.touched[field.name]}
-                        error={form.errors[field.name]}
-                    >
-                        <Select
-                            autoFocus={autoFocus}
-                            label={config.label}
-                            value={field.value}
-                            onChange={participationType =>
-                                form.setFieldValue(
-                                    field.name,
-                                    participationType,
-                                )
-                            }
-                            onBlur={() => form.setFieldTouched(field.name)}
-                            options="participationType"
-                        />
-                    </FormControl>
-                )
             case fieldTypes.COUNTRY.id:
                 return (
                     <FormControl
