@@ -280,13 +280,13 @@ const EventSchema = new mongoose.Schema({
     emailConfig: {
         senderEmail: {
             type: String,
-            default: '',
             trim: true,
             validate: {
                 validator: function (v) {
                     return /\S+@\S+\.\S+/.test(v)
                 },
-                message: (props) => `${props.value} is not a valid email address!`
+                message: props =>
+                    `${props.value} is not a valid email address!`,
             },
         },
         senderName: {
