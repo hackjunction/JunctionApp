@@ -140,7 +140,6 @@ const registrationQuery = gql`
                 needsTravelGrant
                 needsVisa
                 countryOfTravel
-                participationType
                 linkedin
                 github
                 curriculumVitae

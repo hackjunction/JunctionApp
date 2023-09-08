@@ -9,20 +9,16 @@ const RegistrationStatuses = require('./registration-statuses')
 const Misc = require('./misc')
 const Currencies = require('./currencies')
 const Timezones = require('../data/timezones')
-const ParticipationTypes = require('./participation-types')
+
 const currentYear = new Date().getFullYear()
 
 const SelectOptions = {
-    PARTICIPATION_TYPES: ParticipationTypes.map(({ label, id }) => ({
-        label,
-        value: id,
-    })),
     COUNTRIES: Countries.asArrayOfName.map(country => ({
         label: country,
         value: country,
     })),
     COUNTRY_CODES: Countries.asArray.map(country => ({
-        label: country.en_short_name + ' (' + country.phone_code + ')',
+        label: country.en_short_name + " ("+ country.phone_code +")",
         value: country.phone_code,
     })),
     CURRENCIES: Currencies.asArray.map(currency => ({
