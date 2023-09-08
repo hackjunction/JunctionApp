@@ -195,7 +195,6 @@ export const EventDetailProvider = ({ children }) => {
     })
     const createRegistration = useCallback(
         formData => {
-            console.log('creatin regigiigi', idToken, slug)
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,
