@@ -88,15 +88,6 @@ const FilterValueInput = ({
                             {...inputParams}
                         />
                     )
-                case FilterValues.PARTICIPATION_TYPE:
-                    return (
-                        <Select
-                            label="Select a participation type"
-                            type="participationType"
-                            multiple={isMulti}
-                            {...inputParams}
-                        />
-                    )
                 case FilterValues.COUNTRY:
                     return (
                         <Select
