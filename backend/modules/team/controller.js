@@ -424,13 +424,14 @@ controller.attachUserApplicant = (teams, userId) => {
 controller.getTeamsForEvent = (eventId, userId) => {
     return Team.find({
         event: eventId,
-    }).sort({ createdAt: 'desc' })
-    }).then(teams => {
-        if (userId) {
-            return controller.attachUserApplicant(teams, userId)
-        }
-        return teams
     })
+        .sort({ createdAt: 'desc' })
+        .then(teams => {
+            if (userId) {
+                return controller.attachUserApplicant(teams, userId)
+            }
+            return teams
+        })
     // TODO make the code not visible to participants on Redux store
 }
 
