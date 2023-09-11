@@ -424,6 +424,7 @@ controller.attachUserApplicant = (teams, userId) => {
 controller.getTeamsForEvent = (eventId, userId) => {
     return Team.find({
         event: eventId,
+    }).sort({ createdAt: 'desc' })
     }).then(teams => {
         if (userId) {
             return controller.attachUserApplicant(teams, userId)

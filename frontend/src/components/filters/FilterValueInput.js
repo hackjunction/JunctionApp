@@ -62,6 +62,14 @@ const FilterValueInput = ({
                     return <TextInput label="Boolean field" {...inputParams} />
                 case FilterValues.DATE:
                     return <TextInput label="Date field" {...inputParams} />
+                case FilterValues.CUSTOM_QUESTION:
+                    return (
+                        <TextInput
+                            label="Enter the answer"
+                            placeholder="All data is stored as a string, to search for a boolean, write true/false"
+                            {...inputParams}
+                        />
+                    )
                 case FilterValues.GENDER:
                     return (
                         <Select
