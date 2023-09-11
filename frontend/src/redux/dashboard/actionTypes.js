@@ -17,3 +17,5 @@ export const UPDATE_TEAMS = 'dashboard/UPDATE_TEAMS'
 export const UPDATE_SELECTED_TEAM = 'dashboard/UPDATE_SELECTED_TEAM'
 
 export const GET_CANDIDATE_PROFILE = 'dashboard/GET_CANDIDATE_PROFILE'
+export const ACTIVE_EVENTS = 'dashboard/ACTIVE_EVENTS'
+export const PAST_EVENTS = 'dashboard/PAST_EVENTS'

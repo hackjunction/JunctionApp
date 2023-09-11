@@ -131,7 +131,6 @@ RegistrationSchema.post('save', function (doc, next) {
 
     /** If a registration is accepted, create an email notification about it */
     if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {
-        console.log("sendin accept emails...")
          EmailTaskController.createAcceptedTask(doc.user, doc.event, true)
     }
 

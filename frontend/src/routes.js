@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import { Auth as AuthConstants } from '@hackjunction/shared'
 
 import DefaultPage from './pages/_index/index'
+import HomePage from './pages/_home/index'
 import CallbackPage from './pages/_callback'
 import ErrorPage from './pages/_error'
 import LogoutPage from './pages/_logout'
@@ -23,12 +24,18 @@ const RecruitmentRouter = lazy(() => import('./pages/_recruitment'))
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
 const SandboxRouter = lazy(() => import('./pages/_sandbox'))
+const FilesRouter = lazy(() => import('./pages/_sandbox/files'))
 
 const routes = [
     {
         path: '/',
         component: DefaultPage,
         exact: true,
+    },
+    {
+        path: '/home',
+        component: HomePage,
+        exact: false,
     },
     {
         path: '/events',
@@ -68,7 +75,7 @@ const routes = [
         ]),*/
         exact: false,
     },
-    {
+    {//default after login
         path: '/dashboard',
         component: RequiresPermission(DashboardRouter),
         exact: false,
@@ -108,6 +115,13 @@ const routes = [
     },
     {
         path: '/sandbox',
+        component: RequiresRole(SandboxRouter, [
+            AuthConstants.Roles.SUPER_ADMIN,
+        ]),
+        exact: false,
+    },
+    {
+        path: '/files',
         component: RequiresRole(SandboxRouter, [
             AuthConstants.Roles.SUPER_ADMIN,
         ]),

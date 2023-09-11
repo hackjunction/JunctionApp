@@ -24,6 +24,7 @@ const migrations = [
     require('./18-add-event-newsletter-link-to-event'),
     require('./19-add-emailConfig-to-event'),
     require('./20-add-new-fields-to-teams-info'),
+    require('./21-add-recruiters-to-event'),
 ]
 
 const run = async () => {

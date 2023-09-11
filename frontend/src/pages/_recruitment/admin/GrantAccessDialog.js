@@ -18,6 +18,7 @@ import Button from 'components/generic/Button'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserActions from 'redux/organiser/actions'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
@@ -36,17 +37,28 @@ export default ({ userId, onClose }) => {
     const events = useSelector(RecruitmentSelectors.events)
 
     const classes = useStyles()
-    const [loading, setLoading] = useState()
-    const [selectedEvents, setSelectedEvents] = useState()
+    const [loading, setLoading] = useState(false)
+    const [selectedEvents, setSelectedEvents] = useState([])
     const [organisation, setOrganisation] = useState()
 
     const handleGrantAccess = useCallback(async () => {
         setLoading(true)
         try {
+            Promise.all(selectedEvents?.map(event => {
+                return dispatch(
+                    OrganiserActions.addRecruiterToEvent(
+                        event.slug,
+                        userId,
+                        organisation.trim(),
+                    ),
+                )
+            }))
+
+
             await dispatch(
                 RecruitmentActions.adminGrantRecruiterAccess(
                     userId,
-                    selectedEvents,
+                    selectedEvents.map(event => event._id),
                     organisation.trim(),
                 ),
             )
@@ -58,6 +70,7 @@ export default ({ userId, onClose }) => {
             setLoading(false)
         }
     }, [dispatch, userId, selectedEvents, organisation, onClose])
+
 
     return (
         <Dialog
@@ -76,8 +89,9 @@ export default ({ userId, onClose }) => {
                     onChange={setSelectedEvents}
                     isMulti={true}
                     options={events.map(event => ({
-                        value: event._id,
+                        value: event,
                         label: event.name,
+
                     }))}
                 />
                 <Box mt={3} />
@@ -103,7 +117,7 @@ export default ({ userId, onClose }) => {
                 <Box p={1} />
                 <Button
                     disabled={
-                        loading || !organisation || selectedEvents.length === 0
+                        loading || !organisation || selectedEvents?.length === 0
                     }
                     strong
                     onClick={handleGrantAccess}

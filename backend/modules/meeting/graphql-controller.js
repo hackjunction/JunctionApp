@@ -205,8 +205,7 @@ class MeetingContorller {
         const attendeeProfiles = await UsersController.getUserProfiles(
             attendees,
         )
-        console.log("profiles are here: ", attendeeProfiles)
-
+       
         let roomBookedSuccessfully = false
         if (location !== '' && location !== 'ONLINE') {
             roomBookedSuccessfully = await updateRoomSlotReservedStatus(

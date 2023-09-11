@@ -57,6 +57,7 @@ export const updateEventStats = slug => async (dispatch, getState) => {
 /** Update event organisers with loading/error data */
 export const updateOrganisersForEvent =
     (owner, organisers) => async (dispatch, getState) => {
+
         const userIds = [owner].concat(organisers)
 
         dispatch({
@@ -101,6 +102,57 @@ export const addOrganiserToEvent =
         })
 
         return organisers
+    }
+
+/** Update event recruiters with loading/error data */
+
+export const updateRecruitersForEvent =
+    (recruiters) => async (dispatch, getState) => {
+
+        const userIds = recruiters?.map(rec => {
+            return rec.recruiterId
+        })
+
+        dispatch({
+            type: ActionTypes.UPDATE_EVENT_RECRUITERS,
+            promise: UserProfilesService.getPublicUserProfiles(userIds),
+            meta: {
+                onFailure: e => console.log('Error updating recruiters for this event', e),
+            },
+        })
+    }
+
+export const addRecruiterToEvent =
+    (slug, userId, organization) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const recruiters = await EventsService.addRecruiterToEvent(
+            idToken,
+            slug,
+            userId,
+            organization,
+        )
+        dispatch({
+            type: ActionTypes.ADD_EVENT_RECRUITER,
+            payload: recruiters,
+        })
+
+        return recruiters
+    }
+
+export const removeRecruiterFromEvent =
+    (slug, userId) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const recruiter = await EventsService.removeRecruiterFromEvent(
+            idToken,
+            slug,
+            userId,
+        )
+        dispatch({
+            type: ActionTypes.REMOVE_EVENT_RECRUITER,
+            payload: userId,
+        })
+
+        return recruiter
     }
 
 /** Update event registrations with loading/error data */

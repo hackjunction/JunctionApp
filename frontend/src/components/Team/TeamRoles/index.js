@@ -5,7 +5,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import theme from 'junctionTheme'
 
 export default ({
-    onRoleClick = () => {},
+    onRoleClick = () => { },
     maxRoles = 3,
     profileView = false,
     teamRoles = [
@@ -16,17 +16,17 @@ export default ({
 }) => {
     let styling = profileView
         ? {
-              masonryColumns: {
-                  350: 1,
-                  900: 2,
-                  1440: 3,
-              },
-          }
+            masonryColumns: {
+                350: 1,
+                900: 2,
+                1440: 3,
+            },
+        }
         : {
-              masonryColumns: {
-                  350: 1,
-              },
-          }
+            masonryColumns: {
+                350: 1,
+            },
+        }
     return (
         <div className="tw-flex tw-flex-col tw-gap-4">
             {teamRoles?.length > 0 ? (
@@ -74,9 +74,8 @@ export default ({
                                     variant="body1"
                                     component="p"
                                 >
-                                    {`${
-                                        teamRoles.length - maxRoles
-                                    } more roles`}
+                                    {`${teamRoles.length - maxRoles
+                                        } more roles`}
                                 </Typography>
                             </div>
                         </Button>

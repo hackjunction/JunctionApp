@@ -30,7 +30,7 @@ export default () => {
     return (
         <div className={classes.wrapper}>
             <div className={classes.inner}>
-                <a href="/">
+                <a href="/home">
                     <img
                         src={config.LOGO_DARK_URL}
                         className={classes.wordmark}

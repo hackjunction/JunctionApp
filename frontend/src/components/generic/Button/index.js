@@ -113,6 +113,18 @@ const variantStyles = (theme, props) => {
                 margin: theme.spacing(3),
             }
         }
+        case 'outlined-small': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`,
+                borderRadius: '28px',
+                height: '2em',
+                width: '10em',
+                fontSize: '10px',
+                margin: theme.spacing(3),
+            }
+        }
         case 'contained-large': {
             return {
                 backgroundColor: color.main,
@@ -174,11 +186,12 @@ const variantStyles = (theme, props) => {
                 backgroundColor: color.main,
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
-                borderRadius: theme.spacing(4),
+                borderRadius: theme.spacing(2),
                 padding: theme.spacing(1, 4),
                 margin: 0,
                 '&:hover': {
-                    backgroundColor: color.main,
+                    backgroundColor: color.dark,
+                    border: `2px solid ${color.dark}`,
                 },
                 '&.Mui-disabled': {
                     backgroundColor: color.dark,
