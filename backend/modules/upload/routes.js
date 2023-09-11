@@ -1,14 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
-<<<<<<< HEAD
+const { GridFsStorage } = require('multer-gridfs-storage')
 const ObjectId = require('mongodb').ObjectId
-=======
-const {
-    GridFsStorage
-} = require("multer-gridfs-storage")
-const ObjectId = require('mongodb').ObjectId
-
->>>>>>> dashboard-feature
 
 const router = express.Router()
 const { Auth } = require('@hackjunction/shared')
@@ -17,9 +10,6 @@ const helper = require('./helper')
 const { hasPermission } = require('../../common/middleware/permissions')
 const { hasToken } = require('../../common/middleware/token')
 const { ForbiddenError, NotFoundError } = require('../../common/errors/errors')
-
-const storage = require('../../misc/gridfs').storage
-const upload = require('../../misc/gridfs').upload
 
 const storage = require('../../misc/gridfs').storage
 const upload = require('../../misc/gridfs').upload
@@ -307,42 +297,37 @@ router.post('/organization/:slug/icon', (req, res, next) => {
     })
 })
 
-
 //Upload, download and delete general files over 16mb
 //TODO: add hasToken for all calls. Left out for testing with postman
-router.post('/files', upload.single("file"), (req, res, next) => {
-
+router.post('/files', upload.single('file'), (req, res, next) => {
     // console.log("req", req)
 
-    res.status(200)
-        .send("File uploaded successfully")
+    res.status(200).send('File uploaded successfully')
 })
 
-router.get("/files/:id", (req, res, next) => {
+router.get('/files/:id', (req, res, next) => {
     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
-        bucketName: "uploads"
+        bucketName: 'uploads',
     })
-
 
     // console.log("req", ObjectId(req.params.id))
     // console.log("gfs", gfs)
     const file = gfs
         .find({
-            _id: ObjectId(req.params.id)
+            _id: ObjectId(req.params.id),
         })
         .toArray((err, files) => {
-            console.log("files", files)
+            console.log('files', files)
             if (!files || files.length === 0) {
-                return new NotFoundError("file does not exist")
+                return new NotFoundError('file does not exist')
             }
-            gfs.openDownloadStream(ObjectId(req.params.id))
-                .pipe(res)
+            gfs.openDownloadStream(ObjectId(req.params.id)).pipe(res)
         })
 })
 //TODO: make periodic delete function calling this
 router.delete('/files/:id', (req, res, next) => {
     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
-        bucketName: "uploads"
+        bucketName: 'uploads',
     })
     console.log(req.params.id)
     gfs.delete(ObjectId(req.params.id), (err, data) => {
