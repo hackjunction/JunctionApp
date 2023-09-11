@@ -30,6 +30,7 @@ export default ({
     const searchParams = new URLSearchParams(location.search)
     const organiserProfilesMap = useSelector(OrganiserSelectors.organisersMap)
     const event = useSelector(OrganiserSelectors.event)
+    const teams = useSelector(OrganiserSelectors.teams)
 
     const query = new URLSearchParams(location.search)
     const hasModal = query.has('modal')
@@ -115,6 +116,20 @@ export default ({
         }
     }, [activeModal, resetSearch, hasModal, query, selected.length])
 
+    // Add the user's team if it exists
+    const attendeesWithTeam = useMemo(() => {
+        return attendees.map(attendee => {
+            const userId = attendee.user
+            const team = teams.find(
+                team => team.owner === userId || team.members.includes(userId),
+            )
+            return {
+                ...attendee,
+                teamCode: team?.code || 'None',
+            }
+        })
+    }, [attendees, teams])
+
     const columns = useMemo(() => {
         return [
             {
@@ -183,6 +198,12 @@ export default ({
                 },
             },
             {
+                Header: 'Team code',
+                accessor: 'teamCode',
+                ...Sorters.Alphabetic,
+                ...Filters.ContainsSearch,
+            },
+            {
                 Header: 'Created at',
                 accessor: 'createdAt',
                 ...Sorters.DateTime,
@@ -227,7 +248,7 @@ export default ({
                 userIds={selected.map(s => s.original.user)}
             />
             <Table
-                data={attendees}
+                data={attendeesWithTeam}
                 columns={columns}
                 onRowClick={openSingleEdit}
                 bulkActions={[

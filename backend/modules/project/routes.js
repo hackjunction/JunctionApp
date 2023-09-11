@@ -37,6 +37,22 @@ router
     )
 
 router
+    .route('/:slug/validate')
+    /** Validate project before submission on UI, non-blocking (doesn't prevent saving to db) */
+    .post(
+        getEventFromParams,
+        hasToken,
+        asyncHandler(async (req, res) => {
+            const isProjectNameTaken =
+                await ProjectController.isProjectNameTaken(
+                    req.event._id,
+                    req.body.data.projectName,
+                )
+            return res.status(200).json({ isProjectNameTaken })
+        }),
+    )
+
+router
     .route('/:slug/team')
     /** Get the projects submitted by a user's team at a given event */
     .get(

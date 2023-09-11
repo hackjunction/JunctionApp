@@ -40,6 +40,11 @@ controller.getProjectsByEventAndTeam = (eventId, teamId) => {
     })
 }
 
+controller.isProjectNameTaken = async (eventId, projectName) => {
+    const projects = await controller.getAllProjectsByEvent(eventId)
+    return projects.find(p => p.name === projectName) !== undefined
+}
+
 controller.createProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
     const validatedData = await schema.validate(data, { stripUnknown: true })

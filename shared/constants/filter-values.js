@@ -10,6 +10,7 @@ const FilterValues = {
     LANGUAGE: 'LANGUAGE',
     STATUS: 'STATUS',
     TAG: 'TAG',
+    CUSTOM_QUESTION: 'CUSTOM_QUESTION',
 }
 
 module.exports = FilterValues
