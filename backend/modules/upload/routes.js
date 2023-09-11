@@ -1,4 +1,6 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const ObjectId = require('mongodb').ObjectId
 
 const router = express.Router()
 const { Auth } = require('@hackjunction/shared')
@@ -6,7 +8,10 @@ const helper = require('./helper')
 
 const { hasPermission } = require('../../common/middleware/permissions')
 const { hasToken } = require('../../common/middleware/token')
-const { ForbiddenError } = require('../../common/errors/errors')
+const { ForbiddenError, NotFoundError } = require('../../common/errors/errors')
+
+const storage = require('../../misc/gridfs').storage
+const upload = require('../../misc/gridfs').upload
 
 const {
     isEventOrganiser,
@@ -173,6 +178,36 @@ router.post(
 )
 
 /**
+ * Upload background image for a team
+ */
+
+router.post(
+    '/:slug/team/:code',
+    hasToken,
+    hasRegisteredToEvent,
+    (req, res, next) => {
+        helper.uploadTeamBackgroundImage(req.event.slug, req.team.code)(
+            req,
+            res,
+            function (err) {
+                if (err) {
+                    if (err.code === 'LIMIT_FILE_SIZE') {
+                        next(new ForbiddenError(err.message))
+                    } else {
+                        next(err)
+                    }
+                } else {
+                    res.status(200).json({
+                        url: req.file.secure_url || req.file.url,
+                        publicId: req.file.public_id,
+                    })
+                }
+            },
+        )
+    },
+)
+
+/**
  * Upload a logo for a challenge
  */
 router.post(
@@ -197,7 +232,6 @@ router.post(
         })
     },
 )
-
 
 /**
  * Upload icon for a hackerpack partner
@@ -254,6 +288,56 @@ router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
                 publicId: req.file.public_id,
             })
         }
+    })
+})
+
+
+//Upload, download and delete general files over 16mb
+//TODO: add hasToken for all calls. Left out for testing with postman
+router.post('/files', upload.single("file"), (req, res, next) => {
+
+    // console.log("req", req)
+
+    res.status(200)
+        .send("File uploaded successfully")
+})
+
+router.get("/files/:id", (req, res, next) => {
+    var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+        bucketName: "uploads"
+    })
+
+
+    // console.log("req", ObjectId(req.params.id))
+    // console.log("gfs", gfs)
+    const file = gfs
+        .find({
+            _id: ObjectId(req.params.id)
+        })
+        .toArray((err, files) => {
+            console.log("files", files)
+            if (!files || files.length === 0) {
+                return new NotFoundError("file does not exist")
+            }
+            gfs.openDownloadStream(ObjectId(req.params.id))
+                .pipe(res)
+        })
+})
+//TODO: make periodic delete function calling this
+router.delete('/files/:id', (req, res, next) => {
+    var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+        bucketName: "uploads"
+    })
+    // console.log(req.params.id)
+    gfs.delete(ObjectId(req.params.id), (err, data) => {
+        if (err) {
+            next(err)
+        }
+
+        res.status(200).json({
+            success: true,
+            message: `File with ID ${req.params.id} is deleted`,
+        })
     })
 })
 

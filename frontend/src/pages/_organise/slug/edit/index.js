@@ -65,6 +65,8 @@ export default () => {
     const { slug, _id } = event
 
     function onSubmit(values, actions) {
+        console.log('Values on submit from edit:', values)
+        console.log('Actions on submit from edit:', actions)
         const changed = {}
         forOwn(values, (value, field) => {
             if (event[field] !== value) {

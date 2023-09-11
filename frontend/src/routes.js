@@ -11,7 +11,6 @@ import HackerpackPage from './pages/_hackerpack'
 import PricingPage from './pages/_pricing'
 import EventsRouter from './pages/_events'
 import ContactPage from './pages/_contact'
-// import SandboxPage from './pages/_sandbox'
 
 import RequiresPermission from './hocs/RequiresPermission'
 import RequiresRole from 'hocs/RequiresRole'

@@ -183,4 +183,5 @@ export default yup.object().shape({
     approved: yup.boolean(),
     theme: eventTheme,
     meetingRooms: yup.array().of(meetingRoom),
+    submissionFormQuestions: yup.array().of(registrationSection),
 })

@@ -18,7 +18,10 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 
 import { useFormField } from 'hooks/formHooks'
 
-import DetailTop from './DetailTop'
+import ProfileTop from 'components/Participant/ProfileTop'
+import Profile from 'components/Participant/Profile'
+import ProfileInfo from 'components/Participant/ProfileInfo'
+import ProfileSide from 'components/Participant/ProfileSide'
 import DetailSection from './DetailSection'
 import MessageHistory from './MessageHistory'
 import SkillRating from '../default/SearchResults/SkillRating'
@@ -26,6 +29,8 @@ import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
+// import ProfileViewActions from 'components/Recruitment/ProfileViewActions'
+import RecruitmentFavorites from 'components/Participant/RecruitmentFavorites'
 
 const useStyles = makeStyles(theme => ({
     iconBlue: {
@@ -54,37 +59,37 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const idToken = useSelector(AuthSelectors.getIdToken)
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const match = useRouteMatch()
-    const { t } = useTranslation()
+    // const { t } = useTranslation()
 
-    const sendMessage = useCallback(
-        (message, userId) => {
-            dispatch(RecruitmentActions.sendMessage(message, userId))
-        },
-        [dispatch],
-    )
+    // const sendMessage = useCallback(
+    //     (message, userId) => {
+    //         dispatch(RecruitmentActions.sendMessage(message, userId))
+    //     },
+    //     [dispatch],
+    // )
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [user, setUser] = useState(null)
-    const message = useFormField(
-        '',
-        value => {
-            if (value.length < 50) {
-                return t('Your_message_length_')
-            }
-            if (value.length > 1000) {
-                return t('Your_message_long_')
-            }
+    // const message = useFormField(
+    //     '',
+    //     value => {
+    //         if (value.length < 50) {
+    //             return t('Your_message_length_')
+    //         }
+    //         if (value.length > 1000) {
+    //             return t('Your_message_long_')
+    //         }
 
-            return
-        },
-        false,
-        false,
-    )
+    //         return
+    //     },
+    //     false,
+    //     false,
+    // )
 
     const { id } = match.params
 
@@ -105,98 +110,105 @@ export default () => {
         }
     }, [idToken, id])
 
-    const handleSendMessage = useCallback(async () => {
-        const err = message.validate()
-        console.log('user is', user)
-        if (!err && user !== null) {
-            setLoading(true)
-            const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
-            const res = await sendMessage(formatted, user.userId)
+    // const handleSendMessage = useCallback(async () => {
+    //     const err = message.validate()
+    //     console.log('user is', user)
+    //     if (!err && user !== null) {
+    //         setLoading(true)
+    //         const formatted = message.value.replace(/(?:\r\n|\r|\n)/g, '<br>')
+    //         const res = await sendMessage(formatted, user.userId)
 
-            // TODO fix snackbar here
-            /*if (res?.error) {
-                dispatch(SnackbarActions.error(t('Something_went_wrong_')))
-            } else {*/
-            message.reset()
-            dispatch(SnackbarActions.success(t('Message_sent_')))
-            //}
-            setLoading(false)
-        }
-    }, [message, user, sendMessage, dispatch, t])
+    //         // TODO fix snackbar here
+    //         /*if (res?.error) {
+    //             dispatch(SnackbarActions.error(t('Something_went_wrong_')))
+    //         } else {*/
+    //         message.reset()
+    //         dispatch(SnackbarActions.success(t('Message_sent_')))
+    //         //}
+    //         setLoading(false)
+    //     }
+    // }, [message, user, sendMessage, dispatch, t])
 
     // TODO A little bit hard to define for translating
-    const renderRecruitmentStatus = () => {
-        switch (user.recruitmentOptions.status) {
-            case Misc.recruitmentStatuses.items['actively-looking'].id:
-                return (
-                    <Chip
-                        label={
-                            'Recruitment: ' +
-                            Misc.recruitmentStatuses.items['actively-looking']
-                                .label
-                        }
-                        color="primary"
-                        variant="outlined"
-                    />
-                )
-            case Misc.recruitmentStatuses.items['up-for-discussions'].id:
-                return (
-                    <Chip
-                        label={
-                            'Recruitment: ' +
-                            Misc.recruitmentStatuses.items['up-for-discussions']
-                                .label
-                        }
-                        color="secondary"
-                        variant="outlined"
-                    />
-                )
-            default:
-                return null
-        }
-    }
+    // const renderRecruitmentStatus = () => {
+    //     switch (user.recruitmentOptions.status) {
+    //         case Misc.recruitmentStatuses.items['actively-looking'].id:
+    //             return (
+    //                 <Chip
+    //                     label={
+    //                         'Recruitment: ' +
+    //                         Misc.recruitmentStatuses.items['actively-looking']
+    //                             .label
+    //                     }
+    //                     color="primary"
+    //                     variant="outlined"
+    //                 />
+    //             )
+    //         case Misc.recruitmentStatuses.items['up-for-discussions'].id:
+    //             return (
+    //                 <Chip
+    //                     label={
+    //                         'Recruitment: ' +
+    //                         Misc.recruitmentStatuses.items['up-for-discussions']
+    //                             .label
+    //                     }
+    //                     color="secondary"
+    //                     variant="outlined"
+    //                 />
+    //             )
+    //         default:
+    //             return null
+    //     }
+    // }
 
-    const renderRelocationStatus = () => {
-        switch (user.recruitmentOptions.relocation) {
-            case Misc.relocationOptions.items['looking-for-change'].id:
-                return (
-                    <Chip
-                        label={
-                            'Relocation: ' +
-                            Misc.relocationOptions.items['looking-for-change']
-                                .label
-                        }
-                        color="primary"
-                        variant="outlined"
-                    />
-                )
-            case Misc.relocationOptions.items['willing-to-relocate'].id:
-                return (
-                    <Chip
-                        label={
-                            'Relocation: ' +
-                            Misc.relocationOptions.items['willing-to-relocate']
-                                .label
-                        }
-                        color="primary"
-                        variant="outlined"
-                    />
-                )
-            case Misc.relocationOptions.items['not-currently'].id:
-                return (
-                    <Chip
-                        label={
-                            'Relocation: ' +
-                            Misc.relocationOptions.items['not-currently'].label
-                        }
-                        color="secondary"
-                        variant="outlined"
-                    />
-                )
-            default:
-                return null
-        }
-    }
+    // const renderRelocationStatus = () => {
+    //     switch (user.recruitmentOptions.relocation) {
+    //         case Misc.relocationOptions.items['looking-for-change'].id:
+    //             return (
+    //                 <Chip
+    //                     label={
+    //                         'Relocation: ' +
+    //                         Misc.relocationOptions.items['looking-for-change']
+    //                             .label
+    //                     }
+    //                     color="primary"
+    //                     variant="outlined"
+    //                 />
+    //             )
+    //         case Misc.relocationOptions.items['willing-to-relocate'].id:
+    //             return (
+    //                 <Chip
+    //                     label={
+    //                         'Relocation: ' +
+    //                         Misc.relocationOptions.items['willing-to-relocate']
+    //                             .label
+    //                     }
+    //                     color="primary"
+    //                     variant="outlined"
+    //                 />
+    //             )
+    //         case Misc.relocationOptions.items['not-currently'].id:
+    //             return (
+    //                 <Chip
+    //                     label={
+    //                         'Relocation: ' +
+    //                         Misc.relocationOptions.items['not-currently'].label
+    //                     }
+    //                     color="secondary"
+    //                     variant="outlined"
+    //                 />
+    //             )
+    //         default:
+    //             return null
+    //     }
+    // }
+
+    const userLinks = [
+        { label: 'Portfolio', link: 'https://www.google.com' },
+        { label: 'LinkedIn', link: 'https://www.google.com' },
+        { label: 'Dribbble', link: 'https://www.google.com' },
+    ]
+
     return (
         <Dialog fullScreen open={true} transitionDuration={0}>
             <PageWrapper
@@ -204,205 +216,10 @@ export default () => {
                 wrapContent={false}
                 loading={loading}
                 render={() => (
-                    <Container center>
-                        <DetailTop user={user} />
-                        <Box mt={3} />
-                        <Grid container>
-                            <>
-                                <Grid item xs={9} md={8}>
-                                    <DetailSection label="Biography">
-                                        <Typography variant="body2">
-                                            {user.profile.biography}
-                                        </Typography>
-                                    </DetailSection>
-                                </Grid>
-                            </>
-                            <Grid item xs={3} md={4}>
-                                <Box
-                                    p={2}
-                                    display="flex"
-                                    flexDirection="row"
-                                    flexWrap="wrap"
-                                    justifyContent="flex-start"
-                                >
-                                    <Box ml={0.5} mr={0.5} mb={0.5}>
-                                        {renderRecruitmentStatus()}
-                                    </Box>
-                                    <Box ml={0.5} mr={0.5} mb={0.5}>
-                                        {renderRelocationStatus()}
-                                    </Box>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <DetailSection label="Skills">
-                                    <Box>
-                                        {user.skills.map(skill => (
-                                            <SkillRating
-                                                showTooltip
-                                                data={skill}
-                                            />
-                                        ))}
-                                    </Box>
-                                </DetailSection>
-                                <DetailSection label="Spoken languages">
-                                    <Typography variant="body2">
-                                        {user.profile.spokenLanguages.join(
-                                            ', ',
-                                        )}
-                                    </Typography>
-                                </DetailSection>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <DetailSection label="Previous roles">
-                                    {user.roles.map(role => (
-                                        <Box mb={0.3}>
-                                            <Typography
-                                                className={classes.bold}
-                                                variant="body2"
-                                            >
-                                                {role.role}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                {Roles.getLabelForExperienceLevel(
-                                                    role.years,
-                                                )}
-                                            </Typography>
-                                        </Box>
-                                    ))}
-                                </DetailSection>
-                                <DetailSection label="Education">
-                                    {typeof user.education !== 'undefined' ? (
-                                        user.education.university ? (
-                                            <>
-                                                <Typography
-                                                    className={classes.bold}
-                                                    variant="body2"
-                                                >
-                                                    {user.education.level},{' '}
-                                                    {user.education.degree}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {user.education.university}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {user.education
-                                                        .graduationYear <
-                                                    new Date().getFullYear()
-                                                        ? `Graduation year: ${user.education.graduationYear}`
-                                                        : `Expected graduation year: ${user.education.graduationYear}`}
-                                                </Typography>
-                                            </>
-                                        ) : (
-                                            <Typography
-                                                className={classes.bold}
-                                                variant="body2"
-                                            >
-                                                {user.education.level}
-                                            </Typography>
-                                        )
-                                    ) : null}
-                                </DetailSection>
-                            </Grid>
-                            <Grid item xs={12} md={4} container>
-                                <Grid item xs={12} sm={6} md={12}>
-                                    <DetailSection label="Industries of interest">
-                                        {user.industriesOfInterest.map(
-                                            industry => (
-                                                <Box
-                                                    key={industry}
-                                                    display="flex"
-                                                    flexDirection="row"
-                                                    alignItems="center"
-                                                    mb={1}
-                                                >
-                                                    <div
-                                                        className={
-                                                            classes.iconBlue
-                                                        }
-                                                    >
-                                                        <CheckIcon
-                                                            fontSize="inherit"
-                                                            style={{
-                                                                color: 'white',
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <Typography variant="body2">
-                                                        {industry}
-                                                    </Typography>
-                                                </Box>
-                                            ),
-                                        )}
-                                    </DetailSection>
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={12}>
-                                    <DetailSection label="Themes of interest">
-                                        {user.themesOfInterest.map(theme => (
-                                            <Box
-                                                key={theme}
-                                                display="flex"
-                                                flexDirection="row"
-                                                alignItems="center"
-                                                mb={1}
-                                            >
-                                                <div
-                                                    className={
-                                                        classes.iconPurple
-                                                    }
-                                                >
-                                                    <CheckIcon
-                                                        fontSize="inherit"
-                                                        style={{
-                                                            color: 'white',
-                                                        }}
-                                                    />
-                                                </div>
-                                                <Typography variant="body2">
-                                                    {theme}
-                                                </Typography>
-                                            </Box>
-                                        ))}
-                                    </DetailSection>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <DetailSection label="Message history">
-                                    <MessageHistory user={user} />
-                                </DetailSection>
-                            </Grid>
-                            {/*<Grid item xs={12}>
-                                <DetailSection label="Send message">
-                                    <FormControl
-                                        touched={true}
-                                        error={message.error}
-                                        hint={`Type a message for ${user.profile.firstName} here. They will receive an email notification with the message. Remember to add your contact information to continue the messaging on your prefered platform`}
-                                    >
-                                        <TextAreaInput
-                                            label="Your message"
-                                            placeholder={`Hi ${user.profile.firstName}! We're hiring, and I'm just reaching out to let you know that...`}
-                                            value={message.value}
-                                            onChange={message.onChange}
-                                        />
-                                    </FormControl>
-                                    <Box
-                                        mt={2}
-                                        display="flex"
-                                        flexDirection="row"
-                                        justifyContent="flex-end"
-                                    >
-                                        <Button
-                                            disabled={message.error}
-                                            onClick={handleSendMessage}
-                                            color="secondary"
-                                            variant="contained"
-                                        >
-                                            Send message
-                                        </Button>
-                                    </Box>
-                                </DetailSection>
-                                                    </Grid>*/}
-                        </Grid>
-                    </Container>
+                    <>
+                        <RecruitmentFavorites user={user} />
+                        <Profile user={user} />
+                    </>
                 )}
             />
         </Dialog>
