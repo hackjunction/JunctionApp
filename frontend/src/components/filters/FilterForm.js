@@ -1,7 +1,12 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
-import { RegistrationFields, FilterTypes } from '@hackjunction/shared'
+import {
+    RegistrationFields,
+    FilterTypes,
+    FilterValues,
+    FilterHelpers,
+} from '@hackjunction/shared'
 import { makeStyles } from '@material-ui/core/styles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {
@@ -70,6 +75,7 @@ export default ({ onSubmit }) => {
             path: filterParams.path,
             type: filterType,
             value: filterValue,
+            valueType: filterParams.valueType,
         }
     }, [filterParams, filterType, filterValue])
 
@@ -79,11 +85,33 @@ export default ({ onSubmit }) => {
     }, [submitValue, onSubmit, handleClear])
 
     const filterOptions = useMemo(() => {
-        return RegistrationFields.filters.map(filter => ({
+        const defaultFields = RegistrationFields.filters.map(filter => ({
             value: JSON.stringify(filter),
             label: filter.label,
         }))
-    }, [])
+
+        const customQuestions = event.customQuestions
+            .map(section =>
+                section.questions.map(question => {
+                    return {
+                        path: FilterHelpers.createCustomQuestionFilterPath(
+                            section.name,
+                            question.name,
+                        ),
+                        label: question.label,
+                        type: FilterTypes.STRING,
+                        valueType: FilterValues.CUSTOM_QUESTION,
+                    }
+                }),
+            )
+            .flat()
+            .map(filter => ({
+                value: JSON.stringify(filter),
+                label: `Custom questions > ${filter.label}`,
+            }))
+
+        return [...defaultFields, ...customQuestions]
+    }, [event])
 
     const filterTypeOptions = useMemo(() => {
         if (!filterParams) return []
