@@ -3,8 +3,8 @@ const Promise = require('bluebird')
 const shortid = require('shortid')
 
 module.exports = {
-    index: 21,
-    name: '21-renamed-team-tagline-to-subtitle',
+    index: 22,
+    name: '22-renamed-team-tagline-to-subtitle',
     description: 'Rename tagline to subtitle inside of the team model',
     run: async () => {
         const renameTaglineToSubtitle = await mongoose
