@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'
-import team from 'pages/_dashboard/slug/team'
+import team from 'pages/_dashboard/renderDashboard/generalPages/team'
 import React from 'react'
 
 export default ({

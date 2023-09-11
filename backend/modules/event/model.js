@@ -12,6 +12,7 @@ const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryIm
 const Certificate = require('@hackjunction/shared/schemas/Certificate')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
+const EventRecruitersSchema = require('@hackjunction/shared/schemas/Recruiter')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
 const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
@@ -229,6 +230,10 @@ const EventSchema = new mongoose.Schema({
     },
     organisers: {
         type: [String],
+        default: [],
+    },
+    recruiters: {
+        type: [EventRecruitersSchema.mongoose],
         default: [],
     },
     organizations: {

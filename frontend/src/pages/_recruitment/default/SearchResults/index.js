@@ -2,17 +2,19 @@ import React, { useEffect } from 'react'
 import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { useRouteMatch } from 'react-router'
 import { Grid, Box, Typography } from '@material-ui/core'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as DashboardActions from 'redux/dashboard/actions'
 import { useTranslation } from 'react-i18next'
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
 
 export default ({ items }) => {
     const dispatch = useDispatch()
+    const match = useRouteMatch()
     const searchResults =
         items ?? useSelector(RecruitmentSelectors.searchResults)
     const searchResultsCount = useSelector(
@@ -24,9 +26,11 @@ export default ({ items }) => {
     const page = useSelector(RecruitmentSelectors.page)
     const paginationEnabled = !items
     const isFavorited = !!items
+    const { slug } = match.params
     const { t } = useTranslation()
 
     useEffect(() => {
+        dispatch(DashboardActions.updateEvent(slug))
         dispatch(RecruitmentActions.updateSearchResults())
     }, [pageSize, page, filters, dispatch])
 

@@ -55,6 +55,7 @@ controller.getUserProfilesPublic = userIds => {
     })
 }
 
+
 controller.createUserProfile = (data, userId) => {
     const userProfile = new UserProfile({
         userId,
@@ -143,12 +144,46 @@ controller.getRecruiters = () => {
     })
 }
 
-controller.updateRecruiter = (userId, events, organisation) => {
+controller.updateRecruiter = (userId, event, organisation) => {
     return UserProfile.findOne({ userId }).then(user => {
-        user.recruiterEvents = events
-        user.recruiterOrganisation = organisation
+        user.recruiterEvents = user.recruiterEvents.concat(
+            {
+                eventId: event,
+                organisation: organisation,
+            },
+        )
+        return user.save()
+    })
+
+
+}
+
+controller.deleteRecruiter = (userId, event) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = user.recruiterEvents.filter(recruiterEvent =>
+            recruiterEvent.eventId !== event)
         return user.save()
     })
 }
+
+controller.updateRecruitersAdmin = (userId, events, organisation) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = user.recruiterEvents.concat(
+            events.map(event => ({
+                eventId: event,
+                organisation: organisation,
+            })))
+        return user.save()
+    })
+}
+
+controller.deleteRecruitersAdmin = (userId) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = []
+        return user.save()
+    })
+}
+
+
 
 module.exports = controller

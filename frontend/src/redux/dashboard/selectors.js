@@ -14,6 +14,9 @@ export const eventLoading = state => state.dashboard.event.loading
 export const eventError = state => state.dashboard.event.error
 export const eventUpdated = state => state.dashboard.event.updated
 
+export const activeEvents = state => state.dashboard.activeEvents
+export const pastEvents = state => state.dashboard.pastEvents
+
 export const registration = state => state.dashboard.registration.data
 export const registrationLoading = state => state.dashboard.registration.loading
 export const registrationError = state => state.dashboard.registration.error

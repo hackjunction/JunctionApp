@@ -8,6 +8,7 @@ const RecruitmentController = require('./controller')
 const { hasToken } = require('../../common/middleware/token')
 const { hasPermission } = require('../../common/middleware/permissions')
 
+
 const queryUsers = asyncHandler(async (req, res) => {
     const users = await RecruitmentController.queryProfiles(req.body, req.user)
     return res.status(200).json(users)

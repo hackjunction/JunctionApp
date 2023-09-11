@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const { GridFsStorage } = require('multer-gridfs-storage')
 const ObjectId = require('mongodb').ObjectId
 
 const router = express.Router()
@@ -12,6 +13,11 @@ const { ForbiddenError, NotFoundError } = require('../../common/errors/errors')
 
 const storage = require('../../misc/gridfs').storage
 const upload = require('../../misc/gridfs').upload
+
+// console.log(mongoose.connections[0].db)
+// let gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+//     bucketName: "uploads"
+// })
 
 const {
     isEventOrganiser,
@@ -274,7 +280,7 @@ router.post('/banner/:slug/icon', hasToken, (req, res, next) => {
 /**
  * Upload icon for an organization
  */
-router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
+router.post('/organization/:slug/icon', (req, res, next) => {
     helper.uploadOrganizationIcon(req.params.slug)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {
@@ -294,7 +300,7 @@ router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
 //Upload, download and delete general files over 16mb
 //TODO: add hasToken for all calls. Left out for testing with postman
 router.post('/files', upload.single('file'), (req, res, next) => {
-    console.log('Post request from /files', req)
+    // console.log("req", req)
 
     res.status(200).send('File uploaded successfully')
 })
@@ -305,6 +311,7 @@ router.get('/files/:id', (req, res, next) => {
     })
 
     console.log('Get request from /files', req)
+
     // console.log("req", ObjectId(req.params.id))
     // console.log("gfs", gfs)
     const file = gfs
@@ -324,10 +331,10 @@ router.delete('/files/:id', (req, res, next) => {
     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
         bucketName: 'uploads',
     })
-    // console.log(req.params.id)
+    console.log(req.params.id)
     gfs.delete(ObjectId(req.params.id), (err, data) => {
         if (err) {
-            next(err)
+            return res.status(404).json({ err: err })
         }
 
         res.status(200).json({

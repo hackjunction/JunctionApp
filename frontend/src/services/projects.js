@@ -33,6 +33,14 @@ ProjectsService.updateProjectForEventAndTeam = (idToken, eventSlug, data) => {
     )
 }
 
+ProjectsService.validateProject = (idToken, eventSlug, data) => {
+    return _axios.post(
+        `/projects/${eventSlug}/validate`,
+        { data },
+        config(idToken),
+    )
+}
+
 ProjectsService.getAllProjectsAsOrganiser = (idToken, eventSlug) => {
     return _axios.get(`/projects/${eventSlug}/admin`, config(idToken))
 }
