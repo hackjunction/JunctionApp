@@ -7,6 +7,7 @@ import Footer from 'components/layouts/Footer'
 import junctionStyle from 'utils/styles'
 import {
     AppBar,
+    Avatar,
     Card,
     CardActions,
     CardContent,
@@ -151,14 +152,62 @@ export default () => {
                         columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3 }}
                     >
                         <Masonry>
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
+                            <Card
+                                onClick={() => {
+                                    console.log('card clicked')
+                                }}
+                                className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-576px tw-flex tw-flex-col tw-justify-between`}
+                            >
+                                <CardContent className="tw-flex tw-flex-col tw-p-0">
+                                    <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-32 tw-rounded-lg tw-flex tw-justify-end tw-items-start">
+                                        <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4">
+                                            <Chip
+                                                color="primary"
+                                                label="Seen"
+                                            />
+                                            <Chip
+                                                color="secondary"
+                                                label="Final"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                                        <div className="tw-flex tw-flex-col tw-gap-2">
+                                            <Typography
+                                                className="tw-font-semibold"
+                                                variant="body1"
+                                                component="p"
+                                            >
+                                                Something important
+                                            </Typography>
+                                            <Typography
+                                                variant="body1"
+                                                component="p"
+                                            >
+                                                It is amazing here
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                                <CardActions className="tw-flex tw-justify-end tw-items-center tw-px-4 tw-pb-4 tw-pt-0">
+                                    <div className="tw-flex tw-flex-col tw-gap-2">
+                                        <Button
+                                            onClick={e => {
+                                                e.stopPropagation()
+                                            }}
+                                            color="outlined_button"
+                                            variant="jOutlined"
+                                        >
+                                            See more
+                                        </Button>
+                                        <div className="tw-flex tw-gap-2">
+                                            <Avatar>A</Avatar>
+                                            <Avatar>B</Avatar>
+                                            <Avatar>C</Avatar>
+                                        </div>
+                                    </div>
+                                </CardActions>
+                            </Card>
                         </Masonry>
                     </ResponsiveMasonry>
                     <div>
