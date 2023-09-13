@@ -271,12 +271,6 @@ export const candidateApplyToTeam =
     (slug, code, applicationData) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         console.log('submitted with:', applicationData)
-        // const user = await UserProfilesService.getUserPublicProfileById(
-        //     idToken,
-        //     applicationData.userId,
-        // )
-        // console.log('user:', user)
-        // console.log('applicationData:', applicationData)
         const team = await TeamsService.candidateApplyToTeam(
             idToken,
             slug,
@@ -523,37 +517,3 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
         return err
     }
 }
-
-// TODO Create action to fill candidates information dynamically
-
-// export const updateCandidateProfiles =
-//     (userIds) => async (dispatch, getState) => {
-
-//         dispatch({
-//             type: ActionTypes.UPDATE_ORGANISERS,
-//             promise: UserProfilesService.getPublicUserProfiles(userIds),
-//             meta: {
-//                 onFailure: e =>
-//                     console.log('Error updating event organisers', e),
-//             },
-//         })
-//     }
-
-//     export const candidateApplyToTeam =
-//     (slug, code, applicationData) => async (dispatch, getState) => {
-//         const idToken = AuthSelectors.getIdToken(getState())
-
-//         const team = await TeamsService.candidateApplyToTeam(
-//             idToken,
-//             slug,
-//             code,
-//             applicationData,
-//         )
-
-//         dispatch({
-//             type: ActionTypes.EDIT_TEAM,
-//             payload: team,
-//         })
-
-//         return team
-//     }

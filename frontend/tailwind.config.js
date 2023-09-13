@@ -17,14 +17,17 @@ module.exports = {
     theme: {
         extend: {
             spacing: {
+                '400px': '400px',
+                '464px': '464px',
+                '500px': '500px',
+                '576px': '576px',
                 '600px': '600px',
                 '672px': '672px',
-                '576px': '576px',
             },
             minHeight: {
+                '576px': '576px',
                 '600px': '600px',
                 '672px': '672px',
-                '576px': '576px',
             },
         },
     },
