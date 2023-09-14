@@ -6,10 +6,10 @@ import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'
 import CustomSectionListItem from './CustomSectionListItem'
 import { useTranslation } from 'react-i18next'
+import { now } from 'moment'
 
 export default ({ sections = [], onChange, projectsExist = false }) => {
     const { t } = useTranslation()
-
     const handleAdd = useCallback(
         section => {
             const newValue = sections.concat(section)
@@ -85,7 +85,7 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
             onClick={() =>
                 handleAdd({
                     label: 'New section - click here to edit the name of this section',
-                    name: `section_${sections.length + 1}`,
+                    name: `section_${now()}`,
                 })
             }
             fullWidth

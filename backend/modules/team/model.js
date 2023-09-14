@@ -42,14 +42,14 @@ const TeamSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        length: 30,
+        length: 50,
         default: `Team ${() => shortid.generate()}`,
     },
-    tagline: {
+    subtitle: {
         type: String,
-        required: true,
-        length: 60,
-        default: `Team tagline`,
+        // required: true,
+        length: 50,
+        // default: `Team subtitle`,
     },
     description: {
         type: String,
@@ -59,34 +59,34 @@ const TeamSchema = new mongoose.Schema({
     },
     challenge: {
         type: String,
-        required: false,
-        default: '',
+        // required: false,
+        // default: '',
     },
     ideaTitle: {
         type: String,
-        required: true,
-        length: 30,
-        default: `Idea title`,
+        // required: true,
+        length: 50,
+        // default: `Idea title`,
     },
     ideaDescription: {
         type: String,
-        required: true,
+        // required: true,
         length: 300,
-        default: `Idea description`,
+        // default: `Idea description`,
     },
     email: {
         type: String,
-        required: true,
-        length: 30,
-        default: 'test@test.com',
+        // required: true,
+        length: 50,
+        // default: 'test@test.com',
     },
     telegram: {
         type: String,
-        required: false,
+        // required: false,
     },
     discord: {
         type: String,
-        required: false,
+        // required: false,
     },
 })
 

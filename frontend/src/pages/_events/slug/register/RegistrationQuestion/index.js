@@ -17,7 +17,7 @@ import TeamOptionInput from 'components/inputs/TeamOptionInput'
 import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
 import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
 const { fieldTypes } = RegistrationFields
-// TODO URL-input and file upload
+// TODO file upload
 
 const RegistrationQuestion = ({
     field,
@@ -529,7 +529,12 @@ const RegistrationQuestion = ({
                         error={form.errors[field.name]}
                     >
                         {/* TODO component for file input needs to be linked to the formik fields */}
-                        <FileInput />
+                        <FileInput
+                            value={field.value}
+                            handleChange={value =>
+                                form.setFieldValue(field.name, value)
+                            }
+                        />
                     </FormControl>
                 )
             default:

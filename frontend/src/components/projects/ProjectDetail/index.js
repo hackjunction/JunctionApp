@@ -144,46 +144,7 @@ const ProjectDetail = ({
 
     const submissionFormAnswersArray = []
 
-    // if (project.submissionFormAnswers) {
-    //     const te = project.submissionFormAnswers.reduce((result, current) => {
-    //         console.log('result log from reducer', result)
-    //         const checkSection = result.find(
-    //             answer => current.section === answer.section,
-    //         )
-
-    //         console.log('checkSetion value after find', checkSection)
-
-    //         if (checkSection) {
-    //             checkSection.questions.push({
-    //                 key: current.key,
-    //                 value: current.value,
-    //             })
-    //         } else {
-    //             result.push({
-    //                 section: current.section,
-    //                 questions: [
-    //                     {
-    //                         key: current.key,
-    //                         value: current.value,
-    //                     },
-    //                 ],
-    //             })
-    //         }
-    //         console.log('Results after logic is implemented', [
-    //             checkSection,
-    //             result,
-    //         ])
-    //         return result
-    //     }, [])
-    //     console.log('Reducer function test', te)
-    //     submissionFormAnswersArray = [...te]
-    // }
-
-    // console.log('Submission form answers formatted', submissionFormAnswersArray)
-
     if (project.submissionFormAnswers && event.submissionFormQuestions) {
-        console.log('Event questions', event.submissionFormQuestions)
-        console.log('Project answers', project.submissionFormAnswers)
         event.submissionFormQuestions.map(section => {
             const sectionGroup = {
                 section: section.label,
@@ -199,7 +160,7 @@ const ProjectDetail = ({
 
                 if (questionAnswer) {
                     sectionGroup.answers.push({
-                        question: questionAnswer.label,
+                        question: question.label,
                         value: questionAnswer.value,
                     })
                 }
@@ -208,10 +169,6 @@ const ProjectDetail = ({
 
             submissionFormAnswersArray.push(sectionGroup)
         })
-        console.log(
-            'Submission form answers formatter',
-            submissionFormAnswersArray,
-        )
     }
 
     const statusTag = status => {
@@ -234,7 +191,6 @@ const ProjectDetail = ({
                 return null
         }
     }
-    console.log('Project data from projectDetail component', project)
 
     return (
         <>
@@ -341,206 +297,241 @@ const ProjectDetail = ({
                         </Box>
                     </Box>
                 </Tooltip>
-                <Container center>
+                <Container>
                     <Pagination
                         pages={project.images.length}
                         active={index}
                         onChange={setIndex}
                     />
                     <Box className={classes.content}>
-                        <Typography variant="h4" gutterBottom>
-                            {project.name}
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            style={{ fontWeight: 'bold' }}
-                        >
-                            {project.punchline}
-                        </Typography>
-                        {typeof project.status !== 'undefined' &&
-                            statusTag(project.status)}
-                        <Box mt={5} mb={5}>
-                            <Markdown source={project.description} />
-                        </Box>
-                        {submissionFormAnswersArray?.length > 0 &&
-                            submissionFormAnswersArray.map((section, index) => {
-                                if (section.answers?.length > 0) {
-                                    return (
-                                        <Box mb={3} key={index}>
-                                            <Typography
-                                                variant="h6"
-                                                className={classes.sectionTitle}
-                                            >
-                                                {section.section}
-                                            </Typography>
-                                            {section.answers.length > 0 &&
-                                                section.answers.map(answer => (
-                                                    <>
-                                                        <Typography variant="subtitle1">
-                                                            {answer.question}
-                                                        </Typography>
-                                                        <Typography variant="subtitle1">
-                                                            {answer.value}
-                                                        </Typography>
-                                                    </>
-                                                ))}
-                                        </Box>
-                                    )
-                                }
-                            })}
-                        {showTableLocation && project.location && (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    Location
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    {project.location}
-                                </Typography>
-                            </Box>
-                        )}
-                        {project.video ? (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    video
-                                </Typography>
-                                <a
-                                    href={project.video}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {project.video}
-                                </a>
-                                <div className={classes.playerWrapper}>
-                                    <ReactPlayer
-                                        url={project.video}
-                                        className={classes.reactPlayer}
-                                        width="100%"
-                                        height="100%"
-                                        controls
-                                        light={false}
-                                        loop={false}
-                                        playbackRate={1.0}
-                                        volume={0.8}
-                                        muted={false}
-                                        onReady={() => console.log('onReady')}
-                                        onStart={() => console.log('onStart')}
-                                        onBuffer={() => console.log('onBuffer')}
-                                        onSeek={e => console.log('onSeek', e)}
-                                        onError={e => console.log('onError', e)}
-                                    />
+                        <div className="tw-flex tw-flex-col tw-gap-8 tw-p-8">
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                <div className="tw-flex tw-gap-6 tw-items-center">
+                                    <Typography variant="h4" gutterBottom>
+                                        {project.name}
+                                    </Typography>
+                                    {typeof project.status !== 'undefined' &&
+                                        statusTag(project.status)}
                                 </div>
-                            </Box>
-                        ) : (
-                            <Box mb={3}>
                                 <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
+                                    variant="subtitle1"
+                                    style={{ fontWeight: 'bold' }}
                                 >
-                                    video
+                                    {project.punchline}
                                 </Typography>
-                                <Typography variant="subtitle1">
-                                    No video available
-                                </Typography>
-                            </Box>
-                        )}
+                            </div>
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                <Markdown source={project.description} />
+                            </div>
+                            {submissionFormAnswersArray?.length > 0 &&
+                                submissionFormAnswersArray.map(
+                                    (section, index) => {
+                                        if (section.answers?.length > 0) {
+                                            return (
+                                                <div
+                                                    className="tw-flex tw-flex-col tw-gap-6 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md"
+                                                    key={index}
+                                                >
+                                                    <Typography
+                                                        variant="h6"
+                                                        style={{
+                                                            fontWeight: 'bold',
+                                                        }}
+                                                        className={
+                                                            classes.sectionTitle
+                                                        }
+                                                    >
+                                                        {section.section}
+                                                    </Typography>
+                                                    {section.answers.length >
+                                                        0 &&
+                                                        section.answers.map(
+                                                            answer => (
+                                                                <div className="tw-flex tw-flex-col tw-gap-2">
+                                                                    <Typography variant="h6">
+                                                                        {
+                                                                            answer.question
+                                                                        }
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1">
+                                                                        {
+                                                                            answer.value
+                                                                        }
+                                                                    </Typography>
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                </div>
+                                            )
+                                        }
+                                    },
+                                )}
+                            {showTableLocation && project.location && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Location
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        {project.location}
+                                    </Typography>
+                                </div>
+                            )}
+                            {project.video ? (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        video
+                                    </Typography>
+                                    <a
+                                        href={project.video}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {project.video}
+                                    </a>
+                                    <div className={classes.playerWrapper}>
+                                        <ReactPlayer
+                                            url={project.video}
+                                            className={classes.reactPlayer}
+                                            width="100%"
+                                            height="100%"
+                                            controls
+                                            light={false}
+                                            loop={false}
+                                            playbackRate={1.0}
+                                            volume={0.8}
+                                            muted={false}
+                                            onReady={() =>
+                                                console.log('onReady')
+                                            }
+                                            onStart={() =>
+                                                console.log('onStart')
+                                            }
+                                            onBuffer={() =>
+                                                console.log('onBuffer')
+                                            }
+                                            onSeek={e =>
+                                                console.log('onSeek', e)
+                                            }
+                                            onError={e =>
+                                                console.log('onError', e)
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        video
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        No video available
+                                    </Typography>
+                                </div>
+                            )}
 
-                        {project.demo ? (
-                            <Box mb={3}>
+                            {project.demo ? (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Demo
+                                    </Typography>
+                                    <a
+                                        href={project.demo}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {project.demo}
+                                    </a>
+                                </div>
+                            ) : (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Demo
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        No demo available
+                                    </Typography>
+                                </div>
+                            )}
+                            {!project.sourcePublic ? (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Source code
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        Source code not public
+                                    </Typography>
+                                </div>
+                            ) : (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Source code
+                                    </Typography>
+                                    <a
+                                        href={project.source}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {project.source}
+                                    </a>
+                                </div>
+                            )}
+                            {event && project.track && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Track
+                                    </Typography>
+                                    {renderTrack()}
+                                </div>
+                            )}
+                            {event && project.challenges.length > 0 && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.sectionTitle}
+                                    >
+                                        Challenges
+                                    </Typography>
+                                    {renderChallenges()}
+                                </div>
+                            )}
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                 <Typography
                                     variant="h6"
                                     className={classes.sectionTitle}
                                 >
-                                    Demo
+                                    Team
                                 </Typography>
-                                <a
-                                    href={project.demo}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {project.demo}
-                                </a>
-                            </Box>
-                        ) : (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    Demo
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    No demo available
-                                </Typography>
-                            </Box>
-                        )}
-                        {!project.sourcePublic ? (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    Source code
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    Source code not public
-                                </Typography>
-                            </Box>
-                        ) : (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    Source code
-                                </Typography>
-                                <a
-                                    href={project.source}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {project.source}
-                                </a>
-                            </Box>
-                        )}
-                        {event && project.track && (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    Track
-                                </Typography>
-                                {renderTrack()}
-                            </Box>
-                        )}
-                        {event && project.challenges.length > 0 && (
-                            <Box mb={3}>
-                                <Typography
-                                    variant="h6"
-                                    className={classes.sectionTitle}
-                                >
-                                    Challenges
-                                </Typography>
-                                {renderChallenges()}
-                            </Box>
-                        )}
-                        <Typography
-                            variant="h6"
-                            className={classes.sectionTitle}
-                        >
-                            Team
-                        </Typography>
-                        <ProjectTeam
-                            hiddenUsers={project.hiddenMembers}
-                            teamId={project.team}
-                            showFullTeam={showFullTeam}
-                        />
+                                <ProjectTeam
+                                    hiddenUsers={project.hiddenMembers}
+                                    teamId={project.team}
+                                    showFullTeam={showFullTeam}
+                                />
+                            </div>
+                        </div>
                     </Box>
                     <Box height={200} />
                 </Container>

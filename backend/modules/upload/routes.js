@@ -310,6 +310,8 @@ router.get('/files/:id', (req, res, next) => {
         bucketName: 'uploads',
     })
 
+    console.log('Get request from /files', req)
+
     // console.log("req", ObjectId(req.params.id))
     // console.log("gfs", gfs)
     const file = gfs

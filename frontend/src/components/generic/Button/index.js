@@ -167,7 +167,7 @@ const variantStyles = (theme, props) => {
                 color: color.contrastText,
                 border: `2px solid ${color.dark}`,
                 borderRadius: theme.spacing(4),
-                padding: theme.spacing(1, 4),
+                padding: theme.spacing(1, 2),
                 margin: 0,
             }
         }
@@ -175,7 +175,7 @@ const variantStyles = (theme, props) => {
             return {
                 backgroundColor: 'transparent',
                 color: color.main,
-                padding: theme.spacing(1, 4),
+                padding: theme.spacing(1, 2),
                 margin: 0,
                 fontWeight: 'fontWeightRegular',
                 fontSize: theme.spacing(1, 4),
@@ -186,8 +186,8 @@ const variantStyles = (theme, props) => {
                 backgroundColor: color.main,
                 color: color.contrastText,
                 border: `2px solid ${color.main}`,
-                borderRadius: theme.spacing(2),
-                padding: theme.spacing(1, 4),
+                borderRadius: theme.spacing(4),
+                padding: theme.spacing(1, 2),
                 margin: 0,
                 '&:hover': {
                     backgroundColor: color.dark,

@@ -1,29 +1,53 @@
-import { Typography } from '@material-ui/core'
-import React from 'react'
+import { Dialog, Typography } from '@material-ui/core'
+import Button from 'components/generic/Button'
+import Container from 'components/generic/Container'
+import PageWrapper from 'components/layouts/PageWrapper'
+import React, { useEffect, useState } from 'react'
+import Profile from 'components/Participant/Profile'
+import { set } from 'react-ga'
+import { useDispatch } from 'react-redux'
+import * as DashboardActions from 'redux/dashboard/actions'
 
-export default ({
-    viewMode = 'card',
-    userData = {
-        profile: {
-            avatar: 'https://picsum.photos/200',
-            firstName: 'Alea',
-            lastName: 'Solano',
-            headline: 'Full Stack Developer',
-        },
-    },
-}) => {
+export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
+    const [userProfile, setUserProfile] = useState(userData)
+    const [visible, setVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (visible) {
+            setLoading(true)
+            dispatch(
+                DashboardActions.getCandidateProfileById(
+                    userData.profile.userId,
+                ),
+            )
+                .then(data => {
+                    setUserProfile(data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    console.log('Fetched at preview', userProfile)
+                    setLoading(false)
+                })
+        }
+    }, [userData, visible])
+
     const styling = {
         borderStyle: '',
         imageSize: '',
         alignment: 'tw-items-center',
+        userProfile: {},
     }
-    console.log(userData)
-
-    if (userData.profile.avatar !== '') {
+    if (userProfile.profile.avatar) {
         styling.userProfile = {
-            backgroundImage: `url(${userData.profile.avatar})`,
+            backgroundImage: `url(${userProfile.profile.avatar})`,
         }
     }
+
+    // console.log('User data on participant preview', userData)
 
     switch (viewMode) {
         case 'list':
@@ -43,30 +67,58 @@ export default ({
         default:
             break
     }
+
     return (
-        <div
-            className={`tw-flex tw-gap-4 tw-h- tw-rounded-lg ${styling.borderStyle} ${styling.alignment}`}
-        >
+        <>
             <div
-                className={`tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize} tw-bg-cover`}
-                style={styling?.userProfile}
-            ></div>
-            <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">
-                <Typography
-                    className="tw-tracking-tight tw-font-medium"
-                    variant="h5"
-                    component="h5"
-                >
-                    {userData.profile.firstName} {userData.profile.lastName}
-                </Typography>
-                <Typography
-                    className="tw-tracking-tight tw-font-normal"
-                    variant="h6"
-                    component="h6"
-                >
-                    {userData.profile.headline}
-                </Typography>
+                className={`tw-flex tw-justify-between tw-rounded-lg ${styling.borderStyle} ${styling.alignment}`}
+            >
+                <div className="tw-flex tw-gap-4">
+                    <div
+                        className={`tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize} tw-bg-cover`}
+                        style={styling?.userProfile}
+                    ></div>
+                    <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">
+                        <Typography
+                            className="tw-tracking-tight tw-font-medium"
+                            variant="h5"
+                            component="h5"
+                        >
+                            {userProfile.profile.firstName}{' '}
+                            {userProfile.profile.lastName}
+                        </Typography>
+                        <Typography
+                            className="tw-tracking-tight tw-font-normal"
+                            variant="h6"
+                            component="h6"
+                        >
+                            {userProfile.profile.headline}
+                        </Typography>
+                    </div>
+                </div>
+                {enabledView && !visible && viewMode === 'list' && (
+                    <Button
+                        color="outlined_button"
+                        variant="jOutlined"
+                        onClick={() => setVisible(true)}
+                    >
+                        See more
+                    </Button>
+                )}
             </div>
-        </div>
+            <Dialog
+                transitionDuration={0}
+                fullScreen
+                open={visible}
+                onClose={() => setVisible(false)}
+            >
+                <PageWrapper loading={loading}>
+                    <Container center>
+                        <Button onClick={() => setVisible(false)}>Close</Button>
+                        <Profile user={userProfile} />
+                    </Container>
+                </PageWrapper>
+            </Dialog>
+        </>
     )
 }

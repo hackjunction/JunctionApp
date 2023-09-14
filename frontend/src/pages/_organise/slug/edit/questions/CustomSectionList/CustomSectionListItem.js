@@ -18,6 +18,7 @@ import {
     faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons'
 import Empty from 'components/generic/Empty'
+import { now } from 'moment'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -502,9 +503,7 @@ export default ({
                     onClick={() =>
                         handleAdd({
                             label: 'New question - click here to edit the question name',
-                            name: `${section.name}_question_${
-                                questions.length + 1
-                            }`,
+                            name: `${section.name}_question_${now()}`,
                             fieldType: 'text',
                             fieldRequired: false,
                             settings: {

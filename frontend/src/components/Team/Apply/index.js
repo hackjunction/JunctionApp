@@ -1,9 +1,9 @@
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import TextAreaInput from 'components/inputs/TextAreaInput'
-import { FastField, Field, Formik } from 'formik'
+import { Field, Formik } from 'formik'
 import Select from 'components/inputs/Select'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import * as yup from 'yup'
 import * as UserSelectors from 'redux/user/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -12,8 +12,6 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import BottomBar from 'components/inputs/BottomBar'
 import _ from 'lodash'
 import { Box, Typography, Grid } from '@material-ui/core'
-
-import Button from 'components/generic/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'
 
@@ -31,13 +29,36 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
 
     const applicationSchema = {
         roles: yup.array().of(yup.string()).required('Add at least one role'),
-        motivation: yup.string().max(1000).required('Add a motivation'),
+        motivation: yup
+            .string()
+            .min(
+                3,
+                ({ min }) => `The name must have at least ${min} characters`,
+            )
+            .max(50, ({ max }) => `The name can have up to ${max} characters`)
+            .required('Add a motivation'),
     }
 
     // TODO remove any redux calls from this component and pass the data as props
     const userProfile = useSelector(UserSelectors.userProfile)
     const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     const event = useSelector(DashboardSelectors.event)
+
+    const challengeLabel = useMemo(() => {
+        if (
+            !selectedTeam?.challenge ||
+            !event?.challenges ||
+            event.challenges.length < 1
+        )
+            return null
+        if (selectedTeam.challenge.length === 24) {
+            const challenge = event.challenges.find(
+                challenge => challenge._id === selectedTeam.challenge,
+            )
+            return challenge?.name
+        }
+        return selectedTeam.challenge
+    }, [selectedTeam, event])
 
     const handleApply = useCallback(
         (values, formikBag) => {
@@ -47,12 +68,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                 _.includes(values.roles, role.role),
             )
             submittionData.motivation = values.motivation
-            //TODO Make all this data dynamically fetched from the user profile in the backend
             submittionData.userId = userProfile.userId
-            submittionData.avatar = userProfile.avatar
-            submittionData.firstName = userProfile.firstName
-            submittionData.lastName = userProfile.lastName
-            submittionData.headline = userProfile.headline
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
@@ -93,7 +109,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                 >
                     {formikProps => (
                         <>
-                            {console.log(formikProps)}
                             <Box
                                 style={{
                                     display: 'flex',
@@ -101,10 +116,9 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                             >
                                 <h1>{selectedTeam.name}</h1>
                                 {selectedTeam?.challenge && (
-                                    <h3>#{selectedTeam.challenge}</h3>
+                                    <h3>#{challengeLabel}</h3>
                                 )}
                             </Box>
-                            {/* <h2>Role/s applied for*</h2> */}
                             <Grid item xs={12}>
                                 <Field
                                     name="roles"
@@ -142,7 +156,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
 
                             <Grid item xs={12}>
                                 <Box>
-                                    <h2>Motivation*</h2>
                                     <Field
                                         name="motivation"
                                         render={({ field, form }) => (

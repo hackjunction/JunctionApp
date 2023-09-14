@@ -1,9 +1,9 @@
 import React from 'react'
 import { useRouteMatch, useLocation } from 'react-router'
-import CandidatesPage from '../../../slug/team/candidates'
-import ProfilePage from '../../../slug/team/profile'
+import CandidatesPage from './candidates'
+import ProfilePage from './profile'
 import Container from 'components/generic/Container'
-import TeamsPage from '../../../slug/team/teams'
+import TeamsPage from './teams'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageHeader from 'components/generic/PageHeader'
 

@@ -51,9 +51,6 @@ import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
 import { useMyEvents, useActiveEvents } from 'graphql/queries/events'
 // import { Chat } from 'components/messaging/chat'
 
-
-
-
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
         padding: theme.spacing(3),
@@ -69,9 +66,13 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-
-
-export default ({ event, originalAlertCount, originalAlerts, shownPages, lockedPages }) => {
+export default ({
+    event,
+    originalAlertCount,
+    originalAlerts,
+    shownPages,
+    lockedPages,
+}) => {
     const classes = useStyles()
     const { t } = useTranslation()
     const match = useRouteMatch()
@@ -79,7 +80,7 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages, lockedP
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
 
-    console.log("props", originalAlertCount, originalAlerts, shownPages)
+    console.log('props', originalAlertCount, originalAlerts, shownPages)
     console.log(originalAlertCount, alertCount)
 
     return (
@@ -131,7 +132,7 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages, lockedP
                 {
                     key: 'team',
                     path: '/team',
-                    exact: true,
+                    exact: false,
                     icon: <GroupIcon />,
                     label: t('Team_'),
                     locked: lockedPages.team,
@@ -240,7 +241,6 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages, lockedP
                 //     label: 'Events',
                 //     component: EventsPage,
                 // },
-
             ]}
         />
     )

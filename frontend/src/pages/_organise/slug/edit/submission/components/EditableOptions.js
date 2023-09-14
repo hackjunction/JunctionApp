@@ -1,3 +1,5 @@
+import { faPlusCircle, faSave } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 
 const EditableOptions = ({
@@ -50,21 +52,11 @@ const EditableOptions = ({
                                 onChange={e => setEditText(e.target.value)}
                                 className="tw-text-gray-800 tw-font-bold tw-text-sm tw-border-solid tw-border-2 tw-border-gray-400 tw-rounded-lg tw-p-2"
                             />
-                            <svg
+                            <FontAwesomeIcon
                                 onClick={handleSave}
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                className="tw-w-6 tw-h-6 tw-cursor-pointer hover:tw-text-blue-500"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9"
-                                />
-                            </svg>
+                                icon={faSave}
+                                size="lg"
+                            />
                         </>
                     ) : (
                         <>
@@ -104,21 +96,13 @@ const EditableOptions = ({
                     className="tw-rounded-lg tw-bg-gray-300 tw-border-gray-400 tw-p-2 tw-items-start tw-justify-start tw-text-gray-800 tw-border-solid tw-transition-all tw-duration-400 tw-outline-none hover:tw-bg-gray-400"
                     placeholder="Add new option"
                 />
-                <svg
+
+                <FontAwesomeIcon
                     onClick={handleAddNewOption}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    className="tw-w-8 tw-h-8 tw-px-1 tw-py-1 tw-cursor-pointer tw-bg-blue-500 tw-text-white tw-rounded-sm hover:tw-bg-blue-600"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                    />
-                </svg>
+                    icon={faPlusCircle}
+                    size="lg"
+                    color="blue"
+                />
             </div>
         </div>
     )
