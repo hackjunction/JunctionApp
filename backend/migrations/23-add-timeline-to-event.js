@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Promise = require('bluebird')
 
 module.exports = {
-    index: 12,
-    name: '12-add-timeline-to-event',
+    index: 23,
+    name: '23-add-timeline-to-event',
     description: 'add timeline event',
     run: async () => {
         const nres = await mongoose

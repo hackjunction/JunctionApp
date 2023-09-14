@@ -4,8 +4,8 @@ const Promise = require('bluebird')
 const OrganizationControlller = require('../modules/organization/controller')
 
 module.exports = {
-    index: 11,
-    name: '11-add-organization-to-event',
+    index: 19,
+    name: '19-add-organization-to-event',
     description: 'add add org',
     run: async () => {
         const nres = await mongoose
