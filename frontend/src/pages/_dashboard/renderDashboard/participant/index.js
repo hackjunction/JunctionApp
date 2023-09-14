@@ -132,7 +132,7 @@ export default ({
                 {
                     key: 'team',
                     path: '/team',
-                    exact: true,
+                    exact: false,
                     icon: <GroupIcon />,
                     label: t('Team_'),
                     locked: lockedPages.team,
