@@ -15,7 +15,7 @@ module.exports = {
                     $set: {
                         emailConfig: {
                             senderName: "",
-                            senderEmail: "",
+                            senderEmail: "noreply@hackjunction.com",
                             acceptanceEmail: {
                                 title: "",
                                 subtitle: "",
