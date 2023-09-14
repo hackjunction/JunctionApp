@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider, Button } from '@material-ui/core'
 
+import { useRouteMatch, useLocation } from 'react-router'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Container from 'components/generic/Container'
-import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { Helmet } from 'react-helmet'
 import config from 'constants/config'
-
-import HackerpackService from 'services/hackerpack'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -32,14 +32,19 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const dispatch = useDispatch()
     const classes = useStyles()
+    const match = useRouteMatch()
+
+    const { slug } = match.params
+    const event = useSelector(DashboardSelectors.event)
 
     const [hackerpack, setHackerpack] = useState([])
 
     useEffect(() => {
-        HackerpackService.getFullHackerpack().then(pack => {
-            if (pack) setHackerpack(pack)
-        })
-    }, [])
+        if (event) {
+            setHackerpack(event.hackerpacks)
+        }
+    }, [event, slug])
+    console.log(event)
 
     return (
         <PageWrapper

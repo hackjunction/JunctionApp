@@ -226,15 +226,15 @@ export default ({
                     Machine name
                 </Typography>
                 <TextInput
-                    placeholder="favoriteAnimal"
+                    placeholder="favorite-animal"
                     disabled={editing}
                     value={data.name}
                     onChange={value => handleChange('name', value)}
                 />
                 <Typography variant="caption" paragraph>
                     A unique machine-readable name. This should be only letters,
-                    and be written in camelCase: e.g. letterOfMotivation. This
-                    field will not be visible to the end-user.
+                    and be written in snake-case: e.g. letter-of-motivation.
+                    This field will not be visible to the end-user.
                 </Typography>
                 <Typography variant="body1" className={classes.label}>
                     Question type
