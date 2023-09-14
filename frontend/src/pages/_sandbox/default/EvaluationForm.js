@@ -1,91 +1,53 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Button from 'components/generic/Button'
-import junctionStyle from 'utils/styles'
-
-import {
-    Box,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-    TextField,
-} from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import RadioScore from 'components/generic/RadioScore'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 
-const evaluationCriteria = [
-    'creativity',
-    'innovation',
-    'problemSolving',
-    'companyFit',
-    'teamwork',
+const scoreCriteria = [
+    {
+        criteria: 'creativity',
+        label: 'Creativity',
+    },
+    {
+        criteria: 'innovation',
+        label: 'Innovation',
+    },
+    {
+        criteria: 'problemSolving',
+        label: 'Problem Solving',
+    },
+    {
+        criteria: 'companyFit',
+        label: 'Company Fit',
+    },
+    {
+        criteria: 'teamwork',
+        label: 'Teamwork',
+    },
 ]
 
-const EvaluationFormForm = ({ event, project, submit = () => {}, score }) => {
-    const classes = junctionStyle()
+const EvaluationForm = ({ event, project, submit = () => {}, score }) => {
+    const [currentScore, setCurrentScore] = useState(0)
 
-    const [selectedValue, setSelectedValue] = useState('5')
-    const [selectedIndex, setSelectedIndex] = useState(4)
-
-    const handleChange = (event, index) => {
-        setSelectedValue(event.target.value)
-        setSelectedIndex(index)
+    const calculateScore = criterias => {
+        return (
+            criterias.reduce((acc, curr) => {
+                if (!curr.score) return null
+                return curr.score + acc
+            }, 0) / criterias.length
+        )
     }
 
     return (
         <>
-            <div>
-                {/* {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].map(i => (
-                    <Radio
-                        checked={selectedValue === i}
-                        onChange={handleChange}
-                        value={i}
-                        name="radio-button-demo"
-                        inputProps={{ 'aria-label': i }}
-                    />
-                ))} */}
-                {/* <Radio
-                    checked={selectedValue === 'b'}
-                    onChange={handleChange}
-                    value="b"
-                    name="radio-button-demo"
-                    inputProps={{ 'aria-label': 'B' }}
-                />
-                <Radio
-                    checked={selectedValue === 'c'}
-                    onChange={handleChange}
-                    value="c"
-                    name="radio-button-demo"
-                    inputProps={{ 'aria-label': 'C' }}
-                />
-                <Radio
-                    checked={selectedValue === 'd'}
-                    onChange={handleChange}
-                    value="d"
-                    color="default"
-                    name="radio-button-demo"
-                    inputProps={{ 'aria-label': 'D' }}
-                />
-                <Radio
-                    checked={selectedValue === 'e'}
-                    onChange={handleChange}
-                    value="e"
-                    color="default"
-                    name="radio-button-demo"
-                    inputProps={{ 'aria-label': 'E' }}
-                    size="small"
-                /> */}
-            </div>
             <Formik
-                initialValues={{ ...score }}
+                initialValues={{ ...score, scoreCriteria }}
                 enableReinitialize={true}
                 onSubmit={values => {
-                    values.score =
-                        evaluationCriteria.reduce(
-                            (acc, curr) => values[curr] + acc,
-                            0,
-                        ) / evaluationCriteria.length
+                    values.score = calculateScore(values.scoreCriteria)
                     console.log('This are the values submitted', values)
                     submit()
                 }}
@@ -95,9 +57,63 @@ const EvaluationFormForm = ({ event, project, submit = () => {}, score }) => {
                     console.log(formikProps)
                     return (
                         <Form className="tw-flex tw-flex-col tw-gap-8">
-                            {evaluationCriteria.map(category => {
-                                return <RadioScore category={category} />
-                            })}
+                            <Field name={'scoreCriteria'}>
+                                {({ field, form }) => (
+                                    <>
+                                        {scoreCriteria.map(
+                                            ({ criteria, label }, index) => {
+                                                return (
+                                                    <RadioScore
+                                                        category={criteria}
+                                                        label={label}
+                                                        onSelectionChange={score => {
+                                                            const criteriaIndex =
+                                                                field.value.findIndex(
+                                                                    c =>
+                                                                        c.criteria ===
+                                                                        criteria,
+                                                                )
+                                                            const updatedField =
+                                                                field.value
+                                                            updatedField[
+                                                                criteriaIndex
+                                                            ].score = score
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                updatedField,
+                                                            )
+                                                            setCurrentScore(
+                                                                calculateScore(
+                                                                    updatedField,
+                                                                ),
+                                                            )
+                                                        }}
+                                                    />
+                                                )
+                                            },
+                                        )}
+                                    </>
+                                )}
+                            </Field>
+                            <div className="tw-flex tw-gap-2">
+                                <Typography
+                                    className="tw-font-semibold"
+                                    variant="body1"
+                                    component="p"
+                                >
+                                    Final project score:
+                                </Typography>
+                                {currentScore > 0 ? (
+                                    <Typography variant="body1" component="p">
+                                        {currentScore}
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="body1" component="p">
+                                        Assign a score to each criteria to
+                                        calculate the final score
+                                    </Typography>
+                                )}
+                            </div>
                             <ErrorMessage name="score" component="div" />
                             <Field name="message">
                                 {({ field, form }) => (
@@ -145,4 +161,4 @@ const EvaluationFormForm = ({ event, project, submit = () => {}, score }) => {
     )
 }
 
-export default EvaluationFormForm
+export default EvaluationForm
