@@ -14,18 +14,20 @@ const migrations = [
     require('./08-create-registration-objects-in-profiles'),
     require('./09-sync-registration-to-profiles'),
     require('./10-add-banner-priority-and-approved-to-event'),
-    require('./11-add-organization-to-event'),
-    require('./12-add-timeline-to-event'),
+    require('./11-add-emailConfig-to-event'),
+    require('./12-fix-empty-senderEmail-in-event'),
     require('./13-set-eventLocation-null-where-not-exists'),
     require('./14-add-checklist-to-registration'),
     require('./15-add-meetingRooms-to-event'),
     require('./16-add-faq-challenge_instructions-demoInstructions-to-event'),
     require('./17-add-specific-hackerpacks-to-event'),
     require('./18-add-event-newsletter-link-to-event'),
-    require('./19-add-emailConfig-to-event'),
+    require('./19-add-organization-to-event'),
     require('./20-add-new-fields-to-teams-info'),
     require('./21-add-recruiters-to-event'),
     require('./22-rename-team-tagline-to-subtitle'),
+    require('./23-add-timeline-to-event'),
+
 ]
 
 const run = async () => {
