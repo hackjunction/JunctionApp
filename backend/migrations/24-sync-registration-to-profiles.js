@@ -4,8 +4,8 @@ const Promise = require('bluebird')
 const UserProfileControlller = require('../modules/user-profile/controller')
 
 module.exports = {
-    index: 9,
-    name: '09-sync-registration-to-profiles',
+    index: 24,
+    name: '24-sync-registration-to-profiles',
     description: 'Sync registrationa and profile data',
     run: async () => {
         const cursor = mongoose.model('Registration').find({}).cursor()

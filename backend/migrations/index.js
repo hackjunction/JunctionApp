@@ -12,7 +12,7 @@ const migrations = [
     require('./06-finals-active-to-event'),
     require('./07-uniform-answers'),
     require('./08-create-registration-objects-in-profiles'),
-    require('./09-sync-registration-to-profiles'),
+    require('./09-add-challengesenabled-false'),
     require('./10-add-banner-priority-and-approved-to-event'),
     require('./11-add-emailConfig-to-event'),
     require('./12-fix-empty-senderEmail-in-event'),
@@ -27,6 +27,7 @@ const migrations = [
     require('./21-add-recruiters-to-event'),
     require('./22-rename-team-tagline-to-subtitle'),
     require('./23-add-timeline-to-event'),
+    require('./24-sync-registration-to-profiles'),
 
 ]
 
