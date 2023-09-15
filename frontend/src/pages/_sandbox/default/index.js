@@ -290,12 +290,6 @@ export default () => {
                                                         component="p"
                                                     >
                                                         It is amazing here
-                                                        {/* {teamData.ideaDescription.length > 50
-                                        ? `${teamData.ideaDescription.substr(
-                                              0,
-                                              50,
-                                          )}...`
-                                        : teamData.ideaDescription} */}
                                                     </Typography>
                                                 </div>
                                             </div>

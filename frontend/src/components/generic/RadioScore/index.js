@@ -10,36 +10,28 @@ import {
 } from '@material-ui/core'
 import { Email } from '@material-ui/icons'
 import { Field } from 'formik'
+import _ from 'lodash'
 import { capitalize, toInteger, toString } from 'lodash-es'
 import React, { useEffect, useState } from 'react'
 import { popupCenter } from 'utils/misc'
 import junctionStyle from 'utils/styles'
 
-// const labels = {
-//     creativity: 'Creativity',
-//     innovation: 'Innovation',
-//     problemSolving: 'Problem Solving',
-//     companyFit: 'Company Fit',
-//     teamwork: 'Teamwork',
-// }
 const scoreArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-export default ({ category, label, onSelectionChange }) => {
+export default ({ category, label, onSelectionChange, value = null }) => {
     const classes = junctionStyle()
-    const [selectedValue, setSelectedValue] = useState(null)
+    const [selectedValue, setSelectedValue] = useState(value)
     const [selectedIndex, setSelectedIndex] = useState(null)
+
+    if (value && selectedIndex === null && _.includes(scoreArray, value)) {
+        setSelectedIndex(scoreArray.indexOf(value))
+    }
 
     const handleChange = index => {
         setSelectedIndex(index)
     }
 
-    // useEffect(() => {
-    //     onSelectionChange(selectedValue)
-    // }, [selectedValue])
-
     return (
-        // <Field name={category}>
-        //     {({ field, form }) => (
         <FormControl component="fieldset" className="tw-w-full" required>
             <FormLabel
                 component="legend"
@@ -85,7 +77,5 @@ export default ({ category, label, onSelectionChange }) => {
                 ))}
             </RadioGroup>
         </FormControl>
-        //     )}
-        // </Field>
     )
 }

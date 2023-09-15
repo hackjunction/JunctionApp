@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ScoreCriteriaSchema = require('@hackjunction/shared/schemas/ScoreCriteria')
 
 const STATUS_TYPES = ['submitted', 'evaluating', 'evaluated']
 const ProjectScoreSchema = new mongoose.Schema(
@@ -37,6 +38,25 @@ const ProjectScoreSchema = new mongoose.Schema(
         },
         message: {
             type: String,
+            required: false,
+        },
+        scoreCriteria: {
+            type: [
+                {
+                    criteria: {
+                        type: String,
+                        required: true,
+                    },
+                    label: {
+                        type: String,
+                        required: true,
+                    },
+                    score: {
+                        type: Number,
+                        required: true,
+                    },
+                },
+            ],
             required: false,
         },
     },
