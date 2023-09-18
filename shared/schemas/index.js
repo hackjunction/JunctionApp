@@ -80,6 +80,7 @@ const SharedSchema = new GraphQLSchema({
         MeetingRoom.graphql,
         MeetingRoom.graphqlInput,
         EventPageScript.graphql,
+        EventPageScript.graphqlInput,
     ],
 })
 
