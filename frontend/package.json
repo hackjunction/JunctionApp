@@ -77,7 +77,7 @@
     },
     "scripts": {
         "start": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/start.js",
-        "build": "npm run build:styles node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
+        "build": "npm run build:styles && node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
         "test": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/test.js",
         "eject": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/eject.js",
         "lint": "eslint ./src",

@@ -20,6 +20,12 @@ export const organisersLoading = state => state.organiser.organisers.loading
 export const organisersError = state => state.organiser.organisers.error
 export const organisersUpdated = state => state.organiser.organisers.updated
 
+export const eventRecruiters = state => state.organiser.recruiters.data
+export const eventRecruitersMap = state => state.organiser.recruiters.map
+export const eventRecruitersLoading = state => state.organiser.recruiters.loading
+export const eventRecruitersError = state => state.organiser.recruiters.error
+export const eventRecruitersUpdated = state => state.organiser.recruiters.updated
+
 export const organizations = state => state.organiser.organizations.data
 export const organizationsMap = state => state.organiser.organizations.map
 export const organizationsLoading = state =>

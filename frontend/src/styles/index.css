@@ -9,3 +9,7 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   overflow-wrap: break-word;
   word-break: break-word;
 }
+
+  .tw-rounded-02rem {
+    border-radius: 0.2rem
+  }

@@ -3087,6 +3087,10 @@
   background-image: linear-gradient(to top left, var(--gradient-color-stops));
 }
 
+.tw-bg-wave-pattern {
+  background-image: url('../assets/images/nawbar_waves.svg');
+}
+
 .tw-from-transparent {
   --gradient-from-color: transparent;
   --gradient-color-stops: var(--gradient-from-color), var(--gradient-to-color, rgba(0, 0, 0, 0));
@@ -21041,6 +21045,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
   word-break: break-word;
 }
 
+.tw-rounded-02rem {
+  border-radius: 0.2rem
+}
+
 @media (min-width: 640px) {
   .sm\:tw-container {
     width: 100%;
@@ -24129,6 +24137,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .sm\:tw-bg-gradient-to-tl {
     background-image: linear-gradient(to top left, var(--gradient-color-stops));
+  }
+
+  .sm\:tw-bg-wave-pattern {
+    background-image: url('../assets/images/nawbar_waves.svg');
   }
 
   .sm\:tw-from-transparent {
@@ -45136,6 +45148,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     background-image: linear-gradient(to top left, var(--gradient-color-stops));
   }
 
+  .md\:tw-bg-wave-pattern {
+    background-image: url('../assets/images/nawbar_waves.svg');
+  }
+
   .md\:tw-from-transparent {
     --gradient-from-color: transparent;
     --gradient-color-stops: var(--gradient-from-color), var(--gradient-to-color, rgba(0, 0, 0, 0));
@@ -66141,6 +66157,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     background-image: linear-gradient(to top left, var(--gradient-color-stops));
   }
 
+  .lg\:tw-bg-wave-pattern {
+    background-image: url('../assets/images/nawbar_waves.svg');
+  }
+
   .lg\:tw-from-transparent {
     --gradient-from-color: transparent;
     --gradient-color-stops: var(--gradient-from-color), var(--gradient-to-color, rgba(0, 0, 0, 0));
@@ -87144,6 +87164,10 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw-bg-gradient-to-tl {
     background-image: linear-gradient(to top left, var(--gradient-color-stops));
+  }
+
+  .xl\:tw-bg-wave-pattern {
+    background-image: url('../assets/images/nawbar_waves.svg');
   }
 
   .xl\:tw-from-transparent {

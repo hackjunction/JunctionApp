@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
-import ProjectImages from 'pages/_dashboard/slug/project/ProjectImages'
+import ProjectImages from 'pages/_dashboard/renderDashboard/participant/project/ProjectImages'
 import React from 'react'
 
 const ImagesField = ({ props }) => {
