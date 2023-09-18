@@ -1,12 +1,25 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Box, Grid, Typography } from '@material-ui/core'
+import {
+    Avatar,
+    Box,
+    Card,
+    CardActions,
+    CardContent,
+    Chip,
+    Grid,
+    Tooltip,
+    Typography,
+} from '@material-ui/core'
 
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
 import Tag from 'components/generic/Tag'
 import theme from 'material-ui-theme'
+import Filter from 'components/Team/Filter'
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
+import _ from 'lodash'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -54,6 +67,7 @@ const ProjectsGridItem = ({
     score = null,
     message = null,
     showTags = false,
+    showReviewers = false,
 }) => {
     const classes = useStyles({ labelBackground })
     const previewImage =
@@ -63,17 +77,19 @@ const ProjectsGridItem = ({
         switch (status) {
             case 'final':
                 return (
-                    <Tag
-                        label="Final"
-                        color={theme.palette.theme_turquoise.main}
-                    />
+                    <Chip color="primary" label="Final" />
+                    // <Tag
+                    //     label="Final"
+                    //     color={theme.palette.theme_turquoise.main}
+                    // />
                 )
             case 'draft':
                 return (
-                    <Tag
-                        label="Draft"
-                        color={theme.palette.theme_lightgray.main}
-                    />
+                    <Chip color="secondary" label="Draft" />
+                    // <Tag
+                    //     label="Draft"
+                    //     color={theme.palette.theme_lightgray.main}
+                    // />
                 )
             default:
                 return null
@@ -82,78 +98,122 @@ const ProjectsGridItem = ({
 
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
-            <Box className={classes.wrapper}>
-                {label && (
-                    <Typography className={classes.label}>{label}</Typography>
-                )}
-                <Image
-                    className={
-                        previewImage ? classes.image : classes.placeholderImage
-                    }
-                    publicId={
-                        previewImage
-                            ? previewImage
-                            : event?.coverImage?.publicId
-                            ? event?.coverImage.publicId
-                            : event?.logo?.publicId
-                            ? event?.logo.publicId
-                            : false
-                    }
-                    defaultImage={require('assets/images/default_cover_image.png')}
-                    transformation={{
-                        width: 600,
-                    }}
-                />
-                <Box className={classes.content}>
-                    <Typography variant="h6">{project.name}</Typography>
-                    <Typography variant="body1" paragraph>
-                        {project.punchline}
-                    </Typography>
-                </Box>
-                <Box pb={2} pl={2} pr={2}>
-                    {showTags &&
-                        typeof project.status !== 'undefined' &&
-                        statusTag(project.status)}
-                </Box>
-                {showTableLocation && project.location && (
-                    <Box pb={2} pl={2} pr={2}>
-                        <Typography
-                            style={{ fontWeight: 'bold' }}
-                            variant="body1"
-                        >
-                            Table Location
-                        </Typography>
-                        <Typography variant="body1">
-                            {project.location}
-                        </Typography>
-                    </Box>
-                )}
-                {score !== null && (
-                    <Box pb={2} pl={2} pr={2}>
-                        <Typography
-                            style={{ fontWeight: 'bold' }}
-                            variant="body1"
-                        >
-                            Score
-                        </Typography>
-                        <Typography variant="body1">{score}</Typography>
-                        <Typography variant="body1">{message}</Typography>
-                    </Box>
-                )}
-
-                {onClickMore && (
-                    <Box pl={2} pr={2} pb={2}>
+            <Card
+                onClick={onClickMore}
+                className={`tw-bg-white tw-w-full tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-500px tw-flex tw-flex-col tw-justify-between`}
+            >
+                <CardContent className="tw-flex tw-flex-col tw-p-0">
+                    <div className="tw-relative tw-w-full tw- tw-h-40 tw-rounded-lg tw-flex tw-justify-end tw-items-start">
+                        <div className="tw-absolute tw-w-full">
+                            <Image
+                                className={
+                                    previewImage
+                                        ? classes.image
+                                        : classes.placeholderImage
+                                }
+                                publicId={
+                                    previewImage
+                                        ? previewImage
+                                        : event?.coverImage?.publicId
+                                        ? event?.coverImage.publicId
+                                        : event?.logo?.publicId
+                                        ? event?.logo.publicId
+                                        : false
+                                }
+                                defaultImage={require('assets/images/default_cover_image.png')}
+                                // transformation={{
+                                //     width: 600,
+                                // }}
+                            />
+                        </div>
+                        <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-z-10">
+                            {showTags &&
+                                typeof project.status !== 'undefined' &&
+                                statusTag(project.status)}
+                            {score && score > 0 ? (
+                                <Chip color="primary" label="Reviewed" />
+                            ) : (
+                                <Chip color="secondary" label="Not reviewed" />
+                            )}
+                        </div>
+                    </div>
+                    <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                        <div className="tw-flex tw-flex-col tw-gap-2">
+                            <Typography
+                                className="tw-font-semibold"
+                                variant="body1"
+                                component="p"
+                            >
+                                {project.name}
+                            </Typography>
+                            <div>
+                                {project.challenges.map(challenge => (
+                                    <Chip label={challenge} />
+                                ))}
+                            </div>
+                            <Typography variant="body1" component="p">
+                                {project.punchline}
+                            </Typography>
+                        </div>
+                        {showTableLocation && project.location && (
+                            <div className="tw-flex tw-flex-col tw-gap-2">
+                                <Typography
+                                    style={{ fontWeight: 'bold' }}
+                                    variant="body1"
+                                >
+                                    Table Location
+                                </Typography>
+                                <Typography variant="body1">
+                                    {project.location}
+                                </Typography>
+                            </div>
+                        )}
+                        {score !== null && (
+                            <div className="tw-flex tw-flex-col tw-gap-2">
+                                <div className="tw-flex tw-gap-2">
+                                    <Typography
+                                        className="tw-font-semibold"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        Score
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        {score}
+                                    </Typography>
+                                </div>
+                                <Typography variant="body1">
+                                    {_.truncate(message, { length: 20 })}
+                                </Typography>
+                            </div>
+                        )}
+                    </div>
+                </CardContent>
+                <CardActions className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-4 tw-pb-4 tw-pt-0 tw-gap-4">
+                    {onClickMore && (
                         <Button
                             onClick={onClickMore}
-                            fullWidth
-                            variant="outlined"
-                            color="theme_lightgray"
+                            color="outlined_button"
+                            variant="jOutlined"
                         >
                             See more
                         </Button>
-                    </Box>
-                )}
-            </Box>
+                    )}
+                    {showReviewers && (
+                        <div className="tw-flex tw-gap-1 tw-w-full">
+                            <Tooltip title="Reviewed by A">
+                                <Avatar>A</Avatar>
+                            </Tooltip>
+                            <Tooltip title="Reviewed by B">
+                                <Avatar>B</Avatar>
+                            </Tooltip>
+                            <Tooltip title="Reviewed by 3 more people">
+                                <Avatar>+3</Avatar>
+                            </Tooltip>
+                        </div>
+                    )}
+                </CardActions>
+            </Card>
         </Grid>
     )
 }

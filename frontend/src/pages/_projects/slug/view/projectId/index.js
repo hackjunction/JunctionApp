@@ -151,7 +151,8 @@ export default ({ event, showFullTeam }) => {
             />
             {validToken ? (
                 <Container>
-                    {!project?.scoreCriteria ? (
+                    {projectScore?.scoreCriteria &&
+                    projectScore?.scoreCriteria.length > 0 ? (
                         <EvaluationForm
                             event={event}
                             project={project}
