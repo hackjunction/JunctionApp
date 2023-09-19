@@ -147,12 +147,15 @@ const ProjectsGridItem = ({
                                 {project.name}
                             </Typography>
                             <div>
-                                {project.challenges.map(challenge => (
-                                    <Chip label={challenge} />
+                                {project.challenges.map((challenge, index) => (
+                                    <Chip
+                                        key={index}
+                                        label={challenge.replaceAll('-', ' ')}
+                                    />
                                 ))}
                             </div>
                             <Typography variant="body1" component="p">
-                                {project.punchline}
+                                {_.truncate(project.punchline, { length: 50 })}
                             </Typography>
                         </div>
                         {showTableLocation && project.location && (

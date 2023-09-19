@@ -8,6 +8,12 @@ export default ({
     noFilterOption = 'All',
     onChange = arg => {},
 }) => {
+    if (filterArray.length > 0 && typeof filterArray[0] === 'string') {
+        filterArray = filterArray.map(item => {
+            return { value: item, label: item }
+        })
+    }
+
     const [filter, setFilter] = useState(noFilterOption)
     const formatedFilterArray = [
         { value: noFilterOption, label: noFilterOption },
