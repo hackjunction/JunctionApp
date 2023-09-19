@@ -86,7 +86,7 @@
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
         "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint",
         "build:tailwind": "npx tailwindcss build src/styles/index.css -o src/styles/tailwind.css",
-        "build:styles": "NODE_ENV=production npm run build:tailwind"
+        "build:styles": "npm run build:tailwind"
     },
     "browserslist": [
         "defaults",

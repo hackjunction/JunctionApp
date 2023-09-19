@@ -288,7 +288,7 @@ const EventSchema = new mongoose.Schema({
     emailConfig: {
         senderEmail: {
             type: String,
-            default: '',
+            default: 'noreply@hackjunction.com',
             trim: true,
             validate: {
                 validator: function (v) {
