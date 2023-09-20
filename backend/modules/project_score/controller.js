@@ -27,6 +27,7 @@ controller.updateProjectScore = async (id, updatedProjectScore) => {
     projectScore.status = updatedProjectScore.status
     projectScore.track = updatedProjectScore.track
     projectScore.challenge = updatedProjectScore.challenge
+    projectScore.scoreCriteria = updatedProjectScore.scoreCriteria
 
     await projectScore.save()
     return projectScore

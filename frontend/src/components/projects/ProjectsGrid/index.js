@@ -66,8 +66,9 @@ const ProjectsGrid = ({
             alignItems="stretch"
             justify="center"
         >
-            {sorted.map(project => (
+            {sorted.map((project, index) => (
                 <ProjectsGridItem
+                    key={index}
                     project={project}
                     event={event}
                     showTableLocation={isOngoingEvent}

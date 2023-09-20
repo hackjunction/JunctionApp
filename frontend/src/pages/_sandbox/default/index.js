@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
@@ -7,6 +7,7 @@ import Footer from 'components/layouts/Footer'
 import junctionStyle from 'utils/styles'
 import {
     AppBar,
+    Avatar,
     Card,
     CardActions,
     CardContent,
@@ -14,6 +15,7 @@ import {
     Grid,
     Tab,
     Tabs,
+    Tooltip,
     Typography,
 } from '@material-ui/core'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
@@ -28,6 +30,7 @@ import Divider from '@material-ui/core/Divider'
 import { Formik } from 'formik'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
+import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { useRouteMatch, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -46,6 +49,11 @@ import { Skeleton, TabPanel } from '@material-ui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
+import Filter from 'components/Team/Filter'
+import ProjectDetail from 'components/projects/ProjectDetail'
+import { EventHelpers } from '@hackjunction/shared'
+import moment from 'moment-timezone'
+import EvaluationForm from './EvaluationForm'
 
 export default () => {
     const dispatch = useDispatch()
@@ -80,7 +88,38 @@ export default () => {
     const match = useRouteMatch()
     const location = useLocation()
 
+    const [project, setProject] = useState(null)
+
+    const fetchProjects = async slugEvent =>
+        dispatch(DashboardActions.updateProjects(slugEvent))
+
+    const handleClick = () => {
+        fetchProjects('1-random-event')
+            .then(projectsFetched => {
+                setProject(projectsFetched.payload[0])
+                console.log('projects', project)
+            })
+            .finally(() => setSelected(true))
+    }
+
+    // let projects
     const event = useSelector(OrganiserSelectors.event)
+    // const projects = () => {
+    //     projects = await fetchProjects('1-random-event')
+    // }
+    // useEffect(() => {
+    //     fetchProjects('1-random-event').then(projectsFetched => {
+    //         projects = projectsFetched.payload
+    //         console.log('projects', projects)
+    //     })
+    // }, [])
+
+    //    () => await fetchProjects('1-random-event')
+
+    // fetchProjects('1-random-event')
+    //     .then(projectsFetched => (projects = projectsFetched.payload))
+    //     .then(() => console.log('projects', projects))
+    console.log('event on sandbox', event)
     const loading = useSelector(OrganiserSelectors.eventLoading)
     const { slug, _id } = event
 
@@ -98,6 +137,16 @@ export default () => {
     }
 
     // const [events, loading] = useMyEvents()
+
+    const [projectScore, setProjectScore] = useState({
+        project: '',
+        event: '',
+        status: 'submitted',
+        score: 0,
+        maxScore: 10,
+        message: '',
+    })
+    const [selected, setSelected] = useState(false)
     const classes = junctionStyle()
     return (
         <PageWrapper
@@ -105,8 +154,8 @@ export default () => {
             header={() => <GlobalNavBar />}
             footer={() => <Footer />}
             render={() => (
-                <Container center>
-                    <Formik
+                <Container>
+                    {/* <Formik
                         initialValues={
                             saveResult.data
                                 ? saveResult.data.updateEvent
@@ -146,21 +195,132 @@ export default () => {
                                 />
                             </>
                         )}
-                    </Formik>
-                    <ResponsiveMasonry
-                        columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3 }}
-                    >
-                        <Masonry>
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                            <TeamCard />
-                        </Masonry>
-                    </ResponsiveMasonry>
+                    </Formik> */}
+                    {selected && (
+                        <div>
+                            <ProjectDetail
+                                project={project}
+                                event={event}
+                                onBack={() => setSelected(false)}
+                                showFullTeam={true}
+                                showTableLocation={
+                                    !EventHelpers.isEventOver(event, moment)
+                                }
+                            />
+                            <EvaluationForm
+                                event={event}
+                                project={project}
+                                // submit={handleSubmit}
+                                score={projectScore}
+                            />
+                        </div>
+                    )}
+                    {!selected && (
+                        <div className="tw-flex tw-flex-col tw-gap-4">
+                            <div className="tw-flex tw-justify-between tw-items-end">
+                                <div className="tw-flex tw-flex-col tw-gap-2">
+                                    <Typography
+                                        className="tw-font-bold tw-tracking-tight tw-break-words-overflow"
+                                        variant="h4"
+                                        component="h4"
+                                    >
+                                        Reviewing
+                                    </Typography>
+                                    <div className="tw-flex tw-gap-2">
+                                        <Typography
+                                            className="tw-tracking-tight tw-font-medium"
+                                            variant="h6"
+                                            component="h6"
+                                        >
+                                            By Aalto x TEK
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            color="secondary"
+                                            component="p"
+                                        >
+                                            10 projects
+                                        </Typography>
+                                    </div>
+                                </div>
+                                <Filter />
+                            </div>
+                            <ResponsiveMasonry
+                                columnsCountBreakPoints={{
+                                    350: 1,
+                                    750: 2,
+                                    1024: 3,
+                                }}
+                            >
+                                <Masonry>
+                                    <Card
+                                        onClick={() => {
+                                            console.log('card clicked')
+                                            handleClick()
+                                        }}
+                                        className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-464px tw-flex tw-flex-col tw-justify-between`}
+                                    >
+                                        <CardContent className="tw-flex tw-flex-col tw-p-0">
+                                            <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-40 tw-rounded-lg tw-flex tw-justify-end tw-items-start">
+                                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4">
+                                                    <Chip
+                                                        color="primary"
+                                                        label="Seen"
+                                                    />
+                                                    <Chip
+                                                        color="secondary"
+                                                        label="Final"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
+                                                <div className="tw-flex tw-flex-col tw-gap-2">
+                                                    <Typography
+                                                        className="tw-font-semibold"
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        Something important
+                                                    </Typography>
+                                                    <div>
+                                                        <Chip label="Challenge" />
+                                                    </div>
+                                                    <Typography
+                                                        variant="body1"
+                                                        component="p"
+                                                    >
+                                                        It is amazing here
+                                                    </Typography>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                        <CardActions className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-4 tw-pb-4 tw-pt-0 tw-gap-4">
+                                            <Button
+                                                onClick={e => {
+                                                    e.stopPropagation()
+                                                }}
+                                                color="outlined_button"
+                                                variant="jOutlined"
+                                            >
+                                                See more
+                                            </Button>
+                                            <div className="tw-flex tw-gap-1 tw-w-full">
+                                                <Tooltip title="Reviewed by A">
+                                                    <Avatar>A</Avatar>
+                                                </Tooltip>
+                                                <Tooltip title="Reviewed by B">
+                                                    <Avatar>B</Avatar>
+                                                </Tooltip>
+                                                <Tooltip title="Reviewed by 3 more people">
+                                                    <Avatar>+3</Avatar>
+                                                </Tooltip>
+                                            </div>
+                                        </CardActions>
+                                    </Card>
+                                </Masonry>
+                            </ResponsiveMasonry>
+                        </div>
+                    )}
                     <div>
                         <Card>
                             <CardContent className={classes.textAlignStart}>

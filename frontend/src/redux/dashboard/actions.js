@@ -4,7 +4,12 @@ import { useQuery } from '@apollo/client'
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from '../auth/selectors'
 import * as DashboardSelectors from './selectors'
-import { useActiveEvents, usePastEvents, GET_ACTIVE_EVENTS, GET_PAST_EVENTS } from 'graphql/queries/events'
+import {
+    useActiveEvents,
+    usePastEvents,
+    GET_ACTIVE_EVENTS,
+    GET_PAST_EVENTS,
+} from 'graphql/queries/events'
 import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
@@ -273,12 +278,6 @@ export const candidateApplyToTeam =
     (slug, code, applicationData) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         console.log('submitted with:', applicationData)
-        // const user = await UserProfilesService.getUserPublicProfileById(
-        //     idToken,
-        //     applicationData.userId,
-        // )
-        // console.log('user:', user)
-        // console.log('applicationData:', applicationData)
         const team = await TeamsService.candidateApplyToTeam(
             idToken,
             slug,
@@ -525,58 +524,22 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
         return err
     }
 }
-
-// TODO Create action to fill candidates information dynamically
-
-// export const updateCandidateProfiles =
-//     (userIds) => async (dispatch, getState) => {
-
-//         dispatch({
-//             type: ActionTypes.UPDATE_ORGANISERS,
-//             promise: UserProfilesService.getPublicUserProfiles(userIds),
-//             meta: {
-//                 onFailure: e =>
-//                     console.log('Error updating event organisers', e),
-//             },
-//         })
-//     }
-
-//     export const candidateApplyToTeam =
-//     (slug, code, applicationData) => async (dispatch, getState) => {
-//         const idToken = AuthSelectors.getIdToken(getState())
-
-//         const team = await TeamsService.candidateApplyToTeam(
-//             idToken,
-//             slug,
-//             code,
-//             applicationData,
-//         )
-
-//         dispatch({
-//             type: ActionTypes.EDIT_TEAM,
-//             payload: team,
-//         })
-
-//         return team
-//     }
-export const activeEvents = (activeEvents) => dispatch => {
-    console.log("action activeEvents", activeEvents)
+export const activeEvents = activeEvents => dispatch => {
+    console.log('action activeEvents', activeEvents)
     dispatch({
         type: ActionTypes.ACTIVE_EVENTS,
         payload: {
-            activeEvents
+            activeEvents,
         },
     })
 }
 
-export const pastEvents = (pastEvents) => dispatch => {
-    console.log("action pastEvents", pastEvents)
+export const pastEvents = pastEvents => dispatch => {
+    console.log('action pastEvents', pastEvents)
     dispatch({
         type: ActionTypes.PAST_EVENTS,
         payload: {
-            pastEvents
+            pastEvents,
         },
     })
 }
-
-
