@@ -15,7 +15,7 @@ module.exports = {
                 { $set: { recruiters: [] } },//TODO: add recruiters from userprofiles here
             )
         console.log('Done with recruiters to event', ares.n, ares.nModified)
-
+/*
         const bres = await mongoose
             .model('UserProfile')
             .updateMany(
@@ -39,7 +39,7 @@ module.exports = {
                 }])
 
         console.log('Done with events to userprofiles', bres.n, bres.nModified)
-
+*/
         const cres = await mongoose
             .model('UserProfile')
             .updateMany(
