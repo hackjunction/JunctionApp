@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
+
 import { makeStyles } from '@material-ui/core/styles'
 import GroupIcon from '@material-ui/icons/Group'
 import DashboardIcon from '@material-ui/icons/Dashboard'
@@ -12,14 +12,13 @@ import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import StarRateIcon from '@material-ui/icons/StarRate'
 import HowToVoteIcon from '@material-ui/icons/HowToVote'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
-import { QuestionAnswerSharp } from '@material-ui/icons'
+
 import EventIcon from '@material-ui/icons/Event'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
 import BasicNavBar from 'components/navbars/BasicNavBar'
-import PageWrapper from 'components/layouts/PageWrapper'
-import DefaultImage from 'assets/images/dashboardDefault.jpg'
+
 
 import DefaultPage from '../generalPages/default'
 import FinalistVotingPage from '../generalPages/finalist-voting'
@@ -31,24 +30,12 @@ import EventIDPage from './event-id'
 import HackerpackPage from '../generalPages/hackerpack'
 import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
-import ChecklistPage from './checklist'
-import MapPage from '../generalPages/map'
-import EventsPage from '../default/events'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
 
 import { useTranslation } from 'react-i18next'
-import { CheckBox } from '@material-ui/icons'
-import { Alerts } from 'components/messaging/alerts'
+
 import Badge from '@material-ui/core/Badge'
-import { useLazyQuery, useSubscription } from '@apollo/client'
-import { ALERTS_QUERY } from 'graphql/queries/alert'
-import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
-import { useMyEvents, useActiveEvents } from 'graphql/queries/events'
+
 // import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({

@@ -121,6 +121,7 @@ import {
 } from '@material-ui/icons'
 import Divider from '@material-ui/core/Divider'
 
+
 import { Formik } from 'formik'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
@@ -142,6 +143,15 @@ import { Skeleton, TabPanel } from '@material-ui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
+import FormControl from 'components/inputs/FormControl'
+import TextInput from 'components/inputs/TextInput'
+import TextAreaInput from 'components/inputs/TextAreaInput'
+import MarkdownInput from 'components/inputs/MarkdownInput'
+import BooleanInput from 'components/inputs/BooleanInput'
+import Select from 'components/inputs/Select'
+import DateInput from 'components/inputs/DateInput'
+import DateTimeInput from 'components/inputs/DateTimeInput'
+import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
 
 export default () => {
     const dispatch = useDispatch()
@@ -337,6 +347,7 @@ export default () => {
                                     height={40}
                                     animation="wave"
                                 />
+
                                 <Button
                                     color="outlined_button"
                                     variant="outlined"
@@ -529,6 +540,68 @@ export default () => {
                                 <ExpandLess />
                                 KeyboardArrowDown
                                 <KeyboardArrowDown />
+
+                                <ProjectStatusInput
+                                    value={''}
+                                    onChange={() => console.log('ProjectStatusInput')
+                                    }
+                                />
+
+                                <BottomBar
+                                    onSubmit={
+                                        () => console.log('submit')
+                                    }
+                                    errors={
+                                        {}
+                                    }
+                                    dirty={false}
+                                    loading={false}
+                                />
+                                <FormControl
+                                    label={'FormControl'}
+                                    hint={'FormControl'}
+                                    touched={true}
+                                    error={false}
+                                    children={''}
+                                />
+                                <TextInput
+                                    disabled={false}
+                                    label="TextInput"
+                                    helperText="TextInput"
+                                    value={''}
+                                    onChange={() => console.log('TextInput')}
+                                />
+                                <TextAreaInput
+                                    placeholder={'TextAreaInput'}
+                                    value={''}
+                                    onChange={() => console.log('TextAreaInput')}
+                                    onBlur={() => console.log('TextAreaInput')}
+                                />
+                                <DateInput label={'DateInput'} value={''} onChange={() => console.log('date')} onBlur={() => console.log('date')} disableFutureYears={false} />
+                                <DateTimeInput
+                                    value={''}
+                                    onChange={() => console.log('DateTimeInput')}
+                                />
+                                <MarkdownInput
+                                    name={'markdown input'}
+                                    value={'markdown input'}
+                                    onChange={
+                                        console.log('markdown')
+                                    }
+                                    onBlur={() =>
+                                        console.log('markdown')
+                                    }
+                                    placeholder={
+                                        "markdown input"
+                                    }
+                                />
+                                <BooleanInput
+                                    value={'boolean input'}
+                                    onChange={
+                                        console.log('boolean')
+                                    }
+                                />
+                                <Select />
                             </CardContent>
                             <CardActions></CardActions>
                         </Card>

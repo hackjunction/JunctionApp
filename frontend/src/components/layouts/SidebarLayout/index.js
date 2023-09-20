@@ -22,7 +22,7 @@ import {
     Box,
 } from '@material-ui/core'
 
-import PlatformLogo from 'assets/logos/wordmark_white.svg'
+import PlatformLogo from 'assets/logos/JO_wordmark_white.png'
 import IconButton from 'components/generic/IconButton'
 import EventsPage from 'pages/_dashboard/renderDashboard/default/events'
 import ProfilePage from 'pages/_account/profile' //TODO: fix the profile view
@@ -40,6 +40,14 @@ const useStyles = makeStyles(theme => ({
             width: SIDEBAR_WIDTH,
             flexShrink: 0,
         },
+    },
+    wordmark: {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        padding: '5px',
+        top: 0,
+        height: '70px',
     },
     drawerToggle: {
         padding: '10px',
@@ -185,12 +193,11 @@ export default React.memo(
 
         const drawerContent = (
             <>
-                <Box p={2}>
+                <Box >
                     <a href="/home">
                         <img
                             src={PlatformLogo/*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/}
-                            height={100}
-                            width={'100%'}
+
                             className={classes.wordmark}
                             alt={config.PLATFORM_OWNER_NAME + ' logo'}
                         />
