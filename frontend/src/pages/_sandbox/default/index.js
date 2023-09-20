@@ -23,6 +23,102 @@ import AccordionDetails from '@material-ui/core/AccordionDetails'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionActions from '@material-ui/core/AccordionActions'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import DeleteIcon from '@material-ui/icons/Delete'
+import NavigateNextIcon from '@material-ui/icons/NavigateNext'
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined'
+import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined'
+import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined'
+import CheckIcon from '@material-ui/icons/Check'
+import {
+    Email,
+    Check,
+    CheckCircleOutlined,
+    ErrorOutlineOutlined,
+    ReportProblemOutlined,
+    InfoOutlined,
+    InfoTwoTone,
+    MoreHoriz,
+    NavigateBefore,
+    NavigateNext,
+    Delete,
+    ArrowBackIos,
+    ExpandMore,
+    FirstPage,
+    KeyboardArrowLeft,
+    KeyboardArrowRight,
+    LastPage,
+    ErrorOutline,
+    Visibility,
+    Clear,
+    Cancel,
+    Menu,
+    Lock,
+    Storage,
+    AccountBox,
+    ExitToApp,
+    KeyboardBackspace,
+    Edit,
+    Star,
+    GitHub,
+    LinkedIn,
+    Brush,
+
+    LocationOn,
+
+    ThumbUp,
+
+    Group,
+    Dashboard,
+    Fingerprint,
+    FlightTakeoff,
+    AmpStories,
+
+    AssignmentOutlined,
+    StarRate,
+    HowToVote,
+    FormatListBulleted,
+    QuestionAnswerSharp,
+    Event,
+    ChevronRight,
+    ChevronLeft,
+    FiberManualRecord,
+    CheckCircleOutline,
+    SentimentVeryDissatisfied,
+    Search,
+
+
+
+
+
+
+    Tune,
+    Settings,
+    Equalizer,
+    People,
+    CropFree,
+    Code,
+
+    Assessment,
+    HighlightOff,
+    Save,
+    Close,
+    SettingsBrightnessSharp,
+
+    Block,
+
+    VisibilityOff,
+
+    ExpandLess,
+
+    KeyboardArrowDown,
+
+
+} from '@material-ui/icons'
 import Divider from '@material-ui/core/Divider'
 
 import { Formik } from 'formik'
@@ -289,6 +385,150 @@ export default () => {
                                 <Button loading={true}>
                                     Loading default button
                                 </Button>
+                                ArrowBackIosIcon
+                                <ArrowBackIosIcon style={{ color: 'black' }} />
+                                ExpandMoreIcon
+                                <ExpandMoreIcon />
+                                Email
+                                <Email />
+                                Check
+                                <Check />
+                                CheckCircleOutlined
+                                <CheckCircleOutlined />
+                                ErrorOutlineOutlined
+                                <ErrorOutlineOutlined />
+                                ReportProblemOutlined
+                                <ReportProblemOutlined />
+                                InfoOutlined
+                                <InfoOutlined />
+                                InfoTwoTone
+                                <InfoTwoTone />
+                                MoreHoriz
+                                <MoreHoriz />
+                                NavigateBefore
+                                <NavigateBefore />
+                                NavigateNext
+                                <NavigateNext />
+                                Delete
+                                <Delete />
+                                ArrowBackIos
+                                <ArrowBackIos />
+                                ExpandMore
+                                <ExpandMore />
+                                FirstPage
+                                <FirstPage />
+                                KeyboardArrowLeft
+                                <KeyboardArrowLeft />
+                                KeyboardArrowRight
+                                <KeyboardArrowRight />
+                                LastPage
+                                <LastPage />
+                                ErrorOutline
+                                <ErrorOutline />
+                                Visibility
+                                <Visibility />
+
+                                Clear
+                                <Clear />
+                                Cancel
+                                <Cancel />
+
+                                Lock
+                                <Lock />
+                                Storage
+                                <Storage />
+                                AccountBox
+                                <AccountBox />
+                                ExitToApp
+                                <ExitToApp />
+                                KeyboardBackspace
+                                <KeyboardBackspace />
+                                Edit
+                                <Edit />
+                                Star
+                                <Star
+                                />
+                                GitHub
+                                <GitHub />
+                                LinkedIn
+                                <LinkedIn />
+                                Brush
+                                <Brush />
+                                ArrowBackIos
+                                <ArrowBackIos />
+                                LocationOn
+                                <LocationOn />
+                                Menu
+                                <Menu />
+                                ThumbUp
+                                <ThumbUp />
+                                ArrowBackIos
+                                <ArrowBackIos />
+                                Group
+                                <Group />
+                                Dashboard
+                                <Dashboard />
+                                Fingerprint
+                                <Fingerprint />
+                                FlightTakeoff
+                                <FlightTakeoff />
+                                AmpStories
+                                <AmpStories />
+                                AssignmentOutlined
+                                <AssignmentOutlined />
+                                StarRate
+                                <StarRate />
+                                HowToVote
+                                <HowToVote />
+                                FormatListBulleted
+                                <FormatListBulleted />
+                                QuestionAnswerSharp
+                                <QuestionAnswerSharp />
+                                Event
+                                <Event />
+                                ChevronRight
+                                <ChevronRight />
+                                ChevronLeft
+                                <ChevronLeft />
+                                FiberManualRecord
+                                <FiberManualRecord />
+                                CheckCircleOutline
+                                <CheckCircleOutline />
+                                SentimentVeryDissatisfied
+                                <SentimentVeryDissatisfied />
+                                Search
+                                <Search />
+                                Tune
+                                <Tune />
+                                Settings
+                                <Settings />
+                                Equalizer
+                                <Equalizer />
+                                People
+                                <People />
+                                CropFree
+                                <CropFree />
+                                Code
+                                <Code />
+
+                                Assessment
+                                <Assessment />
+                                HighlightOff
+                                <HighlightOff />
+                                Save
+                                <Save />
+                                Close
+                                <Close />
+                                SettingsBrightnessSharp
+                                <SettingsBrightnessSharp />
+                                Block
+                                <Block />
+                                VisibilityOff
+                                <VisibilityOff />
+                                ExpandLess
+                                <ExpandLess />
+                                KeyboardArrowDown
+                                <KeyboardArrowDown />
                             </CardContent>
                             <CardActions></CardActions>
                         </Card>
