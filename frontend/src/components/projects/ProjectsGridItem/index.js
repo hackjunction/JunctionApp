@@ -76,21 +76,9 @@ const ProjectsGridItem = ({
     const statusTag = status => {
         switch (status) {
             case 'final':
-                return (
-                    <Chip color="primary" label="Final" />
-                    // <Tag
-                    //     label="Final"
-                    //     color={theme.palette.theme_turquoise.main}
-                    // />
-                )
+                return <Chip color="primary" label="Final" />
             case 'draft':
-                return (
-                    <Chip color="secondary" label="Draft" />
-                    // <Tag
-                    //     label="Draft"
-                    //     color={theme.palette.theme_lightgray.main}
-                    // />
-                )
+                return <Chip color="secondary" label="Draft" />
             default:
                 return null
         }
@@ -121,9 +109,6 @@ const ProjectsGridItem = ({
                                         : false
                                 }
                                 defaultImage={require('assets/images/default_cover_image.png')}
-                                // transformation={{
-                                //     width: 600,
-                                // }}
                             />
                         </div>
                         <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-z-10">

@@ -43,6 +43,33 @@ const ProjectScoreSchema = new mongoose.Schema(
         scoreCriteria: {
             type: [ScoreCriteriaSchema.mongoose],
             required: false,
+            default: [
+                {
+                    criteria: 'creativity',
+                    label: 'Creativity',
+                    score: 0,
+                },
+                {
+                    criteria: 'innovation',
+                    label: 'Innovation',
+                    score: 0,
+                },
+                {
+                    criteria: 'problemSolving',
+                    label: 'Problem Solving',
+                    score: 0,
+                },
+                {
+                    criteria: 'companyFit',
+                    label: 'Company Fit',
+                    score: 0,
+                },
+                {
+                    criteria: 'teamwork',
+                    label: 'Teamwork',
+                    score: 0,
+                },
+            ],
         },
         // scoreCriteria: {
         //     type: [

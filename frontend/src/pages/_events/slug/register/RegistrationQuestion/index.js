@@ -16,6 +16,7 @@ import RecruitmentOptionInput from 'components/inputs/RecruitmentOptionInput'
 import TeamOptionInput from 'components/inputs/TeamOptionInput'
 import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
 import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
+import ImageUpload from 'components/inputs/ImageUpload'
 const { fieldTypes } = RegistrationFields
 // TODO file upload
 
