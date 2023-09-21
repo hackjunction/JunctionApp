@@ -43,6 +43,7 @@ const ProjectScoreSchema = new mongoose.Schema(
         scoreCriteria: {
             type: [ScoreCriteriaSchema.mongoose],
             required: false,
+            default: [],
         },
     },
     { toJSON: { virtuals: true } },
