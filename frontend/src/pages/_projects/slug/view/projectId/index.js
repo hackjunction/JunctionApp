@@ -68,7 +68,9 @@ export default ({ event, showFullTeam }) => {
         score: 0,
         maxScore: 10,
         message: '',
+        scoreCriteria: [],
     })
+
     useEffect(() => {
         if (token && project && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
@@ -80,6 +82,11 @@ export default ({ event, showFullTeam }) => {
                 if (score[0]) {
                     setProjectScore(score[0])
                     setScoreExists(true)
+                } else {
+                    setProjectScore({
+                        ...projectScore,
+                        scoreCriteria: scoreCriteriaBase,
+                    })
                 }
             })
         }

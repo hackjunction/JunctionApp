@@ -299,8 +299,8 @@ router.post('/organization/:slug/icon', (req, res, next) => {
 
 //Upload, download and delete general files over 16mb
 //TODO: add hasToken for all calls. Left out for testing with postman
-router.post('/files', upload.single('file'), (req, res, next) => {
-    // console.log("req", req)
+router.post('/files', hasToken, upload.single('file'), (req, res, next) => {
+    console.log('res', res)
 
     res.status(200).send('File uploaded successfully')
 })

@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
-import { Formik } from 'formik'
+import { FastField, Formik } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
 import { Grid, Box, Typography } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
@@ -25,6 +25,8 @@ import NameField from 'components/projects/ProjectSubmissionFields/NameField'
 import _ from 'lodash'
 import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
 import ProjectFieldsComponents from 'constants/projectFields'
+import FormControl from 'components/inputs/FormControl'
+import ImageUpload from 'components/inputs/ImageUpload'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -218,7 +220,6 @@ const SubmissionForm = props => {
                     <Grid container spacing={6}>
                         <Grid item xs={12}></Grid>
                         <NameField props={formikProps} />
-
                         {renderDefaultFields(
                             event.submissionFormDefaultFields,
                             event.submissionFormEnabledFields,
