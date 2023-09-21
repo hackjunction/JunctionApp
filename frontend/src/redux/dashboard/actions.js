@@ -19,6 +19,7 @@ import UserProfilesService from 'services/userProfiles'
 import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
+import _ from 'lodash'
 
 export const updateEvent = slug => dispatch => {
     dispatch({
@@ -422,9 +423,72 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
     })
 }
 
+const handleFile = async (file, token) => {
+    console.log('File to upload: ', file)
+    console.log('Token data: ', token)
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+        const response = await fetch('/api/upload/files', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        await console.log(response)
+
+        if (response.ok) {
+            const fileMetadata = await response.json()
+            return fileMetadata
+        } else {
+            throw new Error('Failed to upload file')
+        }
+    } catch (error) {
+        // Handle network or other errors
+        throw error
+    }
+}
+
 export const editProject = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     console.log('From dashboard actions, edit project data: ', data)
+    console.log('attachment test', data['wrong-one'])
+    const fileKeys = []
+    _.forOwn(data, function (value, key) {
+        // console.log(key, value)
+        if (Object.getPrototypeOf(value) === File.prototype) {
+            console.log('File found: ', value)
+            fileKeys.push(key)
+        }
+    })
+    if (fileKeys.length > 0) {
+        fileKeys.map(async (key, index) => {
+            const fileMetadata = await handleFile(data[key], idToken)
+            await console.log('File metadata: ', fileMetadata)
+            data[key] = await fileMetadata
+            await console.log('Data key only: ', data[key])
+            data['submissionFormAnswers'].find(
+                ans => ans['key'] === key,
+            ).value = await fileMetadata
+            await console.log(
+                'Test for data with key: ',
+                data['submissionFormAnswers'].find(ans => ans['key'] === key),
+            )
+        })
+    }
+    // data[key] = fileMetadata
+    console.log('Data after file upload: ', data)
+    await console.log('Data with await: ', data)
+    // if (data.files) {
+    //     console.log('Files attached: ', data.files)
+    //     // Merge the file metadata into the data
+    //     // data = { ...data, fileMetadata }
+    //     // Remove the 'file' property from the data object
+    //     delete data.files
+    //     await console.log('Data after file upload: ', data)
+    // }
     await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
     return dispatch({
         type: ActionTypes.UPDATE_PROJECTS,

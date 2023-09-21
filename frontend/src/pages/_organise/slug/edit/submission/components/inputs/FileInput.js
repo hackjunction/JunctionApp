@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FileInput = (value = null, handleChange = () => {}) => {
+const FileInput = ({ value = null, handleChange = () => {} }) => {
     return (
         <div className="tw-flex tw-items-center tw-justify-center tw-w-full">
             <label
@@ -38,8 +38,8 @@ const FileInput = (value = null, handleChange = () => {}) => {
                     type="file"
                     className="tw-hidden"
                     onChange={e => {
-                        console.log(e.target.value)
-                        handleChange(e.target.value)
+                        console.log(e.target.files[0])
+                        handleChange(e.target.files[0])
                     }}
                 />
             </label>
