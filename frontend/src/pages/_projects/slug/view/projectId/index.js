@@ -68,6 +68,7 @@ export default ({ event, showFullTeam }) => {
         score: 0,
         maxScore: 10,
         message: '',
+        scoreCriteria: scoreCriteriaBase,
     })
     useEffect(() => {
         if (token && project && event) {
