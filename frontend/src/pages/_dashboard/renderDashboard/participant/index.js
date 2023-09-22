@@ -79,7 +79,7 @@ export default ({
                     <Image
                         className={classes.sidebarLogo}
                         publicId={
-                            event && event.logo ? event.logo.publicId : ''
+                            event && event.logo ? event.logo.publicId : ''//TODO: if no logo, use default
                         }
                         transformation={{
                             width: 200,
