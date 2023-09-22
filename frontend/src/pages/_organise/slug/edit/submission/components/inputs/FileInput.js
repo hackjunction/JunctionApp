@@ -1,6 +1,7 @@
 import React from 'react'
 
 const FileInput = ({ value = null, handleChange = () => {} }) => {
+    console.log('field input value :>> ', value)
     return (
         <div className="tw-flex tw-items-center tw-justify-center tw-w-full">
             <label
@@ -37,6 +38,7 @@ const FileInput = ({ value = null, handleChange = () => {} }) => {
                     id="dropzone-file"
                     type="file"
                     className="tw-hidden"
+                    // value={value}
                     onChange={e => {
                         console.log(e.target.files[0])
                         handleChange(e.target.files[0])

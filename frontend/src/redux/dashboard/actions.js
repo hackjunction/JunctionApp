@@ -425,7 +425,6 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
 
 const handleFile = async (file, token) => {
     console.log('File to upload: ', file)
-    console.log('Token data: ', token)
     const formData = new FormData()
     formData.append('file', file)
 
@@ -437,11 +436,16 @@ const handleFile = async (file, token) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        await console.log(response)
+        // const jsonResponse = response.json()
+        // console.log('JSON', await response.json())
+        console.log('Does this render?')
+        // console.log('JSON', JSON.stringify(jsonResponse))
 
         if (response.ok) {
+            console.log('File uploaded successfully')
             const fileMetadata = await response.json()
-            return fileMetadata
+            console.log('File metadata: ', fileMetadata)
+            return JSON.stringify(fileMetadata)
         } else {
             throw new Error('Failed to upload file')
         }
@@ -465,6 +469,7 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
         await Promise.all(
             fileKeys.map(async key => {
                 const fileMetadata = await handleFile(data[key], idToken)
+                console.log('File metadata: ', fileMetadata)
                 data[key] = fileMetadata.toString()
                 const index = data['submissionFormAnswers'].findIndex(
                     ans => ans['key'] === key,
