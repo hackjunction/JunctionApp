@@ -60,7 +60,6 @@ controller.createProjectForEventAndTeam = async (event, team, data) => {
 
 controller.updateProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
-    // upload.single('file')
     console.log('data :>> ', data)
     const validatedData = await schema.validate(data, { stripUnknown: true })
     console.log('validatedData :>> ', validatedData)

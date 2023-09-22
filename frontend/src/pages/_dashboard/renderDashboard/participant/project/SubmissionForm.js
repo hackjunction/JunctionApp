@@ -162,6 +162,7 @@ const SubmissionForm = props => {
                 })
             })
         }
+        console.log('formData after formatting:>> ', formData)
         return formData
     }
 

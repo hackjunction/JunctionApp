@@ -453,8 +453,6 @@ const handleFile = async (file, token) => {
 
 export const editProject = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-    console.log('From dashboard actions, edit project data: ', data)
-    console.log('attachment test', data['wrong-one'])
     const fileKeys = []
     _.forOwn(data, function (value, key) {
         // console.log(key, value)
@@ -464,31 +462,18 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
         }
     })
     if (fileKeys.length > 0) {
-        fileKeys.map(async (key, index) => {
-            const fileMetadata = await handleFile(data[key], idToken)
-            await console.log('File metadata: ', fileMetadata)
-            data[key] = await fileMetadata
-            await console.log('Data key only: ', data[key])
-            data['submissionFormAnswers'].find(
-                ans => ans['key'] === key,
-            ).value = await fileMetadata
-            await console.log(
-                'Test for data with key: ',
-                data['submissionFormAnswers'].find(ans => ans['key'] === key),
-            )
-        })
+        await Promise.all(
+            fileKeys.map(async key => {
+                const fileMetadata = await handleFile(data[key], idToken)
+                data[key] = fileMetadata.toString()
+                const index = data['submissionFormAnswers'].findIndex(
+                    ans => ans['key'] === key,
+                )
+                data['submissionFormAnswers'][index].value =
+                    fileMetadata.toString()
+            }),
+        )
     }
-    // data[key] = fileMetadata
-    console.log('Data after file upload: ', data)
-    await console.log('Data with await: ', data)
-    // if (data.files) {
-    //     console.log('Files attached: ', data.files)
-    //     // Merge the file metadata into the data
-    //     // data = { ...data, fileMetadata }
-    //     // Remove the 'file' property from the data object
-    //     delete data.files
-    //     await console.log('Data after file upload: ', data)
-    // }
     await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
     return dispatch({
         type: ActionTypes.UPDATE_PROJECTS,
