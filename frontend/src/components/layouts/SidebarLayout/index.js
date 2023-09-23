@@ -41,6 +41,19 @@ const useStyles = makeStyles(theme => ({
             flexShrink: 0,
         },
     },
+    menuIcon: {
+        transition: theme.transitions.create(['transform'], {
+            duration: theme.transitions.duration.standard,
+        }),
+    },
+    dashboardOpen: {
+
+        transform: 'rotate(-90deg)',
+    },
+    dashboardClosed: {
+
+        transform: 'rotate(0)',
+    },
     wordmark: {
         display: 'block',
         marginLeft: 'auto',
@@ -356,11 +369,9 @@ export default React.memo(
                         className={classes.drawerToggleDesktop}
                         aria-label="toggle drawer desktop"
                     >
-                        {desktopOpen ? (
-                            <KeyboardBackspaceIcon />
-                        ) : (
-                            <MenuIcon />
-                        )}
+                        <MenuIcon className={`${classes.menuIcon} ${desktopOpen ? classes.dashboardOpen : classes.dashboardClosed
+                            }`} />
+
                     </IconButton>
                 </Hidden>
                 <Hidden mdUp implementation="css">

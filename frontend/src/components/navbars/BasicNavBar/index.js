@@ -19,8 +19,7 @@ const useStyles = makeStyles(theme => ({
     inner: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'right',
         margin: '0',
         height: '100%',
     },
@@ -32,7 +31,7 @@ const BasicNavBar = ({ text }) => {
     return (
 
         // <div className={classes.wrapper}>
-        <div className='tw-w-full tw-h-78px tw-px-0 tw-py-2  tw-bg-wave-pattern tw-bg-black' >
+        <div className='tw-w-full tw-px-0 tw-py-2 tw-pr-32 tw-bg-wave-pattern tw-bg-black ' >
             <div className={classes.inner}>
                 <UserAvatar />
                 {/* <LanguageMenu /> */}

@@ -11,6 +11,7 @@ import {
     ListItemText,
     Divider,
     Grid,
+    IconButton,
 } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -67,15 +68,21 @@ export default () => {
     const [anchorEl, setAnchorEl] = useState(null)
     const color = JunctionTheme.palette
 
-
+    const handleClick = () => {
+        if (match.url === '/home') {
+            dispatch(push(`dashboard/default/profile`))
+        } else {
+            dispatch(push(`${match.url}/profile`))
+        }
+    }
 
 
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
-            <div className='tw-ml-16 tw-rounded-full tw-border-8 tw-border-white'>
-                <a href={`${match.url}/profile`}>
+            <div className='tw-rounded-full tw-border-8 tw-border-white'>
+                <IconButton>
                     <Avatar
-                        className='tw-ml-16 tw-rounded-full tw-border-8 tw-border-white'//TODO: what is wrong with the border
+                        className='tw-rounded-full tw-border-8 tw-border-white '
                         src={profile?.avatar}
                         alt="Avatar"
                         style={{
@@ -84,9 +91,9 @@ export default () => {
                             border: `2px solid ${color['primary'].main}`,
                             borderRadius: '50%',
                         }}
-                        onClick={() => dispatch(push(`${match.url}/profile`))}
+                        onClick={handleClick}
                     />
-                </a>
+                </IconButton>
             </div>
         </Box>
     )
