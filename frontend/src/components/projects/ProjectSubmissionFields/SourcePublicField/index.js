@@ -2,7 +2,7 @@ import { Grid } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
 import React from 'react'
-import Switch from 'pages/_organise/slug/edit/submission/components/Switch'
+import Switch from 'pages/_dashboard/renderDashboard/organiser/edit/submission/components/Switch'
 
 const SourcePublicField = () => {
     return (
