@@ -15,31 +15,31 @@ module.exports = {
                 { $set: { recruiters: [] } },//TODO: add recruiters from userprofiles here
             )
         console.log('Done with recruiters to event', ares.n, ares.nModified)
-/*
-        const bres = await mongoose
-            .model('UserProfile')
-            .updateMany(
-                { 'recruiterEvents.0': { $exists: true }, recruiterEvents: { $elemMatch: { $type: "string" } } }, // array has at least one element and element type is string, not object
-                [{
-                    $set: {
-                        recruiterEvents: {
-                            $map: {
-                                input: "$recruiterEvents",
-                                as: "current",
-                                in: {
-                                    _id: ObjectId().toString(),
-                                    eventId: "$$current",
-                                    organisation: {
-                                        $getField: "recruiterOrganisation"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }])
+        //TODO: breaks wit error MongoError: BSON field 'update.updates.u' is the wrong type 'array', expected type 'object'. fix.
+        // const bres = await mongoose
+        //     .model('UserProfile')
+        //     .updateMany(
+        //         { 'recruiterEvents.0': { $exists: true }, recruiterEvents: { $elemMatch: { $type: "string" } } }, // array has at least one element and element type is string, not object
+        //         [{
+        //             $set: {
+        //                 recruiterEvents: {
+        //                     $map: {
+        //                         input: "$recruiterEvents",
+        //                         as: "current",
+        //                         in: {
+        //                             _id: ObjectId().toString(),
+        //                             eventId: "$$current",
+        //                             organisation: {
+        //                                 $getField: "recruiterOrganisation"
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }])
 
-        console.log('Done with events to userprofiles', bres.n, bres.nModified)
-*/
+        // console.log('Done with events to userprofiles', bres.n, bres.nModified)
+
         const cres = await mongoose
             .model('UserProfile')
             .updateMany(

@@ -24,6 +24,7 @@ export default () => {
 
     if (!EventHelpers.isVotingOpen(event, moment)) return null
 
+    //TODO: create differnt block if no peer review
     return (
         <Grid item xs={12}>
             <GradientBox p={3} color="theme_purple">
