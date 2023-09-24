@@ -5,6 +5,7 @@ const { ProjectSchema } = require('@hackjunction/shared')
 const Project = require('./model')
 const { ForbiddenError } = require('../../common/errors/errors')
 const TeamController = require('../team/controller')
+const upload = require('../../misc/gridfs').upload
 
 const controller = {}
 
@@ -59,6 +60,7 @@ controller.createProjectForEventAndTeam = async (event, team, data) => {
 
 controller.updateProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
+    // upload.single('file')
     console.log('data :>> ', data)
     const validatedData = await schema.validate(data, { stripUnknown: true })
     console.log('validatedData :>> ', validatedData)
@@ -77,8 +79,9 @@ controller.generateChallengeLink = async (event, challengeSlug) => {
     //    console.log('inhere challenge :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
-            }/challenge/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${
+            event.slug
+        }/challenge/${encodeURIComponent(hashed)}`,
     }
 }
 
@@ -87,8 +90,9 @@ controller.generateTrackLink = async (event, trackSlug) => {
     //    console.log('inhere track  :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
-            }/tracks/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${
+            event.slug
+        }/tracks/${encodeURIComponent(hashed)}`,
     }
 }
 

@@ -92,13 +92,13 @@ GavelAnnotatorSchema.methods.canVote = async function () {
 
     if (!this.active) {
         return Promise.reject(
-            new ForbiddenError('Cann,ot submit votes while disabled'),
+            new ForbiddenError('Cannot submit votes while disabled'),
         )
     }
 
     if (!this.onboarded) {
         return Promise.reject(
-            new ForbiddenError('Cannot subm,it votes before being onboarded'),
+            new ForbiddenError('Cannot submit votes before being onboarded'),
         )
     }
 
@@ -202,7 +202,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
                     console.log('no team for', project)
                     return false
                 }
-                // TOOD these should be removed
+                // TODO these should be removed
                 console.log('orpahn gavelproject', gavelProject)
                 return false
             }

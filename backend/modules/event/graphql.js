@@ -118,7 +118,6 @@ const EmailConfigType = new GraphQLObjectType({
     },
 })
 
-
 const EventInput = new GraphQLInputObjectType({
     name: 'EventInput',
     fields: {
@@ -215,6 +214,9 @@ const EventInput = new GraphQLInputObjectType({
             type: GraphQLBoolean,
         },
         allowProjectSubmissionsPerChallenge: {
+            type: GraphQLBoolean,
+        },
+        allowVoteOnOwnProject: {
             type: GraphQLBoolean,
         },
         owner: {

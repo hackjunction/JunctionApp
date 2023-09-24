@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import { push } from 'connected-react-router'
-import { Box, Grid, Divider } from '@material-ui/core'
+import { Box, Grid, Divider, Typography } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -11,6 +11,8 @@ import Button from 'components/generic/Button'
 import { makeStyles } from '@material-ui/core/styles'
 
 import ProjectsService from 'services/projects'
+import Filter from 'components/Team/Filter'
+import _ from 'lodash'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 //TODO make this and track one into a component
 export default ({ event }) => {
+    const allFilterLabel = 'All projects'
     const classes = useStyles()
     const match = useRouteMatch()
     const dispatch = useDispatch()
@@ -34,6 +37,11 @@ export default ({ event }) => {
     const [finalProjects, setFinalProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
+    const [filter, setFilter] = useState(allFilterLabel)
+
+    const onFilterChange = filter => {
+        setFilter(filter)
+    }
 
     const fetchProjects = useCallback(async () => {
         setLoading(true)
@@ -70,51 +78,36 @@ export default ({ event }) => {
             error={error}
             render={() => (
                 <Container center>
-                    <PageHeader
-                        heading={data.challenge.name}
-                        subheading={data.projects.length + ' projects'}
-                    />
-                    <Box>FILTER</Box>
-                    <Divider />
-                    <Grid className={classes.wrapper} container spacing={1}>
-                        <Grid item xs={4}>
-                            <Button
-                                onClick={() => {
-                                    setProjects(finalProjects)
-                                }}
-                                variant="outlined"
-                                color="theme_lightgray"
-                            >
-                                Final
-                            </Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button
-                                onClick={() => {
-                                    setProjects(draftsProjects)
-                                }}
-                                variant="outlined"
-                                color="theme_lightgray"
-                            >
-                                Draft
-                            </Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button
-                                onClick={() => {
-                                    setProjects(data.projects)
-                                }}
-                                variant="outlined"
-                                color="theme_lightgray"
-                            >
-                                All
-                            </Button>
-                        </Grid>
-                    </Grid>
-                    <Divider />
+                    <div className="tw-flex tw-justify-between tw-items-end">
+                        <PageHeader
+                            heading={data?.challenge.name}
+                            subheading={`By ${data?.challenge.partner}`}
+                            alignment="left"
+                            details={`${data?.projects.length} project${
+                                data?.projects.length > 1 ||
+                                data?.projects.length < 1
+                                    ? 's'
+                                    : ''
+                            }`}
+                        />
+                        <Filter
+                            noFilterOption={allFilterLabel}
+                            onChange={onFilterChange}
+                            filterArray={data?.event.challenges.map(c => {
+                                return { label: c.name, value: c.slug }
+                            })}
+                        />
+                    </div>
+
                     <Box height={20} />
                     <ProjectsGrid
-                        projects={projects}
+                        projects={
+                            filter === allFilterLabel
+                                ? projects
+                                : _.filter(projects, project =>
+                                      _.includes(project.challenges, filter),
+                                  )
+                        }
                         event={data.event}
                         onSelect={project =>
                             dispatch(push(`${match.url}/view/${project._id}`))

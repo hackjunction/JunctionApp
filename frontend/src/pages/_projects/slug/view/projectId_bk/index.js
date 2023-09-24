@@ -16,30 +16,6 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
 import { set } from 'object-path'
-import EvaluationForm from './EvaluationForm'
-
-const scoreCriteriaBase = [
-    {
-        criteria: 'creativity',
-        label: 'Creativity',
-    },
-    {
-        criteria: 'innovation',
-        label: 'Innovation',
-    },
-    {
-        criteria: 'problemSolving',
-        label: 'Problem Solving',
-    },
-    {
-        criteria: 'companyFit',
-        label: 'Company Fit',
-    },
-    {
-        criteria: 'teamwork',
-        label: 'Teamwork',
-    },
-]
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
@@ -68,9 +44,7 @@ export default ({ event, showFullTeam }) => {
         score: 0,
         maxScore: 10,
         message: '',
-        scoreCriteria: [],
     })
-
     useEffect(() => {
         if (token && project && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
@@ -78,15 +52,9 @@ export default ({ event, showFullTeam }) => {
                 event.slug,
                 project._id,
             ).then(score => {
-                console.log('Score', score)
                 if (score[0]) {
                     setProjectScore(score[0])
                     setScoreExists(true)
-                } else {
-                    setProjectScore({
-                        ...projectScore,
-                        scoreCriteria: scoreCriteriaBase,
-                    })
                 }
             })
         }
@@ -98,7 +66,6 @@ export default ({ event, showFullTeam }) => {
             const project = await ProjectsService.getPublicProjectById(
                 projectId,
             )
-            console.log('Project details', project)
             setProject(project)
         } catch (err) {
             setError(true)
@@ -158,23 +125,12 @@ export default ({ event, showFullTeam }) => {
             />
             {validToken ? (
                 <Container>
-                    {projectScore?.scoreCriteria &&
-                    projectScore?.scoreCriteria.length > 0 ? (
-                        <EvaluationForm
-                            event={event}
-                            project={project}
-                            submit={handleSubmit}
-                            score={projectScore}
-                            scoreCriteria={scoreCriteriaBase}
-                        />
-                    ) : (
-                        <ScoreForm
-                            event={event}
-                            project={project}
-                            submit={handleSubmit}
-                            score={projectScore}
-                        />
-                    )}
+                    <ScoreForm
+                        event={event}
+                        project={project}
+                        submit={handleSubmit}
+                        score={projectScore}
+                    />
                 </Container>
             ) : null}
             <ShareProject project={project} event={event} />

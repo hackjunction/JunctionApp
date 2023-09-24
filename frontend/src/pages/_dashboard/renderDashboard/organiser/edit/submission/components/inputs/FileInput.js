@@ -38,8 +38,8 @@ const FileInput = (value = null, handleChange = () => {}) => {
                     type="file"
                     className="tw-hidden"
                     onChange={e => {
-                        handleChange(e.target.value)
                         console.log(e.target.value)
+                        handleChange(e.target.value)
                     }}
                 />
             </label>
