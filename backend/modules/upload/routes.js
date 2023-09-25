@@ -300,25 +300,25 @@ router.post('/organization/:slug/icon', (req, res, next) => {
 //Upload, download and delete general files over 16mb
 //TODO: add hasToken for all calls. Left out for testing with postman
 router.post('/files', hasToken, upload.single('file'), (req, res, next) => {
-    console.log('Post request from /files', req.file)
+    console.log('file data', req.file)
+    // console.log('Res', res)
+    console.log('Post request from /files')
     const fileMetaData = {
         id: req.file.id,
         filename: req.file.filename,
         uploadData: req.file.uploadDate,
         fileSize: req.file.size,
     }
+    console.log('fileMetaData', fileMetaData)
     res.status(200).send(fileMetaData)
 })
 
-router.get('/files/:id', (req, res, next) => {
+router.get('/files/:id', hasToken, (req, res, next) => {
     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
         bucketName: 'uploads',
     })
 
     console.log('Get request from /files', req)
-
-    // console.log("req", ObjectId(req.params.id))
-    // console.log("gfs", gfs)
     const file = gfs
         .find({
             _id: ObjectId(req.params.id),
@@ -332,7 +332,7 @@ router.get('/files/:id', (req, res, next) => {
         })
 })
 //TODO: make periodic delete function calling this
-router.delete('/files/:id', (req, res, next) => {
+router.delete('/files/:id', hasToken, (req, res, next) => {
     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
         bucketName: 'uploads',
     })

@@ -20,6 +20,7 @@ import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
 import _ from 'lodash'
+import FileService from 'services/files'
 
 export const updateEvent = slug => dispatch => {
     dispatch({
@@ -423,15 +424,46 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
     })
 }
 
-const handleFile = async (file, token) => {
-    console.log('File to upload: ', file)
-    const formData = new FormData()
-    formData.append('file', file)
-
+const getFile = async (fileId, filename, token) => {
+    console.log('File to download: ', fileId)
     try {
-        const response = await fetch('/api/upload/files', {
-            method: 'POST',
-            body: formData,
+        const response = await fetch(`/api/upload/files/${fileId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+
+        if (response.ok) {
+            console.log('File download successfully')
+            const blob = await response.blob()
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.style.display = 'none'
+            a.href = url
+            a.download = filename // Set the desired file name
+            document.body.appendChild(a)
+
+            // Click the anchor element to initiate the download
+            a.click()
+
+            // Clean up by revoking the object URL
+            window.URL.revokeObjectURL(url)
+            // return JSON.stringify(fileMetadata)
+        } else {
+            throw new Error('Failed to download file')
+        }
+    } catch (error) {
+        // Handle network or other errors
+        throw error
+    }
+}
+
+const deleteFile = async (fileId, token) => {
+    console.log('File to delete: ', fileId)
+    try {
+        const response = await fetch(`/api/upload/files/${fileId}`, {
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -442,17 +474,70 @@ const handleFile = async (file, token) => {
         // console.log('JSON', JSON.stringify(jsonResponse))
 
         if (response.ok) {
-            console.log('File uploaded successfully')
-            const fileMetadata = await response.json()
-            console.log('File metadata: ', fileMetadata)
-            return JSON.stringify(fileMetadata)
+            console.log('File deleted successfully')
         } else {
-            throw new Error('Failed to upload file')
+            throw new Error('Failed to delete file')
         }
     } catch (error) {
         // Handle network or other errors
         throw error
     }
+}
+
+const handleFile = async (file, token) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    console.log('File to upload: ', file)
+    console.log('Form data', formData)
+    try {
+        const response = await fetch('/api/upload/files', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        console.log('File upload response: ', response)
+        if (response.ok) {
+            const fileMetadata = await response.json()
+            console.log('File uploaded successfully')
+            console.log('File data', fileMetadata)
+            return JSON.stringify(fileMetadata)
+        } else {
+            throw new Error('Failed to upload file')
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+export const getFileForProject =
+    (fileId, filename) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        return dispatch({
+            type: ActionTypes.GET_FILE,
+            promise: getFile(fileId, filename, idToken),
+            meta: {
+                onFailure: e =>
+                    console.log(
+                        'Error getting attachment file from project',
+                        e,
+                    ),
+            },
+        })
+    }
+
+export const deleteFileForProject = fileId => async (dispatch, getState) => {
+    const idToken = AuthSelectors.getIdToken(getState())
+
+    return dispatch({
+        type: ActionTypes.DELETE_FILE,
+        promise: deleteFile(fileId, idToken),
+        meta: {
+            onFailure: e =>
+                console.log('Error deleting attachment file from project', e),
+        },
+    })
 }
 
 export const editProject = (slug, data) => async (dispatch, getState) => {
@@ -465,9 +550,11 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
             fileKeys.push(key)
         }
     })
+    console.log('File keys: ', fileKeys)
     if (fileKeys.length > 0) {
         await Promise.all(
             fileKeys.map(async key => {
+                console.log('File key: ', key)
                 const fileMetadata = await handleFile(data[key], idToken)
                 console.log('File metadata: ', fileMetadata)
                 data[key] = fileMetadata.toString()
