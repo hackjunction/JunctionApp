@@ -186,7 +186,7 @@ export default (role) => {
                     loading={eventLoading || registrationLoading || alertsLoading}
                     wrapContent={false}
                 >
-                    <PartnerDashboard originalAlertCount={alertCount} originalAlerts={alerts} shownPages={shownPages} />
+                    <PartnerDashboard event={event} originalAlertCount={alertCount} originalAlerts={alerts} shownPages={shownPages} />
                 </PageWrapper>
             )
         }

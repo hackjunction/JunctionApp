@@ -18,9 +18,10 @@ import RequiresRole from 'hocs/RequiresRole'
 
 /** Lazy-load the access-restricted pages */
 const DashboardRouter = lazy(() => import('./pages/_dashboard'))
-const OrganiserRouter = lazy(() => import('./pages/_organise'))
+const OrganiserRouter = lazy(() => import('./pages/_dashboard/renderDashboard/organiser/router'))
 const AccountRouter = lazy(() => import('./pages/_account'))
-const RecruitmentRouter = lazy(() => import('./pages/_recruitment'))
+//TODO: switch the recruitment view and router
+const RecruitmentRouter = lazy(() => import('./pages/_dashboard/renderDashboard/partner/router'))//import('./pages/_recruitment'))//
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
 const SandboxRouter = lazy(() => import('./pages/_sandbox'))
