@@ -5,7 +5,6 @@ import * as DashboardActions from 'redux/dashboard/actions'
 
 const FileInput = ({ value = null, handleChange = () => {} }) => {
     const dispatch = useDispatch()
-    console.log('field input value :>> ', value)
     let parsedValue
 
     if (typeof value === 'string' && value !== '') {
@@ -14,9 +13,7 @@ const FileInput = ({ value = null, handleChange = () => {} }) => {
         parsedValue = value
     }
 
-    console.log('valueObject :>> ', parsedValue)
-
-    const fileTest = async () => {
+    const downloadFile = async () => {
         await dispatch(
             DashboardActions.getFileForProject(
                 parsedValue.id,
@@ -25,10 +22,11 @@ const FileInput = ({ value = null, handleChange = () => {} }) => {
         )
     }
 
-    const deleteTest = async () => {
+    const deleteFile = async () => {
         handleChange('')
         await dispatch(DashboardActions.deleteFileForProject(parsedValue.id))
     }
+
     return (
         <div className="tw-flex tw-items-center tw-justify-center tw-w-full">
             <label
@@ -77,10 +75,10 @@ const FileInput = ({ value = null, handleChange = () => {} }) => {
                 )}
                 {value && (
                     <div>
-                        <Button variant="jContained" onClick={fileTest}>
+                        <Button variant="jContained" onClick={downloadFile}>
                             Download {parsedValue.filename}
                         </Button>
-                        <Button onClick={deleteTest}>
+                        <Button onClick={deleteFile}>
                             Delete {parsedValue.filename}
                         </Button>
                     </div>
