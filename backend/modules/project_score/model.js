@@ -45,6 +45,24 @@ const ProjectScoreSchema = new mongoose.Schema(
             required: false,
             default: [],
         },
+        reviewers: {
+            type: [
+                {
+                    userId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'User',
+                    },
+                    score: {
+                        type: Number,
+                        default: 0,
+                    },
+                    // scoreCriteria,
+                    // feedback
+                },
+            ],
+            required: false,
+            default: [],
+        },
     },
     { toJSON: { virtuals: true } },
 )

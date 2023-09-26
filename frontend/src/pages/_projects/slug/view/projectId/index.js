@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { goBack } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import ShareProject from 'components/projects/ProjectDetail/ShareProject'
 import ScoreForm from './ScoreForm'
 import Container from 'components/generic/Container'
-
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
 
@@ -17,6 +18,7 @@ import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
 import { set } from 'object-path'
 import EvaluationForm from './EvaluationForm'
+import _ from 'lodash'
 
 const scoreCriteriaBase = [
     {
@@ -43,6 +45,14 @@ const scoreCriteriaBase = [
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
+    const idToken = useSelector(AuthSelectors.getIdToken)
+    const userId = useSelector(AuthSelectors.getUserId)
+    const userProfile = useSelector(UserSelectors.userProfile)
+    const altUserProfile = useSelector(AuthSelectors.getIdTokenPayload)
+    console.log('userId', userId)
+    console.log('userProfile', userProfile)
+    console.log('altUserProfile', altUserProfile)
+    console.log('event', event)
 
     const match = useRouteMatch()
     const { projectId, token } = match.params
@@ -69,6 +79,7 @@ export default ({ event, showFullTeam }) => {
         maxScore: 10,
         message: '',
         scoreCriteria: [],
+        reviewers: [],
     })
 
     useEffect(() => {
@@ -110,7 +121,14 @@ export default ({ event, showFullTeam }) => {
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         values.project = project._id
         values.event = event._id
+        console.log('values', values)
         try {
+            if (userId) {
+                _.includes(values.reviewers, userId)
+                    ? console.log('User already in reviewers list')
+                    : values.reviewers.push(userId)
+            }
+            console.log('Reviewers', values.reviewers)
             if (scoreExists) {
                 await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
                     token,
