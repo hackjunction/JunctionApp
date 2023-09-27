@@ -7,6 +7,11 @@ import { EventHelpers } from '@hackjunction/shared'
 import ProjectsGridItem from '../ProjectsGridItem'
 
 import ProjectScoresService from 'services/projectScores'
+import { useSelector } from 'react-redux'
+
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
+import _ from 'lodash'
 
 const ProjectsGrid = ({
     projects,
@@ -17,6 +22,14 @@ const ProjectsGrid = ({
     showScore = false,
     token = '',
 }) => {
+    // const idToken = useSelector(AuthSelectors.getIdToken)
+    // const userAccessRight = useSelector(UserSelectors.userAccessRight)
+    // const isPartner = _.includes(userAccessRight, 'partner')
+    // if (!token && idToken && isPartner) {
+    //     console.log('No token provided')
+    //     token = idToken
+    // }
+
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
     const fetchData = useCallback(async () => {

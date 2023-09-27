@@ -7,7 +7,6 @@ import DefaultPage from './renderDashboard/default'
 import { useMyEvents, useActiveEvents } from 'graphql/queries/events'
 import { useSelector, useDispatch } from 'react-redux'
 
-
 import * as UserSelectors from 'redux/user/selectors'
 
 export default () => {
@@ -17,7 +16,6 @@ export default () => {
     // const recruiterEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
     // const [organizerEvents, loading] = useMyEvents()//TODO: move to user state
     // const participantEvents = useSelector(UserSelectors.userProfileRegistrations)
-
 
     // const [activeEvents] = useActiveEvents({}) //active events, from these we select where to rediret, or default
 
@@ -54,28 +52,28 @@ export default () => {
     //     }
     // }, [defaultPage, dispatch])
 
-
     //redirect to right event page, default, or out
     return (
         <Switch>
-
             <Route
                 exact={false}
-                path={`${match.path}/event/:slug` /*TODO: pass correct event and role and create default case*/}
+                path={
+                    `${match.path}/event/:slug` /*TODO: pass correct event and role and create default case*/
+                }
                 component={SlugPage}
             />
             <Route
                 exact={false}
-                path={`${match.path}/default` /*TODO: pass correct event and role and create default case*/}
+                path={
+                    `${match.path}/default` /*TODO: pass correct event and role and create default case*/
+                }
                 component={DefaultPage}
             />
-
             {/* For all other routes, redirect outta here */}
             {/* <Redirect to="/" /> */}
         </Switch>
     )
 }
-
 
 // return (
 //     <Switch>

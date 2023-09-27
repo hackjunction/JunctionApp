@@ -16,10 +16,12 @@ import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
 
-
 import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
+import { useSelector } from 'react-redux'
 
+import ProjectsPage from './projects'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 export default ({ originalAlertCount, originalAlerts, shownPages }) => {
     const { t } = useTranslation()
@@ -28,14 +30,17 @@ export default ({ originalAlertCount, originalAlerts, shownPages }) => {
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
 
-    console.log("props", originalAlertCount, originalAlerts, shownPages)
+    const event = useSelector(DashboardSelectors.event)
+
+    console.log('props', originalAlertCount, originalAlerts, shownPages)
     console.log(originalAlertCount, alertCount)
 
     return (
         <SidebarLayout
             baseRoute={match.url}
             location={location}
-            sidebarTopContent={<img src={DefaultImage}></img>
+            sidebarTopContent={
+                <img src={DefaultImage}></img>
                 //TODO: Remove default image
 
                 // <div className={classes.sidebarTop}>
@@ -65,6 +70,15 @@ export default ({ originalAlertCount, originalAlerts, shownPages }) => {
                     component: () => {
                         setAlertCount(0)
                         return DefaultPage({ alerts })
+                    },
+                },
+                {
+                    key: 'projects',
+                    path: '/projects',
+                    exact: false,
+                    label: 'Projects',
+                    component: () => {
+                        return <ProjectsPage event={event} />
                     },
                 },
                 {
@@ -102,7 +116,8 @@ export default ({ originalAlertCount, originalAlerts, shownPages }) => {
                     label: 'Meetings',
                     component: CalendarPage,
                 },
-                {//TODO: wtf is this? move recrytool to be part of the app, not some useles framing
+                {
+                    //TODO: wtf is this? move recrytool to be part of the app, not some useles framing
                     key: 'recruitment',
                     path: '/recruitment',
                     exact: true,

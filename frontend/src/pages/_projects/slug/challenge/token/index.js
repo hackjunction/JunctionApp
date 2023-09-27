@@ -17,6 +17,8 @@ import _ from 'lodash'
 export default ({ event }) => {
     const allFilterLabel = 'All projects'
     const match = useRouteMatch()
+    console.log('match', match)
+    console.log('match URL', match.url)
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params
@@ -39,7 +41,6 @@ export default ({ event }) => {
                 slug,
                 token,
             )
-            console.log('Project list for challenge', data)
             setData(data)
             setDraftsProjects(
                 data.projects.filter(project => project.status === 'draft'),

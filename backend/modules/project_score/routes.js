@@ -11,6 +11,7 @@ const {
     isEventOrganiser,
     getEventFromParams,
     hasPartnerToken,
+    isEventPartner,
 } = require('../../common/middleware/events')
 const { registrationAccepted } = require('../email-task/types')
 
@@ -65,7 +66,6 @@ const getScoresByEventAndTeam = asyncHandler(async (req, res) => {
 })
 
 const getScoreByProjectId = asyncHandler(async (req, res) => {
-    // TODO figure out why ?. operator didn't work here
     const challenge = req.params.challenge ? req.params.challenge._id : null
     const track = req.params.track ? req.params.track._id : null
     const score = await ProjectScoreController.getScoreByProjectId(
@@ -123,5 +123,27 @@ router.put(
     hasPartnerToken,
     updateProjectScore,
 )
+
+// New routes for project review from partner accounts
+
+router.get(
+    '/event/:slug/review/:projectId',
+    getEventFromParams,
+    isEventPartner,
+    getScoreByProjectId,
+)
+
+// router.post(
+//     '/event/:slug/review/:id',
+//     getEventFromParams,
+//     isEventPartner,
+//     addProjectScore,
+// )
+// router.put(
+//     '/event/:slug/review/:id',
+//     getEventFromParams,
+//     isEventPartner,
+//     updateProjectScore,
+// )
 
 module.exports = router

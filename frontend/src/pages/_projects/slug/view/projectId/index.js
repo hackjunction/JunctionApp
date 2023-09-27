@@ -19,29 +19,30 @@ import ProjectScoresService from 'services/projectScores'
 import { set } from 'object-path'
 import EvaluationForm from './EvaluationForm'
 import _ from 'lodash'
+import scoreCriteriaBase from 'components/projects/ScoreCriteria'
 
-const scoreCriteriaBase = [
-    {
-        criteria: 'creativity',
-        label: 'Creativity',
-    },
-    {
-        criteria: 'innovation',
-        label: 'Innovation',
-    },
-    {
-        criteria: 'problemSolving',
-        label: 'Problem Solving',
-    },
-    {
-        criteria: 'companyFit',
-        label: 'Company Fit',
-    },
-    {
-        criteria: 'teamwork',
-        label: 'Teamwork',
-    },
-]
+// const scoreCriteriaBase = [
+//     {
+//         criteria: 'creativity',
+//         label: 'Creativity',
+//     },
+//     {
+//         criteria: 'innovation',
+//         label: 'Innovation',
+//     },
+//     {
+//         criteria: 'problemSolving',
+//         label: 'Problem Solving',
+//     },
+//     {
+//         criteria: 'companyFit',
+//         label: 'Company Fit',
+//     },
+//     {
+//         criteria: 'teamwork',
+//         label: 'Teamwork',
+//     },
+// ]
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
