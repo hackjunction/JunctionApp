@@ -38,6 +38,9 @@ const EventPageScriptType = new GraphQLObjectType({
 const EventPageScriptInput = new GraphQLInputObjectType({
     name: 'EventPageScriptInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         page: {
             type: GraphQLNonNull(GraphQLString),
         },
