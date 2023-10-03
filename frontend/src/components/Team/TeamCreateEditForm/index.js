@@ -48,8 +48,7 @@ export default ({
             .max(
                 300,
                 ({ max }) => `The description can have up to ${max} characters`,
-            )
-            .required('Team description is required'),
+            ),
         ideaTitle: yup
             .string()
             .min(
@@ -240,7 +239,7 @@ export default ({
                         <FastField name="description">
                             {({ field, form }) => (
                                 <FormControl
-                                    label="Brief description about your team *"
+                                    label="Brief description about your team"
                                     hint="Share what your team is about"
                                     touched={
                                         form.touched[field.name] ||
