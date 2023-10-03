@@ -27,7 +27,7 @@ import StatusField from 'components/projects/ProjectSubmissionFields/StatusField
 import ProjectFieldsComponents from 'constants/projectFields'
 import ImageUpload from 'components/inputs/ImageUpload'
 import FormControl from 'components/inputs/FormControl'
-import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
+// import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
