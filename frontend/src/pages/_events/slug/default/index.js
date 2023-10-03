@@ -7,8 +7,10 @@ import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
 
+
 import EventTimeline from './EventTimeline'
 import BannerCarousel from 'components/generic/BannerCarousel'
+import GradientBox from 'components/generic/GradientBox'
 import EventInformation from './EventInformation'
 
 import StaggeredList from 'components/animated/StaggeredList'
@@ -174,15 +176,21 @@ export default () => {
                                     <Box mt={3} />
                                     <StaggeredListItem>
                                         <Box mt={3} />
-                                        <EventTimeline
-                                            event={event}
-                                            accentColor={
-                                                event.theme.accentColor
-                                            }
-                                            textColor={
-                                                event.theme.sidebarTextColor
-                                            }
-                                        />
+                                        <GradientBox color="theme_white" p={3}>
+                                            <Typography variant="button" gutterBottom>
+                                                Event Timeline
+                                            </Typography>
+                                            <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
+                                            <EventTimeline
+                                                event={event}
+                                                accentColor={
+                                                    event.theme.accentColor
+                                                }
+                                                textColor={
+                                                    event.theme.sidebarTextColor
+                                                }
+                                            />
+                                        </GradientBox>
                                     </StaggeredListItem>
                                 </Grid>
                                 <Grid

@@ -14,6 +14,7 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import FormControl from 'components/inputs/FormControl'
 
+
 export default () => {
     const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
@@ -105,6 +106,7 @@ export default () => {
                         </>
                     )}
                 </Formik>
+                {/* <Alerts alerts={alerts} /> //TODO: render sent allerts*/}
             </Grid>
         </PageWrapper>
     )
