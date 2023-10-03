@@ -206,6 +206,7 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Link to challenge descriptions"
+                            hint="If you have challenge descriptions elsewhere, link them here"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
@@ -216,6 +217,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
+                                placeholder="https://www.hackjunction.com/challenges"
                             />
                         </FormControl>
                     )}
@@ -229,6 +231,7 @@ export default () => {
                             label="FAQ link"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
+                            hint="If you have a separate faq page, link it here"
                         >
                             <TextInput
                                 name="faq"
@@ -237,6 +240,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
+                                placeholder="https://www.hackjunction.com/faq"
                             />
                         </FormControl>
                     )}
@@ -250,6 +254,7 @@ export default () => {
                             label="Demo instruction link"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
+                            hint="If you have a separate demo instruction page, link it here"
                         >
                             <TextInput
                                 name="demoInstructions"
@@ -258,6 +263,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
+                                placeholder="https://www.hackjunction.com/demos"
                             />
                         </FormControl>
                     )}
@@ -269,6 +275,7 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Privacy Policy for this event"
+                            hint="Link your privacy policy here. This will be shown to participants when they register to your event"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
@@ -279,6 +286,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
+                                placeholder="https://www.hackjunction.com/privacy"
                             />
                         </FormControl>
                     )}
@@ -290,6 +298,7 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Terms and Conditions for this event"
+                            hint="Link your T&C here. This will be shown to participants when they register to your event"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
@@ -300,6 +309,7 @@ export default () => {
                                     form.setFieldValue(field.name, value)
                                 }
                                 onBlur={() => form.setFieldTouched(field.name)}
+                                placeholder="https://www.hackjunction.com/terms"
                             />
                         </FormControl>
                     )}
