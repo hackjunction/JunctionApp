@@ -124,7 +124,7 @@ export default () => {
             </Helmet>
             <EventHeroImage
                 event={event}
-                onBack={() => dispatch(push('/'))}
+                onBack={() => dispatch(push('/home'))}
                 alignRight
                 backgroundColor={event.theme.headerBackgroundColor}
             />
