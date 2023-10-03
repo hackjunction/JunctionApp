@@ -19,15 +19,28 @@ import ProjectDetail from 'components/projects/ProjectDetail'
 import * as AuthSelectors from 'redux/auth/selectors'
 import ProjectScoresService from 'services/projectScores'
 import EvaluationForm from 'pages/_projects/slug/view/projectId/EvaluationForm'
+import Empty from 'components/generic/Empty'
+import * as SnackbarActions from 'redux/snackbar/actions'
+import ScoreForm from 'pages/_projects/slug/view/projectId/ScoreForm'
 
+const projectScoreBase = {
+    project: '',
+    event: '',
+    status: 'submitted',
+    score: 0,
+    maxScore: 10,
+    message: '',
+    scoreCriteria: [],
+    reviewers: [],
+}
+
+//TODO simplify this component and the reviewer score process
 //TODO make this and track one into a component
 export default ({ event }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
     const allFilterLabel = 'All projects'
     const match = useRouteMatch()
-    console.log('match', match)
-    console.log('match URL', match.url)
     const dispatch = useDispatch()
     const { slug } = event
     const [data, setData] = useState({})
@@ -40,6 +53,12 @@ export default ({ event }) => {
 
     const [selected, setSelected] = useState(null)
     const [scoreExists, setScoreExists] = useState(false)
+    const [projectScore, setProjectScore] = useState(projectScoreBase)
+
+    const resetProjectData = () => {
+        setSelected(null)
+        setScoreExists(false)
+    }
 
     const onFilterChange = filter => {
         setFilter(filter)
@@ -53,8 +72,6 @@ export default ({ event }) => {
                 event.recruiters,
                 recruiter => recruiter.recruiterId === userId,
             )
-            console.log('partnerData', partnerData)
-            console.log('Event challenges', event.challenges)
             let challengeOrg
             let filteredProjects = []
             if (partnerData) {
@@ -68,11 +85,6 @@ export default ({ event }) => {
                     )
                 }
             }
-
-            console.log('challengeOrg', challengeOrg)
-            console.log('filteredProjects', filteredProjects)
-            // _.filter(event.challenges, challenge => challenge.partner === )
-            // _.filter(dataOt, project => project.challenge)
             const data = {
                 projects: filteredProjects,
                 event,
@@ -92,6 +104,78 @@ export default ({ event }) => {
         setLoading(false)
     }, [slug, idToken])
 
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        const submissionValues = { ...values }
+        console.log('submissionValues before submission', submissionValues)
+        submissionValues.project = selected._id
+        submissionValues.event = event._id
+        let reviewerData
+        // const reviewerData = {
+        //     userId: userId,
+        //     score: submissionValues.score,
+        //     // scoreCriteria: submissionValues.scoreCriteria,
+        //     // message: submissionValues.message,
+        // }
+        console.log('submissionValues before', submissionValues)
+        if (userId) {
+            reviewerData = _.find(
+                submissionValues.reviewers,
+                reviewer => reviewer.userId === userId,
+            )
+            if (reviewerData) {
+                console.log('User already in reviewers list')
+                reviewerData = _.find(
+                    submissionValues.reviewers,
+                    reviewer => reviewer.userId === userId,
+                )
+                reviewerData.score = submissionValues.score
+                reviewerData.scoreCriteria = submissionValues.scoreCriteria
+                reviewerData.message = submissionValues.message
+            } else {
+                console.log('User is not in the list')
+                reviewerData = {
+                    userId: userId,
+                    score: submissionValues.score,
+                    scoreCriteria: submissionValues.scoreCriteria,
+                    message: submissionValues.message,
+                }
+                submissionValues.reviewers.push(reviewerData)
+            }
+            delete submissionValues.score
+            delete submissionValues.scoreCriteria
+            delete submissionValues.message
+        }
+        console.log('submissionValues after push or edit', submissionValues)
+        console.log('values', values)
+        console.log('submissionValues', submissionValues)
+        try {
+            if (scoreExists) {
+                await ProjectScoresService.updateScoreByEventSlugAndProjectIdAndPartnerAccount(
+                    idToken,
+                    event.slug,
+                    submissionValues,
+                )
+            } else {
+                await ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount(
+                    idToken,
+                    event.slug,
+                    submissionValues,
+                )
+            }
+            setProjectScore(values)
+            dispatch(SnackbarActions.success(`Score saved.`))
+            resetForm()
+        } catch (e) {
+            dispatch(
+                SnackbarActions.error(
+                    `Score could not be saved. Error: ${e.message}`,
+                ),
+            )
+        } finally {
+            setSubmitting(false)
+        }
+    }
+
     useEffect(() => {
         fetchProjects()
     }, [fetchProjects])
@@ -99,17 +183,6 @@ export default ({ event }) => {
     if (!data) {
         return null
     }
-
-    const [projectScore, setProjectScore] = useState({
-        project: '',
-        event: '',
-        status: 'submitted',
-        score: 0,
-        maxScore: 10,
-        message: '',
-        scoreCriteria: [],
-        reviewers: [],
-    })
 
     useEffect(() => {
         if (idToken && selected && event) {
@@ -120,7 +193,25 @@ export default ({ event }) => {
             ).then(score => {
                 console.log('Score', score)
                 if (score[0]) {
-                    setProjectScore(score[0])
+                    const reviewerData = _.find(
+                        score[0].reviewers,
+                        reviewer => reviewer.userId === userId,
+                    )
+                    if (reviewerData) {
+                        setProjectScore({
+                            ...score[0],
+                            score: reviewerData.score,
+                            scoreCriteria: reviewerData.scoreCriteria,
+                            message: reviewerData.message,
+                        })
+                    } else {
+                        setProjectScore({
+                            ...score[0],
+                            score: 0,
+                            scoreCriteria: scoreCriteriaBase,
+                            message: '',
+                        })
+                    }
                     setScoreExists(true)
                 } else {
                     setProjectScore({
@@ -143,84 +234,95 @@ export default ({ event }) => {
         }
     }
 
+    const renderProjects = inputData => {
+        return (
+            <>
+                <div className="tw-flex tw-justify-between tw-items-end">
+                    <PageHeader
+                        heading={inputData?.challenge.name}
+                        subheading={`By ${inputData?.challenge.partner}`}
+                        alignment="left"
+                        details={`${inputData?.projects.length} project${
+                            inputData?.projects.length > 1 ||
+                            inputData?.projects.length < 1
+                                ? 's'
+                                : ''
+                        }`}
+                    />
+                    <Filter
+                        noFilterOption={allFilterLabel}
+                        onChange={onFilterChange}
+                        filterArray={[
+                            { label: 'Final projects', value: 'final' },
+                            { label: 'Draft projects', value: 'draft' },
+                        ]}
+                    />
+                </div>
+
+                <Box height={20} />
+                <ProjectsGrid
+                    projects={projectsToRender(filter)}
+                    event={inputData.event}
+                    onSelect={setSelected}
+                    showScore={true}
+                    token={idToken}
+                />
+
+                <Box height={200} />
+                <Dialog
+                    transitionDuration={0}
+                    fullScreen
+                    open={Boolean(selected)}
+                    onClose={resetProjectData}
+                >
+                    <ProjectDetail
+                        project={selected}
+                        event={event}
+                        onBack={resetProjectData}
+                        showTableLocation={false}
+                    />
+                    {idToken ? (
+                        <Container center>
+                            {projectScore?.scoreCriteria &&
+                            projectScore?.scoreCriteria.length > 0 ? (
+                                // <span>TODO</span>
+                                <EvaluationForm
+                                    event={event}
+                                    project={selected}
+                                    submit={handleSubmit}
+                                    score={projectScore}
+                                    scoreCriteria={scoreCriteriaBase}
+                                />
+                            ) : (
+                                // <span>Not to do</span>
+                                <ScoreForm
+                                    event={event}
+                                    project={selected}
+                                    submit={handleSubmit}
+                                    score={projectScore}
+                                />
+                            )}
+                            <Box height={200} />
+                        </Container>
+                    ) : null}
+                </Dialog>
+            </>
+        )
+    }
+
+    const renderEmpty = () => {
+        return <Empty isEmpty emptyText="No projects available" />
+    }
+
     return (
         <PageWrapper
             loading={loading || !data}
             error={error}
             render={() => (
                 <Container center>
-                    <div className="tw-flex tw-justify-between tw-items-end">
-                        <PageHeader
-                            heading={data?.challenge.name}
-                            subheading={`By ${data?.challenge.partner}`}
-                            alignment="left"
-                            details={`${data?.projects.length} project${
-                                data?.projects.length > 1 ||
-                                data?.projects.length < 1
-                                    ? 's'
-                                    : ''
-                            }`}
-                        />
-                        <Filter
-                            noFilterOption={allFilterLabel}
-                            onChange={onFilterChange}
-                            filterArray={[
-                                { label: 'Final projects', value: 'final' },
-                                { label: 'Draft projects', value: 'draft' },
-                            ]}
-                        />
-                    </div>
-
-                    <Box height={20} />
-                    <ProjectsGrid
-                        projects={projectsToRender(filter)}
-                        event={data.event}
-                        onSelect={setSelected}
-                        showScore={true}
-                        token={idToken}
-                    />
-
-                    <Box height={200} />
-                    <Dialog
-                        transitionDuration={0}
-                        fullScreen
-                        open={Boolean(selected)}
-                        onClose={() => {
-                            setSelected(null)
-                            setScoreExists(false)
-                        }}
-                    >
-                        <ProjectDetail
-                            project={selected}
-                            event={event}
-                            onBack={() => setSelected(null)}
-                            showTableLocation={false}
-                        />
-                        {idToken ? (
-                            <Container center>
-                                {projectScore?.scoreCriteria &&
-                                projectScore?.scoreCriteria.length > 0 ? (
-                                    // <span>TODO</span>
-                                    <EvaluationForm
-                                        event={event}
-                                        project={selected}
-                                        submit={() => console.log('It works')}
-                                        score={projectScore}
-                                        scoreCriteria={scoreCriteriaBase}
-                                    />
-                                ) : (
-                                    <span>Not to do</span>
-                                    // <ScoreForm
-                                    //     event={event}
-                                    //     project={project}
-                                    //     submit={handleSubmit}
-                                    //     score={projectScore}
-                                    // />
-                                )}
-                                <Box height={200} />
-                            </Container>
-                        ) : null}
-                    </Dialog>
+                    {data?.challenge && data?.event && data?.projects.length > 0
+                        ? renderProjects(data)
+                        : renderEmpty()}
                 </Container>
             )}
         ></PageWrapper>

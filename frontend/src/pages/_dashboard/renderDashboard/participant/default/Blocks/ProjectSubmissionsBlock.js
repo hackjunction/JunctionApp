@@ -3,9 +3,12 @@ import { Typography, Box, Grid, Dialog } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 import ProjectDetail from 'components/projects/ProjectDetail'
+import * as AuthSelectors from 'redux/auth/selectors'
 
 function ProjectSubmissionsBlock({ projects, event }) {
     const [selected, setSelected] = useState(false)
+    const idToken = useSelector(AuthSelectors.getIdToken)
+
     return (
         <>
             {projects && event && projects[0]?.event === event?._id ? (
@@ -22,6 +25,7 @@ function ProjectSubmissionsBlock({ projects, event }) {
                                 event={event}
                                 onSelect={setSelected}
                                 showScore={false}
+                                token={idToken}
                             />
                             <Dialog
                                 transitionDuration={0}

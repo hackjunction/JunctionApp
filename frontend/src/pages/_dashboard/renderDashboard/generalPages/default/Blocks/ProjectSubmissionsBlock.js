@@ -6,6 +6,7 @@ import ProjectDetail from 'components/projects/ProjectDetail'
 
 function ProjectSubmissionsBlock({ projects, event }) {
     const [selected, setSelected] = useState(false)
+    const showScore = event?.scoreSettings?.showScore ? true : false
     return (
         <>
             {projects && event && projects[0]?.event === event?._id ? (
@@ -21,7 +22,8 @@ function ProjectSubmissionsBlock({ projects, event }) {
                                 projects={projects}
                                 event={event}
                                 onSelect={setSelected}
-                                showScore={false}
+                                showScore={true}
+                                // showScore={showScore}
                             />
                             <Dialog
                                 transitionDuration={0}

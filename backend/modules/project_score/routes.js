@@ -16,6 +16,7 @@ const {
 const { registrationAccepted } = require('../email-task/types')
 
 const addProjectScore = asyncHandler(async (req, res) => {
+    console.log('addProjectScore is running')
     try {
         if (req.params.track) {
             req.body.track = req.params.track._id
@@ -84,6 +85,30 @@ const getPublicScores = asyncHandler(async (req, res) => {
     return res.status(200).json(scores)
 })
 
+const updateProjectScoreWithReviewers = asyncHandler(async (req, res) => {
+    console.log('Received on bcknd')
+    try {
+        if (req.params.track) {
+            req.body.track = req.params.track._id
+        }
+        if (req.params.challenge) {
+            req.body.challenge = req.params.challenge._id
+        }
+        const score =
+            await ProjectScoreController.updateProjectScoreWithReviewers(
+                req.params.id,
+                req.body,
+            )
+        return res.status(200).json(score)
+    } catch (e) {
+        return res.status(500).json({
+            message:
+                'Update project score encountered an unknown error. Please check your request and try again.',
+            error: e.message,
+        })
+    }
+})
+
 router.post('/', hasWebhookToken, addProjectScore)
 router.put('/:id', hasWebhookToken, updateProjectScore)
 router.get(
@@ -127,23 +152,25 @@ router.put(
 // New routes for project review from partner accounts
 
 router.get(
-    '/event/:slug/review/:projectId',
-    getEventFromParams,
+    '/review/event/:slug/:projectId',
+    hasToken,
     isEventPartner,
     getScoreByProjectId,
 )
 
-// router.post(
-//     '/event/:slug/review/:id',
-//     getEventFromParams,
-//     isEventPartner,
-//     addProjectScore,
-// )
-// router.put(
-//     '/event/:slug/review/:id',
-//     getEventFromParams,
-//     isEventPartner,
-//     updateProjectScore,
-// )
+router.post(
+    '/review/event/:slug/:id',
+    hasToken,
+    isEventPartner,
+    // getEventFromParams,
+    addProjectScore,
+)
+
+router.put(
+    '/review/event/:slug/:id',
+    hasToken,
+    isEventPartner,
+    updateProjectScoreWithReviewers,
+)
 
 module.exports = router

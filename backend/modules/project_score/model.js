@@ -39,6 +39,7 @@ const ProjectScoreSchema = new mongoose.Schema(
         message: {
             type: String,
             required: false,
+            maxlength: 500,
         },
         scoreCriteria: {
             type: [ScoreCriteriaSchema.mongoose],
@@ -49,19 +50,28 @@ const ProjectScoreSchema = new mongoose.Schema(
             type: [
                 {
                     userId: {
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: 'User',
+                        type: String,
+                        required: true,
                     },
                     score: {
                         type: Number,
                         default: 0,
                     },
-                    // scoreCriteria,
-                    // feedback
+                    scoreCriteria: {
+                        type: [ScoreCriteriaSchema.mongoose],
+                        default: [],
+                    },
+                    message: {
+                        type: String,
+                        maxlength: 500,
+                    },
                 },
             ],
             required: false,
             default: [],
+        },
+        averageScore: {
+            type: Number,
         },
     },
     { toJSON: { virtuals: true } },

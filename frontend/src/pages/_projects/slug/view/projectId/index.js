@@ -46,14 +46,7 @@ import scoreCriteriaBase from 'components/projects/ScoreCriteria'
 
 export default ({ event, showFullTeam }) => {
     const dispatch = useDispatch()
-    const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
-    const userProfile = useSelector(UserSelectors.userProfile)
-    const altUserProfile = useSelector(AuthSelectors.getIdTokenPayload)
-    console.log('userId', userId)
-    console.log('userProfile', userProfile)
-    console.log('altUserProfile', altUserProfile)
-    console.log('event', event)
 
     const match = useRouteMatch()
     const { projectId, token } = match.params
@@ -129,7 +122,6 @@ export default ({ event, showFullTeam }) => {
                     ? console.log('User already in reviewers list')
                     : values.reviewers.push(userId)
             }
-            console.log('Reviewers', values.reviewers)
             if (scoreExists) {
                 await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
                     token,

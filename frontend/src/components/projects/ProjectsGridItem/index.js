@@ -131,7 +131,7 @@ const ProjectsGridItem = ({
                             >
                                 {project.name}
                             </Typography>
-                            <div>
+                            <div className="tw-flex tw-gap-1">
                                 {project.challenges.map((challenge, index) => (
                                     <Chip
                                         key={index}

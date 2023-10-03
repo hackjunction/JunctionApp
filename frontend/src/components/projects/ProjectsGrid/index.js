@@ -22,7 +22,7 @@ const ProjectsGrid = ({
     showScore = false,
     token = '',
 }) => {
-    // const idToken = useSelector(AuthSelectors.getIdToken)
+    const idToken = useSelector(AuthSelectors.getIdToken)
     // const userAccessRight = useSelector(UserSelectors.userAccessRight)
     // const isPartner = _.includes(userAccessRight, 'partner')
     // if (!token && idToken && isPartner) {
@@ -33,14 +33,24 @@ const ProjectsGrid = ({
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
     const fetchData = useCallback(async () => {
+        console.log('Fetching data')
         const nprojects = await Promise.all(
             projects.map(async project => {
+                if (!token) {
+                    console.log(
+                        await ProjectScoresService.getScoresByEventAndTeam(
+                            idToken,
+                            event.slug,
+                        ),
+                    )
+                }
                 return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
                     token,
                     event.slug,
                     project._id,
                 )
                     .then(score => {
+                        console.log('Score fetch', score)
                         if (score[0]) {
                             return Object.assign(score[0], project)
                         }
@@ -58,7 +68,7 @@ const ProjectsGrid = ({
                     })
             }),
         )
-        setSorted((sortBy(nprojects, p => -p['score']): nprojects))
+        setSorted(sortBy(nprojects, p => -p['score']))
     }, [event.slug, projects, token])
 
     useEffect(() => {
@@ -79,19 +89,30 @@ const ProjectsGrid = ({
             alignItems="stretch"
             justify="center"
         >
-            {sorted.map((project, index) => (
-                <ProjectsGridItem
-                    key={index}
-                    project={project}
-                    event={event}
-                    showTableLocation={isOngoingEvent}
-                    showFullTeam={showFullTeam}
-                    onClickMore={() => onSelect(project)}
-                    score={project?.score}
-                    message={project?.message}
-                    showTags={true}
-                />
-            ))}
+            {sorted.map((project, index) => {
+                const projectScore = project?.averageScore
+                    ? project.averageScore
+                    : project?.score
+                let projectMessage
+                if (project?.message) {
+                    projectMessage = project.message
+                } else if (project?.reviewers?.length > 0) {
+                    projectMessage = project.reviewers[0].message
+                }
+                return (
+                    <ProjectsGridItem
+                        key={index}
+                        project={project}
+                        event={event}
+                        showTableLocation={isOngoingEvent}
+                        showFullTeam={showFullTeam}
+                        onClickMore={() => onSelect(project)}
+                        score={projectScore}
+                        message={projectMessage}
+                        showTags={true}
+                    />
+                )
+            })}
         </Grid>
     )
 }
