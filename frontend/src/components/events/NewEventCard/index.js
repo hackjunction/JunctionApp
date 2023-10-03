@@ -6,23 +6,14 @@ import {
     CardContent,
     CardActions,
     Typography,
-    Grid,
     Box,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Divider,
-    AccordionActions,
-    Chip,
 } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Image from 'components/generic/Image'
-import Button from 'components/generic/Button'
 import Markdown from 'components/generic/Markdown'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import FlagUK from 'assets/logos/flagUK.png'
+
 import ProgressBar from 'components/generic/ProgressBar'
 import CardTag from 'components/generic/CardTag'
 

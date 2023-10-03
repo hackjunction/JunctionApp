@@ -67,17 +67,16 @@ LinearProgressWithLabel.propTypes = {
 
 export default function ProgressBar({ start, end, current, event }) {
     const classes = useStyles()
-    //console.log(event, "props", start, start, start, typeof (end), Object.getOwnPropertyNames(start))
     const startDate = Date.parse(start)
     const endDate = Date.parse(end)
     const currentDate = Date.now() //TODO: make this take time sectors into a count
-    //console.log(event, "props parsed", startDate, endDate, currentDate)
+
 
     var daysLeft
     var progress
     if (currentDate <= endDate && currentDate >= startDate) {
         daysLeft = Math.ceil(Math.abs(endDate - currentDate) / (1000 * 60 * 60 * 24))
-        progress = Math.abs((currentDate - startDate) / (endDate - startDate)) * 100//TODO: cases when current date is after end date or before start date
+        progress = Math.abs((currentDate - startDate) / (endDate - startDate)) * 100
     } else if (currentDate > endDate) {
         daysLeft = 0
         progress = 100
@@ -85,7 +84,7 @@ export default function ProgressBar({ start, end, current, event }) {
         daysLeft = daysLeft = Math.ceil(Math.abs(endDate - currentDate) / (1000 * 60 * 60 * 24))
         progress = 0
     }
-    //console.log(event, "progress", progress, "daysLeft", daysLeft)
+
 
     return (
         <div className={classes.root}>

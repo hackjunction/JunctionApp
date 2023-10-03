@@ -30,6 +30,8 @@ const getRecruiterActions = asyncHandler(async (req, res) => {
 })
 
 const saveRecruiterAction = asyncHandler(async (req, res) => {
+    console.log(req.user,
+        req.body,)
     const actionHistory = await RecruitmentController.saveRecruiterAction(
         req.user,
         req.body,
