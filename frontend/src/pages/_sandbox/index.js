@@ -6,7 +6,7 @@ import DefaultPage from './default'
 import TeamPage from './team'
 import ConfigurePage from './default/configure'
 import FilesPage from './files'
-
+//TODO enable sandbox for new dashboard design
 export default () => {
     const match = useRouteMatch()
     return (

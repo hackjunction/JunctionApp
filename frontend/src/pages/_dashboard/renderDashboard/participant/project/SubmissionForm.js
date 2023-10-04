@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
-import { Formik } from 'formik'
+import { FastField, Formik } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
 import { Grid, Box, Typography } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
@@ -25,6 +25,9 @@ import NameField from 'components/projects/ProjectSubmissionFields/NameField'
 import _ from 'lodash'
 import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
 import ProjectFieldsComponents from 'constants/projectFields'
+import ImageUpload from 'components/inputs/ImageUpload'
+import FormControl from 'components/inputs/FormControl'
+// import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -159,6 +162,7 @@ const SubmissionForm = props => {
                 })
             })
         }
+        console.log('formData after formatting:>> ', formData)
         return formData
     }
 
@@ -191,6 +195,16 @@ const SubmissionForm = props => {
         })
     }
 
+    // const fileTest = async () => {
+    //     return await dispatch(
+    //         DashboardActions.getFile('651188f0f66c7a6981df522a'),
+    //     )
+    // }
+
+    // const deleteTest = async () => {
+    //     await dispatch(DashboardActions.deleteFile('651188f0f66c7a6981df522a'))
+    // }
+
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -218,7 +232,56 @@ const SubmissionForm = props => {
                     <Grid container spacing={6}>
                         <Grid item xs={12}></Grid>
                         <NameField props={formikProps} />
+                        {/* <FastField
+                            name="coverImage"
+                            render={({ field, form }) => (
+                                <FormControl
+                                    label="Cover image"
+                                    hint="A cool cover image for your event. Max dimensions 1920x1080 (2MB), will be scaled down if larger."
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <Box
+                                        width="100%"
+                                        pt="56.25%"
+                                        position="relative"
+                                    >
+                                        <ImageUpload
+                                            value={field.value}
+                                            onChange={value => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
+                                                form.setFieldTouched(field.name)
+                                            }}
+                                            uploadUrl={`/api/upload/files`}
+                                            resizeMode="cover"
+                                        />
+                                    </Box>
+                                </FormControl>
+                            )}
+                        /> */}
+                        {/* <button onClick={fileTest}>Download test</button>
+                        <button onClick={deleteTest}>Delete test</button> */}
 
+                        {/* <button onClick={() => console.log(formikProps.values)}>
+                            TEST
+                        </button> */}
+                        {/* <FastField
+                            name="files"
+                            render={({ field, form }) => (
+                                <FileInput
+                                    handleChange={e => {
+                                        form.setFieldValue(field.name, e)
+                                        console.log(
+                                            'From file input at subform',
+                                            e,
+                                        )
+                                    }}
+                                />
+                            )}
+                        /> */}
                         {renderDefaultFields(
                             event.submissionFormDefaultFields,
                             event.submissionFormEnabledFields,

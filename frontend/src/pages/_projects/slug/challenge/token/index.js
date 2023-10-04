@@ -7,7 +7,6 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
-import Button from 'components/generic/Button'
 import { makeStyles } from '@material-ui/core/styles'
 
 import ProjectsService from 'services/projects'

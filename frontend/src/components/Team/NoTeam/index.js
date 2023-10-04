@@ -4,12 +4,7 @@ import { push } from 'connected-react-router'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-export default ({
-    eventData = {
-        slug: 'test-slug-value',
-    },
-    onCreate,
-}) => {
+export default ({ eventData = {}, onCreate }) => {
     const dispatch = useDispatch()
     return (
         <div className="tw-flex tw-flex-col tw-gap-32 tw-py-12">
@@ -20,7 +15,9 @@ export default ({
             <div className="tw-flex tw-gap-4 tw-justify-start">
                 <Button
                     onClick={() => {
-                        dispatch(push(`/dashboard/${eventData.slug}/team`))
+                        dispatch(
+                            push(`/dashboard/event/${eventData.slug}/team`),
+                        )
                     }}
                     color="outlined_button"
                     variant="jOutlined"
