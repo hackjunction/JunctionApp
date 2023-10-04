@@ -29,6 +29,9 @@ const FieldTypes = {
     COUNTRY: {
         id: 'COUNTRY',
     },
+    PARTICIPATION_TYPE: {
+        id: 'PARTICIPATION_TYPE',
+    },
     ROLES: {
         id: 'ROLES',
     },

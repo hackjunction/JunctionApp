@@ -650,6 +650,30 @@ const FieldProps = {
             },
         ],
     },
+    participationType: {
+        label: 'Participation type',
+        hint: 'Do you want to participate offline or online?',
+        hintMarkdown: false,
+        fieldType: FieldTypes.PARTICIPATION_TYPE,
+        copyToUserProfile: false,
+        mongooseSchema: {
+            type: String,
+        },
+        graphqlSchema: GraphQLString,
+        schemaConfig: {
+            defaultEnable: false,
+            defaultRequire: false,
+            editable: true,
+        },
+        filters: [
+            {
+                path: '',
+                label: 'Participation type',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.PARTICIPATION_TYPE,
+            },
+        ],
+    },
     countryOfTravel: {
         label: 'Country of Travel',
         hint: 'Where would you be travelling to the event from?',
@@ -725,8 +749,7 @@ const FieldProps = {
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
-        hint:
-            "",
+        hint: '',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         copyToUserProfile: false,
@@ -1225,6 +1248,19 @@ const Fields = {
         default: (userProfile, idToken) => userProfile.linkedin || undefined,
         validationSchema: required => {
             const base = yup.string().url().label(FieldProps.linkedin.label)
+
+            return required ? base.required() : base
+        },
+    },
+    participationType: {
+        ...FieldProps.participationType,
+        category: Categories.travelAndAccommodation,
+        default: () => undefined,
+        validationSchema: required => {
+            const base = yup
+                .string()
+                .oneOf(['offline', 'online'])
+                .label(FieldProps.participationType.label)
 
             return required ? base.required() : base
         },
