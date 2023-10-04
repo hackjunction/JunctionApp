@@ -116,7 +116,9 @@ router
 
 router.route('/:userId').get(hasToken, getUserPublicProfileById)
 
-router.route('/public').get(getUserProfilesPublic)
+router.route('/public/profiles').get(getUserProfilesPublic)
+
+
 router.route('/public/team/:teamId').get(getUserProfilesByTeamPublic)
 
 router.get(
