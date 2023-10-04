@@ -33,7 +33,7 @@ module.exports = {
             .model('Team')
             .updateMany(
                 { tagline: { $exists: false } },
-                { $set: { tagline: `Generic tagline` } },
+                { $set: { tagline: '' } },
             )
         console.log(
             'Done updating tagline field',
@@ -44,7 +44,7 @@ module.exports = {
             .model('Team')
             .updateMany(
                 { description: { $exists: false } },
-                { $set: { description: `Generic description` } },
+                { $set: { description: '' } },
             )
         console.log(
             'Done updating description field',
@@ -66,7 +66,7 @@ module.exports = {
             .model('Team')
             .updateMany(
                 { ideaTitle: { $exists: false } },
-                { $set: { ideaTitle: `Generic idea title` } },
+                { $set: { ideaTitle: '' } },
             )
         console.log(
             'Done updating ideaTitle field',
@@ -77,7 +77,7 @@ module.exports = {
             .model('Team')
             .updateMany(
                 { ideaDescription: { $exists: false } },
-                { $set: { ideaDescription: `Generic idea description` } },
+                { $set: { ideaDescription: '' } },
             )
         console.log(
             'Done updating ideaDescription field',

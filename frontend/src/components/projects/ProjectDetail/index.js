@@ -12,7 +12,8 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import config from 'constants/config'
 import { Helmet } from 'react-helmet'
 import ReactPlayer from 'react-player'
-
+import { useDispatch } from 'react-redux'
+import * as DashboardActions from 'redux/dashboard/actions'
 import ProjectTeam from './ProjectTeam'
 import Pagination from './Pagination'
 import theme from 'material-ui-theme'
@@ -113,8 +114,30 @@ const ProjectDetail = ({
     const classes = useStyles()
     const [index, setIndex] = useState(0)
     const [pause, setPause] = useState(true)
+    const dispatch = useDispatch()
 
     if (!project) return null
+    const downloadFile = async fileDataString => {
+        const parsedValue = JSON.parse(fileDataString)
+        await dispatch(
+            DashboardActions.getFileForProject(
+                parsedValue.id,
+                parsedValue.filename,
+            ),
+        )
+    }
+
+    const extractFileDetails = (fileDataString, toExtract) => {
+        const parsedValue = JSON.parse(fileDataString)
+        switch (toExtract) {
+            case 'filename':
+                return parsedValue.filename
+            case 'id':
+                return parsedValue.id
+            default:
+                return parsedValue.filename
+        }
+    }
 
     const renderTrack = () => {
         const value = find(event.tracks, t => t.slug === project.track)
@@ -162,6 +185,7 @@ const ProjectDetail = ({
                     sectionGroup.answers.push({
                         question: question.label,
                         value: questionAnswer.value,
+                        fieldType: question.fieldType,
                     })
                 }
                 return
@@ -353,11 +377,31 @@ const ProjectDetail = ({
                                                                             answer.question
                                                                         }
                                                                     </Typography>
-                                                                    <Typography variant="subtitle1">
-                                                                        {
-                                                                            answer.value
-                                                                        }
-                                                                    </Typography>
+                                                                    {answer.fieldType ===
+                                                                    'attachment' ? (
+                                                                        <div>
+                                                                            <button
+                                                                                className="tw-p-2 tw-rounded-sm tw-bg-white tw-border-solid tw-border tw-border-gray-300"
+                                                                                onClick={() =>
+                                                                                    downloadFile(
+                                                                                        answer.value,
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                Download{' '}
+                                                                                {extractFileDetails(
+                                                                                    answer.value,
+                                                                                    'filename',
+                                                                                )}
+                                                                            </button>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <Typography variant="subtitle1">
+                                                                            {
+                                                                                answer.value
+                                                                            }
+                                                                        </Typography>
+                                                                    )}
                                                                 </div>
                                                             ),
                                                         )}
