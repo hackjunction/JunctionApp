@@ -1,9 +1,7 @@
 import React from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
 import UserMenu from 'components/UserMenu'
-
 import config from 'constants/config'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {

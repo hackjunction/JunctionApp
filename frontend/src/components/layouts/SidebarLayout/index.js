@@ -214,7 +214,7 @@ export default React.memo(
                         aria-label="toggle drawer desktop"
                     >
                         {desktopOpen ? (
-                            <KeyboardBackspaceIcon />
+                            <KeyboardBackspaceIcon fontSize="large" />
                         ) : (
                             <MenuIcon fontSize="large" />
                         )}

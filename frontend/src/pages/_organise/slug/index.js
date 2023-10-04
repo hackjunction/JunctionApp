@@ -64,7 +64,6 @@ export default () => {
             dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
-    console.log('event', event.published, event.approved)
     return (
         <PageWrapper loading={loading} error={error}>
             <SidebarLayout
