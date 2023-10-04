@@ -32,6 +32,10 @@ const getRegistration = asyncHandler(async (req, res) => {
 })
 
 const createRegistration = asyncHandler(async (req, res) => {
+    console.log("creating registration with data:",
+        "user: ", req.user,
+        "event ", req.event,
+        "data ", req.body)
     const registration = await RegistrationController.createRegistration(
         req.user,
         req.event,
@@ -212,6 +216,34 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
     return res.status(200).json(rejected)
 })
 
+const addPartnerToRegistrated = asyncHandler(async (req, res) => {
+
+    console.log("addPartnerToRegistrated", req.body)
+    //TODO: should check if the user is registered already first
+    try {
+        const hasRegistration = await RegistrationController.getRegistration(req.body.userId, req.event._id)
+        return res.status(200).json(hasRegistration)
+    } catch (e) {
+        console.log("hasRegistration", e)
+        const registration = await RegistrationController.createPartnerRegistration(
+            req.body.userId, //switch to actual user
+            req.event, //slug
+            req.body.profile, /*data: {
+                    firstName: 'seppo',
+                    lastName: 'pykälä',
+                    email: 'samu.rotko@gmail.com'
+                  }*/
+        )
+        return res.status(200).json(registration)
+    }
+
+
+
+
+
+
+})
+
 router.route('/').get(hasToken, getUserRegistrations)
 
 /** Get, create or update a registration */
@@ -345,6 +377,15 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         editRegistration,
+    )
+
+router
+    .route('/:slug/partner')
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        addPartnerToRegistrated,
     )
 
 module.exports = router

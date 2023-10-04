@@ -34,6 +34,7 @@ export default () => {
     return (
 
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
+
             <Helmet>
                 <title>{config.PLATFORM_OWNER_NAME}</title>
                 <meta
@@ -70,14 +71,16 @@ export default () => {
             </Helmet>
             <BannerCarousel />
             <Divider size={4} />
+
             <Container center>
                 <Divider size={2} />
                 <EventsGrid title={t('Upcoming_')} events={activeEvents} />
+
                 <EventsGrid title={t('Past_events_')} events={pastEvents} />
                 <Box textAlign="center">
                     <Button
-                        variant="containedNew"
-                        color="theme_black"
+                        variant="outlinedNew"
+                        color="theme_lightgray"
                         onClick={() => dispatch(push('/events'))} // TODO: Add past events page
                     >
                         {t('Past_events_all_')}
@@ -173,6 +176,7 @@ export default () => {
                     style={{ width: '10em' }}
                 />
             </Container>
+
         </PageWrapper>
     )
 }

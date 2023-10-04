@@ -76,8 +76,8 @@ export default () => {
                 <EventsGrid title={t('Past_events_')} events={pastEvents} />
                 <Box textAlign="center">
                     <Button
-                        variant="containedNew"
-                        color="theme_black"
+                        variant="outlinedNew"
+                        color="theme_lightgray"
                         onClick={() => dispatch(push('/events'))} // TODO: Add past events page
                     >
                         {t('Past_events_all_')}
