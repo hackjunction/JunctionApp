@@ -198,7 +198,30 @@ const EventSchema = new mongoose.Schema({
     },
     eventTimeline: {
         type: EventTimelineSchema.mongoose,
-        default: { items: [] },
+        default: {
+            items: [
+                {
+                    title: 'Registration period',
+                    startTime: new Date(new Date().getTime()),
+                },
+                {
+                    title: 'Submission period',
+                    startTime: new Date(new Date().getTime() + 1),
+                },
+                {
+                    title: 'Review period',
+                    startTime: new Date(new Date().getTime() + 2),
+                },
+                {
+                    title: 'Event starts',
+                    startTime: new Date(new Date().getTime() + 3),
+                },
+                {
+                    title: 'Event ends',
+                    startTime: new Date(new Date().getTime() + 4),
+                },
+            ],
+        },
     },
     metaDescription: {
         type: String,

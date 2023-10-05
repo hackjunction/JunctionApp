@@ -14,7 +14,7 @@ export default () => {
                     return (
                         <FormControl
                             label="Timeline"
-                            hint="Timeline for the event (displayed on the dashboard and the event information page)"
+                            hint="Timeline for the event (displayed on the dashboard and the event information page). Adjust the dates to actual timestamps of your schedule."
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >

@@ -47,6 +47,7 @@ const {
     EventPageScript,
     SubmissionDefaultFieldsInput,
     SubmissionDefaultFields,
+    EventPageScriptInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -284,6 +285,9 @@ const EventInput = new GraphQLInputObjectType({
         },
         webhooks: {
             type: GraphQLList(WebhookInput),
+        },
+        pageScripts: {
+            type: GraphQLList(EventPageScriptInput),
         },
         meetingsEnabled: {
             type: GraphQLBoolean,

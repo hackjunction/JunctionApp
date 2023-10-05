@@ -208,7 +208,10 @@ export default ({ value, onChange }) => {
                             {value &&
                                 value
                                     .sort((a, b) =>
-                                        a.startTime < b.startTime ? -1 : 1,
+                                        Date.parse(a.startTime) <
+                                        Date.parse(b.startTime)
+                                            ? -1
+                                            : 1,
                                     )
                                     .map(renderListItem)}
                         </List>

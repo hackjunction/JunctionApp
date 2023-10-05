@@ -28,6 +28,10 @@ const migrations = [
     require('./22-rename-team-tagline-to-subtitle'),
     require('./23-add-timeline-to-event'),
     require('./24-sync-registration-to-profiles'),
+    require('./25-add-emailConfig-to-event'),
+    require('./26-fix-empty-senderEmail-in-event'),
+
+
 
 ]
 
