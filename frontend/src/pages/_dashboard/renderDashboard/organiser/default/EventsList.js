@@ -10,7 +10,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 import SearchIcon from '@material-ui/icons/Search'
-import TextInput from '../../../components/inputs/TextInput'
+import TextInput from '../../../../../components/inputs/TextInput'
 
 /*
 textShadow:

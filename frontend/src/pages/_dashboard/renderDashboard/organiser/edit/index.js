@@ -25,6 +25,7 @@ import MeetingRoomsTab from './meetingRooms'
 import OtherTab from './other'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
+import scoreCriteriaTab from './scoreCriteria'
 
 export default () => {
     const dispatch = useDispatch()
@@ -104,6 +105,12 @@ export default () => {
                                     key: 'configuration',
                                     label: 'Configuration',
                                     component: ConfigurationTab,
+                                },
+                                {
+                                    path: '/scoreSettings',
+                                    key: 'scoreSettings',
+                                    label: 'Score criteria',
+                                    component: scoreCriteriaTab,
                                 },
                                 {
                                     path: '/challenges',

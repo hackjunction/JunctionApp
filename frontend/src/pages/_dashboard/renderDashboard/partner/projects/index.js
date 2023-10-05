@@ -42,6 +42,7 @@ export default ({ event }) => {
     //     'Event criteria from model',
     //     event.scoreCriteriaSettings.scoreCriteria,
     // )
+    console.log(event)
     const scoreCriteriaBase = event.scoreCriteriaSettings.scoreCriteria
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)

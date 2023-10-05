@@ -35,8 +35,8 @@ export default ({
                     teamCode={enableActions ? teamData.code : null}
                 />
                 <TeamDescription
-                    teamSubtitle={teamData.subtitle}
-                    teamDescription={teamData.description}
+                    teamSubtitle={teamData?.subtitle}
+                    teamDescription={teamData?.description}
                     teamIdea={teamData?.ideaTitle}
                     teamIdeaDescription={teamData?.ideaDescription}
                 />

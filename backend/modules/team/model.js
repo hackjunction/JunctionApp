@@ -53,9 +53,7 @@ const TeamSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
         length: 300,
-        default: `Team description`,
     },
     challenge: {
         type: String,

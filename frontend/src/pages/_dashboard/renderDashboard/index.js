@@ -188,6 +188,7 @@ export default role => {
                     wrapContent={false}
                 >
                     <PartnerDashboard
+                        event={event}
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
                         shownPages={shownPages}

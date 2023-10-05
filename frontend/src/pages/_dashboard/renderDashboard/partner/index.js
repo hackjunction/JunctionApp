@@ -5,11 +5,14 @@ import DashboardIcon from '@material-ui/icons/Dashboard'
 import AmpStoriesIcon from '@material-ui/icons/AmpStories'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import EventIcon from '@material-ui/icons/Event'
+import { makeStyles } from '@material-ui/core/styles'
+import { Typography } from '@material-ui/core'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import BasicNavBar from 'components/navbars/BasicNavBar'
 import DefaultImage from 'assets/images/dashboardDefault.jpg'
 
+import Image from 'components/generic/Image'
 import DefaultPage from '../generalPages/default'
 import HackerpackPage from '../generalPages/hackerpack'
 import ChallengesIndex from '../generalPages/challenges'
@@ -18,19 +21,33 @@ import RecruitmentPage from './partnerrecruitment'
 
 import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
-import { useSelector } from 'react-redux'
 
 import ProjectsPage from './projects'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
+const useStyles = makeStyles(theme => ({
+    sidebarTop: {
+        padding: theme.spacing(3),
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    sidebarLogo: {
+        width: '100%',
+        objectFit: 'contain',
+    },
+}))
 
-export default ({ originalAlertCount, originalAlerts, shownPages }) => {
+export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
+    const classes = useStyles()
     const { t } = useTranslation()
     const match = useRouteMatch()
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
 
-    const event = useSelector(DashboardSelectors.event)
+    // const event = useSelector(DashboardSelectors.event)
 
     console.log('props', originalAlertCount, originalAlerts, shownPages)
     console.log(originalAlertCount, alertCount)
@@ -40,20 +57,21 @@ export default ({ originalAlertCount, originalAlerts, shownPages }) => {
             baseRoute={match.url}
             location={location}
             sidebarTopContent={
-                <img src={DefaultImage}></img>
-                //TODO: Remove default image
-
-                // <div className={classes.sidebarTop}>
-                //     <Image
-                //         className={classes.sidebarLogo}
-                //         publicId={
-                //             event && event.logo ? event.logo.publicId : ''
-                //         }
-                //         transformation={{
-                //             width: 200,
-                //         }}
-                //     />
-                // </div>
+                <div className={classes.sidebarTop}>
+                    <Image
+                        className={classes.sidebarLogo}
+                        // publicId={
+                        //     event && event.logo ? event.logo.publicId : ''
+                        // }
+                        transformation={{
+                            width: 200,
+                        }}
+                        defaultImage={DefaultImage}
+                    />
+                    <Typography variant="button" style={{ color: 'white' }}>
+                        Partner
+                    </Typography>
+                </div>
             }
             topContent={<BasicNavBar />}
             routes={[

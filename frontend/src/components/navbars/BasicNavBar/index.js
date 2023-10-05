@@ -1,5 +1,6 @@
 import React from 'react'
 import UserMenu from 'components/UserMenu'
+import UserAvatar from 'components/UserAvatar'
 import LanguageMenu from 'components/LanguageMenu'
 
 import { Typography } from '@material-ui/core'
@@ -18,18 +19,11 @@ const useStyles = makeStyles(theme => ({
     inner: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'right',
         margin: '0',
         height: '100%',
     },
-    text: {
-        marginRight: theme.spacing(1),
-        textTransform: 'uppercase',
-        color: 'black',
-        alignSelf: 'flex-end',
-        display: 'none',
-    },
+
 }))
 
 const BasicNavBar = ({ text }) => {
@@ -37,18 +31,13 @@ const BasicNavBar = ({ text }) => {
     return (
 
         // <div className={classes.wrapper}>
-        <div className='tw-w-full tw-h-78px tw-px-0 tw-py-2  tw-bg-wave-pattern tw-bg-black' >
+        <div className='tw-w-full tw-px-0 tw-py-2 tw-pr-32 tw-bg-wave-pattern tw-bg-black ' >
             <div className={classes.inner}>
+                <UserAvatar />
+                {/* <LanguageMenu /> */}
 
-                <Typography variant="button" style={{ paddingLeft: '50px' }}>
-                    {text}
-                </Typography>
-                <div className={classes.inner}>
-                    <UserMenu />
-                    <LanguageMenu />
-
-                </div>
             </div>
+
         </div>
     )
 }
