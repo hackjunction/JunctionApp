@@ -11,7 +11,7 @@ function config(idToken) {
 }
 
 UserProfilesService.getPublicUserProfiles = userIds => {
-    return _axios.get('/user-profiles/public/', {
+    return _axios.get('/user-profiles/public/profiles/', {
         params: {
             userIds,
         },

@@ -32,11 +32,12 @@ controller.getUserPublicProfileById = userId => {
 }
 
 controller.getUserProfiles = userIds => {
-    return UserProfile.find({
+    const users = UserProfile.find({
         userId: {
             $in: userIds,
         },
     })
+    return users
 }
 
 controller.queryProfiles = async query => {

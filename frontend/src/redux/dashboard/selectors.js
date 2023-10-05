@@ -79,6 +79,7 @@ export const isSubmissionsPast = createSelector(event, event =>
 export const isAcceptancePending = createSelector(
     registration,
     registration => {
+        console.log('registration', registration)
         return (
             [
                 RegistrationStatuses.asObject.pending.id,

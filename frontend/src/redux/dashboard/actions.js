@@ -155,6 +155,21 @@ export const createRegistration =
         return registration
     }
 
+export const createPartnerRegistration =
+    (userId, slug) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const user = await UserProfilesService.getUserPublicProfileById(idToken, userId)
+        console.log("createPartnerRegistration", user)
+        const registration = await RegistrationsService.addPartnerToRegistrated(
+            idToken,
+            user,
+            slug,
+
+        )
+        console.log("created registration", registration)
+        return registration
+    }
+
 export const updateTeams = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     if (!slug) return

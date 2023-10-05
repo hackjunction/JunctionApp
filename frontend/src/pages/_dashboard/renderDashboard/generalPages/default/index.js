@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
+import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 export default ({ alerts }) => {
     const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
@@ -97,6 +98,7 @@ export default ({ alerts }) => {
                 >
                     <AlertBlock alerts={alerts} />
                 </div>
+
                 <EventOverBlock />
                 <ProjectSubmissionsBlock projects={projects} event={event} />
                 <ReviewingPeriodBlock />
@@ -106,8 +108,10 @@ export default ({ alerts }) => {
                 <CertificateBlock />
                 <ProjectBlock />
                 <TeamStatusBlock />
+
                 <GavelReviewingBlock />
                 <SocialMediaBlock />
+
             </Grid>
             {event && (
                 <EventPageScriptIFrame

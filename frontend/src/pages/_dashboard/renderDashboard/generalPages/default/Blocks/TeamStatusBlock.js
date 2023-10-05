@@ -16,6 +16,7 @@ export default () => {
     const appliedAsTeam = useSelector(DashboardSelectors.appliedAsTeam)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const isTeamComplete = useSelector(DashboardSelectors.isTeamComplete)
+    console.log("registration", registration)
     const isAcceptancePending = useSelector(
         DashboardSelectors.isAcceptancePending,
     )

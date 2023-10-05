@@ -108,10 +108,11 @@ export const addOrganiserToEvent =
 
 export const updateRecruitersForEvent =
     (recruiters) => async (dispatch, getState) => {
-
+        const idToken = AuthSelectors.getIdToken(getState())
         const userIds = recruiters?.map(rec => {
             return rec.recruiterId
         })
+
 
         dispatch({
             type: ActionTypes.UPDATE_EVENT_RECRUITERS,

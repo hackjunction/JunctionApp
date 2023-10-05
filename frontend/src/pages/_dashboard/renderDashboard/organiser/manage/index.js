@@ -15,6 +15,7 @@ import * as OrganiserActions from 'redux/organiser/actions'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardActions from 'redux/dashboard/actions'
 
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -157,6 +158,17 @@ export default () => {
                             organization.trim(),
                         ),
                     )
+                })
+                .then(() => {
+
+                    dispatch(
+                        DashboardActions.createPartnerRegistration(
+                            userId,
+                            slug,
+
+                        )
+                    )
+
                 })
                 .then(() => {
                     dispatch(SnackbarActions.success('Success!'))

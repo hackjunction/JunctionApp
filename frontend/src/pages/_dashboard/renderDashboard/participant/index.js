@@ -21,7 +21,7 @@ import BasicNavBar from 'components/navbars/BasicNavBar'
 
 
 import DefaultPage from '../generalPages/default'
-import FinalistVotingPage from '../generalPages/finalist-voting'
+import FinalistVotingPage from './finalist-voting'
 import TeamPage from './team'
 import ProjectPage from './project'
 import ReviewingPage from './reviewing'

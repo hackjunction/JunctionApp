@@ -196,8 +196,8 @@ export default () => {
 
                 <Box textAlign="center" padding={5}>
                     <Button
-                        variant="containedNew"
-                        color="theme_black"
+                        variant="outlinedNew"
+                        color="theme_lightgray"
                         onClick={() => dispatch(push('/events'))} // TODO: Add past events page, fix the looks of this button
                     >
                         {t('Past_events_all_')}

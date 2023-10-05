@@ -28,6 +28,7 @@ controller.getUserRegistrations = user => {
 }
 
 controller.createRegistration = async (user, event, data) => {
+    console.log("user", user)
     const answers = await RegistrationHelpers.registrationFromUser(data)
     const registration = new Registration({
         event: event._id.toString(),
@@ -44,7 +45,32 @@ controller.createRegistration = async (user, event, data) => {
         }
     }
     registration.status = RegistrationStatuses.asObject.incomplete.id
+    console.log("createRegistration", registration)
+    return registration.save()
+    /* .catch(function (err) {
+        console.log(err.name, err.errors)
+    }) */
+}
 
+controller.createPartnerRegistration = async (user, event, data) => {
+    console.log("user", user)
+    const answers = await RegistrationHelpers.registrationFromUser(data)
+    const registration = new Registration({
+        event: event._id.toString(),
+        user: user,
+        answers,
+    })
+    if (event.eventType === 'online') {
+        registration.checklist = {
+            items: checklistItemsOnline(),
+        }
+    } else {
+        registration.checklist = {
+            items: checklistItemsPhysical(),
+        }
+    }
+    registration.status = RegistrationStatuses.asObject.incomplete.id
+    console.log("createRegistration", registration)
     return registration.save()
     /* .catch(function (err) {
         console.log(err.name, err.errors)
@@ -73,7 +99,7 @@ controller.updateRegistration = (user, event, data) => {
                 await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
-                
+
                 return Registration.updateAllowed(registration, { answers })
             }
             return false
@@ -434,7 +460,7 @@ controller.rejectPendingTravelGrants = eventId => {
 controller.getFullRegistration = (eventId, registrationId) => {
     const query =
         mongoose.Types.ObjectId.isValid(registrationId) &&
-        registrationId.indexOf('|') === -1
+            registrationId.indexOf('|') === -1
             ? { _id: registrationId }
             : { user: registrationId }
     return Registration.findOne(query)
