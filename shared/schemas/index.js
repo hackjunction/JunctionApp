@@ -89,6 +89,7 @@ const SharedSchema = new GraphQLSchema({
         EventPageScript.graphql,
         SubmissionDefaultFields.graphql,
         SubmissionDefaultFields.graphqlInput,
+        EventPageScript.graphqlInput,
     ],
 })
 

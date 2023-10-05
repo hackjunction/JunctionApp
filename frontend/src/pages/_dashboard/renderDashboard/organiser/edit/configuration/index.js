@@ -250,9 +250,9 @@ export default () => {
                     render={({ field, form }) => (
                         <FormControl
                             label="Overall winner method"
+                            //TODO: test and fix Finals, public voting
+                            //*Finals, public voting*: Winners are selected by voting in the JunctionApp, finalists are auto-generated from the top-ranked projects in each challenge.
                             hint={`Which method should be used to determine the overall winner?
-
-*Finals, public voting*: Winners are selected by voting in the JunctionApp, finalists are auto-generated from the top-ranked projects in each challenge.
 
 *Finals, manual voting*: Winners are selected by voting in the JunctionApp, finalists are hand picked by organisers in the "Finalist selection" tab in "Projects".
 
@@ -282,7 +282,7 @@ export default () => {
                     name="allowVoteOnOwnProject"
                     render={({ field, form }) =>
                         form.values.reviewMethod ===
-                        ReviewingMethods.gavelPeerReview.id ? (
+                            ReviewingMethods.gavelPeerReview.id ? (
                             <FormControl
                                 label="Allow vote on own projects"
                                 hint="Can user vote on their own projects (consider this for events with few participants and multiple submissions per team)"
