@@ -1,8 +1,8 @@
 const OverallReviewingMethods = {
-    finalsPublicVoting: {
-        id: 'finalsPublicVoting',
-        label: 'Finals, public voting',
-    },
+    // finalsPublicVoting: {
+    //     id: 'finalsPublicVoting',
+    //     label: 'Finals, public voting',
+    // }, //TODO: test and fix
     finalsManualSelection: {
         id: 'finalsManualSelection',
         label: 'Finals, manual selection',
