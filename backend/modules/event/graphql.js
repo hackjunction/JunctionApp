@@ -47,6 +47,8 @@ const {
     EventPageScript,
     SubmissionDefaultFieldsInput,
     SubmissionDefaultFields,
+    ScoreCriteriaSettings,
+    ScoreCriteriaSettingsInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -301,6 +303,9 @@ const EventInput = new GraphQLInputObjectType({
         submissionFormDefaultFields: {
             type: SubmissionDefaultFieldsInput,
         },
+        scoreCriteriaSettings: {
+            type: ScoreCriteriaSettingsInput,
+        },
     },
 })
 
@@ -516,6 +521,9 @@ const EventType = new GraphQLObjectType({
             submissionFormDefaultFields: {
                 type: SubmissionDefaultFields,
             },
+            scoreCriteriaSettings: {
+                type: ScoreCriteriaSettings,
+            },
         }
     },
 })
@@ -571,6 +579,14 @@ const QueryType = new GraphQLObjectType({
         },
         roomsByEvent: {
             type: GraphQLList(MeetingRoom),
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        eventScoreCriteriaSettings: {
+            type: ScoreCriteriaSettings,
             args: {
                 eventId: {
                     type: GraphQLNonNull(GraphQLID),

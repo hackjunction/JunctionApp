@@ -12,17 +12,18 @@ import { makeStyles } from '@material-ui/core/styles'
 import ProjectsService from 'services/projects'
 import Filter from 'components/Team/Filter'
 import _ from 'lodash'
-import scoreCriteriaBase from 'components/projects/ScoreCriteria'
 
 import ProjectView from 'pages/_projects/slug/view/projectId'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import * as AuthSelectors from 'redux/auth/selectors'
+import * as userSelectors from 'redux/user/selectors'
 import ProjectScoresService from 'services/projectScores'
 import EvaluationForm from 'pages/_projects/slug/view/projectId/EvaluationForm'
 import Empty from 'components/generic/Empty'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import ScoreForm from 'pages/_projects/slug/view/projectId/ScoreForm'
 
+// import scoreCriteriaBase from 'components/projects/ScoreCriteria'
 const projectScoreBase = {
     project: '',
     event: '',
@@ -37,8 +38,15 @@ const projectScoreBase = {
 //TODO simplify this component and the reviewer score process
 //TODO make this and track one into a component
 export default ({ event }) => {
+    // console.log(
+    //     'Event criteria from model',
+    //     event.scoreCriteriaSettings.scoreCriteria,
+    // )
+    const scoreCriteriaBase = event.scoreCriteriaSettings.scoreCriteria
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
+    const userProfile = useSelector(userSelectors.userProfile)
+    console.log('User profile data', userProfile)
     const allFilterLabel = 'All projects'
     const match = useRouteMatch()
     const dispatch = useDispatch()
@@ -124,10 +132,12 @@ export default ({ event }) => {
             )
             if (reviewerData) {
                 console.log('User already in reviewers list')
-                reviewerData = _.find(
-                    submissionValues.reviewers,
-                    reviewer => reviewer.userId === userId,
-                )
+                if (reviewerData.firstname !== userProfile?.firstName) {
+                    reviewerData.firstname = userProfile.firstName
+                }
+                if (reviewerData.avatar !== userProfile?.avatar) {
+                    reviewerData.avatar = userProfile.avatar
+                }
                 reviewerData.score = submissionValues.score
                 reviewerData.scoreCriteria = submissionValues.scoreCriteria
                 reviewerData.message = submissionValues.message
@@ -135,6 +145,8 @@ export default ({ event }) => {
                 console.log('User is not in the list')
                 reviewerData = {
                     userId: userId,
+                    avatar: userProfile?.avatar,
+                    firstname: userProfile?.firstName,
                     score: submissionValues.score,
                     scoreCriteria: submissionValues.scoreCriteria,
                     message: submissionValues.message,
@@ -266,6 +278,7 @@ export default ({ event }) => {
                     onSelect={setSelected}
                     showScore={true}
                     token={idToken}
+                    showReviewers={true}
                 />
 
                 <Box height={200} />

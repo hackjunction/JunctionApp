@@ -20,7 +20,9 @@ const ProjectsGrid = ({
     sortField = 'location',
     showFullTeam = false,
     showScore = false,
+    showTags = true,
     token = '',
+    showReviewers = false,
 }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     // const userAccessRight = useSelector(UserSelectors.userAccessRight)
@@ -33,24 +35,25 @@ const ProjectsGrid = ({
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
     const fetchData = useCallback(async () => {
-        console.log('Fetching data')
         const nprojects = await Promise.all(
             projects.map(async project => {
-                if (!token) {
-                    console.log(
-                        await ProjectScoresService.getScoresByEventAndTeam(
+                const projectScoreLogic = async () => {
+                    if (!token) {
+                        return ProjectScoresService.getScoreByEventSlugAndProjectId(
                             idToken,
                             event.slug,
-                        ),
-                    )
+                            project._id,
+                        )
+                    } else {
+                        return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
+                            token,
+                            event.slug,
+                            project._id,
+                        )
+                    }
                 }
-                return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
-                    token,
-                    event.slug,
-                    project._id,
-                )
+                return projectScoreLogic()
                     .then(score => {
-                        console.log('Score fetch', score)
                         if (score[0]) {
                             return Object.assign(score[0], project)
                         }
@@ -109,7 +112,8 @@ const ProjectsGrid = ({
                         onClickMore={() => onSelect(project)}
                         score={projectScore}
                         message={projectMessage}
-                        showTags={true}
+                        showTags={showTags}
+                        showReviewers={showReviewers}
                     />
                 )
             })}

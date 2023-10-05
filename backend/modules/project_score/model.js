@@ -53,6 +53,12 @@ const ProjectScoreSchema = new mongoose.Schema(
                         type: String,
                         required: true,
                     },
+                    firstname: {
+                        type: 'String',
+                    },
+                    avatar: {
+                        type: 'String',
+                    },
                     score: {
                         type: Number,
                         default: 0,

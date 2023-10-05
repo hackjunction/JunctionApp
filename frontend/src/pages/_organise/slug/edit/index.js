@@ -21,6 +21,7 @@ import ChallengesTab from './challenges'
 import ScheduleTab from './schedule'
 import QuestionsTab from './questions'
 import SubmissionFormTab from './submission'
+import ScoreCriteriaTab from './scoreCriteria'
 import TimelineTab from './timeline'
 import MeetingRoomsTab from './meetingRooms'
 import OtherTab from './other'
@@ -108,6 +109,12 @@ export default () => {
                                     key: 'configuration',
                                     label: 'Configuration',
                                     component: ConfigurationTab,
+                                },
+                                {
+                                    path: '/scoreSettings',
+                                    key: 'scoreSettings',
+                                    label: 'Score criteria',
+                                    component: ScoreCriteriaTab,
                                 },
                                 {
                                     path: '/emails',

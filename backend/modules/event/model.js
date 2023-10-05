@@ -29,6 +29,7 @@ const uploadHelper = require('../upload/helper')
 const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
 const SubmissionDefaultFieldsSchema = require('@hackjunction/shared/schemas/SubmissionDefaultFields')
 const SubmissionDefaultFields = require('@hackjunction/shared/constants/submission-default-fields')
+const ScoreCriteriaSettingsSchema = require('@hackjunction/shared/schemas/ScoreCriteriaSettings')
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -393,6 +394,10 @@ const EventSchema = new mongoose.Schema({
     submissionFormDefaultFields: {
         type: SubmissionDefaultFieldsSchema.mongoose,
         default: SubmissionDefaultFields,
+    },
+    //New fields for score criteria and score settings
+    scoreCriteriaSettings: {
+        type: ScoreCriteriaSettingsSchema.mongoose,
     },
 })
 
