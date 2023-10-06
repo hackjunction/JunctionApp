@@ -6,6 +6,7 @@ const Fragments = {
             _id
             status
             event {
+                _id
                 slug
                 name
                 description

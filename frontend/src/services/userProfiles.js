@@ -55,7 +55,7 @@ UserProfilesService.getUserProfileRecruitment = (userId, idToken) => {
 }
 
 UserProfilesService.getRecruiters = idToken => {
-    return _axios.get('/user-profiles/recruiters', config(idToken))
+    return _axios.get('/user-profiles/recruiters/get', config(idToken))
 }
 
 
@@ -72,7 +72,7 @@ UserProfilesService.updateRecruiter = (
     organisation,
 ) => {
     const data = { recruiterId, event, organisation }
-    return _axios.patch('/user-profiles/recruiters', data, config(idToken))
+    return _axios.patch('/user-profiles/recruiters/update', data, config(idToken))
 }
 
 UserProfilesService.deleteRecruiter = (

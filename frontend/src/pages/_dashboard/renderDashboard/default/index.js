@@ -51,6 +51,7 @@ export default () => {
     const participantEvents = useSelector(UserSelectors.userProfileRegistrations)
     const [activeEvents, loadingActive] = useActiveEvents({}) //active events, from these we select where to rediret, or default
     const [pastEvents, loadingPast] = usePastEvents({ limit: 3 })//TODO: is undefined, fix
+    const [loading, setLoading] = useState(true)
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
     const stateActiveEvents = useSelector(DashboardSelectors.activeEvents)
     const statePastEvents = useSelector(DashboardSelectors.pastEvents)
@@ -75,6 +76,9 @@ export default () => {
             console.log("dipatch past", pastEvents)
             dispatch(DashboardActions.pastEvents(pastEvents))
         }
+        if (!(loadingActive || loadingEvents || loadingPast)) {
+            setLoading(false)
+        }
     }, [organizerEvents, activeEvents, pastEvents])
 
 
@@ -93,6 +97,7 @@ export default () => {
 
     useEffect(() => {
         //TODO: needs more testing
+        console.log("loading active", loadingActive, "loading organiser", loadingEvents, "loading past", loadingPast)
         if (page === "") {
             const partnerPage = activeEvents?.find(active => recruiterEvents?.some(e => e.eventId === active._id))?.slug
             //console.log("partnerPage", partnerPage)
@@ -153,7 +158,7 @@ export default () => {
 
 
         if (page !== "" && accessRight !== "") {
-            console.log("loading active", loadingActive, "loading organiser", loadingEvents, "loading past", loadingPast)
+
             console.log(`dispatch(UserActions.setAccessRight(${accessRight})`)
             console.log(`/dashboard/event/${page}`)
 
@@ -161,7 +166,8 @@ export default () => {
             dispatch(push(`/dashboard/event/${page}`))
         }
 
-    }, [activeEvents, recruiterEvents, organizerEvents, participantEvents])
+
+    }, [loading])
 
 
     //TODO: fix all `/dashboard/${ calls
@@ -174,7 +180,7 @@ export default () => {
     return (
         <PageWrapper
             wrapContent={false}
-            loading={loadingActive || loadingPast}
+            loading={(loadingActive || loadingEvents || loadingPast)}
         >
             <SidebarLayout
                 baseRoute={match.url}

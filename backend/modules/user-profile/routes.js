@@ -133,26 +133,16 @@ router.get('/search/:terms', hasToken, searchUsers)
 
 router
     .get(
-        '/recruiters',
+        '/recruiters/get',
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         getRecruiters,
     )
     .patch(
-        '/recruiters',
+        '/recruiters/update',
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         updateRecruiter,
-    )
-
-
-
-router
-    .get(
-        '/recruiters',
-        hasToken,
-        hasPermission(Auth.Permissions.MANAGE_EVENT),
-        getRecruiters,
     )
     .patch(
         '/recruiters/delete',
@@ -160,6 +150,7 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         deleteRecruiter,
     )
+
 
 router
     .get(
