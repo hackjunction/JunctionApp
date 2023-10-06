@@ -360,7 +360,7 @@ stages:
 
 
   - deployment: VMDeploy_EU
-    dependsOn: Build
+    dependsOn: Build_eu
     displayName: DEPRLOY EU
     environment:
       name:  PROD
