@@ -19,10 +19,11 @@ import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
 
-
 import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
 
+import ProjectsPage from './projects'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
         padding: theme.spacing(3),
@@ -38,7 +39,6 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-
 export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
     const classes = useStyles()
     const { t } = useTranslation()
@@ -47,7 +47,9 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
 
-    console.log("props", originalAlertCount, originalAlerts, shownPages)
+    // const event = useSelector(DashboardSelectors.event)
+
+    console.log('props', originalAlertCount, originalAlerts, shownPages)
     console.log(originalAlertCount, alertCount)
 
     return (
@@ -55,7 +57,6 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
             baseRoute={match.url}
             location={location}
             sidebarTopContent={
-
                 <div className={classes.sidebarTop}>
                     <Image
                         className={classes.sidebarLogo}
@@ -87,6 +88,15 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     component: () => {
                         setAlertCount(0)
                         return DefaultPage({ alerts })
+                    },
+                },
+                {
+                    key: 'projects',
+                    path: '/projects',
+                    exact: false,
+                    label: 'Projects',
+                    component: () => {
+                        return <ProjectsPage event={event} />
                     },
                 },
                 {
@@ -124,7 +134,8 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     label: 'Meetings',
                     component: CalendarPage,
                 },
-                {//TODO: wtf is this? move recrytool to be part of the app, not some useles framing
+                {
+                    //TODO: wtf is this? move recrytool to be part of the app, not some useles framing
                     key: 'recruitment',
                     path: '/recruitment',
                     exact: true,

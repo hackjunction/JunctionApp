@@ -12,6 +12,7 @@ const ScoreCriteriaSchema = new mongoose.Schema({
     },
     score: {
         type: Number,
+        // default: 0,
         required: true,
     },
 })
