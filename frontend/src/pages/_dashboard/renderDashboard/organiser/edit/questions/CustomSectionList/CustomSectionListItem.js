@@ -104,16 +104,12 @@ export default ({
                                     },
                                 })
                             }}
-                            handleDelete={index => {
-                                console.log(index)
-                                const updatedOptions = [
-                                    ...question.settings.options,
-                                ]
-                                updatedOptions.splice(index, 1)
+                            handleDelete={updatedArr => {
+                                console.log(updatedArr)
                                 handleEdit({
                                     ...question,
                                     settings: {
-                                        options: updatedOptions,
+                                        options: updatedArr,
                                     },
                                 })
                             }}
