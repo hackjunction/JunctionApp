@@ -271,7 +271,7 @@ export default () => {
                                 ).map(key => ({
                                     label: OverallReviewingMethods[key].label,
                                     value: key,
-                                }))}
+                                })).filter(o => o.label !== 'Finals, public voting')}
                             />
                         </FormControl>
                     )}
