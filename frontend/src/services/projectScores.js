@@ -83,48 +83,4 @@ ProjectScoresService.updateScoreByEventSlugAndPartnerToken = (
     )
 }
 
-// Alternative endpoints for partner reviewing with personal accounts
-
-ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerAccount = (
-    idToken,
-    eventSlug,
-    projectId,
-) => {
-    return _axios.get(
-        `/project-scores/review/event/${eventSlug}/${projectId}`,
-        config(idToken),
-    )
-}
-
-ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount = (
-    idToken,
-    eventSlug,
-    projectScore,
-) => {
-    console.log('Adding new score from partner account')
-    return _axios.post(
-        `/project-scores/review/event/${eventSlug}/${projectScore._id}`,
-        projectScore,
-        config(idToken),
-    )
-}
-
-ProjectScoresService.updateScoreByEventSlugAndProjectIdAndPartnerAccount = (
-    idToken,
-    eventSlug,
-    // projectId,
-    projectScore,
-) => {
-    console.log('Updating working', {
-        idToken,
-        eventSlug,
-        projectScore,
-    })
-    return _axios.put(
-        `/project-scores/review/event/${eventSlug}/${projectScore._id}`,
-        projectScore,
-        config(idToken),
-    )
-}
-
 export default ProjectScoresService

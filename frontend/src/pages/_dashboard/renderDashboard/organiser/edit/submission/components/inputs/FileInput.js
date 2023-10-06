@@ -4,17 +4,11 @@ import { useDispatch } from 'react-redux'
 import * as DashboardActions from 'redux/dashboard/actions'
 
 const FileInput = ({ value = null, handleChange = () => {} }) => {
-    console.log('FileInput value', value)
     const dispatch = useDispatch()
     let parsedValue
 
-    if (typeof value === 'string') {
-        if (value !== '' && value !== '[object Object]') {
-            parsedValue = JSON.parse(value)
-        } else if (value === '[object Object]') {
-            console.log('FileInput value is [object Object]')
-            value = null
-        }
+    if (typeof value === 'string' && value !== '') {
+        parsedValue = JSON.parse(value)
     } else {
         parsedValue = value
     }

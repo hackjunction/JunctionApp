@@ -41,12 +41,16 @@ const EvaluationForm = ({
                 onSubmit={submit}
             >
                 {formikProps => {
-                    console.log('formikProps from EvaluationForm', formikProps)
+                    console.log(formikProps)
                     return (
                         <Form className="tw-flex tw-flex-col tw-gap-8">
                             <Field name="scoreCriteria">
                                 {({ field, form }) => (
                                     <>
+                                        {console.log(
+                                            'Field value for scoreCriteria',
+                                            field.value,
+                                        )}
                                         <FormControl
                                             label="Project evaluation"
                                             hint="Assign a score to each criteria to

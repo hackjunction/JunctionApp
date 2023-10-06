@@ -11,12 +11,10 @@ const {
     isEventOrganiser,
     getEventFromParams,
     hasPartnerToken,
-    isEventPartner,
 } = require('../../common/middleware/events')
 const { registrationAccepted } = require('../email-task/types')
 
 const addProjectScore = asyncHandler(async (req, res) => {
-    console.log('addProjectScore is running')
     try {
         if (req.params.track) {
             req.body.track = req.params.track._id
@@ -67,6 +65,7 @@ const getScoresByEventAndTeam = asyncHandler(async (req, res) => {
 })
 
 const getScoreByProjectId = asyncHandler(async (req, res) => {
+    // TODO figure out why ?. operator didn't work here
     const challenge = req.params.challenge ? req.params.challenge._id : null
     const track = req.params.track ? req.params.track._id : null
     const score = await ProjectScoreController.getScoreByProjectId(
@@ -83,30 +82,6 @@ const getPublicScores = asyncHandler(async (req, res) => {
     }
     const scores = await ProjectScoreController.getPublicScores(req.event.id)
     return res.status(200).json(scores)
-})
-
-const updateProjectScoreWithReviewers = asyncHandler(async (req, res) => {
-    console.log('Received on bcknd')
-    try {
-        if (req.params.track) {
-            req.body.track = req.params.track._id
-        }
-        if (req.params.challenge) {
-            req.body.challenge = req.params.challenge._id
-        }
-        const score =
-            await ProjectScoreController.updateProjectScoreWithReviewers(
-                req.params.id,
-                req.body,
-            )
-        return res.status(200).json(score)
-    } catch (e) {
-        return res.status(500).json({
-            message:
-                'Update project score encountered an unknown error. Please check your request and try again.',
-            error: e.message,
-        })
-    }
 })
 
 router.post('/', hasWebhookToken, addProjectScore)
@@ -147,30 +122,6 @@ router.put(
     getEventFromParams,
     hasPartnerToken,
     updateProjectScore,
-)
-
-// New routes for project review from partner accounts
-
-router.get(
-    '/review/event/:slug/:projectId',
-    hasToken,
-    isEventPartner,
-    getScoreByProjectId,
-)
-
-router.post(
-    '/review/event/:slug/:id',
-    hasToken,
-    isEventPartner,
-    // getEventFromParams,
-    addProjectScore,
-)
-
-router.put(
-    '/review/event/:slug/:id',
-    hasToken,
-    isEventPartner,
-    updateProjectScoreWithReviewers,
 )
 
 module.exports = router

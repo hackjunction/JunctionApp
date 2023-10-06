@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -20,10 +20,6 @@ import theme from 'material-ui-theme'
 import Filter from 'components/Team/Filter'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import _ from 'lodash'
-import { EventHelpers } from '@hackjunction/shared'
-import moment from 'moment-timezone'
-
-import ProjectReviewModal from 'components/modals/ProjectReviewModal'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -61,8 +57,6 @@ const useStyles = makeStyles(theme => ({
     }),
 }))
 
-const reviewIndexLimit = 2
-
 const ProjectsGridItem = ({
     project,
     event,
@@ -74,12 +68,7 @@ const ProjectsGridItem = ({
     message = null,
     showTags = false,
     showReviewers = false,
-    // onSeeReviews = () => {},
 }) => {
-    const [openReviewModal, setOpenReviewModal] = useState(false)
-    const isVotingPast = EventHelpers.isVotingPast(event, moment)
-    const isVotingOpen = EventHelpers.isVotingOpen(event, moment)
-    const isEventOver = EventHelpers.isEventOver(event, moment)
     const classes = useStyles({ labelBackground })
     const previewImage =
         project.images.length > 0 ? project.images[0].publicId : ''
@@ -95,31 +84,10 @@ const ProjectsGridItem = ({
         }
     }
 
-    const scoreTag = score => {
-        if (score && score > 0 && (isVotingPast || isEventOver)) {
-            return <Chip color="primary" label="Reviewed" />
-        } else if (isVotingOpen) {
-            return <Chip color="secondary" label="Open for review" />
-        } else if (score && score === 0 && isEventOver) {
-            return <Chip color="secondary" label="Not reviewed" />
-        }
-    }
-
-    const renderTags = () => {
-        if (showTags && typeof project.status !== 'undefined') {
-            return (
-                <>
-                    {statusTag(project.status)}
-                    {scoreTag(score)}
-                </>
-            )
-        }
-    }
-
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Card
-                // onClick={onClickMore}
+                onClick={onClickMore}
                 className={`tw-bg-white tw-w-full tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-500px tw-flex tw-flex-col tw-justify-between`}
             >
                 <CardContent className="tw-flex tw-flex-col tw-p-0">
@@ -144,7 +112,14 @@ const ProjectsGridItem = ({
                             />
                         </div>
                         <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-z-10">
-                            {renderTags()}
+                            {showTags &&
+                                typeof project.status !== 'undefined' &&
+                                statusTag(project.status)}
+                            {score && score > 0 ? (
+                                <Chip color="primary" label="Reviewed" />
+                            ) : (
+                                <Chip color="secondary" label="Not reviewed" />
+                            )}
                         </div>
                     </div>
                     <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
@@ -156,7 +131,7 @@ const ProjectsGridItem = ({
                             >
                                 {project.name}
                             </Typography>
-                            <div className="tw-flex tw-gap-1">
+                            <div>
                                 {project.challenges.map((challenge, index) => (
                                     <Chip
                                         key={index}
@@ -203,95 +178,30 @@ const ProjectsGridItem = ({
                     </div>
                 </CardContent>
                 <CardActions className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-4 tw-pb-4 tw-pt-0 tw-gap-4">
-                    <div className="tw-flex tw-gap-2">
-                        {onClickMore && (
-                            <Button
-                                onClick={onClickMore}
-                                color="outlined_button"
-                                variant="jOutlined"
-                            >
-                                Show more
-                            </Button>
-                        )}
-                        {showReviewers && (
-                            <Button
-                                onClick={() => setOpenReviewModal(true)}
-                                color="outlined_button"
-                                variant="jOutlined"
-                            >
-                                Read reviews
-                            </Button>
-                        )}
-                    </div>
-                    {showReviewers && project?.reviewers?.length > 0 && (
+                    {onClickMore && (
+                        <Button
+                            onClick={onClickMore}
+                            color="outlined_button"
+                            variant="jOutlined"
+                        >
+                            See more
+                        </Button>
+                    )}
+                    {showReviewers && (
                         <div className="tw-flex tw-gap-1 tw-w-full">
-                            {project?.score && project.score > 0 && (
-                                <Tooltip title="Reviewed by Organizer">
-                                    <Avatar>O</Avatar>
-                                </Tooltip>
-                            )}
-                            {project.reviewers.map((reviewer, index) => {
-                                if (index === reviewIndexLimit) {
-                                    return (
-                                        <Tooltip
-                                            key={index}
-                                            title={`Reviewed by ${
-                                                project.reviewers.length - 1
-                                            } more ${
-                                                project.reviewers.length - 1 > 1
-                                                    ? 'people'
-                                                    : 'person'
-                                            }`}
-                                        >
-                                            <Avatar>
-                                                +{project.reviewers.length - 1}
-                                            </Avatar>
-                                        </Tooltip>
-                                    )
-                                } else if (index > reviewIndexLimit) {
-                                    return null
-                                }
-                                return (
-                                    <Tooltip
-                                        key={index}
-                                        title={`Reviewed by ${
-                                            reviewer?.userFirstname
-                                                ? reviewer.userFirstname
-                                                : 'judge'
-                                        }`}
-                                    >
-                                        {reviewer?.avatar ? (
-                                            <Avatar src={reviewer.avatar} />
-                                        ) : (
-                                            <Avatar>
-                                                {reviewer?.userFirstname
-                                                    ? reviewer?.userFirstname.charAt(
-                                                          0,
-                                                      )
-                                                    : 'R'}
-                                            </Avatar>
-                                        )}
-                                    </Tooltip>
-                                )
-                            })}
+                            <Tooltip title="Reviewed by A">
+                                <Avatar>A</Avatar>
+                            </Tooltip>
+                            <Tooltip title="Reviewed by B">
+                                <Avatar>B</Avatar>
+                            </Tooltip>
+                            <Tooltip title="Reviewed by 3 more people">
+                                <Avatar>+3</Avatar>
+                            </Tooltip>
                         </div>
                     )}
                 </CardActions>
             </Card>
-            {showReviewers && (
-                <ProjectReviewModal
-                    open={openReviewModal}
-                    onClose={() => setOpenReviewModal(false)}
-                    score={{
-                        score: 10,
-                        averageScore: 6,
-                        maxScore: 10,
-                        message: 'Something here',
-                        status: 'evaluated',
-                    }}
-                    projectScoreData={project}
-                />
-            )}
         </Grid>
     )
 }
