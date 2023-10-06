@@ -528,7 +528,6 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        {/* TODO component for file input needs to be linked to the formik fields */}
                         <FileInput
                             value={field.value}
                             handleChange={value =>
