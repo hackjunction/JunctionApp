@@ -8,24 +8,24 @@ const bodyFont = ['"Inter"', 'sans-serif'].join(',')
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#0045B6',
-            dark: '#003180',
-            light: '#80b0ff',
+            main: '#6B09FF',
+            dark: '#330080',
+            light: '#a366ff',
         },
         secondary: {
-            main: '#FF9500',
-            dark: '#c37200',
-            light: '#ffd599',
+            main: '#f8a787',
+            dark: '#f58356',
+            light: '#fac0aa',
         },
         success: {
-            main: '#4CB9A3',
-            light: '#bef67a',
-            dark: '#5a9216',
+            main: '#34FACC',
+            light: '#6afbd9',
+            dark: '#06e0ad',
             contrastText: '#ffffff',
         },
         error: {
-            main: '#EF6D6D',
-            dark: '#a81212',
+            main: '#FF4000',
+            dark: '#32d00',
             contrastText: '#ffffff',
         },
         warning: {
