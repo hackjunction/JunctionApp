@@ -33,6 +33,7 @@ const Checklist = require('./Checklist')
 const MeetingRoom = require('./MeetingRoom')
 const EventPageScript = require('./EventPageScript')
 const SubmissionDefaultFields = require('./SubmissionDefaultFields')
+const ScoreCriteriaSettings = require('./ScoreCriteriaSettings')
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
@@ -90,6 +91,8 @@ const SharedSchema = new GraphQLSchema({
         SubmissionDefaultFields.graphql,
         SubmissionDefaultFields.graphqlInput,
         EventPageScript.graphqlInput,
+        ScoreCriteriaSettings.graphql,
+        ScoreCriteriaSettings.graphqlInput,
     ],
 })
 
