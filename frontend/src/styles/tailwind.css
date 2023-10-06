@@ -11813,14 +11813,6 @@
   min-width: 100%;
 }
 
-.tw-min-w-360px {
-  min-width: 360px;
-}
-
-.tw-min-w-540px {
-  min-width: 540px;
-}
-
 .tw-object-contain {
   -o-object-fit: contain;
      object-fit: contain;
@@ -32873,14 +32865,6 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     min-width: 100%;
   }
 
-  .sm\:tw-min-w-360px {
-    min-width: 360px;
-  }
-
-  .sm\:tw-min-w-540px {
-    min-width: 540px;
-  }
-
   .sm\:tw-object-contain {
     -o-object-fit: contain;
        object-fit: contain;
@@ -53888,14 +53872,6 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .md\:tw-min-w-full {
     min-width: 100%;
-  }
-
-  .md\:tw-min-w-360px {
-    min-width: 360px;
-  }
-
-  .md\:tw-min-w-540px {
-    min-width: 540px;
   }
 
   .md\:tw-object-contain {
@@ -74907,14 +74883,6 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
     min-width: 100%;
   }
 
-  .lg\:tw-min-w-360px {
-    min-width: 360px;
-  }
-
-  .lg\:tw-min-w-540px {
-    min-width: 540px;
-  }
-
   .lg\:tw-object-contain {
     -o-object-fit: contain;
        object-fit: contain;
@@ -95922,14 +95890,6 @@ Any custom css, create it here and do not make any updates to the tailwind.css f
 
   .xl\:tw-min-w-full {
     min-width: 100%;
-  }
-
-  .xl\:tw-min-w-360px {
-    min-width: 360px;
-  }
-
-  .xl\:tw-min-w-540px {
-    min-width: 540px;
   }
 
   .xl\:tw-object-contain {
