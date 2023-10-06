@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import { push } from 'connected-react-router'
-import { Box, Grid, Divider, Typography } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -13,20 +13,12 @@ import ProjectsService from 'services/projects'
 import Filter from 'components/Team/Filter'
 import _ from 'lodash'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: theme.spacing(2),
-    },
-}))
-
 //TODO make this and track one into a component
 export default ({ event }) => {
     const allFilterLabel = 'All projects'
-    const classes = useStyles()
     const match = useRouteMatch()
+    console.log('match', match)
+    console.log('match URL', match.url)
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params
@@ -71,6 +63,17 @@ export default ({ event }) => {
         return null
     }
 
+    const projectsToRender = filter => {
+        switch (filter) {
+            case 'draft':
+                return draftsProjects
+            case 'final':
+                return finalProjects
+            default:
+                return projects
+        }
+    }
+
     return (
         <PageWrapper
             loading={loading || !data}
@@ -92,21 +95,16 @@ export default ({ event }) => {
                         <Filter
                             noFilterOption={allFilterLabel}
                             onChange={onFilterChange}
-                            filterArray={data?.event.challenges.map(c => {
-                                return { label: c.name, value: c.slug }
-                            })}
+                            filterArray={[
+                                { label: 'Final projects', value: 'final' },
+                                { label: 'Draft projects', value: 'draft' },
+                            ]}
                         />
                     </div>
 
                     <Box height={20} />
                     <ProjectsGrid
-                        projects={
-                            filter === allFilterLabel
-                                ? projects
-                                : _.filter(projects, project =>
-                                      _.includes(project.challenges, filter),
-                                  )
-                        }
+                        projects={projectsToRender(filter)}
                         event={data.event}
                         onSelect={project =>
                             dispatch(push(`${match.url}/view/${project._id}`))
