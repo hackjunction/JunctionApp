@@ -447,6 +447,7 @@ const RegistrationQuestion = ({
                     </FormControl>
                 )
             case 'boolean': {
+                console.log('From regQ, bool config', config)
                 return (
                     <FormControl
                         label={config.label}

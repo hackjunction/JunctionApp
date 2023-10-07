@@ -195,16 +195,6 @@ const SubmissionForm = props => {
         })
     }
 
-    // const fileTest = async () => {
-    //     return await dispatch(
-    //         DashboardActions.getFile('651188f0f66c7a6981df522a'),
-    //     )
-    // }
-
-    // const deleteTest = async () => {
-    //     await dispatch(DashboardActions.deleteFile('651188f0f66c7a6981df522a'))
-    // }
-
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
@@ -264,10 +254,6 @@ const SubmissionForm = props => {
                         /> */}
                         {/* <button onClick={fileTest}>Download test</button>
                         <button onClick={deleteTest}>Delete test</button> */}
-
-                        {/* <button onClick={() => console.log(formikProps.values)}>
-                            TEST
-                        </button> */}
                         {/* <FastField
                             name="files"
                             render={({ field, form }) => (

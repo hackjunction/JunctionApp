@@ -39,7 +39,13 @@ export default ({
 
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
-            <div className="tw-flex tw-items-center tw-gap-4">
+            <div
+                className={`tw-flex ${
+                    challengeName?.length > 10 || teamName?.length > 6
+                        ? 'tw-flex-col'
+                        : 'tw-items-center'
+                } tw-gap-4`}
+            >
                 <Typography
                     className="tw-font-bold tw-tracking-tight tw-break-words-overflow"
                     variant={styling.teamNameTypography}

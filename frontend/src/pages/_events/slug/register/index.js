@@ -235,21 +235,20 @@ export default RequiresPermission(() => {
         return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
-
     const setNextStep = useCallback(
         (nextStep, values, path) => {
             const newFormData = path
                 ? {
-                    ...formData,
-                    [path]: {
-                        ...formData[path],
-                        ...values,
-                    },
-                }
+                      ...formData,
+                      [path]: {
+                          ...formData[path],
+                          ...values,
+                      },
+                  }
                 : {
-                    ...formData,
-                    ...values,
-                }
+                      ...formData,
+                      ...values,
+                  }
             editRegistration(newFormData)
             setFormData(newFormData)
             setActiveStep(nextStep)
@@ -521,7 +520,9 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(push(`/dashboard/event/${slug}`))
+                                        dispatch(
+                                            push(`/dashboard/event/${slug}`),
+                                        )
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"
