@@ -80,7 +80,7 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
--stage: VMDeploy
+
   - deployment: VMDeploy
     dependsOn: Build
     displayName: Web deploy
@@ -167,7 +167,7 @@ stages:
 
 
 
-- stage: Build_eu
+- stage: Build
   displayName: Build stage
   dependsOn: VMDeploy
   jobs:  
