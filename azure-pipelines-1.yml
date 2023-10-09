@@ -166,7 +166,7 @@ stages:
 
 
 
-- stage: Build eu
+- stage: Build_eu
   displayName: Build stage
   dependsOn: VMDeploy
   jobs:  
