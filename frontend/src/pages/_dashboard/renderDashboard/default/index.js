@@ -51,6 +51,7 @@ export default () => {
     const participantEvents = useSelector(UserSelectors.userProfileRegistrations)
     const [activeEvents, loadingActive] = useActiveEvents({}) //active events, from these we select where to rediret, or default
     const [pastEvents, loadingPast] = usePastEvents({ limit: 3 })//TODO: is undefined, fix
+    const [loading, setLoading] = useState(true)
     const userAccessRight = useSelector(UserSelectors.userAccessRight)
     const stateActiveEvents = useSelector(DashboardSelectors.activeEvents)
     const statePastEvents = useSelector(DashboardSelectors.pastEvents)
@@ -75,6 +76,9 @@ export default () => {
             console.log("dipatch past", pastEvents)
             dispatch(DashboardActions.pastEvents(pastEvents))
         }
+        if (!(loadingActive || loadingEvents || loadingPast)) {
+            setLoading(false)
+        }
     }, [organizerEvents, activeEvents, pastEvents])
 
 
@@ -93,26 +97,27 @@ export default () => {
 
     useEffect(() => {
         //TODO: needs more testing
+        console.log("loading active", loadingActive, "loading organiser", loadingEvents, "loading past", loadingPast)
         if (page === "") {
             const partnerPage = activeEvents?.find(active => recruiterEvents?.some(e => e.eventId === active._id))?.slug
-            console.log("partnerPage", partnerPage)
+            //console.log("partnerPage", partnerPage)
 
-            console.log("page", page)
+            //console.log("page", page)
             if (partnerPage && isPartner) {
                 page = partnerPage
                 accessRight = 'partner'
 
-                dispatch(UserActions.setAccessRight('partner'))
-                console.log("redirect", partnerPage)
+                //dispatch(UserActions.setAccessRight('partner'))
+                //console.log("redirect", partnerPage)
                 //dispatch(push(`/dashboard/event/${partnerPage}`))
             }
         }
 
         if (page === "") {
             const orgPage = activeEvents?.find(active => organizerEvents?.some(e => e._id === active._id))?.slug
-            console.log("orgPage", orgPage)
+            //console.log("orgPage", orgPage)
 
-            console.log("page orgPage", page)
+            //console.log("page orgPage", page)
             if (orgPage && isOrganizer) {
                 page = orgPage
                 accessRight = 'organizer'
@@ -128,12 +133,12 @@ export default () => {
 
         if (page === "") {
             const participantPage = activeEvents?.find(active => {
-                console.log("active._id", active._id, participantEvents?.some(e => e.event === active._id))
+                //console.log("active._id", active._id, participantEvents?.some(e => e.event === active._id))
                 return participantEvents?.some(e => e.event === active._id)
             })?.slug
-            console.log("participantPage", participantPage)
+            //console.log("participantPage", participantPage)
 
-            console.log("page participantPage", page)
+            //console.log("page participantPage", page)
 
             if (participantPage) {
                 page = participantPage
@@ -153,14 +158,16 @@ export default () => {
 
 
         if (page !== "" && accessRight !== "") {
+
             console.log(`dispatch(UserActions.setAccessRight(${accessRight})`)
             console.log(`/dashboard/event/${page}`)
 
-            dispatch(UserActions.setAccessRight(accessRight))
-            dispatch(push(`/dashboard/event/${page}`))
+            //dispatch(UserActions.setAccessRight(accessRight))
+            //dispatch(push(`/dashboard/event/${page}`))
         }
 
-    }, [activeEvents, recruiterEvents, organizerEvents, participantEvents])
+
+    }, [loading])
 
 
     //TODO: fix all `/dashboard/${ calls
@@ -173,7 +180,7 @@ export default () => {
     return (
         <PageWrapper
             wrapContent={false}
-            loading={loadingActive || loadingPast}
+            loading={(loadingActive || loadingPast)}
         >
             <SidebarLayout
                 baseRoute={match.url}

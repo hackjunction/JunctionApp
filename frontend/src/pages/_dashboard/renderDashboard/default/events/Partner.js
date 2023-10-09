@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as UserActions from 'redux/user/actions'
+import * as UserSelectors from 'redux/user/selectors'
 
 import { Box, Grid } from '@material-ui/core'
 
@@ -21,15 +22,17 @@ export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const activeEvents = useSelector(DashboardSelectors.activeEvents)
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
+    const recruiterEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
     const [registrations, loading, error] = useRegistrationsByUser(userId)
 
     console.log("activeEvents", activeEvents)
     console.log("pastEvents", pastEvents)
     console.log("registrations", registrations)
+    console.log("recruiterEvents", recruiterEvents)
 
     const dispatch = useDispatch()
     const { t } = useTranslation()
-
+    //TODO: should be using partner events
     function renderEvents() {
         return (
             <>
@@ -40,7 +43,12 @@ export default () => {
 
                 <Box mt={3}>
                     <Grid container spacing={3}>
-                        {registrations?.map(registration => {//TODO: fiter current event away
+                        {registrations?.filter(registration => {
+                            const recEvents = recruiterEvents?.map(e => e.eventId)
+                            return recEvents?.some(r => r === registration.event._id)
+                        }
+
+                        ).map(registration => {//TODO: fiter current event away
 
                             return (
                                 <NewEventCard

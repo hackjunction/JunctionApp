@@ -87,7 +87,6 @@ const NewEventCard = ({ event, buttons }) => {
     const organization = event?.organizations
     // {event.published && !event.approved ? 'Waiting approval' : null}
 
-    console.log("rendering", event)
 
     const styling = {
         cardHover: '',
@@ -130,14 +129,14 @@ const NewEventCard = ({ event, buttons }) => {
                         />
                     )}
 
-                    <CardTag
+                    {/* <CardTag
                         className={classes.tag}
                         variant='outlined'
                         color="secondary"
                         label="Prize: 20 000 $"//TODO: make this dynamic
                     >
 
-                    </CardTag>
+                    </CardTag> */}
 
                 </div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
@@ -169,7 +168,6 @@ const NewEventCard = ({ event, buttons }) => {
                 </Button>*/}
 
                 {buttons?.slice(0, 2).map((btn, index) => {
-                    console.log("btn idx", event.slug, index)
                     return (
 
                         <Box key={index}>{btn}</Box>

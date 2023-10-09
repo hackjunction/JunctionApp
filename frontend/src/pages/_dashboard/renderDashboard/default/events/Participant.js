@@ -80,7 +80,7 @@ export default () => {
                 <Box mt={3}>
                     <Grid container spacing={3}>
                         {activeEvents?.filter(event =>
-                            registrations?.map(e => e.event.slug).indexOf(event.slug) === -1
+                            registrations?.map(e => e.event?.slug).indexOf(event?.slug) === -1
                         )
                             .map(event => {
                                 const canApply =
