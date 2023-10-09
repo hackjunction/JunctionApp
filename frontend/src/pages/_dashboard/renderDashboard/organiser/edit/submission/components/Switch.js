@@ -5,7 +5,7 @@ const Switch = ({ onChange, checked, checkedText, uncheckedText }) => {
         checked = JSON.parse(checked)
     }
     return (
-        <div className="tw-flex tw-items-center tw-space-x-4">
+        <div className="tw-flex tw-items-center tw-space-x-4 tw-text-left">
             <div
                 className={`${
                     checked ? 'tw-bg-blue-500' : 'tw-bg-gray-300'

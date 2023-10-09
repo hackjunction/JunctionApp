@@ -48,12 +48,12 @@ const SubmissionForm = props => {
     const [project, setProject] = useState(null)
     const [projectStatus, setProjectStatus] = useState('')
 
-    const [projectName, setProjectName] = useState(project?.name || '')
-    const debouncedProjectName = useDebounce(projectName, 300)
-    const [projectValidity, setProjectValidity] = useState({
-        errors: {},
-        state: 'initial',
-    })
+    // const [projectName, setProjectName] = useState(project?.name || '')
+    // const debouncedProjectName = useDebounce(projectName, 300)
+    // const [projectValidity, setProjectValidity] = useState({
+    //     errors: {},
+    //     state: 'initial',
+    // })
 
     useEffect(() => {
         if (projects && projects.length && id) {
@@ -65,39 +65,39 @@ const SubmissionForm = props => {
         }
     }, [id, projects])
 
-    useEffect(() => {
-        setProjectValidity({
-            errors: {},
-            state: 'initial',
-        })
+    // useEffect(() => {
+    //     setProjectValidity({
+    //         errors: {},
+    //         state: 'initial',
+    //     })
 
-        if (debouncedProjectName && debouncedProjectName === project?.name)
-            return
+    //     if (debouncedProjectName && debouncedProjectName === project?.name)
+    //         return
 
-        validateProject()
-    }, [debouncedProjectName])
+    //     validateProject()
+    // }, [debouncedProjectName])
 
-    const validateProject = async () => {
-        setProjectValidity({
-            errors: {},
-            state: 'loading',
-        })
-        const result = await ProjectsService.validateProject(
-            idToken,
-            event.slug,
-            {
-                projectName: debouncedProjectName,
-            },
-        )
-        const errors = Object.entries(result)
-            .filter(([, isInvalid]) => !!isInvalid)
-            .reduce(
-                (acc, [key, isInvalid]) => ({ ...acc, [key]: isInvalid }),
-                {},
-            )
+    // const validateProject = async () => {
+    //     setProjectValidity({
+    //         errors: {},
+    //         state: 'loading',
+    //     })
+    //     const result = await ProjectsService.validateProject(
+    //         idToken,
+    //         event.slug,
+    //         {
+    //             projectName: debouncedProjectName,
+    //         },
+    //     )
+    //     const errors = Object.entries(result)
+    //         .filter(([, isInvalid]) => !!isInvalid)
+    //         .reduce(
+    //             (acc, [key, isInvalid]) => ({ ...acc, [key]: isInvalid }),
+    //             {},
+    //         )
 
-        setProjectValidity({ errors, state: 'loaded' })
-    }
+    //     setProjectValidity({ errors, state: 'loaded' })
+    // }
 
     const initialValues = {
         sourcePublic: true,
