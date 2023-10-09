@@ -162,8 +162,8 @@ export default () => {
             console.log(`dispatch(UserActions.setAccessRight(${accessRight})`)
             console.log(`/dashboard/event/${page}`)
 
-            dispatch(UserActions.setAccessRight(accessRight))
-            dispatch(push(`/dashboard/event/${page}`))
+            //dispatch(UserActions.setAccessRight(accessRight))
+            //dispatch(push(`/dashboard/event/${page}`))
         }
 
 
