@@ -180,7 +180,7 @@ export default () => {
     return (
         <PageWrapper
             wrapContent={false}
-            loading={(loadingActive || loadingEvents || loadingPast)}
+            loading={(loadingActive || loadingPast)}
         >
             <SidebarLayout
                 baseRoute={match.url}
