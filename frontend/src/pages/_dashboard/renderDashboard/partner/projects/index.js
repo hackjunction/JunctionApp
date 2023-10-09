@@ -83,22 +83,39 @@ export default ({ event }) => {
             )
             let challengeOrg
             let filteredProjects = []
-            if (partnerData) {
+            const data = {
+                event,
+            }
+            console.log('Partner data', partnerData)
+            console.log('Data fetched', dataOt)
+            console.log(
+                'Event data',
+                event.scoreCriteriaSettings.reviewAnyChallenge,
+            )
+            // if (event.scoreCriteriaSettings.reviewAnyChallenge) {
+            //     filteredProjects = [...dataOt]
+            // }
+            console.log('Filtered projects', filteredProjects)
+            // filteredProjects = [...dataOt.data]
+            if (event.scoreCriteriaSettings.reviewAnyChallenge) {
+                data.projects = dataOt
+            } else if (partnerData) {
                 challengeOrg = _.find(
                     event.challenges,
                     challenge => challenge.partner === partnerData.organization,
                 )
                 if (challengeOrg) {
+                    data.challenge = challengeOrg
                     filteredProjects = _.filter(dataOt, project =>
                         _.includes(project.challenges, challengeOrg.slug),
                     )
+                    if (filteredProjects.length > 0) {
+                        data.projects = filteredProjects
+                    }
                 }
             }
-            const data = {
-                projects: filteredProjects,
-                event,
-                challenge: challengeOrg,
-            }
+            console.log('Data after', data)
+
             setData(data)
             setDraftsProjects(
                 data.projects.filter(project => project.status === 'draft'),
@@ -251,17 +268,19 @@ export default ({ event }) => {
         return (
             <>
                 <div className="tw-flex tw-justify-between tw-items-end">
-                    <PageHeader
-                        heading={inputData?.challenge.name}
-                        subheading={`By ${inputData?.challenge.partner}`}
-                        alignment="left"
-                        details={`${inputData?.projects.length} project${
-                            inputData?.projects.length > 1 ||
-                            inputData?.projects.length < 1
-                                ? 's'
-                                : ''
-                        }`}
-                    />
+                    {inputData?.challenge?.name && (
+                        <PageHeader
+                            heading={inputData?.challenge.name}
+                            subheading={`By ${inputData?.challenge.partner}`}
+                            alignment="left"
+                            details={`${inputData?.projects.length} project${
+                                inputData?.projects.length > 1 ||
+                                inputData?.projects.length < 1
+                                    ? 's'
+                                    : ''
+                            }`}
+                        />
+                    )}
                     <Filter
                         noFilterOption={allFilterLabel}
                         onChange={onFilterChange}
@@ -334,7 +353,7 @@ export default ({ event }) => {
             error={error}
             render={() => (
                 <Container center>
-                    {data?.challenge && data?.event && data?.projects.length > 0
+                    {data?.event && data?.projects.length > 0
                         ? renderProjects(data)
                         : renderEmpty()}
                 </Container>

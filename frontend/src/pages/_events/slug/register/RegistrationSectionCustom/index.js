@@ -50,12 +50,15 @@ const useStyles = makeStyles(theme => ({
 export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
-    console.log("section", section)
+    console.log('section', section)
+    console.log('registration', registration)
     const [visible, setVisible] = useState(!section.conditional)
 
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
             (result, question) => {
+                console.log('question', question)
+                console.log('result', result)
                 if (
                     RegistrationFieldsCustom.hasOwnProperty(question.fieldType)
                 ) {

@@ -7,8 +7,8 @@ const ProjectStatuses = require('./project-statuses')
 // TODO make fields optional based on event project fields
 const ProjectSchema = {
     name: yup.string().required().max(100).label('Project name'),
-    punchline: yup.string().required().max(300).label('Punchline'),
-    description: yup.string().required().max(3000).label('Description'),
+    punchline: yup.string().max(300).label('Punchline'),
+    description: yup.string().max(3000).label('Description'),
     source: yup.string().url().label('Source code'),
     sourcePublic: yup.boolean().default(true).label('Source code public'),
     technologies: yup.array().of(yup.string()).label('Technologies'),

@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const {
     GraphQLString,
     GraphQLList,
-    GraphQLNonNull,
     GraphQLObjectType,
     GraphQLInputObjectType,
     GraphQLBoolean,
@@ -32,6 +31,10 @@ const ScoreCriteriaSettingsSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    reviewAnyChallenge: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const ScoreCriteriaSettingsType = new GraphQLObjectType({
@@ -56,6 +59,9 @@ const ScoreCriteriaSettingsType = new GraphQLObjectType({
             type: GraphQLBoolean,
         },
         showFeedback: {
+            type: GraphQLBoolean,
+        },
+        reviewAnyChallenge: {
             type: GraphQLBoolean,
         },
     },
@@ -89,6 +95,9 @@ const ScoreCriteriaSettingsInput = new GraphQLInputObjectType({
             type: GraphQLBoolean,
         },
         showFeedback: {
+            type: GraphQLBoolean,
+        },
+        reviewAnyChallenge: {
             type: GraphQLBoolean,
         },
     },

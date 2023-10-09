@@ -37,14 +37,13 @@ export default () => {
                 <div className="tw-flex tw-flex-col tw-gap-2">
                     <FastField
                         name="scoreCriteriaSettings.showScore"
-                        // name="showScore"
                         render={({ field, form }) => {
                             return (
                                 <div className="tw-px-4 tw-gap-4 tw-pb-4 tw-pt-6 tw-rounded-md tw-shadow-md tw-bg-white tw-w-full tw-flex tw-justify-between tw-items-center ">
                                     <FormControl
                                         label="Score visibility for participants"
                                         hint="Enable or disable the visibility of project scores for participants. If disabled, participants will not be able to see the score their project received."
-                                        touched={true}
+                                        touched={field.touched}
                                         error={form.errors[field.name]}
                                     ></FormControl>
                                     <Switch
@@ -68,14 +67,43 @@ export default () => {
                 <div className="tw-flex tw-flex-col tw-gap-2">
                     <FastField
                         name="scoreCriteriaSettings.showFeedback"
-                        // name="showFeedback"
                         render={({ field, form }) => {
                             return (
                                 <div className="tw-px-4 tw-gap-4 tw-pb-4 tw-pt-6 tw-rounded-md tw-shadow-md tw-bg-white tw-w-full tw-flex tw-justify-between tw-items-center ">
                                     <FormControl
                                         label="Show feedback received to participants"
                                         hint="Enable or disable the visibility of feedback left by judges to projects. If disabled, participants will not be able to see the feedback their project received."
-                                        touched={true}
+                                        touched={field.touched}
+                                        error={form.errors[field.name]}
+                                    ></FormControl>
+                                    <Switch
+                                        checked={field.value || false}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
+                                        }
+                                        checkedText="Enabled"
+                                        uncheckedText="Disabled"
+                                    />
+                                </div>
+                            )
+                        }}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12}>
+                <div className="tw-flex tw-flex-col tw-gap-2">
+                    <FastField
+                        name="scoreCriteriaSettings.reviewAnyChallenge"
+                        render={({ field, form }) => {
+                            return (
+                                <div className="tw-px-4 tw-gap-4 tw-pb-4 tw-pt-6 tw-rounded-md tw-shadow-md tw-bg-white tw-w-full tw-flex tw-justify-between tw-items-center ">
+                                    <FormControl
+                                        label="Allow reviewers to rate projects for any challenge"
+                                        hint="Enable or disable the ability for reviewers to rate projects for any challenge. If disabled, reviewers will only be able to rate projects for challenges they are assigned to."
+                                        touched={field.touched}
                                         error={form.errors[field.name]}
                                     ></FormControl>
                                     <Switch
