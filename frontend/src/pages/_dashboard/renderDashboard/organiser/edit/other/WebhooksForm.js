@@ -12,7 +12,8 @@ import {
     Grid,
     Typography,
     ListItemIcon,
-    Switch,
+    // Switch,
+    FormControlLabel,
 } from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import BlockIcon from '@material-ui/icons/Block'
@@ -23,6 +24,7 @@ import Button from 'components/generic/Button'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
+import Switch from '../submission/components/Switch'
 
 const ACTIONS = ['save', 'remove']
 
@@ -209,10 +211,16 @@ export default ({ value = [], fieldName, setFieldValue }) => {
             <Grid item xs={12} md={6}>
                 <Switch
                     checked={enabled.value}
-                    onChange={(e, value) => enabled.setValue(value)}
-                    color="primary"
-                    name="enabled"
+                    onChange={value => enabled.setValue(value)}
+                    checkedText="Enabled"
+                    uncheckedText="Disabled"
                 />
+                {/* // <Switch
+                    //     checked={enabled.value}
+                    //     onChange={(e, value) => enabled.setValue(value)}
+                    //     color="primary"
+                    //     name="enabled"
+                    // /> */}
                 <Typography variant="caption" className={classes.errorMessage}>
                     {enabled.error}
                 </Typography>
