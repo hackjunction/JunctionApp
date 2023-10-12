@@ -38,6 +38,7 @@ const makeTimelineStyles = () => ({
 })
 
 export default ({ alerts = [] }) => {
+
     return (
         <>
             <Grid

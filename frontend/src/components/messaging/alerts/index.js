@@ -20,7 +20,7 @@ export function Alerts({ alerts = [] }) {
     )
     const classes = useStyles()
 
-    console.log(alerts)
+
     return (
         <div className={classes.root}>
             {sortedAlerts.map(a => (

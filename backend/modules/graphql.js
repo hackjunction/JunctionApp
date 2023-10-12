@@ -56,6 +56,7 @@ module.exports = app => {
         // a different path.
         path: '/graphql',
     })
+
     const serverCleanup = useServer(
         {
             schema,

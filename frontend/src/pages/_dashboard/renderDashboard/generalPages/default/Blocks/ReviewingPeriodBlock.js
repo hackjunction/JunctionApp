@@ -21,6 +21,21 @@ export default () => {
             dispatch(DashboardActions.updateAnnotator(event.slug))
         }
     }, [event, dispatch])
+    if (event.reviewMethod === 'manualReview') return (
+        <Grid item xs={12}>
+            <GradientBox p={3} color="theme_purple">
+                <Typography variant="button">Reviewing period</Typography>
+                <Typography variant="h4">Reviewing period is open!</Typography>
+                <Typography variant="h6" gutterBottom>
+                    Reviewing ends {moment(event.reviewingEndTime).fromNow()}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Sit back and relax while we review your project!
+                </Typography>
+                <Box mt={2}></Box>
+            </GradientBox>
+        </Grid>
+    )
 
     if (!EventHelpers.isVotingOpen(event, moment)) return null
 
