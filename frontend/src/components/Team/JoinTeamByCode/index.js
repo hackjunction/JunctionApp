@@ -25,20 +25,21 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default () => {
+export default ({ onAction = () => {} }) => {
     const { t } = useTranslation()
 
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const classes = useStyles()
     const [code, setCode] = useState('')
-    const [loading, setLoading] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleJoin = useCallback(() => {
         setLoading(true)
         dispatch(DashboardActions.joinTeam(event.slug, code))
             .then(() => {
                 dispatch(SnackbarActions.success('Joined team ' + code))
+                onAction()
             })
             .catch(err => {
                 if (err.response && err.response.status === 404) {

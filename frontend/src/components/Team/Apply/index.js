@@ -14,8 +14,13 @@ import _ from 'lodash'
 import { Box, Typography, Grid } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
+export default ({
+    teamRolesData = [],
+    afterSubmitAction = () => {},
+    loading = false,
+}) => {
     const dispatch = useDispatch()
     console.log('teamRolesData from start of component', teamRolesData)
     if (
@@ -106,7 +111,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     )
 
     return (
-        <>
+        <PageWrapper loading={loading}>
             <Container>
                 <PageHeader
                     heading="Application Form"
@@ -220,6 +225,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                     )}
                 </Formik>
             </Container>
-        </>
+        </PageWrapper>
     )
 }
