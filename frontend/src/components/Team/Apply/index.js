@@ -14,8 +14,13 @@ import _ from 'lodash'
 import { Box, Typography, Grid } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'
+import PageWrapper from 'components/layouts/PageWrapper'
 
-export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
+export default ({
+    teamRolesData = [],
+    afterSubmitAction = () => {},
+    loading = false,
+}) => {
     const dispatch = useDispatch()
     console.log('teamRolesData from start of component', teamRolesData)
     if (
@@ -41,9 +46,13 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
             .string()
             .min(
                 3,
-                ({ min }) => `The name must have at least ${min} characters`,
+                ({ min }) =>
+                    `The motivation must have at least ${min} characters`,
             )
-            .max(50, ({ max }) => `The name can have up to ${max} characters`)
+            .max(
+                300,
+                ({ max }) => `The motivation can have up to ${max} characters`,
+            )
             .required('Add a motivation'),
     }
 
@@ -106,7 +115,7 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     )
 
     return (
-        <>
+        <PageWrapper loading={loading}>
             <Container>
                 <PageHeader
                     heading="Application Form"
@@ -130,58 +139,24 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                                     <h3>#{challengeLabel}</h3>
                                 )}
                             </Box>
-                            <Grid item xs={12}>
-                                <Field
-                                    name="roles"
-                                    render={({ field, form }) => (
-                                        <FormControl
-                                            label="Roles *"
-                                            hint="Choose at least one role to apply"
-                                            touched={
-                                                form.touched[field.name] ||
-                                                formikProps.submitCount > 0
-                                            }
-                                            error={form.errors[field.name]}
-                                        >
-                                            <Select
-                                                label="Roles"
-                                                value={field.value}
-                                                options={roles}
-                                                onChange={value =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        value,
-                                                    )
-                                                }
-                                                onBlur={() =>
-                                                    form.setFieldTouched(
-                                                        field.name,
-                                                    )
-                                                }
-                                                isMulti
-                                            />
-                                        </FormControl>
-                                    )}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <Box>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
                                     <Field
-                                        name="motivation"
+                                        name="roles"
                                         render={({ field, form }) => (
                                             <FormControl
-                                                label="Motivation *"
-                                                hint="Briefly explain what motivates you to join this team"
+                                                label="Roles *"
+                                                hint="Choose at least one role to apply"
                                                 touched={
                                                     form.touched[field.name] ||
                                                     formikProps.submitCount > 0
                                                 }
                                                 error={form.errors[field.name]}
                                             >
-                                                <TextAreaInput
+                                                <Select
+                                                    label="Roles"
                                                     value={field.value}
-                                                    placeholder="I would like to join this team because..."
+                                                    options={roles}
                                                     onChange={value =>
                                                         form.setFieldValue(
                                                             field.name,
@@ -193,16 +168,56 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                                                             field.name,
                                                         )
                                                     }
+                                                    isMulti
                                                 />
                                             </FormControl>
                                         )}
                                     />
-                                    <Typography>
-                                        *Your profile information is
-                                        automatically included in the
-                                        application
-                                    </Typography>
-                                </Box>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Box>
+                                        <Field
+                                            name="motivation"
+                                            render={({ field, form }) => (
+                                                <FormControl
+                                                    label="Motivation *"
+                                                    hint="Briefly explain what motivates you to join this team"
+                                                    touched={
+                                                        form.touched[
+                                                            field.name
+                                                        ] ||
+                                                        formikProps.submitCount >
+                                                            0
+                                                    }
+                                                    error={
+                                                        form.errors[field.name]
+                                                    }
+                                                >
+                                                    <TextAreaInput
+                                                        value={field.value}
+                                                        placeholder="I would like to join this team because..."
+                                                        onChange={value =>
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                value,
+                                                            )
+                                                        }
+                                                        onBlur={() =>
+                                                            form.setFieldTouched(
+                                                                field.name,
+                                                            )
+                                                        }
+                                                    />
+                                                </FormControl>
+                                            )}
+                                        />
+                                        <Typography>
+                                            *Your profile information is
+                                            automatically included in the
+                                            application
+                                        </Typography>
+                                    </Box>
+                                </Grid>
                             </Grid>
                             <div className="tw-h-24" />
                             <BottomBar
@@ -220,6 +235,6 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
                     )}
                 </Formik>
             </Container>
-        </>
+        </PageWrapper>
     )
 }

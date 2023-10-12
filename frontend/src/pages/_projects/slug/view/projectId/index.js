@@ -19,32 +19,9 @@ import ProjectScoresService from 'services/projectScores'
 import { set } from 'object-path'
 import EvaluationForm from './EvaluationForm'
 import _ from 'lodash'
-import scoreCriteriaBase from 'components/projects/ScoreCriteria'
-
-// const scoreCriteriaBase = [
-//     {
-//         criteria: 'creativity',
-//         label: 'Creativity',
-//     },
-//     {
-//         criteria: 'innovation',
-//         label: 'Innovation',
-//     },
-//     {
-//         criteria: 'problemSolving',
-//         label: 'Problem Solving',
-//     },
-//     {
-//         criteria: 'companyFit',
-//         label: 'Company Fit',
-//     },
-//     {
-//         criteria: 'teamwork',
-//         label: 'Teamwork',
-//     },
-// ]
 
 export default ({ event, showFullTeam }) => {
+    const scoreCriteriaBase = event.scoreCriteriaSettings.scoreCriteria
     const dispatch = useDispatch()
     const userId = useSelector(AuthSelectors.getUserId)
 
@@ -169,8 +146,7 @@ export default ({ event, showFullTeam }) => {
             />
             {validToken ? (
                 <Container>
-                    {projectScore?.scoreCriteria &&
-                    projectScore?.scoreCriteria.length > 0 ? (
+                    {scoreCriteriaBase && scoreCriteriaBase.length > 0 ? (
                         <EvaluationForm
                             event={event}
                             project={project}
