@@ -92,7 +92,13 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
                             variant="h6"
                             component="h6"
                         >
-                            {userProfile.profile.headline}
+                            {viewMode === 'card' &&
+                            userProfile?.profile?.headline?.length > 20
+                                ? `${userProfile.profile.headline.substr(
+                                      0,
+                                      20,
+                                  )}...`
+                                : userProfile?.profile?.headline}
                         </Typography>
                     </div>
                 </div>
