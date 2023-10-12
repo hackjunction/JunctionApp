@@ -1,5 +1,11 @@
 import React from 'react'
-import { Card, CardContent, CardActions, Typography } from '@material-ui/core'
+import {
+    Card,
+    CardContent,
+    CardActions,
+    Typography,
+    Chip,
+} from '@material-ui/core'
 import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'
@@ -33,7 +39,6 @@ function TeamCard({
                         teamName={teamData.name}
                         teamChallenge={teamData.challenge}
                     />
-                    {teamData.userIsApplicant && <div>Applied</div>}
                     {teamData?.ideaTitle && teamData?.ideaDescription && (
                         <div className="tw-flex tw-flex-col tw-gap-2">
                             <div className="tw-flex tw-gap-2">
@@ -64,7 +69,16 @@ function TeamCard({
                 </div>
             </CardContent>
             <CardActions className="tw-flex tw-justify-end tw-items-center tw-px-4 tw-pb-4 tw-pt-0">
-                {disableActions ? null : (
+                {teamData.userIsApplicant && (
+                    <div className=" tw-font-bold">
+                        <Chip
+                            color="primary"
+                            label="Applied"
+                            variant="outlined"
+                        />
+                    </div>
+                )}
+                {disableActions || teamData.userIsApplicant ? null : (
                     <Button
                         onClick={e => {
                             onClickApply()
