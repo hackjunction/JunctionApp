@@ -158,15 +158,17 @@ export const createRegistration =
 export const createPartnerRegistration =
     (userId, slug) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
-        const user = await UserProfilesService.getUserPublicProfileById(idToken, userId)
-        console.log("createPartnerRegistration", user)
+        const user = await UserProfilesService.getUserPublicProfileById(
+            idToken,
+            userId,
+        )
+        console.log('createPartnerRegistration', user)
         const registration = await RegistrationsService.addPartnerToRegistrated(
             idToken,
             user,
             slug,
-
         )
-        console.log("created registration", registration)
+        console.log('created registration', registration)
         return registration
     }
 
@@ -186,7 +188,7 @@ export const updateTeams = slug => async (dispatch, getState) => {
 export const updateSelectedTeam =
     (slug, code) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
-        if (!slug) return
+        if (!slug || !code) return
 
         dispatch({
             type: ActionTypes.UPDATE_SELECTED_TEAM,

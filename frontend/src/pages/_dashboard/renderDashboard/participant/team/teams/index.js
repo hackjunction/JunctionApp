@@ -25,9 +25,23 @@ export default () => {
     const [applying, setApplying] = useState(false)
     const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
+
+    const [selectedTeamCode, setSelectedTeamCode] = useState('')
+
+    useEffect(() => {
+        console.log('selectedTeamCode', selectedTeamCode)
+        console.log('selectedTeam at start', selectedTeam)
+        if (selectedTeamCode !== '') {
+            dispatch(
+                DashboardActions.updateSelectedTeam(slug, selectedTeamCode),
+            )
+        }
+        console.log('selectedTeam at end', selectedTeam)
+    }, [selectedTeamCode])
+
     useEffect(() => {
         dispatch(DashboardActions.updateTeams(slug))
-    }, [applying])
+    }, [applying, selected, selectedTeam, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
@@ -140,6 +154,7 @@ export default () => {
                                                     team.code,
                                                 ),
                                             )
+                                            // setSelectedTeamCode(team.code)
                                             setApplying(true)
                                         }}
                                         onClick={() => {
@@ -149,6 +164,7 @@ export default () => {
                                                     team.code,
                                                 ),
                                             )
+                                            // setSelectedTeamCode(team.code)
                                             setSelected(true)
                                         }}
                                     />

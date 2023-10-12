@@ -51,13 +51,14 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
     const team = useSelector(DashboardSelectors.team)
     const { slug } = event
     const { code } = team
+    const maxRolesToRender = 2
 
     //TODO make rolesToRender and anything related to how they render into a components for CandidateCard and for candidates page
     let rolesToRender = []
 
     //TODO generate the open application role from the backend
     if (candidateData.roles?.length > 0) {
-        rolesToRender.push(...candidateData.roles?.slice(0, 3))
+        rolesToRender.push(...candidateData.roles?.slice(0, maxRolesToRender))
     } else {
         rolesToRender.push({ role: 'Open application' })
     }
@@ -153,7 +154,7 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
                                 </RadioGroup>
                             </FormControl>
                         </form>
-                        {candidateData.roles?.length > 3 && (
+                        {candidateData.roles?.length > maxRolesToRender && (
                             <Button
                                 color="outlined_button"
                                 variant="jOutlinedBox"
@@ -165,7 +166,8 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
                                         component="p"
                                     >
                                         {`Applied to ${
-                                            candidateData.roles?.length - 3
+                                            candidateData.roles?.length -
+                                            maxRolesToRender
                                         } more roles`}
                                     </Typography>
                                 </div>

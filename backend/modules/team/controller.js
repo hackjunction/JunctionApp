@@ -27,41 +27,63 @@ controller.createTeam = (eventId, userId) => {
 
 controller.createNewTeam = (data, eventId, userId) => {
     // TODO abstract this deconstruction
-    const {
-        teamRoles,
-        name,
-        subtitle,
-        description,
-        challenge,
-        ideaTitle,
-        ideaDescription,
-        email,
-        telegram,
-        discord,
-    } = data
-    const team = new Team({
-        event: eventId,
-        owner: userId,
-        name,
-        subtitle,
-        description,
-        challenge,
-        ideaTitle,
-        ideaDescription,
-        email,
-        telegram,
-        discord,
-    })
-    if (teamRoles && teamRoles.length > 0) {
-        team.teamRoles = teamRoles.map(role => ({
-            role,
-        }))
-    } else {
-        team.teamRoles = []
-    }
-    console.log('On team creation', team)
 
-    return team.save()
+    return controller
+        .getTeamsForEvent(eventId)
+        .then(teams => {
+            console.log('Step 1')
+            if (userHasTeam(teams, userId)) {
+                throw new ForbiddenError('You are already in a team')
+            }
+            return removeCandidateApplications(teams, userId)
+        })
+        .then(teamsToSave => {
+            console.log('Step 2')
+            console.log('Teams to save: ', teamsToSave)
+            const {
+                teamRoles,
+                name,
+                subtitle,
+                description,
+                challenge,
+                ideaTitle,
+                ideaDescription,
+                email,
+                telegram,
+                discord,
+            } = data
+            const team = new Team({
+                event: eventId,
+                owner: userId,
+                name,
+                subtitle,
+                description,
+                challenge,
+                ideaTitle,
+                ideaDescription,
+                email,
+                telegram,
+                discord,
+            })
+            if (teamRoles && teamRoles.length > 0) {
+                team.teamRoles = teamRoles.map(role => ({
+                    role,
+                }))
+            } else {
+                team.teamRoles = []
+            }
+            team.save()
+            if (teamsToSave.length > 0) {
+                Promise.all(teamsToSave.map(team => team.save()))
+            }
+            console.log('On team creation', team)
+
+            return team
+        })
+        .catch(err => {
+            console.log(err)
+            throw new ForbiddenError(`${err}, refresh the page and try again`)
+        })
 }
 
 controller.deleteTeam = (eventId, userId) => {
@@ -113,19 +135,92 @@ controller.editTeam = (eventId, userId, edits) => {
     })
 }
 
+const userHasTeam = (teams, userId) => {
+    let hasTeam = false
+    const teamMembers = teams.map(team => team.members.concat(team.owner))
+    console.log('Team members: ', teamMembers)
+    teamMembers.map(team => {
+        if (_.includes(team, userId)) {
+            hasTeam = true
+        }
+    })
+    console.log('User has team?: ', hasTeam)
+    return hasTeam
+}
+const removeCandidateApplications = (teams, userId) => {
+    const teamsToSave = []
+    console.log('Teams to remove candidate: ', teams)
+    teams.map(team => {
+        console.log('Team candidates: ', team.candidates)
+        if (
+            _.includes(
+                team.candidates.map(candidate => candidate.userId),
+                userId,
+            )
+        ) {
+            team.candidates = team.candidates.filter(
+                candidate => candidate.userId !== userId,
+            )
+            teamsToSave.push(team)
+        }
+    })
+    console.log('Teams to save after removing candidate: ', teamsToSave)
+    return teamsToSave
+}
 controller.joinTeam = (eventId, userId, code) => {
     return controller.getTeamByCode(eventId, code).then(team => {
         // TODO HIGH PRIORITY team size defined in event
+
         if (team.members.length >= 4) {
             throw new ForbiddenError('Teams can have at most 5 members')
         }
-        team.members = team.members.concat(userId)
-        return team.save()
+        return controller
+            .getTeamsForEvent(eventId)
+            .then(teams => {
+                console.log('Step 1')
+                if (userHasTeam(teams, userId)) {
+                    throw new ForbiddenError('You are already in a team')
+                }
+                return teams
+            })
+            .then(teams => {
+                console.log('Step 2')
+                team.members = team.members.concat(userId)
+                team.candidates = team.candidates.filter(
+                    candidate => candidate.userId !== userId,
+                )
+                team.save()
+                console.log('Team saved: ', team)
+                return teams
+            })
+            .then(teams => {
+                console.log('Step 3')
+                const teamsToSave = removeCandidateApplications(
+                    teams,
+                    userId,
+                ).filter(team => team.code !== code)
+                console.log('Teams to save: ', teamsToSave)
+                if (teamsToSave.length > 0) {
+                    Promise.all(teamsToSave.map(team => team.save())).catch(
+                        err => {
+                            console.log(err)
+                            throw new ForbiddenError(`Save failed`)
+                        },
+                    )
+                }
+                console.log('Step 3 - team: ', team)
+                return team
+            })
+            .catch(err => {
+                console.log(err)
+                throw new ForbiddenError(
+                    `${err}, refresh the page and try again`,
+                )
+            })
     })
 }
 
 controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
-    const teamsToSave = []
     let teamToReturn
     return controller
         .getTeamByCode(eventId, code)
@@ -135,46 +230,48 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
                     'Only the team members can accept candidates',
                 )
             }
-            team.members = team.members.concat(candidateId)
-            team.candidates = team.candidates.filter(
+            teamToReturn = team
+            return controller.getTeamsForEvent(eventId)
+        })
+        .then(teams => {
+            console.log('Step 1')
+            console.log('Teams: ', teams)
+            if (userHasTeam(teams, candidateId)) {
+                teamToReturn.candidates = teamToReturn.candidates.filter(
+                    candidate => candidate.userId !== candidateId,
+                )
+                teamToReturn.save()
+                throw new ForbiddenError('Candidate is already in a team')
+            }
+            return teams
+        })
+        .then(teams => {
+            console.log('Step 2')
+            teamToReturn.members = teamToReturn.members.concat(candidateId)
+            teamToReturn.candidates = teamToReturn.candidates.filter(
                 candidate => candidate.userId !== candidateId,
             )
-            teamsToSave.push(team)
-            teamToReturn = team
+            teamToReturn.save()
+            return teams
         })
-        .then(() => {
-            return controller
-                .getTeamsForEvent(eventId)
-                .then(teams => {
-                    return teams.filter(
-                        team =>
-                            _.includes(
-                                team.candidates.map(
-                                    candidate => candidate.userId,
-                                ),
-                                candidateId,
-                            ) && team.code !== code,
-                    )
+        .then(teams => {
+            console.log('Step 3')
+            const teamsToSave = removeCandidateApplications(
+                teams,
+                candidateId,
+            ).filter(team => team.code !== code)
+            if (teamsToSave.length > 0) {
+                Promise.all(teamsToSave.map(team => team.save())).catch(err => {
+                    console.log(err)
+                    throw new ForbiddenError(`Save failed`)
                 })
-                .then(teams => {
-                    if (teams.length === 0) {
-                        return
-                    }
-                    return teams.map(team => {
-                        team.candidates = team.candidates.filter(
-                            candidate => candidate.userId !== candidateId,
-                        )
-                        teamsToSave.push(team)
-                        return team
-                    })
-                })
+            }
+            console.log('Step 3 - team: ', teamToReturn)
+            return teamToReturn
         })
-        .then(() => {
-            return Promise.all(teamsToSave.map(team => team.save())).then(
-                () => {
-                    return teamToReturn
-                },
-            )
+        .catch(err => {
+            console.log(err)
+            throw new ForbiddenError(`${err}, refresh the page and try again`)
         })
 }
 

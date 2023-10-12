@@ -32,12 +32,6 @@ const initialState = {
         error: false,
         updated: 0,
     },
-    // selected_candidate: {
-    //     data: null,
-    //     loading: true,
-    //     error: false,
-    //     updated: 0,
-    // },
     projects: {
         data: null,
         loading: true,
@@ -115,19 +109,17 @@ export default function reducer(state = initialState, action) {
         //     return updateSeletecUserHandler(state, action)
         // }
         case ActionTypes.ACTIVE_EVENTS: {
-            console.log("ACTIVE_EVENTS", state, action.payload)
+            console.log('ACTIVE_EVENTS', state, action.payload)
             return {
                 ...state,
-                activeEvents: action.payload.activeEvents
+                activeEvents: action.payload.activeEvents,
             }
-
         }
         case ActionTypes.PAST_EVENTS: {
             return {
                 ...state,
-                pastEvents: action.payload.pastEvents
+                pastEvents: action.payload.pastEvents,
             }
-
         }
         default:
             return state

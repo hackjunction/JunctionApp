@@ -17,7 +17,15 @@ import FormControl from 'components/inputs/FormControl'
 
 export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
     const dispatch = useDispatch()
-    teamRolesData.unshift({ role: 'Open application' })
+    console.log('teamRolesData from start of component', teamRolesData)
+    if (
+        !_.includes(
+            teamRolesData.map(teamRole => teamRole.role),
+            'Open application',
+        )
+    ) {
+        teamRolesData.unshift({ role: 'Open application' })
+    }
     const roles = useMemo(() => {
         return [
             ...teamRolesData.map(role => ({
@@ -64,11 +72,14 @@ export default ({ teamRolesData = [], afterSubmitAction = () => {} }) => {
         (values, formikBag) => {
             formikBag.setSubmitting(true)
             const submittionData = {}
+            console.log('values from application', values)
+            console.log('teamRolesData from application', teamRolesData)
             submittionData.roles = _.filter(teamRolesData, role =>
                 _.includes(values.roles, role.role),
             )
             submittionData.motivation = values.motivation
             submittionData.userId = userProfile.userId
+            console.log('submittionData from application', submittionData)
             dispatch(
                 DashboardActions.candidateApplyToTeam(
                     event.slug,
