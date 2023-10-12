@@ -163,7 +163,7 @@ export default () => {
             console.log(`/dashboard/event/${page}`)
 
             dispatch(UserActions.setAccessRight(accessRight))
-            dispatch(push(`/dashboard/event/${page}`))
+            //dispatch(push(`/dashboard/event/${page}`))
         }
 
 
@@ -180,7 +180,7 @@ export default () => {
     return (
         <PageWrapper
             wrapContent={false}
-            loading={(loadingActive || loadingEvents || loadingPast)}
+            loading={(loadingActive || loadingPast)}
         >
             <SidebarLayout
                 baseRoute={match.url}

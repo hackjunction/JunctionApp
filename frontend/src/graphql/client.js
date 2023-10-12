@@ -30,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 export default idToken => {
     const wsLink = new GraphQLWsLink(
         createClient({
-            url: 'wss://app.hackjunction.com/graphql',//TODO: is this causing renew loop problem?
+            url: config.WEB_SOCET_URL,//TODO: is this causing renew loop problem?
             connectionParams: { authToken: idToken },
         }),
     )

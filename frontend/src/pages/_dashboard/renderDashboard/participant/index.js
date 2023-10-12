@@ -67,8 +67,12 @@ export default ({
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
 
-    console.log('props', originalAlertCount, originalAlerts, shownPages)
-    console.log(originalAlertCount, alertCount)
+
+    useEffect(() => {//does not take multiple roles into a count
+        setAlerts(originalAlerts)
+        setAlertCount(originalAlertCount)
+        console.log("set alerts", alerts, originalAlerts, alertCount, originalAlertCount)
+    }, [originalAlerts, originalAlertCount,])
 
     return (
         <SidebarLayout
