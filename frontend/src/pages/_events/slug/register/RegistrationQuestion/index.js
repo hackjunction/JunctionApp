@@ -447,6 +447,9 @@ const RegistrationQuestion = ({
                     </FormControl>
                 )
             case 'boolean': {
+                if (field.value === undefined || field.value === null) {
+                    form.setFieldValue(field.name, config.settings.default)
+                }
                 return (
                     <FormControl
                         label={config.label}
@@ -528,7 +531,6 @@ const RegistrationQuestion = ({
                         touched={form.touched[field.name]}
                         error={form.errors[field.name]}
                     >
-                        {/* TODO component for file input needs to be linked to the formik fields */}
                         <FileInput
                             value={field.value}
                             handleChange={value =>

@@ -38,46 +38,50 @@ export default () => {
     //TODO add a method to edit or withdraw an application
     return (
         <>
-            {applying && selectedTeam && Object.keys(selectedTeam).length > 0 && (
-                <div>
-                    <div className="tw-mb-4">
-                        <Button
-                            color="outlined_button"
-                            variant="jOutlined"
-                            onClick={() => setApplying(false)}
-                        >
-                            Back
-                        </Button>
+            {applying &&
+                selectedTeam &&
+                Object.keys(selectedTeam).length > 0 && (
+                    <div>
+                        <div className="tw-mb-4">
+                            <Button
+                                color="outlined_button"
+                                variant="jOutlined"
+                                onClick={() => setApplying(false)}
+                            >
+                                Back
+                            </Button>
+                        </div>
+                        <Apply
+                            teamRolesData={selectedTeam.teamRoles}
+                            afterSubmitAction={() => setApplying(false)}
+                        />
                     </div>
-                    <Apply
-                        teamRolesData={selectedTeam.teamRoles}
-                        afterSubmitAction={() => setApplying(false)}
-                    />
-                </div>
-            )}
-            {selected && selectedTeam && Object.keys(selectedTeam).length > 0 && (
-                <div>
-                    <div className="tw-mb-4">
-                        <Button
-                            color="outlined_button"
-                            variant="jOutlined"
-                            onClick={() => setSelected(false)}
-                        >
-                            Back
-                        </Button>
+                )}
+            {selected &&
+                selectedTeam &&
+                Object.keys(selectedTeam).length > 0 && (
+                    <div>
+                        <div className="tw-mb-4">
+                            <Button
+                                color="outlined_button"
+                                variant="jOutlined"
+                                onClick={() => setSelected(false)}
+                            >
+                                Back
+                            </Button>
+                        </div>
+                        <TeamProfile
+                            teamData={selectedTeam}
+                            enableActions={false}
+                            onRoleClick={() => {
+                                if (!hasTeam) {
+                                    setApplying(true)
+                                    setSelected(false)
+                                }
+                            }}
+                        />
                     </div>
-                    <TeamProfile
-                        teamData={selectedTeam}
-                        enableActions={false}
-                        onRoleClick={() => {
-                            if (!hasTeam) {
-                                setApplying(true)
-                                setSelected(false)
-                            }
-                        }}
-                    />
-                </div>
-            )}
+                )}
             {!selected && !applying && (
                 <>
                     <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
@@ -130,22 +134,22 @@ export default () => {
                                         teamData={team}
                                         disableActions={hasTeam}
                                         onClickApply={() => {
-                                            setApplying(true)
                                             dispatch(
                                                 DashboardActions.updateSelectedTeam(
                                                     slug,
                                                     team.code,
                                                 ),
                                             )
+                                            setApplying(true)
                                         }}
                                         onClick={() => {
-                                            setSelected(true)
                                             dispatch(
                                                 DashboardActions.updateSelectedTeam(
                                                     slug,
                                                     team.code,
                                                 ),
                                             )
+                                            setSelected(true)
                                         }}
                                     />
                                 ))}

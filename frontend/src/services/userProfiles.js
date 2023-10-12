@@ -18,7 +18,6 @@ UserProfilesService.getPublicUserProfiles = userIds => {
     })
 }
 
-
 UserProfilesService.getPublicUserProfilesByTeam = teamId => {
     return _axios.get('/user-profiles/public/team/' + teamId)
 }
@@ -39,13 +38,6 @@ UserProfilesService.getUserPublicProfileById = (idToken, userId) => {
     return _axios.get('/user-profiles/' + userId, config(idToken))
 }
 
-// UserProfilesService.getUsersByEmail = (email, idToken) => {
-//     return _axios.get('/user-profiles/search', {
-//         params: { email },
-//         ...config(idToken)
-//     });
-// };
-
 UserProfilesService.queryUsers = (idToken, terms) => {
     return _axios.get(`/user-profiles/search/${terms}`, config(idToken))
 }
@@ -58,12 +50,9 @@ UserProfilesService.getRecruiters = idToken => {
     return _axios.get('/user-profiles/recruiters/get', config(idToken))
 }
 
-
 UserProfilesService.getUserProfilesByTeamId = (teamId, idToken) => {
     return _axios.get(`/user-profiles/team/${teamId}`, config(idToken))
 }
-
-
 
 UserProfilesService.updateRecruiter = (
     idToken,
@@ -75,14 +64,13 @@ UserProfilesService.updateRecruiter = (
     return _axios.patch('/user-profiles/recruiters/update', data, config(idToken))
 }
 
-UserProfilesService.deleteRecruiter = (
-    idToken,
-    recruiterId,
-    event,
-
-) => {
+UserProfilesService.deleteRecruiter = (idToken, recruiterId, event) => {
     const data = { recruiterId, event }
-    return _axios.patch('/user-profiles/recruiters/delete', data, config(idToken))
+    return _axios.patch(
+        '/user-profiles/recruiters/delete',
+        data,
+        config(idToken),
+    )
 }
 
 UserProfilesService.updateRecruiterAdmin = (
@@ -92,15 +80,20 @@ UserProfilesService.updateRecruiterAdmin = (
     organisation,
 ) => {
     const data = { recruiterId, events, organisation }
-    return _axios.patch('/user-profiles/recruiters/admin', data, config(idToken))
+    return _axios.patch(
+        '/user-profiles/recruiters/admin',
+        data,
+        config(idToken),
+    )
 }
 
-UserProfilesService.deleteRecruitersAdmin = (
-    idToken,
-    recruiterId,
-) => {
-    const data = { recruiterId, }
-    return _axios.patch('/user-profiles/recruiters/admin/delete', data, config(idToken))
+UserProfilesService.deleteRecruitersAdmin = (idToken, recruiterId) => {
+    const data = { recruiterId }
+    return _axios.patch(
+        '/user-profiles/recruiters/admin/delete',
+        data,
+        config(idToken),
+    )
 }
 
 export default UserProfilesService

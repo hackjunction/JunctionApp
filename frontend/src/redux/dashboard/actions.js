@@ -428,15 +428,55 @@ export const updateProjects = slug => async (dispatch, getState) => {
 
 export const createProject = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
+    fileAttachmentFinder(data, idToken)
+        .then(data =>
+            ProjectsService.createProjectForEventAndTeam(idToken, slug, data),
+        )
+        .catch(err => console.log(err))
+        .finally(() => {
+            return dispatch({
+                type: ActionTypes.UPDATE_PROJECTS,
+                promise: ProjectsService.getProjectsForEventAndTeam(
+                    idToken,
+                    slug,
+                ),
+                meta: {
+                    onFailure: e =>
+                        console.log('Error creating dashboard project', e),
+                },
+            })
+        })
+}
 
-    await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
-    return dispatch({
-        type: ActionTypes.UPDATE_PROJECTS,
-        promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error creating dashboard project', e),
-        },
+const fileAttachmentFinder = async (Projectdata, idToken) => {
+    const fileKeys = []
+    _.forOwn(Projectdata, (value, key) => {
+        console.log(key, value)
+        if (value && Object.getPrototypeOf(value) === File.prototype) {
+            console.log('File found: ', value)
+            fileKeys.push(key)
+        }
     })
+    console.log('File keys: ', fileKeys)
+    if (fileKeys.length > 0) {
+        await Promise.all(
+            fileKeys.map(async key => {
+                console.log('File key: ', key)
+                const fileMetadata = await handleFile(Projectdata[key], idToken)
+                console.log('File metadata: ', fileMetadata)
+                if (fileMetadata.toString() === '[object Object]') {
+                    return Error('File upload failed')
+                }
+                Projectdata[key] = fileMetadata.toString()
+                const index = Projectdata['submissionFormAnswers'].findIndex(
+                    ans => ans['key'] === key,
+                )
+                Projectdata['submissionFormAnswers'][index].value =
+                    fileMetadata.toString()
+            }),
+        )
+    }
+    return Projectdata
 }
 
 const getFile = async (fileId, filename, token) => {
@@ -557,38 +597,56 @@ export const deleteFileForProject = fileId => async (dispatch, getState) => {
 
 export const editProject = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-    const fileKeys = []
-    _.forOwn(data, function (value, key) {
-        // console.log(key, value)
-        if (Object.getPrototypeOf(value) === File.prototype) {
-            console.log('File found: ', value)
-            fileKeys.push(key)
-        }
-    })
-    console.log('File keys: ', fileKeys)
-    if (fileKeys.length > 0) {
-        await Promise.all(
-            fileKeys.map(async key => {
-                console.log('File key: ', key)
-                const fileMetadata = await handleFile(data[key], idToken)
-                console.log('File metadata: ', fileMetadata)
-                data[key] = fileMetadata.toString()
-                const index = data['submissionFormAnswers'].findIndex(
-                    ans => ans['key'] === key,
-                )
-                data['submissionFormAnswers'][index].value =
-                    fileMetadata.toString()
-            }),
-        )
-    }
-    await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
-    return dispatch({
-        type: ActionTypes.UPDATE_PROJECTS,
-        promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
-        meta: {
-            onFailure: e => console.log('Error editing dashboard project', e),
-        },
-    })
+    fileAttachmentFinder(data, idToken)
+        .then(data => {
+            console.log('did it work?', data)
+            ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
+        })
+        .catch(err => console.log(err))
+        .finally(() => {
+            return dispatch({
+                type: ActionTypes.UPDATE_PROJECTS,
+                promise: ProjectsService.getProjectsForEventAndTeam(
+                    idToken,
+                    slug,
+                ),
+                meta: {
+                    onFailure: e =>
+                        console.log('Error editing dashboard project', e),
+                },
+            })
+        })
+    // _.forOwn(data, function (value, key) {
+    //     // console.log(key, value)
+    //     if (Object.getPrototypeOf(value) === File.prototype) {
+    //         console.log('File found: ', value)
+    //         fileKeys.push(key)
+    //     }
+    // })
+    // console.log('File keys: ', fileKeys)
+    // if (fileKeys.length > 0) {
+    //     await Promise.all(
+    //         fileKeys.map(async key => {
+    //             console.log('File key: ', key)
+    //             const fileMetadata = await handleFile(data[key], idToken)
+    //             console.log('File metadata: ', fileMetadata)
+    //             data[key] = fileMetadata.toString()
+    //             const index = data['submissionFormAnswers'].findIndex(
+    //                 ans => ans['key'] === key,
+    //             )
+    //             data['submissionFormAnswers'][index].value =
+    //                 fileMetadata.toString()
+    //         }),
+    //     )
+    // }
+    // await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
+    // return dispatch({
+    //     type: ActionTypes.UPDATE_PROJECTS,
+    //     promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
+    //     meta: {
+    //         onFailure: e => console.log('Error editing dashboard project', e),
+    //     },
+    // })
 }
 
 export const updateAnnotator = slug => async (dispatch, getState) => {

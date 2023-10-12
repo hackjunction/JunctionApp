@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Promise = require('bluebird')
-const shortid = require('shortid')
 
 module.exports = {
     index: 20,
@@ -22,7 +21,7 @@ module.exports = {
             .model('Team')
             .updateMany(
                 { name: { $exists: false } },
-                { $set: { name: `Team ${shortid.generate()}` } },
+                { $set: { name: 'Default Team Name' } },
             )
         console.log(
             'Done updating name field',

@@ -16,12 +16,15 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
 import * as UserActions from 'redux/user/actions'
 
-
 import { useTranslation } from 'react-i18next'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
-import { useMyEvents, useActiveEvents, usePastEvents } from 'graphql/queries/events'
+import {
+    useMyEvents,
+    useActiveEvents,
+    usePastEvents,
+} from 'graphql/queries/events'
 // import { Chat } from 'components/messaging/chat'
 
 const useStyles = makeStyles(theme => ({
@@ -39,8 +42,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default (role) => {
-
+export default role => {
     const match = useRouteMatch()
     const dispatch = useDispatch()
 
@@ -48,7 +50,7 @@ export default (role) => {
 
     const [organizerEvents, loading] = useMyEvents()
     const [activeEvents, loadingActive] = useActiveEvents({}) //active events, from these we select where to rediret, or default
-    const [pastEvents, loadingPast] = usePastEvents({ limit: 3 })//TODO: is undefined, fix
+    const [pastEvents, loadingPast] = usePastEvents({ limit: 3 }) //TODO: is undefined, fix
 
     const eventLoading = useSelector(DashboardSelectors.eventLoading)
     const registrationLoading = useSelector(
@@ -66,21 +68,21 @@ export default (role) => {
         variables: { slug },
     })
 
+    const isPartner =
+        useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
+        !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+            'SuperAdmin',
+        ) &&
+        useSelector(UserSelectors.userProfileRecruiterEvents)
+            ?.map(e => e.eventId)
+            .includes(event?._id)
 
-    const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-        'Recruiter'
-    ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-        'SuperAdmin'
-    ) && useSelector(UserSelectors.userProfileRecruiterEvents)?.map(e => e.eventId).includes(event?._id)
+    const isOrganizer =
+        useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
+            ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
+        ) && organizerEvents?.map(e => e._id).includes(event?._id)
 
-    const isOrganizer = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
-        ["Organiser", "AssistantOrganiser", "SuperAdmin"].includes(r)
-    ) && organizerEvents?.map(e => e._id).includes(event?._id)
-
-
-    console.log(isPartner, "user is partner", isOrganizer, "user is organizer")
-
-
+    console.log(isPartner, 'user is partner', isOrganizer, 'user is organizer')
 
     // Set up browser notifications
     useEffect(() => {
@@ -101,7 +103,6 @@ export default (role) => {
         dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
     }, [slug, dispatch])
 
-
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
         useLazyQuery(ALERTS_QUERY)
@@ -113,14 +114,14 @@ export default (role) => {
 
     useEffect(() => {
         dispatch(UserActions.organizerEvents(organizerEvents))
-        console.log(" dispatch(UserActions.organizerEvents)")
+        console.log(' dispatch(UserActions.organizerEvents)')
         console.log(loadingActive, loadingPast)
         if (!loadingActive) {
             dispatch(DashboardActions.activeEvents(activeEvents))
         }
-        console.log("dipatch past?", loadingPast, pastEvents)
+        console.log('dipatch past?', loadingPast, pastEvents)
         if (!loadingPast) {
-            console.log("dipatch past", pastEvents)
+            console.log('dipatch past', pastEvents)
             dispatch(DashboardActions.pastEvents(pastEvents))
         }
     }, [organizerEvents, activeEvents, pastEvents])
@@ -163,58 +164,70 @@ export default (role) => {
         dispatch(DashboardActions.updateProjectScores(slug))
     }, [slug, team, dispatch])
 
-
-    useEffect(() => {//does not take multiple roles into a count
-        console.log("setting access", isPartner, isOrganizer)
+    useEffect(() => {
+        //does not take multiple roles into a count
+        console.log('setting access', isPartner, isOrganizer)
         if (isPartner) {
             dispatch(UserActions.setAccessRight('partner'))
-            console.log("partner", userAccessRight)
-
+            console.log('partner', userAccessRight)
         } else if (isOrganizer) {
-
             dispatch(UserActions.setAccessRight('organizer'))
-            console.log("organizer", userAccessRight)
+            console.log('organizer', userAccessRight)
         }
     }, [])
 
-    console.log("userAccess", userAccessRight)
+    console.log('userAccess', userAccessRight)
     //TODO: reconstruct to contain partner, organizer & participnat pages
     switch (userAccessRight) {
         case 'partner': {
             return (
                 <PageWrapper
-                    loading={eventLoading || registrationLoading || alertsLoading}
+                    loading={
+                        eventLoading || registrationLoading || alertsLoading
+                    }
                     wrapContent={false}
                 >
-                    <PartnerDashboard event={event} originalAlertCount={alertCount} originalAlerts={alerts} shownPages={shownPages} />
+                    <PartnerDashboard
+                        event={event}
+                        originalAlertCount={alertCount}
+                        originalAlerts={alerts}
+                        shownPages={shownPages}
+                    />
                 </PageWrapper>
             )
         }
         case 'organizer': {
             return (
                 <PageWrapper
-                    loading={eventLoading || registrationLoading || alertsLoading}
+                    loading={
+                        eventLoading || registrationLoading || alertsLoading
+                    }
                     wrapContent={false}
                 >
-                    <OrganizerDashboard /* event={event} originalAlertCount={alertCount} originalAlerts={alerts} shownPages={shownPages} lockedPages={lockedPages} */ />
+                    <OrganizerDashboard /* event={event} originalAlertCount={alertCount} originalAlerts={alerts} shownPages={shownPages} lockedPages={lockedPages} */
+                    />
                 </PageWrapper>
             )
         }
         case 'participant': {
             return (
                 <PageWrapper
-                    loading={eventLoading || registrationLoading || alertsLoading}
+                    loading={
+                        eventLoading || registrationLoading || alertsLoading
+                    }
                     wrapContent={false}
                 >
-                    <ParticipantDashboard event={event} originalAlertCount={alertCount} originalAlerts={alerts} shownPages={shownPages} lockedPages={lockedPages} />
+                    <ParticipantDashboard
+                        event={event}
+                        originalAlertCount={alertCount}
+                        originalAlerts={alerts}
+                        shownPages={shownPages}
+                        lockedPages={lockedPages}
+                    />
                 </PageWrapper>
             )
         }
         default:
             return <>error</>
     }
-
 }
-
-
-
