@@ -167,72 +167,72 @@ stages:
 
 
 
-- stage: Build_eu
-  displayName: Build stage
-  dependsOn: Build
-  jobs:  
-  - job: Build_eu
-    steps:
+# - stage: Build_eu
+#   displayName: Build stage
+#   dependsOn: Build
+#   jobs:  
+#   - job: Build_eu
+#     steps:
     
-    - task: DownloadSecureFile@1
-      displayName: 'download EU backendend'
-      inputs:
-        secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+#     - task: DownloadSecureFile@1
+#       displayName: 'download EU backendend'
+#       inputs:
+#         secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
 
-    - task: CopyFiles@2
-      displayName: 'copy EU backendend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: BACKEND_ENV_FILE_EU
-        TargetFolder: './backend'
+#     - task: CopyFiles@2
+#       displayName: 'copy EU backendend'
+#       inputs:
+#         SourceFolder: '$(Agent.TempDirectory)'
+#         Contents: BACKEND_ENV_FILE_EU
+#         TargetFolder: './backend'
 
-    - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
-      displayName: 'rename eu .env'
-    - task: DownloadSecureFile@1
-      displayName: 'download eu frontend'
-      inputs:
-        secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+#     - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
+#       displayName: 'rename eu .env'
+#     - task: DownloadSecureFile@1
+#       displayName: 'download eu frontend'
+#       inputs:
+#         secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
 
-    - task: CopyFiles@2
-      displayName: 'copy eu frontend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: FRONTEND_ENV_FILE_EU
-        TargetFolder: './frontend'
+#     - task: CopyFiles@2
+#       displayName: 'copy eu frontend'
+#       inputs:
+#         SourceFolder: '$(Agent.TempDirectory)'
+#         Contents: FRONTEND_ENV_FILE_EU
+#         TargetFolder: './frontend'
 
-    - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
-      displayName: 'rename eu .env'
+#     - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+#       displayName: 'rename eu .env'
 
-    - script: ls -a ./frontend
-      displayName: 'ls' 
+#     - script: ls -a ./frontend
+#       displayName: 'ls' 
 
-    - script: ls -Rn
-      displayName: 'ls'
+#     - script: ls -Rn
+#       displayName: 'ls'
 
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '12.20.1'
-      displayName: 'Install Node.js'
+#     - task: NodeTool@0
+#       inputs:
+#         versionSpec: '12.20.1'
+#       displayName: 'Install Node.js'
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          node -v
-          npm -v
-          npm install
-          npm run build
+#     - task: Bash@3
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           node -v
+#           npm -v
+#           npm install
+#           npm run build
 
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop_eu
+#     - task: ArchiveFiles@2
+#       displayName: 'Archive files'
+#       inputs:
+#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+#         includeRootFolder: false
+#         archiveType: zip
+#         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#         replaceExistingArchive: true
+#     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#       artifact: drop_eu
   
 
 
