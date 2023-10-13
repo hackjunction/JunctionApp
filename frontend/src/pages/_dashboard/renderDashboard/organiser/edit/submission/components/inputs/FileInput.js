@@ -72,7 +72,7 @@ const FileInput = ({
                                 </span>
                             </p>
                             <p className="tw-text-xs tw-text-gray-500 dark:tw-text-gray-400">
-                                SVG, PNG, JPG or GIF (MAX. 800x400px)
+                                {allowedFileTypes}
                             </p>
                         </div>
                         <input
@@ -88,7 +88,7 @@ const FileInput = ({
                     </>
                 )}
                 {value && (
-                    <div>
+                    <div className=" tw-flex tw-flex-col">
                         <Button variant="jContained" onClick={downloadFile}>
                             Download {parsedValue.filename}
                         </Button>

@@ -118,7 +118,7 @@ const ProjectsGridItem = ({
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Card
-                className={`tw-bg-white tw-w-full tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-500px tw-flex tw-flex-col tw-justify-between`}
+                className={`tw-bg-white tw-w-full tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-576px tw-flex tw-flex-col tw-justify-between`}
             >
                 <CardContent className="tw-flex tw-flex-col tw-p-0">
                     <div className="tw-relative tw-w-full tw- tw-h-40 tw-rounded-lg tw-flex tw-justify-end tw-items-start">
@@ -152,7 +152,7 @@ const ProjectsGridItem = ({
                                 variant="body1"
                                 component="p"
                             >
-                                {project.name}
+                                {_.truncate(project.name, { length: 20 })}
                             </Typography>
                             <div className="tw-flex tw-gap-1">
                                 {project.challenges.map((challenge, index) => (
@@ -163,23 +163,34 @@ const ProjectsGridItem = ({
                                 ))}
                             </div>
                             <Typography variant="body1" component="p">
-                                {_.truncate(project.punchline, { length: 50 })}
+                                {_.truncate(project.punchline, { length: 30 })}
                             </Typography>
                         </div>
                         {showTableLocation && project.location && (
-                            <div className="tw-flex tw-flex-col tw-gap-2">
+                            <div className="tw-flex tw-gap-2">
                                 <Typography
                                     style={{ fontWeight: 'bold' }}
                                     variant="body1"
                                 >
-                                    Table Location
+                                    Table Location:
                                 </Typography>
                                 <Typography variant="body1">
                                     {project.location}
                                 </Typography>
                             </div>
                         )}
-                        {score !== null && (
+                        <div className="tw-flex tw-gap-2">
+                            <Typography
+                                style={{ fontWeight: 'bold' }}
+                                variant="body1"
+                            >
+                                Table Location:
+                            </Typography>
+                            <Typography variant="body1">
+                                Wathever is this
+                            </Typography>
+                        </div>
+                        {score && (
                             <div className="tw-flex tw-flex-col tw-gap-2">
                                 <div className="tw-flex tw-gap-2">
                                     <Typography
