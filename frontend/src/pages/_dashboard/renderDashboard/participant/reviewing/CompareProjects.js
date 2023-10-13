@@ -161,7 +161,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     event={event}
                     showTableLocation={true}
                     label="Previous"
-                    labelBackground="theme_turquoise"
+                    labelBackground="primary"
                     onClickMore={() => setSelected(projects.prev.project)}
                 />
                 <ProjectsGridItem
@@ -169,7 +169,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     event={event}
                     showTableLocation={true}
                     label="Current"
-                    labelBackground="theme_success"
+                    labelBackground="secondary"
                     onClickMore={() => setSelected(projects.next.project)}
                 />
                 <Grid item xs={12} md={8}>
@@ -178,7 +178,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                             <Grid item xs={6}>
                                 <Button
                                     onClick={handlePrevVote}
-                                    color="theme_turquoise"
+                                    color="primary"
                                     variant="contained"
                                     fullWidth
                                 >
@@ -188,7 +188,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                             <Grid item xs={6}>
                                 <Button
                                     onClick={handleNextVote}
-                                    color="theme_success"
+                                    color="secondary"
                                     variant="contained"
                                     fullWidth
                                 >
@@ -220,7 +220,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                 <ConfirmDialog
                     open={confirmOpen}
                     onClose={() => setConfirmOpen(false)}
-                    onCancel={() => {}}
+                    onCancel={() => { }}
                     onOk={handleSkip}
                     title="Are you sure?"
                     message="Have you looked around carefully for the project? Try to check nearby tables if you can find the team there. If you really can't find them, you can skip the project."

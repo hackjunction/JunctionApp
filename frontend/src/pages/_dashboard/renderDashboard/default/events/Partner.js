@@ -45,7 +45,7 @@ export default () => {
                     <Grid container spacing={3}>
                         {registrations?.filter(registration => {
                             const recEvents = recruiterEvents?.map(e => e.eventId)
-                            return recEvents?.some(r => r === registration.event._id)
+                            return recEvents?.some(r => r === registration?.event._id)
                         }
 
                         ).map(registration => {//TODO: fiter current event away

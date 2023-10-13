@@ -133,10 +133,10 @@ const ProjectsGridItem = ({
                                     previewImage
                                         ? previewImage
                                         : event?.coverImage?.publicId
-                                        ? event?.coverImage.publicId
-                                        : event?.logo?.publicId
-                                        ? event?.logo.publicId
-                                        : false
+                                            ? event?.coverImage.publicId
+                                            : event?.logo?.publicId
+                                                ? event?.logo.publicId
+                                                : false
                                 }
                                 defaultImage={require('assets/images/default_cover_image.png')}
                             />
@@ -233,13 +233,11 @@ const ProjectsGridItem = ({
                                     return (
                                         <Tooltip
                                             key={index}
-                                            title={`Reviewed by ${
-                                                project.reviewers.length - 1
-                                            } more ${
-                                                project.reviewers.length - 1 > 1
+                                            title={`Reviewed by ${project.reviewers.length - 1
+                                                } more ${project.reviewers.length - 1 > 1
                                                     ? 'people'
                                                     : 'person'
-                                            }`}
+                                                }`}
                                         >
                                             <Avatar>
                                                 +{project.reviewers.length - 1}
@@ -252,11 +250,10 @@ const ProjectsGridItem = ({
                                 return (
                                     <Tooltip
                                         key={index}
-                                        title={`Reviewed by ${
-                                            reviewer?.userFirstname
-                                                ? reviewer.userFirstname
-                                                : 'judge'
-                                        }`}
+                                        title={`Reviewed by ${reviewer?.userFirstname
+                                            ? reviewer.userFirstname
+                                            : 'judge'
+                                            }`}
                                     >
                                         {reviewer?.avatar ? (
                                             <Avatar src={reviewer.avatar} />
@@ -264,8 +261,8 @@ const ProjectsGridItem = ({
                                             <Avatar>
                                                 {reviewer?.userFirstname
                                                     ? reviewer?.userFirstname.charAt(
-                                                          0,
-                                                      )
+                                                        0,
+                                                    )
                                                     : 'R'}
                                             </Avatar>
                                         )}
