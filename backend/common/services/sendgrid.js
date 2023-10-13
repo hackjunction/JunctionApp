@@ -99,7 +99,7 @@ const SendgridService = {
                 subtitle: event.emailConfig.acceptanceEmail.subtitle || `You've been accepted to ${event.name}!`,
                 body: replaceBodyTags(event.emailConfig.acceptanceEmail.body, event, user),
                 cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
             },
         )
         return SendgridService.send(msg)
@@ -137,7 +137,7 @@ const SendgridService = {
                     subtitle: event.emailConfig.registrationEmail.subtitle || 'Awesome! Now just sit back and relax.',
                     body: replaceBodyTags(event.emailConfig.registrationEmail.body, event, user),
                     cta_text: 'Event dashboard',
-                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
                 },
             )
         } else {
@@ -193,7 +193,7 @@ const SendgridService = {
                 Psst, please note that the transaction will be made in Euros, so please make sure you have a bank account able to receive Euro payments available.
             `,
                 cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
             },
         )
 
@@ -228,7 +228,7 @@ const SendgridService = {
                 accept someone from the waitlist.
             `,
                 cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
             },
         )
 
@@ -285,7 +285,7 @@ const SendgridService = {
                 <br />
                 Please refer to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
             `,
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}/travel-grant`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}/travel-grant`,
                 cta_text: 'Edit your details',
                 reply_to: 'finance@hackjunction.com',
             },
