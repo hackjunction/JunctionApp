@@ -7,6 +7,7 @@ import Profile from 'components/Participant/Profile'
 import { set } from 'react-ga'
 import { useDispatch } from 'react-redux'
 import * as DashboardActions from 'redux/dashboard/actions'
+import { gradientRandomizer } from 'utils/stylingHelpers'
 
 export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
     const [userProfile, setUserProfile] = useState(userData)
@@ -75,7 +76,9 @@ export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {
             >
                 <div className="tw-flex tw-gap-4 tw-items-end">
                     <div
-                        className={`tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-rounded-full ${styling.imageSize} tw-bg-cover`}
+                        className={`tw-bg-gradient-to-r ${gradientRandomizer()} tw-rounded-full ${
+                            styling.imageSize
+                        } tw-bg-cover`}
                         style={styling?.userProfile}
                     ></div>
                     <div className="tw-flex tw-flex-col tw-items-start tw-gap-2">

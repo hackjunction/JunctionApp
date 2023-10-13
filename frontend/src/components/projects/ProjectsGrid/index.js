@@ -81,7 +81,7 @@ const ProjectsGrid = ({
     return (
         <Grid
             container
-            spacing={3}
+            spacing={1}
             direction="row"
             alignItems="stretch"
             justify="center"
