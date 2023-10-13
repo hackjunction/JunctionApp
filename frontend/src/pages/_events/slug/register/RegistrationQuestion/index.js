@@ -536,6 +536,7 @@ const RegistrationQuestion = ({
                             handleChange={value =>
                                 form.setFieldValue(field.name, value)
                             }
+                            config={config}
                         />
                     </FormControl>
                 )

@@ -79,6 +79,7 @@ export default () => {
                                 if (showDisabled || fieldValue(formField)) {
                                     return (
                                         <FastField
+                                            key={index}
                                             name={`submissionFormDefaultFields.${formField}`}
                                             render={({ field, form }) => {
                                                 return (
