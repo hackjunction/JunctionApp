@@ -30,7 +30,6 @@ const migrations = [
     require('./24-sync-registration-to-profiles'),
     require('./25-add-emailConfig-to-event'),
     require('./26-fix-empty-senderEmail-in-event'),
-    require('./27-fix-repeated-team-names'),
 ]
 
 const run = async () => {
