@@ -74,7 +74,6 @@ const ProjectsGridItem = ({
     message = null,
     showTags = false,
     showReviewers = false,
-    // onSeeReviews = () => {},
 }) => {
     const [openReviewModal, setOpenReviewModal] = useState(false)
     const isVotingPast = EventHelpers.isVotingPast(event, moment)
@@ -119,7 +118,6 @@ const ProjectsGridItem = ({
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Card
-                // onClick={onClickMore}
                 className={`tw-bg-white tw-w-full tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-500px tw-flex tw-flex-col tw-justify-between`}
             >
                 <CardContent className="tw-flex tw-flex-col tw-p-0">
@@ -279,13 +277,6 @@ const ProjectsGridItem = ({
                 <ProjectReviewModal
                     open={openReviewModal}
                     onClose={() => setOpenReviewModal(false)}
-                    score={{
-                        score: 10,
-                        averageScore: 6,
-                        maxScore: 10,
-                        message: 'Something here',
-                        status: 'evaluated',
-                    }}
                     projectScoreData={project}
                 />
             )}

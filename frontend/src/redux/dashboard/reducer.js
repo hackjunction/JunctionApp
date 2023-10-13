@@ -32,12 +32,6 @@ const initialState = {
         error: false,
         updated: 0,
     },
-    // selected_candidate: {
-    //     data: null,
-    //     loading: true,
-    //     error: false,
-    //     updated: 0,
-    // },
     projects: {
         data: null,
         loading: true,
@@ -66,7 +60,7 @@ const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
 const updateProjectScoresHandler = buildHandler('project_scores')
 const updateTeamsHandler = buildHandler('teams')
-const updateSeletecTeamHandler = buildHandler('selected_team')
+const updateSelectedTeamHandler = buildHandler('selected_team')
 // const updateSeletecUserHandler = buildHandler('selected_candidate')
 
 const editRegistration = buildUpdatePath('registration.data')
@@ -109,25 +103,23 @@ export default function reducer(state = initialState, action) {
             return updateTeamsHandler(state, action)
         }
         case ActionTypes.UPDATE_SELECTED_TEAM: {
-            return updateSeletecTeamHandler(state, action)
+            return updateSelectedTeamHandler(state, action)
         }
         // case ActionTypes.GET_CANDIDATE_PROFILE: {
         //     return updateSeletecUserHandler(state, action)
         // }
         case ActionTypes.ACTIVE_EVENTS: {
-            console.log("ACTIVE_EVENTS", state, action.payload)
+            console.log('ACTIVE_EVENTS', state, action.payload)
             return {
                 ...state,
-                activeEvents: action.payload.activeEvents
+                activeEvents: action.payload.activeEvents,
             }
-
         }
         case ActionTypes.PAST_EVENTS: {
             return {
                 ...state,
-                pastEvents: action.payload.pastEvents
+                pastEvents: action.payload.pastEvents,
             }
-
         }
         default:
             return state

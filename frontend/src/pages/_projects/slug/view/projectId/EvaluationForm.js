@@ -24,19 +24,48 @@ const EvaluationForm = ({
         return _.every(scoreList, _.isNumber)
     }
 
-    const calculateScore = criterias => {
-        return (
+    const calculateScore = (criterias, decimalPlaces) => {
+        const multiplier = Math.pow(10, decimalPlaces)
+        console.log('Multiplier', multiplier)
+        const scoreAverage =
             criterias.reduce((acc, curr) => {
                 if (!curr.score) return acc
                 return curr.score + acc
             }, 0) / criterias.length
-        )
+        console.log('Score average before format', scoreAverage)
+        const scoreAverageFormatted =
+            Math.floor(scoreAverage * multiplier) / multiplier
+        console.log('Score average', scoreAverageFormatted)
+        return scoreAverageFormatted
     }
+
+    if (
+        scoreCriteria &&
+        scoreCriteria.length > 0 &&
+        score.scoreCriteria.length > 0
+    ) {
+        const scoreFiltered = score.scoreCriteria.filter(criteria =>
+            _.includes(
+                scoreCriteria.map(crit => crit.criteria),
+                criteria.criteria,
+            ),
+        )
+
+        score.scoreCriteria = scoreFiltered
+    }
+
+    // if (score.scoreCriteria.map) {
 
     return (
         <>
             <Formik
                 initialValues={{ ...score }}
+                // initialValues={{
+                //     ...score,
+                //     scoreCriteria: [
+                //         { ...scoreCriteria, score: score.scoreCriteria.score },
+                //     ],
+                // }}
                 enableReinitialize={true}
                 onSubmit={submit}
             >
@@ -57,65 +86,94 @@ const EvaluationForm = ({
                                             }
                                             error={form.errors[field.name]}
                                         >
-                                            {field.value &&
-                                                field.value.length > 0 &&
-                                                scoreCriteria.map(
-                                                    (
-                                                        { criteria, label },
-                                                        index,
-                                                    ) => {
-                                                        return (
-                                                            <RadioScore
-                                                                category={
-                                                                    criteria
-                                                                }
-                                                                label={label}
-                                                                value={
-                                                                    field.value[
-                                                                        index
-                                                                    ]
-                                                                        ? field
-                                                                              .value[
-                                                                              index
-                                                                          ]
-                                                                              .score
-                                                                        : null
-                                                                }
-                                                                onSelectionChange={score => {
-                                                                    form.setFieldTouched(
-                                                                        field.name,
-                                                                    )
-                                                                    const updatedField =
-                                                                        field.value
-                                                                    updatedField[
-                                                                        index
-                                                                    ].score =
-                                                                        score
-                                                                    form.setFieldValue(
-                                                                        field.name,
-                                                                        updatedField,
-                                                                    )
-                                                                    const updatedScore =
-                                                                        calculateScore(
-                                                                            updatedField,
-                                                                        )
-
-                                                                    if (
-                                                                        allScoresSet(
-                                                                            updatedField,
-                                                                        )
-                                                                    ) {
-                                                                        form.setFieldValue(
-                                                                            'score',
-                                                                            updatedScore,
-                                                                        )
+                                            <div className="tw-flex tw-flex-col tw-gap-4">
+                                                {field.value &&
+                                                    scoreCriteria.map(
+                                                        (
+                                                            { criteria, label },
+                                                            index,
+                                                        ) => {
+                                                            console.log(
+                                                                'Field value at evaluationForm',
+                                                                field.value,
+                                                            )
+                                                            return (
+                                                                <RadioScore
+                                                                    key={
+                                                                        criteria
                                                                     }
-                                                                    return
-                                                                }}
-                                                            />
-                                                        )
-                                                    },
-                                                )}
+                                                                    category={
+                                                                        criteria
+                                                                    }
+                                                                    label={
+                                                                        label
+                                                                    }
+                                                                    value={
+                                                                        field
+                                                                            .value[
+                                                                            index
+                                                                        ]
+                                                                            ? field
+                                                                                  .value[
+                                                                                  index
+                                                                              ]
+                                                                                  .score
+                                                                            : null
+                                                                    }
+                                                                    onSelectionChange={score => {
+                                                                        form.setFieldTouched(
+                                                                            field.name,
+                                                                        )
+                                                                        const updatedField =
+                                                                            field.value
+                                                                        console.log(
+                                                                            'From updated field at eval form',
+                                                                            updatedField,
+                                                                        )
+                                                                        if (
+                                                                            !updatedField[
+                                                                                index
+                                                                            ]
+                                                                        ) {
+                                                                            updatedField[
+                                                                                index
+                                                                            ] =
+                                                                                {
+                                                                                    criteria,
+                                                                                    label,
+                                                                                }
+                                                                        }
+                                                                        updatedField[
+                                                                            index
+                                                                        ].score =
+                                                                            score
+                                                                        form.setFieldValue(
+                                                                            field.name,
+                                                                            updatedField,
+                                                                        )
+                                                                        const updatedScore =
+                                                                            calculateScore(
+                                                                                updatedField,
+                                                                                2,
+                                                                            )
+
+                                                                        if (
+                                                                            allScoresSet(
+                                                                                updatedField,
+                                                                            )
+                                                                        ) {
+                                                                            form.setFieldValue(
+                                                                                'score',
+                                                                                updatedScore,
+                                                                            )
+                                                                        }
+                                                                        return
+                                                                    }}
+                                                                />
+                                                            )
+                                                        },
+                                                    )}
+                                            </div>
                                         </FormControl>
                                     </>
                                 )}
@@ -183,14 +241,6 @@ const EvaluationForm = ({
                                 dirty={formikProps.dirty}
                                 loading={formikProps.isSubmitting}
                             />
-                            {/* <Button
-                                color="theme_turquoise"
-                                variant="contained"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                Save
-                            </Button> */}
                         </Form>
                     )
                 }}

@@ -101,58 +101,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ user = {} }) => {
-    // const dispatch = useDispatch()
-    // const actionHistory = useSelector(RecruitmentSelectors.actionHistory)
-    // const isFavorite =
-    //     actionHistory.filter(
-    //         action => action.user === user.userId && action.type === 'favorite',
-    //     ).length !== 0
-
-    //Toggle favorited state locally for instant feedback on favorite action
-    // const [_isFavorite, setIsFavorite] = useState(isFavorite)
-    // const classes = useStyles({ isFavorite: _isFavorite })
     const classes = useStyles()
     const { profile = {}, social = {} } = user
-
-    // const handleFavorite = useCallback(async () => {
-    //     setIsFavorite(!_isFavorite)
-    //     const { error } = await dispatch(
-    //         RecruitmentActions.toggleFavorite(user.userId, _isFavorite),
-    //     )
-    //     if (error) {
-    //         dispatch(SnackbarActions.error('Something went wrong...'))
-    //         setIsFavorite(_isFavorite)
-    //     }
-    // }, [_isFavorite, dispatch, user.userId])
-
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
-            {/* <div className="tw-flex tw-justify-between tw-items-center">
-                <MuiButton onClick={() => dispatch(goBack())}>
-                    <ArrowBackIosIcon style={{ fontSize: '16px' }} />
-                    Back
-                </MuiButton>
-                <Tooltip
-                    title={
-                        isFavorite
-                            ? 'Remove from favorites'
-                            : 'Add to favorites'
-                    }
-                    placement="right"
-                >
-                    <IconButton
-                        onClick={handleFavorite}
-                        aria-label="favorite"
-                        className={classes.margin}
-                    >
-                        <StarIcon
-                            className={classes.favoriteIcon}
-                            fontSize="large"
-                        />
-                    </IconButton>
-                </Tooltip>
-            </div> */}
-            {/* <RecruitmentFavorites user={user} /> */}
             <div className="tw-flex tw-flex-col tw-rounded-lg tw-shadow-md tw-bg-white">
                 <div className="tw-w-full tw-h-32 tw-rounded-lg tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500"></div>
                 <div className="tw-px-8 tw-pt-0 tw-pb-8 tw-flex tw-flex-col tw-gap-2 tw-rounded-lg">
@@ -170,7 +122,6 @@ export default ({ user = {} }) => {
                         </div>
                     )}
 
-                    {/* <SocialLinks viewMode="participant" /> */}
                     {(profile.email || !_.isEmpty(social)) && (
                         <div className="tw-flex tw-content-center tw-justify-start">
                             {social.github && (
@@ -253,13 +204,6 @@ export default ({ user = {} }) => {
                             )}
                         </div>
                     )}
-
-                    {/* <div className="tw-flex tw-gap-4 tw-justify-start">
-                        <Button variant="jContained">Messages</Button>
-                        <Button color="outlined_button" variant="jOutlined">
-                            Share profile
-                        </Button>
-                    </div> */}
                 </div>
             </div>
         </div>

@@ -3,8 +3,17 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as DashboardActions from 'redux/dashboard/actions'
 
-const FileInput = ({ value = null, handleChange = () => {} }) => {
-    console.log('FileInput value', value)
+const FileInput = ({
+    value = null,
+    handleChange = arg => {},
+    config = null,
+}) => {
+    const allowedFileTypes =
+        config?.settings?.allowedTypes &&
+        config.settings.allowedTypes.length > 0
+            ? config.settings.allowedTypes.map(type => `.${type}`).join(',')
+            : ''
+
     const dispatch = useDispatch()
     let parsedValue
 
@@ -60,8 +69,7 @@ const FileInput = ({ value = null, handleChange = () => {} }) => {
                             <p className="tw-mb-2 tw-text-sm tw-text-gray-500 dark:tw-text-gray-400">
                                 <span className="tw-font-semibold">
                                     Click to upload
-                                </span>{' '}
-                                or drag and drop
+                                </span>
                             </p>
                             <p className="tw-text-xs tw-text-gray-500 dark:tw-text-gray-400">
                                 SVG, PNG, JPG or GIF (MAX. 800x400px)
@@ -71,7 +79,7 @@ const FileInput = ({ value = null, handleChange = () => {} }) => {
                             id="dropzone-file"
                             type="file"
                             className="tw-hidden"
-                            // value={value}
+                            accept={allowedFileTypes}
                             onChange={e => {
                                 console.log('File details', e.target.files[0])
                                 handleChange(e.target.files[0])

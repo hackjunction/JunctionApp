@@ -23,13 +23,12 @@ const createTeam = asyncHandler(async (req, res) => {
 })
 
 const createNewTeam = asyncHandler(async (req, res) => {
-    console.log('From routes:', req.body)
     let team = await TeamController.createNewTeam(
         req.body,
         req.event._id,
         req.user.sub,
     )
-    console.log('From routes+controller resolved:', team)
+    console.log('Team to save returned from controller:', team)
     if (req.query.populate === 'true') {
         team = await TeamController.attachMeta(team)
     }

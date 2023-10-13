@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
@@ -19,15 +19,37 @@ export default () => {
     const { slug } = event
 
     const teams = useSelector(DashboardSelectors.teams)
-    const selectedTeam = useSelector(DashboardSelectors.selectedTeam)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const [selected, setSelected] = useState(false)
     const [applying, setApplying] = useState(false)
     const [joinByCode, setJoinByCode] = useState(false)
     const [challengeFilter, setChallengeFilter] = useState('All challenges')
+
+    const [selectedTeam, setSelectedTeam] = useState(null)
+    const [loading, setLoading] = useState(false)
+
+    const hadleTeamCardClick = useCallback(
+        async teamCode => {
+            if (teamCode) {
+                setLoading(true)
+                dispatch(DashboardActions.updateSelectedTeam(slug, teamCode))
+                    .then(team => {
+                        setSelectedTeam(team)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                    .finally(() => {
+                        setLoading(false)
+                    })
+            }
+        },
+        [selectedTeam],
+    )
+
     useEffect(() => {
         dispatch(DashboardActions.updateTeams(slug))
-    }, [applying])
+    }, [applying, selected, selectedTeam, joinByCode, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
@@ -46,14 +68,21 @@ export default () => {
                             <Button
                                 color="outlined_button"
                                 variant="jOutlined"
-                                onClick={() => setApplying(false)}
+                                onClick={() => {
+                                    setApplying(false)
+                                    setSelectedTeam(null)
+                                }}
                             >
                                 Back
                             </Button>
                         </div>
                         <Apply
                             teamRolesData={selectedTeam.teamRoles}
-                            afterSubmitAction={() => setApplying(false)}
+                            afterSubmitAction={() => {
+                                setApplying(false)
+                                setSelectedTeam(null)
+                            }}
+                            loading={loading}
                         />
                     </div>
                 )}
@@ -65,13 +94,17 @@ export default () => {
                             <Button
                                 color="outlined_button"
                                 variant="jOutlined"
-                                onClick={() => setSelected(false)}
+                                onClick={() => {
+                                    setSelected(false)
+                                    setSelectedTeam(null)
+                                }}
                             >
                                 Back
                             </Button>
                         </div>
                         <TeamProfile
                             teamData={selectedTeam}
+                            loading={loading}
                             enableActions={false}
                             onRoleClick={() => {
                                 if (!hasTeam) {
@@ -107,7 +140,9 @@ export default () => {
                     </div>
                     {joinByCode && (
                         <div className="tw-bg-white tw-p-4 tw-text-left tw-rounded-lg tw-shadow-md tw-flex tw-justify-center tw-items-center tw-gap-4">
-                            <JoinTeamByCode />
+                            <JoinTeamByCode
+                                onAction={() => setJoinByCode(false)}
+                            />
                             <div>
                                 <Button
                                     color="outlined_button"
@@ -134,21 +169,11 @@ export default () => {
                                         teamData={team}
                                         disableActions={hasTeam}
                                         onClickApply={() => {
-                                            dispatch(
-                                                DashboardActions.updateSelectedTeam(
-                                                    slug,
-                                                    team.code,
-                                                ),
-                                            )
+                                            hadleTeamCardClick(team.code)
                                             setApplying(true)
                                         }}
                                         onClick={() => {
-                                            dispatch(
-                                                DashboardActions.updateSelectedTeam(
-                                                    slug,
-                                                    team.code,
-                                                ),
-                                            )
+                                            hadleTeamCardClick(team.code)
                                             setSelected(true)
                                         }}
                                     />

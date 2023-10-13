@@ -1,19 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
 import { Box, Dialog } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
-import { makeStyles } from '@material-ui/core/styles'
 
 import ProjectsService from 'services/projects'
 import Filter from 'components/Team/Filter'
 import _ from 'lodash'
 
-import ProjectView from 'pages/_projects/slug/view/projectId'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as userSelectors from 'redux/user/selectors'
@@ -23,7 +19,6 @@ import Empty from 'components/generic/Empty'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import ScoreForm from 'pages/_projects/slug/view/projectId/ScoreForm'
 
-// import scoreCriteriaBase from 'components/projects/ScoreCriteria'
 const projectScoreBase = {
     project: '',
     event: '',
@@ -38,18 +33,11 @@ const projectScoreBase = {
 //TODO simplify this component and the reviewer score process
 //TODO make this and track one into a component
 export default ({ event }) => {
-    // console.log(
-    //     'Event criteria from model',
-    //     event.scoreCriteriaSettings.scoreCriteria,
-    // )
-    console.log(event)
     const scoreCriteriaBase = event.scoreCriteriaSettings.scoreCriteria
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
     const userProfile = useSelector(userSelectors.userProfile)
-    console.log('User profile data', userProfile)
     const allFilterLabel = 'All projects'
-    const match = useRouteMatch()
     const dispatch = useDispatch()
     const { slug } = event
     const [data, setData] = useState({})
@@ -86,17 +74,6 @@ export default ({ event }) => {
             const data = {
                 event,
             }
-            console.log('Partner data', partnerData)
-            console.log('Data fetched', dataOt)
-            console.log(
-                'Event data',
-                event.scoreCriteriaSettings.reviewAnyChallenge,
-            )
-            // if (event.scoreCriteriaSettings.reviewAnyChallenge) {
-            //     filteredProjects = [...dataOt]
-            // }
-            console.log('Filtered projects', filteredProjects)
-            // filteredProjects = [...dataOt.data]
             if (event.scoreCriteriaSettings.reviewAnyChallenge) {
                 data.projects = dataOt
             } else if (partnerData) {
@@ -114,8 +91,6 @@ export default ({ event }) => {
                     }
                 }
             }
-            console.log('Data after', data)
-
             setData(data)
             setDraftsProjects(
                 data.projects.filter(project => project.status === 'draft'),
@@ -128,28 +103,19 @@ export default ({ event }) => {
             setError(true)
         }
         setLoading(false)
-    }, [slug, idToken])
+    }, [slug, idToken, projectScore])
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         const submissionValues = { ...values }
-        console.log('submissionValues before submission', submissionValues)
         submissionValues.project = selected._id
         submissionValues.event = event._id
         let reviewerData
-        // const reviewerData = {
-        //     userId: userId,
-        //     score: submissionValues.score,
-        //     // scoreCriteria: submissionValues.scoreCriteria,
-        //     // message: submissionValues.message,
-        // }
-        console.log('submissionValues before', submissionValues)
         if (userId) {
             reviewerData = _.find(
                 submissionValues.reviewers,
                 reviewer => reviewer.userId === userId,
             )
             if (reviewerData) {
-                console.log('User already in reviewers list')
                 if (reviewerData.firstname !== userProfile?.firstName) {
                     reviewerData.firstname = userProfile.firstName
                 }
@@ -160,7 +126,6 @@ export default ({ event }) => {
                 reviewerData.scoreCriteria = submissionValues.scoreCriteria
                 reviewerData.message = submissionValues.message
             } else {
-                console.log('User is not in the list')
                 reviewerData = {
                     userId: userId,
                     avatar: userProfile?.avatar,
@@ -175,9 +140,6 @@ export default ({ event }) => {
             delete submissionValues.scoreCriteria
             delete submissionValues.message
         }
-        console.log('submissionValues after push or edit', submissionValues)
-        console.log('values', values)
-        console.log('submissionValues', submissionValues)
         try {
             if (scoreExists) {
                 await ProjectScoresService.updateScoreByEventSlugAndProjectIdAndPartnerAccount(
@@ -208,7 +170,7 @@ export default ({ event }) => {
 
     useEffect(() => {
         fetchProjects()
-    }, [fetchProjects])
+    }, [selected, projectScore])
 
     if (!data) {
         return null
@@ -316,9 +278,8 @@ export default ({ event }) => {
                     />
                     {idToken ? (
                         <Container center>
-                            {projectScore?.scoreCriteria &&
-                            projectScore?.scoreCriteria.length > 0 ? (
-                                // <span>TODO</span>
+                            {scoreCriteriaBase &&
+                            scoreCriteriaBase.length > 0 ? (
                                 <EvaluationForm
                                     event={event}
                                     project={selected}
@@ -327,7 +288,6 @@ export default ({ event }) => {
                                     scoreCriteria={scoreCriteriaBase}
                                 />
                             ) : (
-                                // <span>Not to do</span>
                                 <ScoreForm
                                     event={event}
                                     project={selected}

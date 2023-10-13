@@ -178,6 +178,7 @@ export default () => {
                             <Masonry>
                                 {candidateCards.map(candidate => (
                                     <CandidateCard
+                                        key={candidate.userId}
                                         candidateData={candidate}
                                         onViewApplication={() => {
                                             onViewApplication(candidate.userId)
