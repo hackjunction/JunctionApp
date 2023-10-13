@@ -80,6 +80,7 @@ const buildProjectSchema = event => {
                     .string()
                     .oneOf(event.challenges.map(challenge => challenge.slug)),
             )
+            .required()
             .max(5)
             .ensure()
             .label('Challenges')

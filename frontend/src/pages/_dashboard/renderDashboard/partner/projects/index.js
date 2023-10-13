@@ -103,7 +103,7 @@ export default ({ event }) => {
             setError(true)
         }
         setLoading(false)
-    }, [slug, idToken])
+    }, [slug, idToken, projectScore])
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         const submissionValues = { ...values }
@@ -170,7 +170,7 @@ export default ({ event }) => {
 
     useEffect(() => {
         fetchProjects()
-    }, [selected])
+    }, [selected, projectScore])
 
     if (!data) {
         return null
