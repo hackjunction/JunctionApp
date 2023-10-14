@@ -30,11 +30,7 @@ function TeamCard({
     if (teamData === undefined) {
         return null
     }
-    if (teamData?.ideaTitle.length === undefined || teamData?.teamRoles.length === undefined || teamData?.ideaDescription.length === undefined) {
-        console.log("teamRoles", teamData?.teamRoles?.length,
-            "ideaTitle", teamData?.ideaTitle?.length,
-            "ideaDescription", teamData?.ideaDescription?.length)
-    }
+
 
     return (
         <Card
