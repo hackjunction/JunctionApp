@@ -31,7 +31,6 @@ function TeamCard({
         return null
     }
 
-
     return (
         <Card
             onClick={onClick}
