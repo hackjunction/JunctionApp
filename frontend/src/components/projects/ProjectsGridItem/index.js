@@ -74,6 +74,7 @@ const ProjectsGridItem = ({
     message = null,
     showTags = false,
     showReviewers = false,
+    showScore = false,
 }) => {
     const [openReviewModal, setOpenReviewModal] = useState(false)
     const isVotingPast = EventHelpers.isVotingPast(event, moment)
@@ -162,9 +163,9 @@ const ProjectsGridItem = ({
                                     />
                                 ))}
                             </div>
-                            <Typography variant="body1" component="p">
+                            {/* <Typography variant="body1" component="p">
                                 {_.truncate(project.punchline, { length: 30 })}
-                            </Typography>
+                            </Typography> */}
                         </div>
                         {showTableLocation && project.location && (
                             <div className="tw-flex tw-gap-2">
@@ -179,18 +180,7 @@ const ProjectsGridItem = ({
                                 </Typography>
                             </div>
                         )}
-                        <div className="tw-flex tw-gap-2">
-                            <Typography
-                                style={{ fontWeight: 'bold' }}
-                                variant="body1"
-                            >
-                                Table Location:
-                            </Typography>
-                            <Typography variant="body1">
-                                Wathever is this
-                            </Typography>
-                        </div>
-                        {score && (
+                        {showScore && (
                             <div className="tw-flex tw-flex-col tw-gap-2">
                                 <div className="tw-flex tw-gap-2">
                                     <Typography
@@ -204,9 +194,11 @@ const ProjectsGridItem = ({
                                         {score}
                                     </Typography>
                                 </div>
-                                <Typography variant="body1">
-                                    {_.truncate(message, { length: 20 })}
-                                </Typography>
+                                {showReviewers && (
+                                    <Typography variant="body1">
+                                        {_.truncate(message, { length: 20 })}
+                                    </Typography>
+                                )}
                             </div>
                         )}
                     </div>
@@ -232,14 +224,14 @@ const ProjectsGridItem = ({
                             </Button>
                         )}
                     </div>
-                    {showReviewers && project?.reviewers?.length > 0 && (
+                    {showReviewers && (
                         <div className="tw-flex tw-gap-1 tw-w-full">
-                            {project?.score && project.score > 0 && (
+                            {project.score > 0 && (
                                 <Tooltip title="Reviewed by Organizer">
                                     <Avatar>O</Avatar>
                                 </Tooltip>
                             )}
-                            {project.reviewers.map((reviewer, index) => {
+                            {project?.reviewers?.map((reviewer, index) => {
                                 if (index === reviewIndexLimit) {
                                     return (
                                         <Tooltip
