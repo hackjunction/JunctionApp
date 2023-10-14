@@ -69,7 +69,7 @@ const ProjectsGrid = ({
     }, [event.slug, projects, token])
 
     useEffect(() => {
-        if (showScore) {
+        if (showScore || showReviewers) {
             fetchData()
         } else {
             setSorted(
@@ -108,6 +108,7 @@ const ProjectsGrid = ({
                         message={projectMessage}
                         showTags={showTags}
                         showReviewers={showReviewers}
+                        showScore={showScore}
                     />
                 )
             })}
