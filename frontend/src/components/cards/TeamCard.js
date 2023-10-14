@@ -30,6 +30,11 @@ function TeamCard({
     if (teamData === undefined) {
         return null
     }
+    if (teamData?.ideaTitle.length === undefined || teamData?.teamRoles.length === undefined || teamData?.ideaDescription.length === undefined) {
+        console.log("teamRoles", teamData?.teamRoles?.length,
+            "ideaTitle", teamData?.ideaTitle?.length,
+            "ideaDescription", teamData?.ideaDescription?.length)
+    }
 
     return (
         <Card
@@ -70,27 +75,28 @@ function TeamCard({
                             </div>
                         </div>
                     )}
-                    {teamData?.teamRoles.length > 0 &&
-                        teamData?.ideaTitle.length > 20 &&
-                        teamData?.ideaDescription.length > 20 ? (
-                        <Button
-                            color="outlined_button"
-                            variant="jOutlinedBox"
-                            onClick={onClickApply}
-                        >
-                            <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
-                                <Typography
-                                    className="tw-font-semibold tw-text-left"
-                                    variant="body1"
-                                    component="p"
-                                >
-                                    Roles available
-                                </Typography>
-                            </div>
-                        </Button>
-                    ) : (
-                        <TeamRoles teamRoles={teamData?.teamRoles} />
-                    )}
+                    {
+                        teamData?.teamRoles?.length > 0 &&
+                            teamData?.ideaTitle?.length > 20 &&
+                            teamData?.ideaDescription?.length > 20 ? (
+                            <Button
+                                color="outlined_button"
+                                variant="jOutlinedBox"
+                                onClick={onClickApply}
+                            >
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                    <Typography
+                                        className="tw-font-semibold tw-text-left"
+                                        variant="body1"
+                                        component="p"
+                                    >
+                                        Roles available
+                                    </Typography>
+                                </div>
+                            </Button>
+                        ) : (
+                            <TeamRoles teamRoles={teamData?.teamRoles} />
+                        )}
                 </div>
             </CardContent>
             <CardActions className="tw-flex tw-justify-end tw-items-center tw-px-4 tw-pb-4 tw-pt-0">
