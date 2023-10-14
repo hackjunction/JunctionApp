@@ -43,12 +43,12 @@ export default () => {
                         label: 'Assigned to you',
                         component: AssignedTab,
                     },
-                    {
-                        path: '/travel',
-                        key: 'travel',
-                        label: 'Travel',
-                        component: TravelTab,
-                    },
+                    // {
+                    //     path: '/travel',
+                    //     key: 'travel',
+                    //     label: 'Travel',
+                    //     component: TravelTab,
+                    // },
                     {
                         path: '/admin',
                         key: 'admin',

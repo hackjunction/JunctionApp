@@ -39,6 +39,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
                     return registrationsMap[member]
                 })
                 .filter(member => typeof member !== 'undefined')
+            const teamName = team.name
             const ownerMapped = registrationsMap[team.owner] || {}
             const allMembers = membersMapped.concat(ownerMapped)
             const reviewedCount = allMembers.filter(
@@ -47,6 +48,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
             const memberCount = allMembers.length
             return {
                 ...team,
+                name: teamName,
                 owner: ownerMapped,
                 members: allMembers,
                 avgRating: (
@@ -113,6 +115,11 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
             {
                 Header: 'Code',
                 accessor: 'code',
+                ...Sorters.Alphabetic,
+            },
+            {
+                Header: 'Name',
+                accessor: 'name',
                 ...Sorters.Alphabetic,
             },
             {

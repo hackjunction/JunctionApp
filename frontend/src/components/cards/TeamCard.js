@@ -25,6 +25,9 @@ function TeamCard({
     if (onClick) {
         styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-lg'
     }
+    if (teamData === undefined) {
+        return null
+    }
 
     return (
         <Card
@@ -55,11 +58,11 @@ function TeamCard({
                             </div>
                             <div className="tw-flex tw-gap-2">
                                 <Typography variant="body1" component="p">
-                                    {teamData.ideaDescription.length > 50
+                                    {teamData?.ideaDescription.length > 50
                                         ? `${teamData.ideaDescription.substr(
-                                              0,
-                                              50,
-                                          )}...`
+                                            0,
+                                            50,
+                                        )}...`
                                         : teamData.ideaDescription}
                                 </Typography>
                             </div>
