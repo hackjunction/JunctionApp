@@ -253,9 +253,10 @@ const SubmissionForm = props => {
                 </Box>
                 <div className=" tw-mb-16" />
                 <BottomBar
-                    onSubmit={() => {
-                        formikProps.submitForm()
-                        handleProjectSelected(undefined)
+                    onSubmit={async () => {
+                        formikProps.submitForm().then(() => {
+                            handleProjectSelected(undefined)
+                        })
                     }}
                     errors={formikProps.errors}
                     dirty={formikProps.dirty}
@@ -276,47 +277,58 @@ const SubmissionForm = props => {
             }}
             onSubmit={async (values, actions) => {
                 actions.setSubmitting(true)
-                if (!values.privacy) {
-                    if (!values.hiddenMembers.includes(idTokenData.sub)) {
-                        values.hiddenMembers.push(idTokenData.sub)
+                try {
+                    if (!values.privacy) {
+                        if (!values.hiddenMembers.includes(idTokenData.sub)) {
+                            values.hiddenMembers.push(idTokenData.sub)
+                        }
+                    } else {
+                        const index = values.hiddenMembers.indexOf(
+                            idTokenData.sub,
+                        )
+                        if (index !== -1) values.hiddenMembers.splice(index, 1)
                     }
-                } else {
-                    const index = values.hiddenMembers.indexOf(idTokenData.sub)
-                    if (index !== -1) values.hiddenMembers.splice(index, 1)
-                }
-                let res
-                if (project) {
-                    res = await dispatch(
-                        DashboardActions.editProject(
-                            event.slug,
-                            valuesFormatter(values),
-                        ),
-                    )
-                } else {
-                    res = await dispatch(
-                        DashboardActions.createProject(
-                            event.slug,
-                            valuesFormatter(values),
-                        ),
-                    )
-                }
-
-                if (res.error) {
-                    const message =
-                        res?.payload?.response?.data?.message ??
-                        'Oops, something went wrong...'
+                    let res
+                    if (project) {
+                        res = await dispatch(
+                            DashboardActions.editProject(
+                                event.slug,
+                                valuesFormatter(values),
+                            ),
+                        )
+                    } else {
+                        res = await dispatch(
+                            DashboardActions.createProject(
+                                event.slug,
+                                valuesFormatter(values),
+                            ),
+                        )
+                    }
+                    if (res.error) {
+                        const message =
+                            res?.payload?.response?.data?.message ??
+                            'Oops, something went wrong...'
+                        dispatch(
+                            SnackbarActions.error(message, {
+                                autoHideDuration: 3000,
+                            }),
+                        )
+                    } else {
+                        dispatch(
+                            SnackbarActions.success(
+                                'Success! Project submission updated',
+                            ),
+                        )
+                    }
+                } catch (error) {
+                    console.error('An error occurred:', error)
                     dispatch(
-                        SnackbarActions.error(message, {
+                        SnackbarActions.error('Oops, something went wrong...', {
                             autoHideDuration: 3000,
                         }),
                     )
-                } else {
-                    dispatch(
-                        SnackbarActions.success(
-                            'Success! Project submission updated',
-                        ),
-                    )
                 }
+
                 actions.setSubmitting(false)
             }}
         >

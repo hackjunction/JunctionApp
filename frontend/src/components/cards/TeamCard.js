@@ -10,6 +10,8 @@ import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'
 import TeamRoles from 'components/Team/TeamRoles'
+import team from 'pages/_dashboard/renderDashboard/generalPages/team'
+import { gradientRandomizer, stringShortener } from 'utils/stylingHelpers'
 
 function TeamCard({
     teamData = {},
@@ -35,16 +37,18 @@ function TeamCard({
             className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-h-600px tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
         >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
-                <div className="tw-bg-gradient-to-r tw-from-teal-400 tw-to-blue-500 tw-w-full tw-h-16 tw-rounded-lg"></div>
+                <div
+                    className={`tw-bg-gradient-to-r ${gradientRandomizer()} tw-w-full tw-h-16 tw-rounded-lg`}
+                ></div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                     <TeamHeader
                         viewMode="gallery"
-                        teamName={teamData.name}
+                        teamName={stringShortener(teamData.name, 20)}
                         teamChallenge={teamData.challenge}
                     />
                     {teamData?.ideaTitle && teamData?.ideaDescription && (
                         <div className="tw-flex tw-flex-col tw-gap-2">
-                            <div className="tw-flex tw-gap-2">
+                            <div className="tw-flex tw-flex-col tw-gap-2">
                                 <Typography variant="body1" component="p">
                                     Working on:
                                 </Typography>
@@ -53,22 +57,40 @@ function TeamCard({
                                     variant="body1"
                                     component="p"
                                 >
-                                    {teamData.ideaTitle}
+                                    {teamData?.ideaTitle}
                                 </Typography>
                             </div>
                             <div className="tw-flex tw-gap-2">
                                 <Typography variant="body1" component="p">
-                                    {teamData?.ideaDescription.length > 50
-                                        ? `${teamData.ideaDescription.substr(
-                                            0,
-                                            50,
-                                        )}...`
-                                        : teamData.ideaDescription}
+                                    {stringShortener(
+                                        teamData?.ideaDescription,
+                                        30,
+                                    )}
                                 </Typography>
                             </div>
                         </div>
                     )}
-                    <TeamRoles teamRoles={teamData.teamRoles} />
+                    {teamData?.teamRoles.length > 0 &&
+                        teamData?.ideaTitle.length > 20 &&
+                        teamData?.ideaDescription.length > 20 ? (
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlinedBox"
+                            onClick={onClickApply}
+                        >
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                <Typography
+                                    className="tw-font-semibold tw-text-left"
+                                    variant="body1"
+                                    component="p"
+                                >
+                                    Roles available
+                                </Typography>
+                            </div>
+                        </Button>
+                    ) : (
+                        <TeamRoles teamRoles={teamData?.teamRoles} />
+                    )}
                 </div>
             </CardContent>
             <CardActions className="tw-flex tw-justify-end tw-items-center tw-px-4 tw-pb-4 tw-pt-0">

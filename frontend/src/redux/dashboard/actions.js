@@ -1,15 +1,8 @@
 import { push } from 'connected-react-router'
-import { useQuery } from '@apollo/client'
 
 import * as ActionTypes from './actionTypes'
 import * as AuthSelectors from '../auth/selectors'
 import * as DashboardSelectors from './selectors'
-import {
-    useActiveEvents,
-    usePastEvents,
-    GET_ACTIVE_EVENTS,
-    GET_PAST_EVENTS,
-} from 'graphql/queries/events'
 import EventsService from 'services/events'
 import ProjectsService from 'services/projects'
 import RegistrationsService from 'services/registrations'
@@ -20,7 +13,6 @@ import ProjectScoresService from 'services/projectScores'
 
 import GavelService from 'services/reviewing/gavel'
 import _ from 'lodash'
-import FileService from 'services/files'
 
 export const updateEvent = slug => dispatch => {
     dispatch({
@@ -431,25 +423,33 @@ export const updateProjects = slug => async (dispatch, getState) => {
 }
 
 export const createProject = (slug, data) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    fileAttachmentFinder(data, idToken)
-        .then(data =>
-            ProjectsService.createProjectForEventAndTeam(idToken, slug, data),
+    try {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const fileData = await fileAttachmentFinder(data, idToken)
+
+        if (fileData) {
+            await ProjectsService.createProjectForEventAndTeam(
+                idToken,
+                slug,
+                fileData,
+            )
+        }
+        const projects = await ProjectsService.getProjectsForEventAndTeam(
+            idToken,
+            slug,
         )
-        .catch(err => console.log(err))
-        .finally(() => {
-            return dispatch({
-                type: ActionTypes.UPDATE_PROJECTS,
-                promise: ProjectsService.getProjectsForEventAndTeam(
-                    idToken,
-                    slug,
-                ),
-                meta: {
-                    onFailure: e =>
-                        console.log('Error creating dashboard project', e),
-                },
-            })
+
+        return dispatch({
+            type: ActionTypes.UPDATE_PROJECTS,
+            promise: Promise.resolve(projects),
+            meta: {
+                onFailure: e =>
+                    console.log('Error creating dashboard project', e),
+            },
         })
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
 const fileAttachmentFinder = async (Projectdata, idToken) => {
@@ -463,7 +463,7 @@ const fileAttachmentFinder = async (Projectdata, idToken) => {
     })
     console.log('File keys: ', fileKeys)
     if (fileKeys.length > 0) {
-        await Promise.all(
+        const fileMetadataArray = await Promise.all(
             fileKeys.map(async key => {
                 console.log('File key: ', key)
                 const fileMetadata = await handleFile(Projectdata[key], idToken)
@@ -477,8 +477,10 @@ const fileAttachmentFinder = async (Projectdata, idToken) => {
                 )
                 Projectdata['submissionFormAnswers'][index].value =
                     fileMetadata.toString()
+                return fileMetadata
             }),
         )
+        console.log('File metadata array', fileMetadataArray)
     }
     return Projectdata
 }
@@ -500,20 +502,15 @@ const getFile = async (fileId, filename, token) => {
             const a = document.createElement('a')
             a.style.display = 'none'
             a.href = url
-            a.download = filename // Set the desired file name
+            a.download = filename
             document.body.appendChild(a)
-
-            // Click the anchor element to initiate the download
             a.click()
 
-            // Clean up by revoking the object URL
             window.URL.revokeObjectURL(url)
-            // return JSON.stringify(fileMetadata)
         } else {
             throw new Error('Failed to download file')
         }
     } catch (error) {
-        // Handle network or other errors
         throw error
     }
 }
@@ -527,10 +524,7 @@ const deleteFile = async (fileId, token) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        // const jsonResponse = response.json()
-        // console.log('JSON', await response.json())
         console.log('Does this render?')
-        // console.log('JSON', JSON.stringify(jsonResponse))
 
         if (response.ok) {
             console.log('File deleted successfully')
@@ -538,7 +532,6 @@ const deleteFile = async (fileId, token) => {
             throw new Error('Failed to delete file')
         }
     } catch (error) {
-        // Handle network or other errors
         throw error
     }
 }
@@ -600,57 +593,33 @@ export const deleteFileForProject = fileId => async (dispatch, getState) => {
 }
 
 export const editProject = (slug, data) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    fileAttachmentFinder(data, idToken)
-        .then(data => {
-            console.log('did it work?', data)
-            ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
+    try {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const fileData = await fileAttachmentFinder(data, idToken)
+
+        if (fileData) {
+            await ProjectsService.updateProjectForEventAndTeam(
+                idToken,
+                slug,
+                fileData,
+            )
+        }
+        const projects = await ProjectsService.getProjectsForEventAndTeam(
+            idToken,
+            slug,
+        )
+
+        return dispatch({
+            type: ActionTypes.UPDATE_PROJECTS,
+            promise: Promise.resolve(projects),
+            meta: {
+                onFailure: e =>
+                    console.log('Error editing dashboard project', e),
+            },
         })
-        .catch(err => console.log(err))
-        .finally(() => {
-            return dispatch({
-                type: ActionTypes.UPDATE_PROJECTS,
-                promise: ProjectsService.getProjectsForEventAndTeam(
-                    idToken,
-                    slug,
-                ),
-                meta: {
-                    onFailure: e =>
-                        console.log('Error editing dashboard project', e),
-                },
-            })
-        })
-    // _.forOwn(data, function (value, key) {
-    //     // console.log(key, value)
-    //     if (Object.getPrototypeOf(value) === File.prototype) {
-    //         console.log('File found: ', value)
-    //         fileKeys.push(key)
-    //     }
-    // })
-    // console.log('File keys: ', fileKeys)
-    // if (fileKeys.length > 0) {
-    //     await Promise.all(
-    //         fileKeys.map(async key => {
-    //             console.log('File key: ', key)
-    //             const fileMetadata = await handleFile(data[key], idToken)
-    //             console.log('File metadata: ', fileMetadata)
-    //             data[key] = fileMetadata.toString()
-    //             const index = data['submissionFormAnswers'].findIndex(
-    //                 ans => ans['key'] === key,
-    //             )
-    //             data['submissionFormAnswers'][index].value =
-    //                 fileMetadata.toString()
-    //         }),
-    //     )
-    // }
-    // await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
-    // return dispatch({
-    //     type: ActionTypes.UPDATE_PROJECTS,
-    //     promise: ProjectsService.getProjectsForEventAndTeam(idToken, slug),
-    //     meta: {
-    //         onFailure: e => console.log('Error editing dashboard project', e),
-    //     },
-    // })
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
 export const updateAnnotator = slug => async (dispatch, getState) => {
