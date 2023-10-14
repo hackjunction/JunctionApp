@@ -411,7 +411,7 @@ stages:
               
           - task: DeleteFiles@1
             inputs:
-              SourceFolder: '$(Pipeline.Workspace)/drop' 
+              SourceFolder: '$(Pipeline.Workspace)/drop_eu' 
               Contents: '$(Build.BuildId).zip'
 
           - task: Bash@3
