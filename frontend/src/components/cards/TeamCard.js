@@ -27,6 +27,9 @@ function TeamCard({
     if (onClick) {
         styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-lg'
     }
+    if (teamData === undefined) {
+        return null
+    }
 
     return (
         <Card
@@ -54,13 +57,13 @@ function TeamCard({
                                     variant="body1"
                                     component="p"
                                 >
-                                    {teamData.ideaTitle}
+                                    {teamData?.ideaTitle}
                                 </Typography>
                             </div>
                             <div className="tw-flex tw-gap-2">
                                 <Typography variant="body1" component="p">
                                     {stringShortener(
-                                        teamData.ideaDescription,
+                                        teamData?.ideaDescription,
                                         30,
                                     )}
                                 </Typography>
@@ -68,8 +71,8 @@ function TeamCard({
                         </div>
                     )}
                     {teamData?.teamRoles.length > 0 &&
-                    teamData?.ideaTitle.length > 20 &&
-                    teamData?.ideaDescription.length > 20 ? (
+                        teamData?.ideaTitle.length > 20 &&
+                        teamData?.ideaDescription.length > 20 ? (
                         <Button
                             color="outlined_button"
                             variant="jOutlinedBox"
@@ -86,7 +89,7 @@ function TeamCard({
                             </div>
                         </Button>
                     ) : (
-                        <TeamRoles teamRoles={teamData.teamRoles} />
+                        <TeamRoles teamRoles={teamData?.teamRoles} />
                     )}
                 </div>
             </CardContent>

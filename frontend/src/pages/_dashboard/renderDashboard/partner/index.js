@@ -5,6 +5,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard'
 import AmpStoriesIcon from '@material-ui/icons/AmpStories'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import EventIcon from '@material-ui/icons/Event'
+import WorkIcon from '@material-ui/icons/Work'
+import RateReviewIcon from '@material-ui/icons/RateReview'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 
@@ -91,10 +93,11 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     },
                 },
                 {
-                    key: 'projects',
-                    path: '/projects',
+                    key: 'Review',
+                    path: '/Review',
                     exact: false,
-                    label: 'Projects',
+                    icon: <RateReviewIcon />,
+                    label: 'Review',
                     component: () => {
                         return <ProjectsPage event={event} />
                     },
@@ -139,6 +142,7 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     key: 'recruitment',
                     path: '/recruitment',
                     exact: true,
+                    icon: <WorkIcon />,
                     label: 'Recruitment',
                     component: RecruitmentPage,
                 },

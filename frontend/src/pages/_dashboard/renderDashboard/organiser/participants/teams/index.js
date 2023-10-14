@@ -19,6 +19,7 @@ export default () => {
             <TeamsTable
                 loading={registrationsLoading || teamsLoading}
                 teams={teams}
+                simplifiedView={true}
             />
         </PageWrapper>
     )

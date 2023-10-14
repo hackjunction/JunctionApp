@@ -53,8 +53,7 @@ export default () => {
                     SnackbarActions.error('Sending failed', {
                         errorMessages: Object.keys(errors).map(
                             key => `${key}: ${errors[key].message}`,
-                        ),
-                        persist: true,
+                        )
                     }),
                 )
             } else {
@@ -110,7 +109,7 @@ export default () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [alertsData, setAlerts, newAlert, setAlertCount])
 
-    console.log("sent alerts", alerts)
+
 
     const onSubmit = (values, actions) => {
         const changed = {}
