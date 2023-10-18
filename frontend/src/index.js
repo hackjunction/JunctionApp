@@ -26,12 +26,12 @@ const { store, persistor } = configureStore()
 
 /** Disable log statements in production */
 function noop() { }
-
+/*
 if (!config.IS_DEBUG) {
 
     console.log = noop
     console.warn = noop
-}
+}*/
 
 if (process.env.NODE_ENV === 'development') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render')
