@@ -453,6 +453,7 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
 }
 
 const fileAttachmentFinder = async (Projectdata, idToken) => {
+    console.log('Project data to check for files', Projectdata)
     const fileKeys = []
     _.forOwn(Projectdata, (value, key) => {
         console.log(key, value)
@@ -537,6 +538,7 @@ const deleteFile = async (fileId, token) => {
 }
 
 const handleFile = async (file, token) => {
+    console.log('File handling from dashboard actions', file)
     const formData = new FormData()
     formData.append('file', file)
     console.log('File to upload: ', file)
@@ -565,6 +567,9 @@ const handleFile = async (file, token) => {
 
 export const getFileForProject =
     (fileId, filename) => async (dispatch, getState) => {
+        console.log('Getting files for project', fileId)
+        console.log('File name', filename)
+
         const idToken = AuthSelectors.getIdToken(getState())
         return dispatch({
             type: ActionTypes.GET_FILE,
@@ -580,6 +585,7 @@ export const getFileForProject =
     }
 
 export const deleteFileForProject = fileId => async (dispatch, getState) => {
+    console.log('Deleting file', fileId)
     const idToken = AuthSelectors.getIdToken(getState())
 
     return dispatch({
