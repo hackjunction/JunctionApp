@@ -12,7 +12,7 @@ pool:
 
 
 
-# stages:
+stages:
 # - stage: Build
 #   displayName: Build stage
 #   jobs:  
