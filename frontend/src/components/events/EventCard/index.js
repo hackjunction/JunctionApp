@@ -10,7 +10,7 @@ import { push } from 'connected-react-router'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        background: 'white',
+        background: 'inherit',
         borderRadius: '12px',
         overflow: 'hidden',
         flex: 1,

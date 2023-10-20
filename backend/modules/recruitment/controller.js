@@ -18,7 +18,6 @@ controller.getRecruitmentProfile = (userId, recruiterId) => {
         )
     })
 }
-//TODO: debug this shitshow, good luck :-)
 controller.queryProfiles = async (query = {}, user) => {
     let userQuery = {}
     let pagination = {}
@@ -74,7 +73,7 @@ controller.queryProfiles = async (query = {}, user) => {
         registrations: {
             $elemMatch: {
                 event: {
-                    $in: MongoUtils.ensureObjectId(user.recruiter_events.map(e => e.eventId)),
+                    $in: MongoUtils.ensureObjectId(new Array(query.eventId)),
                 },
             },
         },
@@ -117,7 +116,7 @@ controller.queryProfiles = async (query = {}, user) => {
         //console.log(110)
     }
     // userQuery.$and = userQuery.$and.concat([matcher])
-    // console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
+    //console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
     //console.log("query", userQuery, "pag", pagination, "reg", JSON.stringify(userQuery.registrations))
     return UserController.queryProfiles({
         query: userQuery,
@@ -200,10 +199,9 @@ controller.createRecruitmentProfile = async (
 controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     const action = new RecruitmentAction({
         recruiter: recruiter.sub,
-        organisation: recruiter.recruiter_organisation,
+        organisation: actionToSave.organisation,
         ...actionToSave,
     })
-
     if (action.type === 'favorite') {
         // Nothing todo, just save the action
         await action.save()
@@ -211,7 +209,7 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
     if (action.type === 'remove-favorite') {
         // Remove previous favorite
         await RecruitmentAction.deleteMany({
-            organisation: recruiter.recruiter_organisation,
+            organisation: action.organisation,
             user: action.user,
             type: 'favorite',
         })
@@ -221,12 +219,12 @@ controller.saveRecruiterAction = async (recruiter, actionToSave) => {
         await action.save()
     }
 
-    return controller.getRecruiterActions(recruiter)
+    return controller.getRecruiterActions(recruiter, actionToSave.organisation)
 }
 
-controller.getRecruiterActions = async recruiter => {
+controller.getRecruiterActions = async (recruiter, organisation) => {
     return RecruitmentAction.find({
-        organisation: recruiter.recruiter_organisation,
+        organisation: organisation,
     })
         .populate('_user _recruiter')
         .lean()

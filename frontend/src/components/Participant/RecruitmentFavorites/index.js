@@ -5,29 +5,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles, lighten } from '@material-ui/core/styles'
 import {
     Button as MuiButton,
-    Avatar,
-    Typography,
-    Box,
     IconButton,
     Tooltip,
 } from '@material-ui/core'
 
 import StarIcon from '@material-ui/icons/Star'
-import GitHubIcon from '@material-ui/icons/GitHub'
-import LinkedInIcon from '@material-ui/icons/LinkedIn'
-import BrushIcon from '@material-ui/icons/Brush'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import emblem_black from 'assets/logos/emblem_black.png'
-import { Email, LocationOn } from '@material-ui/icons'
-
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
-import ParticipantPreview from 'components/Participant/ParticipantPreview'
-import SocialLinks from 'components/generic/SocialLinks'
-import Button from 'components/generic/Button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { popupCenter } from 'utils/misc'
+import * as UserSelectors from 'redux/user/selectors'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -109,12 +97,17 @@ export default ({ user = {} }) => {
     // Toggle favorited state locally for instant feedback on favorite action
     const [_isFavorite, setIsFavorite] = useState(isFavorite)
     const classes = useStyles({ isFavorite: _isFavorite })
-    const { profile = {}, social = {} } = user
+    const event = useSelector(DashboardSelectors.event)._id
+    const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
+
 
     const handleFavorite = useCallback(async () => {
+        const organisation = recEvents.find(e => {
+            return e.eventId === event
+        }).organisation
         setIsFavorite(!_isFavorite)
         const { error } = await dispatch(
-            RecruitmentActions.toggleFavorite(user.userId, _isFavorite),
+            RecruitmentActions.toggleFavorite(user.userId, _isFavorite, organisation),
         )
         if (error) {
             dispatch(SnackbarActions.error('Something went wrong...'))

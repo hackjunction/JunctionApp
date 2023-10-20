@@ -47,7 +47,6 @@ export default () => {
     const [user, setUser] = useState(null)
 
     const { id } = match.params
-
     useEffect(() => {
         if (id) {
             setLoading(true)

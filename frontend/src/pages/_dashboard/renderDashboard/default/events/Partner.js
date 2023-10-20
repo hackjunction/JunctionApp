@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { useSelector } from 'react-redux'
@@ -24,6 +24,7 @@ export default () => {
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
     const recruiterEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
     const [registrations, loading, error] = useRegistrationsByUser(userId)
+    const [partnerEvents, setPartnerEvents] = useState([])
 
     console.log("activeEvents", activeEvents)
     console.log("pastEvents", pastEvents)
@@ -32,7 +33,18 @@ export default () => {
 
     const dispatch = useDispatch()
     const { t } = useTranslation()
-    //TODO: should be using partner events
+
+    useEffect(() => {
+        const foundPartnerEvents = registrations?.filter(registration => {
+            const recEvents = recruiterEvents?.map(e => e.eventId)
+            return recEvents?.some(r => r === registration?.event._id)
+        })
+        setPartnerEvents(foundPartnerEvents)
+    }, [registrations, recruiterEvents])
+    console.log("partnerEvents", partnerEvents)
+
+
+
     function renderEvents() {
         return (
             <>
@@ -43,12 +55,7 @@ export default () => {
 
                 <Box mt={3}>
                     <Grid container spacing={3}>
-                        {registrations?.filter(registration => {
-                            const recEvents = recruiterEvents?.map(e => e.eventId)
-                            return recEvents?.some(r => r === registration?.event._id)
-                        }
-
-                        ).map(registration => {//TODO: fiter current event away
+                        {partnerEvents?.map(registration => {//TODO: fiter current event away
 
                             return (
                                 <NewEventCard

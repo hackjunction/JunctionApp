@@ -90,7 +90,7 @@ function differentYear(event) {
 }
 const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
     const classes = useStyles({ accentColor, textColor })
-    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D'
+    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D HH:mm'
     const timelineItems = useMemo(() => {
         const realItems = event.eventTimeline.items.map(item => {
             return {

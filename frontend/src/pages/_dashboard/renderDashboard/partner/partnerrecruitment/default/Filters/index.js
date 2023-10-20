@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { Box, CircularProgress } from '@material-ui/core'
+import { Box, CircularProgress, Grid } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
@@ -17,6 +17,7 @@ import LanguagesFilter from './LanguagesFilter'
 import SkillsFilter from './SkillsFilter'
 import RolesFilter from './RolesFilter'
 import FilteredBy from './FilteredBy'
+import LoadingCard from '../SearchResults/LoadingCard'
 import TextInput from 'components/inputs/TextInput'
 
 export default () => {
@@ -37,8 +38,37 @@ export default () => {
         handleSearch(debouncedSearchValue)
     }, [debouncedSearchValue, handleSearch])
 
+    const renderLoading = () => {
+        if (!loading) return null
+        if (loading) {
+            return (
+                <>
+                    <Grid container spacing={2}>
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map(index => (
+                            <Grid
+                                direction="row"
+                                alignItems="stretch"
+                                container
+                                key={index}
+                                item
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                lg={3}
+                            >
+                                <LoadingCard />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </>
+            )
+        }
+        return null
+    }
+
     return (
         <Box display="flex" flexDirection="column">
+
             <Box
                 display="flex"
                 flexDirection="row"
@@ -53,7 +83,7 @@ export default () => {
                         placeholder="Search by name/email"
                     />
                 </Box>
-                {loading && <CircularProgress size={24} />}
+
             </Box>
             <motion.div
                 animate={{
@@ -80,6 +110,7 @@ export default () => {
                     <FilteredBy />
                 </Box>
             </motion.div>
+            {loading && (renderLoading())}
         </Box>
     )
 }

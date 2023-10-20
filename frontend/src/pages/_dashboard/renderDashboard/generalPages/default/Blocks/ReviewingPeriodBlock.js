@@ -21,7 +21,7 @@ export default () => {
             dispatch(DashboardActions.updateAnnotator(event.slug))
         }
     }, [event, dispatch])
-    if (event.reviewMethod === 'manualReview') return (
+    if (event.reviewMethod === 'manualReview' && EventHelpers.isVotingOpen(event, moment)) return (
         <Grid item xs={12}>
             <GradientBox p={3} color="theme_purple">
                 <Typography variant="button">Reviewing period</Typography>

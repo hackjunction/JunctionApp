@@ -23,8 +23,10 @@ const getUserProfileRecruitment = asyncHandler(async (req, res) => {
 })
 
 const getRecruiterActions = asyncHandler(async (req, res) => {
+    console.log("getRecruiterActions", req.params)
     const actionHistory = await RecruitmentController.getRecruiterActions(
         req.user,
+        req.params.organisation,
     )
     return res.status(200).json(actionHistory)
 })
@@ -65,6 +67,14 @@ router
         hasToken,
         hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
         saveRecruiterAction,
+    )
+
+router
+    .route('/action/:organisation')
+    .get(
+        hasToken,
+        hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+        getRecruiterActions,
     )
 
 module.exports = router

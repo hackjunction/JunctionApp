@@ -14,6 +14,7 @@ import Markdown from 'components/generic/Markdown'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
+import * as SnackbarActions from 'redux/snackbar/actions'
 import ProgressBar from 'components/generic/ProgressBar'
 import CardTag from 'components/generic/CardTag'
 
@@ -101,6 +102,16 @@ const NewEventCard = ({ event, buttons }) => {
         const parsed = description.replace(/#.*\n/g, '')
 
         return (parsed.length > 300) ? parsed.slice(0, 200) + ' &hellip;' : parsed
+    }
+
+    if (event === undefined || event === null) {
+        dispatch(
+            SnackbarActions.error(
+                'some of your events is not defined!',
+            ),
+        )
+        console.log('Event is not defined!')
+        return null
     }
 
     return (

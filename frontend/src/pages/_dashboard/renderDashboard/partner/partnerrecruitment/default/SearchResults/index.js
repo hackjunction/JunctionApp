@@ -3,7 +3,7 @@ import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography, CircularProgress } from '@material-ui/core'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import Pagination from './Pagination'
 import LoadingCard from './LoadingCard'
 
-export default ({ items }) => {
+export default ({ items, organisation }) => {
     const dispatch = useDispatch()
     const match = useRouteMatch()
     const searchResults =
@@ -30,7 +30,7 @@ export default ({ items }) => {
     const { t } = useTranslation()
 
     useEffect(() => {
-        dispatch(DashboardActions.updateEvent(slug))
+        //dispatch(DashboardActions.updateEvent(slug))
         dispatch(RecruitmentActions.updateSearchResults())
     }, [pageSize, page, filters, dispatch])
 
@@ -38,23 +38,25 @@ export default ({ items }) => {
         if (!loading) return null
         if (searchResults.length === 0) {
             return (
-                <Grid container spacing={2}>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map(index => (
-                        <Grid
-                            direction="row"
-                            alignItems="stretch"
-                            container
-                            key={index}
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                            lg={3}
-                        >
-                            <LoadingCard />
-                        </Grid>
-                    ))}
-                </Grid>
+                <>
+                    <Grid container spacing={2}>
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map(index => (
+                            <Grid
+                                direction="row"
+                                alignItems="stretch"
+                                container
+                                key={index}
+                                item
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                lg={3}
+                            >
+                                <LoadingCard />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </>
             )
         }
         return null
@@ -84,7 +86,7 @@ export default ({ items }) => {
                         md={4}
                         lg={3}
                     >
-                        <ResultCard data={user} />
+                        <ResultCard data={user} organisation={organisation} />
                     </Grid>
                 ))}
             </Grid>
