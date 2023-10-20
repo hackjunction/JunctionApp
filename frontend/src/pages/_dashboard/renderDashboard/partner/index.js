@@ -138,10 +138,9 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     component: CalendarPage,
                 },
                 {
-                    //TODO: wtf is this? move recrytool to be part of the app, not some useles framing
                     key: 'recruitment',
                     path: '/recruitment',
-                    exact: true,
+                    exact: false,
                     icon: <WorkIcon />,
                     label: 'Recruitment',
                     component: RecruitmentPage,

@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-
+import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { findIndex } from 'lodash-es'
 import { push } from 'connected-react-router'
@@ -52,6 +52,9 @@ const useStyles = makeStyles(theme => ({
     country: {
         textAlign: 'center',
     },
+    skills: {
+        textAlign: 'left',
+    },
     topWrapper: {
         minHeight: '75px',
     },
@@ -86,7 +89,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default React.memo(
-    ({ data }) => {
+    ({ data, organisation }) => {
         const dispatch = useDispatch()
         const actionHistoryByUser = useSelector(
             RecruitmentSelectors.actionHistoryByUser,
@@ -98,6 +101,8 @@ export default React.memo(
         // Toggle the favorited state locally for immediate feedback on favorite action
         const [_isFavorite, setIsFavorite] = useState(isFavorite)
         const classes = useStyles({ isFavorite: _isFavorite })
+        const match = useRouteMatch()
+        const baseRoute = match.url
 
         useEffect(() => {
             setIsFavorite(isFavorite)
@@ -107,8 +112,9 @@ export default React.memo(
             async e => {
                 e.stopPropagation()
                 setIsFavorite(!_isFavorite)
+
                 dispatch(
-                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite),
+                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite, organisation),
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(
@@ -124,7 +130,9 @@ export default React.memo(
         return (
             <Paper
                 className={classes.root}
-                onClick={() => dispatch(push(`/recruitment/${data.userId}`))}
+                onClick={() => {
+                    dispatch(push(`${baseRoute}/${data.userId}`))
+                }}
             >
                 <Box className={classes.iconRight}>
                     <Tooltip
@@ -163,13 +171,14 @@ export default React.memo(
                         </Typography>
                     </Box>
 
-                    <Box>
+                    <Box className={classes.skills}>
                         {sortBy(data.skills, skill => -1 * skill.level)
                             .map(item => (
                                 <SkillRating
                                     data={item}
                                     key={item.skill}
-                                    small
+                                    small={true}
+                                    size={'inherit'}
                                 />
                             ))
                             .slice(0, 3)}

@@ -10,6 +10,8 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useTranslation } from 'react-i18next'
 
+
+
 export default ({ events, loading = false, title }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()

@@ -235,12 +235,11 @@ export default ({ event }) => {
                             heading={inputData?.challenge.name}
                             subheading={`By ${inputData?.challenge.partner}`}
                             alignment="left"
-                            details={`${inputData?.projects.length} project${
-                                inputData?.projects.length > 1 ||
-                                inputData?.projects.length < 1
+                            details={`${inputData?.projects.length} project${inputData?.projects.length > 1 ||
+                                    inputData?.projects.length < 1
                                     ? 's'
                                     : ''
-                            }`}
+                                }`}
                         />
                     )}
                     <Filter
@@ -279,7 +278,7 @@ export default ({ event }) => {
                     {idToken ? (
                         <Container center>
                             {scoreCriteriaBase &&
-                            scoreCriteriaBase.length > 0 ? (
+                                scoreCriteriaBase.length > 0 ? (
                                 <EvaluationForm
                                     event={event}
                                     project={selected}

@@ -22,12 +22,10 @@ import TextInput from 'components/inputs/TextInput'
 import { OutboundLink } from 'react-ga'
 
 export default ({ value, onChange }) => {
-    console.log(value)
+    //console.log("value", value)
     const [name, setName] = useState(undefined)
     const [slug, setSlug] = useState(undefined)
     const [partner, setPartner] = useState(undefined)
-    const [partnerEmail, setPartnerEmail] = useState(undefined)
-    const [title, setTitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
     const [logo, setLogo] = useState(undefined)
     const [link, setLink] = useState(undefined)
@@ -62,9 +60,7 @@ export default ({ value, onChange }) => {
             setEditing(true)
             setName(value[index].name)
             setPartner(value[index].partner)
-            setPartnerEmail(value[index].partnerEmail)
             setSlug(value[index].slug)
-            setTitle(value[index].title)
             setDescription(value[index].description)
             setLogo(value[index].logo)
             setLink(value[index].link)
@@ -77,8 +73,6 @@ export default ({ value, onChange }) => {
         setEditing(false)
         setName(undefined)
         setPartner(undefined)
-        setPartnerEmail(undefined)
-        setTitle(undefined)
         setDescription(undefined)
         setLogo(undefined)
         setLink(undefined)
@@ -93,9 +87,7 @@ export default ({ value, onChange }) => {
                             ...item,
                             name,
                             partner,
-                            partnerEmail,
                             slug,
-                            title,
                             description,
                             logo,
                             link,
@@ -109,9 +101,7 @@ export default ({ value, onChange }) => {
                 value.concat({
                     name,
                     partner,
-                    partnerEmail,
                     slug,
-                    title,
                     description,
                     logo,
                     link,
@@ -126,9 +116,7 @@ export default ({ value, onChange }) => {
         value,
         name,
         partner,
-        partnerEmail,
         slug,
-        title,
         description,
         logo,
         link,
@@ -137,9 +125,9 @@ export default ({ value, onChange }) => {
     const isValid = useMemo(() => {
         return (
             partner &&
-            partnerEmail &&
             name &&
             slug &&
+            link &&
             value.filter((hackerpack, index) => {
                 return (
                     index !== editIndex &&
@@ -147,7 +135,7 @@ export default ({ value, onChange }) => {
                 )
             }).length === 0
         )
-    }, [editIndex, name, partner, partnerEmail, slug, value])
+    }, [editIndex, name, partner, slug, link, value])
 
     const renderListItem = (hackerpack, index) => {
         return (
@@ -157,15 +145,6 @@ export default ({ value, onChange }) => {
                     secondary={hackerpack.slug}
                 />
                 <ListItemSecondaryAction>
-                    <OutboundLink
-                        eventLabel={hackerpack.partner}
-                        to={hackerpack.link}
-                        target="_blank"
-                    >
-                        <Button color="theme_turquoise" variant="contained">
-                            Link
-                        </Button>
-                    </OutboundLink>
                     <Tooltip title="Edit hackerpack">
                         <IconButton onClick={() => handleEditStart(index)}>
                             <EditIcon />
@@ -184,27 +163,18 @@ export default ({ value, onChange }) => {
     const renderForm = () => (
         <>
             <Grid item xs={12}>
+                <Typography variant="h5">Hackerpack Name *</Typography>
                 <TextInput
                     label="Hackerpack name"
                     value={name}
                     onChange={handleNameChange}
                 />
                 <Typography variant="caption">
-                    The unique publicly visible name of the hackerpack.
+                    publicly visible name of the hackerpack.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <TextInput
-                    label="Unique slug"
-                    value={slug}
-                    onChange={setSlug}
-                />
-                <Typography variant="caption">
-                    A unique slug for the hackerpack. This will be used in e.g.
-                    url paths related to this hackerpack.
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
+                <Typography variant="h5">Partner *</Typography>
                 <TextInput
                     label="Partner name"
                     value={partner}
@@ -212,28 +182,6 @@ export default ({ value, onChange }) => {
                 />
                 <Typography variant="caption">
                     Who is the partner responsible for this hackerpack?
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <TextInput
-                    label="Partner email"
-                    value={partnerEmail}
-                    onChange={setPartnerEmail}
-                />
-                <Typography variant="caption">
-                    This email will be used for meetings with participants:
-                    meeting invitations with a Google Meets link will be sent to
-                    this mail.
-                </Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <TextInput
-                    label="Hackerpack title"
-                    value={title}
-                    onChange={setTitle}
-                />
-                <Typography variant="caption">
-                    Title. Displayed in the event list.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -259,15 +207,19 @@ export default ({ value, onChange }) => {
                     />
                 </Box>
                 <Typography variant="caption">
-                    Hackerpack description.
+                    Hackerpack logo.
                 </Typography>
             </Grid>
             <Grid item xs={12}>
+                <Typography variant="h5">Link *</Typography>
                 <TextInput
                     label="Hackperpack link"
                     value={link}
                     onChange={setLink}
                 />
+                <Typography variant="caption">
+                    Hackerpack link.
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <Box
@@ -292,7 +244,7 @@ export default ({ value, onChange }) => {
                     <Button
                         disabled={!isValid}
                         onClick={handleEditDone}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Save
@@ -311,7 +263,7 @@ export default ({ value, onChange }) => {
                 <Box display="flex" flexDirection="row" justifyContent="center">
                     <Button
                         onClick={handleAdd}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Add hackerpack

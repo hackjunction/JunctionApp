@@ -21,7 +21,7 @@ const DashboardRouter = lazy(() => import('./pages/_dashboard'))
 const OrganiserRouter = lazy(() => import('./pages/_dashboard/renderDashboard/organiser/router'))
 const AccountRouter = lazy(() => import('./pages/_account'))
 //TODO: switch the recruitment view and router
-const RecruitmentRouter = lazy(() => import('./pages/_dashboard/renderDashboard/partner/router'))//import('./pages/_recruitment'))//
+const RecruitmentRouter = lazy(() => import('./pages/_dashboard/renderDashboard/partner/partnerrecruitment'))//import('./pages/_recruitment'))//
 const ProjectsRouter = lazy(() => import('./pages/_projects'))
 const AdminRouter = lazy(() => import('./pages/_admin'))
 const SandboxRouter = lazy(() => import('./pages/_sandbox'))

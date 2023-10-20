@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { Helmet } from 'react-helmet'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
@@ -11,9 +12,18 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import HackerpackService from 'services/hackerpack'
 import config from 'constants/config'
 import EventsService from 'services/events'
+
+const useStyles = makeStyles(theme => ({
+    wrapper: {
+        padding: '5px',
+        marginBottom: '15px'
+    },
+}))
+
+
 export default () => {
     const match = useRouteMatch()
-
+    const classes = useStyles()
     const { slug } = match.params
     const event = useSelector(DashboardSelectors.event)
 
@@ -25,7 +35,7 @@ export default () => {
         }
     }, [event, slug])
 
-    console.log(hackerpack)
+    //console.log("hackerpack", hackerpack)
 
     return (
         <>
@@ -70,10 +80,13 @@ export default () => {
                     content={config.SEO_TWITTER_HANDLE}
                 />
             </Helmet>
-            <PageHeader
-                heading="Hackerpack"
-                subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
-            />
+            <div className={classes.wrapper}>
+                <PageHeader
+                    heading="Hackerpack"
+                    subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
+
+                />
+            </div>
             <PageWrapper loading={false}>
                 <Divider variant="middle" />
                 {hackerpack.map(hackerpack => (

@@ -78,9 +78,9 @@ const useStyles = makeStyles(theme => ({
         },
     },
     linkedinIcon: {
-        backgroundColor: 'rgba(40,103,178, 0.8)',
+        color: theme.palette.primary.main,
         '&:hover': {
-            backgroundColor: 'rgba(40,103,178, 1)',
+            color: theme.palette.primary.contrastText,
         },
     },
     portfolioIcon: {
@@ -90,14 +90,15 @@ const useStyles = makeStyles(theme => ({
         },
     },
     icon: {
-        color: 'white',
-    },
-    socialIcon: {
         color: theme.palette.primary.main,
         width: 'auto',
         margin: '1rem',
         cursor: 'pointer',
+        '&:hover': {
+            color: theme.palette.primary.dark,
+        },
     },
+
 }))
 
 export default ({ user = {} }) => {
@@ -135,11 +136,11 @@ export default ({ user = {} }) => {
                                                 )
                                             }
                                             aria-label="github"
-                                            className={classes.githubIcon}
+
                                         >
                                             <GitHubIcon
                                                 className={classes.icon}
-                                                fontSize="small"
+
                                             />
                                         </IconButton>
                                     </Box>
@@ -149,6 +150,7 @@ export default ({ user = {} }) => {
                                 <Tooltip title="LinkedIn" placement="bottom">
                                     <Box p={1}>
                                         <IconButton
+
                                             onClick={() =>
                                                 window.open(
                                                     social.linkedin,
@@ -156,11 +158,11 @@ export default ({ user = {} }) => {
                                                 )
                                             }
                                             aria-label="linkedin"
-                                            className={classes.linkedinIcon}
+
                                         >
                                             <LinkedInIcon
                                                 className={classes.icon}
-                                                fontSize="small"
+
                                             />
                                         </IconButton>
                                     </Box>
@@ -177,11 +179,11 @@ export default ({ user = {} }) => {
                                                 )
                                             }
                                             aria-label="portfolio"
-                                            className={classes.portfolioIcon}
+
                                         >
                                             <BrushIcon
                                                 className={classes.icon}
-                                                fontSize="small"
+
                                             />
                                         </IconButton>
                                     </Box>
@@ -189,9 +191,9 @@ export default ({ user = {} }) => {
                             )}
                             {profile.email && (
                                 <IconButton
-                                    color="primary"
+
                                     aria-label="Email"
-                                    className="tw-p-0"
+
                                     onClick={() =>
                                         popupCenter({
                                             url: `mailto:${profile.email}`,
@@ -199,7 +201,7 @@ export default ({ user = {} }) => {
                                         })
                                     }
                                 >
-                                    <Email className={classes.socialIcon} />
+                                    <Email className={classes.icon} />
                                 </IconButton>
                             )}
                         </div>
