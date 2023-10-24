@@ -33,7 +33,7 @@ const projectScoreBase = {
 //TODO simplify this component and the reviewer score process
 //TODO make this and track one into a component
 export default ({ event }) => {
-    const scoreCriteriaBase = event.scoreCriteriaSettings.scoreCriteria
+    const scoreCriteriaBase = event.scoreCriteriaSettings?.scoreCriteria
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
     const userProfile = useSelector(userSelectors.userProfile)
@@ -59,6 +59,10 @@ export default ({ event }) => {
 
     const onFilterChange = filter => {
         setFilter(filter)
+    }
+
+    if (event.scoreCriteriaSettings === undefined) {
+        return <Empty isEmpty emptyText="Reviewing not yet available" />
     }
 
     const fetchProjects = useCallback(async () => {
@@ -100,6 +104,7 @@ export default ({ event }) => {
             )
             setProjects(data.projects)
         } catch (err) {
+            console.log("err", err)
             setError(true)
         }
         setLoading(false)
@@ -236,9 +241,9 @@ export default ({ event }) => {
                             subheading={`By ${inputData?.challenge.partner}`}
                             alignment="left"
                             details={`${inputData?.projects.length} project${inputData?.projects.length > 1 ||
-                                    inputData?.projects.length < 1
-                                    ? 's'
-                                    : ''
+                                inputData?.projects.length < 1
+                                ? 's'
+                                : ''
                                 }`}
                         />
                     )}
@@ -305,7 +310,6 @@ export default ({ event }) => {
     const renderEmpty = () => {
         return <Empty isEmpty emptyText="No projects available" />
     }
-
     return (
         <PageWrapper
             loading={loading || !data}
