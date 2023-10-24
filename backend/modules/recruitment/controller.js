@@ -116,7 +116,7 @@ controller.queryProfiles = async (query = {}, user) => {
         //console.log(110)
     }
     // userQuery.$and = userQuery.$and.concat([matcher])
-    //console.log('userquery', JSON.stringify(userQuery), user.recruiter_events)
+    console.log('userquery', JSON.stringify(userQuery), "pag", pagination,)
     //console.log("query", userQuery, "pag", pagination, "reg", JSON.stringify(userQuery.registrations))
     return UserController.queryProfiles({
         query: userQuery,
