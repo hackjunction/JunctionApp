@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Grid, Box, Dialog } from '@material-ui/core'
+import { Grid, Box, Dialog, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'
@@ -83,11 +83,14 @@ export default () => {
             tokenVoterResults.find(res => res.project === projectId)?.votes ?? 0
 
         const total = scoreFromUsers + scoreFromTokenVoters
+
         return (
             <>
+
                 <strong>{total}</strong> <br />
                 Participant votes: {scoreFromUsers} <br />
                 Token votes: {scoreFromTokenVoters}
+
             </>
         )
     }
@@ -102,6 +105,7 @@ export default () => {
                         event={event}
                         score={getScoreText(project._id)}
                         onClickMore={() => setSelected(project)}
+                        showScore={true}
                     />
                 ))}
             </Grid>

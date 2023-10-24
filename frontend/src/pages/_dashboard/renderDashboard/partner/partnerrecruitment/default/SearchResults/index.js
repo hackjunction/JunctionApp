@@ -50,7 +50,7 @@ export default ({ items, organisation }) => {
                                 xs={12}
                                 sm={6}
                                 md={4}
-                                lg={3}
+                            //lg={3}
                             >
                                 <LoadingCard />
                             </Grid>
@@ -84,7 +84,7 @@ export default ({ items, organisation }) => {
                         xs={12}
                         sm={6}
                         md={4}
-                        lg={3}
+                    //lg={3}
                     >
                         <ResultCard data={user} organisation={organisation} />
                     </Grid>

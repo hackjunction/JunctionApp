@@ -183,15 +183,8 @@ const ProjectsGridItem = ({
                         {showScore && (
                             <div className="tw-flex tw-flex-col tw-gap-2">
                                 <div className="tw-flex tw-gap-2">
-                                    <Typography
-                                        className="tw-font-semibold"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        Score
-                                    </Typography>
                                     <Typography variant="body1">
-                                        {score}
+                                        <strong>Score</strong> {score}
                                     </Typography>
                                 </div>
                                 {showReviewers && (
