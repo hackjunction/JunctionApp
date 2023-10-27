@@ -35,12 +35,14 @@ export const GET_MEETINGS = gql`
     query meetingSlots(
         $eventId: String!
         $challengeId: String!
+        $recruiterEmail: String
         $from: Date
         $to: Date
     ) {
         meetingSlots(
             eventId: $eventId
             challengeId: $challengeId
+            recruiterEmail: $recruiterEmail
             from: $from
             to: $to
         ) {
@@ -58,15 +60,17 @@ export const GET_MEETING_ROOMS = gql`
     ${MeetingRoomFull}
 `
 
-export const getMeetingSlots = ({ eventId, challengeId, from, to }) => {
+export const getMeetingSlots = ({ eventId, challengeId, recruiterEmail, from, to }) => {
     const { data, loading, error, refetch } = useQuery(GET_MEETINGS, {
         variables: {
             eventId,
+            recruiterEmail,
             from,
             to,
             challengeId,
         },
     })
+
     return [data?.meetingSlots, loading, error, refetch]
 }
 
@@ -82,6 +86,7 @@ export const getMeetingRooms = ({ eventId }) => {
 export const getMeetingSlotsWithPolling = ({
     eventId,
     challengeId,
+    recruiterEmail,
     from,
     to,
 }) => {
@@ -92,7 +97,9 @@ export const getMeetingSlotsWithPolling = ({
             from,
             to,
             challengeId,
+            recruiterEmail,
         },
     })
+
     return [data?.meetingSlots, loading, error]
 }

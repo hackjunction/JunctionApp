@@ -7,7 +7,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
-import Switch from './components/Switch'
+import Switch from '../../../../../../components/generic/Switch'
 import Button from 'components/generic/Button'
 
 export default () => {
@@ -92,7 +92,7 @@ export default () => {
                                                             touched={true}
                                                             error={
                                                                 form.errors[
-                                                                    field.name
+                                                                field.name
                                                                 ]
                                                             }
                                                         ></FormControl>

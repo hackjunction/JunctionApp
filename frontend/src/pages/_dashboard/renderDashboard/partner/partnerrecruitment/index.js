@@ -18,18 +18,18 @@ export default () => {
     const match = useRouteMatch()
 
 
-
+    //console.log(match.url)
 
     return (
         <Switch>
-            <Route exact={true} path={`${match.url}/recruitment`} component={SearchPage} />
+            <Route exact={true} path={`${match.url}`} component={SearchPage} />
             {/* <Route exact={true} path=`${match.url}/recruitment/admin` component={AdminPage} /> */}
             <Route
                 exact={false}
-                path={`${match.url}/recruitment/:id`}
+                path={`${match.url}/:id`}
                 component={DetailPage}
             />
-            <Redirect to={`${match.url}/recruitment`} />
+            <Redirect to={`${match.url}`} />
         </Switch>
     )
 }

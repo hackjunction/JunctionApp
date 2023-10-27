@@ -27,7 +27,7 @@ export default ({ value, onChange }) => {
     const [name, setName] = useState(undefined)
     const [slug, setSlug] = useState(undefined)
     const [partner, setPartner] = useState(undefined)
-    const [partnerEmail, setPartnerEmail] = useState(undefined)
+    const [partnerEmail, setPartnerEmail] = useState("dev@hackjunction.com")//TODO: remove partner email entirely
     const [title, setTitle] = useState(undefined)
     const [subtitle, setSubtitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
@@ -168,7 +168,7 @@ export default ({ value, onChange }) => {
     const isValid = useMemo(() => {
         return (
             partner &&
-            partnerEmail &&
+            //partnerEmail &&
             name &&
             slug &&
             value.filter((challenge, index) => {
@@ -178,7 +178,7 @@ export default ({ value, onChange }) => {
                 )
             }).length === 0
         )
-    }, [editIndex, name, partner, partnerEmail, slug, value])
+    }, [editIndex, name, partner, /*partnerEmail,*/ slug, value])
 
     const renderListItem = (challenge, index) => {
         return (
@@ -233,10 +233,10 @@ export default ({ value, onChange }) => {
                     onChange={setPartner}
                 />
                 <Typography variant="caption">
-                    Who is the partner responsible for this challenge?
+                    Who is the partner responsible for this challenge? <b>CAUTION: </b>If you are using partner meetings or reviewing, this has to currently match <b>EXACTLY</b> to partner organization mentoring this challenge.
                 </Typography>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <TextInput
                     label="Partner email"
                     value={partnerEmail}
@@ -247,7 +247,7 @@ export default ({ value, onChange }) => {
                     meeting invitations with a Google Meets link will be sent to
                     this mail.
                 </Typography>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <TextInput
                     label="Challenge title"
@@ -368,7 +368,7 @@ export default ({ value, onChange }) => {
                     <Button
                         disabled={!isValid}
                         onClick={handleEditDone}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Save
@@ -387,7 +387,7 @@ export default ({ value, onChange }) => {
                 <Box display="flex" flexDirection="row" justifyContent="center">
                     <Button
                         onClick={handleAdd}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Add challenge

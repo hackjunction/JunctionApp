@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import PartnerCalendarView from './PartnerCalendarView'
 import ParticipantCalendarView from './ParticipantCalendarView'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
@@ -13,12 +12,12 @@ export default () => {
     const user = useSelector(UserSelectors.userProfile)
     const isPartner = user.userId == "google-oauth2|108766439620242776277" ||
         useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'Recruiter'   
-            ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-            'SuperAdmin'   
-            )
+            'Recruiter'
+        ) && !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
+            'SuperAdmin'
+        )
 
-return (
+    return (
         <>
             {/* button for DEV to swithc between participant / partner view */}
             {/* <Button
@@ -33,11 +32,9 @@ return (
             src="https://res.cloudinary.com/hackjunction/image/upload/v1667494674/misc_assets/meeting_area.png"
             /> */
             }
-            {isPartner ? (
-                <PartnerCalendarView event={event} />
-            ) : (
-                <ParticipantCalendarView event={event} user={user} />
-            )}
+
+            <ParticipantCalendarView event={event} user={user} />
+
         </>
     )
 }

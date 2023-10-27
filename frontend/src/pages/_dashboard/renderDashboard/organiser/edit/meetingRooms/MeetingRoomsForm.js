@@ -197,7 +197,7 @@ export default ({ value, onChange }) => {
                     <Button
                         disabled={!isValid}
                         onClick={handleEditDone}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Save
@@ -216,7 +216,7 @@ export default ({ value, onChange }) => {
                 <Box display="flex" flexDirection="row" justifyContent="center">
                     <Button
                         onClick={handleAdd}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Add meeting room

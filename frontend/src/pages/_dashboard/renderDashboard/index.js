@@ -96,6 +96,8 @@ export default role => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
+
+
         //TODO dont use OrganiserSelectors here
         dispatch(OrganiserActions.updateProjects(slug))
         dispatch(OrganiserActions.updateGavelProjects(slug))
@@ -109,6 +111,9 @@ export default role => {
     useEffect(() => {
         if (event) {
             getAlerts({ variables: { eventId: event._id } })
+            dispatch(DashboardActions.updateRecruitersForEvent(
+                event.recruiters
+            ))
         }
     }, [event, getAlerts])
 

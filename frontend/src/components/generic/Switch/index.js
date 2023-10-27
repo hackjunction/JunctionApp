@@ -4,6 +4,7 @@ const Switch = ({ onChange, checked, checkedText, uncheckedText }) => {
     if (typeof checked === 'string') {
         checked = JSON.parse(checked)
     }
+    //TODO: use theme colors
     return (
         <div className="tw-flex tw-items-center tw-space-x-4 tw-text-left">
             <div

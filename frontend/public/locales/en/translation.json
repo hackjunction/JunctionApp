@@ -104,6 +104,8 @@
     "No_favorites_": "You haven't added any favorites",
     "No_results_": "No results / too many results. Please try specifying your search term.",
     "No_results_filter_": "No results with the selected filters.",
+    "No_recruiters_": "no available mentors in this challenge.",
+    "No_challenges_": "you have not been assigned to mentor any challenge. Contact the organizers.",
     "Invalid_token_": "Invalid access token. Please try logging out and loggin in again. If the problem persists, please contact support.",
     "Invalid_access_": "You don't have access to any events. Please try logging out and loggin in again. If the problem persists, please contact support.",
     "Invalid_organisation_": "You don't belong to any organisation. Please try logging out and loggin in again. If the problem persists, please contact support.",

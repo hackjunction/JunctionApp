@@ -129,6 +129,9 @@ const QueryType = new GraphQLObjectType({
                 challengeId: {
                     type: GraphQLString,
                 },
+                recruiterEmail: {
+                    type: GraphQLString,
+                },
                 from: {
                     type: GraphQLDate,
                 },
@@ -183,6 +186,7 @@ const Resolvers = {
                     .getMeetings(
                         args.eventId,
                         args.challengeId,
+                        args.recruiterEmail,
                         args.from,
                         args.to,
                     )
@@ -205,10 +209,10 @@ const Resolvers = {
         },
         bookMeeting: async (parent, args, context) => {
             if (args.meetingId && args.attendees) {
-                console.log(args,1111)
+                console.log(args, 1111)
                 return context
                     .controller('Meeting')
-                    .bookMeeting(args.meetingId, args.attendees, args.location,args.description)
+                    .bookMeeting(args.meetingId, args.attendees, args.location, args.description)
             }
             return null
         },
