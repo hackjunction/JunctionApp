@@ -13,201 +13,47 @@ pool:
 
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:  
-  - job: Build
-    steps:
-    
-    - task: DownloadSecureFile@1
-      displayName: 'download STAG backendend'
-      inputs:
-        secureFile: 'BACKEND_ENV_FILE_STAG' # string. Required. Secure File. 
-
-    - task: CopyFiles@2
-      displayName: 'copy STAG backendend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: BACKEND_ENV_FILE_STAG
-        TargetFolder: './backend'
-
-    - script: mv ./backend/BACKEND_ENV_FILE_STAG ./backend/.env
-      displayName: 'rename STAG .env'
-    - task: DownloadSecureFile@1
-      displayName: 'download STAG frontend'
-      inputs:
-        secureFile: 'FRONTEND_ENV_FILE_STAG' # string. Required. Secure File. 
-
-    - task: CopyFiles@2
-      displayName: 'copy STAG frontend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: FRONTEND_ENV_FILE_STAG
-        TargetFolder: './frontend'
-
-    - script: mv ./frontend/FRONTEND_ENV_FILE_STAG ./frontend/.env
-      displayName: 'rename STAG .env'
-
-    - script: ls -a ./frontend
-      displayName: 'ls' 
-
-    - script: ls -Rn
-      displayName: 'ls'
-    
-
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '12.20.1'
-      displayName: 'Install Node.js'
-
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          node -v
-          npm -v
-          npm install
-          npm run build
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
-
-
-  - deployment: VMDeploy
-    dependsOn: Build
-    displayName: Web deploy
-    environment:
-      name:  STAGING
-      resourceType: VirtualMachine
-    strategy:
-      runOnce:
-        preDeploy:
-            steps:
-            - download: 'current'
-              artifact: 'drop'
- 
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current' 
-                project: # string. Required when source == specific. Project. 
-                definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
-                specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
-                buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
-                branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
-                pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
-                tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
-                allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
-                allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
-                artifactName: drop
-                itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
-                targetPath: '$(Pipeline.Workspace)/drop'
-
-
-            - script: echo initialize, cleanup, backup, install certs
-        
-        deploy:
-          steps:
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                Modify deployment script based on the app type
-                echo "Starting deployment script run"
-               
-
-          - task: ExtractFiles@1
-            inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              destinationFolder: '$(Pipeline.Workspace)/japp' 
-              cleanDestinationFolder: true 
-              overwriteExistingFiles: true
-              pathToSevenZipTool: # string. Path to 7z utility.
-              
-          - task: DeleteFiles@1
-            inputs:
-              SourceFolder: '$(Pipeline.Workspace)/drop' 
-              Contents: '$(Build.BuildId).zip'
-
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                pm2 restart index
-                sudo systemctl restart nginx
-             
-
-        routeTraffic:
-          steps:
-          - script: echo routing traffic
-        postRouteTraffic:
-          steps:
-          - script: echo health check post-route traffic
-        on:
-          failure:
-            steps:
-            - script: echo Restore from backup! This is on failure
-          success:
-            steps:
-            - script: echo Notify! This is on success
-              
-     
-
-      
-
-
-
-
-
-
-# - stage: Build_eu
+# - stage: Build
 #   displayName: Build stage
-#   #dependsOn: Build
 #   jobs:  
-#   - job: Build_eu
+#   - job: Build
 #     steps:
     
 #     - task: DownloadSecureFile@1
-#       displayName: 'download EU backendend'
+#       displayName: 'download STAG backendend'
 #       inputs:
-#         secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+#         secureFile: 'BACKEND_ENV_FILE_STAG' # string. Required. Secure File. 
 
 #     - task: CopyFiles@2
-#       displayName: 'copy EU backendend'
+#       displayName: 'copy STAG backendend'
 #       inputs:
 #         SourceFolder: '$(Agent.TempDirectory)'
-#         Contents: BACKEND_ENV_FILE_EU
+#         Contents: BACKEND_ENV_FILE_STAG
 #         TargetFolder: './backend'
 
-#     - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
-#       displayName: 'rename eu .env'
+#     - script: mv ./backend/BACKEND_ENV_FILE_STAG ./backend/.env
+#       displayName: 'rename STAG .env'
 #     - task: DownloadSecureFile@1
-#       displayName: 'download eu frontend'
+#       displayName: 'download STAG frontend'
 #       inputs:
-#         secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+#         secureFile: 'FRONTEND_ENV_FILE_STAG' # string. Required. Secure File. 
 
 #     - task: CopyFiles@2
-#       displayName: 'copy eu frontend'
+#       displayName: 'copy STAG frontend'
 #       inputs:
 #         SourceFolder: '$(Agent.TempDirectory)'
-#         Contents: FRONTEND_ENV_FILE_EU
+#         Contents: FRONTEND_ENV_FILE_STAG
 #         TargetFolder: './frontend'
 
-#     - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
-#       displayName: 'rename eu .env'
+#     - script: mv ./frontend/FRONTEND_ENV_FILE_STAG ./frontend/.env
+#       displayName: 'rename STAG .env'
 
 #     - script: ls -a ./frontend
 #       displayName: 'ls' 
 
 #     - script: ls -Rn
 #       displayName: 'ls'
+    
 
 #     - task: NodeTool@0
 #       inputs:
@@ -232,7 +78,161 @@ stages:
 #         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
 #         replaceExistingArchive: true
 #     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-#       artifact: drop_eu
+#       artifact: drop
+
+
+#   - deployment: VMDeploy
+#     dependsOn: Build
+#     displayName: Web deploy
+#     environment:
+#       name:  STAGING
+#       resourceType: VirtualMachine
+#     strategy:
+#       runOnce:
+#         preDeploy:
+#             steps:
+#             - download: 'current'
+#               artifact: 'drop'
+ 
+#             - task: DownloadPipelineArtifact@2
+#               inputs:
+#                 buildType: 'current' 
+#                 project: # string. Required when source == specific. Project. 
+#                 definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
+#                 specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
+#                 buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
+#                 branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
+#                 pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
+#                 tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
+#                 allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
+#                 allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
+#                 artifactName: drop
+#                 itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
+#                 targetPath: '$(Pipeline.Workspace)/drop'
+
+
+#             - script: echo initialize, cleanup, backup, install certs
+        
+#         deploy:
+#           steps:
+#           - task: Bash@3
+#             inputs:
+#               targetType: 'inline'
+#               script: |
+#                 Modify deployment script based on the app type
+#                 echo "Starting deployment script run"
+               
+
+#           - task: ExtractFiles@1
+#             inputs:
+#               archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+#               destinationFolder: '$(Pipeline.Workspace)/japp' 
+#               cleanDestinationFolder: true 
+#               overwriteExistingFiles: true
+#               pathToSevenZipTool: # string. Path to 7z utility.
+              
+#           - task: DeleteFiles@1
+#             inputs:
+#               SourceFolder: '$(Pipeline.Workspace)/drop' 
+#               Contents: '$(Build.BuildId).zip'
+
+#           - task: Bash@3
+#             inputs:
+#               targetType: 'inline'
+#               script: |
+#                 pm2 restart index
+#                 sudo systemctl restart nginx
+             
+
+#         routeTraffic:
+#           steps:
+#           - script: echo routing traffic
+#         postRouteTraffic:
+#           steps:
+#           - script: echo health check post-route traffic
+#         on:
+#           failure:
+#             steps:
+#             - script: echo Restore from backup! This is on failure
+#           success:
+#             steps:
+#             - script: echo Notify! This is on success
+              
+     
+
+      
+
+
+
+
+
+
+- stage: Build_eu
+  displayName: Build stage
+  #dependsOn: Build
+  jobs:  
+  - job: Build_eu
+    steps:
+    
+    - task: DownloadSecureFile@1
+      displayName: 'download EU backendend'
+      inputs:
+        secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy EU backendend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: BACKEND_ENV_FILE_EU
+        TargetFolder: './backend'
+
+    - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
+      displayName: 'rename eu .env'
+    - task: DownloadSecureFile@1
+      displayName: 'download eu frontend'
+      inputs:
+        secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+
+    - task: CopyFiles@2
+      displayName: 'copy eu frontend'
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: FRONTEND_ENV_FILE_EU
+        TargetFolder: './frontend'
+
+    - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+      displayName: 'rename eu .env'
+
+    - script: ls -a ./frontend
+      displayName: 'ls' 
+
+    - script: ls -Rn
+      displayName: 'ls'
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '12.20.1'
+      displayName: 'Install Node.js'
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          node -v
+          npm -v
+          npm install
+          npm run build
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop_eu
   
 
 
@@ -361,80 +361,80 @@ stages:
 #       artifact: drop_africa
 
 
-  # - deployment: VMDeploy_EU
-  #   dependsOn: Build_eu
-  #   displayName: DEPRLOY EU
-  #   environment:
-  #     name:  PROD
-  #     resourceType: VirtualMachine
-  #     tags: europe
-  #   strategy:
-  #     runOnce:
-  #       preDeploy:
-  #           steps:
-  #           - task: DownloadPipelineArtifact@2
-  #             inputs:
-  #               buildType: 'current' 
-  #               #project: # string. Required when source == specific. Project. 
-  #               #definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
-  #               #specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
-  #               #buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
-  #               #branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
-  #               #pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
-  #               #tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
-  #               #allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
-  #               #allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
-  #               artifactName: drop_eu
-  #               #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
-  #               targetPath: '$(Pipeline.Workspace)/drop'
+  - deployment: VMDeploy_EU
+    dependsOn: Build_eu
+    displayName: DEPRLOY EU
+    environment:
+      name:  PROD
+      resourceType: VirtualMachine
+      tags: europe
+    strategy:
+      runOnce:
+        preDeploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current' 
+                #project: # string. Required when source == specific. Project. 
+                #definition: # string. Alias: pipeline. Required when source == specific. Build pipeline. 
+                #specificBuildWithTriggering: false # boolean. Alias: preferTriggeringPipeline. Optional. Use when source == specific. When appropriate, download artifacts from the triggering build. Default: false.
+                #buildVersionToDownload: 'latest' # 'latest' | 'latestFromBranch' | 'specific'. Alias: runVersion. Required when source == specific. Build version to download. Default: latest.
+                #branchName: 'refs/heads/master' # string. Alias: runBranch. Required when source == specific && runVersion == latestFromBranch. Branch name. Default: refs/heads/master.
+                #pipelineId: # string. Alias: runId | buildId. Required when source == specific && runVersion == specific. Build. 
+                #tags: # string. Optional. Use when source == specific && runVersion != specific. Build Tags. 
+                #allowPartiallySucceededBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from partially succeeded builds. Default: false.
+                #allowFailedBuilds: false # boolean. Optional. Use when source == specific && runVersion != specific. Download artifacts from failed builds. Default: false.
+                artifactName: drop_eu
+                #itemPattern: '**' # string. Alias: patterns. Matching patterns. Default: **.
+                targetPath: '$(Pipeline.Workspace)/drop'
 
 
-  #           - script: echo initialize, cleanup, backup, install certs
+            - script: echo initialize, cleanup, backup, install certs
         
-  #       deploy:
-  #         steps:
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |
-  #               # Modify deployment script based on the app type
-  #               echo "Starting deployment script run"
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Modify deployment script based on the app type
+                echo "Starting deployment script run"
                
 
-  #         - task: ExtractFiles@1
-  #           inputs:
-  #             archiveFilePatterns: '$(Pipeline.Workspace)/drop_eu/$(Build.BuildId).zip'
-  #             destinationFolder: '$(Pipeline.Workspace)/japp' 
-  #             cleanDestinationFolder: true 
-  #             overwriteExistingFiles: true
-  #             #pathToSevenZipTool: # string. Path to 7z utility.
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop_eu/$(Build.BuildId).zip'
+              destinationFolder: '$(Pipeline.Workspace)/japp' 
+              cleanDestinationFolder: true 
+              overwriteExistingFiles: true
+              #pathToSevenZipTool: # string. Path to 7z utility.
               
-  #         - task: DeleteFiles@1
-  #           inputs:
-  #             SourceFolder: '$(Pipeline.Workspace)/drop_eu' 
-  #             Contents: '$(Build.BuildId).zip'
+          - task: DeleteFiles@1
+            inputs:
+              SourceFolder: '$(Pipeline.Workspace)/drop_eu' 
+              Contents: '$(Build.BuildId).zip'
 
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |
-  #               cd /home/azureuser/azagent/_work/1/japp
-  #               pm2 restart index
-  #               sudo systemctl restart nginx
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                cd /home/azureuser/azagent/_work/1/japp
+                pm2 restart index
+                sudo systemctl restart nginx
 
-  #       routeTraffic:
-  #         steps:
-  #         - script: echo routing traffic
-  #       postRouteTraffic:
-  #         steps:
-  #         - script: echo health check post-route traffic
-  #       on:
-  #         failure:
-  #           steps:
-  #           - script: echo Restore from backup! This is on failure
-  #         success:
-  #           steps:
-  #           - script: echo Notify! This is on success
+        routeTraffic:
+          steps:
+          - script: echo routing traffic
+        postRouteTraffic:
+          steps:
+          - script: echo health check post-route traffic
+        on:
+          failure:
+            steps:
+            - script: echo Restore from backup! This is on failure
+          success:
+            steps:
+            - script: echo Notify! This is on success
               
 
 
