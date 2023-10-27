@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 
 import Dropdown from '../../submission/components/section/Dropdown'
-import Switch from '../../submission/components/Switch'
+import Switch from '../../../../../../../components/generic/Switch'
 import TextInput from '../../submission/components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import Checkbox from '../../submission/components/section/Checkbox'

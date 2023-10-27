@@ -273,7 +273,7 @@ export default () => {
                         variant="jContained"
                         onClick={() => setRecruiterDrawerOpen(true)}
                     >
-                        Add recruiters
+                        Add partners
                     </Button>
                     <List>
 

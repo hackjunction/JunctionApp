@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+
 import { MEETINGS_BULK_ACTION } from 'graphql/mutations/meetings'
 import * as SnackbarActions from 'redux/snackbar/actions'
+import * as UserSelectors from 'redux/user/selectors'
 import { getMeetingSlots } from 'graphql/queries/meetings'
 import PartnerMeetingCard from './PartnerMeetingCard'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -15,7 +19,7 @@ import {
     CircularProgress,
 } from '@material-ui/core'
 import Button from 'components/generic/Button'
-import { useDispatch } from 'react-redux'
+import Empty from 'components/generic/Empty'
 import PageHeader from 'components/generic/PageHeader'
 
 const useStyles = makeStyles(theme => ({
@@ -145,22 +149,29 @@ const dailyPresetMeetings = () => {
 }
 
 export default ({ event }) => {
-    const challenges = event.challenges
-    const [challenge, setChallenge] = React.useState('')
+    // const challenges = event.challenges
+    // const [challenge, setChallenge] = React.useState('')
+    const recruiterProfile = event?.recruiters.find(r => r.recruiterId === useSelector(UserSelectors.userProfile).userId)//TODO: add generral mentoring option
+    const challenge = event.challenges.find(c => c.partner === recruiterProfile?.organization)// TODO: add recruiter state so no need for this sort of mapping
     const [daysStartIndex, setDaysStartIndex] = useState(0)
     const [noOfDaysToShow, setNoOfDaysToShow] = useState(3)
     const [slotsToAdd, setSlotsToAdd] = useState({})
     const [slotsToDelete, setSlotsToDelete] = useState({})
     const dispatch = useDispatch()
+    const { t } = useTranslation()
+
     // const [loading, setLoading] = useState(true)
+    const userEmail = useSelector(UserSelectors.userProfile).email
     const [meetingsLoaded, setMeetingsLoaded] = useState(false)
     const [loading, setLoading] = useState(false)
+
     const [meetings, meetingsLoading, meetingsError, refetch] = getMeetingSlots(
         {
             eventId: event._id,
+            recruiterEmail: userEmail,
             from: event.startTime,
             to: event.endTime,
-            challengeId: challenge,
+            challengeId: challenge._id,
         },
     )
 
@@ -241,14 +252,14 @@ export default ({ event }) => {
         },
     })
 
-    const handleChallengeChange = event => {
-        if (event.target.value !== challenge) {
-            // init days back to object with only days of event, but no meeting slots from challenge, as this will be repopulated
-            setDays(eventDays)
-            setMeetingsLoaded(false)
-            setChallenge(event.target.value)
-        }
-    }
+    // const handleChallengeChange = event => {
+    //     if (event.target.value !== challenge) {
+    //         // init days back to object with only days of event, but no meeting slots from challenge, as this will be repopulated
+    //         setDays(eventDays)
+    //         setMeetingsLoaded(false)
+    //         setChallenge(event.target.value)
+    //     }
+    // }
 
     const populateExistingMeetings = () => {
         if (!meetings || meetingsLoaded) return
@@ -262,17 +273,19 @@ export default ({ event }) => {
                     presetMeeting => {
                         return (
                             presetMeeting.startHour ===
-                                meetingStartDate.getHours() &&
+                            meetingStartDate.getHours() &&
                             presetMeeting.startMin ===
-                                meetingStartDate.getMinutes()
+                            meetingStartDate.getMinutes()
                         )
                     },
                 )
                 if (meetingToUpdate) {
+                    console.log("updating meeting ", meeting)
                     meetingToUpdate.available = true
                     meetingToUpdate.location = meeting.location
                     meetingToUpdate._id = meeting._id
                     meetingToUpdate.attendees = meeting.attendees
+                    meetingToUpdate.description = meeting.description
                     meetingToUpdate.googleMeetLink =
                         meeting.googleMeetLink ?? null
                 }
@@ -337,6 +350,7 @@ export default ({ event }) => {
                         attendees={meetingObj.attendees}
                         googleMeetLink={meetingObj.googleMeetLink}
                         location={meetingObj.location}
+                        description={meetingObj.description}
                         // initiallyAvailable has the current state from db, either available or not, this is used to check if available needs to be added or removed when changed
                         initiallyAvailable={meetingObj.available}
                         changeSlotAvailability={changeSlotAvailability}
@@ -344,7 +358,7 @@ export default ({ event }) => {
                             event: event._id,
                             startTime: startTime.toISOString(),
                             endTime: endTime.toISOString(),
-                            challenge,
+                            challenge: challenge._id,
                         }}
                     />
                 )
@@ -415,22 +429,27 @@ export default ({ event }) => {
         </div>
     )
 
+
     return (
-        <div className={classes.content}>
-            {loading && (
-                <div className={classes.loadingOverlay}>
-                    <CircularProgress
-                        size={48}
-                        className={classes.loadingSpinner}
-                    />
-                </div>
-            )}
-            <div className={classes.contentContianer}>
-                <PageHeader
-                    heading="Meetings"
-                    subheading='Select the time slots which participants can book for a meeting with you. Online meetings will have a "Join meeting" button for the Google Meets call.'
-                />
-                <FormControl className={classes.formWrapper}>
+        <>
+            {challenge === undefined ? (
+                <Empty isEmpty emptyText={t('No_challenges_')} />
+            ) : (
+                <div className={classes.content}>
+                    {loading && (
+                        <div className={classes.loadingOverlay}>
+                            <CircularProgress
+                                size={48}
+                                className={classes.loadingSpinner}
+                            />
+                        </div>
+                    )}
+                    <div className={classes.contentContianer}>
+                        <PageHeader
+                            heading="Meetings"
+                            subheading='Select the time slots which participants can book for a meeting with you in your challenge. Online meetings will have a "Join meeting" button for the Google Meets call.'
+                        />
+                        {/* <FormControl className={classes.formWrapper}>
                     <InputLabel id="challenge-selection-label">
                         Challenge
                     </InputLabel>
@@ -447,94 +466,96 @@ export default ({ event }) => {
                             </MenuItem>
                         ))}
                     </Select>
-                </FormControl>
-                {challenge && (
-                    <>
-                        {saveButtonContainer()}
-                        {colorInfoContainer()}
-                        <div className={classes.columns}>
-                            {days &&
-                                Object.keys(days)
-                                    .slice(
-                                        daysStartIndex,
-                                        daysStartIndex + noOfDaysToShow,
-                                    )
-                                    .map((day, index) => {
-                                        const columnMeetings = days[day]
-                                        return (
-                                            <div
-                                                className={classes.column}
-                                                key={day}
-                                            >
-                                                <div
-                                                    className={
-                                                        classes.columnDay
-                                                    }
-                                                >
-                                                    <div
-                                                        onClick={() => {
-                                                            prevDayButtonVisible(
-                                                                index,
-                                                            ) &&
-                                                                showPrevDayRange(
-                                                                    index,
-                                                                )
-                                                        }}
-                                                        className={
-                                                            prevDayButtonVisible(
-                                                                index,
-                                                            )
-                                                                ? classes.iconVisible
-                                                                : classes.iconHidden
-                                                        }
-                                                    >
-                                                        <ArrowBackIosIcon />
-                                                    </div>
-                                                    <p>{dayStr(day)}</p>
-                                                    <div
-                                                        onClick={() => {
-                                                            nextDayRangeButtonVisible(
-                                                                index,
-                                                            ) &&
-                                                                showNextDayRange(
-                                                                    index,
-                                                                )
-                                                        }}
-                                                        className={
-                                                            nextDayRangeButtonVisible(
-                                                                index,
-                                                            )
-                                                                ? classes.iconVisible
-                                                                : classes.iconHidden
-                                                        }
-                                                    >
-                                                        <ArrowForwardIosIcon />
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    className={
-                                                        classes.columnContent
-                                                    }
-                                                    style={{
-                                                        borderRight:
-                                                            index ==
-                                                            noOfDaysToShow - 1
-                                                                ? 'none'
-                                                                : '1px solid lightgray',
-                                                    }}
-                                                >
-                                                    {columnContent(
-                                                        columnMeetings,
-                                                        day,
-                                                    )}
-                                                </div>
-                                            </div>
+                </FormControl> */}
+                        {/* {challenge && ( */}
+                        <>
+                            {saveButtonContainer()}
+                            {colorInfoContainer()}
+                            <div className={classes.columns}>
+                                {days &&
+                                    Object.keys(days)
+                                        .slice(
+                                            daysStartIndex,
+                                            daysStartIndex + noOfDaysToShow,
                                         )
-                                    })}
-                        </div>
-                    </>
-                )}
-            </div>
-        </div>
+                                        .map((day, index) => {
+                                            const columnMeetings = days[day]
+                                            return (
+                                                <div
+                                                    className={classes.column}
+                                                    key={day}
+                                                >
+                                                    <div
+                                                        className={
+                                                            classes.columnDay
+                                                        }
+                                                    >
+                                                        <div
+                                                            onClick={() => {
+                                                                prevDayButtonVisible(
+                                                                    index,
+                                                                ) &&
+                                                                    showPrevDayRange(
+                                                                        index,
+                                                                    )
+                                                            }}
+                                                            className={
+                                                                prevDayButtonVisible(
+                                                                    index,
+                                                                )
+                                                                    ? classes.iconVisible
+                                                                    : classes.iconHidden
+                                                            }
+                                                        >
+                                                            <ArrowBackIosIcon />
+                                                        </div>
+                                                        <p>{dayStr(day)}</p>
+                                                        <div
+                                                            onClick={() => {
+                                                                nextDayRangeButtonVisible(
+                                                                    index,
+                                                                ) &&
+                                                                    showNextDayRange(
+                                                                        index,
+                                                                    )
+                                                            }}
+                                                            className={
+                                                                nextDayRangeButtonVisible(
+                                                                    index,
+                                                                )
+                                                                    ? classes.iconVisible
+                                                                    : classes.iconHidden
+                                                            }
+                                                        >
+                                                            <ArrowForwardIosIcon />
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className={
+                                                            classes.columnContent
+                                                        }
+                                                        style={{
+                                                            borderRight:
+                                                                index ==
+                                                                    noOfDaysToShow - 1
+                                                                    ? 'none'
+                                                                    : '1px solid lightgray',
+                                                        }}
+                                                    >
+                                                        {columnContent(
+                                                            columnMeetings,
+                                                            day,
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                            </div>
+                        </>
+                        {/* )} */}
+                    </div>
+                </div>
+            )}
+        </>
     )
 }

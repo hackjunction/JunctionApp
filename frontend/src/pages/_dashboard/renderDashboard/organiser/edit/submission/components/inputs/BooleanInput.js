@@ -1,5 +1,5 @@
 import React from 'react'
-import Switch from '../Switch'
+import Switch from '../../../../../../../../components/generic/Switch'
 
 const BooleanInput = ({ checked, onChange }) => {
     return (

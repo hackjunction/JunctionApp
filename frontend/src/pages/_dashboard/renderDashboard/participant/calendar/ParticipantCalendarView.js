@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
+import { useTranslation } from 'react-i18next'
 import { BOOK_MEETING, CANCEL_MEETING } from 'graphql/mutations/meetings'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import { getMeetingSlotsWithPolling } from 'graphql/queries/meetings'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 import MeetingCard from './MeetingCard'
+import Empty from 'components/generic/Empty'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 
@@ -80,7 +83,9 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ event, user }) => {
     const challenges = event.challenges
-    const [challenge, setChallenge] = React.useState('')
+    const [challenge, setChallenge] = React.useState(null)
+    const [availableRecruiters, setAvailableRecruiters] = useState([])
+    const [recruiter, setRecruiter] = React.useState(null)
     const [daysStartIndex, setDaysStartIndex] = useState(0)
     const [noOfDaysToShow, setNoOfDaysToShow] = useState(3)
     const dispatch = useDispatch()
@@ -90,6 +95,10 @@ export default ({ event, user }) => {
     const [meetingForLocationSelection, setMeetingForLocationSelection] =
         useState(null)
     const [openCard, setOpenCard] = useState('')
+    const { t } = useTranslation()
+
+    const eventRecruiterProfiles = event.recruiters
+    const recruiterProfilesMap = useSelector(DashboardSelectors.eventRecruitersMap)
 
     const startDate = new Date(event.startTime)
     const endDate = new Date(event.endTime)
@@ -103,10 +112,20 @@ export default ({ event, user }) => {
     }
     const [meetings, loadingMeetings, error] = getMeetingSlotsWithPolling({
         eventId: event._id,
+        recruiterEmail: recruiter?.email,//TODO: possible issue: if multiple recruiters with same email (different login methods)
         from: event.startTime,
         to: event.endTime,
-        challengeId: challenge,
+        challengeId: challenge?._id,
     })
+
+
+    useEffect(() => {
+        const profiles = eventRecruiterProfiles?.filter(rec =>
+            rec.organization === challenge?.partner || rec.organization === 'general'//TODO: add option for generic mentors, not dependent on challenge
+        )
+        setAvailableRecruiters(profiles)
+    }, [challenge])
+
     useEffect(() => {
         setDays(eventDays)
         setMeetingsLoaded(false)
@@ -181,32 +200,42 @@ export default ({ event, user }) => {
         },
     })
 
-    const handleChallengeChange = event => {
+
+
+    const handleChallengeChange = (event) => {
         if (event.target.value !== challenge) {
+
             // init days back to object with only days of event, but no meeting slots from challenge, as this will be repopulated
             setDays(eventDays)
             setMeetingsLoaded(false)
             setChallenge(event.target.value)
+
+
         }
+
     }
 
-    var att = []
-    const team = useSelector(DashboardSelectors.team)
-    if (team) {
-        att = [...team.members, team.owner]
-    } else {
-        att = [user.userId]
+    const handleRecruiterChange = event => {
+        if (event.target.value !== recruiter) {
+            // init days back to object with only days of event, but no meeting slots from challenge, as this will be repopulated
+            // setDays(eventDays)
+            // setMeetingsLoaded(false)
+            setRecruiter(event.target.value)
+        }
+        console.log("recruiter", recruiter)
     }
 
-    const bookMeetingAction = (meeting, location, partiComment) => {
-        console.log("booking: ",meeting)
+
+
+    const bookMeetingAction = (meeting, attendees, location, partiComment) => {
+        console.log("booking: ", meeting)
         setLoading(true)
         console.log(partiComment)
-        
+
         bookMeeting({
             variables: {
                 meetingId: meeting._id,
-                attendees: att,
+                attendees: attendees,
                 location: location,
                 description: partiComment + " ||  " + location,
             },
@@ -238,7 +267,7 @@ export default ({ event, user }) => {
     }
 
     const cancelMeetingAction = meeting => {
-        console.log("cancel: ",meeting)
+        console.log("cancel: ", meeting)
         setLoading(true)
         cancelMeeting({
             variables: { meetingId: meeting._id },
@@ -276,6 +305,7 @@ export default ({ event, user }) => {
                         cardOnClick(meeting._id)
                     }}
                     location={meeting.location}
+                    description={meeting.description}
                     showLocationSelection={() => {
                         setMeetingForLocationSelection(meeting)
                         setShowLocationSelection(true)
@@ -319,8 +349,9 @@ export default ({ event, user }) => {
                 <MeetingLocationSelection
                     bookFunction={bookMeetingAction}
                     meetingInfo={meetingForLocationSelection}
-                    attendeesCount={att.length + 1}
+
                     eventId={event._id}
+                    user={user}
                     close={() => {
                         setMeetingForLocationSelection(null)
                         setShowLocationSelection(false)
@@ -331,11 +362,7 @@ export default ({ event, user }) => {
                 heading="Meetings"
                 subheading="Book a meeting with Partners to learn more about their Challenge."
             />
-            {!challenge && (
-                <div className={classes.info}>
-                    Select a Challenge to see the available time slots.
-                </div>
-            )}
+
             <FormControl className={classes.formWrapper}>
                 <InputLabel id="challenge-selection-label">
                     Challenge
@@ -347,73 +374,106 @@ export default ({ event, user }) => {
                     label="Choose a challenge"
                     onChange={handleChallengeChange}
                 >
-                    {challenges.map((c, index) => (
-                        <MenuItem key={index} value={c._id}>
+                    {challenges?.map((c, index) => (
+                        <MenuItem key={index} value={c}>
                             {c.name}
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            {challenge && (
-                <div className={classes.columns}>
-                    {days &&
-                        Object.keys(days)
-                            .slice(
-                                daysStartIndex,
-                                daysStartIndex + noOfDaysToShow,
-                            )
-                            .map((day, index) => {
-                                const columnMeetings = days[day]
-                                return (
-                                    <div className={classes.column} key={day}>
-                                        <div className={classes.columnDay}>
-                                            <div
-                                                onClick={() => {
-                                                    prevDayButtonVisible(
-                                                        index,
-                                                    ) && showPrevDayRange(index)
-                                                }}
-                                                className={
-                                                    prevDayButtonVisible(index)
-                                                        ? classes.iconVisible
-                                                        : classes.iconHidden
-                                                }
-                                            >
-                                                <ArrowBackIosIcon />
-                                            </div>
-                                            <p>{dayStr(day)}</p>
-                                            <div
-                                                onClick={() => {
-                                                    nextDayRangeButtonVisible(
-                                                        index,
-                                                    ) && showNextDayRange(index)
-                                                }}
-                                                className={
-                                                    nextDayRangeButtonVisible(
-                                                        index,
-                                                    )
-                                                        ? classes.iconVisible
-                                                        : classes.iconHidden
-                                                }
-                                            >
-                                                <ArrowForwardIosIcon />
-                                            </div>
-                                        </div>
-                                        <div
-                                            className={classes.columnContent}
-                                            style={{
-                                                borderRight:
-                                                    index == noOfDaysToShow - 1
-                                                        ? 'none'
-                                                        : '1px solid lightgray',
-                                            }}
-                                        >
-                                            {columnContent(columnMeetings)}
-                                        </div>
-                                    </div>
+            {availableRecruiters.length === 0 ? (
+                <Empty isEmpty emptyText={t('No_recruiters_')} />
+            ) : (<>
+                <FormControl className={classes.formWrapper}>
+                    <InputLabel id="partner-selection-label">
+                        Mentor
+                    </InputLabel>
+                    <Select
+                        labelId="partner-selection-label"
+                        id="partner-selection"
+                        value={recruiter}
+                        label="Choose a mentor"
+                        onChange={handleRecruiterChange}
+                    >
+
+                        {availableRecruiters.map((rec, index) => (
+                            //if(rec.organization === challenge)
+
+                            <MenuItem key={index} value={recruiterProfilesMap[rec.recruiterId]}>
+                                {`${recruiterProfilesMap[rec.recruiterId]?.firstName} ${recruiterProfilesMap[rec.recruiterId]?.lastName}`}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl >
+
+                {!(challenge && recruiter) && (
+                    <div className={classes.info}>
+
+                        Select a Challenge and mentor to see the available time slots.
+                    </div>
+                )}
+                {(challenge && recruiter) && (
+                    <div className={classes.columns}>
+                        {days &&
+                            Object.keys(days)
+                                .slice(
+                                    daysStartIndex,
+                                    daysStartIndex + noOfDaysToShow,
                                 )
-                            })}
-                </div>
+                                .map((day, index) => {
+                                    const columnMeetings = days[day]
+                                    return (
+                                        <div className={classes.column} key={day}>
+                                            <div className={classes.columnDay}>
+                                                <div
+                                                    onClick={() => {
+                                                        prevDayButtonVisible(
+                                                            index,
+                                                        ) && showPrevDayRange(index)
+                                                    }}
+                                                    className={
+                                                        prevDayButtonVisible(index)
+                                                            ? classes.iconVisible
+                                                            : classes.iconHidden
+                                                    }
+                                                >
+                                                    <ArrowBackIosIcon />
+                                                </div>
+                                                <p>{dayStr(day)}</p>
+                                                <div
+                                                    onClick={() => {
+                                                        nextDayRangeButtonVisible(
+                                                            index,
+                                                        ) && showNextDayRange(index)
+                                                    }}
+                                                    className={
+                                                        nextDayRangeButtonVisible(
+                                                            index,
+                                                        )
+                                                            ? classes.iconVisible
+                                                            : classes.iconHidden
+                                                    }
+                                                >
+                                                    <ArrowForwardIosIcon />
+                                                </div>
+                                            </div>
+                                            <div
+                                                className={classes.columnContent}
+                                                style={{
+                                                    borderRight:
+                                                        index == noOfDaysToShow - 1
+                                                            ? 'none'
+                                                            : '1px solid lightgray',
+                                                }}
+                                            >
+                                                {columnContent(columnMeetings)}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                    </div>
+                )}
+            </>
             )}
         </>
     )

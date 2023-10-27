@@ -68,10 +68,11 @@ class MeetingContorller {
             )
     }
 
-    async getMeetings(eventId, challengeId, from, to) {
+    async getMeetings(eventId, challengeId, recruiterEmail, from, to) {
         const queryParams = {
             challenge: challengeId,
             event: eventId,
+            organizerEmail: recruiterEmail,
             startTime: { $gte: from, $lt: to },
         }
         return this._clean(Meeting.find(queryParams).sort({ startTime: 'asc' }))
@@ -81,17 +82,19 @@ class MeetingContorller {
     async create(meeting) {
         if (!(this.isChallengePartner && meeting.event && meeting.challenge))
             return null
+        const partnerEmail = this.requestingUser.email
         const event = await Event.findOne({ _id: meeting.event })
         if (!(event && event.challenges.length > 0)) return null
         const challenge = event.challenges.find(
             c => c._id.toString() === meeting.challenge,
         )
 
-        if (!(challenge && challenge.partnerEmail)) return null
+
+        if (!(challenge && partnerEmail)) return null
         const newMeetingSlot = new Meeting({
             event: meeting.event,
             challenge: meeting.challenge,
-            organizerEmail: challenge.partnerEmail,
+            organizerEmail: partnerEmail,
             location: meeting.location || '',
             title:
                 meeting.title || `Junction: ${challenge.name} partner meeting`,
@@ -109,11 +112,12 @@ class MeetingContorller {
     async deleteMany(meetings) {
         if (!(this.isChallengePartner && meetings.length > 0))
             return { acknowledged: false, deletedCount: 0 }
-
+        const partnerEmail = this.requestingUser.email
         meetings.forEach(async meetingId => {
             try {
                 const meetingToCancel = await Meeting.findOne({
                     _id: meetingId,
+                    organizerEmail: partnerEmail
                 })
                 if (!meetingToCancel) return null
                 if (
@@ -146,16 +150,19 @@ class MeetingContorller {
     }
 
     async createMany(meetings) {
+
         if (!(this.isChallengePartner && meetings.length > 0)) return []
+        const partner = this.requestingUser
         const event = await Event.findOne({ _id: meetings[0].event })
         if (!(event && event.challenges.length > 0)) return []
         const challenge = event.challenges.find(
             c => c._id.toString() === meetings[0].challenge,
         )
 
-        if (!(challenge && challenge.partnerEmail))
+
+        if (!(challenge && partner.email))
             return new Error(
-                `unable to find challenge: ${meetings[0].challenge}, or challenge is missing "partnerEmail"`,
+                `unable to find challenge: ${meetings[0].challenge}, or partner is missing email`,
             )
         const created = []
         for (let i = 0; i < meetings.length; i++) {
@@ -164,6 +171,7 @@ class MeetingContorller {
             const current = await Meeting.findOne({
                 challenge: meeting.challenge,
                 event: meeting.event,
+                organizerEmail: partner.email,
                 startTime: meeting.startTime,
                 endTime: meeting.endTime,
             })
@@ -171,14 +179,14 @@ class MeetingContorller {
                 const newMeetingSlot = new Meeting({
                     event: meeting.event,
                     challenge: meeting.challenge,
-                    organizerEmail: challenge.partnerEmail,
+                    organizerEmail: partner.email,
                     location: '',
                     title:
                         meeting.title ||
-                        `Junction: ${challenge.name} partner meeting`,
+                        `${event.name}: ${challenge.name} partner meeting`,
                     description:
                         meeting.description ||
-                        `Junction: ${challenge.name}\nmeeting between participants and partner, ${challenge.partner}. `,
+                        `${event.name}: ${challenge.name}\nmeeting between partner ${partner.name} from ${challenge.partner} and participant(s)`,
                     attendees: [],
                     startTime: meeting.startTime,
                     endTime: meeting.endTime,
@@ -193,6 +201,7 @@ class MeetingContorller {
                 }
             }
         }
+        console.log("created", created)
         return created
     }
 
@@ -205,7 +214,7 @@ class MeetingContorller {
         const attendeeProfiles = await UsersController.getUserProfiles(
             attendees,
         )
-       
+
         let roomBookedSuccessfully = false
         if (location !== '' && location !== 'ONLINE') {
             roomBookedSuccessfully = await updateRoomSlotReservedStatus(
@@ -216,7 +225,7 @@ class MeetingContorller {
             )
         }
 
-        
+
         const newLocation =
             // eslint-disable-next-line no-nested-ternary
             location === 'ONLINE'
@@ -224,10 +233,10 @@ class MeetingContorller {
                 : roomBookedSuccessfully
                     ? location
                     : ''
-
+        const newDescription = meetingToBook.description.concat(...attendeeProfiles.map(a => ` ${a.firstName} ${a.lastName},`)).replace(/.$/, ".")
         const googleEvent = {
             title: meetingToBook.title,
-            description: meetingToBook.description,
+            description: newDescription,
             location: newLocation,
             start: {
                 dateTime: meetingToBook.startTime,
@@ -252,7 +261,8 @@ class MeetingContorller {
             meetingId,
             desc: partiComment,
         }
-        console.log("creating event",googleEvent)
+        console.log("meetingToBook", meetingToBook.toObject())
+
         // create google calednar event and meets link
         createGoogleEvent(googleEvent)
 
@@ -261,6 +271,7 @@ class MeetingContorller {
                 { _id: meetingId },
                 {
                     ...meetingToBook.toObject(),
+                    description: newDescription,
                     attendees,
                     location: newLocation,
                 },

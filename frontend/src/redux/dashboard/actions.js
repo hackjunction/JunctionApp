@@ -58,6 +58,23 @@ export const updateRegistrationChecklist =
         }
     }
 
+export const updateRecruitersForEvent =
+    (recruiters) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        const userIds = recruiters?.map(rec => {
+            return rec.recruiterId
+        })
+
+
+        dispatch({
+            type: ActionTypes.UPDATE_EVENT_RECRUITERS,
+            promise: UserProfilesService.getPublicUserProfiles(userIds),
+            meta: {
+                onFailure: e => console.log('Error updating recruiters for this event', e),
+            },
+        })
+    }
+
 export const updateRegistrationGrantDetails =
     (slug, data) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())

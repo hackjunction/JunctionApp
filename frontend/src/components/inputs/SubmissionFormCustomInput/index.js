@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FastField, useFormikContext } from 'formik'
 import { Box, Grid, Typography } from '@material-ui/core'
 import RegistrationQuestion from 'pages/_events/slug/register/RegistrationQuestion'
-import Switch from 'pages/_dashboard/renderDashboard/organiser/edit/submission/components/Switch'
+import Switch from 'components/generic/Switch'
 
 export default ({ section, sectionAnswers = undefined }) => {
     const [visible, setVisible] = useState(true)

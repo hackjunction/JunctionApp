@@ -14,8 +14,8 @@ import { Typography } from '@material-ui/core'
 
 export default ({
     initialData = {},
-    formikSubmitAction = () => {},
-    onBack = () => {},
+    formikSubmitAction = () => { },
+    onBack = () => { },
     challengeOptions = [],
 }) => {
     const TeamSchema = {
@@ -441,7 +441,7 @@ export default ({
                         onSubmit={formikProps.handleSubmit}
                         errors={
                             formikProps.touched?.name &&
-                            formikProps.touched?.description
+                                formikProps.touched?.description
                                 ? formikProps.errors
                                 : {}
                         }

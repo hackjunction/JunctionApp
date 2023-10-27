@@ -24,7 +24,7 @@ import Button from 'components/generic/Button'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
-import Switch from '../submission/components/Switch'
+import Switch from '../../../../../../components/generic/Switch'
 
 const ACTIONS = ['save', 'remove']
 

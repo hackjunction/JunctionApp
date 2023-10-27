@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+
 
 import Button from 'components/generic/Button'
+import Switch from 'components/generic/Switch'
 
 import {
     FormControl,
@@ -10,6 +13,8 @@ import {
     makeStyles,
 } from '@material-ui/core'
 import { getMeetingRooms } from 'graphql/queries/meetings'
+import * as DashboardSelectors from 'redux/dashboard/selectors'
+
 
 const useStyles = makeStyles(theme => ({
     background: {
@@ -26,7 +31,7 @@ const useStyles = makeStyles(theme => ({
         width: '70%',
         margin: '0 auto',
         height: 'fit-content',
-        maxHeight: '70vh',
+        maxHeight: '120vh',
         marginTop: 'calc(100vh - 85vh - 20px)',
         backgroundColor: '#fff',
         borderRadius: '4px',
@@ -79,9 +84,11 @@ export default ({
     meetingInfo,
     attendeesCount,
     eventId,
+    user,
     close,
 }) => {
     const [onlineSelected, setOnlineSelected] = useState(true)
+    const [teamSelected, setTeamSelected] = useState(false)
     const [roomSelected, setRoomSelected] = useState('')
     const [partiComSelected, setPartiComSelected] = useState('')
     const start = new Date(meetingInfo.startTime)
@@ -110,7 +117,15 @@ export default ({
             setAvailableRooms(filteredRooms)
             setRoomsLoaded(true)
         }
-    }, [attendeesCount, meetingRooms, roomsLoaded, start])
+    }, [meetingRooms, roomsLoaded, start])
+
+    var att = []
+    const team = useSelector(DashboardSelectors.team)
+    if (team) {
+        att = [...team.members, team.owner]
+    } else {
+        att = [user?.userId]
+    }//TODO: add selection to book alone or for the team
 
     const handleLocationChange = selection => {
         setOnlineSelected(selection)
@@ -119,25 +134,31 @@ export default ({
     const handleRoomChange = event => {
         setRoomSelected(event.target.value)
     }
-    
+
     const handlePartiComChange = event => {
         setPartiComSelected(event.target.value)
     }
 
-    const confirmButtonEnabled = () => onlineSelected || roomSelected !== ''
+    const confirmButtonEnabled = () => (onlineSelected || roomSelected !== '') && (team || !teamSelected)
 
     const confirmButtonAction = () => {
-        if (onlineSelected) {
-            bookFunction(meetingInfo, 'ONLINE', partiComSelected)
+        var attendees = []
+        if (teamSelected) {
+            attendees = [...team.members, team.owner]
         } else {
-            bookFunction(meetingInfo, roomSelected, partiComSelected)
+            attendees = [user?.userId]
+        }
+        if (onlineSelected) {
+            bookFunction(meetingInfo, attendees, 'ONLINE', partiComSelected)
+        } else {
+            bookFunction(meetingInfo, attendees, roomSelected, partiComSelected)
         }
     }
 
     const displayCapacityWarning = () => {
-        if (roomSelected === '') return false
+        if (roomSelected === '' || !teamSelected) return false
         const selectedRoom = meetingRooms.find(r => r.name === roomSelected)
-        return selectedRoom?.capacity < attendeesCount
+        return selectedRoom?.capacity < att.length + 1
     }
 
     const classes = useStyles()
@@ -156,14 +177,12 @@ export default ({
                     </span>
                     &nbsp;
                     <span>
-                        {`${start.getHours()}:${
-                            startMinutes === 0 ? '00' : startMinutes
-                        }`}
+                        {`${start.getHours()}:${startMinutes === 0 ? '00' : startMinutes
+                            }`}
                     </span>
                     <span> - </span>
-                    <span>{`${end.getHours()}:${
-                        endMinutes === 0 ? '00' : endMinutes
-                    }`}</span>
+                    <span>{`${end.getHours()}:${endMinutes === 0 ? '00' : endMinutes
+                        }`}</span>
                 </h2>
                 <h3 style={{ textAlign: 'center' }}>
                     Choose whether you want an online meeting or a physical
@@ -213,13 +232,61 @@ export default ({
                             Physical
                         </Button>
                     </div>
+                    <h3 style={{ textAlign: 'center' }}>
+                        Are you booking for yourself or for your team?
+                    </h3>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginBottom: '1rem',
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            className={
+                                !teamSelected
+                                    ? classes.selected
+                                    : classes.notSelected
+                            }
+                            style={{
+                                marginRight: '0.5rem',
+                                padding: '0.75rem 2rem',
+                            }}
+                            onClick={() => setTeamSelected(false)}
+                        >
+                            For myself
+                        </Button>
+
+                        <Button
+                            variant="contained"
+                            className={
+                                !teamSelected
+                                    ? classes.notSelected
+                                    : classes.selected
+                            }
+                            style={{ padding: '0.75rem 2rem' }}
+                            onClick={() => setTeamSelected(true)}
+                        >
+                            Form my team
+                        </Button>
+                    </div>
+                    {(!team && teamSelected) && (
+                        <p
+                            className={classes.warnColor}
+                            style={{ fontSize: '1.25em' }}
+                        >
+                            You don't have a team yet {':('}
+                        </p>
+                    )
+                    }
                     {!onlineSelected &&
                         (roomsLoaded && availableRooms.length > 0 ? (
                             <FormControl style={{ width: '70%' }}>
                                 <InputLabel id="challenge-selection-label">
                                     Rooms
                                 </InputLabel>
-                                {}
+                                { }
                                 <Select
                                     labelId="room-selection-label"
                                     id="room-selection"
@@ -245,8 +312,8 @@ export default ({
                                                         {' (capacity: '}
                                                         <span
                                                             className={
-                                                                roomInfo.capacity <
-                                                                attendeesCount
+                                                                teamSelected && roomInfo.capacity <
+                                                                    att.length + 1
                                                                     ? classes.warnColor
                                                                     : ''
                                                             }
@@ -269,32 +336,32 @@ export default ({
                                 No rooms available for selected time slot {':('}
                             </p>
                         ))}
-                            <FormControl style={{ width: '70%' }}>
-                                <InputLabel id="agenda-selection-label">
-                                    Choose an agenda for this meeting
-                                </InputLabel>
-                                {}
-                                <Select
-                                    labelId="agenda-selection-label"
-                                    id="agenda-selection"
-                                    label="Choose an agenda for this meeting"
-                                    onChange={handlePartiComChange}
-                                    value={partiComSelected}
-                                >
-                                    <MenuItem                                            
-                                                value={"Recruiting"}
+                    <FormControl style={{ width: '70%' }}>
+                        <InputLabel id="agenda-selection-label">
+                            Choose an agenda for this meeting
+                        </InputLabel>
+                        { }
+                        <Select
+                            labelId="agenda-selection-label"
+                            id="agenda-selection"
+                            label="Choose an agenda for this meeting"
+                            onChange={handlePartiComChange}
+                            value={partiComSelected}
+                        >
+                            <MenuItem
+                                value={"Recruiting"}
 
-                                    >
-                                    <span>{"Recruiting"}</span>
-                                    </MenuItem>
-                                    <MenuItem                                            
-                                                value={"Mentoring"}
-                                    ><span>{"Mentoring"}</span></MenuItem>
-                                    <MenuItem    
-                                                value={"Other"}
-                                    ><span>{"Other"}</span></MenuItem>
-                                </Select>
-                            </FormControl>
+                            >
+                                <span>{"Recruiting"}</span>
+                            </MenuItem>
+                            <MenuItem
+                                value={"Mentoring"}
+                            ><span>{"Mentoring"}</span></MenuItem>
+                            <MenuItem
+                                value={"Other"}
+                            ><span>{"Other"}</span></MenuItem>
+                        </Select>
+                    </FormControl>
                 </div>
                 <div
                     style={{

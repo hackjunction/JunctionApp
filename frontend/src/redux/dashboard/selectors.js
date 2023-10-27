@@ -22,6 +22,12 @@ export const registrationLoading = state => state.dashboard.registration.loading
 export const registrationError = state => state.dashboard.registration.error
 export const registrationUpdated = state => state.dashboard.registration.updated
 
+export const eventRecruiters = state => state.dashboard.recruiters.data
+export const eventRecruitersMap = state => state.dashboard.recruiters.map
+export const eventRecruitersLoading = state => state.dashboard.recruiters.loading
+export const eventRecruitersError = state => state.dashboard.recruiters.error
+export const eventRecruitersUpdated = state => state.dashboard.recruiters.updated
+
 export const team = state => state.dashboard.team.data
 export const teamLoading = state => state.dashboard.team.loading
 export const teamError = state => state.dashboard.team.error

@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
-import Switch from '../submission/components/Switch'
+import Switch from '../../../../../../components/generic/Switch'
 import EditableOptions from '../submission/components/EditableOptions'
 
 export default () => {

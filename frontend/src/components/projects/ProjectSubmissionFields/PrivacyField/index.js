@@ -1,7 +1,7 @@
 import { Box, Grid } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
 import { FastField } from 'formik'
-import Switch from 'pages/_dashboard/renderDashboard/organiser/edit/submission/components/Switch'
+import Switch from 'components/generic/Switch'
 import React from 'react'
 
 const PrivacyField = ({ props }) => {

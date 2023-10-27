@@ -14,6 +14,13 @@ const initialState = {
         error: false,
         updated: 0,
     },
+    recruiters: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: [],
+        map: {},
+    },
     team: {
         data: null,
         loading: true,
@@ -55,6 +62,7 @@ const initialState = {
 const updateEventHandler = buildHandler('event')
 const publicEventsHandler = buildHandler('publicEvents')
 const updateRegistrationHandler = buildHandler('registration')
+const eventRecruitersHandler = buildHandler('recruiters', 'userId')
 const updateTeamHandler = buildHandler('team')
 const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
@@ -74,6 +82,9 @@ export default function reducer(state = initialState, action) {
         }
         case ActionTypes.UPDATE_REGISTRATION: {
             return updateRegistrationHandler(state, action)
+        }
+        case ActionTypes.UPDATE_EVENT_RECRUITERS: {
+            return eventRecruitersHandler(state, action)
         }
         case ActionTypes.UPDATE_TEAM: {
             return updateTeamHandler(state, action)
