@@ -145,7 +145,7 @@ export default ({
                             Fields marked with * are required
                         </Typography>
                     </div>
-                   
+
                     <div>
                         <FastField name="name">
                             {({ field, form }) => (

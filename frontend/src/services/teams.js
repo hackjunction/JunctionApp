@@ -121,8 +121,8 @@ TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
     )
 }
 
-TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug) => {
-    return _axios.get(`/teams/${eventSlug}/teams`, config(idToken))
+TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug, page, page_size) => {
+    return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}`, config(idToken))
 }
 
 TeamsService.getTeamWithMetaForEventParticipant = (

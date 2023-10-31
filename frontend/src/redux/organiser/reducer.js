@@ -123,7 +123,7 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_TEAMS: {
             const newState = teamsHandler(state, action)
             if (action.payload) {
-                const byUser = action.payload.reduce((map, team) => {
+                const byUser = action.payload.data.reduce((map, team) => {
                     map[team.owner] = team
                     team.members.forEach(member => {
                         map[member] = team
@@ -134,6 +134,8 @@ export default function reducer(state = initialState, action) {
                     ...newState,
                     teams: {
                         ...newState.teams,
+                        data: newState.teams.data.data,
+                        count: newState.teams.data.count,
                         map: byUser,
                     },
                 }

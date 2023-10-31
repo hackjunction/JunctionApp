@@ -34,6 +34,7 @@ export const teamError = state => state.dashboard.team.error
 export const teamUpdated = state => state.dashboard.team.updated
 
 export const teams = state => state.dashboard.teams.data
+export const teamsCount = state => state.dashboard.teams.count
 export const teamsLoading = state => state.dashboard.teams.loading
 export const teamsError = state => state.dashboard.teams.error
 export const teamsUpdated = state => state.dashboard.teams.updated

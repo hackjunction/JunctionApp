@@ -485,8 +485,41 @@ controller.attachUserApplicant = (teams, userId) => {
     })
 }
 
-controller.getTeamsForEvent = (eventId, userId) => {
-    return Team.find({
+controller.getTeamsForEvent = async (eventId, userId, page, size) => {
+    if (page && size) {
+        const found = await Team.find({
+            event: eventId,
+        })
+            .sort({ createdAt: 'desc' })
+            .skip(parseInt(size * page))
+            .limit(parseInt(size))
+            .then(teams => {
+                if (userId) {
+                    return controller.attachUserApplicant(teams, userId)
+                }
+            })
+        const count = await Team.find({ event: eventId }).countDocuments()
+        return { data: found, count: count }
+    } else {
+        const found = await Team.find({
+            event: eventId,
+        })
+            .sort({ createdAt: 'desc' })
+            .then(teams => {
+                if (userId) {
+                    return controller.attachUserApplicant(teams, userId)
+                }
+                return teams
+            })
+        const count = await Team.find({ event: eventId }).countDocuments()
+        return { data: found, count: count }
+    }
+    // TODO make the code not visible to participants on Redux store
+}
+
+controller.getAllTeamsForEvent = async (eventId, userId, page, size) => {
+
+    return await Team.find({
         event: eventId,
     })
         .sort({ createdAt: 'desc' })

@@ -142,12 +142,24 @@ const getTeamRoles = asyncHandler(async (req, res) => {
 })
 
 const getTeamsForEvent = asyncHandler(async (req, res) => {
-    const teams = await TeamController.getTeamsForEvent(
-        req.event._id,
-        req.user.sub,
-    )
+    var teams
+    if (req.query.page && req.query.size) {
+        teams = await TeamController.getTeamsForEvent(
+            req.event._id,
+            req.user.sub,
+            req.query.page,
+            req.query.size
+        )
+    } else {
+        teams = await TeamController.getTeamsForEvent(
+            req.event._id,
+            req.user.sub,
+        )
+    }
     return res.status(200).json(teams)
 })
+
+
 
 const exportTeams = asyncHandler(async (req, res) => {
     const teams = await TeamController.exportTeams(req.body.teamIds)
