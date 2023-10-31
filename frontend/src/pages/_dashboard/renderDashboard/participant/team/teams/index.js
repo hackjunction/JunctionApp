@@ -67,7 +67,7 @@ export default () => {
     if (challengeFilter !== 'All challenges') {
         teamCards = teams?.filter(team => team.challenge === challengeFilter)
     } else {
-        teamCards = undefined ? teams : []
+        teamCards = teams ? teams : []
     
     }
 
