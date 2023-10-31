@@ -107,9 +107,9 @@ export default ({
             ),
     }
 
-    if (challengeOptions && challengeOptions.length > 0) {
-        TeamSchema.challenge = yup.string().required('A challenge is required')
-    }
+    // if (challengeOptions && challengeOptions.length > 0) {
+    //     TeamSchema.challenge = yup.string().required('A challenge is required')
+    // }
 
     return (
         <Formik
@@ -145,38 +145,7 @@ export default ({
                             Fields marked with * are required
                         </Typography>
                     </div>
-                    {challengeOptions && challengeOptions.length > 0 && (
-                        <div>
-                            <FastField name="challenge">
-                                {({ field, form }) => (
-                                    <FormControl
-                                        label="Challenge *"
-                                        hint="Select one of the challenges"
-                                        touched={
-                                            form.touched[field.name] ||
-                                            formikProps.submitCount > 0
-                                        }
-                                        error={form.errors[field.name]}
-                                    >
-                                        <Select
-                                            label="Select challenge"
-                                            options={challengeOptions}
-                                            value={field.value}
-                                            onChange={value =>
-                                                form.setFieldValue(
-                                                    field.name,
-                                                    value,
-                                                )
-                                            }
-                                            onBlur={() =>
-                                                form.setFieldTouched(field.name)
-                                            }
-                                        />
-                                    </FormControl>
-                                )}
-                            </FastField>
-                        </div>
-                    )}
+
                     <div>
                         <FastField name="name">
                             {({ field, form }) => (
@@ -206,6 +175,38 @@ export default ({
                             )}
                         </FastField>
                     </div>
+                    {challengeOptions && challengeOptions.length > 0 && (
+                        <div>
+                            <FastField name="challenge">
+                                {({ field, form }) => (
+                                    <FormControl
+                                        label="Challenge"
+                                        hint="Select one of the challenges"
+                                        touched={
+                                            form.touched[field.name] ||
+                                            formikProps.submitCount > 0
+                                        }
+                                        error={form.errors[field.name]}
+                                    >
+                                        <Select
+                                            label="Select challenge"
+                                            options={challengeOptions}
+                                            value={field.value}
+                                            onChange={value =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
+                                            }
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
+                                        />
+                                    </FormControl>
+                                )}
+                            </FastField>
+                        </div>
+                    )}
                     <div>
                         <FastField name="subtitle">
                             {({ field, form }) => (

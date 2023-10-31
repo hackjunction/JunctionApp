@@ -181,13 +181,13 @@ export const createPartnerRegistration =
         return registration
     }
 
-export const updateTeams = slug => async (dispatch, getState) => {
+export const updateTeams = (slug, page, size) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     if (!slug) return
 
     dispatch({
         type: ActionTypes.UPDATE_TEAMS,
-        promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug),
+        promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug, page, size),
         meta: {
             onFailure: e => console.log('Error updating teams', e),
         },

@@ -4,6 +4,14 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
+import {
+    Box,
+    Typography,
+    IconButton,
+} from '@material-ui/core'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import Button from 'components/generic/Button'
@@ -28,6 +36,10 @@ export default () => {
     const [selectedTeam, setSelectedTeam] = useState(null)
     const [loading, setLoading] = useState(false)
 
+    const [currentPage, SetCurrentPage] = useState(0)
+    const totalResults = useSelector(DashboardSelectors.teamsCount)
+    const totalPages = Math.ceil(totalResults / 25)
+
     const hadleTeamCardClick = useCallback(
         async teamCode => {
             if (teamCode) {
@@ -48,8 +60,8 @@ export default () => {
     )
 
     useEffect(() => {
-        dispatch(DashboardActions.updateTeams(slug))
-    }, [applying, selected, selectedTeam, joinByCode, challengeFilter])
+        dispatch(DashboardActions.updateTeams(slug, currentPage, 25))
+    }, [currentPage, applying, selected, selectedTeam, joinByCode, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
@@ -57,6 +69,44 @@ export default () => {
     } else {
         teamCards = teams
     }
+
+    const handlePrevPage = useCallback(() => {
+        SetCurrentPage(currentPage - 1)
+    }, [currentPage])
+
+    const handleNextPage = useCallback(() => {
+        SetCurrentPage(currentPage + 1)
+    }, [currentPage])
+
+    const renderPagination = () => {
+        console.log("props", currentPage, totalResults, totalPages)
+
+        return (
+            <Box display="flex" flexDirection="row" alignItems="center">
+                <IconButton disabled={currentPage === 0} onClick={handlePrevPage}>
+                    <ChevronLeftIcon />
+                </IconButton>
+                <Box padding={1}>
+                    {totalResults === 0 ? (
+                        <Typography variant="overline">
+                            Page 1
+                        </Typography>
+                    ) : (
+                        <Typography variant="overline">
+                            Page {currentPage + 1} of {totalPages}
+                        </Typography>
+                    )}
+                </Box>
+                <IconButton
+                    disabled={currentPage + 1 === totalPages}
+                    onClick={handleNextPage}
+                >
+                    <ChevronRightIcon />
+                </IconButton>
+            </Box>
+        )
+    }
+
     //TODO add a method to edit or withdraw an application
     return (
         <>
@@ -155,31 +205,49 @@ export default () => {
                         </div>
                     )}
                     {teamCards.length > 0 ? (
-                        <ResponsiveMasonry
-                            columnsCountBreakPoints={{
-                                600: 1,
-                                800: 2,
-                                1440: 3,
-                            }}
-                        >
-                            <Masonry>
-                                {teamCards?.map(team => (
-                                    <TeamCard
-                                        key={team._id}
-                                        teamData={team}
-                                        disableActions={hasTeam}
-                                        onClickApply={() => {
-                                            hadleTeamCardClick(team.code)
-                                            setApplying(true)
-                                        }}
-                                        onClick={() => {
-                                            hadleTeamCardClick(team.code)
-                                            setSelected(true)
-                                        }}
-                                    />
-                                ))}
-                            </Masonry>
-                        </ResponsiveMasonry>
+                        <>
+                            <Box
+                                p={2}
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="flex-end"
+                            >
+                                {renderPagination()}
+                            </Box>
+                            <ResponsiveMasonry
+                                columnsCountBreakPoints={{
+                                    600: 1,
+                                    800: 2,
+                                    1440: 3,
+                                }}
+                            >
+                                <Masonry>
+                                    {teamCards?.map(team => (
+                                        <TeamCard
+                                            key={team._id}
+                                            teamData={team}
+                                            disableActions={hasTeam}
+                                            onClickApply={() => {
+                                                hadleTeamCardClick(team.code)
+                                                setApplying(true)
+                                            }}
+                                            onClick={() => {
+                                                hadleTeamCardClick(team.code)
+                                                setSelected(true)
+                                            }}
+                                        />
+                                    ))}
+                                </Masonry>
+                            </ResponsiveMasonry>
+                            <Box
+                                p={2}
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="flex-end"
+                            >
+                                {renderPagination()}
+                            </Box>
+                        </>
                     ) : (
                         <div>No teams found</div>
                     )}

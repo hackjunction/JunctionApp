@@ -111,7 +111,22 @@ export default function reducer(state = initialState, action) {
             return editTeam(state, initialState.team.data)
         }
         case ActionTypes.UPDATE_TEAMS: {
-            return updateTeamsHandler(state, action)
+            if (action.payload) {
+                const formattedAction = {
+                    ...action,
+                    payload: action.payload.data,
+                }
+                const newState = updateTeamsHandler(state, formattedAction)
+                return {
+                    ...newState,
+                    teams: {
+                        ...newState.teams,
+                        count: action.payload.count,
+                    },
+                }
+            } else {
+                return updateTeamsHandler(state, action)
+            }
         }
         case ActionTypes.UPDATE_SELECTED_TEAM: {
             return updateSelectedTeamHandler(state, action)
