@@ -65,9 +65,10 @@ export default () => {
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
-        teamCards = teams.filter(team => team.challenge === challengeFilter)
+        teamCards = teams?.filter(team => team.challenge === challengeFilter)
     } else {
-        teamCards = teams
+        teamCards = undefined ? teams : []
+    
     }
 
     const handlePrevPage = useCallback(() => {
