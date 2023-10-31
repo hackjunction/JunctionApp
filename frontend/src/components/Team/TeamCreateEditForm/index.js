@@ -107,9 +107,9 @@ export default ({
             ),
     }
 
-    // if (challengeOptions && challengeOptions.length > 0) {
-    //     TeamSchema.challenge = yup.string().required('A challenge is required')
-    // }
+    //if (challengeOptions && challengeOptions.length > 0) {
+    //    TeamSchema.challenge = yup.string().required('A challenge is required')
+    //}
 
     return (
         <Formik
