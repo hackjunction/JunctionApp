@@ -9,6 +9,8 @@ import MetaTagsForm from './MetaTagsForm'
 
 import CertificateForm from './CertificateForm'
 import PageScriptsForm from './PageScriptsForm'
+import FileInput from '../submission/components/inputs/FileInput'
+
 
 export default () => {
     return (
@@ -28,6 +30,57 @@ export default () => {
                             />
                         </FormControl>
                     )}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name="map"
+                    render={({ field, form }) => {
+                        console.log(field)
+                        return (
+                            <FormControl
+                                label="Venue Map"
+                                hint="Add a venue map that will be shown on participant and partner dashboards as a .jpg."
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <FileInput
+                                    value={field.value}
+                                    handleChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    config={{
+                                        settings:
+                                        {
+                                            allowedTypes: ['jpg'],
+                                        },
+                                    }}
+                                />
+                            </FormControl>
+                        )
+                    }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name="certificate"
+                    render={({ field, form }) => {
+                        console.log(field)
+                        return (
+                            <FormControl
+                                label="Certificate"
+                                hint="Add a certificate that will be given to the participants. max file size: 10mb"
+                                error={form.errors[field.name]}
+                                touched={form.touched[field.name]}
+                            >
+                                <CertificateForm
+                                    value={field.value}
+                                    fieldName={field.name}
+                                    setFieldValue={form.setFieldValue}
+                                />
+                            </FormControl>
+                        )
+                    }}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -79,28 +132,6 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <Field
-                    name="certificate"
-                    render={({ field, form }) => {
-                        console.log(field)
-                        return (
-                            <FormControl
-                                label="Certificate"
-                                hint="Add a certificate that will be given to the participants. max file size: 10mb"
-                                error={form.errors[field.name]}
-                                touched={form.touched[field.name]}
-                            >
-                                <CertificateForm
-                                    value={field.value}
-                                    fieldName={field.name}
-                                    setFieldValue={form.setFieldValue}
-                                />
-                            </FormControl>
-                        )
-                    }}
                 />
             </Grid>
         </Grid>

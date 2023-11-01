@@ -32,10 +32,10 @@ controller.createNewTeam = (data, eventId, userId) => {
         .getTeamsForEvent(eventId)
         .then(teams => {
             console.log('Step 1')
-            if (userHasTeam(teams, userId)) {
+            if (userHasTeam(teams.data, userId)) {
                 throw new ForbiddenError('You are already in a team')
             }
-            return removeCandidateApplications(teams, userId)
+            return removeCandidateApplications(teams.data, userId)
         })
         .then(teamsToSave => {
             console.log('Step 2')
@@ -138,7 +138,6 @@ controller.editTeam = (eventId, userId, edits) => {
 const userHasTeam = (teams, userId) => {
     let hasTeam = false
     const teamMembers = teams.map(team => team.members.concat(team.owner))
-    console.log('Team members: ', teamMembers)
     teamMembers.map(team => {
         if (_.includes(team, userId)) {
             hasTeam = true
@@ -149,9 +148,7 @@ const userHasTeam = (teams, userId) => {
 }
 const removeCandidateApplications = (teams, userId) => {
     const teamsToSave = []
-    console.log('Teams to remove candidate: ', teams)
     teams.map(team => {
-        console.log('Team candidates: ', team.candidates)
         if (
             _.includes(
                 team.candidates.map(candidate => candidate.userId),
@@ -164,7 +161,6 @@ const removeCandidateApplications = (teams, userId) => {
             teamsToSave.push(team)
         }
     })
-    console.log('Teams to save after removing candidate: ', teamsToSave)
     return teamsToSave
 }
 controller.joinTeam = (eventId, userId, code) => {
@@ -178,10 +174,10 @@ controller.joinTeam = (eventId, userId, code) => {
             .getTeamsForEvent(eventId)
             .then(teams => {
                 console.log('Step 1')
-                if (userHasTeam(teams, userId)) {
+                if (userHasTeam(teams.data, userId)) {
                     throw new ForbiddenError('You are already in a team')
                 }
-                return teams
+                return teams.data
             })
             .then(teams => {
                 console.log('Step 2')
@@ -219,7 +215,7 @@ controller.joinTeam = (eventId, userId, code) => {
             })
     })
 }
-
+//TODO: optimize this process, slow with over 200 teams
 controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
     let teamToReturn
     return controller
@@ -231,19 +227,19 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
                 )
             }
             teamToReturn = team
+
             return controller.getTeamsForEvent(eventId)
         })
         .then(teams => {
             console.log('Step 1')
-            console.log('Teams: ', teams)
-            if (userHasTeam(teams, candidateId)) {
+            if (userHasTeam(teams.data, candidateId)) {
                 teamToReturn.candidates = teamToReturn.candidates.filter(
                     candidate => candidate.userId !== candidateId,
                 )
                 teamToReturn.save()
                 throw new ForbiddenError('Candidate is already in a team')
             }
-            return teams
+            return teams.data
         })
         .then(teams => {
             console.log('Step 2')
@@ -485,21 +481,40 @@ controller.attachUserApplicant = (teams, userId) => {
     })
 }
 
-controller.getTeamsForEvent = async (eventId, userId, page, size) => {
+controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
     if (page && size) {
-        const found = await Team.find({
-            event: eventId,
-        })
-            .sort({ createdAt: 'desc' })
-            .skip(parseInt(size * page))
-            .limit(parseInt(size))
-            .then(teams => {
-                if (userId) {
-                    return controller.attachUserApplicant(teams, userId)
-                }
+        console.log("filter", filter)
+        if (filter) {
+            const found = await Team.find({
+                event: eventId,
+                challenge: filter,
             })
-        const count = await Team.find({ event: eventId }).countDocuments()
-        return { data: found, count: count }
+                .sort({ createdAt: 'desc' })
+                .skip(parseInt(size * page))
+                .limit(parseInt(size))
+                .then(teams => {
+                    if (userId) {
+                        return controller.attachUserApplicant(teams, userId)
+                    }
+                })
+            const count = await Team.find({ event: eventId, challenge: filter }).countDocuments()
+            console.log("with filter", { data: found, count: count })
+            return { data: found, count: count }
+        } else {
+            const found = await Team.find({
+                event: eventId,
+            })
+                .sort({ createdAt: 'desc' })
+                .skip(parseInt(size * page))
+                .limit(parseInt(size))
+                .then(teams => {
+                    if (userId) {
+                        return controller.attachUserApplicant(teams, userId)
+                    }
+                })
+            const count = await Team.find({ event: eventId }).countDocuments()
+            return { data: found, count: count }
+        }
     } else {
         const found = await Team.find({
             event: eventId,
@@ -512,6 +527,7 @@ controller.getTeamsForEvent = async (eventId, userId, page, size) => {
                 return teams
             })
         const count = await Team.find({ event: eventId }).countDocuments()
+        console.log("getting all teams", count)
         return { data: found, count: count }
     }
     // TODO make the code not visible to participants on Redux store
