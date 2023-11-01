@@ -60,14 +60,15 @@ export default () => {
     )
 
     useEffect(() => {
-        dispatch(DashboardActions.updateTeams(slug, currentPage, 25))
+        dispatch(DashboardActions.updateTeams(slug, currentPage, 25, challengeFilter))
     }, [currentPage, applying, selected, selectedTeam, joinByCode, challengeFilter])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
-        teamCards = teams.filter(team => team.challenge === challengeFilter)
+        teamCards = teams?.filter(team => team.challenge === challengeFilter)
     } else {
-        teamCards = teams
+        teamCards = teams ? teams : []
+        console.log("teamCards", teamCards)
     }
 
     const handlePrevPage = useCallback(() => {

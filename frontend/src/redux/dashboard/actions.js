@@ -181,17 +181,26 @@ export const createPartnerRegistration =
         return registration
     }
 
-export const updateTeams = (slug, page, size) => async (dispatch, getState) => {
+export const updateTeams = (slug, page, size, filter) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     if (!slug) return
-
-    dispatch({
-        type: ActionTypes.UPDATE_TEAMS,
-        promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug, page, size),
-        meta: {
-            onFailure: e => console.log('Error updating teams', e),
-        },
-    })
+    if (filter === 'All challenges') {
+        dispatch({
+            type: ActionTypes.UPDATE_TEAMS,
+            promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug, page, size),
+            meta: {
+                onFailure: e => console.log('Error updating teams', e),
+            },
+        })
+    } else {
+        dispatch({
+            type: ActionTypes.UPDATE_TEAMS,
+            promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug, page, size, filter),
+            meta: {
+                onFailure: e => console.log('Error updating teams', e),
+            },
+        })
+    }
 }
 
 export const updateSelectedTeam =
