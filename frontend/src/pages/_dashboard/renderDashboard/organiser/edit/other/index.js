@@ -10,6 +10,7 @@ import MetaTagsForm from './MetaTagsForm'
 import CertificateForm from './CertificateForm'
 import PageScriptsForm from './PageScriptsForm'
 import FileInput from '../submission/components/inputs/FileInput'
+import PdfUpload from 'components/inputs/PdfUpload'
 
 
 export default () => {
@@ -56,6 +57,17 @@ export default () => {
                                         },
                                     }}
                                 />
+
+                                {/* <ImageUpload
+                                    value={field.value}
+                                    onChange={value => {
+                                        form.setFieldValue(field.name, value)
+                                        form.setFieldTouched(field.name)
+                                    }}
+                                    uploadUrl={`/api/upload/events/${event.slug}/map`}
+                                    resizeMode="cover"
+                                /> */}
+
                             </FormControl>
                         )
                     }}

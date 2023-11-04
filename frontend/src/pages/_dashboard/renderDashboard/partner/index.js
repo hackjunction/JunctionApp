@@ -6,6 +6,7 @@ import AmpStoriesIcon from '@material-ui/icons/AmpStories'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import EventIcon from '@material-ui/icons/Event'
 import WorkIcon from '@material-ui/icons/Work'
+import PlaceIcon from '@material-ui/icons/Place'
 import RateReviewIcon from '@material-ui/icons/RateReview'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
@@ -20,6 +21,8 @@ import HackerpackPage from '../generalPages/hackerpack'
 import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
+import MapPage from '../generalPages/map'
+
 
 import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
@@ -91,6 +94,14 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                         setAlertCount(0)
                         return DefaultPage({ alerts })
                     },
+                },
+                {
+                    key: 'map',
+                    path: '/map',
+                    exact: false,
+                    icon: <PlaceIcon />,
+                    label: 'Map',
+                    component: MapPage,
                 },
                 {
                     key: 'Review',

@@ -78,6 +78,16 @@ const removeMember = asyncHandler(async (req, res) => {
     return res.status(200).json(team)
 })
 
+const organiserRemoveMemberFromTeam = asyncHandler(async (req, res) => {
+    const team = await TeamController.organiserRemoveMemberFromTeam(
+        req.event._id,
+        req.params.code,
+        req.params.userId,
+    )
+    console.log("deleted: ", team)
+    return res.status(200).json(team)
+})
+
 const getTeam = asyncHandler(async (req, res) => {
     let team = await TeamController.getTeam(
         req.event._id.toString(),
@@ -194,6 +204,15 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         exportTeams,
+    )
+
+router
+    .route('/organiser/:slug/:code/members/:userId')
+    .delete(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        organiserRemoveMemberFromTeam,
     )
 
 /** Participant-facing routes */

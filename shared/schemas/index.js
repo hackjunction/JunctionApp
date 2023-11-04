@@ -11,6 +11,7 @@ const EventRecruiters = require('./Recruiter')
 const IBANAccount = require('./IBANAccount')
 const LegalName = require('./LegalName')
 const PhoneNumber = require('./PhoneNumber')
+const MongoFile = require('./MongoFile')
 const RecruitmentOptions = require('./RecruitmentOptions')
 const RegistrationConfig = require('./RegistrationConfig')
 const RegistrationQuestion = require('./RegistrationQuestion')
@@ -55,6 +56,8 @@ const SharedSchema = new GraphQLSchema({
         IBANAccount.graphql,
         LegalName.graphql,
         PhoneNumber.graphql,
+        MongoFile.graphql,
+        MongoFile.graphqlInput,
         RecruitmentOptions.graphql,
         RegistrationConfig.graphql,
         RegistrationConfig.graphqlInput,

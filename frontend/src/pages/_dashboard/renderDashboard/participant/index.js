@@ -14,6 +14,7 @@ import HowToVoteIcon from '@material-ui/icons/HowToVote'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 
 import EventIcon from '@material-ui/icons/Event'
+import PlaceIcon from '@material-ui/icons/Place'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
 import Image from 'components/generic/Image'
@@ -30,6 +31,7 @@ import EventIDPage from './event-id'
 import HackerpackPage from '../generalPages/hackerpack'
 import ChallengesIndex from '../generalPages/challenges'
 import CalendarPage from './calendar'
+import MapPage from '../generalPages/map'
 
 
 import { useTranslation } from 'react-i18next'
@@ -109,6 +111,14 @@ export default ({
                     },
                 },
                 {
+                    key: 'map',
+                    path: '/map',
+                    exact: false,
+                    icon: <PlaceIcon />,
+                    label: 'Map',
+                    component: MapPage,
+                },
+                {
                     key: 'finals',
                     path: '/finalist-voting',
                     exact: true,
@@ -161,15 +171,15 @@ export default ({
                     label: 'Event ID',
                     component: EventIDPage,
                 },
-                {
-                    key: 'travelgrant',
-                    path: '/travel-grant',
-                    exact: true,
-                    icon: <FlightTakeoffIcon />,
-                    hidden: !shownPages.travelGrant,
-                    label: 'Travel grant',
-                    component: TravelGrantPage,
-                },
+                // {
+                //     key: 'travelgrant',
+                //     path: '/travel-grant',
+                //     exact: true,
+                //     icon: <FlightTakeoffIcon />,
+                //     hidden: !shownPages.travelGrant,
+                //     label: 'Travel grant',
+                //     component: TravelGrantPage,
+                // },
                 {
                     key: 'hackerpack',
                     path: '/hackerpack',
@@ -197,15 +207,7 @@ export default ({
                     label: 'Checklist',
                     component: ChecklistPage,
                 },
-                {
-                    key: 'map',
-                    path: '/map',
-                    exact: true,
-                    icon: <CheckBox />,
-                    hidden: !shownPages.hackerPack,
-                    label: 'Map',
-                    component: MapPage,
-                },
+                
                 {
                     key: 'chat',
                     path: '/chat',

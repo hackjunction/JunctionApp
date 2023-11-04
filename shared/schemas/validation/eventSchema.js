@@ -9,6 +9,17 @@ const cloudinaryImage = yup
     .default(null)
     .nullable()
 
+const mongoFile = yup
+    .object()
+    .shape({
+        name: yup.string().required(),
+        uploadData: yup.string().required(),
+        size: yup.string().required(),
+        type: yup.string().required(),
+    })
+    .default(null)
+    .nullable()
+
 const address = yup
     .object()
     .shape({
@@ -169,6 +180,7 @@ export default yup.object().shape({
             description: yup.string(),
         }),
     ),
+    map: mongoFile,
     published: yup.boolean().required(),
     galleryOpen: yup.boolean(),
     owner: yup.string(),

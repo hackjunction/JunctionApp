@@ -8,59 +8,69 @@ const {
     GraphQLInputObjectType,
 } = require('graphql')
 
-const MapSchema = new mongoose.Schema({
-    id: {
+const MongoFileSchema = new mongoose.Schema({
+    _id: {
         type: String,
     },
-    filename: {
+    name: {
         type: String,
     },
     uploadData: {
         type: String,
     },
-    fileSize: {
+    type: {
+        type: String,
+    },
+    size: {
         type: Number,
     },
+
 })
 
-const MapType = new GraphQLObjectType({
-    name: 'Map',
+const MongoFile = new GraphQLObjectType({
+    name: 'MongoFile',
     fields: {
-        filename: {
+        name: {
             type: GraphQLNonNull(GraphQLString),
         },
         uploadData: {
             type: GraphQLNonNull(GraphQLString),
         },
-        fileSize: {
+        type: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        size: {
             type: GraphQLNonNull(GraphQLInt),
         },
     },
 })
 
-const MapInput = new GraphQLInputObjectType({
-    name: 'WebhookInput',
+const MongoFileInput = new GraphQLInputObjectType({
+    name: 'MongoFileInput',
     fields: {
         _id: {
             type: GraphQLString,
         },
-        filename: {
+        name: {
             type: GraphQLNonNull(GraphQLString),
         },
         uploadData: {
             type: GraphQLNonNull(GraphQLString),
         },
-        fileSize: {
+        type: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        size: {
             type: GraphQLNonNull(GraphQLInt),
         },
     },
 })
 
 module.exports = {
-    mongoose: MapSchema,
-    graphql: MapType,
-    graphqlInput: MapInput,
+    mongoose: MongoFileSchema,
+    graphql: MongoFile,
+    graphqlInput: MongoFileInput,
 }
-}
+
 
 
