@@ -18,9 +18,9 @@ export default ({
     enableActions = true,
     teamData = {},
     onClickLeave,
-    onClickDelete = () => {},
+    onClickDelete = () => { },
     onClickEdit,
-    onRoleClick = () => {},
+    onRoleClick = () => { },
     loading = false,
 }) => {
     const teamMembersArr = [...objToArr(teamData.meta)]

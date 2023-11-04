@@ -385,6 +385,23 @@ export const leaveTeam = (slug, code) => async (dispatch, getState) => {
     return team
 }
 
+export const organiserRemoveMemberFromTeam =
+    (slug, code, userId) => async (dispatch, getState) => {
+        const state = getState()
+        const idToken = AuthSelectors.getIdToken(state)
+
+        const team = await TeamsService.organiserRemoveMemberFromTeam(
+            idToken,
+            slug,
+            code,
+            userId,
+        )
+
+        console.log("actions done ", team)
+
+        return team
+    }
+
 export const removeMemberFromTeam =
     (slug, code, userId) => async (dispatch, getState) => {
         const state = getState()

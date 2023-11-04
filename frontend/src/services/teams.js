@@ -114,6 +114,14 @@ TeamsService.removeMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
     )
 }
 
+TeamsService.organiserRemoveMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
+    return _axios.delete(
+        `/teams/organiser/${eventSlug}/${teamCode}/members/${userId}`,
+        config(idToken),
+    )
+}
+
+
 TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
     return _axios.get(
         `/teams/${eventSlug}?populate=${populate}`,

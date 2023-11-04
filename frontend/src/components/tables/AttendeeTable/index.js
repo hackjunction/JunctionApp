@@ -13,6 +13,9 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
+//import Button from 'components/generic/Button'
+import { Button, IconButton } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import { CSVLink } from 'react-csv'
@@ -232,7 +235,7 @@ export default ({
     return (
         <>
             <EditRegistrationModal
-                registrationId={
+                teamCode={
                     activeModal === 'edit' ? searchParams.get('id') : undefined
                 }
                 onClose={resetSearch}

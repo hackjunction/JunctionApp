@@ -97,6 +97,12 @@ controller.deleteTeam = (eventId, userId) => {
     })
 }
 
+controller.deleteTeamByCode = (eventId, code) => {
+    return controller.getTeamByCode(eventId, code).then(team => {
+        return team.remove()
+    })
+}
+
 controller.editTeam = (eventId, userId, edits) => {
     return controller.getTeam(eventId, userId).then(team => {
         if (team.owner !== userId && !_.includes(team.members, userId)) {
@@ -217,10 +223,14 @@ controller.joinTeam = (eventId, userId, code) => {
 }
 //TODO: optimize this process, slow with over 200 teams
 controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
+
     let teamToReturn
     return controller
         .getTeamByCode(eventId, code)
         .then(team => {
+            if (team.members.length >= 4) {
+                throw new ForbiddenError('Teams can have at most 5 members')
+            }
             if (!_.includes([team.owner].concat(team.members), userId)) {
                 throw new InsufficientPrivilegesError(
                     'Only the team members can accept candidates',
@@ -578,6 +588,30 @@ controller.convertToFlatExportData = teamWithMeta => {
             )
             .join(', '),
     }
+}
+
+controller.organiserRemoveMemberFromTeam = (eventId, teamCode, userToRemove) => {
+    console.log("removing ", eventId, teamCode, userToRemove)
+    return controller.getTeamByCode(eventId, teamCode).then(team => {
+
+        if (team.members.length === 0 && team.owner === userToRemove) {
+            console.log("deleting team")
+            controller.deleteTeamByCode(eventId, teamCode)
+        } else {
+            if (team.owner === userToRemove) {
+                console.log("new owner", team.members[0])
+                team.owner = team.members[0]
+                team.members = team.members.slice(1)
+            } else {
+                console.log("removing member")
+                team.members = team.members.filter(member => member !== userToRemove)
+            }
+            console.log("deleted ", team.members)
+            return team.save()
+        }
+        console.log("deleted team", team.members)
+        return team.save()
+    })
 }
 
 module.exports = controller

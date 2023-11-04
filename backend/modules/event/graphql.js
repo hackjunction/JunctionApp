@@ -28,6 +28,8 @@ const {
     HackerpackInput,
     TravelGrantConfig,
     TravelGrantConfigInput,
+    // MongoFile,
+    // MongoFileInput,
     RegistrationSection,
     RegistrationSectionInput,
     EventTag,
@@ -297,6 +299,9 @@ const EventInput = new GraphQLInputObjectType({
         meetingRooms: {
             type: GraphQLList(MeetingRoomInput),
         },
+        // map: {
+        //     type: MongoFileInput,
+        // },
         /** DELETE LATER: test area */
         submissionFormQuestions: {
             type: GraphQLList(RegistrationSectionInput),
@@ -488,6 +493,9 @@ const EventType = new GraphQLObjectType({
             meetingRooms: {
                 type: GraphQLList(MeetingRoom),
             },
+            // map: {
+            //     type: MongoFile,
+            // },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
