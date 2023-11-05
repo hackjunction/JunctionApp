@@ -42,7 +42,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
     const openSingleTeamEdit = row => {
         const search = `?${new URLSearchParams({
             modal: 'editTeam',
-            id: row.original.code,
+            code: row.original.code,
         }).toString()}`
         dispatch(push({ search }))
     }
@@ -188,7 +188,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
         <Grid container spacing={2}>
             <EditTeamModal
                 teamCode={
-                    activeModal === 'editTeam' ? searchParams.get('id') : undefined
+                    activeModal === 'editTeam' ? searchParams.get('code') : undefined
                 }
                 onClose={resetSearch}
             />
