@@ -235,7 +235,7 @@ export default ({
     return (
         <>
             <EditRegistrationModal
-                teamCode={
+                registrationId={
                     activeModal === 'edit' ? searchParams.get('id') : undefined
                 }
                 onClose={resetSearch}
