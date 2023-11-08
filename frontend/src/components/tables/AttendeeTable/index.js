@@ -132,7 +132,7 @@ export default ({
             }
         })
     }, [attendees, teams])
-
+    console.log("attendeesWithTeam",attendeesWithTeam)
     const columns = useMemo(() => {
         return [
             {
@@ -167,6 +167,14 @@ export default ({
                 ...Filters.MultipleSelect,
                 ...Sorters.Alphabetic,
                 Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
+            },
+            {
+                Header: 'Login type',
+                accessor: 'user',
+                ...Filters.MultipleSelect,
+                ...Sorters.Alphabetic,
+                Cell: ({ cell: { value } }) =>
+                    value.split('|')[0]
             },
             {
                 Header: 'Rating',

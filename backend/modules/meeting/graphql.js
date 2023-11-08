@@ -209,7 +209,7 @@ const Resolvers = {
         },
         bookMeeting: async (parent, args, context) => {
             if (args.meetingId && args.attendees) {
-                console.log(args, 1111)
+                console.log("booking meeting...", args)
                 return context
                     .controller('Meeting')
                     .bookMeeting(args.meetingId, args.attendees, args.location, args.description)
