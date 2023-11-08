@@ -362,7 +362,7 @@ stages:
 
 
   - deployment: VMDeploy_EU
-    dependsOn: Build_eu
+    dependsOn: Build_africa
     displayName: DEPRLOY EU
     environment:
       name:  PROD
