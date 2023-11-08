@@ -233,7 +233,9 @@ class MeetingContorller {
                 : roomBookedSuccessfully
                     ? location
                     : ''
+        console.log("meetingToBook.description",meetingToBook.description)
         const newDescription = meetingToBook.description.concat(...attendeeProfiles.map(a => ` ${a.firstName} ${a.lastName},`)).replace(/.$/, ".")
+        console.log("newDescription",newDescription)
         const googleEvent = {
             title: meetingToBook.title,
             description: newDescription,
