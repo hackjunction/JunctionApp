@@ -7,7 +7,6 @@ const useStyles = makeStyles(theme => ({
     root: ({ color, radius }) => {
         const _color = theme.palette[color]
         const bg = `linear-gradient(145deg, ${_color.dark} 0%, ${_color.main} 100%)`
-
         return {
             background: bg,
             borderRadius: radius || '13px',

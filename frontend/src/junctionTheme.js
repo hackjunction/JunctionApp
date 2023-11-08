@@ -27,11 +27,14 @@ const theme = createTheme({
         },
         error: {
             main: '#e63900',
-            dark: '#32d00',
+            light: '#ff794d',
+            dark: '#b32d00',
             contrastText: '#ffffff',
         },
         warning: {
             main: '#EAB059',
+            light: '#f4d4a4',
+            dark: '#e3931c',
             contrastText: '#ffffff',
 
         },
