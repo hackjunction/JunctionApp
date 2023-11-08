@@ -170,7 +170,7 @@ export default ({
                             Allowed file types
                         </Typography>
                         <Checkbox
-                            options={['pdf', 'docx', 'jpg', 'png', 'gif']} // Add all the file types you want to allow
+                            options={['pdf', 'docx', 'jpg', 'png', 'gif', 'mp4', 'pptx']} // Add all the file types you want to allow
                             selectedOptions={
                                 question.settings.allowedTypes || []
                             }
