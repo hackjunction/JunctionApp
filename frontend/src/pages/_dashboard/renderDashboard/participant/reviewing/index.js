@@ -65,7 +65,6 @@ export default () => {
 
         return <Complete />
     }
-
     return (
         <PageWrapper loading={annotatorLoading} error={annotatorError}>
             {renderContent()}

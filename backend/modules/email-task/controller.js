@@ -236,7 +236,7 @@ controller.deliverEmailTask = async task => {
             break
         }
         default: {
-            await SendgridService.sendGenericEmail(user.email, task.params)
+            await SendgridService.sendGenericEmail(user.email, task.params, {}, event, user)
             break
         }
     }
