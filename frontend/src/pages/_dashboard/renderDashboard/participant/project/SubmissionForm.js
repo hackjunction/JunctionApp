@@ -198,7 +198,7 @@ const SubmissionForm = props => {
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
-        }
+        }//TODO: make better looking
         return (
             <Box className="tw-flex tw-flex-col tw-gap-4">
                 <GradientBox p={3} color="theme_white">
