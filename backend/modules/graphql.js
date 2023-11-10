@@ -80,8 +80,7 @@ module.exports = app => {
     const server = new ApolloServer({
         schema,
         playground: false,
-        // TODO make instrospection false in production
-        introspection: true,
+        introspection: false,
         context: ({ req, res }) => ({
             req,
             res,

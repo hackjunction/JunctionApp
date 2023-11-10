@@ -327,9 +327,9 @@ const SubmissionForm = props => {
                             autoHideDuration: 3000,
                         }),
                     )
+                } finally {
+                    actions.setSubmitting(false)
                 }
-
-                actions.setSubmitting(false)
             }}
         >
             {renderForm}
