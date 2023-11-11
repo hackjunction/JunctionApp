@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
-import { FastField, Formik } from 'formik'
+import { Formik } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
 import { Grid, Box, Typography } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
@@ -25,8 +25,6 @@ import NameField from 'components/projects/ProjectSubmissionFields/NameField'
 import _ from 'lodash'
 import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
 import ProjectFieldsComponents from 'constants/projectFields'
-import ImageUpload from 'components/inputs/ImageUpload'
-import FormControl from 'components/inputs/FormControl'
 // import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +39,6 @@ const SubmissionForm = props => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-    const idToken = useSelector(AuthSelectors.getIdToken)
     const { t } = useTranslation()
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
@@ -255,7 +252,9 @@ const SubmissionForm = props => {
                 <BottomBar
                     onSubmit={async () => {
                         formikProps.submitForm().then(() => {
-                            handleProjectSelected(undefined)
+                            if (event.allowProjectSubmissionsPerChallenge) {
+                                handleProjectSelected(undefined)
+                            }
                         })
                     }}
                     errors={formikProps.errors}
