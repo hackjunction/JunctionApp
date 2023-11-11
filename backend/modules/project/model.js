@@ -125,6 +125,7 @@ ProjectSchema.post('save', async function (doc, next) {
          */
         case ReviewingMethods.gavelPeerReview.id: {
             GavelController.ensureGavelProject(doc)
+            console.log("saved as gavel projects")
             break
         }
         default: {
