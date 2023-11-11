@@ -37,31 +37,42 @@ const ProjectsTable = ({ projects, baseURL }) => {
                     return index + 1
                 },
                 id: 'index',
-                sortType: Sorters.Numeric,
+                ...Sorters.Numeric,
+            },
+            {
+                Header: 'Status',
+                accessor: 'status',
+                ...Sorters.Alphabetic,
+                ...Filters.ContainsSearch,
             },
             {
                 Header: 'Team',
                 accessor: 'teamCode',
+                ...Sorters.Alphanumeric,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Name',
                 accessor: 'name',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Punchline',
                 accessor: 'punchline',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Demo',
                 accessor: 'demo',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             {
                 Header: 'Source',
                 accessor: 'source',
+                ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
             /*
