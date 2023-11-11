@@ -104,7 +104,7 @@ export default ({ projectId }) => {
                 <Grid item xs={12}>
                     <Button
                         onClick={handleDone}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Done

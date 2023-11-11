@@ -201,14 +201,14 @@ const ProjectDetail = ({
                 return (
                     <Tag
                         label="Final"
-                        color={theme.palette.theme_turquoise.main}
+                        color={theme.palette.primary.main}
                     />
                 )
             case 'draft':
                 return (
                     <Tag
                         label="Draft"
-                        color={theme.palette.theme_lightgray.main}
+                        color={theme.palette.secondary.main}
                     />
                 )
             default:

@@ -208,7 +208,7 @@ export default () => {
                                 </Grid>
                                 <Grid item xs={2}>
                                     <Button
-                                        color="theme_turquoise"
+                                        color="primary"
                                         variant="contained"
                                         type="submit"
                                         disabled={formikProps.isSubmitting}
