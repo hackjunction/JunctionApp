@@ -10,7 +10,7 @@ module.exports = {
         const projects = await mongoose
             .model('Project')
             .updateMany(
-                { event: ObjectId('647860c38fd56d0036cc6033')},
+                { event: '647860c38fd56d0036cc6033'},
                 {
                     $set: {
                         status: "final"

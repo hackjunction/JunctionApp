@@ -73,7 +73,9 @@ controller.getAnnotatorsForEvent = async eventId => {
 }
 
 controller.getAnnotator = async (event, userId) => {
-    return GavelAnnotator.findOne({ event: event._id, user: userId })
+    const annotator = GavelAnnotator.findOne({ event: event._id, user: userId })
+    console.log("getAnnotator control", annotator)
+    return annotator
 }
 
 controller.editAnnotator = async (annotatorId, data) => {
