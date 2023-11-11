@@ -122,7 +122,7 @@ export default () => {
 
     return (
         <Grid item xs={12}>
-            <GradientBox color="theme_turquoise" p={3}>
+            <GradientBox color="primary" p={3}>
                 <Typography variant="button" gutterBottom>
                     Project submissions
                 </Typography>

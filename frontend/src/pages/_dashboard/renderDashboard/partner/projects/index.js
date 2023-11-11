@@ -153,6 +153,7 @@ export default ({ event }) => {
                     submissionValues,
                 )
             } else {
+                console.log("no score")
                 await ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount(
                     idToken,
                     event.slug,

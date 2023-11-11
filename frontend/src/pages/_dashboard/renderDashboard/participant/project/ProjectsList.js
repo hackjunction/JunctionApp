@@ -108,7 +108,7 @@ export default props => {
                         </Box>
                         <Button
                             variant="contained"
-                            color="theme_turquoise"
+                            color="primary"
                             onClick={() => projectSelectedCallback(project._id)}
                             style={{ marginRight: '6px' }}
                         >
