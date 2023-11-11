@@ -233,15 +233,13 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
     const lessSeenProjects = preferredProjects.filter(project => {
         return project.viewedBy.length < Settings.ITEM_MIN_VIEWS
     })
-    console.log("possible projects",lessSeenProjects,"nonBusyProjects",nonBusyProjects,"availableProjects",availableProjects)
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects
 }
 
 GavelAnnotatorSchema.methods.getNextProject = async function () {
     // Remove projects that are by the person reviewing
     const preferredProjects = await this.getPreferredProjects()
-    console.log('preferredProjects', preferredProjects)
-    console.log(preferredProjects.length)
+
 
     /** If there are no projects available, return null */
     if (preferredProjects.length === 0) {
