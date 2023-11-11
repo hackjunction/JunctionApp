@@ -172,7 +172,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
         availableProjectsQuery,
         activeAnnotatorsQuery,
     ])
-
+    console.log("allProjects", allProjects, "activeAnnotators", activeAnnotators)
     // Helper function
     const asyncFilter = async (arr, predicate) => {
         const results = await Promise.all(arr.map(predicate))
@@ -233,7 +233,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
     const lessSeenProjects = preferredProjects.filter(project => {
         return project.viewedBy.length < Settings.ITEM_MIN_VIEWS
     })
-
+    console.log("possible projects",lessSeenProjects,"nonBusyProjects",nonBusyProjects,"availableProjects",availableProjects)
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects
 }
 
@@ -245,6 +245,7 @@ GavelAnnotatorSchema.methods.getNextProject = async function () {
 
     /** If there are no projects available, return null */
     if (preferredProjects.length === 0) {
+        console.log("no prefered projects, return null")
         return null
     }
 
