@@ -215,7 +215,6 @@ const ProjectDetail = ({
                 return null
         }
     }
-
     return (
         <>
             <Helmet>

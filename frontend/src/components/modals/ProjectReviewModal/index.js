@@ -15,7 +15,6 @@ const ProjectScoreModal = ({
     projectScoreData,
     showScore = false,
 }) => {
-    console.log('Score data object from review modal', projectScoreData)
 
     return (
         <Dialog open={open} onClose={onClose}>
