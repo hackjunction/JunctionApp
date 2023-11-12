@@ -92,13 +92,13 @@ GavelAnnotatorSchema.methods.canVote = async function () {
 
     if (!this.active) {
         return Promise.reject(
-            new ForbiddenError('Cann,ot submit votes while disabled'),
+            new ForbiddenError('Cannot submit votes while disabled'),
         )
     }
 
     if (!this.onboarded) {
         return Promise.reject(
-            new ForbiddenError('Cannot subm,it votes before being onboarded'),
+            new ForbiddenError('Cannot submit votes before being onboarded'),
         )
     }
 
@@ -111,7 +111,7 @@ GavelAnnotatorSchema.methods.canVote = async function () {
 
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
-            new ForbiddenError('Cannot subm,it votes while voting is not open'),
+            new ForbiddenError('Cannot submit votes while voting is not open'),
         )
     }
 
