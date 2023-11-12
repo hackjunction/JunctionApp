@@ -261,6 +261,7 @@ const SubmissionForm = props => {
                     errors={formikProps.errors}
                     dirty={formikProps.dirty}
                     loading={formikProps.isSubmitting}
+                    loadingText='uploading, this might take a while ...'
                 />
             </Box>
         )
