@@ -72,9 +72,17 @@ export default ({ event, projects }) => {
         return event.challenges.map(challenge => {
             const items = byChallenge[challenge.slug]
             if (!items) return null
-            const sorted = sortBy(items, item => {
-                return -1 * item.description.length
-            })
+            console.log(items)
+
+           
+
+            const sorted = items.sort(function(a,b){
+                return new Date(b.updatedAt) - new Date(a.updatedAt)
+            }
+            )
+            // sortBy(items, item => {
+            //     return -1 * item.updatedAt
+            // })
             return (
                 <ProjectsPreview
                     key={challenge.slug}

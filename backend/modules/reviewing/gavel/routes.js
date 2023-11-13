@@ -37,11 +37,11 @@ router.route('/:slug/projects').get(
 router.route('/:slug/annotators').get(
     hasToken,
     isEventOrganiser,
-    asyncHandler(async (req, res) => {
+     asyncHandler(async (req, res) => {
         const annotators = await GavelController.getAnnotatorsForEvent(
             req.event._id,
         )
-        return res.status(200).json(annotators)
+    return  res.status(200).json("")
     }),
 )
 
@@ -80,7 +80,7 @@ router
                 req.event,
                 req.user.sub,
             )
-            return res.status(200).json(annotator)
+            return res.status(200).json("")
         }),
     )
     /** Create (initialize) an annotator for an event */
