@@ -57,7 +57,7 @@ const ProjectsGrid = ({
                         )
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.log("got error", e)
                         return Object.assign(
                             { score: 0, message: 'Not rated' },
                             project,
