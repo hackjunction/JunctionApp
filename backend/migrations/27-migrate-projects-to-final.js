@@ -28,16 +28,15 @@ module.exports = {
             })
             //console.log("found",project._id, JSON.stringify(found))
                 
-                const newProject = {
-                    ...project,
-                    submissionFormAnswers: found.submissionFormAnswers
-                }
+                //  project = {
+                //     ...project,
+                //     submissionFormAnswers: found.submissionFormAnswers
+                // }
 
-                if(project.name === "ReLAI"){
-                console.log(newProject)
-                }
+                project.submissionFormAnswers = found.submissionFormAnswers
+                console.log(project)
                 
-            
+                
             return project.save()
         }
             )
