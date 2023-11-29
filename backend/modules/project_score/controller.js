@@ -85,7 +85,6 @@ controller.getScoreByProjectId = (
     if (track) {
         query.track = track
     }
-
     return ProjectScore.find(query)
 }
 

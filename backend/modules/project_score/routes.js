@@ -12,6 +12,7 @@ const {
     getEventFromParams,
     hasPartnerToken,
     isEventPartner,
+    isOrganiserOrCanSubmitProject,
 } = require('../../common/middleware/events')
 const { registrationAccepted } = require('../email-task/types')
 
@@ -121,9 +122,11 @@ router.get('/event/:slug', getEventFromParams, getPublicScores)
 router.get(
     '/event/:slug/project/:projectId',
     hasToken,
-    isEventOrganiser,
+    isOrganiserOrCanSubmitProject,
+    //isEventOrganiser,
     getScoreByProjectId,
 )
+
 
 router.post('/event/:slug', hasToken, isEventOrganiser, addProjectScore)
 router.put('/event/:slug/:id', hasToken, isEventOrganiser, updateProjectScore)
