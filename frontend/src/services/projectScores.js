@@ -101,7 +101,7 @@ ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount = (
     eventSlug,
     projectScore,
 ) => {
-    console.log('Adding new score from partner account',projectScore._id)
+    console.log('Adding new score from partner account', projectScore._id)
     return _axios.post(
         `/project-scores/review/event/${eventSlug}/${projectScore._id}`,
         projectScore,
