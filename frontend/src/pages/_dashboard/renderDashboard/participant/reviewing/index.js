@@ -65,7 +65,7 @@ export default () => {
 
         return <Complete />
     }
-    console.log("annotator",annotator,annotatorError)
+    console.log("annotator", annotator, annotatorError)
     return (
         <PageWrapper loading={annotatorLoading} error={annotatorError}>
             {renderContent()}
