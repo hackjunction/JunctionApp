@@ -169,7 +169,7 @@ stages:
 
 - stage: Build_eu
   displayName: Build stage
-  #dependsOn: Build
+  dependsOn: Build
   jobs:  
   - job: Build_eu
     steps:
