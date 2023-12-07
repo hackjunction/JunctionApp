@@ -41,9 +41,7 @@ GavelService.editAnnotator = (idToken, eventSlug, annotatorId, edits) => {
 }
 
 GavelService.getAnnotator = (idToken, slug) => {
-    const annotator = _axios.get(`${BASE_ROUTE}/${slug}/annotator`, config(idToken))
-    console.log("getAnnotator", annotator)
-    return annotator
+    return _axios.get(`${BASE_ROUTE}/${slug}/annotator`, config(idToken))
 }
 
 GavelService.beginVoting = (idToken, slug) => {

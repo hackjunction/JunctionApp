@@ -139,9 +139,9 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
-    console.log('created Annatator', annotator)
     const savedAnnator = await annotator.save()
-    return savedAnnator.assignNextProject()
+    const next = savedAnnator.assignNextProject()
+    return next
 }
 
 controller.submitVote = async (event, userId, winningProjectId) => {

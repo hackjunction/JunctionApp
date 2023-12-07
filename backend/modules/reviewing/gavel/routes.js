@@ -41,7 +41,7 @@ router.route('/:slug/annotators').get(
         const annotators = await GavelController.getAnnotatorsForEvent(
             req.event._id,
         )
-        return res.status(200).json("")
+        return res.status(200).json(annotators)
     }),
 )
 
@@ -80,7 +80,7 @@ router
                 req.event,
                 req.user.sub,
             )
-            return res.status(200).json("")
+            return res.status(200).json(annotator)
         }),
     )
     /** Create (initialize) an annotator for an event */
