@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon index.js",
+        "dev": "nodemon --inspect --max_old_space_size=2560 index.js",
         "start": "node --max_old_space_size=2560 index.js",
         "prod": "pm2 start --max_old_space_size=2560 index.js --watch",
         "pipe-logs": "pino-cloudwatch --aws_access_key_id=$AWS_ACCESS_KEY_ID --aws_secret_access_key=$AWS_SECRET_ACCESS_KEY --aws_region=$AWS_REGION --group=$AWS_CLOUDWATCH_LOG_GROUP",

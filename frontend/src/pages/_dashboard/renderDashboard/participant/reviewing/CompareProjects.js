@@ -38,10 +38,12 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const fetchProjects = useCallback(async () => {
         setLoading(true)
         try {
+            console.log("getting next")
             const [prev, next] = await Promise.all([
                 GavelService.getProjectDetails(idToken, prevId),
                 GavelService.getProjectDetails(idToken, nextId),
             ])
+            console.log(prev, next)
             setProjects({ prev, next })
         } catch (err) {
             dispatch(

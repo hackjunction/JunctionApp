@@ -12,6 +12,8 @@
         "only_build": "better-npm-run build",
         "build": "better-npm-run setup && better-npm-run build",
         "setup": "better-npm-run setup",
+        "loadGavelVote": "cd tests && k6 run gavelSubmitVoteStressTest.js",
+        "loadGavelStartVote": "cd tests && k6 run gavelStartVoteStressTest.js",
         "dev:frontend": "cd frontend && npm start",
         "dev:backend": "cd backend && npm run dev",
         "db-sync:prod-to-local": "sh ./scripts/sync-production-to-local.sh",
