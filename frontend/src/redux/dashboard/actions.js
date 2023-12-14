@@ -673,7 +673,8 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
 
 export const updateAnnotator = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-
+    //get idToken for gavel start voting stress test
+    //console.log(idToken) 
     const { error } = await dispatch({
         type: ActionTypes.UPDATE_ANNOTATOR,
         promise: GavelService.getAnnotator(idToken, slug), //,
@@ -749,8 +750,11 @@ export const setFirstProjectSeen = slug => async (dispatch, getState) => {
 export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
+    //get idToken and winnerId for gavel voting stress test
+    console.log(idToken, slug, winnerId)
     try {
         const annotator = await GavelService.submitVote(idToken, slug, winnerId)
+        console.log(annotator)
         dispatch({
             type: ActionTypes.EDIT_ANNOTATOR,
             payload: annotator,

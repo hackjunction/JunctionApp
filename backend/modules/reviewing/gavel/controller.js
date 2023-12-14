@@ -139,8 +139,13 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
+    //FOR GAVEL START STRESS TEST: 
+    //comment these out
     const savedAnnator = await annotator.save()
     const next = savedAnnator.assignNextProject()
+
+    //use this instead
+    //const next = annotator.assignNextProject() //not saving for testing purposes
     return next
 }
 
@@ -210,9 +215,14 @@ controller.submitVote = async (event, userId, winningProjectId) => {
         loser: loser._id,
     })
 
+    //FOR GAVEL VOTE STRESS TEST:
+    //comment this out
     await Promise.all([loser.save(), winner.save(), decision.save()])
     const updatedAnnotator = await annotator.assignNextProject()
 
+
+    //use this instead
+    //const updatedAnnotator = annotator
     return updatedAnnotator
 }
 
