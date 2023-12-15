@@ -674,7 +674,7 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
 export const updateAnnotator = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     //get idToken for gavel start voting stress test
-    //console.log(idToken) 
+    console.log(idToken) 
     const { error } = await dispatch({
         type: ActionTypes.UPDATE_ANNOTATOR,
         promise: GavelService.getAnnotator(idToken, slug), //,
