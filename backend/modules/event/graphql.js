@@ -28,10 +28,14 @@ const {
     HackerpackInput,
     TravelGrantConfig,
     TravelGrantConfigInput,
+    // MongoFile,
+    // MongoFileInput,
     RegistrationSection,
     RegistrationSectionInput,
     EventTag,
     EventTagInput,
+    EventRecruiters,
+    EventRecruitersInput,
     RegistrationConfig,
     RegistrationConfigInput,
     EventTheme,
@@ -43,7 +47,11 @@ const {
     MeetingRoom,
     MeetingRoomInput,
     EventPageScript,
+    SubmissionDefaultFieldsInput,
+    SubmissionDefaultFields,
     EventPageScriptInput,
+    ScoreCriteriaSettings,
+    ScoreCriteriaSettingsInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -114,7 +122,6 @@ const EmailConfigType = new GraphQLObjectType({
         },
     },
 })
-
 
 const EventInput = new GraphQLInputObjectType({
     name: 'EventInput',
@@ -214,11 +221,17 @@ const EventInput = new GraphQLInputObjectType({
         allowProjectSubmissionsPerChallenge: {
             type: GraphQLBoolean,
         },
+        allowVoteOnOwnProject: {
+            type: GraphQLBoolean,
+        },
         owner: {
             type: GraphQLString,
         },
         organisers: {
             type: GraphQLList(GraphQLString),
+        },
+        recruiters: {
+            type: GraphQLList(EventRecruitersInput),
         },
         organizations: {
             type: GraphQLList(GraphQLID),
@@ -285,6 +298,22 @@ const EventInput = new GraphQLInputObjectType({
         },
         meetingRooms: {
             type: GraphQLList(MeetingRoomInput),
+        },
+        // map: {
+        //     type: MongoFileInput,
+        // },
+        /** DELETE LATER: test area */
+        submissionFormQuestions: {
+            type: GraphQLList(RegistrationSectionInput),
+        },
+        submissionFormEnabledFields: {
+            type: GraphQLList(GraphQLString),
+        },
+        submissionFormDefaultFields: {
+            type: SubmissionDefaultFieldsInput,
+        },
+        scoreCriteriaSettings: {
+            type: ScoreCriteriaSettingsInput,
         },
     },
 })
@@ -395,6 +424,9 @@ const EventType = new GraphQLObjectType({
             organisers: {
                 type: GraphQLList(GraphQLString),
             },
+            recruiters: {
+                type: GraphQLList(EventRecruiters),
+            },
             organizations: {
                 type: GraphQLList(OrganizationType),
             },
@@ -461,6 +493,9 @@ const EventType = new GraphQLObjectType({
             meetingRooms: {
                 type: GraphQLList(MeetingRoom),
             },
+            // map: {
+            //     type: MongoFile,
+            // },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
@@ -488,6 +523,19 @@ const EventType = new GraphQLObjectType({
                 type: require('../registration/graphql').Types.RegistrationType,
             },
             */
+            /** DELETE LATER: test area */
+            submissionFormQuestions: {
+                type: GraphQLList(RegistrationSection),
+            },
+            submissionFormEnabledFields: {
+                type: GraphQLList(GraphQLString),
+            },
+            submissionFormDefaultFields: {
+                type: SubmissionDefaultFields,
+            },
+            scoreCriteriaSettings: {
+                type: ScoreCriteriaSettings,
+            },
         }
     },
 })
@@ -543,6 +591,14 @@ const QueryType = new GraphQLObjectType({
         },
         roomsByEvent: {
             type: GraphQLList(MeetingRoom),
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        eventScoreCriteriaSettings: {
+            type: ScoreCriteriaSettings,
             args: {
                 eventId: {
                     type: GraphQLNonNull(GraphQLID),

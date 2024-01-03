@@ -113,6 +113,18 @@ const variantStyles = (theme, props) => {
                 margin: theme.spacing(3),
             }
         }
+        case 'outlined-small': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`,
+                borderRadius: '28px',
+                height: '2em',
+                width: '10em',
+                fontSize: '10px',
+                margin: theme.spacing(3),
+            }
+        }
         case 'contained-large': {
             return {
                 backgroundColor: color.main,
@@ -147,6 +159,56 @@ const variantStyles = (theme, props) => {
                     color: color.contrastText,
                     opacity: 0.5,
                 },
+            }
+        }
+        case 'jOutlined': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.contrastText,
+                border: `2px solid ${color.dark}`,
+                borderRadius: theme.spacing(4),
+                padding: theme.spacing(1, 2),
+                margin: 0,
+            }
+        }
+        case 'jIconText': {
+            return {
+                backgroundColor: 'transparent',
+                color: color.main,
+                padding: theme.spacing(1, 2),
+                margin: 0,
+                fontWeight: 'fontWeightRegular',
+                fontSize: theme.spacing(1, 4),
+            }
+        }
+        case 'jContained': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `2px solid ${color.main}`,
+                borderRadius: theme.spacing(4),
+                padding: theme.spacing(1, 2),
+                margin: 0,
+                '&:hover': {
+                    backgroundColor: color.dark,
+                    border: `2px solid ${color.dark}`,
+                },
+                '&.Mui-disabled': {
+                    backgroundColor: color.dark,
+                    color: color.contrastText,
+                    opacity: 0.5,
+                },
+            }
+        }
+        case 'jOutlinedBox': {
+            return {
+                backgroundColor: color.main,
+                color: color.contrastText,
+                border: `1px solid ${color.lightBorder}`,
+                borderRadius: theme.spacing(1),
+                padding: theme.spacing(2),
+                margin: 0,
+                width: '100%',
             }
         }
         default: {

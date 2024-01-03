@@ -114,7 +114,11 @@ export default ({ visible, userIds = [], onClose }) => {
     const handleTestEmail = useCallback(() => {
         if (!validate()) return
         setLoading(true)
-        EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: user.email, params: params })
+        const fromObject = {
+            email: event.emailConfig.senderEmail ? event.emailConfig.senderEmail : 'noreply@hackjunction.com',
+            name: event.emailConfig.senderName ? event.emailConfig.senderName : 'Junction',
+        }
+        EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: user.email, params: params, from: fromObject})
             .then(() => {
                 dispatch(
                     SnackbarActions.success(

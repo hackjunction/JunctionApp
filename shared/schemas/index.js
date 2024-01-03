@@ -7,14 +7,17 @@ const Hackerpack = require('./Hackerpack')
 const CloudinaryImage = require('./CloudinaryImage')
 const Education = require('./Education')
 const EventTag = require('./EventTag')
+const EventRecruiters = require('./Recruiter')
 const IBANAccount = require('./IBANAccount')
 const LegalName = require('./LegalName')
 const PhoneNumber = require('./PhoneNumber')
+const MongoFile = require('./MongoFile')
 const RecruitmentOptions = require('./RecruitmentOptions')
 const RegistrationConfig = require('./RegistrationConfig')
 const RegistrationQuestion = require('./RegistrationQuestion')
 const RegistrationQuestionSettings = require('./RegistrationQuestionSettings')
 const RegistrationSection = require('./RegistrationSection')
+const RecruiterEvents = require('./RecruiterEvents')
 const Role = require('./Role')
 const Skill = require('./Skill')
 const TeamOptions = require('./TeamOptions')
@@ -30,6 +33,8 @@ const EventTimeline = require('./EventTimeline')
 const Checklist = require('./Checklist')
 const MeetingRoom = require('./MeetingRoom')
 const EventPageScript = require('./EventPageScript')
+const SubmissionDefaultFields = require('./SubmissionDefaultFields')
+const ScoreCriteriaSettings = require('./ScoreCriteriaSettings')
 // const GraphQLSchema = makeExecutableSchema
 
 const SharedSchema = new GraphQLSchema({
@@ -46,9 +51,13 @@ const SharedSchema = new GraphQLSchema({
         Education.graphql,
         EventTag.graphql,
         EventTag.graphqlInput,
+        EventRecruiters.graphql,
+        EventRecruiters.graphqlInput,
         IBANAccount.graphql,
         LegalName.graphql,
         PhoneNumber.graphql,
+        MongoFile.graphql,
+        MongoFile.graphqlInput,
         RecruitmentOptions.graphql,
         RegistrationConfig.graphql,
         RegistrationConfig.graphqlInput,
@@ -56,6 +65,8 @@ const SharedSchema = new GraphQLSchema({
         RegistrationQuestionSettings.graphql,
         RegistrationSection.graphql,
         RegistrationSection.graphqlInput,
+        RecruiterEvents.graphql,
+        RecruiterEvents.graphqlInput,
         Role.graphql,
         Skill.graphql,
         TeamOptions.graphql,
@@ -80,7 +91,11 @@ const SharedSchema = new GraphQLSchema({
         MeetingRoom.graphql,
         MeetingRoom.graphqlInput,
         EventPageScript.graphql,
+        SubmissionDefaultFields.graphql,
+        SubmissionDefaultFields.graphqlInput,
         EventPageScript.graphqlInput,
+        ScoreCriteriaSettings.graphql,
+        ScoreCriteriaSettings.graphqlInput,
     ],
 })
 

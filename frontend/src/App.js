@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react'
 
-import { ConnectedRouter } from 'connected-react-router'
+import { ConnectedRouter, push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/client'
 
@@ -33,24 +33,23 @@ export default ({ history, location }) => {
     }, [location, history])
 
     useEffect(() => {
-        
         if (isAuthenticated) {
             if (isSessionExpired) {
                 setLoading(true)
-                console.log("renewing session now")
+                console.log('renewing session now')
                 dispatch(AuthActions.renewSession()).then(() => {
                     setLoading(false)
                 })
-             } else {
-                 setLoading(false)
-             }
+            } else {
+                setLoading(false)
+            }
         } else {
             setLoading(false)
         }
     }, [dispatch, isAuthenticated, isSessionExpired])
 
     return (
-        <ApolloProvider client={apolloClient(idToken)}>
+        <ApolloProvider client={apolloClient(idToken) /*TODO: fails to fetch when renewing session causing a loop. fix! */}>
             <ConnectedRouter history={history}>
                 <Suspense fallback={null}>
                     {!loading && (
@@ -121,7 +120,11 @@ export default ({ history, location }) => {
                                 async
                                 src="https://platform.twitter.com/widgets.js"
                             ></script>
+                            {/* {isAuthenticated ?
+                                <Redirect to="/dashboard" /> :} */}
                             <Redirect to="/" />
+
+
                         </Switch>
                     )}
                 </Suspense>

@@ -57,6 +57,7 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
 
     const pushRoute = useCallback(
         path => {
+            console.log("pushing", `${baseRoute}${path}`)
             dispatch(push(`${baseRoute}${path}`))
         },
         [baseRoute, dispatch],
@@ -68,12 +69,15 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
 
     const activeIndex = useMemo(() => {
         const relativePath = location.pathname.replace(baseRoute, '')
+        console.log("relativePath matTab", relativePath)
         const idx = findIndex(tabs, item => item.path === relativePath)
+        console.log("safeIndex matTab", idx, idx !== -1)
         return idx
     }, [baseRoute, location.pathname, tabs])
 
     useEffect(() => {
         if (activeIndex === -1) {
+            console.log("pushRoute(tabs[0].path)", pushRoute(tabs[0].path))
             pushRoute(tabs[0].path)
         }
     }, [tabs, activeIndex, pushRoute])
@@ -106,6 +110,7 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
             <Box mt={3} p={2}>
                 <Switch>
                     {tabs.map(({ key, path, component }, index) => {
+
                         return (
                             <Route
                                 key={key}
@@ -115,7 +120,7 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
                             />
                         )
                     })}
-                    <Redirect to={baseRoute} />
+
                 </Switch>
             </Box>
         </div>

@@ -9,6 +9,10 @@ export const UPDATE_EVENTS = 'recruitment/UPDATE_EVENTS'
 export const UPDATE_ACTION_HISTORY = 'recruitment/UPDATE_ACTION_HISTORY'
 export const UPDATE_SEARCH_RESULTS = 'recruitment/UPDATE_SEARCH_RESULTS'
 
+export const UPDATE_RECRUITERS_EVENT = 'recruitment/UPDATE_RECRUITERS_EVENT'
+export const ADD_RECRUITERS_EVENT = 'recruitment/ADD_RECRUITERS_EVENT'
+export const REMOVE_RECRUITERS_EVENT = 'recruitment/REMOVE_RECRUITERS_EVENT'
+
 /* Admin panel actions */
 export const ADMIN_UPDATE_RECRUITERS = 'recruitment/ADMIN_UPDATE_RECRUITERS'
 export const ADMIN_UPDATE_SEARCH_RESULTS =

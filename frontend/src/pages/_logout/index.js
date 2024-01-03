@@ -11,7 +11,6 @@ export default () => {
 
     useEffect(() => {
         dispatch(AuthActions.clearSession())
-        console.log("clearing...")
         dispatch(push('/'))
     }, [dispatch])
 

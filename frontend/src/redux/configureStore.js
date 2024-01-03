@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
+import apolloClient from '../graphql/client'
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 import { routerMiddleware } from 'connected-react-router'

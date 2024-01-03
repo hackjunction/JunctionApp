@@ -47,6 +47,24 @@ function isOrganiser(user, event) {
     return null
 }
 
+function isPartner(user, event) {
+    console.log('isPartner func running')
+    if (!event) {
+        return new NotFoundError('Event does not exist')
+    }
+    if (event.recruiters.length > 0) {
+        const recruiterIds = event.recruiters.map(recruiter => {
+            return recruiter.recruiterId
+        })
+        if (recruiterIds.indexOf(user.sub) === -1) {
+            return new InsufficientPrivilegesError(
+                'Must be partner in the of event',
+            )
+        }
+    }
+    return null
+}
+
 function canRegister(user, event) {
     if (!event) {
         return new NotFoundError('Event does not exist')
@@ -178,9 +196,21 @@ const EventMiddleware = {
     isEventOrganiser: async (req, res, next) => {
         // TODO this method is called quite often. Not really problem here, but a reminder to run a profiler on the frontend at some point
         const event = await getEventFromParams(req.params)
-        // TODO what the fuck is the logic with these? :D if true, return null?
         const superAdminError = isSuperAdmin(req.user)
         const error = isOrganiser(req.user, event)
+        if (error && superAdminError) {
+            next(error)
+        } else {
+            req.event = event
+            next()
+        }
+    },
+    isEventPartner: async (req, res, next) => {
+        console.log('isEventPartner running')
+        // TODO this method is called quite often. Not really problem here, but a reminder to run a profiler on the frontend at some point
+        const event = await getEventFromParams(req.params)
+        const superAdminError = isSuperAdmin(req.user)
+        const error = isPartner(req.user, event)
         if (error && superAdminError) {
             next(error)
         } else {
@@ -229,6 +259,24 @@ const EventMiddleware = {
         ])
         const error = canSubmitProject(event, registration, team)
         if (error) {
+            next(error)
+        } else {
+            req.event = event
+            req.registration = registration
+            req.team = team
+            next()
+        }
+    },
+    isOrganiserOrCanSubmitProject: async (req, res, next) => {
+        const event = await getEventFromParams(req.params)
+        const [registration, team] = await Promise.all([
+            getRegistration(req.user, event),
+            getTeamWithMeta(req.user, event),
+        ])
+        const superAdminError = isSuperAdmin(req.user)
+        const organiserError = isOrganiser(req.user, event)
+        const projectError = canSubmitProject(event, registration, team)
+        if ((organiserError && superAdminError) && projectError) {
             next(error)
         } else {
             req.event = event

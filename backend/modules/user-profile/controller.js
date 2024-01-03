@@ -1,6 +1,7 @@
 const { UserProfile } = require('./model')
 const { NotFoundError } = require('../../common/errors/errors')
 const UserProfileHelpers = require('./helpers')
+const userProfileUtils = require('../../common/utils/userProfileUtils')
 
 const controller = {}
 
@@ -17,12 +18,26 @@ controller.getUserProfile = userId => {
     })
 }
 
+controller.getUserPublicProfileById = userId => {
+    return UserProfile.findOne({
+        userId,
+    }).then(userProfile => {
+        if (!userProfile) {
+            throw new NotFoundError(
+                `UserProfile with id ${userId} does not exist`,
+            )
+        }
+        return userProfileUtils.publicProfileBuilder(userProfile)
+    })
+}
+
 controller.getUserProfiles = userIds => {
-    return UserProfile.find({
+    const users = UserProfile.find({
         userId: {
             $in: userIds,
         },
     })
+    return users
 }
 
 controller.queryProfiles = async query => {
@@ -40,6 +55,7 @@ controller.getUserProfilesPublic = userIds => {
         return UserProfile.publicFields(profiles)
     })
 }
+
 
 controller.createUserProfile = (data, userId) => {
     const userProfile = new UserProfile({
@@ -129,12 +145,46 @@ controller.getRecruiters = () => {
     })
 }
 
-controller.updateRecruiter = (userId, events, organisation) => {
+controller.updateRecruiter = (userId, event, organisation) => {
     return UserProfile.findOne({ userId }).then(user => {
-        user.recruiterEvents = events
-        user.recruiterOrganisation = organisation
+        user.recruiterEvents = user.recruiterEvents.concat(
+            {
+                eventId: event,
+                organisation: organisation,
+            },
+        )
+        return user.save()
+    })
+
+
+}
+
+controller.deleteRecruiter = (userId, event) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = user.recruiterEvents.filter(recruiterEvent =>
+            recruiterEvent.eventId !== event)
         return user.save()
     })
 }
+
+controller.updateRecruitersAdmin = (userId, events, organisation) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = user.recruiterEvents.concat(
+            events.map(event => ({
+                eventId: event,
+                organisation: organisation,
+            })))
+        return user.save()
+    })
+}
+
+controller.deleteRecruitersAdmin = (userId) => {
+    return UserProfile.findOne({ userId }).then(user => {
+        user.recruiterEvents = []
+        return user.save()
+    })
+}
+
+
 
 module.exports = controller

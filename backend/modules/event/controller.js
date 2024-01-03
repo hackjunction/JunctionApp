@@ -91,6 +91,21 @@ controller.removeOrganiser = (event, organiserId) => {
     return event.save()
 }
 
+controller.addRecruiter = (event, recruiterId, organization) => {
+    event.recruiters = _.concat(event.recruiters, {
+        recruiterId: recruiterId,
+        organization: organization,
+    })
+    return event.save()
+}
+
+controller.removeRecruiter = (event, recruiterId) => {
+    event.recruiters = _.filter(event.recruiters, recruiter => {
+        return recruiter.recruiterId !== recruiterId
+    })
+    return event.save()
+}
+
 controller.addOrganization = (event, organizationSlug) => {
     event.organizations = _.concat(event.organizations, organizationSlug)
     return event.save()

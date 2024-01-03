@@ -13,6 +13,9 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
+//import Button from 'components/generic/Button'
+import { Button, IconButton } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import { CSVLink } from 'react-csv'
@@ -129,7 +132,7 @@ export default ({
             }
         })
     }, [attendees, teams])
-
+    console.log("attendeesWithTeam",attendeesWithTeam)
     const columns = useMemo(() => {
         return [
             {
@@ -164,6 +167,14 @@ export default ({
                 ...Filters.MultipleSelect,
                 ...Sorters.Alphabetic,
                 Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
+            },
+            {
+                Header: 'Login type',
+                accessor: 'user',
+                ...Filters.MultipleSelect,
+                ...Sorters.Alphabetic,
+                Cell: ({ cell: { value } }) =>
+                    value.split('|')[0]
             },
             {
                 Header: 'Rating',

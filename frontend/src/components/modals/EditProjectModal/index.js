@@ -304,7 +304,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                                     />
                                                     <Box p={2} />
                                                     <Button
-                                                        color="theme_turquoise"
+                                                        color="primary"
                                                         variant="contained"
                                                         type="submit"
                                                         disabled={isSubmitting}

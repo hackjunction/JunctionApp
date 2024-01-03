@@ -10,8 +10,10 @@ const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
 const HackerpackSchema = require('@hackjunction/shared/schemas/Hackerpack')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const Certificate = require('@hackjunction/shared/schemas/Certificate')
+const mongoFile = require('@hackjunction/shared/schemas/MongoFile')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
+const EventRecruitersSchema = require('@hackjunction/shared/schemas/Recruiter')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
 const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
@@ -25,6 +27,10 @@ const EventPageScriptSchema = require('@hackjunction/shared/schemas/EventPageScr
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../upload/helper')
+const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
+const SubmissionDefaultFieldsSchema = require('@hackjunction/shared/schemas/SubmissionDefaultFields')
+const SubmissionDefaultFields = require('@hackjunction/shared/constants/submission-default-fields')
+const ScoreCriteriaSettingsSchema = require('@hackjunction/shared/schemas/ScoreCriteriaSettings')
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -87,6 +93,7 @@ const EventSchema = new mongoose.Schema({
     coverImage: CloudinaryImageSchema.mongoose,
     logo: CloudinaryImageSchema.mongoose,
     certificate: Certificate.mongoose,
+    //map: mongoFile.mongoose,
     /** Event configuration */
     eventType: {
         type: String,
@@ -251,6 +258,10 @@ const EventSchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
+    recruiters: {
+        type: [EventRecruitersSchema.mongoose],
+        default: [],
+    },
     organizations: {
         type: [String],
         default: [],
@@ -309,7 +320,8 @@ const EventSchema = new mongoose.Schema({
                 validator: function (v) {
                     return /\S+@\S+\.\S+/.test(v)
                 },
-                message: (props) => `${props.value} is not a valid email address!`
+                message: props =>
+                    `${props.value} is not a valid email address!`,
             },
         },
         senderName: {
@@ -396,15 +408,21 @@ const EventSchema = new mongoose.Schema({
     meetingRooms: {
         type: [MeetingRoomSchema.mongoose],
         default: [],
-        /* validate: [
-            function (val) {
-                if (!this.meetingsEnabled) {
-                    return !val.length > 0
-                }
-                return true
-            },
-            'cant have meetingrooms if meetings are not enabled',
-        ], */
+    },
+    submissionFormQuestions: {
+        type: [RegistrationSectionSchema.mongoose],
+    },
+    submissionFormEnabledFields: {
+        type: [String],
+        default: ProjectDefaultFields,
+    },
+    submissionFormDefaultFields: {
+        type: SubmissionDefaultFieldsSchema.mongoose,
+        default: SubmissionDefaultFields,
+    },
+    //New fields for score criteria and score settings
+    scoreCriteriaSettings: {
+        type: ScoreCriteriaSettingsSchema.mongoose,
     },
 })
 
