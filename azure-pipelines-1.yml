@@ -239,63 +239,63 @@ stages:
 - stage: Build_asia
   displayName: Build stage
   jobs: 
-  - job: Build_asia
-    # dependsOn: Build_eu
-    steps:
+  # - job: Build_asia
+  #   # dependsOn: Build_eu
+  #   steps:
     
-    - task: DownloadSecureFile@1
-      displayName: 'download ASIA backendend'
-      inputs:
-        secureFile: 'BACKEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+  #   - task: DownloadSecureFile@1
+  #     displayName: 'download ASIA backendend'
+  #     inputs:
+  #       secureFile: 'BACKEND_ENV_FILE_ASIA' # string. Required. Secure File. 
 
-    - task: CopyFiles@2
-      displayName: 'copy asia backendend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: BACKEND_ENV_FILE_ASIA
-        TargetFolder: './backend'
+  #   - task: CopyFiles@2
+  #     displayName: 'copy asia backendend'
+  #     inputs:
+  #       SourceFolder: '$(Agent.TempDirectory)'
+  #       Contents: BACKEND_ENV_FILE_ASIA
+  #       TargetFolder: './backend'
 
-    - script: mv ./backend/BACKEND_ENV_FILE_ASIA ./backend/.env
-      displayName: 'rename asia .env'
-    - task: DownloadSecureFile@1
-      displayName: 'download asia frontend'
-      inputs:
-        secureFile: 'FRONTEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+  #   - script: mv ./backend/BACKEND_ENV_FILE_ASIA ./backend/.env
+  #     displayName: 'rename asia .env'
+  #   - task: DownloadSecureFile@1
+  #     displayName: 'download asia frontend'
+  #     inputs:
+  #       secureFile: 'FRONTEND_ENV_FILE_ASIA' # string. Required. Secure File. 
 
-    - task: CopyFiles@2
-      displayName: 'copy asia frontend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: FRONTEND_ENV_FILE_ASIA
-        TargetFolder: './frontend'
+  #   - task: CopyFiles@2
+  #     displayName: 'copy asia frontend'
+  #     inputs:
+  #       SourceFolder: '$(Agent.TempDirectory)'
+  #       Contents: FRONTEND_ENV_FILE_ASIA
+  #       TargetFolder: './frontend'
 
-    - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
-      displayName: 'rename asia .env'
+  #   - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
+  #     displayName: 'rename asia .env'
 
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '12.20.1'
-      displayName: 'Install Node.js'
+  #   - task: NodeTool@0
+  #     inputs:
+  #       versionSpec: '12.20.1'
+  #     displayName: 'Install Node.js'
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          node -v
-          npm -v
-          npm install
-          npm run build
+  #   - task: Bash@3
+  #     inputs:
+  #       targetType: 'inline'
+  #       script: |
+  #         node -v
+  #         npm -v
+  #         npm install
+  #         npm run build
 
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop_asia
+  #   - task: ArchiveFiles@2
+  #     displayName: 'Archive files'
+  #     inputs:
+  #       rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+  #       includeRootFolder: false
+  #       archiveType: zip
+  #       archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+  #       replaceExistingArchive: true
+  #   - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+  #     artifact: drop_asia
 
 
   # - job: Build_africa
