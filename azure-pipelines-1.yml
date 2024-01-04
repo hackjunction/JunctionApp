@@ -240,7 +240,7 @@ stages:
   displayName: Build stage
   jobs: 
   - job: Build_asia
-    dependsOn: Build_eu
+    # dependsOn: Build_eu
     steps:
     
     - task: DownloadSecureFile@1
