@@ -5,47 +5,47 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-
-- stage: Build_asia
-  displayName: Build stage asia
-  jobs:
-  - job: Build_asia
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
     steps:
     
     - task: DownloadSecureFile@1
-      displayName: 'download ASIA backendend'
+      displayName: 'download STAG backendend'
       inputs:
-        secureFile: 'BACKEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+        secureFile: 'BACKEND_ENV_FILE_STAG' # string. Required. Secure File. 
 
     - task: CopyFiles@2
-      displayName: 'copy asia backendend'
+      displayName: 'copy STAG backendend'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
-        Contents: BACKEND_ENV_FILE_ASIA
+        Contents: BACKEND_ENV_FILE_STAG
         TargetFolder: './backend'
 
-    - script: mv ./backend/BACKEND_ENV_FILE_ASIA ./backend/.env
-      displayName: 'rename asia .env'
+    - script: mv ./backend/BACKEND_ENV_FILE_STAG ./backend/.env
+      displayName: 'rename STAG .env'
     - task: DownloadSecureFile@1
-      displayName: 'download asia frontend'
+      displayName: 'download STAG frontend'
       inputs:
-        secureFile: 'FRONTEND_ENV_FILE_ASIA' # string. Required. Secure File. 
+        secureFile: 'FRONTEND_ENV_FILE_STAG' # string. Required. Secure File. 
 
     - task: CopyFiles@2
-      displayName: 'copy asia frontend'
+      displayName: 'copy STAG frontend'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
-        Contents: FRONTEND_ENV_FILE_ASIA
+        Contents: FRONTEND_ENV_FILE_STAG
         TargetFolder: './frontend'
 
-    - script: mv ./frontend/FRONTEND_ENV_FILE_ASIA ./frontend/.env
-      displayName: 'rename asia .env'
+    - script: mv ./frontend/FRONTEND_ENV_FILE_STAG ./frontend/.env
+      displayName: 'rename STAG .env'
 
     - script: ls -a ./frontend
       displayName: 'ls' 
 
     - script: ls -Rn
       displayName: 'ls'
+    
 
     - task: NodeTool@0
       inputs:
@@ -70,15 +70,15 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop_asia
+      artifact: drop
 
-  - deployment: VMDeploy_ASIA
-    dependsOn: Build_asia
-    displayName: DEPLOY ASIA
+
+  - deployment: VMDeploy
+    dependsOn: Build
+    displayName: Web deploy
     environment:
-      name:  PROD
+      name:  STAGING
       resourceType: VirtualMachine
-      tags: asia
     strategy:
       runOnce:
         preDeploy:
@@ -86,7 +86,7 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current' 
-                artifactName: drop_asia
+                artifactName: drop
                 targetPath: '$(Pipeline.Workspace)/drop'
 
             - script: echo initialize, cleanup, backup, install certs
@@ -97,20 +97,20 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                # Modify deployment script based on the app type
+                Modify deployment script based on the app type
                 echo "Starting deployment script run"
                
 
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop_asia/$(Build.BuildId).zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               destinationFolder: '$(Pipeline.Workspace)/japp' 
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
-
+              
           - task: DeleteFiles@1
             inputs:
-              SourceFolder: '$(Pipeline.Workspace)/drop_asia' 
+              SourceFolder: '$(Pipeline.Workspace)/drop' 
               Contents: '$(Build.BuildId).zip'
 
           - task: Bash@3
@@ -120,6 +120,7 @@ stages:
                 cd /home/azureuser/azagent/_work/1/japp
                 pm2 restart index
                 sudo systemctl restart nginx
+             
 
         routeTraffic:
           steps:
