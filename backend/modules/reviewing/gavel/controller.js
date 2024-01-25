@@ -139,7 +139,7 @@ controller.initAnnotator = async (event, userId) => {
         team: team ? team._id : null,
         track: assignedTrack,
     })
-    //FOR GAVEL START STRESS TEST: 
+    //FOR GAVEL START STRESS TEST:
     //comment these out
     const savedAnnator = await annotator.save()
     const next = savedAnnator.assignNextProject()
@@ -173,6 +173,8 @@ controller.submitVote = async (event, userId, winningProjectId) => {
             ? annotator.prev
             : annotator.next
 
+    // This calculation might scheduled to happen only when reviewing is closed
+    // It could scheduled to when reviewing is closed or requested manually by organizer
     const [loser, winner] = await Promise.all([
         GavelProject.findById(losingProjectId),
         GavelProject.findById(winningProjectId),
@@ -219,7 +221,6 @@ controller.submitVote = async (event, userId, winningProjectId) => {
     //comment this out
     await Promise.all([loser.save(), winner.save(), decision.save()])
     const updatedAnnotator = await annotator.assignNextProject()
-
 
     //use this instead
     //const updatedAnnotator = annotator

@@ -12,6 +12,13 @@ import Filters from './Filters'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
 export default ({ event, projects }) => {
+    console.log('event :>> ', event)
+    console.log('projects :>> ', projects)
+    console.log('Project finalists :>> ', event?.finalists)
+    console.log(
+        'Project finalist details :>> ',
+        projects.filter(project => project.id === project.finalistDetails),
+    )
     const [activeFilter, setActiveFilter] = useState('')
     const dispatch = useDispatch()
 
@@ -74,12 +81,9 @@ export default ({ event, projects }) => {
             if (!items) return null
             console.log(items)
 
-           
-
-            const sorted = items.sort(function(a,b){
+            const sorted = items.sort(function (a, b) {
                 return new Date(b.updatedAt) - new Date(a.updatedAt)
-            }
-            )
+            })
             // sortBy(items, item => {
             //     return -1 * item.updatedAt
             // })
@@ -117,6 +121,8 @@ export default ({ event, projects }) => {
                 return renderTrackPreviews()
             case 'by-challenge':
                 return renderChallengePreviews()
+            case 'by-finalist':
+                return renderProjectGrid()
             default:
                 return renderProjectGrid()
         }

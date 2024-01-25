@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
     Grid,
@@ -39,14 +39,57 @@ export default () => {
     const rankingsOverall = useSelector(OrganiserSelectors.rankingsOverall)
     // const allProjects = useSelector(OrganiserSelectors.projects);
     const allProjectsMap = useSelector(OrganiserSelectors.projectsMap)
+    const projectNameMap = Object.keys(allProjectsMap)
+    console.log('projectNameMap :>> ', projectNameMap)
+    console.log('rankingsOverall :>> ', rankingsOverall)
 
-    const [dragDropState, setDragDropState] = useState({
-        top: rankingsOverall?.rankings ?? [],
-        bottom: [],
-    })
+    // const [dragDropState, setDragDropState] = useState({
+    //     top: [],
+    //     bottom: [],
+    // })
+
+    // if (rankingsOverall?.rankings && projectNameMap) {
+    //     console.log('setting dragDropState')
+    //     setDragDropState(current => ({
+    //         ...current,
+    //         top: rankingsOverall?.rankings ?? [],
+    //         bottom: projectNameMap,
+    //     }))
+    // }
+
+    // const unrankedProjects = useMemo(() => {
+    //     setDragDropState(current => ({
+    //         ...current,
+    //         top: rankingsOverall?.rankings ?? [],
+    //         bottom: projectNameMap ?? [],
+    //     }))
+    // }, [rankingsOverall, projectNameMap])
+
+    const [dragDropState, setDragDropState] = useState(
+        useMemo(() => {
+            return {
+                top: rankingsOverall?.rankings ?? [],
+                bottom: projectNameMap,
+            }
+        }, [rankingsOverall, projectNameMap]),
+    )
+
+    useEffect(() => {
+        console.log('dragdropstate changing')
+        setDragDropState(current => {
+            console.log('current :>> ', current)
+            return {
+                top: rankingsOverall?.rankings ?? [],
+                bottom: projectNameMap,
+            }
+        })
+    }, [])
+
+    console.log('dragDropState :>> ', dragDropState)
 
     const renderRankedItem = useCallback(
         (id, index) => {
+            console.log('id of ranked item :>> ', id)
             const project = allProjectsMap[id]
 
             return (
@@ -68,6 +111,7 @@ export default () => {
 
     const renderUnrankedItem = useCallback(
         (id, index) => {
+            console.log('id of UNRANKED item :>> ', id)
             const project = allProjectsMap[id]
 
             return (
@@ -106,6 +150,17 @@ export default () => {
                         bottomTitle="Unranked projects"
                         renderBottomItem={renderUnrankedItem}
                     />
+                    <h1>Debug</h1>
+                    <h2>DragDropState</h2>
+                    <pre>{JSON.stringify(dragDropState, null, 2)}</pre>
+                    <h2>rankingsOverall</h2>
+                    <pre>{JSON.stringify(rankingsOverall, null, 2)}</pre>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <h2>projectNameMap</h2>
+                    <pre>{JSON.stringify(projectNameMap, null, 2)}</pre>
                 </Paper>
             </Grid>
         </Grid>

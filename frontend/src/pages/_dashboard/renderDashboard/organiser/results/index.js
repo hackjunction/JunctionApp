@@ -15,6 +15,7 @@ import ChallengesTab from './challenges'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 export default () => {
+    console.log('THIS IS THE RESULTS PAGE')
     const event = useSelector(OrganiserSelectors.event)
     const location = useLocation()
     const match = useRouteMatch()

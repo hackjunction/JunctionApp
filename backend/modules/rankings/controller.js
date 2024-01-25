@@ -9,6 +9,7 @@ const Rankings = require('./model')
 
 const WinnerVoteController = require('../winner-votes/controller')
 const GavelController = require('../reviewing/gavel/controller')
+const EventController = require('../event/controller')
 
 const { ForbiddenError } = require('../../common/errors/errors')
 
@@ -79,6 +80,7 @@ controller.updateChallengeResults = (event, challenge, rankings) => {
 }
 
 controller.getOverallResults = event => {
+    console.log('>>>> Getting OVERALL results for event', event.slug)
     return Rankings.findOne({
         event: event._id,
         tag: 'overall',
@@ -100,7 +102,9 @@ controller.updateOverallResults = (event, rankings) => {
     )
 }
 
-controller.getAllResultsForEvent = async event => {
+controller.getAllResultsForEvent = async eventSlug => {
+    console.log('>>>> Getting ALL results for event', eventSlug)
+    const event = await EventController.getEventBySlug(eventSlug)
     const raw = await Rankings.find({ event: event._id })
     const result = {
         overall: null,
