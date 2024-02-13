@@ -30,4 +30,5 @@ module.exports = {
     Themes: require('./constants/themes'),
     Universities: require('./constants/universities'),
     Utils: require('./helpers/utils'),
+    GradientList: require('./constants/gradient-list'),
 }

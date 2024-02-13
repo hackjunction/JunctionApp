@@ -36,8 +36,12 @@ export default () => {
         )
     }
 
-    const fieldValue = field =>
-        formikCont.values[`submissionFormDefaultFields`][`${field}`]
+    const fieldValue = field => {
+        return (
+            formikCont.values[`submissionFormDefaultFields`]?.[`${field}`] ??
+            false
+        )
+    }
 
     return (
         <>
@@ -92,7 +96,7 @@ export default () => {
                                                             touched={true}
                                                             error={
                                                                 form.errors[
-                                                                field.name
+                                                                    field.name
                                                                 ]
                                                             }
                                                         ></FormControl>

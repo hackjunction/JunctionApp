@@ -20,11 +20,17 @@ export default () => {
     const [loading, setLoading] = useState(false)
 
     const challengeOptions = useMemo(() => {
-        if (!challengesEnabled || !challenges) return null
-        return challenges.map(challenge => ({
-            label: `${challenge.name} (${challenge.partner})`,
-            value: challenge._id,
-        }))
+        if (
+            challengesEnabled &&
+            Array.isArray(challenges) &&
+            challenges.length > 0
+        ) {
+            return challenges.map(challenge => ({
+                label: `${challenge.name} (${challenge.partner})`,
+                value: challenge._id,
+            }))
+        }
+        return null
     }, [event])
 
     const handleLeave = useCallback(() => {

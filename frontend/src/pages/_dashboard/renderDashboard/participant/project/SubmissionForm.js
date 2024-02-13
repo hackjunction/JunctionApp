@@ -2,17 +2,11 @@ import React, { useMemo, useState, useEffect } from 'react'
 
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
-import { FastField, Formik } from 'formik'
+import { Formik } from 'formik'
 import { ProjectSchema, EventTypes } from '@hackjunction/shared'
 import { Grid, Box, Typography } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
 import PageWrapper from 'components/layouts/PageWrapper'
-import ErrorsBox from 'components/generic/ErrorsBox'
-import ProjectImages from './ProjectImages'
-import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
-import ProjectsService from 'services/projects'
-import { useDebounce } from 'hooks/customHooks'
-
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
@@ -25,9 +19,7 @@ import NameField from 'components/projects/ProjectSubmissionFields/NameField'
 import _ from 'lodash'
 import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
 import ProjectFieldsComponents from 'constants/projectFields'
-import ImageUpload from 'components/inputs/ImageUpload'
-import FormControl from 'components/inputs/FormControl'
-// import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
+import { debugGroup } from 'utils/debuggingTools'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -35,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 // TODO make the form labels and hints customizable
 const SubmissionForm = props => {
+    debugGroup('SubmissionForm >>', props)
     const id = props.id
     const handleProjectSelected = props.handleProjectSelected
     const classes = useStyles()
@@ -48,15 +41,9 @@ const SubmissionForm = props => {
     const [project, setProject] = useState(null)
     const [projectStatus, setProjectStatus] = useState('')
 
-    // const [projectName, setProjectName] = useState(project?.name || '')
-    // const debouncedProjectName = useDebounce(projectName, 300)
-    // const [projectValidity, setProjectValidity] = useState({
-    //     errors: {},
-    //     state: 'initial',
-    // })
-
     useEffect(() => {
-        if (projects && projects.length && id) {
+        debugGroup('useEffect in submissionForm', [project, id])
+        if (projects && projects.length > 0 && id) {
             const foundProject = projects.find(p => p._id === id)
             setProject(foundProject)
             setProjectStatus(foundProject.status)
@@ -64,40 +51,6 @@ const SubmissionForm = props => {
             setProject(null)
         }
     }, [id, projects])
-
-    // useEffect(() => {
-    //     setProjectValidity({
-    //         errors: {},
-    //         state: 'initial',
-    //     })
-
-    //     if (debouncedProjectName && debouncedProjectName === project?.name)
-    //         return
-
-    //     validateProject()
-    // }, [debouncedProjectName])
-
-    // const validateProject = async () => {
-    //     setProjectValidity({
-    //         errors: {},
-    //         state: 'loading',
-    //     })
-    //     const result = await ProjectsService.validateProject(
-    //         idToken,
-    //         event.slug,
-    //         {
-    //             projectName: debouncedProjectName,
-    //         },
-    //     )
-    //     const errors = Object.entries(result)
-    //         .filter(([, isInvalid]) => !!isInvalid)
-    //         .reduce(
-    //             (acc, [key, isInvalid]) => ({ ...acc, [key]: isInvalid }),
-    //             {},
-    //         )
-
-    //     setProjectValidity({ errors, state: 'loaded' })
-    // }
 
     const initialValues = {
         sourcePublic: true,
@@ -198,7 +151,7 @@ const SubmissionForm = props => {
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
-        }//TODO: make better looking
+        } //TODO: make better looking
         return (
             <Box className="tw-flex tw-flex-col tw-gap-4">
                 <GradientBox p={3} color="theme_white">
@@ -255,13 +208,14 @@ const SubmissionForm = props => {
                 <BottomBar
                     onSubmit={async () => {
                         formikProps.submitForm().then(() => {
-                            handleProjectSelected(undefined)
+                            if (event.allowProjectSubmissionsPerChallenge)
+                                handleProjectSelected(undefined)
                         })
                     }}
                     errors={formikProps.errors}
                     dirty={formikProps.dirty}
                     loading={formikProps.isSubmitting}
-                    loadingText='uploading, this might take a while ...'
+                    loadingText="uploading, this might take a while ..."
                 />
             </Box>
         )
@@ -311,7 +265,7 @@ const SubmissionForm = props => {
                             'Oops, something went wrong...'
                         dispatch(
                             SnackbarActions.error(message, {
-                                autoHideDuration: 3000,
+                                autoHideDuration: 10000,
                             }),
                         )
                     } else {
@@ -325,7 +279,7 @@ const SubmissionForm = props => {
                     console.error('An error occurred:', error)
                     dispatch(
                         SnackbarActions.error('Oops, something went wrong...', {
-                            autoHideDuration: 3000,
+                            autoHideDuration: 10000,
                         }),
                     )
                 }

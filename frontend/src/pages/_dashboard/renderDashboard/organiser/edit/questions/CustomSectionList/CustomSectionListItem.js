@@ -19,6 +19,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Empty from 'components/generic/Empty'
 import { now } from 'moment'
+import { debugGroup } from 'utils/debuggingTools'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -42,6 +43,7 @@ export default ({
     index,
     projectsExist = false,
 }) => {
+    debugGroup('Custom section')
     const { t } = useTranslation()
     const classes = useStyles()
     const questions = section.questions || []
@@ -146,7 +148,8 @@ export default ({
 
             case 'attachment': {
                 return (
-                    <div className=" tw-flex tw-flex-col tw-gap-2">
+                    <>
+                        {/* <div className=" tw-flex tw-flex-col tw-gap-2">
                         <Typography variant="body1" className={classes.label}>
                             Maximum file size
                         </Typography>
@@ -186,7 +189,8 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Allowed file types, select multiple options
                         </Typography>
-                    </div>
+                    </div> */}
+                    </>
                 )
             }
             // // ! ----------------------------------------------------------------
@@ -378,10 +382,10 @@ export default ({
                                                     value: 'link',
                                                     label: 'Link',
                                                 },
-                                                {
-                                                    value: 'attachment',
-                                                    label: 'Attachment',
-                                                },
+                                                // {
+                                                //     value: 'attachment',
+                                                //     label: 'Attachment',
+                                                // },
                                                 {
                                                     value: 'boolean',
                                                     label: 'Yes / No',

@@ -11,9 +11,12 @@ import CertificateForm from './CertificateForm'
 import PageScriptsForm from './PageScriptsForm'
 import FileInput from '../submission/components/inputs/FileInput'
 import PdfUpload from 'components/inputs/PdfUpload'
-
+import Switch from 'components/generic/Switch'
+import { hasSuperAdmin } from 'redux/auth/selectors'
 
 export default () => {
+    const isAdmin = useSelector(hasSuperAdmin)
+    console.log('isAdmin', isAdmin)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -51,8 +54,7 @@ export default () => {
                                         form.setFieldValue(field.name, value)
                                     }
                                     config={{
-                                        settings:
-                                        {
+                                        settings: {
                                             allowedTypes: ['jpg'],
                                         },
                                     }}
@@ -67,7 +69,6 @@ export default () => {
                                     uploadUrl={`/api/upload/events/${event.slug}/map`}
                                     resizeMode="cover"
                                 /> */}
-
                             </FormControl>
                         )
                     }}
@@ -146,6 +147,28 @@ export default () => {
                     )}
                 />
             </Grid>
+            {isAdmin && (
+                <Grid item xs={12}>
+                    <FastField
+                        name="experimental"
+                        render={({ field, form }) => (
+                            <FormControl
+                                label="Enable experimental features"
+                                hint="CAREFUL! This is only recommended for development and research, and is not recommended for normal event as it could cause unexpected behaviors during your event"
+                            >
+                                <Switch
+                                    checked={field.value ?? false}
+                                    onChange={value =>
+                                        form.setFieldValue(field.name, value)
+                                    }
+                                    checkedText="Enabled"
+                                    uncheckedText="Disabled"
+                                />
+                            </FormControl>
+                        )}
+                    />
+                </Grid>
+            )}
         </Grid>
     )
 }

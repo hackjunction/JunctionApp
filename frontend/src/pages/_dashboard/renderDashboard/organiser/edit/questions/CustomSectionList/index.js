@@ -7,9 +7,13 @@ import Button from 'components/generic/Button'
 import CustomSectionListItem from './CustomSectionListItem'
 import { useTranslation } from 'react-i18next'
 import { now } from 'moment'
+import { debugGroup } from 'utils/debuggingTools'
 
 export default ({ sections = [], onChange, projectsExist = false }) => {
     const { t } = useTranslation()
+
+    // TODO create hook
+
     const handleAdd = useCallback(
         section => {
             const newValue = sections.concat(section)
@@ -123,6 +127,7 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
         )
     }
 
+    debugGroup('Custom section list')
     return (
         <>
             {sections.length === 0 ? renderEmpty() : renderList()}

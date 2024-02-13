@@ -26,6 +26,7 @@ import * as UserActions from 'redux/user/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import { useTranslation } from 'react-i18next'
+import { debugGroup } from 'utils/debuggingTools'
 const useStyles = makeStyles(theme => ({
     topWrapper: {
         display: 'flex',
@@ -53,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
+    debugGroup('Profile page')
     const dispatch = useDispatch()
     const userProfile = useSelector(UserSelectors.userProfile)
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)

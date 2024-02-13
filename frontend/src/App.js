@@ -13,6 +13,7 @@ import * as AuthActions from 'redux/auth/actions'
 import AnalyticsService from 'services/analytics'
 import { getCookieConsentValue } from 'react-cookie-consent'
 import CookieConsentBar from 'components/layouts/CookieConsentBar'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default ({ history, location }) => {
     const dispatch = useDispatch()
@@ -37,9 +38,15 @@ export default ({ history, location }) => {
             if (isSessionExpired) {
                 setLoading(true)
                 console.log('renewing session now')
-                dispatch(AuthActions.renewSession()).then(() => {
-                    setLoading(false)
-                })
+                dispatch(AuthActions.renewSession())
+                    .then(() => {
+                        setLoading(false)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        dispatch(SnackbarActions.error('Please, log in again'))
+                    })
+                    .finally(() => setLoading(false))
             } else {
                 setLoading(false)
             }
@@ -49,7 +56,13 @@ export default ({ history, location }) => {
     }, [dispatch, isAuthenticated, isSessionExpired])
 
     return (
-        <ApolloProvider client={apolloClient(idToken) /*TODO: fails to fetch when renewing session causing a loop. fix! */}>
+        <ApolloProvider
+            client={
+                apolloClient(
+                    idToken,
+                ) /*TODO: fails to fetch when renewing session causing a loop. fix! */
+            }
+        >
             <ConnectedRouter history={history}>
                 <Suspense fallback={null}>
                     {!loading && (
@@ -123,8 +136,6 @@ export default ({ history, location }) => {
                             {/* {isAuthenticated ?
                                 <Redirect to="/dashboard" /> :} */}
                             <Redirect to="/" />
-
-
                         </Switch>
                     )}
                 </Suspense>

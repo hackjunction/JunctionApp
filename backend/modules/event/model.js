@@ -424,6 +424,10 @@ const EventSchema = new mongoose.Schema({
     scoreCriteriaSettings: {
         type: ScoreCriteriaSettingsSchema.mongoose,
     },
+    experimental: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 EventSchema.index(

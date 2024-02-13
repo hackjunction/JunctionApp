@@ -25,7 +25,7 @@ controller.createTask = (userId, eventId, type, params, schedule) => {
     }
     console.log(task)
     return task.save().catch(err => {
-        console.log("err", err)
+        console.log('err', err)
         if (err.code === 11000) {
             return Promise.resolve()
         }
@@ -41,7 +41,6 @@ controller.createAcceptedTask = async (userId, eventId, deliverNow = false) => {
         EmailTypes.registrationAccepted,
     )
     if (deliverNow) {
-
         return controller.deliverEmailTask(task)
     }
     return task
@@ -79,7 +78,6 @@ controller.createTravelGrantAcceptedTask = async (
     registration,
     deliverNow = false,
 ) => {
-
     const task = await controller.createTask(
         registration.user,
         registration.event,
@@ -189,17 +187,14 @@ controller.deliverEmailTask = async task => {
     ])
     switch (task.type) {
         case EmailTypes.registrationAccepted: {
-
             await SendgridService.sendAcceptanceEmail(event, user)
             break
         }
         case EmailTypes.registrationRejected: {
-
             await SendgridService.sendRejectionEmail(event, user)
             break
         }
         case EmailTypes.registrationReceived: {
-
             await SendgridService.sendRegisteredEmail(event, user)
             break
         }
@@ -236,7 +231,13 @@ controller.deliverEmailTask = async task => {
             break
         }
         default: {
-            await SendgridService.sendGenericEmail(user.email, task.params, {}, event, user)
+            await SendgridService.sendGenericEmail(
+                user.email,
+                task.params,
+                {},
+                event,
+                user,
+            )
             break
         }
     }
@@ -266,15 +267,20 @@ controller.sendPreviewEmail = async (to, msgParams, from = {}, eventSlug) => {
         throw new Error('Event data not found.')
     }
 
-
-    return SendgridService.sendGenericEmail(to, msgParams, from, event, user).catch(() => { })
+    return SendgridService.sendGenericEmail(
+        to,
+        msgParams,
+        from,
+        event,
+        user,
+    ).catch(() => {})
 }
 
 controller.sendContactEmail = async msgParams => {
     return SendgridService.sendContactEmail(
         global.gConfig.SENDGRID_CONTACT_MAIL,
         msgParams,
-    ).catch(() => { })
+    ).catch(() => {})
 }
 
 controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {

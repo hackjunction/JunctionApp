@@ -1,5 +1,5 @@
 import Button from 'components/generic/Button'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import * as DashboardActions from 'redux/dashboard/actions'
 
