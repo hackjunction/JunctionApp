@@ -44,6 +44,7 @@ const initialState = {
 const eventsHandler = buildHandler('events')
 const searchResultsHandler = buildHandler('searchResults')
 const actionHistoryHandler = buildHandler('actionHistory', 'user', true)
+const eventRecruitersHandler = buildHandler('eventRecruiters')
 const adminRecruitersHandler = buildHandler('adminRecruiters')
 const adminSearchHandler = buildHandler('adminSearchResults')
 
@@ -68,6 +69,33 @@ export default function reducer(state = initialState, action) {
                 }
             } else {
                 return searchResultsHandler(state, action)
+            }
+        }
+        case ActionTypes.UPDATE_RECRUITERS_EVENT: {
+            eventRecruitersHandler(state, action)
+        }
+        case ActionTypes.ADD_RECRUITERS_EVENT: {
+            const data = state.events.data.concat(action.payload.recruiterEvents)
+            return {
+                ...state,
+                events: {
+                    ...state.events,
+                    data: data
+                }
+            }
+
+        }
+        case ActionTypes.REMOVE_RECRUITERS_EVENT: {
+            const data = state.events.data.filter(event => {
+                return event.eventId !== action.payload
+            })
+
+            return {
+                ...state,
+                events: {
+                    ...state.events,
+                    data: data
+                }
             }
         }
         case ActionTypes.UPDATE_ACTION_HISTORY: {

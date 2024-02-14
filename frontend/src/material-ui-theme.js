@@ -114,6 +114,7 @@ const theme = createMuiTheme({
         },
         button: {
             fontFamily: bodyFont,
+            fontSize: 100,
             fontWeight: '400',
         },
         caption: {

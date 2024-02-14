@@ -10,7 +10,7 @@ function config(idToken) {
     }
 }
 
-RecruitmentService.search = (idToken, filters, page, page_size) => {
+RecruitmentService.search = (idToken, filters, page, page_size, eventId) => {
     return _axios.post(
         '/recruitment/search',
         {
@@ -19,6 +19,7 @@ RecruitmentService.search = (idToken, filters, page, page_size) => {
                 page_size,
                 page,
             },
+            eventId,
         },
         config(idToken),
     )
@@ -27,20 +28,21 @@ RecruitmentService.getUserProfile = (idToken, userId) => {
     return _axios.get(`/recruitment/profile/${userId}`, config(idToken))
 }
 
-RecruitmentService.submitAction = (type, idToken, userId, message) => {
+RecruitmentService.submitAction = (type, idToken, userId, organisation, message) => {
     return _axios.post(
         '/recruitment/action',
         {
             type,
             user: userId,
+            organisation: organisation,
             data: { message: message },
         },
         config(idToken),
     )
 }
 
-RecruitmentService.getActionHistory = idToken => {
-    return _axios.get('/recruitment/action', config(idToken))
+RecruitmentService.getActionHistory = (idToken, organisation) => {
+    return _axios.get(`/recruitment/action/${organisation}`, config(idToken))
 }
 
 export default RecruitmentService

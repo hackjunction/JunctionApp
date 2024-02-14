@@ -9,5 +9,5 @@ services:
         ports:
             - 27011:27017
         volumes:
-            - ../dump/alex_dump:/data/db
+            - ../../dump:/data/db/dump
         restart: unless-stopped

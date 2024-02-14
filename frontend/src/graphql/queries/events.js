@@ -6,6 +6,7 @@ const Fragments = {
             _id
             slug
             name
+            description
             galleryOpen
             coverImage {
                 url
@@ -15,6 +16,7 @@ const Fragments = {
             startTime
             registrationStartTime
             registrationEndTime
+            endTime
             organizations {
                 name
                 slug
@@ -82,6 +84,7 @@ export const useActiveEvents = ({ limit }) => {
             limit,
         },
     })
+    console.log("data", data)
 
     return [data?.activeEvents, loading, error]
 }
@@ -101,7 +104,7 @@ export const usePastEvents = ({ limit }) => {
             limit,
         },
     })
-
+    console.log("usePastEvents", data)
     return [data?.pastEvents, loading, error]
 }
 
@@ -116,5 +119,7 @@ export const GET_MY_EVENTS = gql`
 
 export const useMyEvents = () => {
     const { data, loading, error } = useQuery(GET_MY_EVENTS)
+    console.log("data", data)
+
     return [data?.myEvents, loading, error]
 }

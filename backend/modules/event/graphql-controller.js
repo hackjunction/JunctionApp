@@ -98,7 +98,7 @@ class EventController {
                     $lt: new Date(),
                 },
             })
-                .sort([['frontPagePriority', -1]])
+                //.sort([['frontPagePriority', -1]])
                 .sort([['endTime', -1]])
                 .lean(),
         )

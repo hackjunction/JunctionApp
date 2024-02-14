@@ -46,15 +46,24 @@ const ProjectScoreModal = ({ open, onClose, score }) => {
     }
 
     const EvaluationSuccessful = props => {
+        const projectScore = score?.averageScore
+            ? score.averageScore
+            : score?.score
+        let projectMessage
+        if (score?.message) {
+            projectMessage = score.message
+        } else if (score?.reviewers?.length > 0) {
+            projectMessage = score.reviewers[0].message
+        }
         return (
             <>
                 <Typography variant="h6" gutterBottom align="center">
                     Awesome, the result for your project is:
                 </Typography>
                 <Typography variant="h5" gutterBottom>
-                    {score.score}/{score.maxScore}
+                    {projectScore}/{score.maxScore}
                 </Typography>
-                <Typography variant="body1">{score.message}</Typography>
+                <Typography variant="body1">{projectMessage}</Typography>
             </>
         )
     }

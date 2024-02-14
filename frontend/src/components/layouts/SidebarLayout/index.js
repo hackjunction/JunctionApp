@@ -3,9 +3,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch } from 'react-redux'
 import { findIndex } from 'lodash-es'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import { push } from 'connected-react-router'
+
 import Container from 'components/generic/Container/index'
 import MenuIcon from '@material-ui/icons/Menu'
 import LockIcon from '@material-ui/icons/Lock'
+import StorageIcon from '@material-ui/icons/Storage'
+import AccountBoxIcon from '@material-ui/icons/AccountBox'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import {
     Drawer,
@@ -14,10 +19,15 @@ import {
     ListItemIcon,
     ListItemText,
     Hidden,
-    IconButton,
     Box,
 } from '@material-ui/core'
-import { push } from 'connected-react-router'
+
+import PlatformLogo from 'assets/logos/JO_wordmark_white.png'
+import IconButton from 'components/generic/IconButton'
+import EventsPage from 'pages/_dashboard/renderDashboard/default/events'
+import ProfilePage from 'pages/_account/profile' //TODO: fix the profile view
+
+import config from 'constants/config'
 
 const SIDEBAR_WIDTH = 300
 
@@ -31,12 +41,32 @@ const useStyles = makeStyles(theme => ({
             flexShrink: 0,
         },
     },
+    menuIcon: {
+        transition: theme.transitions.create(['transform'], {
+            duration: theme.transitions.duration.standard,
+        }),
+    },
+    dashboardOpen: {
+
+        transform: 'rotate(-90deg)',
+    },
+    dashboardClosed: {
+
+        transform: 'rotate(0)',
+    },
+    wordmark: {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        padding: '5px',
+        top: 0,
+        height: '70px',
+    },
     drawerToggle: {
         padding: '10px',
         position: 'fixed',
         top: theme.spacing(1),
         left: theme.spacing(1),
-        background: '#fbfbfb',
         zIndex: 100,
     },
     drawerToggleDesktop: {
@@ -45,7 +75,6 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(1),
         left: ({ desktopOpen }) =>
             desktopOpen ? SIDEBAR_WIDTH + theme.spacing(1) : theme.spacing(1),
-        background: '#fbfbfb',
         zIndex: 100,
         transition: 'left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
     },
@@ -101,22 +130,49 @@ export default React.memo(
     }) => {
         const dispatch = useDispatch()
         const routes = _routes.filter(route => !route.hidden)
+        console.log("ROUTES", routes)
 
         const activeIndex = useMemo(() => {
             const relativePath = location.pathname.replace(baseRoute, '')
-            const idx = findIndex(routes, item => {
+            var idx = findIndex(routes, item => {
                 if (item.exact) {
                     return relativePath === item.path
                 } else {
                     return relativePath.indexOf(item.path) !== -1
                 }
             })
-
+            console.log("INDEX", idx)
+            console.log(relativePath)
+            if (idx === -1) {
+                switch (relativePath) {
+                    case '/events':
+                        idx = routes.length
+                        console.log('/events', idx)
+                        break
+                    case '/events/organize':
+                        idx = routes.length
+                        console.log('/events', idx)
+                        break
+                    case '/events/partner':
+                        idx = routes.length
+                        console.log('/events', idx)
+                        break
+                    case '/profile':
+                        idx = routes.length + 1
+                        break
+                    case '/logout':
+                        idx = routes.length + 2
+                        break
+                    default: idx = -1
+                }
+            }
+            console.log("IDX", idx)
             return idx
         }, [baseRoute, location.pathname, routes])
 
         const pushRoute = useCallback(
             path => {
+                console.log(`push(${baseRoute}${path})`)
                 dispatch(push(`${baseRoute}${path}`))
             },
             [baseRoute, dispatch],
@@ -124,7 +180,8 @@ export default React.memo(
 
         useEffect(() => {
             if (activeIndex === -1) {
-                pushRoute(routes[0].path)
+                console.log("PUSHING ", routes, "activeIndex", activeIndex)
+                //pushRoute(routes[0].path)
             }
         }, [routes, activeIndex, pushRoute])
 
@@ -149,6 +206,16 @@ export default React.memo(
 
         const drawerContent = (
             <>
+                <Box >
+                    <a href="/home">
+                        <img
+                            src={PlatformLogo/*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/}
+
+                            className={classes.wordmark}
+                            alt={config.PLATFORM_OWNER_NAME + ' logo'}
+                        />
+                    </a>
+                </Box>
                 <Box p={2}>{sidebarTopContent}</Box>
                 <List>
                     {routes
@@ -192,6 +259,93 @@ export default React.memo(
                                 </ListItem>
                             )
                         })}
+                    <hr className="tw-h-px tw-my-8 tw-w-4/5 tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
+                    <div className='tw-grid tw-place-items-center'>
+                        <ListItem
+
+                            button
+                            key={'/events'}
+                            selected={routes.length === safeIndex}
+                            classes={{
+                                root: classes.listItem,
+                                selected: classes.listItemSelected,
+                            }}
+                            onClick={() => {
+                                console.log("safeIndex", safeIndex)
+                                pushRoute('/events')
+                            }}
+                        >
+                            <ListItemIcon
+                                className={classes.listItemIcon}
+                            >
+                                <StorageIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                classes={{
+                                    primary:
+                                        classes.listItemTextPrimary,
+                                    secondary:
+                                        classes.listItemTextSecondary,
+                                }}
+                                primary={'Events'}
+                            />
+                        </ListItem>
+                        <ListItem
+                            button
+                            key={'/profile'}
+                            selected={routes.length + 1 === safeIndex}
+                            classes={{
+                                root: classes.listItem,
+                                selected: classes.listItemSelected,
+                            }}
+                            onClick={() => pushRoute('/profile')}
+                        >
+                            <ListItemIcon
+                                className={classes.listItemIcon}
+                            >
+                                <AccountBoxIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                classes={{
+                                    primary:
+                                        classes.listItemTextPrimary,
+                                    secondary:
+                                        classes.listItemTextSecondary,
+                                }}
+                                primary={'Profile'}
+                            />
+                        </ListItem>
+                        <ListItem
+                            button
+                            key={'/logout'}
+                            selected={routes.length + 2 === safeIndex}
+                            classes={{
+                                root: classes.listItem,
+                                selected: classes.listItemSelected,
+                            }}
+                            onClick={() => dispatch(push('/logout'))}
+                        >
+                            <ListItemIcon
+                                className={classes.listItemIcon}
+                            >
+                                <ExitToAppIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                classes={{
+                                    primary:
+                                        classes.listItemTextPrimary,
+                                    secondary:
+                                        classes.listItemTextSecondary,
+                                }}
+                                primary={'Log Out'}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            {/*TODO: language menu */}
+                            {/* <img src={FlagUK} width="40" height="30" ></img> */}
+
+                        </ListItem>
+                    </div>
                 </List>
             </>
         )
@@ -200,6 +354,7 @@ export default React.memo(
             <div className={classes.root}>
                 <Hidden mdUp implementation="css">
                     <IconButton
+                        variant="roundedBlack"
                         onClick={handleDrawerToggle}
                         className={classes.drawerToggle}
                         aria-label="toggle drawer"
@@ -209,15 +364,14 @@ export default React.memo(
                 </Hidden>
                 <Hidden smDown implementation="css">
                     <IconButton
+                        variant="roundedBlack"
                         onClick={handleDrawerToggleDesktop}
                         className={classes.drawerToggleDesktop}
                         aria-label="toggle drawer desktop"
                     >
-                        {desktopOpen ? (
-                            <KeyboardBackspaceIcon />
-                        ) : (
-                            <MenuIcon fontSize="large" />
-                        )}
+                        <MenuIcon className={`${classes.menuIcon} ${desktopOpen ? classes.dashboardOpen : classes.dashboardClosed
+                            }`} />
+
                     </IconButton>
                 </Hidden>
                 <Hidden mdUp implementation="css">
@@ -272,8 +426,25 @@ export default React.memo(
                                     },
                                     index,
                                 ) => {
+                                    // console.log("PROPS: ", "key", key,
+                                    //     "path", `${baseRoute}${path}`,
+                                    //     "hidden", hidden,
+                                    //     "component", component,
+                                    //     exact = false,
+                                    //     "locked", locked,
+                                    //     "index", index)
                                     if (hidden || locked) {
                                         return null
+                                        // } else if (index === 5) {
+                                        //     console.log("ROUTING EVENT_ID")
+                                        //     return (< Route
+                                        //         key={'eventId2'}
+                                        //         exact={false}
+                                        //         path={`${baseRoute}/event-id`
+                                        //         }
+                                        //         component={LogoutPage}
+                                        //     />)
+
                                     } else {
                                         return (
                                             <Route
@@ -286,7 +457,27 @@ export default React.memo(
                                     }
                                 },
                             )}
-                            <Redirect to={baseRoute} />
+
+                            <Route
+                                key={'profile'}
+                                exact={true}
+                                path={`${baseRoute}/profile`}
+                                component={ProfilePage}
+                            />
+                            <Route
+                                key={'logout'}
+                                exact={true}
+                                path={`${baseRoute}/logout`}
+
+                            />
+                            <Route
+                                key={'events'}
+                                exact={false}
+                                path={`${baseRoute}/events`}
+                                component={EventsPage}
+                            />
+
+                            <Redirect to={`${baseRoute}/events`} />
                         </Switch>
                     </Container>
                 </main>

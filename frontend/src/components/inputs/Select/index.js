@@ -329,6 +329,7 @@ export default function IntegrationReactSelect({
     disabled,
     innerRef,
     isMulti = false,
+    isTeamRoles = false,
     label,
     name,
     onBlur,
@@ -407,7 +408,9 @@ export default function IntegrationReactSelect({
         output => {
             if (!output) return output
             if (isMulti) {
-                return output.map(item => item.value)
+                return output.map(item => {
+                    return item.value
+                })
             } else {
                 return output.value
             }
@@ -420,9 +423,14 @@ export default function IntegrationReactSelect({
             return ''
         }
         if (isMulti) {
+            if (typeof value === 'string') {
+                value = value.split(',')
+            }
             return value
                 .map(item => {
-                    return _options.find(o => o.value === item)
+                    const itemValue =
+                        isTeamRoles && item?.role ? item.role : item
+                    return _options.find(o => o.value === itemValue)
                 })
                 .filter(item => !!item)
         } else {
@@ -457,6 +465,7 @@ export default function IntegrationReactSelect({
         onChange: handleChange,
         onBlur,
         isMulti,
+        isTeamRoles,
         ref: innerRef,
     }
 

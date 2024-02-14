@@ -65,6 +65,14 @@ class UnauthorizedError extends CustomError {
     }
 }
 
+class AlreadyExistsError extends CustomError {
+    constructor(message) {
+        const name = 'AlreadyExistsError'
+        const code = 7
+        super(message, name, code)
+    }
+}
+
 module.exports = {
     InsufficientPrivilegesError,
     EmailVerificationError,
@@ -72,4 +80,5 @@ module.exports = {
     ValidationError,
     ForbiddenError,
     UnauthorizedError,
+    AlreadyExistsError,
 }

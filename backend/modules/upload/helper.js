@@ -2,6 +2,21 @@ const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require('multer')
 
+const { AlreadyExistsError, NotFoundError } = require("../../common/errors/errors")
+const mongoose = require('mongoose')
+const File = require('../files/model')
+
+
+
+// initialize stream
+// let gfs = new mongoose.mongo.GridFSBucket(mongoose.connection, {
+//     bucketName: "uploads"
+// })
+
+const storage = require('../../misc/gridfs').storage
+const upload = require('../../misc/gridfs').upload
+
+
 cloudinary.config({
     cloud_name: global.gConfig.CLOUDINARY_CLOUD_NAME,
     api_key: global.gConfig.CLOUDINARY_API_KEY,
@@ -48,6 +63,9 @@ const UploadHelper = {
     generateProjectTag: (slug, teamCode) => {
         return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}`
     },
+    generateTeamTag: (slug, teamCode) => {
+        return `${cloudinaryRootPath}-event-${slug}-team-${teamCode}-profile`
+    },
     generateTravelGrantTag: (slug, userId) => {
         return `${cloudinaryRootPath}-event-${slug}-receipt-${userId}`
     },
@@ -88,6 +106,24 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateUserTag(userId),
+            },
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 2 * 1024 * 1024 },
+        }).single('image')
+    },
+
+    uploadTeamBackgroundImage: (slug, teamCode) => {
+        const storage = createStorageWithPath(
+            `${slug}/team/${teamCode}`,
+            {
+                width: 480,
+                height: 300,
+                crop: 'fill',
+            },
+            {
+                tag: UploadHelper.generateTeamTag(slug),
             },
         )
         return multer({
@@ -250,6 +286,31 @@ const UploadHelper = {
     removeEventImages: slug => {
         return UploadHelper.deleteWithTag(UploadHelper.generateEventTag(slug))
     },
+
+    uploadOneFile: (caption, file) => {
+
+
+        File.findOne({
+            caption: caption
+        })
+            .then((file) => {
+                console.log("file", file)
+                if (file) {
+                    return new AlreadyExistsError(
+                        `File ${file} already exist`
+                    )
+                }
+
+                let newFile = new File({
+                    caption: caption,
+                    filename: file.filename,
+                    fileId: file.id,
+                })
+
+                newFile.save()
+            })
+
+    }
 }
 
 module.exports = UploadHelper

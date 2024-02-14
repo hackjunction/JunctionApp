@@ -9,6 +9,7 @@ const initialState = {
     registrations: {},
     registrationsLoading: false,
     registrationsError: false,
+    accessRight: 'participant',
 }
 
 export default function reducer(state = initialState, action) {
@@ -51,6 +52,18 @@ export default function reducer(state = initialState, action) {
         }
         case AuthActionTypes.CLEAR_SESSION: {
             return initialState
+        }
+        case ActionTypes.SET_ACCESSRIGHT: {
+            return {
+                ...state,
+                accessRight: action.payload.accessRight
+            }
+        }
+        case ActionTypes.ORGANIZER_EVENTS: {
+            return {
+                ...state,
+                organizerEvents: action.payload.organizerEvents
+            }
         }
         default:
             return state

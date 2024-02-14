@@ -15,13 +15,7 @@ const HackerpackSchema = new mongoose.Schema({
     partner: {
         type: String,
     },
-    partnerEmail: {
-        type: String,
-    },
     slug: {
-        type: String,
-    },
-    title: {
         type: String,
     },
     description: {
@@ -42,14 +36,8 @@ const HackerpackType = new GraphQLObjectType({
         partner: {
             type: GraphQLString,
         },
-        partnerEmail: {
-            type: GraphQLString,
-        },
         slug: {
             type: GraphQLNonNull(GraphQLString),
-        },
-        title: {
-            type: GraphQLString,
         },
         description: {
             type: GraphQLString,
@@ -75,14 +63,8 @@ const HackerpackInput = new GraphQLInputObjectType({
         partner: {
             type: GraphQLString,
         },
-        partnerEmail: {
-            type: GraphQLString,
-        },
         slug: {
             type: GraphQLNonNull(GraphQLString),
-        },
-        title: {
-            type: GraphQLString,
         },
         description: {
             type: GraphQLString,

@@ -358,6 +358,14 @@ const FieldProps = {
             defaultRequire: false,
             editable: true,
         },
+        filters: [
+            {
+                path: '',
+                label: 'T-shirt size',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     dietaryRestrictions: {
         label: 'Dietary Restrictions',
@@ -725,8 +733,7 @@ const FieldProps = {
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
-        hint:
-            "",
+        hint: '',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         copyToUserProfile: false,
@@ -894,13 +901,13 @@ const Fields = {
             const number = yup.string().label('Phone number')
             const shape = required
                 ? {
-                      countryCode: countryCode.required(),
-                      number: number.matches(/^[0-9]{7,14}$/).required(),
-                  }
+                    countryCode: countryCode.required(),
+                    number: number.matches(/^[0-9]{7,14}$/).required(),
+                }
                 : {
-                      countryCode,
-                      number,
-                  }
+                    countryCode,
+                    number,
+                }
 
             return yup.object(shape).label(FieldProps.phoneNumber.label)
         },
@@ -1469,6 +1476,7 @@ const Helpers = {
             return question.settings.default || false
         }
     },
+    // TODO add submission form customization
     getDefaultValuesFromConfig: (
         config,
         customQuestions,
