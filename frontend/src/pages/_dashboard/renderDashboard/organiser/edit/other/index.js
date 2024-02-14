@@ -15,8 +15,8 @@ import Switch from 'components/generic/Switch'
 import { hasSuperAdmin } from 'redux/auth/selectors'
 
 export default () => {
-    const isAdmin = useSelector(hasSuperAdmin)
-    console.log('isAdmin', isAdmin)
+    const isSuperAdmin = useSelector(hasSuperAdmin)
+    console.log('isSuperAdmin', isSuperAdmin)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -147,7 +147,7 @@ export default () => {
                     )}
                 />
             </Grid>
-            {isAdmin && (
+            {isSuperAdmin && (
                 <Grid item xs={12}>
                     <FastField
                         name="experimental"
