@@ -21,10 +21,9 @@ import EvaluationForm from './EvaluationForm'
 import _ from 'lodash'
 
 export default ({ event, showFullTeam }) => {
-    const scoreCriteriaBase = event.scoreCriteriaSettings.scoreCriteria
+    const scoreCriteriaBase = event.scoreCriteriaSettings?.scoreCriteria
     const dispatch = useDispatch()
     const userId = useSelector(AuthSelectors.getUserId)
-
     const match = useRouteMatch()
     const { projectId, token } = match.params
     const { slug } = event

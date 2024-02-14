@@ -26,6 +26,8 @@ const TextAreaInput = React.memo(
         required = false,
         value = '',
         autoFocus,
+        minRows = 10,
+        maxRows = 100,
     }) => {
         const classes = useTextField()
 
@@ -52,8 +54,8 @@ const TextAreaInput = React.memo(
                 required={required}
                 value={value}
                 multiline
-                rows={10}
-                rowsMax={100}
+                minRows={minRows}
+                maxRows={maxRows}
             />
         )
     },

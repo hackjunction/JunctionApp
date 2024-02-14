@@ -24,9 +24,11 @@ export const registrationUpdated = state => state.dashboard.registration.updated
 
 export const eventRecruiters = state => state.dashboard.recruiters.data
 export const eventRecruitersMap = state => state.dashboard.recruiters.map
-export const eventRecruitersLoading = state => state.dashboard.recruiters.loading
+export const eventRecruitersLoading = state =>
+    state.dashboard.recruiters.loading
 export const eventRecruitersError = state => state.dashboard.recruiters.error
-export const eventRecruitersUpdated = state => state.dashboard.recruiters.updated
+export const eventRecruitersUpdated = state =>
+    state.dashboard.recruiters.updated
 
 export const team = state => state.dashboard.team.data
 export const teamLoading = state => state.dashboard.team.loading
@@ -181,6 +183,10 @@ export const shownPages = createSelector(
                     STATUSES.confirmedToHub.id,
                 ].indexOf(registration?.status) !== -1,
             meetings: EventHelpers.areMeetingsEnabled(event),
+            reviewingByScoreCriteria:
+                event?.reviewMethod === ReviewingMethods.manualReview.id,
+            //Experimental
+            experimental: event?.experimental ?? false,
         }
     },
 )

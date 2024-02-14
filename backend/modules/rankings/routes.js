@@ -21,7 +21,11 @@ router
     /** Get public results for an event */
     .get(
         asyncHandler(async (req, res) => {
-            // TODO: Get public results
+            console.log('getting public results')
+            const publicRankings = await RankingsController.getOverallResults(
+                req.params.slug,
+            )
+            return res.status(200).json(publicRankings)
         }),
     )
 
@@ -33,8 +37,9 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         asyncHandler(async (req, res) => {
+            console.log('Full rankings request slug', req.params.slug)
             const rankings = await RankingsController.getAllResultsForEvent(
-                req.event,
+                req.params.slug,
             )
             return res.status(200).json(rankings)
         }),

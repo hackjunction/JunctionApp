@@ -398,6 +398,8 @@ export default function IntegrationReactSelect({
                     return SelectOptions.YEARS
                 case 'year-future':
                     return SelectOptions.YEARS_FUTURE
+                case 'gradient-list':
+                    return SelectOptions.GRADIENT_LIST
                 default:
                     return []
             }

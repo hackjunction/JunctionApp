@@ -37,44 +37,60 @@ export default () => {
         }
     }
 
-    const PLACEHOLDERS_HINT = "You can use the following placeholders: {USER_ID}, {FIRST_NAME}, {LAST_NAME}, {EVENT_NAME}, {REGISTRATION_START_TIME}, {REGISTRATION_END_TIME}, {SUBMISSION_START_TIME}, {SUBMISSION_END_TIME}, {REVIEW_START_TIME}, {REVIEW_END_TIME}, {EVENT_START_TIME}, {EVENT_END_TIME}, {CURRENT_TIME}. For example, to greet the user with their first name, you can use 'Hi {FIRST_NAME}, ...' in the email body. If you want to use the current time, you can use {CURRENT_TIME} in the email body. The time placeholders will be replaced with the time in the timezone of the event."
+    const PLACEHOLDERS_HINT =
+        "You can use the following placeholders: {USER_ID}, {FIRST_NAME}, {LAST_NAME}, {EVENT_NAME}, {REGISTRATION_START_TIME}, {REGISTRATION_END_TIME}, {SUBMISSION_START_TIME}, {SUBMISSION_END_TIME}, {REVIEW_START_TIME}, {REVIEW_END_TIME}, {EVENT_START_TIME}, {EVENT_END_TIME}, {CURRENT_TIME}. For example, to greet the user with their first name, you can use 'Hi {FIRST_NAME}, ...' in the email body. If you want to use the current time, you can use {CURRENT_TIME} in the email body. The time placeholders will be replaced with the time in the timezone of the event."
 
-    const handleTestEmail = useCallback(async (values, emailType) => {
-        setLoading(prevState => ({ ...prevState, [emailType]: true }))
+    const handleTestEmail = useCallback(
+        async (values, emailType) => {
+            setLoading(prevState => ({ ...prevState, [emailType]: true }))
 
-        let params
-        switch (emailType) {
-            case 'acceptanceEmail':
-            case 'rejectionEmail':
-            case 'registrationEmail':
-                params = extractEmailParams(values.emailConfig, emailType)
-                break
-            default:
-                params = extractEmailParams(values.emailConfig, 'acceptanceEmail')
-        }
+            let params
+            switch (emailType) {
+                case 'acceptanceEmail':
+                case 'rejectionEmail':
+                case 'registrationEmail':
+                    params = extractEmailParams(values.emailConfig, emailType)
+                    break
+                default:
+                    params = extractEmailParams(
+                        values.emailConfig,
+                        'acceptanceEmail',
+                    )
+            }
 
-        const senderEmail = values.emailConfig.senderEmail // email to send to oneself
-        const from = {
-            name: values.emailConfig.senderName,
-            email: senderEmail,
-        }
+            const senderEmail = values.emailConfig.senderEmail // email to send to oneself
+            const from = {
+                name: values.emailConfig.senderName,
+                email: senderEmail,
+            }
 
-        await EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: senderEmail, params, from })
-            .then(() => {
-                dispatch(
-                    SnackbarActions.success(
-                        t('Test_email_sent_', { user: senderEmail }),
-                    ),
-                )
+            await EmailService.sendPreviewEmail({
+                idToken: idToken,
+                slug: event.slug,
+                to: user.email,
+                params,
+                from,
             })
-            .catch(err => {
-                dispatch(SnackbarActions.error(t('Something_wrong_')))
-            })
-            .finally(() => {
-                setLoading(prevState => ({ ...prevState, [emailType]: false }))
-            })
-        return null
-    }, [idToken, event.slug, user.email, dispatch, t])
+                .then(() => {
+                    dispatch(
+                        SnackbarActions.success(
+                            t('Test_email_sent_', { user: user.email }),
+                        ),
+                    )
+                })
+                .catch(err => {
+                    dispatch(SnackbarActions.error(t('Something_wrong_')))
+                })
+                .finally(() => {
+                    setLoading(prevState => ({
+                        ...prevState,
+                        [emailType]: false,
+                    }))
+                })
+            return null
+        },
+        [idToken, event.slug, user.email, dispatch, t],
+    )
 
     return (
         <Grid container spacing={3}>
@@ -90,7 +106,9 @@ export default () => {
                         >
                             <Grid item xs={12}>
                                 <Box mb={1}>
-                                    <Typography variant="body1">Sender Email</Typography>
+                                    <Typography variant="body1">
+                                        Sender Email
+                                    </Typography>
                                 </Box>
                                 <TextInput
                                     name="emailConfig.senderEmail"
@@ -99,7 +117,9 @@ export default () => {
                                     onChange={value =>
                                         form.setFieldValue(field.name, value)
                                     }
-                                    onBlur={() => form.setFieldTouched(field.name)}
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
                                 />
                             </Grid>
                             <FastField
@@ -107,16 +127,23 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Sender Name</Typography>
+                                            <Typography variant="body1">
+                                                Sender Name
+                                            </Typography>
                                         </Box>
                                         <TextInput
                                             name="emailConfig.senderName"
                                             placeholder="Sender's name"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                     </Grid>
                                 )}
@@ -137,7 +164,9 @@ export default () => {
                         >
                             <Grid item xs={12}>
                                 <Box mb={1}>
-                                    <Typography variant="body1">Title</Typography>
+                                    <Typography variant="body1">
+                                        Title
+                                    </Typography>
                                 </Box>
                                 <TextInput
                                     name="emailConfig.acceptanceEmail.title"
@@ -146,7 +175,9 @@ export default () => {
                                     onChange={value =>
                                         form.setFieldValue(field.name, value)
                                     }
-                                    onBlur={() => form.setFieldTouched(field.name)}
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
                                 />
                             </Grid>
                             <FastField
@@ -154,16 +185,23 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Subtitle</Typography>
+                                            <Typography variant="body1">
+                                                Subtitle
+                                            </Typography>
                                         </Box>
                                         <TextInput
                                             name="emailConfig.acceptanceEmail.subtitle"
                                             placeholder="Email subtitle"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                     </Grid>
                                 )}
@@ -173,19 +211,29 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Body</Typography>
+                                            <Typography variant="body1">
+                                                Body
+                                            </Typography>
                                         </Box>
                                         <TextAreaInput
                                             name="emailConfig.acceptanceEmail.body"
                                             placeholder="Email body"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                         <Box mt={1}>
-                                            <Typography variant="caption" color="textSecondary">
+                                            <Typography
+                                                variant="caption"
+                                                color="textSecondary"
+                                            >
                                                 {PLACEHOLDERS_HINT}
                                             </Typography>
                                         </Box>
@@ -201,7 +249,9 @@ export default () => {
                             loading={loading.acceptanceEmail}
                             variant="contained"
                             color="primary"
-                            onClick={() => handleTestEmail(values, 'acceptanceEmail')}
+                            onClick={() =>
+                                handleTestEmail(values, 'acceptanceEmail')
+                            }
                         >
                             {t('Send_yourself_')}
                         </Button>
@@ -220,7 +270,9 @@ export default () => {
                         >
                             <Grid item xs={12}>
                                 <Box mb={1}>
-                                    <Typography variant="body1">Title</Typography>
+                                    <Typography variant="body1">
+                                        Title
+                                    </Typography>
                                 </Box>
                                 <TextInput
                                     name="emailConfig.rejectionEmail.title"
@@ -229,7 +281,9 @@ export default () => {
                                     onChange={value =>
                                         form.setFieldValue(field.name, value)
                                     }
-                                    onBlur={() => form.setFieldTouched(field.name)}
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
                                 />
                             </Grid>
                             <FastField
@@ -237,16 +291,23 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Subtitle</Typography>
+                                            <Typography variant="body1">
+                                                Subtitle
+                                            </Typography>
                                         </Box>
                                         <TextInput
                                             name="emailConfig.rejectionEmail.subtitle"
                                             placeholder="Email subtitle"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                     </Grid>
                                 )}
@@ -256,19 +317,29 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Body</Typography>
+                                            <Typography variant="body1">
+                                                Body
+                                            </Typography>
                                         </Box>
                                         <TextAreaInput
                                             name="emailConfig.rejectionEmail.body"
                                             placeholder="Email body"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                         <Box mt={1}>
-                                            <Typography variant="caption" color="textSecondary">
+                                            <Typography
+                                                variant="caption"
+                                                color="textSecondary"
+                                            >
                                                 {PLACEHOLDERS_HINT}
                                             </Typography>
                                         </Box>
@@ -284,7 +355,9 @@ export default () => {
                             loading={loading.rejectionEmail}
                             variant="contained"
                             color="primary"
-                            onClick={() => handleTestEmail(values, 'rejectionEmail')}
+                            onClick={() =>
+                                handleTestEmail(values, 'rejectionEmail')
+                            }
                         >
                             {t('Send_yourself_')}
                         </Button>
@@ -303,7 +376,9 @@ export default () => {
                         >
                             <Grid item xs={12}>
                                 <Box mb={1}>
-                                    <Typography variant="body1">Title</Typography>
+                                    <Typography variant="body1">
+                                        Title
+                                    </Typography>
                                 </Box>
                                 <TextInput
                                     name="emailConfig.registrationEmail.title"
@@ -312,7 +387,9 @@ export default () => {
                                     onChange={value =>
                                         form.setFieldValue(field.name, value)
                                     }
-                                    onBlur={() => form.setFieldTouched(field.name)}
+                                    onBlur={() =>
+                                        form.setFieldTouched(field.name)
+                                    }
                                 />
                             </Grid>
                             <FastField
@@ -320,16 +397,23 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Subtitle</Typography>
+                                            <Typography variant="body1">
+                                                Subtitle
+                                            </Typography>
                                         </Box>
                                         <TextInput
                                             name="emailConfig.registrationEmail.subtitle"
                                             placeholder="Email subtitle"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                     </Grid>
                                 )}
@@ -339,19 +423,29 @@ export default () => {
                                 render={({ field, form }) => (
                                     <Grid item xs={12}>
                                         <Box mb={1} mt={1}>
-                                            <Typography variant="body1">Body</Typography>
+                                            <Typography variant="body1">
+                                                Body
+                                            </Typography>
                                         </Box>
                                         <TextAreaInput
                                             name="emailConfig.registrationEmail.body"
                                             placeholder="Email body"
                                             value={field.value}
                                             onChange={value =>
-                                                form.setFieldValue(field.name, value)
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
                                             }
-                                            onBlur={() => form.setFieldTouched(field.name)}
+                                            onBlur={() =>
+                                                form.setFieldTouched(field.name)
+                                            }
                                         />
                                         <Box mt={1}>
-                                            <Typography variant="caption" color="textSecondary">
+                                            <Typography
+                                                variant="caption"
+                                                color="textSecondary"
+                                            >
                                                 {PLACEHOLDERS_HINT}
                                             </Typography>
                                         </Box>
@@ -367,13 +461,15 @@ export default () => {
                             loading={loading.registrationEmail}
                             variant="contained"
                             color="primary"
-                            onClick={() => handleTestEmail(values, 'registrationEmail')}
+                            onClick={() =>
+                                handleTestEmail(values, 'registrationEmail')
+                            }
                         >
                             {t('Send_yourself_')}
                         </Button>
                     </Box>
                 </Grid>
             </Grid>
-        </Grid >
+        </Grid>
     )
 }

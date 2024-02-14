@@ -10,7 +10,6 @@ import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 import TeamHeader from 'components/Team/TeamHeader'
 import TeamRoles from 'components/Team/TeamRoles'
-import team from 'pages/_dashboard/renderDashboard/generalPages/team'
 import { gradientRandomizer, stringShortener } from 'utils/stylingHelpers'
 
 function TeamCard({
@@ -44,7 +43,7 @@ function TeamCard({
                     <TeamHeader
                         viewMode="gallery"
                         teamName={stringShortener(teamData.name, 20)}
-                        teamChallenge={teamData.challenge}
+                        teamChallenge={teamData?.challenge}
                     />
                     {teamData?.ideaTitle && teamData?.ideaDescription && (
                         <div className="tw-flex tw-flex-col tw-gap-2">
@@ -64,34 +63,33 @@ function TeamCard({
                                 <Typography variant="body1" component="p">
                                     {stringShortener(
                                         teamData?.ideaDescription,
-                                        30,
+                                        200,
                                     )}
                                 </Typography>
                             </div>
                         </div>
                     )}
-                    {
-                        teamData?.teamRoles?.length > 0 &&
-                            teamData?.ideaTitle?.length > 20 &&
-                            teamData?.ideaDescription?.length > 20 ? (
-                            <Button
-                                color="outlined_button"
-                                variant="jOutlinedBox"
-                                onClick={onClickApply}
-                            >
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
-                                    <Typography
-                                        className="tw-font-semibold tw-text-left"
-                                        variant="body1"
-                                        component="p"
-                                    >
-                                        Roles available
-                                    </Typography>
-                                </div>
-                            </Button>
-                        ) : (
-                            <TeamRoles teamRoles={teamData?.teamRoles} />
-                        )}
+                    {teamData?.teamRoles?.length > 0 &&
+                    teamData?.ideaTitle?.length > 20 &&
+                    teamData?.ideaDescription?.length > 20 ? (
+                        <Button
+                            color="outlined_button"
+                            variant="jOutlinedBox"
+                            onClick={onClickApply}
+                        >
+                            <div className="tw-flex tw-flex-col tw-gap-2 tw-items-start tw-w-full">
+                                <Typography
+                                    className="tw-font-semibold tw-text-left"
+                                    variant="body1"
+                                    component="p"
+                                >
+                                    Roles available
+                                </Typography>
+                            </div>
+                        </Button>
+                    ) : (
+                        <TeamRoles teamRoles={teamData?.teamRoles} />
+                    )}
                 </div>
             </CardContent>
             <CardActions className="tw-flex tw-justify-end tw-items-center tw-px-4 tw-pb-4 tw-pt-0">

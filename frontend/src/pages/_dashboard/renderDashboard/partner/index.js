@@ -23,12 +23,13 @@ import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
 import MapPage from '../generalPages/map'
 
-
 import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
 
 import ProjectsPage from './projects'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
+import { QuestionAnswerSharp } from '@material-ui/icons'
+import { Chat } from 'components/messaging/chat'
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
         padding: theme.spacing(3),
@@ -92,6 +93,9 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     label: t('Dashboard_'),
                     component: () => {
                         setAlertCount(0)
+                        if (shownPages?.experimental) {
+                            return <p> Test</p>
+                        }
                         return DefaultPage({ alerts })
                     },
                 },
@@ -106,6 +110,7 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                 {
                     key: 'Review',
                     path: '/Review',
+                    hidden: !shownPages?.reviewingByScoreCriteria,
                     exact: false,
                     icon: <RateReviewIcon />,
                     label: 'Review',
@@ -113,32 +118,6 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                         return <ProjectsPage event={event} />
                     },
                 },
-                {
-                    key: 'hackerpack',
-                    path: '/hackerpack',
-                    exact: true,
-                    icon: <AmpStoriesIcon />,
-                    hidden: !shownPages?.hackerPack,
-                    label: t('Hackerpack_'),
-                    component: HackerpackPage,
-                },
-                {
-                    key: 'challenges',
-                    path: '/challenges',
-                    exact: true,
-                    icon: <FormatListBulletedIcon />,
-                    label: 'Challenges',
-                    component: ChallengesIndex,
-                },
-                /*
-                {
-                    key: 'chat',
-                    path: '/chat',
-                    exact: true,
-                    icon: <QuestionAnswerSharp />,
-                    label: 'Chat',
-                    component: Chat,
-                }, */
                 {
                     key: 'calendar',
                     path: '/calendar',
@@ -155,6 +134,35 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     icon: <WorkIcon />,
                     label: 'Recruitment',
                     component: RecruitmentPage,
+                },
+                //Experimental
+                {
+                    key: 'hackerpack',
+                    path: '/hackerpack',
+                    exact: true,
+                    icon: <AmpStoriesIcon />,
+                    hidden:
+                        !shownPages?.experimental && !shownPages?.hackerPack,
+                    label: t('Hackerpack_'),
+                    component: HackerpackPage,
+                },
+                {
+                    key: 'challenges',
+                    path: '/challenges',
+                    hidden: !shownPages?.experimental,
+                    exact: true,
+                    icon: <FormatListBulletedIcon />,
+                    label: 'Challenges',
+                    component: ChallengesIndex,
+                },
+                {
+                    key: 'chat',
+                    path: '/chat',
+                    hidden: !shownPages?.experimental,
+                    exact: true,
+                    icon: <QuestionAnswerSharp />,
+                    label: 'Chat',
+                    component: Chat,
                 },
             ]}
         />

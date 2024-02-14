@@ -3,6 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
+import { stringShortener } from 'utils/stylingHelpers'
 
 export default ({
     teamName,
@@ -17,11 +18,11 @@ export default ({
 
     let challengeName = null
     let event = useSelector(DashboardSelectors.event)
-    if(event === null){
-        console.log("from organiser")
+    if (event === null) {
+        console.log('from organiser')
         event = useSelector(OrganiserSelectors.event)
     }
-    console.log("event",event)
+    console.log('event', event)
     if (teamChallenge && typeof teamChallenge === 'string') {
         const challengeDetails = event.challenges.find(
             challenge => challenge._id === teamChallenge,
@@ -37,6 +38,9 @@ export default ({
         case 'gallery':
             styling.teamChallengeTypography = 'h6'
             styling.teamNameTypography = 'h4'
+            if (challengeName) {
+                challengeName = stringShortener(challengeName, 20)
+            }
             break
         default:
             break

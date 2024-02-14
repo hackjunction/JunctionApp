@@ -27,7 +27,7 @@ export default ({ value, onChange }) => {
     const [name, setName] = useState(undefined)
     const [slug, setSlug] = useState(undefined)
     const [partner, setPartner] = useState(undefined)
-    const [partnerEmail, setPartnerEmail] = useState("dev@hackjunction.com")//TODO: remove partner email entirely
+    const [partnerEmail, setPartnerEmail] = useState('dev@hackjunction.com') //TODO: remove partner email entirely
     const [title, setTitle] = useState(undefined)
     const [subtitle, setSubtitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
@@ -210,6 +210,7 @@ export default ({ value, onChange }) => {
                     label="Challenge name"
                     value={name}
                     onChange={handleNameChange}
+                    maxLength={100}
                 />
                 <Typography variant="caption">
                     The unique publicly visible name of the challenge.
@@ -233,7 +234,10 @@ export default ({ value, onChange }) => {
                     onChange={setPartner}
                 />
                 <Typography variant="caption">
-                    Who is the partner responsible for this challenge? <b>CAUTION: </b>If you are using partner meetings or reviewing, this has to currently match <b>EXACTLY</b> to partner organization mentoring this challenge.
+                    Who is the partner responsible for this challenge?{' '}
+                    <b>CAUTION: </b>If you are using partner meetings or
+                    reviewing, this has to currently match <b>EXACTLY</b> to
+                    partner organization mentoring this challenge.
                 </Typography>
             </Grid>
             {/* <Grid item xs={12}>

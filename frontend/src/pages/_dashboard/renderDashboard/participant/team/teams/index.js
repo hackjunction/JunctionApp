@@ -4,11 +4,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
-import {
-    Box,
-    Typography,
-    IconButton,
-} from '@material-ui/core'
+import { Box, Typography, IconButton } from '@material-ui/core'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 
@@ -60,15 +56,29 @@ export default () => {
     )
 
     useEffect(() => {
-        dispatch(DashboardActions.updateTeams(slug, currentPage, 25, challengeFilter))
-    }, [currentPage, applying, selected, selectedTeam, joinByCode, challengeFilter])
+        dispatch(
+            DashboardActions.updateTeams(
+                slug,
+                currentPage,
+                25,
+                challengeFilter,
+            ),
+        )
+    }, [
+        currentPage,
+        applying,
+        selected,
+        selectedTeam,
+        joinByCode,
+        challengeFilter,
+    ])
 
     let teamCards = []
     if (challengeFilter !== 'All challenges') {
         teamCards = teams?.filter(team => team.challenge === challengeFilter)
     } else {
         teamCards = teams ? teams : []
-        console.log("teamCards", teamCards)
+        console.log('teamCards', teamCards)
     }
 
     const handlePrevPage = useCallback(() => {
@@ -80,18 +90,19 @@ export default () => {
     }, [currentPage])
 
     const renderPagination = () => {
-        console.log("props", currentPage, totalResults, totalPages)
+        console.log('props', currentPage, totalResults, totalPages)
 
         return (
             <Box display="flex" flexDirection="row" alignItems="center">
-                <IconButton disabled={currentPage === 0} onClick={handlePrevPage}>
+                <IconButton
+                    disabled={currentPage === 0}
+                    onClick={handlePrevPage}
+                >
                     <ChevronLeftIcon />
                 </IconButton>
                 <Box padding={1}>
                     {totalResults === 0 ? (
-                        <Typography variant="overline">
-                            Page 1
-                        </Typography>
+                        <Typography variant="overline">Page 1</Typography>
                     ) : (
                         <Typography variant="overline">
                             Page {currentPage + 1} of {totalPages}
@@ -230,7 +241,9 @@ export default () => {
                                             disableActions={hasTeam}
                                             onClickApply={() => {
                                                 hadleTeamCardClick(team.code)
-                                                setApplying(true)
+                                                if (!hasTeam) {
+                                                    setApplying(true)
+                                                }
                                             }}
                                             onClick={() => {
                                                 hadleTeamCardClick(team.code)

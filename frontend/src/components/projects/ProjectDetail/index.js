@@ -198,18 +198,10 @@ const ProjectDetail = ({
     const statusTag = status => {
         switch (status) {
             case 'final':
-                return (
-                    <Tag
-                        label="Final"
-                        color={theme.palette.primary.main}
-                    />
-                )
+                return <Tag label="Final" color={theme.palette.primary.main} />
             case 'draft':
                 return (
-                    <Tag
-                        label="Draft"
-                        color={theme.palette.secondary.main}
-                    />
+                    <Tag label="Draft" color={theme.palette.secondary.main} />
                 )
             default:
                 return null

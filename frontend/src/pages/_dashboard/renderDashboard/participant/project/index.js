@@ -29,6 +29,10 @@ export default () => {
     const [selectedProjectId, setSelectedProjectId] = useState(undefined)
     const [showSubmissionForm, setShowSubmissionForm] = useState(false)
     const [showProjectSelector, setShowProjectSelector] = useState(false)
+    const handleProjectSelected = id => {
+        setSelectedProjectId(id)
+        setShowSubmissionForm(id !== undefined)
+    }
 
     useEffect(() => {
         if (projects && event) {
@@ -36,15 +40,10 @@ export default () => {
                 setShowProjectSelector(true)
             } else {
                 setShowSubmissionForm(true)
-                if (projects.length) handleProjectSelected(projects[0]._id)
+                if (projects.length > 0) handleProjectSelected(projects[0]._id)
             }
         }
     }, [projects, event])
-
-    const handleProjectSelected = id => {
-        setSelectedProjectId(id)
-        setShowSubmissionForm(id !== undefined)
-    }
 
     if (!event || teamLoading) {
         return <PageWrapper loading />
@@ -66,7 +65,9 @@ export default () => {
                         color="theme_white"
                         variant="contained"
                         onClick={() =>
-                            dispatch(push(`/dashboard/event/${event.slug}/team`))
+                            dispatch(
+                                push(`/dashboard/event/${event.slug}/team`),
+                            )
                         }
                     >
                         Create or join a team
@@ -93,7 +94,9 @@ export default () => {
                         color="theme_white"
                         variant="contained"
                         onClick={() =>
-                            dispatch(push(`/dashboard/event/${event.slug}/team`))
+                            dispatch(
+                                push(`/dashboard/event/${event.slug}/team`),
+                            )
                         }
                     >
                         Edit your team
@@ -194,24 +197,24 @@ export default () => {
                 {showProjectSelector && (
                     <>
                         {selectedProjectId === undefined && (
-                            <ProjectsList
-                                projectSelectedCallback={id =>
-                                    handleProjectSelected(id)
-                                }
-                            />
-                        )}
-                        {selectedProjectId !== undefined && (
-                            <Box my={2}>
-                                <Button
-                                    color="theme_orange"
-                                    variant="contained"
-                                    onClick={() =>
-                                        handleProjectSelected(undefined)
+                            <>
+                                <ProjectsList
+                                    projectSelectedCallback={id =>
+                                        handleProjectSelected(id)
                                     }
-                                >
-                                    Back to Projects
-                                </Button>
-                            </Box>
+                                />
+                                <Box my={2}>
+                                    <Button
+                                        color="theme_orange"
+                                        variant="contained"
+                                        onClick={() =>
+                                            handleProjectSelected(undefined)
+                                        }
+                                    >
+                                        Back to Projects
+                                    </Button>
+                                </Box>
+                            </>
                         )}
                     </>
                 )}
@@ -230,12 +233,13 @@ export default () => {
         <Box>
             <PageHeader
                 heading="Project submission"
-                subheading={`Here's where you submit your project for ${event.name
-                    }. As soon as you have a general idea of what you're building, please make a draft submission here - you'll be able to make edits to it until the final submission deadline on ${moment(
-                        event.submissionsEndTime,
-                    ).format(
-                        'LLLL',
-                    )}. All of the members in your team can edit your team's project submission.`}
+                subheading={`Here's where you submit your project for ${
+                    event.name
+                }. As soon as you have a general idea of what you're building, please make a draft submission here - you'll be able to make edits to it until the final submission deadline on ${moment(
+                    event.submissionsEndTime,
+                ).format(
+                    'LLLL',
+                )}. All of the members in your team can edit your team's project submission.`}
             />
             {renderContent()}
         </Box>

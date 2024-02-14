@@ -64,8 +64,8 @@ export default () => {
                     name="allowProjectSubmissionsPerChallenge"
                     render={({ field, form }) => (
                         <FormControl
-                            label="Projects submitted per challenge"
-                            hint="Does this event allow project submissions for each challenge individually?"
+                            label="Allow multiple project submissions"
+                            hint="Select 'yes', if teams can submit more than one project. If 'no' is selected, teams can only submit one project"
                             error={form.errors[field.name]}
                             touched={form.touched[field.name]}
                         >
@@ -266,12 +266,16 @@ export default () => {
                                 onChange={value =>
                                     form.setFieldValue(field.name, value)
                                 }
-                                options={Object.keys(
-                                    OverallReviewingMethods,
-                                ).map(key => ({
-                                    label: OverallReviewingMethods[key].label,
-                                    value: key,
-                                })).filter(o => o.label !== 'Finals, public voting')}
+                                options={Object.keys(OverallReviewingMethods)
+                                    .map(key => ({
+                                        label: OverallReviewingMethods[key]
+                                            .label,
+                                        value: key,
+                                    }))
+                                    .filter(
+                                        o =>
+                                            o.label !== 'Finals, public voting',
+                                    )}
                             />
                         </FormControl>
                     )}
@@ -282,7 +286,7 @@ export default () => {
                     name="allowVoteOnOwnProject"
                     render={({ field, form }) =>
                         form.values.reviewMethod ===
-                            ReviewingMethods.gavelPeerReview.id ? (
+                        ReviewingMethods.gavelPeerReview.id ? (
                             <FormControl
                                 label="Allow vote on own projects"
                                 hint="Can user vote on their own projects (consider this for events with few participants and multiple submissions per team)"

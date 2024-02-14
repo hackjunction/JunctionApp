@@ -55,9 +55,8 @@ export default () => {
                     event.organisers,
                 ),
             )
-            dispatch(OrganiserActions.updateRecruitersForEvent(
-                event.recruiters
-            ),
+            dispatch(
+                OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
             dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
             dispatch(OrganiserActions.updateTeamsForEvent(slug))
@@ -168,16 +167,6 @@ export default () => {
                         label: 'Check-in',
                         component: CheckinPage,
                     },
-                    // {
-                    //     key: 'travel-grants',
-                    //     path: '/travel-grants',
-                    //     exact: true,
-                    //     locked: event?.travelGrantConfig?.enabled ?? true,
-                    //     lockedDescription: 'Travel grants disabled',
-                    //     icon: <FlightTakeoffIcon />,
-                    //     label: 'Travel grants',
-                    //     component: TravelGrantsPage,
-                    // },
                     {
                         key: 'manage',
                         path: '/manage',
@@ -193,6 +182,18 @@ export default () => {
                         icon: <QuestionAnswerSharp />,
                         label: 'Send announcements',
                         component: AlertsPage,
+                    },
+                    //Experimental
+                    {
+                        key: 'travel-grants',
+                        path: '/travel-grants',
+                        exact: true,
+                        hidden: !event?.experimental,
+                        // locked: event?.travelGrantConfig?.enabled ?? true,
+                        lockedDescription: 'Travel grants disabled',
+                        icon: <FlightTakeoffIcon />,
+                        label: 'Travel grants',
+                        component: TravelGrantsPage,
                     },
                 ]}
             />

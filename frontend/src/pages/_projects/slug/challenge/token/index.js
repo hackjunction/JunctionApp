@@ -15,12 +15,14 @@ import _ from 'lodash'
 
 //TODO make this and track one into a component
 export default ({ event }) => {
-    const allFilterLabel = 'All projects'
+    const baseFilter = { value: 'final', label: 'Final projects' }
     const match = useRouteMatch()
     console.log('match', match)
     console.log('match URL', match.url)
     const dispatch = useDispatch()
     const { slug } = event
+    const { reviewMethod } = event
+    console.log('event data', event)
     const { token } = match.params
     const [data, setData] = useState({})
     const [projects, setProjects] = useState([])
@@ -28,7 +30,7 @@ export default ({ event }) => {
     const [finalProjects, setFinalProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const [filter, setFilter] = useState(allFilterLabel)
+    const [filter, setFilter] = useState(baseFilter)
 
     const onFilterChange = filter => {
         setFilter(filter)
@@ -93,10 +95,10 @@ export default ({ event }) => {
                             }`}
                         />
                         <Filter
-                            noFilterOption={allFilterLabel}
+                            noFilterOption={baseFilter}
                             onChange={onFilterChange}
                             filterArray={[
-                                { label: 'Final projects', value: 'final' },
+                                // { label: 'Final projects', value: 'final' },
                                 { label: 'Draft projects', value: 'draft' },
                             ]}
                         />
@@ -109,7 +111,7 @@ export default ({ event }) => {
                         onSelect={project =>
                             dispatch(push(`${match.url}/view/${project._id}`))
                         }
-                        showScore={true}
+                        showScore={reviewMethod === 'manualReview'}
                         token={token}
                     />
                     <Box height={200} />

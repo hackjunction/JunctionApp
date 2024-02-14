@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, Typography, TextField } from '@material-ui/core'
+import { Grid, Box, Typography } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
@@ -10,7 +10,6 @@ import TextInput from 'components/inputs/TextInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
 import Timeline from '../timeline'
-
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
@@ -74,60 +73,73 @@ export default () => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <FastField
-                    name="coverImage"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Cover image"
-                            hint="A cool cover image for your event. Max dimensions 1920x1080 (2MB), will be scaled down if larger."
-                            error={form.errors[field.name]}
-                            touched={form.touched[field.name]}
-                        >
-                            <Box width="100%" pt="56.25%" position="relative">
-                                <ImageUpload
-                                    value={field.value}
-                                    onChange={value => {
-                                        form.setFieldValue(field.name, value)
-                                        form.setFieldTouched(field.name)
-                                    }}
-                                    uploadUrl={`/api/upload/events/${event.slug}/cover-image`}
-                                    resizeMode="cover"
-                                />
-                            </Box>
-                        </FormControl>
-                    )}
-                />
+            <Grid key="coverImage" item xs={12}>
+                <Grid container spacing={3}>
+                    <Grid key="eventLogo" item sm={4} xs={12}>
+                        <FastField name="logo">
+                            {({ field, form }) => (
+                                <FormControl
+                                    label="Event logo"
+                                    hint="A logo for your event. Max 640x640 (2MB)."
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <Box
+                                        className="tw-h-40 tw-w-40 lg:tw-h-270px lg:tw-w-270px tw-mx-auto"
+                                        position="relative"
+                                    >
+                                        <ImageUpload
+                                            value={field.value}
+                                            onChange={value => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
+                                                form.setFieldTouched(field.name)
+                                            }}
+                                            uploadUrl={`/api/upload/events/${event.slug}/logo`}
+                                            resizeMode="contain"
+                                        />
+                                    </Box>
+                                </FormControl>
+                            )}
+                        </FastField>
+                    </Grid>
+                    <Grid key="coverImage" item sm={8} xs={12}>
+                        <FastField name="coverImage">
+                            {({ field, form }) => (
+                                <FormControl
+                                    label="Cover image"
+                                    hint="A cool cover image for your event. Max 1920x1080 (2MB)."
+                                    error={form.errors[field.name]}
+                                    touched={form.touched[field.name]}
+                                >
+                                    <Box
+                                        className="lg:tw-h-270px lg:tw-w-480px tw-h-40 tw-w-64 tw-mx-auto"
+                                        position="relative"
+                                    >
+                                        <ImageUpload
+                                            value={field.value}
+                                            onChange={value => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    value,
+                                                )
+                                                form.setFieldTouched(field.name)
+                                            }}
+                                            uploadUrl={`/api/upload/events/${event.slug}/cover-image`}
+                                            resizeMode="cover"
+                                        />
+                                    </Box>
+                                </FormControl>
+                            )}
+                        </FastField>
+                    </Grid>
+                </Grid>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="logo"
-                    render={({ field, form }) => (
-                        <FormControl
-                            label="Event logo"
-                            hint="A logo for your event. Max dimensions 640x640 (2MB), will be scaled down if larger."
-                            error={form.errors[field.name]}
-                            touched={form.touched[field.name]}
-                        >
-                            <Box width="100%" pt="33.33%" position="relative">
-                                <ImageUpload
-                                    value={field.value}
-                                    onChange={value => {
-                                        form.setFieldValue(field.name, value)
-                                        form.setFieldTouched(field.name)
-                                    }}
-                                    uploadUrl={`/api/upload/events/${event.slug}/logo`}
-                                    resizeMode="contain"
-                                />
-                            </Box>
-                        </FormControl>
-                    )}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <FastField
-                    name="name"
-                    render={({ field, form }) => (
+                <FastField name="name">
+                    {({ field, form }) => (
                         <FormControl
                             label="Event name"
                             hint="The name of your event"
@@ -145,12 +157,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="description"
-                    render={({ field, form }) => (
+                <FastField name="description">
+                    {({ field, form }) => (
                         <FormControl
                             label="Description"
                             hint="A hype description for your event."
@@ -166,12 +177,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="organizations"
-                    render={({ field, form }) => (
+                <FastField name="organizations">
+                    {({ field, form }) => (
                         <FormControl
                             label={'Organizations organizing the event'}
                             hint={'Specify the parties behind this event'}
@@ -200,13 +210,12 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Timeline />
             <Grid item xs={12}>
-                <FastField
-                    name="challenge_instructions"
-                    render={({ field, form }) => (
+                <FastField name="challenge_instructions">
+                    {({ field, form }) => (
                         <FormControl
                             label="Link to challenge descriptions"
                             hint="If you have challenge descriptions elsewhere, link them here"
@@ -224,12 +233,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="faq"
-                    render={({ field, form }) => (
+                <FastField name="faq">
+                    {({ field, form }) => (
                         <FormControl
                             label="FAQ link"
                             error={form.errors[field.name]}
@@ -247,12 +255,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="demoInstructions"
-                    render={({ field, form }) => (
+                <FastField name="demoInstructions">
+                    {({ field, form }) => (
                         <FormControl
                             label="Demo instruction link"
                             error={form.errors[field.name]}
@@ -270,12 +277,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="eventPrivacy"
-                    render={({ field, form }) => (
+                <FastField name="eventPrivacy">
+                    {({ field, form }) => (
                         <FormControl
                             label="Privacy Policy for this event"
                             hint="Link your privacy policy here. This will be shown to participants when they register to your event"
@@ -293,12 +299,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="eventTerms"
-                    render={({ field, form }) => (
+                <FastField name="eventTerms">
+                    {({ field, form }) => (
                         <FormControl
                             label="Terms and Conditions for this event"
                             hint="Link your T&C here. This will be shown to participants when they register to your event"
@@ -316,12 +321,11 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
-                <FastField
-                    name="eventNewsletter"
-                    render={({ field, form }) => (
+                <FastField name="eventNewsletter">
+                    {({ field, form }) => (
                         <FormControl
                             label="Newsletter subscription link"
                             hint="Set this if you want a subscription button to appear when people register. It will appear after the Junction newsletter and should link to an external subscription form."
@@ -339,7 +343,7 @@ export default () => {
                             />
                         </FormControl>
                     )}
-                />
+                </FastField>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h5">Event page customization</Typography>
@@ -355,9 +359,8 @@ export default () => {
                             key={themeField.field}
                             id={themeField.field}
                         >
-                            <FastField
-                                name={`theme.${themeField.field}`}
-                                render={({ field, form }) => (
+                            <FastField name={`theme.${themeField.field}`}>
+                                {({ field, form }) => (
                                     <FormControl
                                         label={themeField.label}
                                         hint={themeField.hint}
@@ -375,7 +378,7 @@ export default () => {
                                         />
                                     </FormControl>
                                 )}
-                            />
+                            </FastField>
                         </Grid>
                     ))}
                     <Grid item xs={12}>
@@ -387,9 +390,8 @@ export default () => {
                         >
                             Preview
                         </Button>
-                        <FastField
-                            name="theme"
-                            render={({ form }) => (
+                        <FastField name="theme">
+                            {({ form }) => (
                                 <Button
                                     onClick={() =>
                                         form.setFieldValue(
@@ -401,7 +403,7 @@ export default () => {
                                     Reset defaults
                                 </Button>
                             )}
-                        />
+                        </FastField>
                     </Grid>
                 </Grid>
             </Grid>
