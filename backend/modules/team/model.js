@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const shortid = require('shortid')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
+const TeamRole = require('@hackjunction/shared/schemas/TeamRole')
+const Candidate = require('@hackjunction/shared/schemas/Candidate')
 
 const TeamSchema = new mongoose.Schema({
     event: {
@@ -18,12 +20,81 @@ const TeamSchema = new mongoose.Schema({
     },
     code: {
         type: String,
-        default: shortid.generate,
+        unique: true,
     },
     complete: {
         type: Boolean,
         default: false,
     },
+    // new
+    teamRoles: {
+        type: [TeamRole.mongoose],
+        required: false,
+        default: [],
+    },
+    candidates: {
+        type: [Candidate.mongoose],
+        required: false,
+        default: [],
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+        length: 50,
+        default: `Team ${() => shortid.generate()}`,
+    },
+    subtitle: {
+        type: String,
+        length: 50,
+    },
+    description: {
+        type: String,
+        length: 300,
+    },
+    challenge: {
+        type: String,
+    },
+    ideaTitle: {
+        type: String,
+        length: 50,
+    },
+    ideaDescription: {
+        type: String,
+        length: 300,
+    },
+    email: {
+        type: String,
+        length: 50,
+    },
+    telegram: {
+        type: String,
+    },
+    discord: {
+        type: String,
+    },
+})
+
+TeamSchema.pre('save', async function (next) {
+    if (this.code) return next()
+    let code = shortid.generate()
+    let isCodeUnique = false
+
+    while (!isCodeUnique) {
+        // Check if the generated code already exists in the database
+        const existingTeam = await mongoose.model('Team').findOne({ code })
+
+        if (!existingTeam) {
+            isCodeUnique = true
+        } else {
+            // If code is not unique, generate a new one and repeat the process
+            code = shortid.generate()
+        }
+    }
+
+    this.code = code
+
+    next()
 })
 
 /** Removed locked property and added complete */

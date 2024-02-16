@@ -14,6 +14,14 @@ const getUserProfile = asyncHandler(async (req, res) => {
     return res.status(200).json(userProfile)
 })
 
+const getUserPublicProfileById = asyncHandler(async (req, res) => {
+    const userProfile = await UserProfileController.getUserPublicProfileById(
+        req.params.userId,
+    )
+    console.log('From routes:', userProfile)
+    return res.status(200).json(userProfile)
+})
+
 const getUserProfilesPublic = asyncHandler(async (req, res) => {
     const userProfiles = await UserProfileController.getUserProfilesPublic(
         req.query.userIds,
@@ -21,9 +29,19 @@ const getUserProfilesPublic = asyncHandler(async (req, res) => {
     return res.status(200).json(userProfiles)
 })
 
+
 const getUserProfilesByTeamPublic = asyncHandler(async (req, res) => {
     const teamMembers = await TeamController.getTeamMembers(req.params.teamId)
     const userProfiles = await UserProfileController.getUserProfilesPublic(
+        teamMembers,
+    )
+    return res.status(200).json(userProfiles)
+})
+
+// Maybe trim down the data sent to the frontend
+const getUserProfilesByTeamId = asyncHandler(async (req, res) => {
+    const teamMembers = await TeamController.getTeamMembers(req.params.teamId)
+    const userProfiles = await UserProfileController.getUserProfiles(
         teamMembers,
     )
     return res.status(200).json(userProfiles)
@@ -55,11 +73,37 @@ const getRecruiters = asyncHandler(async (req, res) => {
     return res.status(200).json(users)
 })
 
+
 const updateRecruiter = asyncHandler(async (req, res) => {
     const user = await UserProfileController.updateRecruiter(
         req.body.recruiterId,
+        req.body.event,
+        req.body.organisation,
+    )
+    return res.status(200).json(user)
+})
+
+const deleteRecruiter = asyncHandler(async (req, res) => {
+    const user = await UserProfileController.deleteRecruiter(
+        req.body.recruiterId,
+        req.body.event,
+    )
+    return res.status(200).json(user)
+})
+
+const updateRecruitersAdmin = asyncHandler(async (req, res) => {
+    const user = await UserProfileController.updateRecruitersAdmin(
+        req.body.recruiterId,
         req.body.events,
         req.body.organisation,
+    )
+    return res.status(200).json(user)
+})
+
+const deleteRecruitersAdmin = asyncHandler(async (req, res) => {
+    console.log(hasPermission(Auth.Permissions.MANAGE_RECRUITMENT))
+    const user = await UserProfileController.deleteRecruitersAdmin(
+        req.body.recruiterId,
     )
     return res.status(200).json(user)
 })
@@ -70,23 +114,71 @@ router
     .post(hasToken, createUserProfile)
     .patch(hasToken, updateUserProfile)
 
-router.route('/public').get(getUserProfilesPublic)
+router.route('/:userId').get(hasToken, getUserPublicProfileById)
+
+router.route('/public/profiles').get(getUserProfilesPublic)
+
+
 router.route('/public/team/:teamId').get(getUserProfilesByTeamPublic)
+
+router.get(
+    '/team/:teamId',
+    hasToken,
+    hasPermission(Auth.Permissions.ACCESS_RECRUITMENT),
+    getUserProfilesByTeamId,
+)
 
 router.get('/search/:terms', hasToken, searchUsers)
 
+
 router
     .get(
-        '/recruiters',
+        '/recruiters/get',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        getRecruiters,
+    )
+    .patch(
+        '/recruiters/update',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        updateRecruiter,
+    )
+    .patch(
+        '/recruiters/delete',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        deleteRecruiter,
+    )
+
+
+router
+    .get(
+        '/recruiters/admin',
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
         getRecruiters,
     )
     .patch(
-        '/recruiters',
+        '/recruiters/admin',
         hasToken,
         hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
-        updateRecruiter,
+        updateRecruitersAdmin,
     )
+
+router
+    .get(
+        '/recruiters/admin',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        getRecruiters,
+    )
+    .patch(
+        '/recruiters/admin/delete',
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_RECRUITMENT),
+        deleteRecruitersAdmin,
+    )
+
 
 module.exports = router

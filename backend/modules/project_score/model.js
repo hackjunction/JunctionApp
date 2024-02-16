@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ScoreCriteriaSchema = require('@hackjunction/shared/schemas/ScoreCriteria')
 
 const STATUS_TYPES = ['submitted', 'evaluating', 'evaluated']
 const ProjectScoreSchema = new mongoose.Schema(
@@ -35,14 +36,48 @@ const ProjectScoreSchema = new mongoose.Schema(
             type: Number,
             required: false,
         },
-        // TODO remove this once production is updated
-        max_score: {
-            type: Number,
-            required: false,
-        },
         message: {
             type: String,
             required: false,
+            maxlength: 500,
+        },
+        scoreCriteria: {
+            type: [ScoreCriteriaSchema.mongoose],
+            required: false,
+            default: [],
+        },
+        reviewers: {
+            type: [
+                {
+                    userId: {
+                        type: String,
+                        required: true,
+                    },
+                    firstname: {
+                        type: 'String',
+                    },
+                    avatar: {
+                        type: 'String',
+                    },
+                    score: {
+                        type: Number,
+                        default: 0,
+                    },
+                    scoreCriteria: {
+                        type: [ScoreCriteriaSchema.mongoose],
+                        default: [],
+                    },
+                    message: {
+                        type: String,
+                        maxlength: 500,
+                    },
+                },
+            ],
+            required: false,
+            default: [],
+        },
+        averageScore: {
+            type: Number,
         },
     },
     { toJSON: { virtuals: true } },

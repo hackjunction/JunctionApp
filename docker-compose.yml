@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+    mongodb:
+        image: mongo
+        container_name: mongodb_stag
+        environment:
+            - PUID=1000
+            - PGID=1000
+        ports:
+            - 27012:27017
+        volumes:
+            - ../documents/databases/dump
+        restart: unless-stopped

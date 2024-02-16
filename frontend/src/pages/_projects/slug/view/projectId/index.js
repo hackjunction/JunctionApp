@@ -1,34 +1,36 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { goBack } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
-
+import ShareProject from 'components/projects/ProjectDetail/ShareProject'
+import ScoreForm from './ScoreForm'
+import Container from 'components/generic/Container'
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
-
-import { Box, TextField } from '@material-ui/core'
-import Button from 'components/generic/Button'
 
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
-
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { set } from 'object-path'
+import EvaluationForm from './EvaluationForm'
+import _ from 'lodash'
 
 export default ({ event, showFullTeam }) => {
+    const scoreCriteriaBase = event.scoreCriteriaSettings?.scoreCriteria
     const dispatch = useDispatch()
-
+    const userId = useSelector(AuthSelectors.getUserId)
     const match = useRouteMatch()
     const { projectId, token } = match.params
     const { slug } = event
-
+    const [scoreExists, setScoreExists] = useState(false)
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    console.log('project :>> ', project)
     const [validToken, setValidToken] = useState(false)
 
     useEffect(() => {
@@ -46,7 +48,10 @@ export default ({ event, showFullTeam }) => {
         score: 0,
         maxScore: 10,
         message: '',
+        scoreCriteria: [],
+        reviewers: [],
     })
+
     useEffect(() => {
         if (token && project && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
@@ -54,7 +59,16 @@ export default ({ event, showFullTeam }) => {
                 event.slug,
                 project._id,
             ).then(score => {
-                if (score[0]) setProjectScore(score[0])
+                console.log('Score', score)
+                if (score[0]) {
+                    setProjectScore(score[0])
+                    setScoreExists(true)
+                } else {
+                    setProjectScore({
+                        ...projectScore,
+                        scoreCriteria: scoreCriteriaBase,
+                    })
+                }
             })
         }
     }, [event, token, project])
@@ -65,6 +79,7 @@ export default ({ event, showFullTeam }) => {
             const project = await ProjectsService.getPublicProjectById(
                 projectId,
             )
+            console.log('Project details', project)
             setProject(project)
         } catch (err) {
             setError(true)
@@ -72,6 +87,45 @@ export default ({ event, showFullTeam }) => {
             setLoading(false)
         }
     }, [projectId])
+
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        values.project = project._id
+        values.event = event._id
+        console.log('values', values)
+        try {
+            if (userId) {
+                _.includes(values.reviewers, userId)
+                    ? console.log('User already in reviewers list')
+                    : values.reviewers.push(userId)
+            }
+            if (scoreExists) {
+                await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
+                    token,
+                    event.slug,
+                    values,
+                )
+                setProjectScore(values)
+            } else {
+                await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
+                    token,
+                    event.slug,
+                    values,
+                )
+                setProjectScore(values)
+            }
+
+            dispatch(SnackbarActions.success(`Score saved.`))
+            resetForm()
+        } catch (e) {
+            dispatch(
+                SnackbarActions.error(
+                    `Score could not be saved. Error: ${e.message}`,
+                ),
+            )
+        } finally {
+            setSubmitting(false)
+        }
+    }
 
     const onBack = useCallback(() => {
         dispatch(goBack())
@@ -90,80 +144,26 @@ export default ({ event, showFullTeam }) => {
                 showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
             {validToken ? (
-                <Formik
-                    initialValues={{
-                        ...projectScore,
-                    }}
-                    enableReinitialize={true}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        values.project = project._id
-                        values.event = event._id
-                        try {
-                            if (projectScore._id) {
-                                await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
-                                    token,
-                                    event.slug,
-                                    values,
-                                )
-                            } else {
-                                await ProjectScoresService.addScoreByEventSlugAndPartnerToken(
-                                    token,
-                                    event.slug,
-                                    values,
-                                )
-                            }
-                            dispatch(
-                                SnackbarActions.success(
-                                    'Score saved successfully.',
-                                ),
-                            )
-                        } catch (e) {
-                            dispatch(
-                                SnackbarActions.error(
-                                    `Score could not be saved. Error: ${e.message}`,
-                                ),
-                            )
-                        } finally {
-                            setSubmitting(false)
-                        }
-                    }}
-                >
-                    {({ isSubmitting }) => (
-                        <Form>
-                            <Field name="score">
-                                {({ field }) => (
-                                    <TextField
-                                        fullWidth
-                                        label="Score"
-                                        type="number"
-                                        {...field}
-                                    />
-                                )}
-                            </Field>
-                            <ErrorMessage name="score" component="div" />
-                            <Field name="message">
-                                {({ field }) => (
-                                    <TextField
-                                        fullWidth
-                                        label="Message"
-                                        {...field}
-                                    />
-                                )}
-                            </Field>
-                            <ErrorMessage name="message" component="div" />
-                            <Box p={2} />
-                            <Button
-                                color="theme_turquoise"
-                                variant="contained"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                Save
-                            </Button>
-                        </Form>
+                <Container>
+                    {scoreCriteriaBase && scoreCriteriaBase.length > 0 ? (
+                        <EvaluationForm
+                            event={event}
+                            project={project}
+                            submit={handleSubmit}
+                            score={projectScore}
+                            scoreCriteria={scoreCriteriaBase}
+                        />
+                    ) : (
+                        <ScoreForm
+                            event={event}
+                            project={project}
+                            submit={handleSubmit}
+                            score={projectScore}
+                        />
                     )}
-                </Formik>
+                </Container>
             ) : null}
+            <ShareProject project={project} event={event} />
         </PageWrapper>
     )
 }

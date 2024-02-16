@@ -1,25 +1,55 @@
 import React, { useMemo, useState, useCallback } from 'react'
 
-import { useSelector } from 'react-redux'
+import { push } from 'connected-react-router'
+import { useSelector, useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { sumBy } from 'lodash-es'
 import { Typography, Grid, Box, Slider, Paper } from '@material-ui/core'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import Select from 'components/inputs/SelectOld'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
+import EditTeamModal from 'components/modals/EditTeamModal'
+
 
 import { Table, Sorters } from 'components/generic/_Table'
 import AttendeeTable from '../AttendeeTable'
+import * as AuthSelectors from 'redux/auth/selectors'
+import CsvExporterService from 'services/csvExporter'
+import TeamsService from 'services/teams'
 
 export default ({ loading, teams = [], simplifiedView = false }) => {
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const idToken = useSelector(AuthSelectors.getIdToken)
+
     const registrationsMap = useSelector(OrganiserSelectors.registrationsMap)
+    const event = useSelector(OrganiserSelectors.event)
+
     const [reviewStatus, setReviewStatus] = useState('any')
     const [completedStatus, setCompletedStatus] = useState('any')
     const [ratingRange, setRatingRange] = useState([0, 5])
     const [bulkEdit, setBulkEdit] = useState(false)
     const [bulkEmail, setBulkEmail] = useState(false)
+
+    const searchParams = new URLSearchParams(location.search)
+    const query = new URLSearchParams(location.search)
+    const hasModal = query.has('modal')
+    const activeModal = query.get('modal')
     // TODO add expansion
     // const [expandedRows, setExpandedRows] = useState({ 1: true })
+
+    const openSingleTeamEdit = row => {
+        const search = `?${new URLSearchParams({
+            modal: 'editTeam',
+            code: row.original.code,
+        }).toString()}`
+        dispatch(push({ search }))
+    }
+
+    const resetSearch = useCallback(() => {
+        dispatch(push({ search: '' }))
+    }, [dispatch])
 
     const handleRatingRangeChange = useCallback((e, value) => {
         setRatingRange(value)
@@ -32,6 +62,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
                     return registrationsMap[member]
                 })
                 .filter(member => typeof member !== 'undefined')
+            const teamName = team.name
             const ownerMapped = registrationsMap[team.owner] || {}
             const allMembers = membersMapped.concat(ownerMapped)
             const reviewedCount = allMembers.filter(
@@ -40,6 +71,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
             const memberCount = allMembers.length
             return {
                 ...team,
+                name: teamName,
                 owner: ownerMapped,
                 members: allMembers,
                 avgRating: (
@@ -83,6 +115,8 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
         }, [])
     }, [teamsFiltered])
 
+
+
     const columns = useMemo(() => {
         return [
             {
@@ -106,6 +140,11 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
             {
                 Header: 'Code',
                 accessor: 'code',
+                ...Sorters.Alphabetic,
+            },
+            {
+                Header: 'Name',
+                accessor: 'name',
                 ...Sorters.Alphabetic,
             },
             {
@@ -137,8 +176,22 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
         ]
     }, [])
 
+    const fetchExportTeamData = teamIds => {
+        TeamsService.exportTeams(idToken, event.slug, teamIds).then(
+            response => {
+                CsvExporterService.exportToCsv(response, 'teams-export')
+            },
+        )
+    }
+
     return (
         <Grid container spacing={2}>
+            <EditTeamModal
+                teamCode={
+                    activeModal === 'editTeam' ? searchParams.get('code') : undefined
+                }
+                onClose={resetSearch}
+            />
             <BulkEditRegistrationModal
                 visible={bulkEdit}
                 onClose={setBulkEdit}
@@ -241,6 +294,28 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
                     renderExpanded={row => (
                         <AttendeeTable attendees={row.original.members} />
                     )}
+                    //onRowClick={openSingleTeamEdit}
+                    bulkActions={[
+                        {
+                            key: 'export-teams',
+                            label: 'Export team members',
+                            action: rows => {
+                                const teamIds = rows.map(
+                                    row => row.original._id,
+                                )
+                                fetchExportTeamData(teamIds)
+                            },
+                        },
+                        {
+                            key: 'edit-team',
+                            label: 'Edit team',
+                            action: rows => {
+
+                                openSingleTeamEdit(rows[0])
+
+                            },
+                        },
+                    ]}
                 />
                 {/* <MaterialTable
                     title="Teams"

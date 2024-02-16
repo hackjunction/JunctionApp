@@ -28,7 +28,25 @@ const eventQuery = gql`
                 optionalFields
                 requiredFields
             }
+            challenges {
+                name
+                partner
+                slug
+                title
+                subtitle
+                description
+                insights
+                resources
+                prizes
+                criteria
+                companyInfo
+                logo {
+                    url
+                    publicId
+                }
+            }
             customQuestions {
+                conditional
                 label
                 name
                 description
@@ -53,6 +71,13 @@ const eventQuery = gql`
             frontPagePriority
             approved
             eventTerms
+            eventTimeline {
+                items {
+                    title
+                    startTime
+                }
+            }
+            eventNewsletter
             theme {
                 headerBackgroundColor
                 headerTextColor
@@ -63,6 +88,11 @@ const eventQuery = gql`
                 sidebarTextColor
                 accentColor
                 linkColor
+            }
+            pageScripts {
+                page
+                script
+                approved
             }
             _eventStatus
             _eventTimeFormatted
@@ -164,7 +194,7 @@ export const EventDetailProvider = ({ children }) => {
     })
     const createRegistration = useCallback(
         formData => {
-            console.log('creatin regigiigi', idToken, slug)
+            console.log('creatin regigiigi', idToken, slug, formData)
             return RegistrationsService.createRegistration(
                 idToken,
                 slug,

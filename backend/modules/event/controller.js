@@ -33,12 +33,30 @@ controller.getEventBySlug = slug => {
     return Event.findOne({ slug })
 }
 
+controller.isEventOnline = id => {
+    Event.findById(id).then(event => {
+        if (event.eventType === 'online') {
+            return true
+        }
+        return false
+    })
+}
+
 controller.getUnapprovedEvents = () => {
     return Event.find({ approved: false })
 }
 
 controller.approveEvent = (event, data) => {
     const eventData = { approved: data.approved }
+    return Event.updateAllowed(event, eventData)
+}
+
+controller.approveEventPageScript = (event, data) => {
+    const pageScripts = [...event.pageScripts] || []
+    if (data.index < pageScripts.length) {
+        pageScripts[data.index].approved = data.approved
+    }
+    const eventData = { pageScripts }
     return Event.updateAllowed(event, eventData)
 }
 
@@ -70,6 +88,21 @@ controller.addOrganiser = (event, organiserId) => {
 
 controller.removeOrganiser = (event, organiserId) => {
     event.organisers = _.filter(event.organisers, id => id !== organiserId)
+    return event.save()
+}
+
+controller.addRecruiter = (event, recruiterId, organization) => {
+    event.recruiters = _.concat(event.recruiters, {
+        recruiterId: recruiterId,
+        organization: organization,
+    })
+    return event.save()
+}
+
+controller.removeRecruiter = (event, recruiterId) => {
+    event.recruiters = _.filter(event.recruiters, recruiter => {
+        return recruiter.recruiterId !== recruiterId
+    })
     return event.save()
 }
 
@@ -119,6 +152,14 @@ controller.updateFinalists = (eventId, finalist) => {
         } else {
             event.finalists.push(finalist)
         }
+        return event.save()
+    })
+}
+
+controller.batchUpdateFinalists = (eventId, finalists) => {
+    console.log(eventId, finalists)
+    return Event.findById(eventId).then(event => {
+        event.finalists = finalists || []
         return event.save()
     })
 }

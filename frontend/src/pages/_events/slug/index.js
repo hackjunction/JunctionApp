@@ -10,7 +10,7 @@ import EventFooter from 'components/layouts/EventFooter'
 
 import EventDetail from './default'
 import EventRegister from './register'
-
+import FinalistVoting from './voteWithToken'
 import EventDetailContext, { EventDetailProvider } from './context'
 
 const EventDetailRouter = () => {
@@ -43,6 +43,11 @@ const EventDetailRouter = () => {
                                     component={EventRegister}
                                 />
                             )}
+                            <Route
+                                exact
+                                path={`${match.url}/finalist-voting`}
+                                component={FinalistVoting}
+                            />
                             <Redirect to={`${match.url}`} />
                         </Switch>
                     </AnimatePresence>

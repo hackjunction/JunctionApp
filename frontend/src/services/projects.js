@@ -26,8 +26,17 @@ ProjectsService.createProjectForEventAndTeam = (idToken, eventSlug, data) => {
 }
 
 ProjectsService.updateProjectForEventAndTeam = (idToken, eventSlug, data) => {
+    console.log('From router', data)
     return _axios.patch(
         `/projects/${eventSlug}/team`,
+        { data },
+        config(idToken),
+    )
+}
+
+ProjectsService.validateProject = (idToken, eventSlug, data) => {
+    return _axios.post(
+        `/projects/${eventSlug}/validate`,
         { data },
         config(idToken),
     )
@@ -69,6 +78,15 @@ ProjectsService.validateToken = (eventSlug, token) => {
 ProjectsService.getCommits = projectId => {
     const project = _axios.get(`/projects/id/${projectId}`)
     return project
+}
+
+ProjectsService.exportProjects = (idToken, eventSlug, projectIds) => {
+    const projects = _axios.post(
+        `/projects/${eventSlug}/admin/export`,
+        { projectIds },
+        config(idToken),
+    )
+    return projects
 }
 
 export default ProjectsService

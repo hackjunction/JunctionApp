@@ -11,7 +11,7 @@ export default () => {
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
             <Button
-                color="theme_turquoise"
+                color="primary"
                 variant="contained"
                 strong
                 onClick={() => dispatch(push('/pricing'))}

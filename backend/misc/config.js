@@ -113,6 +113,10 @@ const settings = {
         required: false,
         value: process.env.WEBHOOK_API_KEY || 'NotVerySafeWebhookApiKey',
     },
+    REDIS_PASSWORD: {
+        required: false,
+        value: process.env.REDIS_PASSWORD || 'NOPE'
+    },
 }
 
 const buildConfig = () => {

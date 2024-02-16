@@ -36,13 +36,17 @@ export default () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { t } = useTranslation()
-    const body1 = ['Event registration and organization through platform']
+    const body1 = [
+        'Event registration and organization through platform.',
+        'For non - profit organizations.',
+    ]
     const body2 = [
         'Event registration and organization through platform',
         'Tech Support during event',
-        'Dedicated project lead from Junction Team',
-        'Junction made website for event',
-        'Event PR through Junction media channel',
+        'Full Access to the Junction App',
+        'Consulting from the Junction Team',
+        'Statistics',
+        'Price is negotiable',
     ]
     // const body3 = [
     //     'Event registration and organization through platform',
@@ -80,7 +84,7 @@ export default () => {
                                 price="Free"
                             />
                             <PricingCard
-                                topic="Pro"
+                                topic="Enterprise"
                                 body={body2}
                                 price="Ask: hello@hackjunction.com"
                             />

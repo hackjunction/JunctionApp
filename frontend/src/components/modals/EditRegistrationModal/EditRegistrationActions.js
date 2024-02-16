@@ -42,7 +42,7 @@ export default ({ registration, onSubmit, onCancel }) => {
         if (errors.length > 0) {
             return
         }
-
+        
         onSubmit(formValues)
     }, [formFields, formValues, onSubmit])
 

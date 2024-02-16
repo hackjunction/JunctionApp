@@ -13,6 +13,10 @@ const settings = {
         required: true,
         value: process.env.REACT_APP_BASE_URL,
     },
+    WEB_SOCET_URL: {
+        required: false,
+        value: process.env.REACT_APP_WEB_SOCET_URL,
+    },
     CALENDAR_URL: {
         required: false,
         value:
@@ -34,13 +38,12 @@ const settings = {
     ID_TOKEN_NAMESPACE: {
         required: true,
         value:
-            process.env.REACT_APP_ID_TOKEN_NAMESPACE ||
-            'https://app.hackjunction.com/',
+            process.env.REACT_APP_ID_TOKEN_NAMESPACE || 'https://eu.junctionplatform.com/',
     },
     IS_DEBUG: {
-        default: process.env.NODE_ENV === 'development',
+        default: process.env.REACT_APP_IS_DEBUG === 'true',
         required: true,
-        value: process.env.IS_DEBUG,
+        value: process.env.REACT_APP_IS_DEBUG === 'true',
     },
     LOGO_DARK_URL: {
         required: true,
@@ -113,6 +116,14 @@ const settings = {
     SEO_PAGE_LOGIN_DESCRIPTION: {
         required: true,
         value: 'Login to see something',
+    },
+    METABASE_SECRET_KEY: {
+        required: false,
+        value: process.env.REACT_APP_METABASE_SECRET_KEY,
+    },
+    METABASE_SITE_URL: {
+        required: false,
+        value: process.env.REACT_APP_METABASE_SITE_URL,
     },
 }
 const buildConfig = () => {

@@ -98,7 +98,7 @@ class EventController {
                     $lt: new Date(),
                 },
             })
-                .sort([['frontPagePriority', -1]])
+                //.sort([['frontPagePriority', -1]])
                 .sort([['endTime', -1]])
                 .lean(),
         )
@@ -106,6 +106,28 @@ class EventController {
 
     async getAll() {
         return this._clean(Event.find().lean())
+    }
+
+    async getRoomsByEvent(eventId) {
+        const event = await this.getById(eventId)
+        return event.meetingRooms
+    }
+
+    async update(id, event) {
+        return this._clean(
+            Event.findOneAndUpdate({ _id: id }, event, { new: true }),
+        )
+    }
+
+    // Event with meeting room that has timeslot timeSlotId and set it to reserved
+    async setTimeslotReserved(timeSlotId, reserved) {
+        const event = await Event.findOneAndUpdate(
+            // FIXME: HOW THE F*** THE MONGO
+            { 'meetingRooms.timeSlots._id': timeSlotId },
+            { $set: { 'meetingRooms.timeSlots.$.reserved': reserved } },
+            { new: true },
+        )
+        return event ? reserved : null
     }
 
     async _clean(promise) {

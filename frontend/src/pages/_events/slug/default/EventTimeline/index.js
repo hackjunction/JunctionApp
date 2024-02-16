@@ -50,12 +50,12 @@ const colorLibStyle = props => ({
     },
     active: {
         '& $line': {
-            borderColor: '#784af4',
+            borderColor: props => props.accent || '#784af4',
         },
     },
     completed: {
         '& $line': {
-            borderColor: '#784af4',
+            borderColor: props => props.accent || '#784af4',
         },
     },
     line: {
@@ -83,60 +83,82 @@ function differentYear(event) {
         currentYear.diff(event.registrationStartTime, 'years') ||
         currentYear.diff(event.registrationEndTime, 'years') ||
         currentYear.diff(event.startTime, 'years') ||
-        currentYear.diff(event.endTime, 'years')
+        currentYear.diff(event.endTime, 'years') ||
+        currentYear.diff(event.submissionStartTime, 'years') ||
+        currentYear.diff(event.reviewStartTime, 'years')
     )
 }
 const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
     const classes = useStyles({ accentColor, textColor })
-    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D'
+    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D HH:mm'
     const timelineItems = useMemo(() => {
-        const items = [
-            {
-                date: moment(event.registrationStartTime).format(dateString),
-                dateValue: moment(event.registrationStartTime).unix(),
-                completed: moment(event.registrationStartTime).isBefore(),
-                title: 'Application period begins',
+        const realItems = event.eventTimeline.items.map(item => {
+            return {
+                date: moment(item.startTime).format(dateString),
+                dateValue: moment(item.startTime).unix(),
+                completed: moment(item.startTime).isBefore(),
+                title: item.title,
                 active: true,
-            },
-            {
-                date: moment(event.registrationEndTime).format(dateString),
-                dateValue: moment(event.registrationEndTime).unix(),
-                completed: moment(event.registrationEndTime).isBefore(),
-                title: 'Application period ends',
-                active: true,
-            },
-        ]
-        if (
-            moment(event.registrationEndTime).isBetween(
-                event.startTime,
-                event.endTime,
-            )
-        ) {
-            items.push({
-                date: moment(event.startTime).format(dateString),
-                dateValue: moment(event.startTime).unix(),
-                completed: moment(event.startTime).isBefore(),
-                title: event.name + ' begins',
-                active: true,
-            })
-            items.push({
-                date: moment(event.endTime).format(dateString),
-                dateValue: moment(event.endTime).unix(),
-                completed: moment(event.endTime).isBefore(),
-                title: event.name + ' ends',
-                active: true,
-            })
-        } else {
-            items.push({
-                date: MiscUtils.formatPDFDateInterval(
+            }
+        })
+        const items =
+            realItems.length > 0
+                ? realItems
+                : [
+                    {
+                        date: moment(event.registrationStartTime).format(
+                            dateString,
+                        ),
+                        dateValue: moment(event.registrationStartTime).unix(),
+                        completed: moment(
+                            event.registrationStartTime,
+                        ).isBefore(),
+                        title: 'Application period begins',
+                        active: true,
+                    },
+                    {
+                        date: moment(event.registrationEndTime).format(
+                            dateString,
+                        ),
+                        dateValue: moment(event.registrationEndTime).unix(),
+                        completed: moment(
+                            event.registrationEndTime,
+                        ).isBefore(),
+                        title: 'Application period ends',
+                        active: true,
+                    },
+                ]
+
+        if (realItems.length < 1) {
+            if (
+                moment(event.registrationEndTime).isBetween(
                     event.startTime,
                     event.endTime,
-                ),
-                dateValue: moment(event.startTime).unix(),
-                completed: moment(event.endTime).isBefore(),
-                title: event.name,
-                active: true,
-            })
+                )
+            ) {
+                items.push({
+                    date: moment(event.startTime).format(dateString),
+                    dateValue: moment(event.startTime).unix(),
+                    completed: moment(event.startTime).isBefore(),
+                    title: event.name + ' begins',
+                    active: true,
+                })
+                items.push({
+                    date: moment(event.endTime).format(dateString),
+                    dateValue: moment(event.endTime).unix(),
+                    completed: moment(event.endTime).isBefore(),
+                    title: event.name + ' ends',
+                    active: true,
+                })
+            } else {
+                items.push({
+                    date: 'No Date',
+                    dateValue: 'No Date',
+                    completed: moment(event.endTime),
+                    title: 'End of event',
+                    active: true,
+                })
+            }
         }
 
         const sorted = sortBy(items, 'dateValue')
@@ -145,10 +167,13 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
     }, [
         dateString,
         event.endTime,
+        event.eventTimeline,
         event.name,
         event.registrationEndTime,
         event.registrationStartTime,
         event.startTime,
+        event.submissionStartTime,
+        event.reviewStartTime,
     ])
 
     return (

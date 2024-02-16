@@ -50,7 +50,7 @@ export default ({ event, registration }) => {
                                 <Button
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/${event.slug}`),
+                                            push(`/dashboard/event/${event.slug}`),
                                         )
                                     }
                                     variant="applicationsClosed"
@@ -98,7 +98,7 @@ export default ({ event, registration }) => {
                     return (
                         <Button
                             onClick={() =>
-                                dispatch(push(`/dashboard/${event.slug}`))
+                                dispatch(push(`/dashboard/event/${event.slug}`))
                             }
                             variant="applicationsClosed"
                             color="theme_blue"

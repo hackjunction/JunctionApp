@@ -1,4 +1,7 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const { GridFsStorage } = require('multer-gridfs-storage')
+const ObjectId = require('mongodb').ObjectId
 
 const router = express.Router()
 const { Auth } = require('@hackjunction/shared')
@@ -6,7 +9,15 @@ const helper = require('./helper')
 
 const { hasPermission } = require('../../common/middleware/permissions')
 const { hasToken } = require('../../common/middleware/token')
-const { ForbiddenError } = require('../../common/errors/errors')
+const { ForbiddenError, NotFoundError } = require('../../common/errors/errors')
+
+const storage = require('../../misc/gridfs').storage
+const upload = require('../../misc/gridfs').upload
+
+// console.log(mongoose.connections[0].db)
+// let gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+//     bucketName: "uploads"
+// })
 
 const {
     isEventOrganiser,
@@ -115,6 +126,33 @@ router.post(
     },
 )
 
+router.post(
+    '/events/:slug/certificate',
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    (req, res, next) => {
+        helper.uploadEventCertificate(req.event.slug, req.user.sub)(
+            req,
+            res,
+            function (err) {
+                if (err) {
+                    if (err.code === 'LIMIT_FILE_SIZE') {
+                        next(new ForbiddenError(err.message))
+                    } else {
+                        next(err)
+                    }
+                } else {
+                    res.status(200).json({
+                        url: req.file.secure_url || req.file.url,
+                        publicId: req.file.public_id,
+                    })
+                }
+            },
+        )
+    },
+)
+
 /**
  * Upload images for a project
  */
@@ -142,6 +180,62 @@ router.post(
                 }
             },
         )
+    },
+)
+
+/**
+ * Upload background image for a team
+ */
+
+router.post(
+    '/:slug/team/:code',
+    hasToken,
+    hasRegisteredToEvent,
+    (req, res, next) => {
+        helper.uploadTeamBackgroundImage(req.event.slug, req.team.code)(
+            req,
+            res,
+            function (err) {
+                if (err) {
+                    if (err.code === 'LIMIT_FILE_SIZE') {
+                        next(new ForbiddenError(err.message))
+                    } else {
+                        next(err)
+                    }
+                } else {
+                    res.status(200).json({
+                        url: req.file.secure_url || req.file.url,
+                        publicId: req.file.public_id,
+                    })
+                }
+            },
+        )
+    },
+)
+
+/**
+ * Upload a logo for a challenge
+ */
+router.post(
+    '/challenges/:slug/logo',
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    (req, res, next) => {
+        helper.uploadChallengeLogo(req.params.slug)(req, res, function (err) {
+            if (err) {
+                if (err.code === 'LIMIT_FILE_SIZE') {
+                    next(new ForbiddenError(err.message))
+                } else {
+                    next(err)
+                }
+            } else {
+                res.status(200).json({
+                    url: req.file.secure_url || req.file.url,
+                    publicId: req.file.public_id,
+                })
+            }
+        })
     },
 )
 
@@ -186,7 +280,7 @@ router.post('/banner/:slug/icon', hasToken, (req, res, next) => {
 /**
  * Upload icon for an organization
  */
-router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
+router.post('/organization/:slug/icon', (req, res, next) => {
     helper.uploadOrganizationIcon(req.params.slug)(req, res, function (err) {
         if (err) {
             if (err.code === 'LIMIT_FILE_SIZE') {
@@ -200,6 +294,60 @@ router.post('/organization/:slug/icon', hasToken, (req, res, next) => {
                 publicId: req.file.public_id,
             })
         }
+    })
+})
+
+//Upload, download and delete general files over 16mb
+//TODO: add hasToken for all calls. Left out for testing with postman
+router.post('/files', hasToken, upload.single('file'), (req, res, next) => {
+    console.log('Routes: Upload > POST > /files > file data', req.file)
+    // console.log('Res', res)
+    console.log('Post request from /files')
+    const fileMetaData = {
+        id: req.file.id,
+        filename: req.file.filename,
+        uploadData: req.file.uploadDate,
+        fileSize: req.file.size,
+    }
+    console.log('fileMetaData', fileMetaData)
+    res.status(200).send(fileMetaData)
+})
+
+router.get('/files/:id', hasToken, (req, res, next) => {
+    console.log('Routes: Upload > GET > /files/:id > data', req)
+    var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+        bucketName: 'uploads',
+    })
+
+    const file = gfs
+        .find({
+            _id: ObjectId(req.params.id),
+        })
+        .toArray((err, files) => {
+            console.log('files', files)
+            if (!files || files.length === 0) {
+                return new NotFoundError('file does not exist')
+            }
+            gfs.openDownloadStream(ObjectId(req.params.id)).pipe(res)
+        })
+})
+//TODO: make periodic delete function calling this
+router.delete('/files/:id', hasToken, (req, res, next) => {
+    console.log('Routes: Upload > DELETE > /files/:id > data', req)
+
+    var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+        bucketName: 'uploads',
+    })
+    console.log(req.params.id)
+    gfs.delete(ObjectId(req.params.id), (err, data) => {
+        if (err) {
+            return res.status(404).json({ err: err })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: `File with ID ${req.params.id} is deleted`,
+        })
     })
 })
 

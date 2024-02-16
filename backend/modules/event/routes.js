@@ -1,11 +1,14 @@
 const express = require('express')
 const _ = require('lodash')
 const mongoose = require('mongoose')
-const { Auth } = require('@hackjunction/shared')
+const { Auth, EventHelpers } = require('@hackjunction/shared')
 const asyncHandler = require('express-async-handler')
+const moment = require('moment-timezone')
 const EventController = require('./controller.js')
 const AuthController = require('../auth/controller')
 const UserProfileController = require('../user-profile/controller')
+const ProjectController = require('../project/controller')
+const { hasValidVotingToken } = require('../../common/middleware/votingToken')
 
 const {
     hasPermission,
@@ -65,6 +68,36 @@ const deleteEvent = asyncHandler(async (req, res) => {
     return res.status(200).json(deletedEvent)
 })
 
+
+const getRecruiters = asyncHandler(async (req, res) => {
+    const event = await EventController.getEventBySlug(req.params.slug)
+    const recruiterIds = event.recruiters.map(recruiter => recruiter.recruiterId)
+    const userProfiles = await UserProfileController.getUserProfiles(recruiterIds)
+    return res.status(200).json(userProfiles)
+})
+
+const addRecruiter = asyncHandler(async (req, res) => {
+    const eventData = await EventController.getEventBySlug(req.params.slug)
+    const authRole = await AuthController.grantRecruiterPermission(req.params.recruiterId)
+
+    const event = await EventController.addRecruiter(
+        eventData,
+        req.params.recruiterId,
+        req.body.organization,
+    )
+    return res.status(200).json(event.recruiters)
+})
+
+const removeRecruiter = asyncHandler(async (req, res) => {
+    const eventData = await EventController.getEventBySlug(req.params.slug)
+    await AuthController.revokeRecruiterPermission(req.params.recruiterId)//TODO: remove roles and permissions from app_metadata
+    const event = await EventController.removeRecruiter(
+        eventData,
+        req.params.recruiterId,
+    )
+    return res.status(200).json(event.recruiters)
+})
+
 const getOrganisers = asyncHandler(async (req, res) => {
     const event = await EventController.getEventBySlug(req.params.slug)
     const userIds = _.concat(event.owner, event.organisers)
@@ -119,6 +152,14 @@ const updateFinalists = asyncHandler(async (req, res) => {
     return res.status(200).json(event)
 })
 
+const batchUpdateFinalists = asyncHandler(async (req, res) => {
+    const event = await EventController.batchUpdateFinalists(
+        req.event._id,
+        req.body.projectIds,
+    )
+    return res.status(200).json(event)
+})
+
 const getFinalists = asyncHandler(async (req, res) => {
     const projects = await mongoose
         .model('Project')
@@ -140,6 +181,14 @@ const clearAchievements = asyncHandler(async (req, res) => {
 // Approve
 const approveEvent = asyncHandler(async (req, res) => {
     const event = await EventController.approveEvent(req.event, req.body)
+    return res.status(200).json(event)
+})
+
+const approveEventPageScript = asyncHandler(async (req, res) => {
+    const event = await EventController.approveEventPageScript(
+        req.event,
+        req.body,
+    )
     return res.status(200).json(event)
 })
 
@@ -225,6 +274,33 @@ router
         updateFinalists,
     )
 
+router
+    .route('/:slug/finalist/batch')
+    .get(hasToken, getEventFromParams, getFinalists)
+    .patch(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        batchUpdateFinalists,
+    )
+
+router
+    .route('/:slug/withVotingToken/finalists')
+    /** As a valid voting token holder, list all projects for an event */
+    .get(
+        hasValidVotingToken,
+        getEventFromParams,
+        asyncHandler(async (req, res) => {
+            if (!EventHelpers.isFinalistVotingOpen(req.event, moment)) {
+                return res
+                    .status(404)
+                    .json({ message: 'Finalist voting is currently closed' })
+            }
+            const projects = await ProjectController.getFinalists(req.event)
+            return res.status(200).json(projects)
+        }),
+    )
+
 /** Get organisers for single event */
 router.get(
     '/organisers/:slug',
@@ -250,6 +326,29 @@ router
         removeOrganiser,
     )
 
+/** Get recruiters for single event */
+router.get(
+    '/recruiters/:slug',
+    hasToken,
+    hasPermission(Auth.Permissions.MANAGE_EVENT),
+    isEventOrganiser,
+    getRecruiters,
+)
+
+/** Add or remove recruiters from event */
+router
+    .route('/recruiters/:slug/:recruiterId')
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        addRecruiter,
+    )
+    .delete(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        removeRecruiter,
+    )
+
 /** Unapproved */
 router
     .route('/admin/unapproved')
@@ -262,6 +361,15 @@ router
         hasRole(Auth.Roles.SUPER_ADMIN),
         isEventOrganiser,
         approveEvent,
+    )
+
+router
+    .route('/admin/page-scripts/:slug')
+    .patch(
+        hasToken,
+        hasRole(Auth.Roles.SUPER_ADMIN),
+        isEventOrganiser,
+        approveEventPageScript,
     )
 
 /** Priority */

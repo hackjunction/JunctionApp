@@ -7,7 +7,6 @@ import {
     EventTypes,
     RegistrationStatuses,
     ReviewingMethods,
-    // RegistrationTravelGrantStatuses as TravelGrantStatuses
 } from '@hackjunction/shared'
 
 export const event = state => state.dashboard.event.data
@@ -15,15 +14,39 @@ export const eventLoading = state => state.dashboard.event.loading
 export const eventError = state => state.dashboard.event.error
 export const eventUpdated = state => state.dashboard.event.updated
 
+export const activeEvents = state => state.dashboard.activeEvents
+export const pastEvents = state => state.dashboard.pastEvents
+
 export const registration = state => state.dashboard.registration.data
 export const registrationLoading = state => state.dashboard.registration.loading
 export const registrationError = state => state.dashboard.registration.error
 export const registrationUpdated = state => state.dashboard.registration.updated
 
+export const eventRecruiters = state => state.dashboard.recruiters.data
+export const eventRecruitersMap = state => state.dashboard.recruiters.map
+export const eventRecruitersLoading = state =>
+    state.dashboard.recruiters.loading
+export const eventRecruitersError = state => state.dashboard.recruiters.error
+export const eventRecruitersUpdated = state =>
+    state.dashboard.recruiters.updated
+
 export const team = state => state.dashboard.team.data
 export const teamLoading = state => state.dashboard.team.loading
 export const teamError = state => state.dashboard.team.error
 export const teamUpdated = state => state.dashboard.team.updated
+
+export const teams = state => state.dashboard.teams.data
+export const teamsCount = state => state.dashboard.teams.count
+export const teamsLoading = state => state.dashboard.teams.loading
+export const teamsError = state => state.dashboard.teams.error
+export const teamsUpdated = state => state.dashboard.teams.updated
+
+export const selectedTeam = state => state.dashboard.selected_team.data
+export const selectedTeamLoading = state =>
+    state.dashboard.selected_team.loading
+export const selectedTeamError = state => state.dashboard.selected_team.error
+export const selectedTeamUpdated = state =>
+    state.dashboard.selected_team.updated
 
 export const projects = state => state.dashboard.projects.data
 export const projectsLoading = state => state.dashboard.projects.loading
@@ -65,6 +88,7 @@ export const isSubmissionsPast = createSelector(event, event =>
 export const isAcceptancePending = createSelector(
     registration,
     registration => {
+        console.log('registration', registration)
         return (
             [
                 RegistrationStatuses.asObject.pending.id,
@@ -120,7 +144,6 @@ export const isTeamValid = createSelector(team, team => {
 })
 
 export const lockedPages = createSelector(event, event => {
-    console.log('event', event)
     return {
         submissions: !EventHelpers.isSubmissionsOpen(event, moment),
         reviewing: EventHelpers.isVotingPast(event, moment),
@@ -139,9 +162,11 @@ export const shownPages = createSelector(
             submissions: registration?.status === STATUSES.checkedIn.id,
             eventID:
                 event?.eventType === EventTypes.physical.id &&
-                [STATUSES.confirmed.id, STATUSES.checkedIn.id].indexOf(
-                    registration?.status,
-                ) !== -1,
+                [
+                    STATUSES.confirmed.id,
+                    STATUSES.confirmedToHub.id,
+                    STATUSES.checkedIn.id,
+                ].indexOf(registration?.status) !== -1,
             reviewing:
                 registration?.status === STATUSES.checkedIn.id &&
                 event?.reviewMethod === ReviewingMethods.gavelPeerReview.id,
@@ -150,11 +175,18 @@ export const shownPages = createSelector(
                 (registration?.travelGrant ?? 0) > 0,
             finalistVoting:
                 registration?.status === STATUSES.checkedIn.id &&
-                event.overallReviewMethod !== 'noOverallWinner',
+                event?.overallReviewMethod !== 'noOverallWinner',
             hackerPack:
-                [STATUSES.checkedIn.id, STATUSES.confirmed.id].indexOf(
-                    registration?.status,
-                ) !== -1,
+                [
+                    STATUSES.checkedIn.id,
+                    STATUSES.confirmed.id,
+                    STATUSES.confirmedToHub.id,
+                ].indexOf(registration?.status) !== -1,
+            meetings: EventHelpers.areMeetingsEnabled(event),
+            reviewingByScoreCriteria:
+                event?.reviewMethod === ReviewingMethods.manualReview.id,
+            //Experimental
+            experimental: event?.experimental ?? false,
         }
     },
 )

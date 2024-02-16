@@ -6,10 +6,14 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "better-npm-run start:prod",
+        "prod": "better-npm-run forever:prod",
         "dev": "better-npm-run start:dev",
         "debug": "better-npm-run start:debug",
+        "only_build": "better-npm-run build",
         "build": "better-npm-run setup && better-npm-run build",
         "setup": "better-npm-run setup",
+        "loadGavelVote": "cd tests && k6 run gavelSubmitVoteStressTest.js",
+        "loadGavelStartVote": "cd tests && k6 run gavelStartVoteStressTest.js",
         "dev:frontend": "cd frontend && npm start",
         "dev:backend": "cd backend && npm run dev",
         "db-sync:prod-to-local": "sh ./scripts/sync-production-to-local.sh",
@@ -19,16 +23,18 @@
         "pre-commit:frontend": "cd frontend && npm run precommit",
         "pre-commit:backend": "cd backend && npm run precommit",
         "pre-commit:shared": "cd shared && npm run precommit",
-        "auth0": "a0deploy import -c ./auth0/config.json -i ./auth0/tenant.yaml"
+        "auth0": "a0deploy import -c ./auth0/config.json -i ./auth0/tenant.yaml",
+        "tailwind": "cd frontend && npm run build:tailwind"
     },
     "betterScripts": {
         "setup": "better-npm-run setup:backend && better-npm-run setup:frontend && better-npm-run setup:shared",
-        "setup:frontend": "cd frontend && npm ci",
+        "setup:frontend": "cd frontend && npm install",
         "setup:backend": "cd backend && npm ci",
         "setup:shared": "cd shared && npm ci",
         "start:dev": "npm-run-all --parallel dev:frontend dev:backend",
         "start:debug": "npm-run-all --parallel dev:frontend dev:backend --debug-brk=2222",
         "start:prod": "cd backend && npm start",
+        "forever:prod": "cd backend && npm run prod",
         "build": "rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build"
     },
     "pre-commit": [
@@ -43,13 +49,21 @@
         "pre-commit": "^1.2.2"
     },
     "dependencies": {
+        "@fontsource/hanken-grotesk": "^5.0.3",
+        "@fontsource/inter": "^5.0.3",
+        "@google-cloud/local-auth": "^2.1.0",
         "auth0-deploy-cli": "^5.5.7",
         "better-npm-run": "^0.1.1",
+        "forever": "^4.0.3",
+        "googleapis": "^105.0.0",
+        "graphql-redis-subscriptions": "^2.5.0",
         "if-env": "^1.0.4",
+        "next-auth": "^4.22.1",
         "pino": "^6.3.1",
         "pino-pretty": "^4.0.0",
         "react-helmet": "^6.1.0",
         "react-pdf": "^4.1.0",
+        "uuid": "^8.3.2",
         "yup": "^0.29.1"
     },
     "engines": {

@@ -24,6 +24,7 @@ function allowPublishPlugin(schema, { defaultPublished = false } = {}) {
                     `must be set before the event can be published!`,
                 ],
             }
+            //console.log("error with publishing", "options", options, "path", path)//TODO: migrate the publish button to the end and show errors
             delete newOptions.requiredForPublish
             schema.path(path, newOptions)
         }

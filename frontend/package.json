@@ -12,6 +12,7 @@
         "@material-ui/core": "^4.10.1",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.55",
+        "@mui/x-data-grid": "^4.0.2",
         "@react-pdf/renderer": "^2.0.0-beta.6",
         "@welldone-software/why-did-you-render": "^4.2.5",
         "antd": "^4.3.1",
@@ -20,9 +21,12 @@
         "babel-plugin-import": "^1.13.0",
         "cloudinary-react": "^1.5.0",
         "connected-react-router": "^6.8.0",
+        "downloadjs": "^1.4.7",
+        "export-to-csv": "^0.2.1",
         "formik": "^2.1.4",
         "framer-motion": "^1.11.0",
         "graphql": "^15.0.0",
+        "graphql-ws": "^5.9.1",
         "i18next": "^19.4.5",
         "i18next-browser-languagedetector": "^4.3.1",
         "i18next-xhr-backend": "^3.2.2",
@@ -32,6 +36,7 @@
         "moment-timezone": "^0.5.31",
         "notistack": "^0.9.16",
         "object-path": "^0.11.5",
+        "pdf-lib": "^1.17.1",
         "qrcode.react": "^1.0.0",
         "react": "16.13.1",
         "react-beautiful-dnd": "^13.0.0",
@@ -47,9 +52,11 @@
         "react-i18next": "^11.5.0",
         "react-inlinesvg": "^1.2.0",
         "react-markdown": "^4.3.1",
+        "react-multi-carousel": "^2.8.4",
         "react-player": "^2.6.2",
         "react-qr-reader": "^2.2.1",
         "react-redux": "^7.2.0",
+        "react-responsive-masonry": "^2.1.7",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^3.4.3",
         "react-select": "^3.1.0",
@@ -65,25 +72,28 @@
         "remark-breaks": "^1.0.5",
         "reselect": "^4.0.0",
         "speakingurl": "^14.0.1",
+        "tailwindcss": "^1.9.6",
         "webfontloader": "^1.6.28",
         "yup": "^0.29.1"
     },
     "scripts": {
         "start": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/start.js",
-        "build": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/build.js",
+        "build": "npm run build:styles && node --expose-gc --max-old-space-size=2048 node_modules/react-scripts/scripts/build.js",
         "test": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/test.js",
         "eject": "node --expose-gc --max-old-space-size=8192 node_modules/react-scripts/scripts/eject.js",
         "lint": "eslint ./src",
         "lint-fix": "eslint ./src --fix",
         "depcheck": "depcheck .",
         "eslint-check": "eslint --print-config path/to/main.js | eslint-config-prettier-check",
-        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint"
+        "precommit": "echo \"Frontend: running pre-commit checks\" && npm run lint",
+        "build:tailwind": "npx tailwindcss build src/styles/index.css -o src/styles/tailwind.css",
+        "build:styles": "npm run build:tailwind"
     },
     "browserslist": [
         "defaults",
         "not IE 11",
         "maintained node versions"
-      ],
+    ],
     "proxy": "http://localhost:2222",
     "engines": {
         "node": "12.3.1",
@@ -96,6 +106,7 @@
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-prettier": "^3.4.0",
+        "postcss-cli": "^10.1.0",
         "prettier": "^2.3.2"
     }
 }

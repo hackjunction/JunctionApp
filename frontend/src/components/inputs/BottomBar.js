@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
     Box,
+    Grid,
     CircularProgress,
     ButtonBase,
     Typography,
@@ -15,6 +16,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import Button from 'components/generic/Button'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty/index'
+import { isArray } from 'lodash-es'
 
 const useStyles = makeStyles(theme => ({
     wrapper: ({ dirty, hasErrors }) => ({
@@ -47,12 +49,32 @@ const useStyles = makeStyles(theme => ({
             paddingRight: theme.spacing(2),
         },
     },
+    loader: {
+        margin: '10px',
+        padding: '5px',
+        color: 'white',
+        size: '10px'
+    },
+    loadingText: {
+        fontWeight: 'bold',
+        display: 'inlineBlock',
+        margin: '10px',
+        color: 'white',
+        size: '24px'
+    },
     errorButton: {
         padding: theme.spacing(1),
     },
 }))
 
-const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
+const BottomBar = ({
+    errors,
+    dirty,
+    onSubmit,
+    loading,
+    submitLabel = 'Save Changes',
+    loadingText = ''
+}) => {
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ dirty, hasErrors })
     const [showErrors, setShowErrors] = useState(false)
@@ -83,18 +105,31 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
     return (
         <>
             <Box className={classes.wrapper}>
-                {loading && (
-                    <CircularProgress size={24} style={{ color: 'white' }} />
-                )}
-                {dirty && !hasErrors && (
+
+                {loading && (//TODO: fix the looks
+                    <Grid container spacing={6}>
+                        <Grid item xs={8}>
+                <Typography className={classes.loadingText}> 
+                {loadingText}
+                </Typography>
+                </Grid>
+                <Grid item xs={4}>
+
+                    <CircularProgress className={classes.loader} />
+                    </Grid>
+
+                    </Grid>
+                  )}  
+                 {dirty && !hasErrors && ( 
                     <Button
                         color="theme_white"
                         variant="contained"
                         onClick={onSubmit}
+                        disabled={loading}
                     >
-                        Save changes
+                        {submitLabel}
                     </Button>
-                )}
+                 )} 
                 {!loading && hasErrors && renderErrorsButton()}
             </Box>
             {dirty && <BlockExitIfDirty dirty={dirty} />}
@@ -118,6 +153,17 @@ const BottomBar = ({ errors, dirty, onSubmit, loading }) => {
                             return (
                                 <ListItem divider key={field}>
                                     <ListItemText primary={errorMsg} />
+                                </ListItem>
+                            )
+                            // TODO: improve
+                        } else if (isArray(errorMsg)) {
+                            if (showErrors)
+                                console.info(`${field} errors`, errorMsg)
+                            return (
+                                <ListItem divider key={field}>
+                                    <ListItemText
+                                        primary={`Multiple errors in ${field}`}
+                                    />
                                 </ListItem>
                             )
                         } else {

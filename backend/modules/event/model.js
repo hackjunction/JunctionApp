@@ -7,9 +7,13 @@ const {
 } = require('@hackjunction/shared')
 // const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
+const HackerpackSchema = require('@hackjunction/shared/schemas/Hackerpack')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
+const Certificate = require('@hackjunction/shared/schemas/Certificate')
+const mongoFile = require('@hackjunction/shared/schemas/MongoFile')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
+const EventRecruitersSchema = require('@hackjunction/shared/schemas/Recruiter')
 const TravelGrantConfigSchema = require('@hackjunction/shared/schemas/TravelGrantConfig')
 const UserDetailsConfigSchema = require('@hackjunction/shared/schemas/UserDetailsConfig')
 const EventTagSchema = require('@hackjunction/shared/schemas/EventTag')
@@ -17,9 +21,16 @@ const RegistrationConfigSchema = require('@hackjunction/shared/schemas/Registrat
 const AddressSchema = require('@hackjunction/shared/schemas/Address')
 const WebhookSchema = require('@hackjunction/shared/schemas/Webhook')
 const EventThemeSchema = require('@hackjunction/shared/schemas/EventTheme')
+const EventTimelineSchema = require('@hackjunction/shared/schemas/EventTimeline')
+const MeetingRoomSchema = require('@hackjunction/shared/schemas/MeetingRoom')
+const EventPageScriptSchema = require('@hackjunction/shared/schemas/EventPageScript')
 const allowPublishPlugin = require('../../common/plugins/allowPublish')
 const updateAllowedPlugin = require('../../common/plugins/updateAllowed')
 const uploadHelper = require('../upload/helper')
+const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
+const SubmissionDefaultFieldsSchema = require('@hackjunction/shared/schemas/SubmissionDefaultFields')
+const SubmissionDefaultFields = require('@hackjunction/shared/constants/submission-default-fields')
+const ScoreCriteriaSettingsSchema = require('@hackjunction/shared/schemas/ScoreCriteriaSettings')
 
 const EventSchema = new mongoose.Schema({
     /** Event info */
@@ -81,6 +92,8 @@ const EventSchema = new mongoose.Schema({
     /** Event customisation */
     coverImage: CloudinaryImageSchema.mongoose,
     logo: CloudinaryImageSchema.mongoose,
+    certificate: Certificate.mongoose,
+    //map: mongoFile.mongoose,
     /** Event configuration */
     eventType: {
         type: String,
@@ -130,12 +143,11 @@ const EventSchema = new mongoose.Schema({
             },
             'must have at least one item if challenges are enabled',
         ],
-        required: [
-            function () {
-                return this.challengesEnabled
-            },
-            'is required if challenges are enabled',
-        ],
+    },
+    hackerpacksEnabled: false,
+    hackerpacks: {
+        type: [HackerpackSchema.mongoose],
+        default: [],
     },
     allowProjectSubmissionsPerChallenge: {
         type: Boolean,
@@ -187,6 +199,33 @@ const EventSchema = new mongoose.Schema({
         type: [WebhookSchema.mongoose],
         default: [],
     },
+    eventTimeline: {
+        type: EventTimelineSchema.mongoose,
+        default: {
+            items: [
+                {
+                    title: 'Registration period',
+                    startTime: new Date(new Date().getTime()),
+                },
+                {
+                    title: 'Submission period',
+                    startTime: new Date(new Date().getTime() + 1),
+                },
+                {
+                    title: 'Review period',
+                    startTime: new Date(new Date().getTime() + 2),
+                },
+                {
+                    title: 'Event starts',
+                    startTime: new Date(new Date().getTime() + 3),
+                },
+                {
+                    title: 'Event ends',
+                    startTime: new Date(new Date().getTime() + 4),
+                },
+            ],
+        },
+    },
     metaDescription: {
         type: String,
         default: '',
@@ -217,6 +256,10 @@ const EventSchema = new mongoose.Schema({
     },
     organisers: {
         type: [String],
+        default: [],
+    },
+    recruiters: {
+        type: [EventRecruitersSchema.mongoose],
         default: [],
     },
     organizations: {
@@ -265,6 +308,89 @@ const EventSchema = new mongoose.Schema({
     eventTerms: {
         type: String,
     },
+    eventNewsletter: {
+        type: String,
+    },
+    emailConfig: {
+        senderEmail: {
+            type: String,
+            default: 'noreply@hackjunction.com',
+            trim: true,
+            validate: {
+                validator: function (v) {
+                    return /\S+@\S+\.\S+/.test(v)
+                },
+                message: props =>
+                    `${props.value} is not a valid email address!`,
+            },
+        },
+        senderName: {
+            type: String,
+            default: '',
+            trim: true,
+            maxLength: 100,
+        },
+        acceptanceEmail: {
+            title: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            subtitle: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            body: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 5000,
+            },
+        },
+        rejectionEmail: {
+            title: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            subtitle: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            body: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 5000,
+            },
+        },
+        registrationEmail: {
+            title: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            subtitle: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 100,
+            },
+            body: {
+                type: String,
+                default: '',
+                trim: true,
+                maxLength: 5000,
+            },
+        },
+    },
     frontPagePriority: {
         type: Number,
         default: 0,
@@ -274,6 +400,34 @@ const EventSchema = new mongoose.Schema({
         default: false,
     },
     theme: { type: EventThemeSchema.mongoose, default: {} },
+    pageScripts: {
+        type: [EventPageScriptSchema.mongoose],
+        default: [],
+    },
+    meetingsEnabled: false,
+    meetingRooms: {
+        type: [MeetingRoomSchema.mongoose],
+        default: [],
+    },
+    submissionFormQuestions: {
+        type: [RegistrationSectionSchema.mongoose],
+    },
+    submissionFormEnabledFields: {
+        type: [String],
+        default: ProjectDefaultFields,
+    },
+    submissionFormDefaultFields: {
+        type: SubmissionDefaultFieldsSchema.mongoose,
+        default: SubmissionDefaultFields,
+    },
+    //New fields for score criteria and score settings
+    scoreCriteriaSettings: {
+        type: ScoreCriteriaSettingsSchema.mongoose,
+    },
+    experimental: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 EventSchema.index(

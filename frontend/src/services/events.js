@@ -63,6 +63,25 @@ EventsService.removeOrganiserFromEvent = (idToken, slug, userId) => {
     )
 }
 
+EventsService.getEventRecruiters = (idToken, slug) => {
+    return _axios.get(`${BASE_ROUTE}/recruiters/${slug}`, config(idToken))
+}
+
+EventsService.addRecruiterToEvent = (idToken, slug, recruiterId, organization) => {
+    return _axios.post(
+        `${BASE_ROUTE}/recruiters/${slug}/${recruiterId}`,
+        { organization: organization },
+        config(idToken),
+    )
+}
+
+EventsService.removeRecruiterFromEvent = (idToken, slug, recruiterId) => {
+    return _axios.delete(
+        `${BASE_ROUTE}/recruiters/${slug}/${recruiterId}`,
+        config(idToken),
+    )
+}
+
 EventsService.getOrganizations = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/organizations/${slug}`, config(idToken))
 }
@@ -98,8 +117,22 @@ EventsService.updateFinalists = (idToken, slug, projectId) => {
     )
 }
 
+EventsService.batchUpdateFinalists = (idToken, slug, projectIds) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/${slug}/finalist/batch`,
+        { projectIds },
+        config(idToken),
+    )
+}
+
 EventsService.getFinalists = (idToken, slug) => {
     return _axios.get(`${BASE_ROUTE}/${slug}/finalist`, config(idToken))
+}
+
+EventsService.getFinalistsWithVotingToken = (slug, votingToken) => {
+    return _axios.get(
+        `${BASE_ROUTE}/${slug}/withVotingToken/finalists?votingToken=${votingToken}`,
+    )
 }
 
 EventsService.getWinnerProjects = (idToken, slug) => {
@@ -122,6 +155,14 @@ EventsService.setApproved = (idToken, slug, approved) => {
     return _axios.patch(
         `${BASE_ROUTE}/admin/unapproved/${slug}`,
         { approved: approved },
+        config(idToken),
+    )
+}
+
+EventsService.setPageScriptApproved = (idToken, slug, approved, index) => {
+    return _axios.patch(
+        `${BASE_ROUTE}/admin/page-scripts/${slug}`,
+        { approved, index },
         config(idToken),
     )
 }

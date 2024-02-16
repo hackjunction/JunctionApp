@@ -1,9 +1,9 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
 
 const titleFont = ['"Montserrat"', 'sans-serif'].join(',')
 const bodyFont = ['"Lato"', 'sans-serif'].join(',')
 
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
         primary: {
             main: '#52d7af',
@@ -114,6 +114,7 @@ const theme = createMuiTheme({
         },
         button: {
             fontFamily: bodyFont,
+            fontSize: 100,
             fontWeight: '400',
         },
         caption: {

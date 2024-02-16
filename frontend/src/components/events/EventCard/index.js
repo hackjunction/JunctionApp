@@ -10,13 +10,16 @@ import { push } from 'connected-react-router'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        background: 'white',
+        background: 'inherit',
         borderRadius: '12px',
         overflow: 'hidden',
         flex: 1,
     },
     top: {
-        height: '148px',
+        height: '200px',
+        maxWidth: 'min(100%, 400px)',
+        aspectRatio: '16/9',
+        margin: '0 auto',
         position: 'relative',
         display: 'flex',
         justifyContent: 'flex-end',
@@ -58,7 +61,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const EventCard = ({ event, buttons }) => {
+const EventCard = ({ event, buttons }) => {//TODO: use neweventcard everywhere
     const dispatch = useDispatch()
     const classes = useStyles()
     const organization = event?.organizations

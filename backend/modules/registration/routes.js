@@ -32,6 +32,10 @@ const getRegistration = asyncHandler(async (req, res) => {
 })
 
 const createRegistration = asyncHandler(async (req, res) => {
+    console.log("creating registration with data:",
+        "user: ", req.user,
+        "event ", req.event,
+        "data ", req.body)
     const registration = await RegistrationController.createRegistration(
         req.user,
         req.event,
@@ -91,11 +95,12 @@ const cancelRegistration = asyncHandler(async (req, res) => {
 })
 
 const setTravelGrantDetails = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.setTravelGrantDetailsForRegistration(
-        req.user,
-        req.event,
-        req.body.data,
-    )
+    const registration =
+        await RegistrationController.setTravelGrantDetailsForRegistration(
+            req.user,
+            req.event,
+            req.body.data,
+        )
     return res.status(200).json(registration)
 })
 
@@ -103,6 +108,14 @@ const updateTravelGrantDetails = asyncHandler(async (req, res) => {
     const registration = await RegistrationController.updateTravelGrantDetails(
         req.body.registrationId,
         req.event,
+        req.body.data,
+    )
+    return res.status(200).json(registration)
+})
+
+const updateChecklist = asyncHandler(async (req, res) => {
+    const registration = await RegistrationController.updateChecklist(
+        req.body.registrationId,
         req.body.data,
     )
     return res.status(200).json(registration)
@@ -140,18 +153,18 @@ const getRegistrationsForEvent = asyncHandler(async (req, res) => {
 })
 
 const selfAssignRegistrationsForEvent = asyncHandler(async (req, res) => {
-    const registrations = await RegistrationController.selfAssignRegistrationsForEvent(
-        req.event._id.toString(),
-        req.user.sub,
-    )
+    const registrations =
+        await RegistrationController.selfAssignRegistrationsForEvent(
+            req.event._id.toString(),
+            req.user.sub,
+        )
 
     return res.status(200).json(registrations)
 })
 
 const assignRegistrationForEvent = asyncHandler(async (req, res) => {
-    const registration = await RegistrationController.assignRegistrationForEvent(
-        req.body,
-    )
+    const registration =
+        await RegistrationController.assignRegistrationForEvent(req.body)
 
     return res.status(200).json(registration)
 })
@@ -203,6 +216,34 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
     return res.status(200).json(rejected)
 })
 
+const addPartnerToRegistrated = asyncHandler(async (req, res) => {
+
+    console.log("addPartnerToRegistrated", req.body)
+    //TODO: should check if the user is registered already first
+    try {
+        const hasRegistration = await RegistrationController.getRegistration(req.body.userId, req.event._id)
+        return res.status(200).json(hasRegistration)
+    } catch (e) {
+        console.log("hasRegistration", e)
+        const registration = await RegistrationController.createPartnerRegistration(
+            req.body.userId, //switch to actual user
+            req.event, //slug
+            req.body.profile, /*data: {
+                    firstName: 'seppo',
+                    lastName: 'pykälä',
+                    email: 'samu.rotko@gmail.com'
+                  }*/
+        )
+        return res.status(200).json(registration)
+    }
+
+
+
+
+
+
+})
+
 router.route('/').get(hasToken, getUserRegistrations)
 
 /** Get, create or update a registration */
@@ -224,6 +265,10 @@ router
 router
     .route('/:slug/travel-grant-details')
     .patch(hasToken, hasRegisteredToEvent, setTravelGrantDetails)
+
+router
+    .route('/:slug/checklist')
+    .patch(hasToken, hasRegisteredToEvent, updateChecklist)
 
 /** Get all registration as organiser */
 router.get(
@@ -332,6 +377,15 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         editRegistration,
+    )
+
+router
+    .route('/:slug/partner')
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        addPartnerToRegistrated,
     )
 
 module.exports = router

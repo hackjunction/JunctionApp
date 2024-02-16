@@ -45,6 +45,7 @@ export default ({ data = [] }) => {
             if (org) setOrganization(org)
         })
     }, [])
+    console.log(organization)
 
     const handleRemove = useCallback(
         slug => {
@@ -96,7 +97,7 @@ export default ({ data = [] }) => {
                                             target="_blank"
                                         >
                                             <Button
-                                                color="theme_turquoise"
+                                                color="primary"
                                                 variant="contained"
                                             >
                                                 Link

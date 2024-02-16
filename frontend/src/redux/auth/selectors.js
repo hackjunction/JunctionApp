@@ -14,9 +14,14 @@ export const getSession = state => state.auth.session
 export const getSessionExpiresAt = state =>
     state.auth.session ? state.auth.session.expiresAt : 0
 export const getNextRoute = state => state.auth.nextRoute
-export const isAuthenticated = state => getIdToken(state) !== null
-export const isSessionExpired = state =>
-    new Date().getTime() > state.auth.session.expiresAt
+export const isAuthenticated = state => {
+
+    return getIdToken(state) !== null
+}
+export const isSessionExpired = state => {
+
+    return new Date().getTime() > state.auth.session.expiresAt
+}
 
 export const getRoles = state =>
     state.auth.session.idTokenPayload
@@ -48,6 +53,7 @@ export const idTokenData = createSelector(getIdTokenPayload, data => {
     if (!data) {
         return
     }
+
     return reduce(
         Object.keys(data),
         (result, field) => {

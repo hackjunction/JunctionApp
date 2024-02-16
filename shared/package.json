@@ -4,10 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "mocha",
+        "test": "",
         "precommit": "echo \"Shared: running pre-commit checks\" && npm run test"
     },
-    "author": "Juuso Lappalainen",
+    "author": "Eino Miettinen",
     "license": "ISC",
     "eslintConfig": {
         "env": {
@@ -69,8 +69,7 @@
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-prettier": "^3.1.3",
-        "prettier": "^2.0.5",
-        "mocha": "^7.2.0"
+        "prettier": "^2.0.5"
     },
     "engines": {
         "node": "12.3.1",

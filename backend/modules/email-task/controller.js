@@ -23,7 +23,9 @@ controller.createTask = (userId, eventId, type, params, schedule) => {
     if (params) {
         task.params = params
     }
+    console.log(task)
     return task.save().catch(err => {
+        console.log('err', err)
         if (err.code === 11000) {
             return Promise.resolve()
         }
@@ -229,7 +231,13 @@ controller.deliverEmailTask = async task => {
             break
         }
         default: {
-            await SendgridService.sendGenericEmail(user.email, task.params)
+            await SendgridService.sendGenericEmail(
+                user.email,
+                task.params,
+                {},
+                event,
+                user,
+            )
             break
         }
     }
@@ -239,8 +247,33 @@ controller.deliverEmailTask = async task => {
     return task.save()
 }
 
-controller.sendPreviewEmail = async (to, msgParams) => {
-    return SendgridService.sendGenericEmail(to, msgParams).catch(() => {})
+controller.sendPreviewEmail = async (to, msgParams, from = {}, eventSlug) => {
+    // Fetch the userId using the provided email
+    const userId = await UserController.getUserIdByEmail(to)
+
+    // Fetch the required 'event' and 'user' data using the eventSlug and userId
+    const [event, user] = await Promise.all([
+        EventController.getEventBySlug(eventSlug),
+        UserController.getUserProfile(userId),
+    ])
+
+    // Check if user is available.
+    if (!user) {
+        throw new Error('User data not found.')
+    }
+
+    // Check if event is available.
+    if (!event) {
+        throw new Error('Event data not found.')
+    }
+
+    return SendgridService.sendGenericEmail(
+        to,
+        msgParams,
+        from,
+        event,
+        user,
+    ).catch(() => {})
 }
 
 controller.sendContactEmail = async msgParams => {

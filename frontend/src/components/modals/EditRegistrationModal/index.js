@@ -51,7 +51,6 @@ export default ({
                 })
         }
     }, [idToken, registrationId, slug])
-
     const participantName = useMemo(() => {
         if (!registration) return ''
         const { firstName, lastName } = registration.answers

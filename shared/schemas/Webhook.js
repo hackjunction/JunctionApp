@@ -4,6 +4,7 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLBoolean,
+    GraphQLInputObjectType,
 } = require('graphql')
 
 // TODO: The Project ref here might be an issue
@@ -51,7 +52,32 @@ const WebhookType = new GraphQLObjectType({
     },
 })
 
+const WebhookInput = new GraphQLInputObjectType({
+    name: 'WebhookInput',
+    fields: {
+        _id: {
+            type: GraphQLString,
+        },
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        resource: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        action: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        url: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        enabled: {
+            type: GraphQLBoolean,
+        },
+    },
+})
+
 module.exports = {
     mongoose: WebhookSchema,
     graphql: WebhookType,
+    graphqlInput: WebhookInput,
 }

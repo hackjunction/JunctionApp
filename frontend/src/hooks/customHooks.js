@@ -1,4 +1,11 @@
+import React from 'react'
 import { useState, useCallback, useEffect } from 'react'
+//import { useSelector, useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+// import { push } from 'connected-react-router'
+
+// import { useMyEvents, useActiveEvents } from 'graphql/queries/events'
+// import * as UserSelectors from 'redux/user/selectors'
 
 export const useStateWithReset = initialValue => {
     const [value, setValue] = useState(initialValue)
@@ -88,3 +95,47 @@ export const useDebounce = (value, delay) => {
 
     return debouncedValue
 }
+
+export function useQueryParams() {
+    const { search } = useLocation()
+
+    return React.useMemo(() => new URLSearchParams(search), [search])
+}
+
+// export const useRedirectDashboard = () => {
+//     const dispatch = useDispatch()
+//     const recruiterEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
+//     const [organizerEvents, loading] = useMyEvents()//TODO: move to user state
+//     const participantEvents = useSelector(UserSelectors.userProfileRegistrations)
+//     const [activeEvents] = useActiveEvents({}) //active events, from these we select where to rediret, or default
+
+//     console.log("activeEvents", activeEvents)
+//     console.log("organizerEvents", organizerEvents)
+//     console.log("recruiterEvents", recruiterEvents)
+//     console.log("participantEvents", participantEvents)
+
+//     var defaultPage = activeEvents?.find(active => recruiterEvents?.some(e => e.eventId === active._id))
+//     console.log("defaultPage?", defaultPage)
+//     //abstract equality
+//     if (defaultPage == null) {
+//         defaultPage = activeEvents?.find(active => organizerEvents?.some(e => e._id === active._id))
+//         console.log("defaultPage organizerEvents", defaultPage)
+//     }
+//     if (defaultPage == null) {
+//         defaultPage = activeEvents?.find(active => participantEvents?.some(e => e.event === active._id))
+//         console.log("defaultPage participantEvents", defaultPage)
+//     }
+//     console.log("defaultPage", defaultPage != null ? "not null" : "null")
+
+
+//     if (defaultPage != null) {
+//         console.log(`/dashboard/${defaultPage.slug}`)
+//         dispatch(push(`/dashboard/${defaultPage.slug}`))
+//     } else {
+//         console.log(`/dashboard`)
+//         dispatch(push(`/dashboard`))
+//     }
+
+
+
+// }

@@ -15,6 +15,7 @@ const Registration = require('./model')
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
 const RegistrationHelpers = require('./helpers')
 const EmailTaskController = require('../email-task/controller')
+const { checklistItemsOnline, checklistItemsPhysical } = require('./checklists')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
@@ -27,14 +28,49 @@ controller.getUserRegistrations = user => {
 }
 
 controller.createRegistration = async (user, event, data) => {
+    console.log("user", user)
     const answers = await RegistrationHelpers.registrationFromUser(data)
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
         answers,
     })
+    if (event.eventType === 'online') {
+        registration.checklist = {
+            items: checklistItemsOnline(),
+        }
+    } else {
+        registration.checklist = {
+            items: checklistItemsPhysical(),
+        }
+    }
     registration.status = RegistrationStatuses.asObject.incomplete.id
+    console.log("createRegistration", registration)
+    return registration.save()
+    /* .catch(function (err) {
+        console.log(err.name, err.errors)
+    }) */
+}
 
+controller.createPartnerRegistration = async (user, event, data) => {
+    console.log("user", user)
+    const answers = await RegistrationHelpers.registrationFromUser(data)
+    const registration = new Registration({
+        event: event._id.toString(),
+        user: user,
+        answers,
+    })
+    if (event.eventType === 'online') {
+        registration.checklist = {
+            items: checklistItemsOnline(),
+        }
+    } else {
+        registration.checklist = {
+            items: checklistItemsPhysical(),
+        }
+    }
+    registration.status = RegistrationStatuses.asObject.incomplete.id
+    console.log("createRegistration", registration)
     return registration.save()
     /* .catch(function (err) {
         console.log(err.name, err.errors)
@@ -63,6 +99,7 @@ controller.updateRegistration = (user, event, data) => {
                 await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
+
                 return Registration.updateAllowed(registration, { answers })
             }
             return false
@@ -169,6 +206,13 @@ controller.setTravelGrantDetailsForRegistration = async (
     registration.travelGrantDetails = validated
     registration.travelGrantStatus = TRAVEL_GRANT_STATUSES.pending.id
     return registration.save()
+}
+
+controller.updateChecklist = (registrationId, data) => {
+    return Registration.findById(registrationId).then(registration => {
+        registration.checklist.items[data.itemIndex] = data.checklistItem
+        return registration.save()
+    })
 }
 
 controller.updateTravelGrantDetails = (registrationId, event, data) => {
@@ -416,7 +460,7 @@ controller.rejectPendingTravelGrants = eventId => {
 controller.getFullRegistration = (eventId, registrationId) => {
     const query =
         mongoose.Types.ObjectId.isValid(registrationId) &&
-        registrationId.indexOf('|') === -1
+            registrationId.indexOf('|') === -1
             ? { _id: registrationId }
             : { user: registrationId }
     return Registration.findOne(query)

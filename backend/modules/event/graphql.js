@@ -6,6 +6,7 @@ const {
     GraphQLList,
     GraphQLInt,
     GraphQLBoolean,
+    GraphQLInputObjectType,
 } = require('graphql')
 const { GraphQLDateTime } = require('graphql-iso-date')
 
@@ -16,17 +17,309 @@ const dateUtils = require('../../common/utils/dateUtils')
 
 const {
     CloudinaryImage,
+    CloudinaryImageInput,
     Address,
+    AddressInput,
     Track,
+    TrackInput,
     Challenge,
+    ChallengeInput,
+    Hackerpack,
+    HackerpackInput,
     TravelGrantConfig,
+    TravelGrantConfigInput,
+    // MongoFile,
+    // MongoFileInput,
     RegistrationSection,
+    RegistrationSectionInput,
     EventTag,
+    EventTagInput,
+    EventRecruiters,
+    EventRecruitersInput,
     RegistrationConfig,
+    RegistrationConfigInput,
     EventTheme,
+    EventThemeInput,
+    EventTimeline,
+    EventTimelineInput,
+    Webhook,
+    WebhookInput,
+    MeetingRoom,
+    MeetingRoomInput,
+    EventPageScript,
+    SubmissionDefaultFieldsInput,
+    SubmissionDefaultFields,
+    EventPageScriptInput,
+    ScoreCriteriaSettings,
+    ScoreCriteriaSettingsInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
+
+// A function to generate the fields for the email template
+function emailTemplateFields() {
+    return {
+        title: {
+            type: GraphQLString,
+        },
+        subtitle: {
+            type: GraphQLString,
+        },
+        body: {
+            type: GraphQLString,
+        },
+    }
+}
+
+const EmailTemplateInput = new GraphQLInputObjectType({
+    name: 'EmailTemplateInput',
+    fields: emailTemplateFields,
+})
+
+const EmailTemplateType = new GraphQLObjectType({
+    name: 'EmailTemplateType',
+    fields: emailTemplateFields,
+})
+
+const EmailConfigInput = new GraphQLInputObjectType({
+    name: 'EmailConfigInput',
+    fields: {
+        senderName: {
+            type: GraphQLString,
+        },
+        senderEmail: {
+            type: GraphQLString,
+        },
+        acceptanceEmail: {
+            type: EmailTemplateInput,
+        },
+        rejectionEmail: {
+            type: EmailTemplateInput,
+        },
+        registrationEmail: {
+            type: EmailTemplateInput,
+        },
+    },
+})
+
+const EmailConfigType = new GraphQLObjectType({
+    name: 'EmailConfigType',
+    fields: {
+        senderName: {
+            type: GraphQLString,
+        },
+        senderEmail: {
+            type: GraphQLString,
+        },
+        acceptanceEmail: {
+            type: EmailTemplateType,
+        },
+        rejectionEmail: {
+            type: EmailTemplateType,
+        },
+        registrationEmail: {
+            type: EmailTemplateType,
+        },
+    },
+})
+
+const EventInput = new GraphQLInputObjectType({
+    name: 'EventInput',
+    fields: {
+        name: {
+            type: GraphQLString,
+        },
+        slug: {
+            type: GraphQLString,
+        },
+        timezone: {
+            type: GraphQLString,
+        },
+        coverImage: {
+            type: CloudinaryImageInput,
+        },
+        logo: {
+            type: CloudinaryImageInput,
+        },
+        eventType: {
+            type: GraphQLString,
+        },
+        description: {
+            type: GraphQLString,
+        },
+        /** Times */
+        registrationStartTime: {
+            type: GraphQLDateTime,
+        },
+        registrationEndTime: {
+            type: GraphQLDateTime,
+        },
+        startTime: {
+            type: GraphQLDateTime,
+        },
+        endTime: {
+            type: GraphQLDateTime,
+        },
+        submissionsStartTime: {
+            type: GraphQLDateTime,
+        },
+        submissionsEndTime: {
+            type: GraphQLDateTime,
+        },
+        reviewingStartTime: {
+            type: GraphQLDateTime,
+        },
+        reviewingEndTime: {
+            type: GraphQLDateTime,
+        },
+        finalsActive: {
+            type: GraphQLBoolean,
+        },
+        eventLocation: {
+            type: AddressInput,
+        },
+        tracksEnabled: {
+            type: GraphQLBoolean,
+        },
+        tracks: {
+            type: GraphQLList(TrackInput),
+        },
+        challengesEnabled: {
+            type: GraphQLBoolean,
+        },
+        challenges: {
+            type: GraphQLList(ChallengeInput),
+        },
+        hackerpacksEnabled: {
+            type: GraphQLBoolean,
+        },
+        hackerpacks: {
+            type: GraphQLList(HackerpackInput),
+        },
+        travelGrantConfig: {
+            type: TravelGrantConfigInput,
+        },
+        reviewMethod: {
+            type: GraphQLString,
+        },
+        overallReviewMethod: {
+            type: GraphQLString,
+        },
+        customQuestions: {
+            type: GraphQLList(RegistrationSectionInput),
+        },
+        tags: {
+            type: GraphQLList(EventTagInput),
+        },
+        /** System metadata */
+        published: {
+            type: GraphQLBoolean,
+        },
+        galleryOpen: {
+            type: GraphQLBoolean,
+        },
+        allowProjectSubmissionsPerChallenge: {
+            type: GraphQLBoolean,
+        },
+        allowVoteOnOwnProject: {
+            type: GraphQLBoolean,
+        },
+        owner: {
+            type: GraphQLString,
+        },
+        organisers: {
+            type: GraphQLList(GraphQLString),
+        },
+        recruiters: {
+            type: GraphQLList(EventRecruitersInput),
+        },
+        organizations: {
+            type: GraphQLList(GraphQLID),
+        },
+        registrationConfig: {
+            type: RegistrationConfigInput,
+        },
+        demoLabel: {
+            type: GraphQLString,
+        },
+        demoHint: {
+            type: GraphQLString,
+        },
+        challenge_instructions: {
+            type: GraphQLString,
+        },
+        faq: {
+            type: GraphQLString,
+        },
+        demoInstructions: {
+            type: GraphQLString,
+        },
+        eventPrivacy: {
+            type: GraphQLString,
+        },
+        eventTerms: {
+            type: GraphQLString,
+        },
+        eventNewsletter: {
+            type: GraphQLString,
+        },
+        eventTimeline: {
+            type: EventTimelineInput,
+        },
+        emailConfig: {
+            type: EmailConfigInput,
+        },
+        demoPlaceholder: {
+            type: GraphQLString,
+        },
+        metaDescription: {
+            type: GraphQLString,
+        },
+        finalists: {
+            type: GraphQLList(GraphQLString),
+        },
+        frontPagePriority: {
+            type: GraphQLInt,
+        },
+        approved: {
+            type: GraphQLBoolean,
+        },
+        theme: {
+            type: EventThemeInput,
+        },
+        webhooks: {
+            type: GraphQLList(WebhookInput),
+        },
+        pageScripts: {
+            type: GraphQLList(EventPageScriptInput),
+        },
+        meetingsEnabled: {
+            type: GraphQLBoolean,
+        },
+        meetingRooms: {
+            type: GraphQLList(MeetingRoomInput),
+        },
+        // map: {
+        //     type: MongoFileInput,
+        // },
+        /** DELETE LATER: test area */
+        submissionFormQuestions: {
+            type: GraphQLList(RegistrationSectionInput),
+        },
+        submissionFormEnabledFields: {
+            type: GraphQLList(GraphQLString),
+        },
+        submissionFormDefaultFields: {
+            type: SubmissionDefaultFieldsInput,
+        },
+        scoreCriteriaSettings: {
+            type: ScoreCriteriaSettingsInput,
+        },
+        experimental: {
+            type: GraphQLBoolean,
+        },
+    },
+})
 
 const EventType = new GraphQLObjectType({
     name: 'Event',
@@ -100,6 +393,12 @@ const EventType = new GraphQLObjectType({
             challenges: {
                 type: GraphQLList(Challenge),
             },
+            hackerpacksEnabled: {
+                type: GraphQLBoolean,
+            },
+            hackerpacks: {
+                type: GraphQLList(Hackerpack),
+            },
             travelGrantConfig: {
                 type: TravelGrantConfig,
             },
@@ -113,7 +412,7 @@ const EventType = new GraphQLObjectType({
                 type: GraphQLList(RegistrationSection),
             },
             tags: {
-                type: EventTag,
+                type: GraphQLList(EventTag),
             },
             /** System metadata */
             published: {
@@ -128,6 +427,9 @@ const EventType = new GraphQLObjectType({
             organisers: {
                 type: GraphQLList(GraphQLString),
             },
+            recruiters: {
+                type: GraphQLList(EventRecruiters),
+            },
             organizations: {
                 type: GraphQLList(OrganizationType),
             },
@@ -140,11 +442,29 @@ const EventType = new GraphQLObjectType({
             demoHint: {
                 type: GraphQLString,
             },
+            challenge_instructions: {
+                type: GraphQLString,
+            },
+            faq: {
+                type: GraphQLString,
+            },
+            demoInstructions: {
+                type: GraphQLString,
+            },
             eventPrivacy: {
                 type: GraphQLString,
             },
             eventTerms: {
                 type: GraphQLString,
+            },
+            eventNewsletter: {
+                type: GraphQLString,
+            },
+            eventTimeline: {
+                type: EventTimeline,
+            },
+            emailConfig: {
+                type: EmailConfigType,
             },
             demoPlaceholder: {
                 type: GraphQLString,
@@ -164,6 +484,21 @@ const EventType = new GraphQLObjectType({
             theme: {
                 type: EventTheme,
             },
+            webhooks: {
+                type: GraphQLList(Webhook),
+            },
+            pageScripts: {
+                type: GraphQLList(EventPageScript),
+            },
+            meetingsEnabled: {
+                type: GraphQLBoolean,
+            },
+            meetingRooms: {
+                type: GraphQLList(MeetingRoom),
+            },
+            // map: {
+            //     type: MongoFile,
+            // },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {
@@ -191,6 +526,22 @@ const EventType = new GraphQLObjectType({
                 type: require('../registration/graphql').Types.RegistrationType,
             },
             */
+            /** DELETE LATER: test area */
+            submissionFormQuestions: {
+                type: GraphQLList(RegistrationSection),
+            },
+            submissionFormEnabledFields: {
+                type: GraphQLList(GraphQLString),
+            },
+            submissionFormDefaultFields: {
+                type: SubmissionDefaultFields,
+            },
+            scoreCriteriaSettings: {
+                type: ScoreCriteriaSettings,
+            },
+            experimental: {
+                type: GraphQLBoolean,
+            },
         }
     },
 })
@@ -244,6 +595,58 @@ const QueryType = new GraphQLObjectType({
                 },
             },
         },
+        roomsByEvent: {
+            type: GraphQLList(MeetingRoom),
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        eventScoreCriteriaSettings: {
+            type: ScoreCriteriaSettings,
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        allowExperimental: {
+            type: GraphQLBoolean,
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+    },
+})
+
+const MutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        updateEvent: {
+            type: EventType,
+            args: {
+                _id: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+                event: {
+                    type: GraphQLNonNull(EventInput),
+                },
+            },
+        },
+        setTimeslotReserved: {
+            type: GraphQLBoolean,
+            args: {
+                timeSlotId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+                reserved: {
+                    type: GraphQLNonNull(GraphQLBoolean),
+                },
+            },
+        },
     },
 })
 
@@ -290,6 +693,19 @@ const Resolvers = {
             }
             return events
         },
+        roomsByEvent: async (parent, args, context) => {
+            return context.controller('Event').getRoomsByEvent(args.eventId)
+        },
+    },
+    Mutation: {
+        updateEvent: async (parent, args, context) => {
+            return context.controller('Event').update(args._id, args.event)
+        },
+        setTimeslotReserved: async (parent, args, context) => {
+            return context
+                .controller('Event')
+                .setTimeslotReserved(args.timeSlotId, args.reserved)
+        },
     },
     Event: {
         organizations: parent => {
@@ -319,13 +735,14 @@ const Resolvers = {
                 .controller('Registration')
                 .getByIdAndUser(parent._id, context.userId)
         },
-
+ 
          */
     },
 }
 
 module.exports = {
     QueryType,
+    MutationType,
     Resolvers,
     Types: {
         EventType,

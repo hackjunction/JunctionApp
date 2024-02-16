@@ -4,6 +4,8 @@ const Promise = require('bluebird')
 const { ProjectSchema } = require('@hackjunction/shared')
 const Project = require('./model')
 const { ForbiddenError } = require('../../common/errors/errors')
+const TeamController = require('../team/controller')
+const upload = require('../../misc/gridfs').upload
 
 const controller = {}
 
@@ -39,6 +41,11 @@ controller.getProjectsByEventAndTeam = (eventId, teamId) => {
     })
 }
 
+controller.isProjectNameTaken = async (eventId, projectName) => {
+    const projects = await controller.getAllProjectsByEvent(eventId)
+    return projects.find(p => p.name === projectName) !== undefined
+}
+
 controller.createProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
     const validatedData = await schema.validate(data, { stripUnknown: true })
@@ -53,7 +60,9 @@ controller.createProjectForEventAndTeam = async (event, team, data) => {
 
 controller.updateProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
+    console.log('data :>> ', data)
     const validatedData = await schema.validate(data, { stripUnknown: true })
+    console.log('validatedData :>> ', validatedData)
     const projects = await controller.getProjectsByEventAndTeam(
         event._id,
         team._id,
@@ -69,9 +78,8 @@ controller.generateChallengeLink = async (event, challengeSlug) => {
     //    console.log('inhere challenge :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${
-            event.slug
-        }/challenge/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
+            }/challenge/${encodeURIComponent(hashed)}`,
     }
 }
 
@@ -80,9 +88,8 @@ controller.generateTrackLink = async (event, trackSlug) => {
     //    console.log('inhere track  :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${
-            event.slug
-        }/tracks/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
+            }/tracks/${encodeURIComponent(hashed)}`,
     }
 }
 
@@ -179,4 +186,28 @@ controller.getFinalProjects = async event => {
     return projects
 }
 
+controller.exportProjects = async projectIds => {
+    const projects = await Project.find({ _id: { $in: projectIds } }).populate({
+        path: 'team',
+    })
+
+    const projectAndMeta = await Promise.all(
+        projects.map(async project => {
+            const teamWithMeta = await TeamController.attachMeta(project.team)
+            return [project, teamWithMeta]
+        }),
+    )
+
+    const exportData = projectAndMeta.map(([project, teamWithMeta]) => {
+        return {
+            ...project.getExportData(),
+            ...TeamController.convertToFlatExportData(teamWithMeta),
+        }
+    })
+
+    return exportData
+}
+controller.getFinalists = event => {
+    return Project.find({ _id: { $in: event.finalists } })
+}
 module.exports = controller

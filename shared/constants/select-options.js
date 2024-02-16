@@ -9,6 +9,7 @@ const RegistrationStatuses = require('./registration-statuses')
 const Misc = require('./misc')
 const Currencies = require('./currencies')
 const Timezones = require('../data/timezones')
+const GradientList = require('./gradient-list')
 
 const currentYear = new Date().getFullYear()
 
@@ -18,7 +19,7 @@ const SelectOptions = {
         value: country,
     })),
     COUNTRY_CODES: Countries.asArray.map(country => ({
-        label: country.en_short_name + " ("+ country.phone_code +")",
+        label: country.en_short_name + ' (' + country.phone_code + ')',
         value: country.phone_code,
     })),
     CURRENCIES: Currencies.asArray.map(currency => ({
@@ -102,6 +103,10 @@ const SelectOptions = {
     YEARS_FUTURE: Array.apply(null, Array(120)).map((val, index) => ({
         value: currentYear + 15 - index,
         label: currentYear + 15 - index,
+    })),
+    GRADIENT_LIST: GradientList.map((gradient, index) => ({
+        label: index,
+        value: gradient,
     })),
 }
 

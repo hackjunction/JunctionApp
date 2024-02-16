@@ -48,14 +48,17 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
-    console.log('section', section)
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
+    console.log('section', section)
+    console.log('registration', registration)
     const [visible, setVisible] = useState(!section.conditional)
 
     const { initialValues, validationSchema } = useMemo(() => {
         return section.questions.reduce(
             (result, question) => {
+                console.log('question', question)
+                console.log('result', result)
                 if (
                     RegistrationFieldsCustom.hasOwnProperty(question.fieldType)
                 ) {
@@ -123,7 +126,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                         flexDirection="column"
                         alignItems="center"
                     >
-                        <Box maxWidth="600px">
+                        <Box>
                             <Markdown
                                 source={section.description}
                                 light
@@ -131,10 +134,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                             />
                         </Box>
                         {section.conditional && (
-                            <Box
-                                maxWidth="600px"
-                                className={classes.radioGroupWrapper}
-                            >
+                            <Box className={classes.radioGroupWrapper}>
                                 <Typography
                                     style={{ textAlign: 'center' }}
                                     variant="subtitle1"
@@ -159,7 +159,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                                         key={question.name}
                                         className={classes.question}
                                     >
-                                        <div className={classes.questionInner}>
+                                        {/* <div className={classes.questionInner}>
                                             <FastField
                                                 autoFocus={index === 0}
                                                 name={question.name}
@@ -167,6 +167,19 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                                                 config={question}
                                                 isCustom={true}
                                             />
+                                        </div> */}
+                                        <div className={classes.questionInner}>
+                                            <FastField name={question.name}>
+                                                {props => (
+                                                    <RegistrationQuestion
+                                                        autoFocus={index === 0}
+                                                        config={question}
+                                                        isCustom={true}
+                                                        field={props.field}
+                                                        form={props.form}
+                                                    />
+                                                )}
+                                            </FastField>
                                         </div>
                                     </Grid>
                                 ))}

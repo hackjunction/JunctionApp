@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLString } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLInputObjectType,
+    GraphQLNonNull,
+} = require('graphql')
 
 const CloudinaryImageSchema = new mongoose.Schema({
     url: {
@@ -11,7 +16,6 @@ const CloudinaryImageSchema = new mongoose.Schema({
         required: true,
     },
 })
-
 const CloudinaryImageType = new GraphQLObjectType({
     name: 'CloudinaryImage',
     fields: {
@@ -24,7 +28,23 @@ const CloudinaryImageType = new GraphQLObjectType({
     },
 })
 
+const CloudinaryImageInput = new GraphQLInputObjectType({
+    name: 'CloudinaryImageInput',
+    fields: {
+        url: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        publicId: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        _id: {
+            type: GraphQLString,
+        },
+    },
+})
+
 module.exports = {
     mongoose: CloudinaryImageSchema,
     graphql: CloudinaryImageType,
+    graphqlInput: CloudinaryImageInput,
 }

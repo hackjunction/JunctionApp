@@ -36,6 +36,7 @@ import RegistrationSection from './RegistrationSection'
 import RegistrationSectionCustom from './RegistrationSectionCustom'
 import RegistrationSectionLabel from './RegistrationSectionLabel'
 import NewsLetterButton from 'components/inputs/NewsLetterButton'
+import EventNewsLetterButton from 'components/inputs/EventNewsLetterButton'
 import SubmitButton from 'components/inputs/SubmitButton'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -44,6 +45,8 @@ import { popupCenter } from '../../../../utils/misc'
 import EventDetailContext from '../context'
 
 import { useTranslation } from 'react-i18next'
+import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
+import { EventPageScripts } from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -147,6 +150,7 @@ export default RequiresPermission(() => {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
+    const [eventNewsLetterHidden, setEventNewsLetterHidden] = useState(true)
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -350,6 +354,16 @@ export default RequiresPermission(() => {
                             />
                         )}
                     </StepContent>
+                    {index === 0 && (
+                        <EventPageScriptIFrame
+                            slug={slug}
+                            pageId={
+                                EventPageScripts.PageScriptLocation
+                                    .EVENT_REGISTRATION_FORM_START
+                            }
+                            event={event}
+                        />
+                    )}
                 </Step>
             )
         })
@@ -396,7 +410,17 @@ export default RequiresPermission(() => {
                             <NewsLetterButton
                                 email={formData.email}
                                 country={formData.countryOfResidence}
+                                onHidden={() => setEventNewsLetterHidden(false)}
                             />
+                            {event?.eventNewsletter && (
+                                <>
+                                    <Box mt={5} />
+                                    <EventNewsLetterButton
+                                        signupUrl={event?.eventNewsletter}
+                                        initiallyHidden={eventNewsLetterHidden}
+                                    />
+                                </>
+                            )}
                             <Box mt={5} />
                             <SubmitButton
                                 hasErrors={false}
@@ -496,7 +520,9 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(push(`/dashboard/${slug}`))
+                                        dispatch(
+                                            push(`/dashboard/event/${slug}`),
+                                        )
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"
@@ -514,6 +540,14 @@ export default RequiresPermission(() => {
                                     {t('Back_to_event_')}
                                 </Button>
                             </Box>
+                            <EventPageScriptIFrame
+                                slug={slug}
+                                pageId={
+                                    EventPageScripts.PageScriptLocation
+                                        .EVENT_REGISTRATION_FORM_END
+                                }
+                                event={event}
+                            />
                         </StepContent>
                     </Step>
                 </Stepper>

@@ -14,6 +14,15 @@ TeamsService.getTeamsForEvent = (idToken, eventSlug) => {
     return _axios.get(`/teams/organiser/${eventSlug}`, config(idToken))
 }
 
+TeamsService.exportTeams = (idToken, eventSlug, teamIds) => {
+    return _axios.post(
+        `/teams/organiser/${eventSlug}/export`,
+        { teamIds },
+        config(idToken),
+    )
+}
+
+//TODO createTeamForEvent is deprecated and to be removed in the future
 TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     return _axios.post(
         `/teams/${eventSlug}?populate=${populate}`,
@@ -22,12 +31,65 @@ TeamsService.createTeamForEvent = (idToken, eventSlug, populate) => {
     )
 }
 
+// TODO: When createTeamForEvent is removed, rename this to createTeamForEvent
+TeamsService.createNewTeamForEvent = (idToken, eventSlug, data, populate) => {
+    return _axios.post(
+        `/teams/${eventSlug}/teams?populate=${populate}`,
+        data,
+        config(idToken),
+    )
+}
+
 TeamsService.deleteTeamForEvent = (idToken, eventSlug) => {
     return _axios.delete(`/teams/${eventSlug}`, config(idToken))
 }
 
-TeamsService.editTeamForEvent = (idToken, eventSlug, edits) => {
-    return _axios.patch(`/teams/${eventSlug}`, edits, config(idToken))
+TeamsService.editTeamForEvent = (idToken, eventSlug, edits, populate) => {
+    return _axios.patch(
+        `/teams/${eventSlug}?populate=${populate}`,
+        edits,
+        config(idToken),
+    )
+}
+
+TeamsService.candidateApplyToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    applicationData,
+) => {
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}`,
+        applicationData,
+        config(idToken),
+    )
+}
+
+TeamsService.acceptCandidateToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    candidateId,
+) => {
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}/accept/${candidateId}`,
+        {},
+        config(idToken),
+    )
+}
+
+TeamsService.declineCandidateToTeam = (
+    idToken,
+    eventSlug,
+    teamCode,
+    candidateId,
+) => {
+    console.log('Sending')
+    return _axios.patch(
+        `/teams/${eventSlug}/teams/${teamCode}/decline/${candidateId}`,
+        {},
+        config(idToken),
+    )
 }
 
 TeamsService.joinTeamForEvent = (idToken, eventSlug, teamCode, populate) => {
@@ -52,9 +114,38 @@ TeamsService.removeMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
     )
 }
 
+TeamsService.organiserRemoveMemberFromTeam = (idToken, eventSlug, teamCode, userId) => {
+    return _axios.delete(
+        `/teams/organiser/${eventSlug}/${teamCode}/members/${userId}`,
+        config(idToken),
+    )
+}
+
+
 TeamsService.getTeamForEvent = (idToken, eventSlug, populate = false) => {
     return _axios.get(
         `/teams/${eventSlug}?populate=${populate}`,
+        config(idToken),
+    )
+}
+
+TeamsService.getAllTeamsForEventParticipant = (idToken, eventSlug, page, page_size, filter) => {
+    if (filter) {
+        return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}&filter=${filter}`, config(idToken))
+    } else {
+        return _axios.get(`/teams/${eventSlug}/teams?page=${page}&size=${page_size}`, config(idToken))
+
+    }
+}
+
+TeamsService.getTeamWithMetaForEventParticipant = (
+    idToken,
+    eventSlug,
+    teamCode,
+    populate = true,
+) => {
+    return _axios.get(
+        `/teams/${eventSlug}/teams/${teamCode}?populate=${populate}`,
         config(idToken),
     )
 }

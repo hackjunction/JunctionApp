@@ -1,4 +1,9 @@
-const { GraphQLObjectType, GraphQLString } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLInputObjectType,
+    GraphQLID,
+} = require('graphql')
 const mongoose = require('mongoose')
 
 const EventTagSchema = new mongoose.Schema({
@@ -28,7 +33,26 @@ const EventTagType = new GraphQLObjectType({
     },
 })
 
+const EventTagInput = new GraphQLInputObjectType({
+    name: 'EventTagInput',
+    fields: {
+        _id: {
+            type: GraphQLString,
+        },
+        label: {
+            type: GraphQLString,
+        },
+        color: {
+            type: GraphQLString,
+        },
+        description: {
+            type: GraphQLString,
+        },
+    },
+})
+
 module.exports = {
     mongoose: EventTagSchema,
     graphql: EventTagType,
+    graphqlInput: EventTagInput,
 }

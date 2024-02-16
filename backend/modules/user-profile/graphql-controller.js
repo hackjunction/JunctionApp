@@ -22,7 +22,7 @@ class UserProfileController {
             overrideChecks ||
             PermissionUtils.userHasPermission(
                 requestingUser,
-                Auth.Permissions.MANAGE_EVENT // TODO: Should be Auth.Permissions.VIEW_FULL_PROFILE etc.
+                Auth.Permissions.MANAGE_EVENT, // TODO: Should be Auth.Permissions.VIEW_FULL_PROFILE etc.
             )
 
         this.userIdLoader = new DataLoader(batchUsersByUserId)

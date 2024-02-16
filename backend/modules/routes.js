@@ -18,6 +18,8 @@ const projectScoresRouter = require('./project_score/routes')
 const hackerpackRouter = require('./hackerpack/routes')
 const bannerRouter = require('./banner/routes')
 const organizationRouter = require('./organization/routes')
+const votingTokenRouter = require('./voting-token/routes')
+const sandboxRouter = require('./sandbox/routes')
 
 module.exports = app => {
     app.get('/api', (req, res) => {
@@ -30,6 +32,8 @@ module.exports = app => {
     app.use('/api/newsletter', newsletterRouter)
     app.use('/api/upload', uploadRouter)
     app.use('/api/winner-votes', winnerVoteRouter)
+    app.use('/api/voting-token', votingTokenRouter)
+    app.use('/api/sandbox', sandboxRouter)
 
     /** Model related routes */
     app.use('/api/rankings', rankingsRouter)

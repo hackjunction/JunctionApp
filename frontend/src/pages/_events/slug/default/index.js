@@ -7,8 +7,10 @@ import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
 
+
 import EventTimeline from './EventTimeline'
 import BannerCarousel from 'components/generic/BannerCarousel'
+import GradientBox from 'components/generic/GradientBox'
 import EventInformation from './EventInformation'
 
 import StaggeredList from 'components/animated/StaggeredList'
@@ -17,14 +19,32 @@ import FadeInWrapper from 'components/animated/FadeInWrapper'
 import Container from 'components/generic/Container'
 import { Helmet } from 'react-helmet'
 import EventDetailContext from '../context'
+import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
+import { EventPageScripts } from '@hackjunction/shared'
+import EventButtons from './EventButtons'
 
 const useStyles = makeStyles({
     header: {
         background: props => props.headerBackgroundColor,
         color: props => props.headerTextColor,
 
+        '& button:not(disabled)': {
+            color: props => props.headerBackgroundColor,
+            background: props => props.accentColor,
+
+            '&:hover': {
+                background: props => props.linkColor,
+            },
+        },
+    },
+    cta: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '3rem 2rem',
+        margin: '20px 0 0 0',
         '& button': {
-            color: props => props.accentColor,
+            margin: 0,
         },
     },
     body: {
@@ -52,8 +72,6 @@ export default () => {
     const classes = useStyles(event.theme)
 
     const keywords = event.name.split(' ').join(', ')
-    console.log('KEYWORDS', keywords)
-    console.log('HELMET', Helmet.peek())
 
     useEffect(() => {
         if (slug) {
@@ -106,8 +124,12 @@ export default () => {
                 <meta property="og:image" content={coverImage()} />
                 <meta name="twitter:image" content={coverImage()} />
             </Helmet>
-            <EventHeroImage event={event} onBack={() => dispatch(push('/'))} />
-
+            <EventHeroImage
+                event={event}
+                onBack={() => dispatch(push('/home'))}
+                alignRight
+                backgroundColor={event.theme.headerBackgroundColor}
+            />
             <FadeInWrapper>
                 <StaggeredList>
                     <Box className={classes.header}>
@@ -154,15 +176,21 @@ export default () => {
                                     <Box mt={3} />
                                     <StaggeredListItem>
                                         <Box mt={3} />
-                                        <EventTimeline
-                                            event={event}
-                                            accentColor={
-                                                event.theme.accentColor
-                                            }
-                                            textColor={
-                                                event.theme.sidebarTextColor
-                                            }
-                                        />
+                                        <GradientBox color="theme_white" p={3}>
+                                            <Typography variant="button" gutterBottom>
+                                                Event Timeline
+                                            </Typography>
+                                            <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
+                                            <EventTimeline
+                                                event={event}
+                                                accentColor={
+                                                    event.theme.accentColor
+                                                }
+                                                textColor={
+                                                    event.theme.sidebarTextColor
+                                                }
+                                            />
+                                        </GradientBox>
                                     </StaggeredListItem>
                                 </Grid>
                                 <Grid
@@ -179,9 +207,20 @@ export default () => {
                             </Grid>
                         </Container>
                     </Box>
+                    <Box className={`${classes.header} ${classes.cta}`}>
+                        <EventButtons
+                            event={event}
+                            registration={registration}
+                        />
+                    </Box>
                 </StaggeredList>
             </FadeInWrapper>
             <BannerCarousel />
+            <EventPageScriptIFrame
+                slug={slug}
+                pageId={EventPageScripts.PageScriptLocation.EVENT_DETAILS_PAGE}
+                event={event}
+            />
         </>
     )
 }

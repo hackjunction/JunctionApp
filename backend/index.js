@@ -27,7 +27,7 @@ app.use(
 )
 
 /* Force SSL Redirect in production */
-app.use(sslRedirect(['production'], 301))
+//app.use(sslRedirect(['production'], 301))
 
 /* Enable body-parser */
 app.use(bodyParser.json())
@@ -47,7 +47,7 @@ app.use(parseToken)
 require('./modules/routes')(app)
 
 /* Register GraphQL server */
-require('./modules/graphql')(app)
+const httpServer = require('./modules/graphql')(app)
 
 /* Serve frontend at all other routes */
 if (process.env.NODE_ENV === 'production') {
@@ -66,11 +66,30 @@ app.use(require('./common/errors/errorHandler'))
 
 /* Database connection */
 require('./misc/db').connect()
+//let gfs = require('./misc/db').gfs
 
+// const storage = require('./misc/gridfs').storage
+// const upload = require('./misc/gridfs').upload
 const migrations = require('./migrations/index')
 
 /** A clone of the npm library throng, with a minor edit. See the file for details. */
 const throng = require('./misc/throng')
+
+const memoryUsage = () => {
+    const formatMemoryUsage = (data) => `${Math.round(data / 1024 / 1024 * 100) / 100} MB`
+
+    const memoryData = process.memoryUsage()
+
+    const memoryUsage = {
+        rss: `${formatMemoryUsage(memoryData.rss)} -> Resident Set Size - total memory allocated for the process execution`,
+        heapTotal: `${formatMemoryUsage(memoryData.heapTotal)} -> total size of the allocated heap`,
+        heapUsed: `${formatMemoryUsage(memoryData.heapUsed)} -> actual memory used during the execution`,
+        external: `${formatMemoryUsage(memoryData.external)} -> V8 external memory`,
+    }
+
+    console.log(memoryUsage)
+
+}
 
 throng({
     workers: process.env.WEB_CONCURRENCY || 1,
@@ -88,12 +107,23 @@ throng({
     start: () => {
         const PORT = process.env.PORT || 2222
 
-        app.listen(PORT, () => {
+        httpServer.listen(PORT, () => {
             logger.info(
-                `Worker ${process.pid} started, listening on port ${PORT}`,
+                `Worker ${process.pid} started, listening on port ${httpServer.address().port}`,
+
             )
+
         })
+
+        memoryUsage()
+
+
+
+
     },
+
+
+
     /** This is run only if the master function errors out, which means the
      *  server could not start properly. Workers are automatically revived on failure, if e.g.
      *  the app crashes or runs out of memory while processing a request.

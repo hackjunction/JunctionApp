@@ -13,6 +13,9 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
+//import Button from 'components/generic/Button'
+import { Button, IconButton } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import { CSVLink } from 'react-csv'
@@ -30,6 +33,7 @@ export default ({
     const searchParams = new URLSearchParams(location.search)
     const organiserProfilesMap = useSelector(OrganiserSelectors.organisersMap)
     const event = useSelector(OrganiserSelectors.event)
+    const teams = useSelector(OrganiserSelectors.teams)
 
     const query = new URLSearchParams(location.search)
     const hasModal = query.has('modal')
@@ -115,6 +119,20 @@ export default ({
         }
     }, [activeModal, resetSearch, hasModal, query, selected.length])
 
+    // Add the user's team if it exists
+    const attendeesWithTeam = useMemo(() => {
+        return attendees.map(attendee => {
+            const userId = attendee.user
+            const team = teams.find(
+                team => team.owner === userId || team.members.includes(userId),
+            )
+            return {
+                ...attendee,
+                teamCode: team?.code || 'None',
+            }
+        })
+    }, [attendees, teams])
+    console.log("attendeesWithTeam",attendeesWithTeam)
     const columns = useMemo(() => {
         return [
             {
@@ -151,6 +169,14 @@ export default ({
                 Cell: ({ cell: { value } }) => <StatusBadge status={value} />,
             },
             {
+                Header: 'Login type',
+                accessor: 'user',
+                ...Filters.MultipleSelect,
+                ...Sorters.Alphabetic,
+                Cell: ({ cell: { value } }) =>
+                    value.split('|')[0]
+            },
+            {
                 Header: 'Rating',
                 accessor: 'rating',
                 ...Filters.MultipleSelect,
@@ -181,6 +207,12 @@ export default ({
                             ))
                     }
                 },
+            },
+            {
+                Header: 'Team code',
+                accessor: 'teamCode',
+                ...Sorters.Alphabetic,
+                ...Filters.ContainsSearch,
             },
             {
                 Header: 'Created at',
@@ -227,7 +259,7 @@ export default ({
                 userIds={selected.map(s => s.original.user)}
             />
             <Table
-                data={attendees}
+                data={attendeesWithTeam}
                 columns={columns}
                 onRowClick={openSingleEdit}
                 bulkActions={[

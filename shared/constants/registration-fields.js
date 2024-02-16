@@ -173,7 +173,7 @@ const FieldProps = {
     dateOfBirth: {
         label: 'Date of Birth',
         hint:
-            'You need to be at least 16 years old at the time of the event to apply.',
+            'You need to be at least 15 years old at the time of the event to apply.',
         hintMarkdown: false,
         placeholder: 'Select date',
         fieldType: FieldTypes.DATE,
@@ -358,6 +358,14 @@ const FieldProps = {
             defaultRequire: false,
             editable: true,
         },
+        filters: [
+            {
+                path: '',
+                label: 'T-shirt size',
+                type: FilterTypes.STRING,
+                valueType: FilterValues.STRING,
+            },
+        ],
     },
     dietaryRestrictions: {
         label: 'Dietary Restrictions',
@@ -725,13 +733,7 @@ const FieldProps = {
     },
     needsTravelGrant: {
         label: 'Do you want to apply for a travel grant?',
-        hint:
-            "We can't cover all of your travel costs, but we offer the following travel grants for people travelling to the event from farther away: \n\n" +
-            '- Finland (outside Greater Helsinki Region): 20€ \n' +
-            '- Baltics: 40€ \n' +
-            '- Nordics & Russia: 60€ \n' +
-            '- Rest of Europe: 80€ \n' +
-            '- Outside of Europe: 150€',
+        hint: '',
         hintMarkdown: true,
         fieldType: FieldTypes.BOOLEAN,
         copyToUserProfile: false,
@@ -899,13 +901,13 @@ const Fields = {
             const number = yup.string().label('Phone number')
             const shape = required
                 ? {
-                      countryCode: countryCode.required(),
-                      number: number.matches(/^[0-9]{7,14}$/).required(),
-                  }
+                    countryCode: countryCode.required(),
+                    number: number.matches(/^[0-9]{7,14}$/).required(),
+                }
                 : {
-                      countryCode,
-                      number,
-                  }
+                    countryCode,
+                    number,
+                }
 
             return yup.object(shape).label(FieldProps.phoneNumber.label)
         },
@@ -921,7 +923,7 @@ const Fields = {
             const base = yup
                 .date()
                 .min(new Date(relativeTime - 1000 * 60 * 60 * 24 * 365 * 120))
-                .max(new Date(relativeTime - 1000 * 60 * 60 * 24 * 364 * 16))
+                .max(new Date(relativeTime - 1000 * 60 * 60 * 24 * 364 * 14))
                 .label(FieldProps.dateOfBirth.label)
 
             return required ? base.required() : base
@@ -1474,6 +1476,7 @@ const Helpers = {
             return question.settings.default || false
         }
     },
+    // TODO add submission form customization
     getDefaultValuesFromConfig: (
         config,
         customQuestions,

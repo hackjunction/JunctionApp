@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 const NewsLetterButton = ({
     email = 'juuso.lappalainen@hackjunction.com',
     country,
+    onHidden,
 }) => {
     const classes = useStyles()
     const { t } = useTranslation()
@@ -51,6 +52,13 @@ const NewsLetterButton = ({
                 setHidden(true)
             })
     }, [country, email])
+
+    React.useEffect(() => {
+        if (hidden) {
+            onHidden()
+        }
+    }, [hidden])
+
     return (
         <motion.div
             variants={{

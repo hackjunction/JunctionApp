@@ -4,14 +4,20 @@ const {
     GraphQLString,
     GraphQLBoolean,
     GraphQLNonNull,
+    GraphQLInputObjectType,
+    GraphQLID,
 } = require('graphql')
 const RegistrationQuestionSettingsType = require('./RegistrationQuestionSettings')
     .graphql
+const RegistrationQuestionSettingsInput = require('./RegistrationQuestionSettings')
+    .graphqlInput
 
 const FIELD_TYPES = [
     'text',
     'textarea',
     'boolean',
+    'link',
+    'attachment',
     'single-choice',
     'multiple-choice',
     'checkbox',
@@ -56,7 +62,7 @@ const RegistrationQuestionSchema = new mongoose.Schema({
             required() {
                 return (
                     ['single-choice', 'multiple-choice'].indexOf(
-                        this.fieldType
+                        this.fieldType,
                     ) !== -1
                 )
             },
@@ -67,6 +73,12 @@ const RegistrationQuestionSchema = new mongoose.Schema({
             required() {
                 return ['boolean', 'checkbox'].indexOf(this.fieldType) !== -1
             },
+        },
+        maxSize: {
+            type: Number,
+        },
+        allowedTypes: {
+            type: [String],
         },
     },
 })
@@ -98,7 +110,38 @@ const RegistrationQuestionType = new GraphQLObjectType({
     },
 })
 
+const RegistrationQuestionInput = new GraphQLInputObjectType({
+    name: 'RegistrationQuestionInput',
+    fields: {
+        _id: {
+            type: GraphQLID,
+        },
+        name: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        label: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        hint: {
+            type: GraphQLString,
+        },
+        placeholder: {
+            type: GraphQLString,
+        },
+        fieldType: {
+            type: GraphQLNonNull(GraphQLString),
+        },
+        fieldRequired: {
+            type: GraphQLBoolean,
+        },
+        settings: {
+            type: RegistrationQuestionSettingsInput,
+        },
+    },
+})
+
 module.exports = {
     mongoose: RegistrationQuestionSchema,
     graphql: RegistrationQuestionType,
+    graphqlInput: RegistrationQuestionInput,
 }

@@ -33,6 +33,7 @@ const PageWrapper = ({
             )
         }
         if (error || errorMessage) {
+            console.log("errors", error, errorMessage)
             // TODO Oops something went wrong happens here. Make it better :D
             return (
                 <Box
