@@ -87,7 +87,7 @@ stages:
               inputs:
                 buildType: 'current' 
                 artifactName: drop_africa
-                targetPath: '$(Pipeline.Workspace)/drop'
+                targetPath: '$(Pipeline.Workspace)/drop_africa'
 
             - script: echo initialize, cleanup, backup, install certs
         
