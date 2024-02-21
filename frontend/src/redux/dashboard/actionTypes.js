@@ -10,4 +10,17 @@ export const EDIT_TEAM = 'dashboard/EDIT_TEAM'
 export const EDIT_PROFILES = 'dashboard/EDIT_PROFILES'
 export const EDIT_ANNOTATOR = 'dashboard/EDIT_ANNOTATOR'
 
+export const UPDATE_EVENT_RECRUITERS = 'dashboard/UPDATE_EVENT_RECRUITERS'
+
 export const CLEAR_TEAM = 'dashboard/CLEAR_TEAM'
+
+export const UPDATE_TEAMS = 'dashboard/UPDATE_TEAMS'
+
+export const UPDATE_SELECTED_TEAM = 'dashboard/UPDATE_SELECTED_TEAM'
+
+export const GET_CANDIDATE_PROFILE = 'dashboard/GET_CANDIDATE_PROFILE'
+export const ACTIVE_EVENTS = 'dashboard/ACTIVE_EVENTS'
+export const PAST_EVENTS = 'dashboard/PAST_EVENTS'
+
+export const GET_FILE = 'dashboard/GET_FILE'
+export const DELETE_FILE = 'dashboard/DELETE_FILE'

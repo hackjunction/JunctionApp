@@ -9,6 +9,17 @@ const cloudinaryImage = yup
     .default(null)
     .nullable()
 
+const mongoFile = yup
+    .object()
+    .shape({
+        name: yup.string().required(),
+        uploadData: yup.string().required(),
+        size: yup.string().required(),
+        type: yup.string().required(),
+    })
+    .default(null)
+    .nullable()
+
 const address = yup
     .object()
     .shape({
@@ -85,6 +96,11 @@ const registrationSection = yup.object().shape({
 const registrationConfig = yup.object().shape({
     optionalFields: yup.array().of(yup.string()),
     requiredFields: yup.array().of(yup.string()),
+})
+
+const recruiter = yup.object().shape({
+    recruiterId: yup.string().required(),
+    organization: yup.string()
 })
 
 const eventTimeline = yup.object().shape({
@@ -164,10 +180,12 @@ export default yup.object().shape({
             description: yup.string(),
         }),
     ),
+    map: mongoFile,
     published: yup.boolean().required(),
     galleryOpen: yup.boolean(),
     owner: yup.string(),
     organisers: yup.array().of(yup.string()),
+    recruiters: yup.array().of(recruiter),
     organizations: yup.array().of(yup.string()),
     registrationConfig,
     demoLabel: yup.string(),
@@ -183,4 +201,5 @@ export default yup.object().shape({
     approved: yup.boolean(),
     theme: eventTheme,
     meetingRooms: yup.array().of(meetingRoom),
+    submissionFormQuestions: yup.array().of(registrationSection),
 })

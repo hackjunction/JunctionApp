@@ -19,8 +19,9 @@ export default (ComposedComponent, requiredPermissions = []) => {
         const hasProfile = useSelector(UserSelectors.hasProfile)
 
         const hasRequiredPermissions = useMemo(() => {
+            console.log(permissions, requiredPermissions)
             return (
-                requiredPermissions.filter(x => !permissions.includes(x))
+                requiredPermissions.filter(x => !permissions?.includes(x))
                     .length === 0
             )
         }, [permissions])

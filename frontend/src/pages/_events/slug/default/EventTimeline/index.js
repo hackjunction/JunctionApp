@@ -90,7 +90,7 @@ function differentYear(event) {
 }
 const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
     const classes = useStyles({ accentColor, textColor })
-    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D'
+    const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D HH:mm'
     const timelineItems = useMemo(() => {
         const realItems = event.eventTimeline.items.map(item => {
             return {
@@ -105,48 +105,29 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
             realItems.length > 0
                 ? realItems
                 : [
-                      {
-                          date: 'No Date',
-                          dateValue: 'No Date',
-                          completed: moment(
-                              event.registrationStartTime,
-                          ).isBefore(),
-                          title: 'Application period begins',
-                          active: true,
-                      },
-                      {
-                          date: 'No Date',
-                          dateValue: 'No Date',
-                          completed: moment(
-                              event.registrationEndTime,
-                          ).isBefore(),
-                          title: 'Application period ends',
-                          active: true,
-                      },
-                      {
-                          date: 'No Date',
-                          dateValue: 'No Date',
-                          completed: moment(event.endTime).isBefore(),
-                          title: 'Start of event',
-                          active: true,
-                      },
-                      {
-                          date: 'No Date',
-                          dateValue: 'No Date',
-                          completed: moment(
-                              event.submissionStartTime,
-                          ).isBefore(),
-                          title: 'Submission period',
-                          active: true,
-                      },
-                      {
-                          date: 'No Date',
-                          dateValue: 'No Date',
-                          completed: moment(event.reviewStartTime).isBefore(),
-                          title: 'Review period',
-                          active: true,
-                      },
-                  ]
+                    {
+                        date: moment(event.registrationStartTime).format(
+                            dateString,
+                        ),
+                        dateValue: moment(event.registrationStartTime).unix(),
+                        completed: moment(
+                            event.registrationStartTime,
+                        ).isBefore(),
+                        title: 'Application period begins',
+                        active: true,
+                    },
+                    {
+                        date: moment(event.registrationEndTime).format(
+                            dateString,
+                        ),
+                        dateValue: moment(event.registrationEndTime).unix(),
+                        completed: moment(
+                            event.registrationEndTime,
+                        ).isBefore(),
+                        title: 'Application period ends',
+                        active: true,
+                    },
+                ]
 
         if (realItems.length < 1) {
             if (

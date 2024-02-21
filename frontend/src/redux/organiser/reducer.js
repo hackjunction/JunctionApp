@@ -23,6 +23,13 @@ const initialState = {
         data: [],
         map: {},
     },
+    recruiters: {
+        loading: false,
+        error: false,
+        updated: 0,
+        data: [],
+        map: {},
+    },
     organizations: {
         loading: false,
         error: false,
@@ -81,6 +88,7 @@ const initialState = {
 const eventHandler = buildHandler('event')
 const statsHandler = buildHandler('stats')
 const organisersHandler = buildHandler('organisers', 'userId')
+const eventRecruitersHandler = buildHandler('recruiters', 'userId')
 const registrationsHandler = buildHandler('registrations', 'user')
 const filterGroupsHandler = buildHandler('filterGroups')
 const teamsHandler = buildHandler('teams')
@@ -90,6 +98,7 @@ const gavelAnnotatorsHandler = buildHandler('gavelAnnotators')
 const rankingsHandler = buildHandler('rankings')
 const editEvent = buildUpdatePath('event.data')
 const editEventOrganisers = buildUpdatePath('event.data.organisers')
+const editEventRecruitres = buildUpdatePath('event.data.recruiters')
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
@@ -105,13 +114,16 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_ORGANISERS: {
             return organisersHandler(state, action)
         }
+        case ActionTypes.UPDATE_EVENT_RECRUITERS: {
+            return eventRecruitersHandler(state, action)
+        }
         case ActionTypes.UPDATE_REGISTRATIONS: {
             return registrationsHandler(state, action)
         }
         case ActionTypes.UPDATE_TEAMS: {
             const newState = teamsHandler(state, action)
             if (action.payload) {
-                const byUser = action.payload.reduce((map, team) => {
+                const byUser = action.payload.data.reduce((map, team) => {
                     map[team.owner] = team
                     team.members.forEach(member => {
                         map[member] = team
@@ -122,6 +134,8 @@ export default function reducer(state = initialState, action) {
                     ...newState,
                     teams: {
                         ...newState.teams,
+                        data: newState.teams.data.data,
+                        count: newState.teams.data.count,
                         map: byUser,
                     },
                 }
@@ -237,6 +251,18 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.ADD_ORGANISER: {
             const data = concat(state.event.data.organisers, action.payload)
             return editEventOrganisers(state, data)
+        }
+        case ActionTypes.REMOVE_EVENT_RECRUITER: {
+            const data = filter(state.event.data.recruiters, userId => {
+                return userId.recruiterId !== action.payload
+            })
+
+            return editEventRecruitres(state, data)
+        }
+        case ActionTypes.ADD_EVENT_RECRUITER: {
+            //const data = state.event.data.recruiters.concat(action.payload)
+            console.log("ADD_EVENT_RECRUITER", action.payload)
+            return editEventRecruitres(state, action.payload)
         }
         /**TODO: Add attendee update actions */
         case AuthActionTypes.CLEAR_SESSION: {

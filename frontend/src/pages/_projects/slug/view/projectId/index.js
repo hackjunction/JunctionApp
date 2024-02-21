@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { goBack } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import ShareProject from 'components/projects/ProjectDetail/ShareProject'
 import ScoreForm from './ScoreForm'
 import Container from 'components/generic/Container'
-
+import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'redux/user/selectors'
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
 
@@ -16,10 +17,13 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import ProjectsService from 'services/projects'
 import ProjectScoresService from 'services/projectScores'
 import { set } from 'object-path'
+import EvaluationForm from './EvaluationForm'
+import _ from 'lodash'
 
 export default ({ event, showFullTeam }) => {
+    const scoreCriteriaBase = event.scoreCriteriaSettings?.scoreCriteria
     const dispatch = useDispatch()
-
+    const userId = useSelector(AuthSelectors.getUserId)
     const match = useRouteMatch()
     const { projectId, token } = match.params
     const { slug } = event
@@ -27,7 +31,6 @@ export default ({ event, showFullTeam }) => {
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    console.log('project :>> ', project)
     const [validToken, setValidToken] = useState(false)
 
     useEffect(() => {
@@ -45,7 +48,10 @@ export default ({ event, showFullTeam }) => {
         score: 0,
         maxScore: 10,
         message: '',
+        scoreCriteria: [],
+        reviewers: [],
     })
+
     useEffect(() => {
         if (token && project && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
@@ -53,9 +59,15 @@ export default ({ event, showFullTeam }) => {
                 event.slug,
                 project._id,
             ).then(score => {
+                console.log('Score', score)
                 if (score[0]) {
                     setProjectScore(score[0])
                     setScoreExists(true)
+                } else {
+                    setProjectScore({
+                        ...projectScore,
+                        scoreCriteria: scoreCriteriaBase,
+                    })
                 }
             })
         }
@@ -67,6 +79,7 @@ export default ({ event, showFullTeam }) => {
             const project = await ProjectsService.getPublicProjectById(
                 projectId,
             )
+            console.log('Project details', project)
             setProject(project)
         } catch (err) {
             setError(true)
@@ -78,7 +91,13 @@ export default ({ event, showFullTeam }) => {
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         values.project = project._id
         values.event = event._id
+        console.log('values', values)
         try {
+            if (userId) {
+                _.includes(values.reviewers, userId)
+                    ? console.log('User already in reviewers list')
+                    : values.reviewers.push(userId)
+            }
             if (scoreExists) {
                 await ProjectScoresService.updateScoreByEventSlugAndPartnerToken(
                     token,
@@ -126,12 +145,22 @@ export default ({ event, showFullTeam }) => {
             />
             {validToken ? (
                 <Container>
-                    <ScoreForm
-                        event={event}
-                        project={project}
-                        submit={handleSubmit}
-                        score={projectScore}
-                    />
+                    {scoreCriteriaBase && scoreCriteriaBase.length > 0 ? (
+                        <EvaluationForm
+                            event={event}
+                            project={project}
+                            submit={handleSubmit}
+                            score={projectScore}
+                            scoreCriteria={scoreCriteriaBase}
+                        />
+                    ) : (
+                        <ScoreForm
+                            event={event}
+                            project={project}
+                            submit={handleSubmit}
+                            score={projectScore}
+                        />
+                    )}
                 </Container>
             ) : null}
             <ShareProject project={project} event={event} />

@@ -55,6 +55,9 @@ const WebhookType = new GraphQLObjectType({
 const WebhookInput = new GraphQLInputObjectType({
     name: 'WebhookInput',
     fields: {
+        _id: {
+            type: GraphQLString,
+        },
         name: {
             type: GraphQLNonNull(GraphQLString),
         },

@@ -1,137 +1,131 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
-trigger: none
+trigger:
+    - none
 
 pool:
-  vmImage: ubuntu-latest
+    vmImage: ubuntu-latest
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '12.20.1'
-  displayName: 'Install Node.js'
+stages:
+    - stage: Build
+      displayName: Build stage
+      jobs:
+          - job: Build
+            steps:
+                - task: DownloadSecureFile@1
+                  displayName: 'download STAG backendend'
+                  inputs:
+                      secureFile: 'BACKEND_ENV_FILE_STAG' # string. Required. Secure File.
 
+                - task: CopyFiles@2
+                  displayName: 'copy STAG backendend'
+                  inputs:
+                      SourceFolder: '$(Agent.TempDirectory)'
+                      Contents: BACKEND_ENV_FILE_STAG
+                      TargetFolder: './backend'
 
+                - script: mv ./backend/BACKEND_ENV_FILE_STAG ./backend/.env
+                  displayName: 'rename STAG .env'
+                - task: DownloadSecureFile@1
+                  displayName: 'download STAG frontend'
+                  inputs:
+                      secureFile: 'FRONTEND_ENV_FILE_STAG' # string. Required. Secure File.
 
-#EUROPE SETUP
+                - task: CopyFiles@2
+                  displayName: 'copy STAG frontend'
+                  inputs:
+                      SourceFolder: '$(Agent.TempDirectory)'
+                      Contents: FRONTEND_ENV_FILE_STAG
+                      TargetFolder: './frontend'
 
-#- script: |
- #   npm install
-  #displayName: 'npm install'
+                - script: mv ./frontend/FRONTEND_ENV_FILE_STAG ./frontend/.env
+                  displayName: 'rename STAG .env'
 
-- script: ls -R
-  displayName: 'ls'
+                - script: ls -a ./frontend
+                  displayName: 'ls'
 
-- task: DownloadSecureFile@1
-  displayName: 'download EU backendend'
-  inputs:
-    secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
+                - script: ls -Rn
+                  displayName: 'ls'
 
-- task: CopyFiles@2
-  displayName: 'copy EU backendend'
-  inputs:
-    SourceFolder: '$(Agent.TempDirectory)'
-    Contents: BACKEND_ENV_FILE_EU
-    TargetFolder: './backend'
+                - task: NodeTool@0
+                  inputs:
+                      versionSpec: '12.20.1'
+                  displayName: 'Install Node.js'
 
-- script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
-  displayName: 'rename eu .env'
-- task: DownloadSecureFile@1
-  displayName: 'download eu frontend'
-  inputs:
-    secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
+                - task: Bash@3
+                  inputs:
+                      targetType: 'inline'
+                      script: |
+                          node -v
+                          npm -v
+                          npm install
+                          npm run build
 
-- task: CopyFiles@2
-  displayName: 'copy eu frontend'
-  inputs:
-    SourceFolder: '$(Agent.TempDirectory)'
-    Contents: FRONTEND_ENV_FILE_EU
-    TargetFolder: './frontend'
+                - task: ArchiveFiles@2
+                  displayName: 'Archive files'
+                  inputs:
+                      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+                      includeRootFolder: false
+                      archiveType: zip
+                      archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                      replaceExistingArchive: true
+                - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                  artifact: drop
 
-# - script: ls frontend -a
-#   displayName: 'ls'
+          - deployment: VMDeploy
+            dependsOn: Build
+            displayName: Web deploy
+            environment:
+                name: STAGING
+                resourceType: VirtualMachine
+            strategy:
+                runOnce:
+                    preDeploy:
+                        steps:
+                            - task: DownloadPipelineArtifact@2
+                              inputs:
+                                  buildType: 'current'
+                                  artifactName: drop
+                                  targetPath: '$(Pipeline.Workspace)/drop'
 
-- script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
-  displayName: 'rename eu .env'
+                            - script: echo initialize, cleanup, backup, install certs
 
-# - script: ls -a ./frontend
-#   displayName: 'ls'
+                    deploy:
+                        steps:
+                            - task: Bash@3
+                              inputs:
+                                  targetType: 'inline'
+                                  script: |
+                                      Modify deployment script based on the app type
+                                      echo "Starting deployment script run"
 
-# - script: cat ./frontend/.env
-#   displayName: 'cat'
+                            - task: ExtractFiles@1
+                              inputs:
+                                  archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+                                  destinationFolder: '$(Pipeline.Workspace)/japp'
+                                  cleanDestinationFolder: true
+                                  overwriteExistingFiles: true
 
-# - script: |
-#     npm install
-#   displayName: 'install frontend'
+                            - task: DeleteFiles@1
+                              inputs:
+                                  SourceFolder: '$(Pipeline.Workspace)/drop'
+                                  Contents: '$(Build.BuildId).zip'
 
-# - script: |
-#     cd frontend && npm install
-#   displayName: 'npm setup front'
+                            - task: Bash@3
+                              inputs:
+                                  targetType: 'inline'
+                                  script: |
+                                      pm2 restart index
+                                      sudo systemctl restart nginx
 
-  
-# - script: |
-#     rm -rf ./backend/build && cd frontend && npm run build && cp -r ./build ../backend/build
-#   displayName: 'npm build front'
-
-# - script: rm -rf ./frontend/node_modules
-#   displayName: 'rm frontend node_modules'
-
-# - script: ls -R
-#   displayName: 'ls'
-
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'junctionapp_test'
-    runOptions: 'inline' 
-    inline: |
-        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        nvm use 12.20.1
-        node -v
-        cd build
-        npm install
-        npm run build
-        pm2 restart index
-        sudo systemctl restart nginx
-    continueOnError: true
-    #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
-    #interpreterCommand: '/home/newadmin/build'
-    #interactiveSession: true
-    
-- task: CopyFilesOverSSH@0
-  inputs:
-     sshEndpoint: 'junctionapp_test'
-     sourceFolder: '.'
-     contents: '**' 
-     targetFolder: '/home/azurejunction/build'
-   # Advanced
-     #isWindowsOnTarget: false # boolean. Target machine running Windows. Default: false.
-     cleanTargetFolder: true 
-     #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
-     #readyTimeout: '20000' 
-     overwrite: true 
-     #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
-     #flattenFolders: false # boolean. Flatten folders. Default: false.
-
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'junctionapp_test'
-    runOptions: 'inline' 
-    inline: |
-        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        nvm use 12.20.1
-        node -v
-        cd build
-        npm install
-        npm run build
-        pm2 restart index
-        sudo systemctl restart nginx
-    continueOnError: true
-    #&& npm install && npm run build && pm2 restart && sudo systemctl restart nginx
-    #interpreterCommand: '/home/newadmin/build'
-    #interactiveSession: true
-
+                    routeTraffic:
+                        steps:
+                            - script: echo routing traffic
+                    postRouteTraffic:
+                        steps:
+                            - script: echo health check post-route traffic
+                    on:
+                        failure:
+                            steps:
+                                - script: echo Restore from backup! This is on failure
+                        success:
+                            steps:
+                                - script: echo Notify! This is on success

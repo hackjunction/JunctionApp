@@ -520,7 +520,9 @@ export default RequiresPermission(() => {
                                 <div style={{ height: '50px' }} />
                                 <Button
                                     onClick={() =>
-                                        dispatch(push(`/dashboard/${slug}`))
+                                        dispatch(
+                                            push(`/dashboard/event/${slug}`),
+                                        )
                                     }
                                     style={{ width: '300px' }}
                                     color="primary"

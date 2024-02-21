@@ -114,30 +114,27 @@ RegistrationSchema.pre('save', function (next) {
 /** Trigger email sending on status changes etc. */
 RegistrationSchema.post('save', function (doc, next) {
     const INCOMPLETE = RegistrationStatuses.asObject.incomplete.id
-
-    const SOFT_ACCEPTED = RegistrationStatuses.asObject.softAccepted.id
+    const PENDING = RegistrationStatuses.asObject.pending.id
     const ACCEPTED = RegistrationStatuses.asObject.accepted.id
-    const SOFT_REJECTED = RegistrationStatuses.asObject.softRejected.id
     const REJECTED = RegistrationStatuses.asObject.rejected.id
     /** If a registration has its status changed, update the user profile */
     if (this._previousStatus !== this.status) {
         UserProfileController.syncRegistration(doc)
         // Used to be incomplete, isn't anymore
-        if (this._previousStatus === INCOMPLETE) {
+        if (this._previousStatus === INCOMPLETE && this.status === PENDING) {
             /** If a registration was just created, create an email notification about it */
             EmailTaskController.createRegisteredTask(doc.user, doc.event, true)
         }
     }
 
     /** If a registration is accepted, create an email notification about it */
-    if (this._previousStatus === SOFT_ACCEPTED && this.status === ACCEPTED) {
-        console.log("sendin accept emails...")
-         EmailTaskController.createAcceptedTask(doc.user, doc.event, true)
+    if (this.status === ACCEPTED) {
+        EmailTaskController.createAcceptedTask(doc.user, doc.event, true)
     }
 
     /** If a registration is rejected, create an email notification about it */
-    if (this._previousStatus === SOFT_REJECTED && this.status === REJECTED) {
-         EmailTaskController.createRejectedTask(doc.user, doc.event, true)
+    if (this.status === REJECTED) {
+        EmailTaskController.createRejectedTask(doc.user, doc.event, true)
     }
 
     if (!this._previousGrant && this.travelGrant === 0) {

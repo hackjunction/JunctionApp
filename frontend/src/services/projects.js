@@ -26,6 +26,7 @@ ProjectsService.createProjectForEventAndTeam = (idToken, eventSlug, data) => {
 }
 
 ProjectsService.updateProjectForEventAndTeam = (idToken, eventSlug, data) => {
+    console.log('From router', data)
     return _axios.patch(
         `/projects/${eventSlug}/team`,
         { data },

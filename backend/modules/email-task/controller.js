@@ -25,9 +25,8 @@ controller.createTask = (userId, eventId, type, params, schedule) => {
     }
     console.log(task)
     return task.save().catch(err => {
-        console.log("err", err)
+        console.log('err', err)
         if (err.code === 11000) {
-            console.log("err", Promise.resolve())
             return Promise.resolve()
         }
         // For other types of errors, we'll want to throw the error normally
@@ -36,15 +35,12 @@ controller.createTask = (userId, eventId, type, params, schedule) => {
 }
 
 controller.createAcceptedTask = async (userId, eventId, deliverNow = false) => {
-    console.log("createAcceptedTask, userId: ", userId, "eventId: ", eventId, "deliverNow: ", deliverNow)
     const task = await controller.createTask(
         userId,
         eventId,
         EmailTypes.registrationAccepted,
     )
-    console.log("sending task", task)
     if (deliverNow) {
-
         return controller.deliverEmailTask(task)
     }
     return task
@@ -82,7 +78,6 @@ controller.createTravelGrantAcceptedTask = async (
     registration,
     deliverNow = false,
 ) => {
-
     const task = await controller.createTask(
         registration.user,
         registration.event,
@@ -186,34 +181,20 @@ controller.createGenericTask = async (
 }
 
 controller.deliverEmailTask = async task => {
-    console.log("getting user and event", task)
     const [user, event] = await Promise.all([
         UserController.getUserProfile(task.user),
         EventController.getEventById(task.event),
     ])
     switch (task.type) {
         case EmailTypes.registrationAccepted: {
-            console.log("acceptance email", event, user)
-            if (event.name == "HackCodeX") {
-                break
-                //remember to remove this after hackCodeX eevnt
-            }
             await SendgridService.sendAcceptanceEmail(event, user)
             break
         }
         case EmailTypes.registrationRejected: {
-            if (event.name == "HackCodeX") {
-                break
-                //remember to remove this after hackCodeX eevnt
-            }
             await SendgridService.sendRejectionEmail(event, user)
             break
         }
         case EmailTypes.registrationReceived: {
-            if (event.name == "HackCodeX") {
-                break
-                //remember to remove this after hackCodeX eevnt
-            }
             await SendgridService.sendRegisteredEmail(event, user)
             break
         }
@@ -250,7 +231,13 @@ controller.deliverEmailTask = async task => {
             break
         }
         default: {
-            await SendgridService.sendGenericEmail(user.email, task.params)
+            await SendgridService.sendGenericEmail(
+                user.email,
+                task.params,
+                {},
+                event,
+                user,
+            )
             break
         }
     }
@@ -280,15 +267,20 @@ controller.sendPreviewEmail = async (to, msgParams, from = {}, eventSlug) => {
         throw new Error('Event data not found.')
     }
 
-
-    return SendgridService.sendGenericEmail(to, msgParams, from, event, user).catch(() => { })
+    return SendgridService.sendGenericEmail(
+        to,
+        msgParams,
+        from,
+        event,
+        user,
+    ).catch(() => {})
 }
 
 controller.sendContactEmail = async msgParams => {
     return SendgridService.sendContactEmail(
         global.gConfig.SENDGRID_CONTACT_MAIL,
         msgParams,
-    ).catch(() => { })
+    ).catch(() => {})
 }
 
 controller.sendBulkEmail = async (recipients, msgParams, event, uniqueId) => {

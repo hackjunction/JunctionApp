@@ -37,6 +37,10 @@ const sendgridAddRecipientsToList = (listId, recipientIds) => {
     })
 }
 
+const replaceLinebreaksToHtml = str => {
+    return _.replace(str, /\n/gm, '<br />')
+}
+
 // A function that takes in the email body as a string and replaces the tags with corresponding dynamic information
 const replaceBodyTags = (str, event, user) => {
     if (typeof str !== 'string' || !str.length) {
@@ -48,46 +52,63 @@ const replaceBodyTags = (str, event, user) => {
     }
 
     if (!user || typeof user !== 'object') {
-        throw new Error("User object is missing or not an object")
+        throw new Error('User object is missing or not an object')
     }
 
     const data = {
-        "{USER_ID}": user.userId,
-        "{FIRST_NAME}": user.firstName,
-        "{LAST_NAME}": user.lastName,
-        "{EVENT_NAME}": event.name,
-        "{REGISTRATION_START_TIME}": moment(event.registrationStartTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{REGISTRATION_END_TIME}": moment(event.registrationEndTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{SUBMISSION_START_TIME}": moment(event.submissionStartTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{SUBMISSION_END_TIME}": moment(event.submissionEndTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{REVIEW_START_TIME}": moment(event.reviewStartTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{REVIEW_END_TIME}": moment(event.reviewEndTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{EVENT_START_TIME}": moment(event.startTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{EVENT_END_TIME}": moment(event.endTime).format('MMMM Do YYYY, h:mm:ss a'),
-        "{CURRENT_TIME}": moment().format('MMMM Do YYYY, h:mm:ss a'),
+        '{USER_ID}': user.userId,
+        '{FIRST_NAME}': user.firstName,
+        '{LAST_NAME}': user.lastName,
+        '{EVENT_NAME}': event.name,
+        '{REGISTRATION_START_TIME}': moment(event.registrationStartTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{REGISTRATION_END_TIME}': moment(event.registrationEndTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{SUBMISSION_START_TIME}': moment(event.submissionStartTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{SUBMISSION_END_TIME}': moment(event.submissionEndTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{REVIEW_START_TIME}': moment(event.reviewStartTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{REVIEW_END_TIME}': moment(event.reviewEndTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{EVENT_START_TIME}': moment(event.startTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{EVENT_END_TIME}': moment(event.endTime).format(
+            'MMMM Do YYYY, h:mm:ss a',
+        ),
+        '{CURRENT_TIME}': moment().format('MMMM Do YYYY, h:mm:ss a'),
     }
     try {
         for (const key in data) {
             if (data[key] === null || data[key] === undefined) {
                 console.error(`Data for key ${key} is missing or undefined`)
-                continue    // We skip this replacement if the data is missing
+                continue // We skip this replacement if the data is missing
             }
             str = str.replace(new RegExp(key, 'g'), data[key]) // Replace all instances of the tag with the corresponding data
         }
     } catch (err) {
-        console.error("Error replacing body tags:", err)
+        console.error('Error replacing body tags:', err)
         return str
     }
-
     return str
+}
+
+const formatBody = (str, event, user) => {
+    return replaceBodyTags(replaceLinebreaksToHtml(str), event, user)
 }
 
 const SendgridService = {
     sendAcceptanceEmail: (event, user) => {
-
-
-        var header_image_url = null
-        if (typeof event.coverImage !== "undefined") {
+        let header_image_url = null
+        if (typeof event.coverImage !== 'undefined') {
             header_image_url = event.coverImage.url
         }
         const msg = SendgridService.buildTemplateMessage(
@@ -95,35 +116,51 @@ const SendgridService = {
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
                 header_image: header_image_url,
-                subject: event.emailConfig.acceptanceEmail.title || `Congratulations!`,
-                subtitle: event.emailConfig.acceptanceEmail.subtitle || `You've been accepted to ${event.name}!`,
-                body: replaceBodyTags(event.emailConfig.acceptanceEmail.body, event, user),
+                subject:
+                    event.emailConfig.acceptanceEmail.title ||
+                    `Congratulations!`,
+                subtitle:
+                    event.emailConfig.acceptanceEmail.subtitle ||
+                    `You've been accepted to ${event.name}!`,
+                body: formatBody(
+                    event.emailConfig.acceptanceEmail.body,
+                    event,
+                    user,
+                ),
                 cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
             },
         )
         return SendgridService.send(msg)
     },
     sendRejectionEmail: (event, user) => {
-        var header_image_url = null
-        if (typeof event.coverImage !== "undefined") {
+        let header_image_url = null
+        if (typeof event.coverImage !== 'undefined') {
             header_image_url = event.coverImage.url
         }
         const msg = SendgridService.buildTemplateMessage(
             user.email,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
-                header_image_url: header_image_url,
-                subject: event.emailConfig.rejectionEmail.title || `Oh-oh, bad news...`,
-                subtitle: event.emailConfig.rejectionEmail.subtitle || `We couldn't give you a spot at ${event.name}.`,
-                body: replaceBodyTags(event.emailConfig.rejectionEmail.body, event, user),
+                header_image: header_image_url,
+                subject:
+                    event.emailConfig.rejectionEmail.title ||
+                    `Oh-oh, bad news...`,
+                subtitle:
+                    event.emailConfig.rejectionEmail.subtitle ||
+                    `We couldn't give you a spot at ${event.name}.`,
+                body: formatBody(
+                    event.emailConfig.rejectionEmail.body,
+                    event,
+                    user,
+                ),
             },
         )
         return SendgridService.send(msg)
     },
     sendRegisteredEmail: (event, user) => {
-        var header_image_url = null
-        if (typeof event.coverImage !== "undefined") {
+        let header_image_url = null
+        if (typeof event.coverImage !== 'undefined') {
             header_image_url = event.coverImage.url
         }
         let msg
@@ -133,11 +170,19 @@ const SendgridService = {
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
                     header_image: header_image_url,
-                    subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
-                    subtitle: event.emailConfig.registrationEmail.subtitle || 'Awesome! Now just sit back and relax.',
-                    body: replaceBodyTags(event.emailConfig.registrationEmail.body, event, user),
+                    subject:
+                        event.emailConfig.registrationEmail.title ||
+                        `Thanks for registering to ${event.name}!`,
+                    subtitle:
+                        event.emailConfig.registrationEmail.subtitle ||
+                        'Awesome! Now just sit back and relax.',
+                    body: formatBody(
+                        event.emailConfig.registrationEmail.body,
+                        event,
+                        user,
+                    ),
                     cta_text: 'Event dashboard',
-                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                    cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
                 },
             )
         } else {
@@ -146,8 +191,12 @@ const SendgridService = {
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,
                 {
                     header_image: header_image_url,
-                    subject: event.emailConfig.registrationEmail.title || `Thanks for registering to ${event.name}!`,
-                    subtitle: event.emailConfig.registrationEmail.subtitle || `Thank you for registering to ${event.name}!`,
+                    subject:
+                        event.emailConfig.registrationEmail.title ||
+                        `Thanks for registering to ${event.name}!`,
+                    subtitle:
+                        event.emailConfig.registrationEmail.subtitle ||
+                        `Thank you for registering to ${event.name}!`,
                     body: `You can modify your registration until the registration period ends <b>${moment(
                         event.registrationEndTime,
                     ).format(
@@ -193,7 +242,7 @@ const SendgridService = {
                 Psst, please note that the transaction will be made in Euros, so please make sure you have a bank account able to receive Euro payments available.
             `,
                 cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
             },
         )
 
@@ -228,7 +277,7 @@ const SendgridService = {
                 accept someone from the waitlist.
             `,
                 cta_text: 'Event dashboard',
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}`,
             },
         )
 
@@ -285,7 +334,7 @@ const SendgridService = {
                 <br />
                 Please refer to finance@hackjunction.com (by replying to this email) with any further questions on the matter.
             `,
-                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/${event.slug}/travel-grant`,
+                cta_link: `${global.gConfig.FRONTEND_URL}/dashboard/event/${event.slug}/travel-grant`,
                 cta_text: 'Edit your details',
                 reply_to: 'finance@hackjunction.com',
             },
@@ -315,19 +364,23 @@ const SendgridService = {
         return SendgridService.sendGenericEmail(user.email, params)
     },
     sendGenericEmail: (to, params, from = {}, event, user) => {
+        let header_image_url = null
+        if (typeof event.coverImage !== 'undefined') {
+            header_image_url = event.coverImage.url
+        }
         const msg = SendgridService.buildTemplateMessage(
             to,
             global.gConfig.SENDGRID_GENERIC_TEMPLATE,
             {
                 subject: params.subject,
                 subtitle: params.subtitle,
-                header_image: params.header_image,
-                body: replaceBodyTags(params.body, event, user),
+                header_image: header_image_url,
+                body: formatBody(params.body, event, user),
                 cta_text: params.cta_text,
                 cta_link: params.cta_link,
                 reply_to: params.reply_to,
             },
-            from
+            from,
         )
         console.log('sending', msg)
         return SendgridService.send(msg)

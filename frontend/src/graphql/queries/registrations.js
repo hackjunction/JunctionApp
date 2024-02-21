@@ -6,8 +6,12 @@ const Fragments = {
             _id
             status
             event {
+                _id
                 slug
                 name
+                description
+                startTime
+                endTime
                 coverImage {
                     publicId
                 }
@@ -33,6 +37,6 @@ export const useRegistrationsByUser = userId => {
             userId,
         },
     })
-
+    console.log("useRegistrationsByUser", userId, data, loading, error)
     return [data?.registrationsByUser, loading, error]
 }

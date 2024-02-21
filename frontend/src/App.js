@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react'
 
-import { ConnectedRouter } from 'connected-react-router'
+import { ConnectedRouter, push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/client'
 
@@ -13,6 +13,7 @@ import * as AuthActions from 'redux/auth/actions'
 import AnalyticsService from 'services/analytics'
 import { getCookieConsentValue } from 'react-cookie-consent'
 import CookieConsentBar from 'components/layouts/CookieConsentBar'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 export default ({ history, location }) => {
     const dispatch = useDispatch()
@@ -33,24 +34,35 @@ export default ({ history, location }) => {
     }, [location, history])
 
     useEffect(() => {
-        
         if (isAuthenticated) {
             if (isSessionExpired) {
                 setLoading(true)
-                console.log("renewing session now")
-                dispatch(AuthActions.renewSession()).then(() => {
-                    setLoading(false)
-                })
-             } else {
-                 setLoading(false)
-             }
+                console.log('renewing session now')
+                dispatch(AuthActions.renewSession())
+                    .then(() => {
+                        setLoading(false)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        dispatch(SnackbarActions.error('Please, log in again'))
+                    })
+                    .finally(() => setLoading(false))
+            } else {
+                setLoading(false)
+            }
         } else {
             setLoading(false)
         }
     }, [dispatch, isAuthenticated, isSessionExpired])
 
     return (
-        <ApolloProvider client={apolloClient(idToken)}>
+        <ApolloProvider
+            client={
+                apolloClient(
+                    idToken,
+                ) /*TODO: fails to fetch when renewing session causing a loop. fix! */
+            }
+        >
             <ConnectedRouter history={history}>
                 <Suspense fallback={null}>
                     {!loading && (
@@ -121,6 +133,8 @@ export default ({ history, location }) => {
                                 async
                                 src="https://platform.twitter.com/widgets.js"
                             ></script>
+                            {/* {isAuthenticated ?
+                                <Redirect to="/dashboard" /> :} */}
                             <Redirect to="/" />
                         </Switch>
                     )}
