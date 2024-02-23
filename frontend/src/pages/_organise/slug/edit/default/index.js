@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Box, Typography, TextField } from '@material-ui/core'
@@ -69,6 +69,7 @@ const themeFields = [
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
+    const [previewOpen, setPreviewOpen] = useState(false)
     const dispatch = useDispatch()
 
     return (
