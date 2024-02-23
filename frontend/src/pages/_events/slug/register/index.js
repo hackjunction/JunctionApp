@@ -332,6 +332,10 @@ export default RequiresPermission(() => {
                                 isActive={activeStep === index}
                                 section={section}
                                 data={formData}
+                                sectionsInfo={{
+                                    sections: sections.length,
+                                    index: index + 1,
+                                }}
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
                                 onNext={(values, path) => {
@@ -343,6 +347,10 @@ export default RequiresPermission(() => {
                             <RegistrationSection
                                 isActive={activeStep === index}
                                 data={formData}
+                                sectionsInfo={{
+                                    sections: sections.length,
+                                    index: index + 1,
+                                }}    
                                 label={section.label}
                                 fields={section.fields}
                                 onPrev={setPrevStep}
