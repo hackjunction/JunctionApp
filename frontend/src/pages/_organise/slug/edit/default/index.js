@@ -18,6 +18,7 @@ import Button from 'components/generic/Button'
 import { push } from 'connected-react-router'
 import { defaultEventStyles } from './const'
 import Timeline from '../timeline'
+import EventPagePreview from 'pages/_events/EventPagePreview'
 
 const themeFields = [
     {
@@ -416,7 +417,7 @@ export default () => {
             <EventPageCustomizationPreviewModal
                 open={isPreviewOpen}
                 onClose={() => setIsPreviewOpen(false)}
-                eventSlug={event.slug}
+                event={EventPagePreview}
             />
         </Grid>
     )
