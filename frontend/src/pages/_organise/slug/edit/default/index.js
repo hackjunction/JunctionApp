@@ -417,7 +417,6 @@ export default () => {
             <EventPageCustomizationPreviewModal
                 open={isPreviewOpen}
                 onClose={() => setIsPreviewOpen(false)}
-                event={EventPagePreview}
             />
         </Grid>
     )
