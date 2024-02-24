@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core'
 
-export default function PreviewModal({ open, onClose, eventSlug }) {
+export default ({ open, onClose, eventSlug }) => {
     return (
         <Dialog
             fullWidth
