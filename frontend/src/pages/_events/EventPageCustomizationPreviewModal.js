@@ -14,7 +14,7 @@ export default ({ open, onClose, eventSlug }) => {
             <DialogContent>
                 {/* Embedding the event page preview here. We could use an iframe or any other component that renders the preview */}
                 <iframe
-                    // src={`/events/${eventSlug}`}
+                    src={`/events/${eventSlug}`}
                     style={{ width: '100%', height: '500px', border: 'none' }}
                     title="Event Preview"
                 />
