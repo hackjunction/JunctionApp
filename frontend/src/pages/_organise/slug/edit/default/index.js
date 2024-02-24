@@ -9,6 +9,7 @@ import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
+import EventPageCustomizationPreviewModal from './EventPageCustomizationPreviewModal'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
@@ -388,7 +389,8 @@ export default () => {
                         <Button
                             variant="contained"
                             onClick={() =>
-                                dispatch(push('/events/' + event.slug))
+                                // dispatch(push('/events/' + event.slug))
+                                setIsPreviewOpen(true)
                             }
                         >
                             Preview
@@ -411,6 +413,11 @@ export default () => {
                     </Grid>
                 </Grid>
             </Grid>
+            <EventPageCustomizationPreviewModal
+                open={isPreviewOpen}
+                onClose={() => setIsPreviewOpen(false)}
+                eventSlug={event.slug}
+            />
         </Grid>
     )
 }
