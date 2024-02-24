@@ -69,7 +69,7 @@ const themeFields = [
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
-    const [previewOpen, setPreviewOpen] = useState(false)
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false)
     const dispatch = useDispatch()
 
     return (
