@@ -82,9 +82,11 @@ const RegistrationBottomBar = ({
                 </Button>
             )}
             <Box className={classes.right}>
-                <Typography className={classes.sectionsNum}>
-                    {`${sectionsInfo.index}/${sectionsInfo.sections}`}
-                </Typography>
+                {sectionsInfo && (
+                    <Typography className={classes.sectionsNum}>
+                        {`${sectionsInfo.activeSection}/${sectionsInfo.sections}`}
+                    </Typography>
+                )}
                 <ErrorDisplay errors={errors} />
                 <Button
                     className={classes.nextButton}

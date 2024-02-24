@@ -334,7 +334,7 @@ export default RequiresPermission(() => {
                                 data={formData}
                                 sectionsInfo={{
                                     sections: sections.length,
-                                    index: index + 1,
+                                    activeSection: index + 1,
                                 }}
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
@@ -349,7 +349,7 @@ export default RequiresPermission(() => {
                                 data={formData}
                                 sectionsInfo={{
                                     sections: sections.length,
-                                    index: index + 1,
+                                    activeSection: index + 1,
                                 }}    
                                 label={section.label}
                                 fields={section.fields}
