@@ -9,7 +9,7 @@ import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
-import EventPageCustomizationPreviewModal from './EventPageCustomizationPreviewModal'
+import EventPageCustomizationPreviewModal from '../../../../_events/EventPageCustomizationPreviewModal'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
