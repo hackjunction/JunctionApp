@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Grid, Box, Typography, TextField } from '@material-ui/core'
 import { FastField } from 'formik'
 
@@ -15,7 +15,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'
-import { push } from 'connected-react-router'
+// import { push } from 'connected-react-router'
 import { defaultEventStyles } from './const'
 import Timeline from '../timeline'
 import { useQuery } from '../../../../../hooks/useQuery'
@@ -73,7 +73,6 @@ export default () => {
     const [organizations] = useAllOrganizations()
     const { getQuery, setQuery } = useQuery()
     const isPreviewOpen = getQuery('preview') === 'true'
-    const dispatch = useDispatch()
 
     // Open the preview modal by setting the preview mode in URL
     const handlePreviewOpen = () => setQuery('preview', 'true')
