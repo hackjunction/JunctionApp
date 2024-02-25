@@ -64,7 +64,7 @@ const useStyles = makeStyles({
     },
 })
 
-export default () => {
+export default ({ isPreview = false }) => { // isPreview determines if the page is being previewed in the Preview modal
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
     const classes = useStyles(event.theme)
@@ -127,6 +127,7 @@ export default () => {
                 onBack={() => dispatch(push('/'))}
                 alignRight
                 backgroundColor={event.theme.headerBackgroundColor}
+                isPreview={isPreview}
             />
             <FadeInWrapper>
                 <StaggeredList>
@@ -203,6 +204,7 @@ export default () => {
                         <EventButtons
                             event={event}
                             registration={registration}
+                            isPreview={isPreview}
                         />
                     </Box>
                 </StaggeredList>
