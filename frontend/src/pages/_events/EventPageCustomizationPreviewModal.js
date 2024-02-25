@@ -1,8 +1,7 @@
 import React from 'react'
 import { Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core'
-import EventPagePreview from './EventPagePreview'
 
-export default ({ open, onClose }) => {
+export default ({ open, onClose, eventSlug }) => {
     return (
         <Dialog
             fullWidth
@@ -13,13 +12,11 @@ export default ({ open, onClose }) => {
         >
             <DialogTitle id="preview-modal-title">Event Preview</DialogTitle>
             <DialogContent>
-                {/* Embedding the event page preview here. We could use an iframe or any other component that renders the preview */}
-                {/* <iframe
-                    src={`/events/${eventSlug}`}
+                <iframe
+                    src={`/events/${eventSlug}?preview=true`}
                     style={{ width: '100%', height: '500px', border: 'none' }}
                     title="Event Preview"
-                /> */}
-                <EventPagePreview />
+                />
             </DialogContent>
             <Button onClick={onClose} color="primary" variant="contained">
                 Close
