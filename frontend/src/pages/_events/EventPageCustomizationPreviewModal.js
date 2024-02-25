@@ -1,5 +1,6 @@
 import React from 'react'
-import { Dialog, DialogTitle, DialogContent, Button } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import Button from 'components/generic/Button'
 
 export default ({ open, onClose, eventSlug }) => {
     return (
@@ -14,13 +15,15 @@ export default ({ open, onClose, eventSlug }) => {
             <DialogContent>
                 <iframe
                     src={`/events/${eventSlug}?preview=true`}
-                    style={{ width: '100%', height: '500px', border: 'none' }}
+                    style={{ width: '100%', height: '80vh', border: 'none' }}
                     title="Event Preview"
                 />
             </DialogContent>
-            <Button onClick={onClose} color="primary" variant="contained">
-                Close
-            </Button>
+            <DialogActions style={{ display: 'flex', justifyContent: 'center' }}>
+                <Button onClick={onClose} color="primary" variant="contained">
+                    Close
+                </Button>
+            </DialogActions>
         </Dialog>
     )
 }
