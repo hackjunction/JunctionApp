@@ -18,7 +18,7 @@ import Button from 'components/generic/Button'
 import { push } from 'connected-react-router'
 import { defaultEventStyles } from './const'
 import Timeline from '../timeline'
-import EventPagePreview from 'pages/_events/EventPagePreview'
+import { useQuery } from '../../../../../hooks/useQuery'
 
 const themeFields = [
     {
@@ -71,8 +71,15 @@ const themeFields = [
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
-    const [isPreviewOpen, setIsPreviewOpen] = useState(false)
+    const { getQuery, setQuery } = useQuery()
+    const isPreviewOpen = getQuery('preview') === 'true'
     const dispatch = useDispatch()
+
+    // Open the preview modal by setting the preview mode in URL
+    const handlePreviewOpen = () => setQuery('preview', 'true')
+
+    // Close the preview modal by removing the preview mode from URL
+    const handlePreviewClose = () => setQuery('preview', 'false')
 
     return (
         <Grid container spacing={3}>
@@ -389,10 +396,7 @@ export default () => {
                     <Grid item xs={12}>
                         <Button
                             variant="contained"
-                            onClick={() =>
-                                // dispatch(push('/events/' + event.slug))
-                                setIsPreviewOpen(true)
-                            }
+                            onClick={handlePreviewOpen}
                         >
                             Preview
                         </Button>
@@ -416,7 +420,8 @@ export default () => {
             </Grid>
             <EventPageCustomizationPreviewModal
                 open={isPreviewOpen}
-                onClose={() => setIsPreviewOpen(false)}
+                onClose={handlePreviewClose}
+                eventSlug={event.slug}
             />
         </Grid>
     )
