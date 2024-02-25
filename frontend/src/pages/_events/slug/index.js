@@ -37,10 +37,17 @@ const EventDetailRouter = () => {
             render={() => (
                 <AnimatePresence>
                     <Switch location={location} key={location.pathname}>
-                        <Route exact path={`${match.url}`} component={EventDetail} />
-                        {isRegistrationOpen && !isPreview && <Route exact path={`${match.url}/register`} component={EventRegister} />
+                        <Route
+                            exact
+                            path={`${match.url}`}
+                            render={(props) => <EventDetail {...props} isPreview={isPreview} />}
+                        />
+                        {isRegistrationOpen && !isPreview &&
+                            <Route exact path={`${match.url}/register`} component={EventRegister} />
                         }
-                        {!isPreview && <Route exact path={`${match.url}/finalist-voting`} component={FinalistVoting} />}
+                        {!isPreview &&
+                            <Route exact path={`${match.url}/finalist-voting`} component={FinalistVoting} />
+                        }
                         <Redirect to={`${match.url}`} />
                     </Switch>
                 </AnimatePresence>
