@@ -35,7 +35,7 @@
         "moment": "^2.26.0",
         "moment-timezone": "^0.5.31",
         "notistack": "^0.9.16",
-        "object-path": "^0.11.5",
+        "object-path": "^0.11.8",
         "pdf-lib": "^1.17.1",
         "qrcode.react": "^1.0.0",
         "react": "16.13.1",
