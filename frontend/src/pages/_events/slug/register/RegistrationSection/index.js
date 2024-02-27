@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default props => {
-    const { fields, onNext, nextLabel, prevLabel, onPrev, data, isActive } =
+    const { sectionsInfo, fields, onNext, nextLabel, prevLabel, onPrev, data, isActive } =
         props
     const { event, registration } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
@@ -131,6 +131,7 @@ export default props => {
                             onNext={handleSubmit}
                             errors={errors}
                             dirty={dirty}
+                            sectionsInfo={sectionsInfo}
                         />,
                         document.body,
                     )}

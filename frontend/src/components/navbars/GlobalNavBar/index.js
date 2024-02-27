@@ -35,10 +35,12 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const classes = useStyles()
     return (
-        <div className='tw-w-full tw-py-2 tw-bg-wave-pattern ' >
+        <div
+            id="global-navbar"
+            className="tw-w-full tw-py-2 tw-bg-wave-pattern "
+        >
             <div className={classes.wrapper}>
                 <div className={classes.inner}>
-
                     <a href="/home">
                         <img
                             src={PlatformLogo}
