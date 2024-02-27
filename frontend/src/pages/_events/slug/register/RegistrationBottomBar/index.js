@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     },
     sectionsNum: {
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     buttonIcon: {
         marginLeft: theme.spacing(1),

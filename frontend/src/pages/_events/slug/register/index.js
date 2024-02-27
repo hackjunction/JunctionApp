@@ -146,11 +146,14 @@ export default RequiresPermission(() => {
         finishRegistration,
     } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
-
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({})
     const [activeStep, setActiveStep] = useState(0)
     const [eventNewsLetterHidden, setEventNewsLetterHidden] = useState(true)
+
+    const globalNavbarElement = document.getElementById('global-navbar')
+    globalNavbarElement.style.display = 'none'
+
     useEffect(() => {
         setTimeout(function () {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -287,7 +290,9 @@ export default RequiresPermission(() => {
             }
             AnalyticsService.events.COMPLETE_REGISTRATION(slug)
             setActiveStep(sections.length + 1)
+            globalNavbarElement.style.display = 'block'
         } catch (e) {
+            globalNavbarElement.style.display = 'none'
             dispatch(
                 SnackbarActions.error(
                     'Oops, something went wrong... Please try again',
@@ -350,7 +355,7 @@ export default RequiresPermission(() => {
                                 sectionsInfo={{
                                     sections: sections.length,
                                     activeSection: index + 1,
-                                }}    
+                                }}
                                 label={section.label}
                                 fields={section.fields}
                                 onPrev={setPrevStep}
