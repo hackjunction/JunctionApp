@@ -1,3 +1,4 @@
+# Works
 trigger:
 - none
 
@@ -6,40 +7,40 @@ pool:
 
 stages:
 
-- stage: Build_africa
-  displayName: Build stage africa
+- stage: Build_europe
+  displayName: Build stage europe
   jobs:
-  - job: Build_africa
+  - job: Build_europe
     steps:
     
     - task: DownloadSecureFile@1
-      displayName: 'download AFRICA backendend'
+      displayName: 'download EU backendend'
       inputs:
-        secureFile: 'BACKEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
+        secureFile: 'BACKEND_ENV_FILE_EU' # string. Required. Secure File. 
 
     - task: CopyFiles@2
-      displayName: 'copy africa backendend'
+      displayName: 'copy europe backendend'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
-        Contents: BACKEND_ENV_FILE_AFRICA
+        Contents: BACKEND_ENV_FILE_EU
         TargetFolder: './backend'
 
-    - script: mv ./backend/BACKEND_ENV_FILE_AFRICA ./backend/.env
-      displayName: 'rename africa .env'
+    - script: mv ./backend/BACKEND_ENV_FILE_EU ./backend/.env
+      displayName: 'rename europe .env'
     - task: DownloadSecureFile@1
-      displayName: 'download africa frontend'
+      displayName: 'download europe frontend'
       inputs:
-        secureFile: 'FRONTEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
+        secureFile: 'FRONTEND_ENV_FILE_EU' # string. Required. Secure File. 
 
     - task: CopyFiles@2
-      displayName: 'copy africa frontend'
+      displayName: 'copy europe frontend'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
-        Contents: FRONTEND_ENV_FILE_AFRICA
+        Contents: FRONTEND_ENV_FILE_EU
         TargetFolder: './frontend'
 
-    - script: mv ./frontend/FRONTEND_ENV_FILE_AFRICA ./frontend/.env
-      displayName: 'rename africa .env'
+    - script: mv ./frontend/FRONTEND_ENV_FILE_EU ./frontend/.env
+      displayName: 'rename europe .env'
 
     - script: ls -a ./frontend
       displayName: 'ls' 
@@ -70,15 +71,15 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop_africa
+      artifact: drop_eu
 
-  - deployment: VMDeploy_AFRICA
-    dependsOn: Build_africa
-    displayName: DEPLOY AFRICA
+  - deployment: VMDeploy_EU
+    dependsOn: Build_europe
+    displayName: DEPLOY EU
     environment:
       name:  PROD
       resourceType: VirtualMachine
-      tags: africa
+      tags: europe
     strategy:
       runOnce:
         preDeploy:
@@ -86,8 +87,8 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current' 
-                artifactName: drop_africa
-                targetPath: '$(Pipeline.Workspace)/drop'
+                artifactName: drop_eu
+                targetPath: '$(Pipeline.Workspace)/drop_eu'
 
             - script: echo initialize, cleanup, backup, install certs
         
@@ -103,21 +104,21 @@ stages:
 
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop_africa/$(Build.BuildId).zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop_eu/$(Build.BuildId).zip'
               destinationFolder: '$(Pipeline.Workspace)/japp' 
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
 
           - task: DeleteFiles@1
             inputs:
-              SourceFolder: '$(Pipeline.Workspace)/drop_africa' 
+              SourceFolder: '$(Pipeline.Workspace)/drop_eu' 
               Contents: '$(Build.BuildId).zip'
 
           - task: Bash@3
             inputs:
               targetType: 'inline'
               script: |
-                cd /home/azureuser/azagent/_work/1/japp
+                cd /home/azureuser/azagent/_work/2/japp
                 pm2 restart index
                 sudo systemctl restart nginx
 
