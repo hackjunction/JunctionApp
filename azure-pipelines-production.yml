@@ -5,47 +5,47 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:  
-  - job: Build
+
+- stage: Build_africa
+  displayName: Build stage africa
+  jobs:
+  - job: Build_africa
     steps:
     
     - task: DownloadSecureFile@1
-      displayName: 'download PROD Africa backend'
+      displayName: 'download AFRICA backendend'
       inputs:
         secureFile: 'BACKEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
 
     - task: CopyFiles@2
-      displayName: 'copy PROD Africa backend'
+      displayName: 'copy africa backendend'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
         Contents: BACKEND_ENV_FILE_AFRICA
         TargetFolder: './backend'
 
     - script: mv ./backend/BACKEND_ENV_FILE_AFRICA ./backend/.env
-      displayName: 'rename PROD Africa .env'
+      displayName: 'rename africa .env'
     - task: DownloadSecureFile@1
-      displayName: 'download PROD Africa frontend'
+      displayName: 'download africa frontend'
       inputs:
         secureFile: 'FRONTEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
 
     - task: CopyFiles@2
-      displayName: 'copy PROD Africa frontend'
+      displayName: 'copy africa frontend'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
         Contents: FRONTEND_ENV_FILE_AFRICA
         TargetFolder: './frontend'
 
     - script: mv ./frontend/FRONTEND_ENV_FILE_AFRICA ./frontend/.env
-      displayName: 'rename PROD Africa .env'
+      displayName: 'rename africa .env'
 
     - script: ls -a ./frontend
       displayName: 'ls' 
 
     - script: ls -Rn
       displayName: 'ls'
-    
 
     - task: NodeTool@0
       inputs:
@@ -70,12 +70,11 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
-
+      artifact: drop_africa
 
   - deployment: VMDeploy_AFRICA
-    dependsOn: Build
-    displayName: Web deploy Africa
+    dependsOn: Build_africa
+    displayName: DEPLOY AFRICA
     environment:
       name:  PROD
       resourceType: VirtualMachine
@@ -87,7 +86,7 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current' 
-                artifactName: drop
+                artifactName: drop_africa
                 targetPath: '$(Pipeline.Workspace)/drop'
 
             - script: echo initialize, cleanup, backup, install certs
@@ -98,32 +97,32 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                Modify deployment script based on the app type
+                # Modify deployment script based on the app type
                 echo "Starting deployment script run"
                
 
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop_africa/$(Build.BuildId).zip'
               destinationFolder: '$(Pipeline.Workspace)/japp' 
               cleanDestinationFolder: true 
               overwriteExistingFiles: true
-              
+
           - task: DeleteFiles@1
             inputs:
-              SourceFolder: '$(Pipeline.Workspace)/drop' 
+              SourceFolder: '$(Pipeline.Workspace)/drop_africa' 
               Contents: '$(Build.BuildId).zip'
 
           - task: Bash@3
             inputs:
               targetType: 'inline'
               script: |
+                cd /home/azureuser/azagent/_work/1/japp
                 pm2 restart index
                 sudo systemctl restart nginx
-             
 
         routeTraffic:
-          steps:  
+          steps:
           - script: echo routing traffic
         postRouteTraffic:
           steps:
