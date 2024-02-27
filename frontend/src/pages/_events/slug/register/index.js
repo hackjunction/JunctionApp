@@ -238,6 +238,13 @@ export default RequiresPermission(() => {
         return sorted.concat(event?.customQuestions ?? [])
     }, [event])
 
+    const sectionsInfo = (sections, index) => {
+        return {
+            sections: sections.length,
+            activeSection: index + 1,
+        }
+    }
+
     const setNextStep = useCallback(
         (nextStep, values, path) => {
             const newFormData = path
@@ -337,10 +344,7 @@ export default RequiresPermission(() => {
                                 isActive={activeStep === index}
                                 section={section}
                                 data={formData}
-                                sectionsInfo={{
-                                    sections: sections.length,
-                                    activeSection: index + 1,
-                                }}
+                                sectionsInfo={sectionsInfo(sections, index)}
                                 onPrev={setPrevStep}
                                 prevLabel={prevStep ? prevStep.label : null}
                                 onNext={(values, path) => {
@@ -352,10 +356,7 @@ export default RequiresPermission(() => {
                             <RegistrationSection
                                 isActive={activeStep === index}
                                 data={formData}
-                                sectionsInfo={{
-                                    sections: sections.length,
-                                    activeSection: index + 1,
-                                }}
+                                sectionsInfo={sectionsInfo(sections, index)}
                                 label={section.label}
                                 fields={section.fields}
                                 onPrev={setPrevStep}
