@@ -248,6 +248,9 @@ const EventInput = new GraphQLInputObjectType({
         challenge_instructions: {
             type: GraphQLString,
         },
+        map: {
+            type: CloudinaryImageInput,
+        },
         faq: {
             type: GraphQLString,
         },
@@ -496,9 +499,9 @@ const EventType = new GraphQLObjectType({
             meetingRooms: {
                 type: GraphQLList(MeetingRoom),
             },
-            // map: {
-            //     type: MongoFile,
-            // },
+            map: {
+                type: CloudinaryImage,
+            },
             // Implement userprofile in graphql
             // TODO: Figure this stuff out
             // winners: {

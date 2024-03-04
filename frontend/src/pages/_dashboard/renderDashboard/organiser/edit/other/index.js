@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Grid } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 import { FastField, Field } from 'formik'
 import FormControl from 'components/inputs/FormControl'
 import EventTagsForm from './EventTagsForm'
@@ -9,12 +9,13 @@ import MetaTagsForm from './MetaTagsForm'
 
 import CertificateForm from './CertificateForm'
 import PageScriptsForm from './PageScriptsForm'
-import FileInput from '../submission/components/inputs/FileInput'
-import PdfUpload from 'components/inputs/PdfUpload'
 import Switch from 'components/generic/Switch'
 import { hasSuperAdmin } from 'redux/auth/selectors'
+import ImageUpload from 'components/inputs/ImageUpload'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 export default () => {
+    const event = useSelector(OrganiserSelectors.event)
     const isSuperAdmin = useSelector(hasSuperAdmin)
     console.log('isSuperAdmin', isSuperAdmin)
     return (
@@ -40,7 +41,6 @@ export default () => {
                 <Field
                     name="map"
                     render={({ field, form }) => {
-                        console.log(field)
                         return (
                             <FormControl
                                 label="Venue Map"
@@ -48,27 +48,22 @@ export default () => {
                                 error={form.errors[field.name]}
                                 touched={form.touched[field.name]}
                             >
-                                <FileInput
-                                    value={field.value}
-                                    handleChange={value =>
-                                        form.setFieldValue(field.name, value)
-                                    }
-                                    config={{
-                                        settings: {
-                                            allowedTypes: ['jpg'],
-                                        },
-                                    }}
-                                />
-
-                                {/* <ImageUpload
-                                    value={field.value}
-                                    onChange={value => {
-                                        form.setFieldValue(field.name, value)
-                                        form.setFieldTouched(field.name)
-                                    }}
-                                    uploadUrl={`/api/upload/events/${event.slug}/map`}
-                                    resizeMode="cover"
-                                /> */}
+                                <Box
+                                    className="tw-h-40 lg:tw-h-270px tw-w-full tw-mx-auto"
+                                    position="relative"
+                                >
+                                    <ImageUpload
+                                        value={field.value}
+                                        onChange={value => {
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
+                                            form.setFieldTouched(field.name)
+                                        }}
+                                        uploadUrl={`/api/upload/events/${event.slug}/map`}
+                                    />
+                                </Box>
                             </FormControl>
                         )
                     }}

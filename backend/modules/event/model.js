@@ -10,7 +10,6 @@ const ChallengeSchema = require('@hackjunction/shared/schemas/Challenge')
 const HackerpackSchema = require('@hackjunction/shared/schemas/Hackerpack')
 const CloudinaryImageSchema = require('@hackjunction/shared/schemas/CloudinaryImage')
 const Certificate = require('@hackjunction/shared/schemas/Certificate')
-const mongoFile = require('@hackjunction/shared/schemas/MongoFile')
 const RegistrationSectionSchema = require('@hackjunction/shared/schemas/RegistrationSection')
 const TrackSchema = require('@hackjunction/shared/schemas/Track')
 const EventRecruitersSchema = require('@hackjunction/shared/schemas/Recruiter')
@@ -93,7 +92,7 @@ const EventSchema = new mongoose.Schema({
     coverImage: CloudinaryImageSchema.mongoose,
     logo: CloudinaryImageSchema.mongoose,
     certificate: Certificate.mongoose,
-    //map: mongoFile.mongoose,
+    map: CloudinaryImageSchema.mongoose,
     /** Event configuration */
     eventType: {
         type: String,

@@ -72,6 +72,9 @@ const UploadHelper = {
     generateCertificateTag: slug => {
         return `${cloudinaryRootPath}-event-${slug}-certificate`
     },
+    generateMapTag: slug => {
+        return `${cloudinaryRootPath}-event-${slug}-map`
+    },
     generateHackerpackTag: id => {
         return `${cloudinaryRootPath}-hackerpac-${id}`
     },
@@ -222,6 +225,20 @@ const UploadHelper = {
             },
             {
                 tag: UploadHelper.generateProjectTag(slug, teamCode),
+            },
+        )
+        return multer({
+            storage,
+            limits: { fileSize: 5 * 1024 * 1024 },
+        }).single('image')
+    },
+
+    uploadEventMap: (slug) => {
+        const storage = createStorageWithPath(
+            `events/maps/`,
+            {},
+            {
+                tag: UploadHelper.generateMapTag(slug),
             },
         )
         return multer({

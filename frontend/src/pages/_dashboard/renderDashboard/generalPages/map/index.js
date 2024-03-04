@@ -1,65 +1,33 @@
-import React, { useEffect, useRef } from 'react'
-import { useRouteMatch, useLocation } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { useRouteMatch } from 'react-router'
 
-import FormControl from '@material-ui/core/FormControl'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import PageWrapper from 'components/layouts/PageWrapper'
-import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageHeader from 'components/generic/PageHeader'
-import Image from 'components/generic/Image'
 
 import GradientBox from 'components/generic/GradientBox'
-import LayoutMap1 from 'assets/images/venueMap2023/LayoutMap-venue-01.jpg'
-import LayoutMap2 from 'assets/images/venueMap2023/LayoutMap-venue-02.jpg'
-import LayoutMap3 from 'assets/images/venueMap2023/LayoutMap-venue-03.jpg'
-import { Grid, Typography } from '@material-ui/core'
+import * as DashboardSelectors from '../../../../../redux/dashboard/selectors'
 
 export default () => {
     const match = useRouteMatch()
-    const location = useLocation()
+    const { slug } = match.params
 
+    const event = useSelector(DashboardSelectors.event)
+    const [venueMap, setVenueMap] = useState([])
 
-    const floorNeg1 = () => {
+    const VenueMap = () => {
         return (
             <GradientBox color="theme_white" p={3}>
-                <img
-                    src={LayoutMap1}
-                    alt={"Venue map floor 1"}
-                    width={'100%'}
-                />
+                <img src={venueMap.url} alt={'Venue Map'} width={'100%'} />
             </GradientBox>
         )
     }
 
-    const floor1 = () => {
-        return (
-            <GradientBox color="theme_white" p={3}>
-                <img
-                    src={LayoutMap2}
-                    alt={"Venue map floor -1"}
-                    width={'100%'}
-                />
-            </GradientBox>
-        )
-    }
-
-
-    const floor2 = () => {
-        return (
-            <GradientBox color="theme_white" p={3}>
-                <img
-                    src={LayoutMap3}
-                    alt={"Venue map floor 2"}
-                    width={'100%'}
-                />
-            </GradientBox>
-        )
-    }
-
-
+    useEffect(() => {
+        if (event) {
+            setVenueMap(event.map)
+        }
+    }, [event, slug])
 
     return (
         <>
@@ -83,37 +51,15 @@ export default () => {
                 ></iframe>
             </div> */}
             <PageWrapper loading={false}>
-                <PageHeader
-                    heading="Venue map"
-                    subheading="Check what is happening where"
-                />
+                <div class="tw-flex tw-flex-col tw-gap-5">
+                    <PageHeader
+                        heading="Venue map"
+                        subheading="Check what is happening where"
+                    />
+                    <VenueMap />
+                </div>
 
-                <MaterialTabsLayout
-                    transparent
-                    tabs={[
-                        {
-                            path: '/1',
-                            key: '1',
-                            label: 'Floor 1',
-                            component: () => floorNeg1()
-                        },
-                        {
-                            path: '/-1',
-                            key: '-1',
-                            label: 'Floor -1',
-                            component: () => floor1()
-                        },
-                        {
-                            path: '/2',
-                            key: '2',
-                            label: 'Floor 2',
-                            component: () => floor2()
-                        },
 
-                    ]}
-                    location={location}
-                    baseRoute={match.url}
-                />
             </PageWrapper>
         </>
     )
