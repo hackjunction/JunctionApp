@@ -111,7 +111,7 @@ GavelAnnotatorSchema.methods.canVote = async function () {
 
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
-            new ForbiddenError('Cannot subm,it votes while voting is not open'),
+            new ForbiddenError('Cannot submit votes while voting is not open'),
         )
     }
 
