@@ -524,6 +524,14 @@ controller.rejectSoftRejected = async eventId => {
 
 controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
     console.log('Gavel data received', gavelData, typeof gavelData)
+    gavelData.forEach(gavel => {
+        if (
+            typeof gavel.registration !== 'string' ||
+            typeof gavel.link !== 'string'
+        ) {
+            throw new Error('Gavel data is invalid')
+        }
+    })
     let updateCount = 0
     const registrations = await Registration.find({
         event: eventId,
@@ -550,8 +558,6 @@ controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
         updateCount,
         registrationCount,
     )
-    // Go through gavelData and assign the login URL to their corresponding registration
-    // const registration = await Registration
 }
 
 module.exports = controller
