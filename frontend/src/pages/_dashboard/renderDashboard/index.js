@@ -82,8 +82,6 @@ export default role => {
             ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
         ) && organizerEvents?.map(e => e._id).includes(event?._id)
 
-    console.log(isPartner, 'user is partner', isOrganizer, 'user is organizer')
-
     // Set up browser notifications
     useEffect(() => {
         if ('Notification' in window && Notification.permission !== 'granted') {
@@ -96,13 +94,7 @@ export default role => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
-
-        //TODO dont use OrganiserSelectors here
-        dispatch(OrganiserActions.updateProjects(slug))
-        dispatch(OrganiserActions.updateGavelProjects(slug))
-        dispatch(OrganiserActions.updateRankings(slug))
-        dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
-    }, [slug, dispatch])
+    }, [slug])
 
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
@@ -118,14 +110,10 @@ export default role => {
 
     useEffect(() => {
         dispatch(UserActions.organizerEvents(organizerEvents))
-        console.log(' dispatch(UserActions.organizerEvents)')
-        console.log(loadingActive, loadingPast)
         if (!loadingActive) {
             dispatch(DashboardActions.activeEvents(activeEvents))
         }
-        console.log('dipatch past?', loadingPast, pastEvents)
         if (!loadingPast) {
-            console.log('dipatch past', pastEvents)
             dispatch(DashboardActions.pastEvents(pastEvents))
         }
     }, [organizerEvents, activeEvents, pastEvents])
@@ -170,17 +158,13 @@ export default role => {
 
     useEffect(() => {
         //does not take multiple roles into a count
-        console.log('setting access', isPartner, isOrganizer)
         if (isPartner) {
             dispatch(UserActions.setAccessRight('partner'))
-            console.log('partner', userAccessRight)
         } else if (isOrganizer) {
             dispatch(UserActions.setAccessRight('organizer'))
-            console.log('organizer', userAccessRight)
         }
     }, [])
 
-    console.log('userAccess', userAccessRight)
     //TODO: reconstruct to contain partner, organizer & participnat pages
     switch (userAccessRight) {
         case 'partner': {
@@ -196,6 +180,7 @@ export default role => {
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
                         shownPages={shownPages}
+                        lockedPages={lockedPages}
                     />
                 </PageWrapper>
             )

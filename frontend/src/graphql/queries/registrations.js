@@ -37,6 +37,6 @@ export const useRegistrationsByUser = userId => {
             userId,
         },
     })
-    console.log("useRegistrationsByUser", userId, data, loading, error)
+    console.log('useRegistrationsByUser', userId, data, loading, error)
     return [data?.registrationsByUser, loading, error]
 }

@@ -1,8 +1,6 @@
-
-
 import React, { useEffect, useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+// import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -20,25 +18,26 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import ToggleFavorites from './ToggleFavorites'
 import { useTranslation } from 'react-i18next'
 import { useToggle } from 'hooks/customHooks'
+import { debugGroup } from 'utils/debuggingTools'
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flex: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
-    },
-}))
+// const useStyles = makeStyles(theme => ({
+//     root: {
+//         flex: 1,
+//         backgroundColor: theme.palette.background.default,
+//         padding: theme.spacing(3),
+//     },
+// }))
 
 export default () => {
     const { t } = useTranslation()
-    const classes = useStyles()
+    // const classes = useStyles()
     const dispatch = useDispatch()
     const idTokenData = useSelector(AuthSelectors.idTokenData)
     const favorites = useSelector(RecruitmentSelectors.favorites)
-    const event = useSelector(DashboardSelectors.event)._id
+    const eventId = useSelector(DashboardSelectors.event)._id
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
 
-    const [recruiterOrganisation, SetRecruiterOrganisation] = useState("")
+    const [recruiterOrganisation, SetRecruiterOrganisation] = useState('')
     const [showFavorites, toggleFavorites] = useToggle(false)
 
     useEffect(() => {
@@ -55,14 +54,14 @@ export default () => {
         //dispatch(RecruitmentActions.updateEvents())
 
         const organisation = recEvents.find(e => {
-            return e.eventId === event
+            return e.eventId === eventId
         }).organisation
         SetRecruiterOrganisation(organisation)
 
         dispatch(RecruitmentActions.updateActionHistory(organisation))
     }, [dispatch])
 
-
+    debugGroup('Recruitment', [recruiterOrganisation, recEvents])
 
     return (
         <>
@@ -74,20 +73,24 @@ export default () => {
                         justifyContent="flex-end"
                         mb={2}
                     >
-
                         <ToggleFavorites
                             count={favorites.length}
                             active={showFavorites}
                             onChange={toggleFavorites}
                         />
-                    </Box >
+                    </Box>
 
                     {showFavorites ? (
-                        <SearchResults items={favorites} organisation={recruiterOrganisation} />
+                        <SearchResults
+                            items={favorites}
+                            organisation={recruiterOrganisation}
+                        />
                     ) : (
                         <>
                             <Filters />
-                            <SearchResults organisation={recruiterOrganisation} />
+                            <SearchResults
+                                organisation={recruiterOrganisation}
+                            />
                         </>
                     )}
                 </Container>
@@ -96,5 +99,3 @@ export default () => {
         </>
     )
 }
-
-

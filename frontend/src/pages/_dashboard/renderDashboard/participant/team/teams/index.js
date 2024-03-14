@@ -21,7 +21,7 @@ export default () => {
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const { slug } = event
-
+    //TODO create pagination component
     const teams = useSelector(DashboardSelectors.teams)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const [selected, setSelected] = useState(false)
@@ -90,8 +90,6 @@ export default () => {
     }, [currentPage])
 
     const renderPagination = () => {
-        console.log('props', currentPage, totalResults, totalPages)
-
         return (
             <Box display="flex" flexDirection="row" alignItems="center">
                 <IconButton

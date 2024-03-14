@@ -243,7 +243,7 @@ SingleValue.propTypes = {
     /**
      * Props passed to the wrapping element for the group.
      */
-    innerProps: PropTypes.any.isRequired,
+    innerProps: PropTypes.any,
     selectProps: PropTypes.object.isRequired,
 }
 
@@ -436,6 +436,9 @@ export default function IntegrationReactSelect({
                 })
                 .filter(item => !!item)
         } else {
+            if (Array.isArray(value)) {
+                value = value[0]
+            }
             return _options.find(o => o.value === value)
         }
     }, [_options, isMulti, value])

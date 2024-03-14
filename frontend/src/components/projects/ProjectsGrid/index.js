@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { sortBy } from 'lodash-es'
 import moment from 'moment-timezone'
 import { Grid } from '@material-ui/core'
 import { EventHelpers } from '@hackjunction/shared'
@@ -10,109 +9,164 @@ import ProjectScoresService from 'services/projectScores'
 import { useSelector } from 'react-redux'
 
 import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
 import _ from 'lodash'
+import Filter from 'components/Team/Filter'
 
 const ProjectsGrid = ({
     projects,
     event,
     onSelect,
-    sortField = 'location',
-    showFullTeam = false,
     showScore = false,
     showTags = true,
     token = '',
     showReviewers = false,
+    reviewerGrid = false,
+    filterEnabled = false,
 }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
-
+    const userId = useSelector(AuthSelectors.getUserId)
     const isOngoingEvent = EventHelpers.isEventOngoing(event, moment)
     const [sorted, setSorted] = useState(projects)
+    const projectScoreLogic = async project => {
+        if (!token) {
+            const scoresNotToken =
+                await ProjectScoresService.getScoreByEventSlugAndProjectId(
+                    idToken,
+                    event.slug,
+                    project._id,
+                )
+            return scoresNotToken
+        } else {
+            const scoresWithToken =
+                await ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
+                    token,
+                    event.slug,
+                    project._id,
+                )
+            return scoresWithToken
+        }
+    }
     const fetchData = useCallback(async () => {
-        const nprojects = await Promise.all(
+        // TODO add loading indicator
+        const projectScoreData = await Promise.allSettled(
             projects.map(async project => {
-                const projectScoreLogic = async () => {
-                    if (!token) {
-                        return ProjectScoresService.getScoreByEventSlugAndProjectId(
-                            idToken,
-                            event.slug,
-                            project._id,
-                        )
-                    } else {
-                        return ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken(
-                            token,
-                            event.slug,
-                            project._id,
-                        )
-                    }
-                }
-                return projectScoreLogic()
+                return projectScoreLogic(project)
                     .then(score => {
-                        if (score[0]) {
-                            return Object.assign(score[0], project)
-                        }
-                        return Object.assign(
-                            { score: 0, message: 'Not rated' },
-                            project,
-                        )
+                        return score[0]
                     })
                     .catch(e => {
                         console.log('got error', e)
-                        return Object.assign(
-                            { score: 0, message: 'Not rated' },
-                            project,
-                        )
                     })
             }),
         )
-        setSorted(sortBy(nprojects, p => -p['score']))
+        const returnProjects = projects.map(project => {
+            const scoreData = projectScoreData.find(
+                score => score?.value?.project === project._id,
+            )
+            if (scoreData) {
+                if (reviewerGrid) {
+                    const userScore = scoreData?.value?.reviewers?.find(
+                        reviewer => {
+                            return reviewer?.userId === userId
+                        },
+                    )
+                    if (userScore) {
+                        project.scoreData = userScore
+                    }
+                } else {
+                    project.scoreData = scoreData?.value
+                }
+            }
+            return project
+        })
+        let sortedProjects
+        if (reviewerGrid) {
+            sortedProjects = _.sortBy(
+                returnProjects,
+                p => -(p.scoreData?.score || 0),
+            )
+        } else if (showScore) {
+            sortedProjects = _.sortBy(
+                returnProjects,
+                p => -(p.scoreData?.averageScore || 0),
+            )
+        }
+        if (sortedProjects) {
+            setSorted(sortedProjects)
+        } else {
+            setSorted(returnProjects)
+        }
     }, [event.slug, projects, token])
 
     useEffect(() => {
         if (showScore || showReviewers) {
             fetchData()
         } else {
-            setSorted(
-                sortField ? sortBy(projects, p => p[sortField]) : projects,
-            )
+            setSorted(projects)
         }
-    }, [fetchData, projects, showScore, sortField])
+    }, [fetchData, projects, showScore])
+
+    const allFilterLabel = 'All projects'
+    const [filter, setFilter] = useState(allFilterLabel)
+    const onFilterChange = filter => {
+        setFilter(filter)
+    }
+
+    const filterArray = [
+        { label: 'Reviewed', value: 'reviewed' },
+        { label: 'Pending review', value: 'pending' },
+    ]
+
+    const projectsToRender = useCallback(
+        (projects, filterSelected) => {
+            switch (filterSelected) {
+                case 'reviewed':
+                    return projects.filter(
+                        project => project.scoreData?.userId === userId,
+                    )
+                case 'pending':
+                    return projects.filter(
+                        project => project.scoreData?.userId !== userId,
+                    )
+                default:
+                    return projects
+            }
+        },
+        [sorted],
+    )
 
     return (
-        <Grid
-            container
-            spacing={1}
-            direction="row"
-            alignItems="stretch"
-            justify="center"
-        >
-            {sorted.map((project, index) => {
-                const projectScore = project?.averageScore
-                    ? project.averageScore
-                    : project?.score
-                let projectMessage
-                if (project?.message) {
-                    projectMessage = project.message
-                } else if (project?.reviewers?.length > 0) {
-                    projectMessage = project.reviewers[0].message
-                }
-                return (
-                    <ProjectsGridItem
-                        key={index}
-                        project={project}
-                        event={event}
-                        showTableLocation={isOngoingEvent}
-                        // showFullTeam={showFullTeam}
-                        onClickMore={() => onSelect(project)}
-                        score={projectScore}
-                        message={projectMessage}
-                        showTags={showTags}
-                        showReviewers={showReviewers}
-                        showScore={showScore}
-                    />
-                )
-            })}
-        </Grid>
+        <>
+            {filterEnabled && (
+                <Filter
+                    noFilterOption={allFilterLabel}
+                    onChange={onFilterChange}
+                    filterArray={filterArray}
+                />
+            )}
+            <Grid
+                container
+                spacing={1}
+                direction="row"
+                alignItems="stretch"
+                justifyContent="center"
+            >
+                {projectsToRender(sorted, filter).map((project, index) => {
+                    return (
+                        <ProjectsGridItem
+                            key={index}
+                            project={project}
+                            event={event}
+                            showTableLocation={isOngoingEvent}
+                            onClickMore={() => onSelect(project)}
+                            showTags={showTags}
+                            showReviewers={showReviewers}
+                            showScore={showScore}
+                        />
+                    )
+                })}
+            </Grid>
+        </>
     )
 }
 

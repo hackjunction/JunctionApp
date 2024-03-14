@@ -1,137 +1,133 @@
 trigger:
-- none
+    - none
 
 pool:
-  vmImage: ubuntu-latest
+    vmImage: ubuntu-latest
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:  
-  - job: Build
-    steps:
-    
-    - task: DownloadSecureFile@1
-      displayName: 'download PROD Africa backend'
-      inputs:
-        secureFile: 'BACKEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
-
-    - task: CopyFiles@2
-      displayName: 'copy PROD Africa backend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: BACKEND_ENV_FILE_AFRICA
-        TargetFolder: './backend'
-
-    - script: mv ./backend/BACKEND_ENV_FILE_AFRICA ./backend/.env
-      displayName: 'rename PROD Africa .env'
-    - task: DownloadSecureFile@1
-      displayName: 'download PROD Africa frontend'
-      inputs:
-        secureFile: 'FRONTEND_ENV_FILE_AFRICA' # string. Required. Secure File. 
-
-    - task: CopyFiles@2
-      displayName: 'copy PROD Africa frontend'
-      inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: FRONTEND_ENV_FILE_AFRICA
-        TargetFolder: './frontend'
-
-    - script: mv ./frontend/FRONTEND_ENV_FILE_AFRICA ./frontend/.env
-      displayName: 'rename PROD Africa .env'
-
-    - script: ls -a ./frontend
-      displayName: 'ls' 
-
-    - script: ls -Rn
-      displayName: 'ls'
-    
-
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '12.20.1'
-      displayName: 'Install Node.js'
-
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          node -v
-          npm -v
-          npm install
-          npm run build
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
-
-
-  - deployment: VMDeploy_AFRICA
-    dependsOn: Build
-    displayName: Web deploy Africa
-    environment:
-      name:  PROD
-      resourceType: VirtualMachine
-      tags: africa
-    strategy:
-      runOnce:
-        preDeploy:
+    - stage: Build_africa
+      displayName: Build stage africa
+      jobs:
+          - job: Build_africa
             steps:
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current' 
-                artifactName: drop
-                targetPath: '$(Pipeline.Workspace)/drop'
+                - task: DownloadSecureFile@1
+                  displayName: 'download PROD Africa backend'
+                  inputs:
+                      secureFile: 'BACKEND_ENV_FILE_AFRICA' # string. Required. Secure File.
 
-            - script: echo initialize, cleanup, backup, install certs
-        
-        deploy:
-          steps:
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                Modify deployment script based on the app type
-                echo "Starting deployment script run"
-               
+                - task: CopyFiles@2
+                  displayName: 'copy PROD Africa backend'
+                  inputs:
+                      SourceFolder: '$(Agent.TempDirectory)'
+                      Contents: BACKEND_ENV_FILE_AFRICA
+                      TargetFolder: './backend'
 
-          - task: ExtractFiles@1
-            inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              destinationFolder: '$(Pipeline.Workspace)/japp' 
-              cleanDestinationFolder: true 
-              overwriteExistingFiles: true
-              
-          - task: DeleteFiles@1
-            inputs:
-              SourceFolder: '$(Pipeline.Workspace)/drop' 
-              Contents: '$(Build.BuildId).zip'
+                - script: mv ./backend/BACKEND_ENV_FILE_AFRICA ./backend/.env
+                  displayName: 'rename PROD Africa .env'
+                - task: DownloadSecureFile@1
+                  displayName: 'download PROD Africa frontend'
+                  inputs:
+                      secureFile: 'FRONTEND_ENV_FILE_AFRICA' # string. Required. Secure File.
 
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                pm2 restart index
-                sudo systemctl restart nginx
-             
+                - task: CopyFiles@2
+                  displayName: 'copy PROD Africa frontend'
+                  inputs:
+                      SourceFolder: '$(Agent.TempDirectory)'
+                      Contents: FRONTEND_ENV_FILE_AFRICA
+                      TargetFolder: './frontend'
 
-        routeTraffic:
-          steps:  
-          - script: echo routing traffic
-        postRouteTraffic:
-          steps:
-          - script: echo health check post-route traffic
-        on:
-          failure:
-            steps:
-            - script: echo Restore from backup! This is on failure
-          success:
-            steps:
-            - script: echo Notify! This is on success
+                - script: mv ./frontend/FRONTEND_ENV_FILE_AFRICA ./frontend/.env
+                  displayName: 'rename PROD Africa .env'
+
+                - script: ls -a ./frontend
+                  displayName: 'ls'
+
+                - script: ls -Rn
+                  displayName: 'ls'
+
+                - task: NodeTool@0
+                  inputs:
+                      versionSpec: '12.20.1'
+                  displayName: 'Install Node.js'
+
+                - task: Bash@3
+                  inputs:
+                      targetType: 'inline'
+                      script: |
+                          node -v
+                          npm -v
+                          npm install
+                          npm run build
+
+                - task: ArchiveFiles@2
+                  displayName: 'Archive files'
+                  inputs:
+                      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+                      includeRootFolder: false
+                      archiveType: zip
+                      archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                      replaceExistingArchive: true
+                - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                  artifact: drop_africa
+
+          - deployment: VMDeploy_AFRICA
+            dependsOn: Build_africa
+            displayName: DEPLOY AFRICA
+            environment:
+                name: PROD
+                resourceType: VirtualMachine
+                tags: africa
+            strategy:
+                runOnce:
+                    preDeploy:
+                        steps:
+                            - task: DownloadPipelineArtifact@2
+                              inputs:
+                                  buildType: 'current'
+                                  artifactName: drop_africa
+                                  targetPath: '$(Pipeline.Workspace)/drop'
+
+                            - script: echo initialize, cleanup, backup, install certs
+
+                    deploy:
+                        steps:
+                            - task: Bash@3
+                              inputs:
+                                  targetType: 'inline'
+                                  script: |
+                                      Modify deployment script based on the app type
+                                      echo "Starting deployment script run"
+
+                            - task: ExtractFiles@1
+                              inputs:
+                                  archiveFilePatterns: '$(Pipeline.Workspace)/drop_africa/$(Build.BuildId).zip'
+                                  destinationFolder: '$(Pipeline.Workspace)/japp'
+                                  cleanDestinationFolder: true
+                                  overwriteExistingFiles: true
+
+                            - task: DeleteFiles@1
+                              inputs:
+                                  SourceFolder: '$(Pipeline.Workspace)/drop_africa'
+                                  Contents: '$(Build.BuildId).zip'
+
+                            - task: Bash@3
+                              inputs:
+                                  targetType: 'inline'
+                                  script: |
+                                      cd /home/azureuser/azagent/_work/1/japp
+                                      pm2 restart index
+                                      sudo systemctl restart nginx
+
+                    routeTraffic:
+                        steps:
+                            - script: echo routing traffic
+                    postRouteTraffic:
+                        steps:
+                            - script: echo health check post-route traffic
+                    on:
+                        failure:
+                            steps:
+                                - script: echo Restore from backup! This is on failure
+                        success:
+                            steps:
+                                - script: echo Notify! This is on success

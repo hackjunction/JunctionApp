@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const Event = require('../event/model')
 const Project = require('../project/model')
 const { ProjectScore } = require('./model')
@@ -25,7 +26,6 @@ controller.addProjectScore = async score => {
         }
         projectScore.averageScore = averageScore
     }
-    console.log('ProjectScore from controller', projectScore)
     return projectScore.save()
 }
 
@@ -54,7 +54,6 @@ controller.updateProjectScore = async (id, updatedProjectScore) => {
         }
         projectScore.averageScore = averageScore
     }
-    console.log('updated project with token score', projectScore)
     await projectScore.save()
     return projectScore
 }
@@ -71,7 +70,7 @@ controller.getScoresByEventAndTeamId = (eventId, teamId) => {
         })
 }
 
-controller.getScoreByProjectId = (
+controller.getScoreByProjectId = async (
     projectId,
     challenge = null,
     track = null,
@@ -88,6 +87,18 @@ controller.getScoreByProjectId = (
     return ProjectScore.find(query)
 }
 
+controller.getScoreForProjectByReviewerId = async (projectId, reviewerId) => {
+    const testProjectScore = await controller.getScoreByProjectId(projectId)
+    if (testProjectScore && testProjectScore.length > 0) {
+        testProjectScore[0].reviewers.forEach(reviewer => {})
+        const scoreFromReviewer = _.find(
+            testProjectScore[0].reviewers,
+            reviewerScore => reviewerScore.userId === reviewerId,
+        )
+        return scoreFromReviewer
+    }
+}
+
 controller.getPublicScores = async eventId => {
     return ProjectScore.find({ event: eventId })
         .populate({ path: 'event', select: 'name' })
@@ -101,11 +112,8 @@ const limitDecimals = (number, decimalPlaces) => {
 
 const averageScoreCalculation = (reviewers, globalScore) => {
     const allScores = reviewers.map(review => review.score)
-    console.log('All scores from reviewers', allScores)
     allScores.push(globalScore)
-    console.log('All scores with global score', allScores)
     let scoreCount = allScores.length
-    console.log('Score count', scoreCount)
 
     const scoreSum = allScores.reduce((acc, current) => {
         if (current && current > 0) {
@@ -116,15 +124,10 @@ const averageScoreCalculation = (reviewers, globalScore) => {
         }
     }, 0)
 
-    console.log('Score sum', scoreSum)
-    console.log('Score count after', scoreCount)
     let finalScore = scoreSum / scoreCount
     if (!Number.isInteger(finalScore)) {
         finalScore = limitDecimals(finalScore, 2)
-        console.log('Not an integer')
     }
-    console.log('Score to submit', finalScore)
-    console.log('Score type', typeof finalScore)
     return finalScore
 }
 
@@ -139,39 +142,6 @@ controller.updateProjectScoreWithReviewers = async (
     projectScore.track = updatedProjectScore.track
     projectScore.challenge = updatedProjectScore.challenge
     projectScore.reviewers = updatedProjectScore.reviewers
-    console.log(
-        'Updated project score from controller BEFORE save',
-        projectScore,
-    )
-
-    // const allScores = projectScore.reviewers.map(review => review.score)
-    // console.log('All scores from reviewers', allScores)
-    // allScores.push(projectScore.score)
-    // console.log('All scores with global score', allScores)
-    // let scoreCount = allScores.length
-    // console.log('Score count', scoreCount)
-
-    // const scoreSum = allScores.reduce((acc, current) => {
-    //     if (current && current > 0) {
-    //         return acc + current
-    //     } else {
-    //         scoreCount = scoreCount - 1
-    //         return acc
-    //     }
-    // }, 0)
-    // function limitDecimals(number, decimalPlaces) {
-    //     const multiplier = Math.pow(10, decimalPlaces)
-    //     return Math.floor(number * multiplier) / multiplier
-    // }
-    // console.log('Score sum', scoreSum)
-    // console.log('Score count after', scoreCount)
-    // let finalScore = scoreSum / scoreCount
-    // if (!Number.isInteger(finalScore)) {
-    //     finalScore = limitDecimals(finalScore, 2)
-    //     console.log('Not an integer')
-    // }
-    // console.log('Score to submit', finalScore)
-    // console.log('Score type', typeof finalScore)
 
     projectScore.averageScore = projectScore.score
 
@@ -191,10 +161,6 @@ controller.updateProjectScoreWithReviewers = async (
     // projectScore.averageScore = projectScore.score +
 
     await projectScore.save()
-    console.log(
-        'Updated project score from controller AFTER save',
-        projectScore,
-    )
     return projectScore
 }
 

@@ -14,12 +14,9 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 
-
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as UserActions from 'redux/user/actions'
-
-
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
@@ -28,11 +25,9 @@ export default () => {
     const [registrations, loading, error] = useRegistrationsByUser(userId)
     //useSelector(UserSelectors.registrations)
 
-
-
-    console.log("activeEvents", activeEvents)
-    console.log("pastEvents", pastEvents)
-    console.log("registrations", registrations)
+    console.log('activeEvents', activeEvents)
+    console.log('pastEvents', pastEvents)
+    console.log('registrations', registrations)
 
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -40,7 +35,6 @@ export default () => {
     const isodate = date.toISOString()
 
     function renderEvents() {
-
         return (
             <>
                 <PageHeader
@@ -51,12 +45,12 @@ export default () => {
                 <Box p={2}>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-
-                            {registrations.length === 0 && (
-                                <Typography variant="body1">
-                                    {t('Looks_like_register_')}
-                                </Typography>
-                            )}
+                            {Array.isArray(registrations) &&
+                                registrations.length === 0 && (
+                                    <Typography variant="body1">
+                                        {t('Looks_like_register_')}
+                                    </Typography>
+                                )}
                         </Grid>
 
                         {registrations?.map(registration => (
@@ -64,45 +58,63 @@ export default () => {
                                 <EventCardSmall
                                     event={registration.event}
                                     handleClick={event => {
-                                        dispatch(UserActions.setAccessRight('participant'))//TODO: make this a schema
-                                        dispatch(push(`/dashboard/event/${event?.slug}`))
-                                    }
-                                    }
+                                        dispatch(
+                                            UserActions.setAccessRight(
+                                                'participant',
+                                            ),
+                                        ) //TODO: make this a schema
+                                        dispatch(
+                                            push(
+                                                `/dashboard/event/${event?.slug}`,
+                                            ),
+                                        )
+                                    }}
                                 />
                             </Grid>
                         ))}
                     </Grid>
                 </Box>
 
-
-                <h1 >Upcoming Events</h1>
+                <h1>Upcoming Events</h1>
 
                 <Box mt={3}>
                     <Grid container spacing={3}>
-                        {activeEvents?.filter(event =>
-                            registrations?.map(e => e.event?.slug).indexOf(event?.slug) === -1
-                        )
+                        {activeEvents
+                            ?.filter(
+                                event =>
+                                    registrations
+                                        ?.map(e => e.event?.slug)
+                                        .indexOf(event?.slug) === -1,
+                            )
                             .map(event => {
                                 const canApply =
                                     isodate < event.registrationEndTime &&
                                     isodate > event.registrationStartTime
 
                                 const eventStarted = isodate > event.startTime
-                                console.log("button render", event.slug, canApply && !event.galleryOpen, event.galleryOpen && eventStarted)
+                                console.log(
+                                    'button render',
+                                    event.slug,
+                                    canApply && !event.galleryOpen,
+                                    event.galleryOpen && eventStarted,
+                                )
                                 return (
                                     <NewEventCard
                                         event={event}
                                         buttons={[
-                                            (
-                                                <Button
-                                                    size="small"
-                                                    onClick={() =>
-                                                        dispatch(push('/events/' + event.slug))
-                                                    }
-                                                >
-                                                    {t('See_more_')}
-                                                </Button>
-                                            ),
+                                            <Button
+                                                size="small"
+                                                onClick={() =>
+                                                    dispatch(
+                                                        push(
+                                                            '/events/' +
+                                                                event.slug,
+                                                        ),
+                                                    )
+                                                }
+                                            >
+                                                {t('See_more_')}
+                                            </Button>,
                                             canApply && (
                                                 <Button
                                                     size="small"
@@ -110,8 +122,8 @@ export default () => {
                                                         dispatch(
                                                             push(
                                                                 '/events/' +
-                                                                event.slug +
-                                                                '/register/',
+                                                                    event.slug +
+                                                                    '/register/',
                                                             ),
                                                         )
                                                     }
@@ -119,35 +131,34 @@ export default () => {
                                                     Register
                                                 </Button>
                                             ),
-                                            event.galleryOpen && eventStarted && (
-                                                <Button
-                                                    size="small"
-                                                    onClick={() => {
-                                                        console.log('/projects/' + event.slug)
-                                                        dispatch(
-                                                            push('/projects/' + event.slug),
-                                                        )
-                                                    }
-                                                    }
-                                                >
-                                                    Projects
-                                                </Button>
-                                            ),
-
-
-
-
-
-
+                                            event.galleryOpen &&
+                                                eventStarted && (
+                                                    <Button
+                                                        size="small"
+                                                        onClick={() => {
+                                                            console.log(
+                                                                '/projects/' +
+                                                                    event.slug,
+                                                            )
+                                                            dispatch(
+                                                                push(
+                                                                    '/projects/' +
+                                                                        event.slug,
+                                                                ),
+                                                            )
+                                                        }}
+                                                    >
+                                                        Projects
+                                                    </Button>
+                                                ),
                                         ]}
-                                    />)
-                            }
-                            )
-                        }
+                                    />
+                                )
+                            })}
                     </Grid>
-                </Box >
+                </Box>
 
-                <h1 >Past Events</h1>
+                <h1>Past Events</h1>
 
                 <Box mt={3}>
                     <Grid container spacing={3}>
@@ -161,38 +172,43 @@ export default () => {
                                 <NewEventCard
                                     event={event}
                                     buttons={[
-                                        (
-                                            <Button
-                                                size="small"
-                                                onClick={() =>
-                                                    dispatch(push('/events/' + event.slug))
-                                                }
-                                            >
-                                                {t('See_more_')}
-                                            </Button>
-                                        ),
-
+                                        <Button
+                                            size="small"
+                                            onClick={() =>
+                                                dispatch(
+                                                    push(
+                                                        '/events/' + event.slug,
+                                                    ),
+                                                )
+                                            }
+                                        >
+                                            {t('See_more_')}
+                                        </Button>,
                                         event.galleryOpen && eventStarted && (
                                             <Button
                                                 size="small"
                                                 onClick={() => {
-                                                    console.log('/projects/' + event.slug)
-                                                    dispatch(
-                                                        push('/projects/' + event.slug),
+                                                    console.log(
+                                                        '/projects/' +
+                                                            event.slug,
                                                     )
-                                                }
-                                                }
+                                                    dispatch(
+                                                        push(
+                                                            '/projects/' +
+                                                                event.slug,
+                                                        ),
+                                                    )
+                                                }}
                                             >
                                                 Projects
                                             </Button>
                                         ),
                                     ]}
-                                />)
-                        }
-                        )
-                        }
+                                />
+                            )
+                        })}
                     </Grid>
-                </Box >
+                </Box>
 
                 <Box textAlign="center" padding={5}>
                     <Button
@@ -210,12 +226,7 @@ export default () => {
     return (
         <PageWrapper
             loading={loading}
-            render={() => (
-                <Container center>
-                    {renderEvents()}
-                </Container>
-            )
-            }
+            render={() => <Container center>{renderEvents()}</Container>}
         />
     )
 }
