@@ -289,7 +289,11 @@ export default ({
                                     color: 'inherit',
                                 }}
                                 data={selected.map(item => {
-                                    return flattenObject(item.original)
+                                    const returnObject = {
+                                        ...flattenObject(item.original),
+                                        registrationId: item.original._id,
+                                    }
+                                    return returnObject
                                 })}
                                 filename="export.csv"
                             >

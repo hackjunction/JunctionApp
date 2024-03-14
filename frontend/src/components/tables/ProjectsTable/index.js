@@ -119,12 +119,15 @@ const ProjectsTable = ({ projects }) => {
                                     color: 'inherit',
                                 }}
                                 data={selected.map(item => {
-                                    item.original.projectURL =
-                                        projectURLgenerator(
+                                    const returnObject = {
+                                        ...flattenObject(item.original),
+                                        projectId: item.original._id,
+                                        projectURL: projectURLgenerator(
                                             event.slug,
                                             item.original._id,
-                                        )
-                                    return flattenObject(item.original)
+                                        ),
+                                    }
+                                    return returnObject
                                 })}
                                 filename="export.csv"
                             >
