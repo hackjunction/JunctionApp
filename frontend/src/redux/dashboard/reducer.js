@@ -51,12 +51,12 @@ const initialState = {
         error: false,
         updated: 0,
     },
-    project_scores: {
-        data: [],
-        loading: true,
-        error: false,
-        updated: 0,
-    },
+    // project_scores: {
+    //     data: [],
+    //     loading: true,
+    //     error: false,
+    //     updated: 0,
+    // },
 }
 
 const updateEventHandler = buildHandler('event')
@@ -66,7 +66,7 @@ const eventRecruitersHandler = buildHandler('recruiters', 'userId')
 const updateTeamHandler = buildHandler('team')
 const updateProjectsHandler = buildHandler('projects', '_id')
 const updateAnnotatorHandler = buildHandler('annotator')
-const updateProjectScoresHandler = buildHandler('project_scores')
+// const updateProjectScoresHandler = buildHandler('project_scores')
 const updateTeamsHandler = buildHandler('teams')
 const updateSelectedTeamHandler = buildHandler('selected_team')
 // const updateSeletecUserHandler = buildHandler('selected_candidate')
@@ -95,9 +95,9 @@ export default function reducer(state = initialState, action) {
         case ActionTypes.UPDATE_ANNOTATOR: {
             return updateAnnotatorHandler(state, action)
         }
-        case ActionTypes.UPDATE_PROJECT_SCORES: {
-            return updateProjectScoresHandler(state, action)
-        }
+        // case ActionTypes.UPDATE_PROJECT_SCORES: {
+        //     // return updateProjectScoresHandler(state, action)
+        // }
         case ActionTypes.EDIT_REGISTRATION: {
             return editRegistration(state, action.payload)
         }

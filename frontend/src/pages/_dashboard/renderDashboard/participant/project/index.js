@@ -223,6 +223,7 @@ export default () => {
                     <SubmissionForm
                         id={selectedProjectId}
                         handleProjectSelected={handleProjectSelected}
+                        eventSlug={event?.slug}
                     />
                 )}
             </>

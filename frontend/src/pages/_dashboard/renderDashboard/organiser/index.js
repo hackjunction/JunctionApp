@@ -151,18 +151,12 @@ export default () => {
                         component: ProjectsPage,
                     },
                     {
-                        key: 'results',
-                        path: '/results',
-                        icon: <AssessmentIcon />,
-                        label: 'Results',
-                        component: ResultsPage,
-                    },
-                    {
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
-                        locked: event.eventType !== EventTypes.physical.id,
-                        lockedDescription: 'Only for physical events',
+                        locked: event.eventType === EventTypes.online.id,
+                        lockedDescription:
+                            'Only for physical and hybrid events',
                         icon: <CropFreeIcon />,
                         label: 'Check-in',
                         component: CheckinPage,
@@ -184,6 +178,15 @@ export default () => {
                         component: AlertsPage,
                     },
                     //Experimental
+
+                    {
+                        key: 'results',
+                        path: '/results',
+                        hidden: !event?.experimental,
+                        icon: <AssessmentIcon />,
+                        label: 'Results',
+                        component: ResultsPage,
+                    },
                     {
                         key: 'travel-grants',
                         path: '/travel-grants',

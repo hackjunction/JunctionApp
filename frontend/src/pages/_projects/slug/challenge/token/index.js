@@ -7,7 +7,6 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
-import { makeStyles } from '@material-ui/core/styles'
 
 import ProjectsService from 'services/projects'
 import Filter from 'components/Team/Filter'
@@ -17,12 +16,8 @@ import _ from 'lodash'
 export default ({ event }) => {
     const baseFilter = { value: 'final', label: 'Final projects' }
     const match = useRouteMatch()
-    console.log('match', match)
-    console.log('match URL', match.url)
     const dispatch = useDispatch()
     const { slug } = event
-    const { reviewMethod } = event
-    console.log('event data', event)
     const { token } = match.params
     const [data, setData] = useState({})
     const [projects, setProjects] = useState([])
@@ -111,7 +106,8 @@ export default ({ event }) => {
                         onSelect={project =>
                             dispatch(push(`${match.url}/view/${project._id}`))
                         }
-                        showScore={reviewMethod === 'manualReview'}
+                        showScore={true}
+                        showReviewers={true}
                         token={token}
                     />
                     <Box height={200} />

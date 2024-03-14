@@ -2,12 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { push } from 'connected-react-router'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-    Box,
-    ListItem,
-    ListItemText,
-    Grid,
-} from '@material-ui/core'
+import { Box, ListItem, ListItemText, Grid } from '@material-ui/core'
 import * as AuthSelectors from 'redux/auth/selectors'
 import JunctionTheme from 'junctionTheme.js'
 import Button from 'components/generic/Button'
@@ -45,17 +40,12 @@ export default () => {
 
     const idTokenPayload = useSelector(AuthSelectors.getIdTokenPayload)
     const userId = idTokenPayload?.sub
-    const [profile] = useMyProfilePreview()
     const dispatch = useDispatch()
     const classes = useStyles()
-
-
 
     if (!userId) {
         return (
             <Box display="flex" flexDirection="row" alignItems="center">
-
-
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <Button
@@ -67,31 +57,23 @@ export default () => {
                         </Button>
                     </Grid>
                 </Grid>
-
-
             </Box>
         )
     }
 
-
-
     return (
         <Box display="flex" flexDirection="row" alignItems="center">
-
-            <Grid container spacing={2} wrap="nowrap" >
+            <Grid container spacing={2} wrap="nowrap">
                 <Grid item xs={4}>
-
                     <Button
                         onClick={() => dispatch(push('/dashboard/default'))}
                         strong={true}
                         className={classes.menuBox}
                     >
-
                         {t('Dashboard_')}
                     </Button>
                 </Grid>
-                <Grid item xs={5} wrap='nowrap'>
-
+                <Grid item xs={5}>
                     <Button
                         onClick={() => dispatch(push('/logout'))}
                         strong={true}
@@ -104,6 +86,6 @@ export default () => {
                     <UserAvatar />
                 </Grid>
             </Grid>
-        </Box >
+        </Box>
     )
 }

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ name, value, placeholder, onChange, onBlur }) => {
+export default ({ name, value, placeholder, onChange, onBlur, maxLength }) => {
     const classes = useStyles()
     const [isPreview, setIsPreview] = useState(false)
 
@@ -58,6 +58,7 @@ export default ({ name, value, placeholder, onChange, onBlur }) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        maxLength={maxLength}
                     />
                 )}
             </Box>

@@ -16,6 +16,7 @@ import EventsService from 'services/events'
 
 import WinnerVoteService from 'services/winnerVote'
 import VotingTokenService from 'services/votingToken'
+import { debugGroup } from 'utils/debuggingTools'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -86,15 +87,13 @@ export default () => {
 
         return (
             <>
-
                 <strong>{total}</strong> <br />
                 Participant votes: {scoreFromUsers} <br />
                 Token votes: {scoreFromTokenVoters}
-
             </>
         )
     }
-    console.log('resus are', results)
+    debugGroup('Results', results)
     return (
         <PageWrapper loading={loading}>
             <PageHeader heading="Results" subheading="Finalist vote results" />

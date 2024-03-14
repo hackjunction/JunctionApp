@@ -279,8 +279,10 @@ export default RequiresPermission(() => {
                 const sec = section.name
                 section.questions.forEach(question => {
                     const que = question.name
+                    const label = question?.label || 'custom question'
                     const value = formData[sec][que]
                     const custom = {
+                        label: label,
                         section: sec,
                         key: que,
                         value: value + '',

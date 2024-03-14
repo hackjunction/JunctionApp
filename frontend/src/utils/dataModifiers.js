@@ -18,3 +18,13 @@ export const removeNumbers = (str, replace = '') => {
 export const generateSlug = (str, replaceNumValue = '') => {
     return getSlug(removeNumbers(str, replaceNumValue))
 }
+
+export const projectURLgenerator = (eventSlug, projectId) => {
+    //Utility to generate public project URL, with the shape /projects/:eventSlug/view/:projectId
+    const originURL = window.location.origin
+    let projectURL
+    if (!!projectId && !!eventSlug && !!originURL) {
+        projectURL = `${originURL}/projects/${eventSlug}/view/${projectId}`
+    }
+    return projectURL
+}

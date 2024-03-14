@@ -105,9 +105,12 @@ const EventSchema = new mongoose.Schema({
         type: AddressSchema.mongoose,
         required: [
             function () {
-                return this.eventType === EventTypes.physical.id
+                return (
+                    this.eventType === EventTypes.physical.id ||
+                    this.eventType === EventTypes.hybrid.id
+                )
             },
-            `is required for physical events`,
+            `is required for physical or hydrid events`,
         ],
     },
     tracksEnabled: false,
@@ -326,7 +329,7 @@ const EventSchema = new mongoose.Schema({
         },
         senderName: {
             type: String,
-            default: '',
+            default: 'Junction team',
             trim: true,
             maxLength: 100,
         },

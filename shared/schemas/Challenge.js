@@ -11,7 +11,7 @@ const ChallengeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        length: 100,
+        length: 50,
     },
     partner: {
         type: String,
