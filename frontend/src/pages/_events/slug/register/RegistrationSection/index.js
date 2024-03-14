@@ -107,7 +107,7 @@ export default props => {
                                     <Grid
                                         item
                                         xs={12}
-                                        key={field.fieldName}
+                                        key={`${field.fieldName}-${index}`}
                                         className={classes.question}
                                     >
                                         <div className={classes.questionInner}>

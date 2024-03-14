@@ -78,13 +78,6 @@ export default ({
     useEffect(() => {
         setAlerts(originalAlerts)
         setAlertCount(originalAlertCount)
-        console.log(
-            'set alerts',
-            alerts,
-            originalAlerts,
-            alertCount,
-            originalAlertCount,
-        )
     }, [originalAlerts, originalAlertCount])
 
     return (
@@ -120,14 +113,6 @@ export default ({
                         setAlertCount(0)
                         return DefaultPage({ alerts })
                     },
-                },
-                {
-                    key: 'map',
-                    path: '/map',
-                    exact: false,
-                    icon: <PlaceIcon />,
-                    label: 'Map',
-                    component: MapPage,
                 },
                 {
                     key: 'finals',
@@ -195,11 +180,11 @@ export default ({
                     key: 'challenges',
                     path: '/challenges',
                     exact: true,
+                    hidden: !shownPages.challengesEnabled,
                     icon: <FormatListBulletedIcon />,
                     label: 'Challenges',
                     component: ChallengesIndex,
                 },
-
                 {
                     key: 'calendar',
                     path: '/calendar',
@@ -210,6 +195,15 @@ export default ({
                     component: CalendarPage,
                 },
                 // Experimental
+                {
+                    key: 'map',
+                    hidden: !shownPages.experimental,
+                    path: '/map',
+                    exact: false,
+                    icon: <PlaceIcon />,
+                    label: 'Map',
+                    component: MapPage,
+                },
                 {
                     key: 'chat',
                     hidden: !shownPages.experimental,

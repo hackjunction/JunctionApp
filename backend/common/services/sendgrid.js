@@ -164,7 +164,10 @@ const SendgridService = {
             header_image_url = event.coverImage.url
         }
         let msg
-        if (event.eventType === EventTypes.physical.id) {
+        if (
+            event.eventType === EventTypes.physical.id ||
+            event.eventType === EventTypes.hybrid.id
+        ) {
             msg = SendgridService.buildTemplateMessage(
                 user.email,
                 global.gConfig.SENDGRID_GENERIC_TEMPLATE,

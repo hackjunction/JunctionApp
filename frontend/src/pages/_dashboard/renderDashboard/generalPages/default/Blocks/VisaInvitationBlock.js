@@ -16,7 +16,7 @@ const VisaInvitationDrawer = React.lazy(() =>
 export default () => {
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
-    if (event?.eventType !== EventTypes.physical.id) return null
+    if (event?.eventType === EventTypes.online.id) return null
 
     const statuses = [STATUSES.accepted.id, STATUSES.confirmed.id]
 

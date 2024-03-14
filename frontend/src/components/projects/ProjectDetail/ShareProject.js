@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { popupCenter } from '../../../utils/misc'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from 'components/generic/Container'
+import { projectURLgenerator } from 'utils/dataModifiers'
 
 const useStyles = makeStyles(theme => ({
     socialIcon: {
@@ -15,11 +16,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ShareProject = (event, project) => {
-    const shareurl =
-        'https://app.hackjunction.com/projects/' +
-        event.slug +
-        '/view/' +
-        project._id // TODO: remove hard coded base URL
+    const shareurl = projectURLgenerator(event.slug, project._id)
     const sharetext = `I just applied to ${event.name}!`
 
     const classes = useStyles()
@@ -35,7 +32,7 @@ const ShareProject = (event, project) => {
                         container
                         spacing={1}
                         direction="row"
-                        justify="center"
+                        justifyContent="center"
                         alignItems="center"
                     >
                         <Grid item>

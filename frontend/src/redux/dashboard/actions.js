@@ -480,15 +480,11 @@ export const updateProjects = slug => async (dispatch, getState) => {
 export const createProject = (slug, data) => async (dispatch, getState) => {
     try {
         const idToken = AuthSelectors.getIdToken(getState())
-        const fileData = await fileAttachmentFinder(data, idToken)
+        // const fileData = await fileAttachmentFinder(data, idToken)
 
-        if (fileData) {
-            await ProjectsService.createProjectForEventAndTeam(
-                idToken,
-                slug,
-                fileData,
-            )
-        }
+        // if (fileData) {
+        // }
+        await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
         const projects = await ProjectsService.getProjectsForEventAndTeam(
             idToken,
             slug,
@@ -656,15 +652,11 @@ export const deleteFileForProject = fileId => async (dispatch, getState) => {
 export const editProject = (slug, data) => async (dispatch, getState) => {
     try {
         const idToken = AuthSelectors.getIdToken(getState())
-        const fileData = await fileAttachmentFinder(data, idToken)
+        // const fileData = await fileAttachmentFinder(data, idToken)
 
-        if (fileData) {
-            await ProjectsService.updateProjectForEventAndTeam(
-                idToken,
-                slug,
-                fileData,
-            )
-        }
+        // if (fileData) {
+        // }
+        await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
         const projects = await ProjectsService.getProjectsForEventAndTeam(
             idToken,
             slug,

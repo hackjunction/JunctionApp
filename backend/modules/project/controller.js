@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const yup = require('yup')
 const bcrypt = require('bcrypt')
 const Promise = require('bluebird')
@@ -5,7 +6,6 @@ const { ProjectSchema } = require('@hackjunction/shared')
 const Project = require('./model')
 const { ForbiddenError } = require('../../common/errors/errors')
 const TeamController = require('../team/controller')
-const upload = require('../../misc/gridfs').upload
 
 const controller = {}
 
@@ -60,9 +60,7 @@ controller.createProjectForEventAndTeam = async (event, team, data) => {
 
 controller.updateProjectForEventAndTeam = async (event, team, data) => {
     const schema = yup.object().shape(ProjectSchema(event))
-    console.log('data :>> ', data)
     const validatedData = await schema.validate(data, { stripUnknown: true })
-    console.log('validatedData :>> ', validatedData)
     const projects = await controller.getProjectsByEventAndTeam(
         event._id,
         team._id,
@@ -75,11 +73,11 @@ controller.updateProjectForEventAndTeam = async (event, team, data) => {
 
 controller.generateChallengeLink = async (event, challengeSlug) => {
     const hashed = await bcrypt.hash(challengeSlug, global.gConfig.HASH_SALT)
-    //    console.log('inhere challenge :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
-            }/challenge/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${
+            event.slug
+        }/challenge/${encodeURIComponent(hashed)}`,
     }
 }
 
@@ -88,8 +86,9 @@ controller.generateTrackLink = async (event, trackSlug) => {
     //    console.log('inhere track  :>> ')
     return {
         hash: hashed,
-        link: `${global.gConfig.FRONTEND_URL}/projects/${event.slug
-            }/tracks/${encodeURIComponent(hashed)}`,
+        link: `${global.gConfig.FRONTEND_URL}/projects/${
+            event.slug
+        }/tracks/${encodeURIComponent(hashed)}`,
     }
 }
 
@@ -175,7 +174,14 @@ controller.validateToken = async (event, token) => {
     if (Challengematches.length === 0 && Trackmatches === 0) {
         throw new ForbiddenError('Invalid token')
     }
-    return true
+    console.log('Matches :>> ', Challengematches, Trackmatches)
+    if (
+        (Array.isArray(Challengematches) && Challengematches.length > 0) ||
+        (Array.isArray(Trackmatches) && Trackmatches.length > 0)
+    ) {
+        return true
+    }
+    return false
 }
 
 controller.getFinalProjects = async event => {
@@ -211,3 +217,43 @@ controller.getFinalists = event => {
     return Project.find({ _id: { $in: event.finalists } })
 }
 module.exports = controller
+
+controller.getDataForPartnerReviewing = async (event, user) => {
+    const data = {}
+    const teams = await TeamController.getAllTeamsForEvent(event._id)
+    const projects = await controller.getProjectPreviewsByEvent(event._id)
+    const projectsWithExistingTeamsAndFinal = _.filter(projects, project => {
+        if (project.status === 'final') {
+            const teamFound = _.find(teams, team => {
+                return `${team._id}` === `${project.team}`
+            })
+            if (teamFound) {
+                return project
+            }
+        }
+    })
+
+    if (event.scoreCriteriaSettings.reviewAnyChallenge) {
+        data.projects = projectsWithExistingTeamsAndFinal
+    } else {
+        const challengeOrg = _.find(
+            event.recruiters,
+            recruiter => recruiter.recruiterId === user.sub,
+        )
+        if (challengeOrg) {
+            const challengeData = _.find(
+                event.challenges,
+                challenge => challenge.partner === challengeOrg.organization,
+            )
+            const projectsFilteredByChallenge = _.filter(
+                projectsWithExistingTeamsAndFinal,
+                project => _.includes(project.challenges, challengeData.slug),
+            )
+            data.projects = projectsFilteredByChallenge
+            data.challenge = challengeData
+        } else {
+            data.projects = []
+        }
+    }
+    return data
+}

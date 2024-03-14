@@ -58,12 +58,12 @@ export const annotatorLoading = state => state.dashboard.annotator.loading
 export const annotatorError = state => state.dashboard.annotator.error
 export const annotatorUpdated = state => state.dashboard.annotator.updated
 
-export const projectScores = state => state.dashboard.project_scores.data
-export const projectScoresLoading = state =>
-    state.dashboard.project_scores.loading
-export const projectScoresError = state => state.dashboard.project_scores.error
-export const projectScoresUpdated = state =>
-    state.dashboard.project_scores.updated
+// export const projectScores = state => state.dashboard.project_scores.data
+// export const projectScoresLoading = state =>
+//     state.dashboard.project_scores.loading
+// export const projectScoresError = state => state.dashboard.project_scores.error
+// export const projectScoresUpdated = state =>
+//     state.dashboard.project_scores.updated
 
 export const annotatorVoteCount = createSelector(annotator, annotator => {
     if (!annotator) return 0
@@ -146,7 +146,7 @@ export const isTeamValid = createSelector(team, team => {
 export const lockedPages = createSelector(event, event => {
     return {
         submissions: !EventHelpers.isSubmissionsOpen(event, moment),
-        reviewing: EventHelpers.isVotingPast(event, moment),
+        reviewing: !EventHelpers.isReviewingOpen(event, moment),
         team: EventHelpers.isSubmissionsPast(event, moment),
         finalistVoting: !EventHelpers.isFinalistVotingOpen(event, moment),
     }
@@ -161,7 +161,8 @@ export const shownPages = createSelector(
         return {
             submissions: registration?.status === STATUSES.checkedIn.id,
             eventID:
-                event?.eventType === EventTypes.physical.id &&
+                (event?.eventType === EventTypes.physical.id ||
+                    event?.eventType === EventTypes.hybrid.id) &&
                 [
                     STATUSES.confirmed.id,
                     STATUSES.confirmedToHub.id,
@@ -177,12 +178,14 @@ export const shownPages = createSelector(
                 registration?.status === STATUSES.checkedIn.id &&
                 event?.overallReviewMethod !== 'noOverallWinner',
             hackerPack:
+                (event?.hackerpacksEnabled ?? false) &&
                 [
                     STATUSES.checkedIn.id,
                     STATUSES.confirmed.id,
                     STATUSES.confirmedToHub.id,
                 ].indexOf(registration?.status) !== -1,
             meetings: EventHelpers.areMeetingsEnabled(event),
+            challengesEnabled: event?.challengesEnabled,
             reviewingByScoreCriteria:
                 event?.reviewMethod === ReviewingMethods.manualReview.id,
             //Experimental

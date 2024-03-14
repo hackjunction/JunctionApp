@@ -8,7 +8,7 @@ import PageHeader from 'components/generic/PageHeader'
 import DefaultTab from './default'
 import TeamsTab from './teams'
 import AssignedTab from './assigned'
-import TravelTab from './travel'
+// import TravelTab from './travel'
 import AdminTab from './admin'
 
 export default () => {

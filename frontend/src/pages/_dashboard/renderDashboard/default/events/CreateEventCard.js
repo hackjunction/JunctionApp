@@ -28,34 +28,32 @@ const fillerContent = makeStyles({
         height: '10px',
         background: '#cbd2e0',
         borderRadius: '5px',
-        margin: '5px'
+        margin: '5px',
     },
     filler40: {
         width: '40%',
         height: '10px',
         background: '#cbd2e0',
         borderRadius: '5px',
-        margin: '5px'
+        margin: '5px',
     },
     filler60: {
         width: '60%',
         height: '10px',
         background: '#cbd2e0',
         borderRadius: '5px',
-        margin: '5px'
+        margin: '5px',
     },
     filler80: {
         width: '80%',
         height: '10px',
         background: '#cbd2e0',
         borderRadius: '5px',
-        margin: '5px'
+        margin: '5px',
     },
 })
 
-
 const useStyles = makeStyles(theme => ({
-
     wrapper: {
         background: 'white',
         borderRadius: '12px',
@@ -72,7 +70,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        borderBottom: `2px ${theme.palette.primary.main} solid`
+        borderBottom: `2px ${theme.palette.primary.main} solid`,
     },
     topWrapper: {
         display: 'flex',
@@ -116,14 +114,11 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-
-
-
 export default () => {
     const [hover, setHover] = useState(false)
     const { t } = useTranslation()
     const [name, setName] = useState('')
-    const [error, setError] = useState()
+    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const hasError = Boolean(error)
     const classes = useStyles()
@@ -141,78 +136,66 @@ export default () => {
     }
 
     useEffect(() => {
-        if (hasError) {
-            if (name.length < 5) {
-                setError(t('Name_must_five_'))
-            } else if (name.length >= 50) {
-                setError(t('Name_must_under_'))
-            } else if (name === "default") {
-                setError(t('Name_not_default_'))
-            } else {
-                setError()
-            }
-        }
-    }, [name, hasError, t])
+        checkName()
+    }, [name])
 
     const checkName = useCallback(() => {
         if (name.length < 5) {
-            setError(t('Name_must_five_'))
+            setError('Event name must be at least 5 characters')
             return false
         } else if (name.length >= 50) {
-            setError(t('Name_must_under_'))
+            setError('Event name must be under 50 characters')
             return false
-        } else if (name === "default") {
-            setError(t('Name_not_default_'))
+        } else if (name === 'default') {
+            setError('Event name cannot be default')
             return false
         }
+        setError('')
         return true
-    }, [name.length, t])
+    }, [name.length])
 
     const handleCreate = useCallback(() => {
-        if (!checkName()) return
         setLoading(true)
-        EventsService.createEvent(idToken, { name })
-            .then(data => {
-                dispatch(push(`/organise/${data.slug}`))
-                dispatch(SnackbarActions.success(`Created ${data.name}`))
-            })
-            .catch(e => {
-                dispatch(SnackbarActions.error(t('Unable_to_create_')))
-            })
-            .finally(() => {
-                setLoading(false)
-            })
-    }, [checkName, idToken, name, dispatch, t])
-
-
+        if (checkName()) {
+            EventsService.createEvent(idToken, { name })
+                .then(data => {
+                    dispatch(push(`/organise/${data.slug}`))
+                    dispatch(SnackbarActions.success(`Created ${data.name}`))
+                })
+                .catch(e => {
+                    dispatch(SnackbarActions.error(t('Unable_to_create_')))
+                    if (error) {
+                    }
+                })
+        } else {
+            dispatch(SnackbarActions.error(t('Unable_to_create_')))
+            dispatch(SnackbarActions.error(error))
+        }
+        setLoading(false)
+    }, [checkName, idToken, name, dispatch])
 
     //TODO: make same size, add border color = primary
     return (
         <Card
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            onClick={() =>
-                console.log("click")
-            }
-            className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-600px tw-max-w-xs tw-flex tw-flex-col tw-bg-gray-200 tw-rounded-t-2xl tw-border-8 tw-border-black tw-justify-between ${styling.cardHover}`}
+            onClick={() => console.log('click')}
+            className={`tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-600px tw-max-w-xs tw-flex tw-flex-col tw-bg-gray-200 tw-rounded-t-2xl tw-border-8 tw-border-black tw-justify-between ${styling.cardHover}`}
         >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
                 <div className="tw-h-40 tw-w-full tw-my-0 tw-mx-auto tw-relative tw-flex tw-justify-end tw-items-end">
                     <Image
                         className={classes.image}
                         defaultImage={require('assets/images/default_cover_image.png')}
-
                         transformation={{
                             width: 400,
                         }}
                     />
-
-
-
-
                 </div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
-                    <Typography variant="h4">{t('Create_new_event_')}</Typography>
+                    <Typography variant="h4">
+                        {t('Create_new_event_')}
+                    </Typography>
                 </div>
                 <div className={content.filler80}></div>
                 <div className={content.filler60}></div>
@@ -226,7 +209,12 @@ export default () => {
                 <div className={content.filler80}></div>
 
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
-                    <Grid container spacing={4} direction="row" alignItems="flex-end" >
+                    <Grid
+                        container
+                        spacing={4}
+                        direction="row"
+                        alignItems="flex-end"
+                    >
                         <Grid item xs={12} sm={6}>
                             <TextInput
                                 label={t('Event_name_')}
@@ -245,14 +233,12 @@ export default () => {
                                 color="primary"
                                 variant="contained"
                             >
-                                {"+ Create"}
+                                {'+ Create'}
                             </Button>
                         </Grid>
                     </Grid>
                 </div>
             </CardContent>
-
-
-        </Card >
+        </Card>
     )
 }

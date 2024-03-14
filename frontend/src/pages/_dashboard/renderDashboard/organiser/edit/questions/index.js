@@ -8,66 +8,6 @@ import FormControl from 'components/inputs/FormControl'
 import QuestionSelect from './QuestionSelect'
 
 export default () => {
-    // const buildColumns = useCallback((form, field, fieldValue) => {
-    //     return [
-    //         {
-    //             Header: 'Name',
-    //             accessor: 'label',
-    //         },
-    //         {
-    //             Header: 'Category',
-    //             accessor: 'category',
-    //         },
-    //         {
-    //             Header: 'Enabled?',
-    //             accessor: 'enabled',
-    //             Cell: props => {
-    //                 const row = props.row.original
-    //                 return (
-    //                     <Switch
-    //                         color="primary"
-    //                         disabled={!row.editable}
-    //                         checked={row.enable}
-    //                         onChange={(e, enable) => {
-    //                             form.setFieldValue(field.name, {
-    //                                 ...fieldValue,
-    //                                 [row.key]: {
-    //                                     ...fieldValue[row.key],
-    //                                     enable,
-    //                                     require: !enable ? false : row.require,
-    //                                 },
-    //                             })
-    //                         }}
-    //                     />
-    //                 )
-    //             },
-    //         },
-    //         {
-    //             Header: 'Required?',
-    //             accessor: 'require',
-    //             Cell: props => {
-    //                 const row = props.row.original
-    //                 return (
-    //                     <Switch
-    //                         color="primary"
-    //                         disabled={!row.editable || !row.enable}
-    //                         checked={row.require}
-    //                         onChange={(e, require) => {
-    //                             form.setFieldValue(field.name, {
-    //                                 ...fieldValue,
-    //                                 [row.key]: {
-    //                                     ...fieldValue[row.key],
-    //                                     require,
-    //                                 },
-    //                             })
-    //                         }}
-    //                     />
-    //                 )
-    //             },
-    //         },
-    //     ]
-    // }, [])
-
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>

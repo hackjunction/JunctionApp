@@ -58,19 +58,27 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                         checkedIcon={
                             <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                 <span
-                                    className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
-                                ></span>
+                                    className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${classes.bgPrimary}`}
+                                >
+                                    {score}
+                                </span>
                             </div>
                         }
                         icon={
                             index < selectedIndex ? (
                                 <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                     <span
-                                        className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
-                                    ></span>
+                                        className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${classes.bgPrimary}`}
+                                    >
+                                        {score}
+                                    </span>
                                 </div>
                             ) : (
-                                <span className={classes.icon} />
+                                <span
+                                    className={`tw-flex tw-justify-center tw-items-center tw-text-sm ${classes.icon}`}
+                                >
+                                    {score}
+                                </span>
                             )
                         }
                     />

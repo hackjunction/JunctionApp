@@ -123,7 +123,8 @@ export default ({ projectId }) => {
                     </Typography>
                     <Markdown
                         source={
-                            event.eventType === 'physical'
+                            event.eventType === 'physical' ||
+                            event.eventType === 'hybrid'
                                 ? t('Gavel_first_project_physical_')
                                 : t('Gavel_first_project_online_')
                         }
