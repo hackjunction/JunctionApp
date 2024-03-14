@@ -118,6 +118,24 @@ const ProjectsGridItem = ({
         }
     }
 
+    const styling = {
+        punchlineMaxLength: 150,
+    }
+
+    const stylingModifiers = styleRules => {
+        if (showTableLocation) {
+            styleRules.punchlineMaxLength = styleRules.punchlineMaxLength - 25
+        }
+        if (showScore) {
+            styleRules.punchlineMaxLength = styleRules.punchlineMaxLength - 25
+        }
+        if (showReviewers) {
+            styleRules.punchlineMaxLength = styleRules.punchlineMaxLength - 50
+        }
+    }
+
+    stylingModifiers(styling)
+
     return (
         <Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
             <Card
@@ -167,8 +185,9 @@ const ProjectsGridItem = ({
                             </div>
                             {project?.punchline && (
                                 <Typography variant="body1" component="p">
+                                    {showTableLocation && showScore}
                                     {_.truncate(project.punchline, {
-                                        length: 150,
+                                        length: styling.punchlineMaxLength,
                                     })}
                                 </Typography>
                             )}
