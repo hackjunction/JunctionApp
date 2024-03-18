@@ -68,8 +68,9 @@ export default ({ event }) => {
                 ...dataOt,
             }
             setData(data)
-            setProjects(data.projects)
+            setProjects(data?.projects)
         } catch (err) {
+            dispatch(SnackbarActions.error(`Error found: ${err.message}`))
             setError(true)
         } finally {
             setLoading(false)
