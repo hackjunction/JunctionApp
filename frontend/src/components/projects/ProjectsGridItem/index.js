@@ -68,6 +68,7 @@ const ProjectsGridItem = ({
     showTags = false,
     showReviewers = false,
     showScore = false,
+    votingResults = null,
 }) => {
     const [openReviewModal, setOpenReviewModal] = useState(false)
     const isReviewingOpen = EventHelpers.isReviewingOpen(event, moment)
@@ -191,7 +192,6 @@ const ProjectsGridItem = ({
                             </div>
                             {project?.punchline && (
                                 <Typography variant="body1" component="p">
-                                    {showTableLocation && showScore}
                                     {_.truncate(project.punchline, {
                                         length: styling.punchlineMaxLength,
                                     })}
@@ -225,6 +225,7 @@ const ProjectsGridItem = ({
                                 )}
                             </div>
                         )}
+                        {votingResults && <>{votingResults}</>}
                     </div>
                 </CardContent>
                 <CardActions className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-4 tw-pb-4 tw-pt-0 tw-gap-4">
