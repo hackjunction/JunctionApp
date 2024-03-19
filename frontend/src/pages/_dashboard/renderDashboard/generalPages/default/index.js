@@ -22,18 +22,10 @@ import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 // import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
 // import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 export default ({ alerts }) => {
-    const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
-    // const isPartner =
-    //     user.userId == 'google-oauth2|108766439620242776277' ||
-    //     (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
-    //         !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-    //             'SuperAdmin',
-    //         ))
     return (
         <Box>
             <PageHeader heading="Dashboard" />

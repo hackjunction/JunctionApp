@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
 import DashboardIcon from '@material-ui/icons/Dashboard'
@@ -23,7 +23,6 @@ import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
 import MapPage from '../generalPages/map'
 
-import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
 
 import ProjectsPage from './projects'
@@ -54,7 +53,6 @@ export default ({
     lockedPages,
 }) => {
     const classes = useStyles()
-    const { t } = useTranslation()
     const match = useRouteMatch()
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
@@ -92,7 +90,7 @@ export default ({
                             <DashboardIcon />
                         </Badge>
                     ),
-                    label: t('Dashboard_'),
+                    label: 'Dashboard',
                     component: () => {
                         setAlertCount(0)
                         if (shownPages?.experimental) {
@@ -129,7 +127,7 @@ export default ({
                     exact: true,
                     icon: <AmpStoriesIcon />,
                     hidden: !shownPages?.hackerPack,
-                    label: t('Hackerpack_'),
+                    label: 'Hackerpack',
                     component: HackerpackPage,
                 },
                 {

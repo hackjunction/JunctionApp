@@ -30,6 +30,9 @@ const ProjectScoreModal = ({
                         )}
                     {projectScoreData?.reviewers?.length > 0 &&
                         projectScoreData.reviewers.map((reviewer, index) => {
+                            if (!reviewer?.message) {
+                                return null
+                            }
                             return (
                                 <ReviewElement
                                     key={index}
