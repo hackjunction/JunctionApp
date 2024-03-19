@@ -241,16 +241,20 @@ controller.getDataForPartnerReviewing = async (event, user) => {
             recruiter => recruiter.recruiterId === user.sub,
         )
         if (challengeOrg) {
-            const challengeData = _.find(
-                event.challenges,
-                challenge => challenge.partner === challengeOrg.organization,
-            )
-            const projectsFilteredByChallenge = _.filter(
-                projectsWithExistingTeamsAndFinal,
-                project => _.includes(project.challenges, challengeData.slug),
-            )
+            const challengesArray = []
+            event.challenges.map(challenge => {
+                if (challenge.partner === challengeOrg.organization) {
+                    challengesArray.push(challenge.slug)
+                }
+            })
+            const projectsFilteredByChallenge = []
+
+            projectsWithExistingTeamsAndFinal.map(project => {
+                if (_.includes(challengesArray, project.challenges[0])) {
+                    projectsFilteredByChallenge.push(project)
+                }
+            })
             data.projects = projectsFilteredByChallenge
-            data.challenge = challengeData
         } else {
             data.projects = []
         }

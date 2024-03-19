@@ -120,6 +120,7 @@ const ProjectsGridItem = ({
 
     const styling = {
         punchlineMaxLength: 150,
+        challengeMaxLength: 30,
     }
 
     const stylingModifiers = styleRules => {
@@ -179,7 +180,12 @@ const ProjectsGridItem = ({
                                 {project.challenges.map((challenge, index) => (
                                     <Chip
                                         key={index}
-                                        label={challenge.replaceAll('-', ' ')}
+                                        label={_.truncate(
+                                            challenge.replaceAll('-', ' '),
+                                            {
+                                                length: styling.challengeMaxLength,
+                                            },
+                                        )}
                                     />
                                 ))}
                             </div>
@@ -251,9 +257,11 @@ const ProjectsGridItem = ({
                                             <Tooltip
                                                 key={index}
                                                 title={`Reviewed by ${
-                                                    project.reviewers.length - 1
+                                                    project?.scoreData
+                                                        ?.reviewers?.length - 1
                                                 } more ${
-                                                    project.reviewers.length -
+                                                    project?.scoreData
+                                                        ?.reviewers?.length -
                                                         1 >
                                                     1
                                                         ? 'people'
@@ -262,8 +270,8 @@ const ProjectsGridItem = ({
                                             >
                                                 <Avatar>
                                                     +
-                                                    {project.reviewers.length -
-                                                        1}
+                                                    {project?.scoreData
+                                                        ?.reviewers?.length - 1}
                                                 </Avatar>
                                             </Tooltip>
                                         )
