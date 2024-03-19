@@ -64,8 +64,8 @@ export default () => {
             if (partnerVotes) {
                 setTokenVoterResults(partnerVotes)
             }
-            setLoading(false)
         }
+        setLoading(false)
     }, [
         event.overallReviewMethod,
         event.slug,
@@ -87,7 +87,7 @@ export default () => {
 
         return (
             <>
-                <strong>{total}</strong> <br />
+                <strong>Total votes received: {total}</strong> <br />
                 Participant votes: {scoreFromUsers} <br />
                 Token votes: {scoreFromTokenVoters}
             </>
@@ -102,7 +102,7 @@ export default () => {
                     <ProjectsGridItem
                         project={project}
                         event={event}
-                        score={getScoreText(project._id)}
+                        votingResults={getScoreText(project._id)}
                         onClickMore={() => setSelected(project)}
                         showScore={true}
                     />
