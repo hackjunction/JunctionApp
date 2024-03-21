@@ -52,7 +52,7 @@ const EventHelpers = {
         if (!event) return false
         return !nowIsBefore(event.submissionsEndTime, moment)
     },
-    isVotingOpen: (event, moment) => {
+    isReviewingOpen: (event, moment) => {
         if (!event) return false
         return nowIsBetween(
             event.reviewingStartTime,
@@ -67,7 +67,7 @@ const EventHelpers = {
             event.finalsActive
         )
     },
-    isVotingPast: (event, moment) => {
+    isReviewingPast: (event, moment) => {
         if (!event) return true
         return !nowIsBefore(event.reviewingEndTime, moment)
     },
@@ -111,6 +111,10 @@ const EventHelpers = {
     areMeetingsEnabled: event => {
         if (!event) return true
         return event.meetingsEnabled
+    },
+    areChallengesEnabled: event => {
+        if (!event) return false
+        return event.challengesEnabled
     },
 }
 

@@ -1,5 +1,4 @@
 const express = require('express')
-
 const router = express.Router()
 const asyncHandler = require('express-async-handler')
 
@@ -12,6 +11,7 @@ const {
     canSubmitProject,
     isEventOrganiser,
     getEventFromParams,
+    isEventPartner,
 } = require('../../common/middleware/events')
 
 router.route('/id/:projectId').get(
@@ -33,6 +33,22 @@ router
                 req.event._id,
             )
             return res.status(200).json(projects)
+        }),
+    )
+
+router
+    .route('/:slug/partner-review')
+    /** Get projects for partner review, only if their status is final, have a team and based on challenges */
+    .get(
+        hasToken,
+        isEventPartner,
+        getEventFromParams,
+        asyncHandler(async (req, res) => {
+            const data = await ProjectController.getDataForPartnerReviewing(
+                req.event,
+                req.user,
+            )
+            return res.status(200).json(data)
         }),
     )
 

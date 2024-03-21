@@ -210,7 +210,7 @@ export default ({ value, onChange }) => {
                     label="Challenge name"
                     value={name}
                     onChange={handleNameChange}
-                    maxLength={100}
+                    maxLength={50}
                 />
                 <Typography variant="caption">
                     The unique publicly visible name of the challenge.
@@ -221,6 +221,7 @@ export default ({ value, onChange }) => {
                     label="Unique slug"
                     value={slug}
                     onChange={setSlug}
+                    maxLength={50}
                 />
                 <Typography variant="caption">
                     A unique slug for the challenge. This will be used in e.g.
@@ -279,6 +280,7 @@ export default ({ value, onChange }) => {
                     value={description}
                     onChange={setDescription}
                     placeholder="Description goes here"
+                    maxLength={1000}
                 />
                 <Typography variant="caption">
                     Challenge description.
@@ -291,6 +293,7 @@ export default ({ value, onChange }) => {
                     value={insights}
                     onChange={setInsights}
                     placeholder="Insights go here"
+                    maxLength={1000}
                 />
                 <Typography variant="caption">Challenge insights.</Typography>
             </Grid>
@@ -301,6 +304,7 @@ export default ({ value, onChange }) => {
                     value={resources}
                     onChange={setResources}
                     placeholder="Resource go here"
+                    maxLength={1000}
                 />
                 <Typography variant="caption">Challenge resources.</Typography>
             </Grid>
@@ -311,6 +315,7 @@ export default ({ value, onChange }) => {
                     value={prizes}
                     onChange={setPrizes}
                     placeholder="Prizes go here"
+                    maxLength={1000}
                 />
                 <Typography variant="caption">Challenge Prizes.</Typography>
             </Grid>
@@ -321,6 +326,7 @@ export default ({ value, onChange }) => {
                     value={criteria}
                     onChange={setCriteria}
                     placeholder="Criteria go here"
+                    maxLength={1000}
                 />
                 <Typography variant="caption">Challenge criteria.</Typography>
             </Grid>
@@ -331,6 +337,7 @@ export default ({ value, onChange }) => {
                     value={companyInfo}
                     onChange={setCompanyInfo}
                     placeholder="Company info goes here"
+                    maxLength={1000}
                 />
                 <Typography variant="caption">Company Info</Typography>
             </Grid>

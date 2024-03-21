@@ -98,7 +98,10 @@ export default () => {
                                             null,
                                         )
                                     }
-                                    if (value === 'physical') {
+                                    if (
+                                        value === 'physical' ||
+                                        value === 'hybrid'
+                                    ) {
                                         await form.setFieldValue(
                                             'eventLocation',
                                             form.values.eventLocation ?? {}, //checks whether the eventLocation is null || undefined => if true, set it to an empty object
@@ -120,7 +123,8 @@ export default () => {
                     name="eventLocation"
                     render={({ field, form }) => {
                         if (
-                            form.values.eventType === 'physical' &&
+                            (form.values.eventType === 'physical' ||
+                                form.values.eventType === 'hybrid') &&
                             field.value
                         ) {
                             return (
@@ -145,7 +149,7 @@ export default () => {
                     }}
                 />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <Field
                     name="travelGrantConfig"
                     render={({ field, form }) => {
@@ -162,7 +166,7 @@ export default () => {
                         return null
                     }}
                 />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <FastField
                     name="tracksEnabled"
@@ -219,7 +223,7 @@ export default () => {
                     name="reviewMethod"
                     render={({ field, form }) => (
                         <FormControl
-                            label="Reviewing method"
+                            label="Reviewing method to select overall winner"
                             hint={
                                 form.values.tracksEnabled
                                     ? 'Which method should be used to determine the ranking of projects within tracks?'

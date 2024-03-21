@@ -11,8 +11,8 @@ import PageHeader from 'components/generic/PageHeader'
 import DefaultTab from './default'
 import ChallengesTab from './by-challenge'
 import TracksTab from './by-track'
-import GavelTab from './gavel'
-import AnnotatorsTab from './annotators'
+// import GavelTab from './gavel'
+// import AnnotatorsTab from './annotators'
 import WinnersTab from './winners'
 import FinalistSelectionTab from './finalist-selection'
 import VotingTokensTab from './votingTokens'
@@ -51,19 +51,19 @@ export default () => {
             })
         }
 
-        data.push({
-            path: '/gavel',
-            key: 'gavel',
-            label: 'Gavel voting',
-            component: GavelTab,
-        })
+        // data.push({
+        //     path: '/gavel',
+        //     key: 'gavel',
+        //     label: 'Gavel voting',
+        //     component: GavelTab,
+        // })
 
-        data.push({
-            path: '/annotators',
-            key: 'annotators',
-            label: 'Gavel annotators',
-            component: AnnotatorsTab,
-        })
+        // data.push({
+        //     path: '/annotators',
+        //     key: 'annotators',
+        //     label: 'Gavel annotators',
+        //     component: AnnotatorsTab,
+        // })
 
         if (
             event?.overallReviewMethod ===

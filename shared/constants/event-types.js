@@ -7,6 +7,10 @@ const EventTypes = {
         id: 'online',
         label: 'Online event',
     },
+    hybrid: {
+        id: 'hybrid',
+        label: 'Hybrid event',
+    },
 }
 
 module.exports = EventTypes

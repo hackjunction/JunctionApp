@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useRouteMatch, useLocation } from 'react-router'
 import DashboardIcon from '@material-ui/icons/Dashboard'
@@ -23,13 +23,13 @@ import CalendarPage from './calendar'
 import RecruitmentPage from './partnerrecruitment'
 import MapPage from '../generalPages/map'
 
-import { useTranslation } from 'react-i18next'
 import Badge from '@material-ui/core/Badge'
 
 import ProjectsPage from './projects'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
 import { QuestionAnswerSharp } from '@material-ui/icons'
 import { Chat } from 'components/messaging/chat'
+// import PartnerReviewingBlock from '../generalPages/default/Blocks/PartnerReviewingBlock'
+
 const useStyles = makeStyles(theme => ({
     sidebarTop: {
         padding: theme.spacing(3),
@@ -45,18 +45,18 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
+export default ({
+    event,
+    originalAlertCount,
+    originalAlerts,
+    shownPages,
+    lockedPages,
+}) => {
     const classes = useStyles()
-    const { t } = useTranslation()
     const match = useRouteMatch()
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
-
-    // const event = useSelector(DashboardSelectors.event)
-
-    console.log('props', originalAlertCount, originalAlerts, shownPages)
-    console.log(originalAlertCount, alertCount)
 
     return (
         <SidebarLayout
@@ -90,27 +90,21 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                             <DashboardIcon />
                         </Badge>
                     ),
-                    label: t('Dashboard_'),
+                    label: 'Dashboard',
                     component: () => {
                         setAlertCount(0)
                         if (shownPages?.experimental) {
-                            return <p> Test</p>
+                            return <p>Experimental enabled</p>
                         }
                         return DefaultPage({ alerts })
                     },
                 },
                 {
-                    key: 'map',
-                    path: '/map',
-                    exact: false,
-                    icon: <PlaceIcon />,
-                    label: 'Map',
-                    component: MapPage,
-                },
-                {
                     key: 'Review',
-                    path: '/Review',
-                    hidden: !shownPages?.reviewingByScoreCriteria,
+                    path: '/review',
+                    // hidden: !shownPages?.reviewingByScoreCriteria,
+                    locked: lockedPages.reviewing,
+                    lockedDescription: 'Reviewing closed',
                     exact: false,
                     icon: <RateReviewIcon />,
                     label: 'Review',
@@ -119,7 +113,7 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     },
                 },
                 {
-                    key: 'calendar',
+                    key: 'meetings',
                     path: '/calendar',
                     exact: true,
                     hidden: !shownPages?.meetings,
@@ -128,23 +122,33 @@ export default ({ event, originalAlertCount, originalAlerts, shownPages }) => {
                     component: CalendarPage,
                 },
                 {
+                    key: 'hackerpack',
+                    path: '/hackerpack',
+                    exact: true,
+                    icon: <AmpStoriesIcon />,
+                    hidden: !shownPages?.hackerPack,
+                    label: 'Hackerpack',
+                    component: HackerpackPage,
+                },
+                {
                     key: 'recruitment',
                     path: '/recruitment',
                     exact: false,
                     icon: <WorkIcon />,
                     label: 'Recruitment',
                     component: RecruitmentPage,
+                    locked: true,
+                    lockedDescription: 'Currently unavailable',
                 },
                 //Experimental
                 {
-                    key: 'hackerpack',
-                    path: '/hackerpack',
-                    exact: true,
-                    icon: <AmpStoriesIcon />,
-                    hidden:
-                        !shownPages?.experimental && !shownPages?.hackerPack,
-                    label: t('Hackerpack_'),
-                    component: HackerpackPage,
+                    key: 'map',
+                    path: '/map',
+                    exact: false,
+                    icon: <PlaceIcon />,
+                    hidden: !shownPages?.experimental,
+                    label: 'Map',
+                    component: MapPage,
                 },
                 {
                     key: 'challenges',

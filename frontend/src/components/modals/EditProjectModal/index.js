@@ -32,12 +32,17 @@ import EventsService from 'services/events'
 
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Button from 'components/generic/Button'
+import { projectURLgenerator } from 'utils/dataModifiers'
 
 export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const event = useSelector(OrganiserSelectors.event)
     const teams = useSelector(OrganiserSelectors.teams)
+    let projectURL
+    if (project) {
+        projectURL = projectURLgenerator(event.slug, project._id)
+    }
     const [finalistChecked, setFinalistChecked] = useState(false)
     const [projectScores, setProjectScores] = useState([
         {
@@ -84,6 +89,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                             <PageHeader
                                 heading={project.name}
                                 subheading={project.track}
+                                link={projectURL}
                             />
                             <ExpansionPanel>
                                 <ExpansionPanelSummary

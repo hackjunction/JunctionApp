@@ -4,7 +4,6 @@ import { push } from 'connected-react-router'
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 
-
 import PageHeader from 'components/generic/PageHeader'
 import NewEventCard from 'components/events/NewEventCard'
 import Button from 'components/generic/Button'
@@ -22,14 +21,16 @@ export default () => {
     const userId = useSelector(AuthSelectors.getUserId)
     const activeEvents = useSelector(DashboardSelectors.activeEvents)
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
-    const recruiterEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
+    const recruiterEvents = useSelector(
+        UserSelectors.userProfileRecruiterEvents,
+    )
     const [registrations, loading, error] = useRegistrationsByUser(userId)
     const [partnerEvents, setPartnerEvents] = useState([])
 
-    console.log("activeEvents", activeEvents)
-    console.log("pastEvents", pastEvents)
-    console.log("registrations", registrations)
-    console.log("recruiterEvents", recruiterEvents)
+    console.log('activeEvents', activeEvents)
+    console.log('pastEvents', pastEvents)
+    console.log('registrations', registrations)
+    console.log('recruiterEvents', recruiterEvents)
 
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -37,13 +38,11 @@ export default () => {
     useEffect(() => {
         const foundPartnerEvents = registrations?.filter(registration => {
             const recEvents = recruiterEvents?.map(e => e.eventId)
-            return recEvents?.some(r => r === registration?.event._id)
+            return recEvents?.some(r => r === registration?.event?._id)
         })
         setPartnerEvents(foundPartnerEvents)
     }, [registrations, recruiterEvents])
-    console.log("partnerEvents", partnerEvents)
-
-
+    console.log('partnerEvents', partnerEvents)
 
     function renderEvents() {
         return (
@@ -55,17 +54,23 @@ export default () => {
 
                 <Box mt={3}>
                     <Grid container spacing={3}>
-                        {partnerEvents?.map(registration => {//TODO: fiter current event away
+                        {partnerEvents?.map(registration => {
+                            //TODO: fiter current event away
 
                             return (
                                 <NewEventCard
                                     event={registration.event}
                                     buttons={[
-
                                         <Button
                                             size="small"
                                             onClick={() =>
-                                                dispatch(push('/events/' + registration.event.slug))
+                                                dispatch(
+                                                    push(
+                                                        '/events/' +
+                                                            registration.event
+                                                                .slug,
+                                                    ),
+                                                )
                                             }
                                         >
                                             {t('See_more_')}
@@ -74,19 +79,30 @@ export default () => {
                                         <Button
                                             size="small"
                                             onClick={() => {
-                                                console.log('/dashboard/event/' + registration.event.slug)
-                                                dispatch(UserActions.setAccessRight('partner'))
-                                                dispatch(push(`/dashboard/event/${registration.event?.slug}`))
-                                            }
-                                            }
+                                                console.log(
+                                                    '/dashboard/event/' +
+                                                        registration.event.slug,
+                                                )
+                                                dispatch(
+                                                    UserActions.setAccessRight(
+                                                        'partner',
+                                                    ),
+                                                )
+                                                dispatch(
+                                                    push(
+                                                        `/dashboard/event/${registration.event?.slug}`,
+                                                    ),
+                                                )
+                                            }}
                                         >
                                             {t('Dashboard_')}
                                         </Button>,
                                     ]}
-                                />)
+                                />
+                            )
                         })}
                     </Grid>
-                </Box >
+                </Box>
             </>
         )
     }
@@ -94,12 +110,7 @@ export default () => {
     return (
         <PageWrapper
             loading={loading}
-            render={() => (
-                <Container center>
-                    {renderEvents()}
-                </Container>
-            )
-            }
+            render={() => <Container center>{renderEvents()}</Container>}
         />
     )
 }
