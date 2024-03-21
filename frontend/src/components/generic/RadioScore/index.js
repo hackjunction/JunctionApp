@@ -1,19 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    IconButton,
-    Radio,
-    RadioGroup,
-    Typography,
-} from '@material-ui/core'
-import { Email } from '@material-ui/icons'
-import { Field } from 'formik'
+import { FormControl, FormLabel, Radio, RadioGroup } from '@material-ui/core'
 import _ from 'lodash'
-import { capitalize, toInteger, toString } from 'lodash-es'
-import React, { useEffect, useState } from 'react'
-import { popupCenter } from 'utils/misc'
+import { toInteger } from 'lodash-es'
+import React, { useState } from 'react'
 import junctionStyle from 'utils/styles'
 
 const scoreArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -51,6 +39,7 @@ export default ({ category, label, onSelectionChange, value = null }) => {
             >
                 {scoreArray.map((score, index) => (
                     <Radio
+                        key={index}
                         checked={score === selectedValue}
                         onChange={() => handleChange(index)}
                         value={score}

@@ -5,6 +5,7 @@ import { Paper, Typography, Chip, Box, Grid } from '@material-ui/core'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 
 import Button from 'components/generic/Button'
+import _ from 'lodash'
 
 export default props => {
     const event = useSelector(DashboardSelectors.event)
@@ -29,6 +30,13 @@ export default props => {
         }
         setChallengeAndTrackSlugState(challengeAndTrackSlugToNameMap)
     }, [event])
+
+    const styling = {
+        trackMaxLength: 30,
+        challengeMaxLength: 30,
+        projectNameMaxLength: 30,
+    }
+
     const ProjectCard = props => {
         const project = props.project
         return (
@@ -36,29 +44,35 @@ export default props => {
                 <Paper elevation={1}>
                     <Box p={2}>
                         <Typography variant="h4" gutterBottom>
-                            {project.name}
+                            {_.truncate(project.name, {
+                                length: styling.projectNameMaxLength,
+                            })}
                         </Typography>
 
                         <Box m={1} mb={2}>
                             {project.track && (
                                 <Chip
                                     color="primary"
-                                    label={
+                                    label={_.truncate(
                                         challengeAndTrackSlugState[
                                             project.track
-                                        ]
-                                    }
+                                        ],
+                                        { length: styling.trackMaxLength },
+                                    )}
                                     style={{ margin: '3px' }}
                                 ></Chip>
                             )}
                             {project.challenges &&
                                 project.challenges.map(challenge => (
                                     <Chip
-                                        label={
+                                        label={_.truncate(
                                             challengeAndTrackSlugState[
                                                 challenge
-                                            ]
-                                        }
+                                            ],
+                                            {
+                                                length: styling.challengeMaxLength,
+                                            },
+                                        )}
                                         style={{ margin: '3px' }}
                                         key={challenge}
                                     />

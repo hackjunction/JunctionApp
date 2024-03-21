@@ -47,6 +47,13 @@ export default ({ event }) => {
     const [projectScore, setProjectScore] = useState(projectScoreBase)
 
     const resetProjectData = () => {
+        if (Array.isArray(scoreCriteriaBase) && scoreCriteriaBase.length > 0) {
+            scoreCriteriaBase.forEach(criteria => {
+                if (criteria.score) {
+                    delete criteria.score
+                }
+            })
+        }
         setSelected(null)
         setScoreExists(false)
         setProjectScore(projectScoreBase)
