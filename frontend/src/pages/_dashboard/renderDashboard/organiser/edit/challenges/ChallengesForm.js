@@ -206,7 +206,7 @@ export default ({ value, onChange }) => {
     const styling = {
         challengeNameMaxLength: 200,
         challengeSlugMaxLength: 200,
-        textAreaMaxLength: styling.textAreaMaxLength,
+        textAreaMaxLength: 3000,
     }
 
     const renderForm = () => (
