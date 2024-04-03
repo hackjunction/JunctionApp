@@ -14,13 +14,16 @@ const ProjectsTable = ({ projects }) => {
     const event = useSelector(OrganiserSelectors.event)
 
     const skipArray = ['_id', '__v', 'id', 'key', 'section']
-    function flattenObject(ob) {
+    const flattenObject = ob => {
         let toReturn = {}
         for (let i in ob) {
             if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
                 continue
 
-            if (typeof ob[i] === 'object' && ob[i] !== null) {
+            if (i === 'description' || i === 'punchline') {
+                toReturn[i] = ob[i].replace(/"/g, '""')
+                continue
+            } else if (typeof ob[i] === 'object' && ob[i] !== null) {
                 let flatObject = flattenObject(ob[i])
                 for (let x in flatObject) {
                     if (!flatObject.hasOwnProperty(x)) continue
@@ -98,6 +101,18 @@ const ProjectsTable = ({ projects }) => {
         setSelected(selectedRows)
     }
 
+    // debugGroup(
+    //     'Projects to export',
+    //     selected.map(item => {
+    //         const returnObject = {
+    //             ...flattenObject(item.original),
+    //             projectId: item.original._id,
+    //             projectURL: projectURLgenerator(event.slug, item.original._id),
+    //         }
+    //         return returnObject
+    //     }),
+    // )
+
     return (
         <>
             <EditProjectModal
@@ -120,12 +135,12 @@ const ProjectsTable = ({ projects }) => {
                                 }}
                                 data={selected.map(item => {
                                     const returnObject = {
-                                        ...flattenObject(item.original),
                                         projectId: item.original._id,
                                         projectURL: projectURLgenerator(
                                             event.slug,
                                             item.original._id,
                                         ),
+                                        ...flattenObject(item.original),
                                     }
                                     return returnObject
                                 })}

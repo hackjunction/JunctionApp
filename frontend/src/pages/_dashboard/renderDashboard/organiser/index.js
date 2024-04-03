@@ -59,12 +59,12 @@ export default () => {
                 OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
             dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
-            dispatch(OrganiserActions.updateTeamsForEvent(slug))
+            // dispatch(OrganiserActions.updateTeamsForEvent(slug))
             dispatch(OrganiserActions.updateFilterGroups(slug))
-            dispatch(OrganiserActions.updateProjects(slug))
-            dispatch(OrganiserActions.updateGavelProjects(slug))
-            dispatch(OrganiserActions.updateRankings(slug))
-            dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
+            // dispatch(OrganiserActions.updateProjects(slug))
+            // dispatch(OrganiserActions.updateGavelProjects(slug))
+            // dispatch(OrganiserActions.updateRankings(slug))
+            // dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
     return (
