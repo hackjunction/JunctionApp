@@ -6,7 +6,7 @@ const AchievementSchema = require('../../common/schemas/Achievement')
 const GavelController = require('../reviewing/gavel/controller')
 const WebhookService = require('../../common/services/webhook')
 const CustomAnswer = require('@hackjunction/shared/schemas/CustomAnswer')
-const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
+// const ProjectDefaultFields = require('@hackjunction/shared/constants/project-default-fields')
 // const AnswersSchema = require('@hackjunction/shared/schemas/Answers')
 
 const ProjectSchema = new mongoose.Schema({
@@ -70,11 +70,6 @@ const ProjectSchema = new mongoose.Schema({
     submissionFormAnswers: {
         type: [CustomAnswer.mongoose],
     },
-    // TODO default fields
-    // enabledFields: {
-    //     type: [String],
-    //     default: ProjectDefaultFields,
-    // },
 })
 
 ProjectSchema.set('timestamps', true)
