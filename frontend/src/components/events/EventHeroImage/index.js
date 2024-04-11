@@ -110,37 +110,6 @@ export default ({
                 </Grid>
             </Container>
 
-            {/* <Box className={classes.logoWrapper}>
-                <FadeInWrapper enterDelay={0.3} verticalOffset={50}>
-                    <Box
-                        p={3}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Typography
-                            className={classes.overline}
-                            variant="button"
-                        >
-                            {event?._eventTimeFormatted}
-                        </Typography>
-                        <Typography className={classes.title} variant="h3">
-                            {title ?? event?.name}
-                        </Typography>
-                        <Typography className={classes.title} variant="h4">
-                            {subheading}
-                        </Typography>
-
-                        <Typography
-                            className={classes.overline}
-                            variant="button"
-                        >
-                            {event?._eventLocationFormatted}
-                        </Typography>
-                    </Box>
-                </FadeInWrapper>
-            </Box> */}
             <Container
                 wrapperClass={classes.backButtonWrapper}
                 className={classes.buttonInner}

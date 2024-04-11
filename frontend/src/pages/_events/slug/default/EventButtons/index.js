@@ -50,7 +50,9 @@ export default ({ event, registration }) => {
                                 <Button
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/event/${event.slug}`),
+                                            push(
+                                                `/dashboard/event/${event.slug}`,
+                                            ),
                                         )
                                     }
                                     variant="applicationsClosed"
