@@ -7,7 +7,6 @@ import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
 
-
 import EventTimeline from './EventTimeline'
 import BannerCarousel from 'components/generic/BannerCarousel'
 import GradientBox from 'components/generic/GradientBox'
@@ -66,7 +65,8 @@ const useStyles = makeStyles({
     },
 })
 
-export default ({ isPreview = false }) => { // isPreview determines if the page is being previewed in the Preview modal
+export default () => {
+    // isPreview determines if the page is being previewed in the Preview modal
     const dispatch = useDispatch()
     const { slug, event, registration } = useContext(EventDetailContext)
     const classes = useStyles(event.theme)
@@ -129,7 +129,6 @@ export default ({ isPreview = false }) => { // isPreview determines if the page 
                 onBack={() => dispatch(push('/home'))}
                 alignRight
                 backgroundColor={event.theme.headerBackgroundColor}
-                isPreview={isPreview}
             />
             <FadeInWrapper>
                 <StaggeredList>
@@ -178,7 +177,10 @@ export default ({ isPreview = false }) => { // isPreview determines if the page 
                                     <StaggeredListItem>
                                         <Box mt={3} />
                                         <GradientBox color="theme_white" p={3}>
-                                            <Typography variant="button" gutterBottom>
+                                            <Typography
+                                                variant="button"
+                                                gutterBottom
+                                            >
                                                 Event Timeline
                                             </Typography>
                                             <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
@@ -212,7 +214,6 @@ export default ({ isPreview = false }) => { // isPreview determines if the page 
                         <EventButtons
                             event={event}
                             registration={registration}
-                            isPreview={isPreview}
                         />
                     </Box>
                 </StaggeredList>

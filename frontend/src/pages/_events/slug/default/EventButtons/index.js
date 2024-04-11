@@ -10,7 +10,7 @@ import Button from 'components/generic/Button'
 import * as AuthSelectors from 'redux/auth/selectors'
 import { useTranslation } from 'react-i18next'
 
-export default ({ event, registration, isPreview = false }) => {
+export default ({ event, registration }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const match = useRouteMatch()
@@ -37,7 +37,6 @@ export default ({ event, registration, isPreview = false }) => {
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <Button
-                                    disabled={isPreview}
                                     onClick={() =>
                                         dispatch(push(`${match.url}/register`))
                                     }
@@ -49,10 +48,11 @@ export default ({ event, registration, isPreview = false }) => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
-                                    disabled={isPreview}
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/event/${event.slug}`),
+                                            push(
+                                                `/dashboard/event/${event.slug}`,
+                                            ),
                                         )
                                     }
                                     variant="applicationsClosed"
@@ -66,7 +66,6 @@ export default ({ event, registration, isPreview = false }) => {
                 } else {
                     return (
                         <Button
-                            disabled={isPreview}
                             onClick={() =>
                                 dispatch(push(`${match.url}/register`))
                             }
@@ -80,7 +79,6 @@ export default ({ event, registration, isPreview = false }) => {
             } else {
                 return (
                     <Button
-                        disabled={isPreview}
                         onClick={() =>
                             dispatch(
                                 push(`/login`, {
@@ -101,7 +99,6 @@ export default ({ event, registration, isPreview = false }) => {
                 if (hasRegistration) {
                     return (
                         <Button
-                            disabled={isPreview}
                             onClick={() =>
                                 dispatch(push(`/dashboard/event/${event.slug}`))
                             }
@@ -121,7 +118,6 @@ export default ({ event, registration, isPreview = false }) => {
             } else {
                 return (
                     <Button
-                        disabled={isPreview}
                         onClick={() =>
                             dispatch(push('/login', { nextRoute: match.url }))
                         }
