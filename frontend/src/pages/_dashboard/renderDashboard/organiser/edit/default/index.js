@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { Grid, Box, Typography, TextField } from '@material-ui/core'
+import { Grid, Box, Typography } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
