@@ -6,47 +6,29 @@ import config from 'constants/config'
 import RegistrationStatusBlock from './Blocks/RegistrationStatusBlock'
 import ProjectBlock from './Blocks/ProjectBlock'
 import TeamStatusBlock from './Blocks/TeamStatusBlock'
-import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
-import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
+// import VisaInvitationBlock from './Blocks/VisaInvitationBlock'
+// import TravelGrantStatusBlock from './Blocks/TravelGrantStatusBlock'
 import GavelReviewingBlock from './Blocks/GavelReviewingBlock'
 import ProjectSubmissionsBlock from './Blocks/ProjectSubmissionsBlock'
-//import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 import ReviewingPeriodBlock from './Blocks/ReviewingPeriodBlock'
 import CertificateBlock from './Blocks/CertificateBlock'
 import EventOverBlock from './Blocks/EventOverBlock'
 import SocialMediaBlock from './Blocks/SocialMediaBlock'
-import EventTimeline from 'pages/_events/slug/default/EventTimeline'
-import TimeLineBlock from './Blocks/TimeLineBlock'
+// import EventTimeline from 'pages/_events/slug/default/EventTimeline'
+// import TimeLineBlock from './Blocks/TimeLineBlock'
 import AlertBlock from './Blocks/AlertBlock'
 import EventPageScriptIFrame from 'components/events/EventPageScriptIFrame'
 import { EventPageScripts } from '@hackjunction/shared'
 import { useSelector } from 'react-redux'
 import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
+// import * as AuthSelectors from 'redux/auth/selectors'
+// import PartnerReviewingBlock from './Blocks/PartnerReviewingBlock'
 export default ({ alerts }) => {
-    const user = useSelector(UserSelectors.userProfile)
     const event = useSelector(DashboardSelectors.event)
     const projects = useSelector(DashboardSelectors.projects)
-    const isPartner =
-        user.userId == 'google-oauth2|108766439620242776277' ||
-        (useSelector(AuthSelectors.idTokenData)?.roles?.includes('Recruiter') &&
-            !useSelector(AuthSelectors.idTokenData)?.roles?.includes(
-                'SuperAdmin',
-            ))
     return (
         <Box>
             <PageHeader heading="Dashboard" />
-            {/*isPartner ? (
-                <a href="https://junction-partner-guidebook-2022.notion.site/Partner-Guidebook-7f5b37bee5a9466cb801211c2b7d99e2">
-                    Click here for guidebook!
-                </a>
-            ) : (
-                <a href="https://guidebook2022.notion.site/guidebook2022/Participant-Guidebook-a98e9f36c4594c1ca757a1e2c120b587">
-                    Click here for guidebook!
-                </a>
-            )*/}
 
             <Helmet>
                 <title>Junction App || Dashboard</title>
@@ -111,7 +93,6 @@ export default ({ alerts }) => {
 
                 <GavelReviewingBlock />
                 <SocialMediaBlock />
-
             </Grid>
             {event && (
                 <EventPageScriptIFrame

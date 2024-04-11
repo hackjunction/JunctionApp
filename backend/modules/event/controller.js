@@ -42,6 +42,15 @@ controller.isEventOnline = id => {
     })
 }
 
+controller.isEventHybrid = id => {
+    Event.findById(id).then(event => {
+        if (event.eventType === 'hybrid') {
+            return true
+        }
+        return false
+    })
+}
+
 controller.getUnapprovedEvents = () => {
     return Event.find({ approved: false })
 }

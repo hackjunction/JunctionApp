@@ -102,7 +102,8 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     </Typography>
                     <Markdown
                         source={
-                            event.eventType === 'physical'
+                            event.eventType === 'physical' ||
+                            event.eventType === 'hybrid'
                                 ? t('Gavel_compare_projects_physical_')
                                 : t('Gavel_compare_projects_online_')
                         }
@@ -126,7 +127,8 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     </Typography>
                     <Markdown
                         source={
-                            event.eventType === 'physical'
+                            event.eventType === 'physical' ||
+                            event.eventType === 'hybrid'
                                 ? t('Gavel_compare_projects_physical2_')
                                 : t('Gavel_compare_projects_online2_')
                         }

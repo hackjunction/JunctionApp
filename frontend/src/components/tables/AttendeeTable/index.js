@@ -13,12 +13,10 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'
-//import Button from 'components/generic/Button'
-import { Button, IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import { CSVLink } from 'react-csv'
+import _ from 'lodash'
 
 export default ({
     emptyRenderer,
@@ -73,17 +71,27 @@ export default ({
         [dispatch],
     )
     // TODO move somewhere else
+    const skipArray = ['_id', '__v', 'section', 'key', 'id', 'checklist']
     function flattenObject(ob) {
-        var toReturn = {}
-        for (var i in ob) {
-            if (!ob.hasOwnProperty(i)) continue
+        let toReturn = {}
+        for (let i in ob) {
+            if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
+                continue
 
-            if (typeof ob[i] == 'object' && ob[i] !== null) {
-                var flatObject = flattenObject(ob[i])
-                for (var x in flatObject) {
-                    if (!flatObject.hasOwnProperty(x)) continue
-
-                    toReturn[i + '.' + x] = flatObject[x]
+            if (typeof ob[i] === 'object' && ob[i] !== null) {
+                if (i === 'CustomAnswers') {
+                    for (let j in ob[i]) {
+                        if (!ob[i].hasOwnProperty(j)) continue
+                        const customAnswerLabel = ob[i][j].label
+                        const customAnswerValue = ob[i][j].value
+                        toReturn[customAnswerLabel] = customAnswerValue
+                    }
+                } else {
+                    let flatObject = flattenObject(ob[i])
+                    for (let x in flatObject) {
+                        if (!flatObject.hasOwnProperty(x)) continue
+                        toReturn[i + '.' + x] = flatObject[x]
+                    }
                 }
             } else {
                 toReturn[i] = ob[i]
@@ -132,7 +140,7 @@ export default ({
             }
         })
     }, [attendees, teams])
-    console.log("attendeesWithTeam",attendeesWithTeam)
+    console.log('attendeesWithTeam', attendeesWithTeam)
     const columns = useMemo(() => {
         return [
             {
@@ -173,8 +181,7 @@ export default ({
                 accessor: 'user',
                 ...Filters.MultipleSelect,
                 ...Sorters.Alphabetic,
-                Cell: ({ cell: { value } }) =>
-                    value.split('|')[0]
+                Cell: ({ cell: { value } }) => value.split('|')[0],
             },
             {
                 Header: 'Rating',
@@ -281,9 +288,13 @@ export default ({
                                     textDecoration: 'none',
                                     color: 'inherit',
                                 }}
-                                data={selected.map(item =>
-                                    flattenObject(item.original),
-                                )}
+                                data={selected.map(item => {
+                                    const returnObject = {
+                                        ...flattenObject(item.original),
+                                        registrationId: item.original._id,
+                                    }
+                                    return returnObject
+                                })}
                                 filename="export.csv"
                             >
                                 Export registrations

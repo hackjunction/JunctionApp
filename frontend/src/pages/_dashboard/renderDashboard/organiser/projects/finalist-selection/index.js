@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Grid,
@@ -45,18 +45,18 @@ export default () => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const [loading, setLoading] = useState(false)
 
-    const [checked, setChecked] = React.useState([])
-    const [left, setLeft] = React.useState([])
-    const [filteredLeft, setFilteredLeft] = React.useState([])
+    const [checked, setChecked] = useState([])
+    const [left, setLeft] = useState([])
+    const [filteredLeft, setFilteredLeft] = useState([])
 
-    const [right, setRight] = React.useState([])
-    const [filter, setFilter] = React.useState('')
+    const [right, setRight] = useState([])
+    const [filter, setFilter] = useState('')
     const debouncedFilter = useDebounce(filter, 300)
 
     const leftChecked = intersection(checked, left)
     const rightChecked = intersection(checked, right)
 
-    React.useEffect(() => {
+    useEffect(() => {
         const newLeft =
             projects
                 ?.filter(project => !event?.finalists?.includes(project._id))
@@ -70,7 +70,7 @@ export default () => {
         )
     }, [projects, event])
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (debouncedFilter) {
             const availableProjects = projects.filter(p => left.includes(p._id))
             setFilteredLeft(

@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import Button from 'components/generic/Button'
+import React from 'react'
+import { Formik, Form, Field } from 'formik'
 import { Box, Typography } from '@material-ui/core'
 import RadioScore from 'components/generic/RadioScore'
 import TextAreaInput from 'components/inputs/TextAreaInput'
@@ -8,15 +7,7 @@ import FormControl from 'components/inputs/FormControl'
 import BottomBar from 'components/inputs/BottomBar'
 import _ from 'lodash'
 
-const EvaluationForm = ({
-    event,
-    project,
-    submit = () => {},
-    score,
-    scoreCriteria,
-}) => {
-    console.log('Score from eval form', score)
-
+const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
     const allScoresSet = evalScores => {
         const scoreList = evalScores.map(value => {
             return value?.score ? value.score : null
@@ -26,16 +17,13 @@ const EvaluationForm = ({
 
     const calculateScore = (criterias, decimalPlaces) => {
         const multiplier = Math.pow(10, decimalPlaces)
-        console.log('Multiplier', multiplier)
         const scoreAverage =
             criterias.reduce((acc, curr) => {
                 if (!curr.score) return acc
                 return curr.score + acc
             }, 0) / criterias.length
-        console.log('Score average before format', scoreAverage)
         const scoreAverageFormatted =
             Math.floor(scoreAverage * multiplier) / multiplier
-        console.log('Score average', scoreAverageFormatted)
         return scoreAverageFormatted
     }
 
@@ -54,23 +42,14 @@ const EvaluationForm = ({
         score.scoreCriteria = scoreFiltered
     }
 
-    // if (score.scoreCriteria.map) {
-
     return (
         <>
             <Formik
                 initialValues={{ ...score }}
-                // initialValues={{
-                //     ...score,
-                //     scoreCriteria: [
-                //         { ...scoreCriteria, score: score.scoreCriteria.score },
-                //     ],
-                // }}
                 enableReinitialize={true}
                 onSubmit={submit}
             >
                 {formikProps => {
-                    console.log('formikProps from EvaluationForm', formikProps)
                     return (
                         <Form className="tw-flex tw-flex-col tw-gap-8">
                             <Field name="scoreCriteria">
@@ -93,10 +72,6 @@ const EvaluationForm = ({
                                                             { criteria, label },
                                                             index,
                                                         ) => {
-                                                            console.log(
-                                                                'Field value at evaluationForm',
-                                                                field.value,
-                                                            )
                                                             return (
                                                                 <RadioScore
                                                                     key={
@@ -126,10 +101,6 @@ const EvaluationForm = ({
                                                                         )
                                                                         const updatedField =
                                                                             field.value
-                                                                        console.log(
-                                                                            'From updated field at eval form',
-                                                                            updatedField,
-                                                                        )
                                                                         if (
                                                                             !updatedField[
                                                                                 index
@@ -230,6 +201,8 @@ const EvaluationForm = ({
                                             onBlur={() =>
                                                 form.setFieldTouched(field.name)
                                             }
+                                            minRows={2}
+                                            maxLength={500}
                                         />
                                     </FormControl>
                                 )}

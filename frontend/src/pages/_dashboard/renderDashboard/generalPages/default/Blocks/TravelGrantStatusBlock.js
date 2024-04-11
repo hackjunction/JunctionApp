@@ -13,7 +13,7 @@ const STATUSES = RegistrationStatuses.asObject
 export default () => {
     const event = useSelector(DashboardSelectors.event)
     const registration = useSelector(DashboardSelectors.registration)
-    if (event?.eventType !== EventTypes.physical.id) return null
+    if (event?.eventType === EventTypes.online.id) return null
     if (!registration?.answers?.needsTravelGrant) return null
 
     // TODO: When status is checkedIn, show the travel grant details submission form here

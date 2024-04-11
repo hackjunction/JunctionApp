@@ -33,7 +33,6 @@ controller.queryProfiles = async (query = {}, user) => {
         }
         console.log(34)
     } else if (query.filters && query.filters.length) {
-
         const whereFields = query.filters.map(filter => {
             //console.log("query.filter", filter.value)
             const formatted = MongoUtils.ensureObjectId(filter.value)
@@ -116,7 +115,7 @@ controller.queryProfiles = async (query = {}, user) => {
         //console.log(110)
     }
     // userQuery.$and = userQuery.$and.concat([matcher])
-    console.log('userquery', JSON.stringify(userQuery), "pag", pagination,)
+    console.log('userquery', JSON.stringify(userQuery), 'pag', pagination)
     //console.log("query", userQuery, "pag", pagination, "reg", JSON.stringify(userQuery.registrations))
     return UserController.queryProfiles({
         query: userQuery,
@@ -127,7 +126,7 @@ controller.queryProfiles = async (query = {}, user) => {
                 return controller.createRecruitmentProfile(profile, false)
             }),
         ).then(profiles => {
-
+            console.log('profiles', profiles)
             return { data: profiles, count: results.count }
         })
     })

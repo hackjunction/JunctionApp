@@ -7,7 +7,6 @@ import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
 
 import ProjectsService from 'services/projects'
-import Filter from 'components/Team/Filter'
 import _ from 'lodash'
 
 import ProjectDetail from 'components/projects/ProjectDetail'
@@ -17,7 +16,6 @@ import ProjectScoresService from 'services/projectScores'
 import EvaluationForm from 'pages/_projects/slug/view/projectId/EvaluationForm'
 import Empty from 'components/generic/Empty'
 import * as SnackbarActions from 'redux/snackbar/actions'
-import ScoreForm from 'pages/_projects/slug/view/projectId/ScoreForm'
 
 const projectScoreBase = {
     project: '',
@@ -37,28 +35,28 @@ export default ({ event }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
     const userProfile = useSelector(userSelectors.userProfile)
-    const allFilterLabel = 'All projects'
     const dispatch = useDispatch()
     const { slug } = event
     const [data, setData] = useState({})
     const [projects, setProjects] = useState([])
-    const [draftsProjects, setDraftsProjects] = useState([])
-    const [finalProjects, setFinalProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const [filter, setFilter] = useState(allFilterLabel)
 
     const [selected, setSelected] = useState(null)
     const [scoreExists, setScoreExists] = useState(false)
     const [projectScore, setProjectScore] = useState(projectScoreBase)
 
     const resetProjectData = () => {
+        if (Array.isArray(scoreCriteriaBase) && scoreCriteriaBase.length > 0) {
+            scoreCriteriaBase.forEach(criteria => {
+                if (criteria.score) {
+                    delete criteria.score
+                }
+            })
+        }
         setSelected(null)
         setScoreExists(false)
-    }
-
-    const onFilterChange = filter => {
-        setFilter(filter)
+        setProjectScore(projectScoreBase)
     }
 
     if (event.scoreCriteriaSettings === undefined) {
@@ -68,46 +66,22 @@ export default ({ event }) => {
     const fetchProjects = useCallback(async () => {
         setLoading(true)
         try {
-            const dataOt = await ProjectsService.getProjectsByEvent(slug)
-            const partnerData = _.find(
-                event.recruiters,
-                recruiter => recruiter.recruiterId === userId,
+            const dataOt = await ProjectsService.getProjectsByEventAsPartner(
+                idToken,
+                slug,
             )
-            let challengeOrg
-            let filteredProjects = []
             const data = {
                 event,
-            }
-            if (event.scoreCriteriaSettings.reviewAnyChallenge) {
-                data.projects = dataOt
-            } else if (partnerData) {
-                challengeOrg = _.find(
-                    event.challenges,
-                    challenge => challenge.partner === partnerData.organization,
-                )
-                if (challengeOrg) {
-                    data.challenge = challengeOrg
-                    filteredProjects = _.filter(dataOt, project =>
-                        _.includes(project.challenges, challengeOrg.slug),
-                    )
-                    if (filteredProjects.length > 0) {
-                        data.projects = filteredProjects
-                    }
-                }
+                ...dataOt,
             }
             setData(data)
-            setDraftsProjects(
-                data.projects.filter(project => project.status === 'draft'),
-            )
-            setFinalProjects(
-                data.projects.filter(project => project.status === 'final'),
-            )
-            setProjects(data.projects)
+            setProjects(data?.projects)
         } catch (err) {
-            console.log("err", err)
+            dispatch(SnackbarActions.error(`Error found: ${err.message}`))
             setError(true)
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }, [slug, idToken, projectScore])
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -153,7 +127,6 @@ export default ({ event }) => {
                     submissionValues,
                 )
             } else {
-                console.log("no score")
                 await ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount(
                     idToken,
                     event.slug,
@@ -182,6 +155,7 @@ export default ({ event }) => {
         return null
     }
 
+    //TODO perform this on the backend
     useEffect(() => {
         if (idToken && selected && event) {
             ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerAccount(
@@ -189,7 +163,6 @@ export default ({ event }) => {
                 event.slug,
                 selected._id,
             ).then(score => {
-                console.log('Score', score)
                 if (score[0]) {
                     const reviewerData = _.find(
                         score[0].reviewers,
@@ -221,51 +194,32 @@ export default ({ event }) => {
         }
     }, [event, idToken, selected])
 
-    const projectsToRender = filter => {
-        switch (filter) {
-            case 'draft':
-                return draftsProjects
-            case 'final':
-                return finalProjects
-            default:
-                return projects
-        }
-    }
-
     const renderProjects = inputData => {
         return (
             <>
                 <div className="tw-flex tw-justify-between tw-items-end">
-                    {inputData?.challenge?.name && (
-                        <PageHeader
-                            heading={inputData?.challenge.name}
-                            subheading={`By ${inputData?.challenge.partner}`}
-                            alignment="left"
-                            details={`${inputData?.projects.length} project${inputData?.projects.length > 1 ||
-                                inputData?.projects.length < 1
+                    <PageHeader
+                        heading="Project review"
+                        subheading={`Available for review:`}
+                        alignment="left"
+                        details={`${inputData?.projects.length} project${
+                            inputData?.projects.length > 1 ||
+                            inputData?.projects.length < 1
                                 ? 's'
                                 : ''
-                                }`}
-                        />
-                    )}
-                    <Filter
-                        noFilterOption={allFilterLabel}
-                        onChange={onFilterChange}
-                        filterArray={[
-                            { label: 'Final projects', value: 'final' },
-                            { label: 'Draft projects', value: 'draft' },
-                        ]}
+                        }`}
                     />
                 </div>
 
                 <Box height={20} />
                 <ProjectsGrid
-                    projects={projectsToRender(filter)}
+                    filterEnabled={true}
+                    projects={projects}
                     event={inputData.event}
                     onSelect={setSelected}
                     showScore={true}
                     token={idToken}
-                    showReviewers={true}
+                    reviewerGrid={true}
                 />
 
                 <Box height={200} />
@@ -284,22 +238,13 @@ export default ({ event }) => {
                     {idToken ? (
                         <Container center>
                             {scoreCriteriaBase &&
-                                scoreCriteriaBase.length > 0 ? (
-                                <EvaluationForm
-                                    event={event}
-                                    project={selected}
-                                    submit={handleSubmit}
-                                    score={projectScore}
-                                    scoreCriteria={scoreCriteriaBase}
-                                />
-                            ) : (
-                                <ScoreForm
-                                    event={event}
-                                    project={selected}
-                                    submit={handleSubmit}
-                                    score={projectScore}
-                                />
-                            )}
+                                scoreCriteriaBase.length > 0 && (
+                                    <EvaluationForm
+                                        submit={handleSubmit}
+                                        score={projectScore}
+                                        scoreCriteria={scoreCriteriaBase}
+                                    />
+                                )}
                             <Box height={200} />
                         </Container>
                     ) : null}

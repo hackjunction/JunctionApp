@@ -16,6 +16,7 @@ import EventsService from 'services/events'
 
 import WinnerVoteService from 'services/winnerVote'
 import VotingTokenService from 'services/votingToken'
+import { debugGroup } from 'utils/debuggingTools'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -63,8 +64,8 @@ export default () => {
             if (partnerVotes) {
                 setTokenVoterResults(partnerVotes)
             }
-            setLoading(false)
         }
+        setLoading(false)
     }, [
         event.overallReviewMethod,
         event.slug,
@@ -86,15 +87,13 @@ export default () => {
 
         return (
             <>
-
-                <strong>{total}</strong> <br />
+                <strong>Total votes received: {total}</strong> <br />
                 Participant votes: {scoreFromUsers} <br />
                 Token votes: {scoreFromTokenVoters}
-
             </>
         )
     }
-    console.log('resus are', results)
+    debugGroup('Results', results)
     return (
         <PageWrapper loading={loading}>
             <PageHeader heading="Results" subheading="Finalist vote results" />
@@ -103,7 +102,7 @@ export default () => {
                     <ProjectsGridItem
                         project={project}
                         event={event}
-                        score={getScoreText(project._id)}
+                        votingResults={getScoreText(project._id)}
                         onClickMore={() => setSelected(project)}
                         showScore={true}
                     />

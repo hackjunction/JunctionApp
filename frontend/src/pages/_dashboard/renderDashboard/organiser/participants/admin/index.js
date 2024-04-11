@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { groupBy, filter } from 'lodash-es'
@@ -12,10 +12,14 @@ import * as AuthSelectors from 'redux/auth/selectors'
 import * as OrganiserActions from 'redux/organiser/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import RegistrationsService from 'services/registrations'
+import Button from 'components/generic/Button'
+
+import TextAreaInput from 'components/inputs/TextAreaInput'
 
 const STATUSES = RegistrationStatuses.asObject
 
 export default () => {
+    const isSuperAdmin = useSelector(AuthSelectors.hasSuperAdmin)
     const dispatch = useDispatch()
 
     const registrations = useSelector(OrganiserSelectors.registrations)
@@ -92,6 +96,32 @@ export default () => {
 
     const total = registrations.length
     const rated = filter(registrations, reg => reg.rating).length
+
+    const [gavelInputs, setGavelInputs] = useState('')
+    // let gavelInputs = ''
+    const gavelData = str => {
+        setGavelInputs(str)
+    }
+
+    const submitGavelLoginData = async data => {
+        return RegistrationsService.addGavelLoginToRegistrations(
+            idToken,
+            event.slug,
+            data,
+        )
+            .then(data => {
+                dispatch(SnackbarActions.success('Gavel logins added.'))
+            })
+            .catch(err => {
+                dispatch(SnackbarActions.error(`Something went wrong...`))
+            })
+            .finally(() => {
+                dispatch(
+                    OrganiserActions.updateRegistrationsForEvent(event.slug),
+                )
+                return
+            })
+    }
 
     return (
         <PageWrapper loading={loading}>
@@ -226,6 +256,36 @@ export default () => {
                     </Paper>
                 </Grid>
             </Grid>
+            {isSuperAdmin && (
+                <>
+                    <Typography variant="h5" paragraph>
+                        Gavel tools
+                    </Typography>
+                    <TextAreaInput
+                        value={gavelInputs}
+                        label="Gavel inputs"
+                        onChange={gavelData}
+                        placeholder="Only stringified JSON accepted"
+                    />
+                    <Button
+                        variant="jContained"
+                        onClick={() => {
+                            try {
+                                const valueTest = JSON.parse(gavelInputs)
+                                submitGavelLoginData(valueTest)
+                            } catch (e) {
+                                dispatch(
+                                    SnackbarActions.error(
+                                        `Invalid JSON data. Please check your input.`,
+                                    ),
+                                )
+                            }
+                        }}
+                    >
+                        Add gavel logins
+                    </Button>
+                </>
+            )}
         </PageWrapper>
     )
 }

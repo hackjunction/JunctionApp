@@ -31,6 +31,7 @@ const migrations = [
     require('./25-add-emailConfig-to-event'),
     require('./26-fix-empty-senderEmail-in-event'),
     require('./27-add-experimental-flag-to-events'),
+    require('./28-add-gavel-login-to-registrations'),
 ]
 
 const run = async () => {

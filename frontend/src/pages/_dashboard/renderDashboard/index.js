@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import PartnerDashboard from './partner'
@@ -11,12 +10,10 @@ import OrganizerDashboard from './organiser'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
-import * as OrganiserActions from 'redux/organiser/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
 import * as UserActions from 'redux/user/actions'
 
-import { useTranslation } from 'react-i18next'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
@@ -26,21 +23,6 @@ import {
     usePastEvents,
 } from 'graphql/queries/events'
 // import { Chat } from 'components/messaging/chat'
-
-const useStyles = makeStyles(theme => ({
-    sidebarTop: {
-        padding: theme.spacing(3),
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    sidebarLogo: {
-        width: '100%',
-        objectFit: 'contain',
-    },
-}))
 
 export default role => {
     const match = useRouteMatch()
@@ -82,8 +64,6 @@ export default role => {
             ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
         ) && organizerEvents?.map(e => e._id).includes(event?._id)
 
-    console.log(isPartner, 'user is partner', isOrganizer, 'user is organizer')
-
     // Set up browser notifications
     useEffect(() => {
         if ('Notification' in window && Notification.permission !== 'granted') {
@@ -96,13 +76,7 @@ export default role => {
         dispatch(DashboardActions.updateEvent(slug))
         dispatch(DashboardActions.updateRegistration(slug))
         dispatch(DashboardActions.updateTeam(slug))
-
-        //TODO dont use OrganiserSelectors here
-        dispatch(OrganiserActions.updateProjects(slug))
-        dispatch(OrganiserActions.updateGavelProjects(slug))
-        dispatch(OrganiserActions.updateRankings(slug))
-        dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
-    }, [slug, dispatch])
+    }, [slug])
 
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
@@ -118,14 +92,10 @@ export default role => {
 
     useEffect(() => {
         dispatch(UserActions.organizerEvents(organizerEvents))
-        console.log(' dispatch(UserActions.organizerEvents)')
-        console.log(loadingActive, loadingPast)
         if (!loadingActive) {
             dispatch(DashboardActions.activeEvents(activeEvents))
         }
-        console.log('dipatch past?', loadingPast, pastEvents)
         if (!loadingPast) {
-            console.log('dipatch past', pastEvents)
             dispatch(DashboardActions.pastEvents(pastEvents))
         }
     }, [organizerEvents, activeEvents, pastEvents])
@@ -170,17 +140,13 @@ export default role => {
 
     useEffect(() => {
         //does not take multiple roles into a count
-        console.log('setting access', isPartner, isOrganizer)
         if (isPartner) {
             dispatch(UserActions.setAccessRight('partner'))
-            console.log('partner', userAccessRight)
         } else if (isOrganizer) {
             dispatch(UserActions.setAccessRight('organizer'))
-            console.log('organizer', userAccessRight)
         }
     }, [])
 
-    console.log('userAccess', userAccessRight)
     //TODO: reconstruct to contain partner, organizer & participnat pages
     switch (userAccessRight) {
         case 'partner': {
@@ -196,6 +162,7 @@ export default role => {
                         originalAlertCount={alertCount}
                         originalAlerts={alerts}
                         shownPages={shownPages}
+                        lockedPages={lockedPages}
                     />
                 </PageWrapper>
             )

@@ -714,7 +714,10 @@ const Resolvers = {
             )
         },
         _eventLocationFormatted: parent => {
-            if (parent.eventType === 'physical') {
+            if (
+                parent.eventType === 'physical' ||
+                parent.eventType === 'hybrid'
+            ) {
                 return `${parent.eventLocation.city}, ${parent.eventLocation.country}`
             }
             return 'Online'

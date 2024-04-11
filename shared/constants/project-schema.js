@@ -35,6 +35,7 @@ const ProjectSchema = {
         yup
             .object()
             .shape({
+                label: yup.string(),
                 section: yup.string(),
                 key: yup.string(),
                 value: yup.string(),
@@ -96,7 +97,10 @@ const buildProjectSchema = event => {
         )
     }
 
-    if (event.eventType === EventTypes.physical.id) {
+    if (
+        event.eventType === EventTypes.physical.id ||
+        event.eventType === EventTypes.hybrid.id
+    ) {
         schema.location = yup.string().max(100).label('Table location')
     }
 

@@ -17,9 +17,24 @@ import TrackLink from './TrackLink'
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const projects = useSelector(OrganiserSelectors.projects)
+    const teams = useSelector(OrganiserSelectors.teams)
 
     const getProjectsForTrack = slug => {
-        return projects.filter(project => project.track === slug)
+        const projectsWithTeam = projects
+            .map(project => {
+                const teamFound = teams.find(team => {
+                    console.log(team._id, project.team)
+                    return team._id === project.team
+                })
+                if (teamFound) {
+                    project.teamCode = teamFound.code
+                } else {
+                    project.teamCode = 'No team'
+                }
+                return project
+            })
+            .filter(project => project.teamCode !== 'No team')
+        return projectsWithTeam.filter(project => project.track === slug)
     }
 
     return (

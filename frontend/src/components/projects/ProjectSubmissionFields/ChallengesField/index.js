@@ -19,7 +19,7 @@ const ChallengesField = ({
                     return (
                         <FormControl
                             label="Challenges"
-                            hint="Which partner challenges do you want to submit your project in? You can choose up to 5. Note: make sure you read the event guidelines about how many challenges you can set here!"
+                            hint="For which challenge are you submitting your project?"
                             touched={
                                 form.touched[field.name] ||
                                 props.submitCount > 0
@@ -37,7 +37,6 @@ const ChallengesField = ({
                                     onBlur={() =>
                                         form.setFieldTouched(field.name)
                                     }
-                                    isMulti
                                 />
                             </div>
                         </FormControl>
