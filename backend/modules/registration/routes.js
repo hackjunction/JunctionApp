@@ -32,15 +32,13 @@ const getRegistration = asyncHandler(async (req, res) => {
 })
 
 const createRegistration = asyncHandler(async (req, res) => {
-    console.log("creating registration with data:",
-        "user: ", req.user,
-        "event ", req.event,
-        "data ", req.body)
+    console.log('creating registration from routes')
     const registration = await RegistrationController.createRegistration(
         req.user,
         req.event,
         req.body,
     )
+    console.log('registration complete')
     return res.status(201).json(registration)
 })
 
@@ -217,31 +215,39 @@ const bulkRejectRegistrations = asyncHandler(async (req, res) => {
 })
 
 const addPartnerToRegistrated = asyncHandler(async (req, res) => {
-
-    console.log("addPartnerToRegistrated", req.body)
+    console.log('addPartnerToRegistrated', req.body)
     //TODO: should check if the user is registered already first
     try {
-        const hasRegistration = await RegistrationController.getRegistration(req.body.userId, req.event._id)
+        const hasRegistration = await RegistrationController.getRegistration(
+            req.body.userId,
+            req.event._id,
+        )
         return res.status(200).json(hasRegistration)
     } catch (e) {
-        console.log("hasRegistration", e)
-        const registration = await RegistrationController.createPartnerRegistration(
-            req.body.userId, //switch to actual user
-            req.event, //slug
-            req.body.profile, /*data: {
+        console.log('hasRegistration', e)
+        const registration =
+            await RegistrationController.createPartnerRegistration(
+                req.body.userId, //switch to actual user
+                req.event, //slug
+                req.body.profile /*data: {
                     firstName: 'seppo',
                     lastName: 'pykälä',
                     email: 'samu.rotko@gmail.com'
-                  }*/
-        )
+                  }*/,
+            )
         return res.status(200).json(registration)
     }
+})
 
+const addGavelLoginToRegistrations = asyncHandler(async (req, res) => {
+    console.log('Event id', req.event._id)
+    console.log('From routes, for gavel login', req.body)
+    await RegistrationController.addGavelLoginToRegistrations(
+        req.event._id.toString(),
+        req.body,
+    )
 
-
-
-
-
+    return res.status(200).json([])
 })
 
 router.route('/').get(hasToken, getUserRegistrations)
@@ -386,6 +392,15 @@ router
         hasPermission(Auth.Permissions.MANAGE_EVENT),
         isEventOrganiser,
         addPartnerToRegistrated,
+    )
+
+router
+    .route('/:slug/gavel')
+    .post(
+        hasToken,
+        hasPermission(Auth.Permissions.MANAGE_EVENT),
+        isEventOrganiser,
+        addGavelLoginToRegistrations,
     )
 
 module.exports = router

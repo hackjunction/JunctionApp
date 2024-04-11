@@ -7,25 +7,18 @@ import { ProjectSchema, EventTypes } from '@hackjunction/shared'
 import { Grid, Box, Typography } from '@material-ui/core'
 import GradientBox from 'components/generic/GradientBox'
 import PageWrapper from 'components/layouts/PageWrapper'
-import ErrorsBox from 'components/generic/ErrorsBox'
-import ProjectImages from './ProjectImages'
-import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
-import ProjectsService from 'services/projects'
-import { useDebounce } from 'hooks/customHooks'
-
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import { makeStyles } from '@material-ui/core/styles'
-import { useTranslation } from 'react-i18next'
 import SubmissionFormCustomInput from 'components/inputs/SubmissionFormCustomInput'
 import BottomBar from 'components/inputs/BottomBar'
 import NameField from 'components/projects/ProjectSubmissionFields/NameField'
 import _ from 'lodash'
 import StatusField from 'components/projects/ProjectSubmissionFields/StatusField'
 import ProjectFieldsComponents from 'constants/projectFields'
-// import FileInput from 'pages/_organise/slug/edit/submission/components/inputs/FileInput'
+import { projectURLgenerator } from 'utils/dataModifiers'
 
 const useStyles = makeStyles(theme => ({
     uppercase: { 'text-transform': 'uppercase' },
@@ -34,26 +27,19 @@ const useStyles = makeStyles(theme => ({
 // TODO make the form labels and hints customizable
 const SubmissionForm = props => {
     const id = props.id
+    const projectURL = projectURLgenerator(props?.eventSlug, id)
     const handleProjectSelected = props.handleProjectSelected
     const classes = useStyles()
     const dispatch = useDispatch()
     const event = useSelector(DashboardSelectors.event)
     const idTokenData = useSelector(AuthSelectors.idTokenData)
-    const { t } = useTranslation()
     const projects = useSelector(DashboardSelectors.projects)
     const projectLoading = useSelector(DashboardSelectors.projectsLoading)
     const [project, setProject] = useState(null)
     const [projectStatus, setProjectStatus] = useState('')
 
-    // const [projectName, setProjectName] = useState(project?.name || '')
-    // const debouncedProjectName = useDebounce(projectName, 300)
-    // const [projectValidity, setProjectValidity] = useState({
-    //     errors: {},
-    //     state: 'initial',
-    // })
-
     useEffect(() => {
-        if (projects && projects.length && id) {
+        if (projects && projects.length > 0 && id) {
             const foundProject = projects.find(p => p._id === id)
             setProject(foundProject)
             setProjectStatus(foundProject.status)
@@ -61,40 +47,6 @@ const SubmissionForm = props => {
             setProject(null)
         }
     }, [id, projects])
-
-    // useEffect(() => {
-    //     setProjectValidity({
-    //         errors: {},
-    //         state: 'initial',
-    //     })
-
-    //     if (debouncedProjectName && debouncedProjectName === project?.name)
-    //         return
-
-    //     validateProject()
-    // }, [debouncedProjectName])
-
-    // const validateProject = async () => {
-    //     setProjectValidity({
-    //         errors: {},
-    //         state: 'loading',
-    //     })
-    //     const result = await ProjectsService.validateProject(
-    //         idToken,
-    //         event.slug,
-    //         {
-    //             projectName: debouncedProjectName,
-    //         },
-    //     )
-    //     const errors = Object.entries(result)
-    //         .filter(([, isInvalid]) => !!isInvalid)
-    //         .reduce(
-    //             (acc, [key, isInvalid]) => ({ ...acc, [key]: isInvalid }),
-    //             {},
-    //         )
-
-    //     setProjectValidity({ errors, state: 'loaded' })
-    // }
 
     const initialValues = {
         sourcePublic: true,
@@ -138,7 +90,10 @@ const SubmissionForm = props => {
     }, [event])
 
     const locationEnabled = useMemo(() => {
-        return event.eventType === EventTypes.physical.id
+        return (
+            event.eventType === EventTypes.physical.id ||
+            event.eventType === EventTypes.hybrid.id
+        )
     }, [event])
 
     const valuesFormatter = values => {
@@ -148,6 +103,7 @@ const SubmissionForm = props => {
             event.submissionFormQuestions.forEach(section => {
                 const sec = section.name
                 section.questions.forEach(question => {
+                    const label = question?.label
                     const que = question.name
                     const value = values[que]
                     const custom = {
@@ -155,11 +111,11 @@ const SubmissionForm = props => {
                         key: que,
                         value: value,
                     }
+                    if (label) custom['label'] = label
                     formData['submissionFormAnswers'].push(custom)
                 })
             })
         }
-        console.log('formData after formatting:>> ', formData)
         return formData
     }
 
@@ -195,7 +151,7 @@ const SubmissionForm = props => {
     const renderForm = formikProps => {
         if (projectLoading) {
             return <PageWrapper loading />
-        }
+        } //TODO: make better looking
         return (
             <Box className="tw-flex tw-flex-col tw-gap-4">
                 <GradientBox p={3} color="theme_white">
@@ -210,10 +166,27 @@ const SubmissionForm = props => {
                     >
                         {projectStatus}
                     </Typography>
-                    <Typography variant="body1">
-                        Remember to update the project status to final if you
-                        want this project to be graded!
-                    </Typography>
+                    {projectStatus !== 'final' ? (
+                        <Typography variant="body1">
+                            Remember to update the project status to final if
+                            you want this project to be graded!
+                        </Typography>
+                    ) : (
+                        projectURL && (
+                            <>
+                                <Typography variant="body1">
+                                    Your project's public URL is:
+                                </Typography>
+                                <a
+                                    href={projectURL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {projectURL}
+                                </a>
+                            </>
+                        )
+                    )}
                 </GradientBox>
                 <Box className="tw-p-6 tw-rounded-md tw-flex tw-flex-col tw-gap-4 tw-bg-white tw-shadow-md">
                     <Grid container spacing={6}>
@@ -252,14 +225,14 @@ const SubmissionForm = props => {
                 <BottomBar
                     onSubmit={async () => {
                         formikProps.submitForm().then(() => {
-                            if (event.allowProjectSubmissionsPerChallenge) {
+                            if (event.allowProjectSubmissionsPerChallenge)
                                 handleProjectSelected(undefined)
-                            }
                         })
                     }}
                     errors={formikProps.errors}
                     dirty={formikProps.dirty}
                     loading={formikProps.isSubmitting}
+                    loadingText="uploading, this might take a while ..."
                 />
             </Box>
         )
@@ -309,7 +282,7 @@ const SubmissionForm = props => {
                             'Oops, something went wrong...'
                         dispatch(
                             SnackbarActions.error(message, {
-                                autoHideDuration: 3000,
+                                autoHideDuration: 10000,
                             }),
                         )
                     } else {
@@ -320,10 +293,9 @@ const SubmissionForm = props => {
                         )
                     }
                 } catch (error) {
-                    console.error('An error occurred:', error)
                     dispatch(
                         SnackbarActions.error('Oops, something went wrong...', {
-                            autoHideDuration: 3000,
+                            autoHideDuration: 10000,
                         }),
                     )
                 } finally {

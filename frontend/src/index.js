@@ -25,7 +25,7 @@ library.add(fab)
 const { store, persistor } = configureStore()
 
 /** Disable log statements in production */
-function noop() { }
+function noop() {}
 
 if (!config.IS_DEBUG) {
     console.log = noop
@@ -62,7 +62,7 @@ ReactDOM.render(
                     <ThemeProvider theme={theme}>
                         <SnackbarProvider
                             maxSnack={3}
-                            autoHideDuration={1000}
+                            autoHideDuration={10000}
                             anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'right',

@@ -27,7 +27,7 @@ export default ({ value, onChange }) => {
     const [name, setName] = useState(undefined)
     const [slug, setSlug] = useState(undefined)
     const [partner, setPartner] = useState(undefined)
-    const [partnerEmail, setPartnerEmail] = useState("dev@hackjunction.com")//TODO: remove partner email entirely
+    const [partnerEmail, setPartnerEmail] = useState('dev@hackjunction.com') //TODO: remove partner email entirely
     const [title, setTitle] = useState(undefined)
     const [subtitle, setSubtitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
@@ -203,6 +203,12 @@ export default ({ value, onChange }) => {
         )
     }
 
+    const styling = {
+        challengeNameMaxLength: 200,
+        challengeSlugMaxLength: 200,
+        textAreaMaxLength: 3000,
+    }
+
     const renderForm = () => (
         <>
             <Grid item xs={12}>
@@ -210,6 +216,7 @@ export default ({ value, onChange }) => {
                     label="Challenge name"
                     value={name}
                     onChange={handleNameChange}
+                    maxLength={styling.challengeNameMaxLength}
                 />
                 <Typography variant="caption">
                     The unique publicly visible name of the challenge.
@@ -220,6 +227,7 @@ export default ({ value, onChange }) => {
                     label="Unique slug"
                     value={slug}
                     onChange={setSlug}
+                    maxLength={styling.challengeSlugMaxLength}
                 />
                 <Typography variant="caption">
                     A unique slug for the challenge. This will be used in e.g.
@@ -233,7 +241,10 @@ export default ({ value, onChange }) => {
                     onChange={setPartner}
                 />
                 <Typography variant="caption">
-                    Who is the partner responsible for this challenge? <b>CAUTION: </b>If you are using partner meetings or reviewing, this has to currently match <b>EXACTLY</b> to partner organization mentoring this challenge.
+                    Who is the partner responsible for this challenge?{' '}
+                    <b>CAUTION: </b>If you are using partner meetings or
+                    reviewing, this has to currently match <b>EXACTLY</b> to
+                    partner organization mentoring this challenge.
                 </Typography>
             </Grid>
             {/* <Grid item xs={12}>
@@ -275,6 +286,7 @@ export default ({ value, onChange }) => {
                     value={description}
                     onChange={setDescription}
                     placeholder="Description goes here"
+                    maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">
                     Challenge description.
@@ -287,6 +299,7 @@ export default ({ value, onChange }) => {
                     value={insights}
                     onChange={setInsights}
                     placeholder="Insights go here"
+                    maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">Challenge insights.</Typography>
             </Grid>
@@ -297,6 +310,7 @@ export default ({ value, onChange }) => {
                     value={resources}
                     onChange={setResources}
                     placeholder="Resource go here"
+                    maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">Challenge resources.</Typography>
             </Grid>
@@ -307,6 +321,7 @@ export default ({ value, onChange }) => {
                     value={prizes}
                     onChange={setPrizes}
                     placeholder="Prizes go here"
+                    maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">Challenge Prizes.</Typography>
             </Grid>
@@ -317,6 +332,7 @@ export default ({ value, onChange }) => {
                     value={criteria}
                     onChange={setCriteria}
                     placeholder="Criteria go here"
+                    maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">Challenge criteria.</Typography>
             </Grid>
@@ -327,6 +343,7 @@ export default ({ value, onChange }) => {
                     value={companyInfo}
                     onChange={setCompanyInfo}
                     placeholder="Company info goes here"
+                    maxLength={styling.textAreaMaxLength}
                 />
                 <Typography variant="caption">Company Info</Typography>
             </Grid>

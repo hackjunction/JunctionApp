@@ -28,6 +28,11 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const event = useSelector(DashboardSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
 
+    console.log('annotator :>> ', annotator)
+    console.log('prevId :>> ', prevId)
+    console.log('nextId :>> ', nextId)
+    console.log('isFirstChoice :>> ', isFirstChoice)
+
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [projects, setProjects] = useState()
@@ -38,10 +43,12 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
     const fetchProjects = useCallback(async () => {
         setLoading(true)
         try {
+            console.log('getting next')
             const [prev, next] = await Promise.all([
                 GavelService.getProjectDetails(idToken, prevId),
                 GavelService.getProjectDetails(idToken, nextId),
             ])
+            console.log(prev, next)
             setProjects({ prev, next })
         } catch (err) {
             dispatch(
@@ -95,7 +102,8 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     </Typography>
                     <Markdown
                         source={
-                            event.eventType === 'physical'
+                            event.eventType === 'physical' ||
+                            event.eventType === 'hybrid'
                                 ? t('Gavel_compare_projects_physical_')
                                 : t('Gavel_compare_projects_online_')
                         }
@@ -119,7 +127,8 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                     </Typography>
                     <Markdown
                         source={
-                            event.eventType === 'physical'
+                            event.eventType === 'physical' ||
+                            event.eventType === 'hybrid'
                                 ? t('Gavel_compare_projects_physical2_')
                                 : t('Gavel_compare_projects_online2_')
                         }
@@ -220,7 +229,7 @@ export default ({ annotator, prevId, nextId, isFirstChoice }) => {
                 <ConfirmDialog
                     open={confirmOpen}
                     onClose={() => setConfirmOpen(false)}
-                    onCancel={() => { }}
+                    onCancel={() => {}}
                     onOk={handleSkip}
                     title="Are you sure?"
                     message="Have you looked around carefully for the project? Try to check nearby tables if you can find the team there. If you really can't find them, you can skip the project."

@@ -122,7 +122,7 @@ export default () => {
                                 </Typography>
                             ) : (
                                 <Button
-                                    color="theme_turquoise"
+                                    color="primary"
                                     variant="contained"
                                     onClick={handleCheckIn}
                                 >

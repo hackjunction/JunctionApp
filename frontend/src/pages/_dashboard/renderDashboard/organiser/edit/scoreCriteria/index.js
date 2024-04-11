@@ -27,7 +27,7 @@ export default () => {
                     >
                         Score and feedback settings
                     </Typography>
-                    <Typography variant="p" component="p">
+                    <Typography variant="body2" component="p">
                         Customize how judged evaluate projects and set the
                         visibility of scores and feedback for participants.
                     </Typography>

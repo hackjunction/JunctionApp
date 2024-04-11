@@ -59,18 +59,18 @@ export const updateRegistrationChecklist =
     }
 
 export const updateRecruitersForEvent =
-    (recruiters) => async (dispatch, getState) => {
+    recruiters => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
         const userIds = recruiters?.map(rec => {
             return rec.recruiterId
         })
 
-
         dispatch({
             type: ActionTypes.UPDATE_EVENT_RECRUITERS,
             promise: UserProfilesService.getPublicUserProfiles(userIds),
             meta: {
-                onFailure: e => console.log('Error updating recruiters for this event', e),
+                onFailure: e =>
+                    console.log('Error updating recruiters for this event', e),
             },
         })
     }
@@ -181,27 +181,39 @@ export const createPartnerRegistration =
         return registration
     }
 
-export const updateTeams = (slug, page, size, filter) => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    if (!slug) return
-    if (filter === 'All challenges') {
-        dispatch({
-            type: ActionTypes.UPDATE_TEAMS,
-            promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug, page, size),
-            meta: {
-                onFailure: e => console.log('Error updating teams', e),
-            },
-        })
-    } else {
-        dispatch({
-            type: ActionTypes.UPDATE_TEAMS,
-            promise: TeamsService.getAllTeamsForEventParticipant(idToken, slug, page, size, filter),
-            meta: {
-                onFailure: e => console.log('Error updating teams', e),
-            },
-        })
+export const updateTeams =
+    (slug, page, size, filter) => async (dispatch, getState) => {
+        const idToken = AuthSelectors.getIdToken(getState())
+        if (!slug) return
+        if (filter === 'All challenges') {
+            dispatch({
+                type: ActionTypes.UPDATE_TEAMS,
+                promise: TeamsService.getAllTeamsForEventParticipant(
+                    idToken,
+                    slug,
+                    page,
+                    size,
+                ),
+                meta: {
+                    onFailure: e => console.log('Error updating teams', e),
+                },
+            })
+        } else {
+            dispatch({
+                type: ActionTypes.UPDATE_TEAMS,
+                promise: TeamsService.getAllTeamsForEventParticipant(
+                    idToken,
+                    slug,
+                    page,
+                    size,
+                    filter,
+                ),
+                meta: {
+                    onFailure: e => console.log('Error updating teams', e),
+                },
+            })
+        }
     }
-}
 
 export const updateSelectedTeam =
     (slug, code) => async (dispatch, getState) => {
@@ -397,7 +409,7 @@ export const organiserRemoveMemberFromTeam =
             userId,
         )
 
-        console.log("actions done ", team)
+        console.log('actions done ', team)
 
         return team
     }
@@ -468,15 +480,11 @@ export const updateProjects = slug => async (dispatch, getState) => {
 export const createProject = (slug, data) => async (dispatch, getState) => {
     try {
         const idToken = AuthSelectors.getIdToken(getState())
-        const fileData = await fileAttachmentFinder(data, idToken)
+        // const fileData = await fileAttachmentFinder(data, idToken)
 
-        if (fileData) {
-            await ProjectsService.createProjectForEventAndTeam(
-                idToken,
-                slug,
-                fileData,
-            )
-        }
+        // if (fileData) {
+        // }
+        await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
         const projects = await ProjectsService.getProjectsForEventAndTeam(
             idToken,
             slug,
@@ -644,15 +652,11 @@ export const deleteFileForProject = fileId => async (dispatch, getState) => {
 export const editProject = (slug, data) => async (dispatch, getState) => {
     try {
         const idToken = AuthSelectors.getIdToken(getState())
-        const fileData = await fileAttachmentFinder(data, idToken)
+        // const fileData = await fileAttachmentFinder(data, idToken)
 
-        if (fileData) {
-            await ProjectsService.updateProjectForEventAndTeam(
-                idToken,
-                slug,
-                fileData,
-            )
-        }
+        // if (fileData) {
+        // }
+        await ProjectsService.updateProjectForEventAndTeam(idToken, slug, data)
         const projects = await ProjectsService.getProjectsForEventAndTeam(
             idToken,
             slug,
@@ -673,7 +677,8 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
 
 export const updateAnnotator = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-
+    //get idToken for gavel start voting stress test
+    console.log(idToken)
     const { error } = await dispatch({
         type: ActionTypes.UPDATE_ANNOTATOR,
         promise: GavelService.getAnnotator(idToken, slug), //,
@@ -749,8 +754,11 @@ export const setFirstProjectSeen = slug => async (dispatch, getState) => {
 export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
+    //get idToken and winnerId for gavel voting stress test
+    console.log(slug, winnerId)
     try {
         const annotator = await GavelService.submitVote(idToken, slug, winnerId)
+        console.log(annotator)
         dispatch({
             type: ActionTypes.EDIT_ANNOTATOR,
             payload: annotator,

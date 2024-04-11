@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const typeToClass = {
     heading: 'tw-text-xl tw-font-bold',
@@ -22,7 +22,7 @@ const EditableText = ({ value, save, className = '', type = 'default' }) => {
         }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCurrentValue(value)
     }, [value])
 
@@ -42,7 +42,7 @@ const EditableText = ({ value, save, className = '', type = 'default' }) => {
             onClick={() => setIsEditable(true)}
             className={`tw-w-full tw-items-start tw-justify-start tw-text-gray-800 tw-cursor-pointer ${displayClass}`}
         >
-            {currentValue}
+            {currentValue || 'Click to edit'}
         </span>
     )
 }

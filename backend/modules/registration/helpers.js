@@ -56,7 +56,6 @@ const RegistrationHelpers = {
             .validate(data, { stripUknown: true })
             .catch(e => {
                 // TODO proper log
-                console.log('error in validateAnswers', e)
                 return minSchema
                     .validate(data, { stripUknown: true })
                     .catch(ee => {
@@ -89,12 +88,8 @@ const RegistrationHelpers = {
         })
 
         const schema = yup.object().shape(validationSchema)
-        console.log('users', d)
 
-        const data = schema.validate(d, { stripUknown: true }).catch(e => {
-            console.log('RFU', e)
-        })
-        console.log('got data', data)
+        const data = schema.validate(d, { stripUknown: true }).catch(e => {})
         return data
     },
     buildAggregation: (eventId, userId, qp) => {

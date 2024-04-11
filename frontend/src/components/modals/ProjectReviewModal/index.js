@@ -1,12 +1,6 @@
 import React from 'react'
 
-import {
-    Typography,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    Avatar,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent } from '@material-ui/core'
 import ReviewElement from './ReviewElement'
 
 const ProjectScoreModal = ({
@@ -15,8 +9,6 @@ const ProjectScoreModal = ({
     projectScoreData,
     showScore = false,
 }) => {
-    console.log('Score data object from review modal', projectScoreData)
-
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Feedback received</DialogTitle>
@@ -37,9 +29,13 @@ const ProjectScoreModal = ({
                             />
                         )}
                     {projectScoreData?.reviewers?.length > 0 &&
-                        projectScoreData.reviewers.map(reviewer => {
+                        projectScoreData.reviewers.map((reviewer, index) => {
+                            if (!reviewer?.message) {
+                                return null
+                            }
                             return (
                                 <ReviewElement
+                                    key={index}
                                     reviewer={reviewer}
                                     showScore={showScore}
                                 />

@@ -21,7 +21,6 @@ const TeamSchema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
-        // default: generateUniqueCode,
     },
     complete: {
         type: Boolean,
@@ -47,9 +46,7 @@ const TeamSchema = new mongoose.Schema({
     },
     subtitle: {
         type: String,
-        // required: true,
         length: 50,
-        // default: `Team subtitle`,
     },
     description: {
         type: String,
@@ -57,34 +54,24 @@ const TeamSchema = new mongoose.Schema({
     },
     challenge: {
         type: String,
-        // required: false,
-        // default: '',
     },
     ideaTitle: {
         type: String,
-        // required: true,
         length: 50,
-        // default: `Idea title`,
     },
     ideaDescription: {
         type: String,
-        // required: true,
         length: 300,
-        // default: `Idea description`,
     },
     email: {
         type: String,
-        // required: true,
         length: 50,
-        // default: 'test@test.com',
     },
     telegram: {
         type: String,
-        // required: false,
     },
     discord: {
         type: String,
-        // required: false,
     },
 })
 

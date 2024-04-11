@@ -23,6 +23,17 @@ const RegistrationFieldsCustom = {
             return required ? base.required() : base
         },
     },
+    link: {
+        id: 'link',
+        validationSchema: (required, question) => {
+            const base = yup
+                .string()
+                .min(required ? 1 : 0)
+                .max(300)
+                .label(question.label)
+            return required ? base.required() : base
+        },
+    },
     boolean: {
         id: 'boolean',
         validationSchema: (required, question) => {

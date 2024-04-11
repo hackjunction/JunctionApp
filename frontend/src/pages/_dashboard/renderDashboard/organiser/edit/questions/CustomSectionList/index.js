@@ -10,6 +10,9 @@ import { now } from 'moment'
 
 export default ({ sections = [], onChange, projectsExist = false }) => {
     const { t } = useTranslation()
+
+    // TODO create hook
+
     const handleAdd = useCallback(
         section => {
             const newValue = sections.concat(section)
@@ -67,18 +70,18 @@ export default ({ sections = [], onChange, projectsExist = false }) => {
         [onChange, sections],
     )
 
-    const handleEditDone = useCallback(
-        section => {
-            const newValue = sections.map(s => {
-                if (s.name === section.name) {
-                    return section
-                }
-                return s
-            })
-            onChange(newValue)
-        },
-        [onChange, sections],
-    )
+    // const handleEditDone = useCallback(
+    //     section => {
+    //         const newValue = sections.map(s => {
+    //             if (s.name === section.name) {
+    //                 return section
+    //             }
+    //             return s
+    //         })
+    //         onChange(newValue)
+    //     },
+    //     [onChange, sections],
+    // )
 
     const renderAdd = () => (
         <Button

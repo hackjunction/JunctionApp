@@ -27,6 +27,8 @@ router.route('/:slug/projects').get(
     hasToken,
     isEventOrganiser,
     asyncHandler(async (req, res) => {
+        console.log('>>>>> getting projects for event', req.event._id)
+        console.log(req.params.slug)
         const projects = await GavelController.getProjectsForEvent(
             req.event._id,
         )
@@ -38,6 +40,8 @@ router.route('/:slug/annotators').get(
     hasToken,
     isEventOrganiser,
     asyncHandler(async (req, res) => {
+        console.log('>>>>> getting annotators for event', req.event._id)
+        console.log(req.params.slug)
         const annotators = await GavelController.getAnnotatorsForEvent(
             req.event._id,
         )

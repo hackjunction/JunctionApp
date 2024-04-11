@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
@@ -45,6 +45,10 @@ const useStyles = makeStyles(theme => ({
             display: 'none',
         },
     },
+    sectionsNum: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
     buttonIcon: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
@@ -58,6 +62,7 @@ const RegistrationBottomBar = ({
     onNext,
     errors,
     dirty,
+    sectionsInfo,
 }) => {
     const classes = useStyles()
     const [enabled, setEnabled] = useState(false)
@@ -77,6 +82,11 @@ const RegistrationBottomBar = ({
                 </Button>
             )}
             <Box className={classes.right}>
+                {sectionsInfo && (
+                    <Typography className={classes.sectionsNum}>
+                        {`${sectionsInfo.activeSection}/${sectionsInfo.sections}`}
+                    </Typography>
+                )}
                 <ErrorDisplay errors={errors} />
                 <Button
                     className={classes.nextButton}

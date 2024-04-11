@@ -1,7 +1,13 @@
 import React, { useEffect, useLayoutEffect } from 'react'
 import { useRouteMatch } from 'react-router'
 import { useDispatch } from 'react-redux'
-import { Switch, Route, Redirect, useLocation, useParams } from 'react-router-dom'
+import {
+    Switch,
+    Route,
+    Redirect,
+    useLocation,
+    useParams,
+} from 'react-router-dom'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import * as RecruitmentActions from 'redux/recruitment/actions'
@@ -9,14 +15,13 @@ import * as RecruitmentActions from 'redux/recruitment/actions'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
 import SearchPage from './default'
-import AdminPage from './admin'
+// import AdminPage from './admin'
 import DetailPage from './id'
 
 export default () => {
-    const dispatch = useDispatch()
-    const location = useLocation()
+    // const dispatch = useDispatch()
+    // const location = useLocation()
     const match = useRouteMatch()
-
 
     //console.log(match.url)
 
@@ -29,46 +34,15 @@ export default () => {
                 path={`${match.url}/:id`}
                 component={DetailPage}
             />
+            {/* <Route
+                exact={false}
+                path={`${match.url}/admin`}
+                component={AdminPage}
+            /> */}
             <Redirect to={`${match.url}`} />
         </Switch>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useRef } from 'react'
 // import FormControl from '@material-ui/core/FormControl'
@@ -81,9 +55,6 @@ export default () => {
 // import { Grid, Typography } from '@material-ui/core'
 
 // export default () => {
-
-
-
 
 //     return (
 //         <>

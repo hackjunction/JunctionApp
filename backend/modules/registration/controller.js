@@ -15,7 +15,7 @@ const Registration = require('./model')
 const { NotFoundError, ForbiddenError } = require('../../common/errors/errors')
 const RegistrationHelpers = require('./helpers')
 const EmailTaskController = require('../email-task/controller')
-const { checklistItemsOnline, checklistItemsPhysical } = require('./checklists')
+// const { checklistItemsOnline, checklistItemsPhysical } = require('./checklists')
 
 const STATUSES = RegistrationStatuses.asObject
 const TRAVEL_GRANT_STATUSES = RegistrationTravelGrantStatuses.asObject
@@ -28,56 +28,49 @@ controller.getUserRegistrations = user => {
 }
 
 controller.createRegistration = async (user, event, data) => {
-    console.log("user", user)
     const answers = await RegistrationHelpers.registrationFromUser(data)
     const registration = new Registration({
         event: event._id.toString(),
         user: user.sub,
         answers,
     })
-    if (event.eventType === 'online') {
-        registration.checklist = {
-            items: checklistItemsOnline(),
-        }
-    } else {
-        registration.checklist = {
-            items: checklistItemsPhysical(),
-        }
-    }
+    // if (event.eventType === 'online') {
+    //     registration.checklist = {
+    //         items: checklistItemsOnline(),
+    //     }
+    // } else {
+    //     registration.checklist = {
+    //         items: checklistItemsPhysical(),
+    //     }
+    // }
     registration.status = RegistrationStatuses.asObject.incomplete.id
-    console.log("createRegistration", registration)
+    console.log('createRegistration', registration)
     return registration.save()
-    /* .catch(function (err) {
-        console.log(err.name, err.errors)
-    }) */
 }
 
 controller.createPartnerRegistration = async (user, event, data) => {
-    console.log("user", user)
+    console.log('user', user)
     const answers = await RegistrationHelpers.registrationFromUser(data)
     const registration = new Registration({
         event: event._id.toString(),
         user: user,
         answers,
     })
-    if (event.eventType === 'online') {
-        registration.checklist = {
-            items: checklistItemsOnline(),
-        }
-    } else {
-        registration.checklist = {
-            items: checklistItemsPhysical(),
-        }
-    }
+    // if (event.eventType === 'online') {
+    //     registration.checklist = {
+    //         items: checklistItemsOnline(),
+    //     }
+    // } else {
+    //     registration.checklist = {
+    //         items: checklistItemsPhysical(),
+    //     }
+    // }
     registration.status = RegistrationStatuses.asObject.incomplete.id
-    console.log("createRegistration", registration)
+    console.log('create registration for partner', registration)
     return registration.save()
-    /* .catch(function (err) {
-        console.log(err.name, err.errors)
-    }) */
 }
 
-controller.getRegistration = (userId, eventId) => {
+controller.getRegistration = async (userId, eventId) => {
     return Registration.findOne({
         event: eventId,
         user: userId,
@@ -99,7 +92,6 @@ controller.updateRegistration = (user, event, data) => {
                 await RegistrationHelpers.validateAnswers(data, event)
             // answers are valid
             if (answers) {
-
                 return Registration.updateAllowed(registration, { answers })
             }
             return false
@@ -120,15 +112,20 @@ controller.finishRegistration = (user, event, data) => {
                         registration.status ===
                         RegistrationStatuses.asObject.incomplete.id
                     ) {
-                        if (event.eventType === EventTypes.physical.id) {
-                            registration.status =
-                                RegistrationStatuses.asObject.pending.id
-                        }
+                        registration.status =
+                            RegistrationStatuses.asObject.pending.id
+                        // if (
+                        //     event.eventType === EventTypes.physical.id ||
+                        //     event.eventType === EventTypes.hybrid.id
+                        // ) {
+                        //     registration.status =
+                        //         RegistrationStatuses.asObject.pending.id
+                        // }
                         // TODO we most likely don't want to do this here? Get desired state from event?
-                        if (event.eventType === EventTypes.online.id) {
-                            registration.status =
-                                RegistrationStatuses.asObject.checkedIn.id
-                        }
+                        // if (event.eventType === EventTypes.online.id) {
+                        //     registration.status =
+                        //         RegistrationStatuses.asObject.checkedIn.id
+                        // }
                     }
                     return Registration.updateAllowed(registration, { answers })
                 }
@@ -460,7 +457,7 @@ controller.rejectPendingTravelGrants = eventId => {
 controller.getFullRegistration = (eventId, registrationId) => {
     const query =
         mongoose.Types.ObjectId.isValid(registrationId) &&
-            registrationId.indexOf('|') === -1
+        registrationId.indexOf('|') === -1
             ? { _id: registrationId }
             : { user: registrationId }
     return Registration.findOne(query)
@@ -523,6 +520,44 @@ controller.rejectSoftRejected = async eventId => {
         user.save()
     })
     return rejected
+}
+
+controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
+    console.log('Gavel data received', gavelData, typeof gavelData)
+    gavelData.forEach(gavel => {
+        if (
+            typeof gavel.registration !== 'string' ||
+            typeof gavel.link !== 'string'
+        ) {
+            throw new Error('Gavel data is invalid')
+        }
+    })
+    let updateCount = 0
+    const registrations = await Registration.find({
+        event: eventId,
+        status: RegistrationStatuses.asObject.checkedIn.id,
+    })
+    console.log('Registrations found', registrations.length)
+    console.log('Registrations data', registrations)
+    const registrationCount = registrations.length
+
+    gavelData.forEach(gavel => {
+        const registration = registrations.find(
+            r => r._id.toString() === gavel.registration,
+        )
+        if (registration) {
+            registration.gavelLogin = gavel.link
+            updateCount++
+            console.log('Registration full data', registration)
+            registration.save()
+        }
+    })
+
+    console.log(
+        'Modified counts, updated/total',
+        updateCount,
+        registrationCount,
+    )
 }
 
 module.exports = controller

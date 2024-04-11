@@ -25,15 +25,10 @@ import EventsGrid from './EventsGrid'
 
 const useStyles = makeStyles(theme => ({
     root: {
-
-
-        background: theme.palette.theme_white.main//`linear-gradient(to right bottom, ${theme.palette.secondary.contrastText}, ${theme.palette.success.contrastText}, ${theme.palette.primary.contrastText})`,
-
-
+        background: theme.palette.theme_white.main, //`linear-gradient(to right bottom, ${theme.palette.secondary.contrastText}, ${theme.palette.success.contrastText}, ${theme.palette.primary.contrastText})`,
 
         //'linear-gradient(to bottom right, blue, pink)',
         //`linearGradient(${theme.palette.primary}, ${theme.palette.secondary})`,
-
     },
 }))
 
@@ -44,12 +39,9 @@ export default () => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const classes = useStyles()
-    console.log("activeEvents", activeEvents)
-
-
+    console.log('activeEvents', activeEvents)
 
     return (
-
         <PageWrapper header={() => <GlobalNavBar />} footer={() => <Footer />}>
             <div className={classes.root}>
                 <Helmet>
@@ -60,7 +52,10 @@ export default () => {
                     />
                     <meta name="title" content={config.SEO_PAGE_TITLE} />
                     <meta property="og:title" content={config.SEO_PAGE_TITLE} />
-                    <meta name="twitter:title" content={config.SEO_PAGE_TITLE} />
+                    <meta
+                        name="twitter:title"
+                        content={config.SEO_PAGE_TITLE}
+                    />
                     <meta
                         name="description"
                         content={config.SEO_PAGE_DESCRIPTION}
@@ -80,7 +75,10 @@ export default () => {
                     <meta property="og:image:width" content="1200" />
                     <meta property="og:image:height" content="630" />
                     <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:site" content={config.SEO_TWITTER_HANDLE} />
+                    <meta
+                        name="twitter:site"
+                        content={config.SEO_TWITTER_HANDLE}
+                    />
                     <meta
                         name="twitter:creator"
                         content={config.SEO_TWITTER_HANDLE}

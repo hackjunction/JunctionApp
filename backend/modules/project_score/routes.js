@@ -12,8 +12,8 @@ const {
     getEventFromParams,
     hasPartnerToken,
     isEventPartner,
+    isOrganiserOrCanSubmitProject,
 } = require('../../common/middleware/events')
-const { registrationAccepted } = require('../email-task/types')
 
 const addProjectScore = asyncHandler(async (req, res) => {
     console.log('addProjectScore is running')
@@ -121,7 +121,8 @@ router.get('/event/:slug', getEventFromParams, getPublicScores)
 router.get(
     '/event/:slug/project/:projectId',
     hasToken,
-    isEventOrganiser,
+    isOrganiserOrCanSubmitProject,
+    //isEventOrganiser,
     getScoreByProjectId,
 )
 

@@ -49,7 +49,7 @@ const OrganizationDetail = ({ organization, handleRemove }) => {
                             to={organization.link}
                             target="_blank"
                         >
-                            <Button color="theme_turquoise" variant="contained">
+                            <Button color="primary" variant="contained">
                                 Link
                             </Button>
                         </OutboundLink>

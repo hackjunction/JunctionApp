@@ -16,8 +16,7 @@ import * as UserActions from 'redux/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'
-
-
+import { debugGroup } from 'utils/debuggingTools'
 
 //TODO: make this to use theme colors and make prettier
 const useStyles = makeStyles({
@@ -66,49 +65,48 @@ export default () => {
     var date = new Date()
     const isodate = date.toISOString()
 
-    const [searchTerm, setSearchTerm] = React.useState('')
+    const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState(organizerEvents)
     const [name, setName] = useState('')
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)
     const hasError = Boolean(error)
 
-
-
     const isOrganizer = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>
-        ["Organiser", "AssistantOrganiser", "SuperAdmin"].includes(r)
+        ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
     )
 
+    // useEffect(() => {
+    //     if (hasError) {
+    //         if (name.length < 5) {
+    //             setError(t('Name_must_five_'))
+    //         } else if (name.length >= 50) {
+    //             setError(t('Name_must_under_'))
+    //         } else if (name === 'default') {
+    //             setError(t('Name_not_default_'))
+    //         } else {
+    //             setError()
+    //         }
+    //     }
+    // }, [name, hasError, t])
 
-    useEffect(() => {
-        if (hasError) {
-            if (name.length < 5) {
-                setError(t('Name_must_five_'))
-            } else if (name.length >= 50) {
-                setError(t('Name_must_under_'))
-            } else if (name === "default") {
-                setError(t('Name_not_default_'))
-            } else {
-                setError()
-            }
-        }
-    }, [name, hasError, t])
+    // const checkName = useCallback(() => {
+    //     if (name.length < 5) {
+    //         setError(t('Name_must_five_'))
+    //         return false
+    //     } else if (name.length >= 50) {
+    //         setError(t('Name_must_under_'))
+    //         return false
+    //     } else if (name === 'default') {
+    //         setError(t('Name_not_default_'))
+    //         return false
+    //     }
+    //     return true
+    // }, [name.length, t])
 
-    const checkName = useCallback(() => {
-        if (name.length < 5) {
-            setError(t('Name_must_five_'))
-            return false
-        } else if (name.length >= 50) {
-            setError(t('Name_must_under_'))
-            return false
-        } else if (name === "default") {
-            setError(t('Name_not_default_'))
-            return false
-        }
-        return true
-    }, [name.length, t])
+    console.log('organizerEvents', organizerEvents)
 
-    console.log("organizerEvents", organizerEvents)
+    //TODO implement pagination to improve performance of organize tab
 
     useEffect(() => {
         const results = organizerEvents.filter(
@@ -119,108 +117,100 @@ export default () => {
         setSearchResults(results)
     }, [organizerEvents, searchTerm])
 
-
     //TODO: super slow on superadmin. fix the rendering
-    return (organizerEvents.length === 0 || !isOrganizer) ?
-        (
-            (
-                <>
+    return organizerEvents.length === 0 || !isOrganizer ? (
+        <>
+            <PageHeader
+                heading="Your Admin Events"
+                subheading="You don't have any events yet. Wanna create one?"
+            />
+            <Box mt={3}>
+                <Grid container spacing={3}>
+                    <CreateEventCard></CreateEventCard>
+                </Grid>
+            </Box>
+        </>
+    ) : (
+        <>
+            <PageHeader
+                heading="Your admin events"
+                subheading="You are organizing these events"
+            />
+            <Box mt={3}>
+                <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center"
+                    spacing={3}
+                >
+                    <Grid item>
+                        <SearchIcon />
+                    </Grid>
+                    <Grid item xs>
+                        <TextInput
+                            value={searchTerm}
+                            onChange={setSearchTerm}
+                            placeholder={t('Search_')}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3}>
+                    <CreateEventCard />
+                    {searchResults.map(event => (
+                        <Grid item xs={12} md={6} lg={4}>
+                            <div className={classes.statusText}>
+                                {event.published && event.approved ? (
+                                    <span className={classes.green}>
+                                        Published!
+                                    </span>
+                                ) : null}
+                                {event.published && !event.approved ? (
+                                    <span className={classes.yellow}>
+                                        Waiting approval
+                                    </span>
+                                ) : null}
+                                {!event.published ? (
+                                    <span className={classes.orange}>
+                                        Not published
+                                    </span>
+                                ) : null}
+                            </div>
 
-                    <PageHeader
-                        heading="Your Admin Events"
-                        subheading="You don't have any events yet. Wanna create one?"
-                    />
-                    <Box mt={3}>
-                        <Grid container spacing={3}>
-                            <CreateEventCard></CreateEventCard>
-                        </Grid>
-                    </Box>
-                </>
-            )
-        )
-        :
-        (
-            <>
-
-
-                <PageHeader
-                    heading="Your admin events"
-                    subheading="You are organizing these events"
-                />
-                <Box mt={3}>
-                    <Grid
-                        container
-                        direction="row"
-                        justify="flex-start"
-                        alignItems="center"
-                        spacing={3}
-                    >
-                        <Grid item>
-                            <SearchIcon />
-                        </Grid>
-                        <Grid item xs>
-                            <TextInput
-                                value={searchTerm}
-                                onChange={setSearchTerm}
-                                placeholder={t('Search_')}
+                            <NewEventCard
+                                event={event}
+                                buttons={[
+                                    <Button
+                                        size="small"
+                                        onClick={() =>
+                                            dispatch(
+                                                push('/events/' + event.slug),
+                                            )
+                                        }
+                                    >
+                                        {t('See_more_')}
+                                    </Button>,
+                                    <Button
+                                        size="small"
+                                        onClick={() => {
+                                            dispatch(
+                                                UserActions.setAccessRight(
+                                                    'organizer',
+                                                ),
+                                            )
+                                            dispatch(
+                                                push(`/organise/${event.slug}`),
+                                            )
+                                        }}
+                                    >
+                                        {t('Manage_')}
+                                    </Button>,
+                                ]}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid container spacing={3}>
-                        <CreateEventCard></CreateEventCard>
-                        {searchResults.map(event => (
-                            <Grid item xs={12} md={6} lg={4}>
-                                <div className={classes.statusText}>
-                                    {event.published && event.approved ? (
-                                        <span className={classes.green}>
-                                            Published!
-                                        </span>
-                                    ) : null}
-                                    {event.published && !event.approved ? (
-                                        <span className={classes.yellow}>
-                                            Waiting approval
-                                        </span>
-                                    ) : null}
-                                    {!event.published ? (
-                                        <span className={classes.orange}>
-                                            Not published
-                                        </span>
-                                    ) : null}
-                                </div>
-
-                                <NewEventCard
-                                    event={event}
-                                    buttons={[
-
-                                        <Button
-                                            size="small"
-                                            onClick={() =>
-                                                dispatch(push('/events/' + event.slug))
-                                            }
-                                        >
-                                            {t('See_more_')}
-                                        </Button>,
-                                        <Button
-                                            size="small"
-                                            onClick={() => {
-                                                dispatch(UserActions.setAccessRight('organizer'))
-                                                dispatch(
-                                                    push(`/organise/${event.slug}`),
-                                                )
-                                            }
-                                            }
-                                        >
-                                            {t('Manage_')}
-                                        </Button>,
-                                    ]}
-                                />
-
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
-            </>
-        )
-
-
+                    ))}
+                </Grid>
+            </Box>
+        </>
+    )
 }

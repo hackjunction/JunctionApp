@@ -50,7 +50,7 @@ export default () => {
                                 before we'll begin processing your application!
                             </Typography>
                             <Button
-                                color="theme_turquoise"
+                                color="primary"
                                 variant="contained"
                                 onClick={() =>
                                     dispatch(
@@ -87,7 +87,7 @@ export default () => {
                                 easier for us to review your application.
                             </Typography>
                             <Button
-                                color="theme_turquoise"
+                                color="primary"
                                 variant="contained"
                                 onClick={() =>
                                     dispatch(

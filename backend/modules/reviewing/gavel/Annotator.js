@@ -111,7 +111,7 @@ GavelAnnotatorSchema.methods.canVote = async function () {
 
     if (!EventHelpers.isVotingOpen(event, moment)) {
         return Promise.reject(
-            new ForbiddenError('Cannot subm,it votes while voting is not open'),
+            new ForbiddenError('Cannot submit votes while voting is not open'),
         )
     }
 
@@ -122,8 +122,7 @@ GavelAnnotatorSchema.methods.canVote = async function () {
     if (diffSeconds < Settings.ANNOTATOR_WAIT_SECONDS) {
         return Promise.reject(
             new ForbiddenError(
-                `Must wait ${
-                    Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
+                `Must wait ${Settings.ANNOTATOR_WAIT_SECONDS - diffSeconds
                 } more seconds before voting again`,
             ),
         )
@@ -172,7 +171,7 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
         availableProjectsQuery,
         activeAnnotatorsQuery,
     ])
-
+    //console.log("allProjects", allProjects, "activeAnnotators", activeAnnotators)
     // Helper function
     const asyncFilter = async (arr, predicate) => {
         const results = await Promise.all(arr.map(predicate))
@@ -189,11 +188,11 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
                 if (project) {
                     const team = await Team.findById(project.team)
                     if (team) {
-                        console.log(this.user, team.owner, !team.members)
-                        console.log(
-                            this.user !== team.owner &&
-                                !team.members.includes(this.user),
-                        )
+                        // console.log(this.user, team.owner, !team.members)
+                        // console.log(
+                        //     this.user !== team.owner &&
+                        //     !team.members.includes(this.user),
+                        // )
                         return (
                             this.user !== team.owner &&
                             !team.members.includes(this.user)
@@ -233,18 +232,17 @@ GavelAnnotatorSchema.methods.getPreferredProjects = async function () {
     const lessSeenProjects = preferredProjects.filter(project => {
         return project.viewedBy.length < Settings.ITEM_MIN_VIEWS
     })
-
     return lessSeenProjects.length > 0 ? lessSeenProjects : preferredProjects
 }
 
 GavelAnnotatorSchema.methods.getNextProject = async function () {
     // Remove projects that are by the person reviewing
     const preferredProjects = await this.getPreferredProjects()
-    console.log('preferredProjects', preferredProjects)
-    console.log(preferredProjects.length)
+
 
     /** If there are no projects available, return null */
     if (preferredProjects.length === 0) {
+        console.log("no prefered projects, return null")
         return null
     }
 
@@ -272,11 +270,11 @@ GavelAnnotatorSchema.methods.getNextProject = async function () {
 }
 
 GavelAnnotatorSchema.methods.assignNextProject = async function () {
-    console.log('assigning')
-    console.log(this.getNextProject, 'exists?')
-    console.log(this, 'even this?')
+    // console.log('assigning')
+    // console.log(this.getNextProject, 'exists?')
+    // console.log(this, 'even this?')
     const nextProject = await this.getNextProject()
-    console.log('nextProject', nextProject)
+    //console.log('nextProject', nextProject)
 
     if (!this.next) {
         if (nextProject) {
@@ -294,7 +292,12 @@ GavelAnnotatorSchema.methods.assignNextProject = async function () {
         }
     }
 
+    //FOR GAVEL STRESS TEST: 
+    //comment this out
     return this.save()
+
+    //use this instead
+    //return this //not saving for testing purposes
 }
 
 GavelAnnotatorSchema.methods.skipCurrentProject = async function () {
