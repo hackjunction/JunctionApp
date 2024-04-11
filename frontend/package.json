@@ -34,7 +34,7 @@
         "logrocket": "^1.0.7",
         "moment": "^2.26.0",
         "moment-timezone": "^0.5.31",
-        "notistack": "^0.9.16",
+        "notistack": "^3.0.1",
         "object-path": "^0.11.8",
         "pdf-lib": "^1.17.1",
         "qrcode.react": "^1.0.0",
