@@ -104,7 +104,7 @@ export default ({ projectId }) => {
                 <Grid item xs={12}>
                     <Button
                         onClick={handleDone}
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                     >
                         Done
@@ -123,7 +123,8 @@ export default ({ projectId }) => {
                     </Typography>
                     <Markdown
                         source={
-                            event.eventType === 'physical'
+                            event.eventType === 'physical' ||
+                            event.eventType === 'hybrid'
                                 ? t('Gavel_first_project_physical_')
                                 : t('Gavel_first_project_online_')
                         }

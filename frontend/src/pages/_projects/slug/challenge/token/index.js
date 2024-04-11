@@ -7,7 +7,6 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
-import { makeStyles } from '@material-ui/core/styles'
 
 import ProjectsService from 'services/projects'
 import Filter from 'components/Team/Filter'
@@ -15,10 +14,8 @@ import _ from 'lodash'
 
 //TODO make this and track one into a component
 export default ({ event }) => {
-    const allFilterLabel = 'All projects'
+    const baseFilter = { value: 'final', label: 'Final projects' }
     const match = useRouteMatch()
-    console.log('match', match)
-    console.log('match URL', match.url)
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params
@@ -28,7 +25,7 @@ export default ({ event }) => {
     const [finalProjects, setFinalProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const [filter, setFilter] = useState(allFilterLabel)
+    const [filter, setFilter] = useState(baseFilter)
 
     const onFilterChange = filter => {
         setFilter(filter)
@@ -93,10 +90,10 @@ export default ({ event }) => {
                             }`}
                         />
                         <Filter
-                            noFilterOption={allFilterLabel}
+                            noFilterOption={baseFilter}
                             onChange={onFilterChange}
                             filterArray={[
-                                { label: 'Final projects', value: 'final' },
+                                // { label: 'Final projects', value: 'final' },
                                 { label: 'Draft projects', value: 'draft' },
                             ]}
                         />
@@ -110,6 +107,7 @@ export default ({ event }) => {
                             dispatch(push(`${match.url}/view/${project._id}`))
                         }
                         showScore={true}
+                        showReviewers={true}
                         token={token}
                     />
                     <Box height={200} />

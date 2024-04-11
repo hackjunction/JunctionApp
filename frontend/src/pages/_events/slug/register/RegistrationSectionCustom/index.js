@@ -47,7 +47,15 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
+export default ({
+    section,
+    sectionsInfo,
+    onNext,
+    nextLabel,
+    onPrev,
+    prevLabel,
+    data,
+}) => {
     const classes = useStyles()
     const { registration } = useContext(EventDetailContext)
     console.log('section', section)
@@ -159,15 +167,6 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                                         key={question.name}
                                         className={classes.question}
                                     >
-                                        {/* <div className={classes.questionInner}>
-                                            <FastField
-                                                autoFocus={index === 0}
-                                                name={question.name}
-                                                component={RegistrationQuestion}
-                                                config={question}
-                                                isCustom={true}
-                                            />
-                                        </div> */}
                                         <div className={classes.questionInner}>
                                             <FastField name={question.name}>
                                                 {props => (
@@ -194,6 +193,7 @@ export default ({ section, onNext, nextLabel, onPrev, prevLabel, data }) => {
                             onNext={handleSubmit}
                             errors={errors}
                             dirty={dirty}
+                            sectionsInfo={sectionsInfo}
                         />,
                         document.body,
                     )}

@@ -81,15 +81,19 @@ export default () => {
             case RegistrationStatuses.asObject.rejected.id: {
                 return 'error'
             }
-            case RegistrationStatuses.asObject.accepted.id:
-            case RegistrationStatuses.asObject.acceptedToHub.id:
+            case RegistrationStatuses.asObject.accepted.id: {
+                return 'success'
+            }
+            case RegistrationStatuses.asObject.acceptedToHub.id: {
+                return 'success'
+            }
             case RegistrationStatuses.asObject.confirmed.id:
             case RegistrationStatuses.asObject.confirmedToHub.id:
             case RegistrationStatuses.asObject.checkedIn.id: {
-                return 'theme_turquoise'
+                return 'primary'
             }
             case RegistrationStatuses.asObject.cancelled.id: {
-                return 'theme_orange'
+                return 'warning'
             }
             default:
                 return null
@@ -344,7 +348,6 @@ export default () => {
     if (!title) {
         return null
     }
-
     return (
         <Grid item xs={12}>
             <GradientBox p={3} color={color}>

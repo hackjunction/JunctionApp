@@ -22,7 +22,6 @@ export default ({
     loading = false,
 }) => {
     const dispatch = useDispatch()
-    console.log('teamRolesData from start of component', teamRolesData)
     if (
         !_.includes(
             teamRolesData.map(teamRole => teamRole.role),

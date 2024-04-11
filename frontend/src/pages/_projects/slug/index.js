@@ -12,7 +12,6 @@ import GalleryChallenge from './by-challenge/challenge'
 import GalleryDetail from './view/projectId'
 import GalleryChallengeAdmin from './challenge/token'
 import GalleryTrackAdmin from './track/token'
-// import { useEventPreview } from 'graphql/queries/events'
 
 export default () => {
     const match = useRouteMatch()
@@ -92,15 +91,15 @@ export default () => {
                         />
                     )}
                 />
+                <Route
+                    path={`${match.url}/view/:projectId`}
+                    component={({ match }) => (
+                        <GalleryDetail event={event} match={match} />
+                    )}
+                />
                 {/** Hide the rest of these routes if the gallery isn't open */}
                 {event?.galleryOpen && (
                     <>
-                        <Route
-                            path={`${match.url}/view/:projectId`}
-                            component={({ match }) => (
-                                <GalleryDetail event={event} match={match} />
-                            )}
-                        />
                         <Route
                             path={`${match.url}/by-track/:track`}
                             component={({ match }) => (

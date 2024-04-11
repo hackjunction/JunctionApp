@@ -12,7 +12,7 @@ import PageHeader from 'components/generic/PageHeader'
 import Image from 'components/generic/Image'
 
 import GradientBox from 'components/generic/GradientBox'
-import LayoutMap1 from 'assets/images/venueMap2023/LayoutMap-venue-01.png'
+import LayoutMap1 from 'assets/images/venueMap2023/LayoutMap-venue-01.jpg'
 import LayoutMap2 from 'assets/images/venueMap2023/LayoutMap-venue-02.jpg'
 import LayoutMap3 from 'assets/images/venueMap2023/LayoutMap-venue-03.jpg'
 import { Grid, Typography } from '@material-ui/core'

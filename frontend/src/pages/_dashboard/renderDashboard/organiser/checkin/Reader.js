@@ -52,7 +52,7 @@ export default ({ onResult, onError }) => {
                     </Typography>
                     <Box mt={1} />
                     <Button
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                         onClick={() => reader.current.openImageDialog()}
                     >
@@ -74,7 +74,7 @@ export default ({ onResult, onError }) => {
                     </Typography>
                     <Box mt={1} />
                     <Button
-                        color="theme_turquoise"
+                        color="primary"
                         variant="contained"
                         onClick={() => setLegacyMode(true)}
                     >

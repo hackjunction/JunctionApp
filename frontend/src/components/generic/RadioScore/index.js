@@ -1,19 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    IconButton,
-    Radio,
-    RadioGroup,
-    Typography,
-} from '@material-ui/core'
-import { Email } from '@material-ui/icons'
-import { Field } from 'formik'
+import { FormControl, FormLabel, Radio, RadioGroup } from '@material-ui/core'
 import _ from 'lodash'
-import { capitalize, toInteger, toString } from 'lodash-es'
-import React, { useEffect, useState } from 'react'
-import { popupCenter } from 'utils/misc'
+import { toInteger } from 'lodash-es'
+import React, { useState } from 'react'
 import junctionStyle from 'utils/styles'
 
 const scoreArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -51,6 +39,7 @@ export default ({ category, label, onSelectionChange, value = null }) => {
             >
                 {scoreArray.map((score, index) => (
                     <Radio
+                        key={index}
                         checked={score === selectedValue}
                         onChange={() => handleChange(index)}
                         value={score}
@@ -58,19 +47,27 @@ export default ({ category, label, onSelectionChange, value = null }) => {
                         checkedIcon={
                             <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                 <span
-                                    className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
-                                ></span>
+                                    className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-font-bold tw-text-white ${classes.bgPrimary}`}
+                                >
+                                    {score}
+                                </span>
                             </div>
                         }
                         icon={
                             index < selectedIndex ? (
                                 <div className="tw-flex tw-items-center tw-justify-center tw-bg-gray-300 tw-w-8 tw-h-8 tw-rounded-full">
                                     <span
-                                        className={`tw-w-5 tw-h-5 tw-rounded-full ${classes.bgPrimary}`}
-                                    ></span>
+                                        className={`tw-w-5 tw-h-5 tw-rounded-full tw-flex tw-justify-center tw-items-center tw-text-sm tw-text-gray-400 ${classes.bgPrimary}`}
+                                    >
+                                        {score}
+                                    </span>
                                 </div>
                             ) : (
-                                <span className={classes.icon} />
+                                <span
+                                    className={`tw-flex tw-justify-center tw-items-center tw-text-sm ${classes.icon}`}
+                                >
+                                    {score}
+                                </span>
                             )
                         }
                     />

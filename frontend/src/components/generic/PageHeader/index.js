@@ -1,20 +1,12 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography } from '@material-ui/core'
-
-// const useStyles = makeStyles(theme => ({
-//     subheading: {
-//         marginTop: theme.spacing(1),
-//         marginLeft: theme.spacing(0.5),
-//         fontFamily: 'Lato',
-//     },
-// }))
+import { Link, Typography } from '@material-ui/core'
 
 const PageHeader = ({
     heading,
     subheading = null,
     details = null,
+    link = null,
     alignment = 'center',
 }) => {
     const styling = {
@@ -23,9 +15,7 @@ const PageHeader = ({
         right: 'tw-items-end tw-text-right',
     }
 
-    // const classes = useStyles()
     return (
-        // <Box pb={2} pt={2}>
         <div className={`tw-flex tw-flex-col tw-gap-2 ${styling[alignment]}`}>
             <Typography
                 className="tw-font-bold tw-tracking-tight"
@@ -45,25 +35,18 @@ const PageHeader = ({
                 <Typography variant="body1" color="secondary" component="p">
                     {details}
                 </Typography>
-            </div>
-            {/* <Typography
-                    className="tw-font-bold tw-tracking-tight"
-                    variant="h3"
-                    component="h3"
-                >
-                    {heading}
-                </Typography>
-                {subheading && (
-                    <Typography
-                        className="tw-text-lg tw-text-gray-600"
-                        variant="body1"
-                        component="p"
+                {!!link && (
+                    <Link
+                        component="a"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={link}
                     >
-                        {subheading}
-                    </Typography>
-                )} */}
+                        Open in new tab
+                    </Link>
+                )}
+            </div>
         </div>
-        // </Box>
     )
 }
 

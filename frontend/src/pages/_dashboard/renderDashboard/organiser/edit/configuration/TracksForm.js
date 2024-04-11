@@ -170,7 +170,7 @@ export default ({ value, onChange }) => {
                             <Button
                                 disabled={!isValid}
                                 onClick={handleAdd}
-                                color="theme_turquoise"
+                                color="primary"
                                 variant="contained"
                             >
                                 Add track

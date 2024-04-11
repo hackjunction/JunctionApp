@@ -168,6 +168,7 @@ export default ({ event, user }) => {
             }, 500)
         },
     })
+    //TODO: this is launching twice for some reason
     const [bookMeeting, bookMeetingResult] = useMutation(BOOK_MEETING, {
         onError: err => {
             const errors = err.graphQLErrors

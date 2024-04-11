@@ -25,10 +25,10 @@ export default () => {
     if (!EventHelpers.isEventOver(event, moment)) return null
     if (registration?.status !== RegistrationStatuses.asObject.checkedIn.id)
         return null
-    if (event.slug == "junction-2022-1" || ('certificate' in event && event.certificate.url !== '')) {
+    if (event.slug == "junction-2023" || ('certificate' in event && event.certificate.url !== '')) {//TODO: fix certificate upload
         return (
             <Grid item xs={12}>
-                <GradientBox p={3} color="theme_turquoise">
+                <GradientBox p={3} color="secondary">
                     <Typography variant="h4" gutterBottom>
                         Participation certificate
                     </Typography>
@@ -44,7 +44,7 @@ export default () => {
                         <Button
                             onClick={() => {
                                 modifyPdf(
-                                    'https://res.cloudinary.com/hackjunction/image/upload/v1668518422/junctionapp/events/certificates/11112022_CertificatesTemplate_Participants_3.pdf',
+                                    'https://res.cloudinary.com/hackjunction/image/upload/v1699734274/junctionapp/events/junction-2023/hubqdmfoo1xcy5a2jl8c.pdf',
                                     0,
                                     0,
                                     `${userProfile.firstName} ${userProfile.lastName}`,

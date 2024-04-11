@@ -55,9 +55,8 @@ export default () => {
                     event.organisers,
                 ),
             )
-            dispatch(OrganiserActions.updateRecruitersForEvent(
-                event.recruiters
-            ),
+            dispatch(
+                OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
             dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
             dispatch(OrganiserActions.updateTeamsForEvent(slug))
@@ -152,32 +151,16 @@ export default () => {
                         component: ProjectsPage,
                     },
                     {
-                        key: 'results',
-                        path: '/results',
-                        icon: <AssessmentIcon />,
-                        label: 'Results',
-                        component: ResultsPage,
-                    },
-                    {
                         key: 'checkin',
                         path: '/check-in',
                         exact: true,
-                        locked: event.eventType !== EventTypes.physical.id,
-                        lockedDescription: 'Only for physical events',
+                        locked: event.eventType === EventTypes.online.id,
+                        lockedDescription:
+                            'Only for physical and hybrid events',
                         icon: <CropFreeIcon />,
                         label: 'Check-in',
                         component: CheckinPage,
                     },
-                    // {
-                    //     key: 'travel-grants',
-                    //     path: '/travel-grants',
-                    //     exact: true,
-                    //     locked: event?.travelGrantConfig?.enabled ?? true,
-                    //     lockedDescription: 'Travel grants disabled',
-                    //     icon: <FlightTakeoffIcon />,
-                    //     label: 'Travel grants',
-                    //     component: TravelGrantsPage,
-                    // },
                     {
                         key: 'manage',
                         path: '/manage',
@@ -193,6 +176,27 @@ export default () => {
                         icon: <QuestionAnswerSharp />,
                         label: 'Send announcements',
                         component: AlertsPage,
+                    },
+                    //Experimental
+
+                    {
+                        key: 'results',
+                        path: '/results',
+                        hidden: !event?.experimental,
+                        icon: <AssessmentIcon />,
+                        label: 'Results',
+                        component: ResultsPage,
+                    },
+                    {
+                        key: 'travel-grants',
+                        path: '/travel-grants',
+                        exact: true,
+                        hidden: !event?.experimental,
+                        // locked: event?.travelGrantConfig?.enabled ?? true,
+                        lockedDescription: 'Travel grants disabled',
+                        icon: <FlightTakeoffIcon />,
+                        label: 'Travel grants',
+                        component: TravelGrantsPage,
                     },
                 ]}
             />

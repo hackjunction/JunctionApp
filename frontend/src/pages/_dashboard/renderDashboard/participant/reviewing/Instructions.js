@@ -74,7 +74,7 @@ export default () => {
                                                     </Typography>
                                                     <Button
                                                         onClick={handleBegin}
-                                                        color="theme_turquoise"
+                                                        color="primary"
                                                         variant="contained"
                                                         loading={loading}
                                                     >

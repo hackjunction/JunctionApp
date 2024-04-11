@@ -18,9 +18,24 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const projects = useSelector(OrganiserSelectors.projects)
+    const teams = useSelector(OrganiserSelectors.teams)
 
     const getProjectsForChallenge = slug => {
-        return projects.filter(project => {
+        const projectsWithTeam = projects
+            .map(project => {
+                const teamFound = teams.find(team => {
+                    console.log(team._id, project.team)
+                    return team._id === project.team
+                })
+                if (teamFound) {
+                    project.teamCode = teamFound.code
+                } else {
+                    project.teamCode = 'No team'
+                }
+                return project
+            })
+            .filter(project => project.teamCode !== 'No team')
+        return projectsWithTeam.filter(project => {
             return project.challenges && project.challenges.indexOf(slug) !== -1
         })
     }

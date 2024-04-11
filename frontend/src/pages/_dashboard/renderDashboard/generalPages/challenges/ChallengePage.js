@@ -47,7 +47,7 @@ export default ({
         <>
             <Button
                 variant="contained"
-                color="theme_turquoise"
+                color="primary"
                 startIcon={<ArrowBack />}
                 onClick={onClose}
             >

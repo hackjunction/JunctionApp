@@ -1,5 +1,7 @@
 @tailwind components;
 @tailwind utilities;
+/* CSS */
+@import url(https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css);
 
 /* Create below composite classes, after you finish, from the /frontend directory, you must run the command 'npm run build:tailwind' to build tailwind css to see the changes on the development enviroment
 

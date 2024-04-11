@@ -15,6 +15,7 @@ RankingsService.getPublicResults = eventSlug => {
 }
 
 RankingsService.getFullResults = (idToken, eventSlug) => {
+    console.log('>>>> Getting FULL results for event', eventSlug)
     return _axios.get(`/rankings/${eventSlug}/admin`, config(idToken))
 }
 

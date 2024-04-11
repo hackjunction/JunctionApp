@@ -2,30 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Select from 'components/inputs/Select'
 import Button from 'components/generic/Button'
+import _ from 'lodash'
 
 export default ({
     filterArray = [],
     noFilterOption = 'All',
     onChange = arg => {},
 }) => {
+    //TODO use TS to avoid issues with this component, receiving the wrong prop types
+    let noFilterObject
+    if (_.isObject(noFilterOption)) {
+        noFilterObject = noFilterOption
+    } else if (_.isString(noFilterOption)) {
+        noFilterObject = { value: noFilterOption, label: noFilterOption }
+    }
+
     if (filterArray.length > 0 && typeof filterArray[0] === 'string') {
         filterArray = filterArray.map(item => {
             return { value: item, label: item }
         })
     }
 
-    const [filter, setFilter] = useState(noFilterOption)
-    const formatedFilterArray = [
-        { value: noFilterOption, label: noFilterOption },
-        ...filterArray,
-    ]
+    const [filter, setFilter] = useState(noFilterObject.value)
+    const formatedFilterArray = [noFilterObject, ...filterArray]
 
     const handleChange = event => {
         setFilter(event.target.value)
     }
 
     const resetFilters = () => {
-        setFilter(noFilterOption)
+        setFilter(noFilterObject.value)
     }
 
     useEffect(() => {
@@ -34,7 +40,7 @@ export default ({
 
     return (
         <div className="tw-justify-end tw-flex tw-items-center tw-gap-2">
-            {filter !== noFilterOption && (
+            {filter !== noFilterObject.value && (
                 <Button onClick={resetFilters}>Reset filter</Button>
             )}
             <div className="tw-inline-block tw-relative tw-w-64">

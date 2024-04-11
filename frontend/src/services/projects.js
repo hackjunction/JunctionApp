@@ -13,6 +13,10 @@ ProjectsService.getProjectsByEvent = eventSlug => {
     return _axios.get(`/projects/${eventSlug}`)
 }
 
+ProjectsService.getProjectsByEventAsPartner = (idToken, eventSlug) => {
+    return _axios.get(`/projects/${eventSlug}/partner-review`, config(idToken))
+}
+
 ProjectsService.getPublicProjectById = projectId => {
     return _axios.get(`/projects/id/${projectId}`)
 }

@@ -215,11 +215,12 @@ RegistrationsService.adminNotifyAcceptedTravelGrants = (idToken, slug) => {
     )
 }
 
-RegistrationsService.addPartnerToRegistrated = (idToken,
-    user,
-    slug,
-    data) => {
+RegistrationsService.addPartnerToRegistrated = (idToken, user, slug, data) => {
     return _axios.post(`${BASE_ROUTE}/${slug}/partner`, user, config(idToken))
+}
+
+RegistrationsService.addGavelLoginToRegistrations = (idToken, slug, data) => {
+    return _axios.post(`${BASE_ROUTE}/${slug}/gavel`, data, config(idToken))
 }
 
 export default RegistrationsService

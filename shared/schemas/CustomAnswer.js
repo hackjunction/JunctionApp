@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const { GraphQLObjectType, GraphQLString } = require('graphql')
 
 const mongooseSchema = new mongoose.Schema({
+    label: {
+        type: String,
+    },
     section: {
         type: String,
     },
@@ -16,6 +19,9 @@ const mongooseSchema = new mongoose.Schema({
 const graphqlSchema = new GraphQLObjectType({
     name: 'CustomAnswer',
     fields: () => ({
+        label: {
+            type: GraphQLString,
+        },
         section: {
             type: GraphQLString,
         },

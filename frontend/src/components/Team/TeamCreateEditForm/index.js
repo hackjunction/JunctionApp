@@ -11,11 +11,12 @@ import * as yup from 'yup'
 import React from 'react'
 import Button from 'components/generic/Button'
 import { Typography } from '@material-ui/core'
+import { debugGroup } from 'utils/debuggingTools'
 
 export default ({
     initialData = {},
-    formikSubmitAction = () => { },
-    onBack = () => { },
+    formikSubmitAction = () => {},
+    onBack = () => {},
     challengeOptions = [],
 }) => {
     const TeamSchema = {
@@ -35,7 +36,7 @@ export default ({
                     `The subtitle must have at least ${min} characters`,
             )
             .max(
-                100,
+                50,
                 ({ max }) => `The subtitle can have up to ${max} characters`,
             ),
         description: yup
@@ -46,7 +47,7 @@ export default ({
                     `The description must have at least ${min} characters`,
             )
             .max(
-                300,
+                150,
                 ({ max }) => `The description can have up to ${max} characters`,
             ),
         ideaTitle: yup
@@ -77,7 +78,7 @@ export default ({
                     `The description of your idea must have at least ${min} characters`,
             )
             .max(
-                300,
+                150,
                 ({ max }) =>
                     `The description of your idea can have up to ${max} characters`,
             ),
@@ -91,7 +92,7 @@ export default ({
                 3,
                 ({ min }) => `The email must have at least ${min} characters`,
             )
-            .max(100, ({ max }) => `The email can have up to ${max} characters`)
+            .max(50, ({ max }) => `The email can have up to ${max} characters`)
             .email('Invalid email address'),
         discord: yup
             .string('Invalid discord url')
@@ -107,9 +108,19 @@ export default ({
             ),
     }
 
-    //if (challengeOptions && challengeOptions.length > 0) {
-    //    TeamSchema.challenge = yup.string().required('A challenge is required')
-    //}
+    const formMode =
+        initialData && Object.keys(initialData).length > 0 ? 'Edit' : 'Create'
+
+    debugGroup('Prop data', [
+        initialData,
+        formikSubmitAction,
+        onBack,
+        challengeOptions,
+    ])
+
+    if (Array.isArray(challengeOptions) && challengeOptions.length > 0) {
+        TeamSchema.challenge = yup.string().required('A challenge is required')
+    }
 
     return (
         <Formik
@@ -135,7 +146,7 @@ export default ({
                             variant="h4"
                             component="h4"
                         >
-                            Create your team
+                            {`${formMode} your team`}
                         </Typography>
                         <Typography
                             className="tw-text-lg tw-text-gray-600"
@@ -175,38 +186,72 @@ export default ({
                             )}
                         </FastField>
                     </div>
-                    {challengeOptions && challengeOptions.length > 0 && (
-                        <div>
-                            <FastField name="challenge">
-                                {({ field, form }) => (
-                                    <FormControl
-                                        label="Challenge"
-                                        hint="Select one of the challenges"
-                                        touched={
-                                            form.touched[field.name] ||
-                                            formikProps.submitCount > 0
+                    {/* <div>
+                        <FastField name="teamColor">
+                            {({ field, form }) => (
+                                <FormControl
+                                    label="Team banner colors"
+                                    hint="Select one option for your team banner colors gradient"
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
+                                    error={form.errors[field.name]}
+                                >
+                                    <Select
+                                        label="Select team banner colors"
+                                        options="gradient-list"
+                                        value={field.value}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
                                         }
-                                        error={form.errors[field.name]}
-                                    >
-                                        <Select
-                                            label="Select challenge"
-                                            options={challengeOptions}
-                                            value={field.value}
-                                            onChange={value =>
-                                                form.setFieldValue(
-                                                    field.name,
-                                                    value,
-                                                )
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
+                                    />
+                                </FormControl>
+                            )}
+                        </FastField>
+                        --- 
+                    </div> */}
+                    {Array.isArray(challengeOptions) &&
+                        challengeOptions.length > 0 && (
+                            <div>
+                                <FastField name="challenge">
+                                    {({ field, form }) => (
+                                        <FormControl
+                                            label="Challenge"
+                                            hint="Select one of the challenges"
+                                            touched={
+                                                form.touched[field.name] ||
+                                                formikProps.submitCount > 0
                                             }
-                                            onBlur={() =>
-                                                form.setFieldTouched(field.name)
-                                            }
-                                        />
-                                    </FormControl>
-                                )}
-                            </FastField>
-                        </div>
-                    )}
+                                            error={form.errors[field.name]}
+                                        >
+                                            <Select
+                                                label="Select challenge"
+                                                options={challengeOptions}
+                                                value={field.value}
+                                                onChange={value =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value,
+                                                    )
+                                                }
+                                                onBlur={() =>
+                                                    form.setFieldTouched(
+                                                        field.name,
+                                                    )
+                                                }
+                                            />
+                                        </FormControl>
+                                    )}
+                                </FastField>
+                            </div>
+                        )}
                     <div>
                         <FastField name="subtitle">
                             {({ field, form }) => (
@@ -260,6 +305,7 @@ export default ({
                                         onBlur={() =>
                                             form.setFieldTouched(field.name)
                                         }
+                                        minRows={3}
                                     />
                                 </FormControl>
                             )}
@@ -318,6 +364,7 @@ export default ({
                                         onBlur={() =>
                                             form.setFieldTouched(field.name)
                                         }
+                                        minRows={3}
                                     />
                                 </FormControl>
                             )}
@@ -442,7 +489,7 @@ export default ({
                         onSubmit={formikProps.handleSubmit}
                         errors={
                             formikProps.touched?.name &&
-                                formikProps.touched?.description
+                            formikProps.touched?.description
                                 ? formikProps.errors
                                 : {}
                         }

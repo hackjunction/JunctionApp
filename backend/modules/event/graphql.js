@@ -315,6 +315,9 @@ const EventInput = new GraphQLInputObjectType({
         scoreCriteriaSettings: {
             type: ScoreCriteriaSettingsInput,
         },
+        experimental: {
+            type: GraphQLBoolean,
+        },
     },
 })
 
@@ -536,6 +539,9 @@ const EventType = new GraphQLObjectType({
             scoreCriteriaSettings: {
                 type: ScoreCriteriaSettings,
             },
+            experimental: {
+                type: GraphQLBoolean,
+            },
         }
     },
 })
@@ -599,6 +605,14 @@ const QueryType = new GraphQLObjectType({
         },
         eventScoreCriteriaSettings: {
             type: ScoreCriteriaSettings,
+            args: {
+                eventId: {
+                    type: GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        allowExperimental: {
+            type: GraphQLBoolean,
             args: {
                 eventId: {
                     type: GraphQLNonNull(GraphQLID),
@@ -700,7 +714,10 @@ const Resolvers = {
             )
         },
         _eventLocationFormatted: parent => {
-            if (parent.eventType === 'physical') {
+            if (
+                parent.eventType === 'physical' ||
+                parent.eventType === 'hybrid'
+            ) {
                 return `${parent.eventLocation.city}, ${parent.eventLocation.country}`
             }
             return 'Online'

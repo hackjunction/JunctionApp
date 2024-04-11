@@ -5,34 +5,47 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import EditProjectModal from 'components/modals/EditProjectModal'
-import ProjectsService from 'services/projects'
-import * as AuthSelectors from 'redux/auth/selectors'
-import CsvExporterService from 'services/csvExporter'
+import _ from 'lodash'
+import { CSVLink } from 'react-csv'
+import { projectURLgenerator } from 'utils/dataModifiers'
 
-const ProjectsTable = ({ projects, baseURL }) => {
+const ProjectsTable = ({ projects }) => {
     const teams = useSelector(OrganiserSelectors.teams)
     const event = useSelector(OrganiserSelectors.event)
 
-    //const dispatch = useDispatch()
-    //const location = useLocation()
+    const skipArray = ['_id', '__v', 'id', 'key', 'section']
+    function flattenObject(ob) {
+        let toReturn = {}
+        for (let i in ob) {
+            if (!ob.hasOwnProperty(i) || skipArray.some(val => val === i))
+                continue
+
+            if (typeof ob[i] === 'object' && ob[i] !== null) {
+                let flatObject = flattenObject(ob[i])
+                for (let x in flatObject) {
+                    if (!flatObject.hasOwnProperty(x)) continue
+                    toReturn[i + '.' + x] = flatObject[x]
+                }
+            } else {
+                toReturn[i] = ob[i]
+            }
+        }
+        return toReturn
+    }
+
+    const [selected, setSelected] = useState([])
 
     const [selectedProject, setSelectedProject] = useState(null)
-    const idToken = useSelector(AuthSelectors.getIdToken)
 
     // TODO config columsn (table only in physical events)
     const openSingleEdit = useCallback(row => {
         setSelectedProject(row.original)
-        /* const search = `?${new URLSearchParams({
-                modal: 'edit',
-                id: row.original.user,
-            }).toString()}`
-            dispatch(push({ search })) */
     }, [])
 
     const columns = useMemo(() => {
         return [
             {
-                Header: '#',
+                Header: '',
                 accessor: (row, index) => {
                     return index + 1
                 },
@@ -75,43 +88,25 @@ const ProjectsTable = ({ projects, baseURL }) => {
                 ...Sorters.Alphabetic,
                 ...Filters.ContainsSearch,
             },
-            /*
-            {
-                Header: 'Location',
-                accessor: 'location',
-                ...Filters.ContainsSearch,
-            },
-            */
         ]
     }, [])
 
-    // const onProjectSelected = useCallback(
-    //     project => {
-    //         dispatch(push(`${baseURL}${project.original._id}`))
-    //     },
-    //     [baseURL, dispatch],
-    // )
-
-    // TODO refactor forloops
-    const data = projects.map(project => {
-        for (const i in teams) {
-            const team = teams[i]
-            if (project.team === team._id) {
-                project.teamCode = team.code
-                break
+    const data = projects
+        .map(project => {
+            const teamFound = teams.find(team => {
+                return team._id === project.team
+            })
+            if (teamFound) {
+                project.teamCode = teamFound.code
+            } else {
+                project.teamCode = 'No team'
             }
-        }
-        return project
-    })
-
-    const fetchExportProjectData = exportSelectedProjects => {
-        ProjectsService.exportProjects(
-            idToken,
-            event.slug,
-            exportSelectedProjects,
-        ).then(response => {
-            CsvExporterService.exportToCsv(response, 'project-export')
+            return project
         })
+        .filter(project => project.teamCode !== 'No team')
+
+    const exportProjects = selectedRows => {
+        setSelected(selectedRows)
     }
 
     return (
@@ -128,11 +123,29 @@ const ProjectsTable = ({ projects, baseURL }) => {
                 bulkActions={[
                     {
                         key: 'export-projects',
-                        label: 'Export selected',
-                        action: rows => {
-                            const projectIds = rows.map(row => row.original._id)
-                            fetchExportProjectData(projectIds)
-                        },
+                        label: (
+                            <CSVLink
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }}
+                                data={selected.map(item => {
+                                    const returnObject = {
+                                        ...flattenObject(item.original),
+                                        projectId: item.original._id,
+                                        projectURL: projectURLgenerator(
+                                            event.slug,
+                                            item.original._id,
+                                        ),
+                                    }
+                                    return returnObject
+                                })}
+                                filename="export.csv"
+                            >
+                                Export selected
+                            </CSVLink>
+                        ),
+                        action: exportProjects,
                     },
                 ]}
             />

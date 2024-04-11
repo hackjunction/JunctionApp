@@ -41,7 +41,7 @@ export default ({ challenge }) => {
         <Button
             onClick={handleGenerateLink}
             loading={linkLoading}
-            color="theme_turquoise"
+            color="primary"
             variant="contained"
         >
             Generate partner link

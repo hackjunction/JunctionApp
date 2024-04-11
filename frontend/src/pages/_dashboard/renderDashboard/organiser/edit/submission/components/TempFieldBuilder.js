@@ -245,7 +245,7 @@ export default ({
             case 'attachment': {
                 return (
                     <>
-                        <Typography variant="body1" className={classes.label}>
+                        {/* <Typography variant="body1" className={classes.label}>
                             Maximum file size
                         </Typography>
                         <TextInput
@@ -277,7 +277,7 @@ export default ({
                         />
                         <Typography variant="caption" paragraph>
                             Allowed file types, select multiple options
-                        </Typography>
+                        </Typography> */}
                     </>
                 )
             }
@@ -358,10 +358,10 @@ export default ({
                                 value: 'link',
                                 label: 'Link',
                             },
-                            {
-                                value: 'attachment',
-                                label: 'Attachment',
-                            },
+                            // {
+                            //     value: 'attachment',
+                            //     label: 'Attachment',
+                            // },
                             {
                                 value: 'boolean',
                                 label: 'Yes / No',

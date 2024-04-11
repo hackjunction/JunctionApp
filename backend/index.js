@@ -75,6 +75,22 @@ const migrations = require('./migrations/index')
 /** A clone of the npm library throng, with a minor edit. See the file for details. */
 const throng = require('./misc/throng')
 
+const memoryUsage = () => {
+    const formatMemoryUsage = (data) => `${Math.round(data / 1024 / 1024 * 100) / 100} MB`
+
+    const memoryData = process.memoryUsage()
+
+    const memoryUsage = {
+        rss: `${formatMemoryUsage(memoryData.rss)} -> Resident Set Size - total memory allocated for the process execution`,
+        heapTotal: `${formatMemoryUsage(memoryData.heapTotal)} -> total size of the allocated heap`,
+        heapUsed: `${formatMemoryUsage(memoryData.heapUsed)} -> actual memory used during the execution`,
+        external: `${formatMemoryUsage(memoryData.external)} -> V8 external memory`,
+    }
+
+    console.log(memoryUsage)
+
+}
+
 throng({
     workers: process.env.WEB_CONCURRENCY || 1,
     grace: 1000,
@@ -99,6 +115,7 @@ throng({
 
         })
 
+        memoryUsage()
 
 
 

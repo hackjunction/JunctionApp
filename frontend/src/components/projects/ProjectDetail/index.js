@@ -198,24 +198,15 @@ const ProjectDetail = ({
     const statusTag = status => {
         switch (status) {
             case 'final':
-                return (
-                    <Tag
-                        label="Final"
-                        color={theme.palette.theme_turquoise.main}
-                    />
-                )
+                return <Tag label="Final" color={theme.palette.primary.main} />
             case 'draft':
                 return (
-                    <Tag
-                        label="Draft"
-                        color={theme.palette.theme_lightgray.main}
-                    />
+                    <Tag label="Draft" color={theme.palette.secondary.main} />
                 )
             default:
                 return null
         }
     }
-
     return (
         <>
             <Helmet>
@@ -226,15 +217,21 @@ const ProjectDetail = ({
                 />
                 <meta
                     name="title"
-                    content={project ? `Junction App || ${project.name}` : ''}
+                    content={
+                        project ? `${project.name} - Junction Platform` : ''
+                    }
                 />
                 <meta
                     property="og:title"
-                    content={project ? `Junction App || ${project.name}` : ''}
+                    content={
+                        project ? `${project.name} - Junction Platform` : ''
+                    }
                 />
                 <meta
                     name="twitter:title"
-                    content={project ? `Junction App || ${project.name}` : ''}
+                    content={
+                        project ? `${project.name} - Junction Platform` : ''
+                    }
                 />
                 <meta
                     name="description"
@@ -370,8 +367,11 @@ const ProjectDetail = ({
                                                     {section.answers.length >
                                                         0 &&
                                                         section.answers.map(
-                                                            answer => (
-                                                                <div className="tw-flex tw-flex-col tw-gap-2">
+                                                            (answer, index) => (
+                                                                <div
+                                                                    key={index}
+                                                                    className="tw-flex tw-flex-col tw-gap-2"
+                                                                >
                                                                     <Typography variant="h6">
                                                                         {
                                                                             answer.question

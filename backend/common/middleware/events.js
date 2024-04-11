@@ -267,6 +267,24 @@ const EventMiddleware = {
             next()
         }
     },
+    isOrganiserOrCanSubmitProject: async (req, res, next) => {
+        const event = await getEventFromParams(req.params)
+        const [registration, team] = await Promise.all([
+            getRegistration(req.user, event),
+            getTeamWithMeta(req.user, event),
+        ])
+        const superAdminError = isSuperAdmin(req.user)
+        const organiserError = isOrganiser(req.user, event)
+        const projectError = canSubmitProject(event, registration, team)
+        if ((organiserError && superAdminError) && projectError) {
+            next(error)
+        } else {
+            req.event = event
+            req.registration = registration
+            req.team = team
+            next()
+        }
+    },
     hasPartnerToken: async (req, res, next) => {
         /*         const [match, ...other] = await hasPartnerToken(
             req.event,
