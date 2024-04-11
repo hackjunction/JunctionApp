@@ -13,10 +13,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-
 import EventsService from 'services/events'
-import ProjectsService from 'services/projects'
 
 import WinnerVoteService from 'services/winnerVote'
 
@@ -32,97 +29,75 @@ export default () => {
     const [vote, setVote] = useState(null)
     const [hasVoted, setVoted] = useState(false)
 
-    const updateVote = useCallback(() => {
+    const getCurrentVote = useCallback(() => {
         return WinnerVoteService.getVote(idToken, event.slug)
     }, [idToken, event])
 
-    const updateProjects = useCallback(() => {
-        // TODO use EventsService
-        return ProjectsService.getProjectsByEvent(event.slug)
-        // return EventsService.getWinnerProjects(idToken, event.slug)
-    }, [event])
+    const getFinalists = useCallback(async () => {
+        setLoading(true)
+        EventsService.getFinalists(idToken, event.slug)
+            .then(finalistProjects => {
+                setProjects(finalistProjects)
+            })
+            .catch(err => {
+                dispatch(
+                    SnackbarActions.error(
+                        'Something went wrong... Please try again',
+                    ),
+                )
+                console.error(err)
+            })
+            .finally(() => {
+                setLoading(false)
+            })
+    }, [idToken, event])
+
+    useEffect(() => {
+        getFinalists()
+        update()
+    }, [])
 
     const update = useCallback(async () => {
-        setLoading(true)
-        if (event.overallReviewMethod === 'finalsManualSelection') {
-            const vote = await updateVote()
-
-            const topProjects = await EventsService.getFinalists(
-                idToken,
-                event.slug,
-            )
-            setProjects(topProjects)
+        try {
+            setLoading(true)
+            const vote = await getCurrentVote()
             if (vote) {
                 setVote(vote.project)
                 setVoted(true)
             }
-        } else {
-            //TODO holy shit redo this
-            const topProjects = []
-            const rankingsByTrack = useSelector(
-                OrganiserSelectors.rankingsByTrack,
-            )
-            try {
-                const [vote, projects] = await Promise.all([
-                    updateVote(),
-                    updateProjects(),
-                ])
-                if (rankingsByTrack) {
-                    Object.keys(rankingsByTrack).forEach(name =>
-                        topProjects?.push(
-                            projects?.find(
-                                x => x._id === rankingsByTrack[name][0],
-                            ),
-                        ),
-                    )
-                }
-                setProjects(topProjects)
-                if (vote) {
-                    setVote(vote.project)
-                }
-            } catch (err) {
-                dispatch(
-                    SnackbarActions.error(
-                        'Oops, something went wrong... Please reload the page.',
-                    ),
-                )
-            }
-        }
-        setLoading(false)
-    }, [
-        event.overallReviewMethod,
-        event.slug,
-        updateVote,
-        idToken,
-        updateProjects,
-        dispatch,
-    ])
-
-    useEffect(() => {
-        update()
-    }, [update])
-
-    const handleSubmit = useCallback(async () => {
-        setLoading(true)
-        try {
-            const result = await WinnerVoteService.submitVote(
-                idToken,
-                event.slug,
-                vote,
-            )
-            setVote(result.project)
-            setVoted(true)
-            dispatch(SnackbarActions.success('Vote submitted!'))
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
                     'Something went wrong... Please try again',
                 ),
             )
+            console.error(err)
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
-    }, [idToken, event.slug, vote, dispatch])
+    }, [event, idToken])
 
+    const handleSubmit = useCallback(async () => {
+        try {
+            setLoading(true)
+            const result = await WinnerVoteService.submitVote(
+                idToken,
+                event.slug,
+                vote,
+            )
+            if (result) {
+                dispatch(SnackbarActions.success('Vote submitted!'))
+            }
+        } catch (err) {
+            dispatch(
+                SnackbarActions.error(
+                    'Something went wrong... Please try again',
+                ),
+            )
+        } finally {
+            setLoading(false)
+        }
+    }, [idToken, event, vote])
     return (
         <PageWrapper loading={loading}>
             <PageHeader
@@ -158,8 +133,9 @@ export default () => {
                 </Box>
             </Box>
             <Grid container spacing={3}>
-                {projects.map(project => (
+                {projects.map((project, index) => (
                     <ProjectsGridItem
+                        key={index}
                         project={project}
                         event={event}
                         onClickMore={() => setSelected(project)}
