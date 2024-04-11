@@ -83,6 +83,7 @@ export default ({
     onBack,
     backgroundColor,
     alignRight,
+    isPreview = false,
 }) => {
     const dispatch = useDispatch()
     const classes = useStyles({ backgroundColor })
@@ -145,7 +146,7 @@ export default ({
                 wrapperClass={classes.backButtonWrapper}
                 className={classes.buttonInner}
             >
-                <Button
+                {!isPreview && (<Button
                     onClick={
                         typeof onBack === 'function'
                             ? onBack
@@ -157,7 +158,8 @@ export default ({
                         Back
                     </Typography>
                 </Button>
+                )}
             </Container>
-        </Box>
+        </Box >
     )
 }

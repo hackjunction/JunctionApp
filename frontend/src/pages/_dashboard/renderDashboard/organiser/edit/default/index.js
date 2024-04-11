@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { Grid, Box, Typography, TextField } from '@material-ui/core'
 import { FastField } from 'formik'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
@@ -9,14 +9,16 @@ import FormControl from 'components/inputs/FormControl'
 import TextInput from 'components/inputs/TextInput'
 import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
-import Timeline from '../timeline'
+import EventPageCustomizationPreviewModal from 'pages/_events/EventPageCustomizationPreviewModal'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'
-import { push } from 'connected-react-router'
+// import { push } from 'connected-react-router'
 import { defaultEventStyles } from './const'
+import Timeline from '../timeline'
+import { useQuery } from 'hooks/useQuery'
 
 const themeFields = [
     {
@@ -69,7 +71,14 @@ const themeFields = [
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const [organizations] = useAllOrganizations()
-    const dispatch = useDispatch()
+    const { getQuery, setQuery } = useQuery()
+    const isPreviewOpen = getQuery('preview') === 'true'
+
+    // Open the preview modal by setting the preview mode in URL
+    const handlePreviewOpen = () => setQuery('preview', 'true')
+
+    // Close the preview modal by removing the preview mode from URL
+    const handlePreviewClose = () => setQuery('preview', 'false')
 
     return (
         <Grid container spacing={3}>
@@ -382,12 +391,7 @@ export default () => {
                         </Grid>
                     ))}
                     <Grid item xs={12}>
-                        <Button
-                            variant="contained"
-                            onClick={() =>
-                                dispatch(push('/events/' + event.slug))
-                            }
-                        >
+                        <Button variant="contained" onClick={handlePreviewOpen}>
                             Preview
                         </Button>
                         <FastField name="theme">
@@ -407,6 +411,11 @@ export default () => {
                     </Grid>
                 </Grid>
             </Grid>
+            <EventPageCustomizationPreviewModal
+                open={isPreviewOpen}
+                onClose={handlePreviewClose}
+                eventSlug={event.slug}
+            />
         </Grid>
     )
 }
