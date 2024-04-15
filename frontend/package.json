@@ -28,7 +28,7 @@
         "graphql": "^15.0.0",
         "graphql-ws": "^5.9.1",
         "i18next": "^19.4.5",
-        "i18next-browser-languagedetector": "^4.3.1",
+        "i18next-browser-languagedetector": "^7.2.1",
         "i18next-xhr-backend": "^3.2.2",
         "lodash-es": "^4.17.15",
         "logrocket": "^1.0.7",
