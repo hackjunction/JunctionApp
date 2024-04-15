@@ -24,7 +24,6 @@
 
 We want to provide the best tools for organizing hackathons, so we have developed a platform that anybody can use. Junction App provides an all-in-one platform for hackathon organizing from custom event creation to project judging.
 
-
 ### Features
 
 * Custom event configuration
