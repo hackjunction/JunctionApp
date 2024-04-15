@@ -63,7 +63,7 @@
         "pino-pretty": "^4.0.0",
         "react-helmet": "^6.1.0",
         "react-pdf": "^4.1.0",
-        "uuid": "^8.3.2",
+        "uuid": "^9.0.1",
         "yup": "^0.29.1"
     },
     "engines": {
