@@ -53,7 +53,7 @@
         "http-status": "^1.4.2",
         "jwks-rsa": "^3.1.0",
         "lodash": "^4.17.21",
-        "moment-timezone": "^0.5.31",
+        "moment-timezone": "^0.5.45",
         "mongoose": "5.9.16",
         "mongoose-slug-plugin": "^2.0.3",
         "multer": "^1.4.2",
