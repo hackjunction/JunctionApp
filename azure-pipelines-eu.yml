@@ -1,9 +1,9 @@
 # Works
 trigger:
-    - none
+- none
 
 pool:
-    vmImage: ubuntu-latest
+  vmImage: ubuntu-latest
 
 stages:
 
