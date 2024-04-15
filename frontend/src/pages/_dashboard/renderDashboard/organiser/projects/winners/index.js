@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Grid, Box, Dialog, Typography } from '@material-ui/core'
+import { Grid, Box, Dialog } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'
@@ -11,12 +11,8 @@ import ProjectDetail from 'components/projects/ProjectDetail'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
 
-import EventsService from 'services/events'
-//import ProjectsService from 'services/projects'
-
 import WinnerVoteService from 'services/winnerVote'
-import VotingTokenService from 'services/votingToken'
-import { debugGroup } from 'utils/debuggingTools'
+import _ from 'lodash'
 
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
@@ -26,65 +22,35 @@ export default () => {
     const [selected, setSelected] = useState(false)
 
     const [projects, setProjects] = useState([])
-    const [results, setResults] = useState({})
-    const [tokenVoterResults, setTokenVoterResults] = useState([])
-
-    const updateVote = useCallback(() => {
-        return WinnerVoteService.getResults(idToken, event.slug)
-    }, [idToken, event])
-
-    const updateVotesWithToken = useCallback(() => {
-        return VotingTokenService.getVotingTokenResults(
-            idToken,
-            event.slug,
-        ).catch(error => {
-            console.error(error?.response)
-        })
-    }, [idToken, event])
-
-    // const updateProjects = useCallback(() => {
-    //     // TODO use EventsService
-    //     return ProjectsService.getProjectsByEvent(event.slug)
-    //     // return EventsService.getWinnerProjects(idToken, event.slug)
-    // }, [event])
 
     const update = useCallback(async () => {
-        setLoading(true)
-        if (event.overallReviewMethod === 'finalsManualSelection') {
-            const vote = await updateVote()
-            const partnerVotes = await updateVotesWithToken()
-            const topProjects = await EventsService.getFinalists(
-                idToken,
-                event.slug,
-            )
-            setProjects(topProjects)
-            if (vote) {
-                setResults(vote)
+        try {
+            setLoading(true)
+            const finalistProjectsWithAllVotes =
+                await WinnerVoteService.getResults(idToken, event.slug)
+            if (
+                Array.isArray(finalistProjectsWithAllVotes) &&
+                finalistProjectsWithAllVotes.length > 0
+            ) {
+                setProjects(finalistProjectsWithAllVotes)
             }
-            if (partnerVotes) {
-                setTokenVoterResults(partnerVotes)
-            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
-    }, [
-        event.overallReviewMethod,
-        event.slug,
-        updateVote,
-        updateVotesWithToken,
-        idToken,
-    ])
+    }, [event, idToken])
 
     useEffect(() => {
-        update()
-    }, [update])
+        if (event?.slug) {
+            update()
+        }
+    }, [event])
 
-    const getScoreText = projectId => {
-        const scoreFromUsers = results[projectId]?.length ?? 0
-        const scoreFromTokenVoters =
-            tokenVoterResults.find(res => res.project === projectId)?.votes ?? 0
-
-        const total = scoreFromUsers + scoreFromTokenVoters
-
+    const getScoreText = project => {
+        const scoreFromUsers = project?.votingData?.userVotes ?? 0
+        const scoreFromTokenVoters = project?.votingData?.tokenVotes ?? 0
+        const total = project?.votingData?.totalVotes ?? 0
         return (
             <>
                 <strong>Total votes received: {total}</strong> <br />
@@ -93,16 +59,16 @@ export default () => {
             </>
         )
     }
-    debugGroup('Results', results)
     return (
         <PageWrapper loading={loading}>
             <PageHeader heading="Results" subheading="Finalist vote results" />
             <Grid container spacing={3}>
-                {projects.map(project => (
+                {projects.map((project, index) => (
                     <ProjectsGridItem
+                        key={index}
                         project={project}
                         event={event}
-                        votingResults={getScoreText(project._id)}
+                        votingResults={getScoreText(project)}
                         onClickMore={() => setSelected(project)}
                         showScore={true}
                     />
