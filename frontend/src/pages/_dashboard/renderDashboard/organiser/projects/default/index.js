@@ -5,12 +5,6 @@ import ProjectsTable from 'components/tables/ProjectsTable'
 
 export default () => {
     const projects = useSelector(OrganiserSelectors.projects)
-    const event = useSelector(OrganiserSelectors.event)
 
-    return (
-        <ProjectsTable
-            baseURL={`/projects/${event.slug}/view/`}
-            projects={projects}
-        />
-    )
+    return <ProjectsTable projects={projects} />
 }

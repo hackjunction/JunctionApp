@@ -49,22 +49,22 @@ export default () => {
 
     useEffect(() => {
         if (event) {
-            dispatch(
-                OrganiserActions.updateOrganisersForEvent(
-                    event.owner,
-                    event.organisers,
-                ),
-            )
+            // dispatch(
+            //     OrganiserActions.updateOrganisersForEvent(
+            //         event.owner,
+            //         event.organisers,
+            //     ),
+            // )
             dispatch(
                 OrganiserActions.updateRecruitersForEvent(event.recruiters),
             )
-            dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
-            dispatch(OrganiserActions.updateTeamsForEvent(slug))
+            // dispatch(OrganiserActions.updateRegistrationsForEvent(slug))
+            // dispatch(OrganiserActions.updateTeamsForEvent(slug))
             dispatch(OrganiserActions.updateFilterGroups(slug))
-            dispatch(OrganiserActions.updateProjects(slug))
-            dispatch(OrganiserActions.updateGavelProjects(slug))
-            dispatch(OrganiserActions.updateRankings(slug))
-            dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
+            // dispatch(OrganiserActions.updateProjects(slug))
+            // dispatch(OrganiserActions.updateGavelProjects(slug))
+            // dispatch(OrganiserActions.updateRankings(slug))
+            // dispatch(OrganiserActions.generateResults(slug)) // TODO do we need to get results always?
         }
     }, [dispatch, slug, event])
     return (
