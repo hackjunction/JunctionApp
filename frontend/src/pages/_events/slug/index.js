@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
@@ -16,43 +16,42 @@ import EventDetailContext, { EventDetailProvider } from './context'
 const EventDetailRouter = () => {
     const match = useRouteMatch()
     const location = useLocation()
-    const { eventLoading, eventError, isRegistrationOpen } =
-        useContext(EventDetailContext)
-    // TODO FIX errortext and desc to be from eventErro
+    const [isPreview, setIsPreview] = useState(false)
+    const { eventLoading, eventError, isRegistrationOpen } = useContext(EventDetailContext)
+
+    // Monitor changes to the preview query parameter and update state accordingly
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search)
+        setIsPreview(searchParams.get('preview') === 'true')
+    }, [location.search])
+
+    // Conditional rendering for preview or non-preview mode
     return (
         <PageWrapper
             loading={eventLoading}
             error={!!eventError}
-            errorText={`Oops, something went wrong`}
-            errorDesc={`Please refresh the page to try again.`}
-            header={() => <GlobalNavBar />}
-            footer={() => <EventFooter />}
-            render={() => {
-                return (
-                    <AnimatePresence>
-                        <Switch location={location} key={location.pathname}>
-                            <Route
-                                exact
-                                path={`${match.url}`}
-                                component={EventDetail}
-                            />
-                            {isRegistrationOpen && (
-                                <Route
-                                    exact
-                                    path={`${match.url}/register`}
-                                    component={EventRegister}
-                                />
-                            )}
-                            <Route
-                                exact
-                                path={`${match.url}/finalist-voting`}
-                                component={FinalistVoting}
-                            />
-                            <Redirect to={`${match.url}`} />
-                        </Switch>
-                    </AnimatePresence>
-                )
-            }}
+            errorText="Oops, something went wrong"
+            errorDesc="Please refresh the page to try again."
+            header={!isPreview ? () => <GlobalNavBar /> : undefined}
+            footer={!isPreview ? () => <EventFooter /> : undefined}
+            render={() => (
+                <AnimatePresence>
+                    <Switch location={location} key={location.pathname}>
+                        <Route
+                            exact
+                            path={`${match.url}`}
+                            render={(props) => <EventDetail {...props} isPreview={isPreview} />}
+                        />
+                        {isRegistrationOpen && !isPreview &&
+                            <Route exact path={`${match.url}/register`} component={EventRegister} />
+                        }
+                        {!isPreview &&
+                            <Route exact path={`${match.url}/finalist-voting`} component={FinalistVoting} />
+                        }
+                        <Redirect to={`${match.url}`} />
+                    </Switch>
+                </AnimatePresence>
+            )}
         />
     )
 }

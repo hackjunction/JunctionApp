@@ -213,10 +213,12 @@ controller.exportProjects = async projectIds => {
 
     return exportData
 }
-controller.getFinalists = event => {
-    return Project.find({ _id: { $in: event.finalists } })
+controller.getFinalists = async event => {
+    const finalistProjects = await Project.find({
+        _id: { $in: event.finalists },
+    })
+    return finalistProjects
 }
-module.exports = controller
 
 controller.getDataForPartnerReviewing = async (event, user) => {
     const data = {}
@@ -261,3 +263,5 @@ controller.getDataForPartnerReviewing = async (event, user) => {
     }
     return data
 }
+
+module.exports = controller
