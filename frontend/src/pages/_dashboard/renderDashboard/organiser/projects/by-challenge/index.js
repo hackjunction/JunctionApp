@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { sortBy } from 'lodash-es'
 import {
     Box,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     ListItemText,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -24,7 +24,6 @@ export default () => {
         const projectsWithTeam = projects
             .map(project => {
                 const teamFound = teams.find(team => {
-                    console.log(team._id, project.team)
                     return team._id === project.team
                 })
                 if (teamFound) {
@@ -48,8 +47,8 @@ export default () => {
             {challenges.map(challenge => {
                 const projects = getProjectsForChallenge(challenge.slug)
                 return (
-                    <ExpansionPanel key={challenge.slug}>
-                        <ExpansionPanelSummary
+                    <Accordion key={challenge.slug}>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
@@ -58,8 +57,8 @@ export default () => {
                                 primary={challenge.name}
                                 secondary={`${challenge.partner} // ${projects.length} projects`}
                             ></ListItemText>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <Box
                                 display="flex"
                                 flexDirection="column"
@@ -68,13 +67,10 @@ export default () => {
                                 <Box p={1}>
                                     <ChallengeLink challenge={challenge.slug} />
                                 </Box>
-                                <ProjectsTable
-                                    baseURL={`/projects/${event.slug}/view/`}
-                                    projects={projects}
-                                />
+                                <ProjectsTable projects={projects} />
                             </Box>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 )
             })}
         </Box>

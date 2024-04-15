@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react'
 
-import { ConnectedRouter, push } from 'connected-react-router'
+import { ConnectedRouter } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/client'
 
@@ -38,21 +38,13 @@ export default ({ history, location }) => {
             if (isSessionExpired) {
                 setLoading(true)
                 console.log('renewing session now')
-                dispatch(AuthActions.renewSession())
-                    .then(() => {
-                        setLoading(false)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        dispatch(SnackbarActions.error('Please, log in again'))
-                    })
-                    .finally(() => setLoading(false))
-            } else {
-                setLoading(false)
+                dispatch(AuthActions.renewSession()).catch(err => {
+                    console.log(err)
+                    dispatch(SnackbarActions.error('Please, log in again'))
+                })
             }
-        } else {
-            setLoading(false)
         }
+        setLoading(false)
     }, [dispatch, isAuthenticated, isSessionExpired])
 
     return (
