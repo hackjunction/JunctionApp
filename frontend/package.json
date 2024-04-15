@@ -70,7 +70,7 @@
         "redux-persist": "^6.0.0",
         "redux-thunk": "^2.3.0",
         "remark-breaks": "^1.0.5",
-        "reselect": "^4.0.0",
+        "reselect": "^5.1.0",
         "speakingurl": "^14.0.1",
         "tailwindcss": "^1.9.6",
         "webfontloader": "^1.6.28",
