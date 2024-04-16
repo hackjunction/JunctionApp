@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch, useLocation } from 'react-router'
 import { OverallReviewingMethods } from '@hackjunction/shared'
 
@@ -17,12 +17,21 @@ import WinnersTab from './winners'
 import FinalistSelectionTab from './finalist-selection'
 import VotingTokensTab from './votingTokens'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserActions from 'redux/organiser/actions'
 
 export default () => {
+    const dispatch = useDispatch()
     const event = useSelector(OrganiserSelectors.event)
-    const projectsLoading = useSelector(OrganiserSelectors.projectsLoading)
     const match = useRouteMatch()
     const location = useLocation()
+    useEffect(() => {
+        if (event.slug) {
+            dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
+            dispatch(OrganiserActions.updateProjects(event.slug))
+        }
+    }, [event, location])
+
+    const projectsLoading = useSelector(OrganiserSelectors.projectsLoading)
 
     const tabs = useMemo(() => {
         const data = [
