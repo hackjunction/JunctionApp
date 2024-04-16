@@ -124,7 +124,6 @@ const BottomBar = ({
                     <Button
                         color="theme_white"
                         variant="contained"
-                        disabled={loading}
                         onClick={onSubmit}
                         disabled={loading}
                     >
