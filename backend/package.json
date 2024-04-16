@@ -23,7 +23,7 @@
     "dependencies": {
         "@hackjunction/shared": "file:../shared",
         "@sendgrid/client": "^7.4.1",
-        "@sendgrid/mail": "^7.1.1",
+        "@sendgrid/mail": "^8.1.3",
         "@stdlib/math": "^0.0.11",
         "@stdlib/stdlib": "0.0.91",
         "apollo-server-core": "^3.10.0",
