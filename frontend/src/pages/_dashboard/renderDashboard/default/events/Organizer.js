@@ -76,36 +76,6 @@ export default () => {
         ['Organiser', 'AssistantOrganiser', 'SuperAdmin'].includes(r),
     )
 
-    // useEffect(() => {
-    //     if (hasError) {
-    //         if (name.length < 5) {
-    //             setError(t('Name_must_five_'))
-    //         } else if (name.length >= 50) {
-    //             setError(t('Name_must_under_'))
-    //         } else if (name === 'default') {
-    //             setError(t('Name_not_default_'))
-    //         } else {
-    //             setError()
-    //         }
-    //     }
-    // }, [name, hasError, t])
-
-    // const checkName = useCallback(() => {
-    //     if (name.length < 5) {
-    //         setError(t('Name_must_five_'))
-    //         return false
-    //     } else if (name.length >= 50) {
-    //         setError(t('Name_must_under_'))
-    //         return false
-    //     } else if (name === 'default') {
-    //         setError(t('Name_not_default_'))
-    //         return false
-    //     }
-    //     return true
-    // }, [name.length, t])
-
-    console.log('organizerEvents', organizerEvents)
-
     //TODO implement pagination to improve performance of organize tab
 
     useEffect(() => {
@@ -140,7 +110,7 @@ export default () => {
                 <Grid
                     container
                     direction="row"
-                    justify="flex-start"
+                    justifyContent="flex-start"
                     alignItems="center"
                     spacing={3}
                 >
@@ -157,8 +127,8 @@ export default () => {
                 </Grid>
                 <Grid container spacing={3}>
                     <CreateEventCard />
-                    {searchResults.map(event => (
-                        <Grid item xs={12} md={6} lg={4}>
+                    {searchResults.map((event, index) => (
+                        <Grid key={index} item xs={12} md={6} lg={4}>
                             <div className={classes.statusText}>
                                 {event.published && event.approved ? (
                                     <span className={classes.green}>

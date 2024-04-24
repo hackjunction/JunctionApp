@@ -130,7 +130,6 @@ export default React.memo(
     }) => {
         const dispatch = useDispatch()
         const routes = _routes.filter(route => !route.hidden)
-        console.log("ROUTES", routes)
 
         const activeIndex = useMemo(() => {
             const relativePath = location.pathname.replace(baseRoute, '')
@@ -141,21 +140,16 @@ export default React.memo(
                     return relativePath.indexOf(item.path) !== -1
                 }
             })
-            console.log("INDEX", idx)
-            console.log(relativePath)
             if (idx === -1) {
                 switch (relativePath) {
                     case '/events':
                         idx = routes.length
-                        console.log('/events', idx)
                         break
                     case '/events/organize':
                         idx = routes.length
-                        console.log('/events', idx)
                         break
                     case '/events/partner':
                         idx = routes.length
-                        console.log('/events', idx)
                         break
                     case '/profile':
                         idx = routes.length + 1
@@ -166,13 +160,11 @@ export default React.memo(
                     default: idx = -1
                 }
             }
-            console.log("IDX", idx)
             return idx
         }, [baseRoute, location.pathname, routes])
 
         const pushRoute = useCallback(
             path => {
-                console.log(`push(${baseRoute}${path})`)
                 dispatch(push(`${baseRoute}${path}`))
             },
             [baseRoute, dispatch],
@@ -180,7 +172,6 @@ export default React.memo(
 
         useEffect(() => {
             if (activeIndex === -1) {
-                console.log("PUSHING ", routes, "activeIndex", activeIndex)
                 //pushRoute(routes[0].path)
             }
         }, [routes, activeIndex, pushRoute])
@@ -271,7 +262,6 @@ export default React.memo(
                                 selected: classes.listItemSelected,
                             }}
                             onClick={() => {
-                                console.log("safeIndex", safeIndex)
                                 pushRoute('/events')
                             }}
                         >
@@ -339,11 +329,6 @@ export default React.memo(
                                 }}
                                 primary={'Log Out'}
                             />
-                        </ListItem>
-                        <ListItem>
-                            {/*TODO: language menu */}
-                            {/* <img src={FlagUK} width="40" height="30" ></img> */}
-
                         </ListItem>
                     </div>
                 </List>
@@ -426,24 +411,8 @@ export default React.memo(
                                     },
                                     index,
                                 ) => {
-                                    // console.log("PROPS: ", "key", key,
-                                    //     "path", `${baseRoute}${path}`,
-                                    //     "hidden", hidden,
-                                    //     "component", component,
-                                    //     exact = false,
-                                    //     "locked", locked,
-                                    //     "index", index)
                                     if (hidden || locked) {
                                         return null
-                                        // } else if (index === 5) {
-                                        //     console.log("ROUTING EVENT_ID")
-                                        //     return (< Route
-                                        //         key={'eventId2'}
-                                        //         exact={false}
-                                        //         path={`${baseRoute}/event-id`
-                                        //         }
-                                        //         component={LogoutPage}
-                                        //     />)
 
                                     } else {
                                         return (

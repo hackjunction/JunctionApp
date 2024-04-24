@@ -34,7 +34,7 @@ const SocialMediaBlock = () => {
                     container
                     spacing={1}
                     direction="row"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center"
                 >
                     <Grid item>
