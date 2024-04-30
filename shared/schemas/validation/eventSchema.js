@@ -180,7 +180,7 @@ export default yup.object().shape({
             description: yup.string(),
         }),
     ),
-    map: mongoFile,
+    map: cloudinaryImage,
     published: yup.boolean().required(),
     galleryOpen: yup.boolean(),
     owner: yup.string(),
