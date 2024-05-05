@@ -118,8 +118,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                cd /home/azureuser/azagent/_work/2/japp
-                pm2 restart index --update-env
+                pm2 restart index
                 sudo systemctl restart nginx
 
         routeTraffic:
