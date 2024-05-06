@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const { errors } = require('celebrate')
 const path = require('path')
 const helmet = require('helmet')
-const sslRedirect = require('heroku-ssl-redirect')
+// const sslRedirect = require('heroku-ssl-redirect')
 
 /** Create Express application */
 const app = express()
@@ -76,19 +76,27 @@ const migrations = require('./migrations/index')
 const throng = require('./misc/throng')
 
 const memoryUsage = () => {
-    const formatMemoryUsage = (data) => `${Math.round(data / 1024 / 1024 * 100) / 100} MB`
+    const formatMemoryUsage = data =>
+        `${Math.round((data / 1024 / 1024) * 100) / 100} MB`
 
     const memoryData = process.memoryUsage()
 
     const memoryUsage = {
-        rss: `${formatMemoryUsage(memoryData.rss)} -> Resident Set Size - total memory allocated for the process execution`,
-        heapTotal: `${formatMemoryUsage(memoryData.heapTotal)} -> total size of the allocated heap`,
-        heapUsed: `${formatMemoryUsage(memoryData.heapUsed)} -> actual memory used during the execution`,
-        external: `${formatMemoryUsage(memoryData.external)} -> V8 external memory`,
+        rss: `${formatMemoryUsage(
+            memoryData.rss,
+        )} -> Resident Set Size - total memory allocated for the process execution`,
+        heapTotal: `${formatMemoryUsage(
+            memoryData.heapTotal,
+        )} -> total size of the allocated heap`,
+        heapUsed: `${formatMemoryUsage(
+            memoryData.heapUsed,
+        )} -> actual memory used during the execution`,
+        external: `${formatMemoryUsage(
+            memoryData.external,
+        )} -> V8 external memory`,
     }
 
     console.log(memoryUsage)
-
 }
 
 throng({
@@ -109,20 +117,14 @@ throng({
 
         httpServer.listen(PORT, () => {
             logger.info(
-                `Worker ${process.pid} started, listening on port ${httpServer.address().port}`,
-
+                `Worker ${process.pid} started, listening on port ${
+                    httpServer.address().port
+                }`,
             )
-
         })
 
         memoryUsage()
-
-
-
-
     },
-
-
 
     /** This is run only if the master function errors out, which means the
      *  server could not start properly. Workers are automatically revived on failure, if e.g.

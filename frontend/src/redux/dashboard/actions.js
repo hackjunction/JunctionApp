@@ -60,7 +60,6 @@ export const updateRegistrationChecklist =
 
 export const updateRecruitersForEvent =
     recruiters => async (dispatch, getState) => {
-        const idToken = AuthSelectors.getIdToken(getState())
         const userIds = recruiters?.map(rec => {
             return rec.recruiterId
         })
@@ -171,13 +170,11 @@ export const createPartnerRegistration =
             idToken,
             userId,
         )
-        console.log('createPartnerRegistration', user)
         const registration = await RegistrationsService.addPartnerToRegistrated(
             idToken,
             user,
             slug,
         )
-        console.log('created registration', registration)
         return registration
     }
 
@@ -255,19 +252,6 @@ export const updateTeam = slug => (dispatch, getState) => {
     })
 }
 
-// TODO createTeam action to be depreciated and deleted, replaced by createNewTeam
-export const createTeam = slug => async (dispatch, getState) => {
-    const idToken = AuthSelectors.getIdToken(getState())
-    const team = await TeamsService.createTeamForEvent(idToken, slug, true)
-
-    dispatch({
-        type: ActionTypes.EDIT_TEAM,
-        payload: team,
-    })
-
-    return team
-}
-
 export const editTeam = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     const team = await TeamsService.editTeamForEvent(idToken, slug, data, true)
@@ -280,9 +264,7 @@ export const editTeam = (slug, data) => async (dispatch, getState) => {
     return team
 }
 
-//TODO when createTeam is deleted, rename this to createTeam
-export const createNewTeam = (slug, data) => async (dispatch, getState) => {
-    console.log('createNewTeam action received:', slug, data)
+export const createTeam = (slug, data) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
     const team = await TeamsService.createNewTeamForEvent(
         idToken,
@@ -301,9 +283,7 @@ export const createNewTeam = (slug, data) => async (dispatch, getState) => {
 
 export const joinTeam = (slug, code) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-
     const team = await TeamsService.joinTeamForEvent(idToken, slug, code, true)
-
     dispatch({
         type: ActionTypes.EDIT_TEAM,
         payload: team,
@@ -328,7 +308,6 @@ export const getCandidateProfileById = userId => async (dispatch, getState) => {
 export const candidateApplyToTeam =
     (slug, code, applicationData) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
-        console.log('submitted with:', applicationData)
         const team = await TeamsService.candidateApplyToTeam(
             idToken,
             slug,
@@ -350,7 +329,6 @@ export const candidateApplyToTeam =
 export const acceptCandidateToTeam =
     (slug, code, userId) => async (dispatch, getState) => {
         const idToken = AuthSelectors.getIdToken(getState())
-        // const team = await TeamsService.editTeam(idToken, slug, code, userId)
         const team = await TeamsService.acceptCandidateToTeam(
             idToken,
             slug,
@@ -480,10 +458,6 @@ export const updateProjects = slug => async (dispatch, getState) => {
 export const createProject = (slug, data) => async (dispatch, getState) => {
     try {
         const idToken = AuthSelectors.getIdToken(getState())
-        // const fileData = await fileAttachmentFinder(data, idToken)
-
-        // if (fileData) {
-        // }
         await ProjectsService.createProjectForEventAndTeam(idToken, slug, data)
         const projects = await ProjectsService.getProjectsForEventAndTeam(
             idToken,
@@ -502,40 +476,40 @@ export const createProject = (slug, data) => async (dispatch, getState) => {
         throw new Error(error)
     }
 }
-
-const fileAttachmentFinder = async (Projectdata, idToken) => {
-    console.log('Project data to check for files', Projectdata)
-    const fileKeys = []
-    _.forOwn(Projectdata, (value, key) => {
-        console.log(key, value)
-        if (value && Object.getPrototypeOf(value) === File.prototype) {
-            console.log('File found: ', value)
-            fileKeys.push(key)
-        }
-    })
-    console.log('File keys: ', fileKeys)
-    if (fileKeys.length > 0) {
-        const fileMetadataArray = await Promise.all(
-            fileKeys.map(async key => {
-                console.log('File key: ', key)
-                const fileMetadata = await handleFile(Projectdata[key], idToken)
-                console.log('File metadata: ', fileMetadata)
-                if (fileMetadata.toString() === '[object Object]') {
-                    return Error('File upload failed')
-                }
-                Projectdata[key] = fileMetadata.toString()
-                const index = Projectdata['submissionFormAnswers'].findIndex(
-                    ans => ans['key'] === key,
-                )
-                Projectdata['submissionFormAnswers'][index].value =
-                    fileMetadata.toString()
-                return fileMetadata
-            }),
-        )
-        console.log('File metadata array', fileMetadataArray)
-    }
-    return Projectdata
-}
+// TODO delete file upload and file attachement
+// const fileAttachmentFinder = async (Projectdata, idToken) => {
+//     console.log('Project data to check for files', Projectdata)
+//     const fileKeys = []
+//     _.forOwn(Projectdata, (value, key) => {
+//         console.log(key, value)
+//         if (value && Object.getPrototypeOf(value) === File.prototype) {
+//             console.log('File found: ', value)
+//             fileKeys.push(key)
+//         }
+//     })
+//     console.log('File keys: ', fileKeys)
+//     if (fileKeys.length > 0) {
+//         const fileMetadataArray = await Promise.all(
+//             fileKeys.map(async key => {
+//                 console.log('File key: ', key)
+//                 const fileMetadata = await handleFile(Projectdata[key], idToken)
+//                 console.log('File metadata: ', fileMetadata)
+//                 if (fileMetadata.toString() === '[object Object]') {
+//                     return Error('File upload failed')
+//                 }
+//                 Projectdata[key] = fileMetadata.toString()
+//                 const index = Projectdata['submissionFormAnswers'].findIndex(
+//                     ans => ans['key'] === key,
+//                 )
+//                 Projectdata['submissionFormAnswers'][index].value =
+//                     fileMetadata.toString()
+//                 return fileMetadata
+//             }),
+//         )
+//         console.log('File metadata array', fileMetadataArray)
+//     }
+//     return Projectdata
+// }
 
 const getFile = async (fileId, filename, token) => {
     console.log('File to download: ', fileId)
@@ -588,33 +562,33 @@ const deleteFile = async (fileId, token) => {
     }
 }
 
-const handleFile = async (file, token) => {
-    console.log('File handling from dashboard actions', file)
-    const formData = new FormData()
-    formData.append('file', file)
-    console.log('File to upload: ', file)
-    console.log('Form data', formData)
-    try {
-        const response = await fetch('/api/upload/files', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        console.log('File upload response: ', response)
-        if (response.ok) {
-            const fileMetadata = await response.json()
-            console.log('File uploaded successfully')
-            console.log('File data', fileMetadata)
-            return JSON.stringify(fileMetadata)
-        } else {
-            throw new Error('Failed to upload file')
-        }
-    } catch (error) {
-        throw error
-    }
-}
+// const handleFile = async (file, token) => {
+//     console.log('File handling from dashboard actions', file)
+//     const formData = new FormData()
+//     formData.append('file', file)
+//     console.log('File to upload: ', file)
+//     console.log('Form data', formData)
+//     try {
+//         const response = await fetch('/api/upload/files', {
+//             method: 'POST',
+//             body: formData,
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         })
+//         console.log('File upload response: ', response)
+//         if (response.ok) {
+//             const fileMetadata = await response.json()
+//             console.log('File uploaded successfully')
+//             console.log('File data', fileMetadata)
+//             return JSON.stringify(fileMetadata)
+//         } else {
+//             throw new Error('Failed to upload file')
+//         }
+//     } catch (error) {
+//         throw error
+//     }
+// }
 
 export const getFileForProject =
     (fileId, filename) => async (dispatch, getState) => {
@@ -677,8 +651,6 @@ export const editProject = (slug, data) => async (dispatch, getState) => {
 
 export const updateAnnotator = slug => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
-    //get idToken for gavel start voting stress test
-    console.log(idToken)
     const { error } = await dispatch({
         type: ActionTypes.UPDATE_ANNOTATOR,
         promise: GavelService.getAnnotator(idToken, slug), //,
@@ -754,8 +726,6 @@ export const setFirstProjectSeen = slug => async (dispatch, getState) => {
 export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
     const idToken = AuthSelectors.getIdToken(getState())
 
-    //get idToken and winnerId for gavel voting stress test
-    console.log(slug, winnerId)
     try {
         const annotator = await GavelService.submitVote(idToken, slug, winnerId)
         console.log(annotator)
@@ -769,7 +739,6 @@ export const submitVote = (slug, winnerId) => async (dispatch, getState) => {
     }
 }
 export const activeEvents = activeEvents => dispatch => {
-    console.log('action activeEvents', activeEvents)
     dispatch({
         type: ActionTypes.ACTIVE_EVENTS,
         payload: {
@@ -779,7 +748,6 @@ export const activeEvents = activeEvents => dispatch => {
 }
 
 export const pastEvents = pastEvents => dispatch => {
-    console.log('action pastEvents', pastEvents)
     dispatch({
         type: ActionTypes.PAST_EVENTS,
         payload: {
