@@ -407,7 +407,10 @@ const EventSchema = new mongoose.Schema({
         type: [EventPageScriptSchema.mongoose],
         default: [],
     },
-    meetingsEnabled: false,
+    meetingsEnabled: {
+        type: Boolean,
+        default: false,
+    },
     meetingRooms: {
         type: [MeetingRoomSchema.mongoose],
         default: [],
@@ -426,6 +429,12 @@ const EventSchema = new mongoose.Schema({
     //New fields for score criteria and score settings
     scoreCriteriaSettings: {
         type: ScoreCriteriaSettingsSchema.mongoose,
+        default: {
+            scoreCriteria: [{criteria: 'overall', label: 'Overall'}],
+            showScore: false,
+            showFeedback: false,
+            reviewAnyChallenge: false,
+        },
     },
     experimental: {
         type: Boolean,

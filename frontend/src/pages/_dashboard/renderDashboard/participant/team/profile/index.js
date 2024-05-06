@@ -74,7 +74,7 @@ export default () => {
     const handleCreate = useCallback(
         (values, formikBag) => {
             setLoading(true)
-            dispatch(DashboardActions.createNewTeam(slug, values))
+            dispatch(DashboardActions.createTeam(slug, values))
                 .then(() => {
                     dispatch(SnackbarActions.success('Created new team'))
                 })

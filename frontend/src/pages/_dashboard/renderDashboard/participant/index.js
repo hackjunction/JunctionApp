@@ -110,7 +110,6 @@ export default ({
                     ),
                     label: t('Dashboard_'),
                     component: () => {
-                        setAlertCount(0)
                         return DefaultPage({ alerts })
                     },
                 },

@@ -23,11 +23,6 @@ export default () => {
     const activeEvents = useSelector(DashboardSelectors.activeEvents)
     const pastEvents = useSelector(DashboardSelectors.pastEvents)
     const [registrations, loading, error] = useRegistrationsByUser(userId)
-    //useSelector(UserSelectors.registrations)
-
-    console.log('activeEvents', activeEvents)
-    console.log('pastEvents', pastEvents)
-    console.log('registrations', registrations)
 
     const dispatch = useDispatch()
     const { t } = useTranslation()
@@ -53,9 +48,10 @@ export default () => {
                                 )}
                         </Grid>
 
-                        {registrations?.map(registration => (
-                            <Grid key={registration.id} item xs={12} md={6}>
+                        {registrations?.map((registration, index) => (
+                            <Grid key={`${registration.id}-${index}`} item xs={12} md={6}>
                                 <EventCardSmall
+                                    key={index}
                                     event={registration.event}
                                     handleClick={event => {
                                         dispatch(
@@ -92,12 +88,6 @@ export default () => {
                                     isodate > event.registrationStartTime
 
                                 const eventStarted = isodate > event.startTime
-                                console.log(
-                                    'button render',
-                                    event.slug,
-                                    canApply && !event.galleryOpen,
-                                    event.galleryOpen && eventStarted,
-                                )
                                 return (
                                     <NewEventCard
                                         event={event}
@@ -136,10 +126,6 @@ export default () => {
                                                     <Button
                                                         size="small"
                                                         onClick={() => {
-                                                            console.log(
-                                                                '/projects/' +
-                                                                    event.slug,
-                                                            )
                                                             dispatch(
                                                                 push(
                                                                     '/projects/' +

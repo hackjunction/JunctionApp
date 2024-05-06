@@ -135,7 +135,6 @@ export default function reducer(state = initialState, action) {
         //     return updateSeletecUserHandler(state, action)
         // }
         case ActionTypes.ACTIVE_EVENTS: {
-            console.log('ACTIVE_EVENTS', state, action.payload)
             return {
                 ...state,
                 activeEvents: action.payload.activeEvents,

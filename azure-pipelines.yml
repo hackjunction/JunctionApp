@@ -13,16 +13,16 @@ stages:
                 - task: DownloadSecureFile@1
                   displayName: 'download STAG backendend'
                   inputs:
-                      secureFile: 'BACKEND_ENV_FILE_STAG' # string. Required. Secure File.
+                      secureFile: 'BACKEND_ENV_FILE_STAG_UPDATED' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy STAG backendend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: BACKEND_ENV_FILE_STAG
+                      Contents: BACKEND_ENV_FILE_STAG_UPDATED
                       TargetFolder: './backend'
 
-                - script: mv ./backend/BACKEND_ENV_FILE_STAG ./backend/.env
+                - script: mv ./backend/BACKEND_ENV_FILE_STAG_UPDATED ./backend/.env
                   displayName: 'rename STAG .env'
                 - task: DownloadSecureFile@1
                   displayName: 'download STAG frontend'

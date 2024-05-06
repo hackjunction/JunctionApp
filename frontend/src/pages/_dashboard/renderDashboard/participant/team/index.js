@@ -10,6 +10,9 @@ import PageHeader from 'components/generic/PageHeader'
 export default () => {
     const match = useRouteMatch()
     const location = useLocation()
+
+    // const hasTeam = useSelector(DashboardSelectors.hasTeam)
+    // TODO make tab "my team" and "Team candidates" visible only if user has a team
     return (
         <Container>
             <PageHeader heading="Team management" />
@@ -17,13 +20,13 @@ export default () => {
                 transparent
                 tabs={[
                     {
-                        label: 'Join a team',
+                        label: 'All teams',
                         key: 'teams',
                         path: '',
                         component: TeamsPage,
                     },
                     {
-                        label: 'Your team',
+                        label: 'My team',
                         key: 'profile',
                         path: '/profile',
                         component: ProfilePage,

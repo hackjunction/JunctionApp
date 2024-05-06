@@ -522,8 +522,13 @@ controller.rejectSoftRejected = async eventId => {
     return rejected
 }
 
+// TODO optimize how gavelData and registrations are matched to avoid O(n^2) complexity
 controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
-    console.log('Gavel data received', gavelData, typeof gavelData)
+    let updateCount = 0
+    const registrations = await Registration.find({
+        event: eventId,
+        status: RegistrationStatuses.asObject.checkedIn.id,
+    })
     gavelData.forEach(gavel => {
         if (
             typeof gavel.registration !== 'string' ||
@@ -531,17 +536,6 @@ controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
         ) {
             throw new Error('Gavel data is invalid')
         }
-    })
-    let updateCount = 0
-    const registrations = await Registration.find({
-        event: eventId,
-        status: RegistrationStatuses.asObject.checkedIn.id,
-    })
-    console.log('Registrations found', registrations.length)
-    console.log('Registrations data', registrations)
-    const registrationCount = registrations.length
-
-    gavelData.forEach(gavel => {
         const registration = registrations.find(
             r => r._id.toString() === gavel.registration,
         )
@@ -552,7 +546,10 @@ controller.addGavelLoginToRegistrations = async (eventId, gavelData) => {
             registration.save()
         }
     })
-
+    console.log('Registrations found', registrations.length)
+    console.log('Registrations data', registrations)
+    const registrationCount = registrations.length
+    
     console.log(
         'Modified counts, updated/total',
         updateCount,

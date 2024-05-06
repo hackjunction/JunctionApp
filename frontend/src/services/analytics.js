@@ -5,7 +5,6 @@ import config from 'constants/config'
 const AnalyticsService = {}
 
 AnalyticsService.init = () => {
-    console.log('Analytics -> initialize')
     if (config.GOOGLE_ANALYTICS_ID) {
         ReactGA.initialize(config.GOOGLE_ANALYTICS_ID)
     }
@@ -23,7 +22,6 @@ AnalyticsService.init = () => {
 }
 
 AnalyticsService.pageView = location => {
-    console.log('Analytics -> pageView')
     if (config.GOOGLE_ANALYTICS_ID) {
         ReactGA.pageview(location.pathname)
     }
@@ -31,14 +29,12 @@ AnalyticsService.pageView = location => {
 
 AnalyticsService.events = {
     LOG_IN: () => {
-        console.log('Analytics -> events -> LOG_IN')
         ReactPixel.track('CompleteRegistration', {
             value: 0.1,
             currency: 'EUR',
         })
     },
     VIEW_EVENT: slug => {
-        console.log('Analytics -> events -> VIEW_EVENT')
         ReactPixel.track('ViewContent', {
             value: 0.1,
             currency: 'EUR',
@@ -47,7 +43,6 @@ AnalyticsService.events = {
         })
     },
     BEGIN_REGISTRATION: slug => {
-        console.log('Analytics -> events -> BEGIN_REGISTRATION')
         ReactPixel.track('AddToCart', {
             value: 0.5,
             currency: 'EUR',
@@ -61,7 +56,6 @@ AnalyticsService.events = {
         })
     },
     COMPLETE_REGISTRATION: slug => {
-        console.log('Analytics -> events -> COMPLETE_REGISTRATION')
         ReactPixel.track('Purchase', {
             value: 1,
             currency: 'EUR',
