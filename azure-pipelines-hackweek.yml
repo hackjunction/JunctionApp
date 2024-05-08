@@ -74,7 +74,7 @@ stages:
             dependsOn: Build
             displayName: Web deploy
             environment:
-                name: STAGING
+                name: CUSTOM
                 resourceType: VirtualMachine
             strategy:
                 runOnce:
