@@ -172,9 +172,10 @@ const removeCandidateApplications = (teams, userId) => {
 controller.joinTeam = (eventId, userId, code) => {
     return controller.getTeamByCode(eventId, code).then(team => {
         // TODO HIGH PRIORITY team size defined in event
+        const maxTeamSize = 10
 
-        if (team.members.length >= 4) {
-            throw new ForbiddenError('Teams can have at most 5 members')
+        if (team.members.length > maxTeamSize) {
+            throw new ForbiddenError('Teams can have at most 10 members')
         }
         return controller
             .getTeamsForEvent(eventId)
@@ -223,7 +224,6 @@ controller.joinTeam = (eventId, userId, code) => {
 }
 //TODO: optimize this process, slow with over 200 teams
 controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
-
     let teamToReturn
     return controller
         .getTeamByCode(eventId, code)
@@ -493,7 +493,7 @@ controller.attachUserApplicant = (teams, userId) => {
 
 controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
     if (page && size) {
-        console.log("filter", filter)
+        console.log('filter', filter)
         if (filter) {
             const found = await Team.find({
                 event: eventId,
@@ -507,8 +507,11 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                         return controller.attachUserApplicant(teams, userId)
                     }
                 })
-            const count = await Team.find({ event: eventId, challenge: filter }).countDocuments()
-            console.log("with filter", { data: found, count: count })
+            const count = await Team.find({
+                event: eventId,
+                challenge: filter,
+            }).countDocuments()
+            console.log('with filter', { data: found, count: count })
             return { data: found, count: count }
         } else {
             const found = await Team.find({
@@ -537,14 +540,13 @@ controller.getTeamsForEvent = async (eventId, userId, page, size, filter) => {
                 return teams
             })
         const count = await Team.find({ event: eventId }).countDocuments()
-        console.log("getting all teams", count)
+        console.log('getting all teams', count)
         return { data: found, count: count }
     }
     // TODO make the code not visible to participants on Redux store
 }
 
 controller.getAllTeamsForEvent = async (eventId, userId, page, size) => {
-
     return await Team.find({
         event: eventId,
     })
@@ -590,26 +592,31 @@ controller.convertToFlatExportData = teamWithMeta => {
     }
 }
 
-controller.organiserRemoveMemberFromTeam = (eventId, teamCode, userToRemove) => {
-    console.log("removing ", eventId, teamCode, userToRemove)
+controller.organiserRemoveMemberFromTeam = (
+    eventId,
+    teamCode,
+    userToRemove,
+) => {
+    console.log('removing ', eventId, teamCode, userToRemove)
     return controller.getTeamByCode(eventId, teamCode).then(team => {
-
         if (team.members.length === 0 && team.owner === userToRemove) {
-            console.log("deleting team")
+            console.log('deleting team')
             controller.deleteTeamByCode(eventId, teamCode)
         } else {
             if (team.owner === userToRemove) {
-                console.log("new owner", team.members[0])
+                console.log('new owner', team.members[0])
                 team.owner = team.members[0]
                 team.members = team.members.slice(1)
             } else {
-                console.log("removing member")
-                team.members = team.members.filter(member => member !== userToRemove)
+                console.log('removing member')
+                team.members = team.members.filter(
+                    member => member !== userToRemove,
+                )
             }
-            console.log("deleted ", team.members)
+            console.log('deleted ', team.members)
             return team.save()
         }
-        console.log("deleted team", team.members)
+        console.log('deleted team', team.members)
         return team.save()
     })
 }

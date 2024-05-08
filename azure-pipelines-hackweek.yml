@@ -1,0 +1,131 @@
+trigger:
+    - none
+
+pool:
+    vmImage: ubuntu-latest
+
+stages:
+    - stage: Build
+      displayName: Build stage
+      jobs:
+          - job: Build
+            steps:
+                - task: DownloadSecureFile@1
+                  displayName: 'download STAG backendend'
+                  inputs:
+                      secureFile: 'BACKEND_ENV_FILE_STAG_UPDATED' # string. Required. Secure File.
+
+                - task: CopyFiles@2
+                  displayName: 'copy STAG backendend'
+                  inputs:
+                      SourceFolder: '$(Agent.TempDirectory)'
+                      Contents: BACKEND_ENV_FILE_STAG_UPDATED
+                      TargetFolder: './backend'
+
+                - script: mv ./backend/BACKEND_ENV_FILE_STAG_UPDATED ./backend/.env
+                  displayName: 'rename STAG .env'
+                - task: DownloadSecureFile@1
+                  displayName: 'download STAG frontend'
+                  inputs:
+                      secureFile: 'FRONTEND_ENV_FILE_STAG' # string. Required. Secure File.
+
+                - task: CopyFiles@2
+                  displayName: 'copy STAG frontend'
+                  inputs:
+                      SourceFolder: '$(Agent.TempDirectory)'
+                      Contents: FRONTEND_ENV_FILE_STAG
+                      TargetFolder: './frontend'
+
+                - script: mv ./frontend/FRONTEND_ENV_FILE_STAG ./frontend/.env
+                  displayName: 'rename STAG .env'
+
+                - script: ls -a ./frontend
+                  displayName: 'ls'
+
+                - script: ls -Rn
+                  displayName: 'ls'
+
+                - task: NodeTool@0
+                  inputs:
+                      versionSpec: '12.20.1'
+                  displayName: 'Install Node.js'
+
+                - task: Bash@3
+                  inputs:
+                      targetType: 'inline'
+                      script: |
+                          node -v
+                          npm -v
+                          npm install
+                          npm run build
+
+                - task: ArchiveFiles@2
+                  displayName: 'Archive files'
+                  inputs:
+                      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+                      includeRootFolder: false
+                      archiveType: zip
+                      archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                      replaceExistingArchive: true
+                - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                  artifact: drop
+
+          - deployment: VMDeploy
+            dependsOn: Build
+            displayName: Web deploy
+            environment:
+                name: STAGING
+                resourceType: VirtualMachine
+            strategy:
+                runOnce:
+                    preDeploy:
+                        steps:
+                            - task: DownloadPipelineArtifact@2
+                              inputs:
+                                  buildType: 'current'
+                                  artifactName: drop
+                                  targetPath: '$(Pipeline.Workspace)/drop'
+
+                            - script: echo initialize, cleanup, backup, install certs
+
+                    deploy:
+                        steps:
+                            - task: Bash@3
+                              inputs:
+                                  targetType: 'inline'
+                                  script: |
+                                      Modify deployment script based on the app type
+                                      echo "Starting deployment script run"
+
+                            - task: ExtractFiles@1
+                              inputs:
+                                  archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+                                  destinationFolder: '$(Pipeline.Workspace)/japp'
+                                  cleanDestinationFolder: true
+                                  overwriteExistingFiles: true
+
+                            - task: DeleteFiles@1
+                              inputs:
+                                  SourceFolder: '$(Pipeline.Workspace)/drop'
+                                  Contents: '$(Build.BuildId).zip'
+
+                            - task: Bash@3
+                              inputs:
+                                  targetType: 'inline'
+                                  script: |
+                                      pm2 restart index
+                                      sudo systemctl restart nginx
+
+                    routeTraffic:
+                        steps:
+                            - script: echo routing traffic
+                    postRouteTraffic:
+                        steps:
+                            - script: echo health check post-route traffic
+                    on:
+                        failure:
+                            steps:
+                                - script: echo Restore from backup! This is on failure
+                        success:
+                            steps:
+                                - script: echo Notify! This is on success
