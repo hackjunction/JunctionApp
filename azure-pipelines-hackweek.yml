@@ -13,30 +13,30 @@ stages:
                 - task: DownloadSecureFile@1
                   displayName: 'download STAG backendend'
                   inputs:
-                      secureFile: 'BACKEND_ENV_FILE_STAG_ALT' # string. Required. Secure File.
+                      secureFile: 'BACKEND_ENV_FILE_OURA' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy STAG backendend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: BACKEND_ENV_FILE_STAG_ALT
+                      Contents: BACKEND_ENV_FILE_OURA
                       TargetFolder: './backend'
 
-                - script: mv ./backend/BACKEND_ENV_FILE_STAG_ALT ./backend/.env
+                - script: mv ./backend/BACKEND_ENV_FILE_OURA ./backend/.env
                   displayName: 'rename STAG .env'
                 - task: DownloadSecureFile@1
                   displayName: 'download STAG frontend'
                   inputs:
-                      secureFile: 'FRONTEND_ENV_FILE_STAG_ALT' # string. Required. Secure File.
+                      secureFile: 'FRONTEND_ENV_FILE_OURA' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy STAG frontend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: FRONTEND_ENV_FILE_STAG_ALT
+                      Contents: FRONTEND_ENV_FILE_OURA
                       TargetFolder: './frontend'
 
-                - script: mv ./frontend/FRONTEND_ENV_FILE_STAG_ALT ./frontend/.env
+                - script: mv ./frontend/FRONTEND_ENV_FILE_OURA ./frontend/.env
                   displayName: 'rename STAG .env'
 
                 - script: ls -a ./frontend
