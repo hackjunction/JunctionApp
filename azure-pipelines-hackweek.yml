@@ -113,7 +113,7 @@ stages:
                               inputs:
                                   targetType: 'inline'
                                   script: |
-                                      cd azureagent/_work/1/japp/backend
+                                      cd azagent/_work/1/japp/backend
                                       pm2 start index.js
                                       sudo systemctl restart nginx
 
