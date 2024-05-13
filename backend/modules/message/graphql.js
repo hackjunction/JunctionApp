@@ -1,6 +1,6 @@
 const { GraphQLBoolean } = require('graphql')
 const { withFilter } = require('graphql-subscriptions')
-// const { RedisPubSub } = require('graphql-redis-subscriptions')
+const { RedisPubSub } = require('graphql-redis-subscriptions')
 const {
     GraphQLString,
     GraphQLObjectType,
@@ -10,12 +10,12 @@ const {
     GraphQLInputObjectType,
 } = require('graphql')
 const { GraphQLDate } = require('graphql-iso-date')
-// const Redis = require('ioredis')
+const Redis = require('ioredis')
 
-// const pubsub = new RedisPubSub({
-//     publisher: new Redis(process.env.REDISCLOUD_URL),
-//     subscriber: new Redis(process.env.REDISCLOUD_URL)
-// })
+const pubsub = new RedisPubSub({
+    publisher: new Redis(process.env.REDISCLOUD_URL),
+    subscriber: new Redis(process.env.REDISCLOUD_URL),
+})
 const MessageInput = new GraphQLInputObjectType({
     name: 'MessageInput',
     fields: {
@@ -118,13 +118,13 @@ const Resolvers = {
             const userId = context.req.user ? context.req.user.sub : null
             if (!userId) return null
 
-            // pubsub.publish('MESSAGE_SENT', {
-            //     newMessage: {
-            //         ...args.message,
-            //         sentAt: new Date(),
-            //         sender: userId,
-            //     },
-            // })
+            pubsub.publish('MESSAGE_SENT', {
+                newMessage: {
+                    ...args.message,
+                    sentAt: new Date(),
+                    sender: userId,
+                },
+            })
 
             return context.controller('Message').send(args.message, userId)
         },
@@ -145,7 +145,7 @@ const Resolvers = {
         newMessage: {
             subscribe: withFilter(
                 () => {
-                    // return pubsub.asyncIterator('MESSAGE_SENT')
+                    return pubsub.asyncIterator('MESSAGE_SENT')
                 },
                 ({ newMessage }, _, { user }) => {
                     // Check authentication from context
