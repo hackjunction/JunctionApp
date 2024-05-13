@@ -28,7 +28,7 @@ import ManagePage from './manage'
 import ParticipantsPage from './participants'
 import ProjectsPage from './projects'
 import ResultsPage from './results'
-import StatsPage from './stats'
+// import StatsPage from './stats'
 import TravelGrantsPage from './travel-grants'
 import AlertsPage from './alerts'
 import { QuestionAnswerSharp } from '@material-ui/icons'
@@ -128,14 +128,14 @@ export default () => {
                         label: 'Edit',
                         component: EditPage,
                     },
-                    {
-                        key: 'stats',
-                        path: '/stats',
-                        exact: true,
-                        icon: <EqualizerIcon />,
-                        label: 'Stats',
-                        component: StatsPage,
-                    },
+                    // {
+                    //     key: 'stats',
+                    //     path: '/stats',
+                    //     exact: true,
+                    //     icon: <EqualizerIcon />,
+                    //     label: 'Stats',
+                    //     component: StatsPage,
+                    // },
                     {
                         key: 'participants',
                         path: '/participants',
