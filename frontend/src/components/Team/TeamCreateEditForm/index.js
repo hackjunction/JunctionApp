@@ -405,7 +405,7 @@ export default ({
                             {({ field, form }) => (
                                 <FormControl
                                     label="Team's contact email"
-                                    hint="Your team must have at least an email, a discord or a telegram channel"
+                                    hint="Your team must have at least an email, a slack, discord or a telegram channel"
                                     touched={
                                         form.touched[field.name] ||
                                         formikProps.submitCount > 0
@@ -424,6 +424,34 @@ export default ({
                                             form.setFieldTouched(field.name)
                                         }
                                         placeholder="team.email@email.com"
+                                    />
+                                </FormControl>
+                            )}
+                        </FastField>
+                    </div>
+                    <div>
+                        <FastField name="slack">
+                            {({ field, form }) => (
+                                <FormControl
+                                    label="Team's Slack"
+                                    touched={
+                                        form.touched[field.name] ||
+                                        formikProps.submitCount > 0
+                                    }
+                                    error={form.errors[field.name]}
+                                >
+                                    <TextInput
+                                        value={field.value}
+                                        onChange={value =>
+                                            form.setFieldValue(
+                                                field.name,
+                                                value,
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            form.setFieldTouched(field.name)
+                                        }
+                                        placeholder="Your team's Slack"
                                     />
                                 </FormControl>
                             )}
