@@ -52,6 +52,8 @@ const {
     EventPageScriptInput,
     ScoreCriteriaSettings,
     ScoreCriteriaSettingsInput,
+    Certificate,
+    CertificateInput,
 } = require('../graphql-shared-types')
 
 const Organization = require('../organization/model')
@@ -318,6 +320,9 @@ const EventInput = new GraphQLInputObjectType({
         experimental: {
             type: GraphQLBoolean,
         },
+        certificate: {
+            type: CertificateInput,
+        },
     },
 })
 
@@ -541,6 +546,9 @@ const EventType = new GraphQLObjectType({
             },
             experimental: {
                 type: GraphQLBoolean,
+            },
+            Certificate: {
+                type: Certificate,
             },
         }
     },

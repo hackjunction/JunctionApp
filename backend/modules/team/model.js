@@ -73,6 +73,9 @@ const TeamSchema = new mongoose.Schema({
     discord: {
         type: String,
     },
+    slack: {
+        type: String,
+    },
 })
 
 TeamSchema.pre('save', async function (next) {
