@@ -8,6 +8,8 @@ const {
     NotFoundError,
 } = require('../../common/errors/errors')
 
+const maxTeamSize = 10
+
 const controller = {}
 
 controller.getRoles = (eventId, code) => {
@@ -174,10 +176,11 @@ const removeCandidateApplications = (teams, userId) => {
 controller.joinTeam = (eventId, userId, code) => {
     return controller.getTeamByCode(eventId, code).then(team => {
         // TODO HIGH PRIORITY team size defined in event
-        const maxTeamSize = 10
 
-        if (team.members.length > maxTeamSize) {
-            throw new ForbiddenError('Teams can have at most 10 members')
+        if (team.members.length + 1 >= maxTeamSize) {
+            throw new ForbiddenError(
+                `Teams can have at most ${maxTeamSize} members`,
+            )
         }
         return controller
             .getTeamsForEvent(eventId)
@@ -230,8 +233,10 @@ controller.acceptCandidateToTeam = (eventId, userId, code, candidateId) => {
     return controller
         .getTeamByCode(eventId, code)
         .then(team => {
-            if (team.members.length >= 4) {
-                throw new ForbiddenError('Teams can have at most 5 members')
+            if (team.members.length + 1 >= maxTeamSize) {
+                throw new ForbiddenError(
+                    `Teams can have at most ${maxTeamSize} members`,
+                )
             }
             if (!_.includes([team.owner].concat(team.members), userId)) {
                 throw new InsufficientPrivilegesError(
