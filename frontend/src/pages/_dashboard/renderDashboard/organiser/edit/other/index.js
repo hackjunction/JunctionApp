@@ -10,13 +10,12 @@ import MetaTagsForm from './MetaTagsForm'
 import CertificateForm from './CertificateForm'
 import PageScriptsForm from './PageScriptsForm'
 import FileInput from '../submission/components/inputs/FileInput'
-import PdfUpload from 'components/inputs/PdfUpload'
+// import PdfUpload from 'components/inputs/PdfUpload'
 import Switch from 'components/generic/Switch'
 import { hasSuperAdmin } from 'redux/auth/selectors'
 
 export default () => {
     const isSuperAdmin = useSelector(hasSuperAdmin)
-    console.log('isSuperAdmin', isSuperAdmin)
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>

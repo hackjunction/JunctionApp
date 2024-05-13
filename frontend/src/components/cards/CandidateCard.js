@@ -125,8 +125,9 @@ function CandidateCard({ candidateData = {}, onViewApplication = () => {} }) {
                                     onChange={formik.handleChange}
                                     className="tw-flex tw-flex-col tw-gap-4"
                                 >
-                                    {rolesToRender.map(role => (
+                                    {rolesToRender.map((role, index) => (
                                         <FormControlLabel
+                                            key={`${candidateProfile.profile.userId}-${role.role}`}
                                             value={role.role}
                                             control={
                                                 <Radio
