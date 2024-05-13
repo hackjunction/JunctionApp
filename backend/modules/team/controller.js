@@ -51,6 +51,7 @@ controller.createNewTeam = (data, eventId, userId) => {
                 email,
                 telegram,
                 discord,
+                slack,
             } = data
             const team = new Team({
                 event: eventId,
@@ -64,6 +65,7 @@ controller.createNewTeam = (data, eventId, userId) => {
                 email,
                 telegram,
                 discord,
+                slack,
             })
             if (teamRoles && teamRoles.length > 0) {
                 team.teamRoles = teamRoles.map(role => ({

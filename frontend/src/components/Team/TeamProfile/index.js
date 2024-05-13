@@ -18,9 +18,9 @@ export default ({
     enableActions = true,
     teamData = {},
     onClickLeave,
-    onClickDelete = () => { },
+    onClickDelete = () => {},
     onClickEdit,
-    onRoleClick = () => { },
+    onRoleClick = () => {},
     loading = false,
 }) => {
     const teamMembersArr = [...objToArr(teamData.meta)]
@@ -96,6 +96,19 @@ export default ({
                         >
                             <Email className={classes.socialIcon} />
                         </IconButton>
+                    )}
+                    {teamData?.slack && (
+                        <FontAwesomeIcon
+                            icon={['fab', 'slack']}
+                            onClick={() =>
+                                popupCenter({
+                                    url: teamData.slack,
+                                    title: 'Slack',
+                                })
+                            }
+                            className={classes.socialIcon}
+                            size="2x"
+                        />
                     )}
                 </div>
                 {/* TODO add socialLinks component from Damilare (@mrprotocoll) */}
