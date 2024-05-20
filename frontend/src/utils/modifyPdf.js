@@ -51,25 +51,31 @@ const modifyPdf = async (
 
     const text = name
     const participantNamesize = 20
+    const participantNameTextWidth = font.widthOfTextAtSize(
+        text,
+        participantNamesize,
+    )
 
     page.drawText(text, {
-        x: x,
+        x: x - participantNameTextWidth / 2,
         y: y,
         size: participantNamesize,
         font: font,
-        align: 'center',
         color: participantNameColor,
     })
 
     if (enableRegistrationId) {
         const registrationIdTextSize = 10
         const registrationIdColorRgb = colorConvertToRgb(registrationIdColor)
+        const registrationIdTextWidth = font.widthOfTextAtSize(
+            registrationId,
+            registrationIdTextSize,
+        )
         page.drawText(registrationId, {
-            x: registrationIdX,
+            x: registrationIdX - registrationIdTextWidth / 2,
             y: registrationIdY,
             size: registrationIdTextSize,
             font: font,
-            align: 'center',
             color: registrationIdColorRgb,
         })
     }
