@@ -2,8 +2,46 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 import download from 'downloadjs'
 
 // TODO: This is hardcoded at the moment for Junction2021 certificate. Make this modular for all certificates
+const colorList = [
+    { white: rgb(0.95, 0.95, 0.95) },
+    { black: rgb(0.01, 0.01, 0.01) },
+    { red: rgb(1, 0, 0) },
+    { green: rgb(0, 1, 0) },
+    { blue: rgb(0, 0, 1) },
+]
 
-const modifyPdf = async (url, x, y, name, slug, color) => {
+const modifyPdf = async (
+    url,
+    x,
+    y,
+    name,
+    slug,
+    color = 'white',
+    enableRegistrationId,
+    registrationIdX,
+    registrationIdY,
+    registrationIdColor,
+    registrationId,
+) => {
+    const colorConvertToRgb = color => {
+        switch (color) {
+            case 'white':
+                return rgb(0.95, 0.95, 0.95)
+            case 'black':
+                return rgb(0.01, 0.01, 0.01)
+            case 'red':
+                return rgb(1, 0, 0)
+            case 'green':
+                return rgb(0, 1, 0)
+            case 'blue':
+                return rgb(0, 0, 1)
+            default:
+                return rgb(0.95, 0.95, 0.95)
+        }
+    }
+
+    const participantNameColor = colorConvertToRgb(color)
+
     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
 
     const pdfDoc = await PDFDocument.load(existingPdfBytes)
@@ -12,36 +50,35 @@ const modifyPdf = async (url, x, y, name, slug, color) => {
     const page = pages[0]
 
     const text = name
-    const textSize = 20
-    //const textHeight = font.heightAtSize(textSize)
+    const participantNamesize = 20
+    const participantNameTextWidth = font.widthOfTextAtSize(
+        text,
+        participantNamesize,
+    )
 
-    const textWidth = font.widthOfTextAtSize(text, textSize)
-    // align text center
     page.drawText(text, {
-        x: 100 + 200 - textWidth / 2,
-        y: 400,
-        size: textSize,
+        x: x - participantNameTextWidth / 2,
+        y: y,
+        size: participantNamesize,
         font: font,
-        align: 'center',
-        color: rgb(0.95, 0.95, 0.95),
+        color: participantNameColor,
     })
-    // page.drawRectangle({
-    //     x: 100,
-    //     y: 475,
-    //     width: 400,
-    //     height: textHeight,
 
-    //     borderWidth: 1.5,
-    // })
-
-    // firstPage.drawText(name, {
-    //     x: boxX + boxWidth - textWidth,
-    //     y: boxY,
-    //     size: textSize,
-    //     font: helveticaFont,
-
-    //     color: rgb(0.95, 0.95, 0.95),
-    // })
+    if (enableRegistrationId) {
+        const registrationIdTextSize = 10
+        const registrationIdColorRgb = colorConvertToRgb(registrationIdColor)
+        const registrationIdTextWidth = font.widthOfTextAtSize(
+            registrationId,
+            registrationIdTextSize,
+        )
+        page.drawText(registrationId, {
+            x: registrationIdX - registrationIdTextWidth / 2,
+            y: registrationIdY,
+            size: registrationIdTextSize,
+            font: font,
+            color: registrationIdColorRgb,
+        })
+    }
 
     const pdfBytes = await pdfDoc.save()
     download(pdfBytes, `${name}-${slug}-certificate`, 'application/pdf')
