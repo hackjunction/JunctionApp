@@ -22,6 +22,7 @@ import {
     useActiveEvents,
     usePastEvents,
 } from 'graphql/queries/events'
+import { debugGroup } from 'utils/debuggingTools'
 // import { Chat } from 'components/messaging/chat'
 
 export default role => {
@@ -81,6 +82,7 @@ export default role => {
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
         useLazyQuery(ALERTS_QUERY)
+
     useEffect(() => {
         if (event) {
             getAlerts({ variables: { eventId: event._id } })
@@ -129,7 +131,7 @@ export default role => {
                 return newArray
             })
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        debugGroup('alertsData', [alertsData])
     }, [alertsData, setAlerts, newAlert, setAlertCount])
 
     /** Update project when team changes */
