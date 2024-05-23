@@ -47,6 +47,13 @@ export default ({ event }) => {
     const [projectScore, setProjectScore] = useState(projectScoreBase)
 
     const resetProjectData = () => {
+        if (Array.isArray(scoreCriteriaBase) && scoreCriteriaBase.length > 0) {
+            scoreCriteriaBase.forEach(criteria => {
+                if (criteria.score) {
+                    delete criteria.score
+                }
+            })
+        }
         setSelected(null)
         setScoreExists(false)
         setProjectScore(projectScoreBase)
@@ -191,19 +198,17 @@ export default ({ event }) => {
         return (
             <>
                 <div className="tw-flex tw-justify-between tw-items-end">
-                    {inputData?.challenge?.name && (
-                        <PageHeader
-                            heading={inputData?.challenge.name}
-                            subheading={`By ${inputData?.challenge.partner}`}
-                            alignment="left"
-                            details={`${inputData?.projects.length} project${
-                                inputData?.projects.length > 1 ||
-                                inputData?.projects.length < 1
-                                    ? 's'
-                                    : ''
-                            }`}
-                        />
-                    )}
+                    <PageHeader
+                        heading="Project review"
+                        subheading={`Available for review:`}
+                        alignment="left"
+                        details={`${inputData?.projects.length} project${
+                            inputData?.projects.length > 1 ||
+                            inputData?.projects.length < 1
+                                ? 's'
+                                : ''
+                        }`}
+                    />
                 </div>
 
                 <Box height={20} />
@@ -235,8 +240,6 @@ export default ({ event }) => {
                             {scoreCriteriaBase &&
                                 scoreCriteriaBase.length > 0 && (
                                     <EvaluationForm
-                                        event={event}
-                                        project={selected}
                                         submit={handleSubmit}
                                         score={projectScore}
                                         scoreCriteria={scoreCriteriaBase}

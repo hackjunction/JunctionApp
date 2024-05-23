@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
 import PageWrapper from 'components/layouts/PageWrapper'
 
 import PartnerDashboard from './partner'
@@ -11,12 +10,10 @@ import OrganizerDashboard from './organiser'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
-import * as OrganiserActions from 'redux/organiser/actions'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as UserSelectors from 'redux/user/selectors'
 import * as UserActions from 'redux/user/actions'
 
-import { useTranslation } from 'react-i18next'
 import { useLazyQuery, useSubscription } from '@apollo/client'
 import { ALERTS_QUERY } from 'graphql/queries/alert'
 import { NEW_ALERTS_SUBSCRIPTION } from 'graphql/subscriptions/alert'
@@ -26,21 +23,6 @@ import {
     usePastEvents,
 } from 'graphql/queries/events'
 // import { Chat } from 'components/messaging/chat'
-
-const useStyles = makeStyles(theme => ({
-    sidebarTop: {
-        padding: theme.spacing(3),
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    sidebarLogo: {
-        width: '100%',
-        objectFit: 'contain',
-    },
-}))
 
 export default role => {
     const match = useRouteMatch()

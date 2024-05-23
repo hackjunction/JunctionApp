@@ -68,6 +68,7 @@ const ProjectsGridItem = ({
     showTags = false,
     showReviewers = false,
     showScore = false,
+    votingResults = null,
 }) => {
     const [openReviewModal, setOpenReviewModal] = useState(false)
     const isReviewingOpen = EventHelpers.isReviewingOpen(event, moment)
@@ -120,6 +121,7 @@ const ProjectsGridItem = ({
 
     const styling = {
         punchlineMaxLength: 150,
+        challengeMaxLength: 30,
     }
 
     const stylingModifiers = styleRules => {
@@ -179,13 +181,17 @@ const ProjectsGridItem = ({
                                 {project.challenges.map((challenge, index) => (
                                     <Chip
                                         key={index}
-                                        label={challenge.replaceAll('-', ' ')}
+                                        label={_.truncate(
+                                            challenge.replaceAll('-', ' '),
+                                            {
+                                                length: styling.challengeMaxLength,
+                                            },
+                                        )}
                                     />
                                 ))}
                             </div>
                             {project?.punchline && (
                                 <Typography variant="body1" component="p">
-                                    {showTableLocation && showScore}
                                     {_.truncate(project.punchline, {
                                         length: styling.punchlineMaxLength,
                                     })}
@@ -219,6 +225,7 @@ const ProjectsGridItem = ({
                                 )}
                             </div>
                         )}
+                        {votingResults && <>{votingResults}</>}
                     </div>
                 </CardContent>
                 <CardActions className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-4 tw-pb-4 tw-pt-0 tw-gap-4">
@@ -251,9 +258,11 @@ const ProjectsGridItem = ({
                                             <Tooltip
                                                 key={index}
                                                 title={`Reviewed by ${
-                                                    project.reviewers.length - 1
+                                                    project?.scoreData
+                                                        ?.reviewers?.length - 1
                                                 } more ${
-                                                    project.reviewers.length -
+                                                    project?.scoreData
+                                                        ?.reviewers?.length -
                                                         1 >
                                                     1
                                                         ? 'people'
@@ -262,8 +271,8 @@ const ProjectsGridItem = ({
                                             >
                                                 <Avatar>
                                                     +
-                                                    {project.reviewers.length -
-                                                        1}
+                                                    {project?.scoreData
+                                                        ?.reviewers?.length - 1}
                                                 </Avatar>
                                             </Tooltip>
                                         )
