@@ -69,8 +69,8 @@ function TeamCard({
                             </div>
                         </div>
                     )}
-                    {teamData?.teamRoles?.length > 0 &&
-                    teamData?.ideaTitle?.length > 20 &&
+                    {(teamData?.teamRoles?.length > 0 &&
+                        teamData?.ideaTitle?.length > 20) ||
                     teamData?.ideaDescription?.length > 20 ? (
                         <Button
                             color="outlined_button"

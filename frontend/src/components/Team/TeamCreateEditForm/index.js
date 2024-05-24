@@ -82,18 +82,12 @@ export default ({
                 ({ max }) =>
                     `The description of your idea can have up to ${max} characters`,
             ),
-        email: yup
-            .string()
-            .when(['discord', 'telegram'], {
-                is: (discord, telegram) => !discord && !telegram,
-                then: yup.string().required('One contact option is required.'),
-            })
-            .min(
-                3,
-                ({ min }) => `The email must have at least ${min} characters`,
-            )
-            .max(50, ({ max }) => `The email can have up to ${max} characters`)
-            .email('Invalid email address'),
+        slack: yup
+            .string('Invalid Slack url')
+            .max(
+                50,
+                ({ max }) => `Slack links can have up to ${max} characters`,
+            ),
         discord: yup
             .string('Invalid discord url')
             .max(
@@ -106,6 +100,19 @@ export default ({
                 50,
                 ({ max }) => `Telegram links can have up to ${max} characters`,
             ),
+        email: yup
+            .string()
+            .when(['discord', 'telegram', 'slack'], {
+                is: (discord, telegram, slack) =>
+                    !discord && !telegram && !slack,
+                then: yup.string().required('One contact option is required.'),
+            })
+            .min(
+                3,
+                ({ min }) => `The email must have at least ${min} characters`,
+            )
+            .max(50, ({ max }) => `The email can have up to ${max} characters`)
+            .email('Invalid email address'),
     }
 
     const formMode =
