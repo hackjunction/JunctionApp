@@ -69,9 +69,10 @@ function TeamCard({
                             </div>
                         </div>
                     )}
-                    {teamData?.teamRoles?.length > 0 &&
-                    teamData?.ideaTitle?.length > 20 &&
-                    teamData?.ideaDescription?.length > 20 ? (
+                    {teamData?.teamRoles?.length > 2 &&
+                    (teamData?.name?.length > 12 ||
+                        teamData?.ideaTitle?.length > 20 ||
+                        teamData?.ideaDescription?.length > 30) ? (
                         <Button
                             color="outlined_button"
                             variant="jOutlinedBox"
