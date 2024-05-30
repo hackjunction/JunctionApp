@@ -13,9 +13,9 @@ const settings = {
         required: true,
         value: process.env.REACT_APP_BASE_URL,
     },
-    WEB_SOCET_URL: {
+    WEB_SOCKET_URL: {
         required: false,
-        value: process.env.REACT_APP_WEB_SOCET_URL,
+        value: process.env.REACT_APP_WEB_SOCKET_URL,
     },
     CALENDAR_URL: {
         required: false,
