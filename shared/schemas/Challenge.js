@@ -46,30 +46,6 @@ const ChallengeSchema = new mongoose.Schema({
     companyInfo: {
         type: String,
     },
-    title: {
-        type: String,
-    },
-    subtitle: {
-        type: String,
-    },
-    description: {
-        type: String,
-    },
-    insights: {
-        type: String,
-    },
-    resources: {
-        type: String,
-    },
-    prizes: {
-        type: String,
-    },
-    criteria: {
-        type: String,
-    },
-    companyInfo: {
-        type: String,
-    },
     logo: CloudinaryImageSchema.mongoose,
 })
 
@@ -87,15 +63,6 @@ const ChallengeType = new GraphQLObjectType({
         },
         slug: {
             type: GraphQLNonNull(GraphQLString),
-        },
-        title: {
-            type: GraphQLString,
-        },
-        subtitle: {
-            type: GraphQLString,
-        },
-        description: {
-            type: GraphQLString,
         },
         title: {
             type: GraphQLString,

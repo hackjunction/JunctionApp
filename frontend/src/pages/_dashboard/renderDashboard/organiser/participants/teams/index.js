@@ -14,23 +14,19 @@ export default () => {
     const registrationsLoading = useSelector(
         OrganiserSelectors.registrationsLoading,
     )
+    const challengeList = []
     const teamsLoading = useSelector(OrganiserSelectors.teamsLoading)
-    const challengeList = event?.challenges || []
-
-    if (challengeList.length > 0) {
-        challengeList.forEach(challenge => {
-            challenge.teamCount = 0
-        })
-    }
-
-    if (teams.length > 0) {
-        teams.map(team => {
-            challengeList.find(challenge => {
-                if (challenge._id === team.challenge) {
-                    challenge.teamCount += 1
-                }
+    if (event?.challenges && event?.challenges.length > 0) {
+        challengeList.push(...event?.challenges.map(challenge => ({ ...challenge, teamCount: 0 })))
+        if (teams.length > 0) {
+            teams.map(team => {
+                challengeList.find(challenge => {
+                    if (challenge._id === team.challenge) {
+                        challenge.teamCount += 1
+                    }
+                })
             })
-        })
+        }
     }
 
     return (

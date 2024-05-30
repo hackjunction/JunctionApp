@@ -81,6 +81,7 @@ export default role => {
     // Must use lazy query because event is fetched asynchnronously
     const [getAlerts, { loading: alertsLoading, data: alertsData }] =
         useLazyQuery(ALERTS_QUERY)
+
     useEffect(() => {
         if (event) {
             getAlerts({ variables: { eventId: event._id } })
@@ -129,7 +130,6 @@ export default role => {
                 return newArray
             })
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [alertsData, setAlerts, newAlert, setAlertCount])
 
     /** Update project when team changes */

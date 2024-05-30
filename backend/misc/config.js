@@ -115,7 +115,7 @@ const settings = {
     },
     REDIS_PASSWORD: {
         required: false,
-        value: process.env.REDIS_PASSWORD || 'NOPE'
+        value: process.env.REDIS_PASSWORD || 'NOPE',
     },
 }
 
@@ -127,7 +127,7 @@ const buildConfig = () => {
                 config[key] = obj.default
             } else {
                 throw new Error(
-                    `Invalid configuration: ${key} must be provided a value from .env, or a default value. See config.js`
+                    `Invalid configuration: ${key} must be provided a value from .env, or a default value. See config.js`,
                 )
             }
         } else {
@@ -142,7 +142,7 @@ const config = buildConfig()
 
 logger.info({
     message: 'Running app with config',
-    data: config,
+    // data: config,
 })
 
 global.gConfig = config
