@@ -22,7 +22,6 @@ import {
     useActiveEvents,
     usePastEvents,
 } from 'graphql/queries/events'
-import { debugGroup } from 'utils/debuggingTools'
 // import { Chat } from 'components/messaging/chat'
 
 export default role => {
@@ -131,7 +130,6 @@ export default role => {
                 return newArray
             })
         }
-        debugGroup('alertsData', [alertsData])
     }, [alertsData, setAlerts, newAlert, setAlertCount])
 
     /** Update project when team changes */
