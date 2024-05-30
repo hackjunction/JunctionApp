@@ -27,16 +27,16 @@ stages:
                 - task: DownloadSecureFile@1
                   displayName: 'download STAG frontend'
                   inputs:
-                      secureFile: 'FRONTEND_ENV_FILE_STAG' # string. Required. Secure File.
+                      secureFile: 'FRONTEND_ENV_FILE_STAG_UPDATED' # string. Required. Secure File.
 
                 - task: CopyFiles@2
                   displayName: 'copy STAG frontend'
                   inputs:
                       SourceFolder: '$(Agent.TempDirectory)'
-                      Contents: FRONTEND_ENV_FILE_STAG
+                      Contents: FRONTEND_ENV_FILE_STAG_UPDATED
                       TargetFolder: './frontend'
 
-                - script: mv ./frontend/FRONTEND_ENV_FILE_STAG ./frontend/.env
+                - script: mv ./frontend/FRONTEND_ENV_FILE_STAG_UPDATED ./frontend/.env
                   displayName: 'rename STAG .env'
 
                 - script: ls -a ./frontend
