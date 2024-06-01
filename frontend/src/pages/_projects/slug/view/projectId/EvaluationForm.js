@@ -27,9 +27,11 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
         return scoreAverageFormatted
     }
 
+    //TODO Update scoreCriteria from backend, when the event scoreCriteria is updated
     if (
         scoreCriteria &&
         scoreCriteria.length > 0 &&
+        score.scoreCriteria &&
         score.scoreCriteria.length > 0
     ) {
         const scoreFiltered = score.scoreCriteria.filter(criteria =>
@@ -38,7 +40,6 @@ const EvaluationForm = ({ submit = () => {}, score, scoreCriteria }) => {
                 criteria.criteria,
             ),
         )
-
         score.scoreCriteria = scoreFiltered
     }
 

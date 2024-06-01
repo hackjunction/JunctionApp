@@ -11,30 +11,22 @@ import _ from 'lodash'
 
 import ProjectDetail from 'components/projects/ProjectDetail'
 import * as AuthSelectors from 'redux/auth/selectors'
-import * as userSelectors from 'redux/user/selectors'
 import ProjectScoresService from 'services/projectScores'
 import EvaluationForm from 'pages/_projects/slug/view/projectId/EvaluationForm'
 import Empty from 'components/generic/Empty'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
-const projectScoreBase = {
-    project: '',
-    event: '',
-    status: 'submitted',
-    score: 0,
-    maxScore: 10,
-    message: '',
-    scoreCriteria: [],
-    reviewers: [],
-}
-
 //TODO simplify this component and the reviewer score process
 //TODO make this and track one into a component
 export default ({ event }) => {
-    const scoreCriteriaBase = event.scoreCriteriaSettings?.scoreCriteria
+    const scoreCriteriaBase = [
+        ...event?.scoreCriteriaSettings?.scoreCriteria.map(criteria => ({
+            ...criteria,
+        })),
+    ]
+
     const idToken = useSelector(AuthSelectors.getIdToken)
     const userId = useSelector(AuthSelectors.getUserId)
-    const userProfile = useSelector(userSelectors.userProfile)
     const dispatch = useDispatch()
     const { slug } = event
     const [data, setData] = useState({})
@@ -43,8 +35,7 @@ export default ({ event }) => {
     const [error, setError] = useState(false)
 
     const [selected, setSelected] = useState(null)
-    const [scoreExists, setScoreExists] = useState(false)
-    const [projectScore, setProjectScore] = useState(projectScoreBase)
+    const [projectScore, setProjectScore] = useState({})
 
     const resetProjectData = () => {
         if (Array.isArray(scoreCriteriaBase) && scoreCriteriaBase.length > 0) {
@@ -55,91 +46,90 @@ export default ({ event }) => {
             })
         }
         setSelected(null)
-        setScoreExists(false)
-        setProjectScore(projectScoreBase)
+        setProjectScore({})
     }
 
-    if (event.scoreCriteriaSettings === undefined) {
+    if (event?.scoreCriteriaSettings === undefined) {
         return <Empty isEmpty emptyText="Reviewing not yet available" />
     }
 
-    const fetchProjects = useCallback(async () => {
-        setLoading(true)
-        try {
-            const dataOt = await ProjectsService.getProjectsByEventAsPartner(
-                idToken,
-                slug,
-            )
-            const data = {
-                event,
-                ...dataOt,
+    const fetchProjects = useCallback(
+        async (idToken, slug) => {
+            setLoading(true)
+            try {
+                const dataOt =
+                    await ProjectsService.getProjectsByEventAsPartner(
+                        idToken,
+                        slug,
+                    )
+                const data = {
+                    event,
+                    ...dataOt,
+                }
+                setData(data)
+                setProjects(data?.projects)
+            } catch (err) {
+                dispatch(
+                    SnackbarActions.error(
+                        `Error found when loading projects: ${err.message}`,
+                    ),
+                )
+                setError(true)
+            } finally {
+                setLoading(false)
             }
-            setData(data)
-            setProjects(data?.projects)
-        } catch (err) {
-            dispatch(SnackbarActions.error(`Error found: ${err.message}`))
-            setError(true)
-        } finally {
-            setLoading(false)
-        }
-    }, [slug, idToken, projectScore])
+        },
+        [slug, idToken],
+    )
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-        const submissionValues = { ...values }
-        submissionValues.project = selected._id
-        submissionValues.event = event._id
-        let reviewerData
-        if (userId) {
-            reviewerData = _.find(
-                submissionValues.reviewers,
-                reviewer => reviewer.userId === userId,
+        const { projectScoreId, score, scoreCriteria, message } = values
+        if (score < 1) {
+            return dispatch(
+                SnackbarActions.error(
+                    `You must assign a value for all criteria before submitting.`,
+                ),
             )
-            if (reviewerData) {
-                if (reviewerData.firstname !== userProfile?.firstName) {
-                    reviewerData.firstname = userProfile.firstName
-                }
-                if (reviewerData.avatar !== userProfile?.avatar) {
-                    reviewerData.avatar = userProfile.avatar
-                }
-                reviewerData.score = submissionValues.score
-                reviewerData.scoreCriteria = submissionValues.scoreCriteria
-                reviewerData.message = submissionValues.message
-            } else {
-                reviewerData = {
-                    userId: userId,
-                    avatar: userProfile?.avatar,
-                    firstname: userProfile?.firstName,
-                    score: submissionValues.score,
-                    scoreCriteria: submissionValues.scoreCriteria,
-                    message: submissionValues.message,
-                }
-                submissionValues.reviewers.push(reviewerData)
-            }
-            delete submissionValues.score
-            delete submissionValues.scoreCriteria
-            delete submissionValues.message
+        }
+        const reviewData = {
+            userId,
+            score,
+            scoreCriteria,
+            message,
         }
         try {
-            if (scoreExists) {
+            if (projectScoreId) {
                 await ProjectScoresService.updateScoreByEventSlugAndProjectIdAndPartnerAccount(
                     idToken,
-                    event.slug,
-                    submissionValues,
+                    slug,
+                    projectScoreId,
+                    reviewData,
                 )
             } else {
+                const projectId = selected._id
                 await ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount(
                     idToken,
-                    event.slug,
-                    submissionValues,
+                    slug,
+                    projectId,
+                    reviewData,
                 )
             }
-            setProjectScore(values)
-            dispatch(SnackbarActions.success(`Score saved.`))
+            dispatch(
+                SnackbarActions.success(
+                    `Score saved${
+                        selected?.name &&
+                        ' for ' + _.truncate(selected?.name, { length: 15 })
+                    } `,
+                ),
+            )
             resetForm()
+            resetProjectData()
         } catch (e) {
             dispatch(
                 SnackbarActions.error(
-                    `Score could not be saved. Error: ${e.message}`,
+                    `Score could not be saved. Error: ${
+                        e.response.data.error || e.message
+                    }`,
                 ),
             )
         } finally {
@@ -148,51 +138,62 @@ export default ({ event }) => {
     }
 
     useEffect(() => {
-        fetchProjects()
-    }, [selected, projectScore])
-
-    if (!data) {
-        return null
-    }
-
-    //TODO perform this on the backend
-    useEffect(() => {
-        if (idToken && selected && event) {
-            ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerAccount(
-                idToken,
-                event.slug,
-                selected._id,
-            ).then(score => {
-                if (score[0]) {
-                    const reviewerData = _.find(
-                        score[0].reviewers,
-                        reviewer => reviewer.userId === userId,
-                    )
-                    if (reviewerData) {
-                        setProjectScore({
-                            ...score[0],
-                            score: reviewerData.score,
-                            scoreCriteria: reviewerData.scoreCriteria,
-                            message: reviewerData.message,
-                        })
-                    } else {
-                        setProjectScore({
-                            ...score[0],
-                            score: 0,
-                            scoreCriteria: scoreCriteriaBase,
-                            message: '',
-                        })
-                    }
-                    setScoreExists(true)
-                } else {
-                    setProjectScore({
-                        ...projectScore,
-                        scoreCriteria: scoreCriteriaBase,
-                    })
-                }
-            })
+        if (idToken && event) {
+            if (!selected) {
+                fetchProjects(idToken, slug)
+            } else if (selected) {
+                fetchProjectScore(idToken, slug, selected._id)
+            }
         }
     }, [event, idToken, selected])
+
+    const fetchProjectScore = useCallback(
+        async (idToken, slug, projectId) => {
+            ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerAccount(
+                idToken,
+                slug,
+                projectId,
+            )
+                .then(score => {
+                    if (score[0]) {
+                        const reviewerData = _.find(
+                            score[0].reviewers,
+                            reviewer => reviewer.userId === userId,
+                        )
+                        if (reviewerData) {
+                            setProjectScore({
+                                projectScoreId: score[0]._id,
+                                score: reviewerData.score,
+                                scoreCriteria: reviewerData.scoreCriteria,
+                                message: reviewerData.message,
+                            })
+                        } else {
+                            setProjectScore({
+                                projectScoreId: score[0]._id,
+                                score: 0,
+                                scoreCriteria: scoreCriteriaBase,
+                                message: '',
+                            })
+                        }
+                    } else {
+                        setProjectScore({
+                            ...projectScore,
+                            scoreCriteria: scoreCriteriaBase,
+                        })
+                    }
+                })
+                .catch(e => {
+                    dispatch(
+                        SnackbarActions.error(
+                            `Score could not be loaded. Error: ${
+                                e.response.data.error || e.message
+                            }`,
+                        ),
+                    )
+                })
+        },
+        [selected],
+    )
 
     const renderProjects = inputData => {
         return (

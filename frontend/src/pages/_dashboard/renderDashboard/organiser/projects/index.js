@@ -28,6 +28,8 @@ export default () => {
         if (event.slug) {
             dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
             dispatch(OrganiserActions.updateProjects(event.slug))
+            dispatch(OrganiserActions.updateRegistrationsForEvent(event.slug))
+            dispatch(OrganiserActions.updateTeamsForEvent(event.slug))
         }
     }, [event, location])
 

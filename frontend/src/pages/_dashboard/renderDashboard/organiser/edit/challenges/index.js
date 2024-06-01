@@ -7,11 +7,28 @@ import FormControl from 'components/inputs/FormControl'
 import BooleanInput from 'components/inputs/BooleanInput'
 
 import ChallengesForm from './ChallengesForm'
+import { useSelector } from 'react-redux'
+import * as OrganiserSelectors from 'redux/organiser/selectors'
+import { EventHelpers } from '@hackjunction/shared'
+import moment from 'moment-timezone'
 
 export default () => {
+    const event = useSelector(OrganiserSelectors.event)
+    const isReviewingOpen = EventHelpers.isReviewingOpen(event, moment)
+    const isReviewingPast = EventHelpers.isReviewingPast(event, moment)
     return (
         <Grid spacing={3} container>
             <Grid item xs={12}>
+                {(isReviewingOpen || isReviewingPast) && (
+                    <p className="tw-text-red-500 tw-text-sm tw-font-semibold tw-mb-4">
+                        Warning: Reviewing is now{' '}
+                        {isReviewingOpen
+                            ? 'open'
+                            : isReviewingPast && 'completed'}{' '}
+                        and if you make changes to the challenges, it might
+                        cause unexpected problems. Modify at your own risk!
+                    </p>
+                )}
                 <FastField
                     name="challengesEnabled"
                     render={({ field, form }) => (

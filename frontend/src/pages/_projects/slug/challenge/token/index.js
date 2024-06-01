@@ -56,10 +56,6 @@ export default ({ event }) => {
         fetchProjects()
     }, [fetchProjects])
 
-    if (!data) {
-        return null
-    }
-
     const projectsToRender = filter => {
         switch (filter) {
             case 'draft':

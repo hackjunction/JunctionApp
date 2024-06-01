@@ -106,7 +106,6 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
             <Box mt={3} p={2}>
                 <Switch>
                     {tabs.map(({ key, path, component }, index) => {
-
                         return (
                             <Route
                                 key={key}
@@ -116,7 +115,6 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
                             />
                         )
                     })}
-
                 </Switch>
             </Box>
         </div>

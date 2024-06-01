@@ -1,17 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { FastField, useFormikContext } from 'formik'
+import React from 'react'
+import { FastField } from 'formik'
 import { Grid, Typography } from '@material-ui/core'
 import FormControl from 'components/inputs/FormControl'
-import CustomSectionList from '../questions/CustomSectionList'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
-import { useTranslation } from 'react-i18next'
-import Button from 'components/generic/Button'
-import Switch from '../../../../../../components/generic/Switch'
+import Switch from 'components/generic/Switch'
 import EditableOptions from '../submission/components/EditableOptions'
+import { EventHelpers } from '@hackjunction/shared'
+import moment from 'moment-timezone'
 
 export default () => {
+    const event = useSelector(OrganiserSelectors.event)
+    const isReviewingOpen = EventHelpers.isReviewingOpen(event, moment)
+    const isReviewingPast = EventHelpers.isReviewingPast(event, moment)
     return (
         <Grid container spacing={8}>
             <Grid
@@ -124,11 +126,22 @@ export default () => {
                 </div>
             </Grid>
             <Grid item xs={12}>
+                {/* Create a P element that looks like a warning */}
+                {(isReviewingOpen || isReviewingPast) && (
+                    <p className="tw-text-red-500 tw-text-sm tw-font-semibold tw-mb-4">
+                        Warning: Reviewing is now{' '}
+                        {isReviewingOpen
+                            ? 'open'
+                            : isReviewingPast && 'completed'}{' '}
+                        and if you make changes to the score criteria, it might
+                        cause unexpected problems. Modify at your own risk!
+                    </p>
+                )}
                 <FastField
                     name="scoreCriteriaSettings.scoreCriteria"
                     render={({ field, form }) => (
                         <FormControl
-                            label="Judge evaluation criteria"
+                            label={`Judge evaluation criteria`}
                             hint="Add, edit, or delete the criteria judges will use to evaluate projects. For example, creativity, innovation, simplicity, efficiency, etc."
                         >
                             <EditableOptions

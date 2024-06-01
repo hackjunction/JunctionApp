@@ -2,19 +2,29 @@ const _ = require('lodash')
 const Event = require('../event/model')
 const Project = require('../project/model')
 const { ProjectScore } = require('./model')
-const { NotFoundError } = require('../../common/errors/errors')
+const {
+    NotFoundError,
+    AlreadyExistsError,
+} = require('../../common/errors/errors')
 
 const controller = {}
 
-controller.addProjectScore = async score => {
-    await Project.findById(score.project).orFail(
+controller.addProjectScore = async (projectId, projectScoreByReviewer) => {
+    const projectScoreFound = await ProjectScore.findOne({ project: projectId })
+    if (projectScoreFound) {
+        return controller.updateProjectScoreWithReviewers(
+            projectScoreFound._id,
+            projectScoreByReviewer,
+        )
+    }
+    const projectData = await Project.findById(projectId).orFail(
         new NotFoundError('The given project does not exist.'),
     )
-    await Event.findById(score.event).orFail(
-        new NotFoundError('The given event does not exist.'),
-    )
-    const projectScore = new ProjectScore({ ...score })
-    projectScore.averageScore = projectScore.score
+    const projectScore = new ProjectScore({
+        reviewers: [projectScoreByReviewer],
+        project: projectId,
+        event: projectData.event,
+    })
 
     if (projectScore.reviewers && projectScore.reviewers.length > 0) {
         const averageScore = averageScoreCalculation(
@@ -22,11 +32,14 @@ controller.addProjectScore = async score => {
             projectScore.score,
         )
         if (!averageScore) {
-            throw new Error('Score average calculation failed')
+            throw new Error(
+                'Score average calculation failed, make sure all criteria are filled in',
+            )
         }
         projectScore.averageScore = averageScore
     }
-    return projectScore.save()
+    projectScore.save()
+    return projectScore
 }
 
 controller.updateProjectScore = async (id, updatedProjectScore) => {
@@ -112,7 +125,9 @@ const limitDecimals = (number, decimalPlaces) => {
 
 const averageScoreCalculation = (reviewers, globalScore) => {
     const allScores = reviewers.map(review => review.score)
-    allScores.push(globalScore)
+    if (globalScore) {
+        allScores.push(globalScore)
+    }
     let scoreCount = allScores.length
 
     const scoreSum = allScores.reduce((acc, current) => {
@@ -132,17 +147,27 @@ const averageScoreCalculation = (reviewers, globalScore) => {
 }
 
 controller.updateProjectScoreWithReviewers = async (
-    id,
+    projectScoreId,
     updatedProjectScore,
 ) => {
-    const projectScore = await ProjectScore.findById(id).orFail(
-        new NotFoundError('The given ProjectScore does not exist.'),
+    const projectScore = await ProjectScore.findById(projectScoreId).orFail(
+        new NotFoundError(
+            'The given ProjectScore does not exist, refresh and try again.',
+        ),
     )
-    projectScore.status = updatedProjectScore.status
-    projectScore.track = updatedProjectScore.track
-    projectScore.challenge = updatedProjectScore.challenge
-    projectScore.reviewers = updatedProjectScore.reviewers
-
+    const reviewerFoundIndex = _.findIndex(projectScore.reviewers, {
+        userId: updatedProjectScore.userId,
+    })
+    if (reviewerFoundIndex !== -1) {
+        projectScore.reviewers[reviewerFoundIndex].score =
+            updatedProjectScore.score
+        projectScore.reviewers[reviewerFoundIndex].scoreCriteria =
+            updatedProjectScore.scoreCriteria
+        projectScore.reviewers[reviewerFoundIndex].message =
+            updatedProjectScore.message
+    } else {
+        projectScore.reviewers.push(updatedProjectScore)
+    }
     projectScore.averageScore = projectScore.score
 
     if (projectScore.reviewers && projectScore.reviewers.length > 0) {
@@ -151,15 +176,12 @@ controller.updateProjectScoreWithReviewers = async (
             projectScore.score,
         )
         if (!averageScore) {
-            throw new Error('Score average calculation failed')
+            throw new Error(
+                'Score average calculation failed, make sure all criteria are filled in',
+            )
         }
         projectScore.averageScore = averageScore
     }
-
-    //scores from reviewers + scores from global, divide by total count of scores
-
-    // projectScore.averageScore = projectScore.score +
-
     await projectScore.save()
     return projectScore
 }

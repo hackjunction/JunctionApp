@@ -79,12 +79,31 @@ const ProjectsGridItem = ({
 
     let score
     let message
+    let messageCount = 0
+
     if (project?.scoreData) {
         score = project.scoreData?.averageScore
             ? project.scoreData?.averageScore
             : project.scoreData?.score
 
-        message = project.scoreData?.message
+        if (project?.scoreData?.reviewers?.length > 0) {
+            const findReviewMessages = () => {
+                const returnArray = []
+                const reviewMap = project?.scoreData?.reviewers?.map(
+                    reviewer => {
+                        if (reviewer?.message?.length > 0) {
+                            returnArray.push(reviewer.message)
+                        }
+                    },
+                )
+                return returnArray
+            }
+            const feedbackMessages = findReviewMessages()
+            if (feedbackMessages?.length > 0) {
+                messageCount = feedbackMessages.length
+                message = _.last(feedbackMessages)
+            }
+        }
     }
 
     const statusTag = status => {
@@ -220,6 +239,7 @@ const ProjectsGridItem = ({
                                 </div>
                                 {message && (
                                     <Typography variant="body1">
+                                        <strong>Latest feedback</strong>{' '}
                                         {_.truncate(message, { length: 20 })}
                                     </Typography>
                                 )}
@@ -229,7 +249,7 @@ const ProjectsGridItem = ({
                     </div>
                 </CardContent>
                 <CardActions className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-px-4 tw-pb-4 tw-pt-0 tw-gap-4">
-                    <div className="tw-flex tw-gap-2">
+                    <div className="tw-flex tw-gap-2 tw-flex-col md:tw-flex-row ">
                         {onClickMore && (
                             <Button
                                 onClick={onClickMore}
@@ -239,13 +259,13 @@ const ProjectsGridItem = ({
                                 Show more
                             </Button>
                         )}
-                        {showReviewers && (
+                        {showReviewers && messageCount > 0 && (
                             <Button
                                 onClick={() => setOpenReviewModal(true)}
                                 color="outlined_button"
                                 variant="jOutlined"
                             >
-                                Read reviews
+                                Read reviews {`(${messageCount})`}
                             </Button>
                         )}
                     </div>

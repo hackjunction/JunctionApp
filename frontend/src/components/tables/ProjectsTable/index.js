@@ -101,18 +101,6 @@ const ProjectsTable = ({ projects }) => {
         setSelected(selectedRows)
     }
 
-    // debugGroup(
-    //     'Projects to export',
-    //     selected.map(item => {
-    //         const returnObject = {
-    //             ...flattenObject(item.original),
-    //             projectId: item.original._id,
-    //             projectURL: projectURLgenerator(event.slug, item.original._id),
-    //         }
-    //         return returnObject
-    //     }),
-    // )
-
     return (
         <>
             <EditProjectModal
