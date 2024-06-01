@@ -237,7 +237,7 @@ const ProjectsGridItem = ({
                                         <strong>Score</strong> {score}
                                     </Typography>
                                 </div>
-                                {message && (
+                                {showReviewers && message && (
                                     <Typography variant="body1">
                                         <strong>Latest feedback</strong>{' '}
                                         {_.truncate(message, { length: 20 })}
