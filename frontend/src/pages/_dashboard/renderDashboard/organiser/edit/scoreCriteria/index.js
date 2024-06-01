@@ -126,7 +126,6 @@ export default () => {
                 </div>
             </Grid>
             <Grid item xs={12}>
-                {/* Create a P element that looks like a warning */}
                 {(isReviewingOpen || isReviewingPast) && (
                     <p className="tw-text-red-500 tw-text-sm tw-font-semibold tw-mb-4">
                         Warning: Reviewing is now{' '}
