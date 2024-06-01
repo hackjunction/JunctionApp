@@ -11,7 +11,6 @@ import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationMod
 import BulkEmailModal from 'components/modals/BulkEmailModal'
 import EditTeamModal from 'components/modals/EditTeamModal'
 
-
 import { Table, Sorters } from 'components/generic/_Table'
 import AttendeeTable from '../AttendeeTable'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -34,10 +33,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
 
     const searchParams = new URLSearchParams(location.search)
     const query = new URLSearchParams(location.search)
-    const hasModal = query.has('modal')
     const activeModal = query.get('modal')
-    // TODO add expansion
-    // const [expandedRows, setExpandedRows] = useState({ 1: true })
 
     const openSingleTeamEdit = row => {
         const search = `?${new URLSearchParams({
@@ -115,8 +111,6 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
         }, [])
     }, [teamsFiltered])
 
-
-
     const columns = useMemo(() => {
         return [
             {
@@ -188,7 +182,9 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
         <Grid container spacing={2}>
             <EditTeamModal
                 teamCode={
-                    activeModal === 'editTeam' ? searchParams.get('code') : undefined
+                    activeModal === 'editTeam'
+                        ? searchParams.get('code')
+                        : undefined
                 }
                 onClose={resetSearch}
             />
@@ -310,9 +306,7 @@ export default ({ loading, teams = [], simplifiedView = false }) => {
                             key: 'edit-team',
                             label: 'Edit team',
                             action: rows => {
-
                                 openSingleTeamEdit(rows[0])
-
                             },
                         },
                     ]}
