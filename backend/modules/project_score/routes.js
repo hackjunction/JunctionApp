@@ -16,18 +16,20 @@ const {
 } = require('../../common/middleware/events')
 
 const addProjectScore = asyncHandler(async (req, res) => {
-    console.log('addProjectScore is running')
+    const { projectId } = req.params
     try {
-        if (req.params.track) {
-            req.body.track = req.params.track._id
-        }
-        if (req.params.challenge) {
-            req.body.challenge = req.params.challenge._id
-        }
-        const score = await ProjectScoreController.addProjectScore(req.body)
+        // if (req.params.track) {
+        //     req.body.track = req.params.track._id
+        // }
+        // if (req.params.challenge) {
+        //     req.body.challenge = req.params.challenge._id
+        // }
+        const score = await ProjectScoreController.addProjectScore(
+            projectId,
+            req.body,
+        )
         return res.status(200).json(score)
     } catch (e) {
-        console.error(e)
         return res.status(500).json({
             message:
                 'Add project score encountered an unknown error. Please check your request and try again.',
@@ -86,20 +88,20 @@ const getPublicScores = asyncHandler(async (req, res) => {
 })
 
 const updateProjectScoreWithReviewers = asyncHandler(async (req, res) => {
-    console.log('Received on bcknd')
+    const { slug, projectScoreId } = req.params
     try {
-        if (req.params.track) {
-            req.body.track = req.params.track._id
-        }
-        if (req.params.challenge) {
-            req.body.challenge = req.params.challenge._id
-        }
-        const score =
+        // if (req.params.track) {
+        //     req.body.track = req.params.track._id
+        // }
+        // if (req.params.challenge) {
+        //     req.body.challenge = req.params.challenge._id
+        // }
+        const projectScore =
             await ProjectScoreController.updateProjectScoreWithReviewers(
-                req.params.id,
+                projectScoreId,
                 req.body,
             )
-        return res.status(200).json(score)
+        return res.status(200).json(projectScore)
     } catch (e) {
         return res.status(500).json({
             message:
@@ -122,7 +124,6 @@ router.get(
     '/event/:slug/project/:projectId',
     hasToken,
     isOrganiserOrCanSubmitProject,
-    //isEventOrganiser,
     getScoreByProjectId,
 )
 
@@ -160,15 +161,14 @@ router.get(
 )
 
 router.post(
-    '/review/event/:slug/:id',
+    '/review/event/:slug/:projectId',
     hasToken,
     isEventPartner,
-    // getEventFromParams,
     addProjectScore,
 )
 
 router.put(
-    '/review/event/:slug/:id',
+    '/review/event/:slug/:projectScoreId',
     hasToken,
     isEventPartner,
     updateProjectScoreWithReviewers,
