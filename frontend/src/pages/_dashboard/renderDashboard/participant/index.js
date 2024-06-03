@@ -95,6 +95,11 @@ export default ({
                             width: 200,
                         }}
                     />
+                    <audio
+                        className="tw-w-48 tw-h-8"
+                        controls
+                        src="/hackweek_pumpup.mp3"
+                    ></audio>
                 </div>
             }
             topContent={<BasicNavBar />}
