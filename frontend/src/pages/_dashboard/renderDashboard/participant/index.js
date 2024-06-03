@@ -96,7 +96,7 @@ export default ({
                         }}
                     />
                     <audio
-                        className="tw-w-48 tw-h-8"
+                        className="tw-w-48 tw-h-8 tw-mt-2"
                         controls
                         src="/hackweek_pumpup.mp3"
                     ></audio>
