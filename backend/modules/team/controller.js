@@ -8,7 +8,7 @@ const {
     NotFoundError,
 } = require('../../common/errors/errors')
 
-const maxTeamSize = 10
+const maxTeamSize = 15
 
 const controller = {}
 
