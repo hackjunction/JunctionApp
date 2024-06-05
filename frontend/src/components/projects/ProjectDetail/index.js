@@ -396,11 +396,28 @@ const ProjectDetail = ({
                                                                             </button>
                                                                         </div>
                                                                     ) : (
-                                                                        <Typography variant="subtitle1">
-                                                                            {
-                                                                                answer.value
-                                                                            }
-                                                                        </Typography>
+                                                                        <>
+                                                                            {answer.fieldType ===
+                                                                            'link' ? (
+                                                                                <a
+                                                                                    href={
+                                                                                        answer.value
+                                                                                    }
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                >
+                                                                                    {
+                                                                                        answer.value
+                                                                                    }
+                                                                                </a>
+                                                                            ) : (
+                                                                                <Typography variant="subtitle1">
+                                                                                    {
+                                                                                        answer.value
+                                                                                    }
+                                                                                </Typography>
+                                                                            )}
+                                                                        </>
                                                                     )}
                                                                 </div>
                                                             ),
