@@ -29,12 +29,11 @@ export default () => {
     const [vote, setVote] = useState(null)
     const [hasVoted, setVoted] = useState(false)
 
-    const getCurrentVote = useCallback(() => {
+    const getCurrentVote = useCallback(async () => {
         return WinnerVoteService.getVote(idToken, event.slug)
     }, [idToken, event])
 
     const getFinalists = useCallback(async () => {
-        setLoading(true)
         EventsService.getFinalists(idToken, event.slug)
             .then(finalistProjects => {
                 setProjects(finalistProjects)
@@ -42,42 +41,40 @@ export default () => {
             .catch(err => {
                 dispatch(
                     SnackbarActions.error(
-                        'Something went wrong... Please try again',
+                        'Something went wrong while fetching finalists, refresh the page to try again.',
                     ),
                 )
-                console.error(err)
-            })
-            .finally(() => {
-                setLoading(false)
             })
     }, [idToken, event])
 
     useEffect(() => {
-        getFinalists()
-        update()
+        setLoading(true)
+        try {
+            getFinalists()
+            update()
+        } catch (err) {
+        } finally {
+            setLoading(false)
+        }
     }, [])
 
     const update = useCallback(async () => {
         try {
-            setLoading(true)
             const vote = await getCurrentVote()
-            if (vote) {
-                setVote(vote.project)
+            if (vote && vote?.project) {
+                setVote(vote?.project)
                 setVoted(true)
             }
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Something went wrong... Please try again',
+                    'Something went wrong while fetching your vote, refresh the page to try again.',
                 ),
             )
-            console.error(err)
-        } finally {
-            setLoading(false)
         }
     }, [event, idToken])
 
-    const handleSubmit = useCallback(async () => {
+    const handleSubmit = async () => {
         try {
             setLoading(true)
             const result = await WinnerVoteService.submitVote(
@@ -91,13 +88,16 @@ export default () => {
         } catch (err) {
             dispatch(
                 SnackbarActions.error(
-                    'Something went wrong... Please try again',
+                    `Score could not be saved. Error: ${
+                        err.response.data.message || err.message
+                    }`,
                 ),
             )
         } finally {
             setLoading(false)
         }
-    }, [idToken, event, vote])
+    }
+
     return (
         <PageWrapper loading={loading}>
             <PageHeader

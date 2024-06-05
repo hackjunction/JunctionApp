@@ -13,11 +13,16 @@ const {
 } = require('../../common/middleware/events')
 
 const votingController = require('./controller')
+const errorHandler = require('../../common/errors/errorHandler')
 
 const getProjectsWithVotesForEvent = asyncHandler(async (req, res) => {
-    const finalistProjectsWithAllVotes =
-        await votingController.getFinalistProjectsWithAllVotes(req.event)
-    return res.status(200).json(finalistProjectsWithAllVotes)
+    try {
+        const finalistProjectsWithAllVotes =
+            await votingController.getFinalistProjectsWithAllVotes(req.event)
+        return res.status(200).json(finalistProjectsWithAllVotes)
+    } catch (e) {
+        return errorHandler(e, req, res)
+    }
 })
 
 const getVote = asyncHandler(async (req, res) => {
@@ -30,79 +35,28 @@ const getVote = asyncHandler(async (req, res) => {
 })
 
 const submitVote = asyncHandler(async (req, res) => {
-    const vote = await WinnerVote.findOne({
-        event: req.event._id,
-        user: req.user.sub,
-    })
-    if (vote) {
-        vote.project = req.body.projectId
-        const result = await vote.save()
+    const eventId = req.event._id
+    const userId = req.user.sub
+    const projectId = req.body.projectId
+    try {
+        const result = await votingController.submitVote(
+            eventId,
+            userId,
+            projectId,
+        )
         return res.status(200).json(result)
+    } catch (e) {
+        return errorHandler(e, req, res)
     }
-    const newVote = new WinnerVote({
-        event: req.event._id,
-        user: req.user.sub,
-        project: req.body.projectId,
-    })
-    const result = await newVote.save()
-    return res.status(200).json(result)
 })
 
 router
     .route('/:slug')
-    .get(
-        hasToken,
-        hasRegisteredToEvent,
-        getVote,
-        // asyncHandler(async (req, res) => {
-        //     const vote = await WinnerVote.findOne({
-        //         event: req.event._id,
-        //         user: req.user.sub,
-        //     })
+    .get(hasToken, hasRegisteredToEvent, getVote)
+    .post(hasToken, hasRegisteredToEvent, submitVote)
 
-        //     return res.status(200).json(vote)
-        // }),
-    )
-    .post(
-        hasToken,
-        hasRegisteredToEvent,
-        submitVote,
-        // asyncHandler(async (req, res) => {
-        //     const vote = await WinnerVote.findOne({
-        //         event: req.event._id,
-        //         user: req.user.sub,
-        //     })
-        //     if (vote) {
-        //         vote.project = req.body.projectId
-        //         const result = await vote.save()
-        //         return res.status(200).json(result)
-        //     }
-        //     const newVote = new WinnerVote({
-        //         event: req.event._id,
-        //         user: req.user.sub,
-        //         project: req.body.projectId,
-        //     })
-        //     const result = await newVote.save()
-        //     return res.status(200).json(result)
-        // }),
-    )
-
-router.route('/:slug/results').get(
-    hasToken,
-    isEventOrganiser,
-    getProjectsWithVotesForEvent,
-    // asyncHandler(async (req, res) => {
-    // const votes = await WinnerVote.find({
-    //     event: req.event._id,
-    // })
-
-    // const grouped = _.groupBy(votes, 'project')
-    // console.log('Grouped votes:', grouped)
-    // getProjectsWithVotesForEvent(req, res)
-
-    // return res.status(200).json(grouped)
-    // }
-)
-// )
+router
+    .route('/:slug/results')
+    .get(hasToken, isEventOrganiser, getProjectsWithVotesForEvent)
 
 module.exports = router
