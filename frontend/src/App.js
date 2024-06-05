@@ -34,24 +34,18 @@ export default ({ history, location }) => {
     }, [location, history])
 
     useEffect(() => {
-        if (isAuthenticated) {
-            if (isSessionExpired) {
-                setLoading(true)
-                console.log('renewing session now')
+        setLoading(false)
+        if (isAuthenticated && isSessionExpired) {
+            setLoading(true)
+            console.log('renewing session now')
+            try {
                 dispatch(AuthActions.renewSession())
-                    .then(() => {
-                        setLoading(false)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        dispatch(SnackbarActions.error('Please, log in again'))
-                    })
-                    .finally(() => setLoading(false))
-            } else {
+            } catch (err) {
+                console.log(err)
+                dispatch(SnackbarActions.error('Please, log in again'))
+            } finally {
                 setLoading(false)
             }
-        } else {
-            setLoading(false)
         }
     }, [dispatch, isAuthenticated, isSessionExpired])
 
