@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { Grid, Box, Dialog } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -10,6 +10,7 @@ import ProjectDetail from 'components/projects/ProjectDetail'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import * as AuthSelectors from 'redux/auth/selectors'
+import * as SnackbarActions from 'redux/snackbar/actions'
 
 import WinnerVoteService from 'services/winnerVote'
 import _ from 'lodash'
@@ -17,6 +18,7 @@ import _ from 'lodash'
 export default () => {
     const event = useSelector(OrganiserSelectors.event)
     const idToken = useSelector(AuthSelectors.getIdToken)
+    const dispatch = useDispatch()
 
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState(false)
@@ -36,10 +38,17 @@ export default () => {
             }
         } catch (error) {
             console.error(error)
+            dispatch(
+                SnackbarActions.error(
+                    `Error retrieving the voting data: ${
+                        error.response.data.message || error.message
+                    }`,
+                ),
+            )
         } finally {
             setLoading(false)
         }
-    }, [event, idToken])
+    }, [event])
 
     useEffect(() => {
         if (event?.slug) {
