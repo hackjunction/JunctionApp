@@ -35,8 +35,7 @@ controller.getVotesByProject = async event => {
         })
         return result
     }, [])
-    const sorted = _.orderBy(results, ['votes'], 'desc')
-    return sorted
+    return results
 }
 
 controller.getToken = id => {
