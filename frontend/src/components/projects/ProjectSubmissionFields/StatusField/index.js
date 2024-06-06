@@ -7,7 +7,7 @@ import React from 'react'
 const useStyles = makeStyles(theme => ({
     customGridItem: {
         border: `4px solid ${theme.palette.error.main}`, // Border color from the theme's error palette
-        backgroundColor: theme.palette.error.light, // Background color from the theme's error palette
+        // backgroundColor: theme.palette.error.light, // Background color from the theme's error palette
         borderRadius: theme.shape.borderRadius, // Border radius from the theme
     },
 }))

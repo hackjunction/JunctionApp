@@ -334,16 +334,20 @@ const ProjectDetail = ({
                                     {typeof project.status !== 'undefined' &&
                                         statusTag(project.status)}
                                 </div>
-                                <Typography
-                                    variant="subtitle1"
-                                    style={{ fontWeight: 'bold' }}
-                                >
-                                    {project.punchline}
-                                </Typography>
+                                {project?.punchline && (
+                                    <Typography
+                                        variant="subtitle1"
+                                        style={{ fontWeight: 'bold' }}
+                                    >
+                                        {project.punchline}
+                                    </Typography>
+                                )}
                             </div>
-                            <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                <Markdown source={project.description} />
-                            </div>
+                            {project?.description && (
+                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                    <Markdown source={project.description} />
+                                </div>
+                            )}
                             {submissionFormAnswersArray?.length > 0 &&
                                 submissionFormAnswersArray.map(
                                     (section, index) => {
@@ -485,19 +489,7 @@ const ProjectDetail = ({
                                         />
                                     </div>
                                 </div>
-                            ) : (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        video
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        No video available
-                                    </Typography>
-                                </div>
-                            )}
+                            ) : null}
 
                             {project.demo ? (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
@@ -515,19 +507,7 @@ const ProjectDetail = ({
                                         {project.demo}
                                     </a>
                                 </div>
-                            ) : (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        Demo
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        No demo available
-                                    </Typography>
-                                </div>
-                            )}
+                            ) : null}
                             {!project.sourcePublic ? (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Typography
@@ -541,21 +521,25 @@ const ProjectDetail = ({
                                     </Typography>
                                 </div>
                             ) : (
-                                <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.sectionTitle}
-                                    >
-                                        Source code
-                                    </Typography>
-                                    <a
-                                        href={project.source}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {project.source}
-                                    </a>
-                                </div>
+                                <>
+                                    {project.source && (
+                                        <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
+                                            <Typography
+                                                variant="h6"
+                                                className={classes.sectionTitle}
+                                            >
+                                                Source code
+                                            </Typography>
+                                            <a
+                                                href={project.source}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {project.source}
+                                            </a>
+                                        </div>
+                                    )}
+                                </>
                             )}
                             {event && project.track && (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
