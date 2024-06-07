@@ -334,20 +334,20 @@ const ProjectDetail = ({
                                     {typeof project.status !== 'undefined' &&
                                         statusTag(project.status)}
                                 </div>
-                                {project?.punchline && (
+                                {/* {project?.punchline && (
                                     <Typography
                                         variant="subtitle1"
                                         style={{ fontWeight: 'bold' }}
                                     >
                                         {project.punchline}
                                     </Typography>
-                                )}
+                                )} */}
                             </div>
-                            {project?.description && (
+                            {/* {project?.description && (
                                 <div className="tw-flex tw-flex-col tw-gap-2 tw-p-4 tw-bg-white tw-rounded-md tw-shadow-md">
                                     <Markdown source={project.description} />
                                 </div>
-                            )}
+                            )} */}
                             {submissionFormAnswersArray?.length > 0 &&
                                 submissionFormAnswersArray.map(
                                     (section, index) => {
@@ -416,9 +416,6 @@ const ProjectDetail = ({
                                                                                 </a>
                                                                             ) : (
                                                                                 <Typography variant="subtitle1">
-                                                                                    {/* {
-                                                                                        answer.value
-                                                                                    } */}
                                                                                     {answer.fieldType ===
                                                                                     'boolean'
                                                                                         ? answer.value ===

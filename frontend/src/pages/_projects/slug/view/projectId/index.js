@@ -49,7 +49,7 @@ export default ({ event, showFullTeam }) => {
                 showTableLocation={!EventHelpers.isEventOver(event, moment)}
             />
 
-            <ShareProject project={project} event={event} />
+            {/* <ShareProject project={project} event={event} /> */}
         </PageWrapper>
     )
 }
