@@ -1,9 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux'
-import React, { useState, useEffect, useMemo } from 'react'
+import { useSelector } from 'react-redux'
+import React, { useState, useMemo } from 'react'
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
 import {
     Dialog,
     List,
@@ -14,11 +13,6 @@ import {
     Typography,
     ExpansionPanelDetails,
     Box,
-    TextField,
-    InputLabel,
-    FormControl,
-    Select,
-    MenuItem,
     Checkbox,
 } from '@material-ui/core'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -27,15 +21,10 @@ import PageHeader from 'components/generic/PageHeader'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import TeamsTable from 'components/tables/TeamsTable'
-import ProjectScoresService from 'services/projectScores'
 import EventsService from 'services/events'
-
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import Button from 'components/generic/Button'
 import { projectURLgenerator } from 'utils/dataModifiers'
 
 export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
-    const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const event = useSelector(OrganiserSelectors.event)
     const teams = useSelector(OrganiserSelectors.teams)
@@ -44,30 +33,7 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
         projectURL = projectURLgenerator(event.slug, project._id)
     }
     const [finalistChecked, setFinalistChecked] = useState(false)
-    const [projectScores, setProjectScores] = useState([
-        {
-            project: '',
-            event: '',
-            status: 'submitted',
-            score: 0,
-            maxScore: 10,
-            message: '',
-            track: 'null',
-            challenge: 'null',
-        },
-    ])
-    useEffect(() => {
-        if (project && event) {
-            ProjectScoresService.getScoreByEventSlugAndProjectId(
-                idToken,
-                event.slug,
-                project._id,
-            ).then(score => {
-                if (score) setProjectScores(score)
-            })
-            setFinalistChecked(event.finalists.includes(project._id))
-        }
-    }, [event, idToken, project])
+
     const team = useMemo(() => {
         if (teams && project) {
             return [teams.find(team => team._id === project.team)]
@@ -171,156 +137,6 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                             simplifiedView={true}
                                         />
                                     </Box>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-
-                            <ExpansionPanel>
-                                <ExpansionPanelSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel3a-content"
-                                    id="panel3a-header"
-                                >
-                                    <Typography>Project Score</Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    {projectScores.map(projectScore => (
-                                        <Formik
-                                            initialValues={{
-                                                ...projectScore,
-                                            }}
-                                            enableReinitialize={true}
-                                            onSubmit={async (
-                                                values,
-                                                { setSubmitting },
-                                            ) => {
-                                                values.project = project._id
-                                                values.event = event._id
-                                                values.track =
-                                                    projectScore.track
-                                                values.challenge =
-                                                    projectScore.challenge
-                                                try {
-                                                    if (projectScore._id) {
-                                                        await ProjectScoresService.updateScoreByEventSlug(
-                                                            idToken,
-                                                            event.slug,
-                                                            values,
-                                                        )
-                                                    } else {
-                                                        await ProjectScoresService.addScoreByEventSlug(
-                                                            idToken,
-                                                            event.slug,
-                                                            values,
-                                                        )
-                                                    }
-                                                    dispatch(
-                                                        SnackbarActions.success(
-                                                            'Score saved successfully.',
-                                                        ),
-                                                    )
-                                                } catch (e) {
-                                                    dispatch(
-                                                        SnackbarActions.error(
-                                                            `Score could not be saved. Error: ${e.message}`,
-                                                        ),
-                                                    )
-                                                } finally {
-                                                    setSubmitting(false)
-                                                }
-                                            }}
-                                        >
-                                            {({ isSubmitting }) => (
-                                                <Form>
-                                                    <Field name="status">
-                                                        {({ field }) => (
-                                                            <FormControl
-                                                                fullWidth
-                                                            >
-                                                                <InputLabel>
-                                                                    Status{' '}
-                                                                    {projectScore.track
-                                                                        ? 'in track ' +
-                                                                          projectScore.track
-                                                                        : null}{' '}
-                                                                    {projectScore.challenge
-                                                                        ? 'in challenge ' +
-                                                                          projectScore.challenge
-                                                                        : null}
-                                                                </InputLabel>
-                                                                <Select
-                                                                    {...field}
-                                                                >
-                                                                    <MenuItem value="submitted">
-                                                                        Submitted
-                                                                    </MenuItem>
-                                                                    <MenuItem value="evaluating">
-                                                                        Evaluating
-                                                                    </MenuItem>
-                                                                    <MenuItem value="evaluated">
-                                                                        Evaluated
-                                                                    </MenuItem>
-                                                                </Select>
-                                                            </FormControl>
-                                                        )}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                        name="status"
-                                                        component="div"
-                                                    />
-                                                    <Field name="score">
-                                                        {({ field }) => (
-                                                            <TextField
-                                                                fullWidth
-                                                                label="Score"
-                                                                type="number"
-                                                                {...field}
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                        name="score"
-                                                        component="div"
-                                                    />
-                                                    <Field name="maxScore">
-                                                        {({ field }) => (
-                                                            <TextField
-                                                                fullWidth
-                                                                type="number"
-                                                                label="Maximum Score"
-                                                                {...field}
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                        name="maxScore"
-                                                        component="div"
-                                                    />
-                                                    <Field name="message">
-                                                        {({ field }) => (
-                                                            <TextField
-                                                                fullWidth
-                                                                label="Message"
-                                                                {...field}
-                                                            />
-                                                        )}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                        name="message"
-                                                        component="div"
-                                                    />
-                                                    <Box p={2} />
-                                                    <Button
-                                                        color="primary"
-                                                        variant="contained"
-                                                        type="submit"
-                                                        disabled={isSubmitting}
-                                                    >
-                                                        Save
-                                                    </Button>
-                                                </Form>
-                                            )}
-                                        </Formik>
-                                    ))}
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                             {event.overallReviewMethod ===

@@ -1,23 +1,27 @@
 const logger = require('../../misc/logger')
 
+const logError = (error, request) => {
+    logger.error({
+        message: error.message,
+        error: {
+            stack: error.stack,
+            complete: error,
+        },
+        request: {
+            requestBody: request.body,
+            requestParams: request.params,
+            requestQuery: request.query,
+        },
+    })
+}
+
 const errorHandler = (error, request, response, next) => {
+    logError(error, request)
     switch (error.name) {
         case 'UnauthorizedError': {
             return response.status(401).json({
                 message: error.message || 'Unauthorized',
                 status: 401,
-            })
-        }
-        case 'InsufficientPrivilegesError': {
-            return response.status(401).json({
-                message: 'Insufficient privileges',
-                status: 401,
-            })
-        }
-        case 'ForbiddenError': {
-            return response.status(403).json({
-                message: error.message || 'Forbidden',
-                status: 403,
             })
         }
         case 'NotFoundError': {
@@ -26,33 +30,53 @@ const errorHandler = (error, request, response, next) => {
                 status: 404,
             })
         }
+        case 'InsufficientPrivilegesError': {
+            return response.status(401).json({
+                message: error.message || 'Insufficient privileges',
+                status: 401,
+            })
+        }
+        case 'EmailVerificationError': {
+            return response.status(403).json({
+                message: error.message || 'Email verification required',
+                status: 403,
+            })
+        }
         case 'ValidationError': {
             return response.status(400).json({
-                message: error.message,
+                message: error.message || 'Validation error',
                 errors: error.errors,
+                status: 400,
+            })
+        }
+        case 'ForbiddenError': {
+            return response.status(403).json({
+                message: error.message || 'Forbidden',
+                status: 403,
+            })
+        }
+        case 'AlreadyExistsError': {
+            return response.status(400).json({
+                message: error.message || 'Already exists',
                 status: 400,
             })
         }
         case 'MongoError': {
             if (error.code === 11000) {
                 return response.status(400).json({
+                    message: 'Report to tech support',
                     type: 'unique-violation',
                     status: 400,
                 })
             }
-            break
+            return response.status(400).json({
+                message: error.message || 'Validation error',
+                status: 400,
+            })
         }
         default:
-            logger.error({
-                message: 'Unhandled error',
-                error: {
-                    message: error.message,
-                    stack: error.stack,
-                },
-            })
-
             return response.status(500).json({
-                message: 'Unexpected error',
+                message: error.message || 'Unexpected error',
                 status: 500,
             })
     }

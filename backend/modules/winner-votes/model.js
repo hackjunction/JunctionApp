@@ -8,6 +8,7 @@ const WinnerVoteSchema = new mongoose.Schema({
     },
     user: {
         type: String,
+        required: true,
     },
     project: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +25,7 @@ WinnerVoteSchema.index(
     },
     {
         unique: true,
-    }
+    },
 )
 
 const WinnerVote = mongoose.model('WinnerVote', WinnerVoteSchema)

@@ -18,26 +18,26 @@ class CustomError extends Error {
 }
 
 class NotFoundError extends CustomError {
-    constructor(message) {
+    constructor(message, details) {
         const name = 'NotFoundError'
         const code = 1
-        super(message, name, code)
+        super(message, name, code, details)
     }
 }
 
 class InsufficientPrivilegesError extends CustomError {
-    constructor(message) {
+    constructor(message, details) {
         const name = 'InsufficientPrivilegesError'
         const code = 2
-        super(message, name, code)
+        super(message, name, code, details)
     }
 }
 
 class EmailVerificationError extends CustomError {
-    constructor(message) {
+    constructor(message, details) {
         const name = 'EmailVerificationError'
         const code = 3
-        super(message, name, code)
+        super(message, name, code, details)
     }
 }
 
@@ -50,26 +50,34 @@ class ValidationError extends CustomError {
 }
 
 class ForbiddenError extends CustomError {
-    constructor(message) {
+    constructor(message, details) {
         const name = 'ForbiddenError'
         const code = 5
-        super(message, name, code)
+        super(message, name, code, details)
     }
 }
 
 class UnauthorizedError extends CustomError {
-    constructor(message) {
+    constructor(message, details) {
         const name = 'UnauthorizedError'
         const code = 6
-        super(message, name, code)
+        super(message, name, code, details)
     }
 }
 
 class AlreadyExistsError extends CustomError {
-    constructor(message) {
+    constructor(message, details) {
         const name = 'AlreadyExistsError'
         const code = 7
-        super(message, name, code)
+        super(message, name, code, details)
+    }
+}
+
+class MongoError extends CustomError {
+    constructor(message, details) {
+        const name = 'MongoError'
+        const code = 8
+        super(message, name, code, details)
     }
 }
 
@@ -81,4 +89,5 @@ module.exports = {
     ForbiddenError,
     UnauthorizedError,
     AlreadyExistsError,
+    MongoError,
 }

@@ -25,6 +25,7 @@ ProjectScoresService.getScoreByEventSlugAndProjectId = (
     )
 }
 
+//TODO delete this endpoint
 ProjectScoresService.addScoreByEventSlug = (
     idToken,
     eventSlug,
@@ -61,6 +62,7 @@ ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerToken = (
     )
 }
 
+//TODO delete this endpoint
 ProjectScoresService.addScoreByEventSlugAndPartnerToken = (
     token,
     eventSlug,
@@ -99,12 +101,13 @@ ProjectScoresService.getScoreByEventSlugAndProjectIdAndPartnerAccount = (
 ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount = (
     idToken,
     eventSlug,
-    projectScore,
+    projectId,
+    projectScoreByReviewer,
 ) => {
-    console.log('Adding new score from partner account', projectScore._id)
+    console.log('Adding new score from partner account')
     return _axios.post(
-        `/project-scores/review/event/${eventSlug}/${projectScore._id}`,
-        projectScore,
+        `/project-scores/review/event/${eventSlug}/${projectId}`,
+        projectScoreByReviewer,
         config(idToken),
     )
 }
@@ -112,17 +115,18 @@ ProjectScoresService.addScoreByEventSlugAndProjectIdAndPartnerAccount = (
 ProjectScoresService.updateScoreByEventSlugAndProjectIdAndPartnerAccount = (
     idToken,
     eventSlug,
-    // projectId,
-    projectScore,
+    projectScoreId,
+    projectScoreByReviewer,
 ) => {
     console.log('Updating working', {
         idToken,
         eventSlug,
-        projectScore,
+        projectScoreId,
+        projectScoreByReviewer,
     })
     return _axios.put(
-        `/project-scores/review/event/${eventSlug}/${projectScore._id}`,
-        projectScore,
+        `/project-scores/review/event/${eventSlug}/${projectScoreId}`,
+        projectScoreByReviewer,
         config(idToken),
     )
 }
