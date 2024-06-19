@@ -1,18 +1,18 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@mui/material/styles'
 import {
     Stepper,
     Step,
     StepLabel,
     StepContent,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { sortBy } from 'lodash-es'
 import moment from 'moment'
 import MiscUtils from 'utils/misc'
 import TimelineDot from 'components/generic/TimelineDot'
-import StepConnector from '@material-ui/core/StepConnector'
+import StepConnector from '@mui/material/StepConnector'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -105,29 +105,29 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
             realItems.length > 0
                 ? realItems
                 : [
-                    {
-                        date: moment(event.registrationStartTime).format(
-                            dateString,
-                        ),
-                        dateValue: moment(event.registrationStartTime).unix(),
-                        completed: moment(
-                            event.registrationStartTime,
-                        ).isBefore(),
-                        title: 'Application period begins',
-                        active: true,
-                    },
-                    {
-                        date: moment(event.registrationEndTime).format(
-                            dateString,
-                        ),
-                        dateValue: moment(event.registrationEndTime).unix(),
-                        completed: moment(
-                            event.registrationEndTime,
-                        ).isBefore(),
-                        title: 'Application period ends',
-                        active: true,
-                    },
-                ]
+                      {
+                          date: moment(event.registrationStartTime).format(
+                              dateString,
+                          ),
+                          dateValue: moment(event.registrationStartTime).unix(),
+                          completed: moment(
+                              event.registrationStartTime,
+                          ).isBefore(),
+                          title: 'Application period begins',
+                          active: true,
+                      },
+                      {
+                          date: moment(event.registrationEndTime).format(
+                              dateString,
+                          ),
+                          dateValue: moment(event.registrationEndTime).unix(),
+                          completed: moment(
+                              event.registrationEndTime,
+                          ).isBefore(),
+                          title: 'Application period ends',
+                          active: true,
+                      },
+                  ]
 
         if (realItems.length < 1) {
             if (

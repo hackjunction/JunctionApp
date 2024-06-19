@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'

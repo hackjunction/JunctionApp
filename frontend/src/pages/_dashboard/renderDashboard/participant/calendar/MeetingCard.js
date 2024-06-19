@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 import Button from 'components/generic/Button'
-import MuiButton from '@material-ui/core/Button'
-import { Grid, Box, IconButton } from '@material-ui/core'
-import { makeStyles, Tooltip, withStyles } from '@material-ui/core'
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
+import MuiButton from '@mui/material/Button'
+import { Grid, Box, IconButton } from '@mui/material'
+import { makeStyles, Tooltip, withStyles } from '@mui/material'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 
 const useStyles = makeStyles(theme => ({
     meetingCard: ({ booked, isOpenable }) => ({
@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
         '&:hover': isOpenable
             ? {
-                filter: 'brightness(0.95)',
-            }
+                  filter: 'brightness(0.95)',
+              }
             : {},
     }),
     meetingTime: {
@@ -119,87 +119,81 @@ export default ({
         <>
             {booked ? (
                 <>
-                    {
-                        (description?.length > 70 && !expand) ? (
-                            <>
-                                <div className={classes.meetingInfo}>
-
-                                    {googleMeetLink && (
-                                        <a
-                                            className={classes.meetsLink}
-                                            href={googleMeetLink}
-                                            target="blank"
-                                        >
-                                            <Button
-                                                className={classes.joinButton}
-                                                variant="contained"
-                                                color="success"
-                                            >
-                                                JOIN MEETING
-                                            </Button>
-                                        </a>
-                                    )}
-
-                                    <Button
-                                        className={classes.actionButton}
-                                        variant="contained"
-                                        color="error"
-                                        onClick={cancelAction}
+                    {description?.length > 70 && !expand ? (
+                        <>
+                            <div className={classes.meetingInfo}>
+                                {googleMeetLink && (
+                                    <a
+                                        className={classes.meetsLink}
+                                        href={googleMeetLink}
+                                        target="blank"
                                     >
-                                        CANCEL
-                                    </Button>
-
-                                </div>
-                                <Box textAlign='center'>
-                                    <IconButton onClick={() => setExpand(true)}>
-                                        <KeyboardArrowDown
-                                            fontSize="large"
-                                            color="secondary"
-                                        />
-                                    </IconButton>
-                                </Box>
-                            </>
-                        ) : (
-                            <>
-                                <div className={classes.meetingInfo}>
-
-                                    {googleMeetLink && (
-                                        <a
-                                            className={classes.meetsLink}
-                                            href={googleMeetLink}
-                                            target="blank"
+                                        <Button
+                                            className={classes.joinButton}
+                                            variant="contained"
+                                            color="success"
                                         >
-                                            <Button
-                                                className={classes.joinButton}
-                                                variant="contained"
-                                                color="success"
-                                            >
-                                                JOIN MEETING
-                                            </Button>
-                                        </a>
-                                    )}
+                                            JOIN MEETING
+                                        </Button>
+                                    </a>
+                                )}
 
-                                    <Button
-                                        className={classes.actionButton}
-                                        variant="contained"
-                                        color="error"
-                                        onClick={cancelAction}
+                                <Button
+                                    className={classes.actionButton}
+                                    variant="contained"
+                                    color="error"
+                                    onClick={cancelAction}
+                                >
+                                    CANCEL
+                                </Button>
+                            </div>
+                            <Box textAlign="center">
+                                <IconButton onClick={() => setExpand(true)}>
+                                    <KeyboardArrowDown
+                                        fontSize="large"
+                                        color="secondary"
+                                    />
+                                </IconButton>
+                            </Box>
+                        </>
+                    ) : (
+                        <>
+                            <div className={classes.meetingInfo}>
+                                {googleMeetLink && (
+                                    <a
+                                        className={classes.meetsLink}
+                                        href={googleMeetLink}
+                                        target="blank"
                                     >
-                                        CANCEL
-                                    </Button>
+                                        <Button
+                                            className={classes.joinButton}
+                                            variant="contained"
+                                            color="success"
+                                        >
+                                            JOIN MEETING
+                                        </Button>
+                                    </a>
+                                )}
 
-                                </div>
-                                <Box textAlign='center'>
-                                    <IconButton onClick={() => setExpand(false)}>
-                                        <KeyboardArrowUp
-                                            fontSize="large"
-                                            color="secondary"
-                                        />
-                                    </IconButton>
-                                </Box>
-                            </>
-                        )
-                    }
+                                <Button
+                                    className={classes.actionButton}
+                                    variant="contained"
+                                    color="error"
+                                    onClick={cancelAction}
+                                >
+                                    CANCEL
+                                </Button>
+                            </div>
+                            <Box textAlign="center">
+                                <IconButton onClick={() => setExpand(false)}>
+                                    <KeyboardArrowUp
+                                        fontSize="large"
+                                        color="secondary"
+                                    />
+                                </IconButton>
+                            </Box>
+                        </>
+                    )}
                 </>
             ) : (
                 <ButtonWithTooltip
@@ -220,19 +214,27 @@ export default ({
         <div
             className={classes.meetingCard}
             key={startTime}
-            onClick={isOpenable ? cardOnClick : () => { }}
+            onClick={isOpenable ? cardOnClick : () => {}}
             style={!isOpenable ? { cursor: 'default' } : {}}
         >
             <p className={classes.meetingTime}>
-                <span>{`${start.getHours()}:${startMinutes === 0 ? '00' : startMinutes
-                    }`}</span>
+                <span>{`${start.getHours()}:${
+                    startMinutes === 0 ? '00' : startMinutes
+                }`}</span>
                 <span> - </span>
-                <span>{`${end.getHours()}:${endMinutes === 0 ? '00' : endMinutes
-                    }`}</span>
+                <span>{`${end.getHours()}:${
+                    endMinutes === 0 ? '00' : endMinutes
+                }`}</span>
             </p>
             {booked && <p className={classes.locationText}>{location}</p>}
-            {(booked && expand) && <p className={classes.locationText}>{description}</p>}
-            {(booked && !expand) && <p className={classes.locationText}>{description.slice(0, 70) + "..."}</p>}
+            {booked && expand && (
+                <p className={classes.locationText}>{description}</p>
+            )}
+            {booked && !expand && (
+                <p className={classes.locationText}>
+                    {description.slice(0, 70) + '...'}
+                </p>
+            )}
             {(isOpen || booked) && openContent()}
         </div>
     )

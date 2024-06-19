@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 
 import Footer from 'components/layouts/Footer'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -11,12 +11,11 @@ import Button from 'components/generic/Button'
 import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import PricingCard from 'components/generic/PricingCard'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { makeStyles } from '@material-ui/core/styles'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { makeStyles } from '@mui/styles'
 
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
 const useStyles = makeStyles(theme => ({
     backButtonWrapper: {

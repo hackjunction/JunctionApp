@@ -1,14 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react'
-import QrReader from 'react-qr-reader'
+import QrReader from '@cmdnio/react-qr-reader'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
     Box,
     Typography,
     Avatar,
     Button,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RegistrationStatuses } from '@hackjunction/shared'
 

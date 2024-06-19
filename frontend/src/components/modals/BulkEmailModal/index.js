@@ -8,7 +8,7 @@ import {
     Dialog,
     DialogContent,
     DialogActions,
-} from '@material-ui/core'
+} from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -115,10 +115,20 @@ export default ({ visible, userIds = [], onClose }) => {
         if (!validate()) return
         setLoading(true)
         const fromObject = {
-            email: event.emailConfig.senderEmail ? event.emailConfig.senderEmail : 'noreply@hackjunction.com',
-            name: event.emailConfig.senderName ? event.emailConfig.senderName : 'Junction',
+            email: event.emailConfig.senderEmail
+                ? event.emailConfig.senderEmail
+                : 'noreply@hackjunction.com',
+            name: event.emailConfig.senderName
+                ? event.emailConfig.senderName
+                : 'Junction',
         }
-        EmailService.sendPreviewEmail({ idToken: idToken, slug: event.slug, to: user.email, params: params, from: fromObject})
+        EmailService.sendPreviewEmail({
+            idToken: idToken,
+            slug: event.slug,
+            to: user.email,
+            params: params,
+            from: fromObject,
+        })
             .then(() => {
                 dispatch(
                     SnackbarActions.success(

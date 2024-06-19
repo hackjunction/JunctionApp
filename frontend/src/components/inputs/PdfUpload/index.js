@@ -6,11 +6,11 @@ import {
     CircularProgress,
     IconButton,
     Tooltip,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { Upload } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import ClearIcon from '@material-ui/icons/Clear'
+import ClearIcon from '@mui/icons-material/Clear'
 import { useTranslation } from 'react-i18next'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as SnackbarActions from 'redux/snackbar/actions'

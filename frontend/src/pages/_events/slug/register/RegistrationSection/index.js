@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import { RegistrationFields } from '@hackjunction/shared'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Grid } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Box, Grid } from '@mui/material'
 import { Formik, FastField } from 'formik'
 import * as yup from 'yup'
 import { useSelector } from 'react-redux'
@@ -38,8 +38,16 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default props => {
-    const { sectionsInfo, fields, onNext, nextLabel, prevLabel, onPrev, data, isActive } =
-        props
+    const {
+        sectionsInfo,
+        fields,
+        onNext,
+        nextLabel,
+        prevLabel,
+        onPrev,
+        data,
+        isActive,
+    } = props
     const { event, registration } = useContext(EventDetailContext)
     const userProfile = useSelector(UserSelectors.userProfile)
     const idTokenData = useSelector(AuthSelectors.idTokenData)

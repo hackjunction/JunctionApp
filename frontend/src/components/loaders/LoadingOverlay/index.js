@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import GlitchLoader from 'components/loaders/GlitchLoader'
 
 const useStyles = makeStyles(theme => ({

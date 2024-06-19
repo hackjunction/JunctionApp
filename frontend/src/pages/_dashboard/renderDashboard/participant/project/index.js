@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
 import moment from 'moment-timezone'
-import { push } from 'connected-react-router'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography, Box } from '@material-ui/core'
+import { Typography, Box } from '@mui/material'
 import Countdown from 'react-countdown-now'
 
 import PageWrapper from 'components/layouts/PageWrapper'

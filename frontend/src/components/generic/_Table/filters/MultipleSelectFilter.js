@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { groupBy } from 'lodash-es'
-import { TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { TextField } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 import * as FilterTypes from '../filterTypes'
 

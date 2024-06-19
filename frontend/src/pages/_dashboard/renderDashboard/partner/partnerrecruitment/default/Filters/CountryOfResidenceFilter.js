@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 
 import FilterItem from './FilterItem'
 import Select from 'components/inputs/Select'

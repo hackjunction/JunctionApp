@@ -2,12 +2,12 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import {
     Box,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     ListItemText,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
@@ -43,8 +43,8 @@ export default () => {
                 const projects = getProjectsForTrack(track.slug)
 
                 return (
-                    <ExpansionPanel key={track.slug}>
-                        <ExpansionPanelSummary
+                    <Accordion key={track.slug}>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
@@ -53,8 +53,8 @@ export default () => {
                                 primary={track.name}
                                 secondary={`${projects.length} projects`}
                             ></ListItemText>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <Box
                                 display="flex"
                                 flexDirection="column"
@@ -65,8 +65,8 @@ export default () => {
                                 </Box>
                                 <ProjectsTable projects={projects} />
                             </Box>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 )
             })}
         </Box>

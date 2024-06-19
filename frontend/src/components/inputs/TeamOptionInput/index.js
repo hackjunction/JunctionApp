@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Typography } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Grid, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import BooleanInput from 'components/inputs/BooleanInput'
 

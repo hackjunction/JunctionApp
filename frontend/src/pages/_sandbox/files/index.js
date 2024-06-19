@@ -1,23 +1,15 @@
 import React from 'react'
 
-
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import Footer from 'components/layouts/Footer'
 
 import junctionStyle from 'utils/styles'
-import {
-
-    Box,
-
-} from '@material-ui/core'
-
-
+import { Box } from '@mui/material'
 
 import FormControl from 'components/inputs/FormControl'
 
 import ImageUpload from 'components/inputs/ImageUpload'
-
 
 import { Formik, FastField } from 'formik'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -30,10 +22,7 @@ import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
 import { forOwn } from 'lodash-es'
 import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 
-
-
 import Container from 'components/generic/Container'
-
 
 export default () => {
     const dispatch = useDispatch()
@@ -114,12 +103,21 @@ export default () => {
                                         error={form.errors[field.name]}
                                         touched={form.touched[field.name]}
                                     >
-                                        <Box width="100%" pt="56.25%" position="relative">
+                                        <Box
+                                            width="100%"
+                                            pt="56.25%"
+                                            position="relative"
+                                        >
                                             <ImageUpload
                                                 value={field.value}
                                                 onChange={value => {
-                                                    form.setFieldValue(field.name, value)
-                                                    form.setFieldTouched(field.name)
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        value,
+                                                    )
+                                                    form.setFieldTouched(
+                                                        field.name,
+                                                    )
                                                 }}
                                                 uploadUrl={`/api/upload/files`}
                                                 resizeMode="cover"

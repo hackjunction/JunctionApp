@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
 import TextInput from 'components/inputs/TextInput'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import Select from 'components/inputs/Select'
 import { useFormField } from 'hooks/formHooks'
 import Button from 'components/generic/Button'

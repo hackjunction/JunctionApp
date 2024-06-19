@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Button, Box } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Typography, Button, Box } from '@mui/material'
 import { motion } from 'framer-motion'
 
 import { useTranslation } from 'react-i18next'

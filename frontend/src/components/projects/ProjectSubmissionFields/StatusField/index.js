@@ -1,4 +1,4 @@
-import { Grid, makeStyles } from '@material-ui/core'
+import { Grid, makeStyles } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import ProjectStatusInput from 'components/inputs/ProjectStatusInput'
 import { FastField } from 'formik'

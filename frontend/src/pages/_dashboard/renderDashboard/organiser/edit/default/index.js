@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import { FastField } from 'formik'
 
 import MarkdownInput from 'components/inputs/MarkdownInput'
@@ -15,7 +15,7 @@ import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'
-import { push } from 'connected-react-router'
+
 import { defaultEventStyles } from './const'
 
 const themeFields = [

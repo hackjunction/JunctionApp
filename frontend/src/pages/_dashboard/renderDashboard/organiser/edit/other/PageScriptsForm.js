@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
     List,
     ListItem,
@@ -14,7 +14,7 @@ import {
     FormGroup,
     FormControlLabel,
     Checkbox,
-} from '@material-ui/core'
+} from '@mui/material'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import EventService from 'services/events'
@@ -22,7 +22,7 @@ import EventService from 'services/events'
 import Select from 'components/inputs/Select'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { useFormField } from 'hooks/formHooks'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import { EventPageScripts } from '@hackjunction/shared'

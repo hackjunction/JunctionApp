@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { IconButton, Typography } from '@material-ui/core'
-import { Email } from '@material-ui/icons'
+import { IconButton, Typography } from '@mui/material'
+import { Email } from '@mui/icons-material'
 import React from 'react'
 import { popupCenter } from 'utils/misc'
 import junctionStyle from 'utils/styles'

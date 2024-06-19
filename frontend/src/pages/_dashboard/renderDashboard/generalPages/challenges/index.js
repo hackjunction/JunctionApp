@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, makeStyles, Typography } from '@material-ui/core'
+import { Box, makeStyles, Typography } from '@mui/material'
 import { Helmet } from 'react-helmet'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -45,7 +45,6 @@ export default () => {
                         />
                     </div>
                 ))}
-
             </PageWrapper>
         </>
     )

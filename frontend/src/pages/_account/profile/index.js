@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { Formik, FastField, Field } from 'formik'
 import { RegistrationFields } from '@hackjunction/shared'
 import * as yup from 'yup'

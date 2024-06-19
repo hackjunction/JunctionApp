@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Grid, Box, Typography } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Paper, Grid, Box, Typography } from '@mui/material'
 
 import Image from 'components/generic/Image'
 

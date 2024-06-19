@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useRouteMatch } from 'react-router'
 import { EventStatuses } from '@hackjunction/shared'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid } from '@mui/material'
 
 import Button from 'components/generic/Button'
 import * as AuthSelectors from 'redux/auth/selectors'
@@ -50,7 +50,9 @@ export default ({ event, registration }) => {
                                 <Button
                                     onClick={() =>
                                         dispatch(
-                                            push(`/dashboard/event/${event.slug}`),
+                                            push(
+                                                `/dashboard/event/${event.slug}`,
+                                            ),
                                         )
                                     }
                                     variant="applicationsClosed"

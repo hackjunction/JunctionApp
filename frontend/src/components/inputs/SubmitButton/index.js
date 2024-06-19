@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
     Box,
     Checkbox,
     Typography,
     Button,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import ExternalLink from 'components/generic/ExternalLink'
 import config from 'constants/config'

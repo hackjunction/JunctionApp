@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Dialog } from '@material-ui/core'
+import { Dialog } from '@mui/material'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'

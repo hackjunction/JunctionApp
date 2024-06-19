@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Grid, Typography, Box } from '@material-ui/core'
-import { Rating } from '@material-ui/lab'
+import { Grid, Typography, Box } from '@mui/material'
+import { Rating } from '@mui/lab'
 
 import Button from 'components/generic/Button'
 import EventTagsSelect from 'components/inputs/EventTagsSelect'
@@ -42,7 +42,7 @@ export default ({ registration, onSubmit, onCancel }) => {
         if (errors.length > 0) {
             return
         }
-        
+
         onSubmit(formValues)
     }, [formFields, formValues, onSubmit])
 

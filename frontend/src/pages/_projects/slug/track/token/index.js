@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
-import { Box } from '@material-ui/core'
+
+import { Box } from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'

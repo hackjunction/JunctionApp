@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
-import { makeStyles, lighten } from '@material-ui/core/styles'
-import { Chip } from '@material-ui/core'
+import { makeStyles, lighten } from '@mui/material/styles'
+import { Chip } from '@mui/material'
 
 import { RegistrationStatuses } from '@hackjunction/shared'
 

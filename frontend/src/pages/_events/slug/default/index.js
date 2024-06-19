@@ -1,12 +1,11 @@
 import React, { useEffect, useContext } from 'react'
 
-import { Grid, Box, Typography, makeStyles } from '@material-ui/core'
+import { Grid, Box, Typography, makeStyles } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import EventHeroImage from 'components/events/EventHeroImage'
 import Markdown from 'components/generic/Markdown'
 import AnalyticsService from 'services/analytics'
-
 
 import EventTimeline from './EventTimeline'
 import BannerCarousel from 'components/generic/BannerCarousel'
@@ -177,7 +176,10 @@ export default () => {
                                     <StaggeredListItem>
                                         <Box mt={3} />
                                         <GradientBox color="theme_white" p={3}>
-                                            <Typography variant="button" gutterBottom>
+                                            <Typography
+                                                variant="button"
+                                                gutterBottom
+                                            >
                                                 Event Timeline
                                             </Typography>
                                             <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>

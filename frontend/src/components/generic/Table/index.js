@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
     Table,
     TableBody,
@@ -13,7 +13,7 @@ import {
     Paper,
     CircularProgress,
     Checkbox,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import objectPath from 'object-path'
 

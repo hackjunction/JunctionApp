@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withSnackbar } from 'notistack'
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 import { removeSnackbar } from 'redux/snackbar/actions'
 import * as SnackbarSelectors from 'redux/snackbar/selectors'
 

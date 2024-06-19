@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
-import { push } from 'connected-react-router'
+
 
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as AuthActions from 'redux/auth/actions'

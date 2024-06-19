@@ -1,8 +1,8 @@
 import React from 'react'
-import Rating from '@material-ui/lab/Rating'
-import { withStyles, makeStyles } from '@material-ui/core/styles'
-import { Typography, Tooltip, Grid } from '@material-ui/core/'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
+import Rating from '@mui/lab/Rating'
+import { withStyles, makeStyles } from '@mui/material/styles'
+import { Typography, Tooltip, Grid } from '@mui/material/'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import PropTypes from 'prop-types'
 import { Skills } from '@hackjunction/shared'
 
@@ -48,15 +48,9 @@ const SkillRating = ({ data, small = false, showTooltip, size }) => {
     }))(Rating)
 
     return (
-        <Grid direction="column" alignItems="stretch" container >
+        <Grid direction="column" alignItems="stretch" container>
             <div className={classes.inline}>
-                <Grid
-
-                    key={data.skill}
-                    item
-                    xs={6}
-                    wrap='nowrap'
-                >
+                <Grid key={data.skill} item xs={6} wrap="nowrap">
                     <Typography
                         variant={small ? 'caption' : 'inherit'}
                         className={classes.label}
@@ -65,26 +59,21 @@ const SkillRating = ({ data, small = false, showTooltip, size }) => {
                         {data.skill}
                     </Typography>
                 </Grid>
-                <Grid
-
-                    key={data.level}
-                    item
-                    xs={6}
-                    wrap='nowrap'
-                >
+                <Grid key={data.level} item xs={6} wrap="nowrap">
                     <StyledRating
                         name="hovertooltip"
                         value={data.level}
                         icon={<FiberManualRecordIcon fontSize="inherit" />}
                         precision={1}
-                        IconContainerComponent={showTooltip ? IconContainer : undefined}
-                        size={small ? "small" : ""}
+                        IconContainerComponent={
+                            showTooltip ? IconContainer : undefined
+                        }
+                        size={small ? 'small' : ''}
                         readOnly={showTooltip ? false : true}
                     />
                 </Grid>
             </div>
-
-        </Grid >
+        </Grid>
     )
 }
 

@@ -1,14 +1,8 @@
 import React from 'react'
 
 import { isEmpty } from 'lodash-es'
-import { makeStyles } from '@material-ui/core/styles'
-import {
-    Typography,
-    Grid,
-    List,
-    ListItem,
-    ListItemText,
-} from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Typography, Grid, List, ListItem, ListItemText } from '@mui/material'
 import { Skills, Roles, Misc } from '@hackjunction/shared'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
 import moment from 'moment'

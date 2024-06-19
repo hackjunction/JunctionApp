@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Button as MuiButton, CircularProgress } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Button as MuiButton, CircularProgress } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 const baseStyles = (theme, props) => {
     return {

@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { useDispatch } from 'react-redux'
-import Hidden from '@material-ui/core/Hidden'
-import { push } from 'connected-react-router'
+import Hidden from '@mui/material/Hidden'
 
 import ExternalLink from 'components/generic/ExternalLink'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 import Divider from 'components/generic/Divider'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'

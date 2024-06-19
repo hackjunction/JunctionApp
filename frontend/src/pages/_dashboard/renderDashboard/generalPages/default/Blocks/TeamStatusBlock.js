@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
-import { Typography, Grid } from '@material-ui/core'
+
+import { Typography, Grid } from '@mui/material'
 import NotificationBlock from 'components/generic/NotificationBlock'
 import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
@@ -16,7 +16,7 @@ export default () => {
     const appliedAsTeam = useSelector(DashboardSelectors.appliedAsTeam)
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const isTeamComplete = useSelector(DashboardSelectors.isTeamComplete)
-    console.log("registration", registration)
+    console.log('registration', registration)
     const isAcceptancePending = useSelector(
         DashboardSelectors.isAcceptancePending,
     )
@@ -54,7 +54,9 @@ export default () => {
                                 variant="contained"
                                 onClick={() =>
                                     dispatch(
-                                        push(`/dashboard/event/${event.slug}/team`),
+                                        push(
+                                            `/dashboard/event/${event.slug}/team`,
+                                        ),
                                     )
                                 }
                             >
@@ -91,7 +93,9 @@ export default () => {
                                 variant="contained"
                                 onClick={() =>
                                     dispatch(
-                                        push(`/dashboard/event/${event.slug}/team`),
+                                        push(
+                                            `/dashboard/event/${event.slug}/team`,
+                                        ),
                                     )
                                 }
                             >

@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useCallback, useEffect } from 'react'
 //import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-// import { push } from 'connected-react-router'
 
 // import { useMyEvents, useActiveEvents } from 'graphql/queries/events'
 // import * as UserSelectors from 'redux/user/selectors'

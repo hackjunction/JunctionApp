@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 
-import { Menu, MenuItem, IconButton, Tooltip } from '@material-ui/core'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import { Menu, MenuItem, IconButton, Tooltip } from '@mui/material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 
 const ActionMenu = ({ title = 'Actions', actions = [], actionProps }) => {
     const [anchorEl, setAnchorEl] = useState(null)

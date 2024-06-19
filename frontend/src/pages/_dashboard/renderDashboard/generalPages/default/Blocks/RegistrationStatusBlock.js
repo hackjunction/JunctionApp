@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { RegistrationStatuses } from '@hackjunction/shared'
 import moment from 'moment-timezone'
 import {
@@ -13,7 +13,7 @@ import {
     Typography,
     Box,
     Grid,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'

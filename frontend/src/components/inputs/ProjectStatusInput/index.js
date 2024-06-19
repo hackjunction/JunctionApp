@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, RadioGroup, Radio, FormControlLabel } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Box, RadioGroup, Radio, FormControlLabel } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     radioGroup: ({ alignCenter }) => ({

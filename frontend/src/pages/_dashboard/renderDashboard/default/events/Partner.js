@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 
@@ -15,7 +15,7 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as UserActions from 'redux/user/actions'
 import * as UserSelectors from 'redux/user/selectors'
 
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material'
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)

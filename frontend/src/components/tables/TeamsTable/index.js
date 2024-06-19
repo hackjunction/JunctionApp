@@ -1,10 +1,9 @@
 import React, { useMemo, useState, useCallback } from 'react'
 
-import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { sumBy } from 'lodash-es'
-import { Typography, Grid, Box, Slider, Paper } from '@material-ui/core'
+import { Typography, Grid, Box, Slider, Paper } from '@mui/material'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import Select from 'components/inputs/SelectOld'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'

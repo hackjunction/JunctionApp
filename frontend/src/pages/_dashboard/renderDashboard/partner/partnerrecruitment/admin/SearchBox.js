@@ -8,7 +8,7 @@ import {
     ListItem,
     ListItemText,
     ListItemSecondaryAction,
-} from '@material-ui/core'
+} from '@mui/material'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'

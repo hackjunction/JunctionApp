@@ -9,7 +9,7 @@ import {
     ListItem,
     ListItemText,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import * as OrganiserActions from 'redux/organiser/actions'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -30,7 +30,9 @@ export default () => {
     const eventLoading = useSelector(OrganiserSelectors.eventLoading)
     const organiserProfiles = useSelector(OrganiserSelectors.organisers)
 
-    const recruiterProfilesMap = useSelector(OrganiserSelectors.eventRecruitersMap)
+    const recruiterProfilesMap = useSelector(
+        OrganiserSelectors.eventRecruitersMap,
+    )
     const eventRecruiterProfiles = event.recruiters
 
     const [organizerDrawerOpen, setOrganizerDrawerOpen] = useState(false)
@@ -90,34 +92,32 @@ export default () => {
     )
 
     const handleRecruiterRemoved = useCallback(
-
         async userId => {
             setLoading(true)
             await dispatch(
-                RecruitmentActions.deleteRecruiterEvent(
-                    userId,
-                    event._id,
-                ),
-
-            ).then(async () => {
-                await dispatch(
-                    OrganiserActions.removeRecruiterFromEvent(
-                        slug,
-                        userId,
-                    ),
-                )
-            }).then(() => {
-                dispatch(SnackbarActions.success('Success!'))
-            })
+                RecruitmentActions.deleteRecruiterEvent(userId, event._id),
+            )
+                .then(async () => {
+                    await dispatch(
+                        OrganiserActions.removeRecruiterFromEvent(slug, userId),
+                    )
+                })
+                .then(() => {
+                    dispatch(SnackbarActions.success('Success!'))
+                })
                 .catch(err => {
-                    dispatch(SnackbarActions.error('Something went wrong... Unable to remove recruiter'))
-                }).finally(() => {
+                    dispatch(
+                        SnackbarActions.error(
+                            'Something went wrong... Unable to remove recruiter',
+                        ),
+                    )
+                })
+                .finally(() => {
                     setLoading(false)
                 })
         },
         [dispatch, slug],
     )
-
 
     const handleOrganiserAdded = useCallback(
         userId => {
@@ -160,15 +160,12 @@ export default () => {
                     )
                 })
                 .then(() => {
-
                     dispatch(
                         DashboardActions.createPartnerRegistration(
                             userId,
                             slug,
-
-                        )
+                        ),
                     )
-
                 })
                 .then(() => {
                     dispatch(SnackbarActions.success('Success!'))
@@ -176,12 +173,13 @@ export default () => {
                 })
                 .catch(err => {
                     dispatch(SnackbarActions.error('Something went wrong...'))
-                }).finally(() => {
+                })
+                .finally(() => {
                     setLoading(false)
                 })
-        }, [dispatch, slug])
-
-
+        },
+        [dispatch, slug],
+    )
 
     return (
         <PageWrapper
@@ -236,7 +234,6 @@ export default () => {
                                         >
                                             Delete
                                         </Button>
-
                                     </ListItemSecondaryAction>
                                 </ListItem>
                             </div>
@@ -276,14 +273,26 @@ export default () => {
                         Add partners
                     </Button>
                     <List>
-
                         {eventRecruiterProfiles?.map(rec => (
                             <div className="tw-flex-column tw-items-center  tw-m-2 tw-rounded-md tw-shadow ">
-                                <ListItem key={rec.recruiterId} divider >
-
+                                <ListItem key={rec.recruiterId} divider>
                                     <ListItemText
-                                        primary={`${recruiterProfilesMap[rec.recruiterId]?.firstName} ${recruiterProfilesMap[rec.recruiterId]?.lastName}             |               ${rec.organization}`}
-                                        secondary={recruiterProfilesMap[rec.recruiterId]?.email}
+                                        primary={`${
+                                            recruiterProfilesMap[
+                                                rec.recruiterId
+                                            ]?.firstName
+                                        } ${
+                                            recruiterProfilesMap[
+                                                rec.recruiterId
+                                            ]?.lastName
+                                        }             |               ${
+                                            rec.organization
+                                        }`}
+                                        secondary={
+                                            recruiterProfilesMap[
+                                                rec.recruiterId
+                                            ]?.email
+                                        }
                                     />
                                     <ListItemSecondaryAction>
                                         <Button
@@ -308,16 +317,13 @@ export default () => {
                         isOpen={recruiterDrawerOpen}
                         onClose={() => {
                             setRecruiterDrawerOpen(false)
-
                         }}
                         onGrant={handleRecruiterAdded}
                         slug={event.slug}
                         recruiters={concat(event.recruiters)}
                     />
                 </>
-
-            )
-            }
+            )}
         />
     )
 }

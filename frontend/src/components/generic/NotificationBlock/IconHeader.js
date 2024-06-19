@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box } from '@material-ui/core'
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined'
-import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined'
-import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined'
+import { makeStyles } from '@mui/styles'
+import { Box } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 
 const getBackgroundColor = (type, theme) => {
     switch (type) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { useSelector } from 'react-redux'
 import { sortBy } from 'lodash-es'
 import {
@@ -12,7 +12,7 @@ import {
     Paper,
     Box,
     Divider,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import FilterForm from './FilterForm'
 import FilterList from './FilterList'
@@ -25,8 +25,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({
-    onChange = () => { },
-    onSelectedChange = () => { },
+    onChange = () => {},
+    onSelectedChange = () => {},
     showEdit = true,
 }) => {
     const filterGroups = useSelector(OrganiserSelectors.filterGroups)

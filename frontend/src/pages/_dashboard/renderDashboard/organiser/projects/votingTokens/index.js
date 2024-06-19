@@ -6,7 +6,7 @@ import {
     Grid,
     Link,
     Paper,
-} from '@material-ui/core'
+} from '@mui/material'
 import TextInput from 'components/inputs/TextInput'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Formik, FastField } from 'formik'
@@ -35,7 +35,7 @@ export default () => {
         if (idToken && event?.slug) {
             refreshTokens()
         }
-    }, [ event?.slug,idToken])
+    }, [event?.slug, idToken])
 
     const refreshTokens = useCallback(() => {
         if (idToken && event?.slug) {
@@ -45,7 +45,7 @@ export default () => {
                 },
             )
         }
-    }, [event?.slug,idToken])
+    }, [event?.slug, idToken])
 
     const handleSubmit = useCallback(
         (values, formikBag) => {

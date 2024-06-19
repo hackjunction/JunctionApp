@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
-import { push } from 'connected-react-router'
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+
+import { Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import Button from 'components/generic/Button'
 import FixedLayout from 'components/layouts/FixedLayout'
 

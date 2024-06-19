@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import React, { useState } from 'react'
 import { CompactPicker } from 'react-color'
 

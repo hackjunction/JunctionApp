@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import BooleanInput from 'components/inputs/BooleanInput'
 
@@ -50,7 +50,7 @@ export default () => {
                                         onChange={value => {
                                             form.setFieldValue(
                                                 field.name,
-                                                value
+                                                value,
                                             )
                                         }}
                                     />

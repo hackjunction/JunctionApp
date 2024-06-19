@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Formik, FastField, Field } from 'formik'
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box } from '@mui/material'
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import FormControl from 'components/inputs/FormControl'

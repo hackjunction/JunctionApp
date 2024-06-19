@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Typography, Checkbox } from '@material-ui/core'
+import { Box, Typography, Checkbox } from '@mui/material'
 import { Misc } from '@hackjunction/shared'
 import FilterItem from './FilterItem'
 

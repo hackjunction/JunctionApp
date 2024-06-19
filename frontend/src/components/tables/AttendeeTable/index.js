@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import moment from 'moment'
-import { push } from 'connected-react-router'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
-import { Box } from '@material-ui/core'
-import Rating from '@material-ui/lab/Rating'
+import { Box } from '@mui/material'
+import Rating from '@mui/lab/Rating'
 import StatusBadge from 'components/generic/StatusBadge'
 import Tag from 'components/generic/Tag'
 

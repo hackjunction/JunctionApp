@@ -4,9 +4,9 @@ import * as DashboardSelectors from 'redux/dashboard/selectors'
 import * as DashboardActions from 'redux/dashboard/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Box, Typography, IconButton } from '@material-ui/core'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import { Box, Typography, IconButton } from '@mui/material'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Button, Typography, Grid, Box } from '@material-ui/core'
+import { Switch, Button, Typography, Grid, Box } from '@mui/material'
 
 import AttendeeTable from 'components/tables/AttendeeTable'
 import ConfirmDialog from 'components/generic/ConfirmDialog'

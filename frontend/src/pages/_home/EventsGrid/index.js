@@ -1,16 +1,14 @@
 import React from 'react'
 
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { Grid, Typography } from '@material-ui/core'
+
+import { Grid, Typography } from '@mui/material'
 
 import Container from 'components/generic/Container'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useTranslation } from 'react-i18next'
-
-
 
 export default ({ events, loading = false, title }) => {
     const dispatch = useDispatch()
@@ -50,8 +48,8 @@ export default ({ events, loading = false, title }) => {
                                         dispatch(
                                             push(
                                                 '/events/' +
-                                                event.slug +
-                                                '/register/',
+                                                    event.slug +
+                                                    '/register/',
                                             ),
                                         )
                                     }

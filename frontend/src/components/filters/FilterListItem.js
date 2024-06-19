@@ -1,7 +1,7 @@
 import React from 'react'
 
-import DeleteIcon from '@material-ui/icons/Delete'
-import { makeStyles } from '@material-ui/core/styles'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { makeStyles } from '@mui/styles'
 import {
     Typography,
     ListItem,
@@ -9,7 +9,7 @@ import {
     ListItemSecondaryAction,
     IconButton,
     Chip,
-} from '@material-ui/core'
+} from '@mui/material'
 import { FilterTypes } from '@hackjunction/shared'
 
 const useStyles = makeStyles(theme => ({

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FastField } from 'formik'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 import { useSelector } from 'react-redux'

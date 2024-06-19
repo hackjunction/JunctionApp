@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Box } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
+import { makeStyles } from '@mui/styles'
+import { Paper, Box } from '@mui/material'
+import { Skeleton } from '@mui/lab'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {

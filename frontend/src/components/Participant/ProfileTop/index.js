@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import _ from 'lodash'
 
-import { goBack } from 'connected-react-router'
-import { useSelector, useDispatch } from 'react-redux'
-import { makeStyles, lighten } from '@material-ui/core/styles'
+import { makeStyles, lighten } from '@mui/material/styles'
 import {
     Button as MuiButton,
     Avatar,
@@ -11,15 +9,15 @@ import {
     Box,
     IconButton,
     Tooltip,
-} from '@material-ui/core'
+} from '@mui/material'
 
-import StarIcon from '@material-ui/icons/Star'
-import GitHubIcon from '@material-ui/icons/GitHub'
-import LinkedInIcon from '@material-ui/icons/LinkedIn'
-import BrushIcon from '@material-ui/icons/Brush'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import StarIcon from '@mui/icons-material/Star'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import BrushIcon from '@mui/icons-material/Brush'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import emblem_black from 'assets/logos/emblem_black.png'
-import { Email, LocationOn } from '@material-ui/icons'
+import { Email, LocationOn } from '@mui/icons-material'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'
@@ -98,7 +96,6 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.primary.dark,
         },
     },
-
 }))
 
 export default ({ user = {} }) => {
@@ -136,11 +133,9 @@ export default ({ user = {} }) => {
                                                 )
                                             }
                                             aria-label="github"
-
                                         >
                                             <GitHubIcon
                                                 className={classes.icon}
-
                                             />
                                         </IconButton>
                                     </Box>
@@ -150,7 +145,6 @@ export default ({ user = {} }) => {
                                 <Tooltip title="LinkedIn" placement="bottom">
                                     <Box p={1}>
                                         <IconButton
-
                                             onClick={() =>
                                                 window.open(
                                                     social.linkedin,
@@ -158,11 +152,9 @@ export default ({ user = {} }) => {
                                                 )
                                             }
                                             aria-label="linkedin"
-
                                         >
                                             <LinkedInIcon
                                                 className={classes.icon}
-
                                             />
                                         </IconButton>
                                     </Box>
@@ -179,11 +171,9 @@ export default ({ user = {} }) => {
                                                 )
                                             }
                                             aria-label="portfolio"
-
                                         >
                                             <BrushIcon
                                                 className={classes.icon}
-
                                             />
                                         </IconButton>
                                     </Box>
@@ -191,9 +181,7 @@ export default ({ user = {} }) => {
                             )}
                             {profile.email && (
                                 <IconButton
-
                                     aria-label="Email"
-
                                     onClick={() =>
                                         popupCenter({
                                             url: `mailto:${profile.email}`,

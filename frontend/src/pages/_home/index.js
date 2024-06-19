@@ -1,15 +1,15 @@
 import React from 'react'
 
 import { Helmet } from 'react-helmet'
-import { push } from 'connected-react-router'
+
 import { useDispatch } from 'react-redux'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
 
-import { Box, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 import BannerCarousel from 'components/generic/BannerCarousel'
 import Button from 'components/generic/Button'

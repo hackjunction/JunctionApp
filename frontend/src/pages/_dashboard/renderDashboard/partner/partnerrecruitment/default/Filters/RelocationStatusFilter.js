@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Typography, Checkbox } from '@material-ui/core'
+import { Box, Typography, Checkbox } from '@mui/material'
 import { Misc } from '@hackjunction/shared'
 import FilterItem from './FilterItem'
 

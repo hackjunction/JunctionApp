@@ -1,6 +1,6 @@
 import React from 'react'
-import { withStyles, lighten } from '@material-ui/core/styles'
-import { Chip } from '@material-ui/core'
+import { withStyles, lighten } from '@mui/material/styles'
+import { Chip } from '@mui/material'
 
 export const Yes = withStyles(theme => ({
     root: {

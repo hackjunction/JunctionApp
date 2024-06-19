@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 
 import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'

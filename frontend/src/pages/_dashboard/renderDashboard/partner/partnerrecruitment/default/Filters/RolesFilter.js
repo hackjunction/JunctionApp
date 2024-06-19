@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography } from '@mui/material'
 
 import { useArray } from 'hooks/customHooks'
 import Select from 'components/inputs/Select'

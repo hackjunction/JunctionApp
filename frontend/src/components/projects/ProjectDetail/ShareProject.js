@@ -1,8 +1,8 @@
 import React from 'react'
-import { Box, Typography, Grid } from '@material-ui/core'
+import { Box, Typography, Grid } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { popupCenter } from '../../../utils/misc'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import Container from 'components/generic/Container'
 import { projectURLgenerator } from 'utils/dataModifiers'
 

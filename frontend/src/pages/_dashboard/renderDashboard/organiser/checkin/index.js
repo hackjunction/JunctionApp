@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, CircularProgress, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, CircularProgress, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { RegistrationStatuses } from '@hackjunction/shared'
 
 import PageHeader from 'components/generic/PageHeader'

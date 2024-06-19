@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import MarkdownInput from 'components/inputs/MarkdownInput'
 import { FastField } from 'formik'

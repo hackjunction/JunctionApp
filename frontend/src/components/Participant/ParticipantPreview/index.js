@@ -1,4 +1,4 @@
-import { Dialog, Typography } from '@material-ui/core'
+import { Dialog, Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 import Container from 'components/generic/Container'
 import PageWrapper from 'components/layouts/PageWrapper'

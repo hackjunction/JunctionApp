@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography } from '@mui/material'
 //TODO use the markdown component for this project
 import ReactMarkdown from 'react-markdown'
 

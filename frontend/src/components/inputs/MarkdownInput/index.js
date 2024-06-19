@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Box, FormControlLabel, Switch } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Typography, Box, FormControlLabel, Switch } from '@mui/material'
 import Markdown from 'components/generic/Markdown'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 

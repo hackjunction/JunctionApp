@@ -1,8 +1,8 @@
 import React from 'react'
 
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied'
-import { Grid, Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
+import { Grid, Box, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(theme => ({
     icon: {

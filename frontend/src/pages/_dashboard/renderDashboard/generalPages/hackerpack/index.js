@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, Divider } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, Divider } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { Helmet } from 'react-helmet'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
@@ -16,10 +16,9 @@ import EventsService from 'services/events'
 const useStyles = makeStyles(theme => ({
     wrapper: {
         padding: '5px',
-        marginBottom: '15px'
+        marginBottom: '15px',
     },
 }))
-
 
 export default () => {
     const match = useRouteMatch()
@@ -84,7 +83,6 @@ export default () => {
                 <PageHeader
                     heading="Hackerpack"
                     subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
-
                 />
             </div>
             <PageWrapper loading={false}>

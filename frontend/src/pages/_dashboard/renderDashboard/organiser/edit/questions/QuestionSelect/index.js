@@ -1,16 +1,10 @@
 import React, { useCallback } from 'react'
 import { RegistrationFields } from '@hackjunction/shared'
 import { groupBy } from 'lodash-es'
-import {
-    FormControl,
-    FormGroup,
-    Typography,
-    Chip,
-    Box,
-} from '@material-ui/core'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
-import { makeStyles } from '@material-ui/core/styles'
+import { FormControl, FormGroup, Typography, Chip, Box } from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import { makeStyles } from '@mui/styles'
 
 const fields = RegistrationFields.getFields()
 const fieldsMapped = Object.keys(fields)

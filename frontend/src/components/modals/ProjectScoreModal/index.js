@@ -6,7 +6,7 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'

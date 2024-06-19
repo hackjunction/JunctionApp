@@ -13,7 +13,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Avatar,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import UserProfilesService from 'services/userProfiles'
 

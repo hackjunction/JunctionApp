@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
     Card,
     CardContent,
@@ -8,7 +8,7 @@ import {
     Button,
     Box,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     value: {

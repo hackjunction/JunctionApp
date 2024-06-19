@@ -7,8 +7,8 @@ import {
     AccordionSummary,
     AccordionDetails,
     ListItemText,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import ProjectsTable from 'components/tables/ProjectsTable'
 import ChallengeLink from './ChallengeLink'

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
     Box,
     Grid,
@@ -11,8 +11,8 @@ import {
     List,
     ListItem,
     ListItemText,
-} from '@material-ui/core'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+} from '@mui/material'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 
 import Button from 'components/generic/Button'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty/index'
@@ -53,14 +53,14 @@ const useStyles = makeStyles(theme => ({
         margin: '10px',
         padding: '5px',
         color: 'white',
-        size: '10px'
+        size: '10px',
     },
     loadingText: {
         fontWeight: 'bold',
         display: 'inlineBlock',
         margin: '10px',
         color: 'white',
-        size: '24px'
+        size: '24px',
     },
     errorButton: {
         padding: theme.spacing(1),
@@ -73,7 +73,7 @@ const BottomBar = ({
     onSubmit,
     loading,
     submitLabel = 'Save Changes',
-    loadingText = ''
+    loadingText = '',
 }) => {
     const hasErrors = Object.keys(errors).length > 0
     const classes = useStyles({ dirty, hasErrors })
@@ -105,22 +105,19 @@ const BottomBar = ({
     return (
         <>
             <Box className={classes.wrapper}>
-
-                {loading && (//TODO: fix the looks
+                {loading && ( //TODO: fix the looks
                     <Grid container spacing={6}>
                         <Grid item xs={8}>
-                <Typography className={classes.loadingText}> 
-                {loadingText}
-                </Typography>
-                </Grid>
-                <Grid item xs={4}>
-
-                    <CircularProgress className={classes.loader} />
+                            <Typography className={classes.loadingText}>
+                                {loadingText}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <CircularProgress className={classes.loader} />
+                        </Grid>
                     </Grid>
-
-                    </Grid>
-                  )}  
-                 {dirty && !hasErrors && ( 
+                )}
+                {dirty && !hasErrors && (
                     <Button
                         color="theme_white"
                         variant="contained"
@@ -129,7 +126,7 @@ const BottomBar = ({
                     >
                         {submitLabel}
                     </Button>
-                 )} 
+                )}
                 {!loading && hasErrors && renderErrorsButton()}
             </Box>
             {dirty && <BlockExitIfDirty dirty={dirty} />}

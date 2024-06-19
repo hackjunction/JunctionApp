@@ -7,17 +7,17 @@ import {
     FilterValues,
     FilterHelpers,
 } from '@hackjunction/shared'
-import { makeStyles } from '@material-ui/core/styles'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { makeStyles } from '@mui/styles'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
     Grid,
     Button,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ExpansionPanelActions,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    AccordionActions,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import Select from 'components/inputs/SelectOld'
 import FilterValueInput from './FilterValueInput'
@@ -126,8 +126,8 @@ export default ({ onSubmit }) => {
     }, [filterParams])
 
     return (
-        <ExpansionPanel expanded={expanded} onChange={toggleExpanded}>
-            <ExpansionPanelSummary
+        <Accordion expanded={expanded} onChange={toggleExpanded}>
+            <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1c-content"
                 id="panel1c-header"
@@ -135,8 +135,8 @@ export default ({ onSubmit }) => {
                 <div className={classes.headingItem}>
                     <Typography color="textPrimary">Add a filter</Typography>
                 </div>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.body}>
+            </AccordionSummary>
+            <AccordionDetails className={classes.body}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Select
@@ -171,8 +171,8 @@ export default ({ onSubmit }) => {
                         />
                     </Grid>
                 </Grid>
-            </ExpansionPanelDetails>
-            <ExpansionPanelActions>
+            </AccordionDetails>
+            <AccordionActions>
                 <Button onClick={handleClear}>Cancel</Button>
                 <Button
                     variant="contained"
@@ -182,7 +182,7 @@ export default ({ onSubmit }) => {
                 >
                     Add
                 </Button>
-            </ExpansionPanelActions>
-        </ExpansionPanel>
+            </AccordionActions>
+        </Accordion>
     )
 }

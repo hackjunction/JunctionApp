@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Paper, Typography, Chip, Box, Grid } from '@material-ui/core'
+import { Paper, Typography, Chip, Box, Grid } from '@mui/material'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
 

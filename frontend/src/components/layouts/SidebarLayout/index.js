@@ -1,17 +1,16 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { useDispatch } from 'react-redux'
 import { findIndex } from 'lodash-es'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { push } from 'connected-react-router'
 
 import Container from 'components/generic/Container/index'
-import MenuIcon from '@material-ui/icons/Menu'
-import LockIcon from '@material-ui/icons/Lock'
-import StorageIcon from '@material-ui/icons/Storage'
-import AccountBoxIcon from '@material-ui/icons/AccountBox'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
+import MenuIcon from '@mui/icons-material/Menu'
+import LockIcon from '@mui/icons-material/Lock'
+import StorageIcon from '@mui/icons-material/Storage'
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import {
     Drawer,
     List,
@@ -20,7 +19,7 @@ import {
     ListItemText,
     Hidden,
     Box,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import PlatformLogo from 'assets/logos/JO_wordmark_white.png'
 import IconButton from 'components/generic/IconButton'
@@ -47,11 +46,9 @@ const useStyles = makeStyles(theme => ({
         }),
     },
     dashboardOpen: {
-
         transform: 'rotate(-90deg)',
     },
     dashboardClosed: {
-
         transform: 'rotate(0)',
     },
     wordmark: {
@@ -157,7 +154,8 @@ export default React.memo(
                     case '/logout':
                         idx = routes.length + 2
                         break
-                    default: idx = -1
+                    default:
+                        idx = -1
                 }
             }
             return idx
@@ -197,11 +195,12 @@ export default React.memo(
 
         const drawerContent = (
             <>
-                <Box >
+                <Box>
                     <a href="/home">
                         <img
-                            src={PlatformLogo/*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/}
-
+                            src={
+                                PlatformLogo /*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/
+                            }
                             className={classes.wordmark}
                             alt={config.PLATFORM_OWNER_NAME + ' logo'}
                         />
@@ -251,9 +250,8 @@ export default React.memo(
                             )
                         })}
                     <hr className="tw-h-px tw-my-8 tw-w-4/5 tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
-                    <div className='tw-grid tw-place-items-center'>
+                    <div className="tw-grid tw-place-items-center">
                         <ListItem
-
                             button
                             key={'/events'}
                             selected={routes.length === safeIndex}
@@ -265,17 +263,13 @@ export default React.memo(
                                 pushRoute('/events')
                             }}
                         >
-                            <ListItemIcon
-                                className={classes.listItemIcon}
-                            >
+                            <ListItemIcon className={classes.listItemIcon}>
                                 <StorageIcon />
                             </ListItemIcon>
                             <ListItemText
                                 classes={{
-                                    primary:
-                                        classes.listItemTextPrimary,
-                                    secondary:
-                                        classes.listItemTextSecondary,
+                                    primary: classes.listItemTextPrimary,
+                                    secondary: classes.listItemTextSecondary,
                                 }}
                                 primary={'Events'}
                             />
@@ -290,17 +284,13 @@ export default React.memo(
                             }}
                             onClick={() => pushRoute('/profile')}
                         >
-                            <ListItemIcon
-                                className={classes.listItemIcon}
-                            >
+                            <ListItemIcon className={classes.listItemIcon}>
                                 <AccountBoxIcon />
                             </ListItemIcon>
                             <ListItemText
                                 classes={{
-                                    primary:
-                                        classes.listItemTextPrimary,
-                                    secondary:
-                                        classes.listItemTextSecondary,
+                                    primary: classes.listItemTextPrimary,
+                                    secondary: classes.listItemTextSecondary,
                                 }}
                                 primary={'Profile'}
                             />
@@ -315,17 +305,13 @@ export default React.memo(
                             }}
                             onClick={() => dispatch(push('/logout'))}
                         >
-                            <ListItemIcon
-                                className={classes.listItemIcon}
-                            >
+                            <ListItemIcon className={classes.listItemIcon}>
                                 <ExitToAppIcon />
                             </ListItemIcon>
                             <ListItemText
                                 classes={{
-                                    primary:
-                                        classes.listItemTextPrimary,
-                                    secondary:
-                                        classes.listItemTextSecondary,
+                                    primary: classes.listItemTextPrimary,
+                                    secondary: classes.listItemTextSecondary,
                                 }}
                                 primary={'Log Out'}
                             />
@@ -354,9 +340,13 @@ export default React.memo(
                         className={classes.drawerToggleDesktop}
                         aria-label="toggle drawer desktop"
                     >
-                        <MenuIcon className={`${classes.menuIcon} ${desktopOpen ? classes.dashboardOpen : classes.dashboardClosed
-                            }`} />
-
+                        <MenuIcon
+                            className={`${classes.menuIcon} ${
+                                desktopOpen
+                                    ? classes.dashboardOpen
+                                    : classes.dashboardClosed
+                            }`}
+                        />
                     </IconButton>
                 </Hidden>
                 <Hidden mdUp implementation="css">
@@ -413,7 +403,6 @@ export default React.memo(
                                 ) => {
                                     if (hidden || locked) {
                                         return null
-
                                     } else {
                                         return (
                                             <Route
@@ -437,7 +426,6 @@ export default React.memo(
                                 key={'logout'}
                                 exact={true}
                                 path={`${baseRoute}/logout`}
-
                             />
                             <Route
                                 key={'events'}

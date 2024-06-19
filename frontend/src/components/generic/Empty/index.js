@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Button, Typography } from '@material-ui/core'
-import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone'
+import { makeStyles } from '@mui/styles'
+import { Box, Button, Typography } from '@mui/material'
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone'
 
 const useStyles = makeStyles(theme => ({
     root: {

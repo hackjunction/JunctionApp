@@ -1,12 +1,12 @@
 import React from 'react'
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 
 import Image from 'components/generic/Image'
 
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 const useStyles = makeStyles(theme => ({
     wrapper: {
         display: 'flex',

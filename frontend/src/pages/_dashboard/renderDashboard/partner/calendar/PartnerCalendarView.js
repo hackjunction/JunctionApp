@@ -8,8 +8,8 @@ import * as SnackbarActions from 'redux/snackbar/actions'
 import * as UserSelectors from 'redux/user/selectors'
 import { getMeetingSlots } from 'graphql/queries/meetings'
 import PartnerMeetingCard from './PartnerMeetingCard'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import {
     FormControl,
     InputLabel,
@@ -17,7 +17,7 @@ import {
     MenuItem,
     Select,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 import Button from 'components/generic/Button'
 import Empty from 'components/generic/Empty'
 import PageHeader from 'components/generic/PageHeader'
@@ -151,8 +151,12 @@ const dailyPresetMeetings = () => {
 export default ({ event }) => {
     // const challenges = event.challenges
     // const [challenge, setChallenge] = React.useState('')
-    const recruiterProfile = event?.recruiters.find(r => r.recruiterId === useSelector(UserSelectors.userProfile).userId)//TODO: add generral mentoring option
-    const challenge = event.challenges.find(c => c.partner === recruiterProfile?.organization)// TODO: add recruiter state so no need for this sort of mapping
+    const recruiterProfile = event?.recruiters.find(
+        r => r.recruiterId === useSelector(UserSelectors.userProfile).userId,
+    ) //TODO: add generral mentoring option
+    const challenge = event.challenges.find(
+        c => c.partner === recruiterProfile?.organization,
+    ) // TODO: add recruiter state so no need for this sort of mapping
     const [daysStartIndex, setDaysStartIndex] = useState(0)
     const [noOfDaysToShow, setNoOfDaysToShow] = useState(3)
     const [slotsToAdd, setSlotsToAdd] = useState({})
@@ -273,14 +277,14 @@ export default ({ event }) => {
                     presetMeeting => {
                         return (
                             presetMeeting.startHour ===
-                            meetingStartDate.getHours() &&
+                                meetingStartDate.getHours() &&
                             presetMeeting.startMin ===
-                            meetingStartDate.getMinutes()
+                                meetingStartDate.getMinutes()
                         )
                     },
                 )
                 if (meetingToUpdate) {
-                    console.log("updating meeting ", meeting)
+                    console.log('updating meeting ', meeting)
                     meetingToUpdate.available = true
                     meetingToUpdate.location = meeting.location
                     meetingToUpdate._id = meeting._id
@@ -429,7 +433,6 @@ export default ({ event }) => {
         </div>
     )
 
-
     return (
         <>
             {challenge === undefined ? (
@@ -537,7 +540,8 @@ export default ({ event }) => {
                                                         style={{
                                                             borderRight:
                                                                 index ==
-                                                                    noOfDaysToShow - 1
+                                                                noOfDaysToShow -
+                                                                    1
                                                                     ? 'none'
                                                                     : '1px solid lightgray',
                                                         }}

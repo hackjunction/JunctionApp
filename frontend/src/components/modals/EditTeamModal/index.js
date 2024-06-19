@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Dialog } from '@material-ui/core'
+import { Dialog } from '@mui/material'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
@@ -10,38 +10,30 @@ import AdminTeamEdit from 'components/Team/AdminTeamEdit'
 import * as AuthSelectors from 'redux/auth/selectors'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 
-
-
 import TeamsService from 'services/teams'
 
-export default ({
-    teamCode,
-    onClose = () => { },
-    onEdited = () => { },
-}) => {
+export default ({ teamCode, onClose = () => {}, onEdited = () => {} }) => {
     const idToken = useSelector(AuthSelectors.getIdToken)
     const event = useSelector(OrganiserSelectors.event)
     //const team = useSelector(OrganiserSelectors.teams)
     //console.log("team", team.find(t => t.code === teamCode))
-
-
 
     // const teamsMap = useSelector(OrganiserSelectors.teamsMap)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [team, setTeam] = useState()
     const { slug } = event
-    console.log("teamCode", teamCode)
+    console.log('teamCode', teamCode)
     useEffect(() => {
         if (teamCode) {
             setLoading(true)
             TeamsService.getTeamWithMetaForEventParticipant(
                 idToken,
                 slug,
-                teamCode
+                teamCode,
             )
                 .then(data => {
-                    console.log("data", data)
+                    console.log('data', data)
                     setTeam(data)
                 })
                 .catch(err => {

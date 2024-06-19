@@ -1,6 +1,6 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import Button from 'components/generic/Button'
-import { push } from 'connected-react-router'
+
 import React from 'react'
 import { useDispatch } from 'react-redux'
 

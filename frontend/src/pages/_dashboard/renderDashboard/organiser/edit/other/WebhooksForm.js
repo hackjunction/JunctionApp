@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { findIndex } from 'lodash-es'
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
     List,
     ListItem,
@@ -14,15 +14,15 @@ import {
     ListItemIcon,
     // Switch,
     FormControlLabel,
-} from '@material-ui/core'
-import CheckIcon from '@material-ui/icons/Check'
-import BlockIcon from '@material-ui/icons/Block'
+} from '@mui/material'
+import CheckIcon from '@mui/icons-material/Check'
+import BlockIcon from '@mui/icons-material/Block'
 
 import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { useFormField } from 'hooks/formHooks'
 import Switch from '../../../../../../components/generic/Switch'
 

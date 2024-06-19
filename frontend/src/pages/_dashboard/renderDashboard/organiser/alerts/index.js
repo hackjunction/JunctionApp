@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import * as yup from 'yup'
 import { useMutation } from '@apollo/client'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 import BottomBar from 'components/inputs/BottomBar'
@@ -20,19 +20,15 @@ import FormControl from 'components/inputs/FormControl'
 import GradientBox from 'components/generic/GradientBox'
 import { Alerts } from '../../../../../components/messaging/alerts'
 
-
 const makeBoxStyles = () => ({
-
-
     backgroundColor: '#f7fafc',
     border: `2px solid #e2e8f0`,
     borderRadius: '6px',
-    height: '100%'
+    height: '100%',
 
     //TODO: blurr the bottom
 
     // backgroundColor: '#f8f8f8',
-
 })
 
 export default () => {
@@ -53,7 +49,7 @@ export default () => {
                     SnackbarActions.error('Sending failed', {
                         errorMessages: Object.keys(errors).map(
                             key => `${key}: ${errors[key].message}`,
-                        )
+                        ),
                     }),
                 )
             } else {
@@ -61,7 +57,7 @@ export default () => {
             }
         },
         onCompleted: () => {
-            console.log("saveResult", saveResult.data.sendAlert)
+            console.log('saveResult', saveResult.data.sendAlert)
             dispatch(SnackbarActions.success('Announcement sent 🚀'))
             setAlerts(alerts.concat(saveResult.data.sendAlert))
         },
@@ -78,7 +74,7 @@ export default () => {
 
     // Set alerts when data is fetched or recieved through websocket
     useEffect(() => {
-        console.log("got newAlert", newAlert)
+        console.log('got newAlert', newAlert)
         if (alertsData) {
             setAlerts(old => {
                 const newArray = [...old, ...alertsData.alerts]
@@ -108,8 +104,6 @@ export default () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [alertsData, setAlerts, newAlert, setAlertCount])
-
-
 
     const onSubmit = (values, actions) => {
         const changed = {}
@@ -172,7 +166,11 @@ export default () => {
                                 alignItems="stretch"
                                 item
                                 xs={12}
-                                style={{ marginLeft: '10px', marginRight: '10px', marginTop: '40px' }}
+                                style={{
+                                    marginLeft: '10px',
+                                    marginRight: '10px',
+                                    marginTop: '40px',
+                                }}
                             >
                                 <GradientBox
                                     style={makeBoxStyles()}
@@ -185,7 +183,6 @@ export default () => {
                                     <hr className="tw-h-px  tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
                                     <Alerts alerts={alerts} />
                                 </GradientBox>
-
                             </Grid>
                             <BottomBar
                                 onSubmit={handleSubmit}

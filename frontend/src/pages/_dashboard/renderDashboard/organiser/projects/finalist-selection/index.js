@@ -12,7 +12,7 @@ import {
     Button,
     Paper,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import * as SnackbarActions from 'redux/snackbar/actions'
 
 import { useDispatch, useSelector } from 'react-redux'

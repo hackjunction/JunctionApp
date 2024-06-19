@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { FastField, Field } from 'formik'
 import FormControl from 'components/inputs/FormControl'
 import EventTagsForm from './EventTagsForm'

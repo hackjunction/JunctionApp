@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Slider, Typography } from '@material-ui/core'
+import { Box, Slider, Typography } from '@mui/material'
 
 import FilterItem from './FilterItem'
 

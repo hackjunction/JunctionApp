@@ -2,9 +2,9 @@ import React from 'react'
 
 import moment from 'moment-timezone'
 import Countdown from 'react-countdown-now'
-import { push } from 'connected-react-router'
+
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'
@@ -110,7 +110,9 @@ export default () => {
                         variant="contained"
                         color="theme_white"
                         onClick={() =>
-                            dispatch(push(`/dashboard/event/${event.slug}/project`))
+                            dispatch(
+                                push(`/dashboard/event/${event.slug}/project`),
+                            )
                         }
                     >
                         Make a draft submission

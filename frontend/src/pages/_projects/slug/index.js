@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
+
 import { Switch, Route, Redirect } from 'react-router-dom'
 import PageWrapper from 'components/layouts/PageWrapper'
 import EventsService from 'services/events'

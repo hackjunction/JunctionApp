@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { Box, CircularProgress, Grid } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
+import { Box, CircularProgress, Grid } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -68,7 +68,6 @@ export default () => {
 
     return (
         <Box display="flex" flexDirection="column">
-
             <Box
                 display="flex"
                 flexDirection="row"
@@ -83,7 +82,6 @@ export default () => {
                         placeholder="Search by name/email"
                     />
                 </Box>
-
             </Box>
             <motion.div
                 animate={{
@@ -110,7 +108,7 @@ export default () => {
                     <FilteredBy />
                 </Box>
             </motion.div>
-            {loading && (renderLoading())}
+            {loading && renderLoading()}
         </Box>
     )
 }

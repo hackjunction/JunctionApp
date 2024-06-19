@@ -1,10 +1,9 @@
 import React, { useMemo, useCallback } from 'react'
 
-import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router'
 import { find, sortBy } from 'lodash-es'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 
 import Container from 'components/generic/Container'
 import EventHeroImage from 'components/events/EventHeroImage'
@@ -33,11 +32,10 @@ export default ({ event, projects }) => {
         const data = projects.filter(project => {
             return project.challenges.indexOf(challenge.slug) !== -1
         })
-        const sorted = data.sort(function(a,b){
+        const sorted = data.sort(function (a, b) {
             return new Date(b.updatedAt) - new Date(a.updatedAt)
-        }
-        )
-        return(sorted)
+        })
+        return sorted
         // return sortBy(data, item => {
         //     return -1 * item?.description.length
         // })

@@ -2,10 +2,10 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 import moment from 'moment-timezone'
-import { Grid, CircularProgress } from '@material-ui/core'
+import { Grid, CircularProgress } from '@mui/material'
 
 import GradientBox from 'components/generic/GradientBox'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'

@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { useRouteMatch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { findIndex } from 'lodash-es'
-import { push } from 'connected-react-router'
+
 import {
     Avatar,
     Paper,
@@ -10,10 +10,10 @@ import {
     Box,
     Tooltip,
     IconButton,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { KeyboardArrowDown } from '@material-ui/icons/'
-import StarIcon from '@material-ui/icons/Star'
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { KeyboardArrowDown } from '@mui/icons-material/'
+import StarIcon from '@mui/icons-material/Star'
 
 import { sortBy } from 'lodash-es'
 import SkillRating from './SkillRating'
@@ -114,7 +114,11 @@ export default React.memo(
                 setIsFavorite(!_isFavorite)
 
                 dispatch(
-                    RecruitmentActions.toggleFavorite(data.userId, _isFavorite, organisation),
+                    RecruitmentActions.toggleFavorite(
+                        data.userId,
+                        _isFavorite,
+                        organisation,
+                    ),
                 ).then(({ error }) => {
                     if (error) {
                         dispatch(

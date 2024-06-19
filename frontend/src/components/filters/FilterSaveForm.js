@@ -2,16 +2,16 @@ import React, { useState, useEffect, useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-    ExpansionPanelActions,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    AccordionActions,
     Typography,
     Button,
     Grid,
     CircularProgress,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import TextInput from 'components/inputs/TextInput'
 import { useFormField } from 'hooks/formHooks'
 import * as OrganiserActions from 'redux/organiser/actions'
@@ -150,12 +150,12 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
     }, [dispatch, event.slug, label.value, onDelete, toggleExpanded])
 
     return (
-        <ExpansionPanel
+        <Accordion
             expanded={expanded}
             onChange={toggleExpanded}
             disabled={filters.length === 0}
         >
-            <ExpansionPanelSummary
+            <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="save-filters"
                 id="save-filters"
@@ -163,8 +163,8 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                 <Typography>
                     {isEdit ? 'Edit these filters' : 'Save these filters'}
                 </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 <Grid container spacing={3}>
                     {!isEdit && (
                         <Grid item xs={12}>
@@ -195,8 +195,8 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                         />
                     </Grid>
                 </Grid>
-            </ExpansionPanelDetails>
-            <ExpansionPanelActions>
+            </AccordionDetails>
+            <AccordionActions>
                 {loading && <CircularProgress size={24} />}
                 {isEdit && (
                     <Button
@@ -216,7 +216,7 @@ export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
                 >
                     {isEdit ? 'Save edits' : 'Create new filter group'}
                 </Button>
-            </ExpansionPanelActions>
-        </ExpansionPanel>
+            </AccordionActions>
+        </Accordion>
     )
 }

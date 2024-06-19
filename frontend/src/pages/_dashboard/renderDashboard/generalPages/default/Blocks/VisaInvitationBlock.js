@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 
 import { useSelector } from 'react-redux'
-import { CircularProgress, Typography, Grid } from '@material-ui/core'
+import { CircularProgress, Typography, Grid } from '@mui/material'
 
 import { RegistrationStatuses, EventTypes } from '@hackjunction/shared'
 import GradientBox from 'components/generic/GradientBox'

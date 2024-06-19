@@ -1,6 +1,6 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography, Grid } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography, Grid } from '@mui/material'
 
 import Markdown from 'components/generic/Markdown'
 
@@ -44,12 +44,11 @@ export default ({ name, logo, partner, description, link, redeemable }) => {
                             />
                         ) : (
                             <img
-                                alt='default logo'
+                                alt="default logo"
                                 src={defaultLogo}
                                 className={classes.companyLogo}
                             />
-                        )
-                        }
+                        )}
                     </Box>
                 </Grid>
                 <Grid item xs={8}>
@@ -79,5 +78,3 @@ export default ({ name, logo, partner, description, link, redeemable }) => {
         </Box>
     )
 }
-
-

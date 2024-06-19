@@ -8,17 +8,17 @@ import {
     List,
     ListItem,
     ListItemText,
-    ExpansionPanel,
-    ExpansionPanelSummary,
+    Accordion,
+    AccordionSummary,
     Typography,
-    ExpansionPanelDetails,
+    AccordionDetails,
     Box,
     Checkbox,
-} from '@material-ui/core'
+} from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import TeamsTable from 'components/tables/TeamsTable'
 import EventsService from 'services/events'
@@ -57,15 +57,15 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                 subheading={project.track}
                                 link={projectURL}
                             />
-                            <ExpansionPanel>
-                                <ExpansionPanelSummary
+                            <Accordion>
+                                <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
                                     <Typography>Project Details</Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                </AccordionSummary>
+                                <AccordionDetails>
                                     <List>
                                         <ListItem>
                                             <ListItemText
@@ -112,17 +112,17 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                             ></ListItemText>
                                         </ListItem>
                                     </List>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                            <ExpansionPanel>
-                                <ExpansionPanelSummary
+                                </AccordionDetails>
+                            </Accordion>
+                            <Accordion>
+                                <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel2a-content"
                                     id="panel2a-header"
                                 >
                                     <Typography>Team Members</Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                </AccordionSummary>
+                                <AccordionDetails>
                                     <Box
                                         display="flex"
                                         flexDirection="column"
@@ -137,8 +137,8 @@ export default ({ project, onClose = () => {}, onEdited = () => {} }) => {
                                             simplifiedView={true}
                                         />
                                     </Box>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
+                                </AccordionDetails>
+                            </Accordion>
                             {event.overallReviewMethod ===
                             'finalsManualSelection' ? (
                                 <Box

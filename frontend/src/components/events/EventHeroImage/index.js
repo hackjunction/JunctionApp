@@ -1,12 +1,11 @@
 import React from 'react'
 
 import { useDispatch } from 'react-redux'
-import { goBack } from 'connected-react-router'
-import { Box, Grid } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { Button, Typography } from '@material-ui/core'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { Button, Typography } from '@mui/material'
 import Image from 'components/generic/Image'
 import Container from 'components/generic/Container'
 
@@ -84,7 +83,6 @@ export default ({
     backgroundColor,
     alignRight,
 }) => {
-    const dispatch = useDispatch()
     const classes = useStyles({ backgroundColor })
     return (
         <Box className={classes.wrapper}>
@@ -149,7 +147,7 @@ export default ({
                     onClick={
                         typeof onBack === 'function'
                             ? onBack
-                            : () => dispatch(goBack())
+                            : () => window.history.back()
                     }
                 >
                     <ArrowBackIosIcon style={{ color: 'black' }} />

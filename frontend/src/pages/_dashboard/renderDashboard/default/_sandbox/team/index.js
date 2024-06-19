@@ -15,15 +15,15 @@ import {
     Tab,
     Tabs,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
 
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionActions from '@material-ui/core/AccordionActions'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Divider from '@material-ui/core/Divider'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionActions from '@mui/material/AccordionActions'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Divider from '@mui/material/Divider'
 
 import { Formik } from 'formik'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
@@ -44,7 +44,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Container from 'components/generic/Container'
 import Button from 'components/generic/Button'
 import Tag from 'components/generic/Tag'
-import { Skeleton, TabPanel } from '@material-ui/lab'
+import { Skeleton, TabPanel } from '@mui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import JoinTeamPage from './joinTeam'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Suspense } from 'react'
 
-import { ConnectedRouter, push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/client'
 
@@ -57,7 +56,6 @@ export default ({ history, location }) => {
                 ) /*TODO: fails to fetch when renewing session causing a loop. fix! */
             }
         >
-            <ConnectedRouter history={history}>
                 <Suspense fallback={null}>
                     {!loading && (
                         <Switch>
@@ -133,7 +131,6 @@ export default ({ history, location }) => {
                         </Switch>
                     )}
                 </Suspense>
-            </ConnectedRouter>
             <CookieConsentBar />
         </ApolloProvider>
     )

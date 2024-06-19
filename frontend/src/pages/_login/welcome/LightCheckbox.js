@@ -1,5 +1,5 @@
-import { withStyles } from '@material-ui/core/styles'
-import { Checkbox } from '@material-ui/core'
+import { withStyles } from '@mui/material/styles'
+import { Checkbox } from '@mui/material'
 
 export default withStyles(theme => ({
     root: {

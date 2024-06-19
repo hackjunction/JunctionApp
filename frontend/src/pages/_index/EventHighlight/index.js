@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 
 import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'

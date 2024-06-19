@@ -1,14 +1,8 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import {
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Box,
-} from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar'
+import { makeStyles } from '@mui/styles'
+import { Card, CardContent, CardActions, Typography, Box } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
 import Image from 'components/generic/Image'
 import Markdown from 'components/generic/Markdown'
 import { useTranslation } from 'react-i18next'
@@ -17,8 +11,6 @@ import { useDispatch } from 'react-redux'
 import * as SnackbarActions from 'redux/snackbar/actions'
 import ProgressBar from 'components/generic/ProgressBar'
 import CardTag from 'components/generic/CardTag'
-
-
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -36,7 +28,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        borderBottom: `2px ${theme.palette.primary.main} solid`
+        borderBottom: `2px ${theme.palette.primary.main} solid`,
     },
     topWrapper: {
         display: 'flex',
@@ -88,7 +80,6 @@ const NewEventCard = ({ event, buttons }) => {
     const organization = event?.organizations
     // {event.published && !event.approved ? 'Waiting approval' : null}
 
-
     const styling = {
         cardHover: '',
     }
@@ -97,29 +88,22 @@ const NewEventCard = ({ event, buttons }) => {
         styling.cardHover = 'tw-cursor-pointer hover:tw-shadow-xl'
     }
 
-    const parseDescription = (description) => {
-
+    const parseDescription = description => {
         const parsed = description.replace(/#.*\n/g, '')
 
-        return (parsed.length > 300) ? parsed.slice(0, 200) + ' &hellip;' : parsed
+        return parsed.length > 300 ? parsed.slice(0, 200) + ' &hellip;' : parsed
     }
 
     if (event === undefined || event === null) {
-        dispatch(
-            SnackbarActions.error(
-                'some of your events is not defined!',
-            ),
-        )
+        dispatch(SnackbarActions.error('some of your events is not defined!'))
         console.log('Event is not defined!')
         return null
     }
 
     return (
-
         <Card
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-
             className={`tw-bg-white tw-m-4 tw-text-left tw-rounded-lg tw-shadow-md tw-min-h-600px tw-max-w-xs tw-flex tw-flex-col tw-justify-between ${styling.cardHover}`}
         >
             <CardContent className="tw-flex tw-flex-col tw-p-0">
@@ -132,11 +116,11 @@ const NewEventCard = ({ event, buttons }) => {
                             width: 400,
                         }}
                     />
-                    {organization?.icon && (//TODO: Fix
+                    {organization?.icon && ( //TODO: Fix
                         <Avatar
                             className={classes.organiser}
                             src={organization?.icon}
-                        //src={FlagUK}
+                            //src={FlagUK}
                         />
                     )}
 
@@ -148,20 +132,26 @@ const NewEventCard = ({ event, buttons }) => {
                     >
 
                     </CardTag> */}
-
                 </div>
                 <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
                     <Typography variant="h4">{event.name}</Typography>
                 </div>
-                {(event?.description) && (
+                {event?.description && (
                     <div className="tw-p-4 tw-flex tw-flex-col tw-gap-4">
-                        <Markdown source={parseDescription(event?.description)} />
+                        <Markdown
+                            source={parseDescription(event?.description)}
+                        />
                     </div>
                 )}
 
-                {(event?.startTime && event?.endTime) && (
+                {event?.startTime && event?.endTime && (
                     <div className="tw-p-4">
-                        <ProgressBar start={event?.startTime} end={event?.endTime} current={new Date()} event={event.slug} />
+                        <ProgressBar
+                            start={event?.startTime}
+                            end={event?.endTime}
+                            current={new Date()}
+                            event={event.slug}
+                        />
                     </div>
                 )}
             </CardContent>
@@ -179,13 +169,8 @@ const NewEventCard = ({ event, buttons }) => {
                 </Button>*/}
 
                 {buttons?.slice(0, 2).map((btn, index) => {
-                    return (
-
-                        <Box key={index}>{btn}</Box>
-                    )
-                }
-                )}
-
+                    return <Box key={index}>{btn}</Box>
+                })}
             </CardActions>
         </Card>
         //     <div className={classes.wrapper}>
@@ -237,7 +222,6 @@ const NewEventCard = ({ event, buttons }) => {
         //         </div>
         //     </div>
     )
-
 }
 
 export default NewEventCard

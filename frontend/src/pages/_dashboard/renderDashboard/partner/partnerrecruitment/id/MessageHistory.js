@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import {
@@ -10,7 +10,7 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 

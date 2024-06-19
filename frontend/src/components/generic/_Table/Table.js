@@ -8,7 +8,7 @@ import {
     useExpanded,
 } from 'react-table'
 
-import { makeStyles, darken } from '@material-ui/core/styles'
+import { makeStyles, darken } from '@mui/material/styles'
 import {
     Box,
     Table,
@@ -19,8 +19,8 @@ import {
     Typography,
     TableSortLabel,
     Checkbox,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import Empty from 'components/generic/Empty'
 
@@ -319,7 +319,7 @@ const _Table = ({
 _Table.defaultProps = {
     data: [],
     columns: [],
-    onRowClick: () => { },
+    onRowClick: () => {},
     bulkActions: [],
     enableExport: true,
     enablePagination: true,

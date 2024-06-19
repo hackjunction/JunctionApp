@@ -1,13 +1,10 @@
-import { Box } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import EventImage from 'components/generic/EventImage'
 import React, { useState } from 'react'
-import SwipeableViews from 'react-swipeable-views'
-import { autoPlay } from 'react-swipeable-views-utils'
+import { SwipeableViews } from 'components/animated/SwipeableViews'
 import BannerService from 'services/banner'
 import { useEffect } from 'react'
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 
 const useStyles = makeStyles(theme => ({
     image: {
@@ -69,14 +66,13 @@ const BannerCarousel = (event = null) => {
         BannerService.getAllBanners().then(banners => {
             if (banners) setPictures(banners)
         })
-
     }, [])
     const [index, setIndex] = useState(0)
-    console.log("pictures", pictures)
+    console.log('pictures', pictures)
     return (
         <>
             <Box style={{ position: 'relative' }} className={classes.margin}>
-                <AutoPlaySwipeableViews
+                <SwipeableViews
                     enableMouseEvents
                     index={index}
                     onChangeIndex={setIndex}
@@ -102,7 +98,7 @@ const BannerCarousel = (event = null) => {
                             </Box>
                         )
                     })}
-                </AutoPlaySwipeableViews>
+                </SwipeableViews>
             </Box>
         </>
     )

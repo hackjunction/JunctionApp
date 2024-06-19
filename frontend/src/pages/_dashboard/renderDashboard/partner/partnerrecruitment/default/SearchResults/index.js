@@ -3,7 +3,7 @@ import Empty from 'components/generic/Empty'
 import ResultCard from './ResultCard'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useRouteMatch } from 'react-router'
-import { Grid, Box, Typography, CircularProgress } from '@material-ui/core'
+import { Grid, Box, Typography, CircularProgress } from '@mui/material'
 
 import * as RecruitmentSelectors from 'redux/recruitment/selectors'
 import * as RecruitmentActions from 'redux/recruitment/actions'

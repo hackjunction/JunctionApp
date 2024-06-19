@@ -1,17 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { makeStyles } from '@mui/styles'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import {
     List,
     Divider,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     Badge,
-} from '@material-ui/core'
+} from '@mui/material'
 import FilterListItem from 'components/filters/FilterListItem'
 import { useTranslation } from 'react-i18next'
 
@@ -49,12 +49,12 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
     )
 
     return (
-        <ExpansionPanel
+        <Accordion
             disabled={!hasFilters}
             expanded={expanded}
             onChange={toggleExpanded}
         >
-            <ExpansionPanelSummary
+            <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1c-content"
                 id="panel1c-header"
@@ -70,8 +70,8 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                         {t('Active_filters_')}
                     </Typography>
                 </Badge>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 <List className={classes.list}>
                     {filters.map((filter, index) => (
                         <React.Fragment
@@ -85,8 +85,8 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                         </React.Fragment>
                     ))}
                 </List>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+            </AccordionDetails>
+        </Accordion>
     )
 }
 

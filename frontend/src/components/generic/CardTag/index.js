@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Chip from '@material-ui/core/Chip'
+import { makeStyles, withStyles } from '@mui/material/styles'
+import LinearProgress from '@mui/material/LinearProgress'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import Chip from '@mui/material/Chip'
 
 const baseStyles = (theme, props) => {
     return {
@@ -56,7 +56,6 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-
 export default function CardTag({
     label,
     color = 'primary',
@@ -65,11 +64,5 @@ export default function CardTag({
     ...props
 }) {
     const classes = useStyles({ color, strong, variant: props.variant })
-    return (
-        <Chip
-            {...props}
-            classes={classes}
-            label={label}
-        />
-    )
+    return <Chip {...props} classes={classes} label={label} />
 }

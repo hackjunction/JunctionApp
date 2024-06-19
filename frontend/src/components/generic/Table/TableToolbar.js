@@ -1,13 +1,7 @@
 import React from 'react'
 
-import { lighten, makeStyles } from '@material-ui/core/styles'
-import {
-    Toolbar,
-    Tooltip,
-    Typography,
-    Box,
-    IconButton,
-} from '@material-ui/core'
+import { lighten, makeStyles } from '@mui/material/styles'
+import { Toolbar, Tooltip, Typography, Box, IconButton } from '@mui/material'
 import clsx from 'clsx'
 
 const useToolbarStyles = makeStyles(theme => ({

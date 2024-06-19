@@ -9,7 +9,7 @@ import {
     ListItemText,
     ListSubheader,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 

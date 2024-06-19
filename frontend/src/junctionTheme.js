@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles'
+import { createTheme } from '@mui/material/styles'
 const titleFont = ['"Inter"', 'sans-serif'].join(',')
 const bodyFont = ['"Inter"', 'sans-serif'].join(',')
 

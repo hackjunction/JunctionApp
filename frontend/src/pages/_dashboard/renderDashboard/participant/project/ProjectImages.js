@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
 import { useSelector } from 'react-redux'
-import { Grid, Box, MobileStepper, Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Box, MobileStepper, Button } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import SwipeableViews from 'react-swipeable-views'
 
 import ImageUpload from 'components/inputs/ImageUpload'

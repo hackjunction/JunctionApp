@@ -9,7 +9,7 @@ import {
     ListItemSecondaryAction,
     Divider,
     CircularProgress,
-} from '@material-ui/core'
+} from '@mui/material'
 import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'

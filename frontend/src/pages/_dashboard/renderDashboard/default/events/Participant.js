@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useRegistrationsByUser } from 'graphql/queries/registrations'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 
 //import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 import PageHeader from 'components/generic/PageHeader'
@@ -49,7 +49,12 @@ export default () => {
                         </Grid>
 
                         {registrations?.map((registration, index) => (
-                            <Grid key={`${registration.id}-${index}`} item xs={12} md={6}>
+                            <Grid
+                                key={`${registration.id}-${index}`}
+                                item
+                                xs={12}
+                                md={6}
+                            >
                                 <EventCardSmall
                                     key={index}
                                     event={registration.event}

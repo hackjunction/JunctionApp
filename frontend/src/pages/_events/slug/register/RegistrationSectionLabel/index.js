@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography, Button } from '@material-ui/core'
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography, Button } from '@mui/material'
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined'
 
 const useStyles = makeStyles(theme => ({
     wrapper: ({ active, completed, isVisible }) => ({

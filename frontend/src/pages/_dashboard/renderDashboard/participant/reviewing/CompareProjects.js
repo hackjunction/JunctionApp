@@ -1,13 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Grid,
-    Typography,
-    CircularProgress,
-    Box,
-    Dialog,
-} from '@material-ui/core'
+import { Grid, Typography, CircularProgress, Box, Dialog } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import * as DashboardSelectors from 'redux/dashboard/selectors'

@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography, Grid } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography, Grid } from '@mui/material'
 
-import CheckIcon from '@material-ui/icons/Check'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
+import CheckIcon from '@mui/icons-material/Check'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
 
 const useStyles = makeStyles(theme => ({
     top: {

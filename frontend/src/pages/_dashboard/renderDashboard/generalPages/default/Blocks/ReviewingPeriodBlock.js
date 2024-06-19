@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
-import { Typography, Grid, Box } from '@material-ui/core'
-import { push } from 'connected-react-router'
+import { Typography, Grid, Box } from '@mui/material'
+
 import moment from 'moment-timezone'
 import { useDispatch, useSelector } from 'react-redux'
 import { EventHelpers } from '@hackjunction/shared'

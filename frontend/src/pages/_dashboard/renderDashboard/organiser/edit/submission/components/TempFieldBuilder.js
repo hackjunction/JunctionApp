@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 
 import { isEmpty } from 'lodash-es'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
     Box,
     Typography,
@@ -10,7 +10,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Dropdown from './section/Dropdown'
 import Switch from '../../../../../../../components/generic/Switch'

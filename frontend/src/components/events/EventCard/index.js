@@ -1,12 +1,11 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, Typography } from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -61,7 +60,8 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const EventCard = ({ event, buttons }) => {//TODO: use neweventcard everywhere
+const EventCard = ({ event, buttons }) => {
+    //TODO: use neweventcard everywhere
     const dispatch = useDispatch()
     const classes = useStyles()
     const organization = event?.organizations

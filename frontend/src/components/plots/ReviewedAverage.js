@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Statistic from 'components/generic/Statistic'
-import StarIcon from '@material-ui/icons/Star'
+import StarIcon from '@mui/icons-material/Star'
 import { useSelector } from 'react-redux'
 import * as OrganiserSelectors from 'redux/organiser/selectors'
 

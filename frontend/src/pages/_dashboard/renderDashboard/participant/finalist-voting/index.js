@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Grid, Box, Button, Dialog } from '@material-ui/core'
+import { Grid, Box, Button, Dialog } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 
 import PageHeader from 'components/generic/PageHeader'

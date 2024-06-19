@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import moment from 'moment-timezone'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { EventHelpers } from '@hackjunction/shared'
 import ProjectsGridItem from '../ProjectsGridItem'
 

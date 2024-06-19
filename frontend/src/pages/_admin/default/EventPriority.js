@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { Grid, Box, Typography } from '@material-ui/core'
+import { Grid, Box, Typography } from '@mui/material'
 import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'

@@ -10,7 +10,7 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'

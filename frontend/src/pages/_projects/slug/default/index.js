@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useCallback } from 'react'
-import { push } from 'connected-react-router'
+
 import { useDispatch } from 'react-redux'
 
 import { sortBy } from 'lodash-es'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import Container from 'components/generic/Container'
 import EventHeroImage from 'components/events/EventHeroImage'
 import ProjectsPreview from './ProjectsPreview'

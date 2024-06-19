@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box } from '@mui/material'
 import { FastField, useFormikContext } from 'formik'
 
 import FormControl from 'components/inputs/FormControl'

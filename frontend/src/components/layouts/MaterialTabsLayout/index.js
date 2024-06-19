@@ -1,11 +1,11 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { findIndex } from 'lodash-es'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Tabs, Tab, Typography, Box, useMediaQuery } from '@material-ui/core'
+import { makeStyles, useTheme } from '@mui/material/styles'
+import { Tabs, Tab, Typography, Box, useMediaQuery } from '@mui/material'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props

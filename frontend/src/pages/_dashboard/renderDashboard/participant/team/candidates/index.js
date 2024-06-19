@@ -17,7 +17,7 @@ import {
     Radio,
     RadioGroup,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import FormControl from 'components/inputs/FormControl'
 import junctionStyle from 'utils/styles'
 

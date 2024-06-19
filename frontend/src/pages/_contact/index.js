@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Button, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { TextField } from '@material-ui/core'
+import { Button, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { TextField } from '@mui/material'
 
 import Divider from 'components/generic/Divider'
 import Footer from 'components/layouts/Footer'

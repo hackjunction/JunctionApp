@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Button, Box } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Button, Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 const useButtonStyles = makeStyles(theme => ({
     button: {

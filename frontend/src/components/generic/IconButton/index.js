@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { IconButton as MuiButton, CircularProgress } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { IconButton as MuiButton, CircularProgress } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 const baseStyles = (theme, props) => {
     return {
@@ -191,7 +191,7 @@ const variantStyles = (theme, props) => {
         }
         case 'roundedBlack': {
             return {
-                backgroundColor: "black",
+                backgroundColor: 'black',
                 color: color.main,
                 border: `2px solid ${color.main}`,
                 borderRadius: '50%',

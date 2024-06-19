@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Box, Typography } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { Grid, Box, Typography } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
