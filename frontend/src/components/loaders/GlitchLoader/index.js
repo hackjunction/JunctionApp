@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { makeStyles } from '@mui/styles'
+
 import SVG from 'react-inlinesvg'
 
 export default ({ size, title }) => {

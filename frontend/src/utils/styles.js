@@ -1,5 +1,4 @@
 import theme from 'junctionTheme'
-import { makeStyles } from '@mui/styles'
 
 const junctionStyle = makeStyles({
     socialIcon: {

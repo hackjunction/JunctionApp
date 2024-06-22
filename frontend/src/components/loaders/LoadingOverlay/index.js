@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import GlitchLoader from 'components/loaders/GlitchLoader'
 
 const useStyles = makeStyles(theme => ({

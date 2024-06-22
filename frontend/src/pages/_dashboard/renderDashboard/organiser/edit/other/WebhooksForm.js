@@ -22,7 +22,6 @@ import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@mui/styles'
 import { useFormField } from 'hooks/formHooks'
 import Switch from '../../../../../../components/generic/Switch'
 

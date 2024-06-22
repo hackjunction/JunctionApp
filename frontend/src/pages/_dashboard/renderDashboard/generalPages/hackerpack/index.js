@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Divider } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+
 import { Helmet } from 'react-helmet'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import HackerpackService from 'services/hackerpack'
 import config from 'constants/config'
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const classes = useStyles()
     const { slug } = match.params
     const event = useSelector(DashboardSelectors.event)

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { useLocation } from 'react-router'
 
-import * as AuthActions from 'redux/auth/actions'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthActions from 'reducers/auth/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import LoadingOverlay from 'components/loaders/LoadingOverlay'
 import AnalyticsService from 'services/analytics'

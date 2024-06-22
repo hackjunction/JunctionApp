@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Grid, Typography } from '@mui/material'
 import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'

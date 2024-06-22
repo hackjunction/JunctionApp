@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 
 import EventService from 'services/events'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()

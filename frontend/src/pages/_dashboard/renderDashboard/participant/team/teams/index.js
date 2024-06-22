@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Box, Typography, IconButton } from '@mui/material'

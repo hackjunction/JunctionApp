@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-// import { makeStyles } from '@mui/styles'
+//
 import { Box } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -9,11 +9,11 @@ import Filters from './Filters'
 import Container from 'components/generic/Container'
 import PageWrapper from 'components/layouts/PageWrapper'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as UserSelectors from 'redux/user/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import ToggleFavorites from './ToggleFavorites'
 import { useTranslation } from 'react-i18next'

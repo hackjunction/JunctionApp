@@ -7,7 +7,7 @@ import { EventHelpers } from '@hackjunction/shared'
 import { Typography, Grid } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import config from 'constants/config'
 
 export default () => {

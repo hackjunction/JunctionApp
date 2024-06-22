@@ -11,7 +11,7 @@ import Button from 'components/generic/Button'
 import { useFormField } from 'hooks/formHooks'
 
 import VisaInvitationPDF from './VisaInvitationPDF'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 export default () => {
     const registration = useSelector(DashboardSelectors.registration)

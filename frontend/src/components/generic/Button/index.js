@@ -1,236 +1,54 @@
 import React from 'react'
-
 import { Button as MuiButton, CircularProgress } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
-const baseStyles = (theme, props) => {
-    return {
-        borderRadius: '13px',
-        padding: '0.35rem 1.5rem',
-        boxSizing: 'border-box',
-        fontSize: '16px',
-        letterSpacing: '0.02em',
-        lineHeight: '22px',
-        boxShadow: 'none',
-        fontFamily: props.strong
-            ? theme.typography.h1.fontFamily
-            : theme.typography.body1.fontFamily,
-        fontWeight: 'bold',
-        textTransform: props.strong ? 'uppercase' : 'none',
-        '&:focus': {
-            boxShadow: 'none',
-        },
+const getButtonClasses = (color, variant, strong) => {
+    const baseClasses = [
+        'rounded-[13px]',
+        'px-6',
+        'py-2',
+        'box-border',
+        'text-[16px]',
+        'tracking-[0.02em]',
+        'leading-[22px]',
+        'shadow-none',
+        'font-bold',
+    ]
+
+    if (strong) {
+        baseClasses.push('uppercase')
+        baseClasses.push('font-sans')
+    } else {
+        baseClasses.push('font-body')
     }
-}
 
-const variantStyles = (theme, props) => {
-    const color = theme.palette[props.color]
-    switch (props.variant) {
-        case 'contained': {
-            return {
-                backgroundColor: color.main,
-                color: color.contrastText,
-                border: `2px solid ${color.main}`,
-                '&:hover': {
-                    backgroundColor: color.main,
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: color.dark,
-                    color: color.contrastText,
-                    opacity: 0.5,
-                },
-            }
-        }
-        case 'containedNew': {
-            return {
-                color: color.contrastText,
-
-                textDecoration: 'underline',
-                textTransform: 'uppercase',
-                textAlign: 'center',
-                '&:hover': {
-                    textDecoration: 'none',
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: 'transparent',
-                    color: color.contrastText,
-                    opacity: 0.5,
-                },
-            }
-        }
-        case 'applicationsClosed': {
-            return {
-                color: color.main,
-                margin: '25px 0 0 0',
-                textTransform: 'uppercase',
-                fontSize: '18px',
-                textAlign: 'center',
-                '&:hover': {
-                    textDecoration: 'none',
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: 'transparent',
-                    color: color.contrastText,
-                    opacity: 0.5,
-                },
-            }
-        }
-        case 'containedCard': {
-            return {
-                color: color.contrastText,
-                backgroundColor: color.main,
-                borderRadius: '16px 0 15px',
-                textTransform: 'uppercase',
-                opacity: 0.75,
-                fontSize: '12px',
-                '&:hover': {
-                    backgroundColor: color.main,
-                    opacity: 1,
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: 'transparent',
-                    color: color.contrastText,
-                    opacity: 1,
-                },
-            }
-        }
-
-        case 'outlined': {
-            return {
-                backgroundColor: 'transparent',
-                color: color.contrastText,
-                border: `2px solid ${color.dark}`,
-            }
-        }
-        case 'outlinedNew': {
-            return {
-                backgroundColor: 'transparent',
-                color: color.contrastText,
-                border: `2px solid ${color.dark}`,
-                borderRadius: '28px',
-                height: '3em',
-                width: '13em',
-                margin: theme.spacing(3),
-            }
-        }
-        case 'outlined-small': {
-            return {
-                backgroundColor: 'transparent',
-                color: color.contrastText,
-                border: `2px solid ${color.dark}`,
-                borderRadius: '28px',
-                height: '2em',
-                width: '10em',
-                fontSize: '10px',
-                margin: theme.spacing(3),
-            }
-        }
-        case 'contained-large': {
-            return {
-                backgroundColor: color.main,
-                color: color.contrastText,
-                border: `2px solid ${color.main}`,
-                height: '3em',
-                fontSize: '1.5em',
-                '&:hover': {
-                    backgroundColor: color.main,
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: color.dark,
-                    color: color.contrastText,
-                    opacity: 0.5,
-                },
-            }
-        }
-        case 'containedEventImage': {
-            return {
-                backgroundColor: color.main,
-                color: color.contrastText,
-                border: `2px solid ${color.main}`,
-                height: '2.6em',
-                borderRadius: '28px',
-                fontSize: '1.3em',
-                margin: theme.spacing(2),
-                '&:hover': {
-                    backgroundColor: color.main,
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: color.dark,
-                    color: color.contrastText,
-                    opacity: 0.5,
-                },
-            }
-        }
-        case 'jOutlined': {
-            return {
-                backgroundColor: 'transparent',
-                color: color.contrastText,
-                border: `2px solid ${color.dark}`,
-                borderRadius: theme.spacing(4),
-                padding: theme.spacing(1, 2),
-                margin: 0,
-            }
-        }
-        case 'jIconText': {
-            return {
-                backgroundColor: 'transparent',
-                color: color.main,
-                padding: theme.spacing(1, 2),
-                margin: 0,
-                fontWeight: 'fontWeightRegular',
-                fontSize: theme.spacing(1, 4),
-            }
-        }
-        case 'jContained': {
-            return {
-                backgroundColor: color.main,
-                color: color.contrastText,
-                border: `2px solid ${color.main}`,
-                borderRadius: theme.spacing(4),
-                padding: theme.spacing(1, 2),
-                margin: 0,
-                '&:hover': {
-                    backgroundColor: color.dark,
-                    border: `2px solid ${color.dark}`,
-                },
-                '&.Mui-disabled': {
-                    backgroundColor: color.dark,
-                    color: color.contrastText,
-                    opacity: 0.5,
-                },
-            }
-        }
-        case 'jOutlinedBox': {
-            return {
-                backgroundColor: color.main,
-                color: color.contrastText,
-                border: `1px solid ${color.lightBorder}`,
-                borderRadius: theme.spacing(1),
-                padding: theme.spacing(2),
-                margin: 0,
-                width: '100%',
-            }
-        }
-        default: {
-            return {
-                borderRadius: 0,
-                color: color.main,
-            }
-        }
+    const colorClasses = {
+        primary: 'text-white bg-primary-main border-2 border-primary-main',
+        secondary:
+            'text-white bg-secondary-main border-2 border-secondary-main',
+        // Add more color mappings as needed
     }
-}
 
-const useStyles = makeStyles(theme => ({
-    root: props => {
-        return {
-            ...baseStyles(theme, props),
-            ...variantStyles(theme, props),
-            '&:focus': {
-                boxShadow: 'none',
-            },
-        }
-    },
-}))
+    const variantClasses = {
+        contained: `${colorClasses[color]} hover:bg-opacity-75`,
+        containedNew:
+            'text-white underline uppercase text-center hover:no-underline',
+        applicationsClosed:
+            'text-primary-main uppercase text-lg text-center mt-6',
+        containedCard:
+            'text-white bg-primary-main rounded-[16px_0_15px] uppercase opacity-75 text-xs hover:opacity-100',
+        outlined: `bg-transparent text-white border-2 border-${color}-dark`,
+        outlinedNew: `bg-transparent text-white border-2 border-${color}-dark rounded-[28px] h-[3em] w-[13em] m-3`,
+        outlinedSmall: `bg-transparent text-white border-2 border-${color}-dark rounded-[28px] h-[2em] w-[10em] text-[10px] m-3`,
+        containedLarge: `${colorClasses[color]} h-[3em] text-[1.5em] hover:bg-opacity-75`,
+        containedEventImage: `${colorClasses[color]} h-[2.6em] rounded-[28px] text-[1.3em] m-2 hover:bg-opacity-75`,
+        jOutlined: `bg-transparent text-white border-2 border-${color}-dark rounded-lg px-4 py-2`,
+        jIconText: `bg-transparent text-${color}-main px-4 py-2 font-normal text-sm`,
+        jContained: `${colorClasses[color]} rounded-lg px-4 py-2 hover:bg-${color}-dark hover:border-${color}-dark`,
+        jOutlinedBox: `bg-${color}-main text-white border border-${color}-lightBorder rounded p-2 w-full`,
+    }
+
+    return baseClasses.join(' ') + ' ' + (variantClasses[variant] || '')
+}
 
 const Button = ({
     color = 'primary',
@@ -238,19 +56,21 @@ const Button = ({
     loading = false,
     ...props
 }) => {
-    const classes = useStyles({ color, strong, variant: props.variant })
+    const buttonClasses = getButtonClasses(color, props.variant, strong)
 
     // These are the only variants offered by MUIbutton
     if (!['text', 'outlined', 'contained'].includes(props.variant)) {
         delete props.variant
     }
+
     return (
         <MuiButton
             {...props}
-            classes={classes}
+            className={buttonClasses}
             disabled={loading || props.disabled}
-            children={loading ? <CircularProgress size={20} /> : props.children}
-        />
+        >
+            {loading ? <CircularProgress size={20} /> : props.children}
+        </MuiButton>
     )
 }
 

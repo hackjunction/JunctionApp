@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DefaultPage from './default'
@@ -8,7 +8,7 @@ import ConfigurePage from './default/configure'
 import FilesPage from './files'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     return (
         <Switch>
             <Route exact={true} path={`${match.url}`} component={DefaultPage} />

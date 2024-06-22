@@ -75,7 +75,7 @@ import {
     Dashboard,
     Fingerprint,
     FlightTakeoff,
-    AmpStories,
+    WebStoriesOutlined,
     AssignmentOutlined,
     StarRate,
     HowToVote,
@@ -107,11 +107,11 @@ import {
 import Divider from '@mui/material/Divider'
 
 import { Formik } from 'formik'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { useRouteMatch, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import ConfigureTab from './configure'
@@ -173,7 +173,7 @@ export default () => {
             )
         },
     })
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const [project, setProject] = useState(null)
@@ -622,7 +622,7 @@ export default () => {
                                 FlightTakeoff
                                 <FlightTakeoff />
                                 AmpStories
-                                <AmpStories />
+                                <WebStoriesOutlined />
                                 AssignmentOutlined
                                 <AssignmentOutlined />
                                 StarRate

@@ -1,11 +1,11 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-
+import { push } from 'connected-react-router'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { findIndex } from 'lodash-es'
-import { makeStyles, useTheme } from '@mui/material/styles'
 import { Tabs, Tab, Typography, Box, useMediaQuery } from '@mui/material'
+import { makeStyles, useTheme } from '@mui/material/styles'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props
@@ -37,23 +37,8 @@ function a11yProps(index) {
     }
 }
 
-const useStyles = makeStyles(theme => ({
-    root: ({ transparent }) => ({
-        flexGrow: 1,
-        width: '100%',
-        backgroundColor: transparent
-            ? 'transparent'
-            : theme.palette.background.paper,
-    }),
-    wrapper: {
-        textAlign: 'left',
-        alignItems: 'flex-start',
-    },
-}))
-
-export default ({ tabs, location, baseRoute, transparent = false }) => {
+const TabNavigation = ({ tabs, location, baseRoute, transparent = false }) => {
     const dispatch = useDispatch()
-    const classes = useStyles({ transparent })
 
     const pushRoute = useCallback(
         path => {
@@ -83,7 +68,9 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
-        <div className={classes.root}>
+        <div
+            className={`w-full ${transparent ? 'bg-transparent' : 'bg-white'}`}
+        >
             <Tabs
                 orientation={isMobile ? 'vertical' : 'horizontal'}
                 value={safeIndex}
@@ -99,24 +86,24 @@ export default ({ tabs, location, baseRoute, transparent = false }) => {
                         key={tab.label}
                         label={tab.label}
                         {...a11yProps(index)}
-                        classes={isMobile ? { wrapper: classes.wrapper } : {}}
+                        classes={isMobile ? 'align-start' : ''}
                     />
                 ))}
             </Tabs>
             <Box mt={3} p={2}>
                 <Switch>
-                    {tabs.map(({ key, path, component }, index) => {
-                        return (
-                            <Route
-                                key={key}
-                                exact={true}
-                                path={`${baseRoute}${path}`}
-                                component={component}
-                            />
-                        )
-                    })}
+                    {tabs.map(({ key, path, component }) => (
+                        <Route
+                            key={key}
+                            exact={true}
+                            path={`${baseRoute}${path}`}
+                            component={component}
+                        />
+                    ))}
                 </Switch>
             </Box>
         </div>
     )
 }
+
+export default TabNavigation

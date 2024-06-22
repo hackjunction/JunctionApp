@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useDispatch } from 'react-redux'
 
-import * as AuthActions from 'redux/auth/actions'
+import * as AuthActions from 'reducers/auth/actions'
 
 import LoadingOverlay from 'components/loaders/LoadingOverlay'
 

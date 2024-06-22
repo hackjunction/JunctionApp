@@ -1,16 +1,16 @@
 import React from 'react'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import CandidatesPage from './candidates'
 import ProfilePage from './profile'
 import Container from 'components/generic/Container'
 import TeamsPage from './teams'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageHeader from 'components/generic/PageHeader'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 import { useSelector } from 'react-redux'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const location = useLocation()
     const hasTeam = useSelector(DashboardSelectors.hasTeam)
     const enabledTabs = [

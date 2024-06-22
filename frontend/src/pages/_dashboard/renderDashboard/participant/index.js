@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
-import { makeStyles } from '@mui/styles'
 import GroupIcon from '@mui/icons-material/Group'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
-import AmpStoriesIcon from '@mui/icons-material/AmpStories'
+import WebStoriesOutlined from '@mui/icons-material/WebStoriesOutlined'
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined'
 import StarRateIcon from '@mui/icons-material/StarRate'
 import HowToVoteIcon from '@mui/icons-material/HowToVote'
@@ -70,7 +69,7 @@ export default ({
 }) => {
     const classes = useStyles()
     const { t } = useTranslation()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
@@ -170,7 +169,7 @@ export default ({
                     key: 'hackerpack',
                     path: '/hackerpack',
                     exact: true,
-                    icon: <AmpStoriesIcon />,
+                    icon: <WebStoriesOutlined />,
                     hidden: !shownPages.hackerPack,
                     label: t('Hackerpack_'),
                     component: HackerpackPage,

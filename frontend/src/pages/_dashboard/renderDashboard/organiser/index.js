@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import { Typography, Box } from '@mui/material'
 import { EventTypes } from '@hackjunction/shared'
 import TuneIcon from '@mui/icons-material/Tune'
@@ -14,8 +14,8 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import Alert from '@mui/material/Alert'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Image from 'components/generic/Image'
 import BasicNavBar from 'components/navbars/BasicNavBar'
@@ -34,7 +34,7 @@ import AlertsPage from './alerts'
 import { QuestionAnswerSharp } from '@mui/icons-material'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const dispatch = useDispatch()
     const { slug } = match.params

@@ -10,7 +10,7 @@ import {
 
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 const ProjectScoreModal = ({ open, onClose, score }) => {
     const dispatch = useDispatch()

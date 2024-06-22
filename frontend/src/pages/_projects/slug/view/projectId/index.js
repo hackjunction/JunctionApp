@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import ShareProject from 'components/projects/ProjectDetail/ShareProject'
@@ -8,7 +8,7 @@ import { EventHelpers } from '@hackjunction/shared'
 import ProjectsService from 'services/projects'
 
 export default ({ event, showFullTeam }) => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const { projectId } = match.params
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)

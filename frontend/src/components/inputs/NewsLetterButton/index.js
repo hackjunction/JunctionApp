@@ -1,41 +1,15 @@
-import React, { useState, useCallback } from 'react'
-
-import { makeStyles } from '@mui/styles'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Typography, Button, Box } from '@mui/material'
 import { motion } from 'framer-motion'
-
 import NewsletterService from 'services/newsletter'
 import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        overflow: 'hidden',
-    },
-    title: {
-        color: 'white',
-        fontSize: '1.25rem',
-        fontWeight: 'bold',
-    },
-    description: {
-        color: 'white',
-        maxWidth: '600px',
-        textAlign: 'center',
-    },
-    cancelButton: {
-        color: 'white',
-    },
-}))
 
 const NewsLetterButton = ({
     email = 'juuso.lappalainen@hackjunction.com',
     country,
     onHidden,
 }) => {
-    const classes = useStyles()
     const { t } = useTranslation()
     const [hidden, setHidden] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -53,11 +27,11 @@ const NewsLetterButton = ({
             })
     }, [country, email])
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (hidden) {
             onHidden()
         }
-    }, [hidden])
+    }, [hidden, onHidden])
 
     return (
         <motion.div
@@ -72,13 +46,17 @@ const NewsLetterButton = ({
                 },
             }}
             animate={isHidden ? 'hidden' : 'visible'}
-            className={classes.wrapper}
+            className="flex flex-col items-center overflow-hidden"
         >
-            <Typography className={classes.title} variant="button" paragraph>
+            <Typography
+                className="text-white text-xl font-bold"
+                variant="button"
+                paragraph
+            >
                 {t('While_here_')}
             </Typography>
             <Typography
-                className={classes.description}
+                className="text-white max-w-xl text-center"
                 variant="subtitle1"
                 paragraph
             >
@@ -95,7 +73,7 @@ const NewsLetterButton = ({
             </Button>
             <Box p={1} />
             <Button
-                className={classes.cancelButton}
+                className="text-white"
                 onClick={() => setHidden(true)}
                 disabled={loading}
             >

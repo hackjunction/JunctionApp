@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { Box, Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 export default ({ onResult, onError }) => {
     const reader = useRef(null)
     const dispatch = useDispatch()

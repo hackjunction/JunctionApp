@@ -1,65 +1,15 @@
 import React from 'react'
-
-import { makeStyles } from '@mui/styles'
-
 import ExternalLink from 'components/generic/ExternalLink'
 import Divider from 'components/generic/Divider'
 import { useTranslation } from 'react-i18next'
 import config from 'constants/config'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        background: theme.palette.theme_black.main,
-        padding: theme.spacing(2),
-    },
-    inner: {
-        width: '100%',
-        maxWidth: '1120px',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row-reverse',
-        },
-    },
-    copyright: {
-        flex: 1,
-        textAlign: 'center',
-        [theme.breakpoints.up('md')]: {
-            textAlign: 'left',
-        },
-        color: 'white',
-    },
-    links: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-            alignItems: 'flex-end',
-            textAlign: 'right',
-        },
-    },
-    logos: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            justifyContent: 'flex-start',
-        },
-    },
-}))
-
-const Footer = props => {
-    const classes = useStyles()
+const Footer = () => {
     const { t } = useTranslation()
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.inner}>
-                <div className={classes.links}>
+        <div className="bg-black p-4">
+            <div className="max-w-6xl mx-auto flex flex-col items-center md:flex-row-reverse">
+                <div className="flex-1 flex flex-col items-center md:items-end text-right">
                     <Divider size={1} />
                     <ExternalLink theme="footer" href={config.TERMS_URL}>
                         {t('Terms_')}
@@ -77,14 +27,14 @@ const Footer = props => {
                     </ExternalLink>
                     <Divider size={1} />
                 </div>
-                <div className={classes.copyright}>
+                <div className="flex-1 text-center md:text-left text-white">
                     <Divider size={1} />
-                    <span className={classes.copyright}>
+                    <span>
                         Designed and developed with ❤️ and ☕ by the Junction
                         team, with the help of:
                     </span>
                     <Divider size={1} />
-                    <div className={classes.logos}>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start">
                         <a
                             width="150"
                             height="50"
@@ -107,7 +57,9 @@ const Footer = props => {
         </div>
     )
 }
+
 Footer.defaultProps = {
     hide_contact: false,
 }
+
 export default Footer

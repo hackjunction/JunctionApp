@@ -8,9 +8,9 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectsGridItem from 'components/projects/ProjectsGridItem'
 import ProjectDetail from 'components/projects/ProjectDetail'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import WinnerVoteService from 'services/winnerVote'
 import _ from 'lodash'

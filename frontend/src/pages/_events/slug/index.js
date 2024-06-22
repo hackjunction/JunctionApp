@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
@@ -14,7 +14,7 @@ import FinalistVoting from './voteWithToken'
 import EventDetailContext, { EventDetailProvider } from './context'
 
 const EventDetailRouter = () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const location = useLocation()
     const { eventLoading, eventError, isRegistrationOpen } =
         useContext(EventDetailContext)

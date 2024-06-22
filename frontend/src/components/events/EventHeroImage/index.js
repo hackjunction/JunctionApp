@@ -1,79 +1,10 @@
 import React from 'react'
-
 import { useDispatch } from 'react-redux'
 import { Box, Grid } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Button, Typography } from '@mui/material'
 import Image from 'components/generic/Image'
 import Container from 'components/generic/Container'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        position: 'relative',
-        background: props => props.backgroundColor ?? undefined,
-        paddingTop: theme.spacing(2),
-    },
-    imageContainer: {
-        display: 'flex',
-    },
-    image: {
-        zIndex: 1,
-        top: 0,
-        left: 0,
-        objectFit: 'cover',
-        aspectRatio: '16/9',
-        maxHeight: 500,
-        borderRadius: 6,
-        margin: '0 auto',
-        boxShadow: '2px 7px 15px rgba(0, 0, 0, 0.12)',
-    },
-    backButtonWrapper: {
-        position: 'absolute',
-        zIndex: 10,
-        width: 'auto',
-        paddingTop: theme.spacing(3),
-        top: 0,
-        left: 0,
-    },
-    buttonInner: {
-        color: 'black',
-        background: 'white',
-        zIndex: 2,
-        border: 'none',
-        width: '100%',
-        '&:hover': {
-            opacity: '70%',
-        },
-        borderRadius: '10px',
-    },
-    logoWrapper: {
-        position: 'absolute',
-        zIndex: 2,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'rgba(0,0,0,0.6)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-    },
-    title: {
-        color: 'white',
-        [theme.breakpoints.down('md')]: {
-            fontSize: '1.75rem',
-        },
-    },
-    overline: {
-        color: 'white',
-        fontSize: '1.25rem',
-        [theme.breakpoints.down('md')]: {
-            fontSize: '1rem',
-        },
-    },
-}))
 
 export default ({
     event,
@@ -83,9 +14,8 @@ export default ({
     backgroundColor,
     alignRight,
 }) => {
-    const classes = useStyles({ backgroundColor })
     return (
-        <Box className={classes.wrapper}>
+        <Box className={`relative ${backgroundColor ?? ''} pt-2`}>
             <Container>
                 <Grid container>
                     {alignRight && <Grid item xs={12} md={4} />}
@@ -93,10 +23,10 @@ export default ({
                         item
                         xs={12}
                         md={alignRight ? 8 : 12}
-                        className={classes.imageContainer}
+                        className="flex"
                     >
                         <Image
-                            className={classes.image}
+                            className="z-1 top-0 left-0 object-cover aspect-[16/9] max-h-[500px] rounded-[6px] m-auto shadow-[2px_7px_15px_rgba(0,0,0,0.12)]"
                             publicId={event?.coverImage?.publicId}
                             defaultImage={require('assets/images/default_cover_image.png')}
                             transformation={{
@@ -108,7 +38,7 @@ export default ({
                 </Grid>
             </Container>
 
-            {/* <Box className={classes.logoWrapper}>
+            {/* <Box className="absolute z-2 top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)] flex flex-col justify-center">
                 <FadeInWrapper enterDelay={0.3} verticalOffset={50}>
                     <Box
                         p={3}
@@ -118,20 +48,19 @@ export default ({
                         justifyContent="center"
                     >
                         <Typography
-                            className={classes.overline}
+                            className="text-white text-xl md:text-base"
                             variant="button"
                         >
                             {event?._eventTimeFormatted}
                         </Typography>
-                        <Typography className={classes.title} variant="h3">
+                        <Typography className="text-white md:text-2xl text-3xl" variant="h3">
                             {title ?? event?.name}
                         </Typography>
-                        <Typography className={classes.title} variant="h4">
+                        <Typography className="text-white md:text-2xl text-3xl" variant="h4">
                             {subheading}
                         </Typography>
-
                         <Typography
-                            className={classes.overline}
+                            className="text-white text-xl md:text-base"
                             variant="button"
                         >
                             {event?._eventLocationFormatted}
@@ -140,8 +69,8 @@ export default ({
                 </FadeInWrapper>
             </Box> */}
             <Container
-                wrapperClass={classes.backButtonWrapper}
-                className={classes.buttonInner}
+                wrapperClass="absolute z-10 pt-3 top-0 left-0 w-auto"
+                className="text-black bg-white z-2 border-none w-full hover:opacity-70 rounded-[10px]"
             >
                 <Button
                     onClick={

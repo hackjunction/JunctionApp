@@ -7,7 +7,7 @@ import NotificationBlock from 'components/generic/NotificationBlock'
 import GradientBox from 'components/generic/GradientBox'
 import Button from 'components/generic/Button'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 export default () => {
     const dispatch = useDispatch()

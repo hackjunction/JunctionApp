@@ -18,9 +18,9 @@ import {
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import config from 'constants/config'
 
 import { useTranslation } from 'react-i18next'

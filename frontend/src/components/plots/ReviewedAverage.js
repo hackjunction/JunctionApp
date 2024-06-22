@@ -3,7 +3,7 @@ import React from 'react'
 import Statistic from 'components/generic/Statistic'
 import StarIcon from '@mui/icons-material/Star'
 import { useSelector } from 'react-redux'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default () => {
     const value = useSelector(OrganiserSelectors.averageRating)

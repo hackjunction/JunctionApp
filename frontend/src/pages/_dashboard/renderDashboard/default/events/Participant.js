@@ -14,9 +14,9 @@ import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 export default () => {
     const userId = useSelector(AuthSelectors.getUserId)

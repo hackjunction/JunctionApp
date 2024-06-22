@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react'
 import QrReader from '@cmdnio/react-qr-reader'
 
-import { makeStyles } from '@mui/styles'
 import {
     Box,
     Typography,
@@ -14,9 +13,9 @@ import { RegistrationStatuses } from '@hackjunction/shared'
 
 import Modal from 'components/generic/Modal'
 import StatusBadge from 'components/generic/StatusBadge'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import UserProfilesService from 'services/userProfiles'
 
 const useStyles = makeStyles(theme => ({

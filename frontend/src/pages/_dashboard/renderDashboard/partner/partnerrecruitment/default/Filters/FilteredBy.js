@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
 import { Misc } from '@hackjunction/shared'
 import { useTranslation } from 'react-i18next'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
 
 const FilteredByItem = ({ label, text }) => {
     return (

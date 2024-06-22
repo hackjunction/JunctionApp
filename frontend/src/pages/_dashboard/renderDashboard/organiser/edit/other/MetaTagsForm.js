@@ -14,7 +14,6 @@ import {
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@mui/styles'
 import { useFormField } from 'hooks/formHooks'
 
 const useStyles = makeStyles(theme => ({

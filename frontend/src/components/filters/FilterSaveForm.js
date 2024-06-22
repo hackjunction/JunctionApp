@@ -14,9 +14,9 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import TextInput from 'components/inputs/TextInput'
 import { useFormField } from 'hooks/formHooks'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 export default ({ filters, activeItem, reservedLabels, onSave, onDelete }) => {
     const dispatch = useDispatch()

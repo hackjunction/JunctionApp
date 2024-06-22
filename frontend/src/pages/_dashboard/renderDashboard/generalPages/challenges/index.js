@@ -3,7 +3,7 @@ import { Box, makeStyles, Typography } from '@mui/material'
 import { Helmet } from 'react-helmet'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import ChallengeDetail from 'components/challenges/ChallengeDetail'
 import { useSelector } from 'react-redux'

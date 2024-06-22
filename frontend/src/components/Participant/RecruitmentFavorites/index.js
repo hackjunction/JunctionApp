@@ -6,11 +6,11 @@ import { Button as MuiButton, IconButton, Tooltip } from '@mui/material'
 
 import StarIcon from '@mui/icons-material/Star'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as UserSelectors from 'redux/user/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {

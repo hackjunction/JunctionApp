@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useSelector } from 'react-redux'
 
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import PageWrapper from 'components/layouts/PageWrapper'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import Organizer from './Organizer'
 import Participant from './Participant'
@@ -13,7 +13,7 @@ import Partner from './Partner'
 
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const location = useLocation()
 
     const isPartner = useSelector(AuthSelectors.idTokenData)?.roles?.some(r =>

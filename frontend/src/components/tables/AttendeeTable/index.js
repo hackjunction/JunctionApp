@@ -9,7 +9,7 @@ import Rating from '@mui/lab/Rating'
 import StatusBadge from 'components/generic/StatusBadge'
 import Tag from 'components/generic/Tag'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import EditRegistrationModal from 'components/modals/EditRegistrationModal'
 import BulkEditRegistrationModal from 'components/modals/BulkEditRegistrationModal'
 import BulkEmailModal from 'components/modals/BulkEmailModal'

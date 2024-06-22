@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react'
 
-import { makeStyles } from '@mui/styles'
 import {
     Card,
     CardContent,
@@ -10,16 +9,6 @@ import {
     CircularProgress,
 } from '@mui/material'
 
-const useStyles = makeStyles(theme => ({
-    value: {
-        textAlign: 'left',
-    },
-    suffix: {
-        marginLeft: theme.spacing(1),
-        display: 'inline-block',
-    },
-}))
-
 const Statistic = ({ label, value, suffix, action, actionText }) => {
     const [actionLoading, setActionLoading] = useState()
 
@@ -28,19 +17,21 @@ const Statistic = ({ label, value, suffix, action, actionText }) => {
         await action()
         setActionLoading(false)
     }, [action])
-    const classes = useStyles()
     return (
         <Card>
-            <CardContent className={classes.root}>
+            <CardContent className="">
                 <Typography variant="body2" color="textSecondary" gutterBottom>
                     {label}
                 </Typography>
                 <Box display="flex" flexDirection="row" alignItems="flex-end">
-                    <Typography variant="h4" className={classes.value}>
+                    <Typography variant="h4" className="tw-text-left">
                         {value}
                     </Typography>
                     {suffix && (
-                        <Typography variant="h6" className={classes.suffix}>
+                        <Typography
+                            variant="h6"
+                            className={'ml-1 tw-inline-block'}
+                        >
                             {suffix}
                         </Typography>
                     )}

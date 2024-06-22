@@ -1,76 +1,18 @@
 import React from 'react'
-
-import { makeStyles } from '@mui/styles'
 import { Box, Typography } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Image from 'components/generic/Image'
 import Button from 'components/generic/Button'
-import { useDispatch } from 'react-redux'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        background: 'inherit',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        flex: 1,
-    },
-    top: {
-        height: '200px',
-        maxWidth: 'min(100%, 400px)',
-        aspectRatio: '16/9',
-        margin: '0 auto',
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-    },
-    topWrapper: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '100%',
-    },
-    topLeft: {
-        justifyContent: 'flex-start',
-    },
-
-    image: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        borderRadius: '15px',
-    },
-    organiser: {
-        position: 'absolute',
-        top: '5%',
-        left: '2%',
-    },
-    bottom: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-    },
-    bolded: {
-        fontWeight: 'bold',
-        marginBottom: theme.spacing(1),
-    },
-    uppercase: {
-        textTransform: 'uppercase',
-    },
-}))
+import { Link } from 'react-router-dom'
 
 const EventCard = ({ event, buttons }) => {
-    //TODO: use neweventcard everywhere
-    const dispatch = useDispatch()
-    const classes = useStyles()
     const organization = event?.organizations
-    // {event.published && !event.approved ? 'Waiting approval' : null}
+
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.top}>
+        <div className="bg-inherit rounded-[12px] overflow-hidden flex-1">
+            <div className="h-[200px] max-w-[min(100%,400px)] aspect-[16/9] mx-auto relative flex justify-end items-end">
                 <Image
-                    className={classes.image}
+                    className="absolute top-0 left-0 w-full h-full object-cover rounded-[15px]"
                     defaultImage={require('assets/images/default_cover_image.png')}
                     publicId={event?.coverImage?.publicId}
                     transformation={{
@@ -79,19 +21,15 @@ const EventCard = ({ event, buttons }) => {
                 />
                 {organization?.icon && (
                     <Avatar
-                        className={classes.organiser}
+                        className="absolute top-[5%] left-[2%]"
                         src={organization?.icon}
                     />
                 )}
-                <Button
-                    variant="containedCard"
-                    color="theme_lightgray"
-                    onClick={() => dispatch(push('/events/' + event.slug))}
-                >
-                    See more
+                <Button variant="containedCard" color="theme_lightgray">
+                    <Link to={`/events/${event.slug}`}>See more</Link>
                 </Button>
             </div>
-            <div className={classes.bottom}>
+            <div className="p-4 text-center">
                 <Box width="100%" height="4em" margin="0">
                     <Typography variant="h6">{event.name}</Typography>
                 </Box>
@@ -101,9 +39,9 @@ const EventCard = ({ event, buttons }) => {
                     flexWrap="wrap"
                     justifyContent="center"
                     mt={2}
-                    className={classes.uppercase}
+                    className="uppercase"
                 >
-                    <Typography variant="body1" className={classes.bolded}>
+                    <Typography variant="body1" className="font-bold mb-1">
                         {event?._eventTimeFormatted}
                     </Typography>
                     <Typography variant="body1">

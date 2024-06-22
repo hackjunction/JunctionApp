@@ -22,9 +22,9 @@ import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect
 import ConfirmDialog from 'components/generic/ConfirmDialog'
 import Button from 'components/generic/Button'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useFormField } from 'hooks/formHooks'
 import { useTranslation } from 'react-i18next'
 export default ({ visible, userIds = [], onClose }) => {

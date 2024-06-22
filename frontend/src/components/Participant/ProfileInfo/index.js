@@ -1,7 +1,7 @@
 import React from 'react'
 import { Roles, Misc } from '@hackjunction/shared'
 import { Box, Chip, Typography, Grid } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+
 import GradientBox from 'components/generic/GradientBox'
 import SkillRating from '../../../pages/_dashboard/renderDashboard/partner/partnerrecruitment/default/SearchResults/SkillRating'
 

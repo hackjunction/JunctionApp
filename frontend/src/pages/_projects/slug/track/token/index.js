@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 
 import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 
 import { Box } from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -13,7 +13,7 @@ import ProjectsService from 'services/projects'
 
 //TODO make this and challenge one into a component
 export default ({ event }) => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params

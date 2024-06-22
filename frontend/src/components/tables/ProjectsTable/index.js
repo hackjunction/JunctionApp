@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import { Table, Filters, Sorters } from 'components/generic/_Table'
 import EditProjectModal from 'components/modals/EditProjectModal'

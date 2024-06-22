@@ -8,8 +8,8 @@ import { EventHelpers } from '@hackjunction/shared'
 
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 export default () => {
     const dispatch = useDispatch()

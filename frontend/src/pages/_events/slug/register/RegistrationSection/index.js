@@ -1,14 +1,14 @@
 import React, { useMemo, useRef, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import { RegistrationFields } from '@hackjunction/shared'
-import { makeStyles } from '@mui/styles'
+
 import { Box, Grid } from '@mui/material'
 import { Formik, FastField } from 'formik'
 import * as yup from 'yup'
 import { useSelector } from 'react-redux'
 
-import * as UserSelectors from 'redux/user/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import RegistrationQuestion from '../RegistrationQuestion'
 import RegistrationBottomBar from '../RegistrationBottomBar'
 

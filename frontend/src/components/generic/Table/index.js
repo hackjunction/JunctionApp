@@ -1,6 +1,4 @@
 import React, { useState, useCallback, useMemo } from 'react'
-
-import { makeStyles } from '@mui/styles'
 import {
     Table,
     TableBody,
@@ -14,29 +12,11 @@ import {
     CircularProgress,
     Checkbox,
 } from '@mui/material'
-
 import objectPath from 'object-path'
-
 import TableToolbar from './TableToolbar'
 import TablePaginationActions from './TablePaginationActions'
 import ActionMenu from 'components/generic/ActionMenu'
-
-const useTableStyles = makeStyles(theme => ({
-    root: {
-        overflowX: 'auto',
-    },
-}))
-
-const usePaginationStyles = makeStyles(theme => ({
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        height: 'auto',
-    },
-}))
+import clsx from 'clsx'
 
 export default ({
     columns = [],
@@ -51,8 +31,6 @@ export default ({
     selectedActions = [],
     rowActions = [],
 }) => {
-    const classes = useTableStyles()
-    const paginationClasses = usePaginationStyles()
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [page, setPage] = useState(0)
     const [selectedRows, setSelectedRows] = useState([])
@@ -78,7 +56,7 @@ export default ({
         const key = item[rowKey]
         let rows = selectedRows.slice()
         const index = rows.indexOf(key)
-        if (rows.indexOf(key) !== -1) {
+        if (index !== -1) {
             rows.splice(index, 1)
         } else {
             rows = rows.concat(key)
@@ -91,11 +69,11 @@ export default ({
     }
 
     const columnCount = useMemo(() => {
-        let columnCount = columns.length
-        if (rowSelection) columnCount++
-        if (rowNumber) columnCount++
-        if (rowActions) columnCount++
-        return columnCount
+        let count = columns.length
+        if (rowSelection) count++
+        if (rowNumber) count++
+        if (rowActions.length > 0) count++
+        return count
     }, [columns, rowSelection, rowActions, rowNumber])
 
     const data = useMemo(() => {
@@ -109,7 +87,7 @@ export default ({
 
     return (
         <>
-            <Paper className={classes.root}>
+            <Paper className="overflow-x-auto">
                 <TableToolbar
                     title={title}
                     selectedRows={selectedRows}
@@ -235,10 +213,14 @@ export default ({
                                 inputProps: { 'aria-label': 'rows per page' },
                                 native: true,
                             }}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
                             ActionsComponent={TablePaginationActions}
-                            classes={paginationClasses}
+                            classes={{
+                                toolbar: clsx(
+                                    'flex items-center justify-center flex-wrap',
+                                ),
+                            }}
                         />
                     </Paper>
                 </Box>

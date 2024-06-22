@@ -3,7 +3,7 @@ import { IconButton, Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
 import TeamHeader from '../TeamHeader'
 import TeamDescription from '../TeamDescription'
@@ -17,9 +17,9 @@ import { objToArr } from 'utils/dataModifiers'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { gradientRandomizer } from 'utils/stylingHelpers'
 import TeamsService from 'services/teams'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 // TODO add socialLinks component from Damilare (@mrprotocoll)
 
@@ -33,7 +33,7 @@ export default ({
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [teamMemberToRemove, setTeamMemberToRemove] = useState('')
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     console.log('match', slug)
 
     const [teamMembersArr, setTeamMembersArr] = useState([

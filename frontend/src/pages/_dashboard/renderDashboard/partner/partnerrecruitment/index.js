@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useDispatch } from 'react-redux'
 import {
     Switch,
@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom'
 
 import PageWrapper from 'components/layouts/PageWrapper'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 /*import BasicNavBar from 'components/navbars/BasicNavBar'*/
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 
@@ -21,7 +21,7 @@ import DetailPage from './id'
 export default () => {
     // const dispatch = useDispatch()
     // const location = useLocation()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
 
     //console.log(match.url)
 

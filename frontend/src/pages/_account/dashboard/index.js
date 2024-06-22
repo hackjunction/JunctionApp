@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Grid, Box, Typography } from '@mui/material'
 import { useDispatch } from 'react-redux'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import EventCardSmall from 'components/events/EventCardSmall'
 import PageWrapper from 'components/layouts/PageWrapper'

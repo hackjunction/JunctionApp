@@ -1,7 +1,7 @@
 import Button from 'components/generic/Button'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 const FileInput = ({
     value = null,

@@ -7,12 +7,12 @@ import { Route, Redirect, Switch } from 'react-router-dom'
 import routeConfig from './routes'
 import apolloClient from './graphql/client'
 import config from 'constants/config'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as AuthActions from 'redux/auth/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as AuthActions from 'reducers/auth/actions'
 import AnalyticsService from 'services/analytics'
 import { getCookieConsentValue } from 'react-cookie-consent'
 import CookieConsentBar from 'components/layouts/CookieConsentBar'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 export default ({ history, location }) => {
     const dispatch = useDispatch()

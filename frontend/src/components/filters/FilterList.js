@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { makeStyles } from '@mui/styles'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import {
@@ -15,20 +14,7 @@ import {
 import FilterListItem from 'components/filters/FilterListItem'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(theme => ({
-    headingItem: {
-        marginRight: theme.spacing(1),
-    },
-    badge: {
-        right: -1 * theme.spacing(2),
-        top: theme.spacing(1),
-    },
-    list: {
-        width: '100%',
-    },
-}))
 const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
-    const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
     const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
     const hasFilters = filters.length !== 0
@@ -63,7 +49,6 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                     color="primary"
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                     badgeContent={filters.length}
-                    classes={{ badge: classes.badge }}
                     showZero={false}
                 >
                     <Typography color="textPrimary">
@@ -72,7 +57,7 @@ const FilterList = ({ activeItemKey, filters = [], onChange = () => {} }) => {
                 </Badge>
             </AccordionSummary>
             <AccordionDetails>
-                <List className={classes.list}>
+                <List className="w-full">
                     {filters.map((filter, index) => (
                         <React.Fragment
                             key={filter.path + filter.type + filter.value}

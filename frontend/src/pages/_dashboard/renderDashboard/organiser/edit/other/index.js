@@ -12,7 +12,7 @@ import PageScriptsForm from './PageScriptsForm'
 import FileInput from '../submission/components/inputs/FileInput'
 // import PdfUpload from 'components/inputs/PdfUpload'
 import Switch from 'components/generic/Switch'
-import { hasSuperAdmin } from 'redux/auth/selectors'
+import { hasSuperAdmin } from 'reducers/auth/selectors'
 
 export default () => {
     const isSuperAdmin = useSelector(hasSuperAdmin)

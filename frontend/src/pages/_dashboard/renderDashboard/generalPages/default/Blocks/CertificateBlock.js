@@ -8,8 +8,8 @@ import GradientBox from 'components/generic/GradientBox'
 import { Typography } from '@mui/material'
 import { RegistrationStatuses, EventHelpers } from '@hackjunction/shared'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as UserSelectors from 'redux/user/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
 
 import Button from 'components/generic/Button'
 //import ParticipationCertificate from 'components/pdfs/ParticipationCertificate'

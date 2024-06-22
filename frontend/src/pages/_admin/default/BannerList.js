@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 
 import BannerService from 'services/banner'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 export default ({ data = [] }) => {
     const dispatch = useDispatch()

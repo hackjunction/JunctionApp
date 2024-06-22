@@ -1,7 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
 import { Grid, Box, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(theme => ({
     filterItem: {

@@ -1,76 +1,57 @@
 import React from 'react'
-
-import { makeStyles } from '@mui/styles'
 import { Box } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
+import clsx from 'clsx'
 
-const getBackgroundColor = (type, theme) => {
+const getBackgroundColor = type => {
     switch (type) {
         case 'success':
-            return theme.palette.primary.main
+            return 'bg-primary-main'
         case 'error':
-            return theme.palette.error.light
+            return 'bg-red-500'
         case 'warning':
-            return 'orange'
+            return 'bg-orange-500'
         case 'info':
-            return '#888'
+            return 'bg-gray-500'
         default:
-            return '#888'
+            return 'bg-gray-500'
     }
 }
 
-const useStyles = makeStyles(theme => ({
-    root: ({ type }) => ({
-        padding: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: getBackgroundColor(type, theme),
-    }),
-    icon: {
-        color: 'white',
-        fontSize: '32px',
-    },
-}))
+const getIcon = type => {
+    switch (type) {
+        case 'success':
+            return <CheckCircleOutlinedIcon className="text-white text-4xl" />
+        case 'error':
+            return <ErrorOutlineOutlinedIcon className="text-white text-4xl" />
+        case 'warning':
+            return <ReportProblemOutlinedIcon className="text-white text-4xl" />
+        case 'info':
+            return <InfoOutlinedIcon className="text-white text-4xl" />
+        default:
+            return <InfoOutlinedIcon className="text-white text-4xl" />
+    }
+}
 
 const IconHeader = ({ type }) => {
-    const classes = useStyles({ type })
-    const getIcon = () => {
-        switch (type) {
-            case 'success':
-                return <CheckCircleOutlinedIcon className={classes.icon} />
-            case 'error':
-                return <ErrorOutlineOutlinedIcon className={classes.icon} />
-            case 'warning':
-                return <ReportProblemOutlinedIcon className={classes.icon} />
-            case 'info':
-                return <InfoOutlinedIcon className={classes.icon} />
-            default:
-                return <InfoOutlinedIcon className={classes.icon} />
-        }
-    }
-
-    return <Box className={classes.root}>{getIcon()}</Box>
+    return (
+        <Box
+            className={clsx(
+                'p-4 flex flex-col items-center justify-center',
+                getBackgroundColor(type),
+            )}
+        >
+            {getIcon(type)}
+        </Box>
+    )
 }
 
-export const SuccessHeader = props => {
-    return <IconHeader type="success" {...props} />
-}
-
-export const ErrorHeader = props => {
-    return <IconHeader type="error" {...props} />
-}
-
-export const WarningHeader = props => {
-    return <IconHeader type="warning" {...props} />
-}
-
-export const InfoHeader = props => {
-    return <IconHeader type="info" {...props} />
-}
+export const SuccessHeader = props => <IconHeader type="success" {...props} />
+export const ErrorHeader = props => <IconHeader type="error" {...props} />
+export const WarningHeader = props => <IconHeader type="warning" {...props} />
+export const InfoHeader = props => <IconHeader type="info" {...props} />
 
 export default IconHeader

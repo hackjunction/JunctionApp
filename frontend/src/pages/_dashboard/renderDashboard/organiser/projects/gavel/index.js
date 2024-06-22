@@ -11,8 +11,8 @@ import Paper from '@mui/material/Paper'
 import Chip from '@mui/material/Chip'
 
 import RankingsService from 'services/rankings'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 export default () => {
     const idToken = useSelector(AuthSelectors.getIdToken)

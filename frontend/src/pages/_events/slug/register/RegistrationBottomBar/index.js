@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
 import { Box, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'

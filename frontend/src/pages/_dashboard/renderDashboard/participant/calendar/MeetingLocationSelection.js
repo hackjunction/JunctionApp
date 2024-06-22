@@ -12,7 +12,7 @@ import {
     makeStyles,
 } from '@mui/material'
 import { getMeetingRooms } from 'graphql/queries/meetings'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 const useStyles = makeStyles(theme => ({
     background: {

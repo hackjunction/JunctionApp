@@ -11,11 +11,11 @@ import {
     Typography,
 } from '@mui/material'
 
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 import Button from 'components/generic/Button'
 import PageWrapper from 'components/layouts/PageWrapper'

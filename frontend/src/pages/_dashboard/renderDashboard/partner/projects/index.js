@@ -10,11 +10,11 @@ import ProjectsService from 'services/projects'
 import _ from 'lodash'
 
 import ProjectDetail from 'components/projects/ProjectDetail'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import ProjectScoresService from 'services/projectScores'
 import EvaluationForm from 'pages/_projects/slug/view/projectId/EvaluationForm'
 import Empty from 'components/generic/Empty'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 //TODO simplify this component and the reviewer score process
 //TODO make this and track one into a component

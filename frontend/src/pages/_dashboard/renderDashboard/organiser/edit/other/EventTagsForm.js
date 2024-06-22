@@ -19,7 +19,6 @@ import TextInput from 'components/inputs/TextInput'
 import Tag from 'components/generic/Tag'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@mui/styles'
 import { useFormField } from 'hooks/formHooks'
 
 const COLORS = [

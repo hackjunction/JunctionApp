@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { RegistrationStatuses } from '@hackjunction/shared'
-import { makeStyles } from '@mui/styles'
+
 import {
     Accordion,
     AccordionSummary,

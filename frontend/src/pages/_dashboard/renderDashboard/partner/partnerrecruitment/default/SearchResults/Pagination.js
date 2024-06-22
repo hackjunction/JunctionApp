@@ -7,8 +7,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
 import { useDebounce } from 'hooks/customHooks'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 export default () => {
     const dispatch = useDispatch()

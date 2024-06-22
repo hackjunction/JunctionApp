@@ -1,165 +1,84 @@
 import React from 'react'
-
-import { makeStyles } from '@mui/styles'
 import { useDispatch } from 'react-redux'
-import Hidden from '@mui/material/Hidden'
-
 import ExternalLink from 'components/generic/ExternalLink'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import Divider from 'components/generic/Divider'
-import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
 import config from 'constants/config'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        background: theme.palette.theme_black.main,
-        padding: theme.spacing(2),
-    },
-    inner: {
-        width: '100%',
-        maxWidth: '1120px',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row-reverse',
-        },
-    },
-    innerSecond: {
-        width: '100%',
-        maxWidth: '1120px',
-        margin: '48px auto 24px',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    copyright: {
-        flex: 1,
-        textAlign: 'center',
-        [theme.breakpoints.up('md')]: {
-            textAlign: 'left',
-        },
-        color: 'white',
-    },
-    links: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-            alignItems: 'flex-end',
-            textAlign: 'right',
-        },
-    },
-    logos: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            justifyContent: 'flex-start',
-        },
-    },
-    white: {
-        color: 'white',
-    },
-    align: {
-        '& button': {
-            marginLeft: 0,
-        },
-    },
-    innest: {
-        display: 'flex',
-        flexDirection: 'column',
-        textAlign: 'right',
-        '& button': {
-            alignSelf: 'flex-end',
-            marginRight: 0,
-        },
-    },
-}))
+import { Box, Typography, Button } from '@mui/material'
+import Hidden from '@mui/material/Hidden'
 
 const EventFooter = props => {
-    const classes = useStyles()
     const dispatch = useDispatch()
     const { t } = useTranslation()
+
     return (
-        <div className={classes.wrapper}>
-            <Grid container className={classes.innerSecond}>
-                <Grid item xs={12} md={6} xl={6} className={classes.align}>
-                    <Typography variant="h4" className={classes.white}>
+        <div className="bg-black p-8">
+            <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
+                <div className="w-full md:w-1/2 text-white text-center md:text-left">
+                    <Typography variant="h4">
                         {t('Platform_organise_hack_', {
                             owner: config.PLATFORM_OWNER_NAME,
                         })}
                     </Typography>
-                    <Button
-                        color="theme_lightgrayDark"
-                        variant="outlinedNew"
-                        strong
-                        onClick={() => dispatch(push('/contact'))}
-                    >
-                        {t('Contact_us_')}
-                    </Button>
-                    <Button
-                        color="theme_lightgrayDark"
-                        variant="outlinedNew"
-                        strong
-                        onClick={() => dispatch(push('/pricing'))}
-                    >
-                        {/* {t('Contact_us_')} */}
-                        Pricing
-                    </Button>
-                </Grid>
+                    <div className="mt-4">
+                        <Button
+                            color="theme_lightgrayDark"
+                            variant="outlinedNew"
+                            strong
+                            className="mr-4"
+                            onClick={() => dispatch(push('/contact'))}
+                        >
+                            {t('Contact_us_')}
+                        </Button>
+                        <Button
+                            color="theme_lightgrayDark"
+                            variant="outlinedNew"
+                            strong
+                            onClick={() => dispatch(push('/pricing'))}
+                        >
+                            Pricing
+                        </Button>
+                    </div>
+                </div>
                 <Hidden xsDown>
-                    <Grid item xs={6} md={6} x={6} className={classes.innest}>
-                        <Typography variant="h4" className={classes.white}>
+                    <div className="w-full md:w-1/2 text-white text-center md:text-right mt-8 md:mt-0">
+                        <Typography variant="h4">
                             {t('Join_hackerpack_')}
                         </Typography>
                         <Button
                             color="theme_lightgrayDark"
                             variant="outlinedNew"
                             strong
+                            className="mt-4"
                             onClick={() => dispatch(push('/hackerpack'))}
-                            className={classes.align}
                         >
                             {t('To_hackerpack_')}
                         </Button>
-                    </Grid>
+                    </div>
                 </Hidden>
-            </Grid>
-            <Divider size={5} />
-
-            <div className={classes.inner}>
-                <div className={classes.links}>
-                    <Divider size={1} />
-                    <ExternalLink theme="footer" href={config.TERMS_URL}>
-                        {t('Terms_')}
-                    </ExternalLink>
-                    <ExternalLink theme="footer" href={config.PRIVACY_URL}>
-                        {t('Privacy_')}
-                    </ExternalLink>
-                    <ExternalLink
-                        theme="footer"
-                        href={config.PLATFORM_OWNER_WEBSITE}
-                    >
-                        {t('Website_', {
-                            owner: config.PLATFORM_OWNER_NAME,
-                        })}
-                    </ExternalLink>
-                    <Divider size={1} />
-                </div>
-                <div className={classes.copyright}>
-                    <Divider size={1} />
-                    <span className={classes.copyright}>
-                        Designed and developed with ❤️ and ☕ by the Junction
-                        team, with the help of:
-                    </span>
-                    <Divider size={1} />
-                    <div className={classes.logos}>
+            </div>
+            <div className="container mx-auto mt-8">
+                <div className="flex flex-col items-center md:flex-row md:justify-between">
+                    <div className="flex flex-col items-center md:items-start text-white">
+                        <ExternalLink theme="footer" href={config.TERMS_URL}>
+                            {t('Terms_')}
+                        </ExternalLink>
+                        <ExternalLink theme="footer" href={config.PRIVACY_URL}>
+                            {t('Privacy_')}
+                        </ExternalLink>
+                        <ExternalLink
+                            theme="footer"
+                            href={config.PLATFORM_OWNER_WEBSITE}
+                        >
+                            {t('Website_', {
+                                owner: config.PLATFORM_OWNER_NAME,
+                            })}
+                        </ExternalLink>
+                    </div>
+                    <div className="mt-8 md:mt-0 text-white text-center">
+                        <Typography variant="body2">
+                            Designed and developed with ❤️ and ☕ by the
+                            Junction team, with the help of:
+                        </Typography>
                         <a
                             width="150"
                             height="50"
@@ -167,6 +86,7 @@ const EventFooter = props => {
                             target="_blank"
                             rel="noopener noreferrer"
                             alt="Single Sign On & Token Based Authentication - Auth0"
+                            className="block mt-4"
                         >
                             <img
                                 width="150"
@@ -176,13 +96,14 @@ const EventFooter = props => {
                             />
                         </a>
                     </div>
-                    <Divider size={1} />
                 </div>
             </div>
         </div>
     )
 }
+
 EventFooter.defaultProps = {
     hide_contact: false,
 }
+
 export default EventFooter

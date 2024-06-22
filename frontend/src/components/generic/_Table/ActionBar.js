@@ -1,25 +1,9 @@
 import React, { useMemo } from 'react'
-
 import { Box, Typography, Button } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 import { motion } from 'framer-motion'
 import { CSVLink } from 'react-csv'
 
-const useStyles = makeStyles(theme => ({
-    selectionActions: {
-        height: 0,
-        background: theme.palette.primary.main,
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-    },
-    selectionTitle: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-}))
-
 const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
-    const classes = useStyles()
     const selectionActive = selected.length > 0
 
     const _actions = useMemo(() => {
@@ -40,7 +24,6 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
                                         key: header.id,
                                     }
                                 }
-                                // Not a proper header, filter it out
                                 return false
                             })
                             .filter(item => item)}
@@ -56,16 +39,11 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
 
     return (
         <motion.div
-            className={classes.selectionActions}
-            variants={{
-                visible: {
-                    height: 'auto',
-                },
-                hidden: {
-                    height: 0,
-                },
-            }}
-            animate={selectionActive ? 'visible' : 'hidden'}
+            className={`overflow-hidden box-border bg-primary-main ${
+                selectionActive ? 'h-auto' : 'h-0'
+            }`}
+            initial={{ height: 0 }}
+            animate={{ height: selectionActive ? 'auto' : 0 }}
         >
             <Box
                 p={1}
@@ -78,7 +56,7 @@ const ActionBar = ({ selected, actions = [], enableExport, flatHeaders }) => {
                 <Box width="100%" mt={1}>
                     <Typography
                         variant="subtitle2"
-                        className={classes.selectionTitle}
+                        className="text-white font-bold"
                     >
                         {selected.length} selected
                     </Typography>

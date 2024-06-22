@@ -4,8 +4,8 @@ import { Box, Typography, Checkbox } from '@mui/material'
 import { Misc } from '@hackjunction/shared'
 import FilterItem from './FilterItem'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 const ACTIVELY_LOOKING = Misc.recruitmentStatuses.items['actively-looking']
 const UP_FOR_DISCUSSIONS = Misc.recruitmentStatuses.items['up-for-discussions']

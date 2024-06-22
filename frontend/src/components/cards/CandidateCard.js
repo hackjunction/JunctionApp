@@ -15,8 +15,8 @@ import {
 import Button from 'components/generic/Button'
 import 'react-multi-carousel/lib/styles.css'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import ParticipantPreview from 'components/Participant/ParticipantPreview'

@@ -16,10 +16,10 @@ import {
 import { Skills } from '@hackjunction/shared'
 import { find } from 'lodash-es'
 import { useDispatch } from 'react-redux'
-import { makeStyles } from '@mui/styles'
+
 import Select from 'components/inputs/Select'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(theme => ({
     radioGroup: {

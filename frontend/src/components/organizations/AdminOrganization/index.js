@@ -1,8 +1,6 @@
 import React from 'react'
 import { Grid, Typography } from '@mui/material'
 
-import { makeStyles } from '@mui/styles'
-
 import Button from 'components/generic/Button'
 import { useDispatch } from 'react-redux'
 

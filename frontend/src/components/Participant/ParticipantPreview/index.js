@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import Profile from 'components/Participant/Profile'
 import { set } from 'react-ga'
 import { useDispatch } from 'react-redux'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
 import { gradientRandomizer } from 'utils/stylingHelpers'
 
 export default ({ viewMode = 'card', userData = {}, enabledView = false }) => {

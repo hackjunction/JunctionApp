@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Box, List, Button } from '@mui/material'
 
 import Modal from 'components/generic/Modal'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { useTranslation } from 'react-i18next'
 import UserListItem from 'components/generic/UserListItem'
 

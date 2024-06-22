@@ -1,28 +1,21 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { Button, Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-const useButtonStyles = makeStyles(theme => ({
-    button: {
-        marginLeft: theme.spacing(2),
-    },
-}))
 
 const StepButtons = ({ numSteps, activeStep, onBack, onNext, onFinish }) => {
-    const classes = useButtonStyles()
     const { t } = useTranslation()
     return (
         <Box p={2} display="flex" flexDirection="row" justifyContent="flex-end">
             <Button
-                className={classes.button}
+                className="ml-2"
                 disabled={activeStep === 0}
                 onClick={onBack}
             >
                 {t('Back_')}
             </Button>
             <Button
-                className={classes.button}
+                className={'ml-2'}
                 variant="contained"
                 color="primary"
                 onClick={activeStep === numSteps - 1 ? onFinish : onNext}

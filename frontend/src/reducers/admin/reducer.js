@@ -1,5 +1,5 @@
 import * as ActionTypes from './actionTypes'
-import * as AuthActionTypeas from 'redux/auth/actionTypes'
+import * as AuthActionTypeas from 'reducers/auth/actionTypes'
 import { handle } from 'redux-pack'
 
 const initialState = {

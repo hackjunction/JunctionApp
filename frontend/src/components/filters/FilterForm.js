@@ -7,7 +7,7 @@ import {
     FilterValues,
     FilterHelpers,
 } from '@hackjunction/shared'
-import { makeStyles } from '@mui/styles'
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
     Grid,
@@ -21,23 +21,10 @@ import {
 import { useTranslation } from 'react-i18next'
 import Select from 'components/inputs/SelectOld'
 import FilterValueInput from './FilterValueInput'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-
-const useStyles = makeStyles(theme => ({
-    paper: {
-        padding: theme.spacing(2),
-    },
-    headingItem: {
-        marginRight: theme.spacing(1),
-    },
-    body: {
-        padding: theme.spacing(3),
-    },
-}))
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default ({ onSubmit }) => {
     const event = useSelector(OrganiserSelectors.event)
-    const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
     const [filter, setFilter] = useState()
     const [filterType, setFilterType] = useState()
@@ -132,11 +119,11 @@ export default ({ onSubmit }) => {
                 aria-controls="panel1c-content"
                 id="panel1c-header"
             >
-                <div className={classes.headingItem}>
+                <div className="p-2">
                     <Typography color="textPrimary">Add a filter</Typography>
                 </div>
             </AccordionSummary>
-            <AccordionDetails className={classes.body}>
+            <AccordionDetails className="p-3">
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Select

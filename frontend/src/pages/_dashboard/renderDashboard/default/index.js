@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 //
 import { useDispatch, useSelector } from 'react-redux'
-// import { makeStyles } from '@mui/styles'
+//
 
 import SidebarLayout from 'components/layouts/SidebarLayout' //TODO: make normal sidepar work with default view
 import BasicNavBar from 'components/navbars/BasicNavBar'
 import PageWrapper from 'components/layouts/PageWrapper'
 import defaultImage from 'assets/images/dashboardDefault.jpg'
 
-// import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
+// import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import { useTranslation } from 'react-i18next'
 import {
@@ -41,7 +41,7 @@ import {
 
 export default () => {
     // const classes = useStyles()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const dispatch = useDispatch()

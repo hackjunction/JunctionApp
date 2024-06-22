@@ -4,7 +4,6 @@ import UserAvatar from 'components/UserAvatar'
 import LanguageMenu from 'components/LanguageMenu'
 
 import { Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
 import navbarWaves from 'assets/images/nawbar_waves.svg'
 

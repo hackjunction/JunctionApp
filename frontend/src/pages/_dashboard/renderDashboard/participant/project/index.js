@@ -13,7 +13,7 @@ import Button from 'components/generic/Button'
 import SubmissionForm from './SubmissionForm'
 import ProjectsList from './ProjectsList'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 export default () => {
     const dispatch = useDispatch()

@@ -8,7 +8,7 @@ import ProjectsGridItem from '../ProjectsGridItem'
 import ProjectScoresService from 'services/projectScores'
 import { useSelector } from 'react-redux'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import _ from 'lodash'
 import Filter from 'components/Team/Filter'
 

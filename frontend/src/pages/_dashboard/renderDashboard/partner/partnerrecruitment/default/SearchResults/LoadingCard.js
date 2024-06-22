@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { Paper, Box } from '@mui/material'
 import { Skeleton } from '@mui/lab'
 

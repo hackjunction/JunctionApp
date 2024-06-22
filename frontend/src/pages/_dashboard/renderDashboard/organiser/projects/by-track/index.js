@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import ProjectsTable from 'components/tables/ProjectsTable'
 import TrackLink from './TrackLink'

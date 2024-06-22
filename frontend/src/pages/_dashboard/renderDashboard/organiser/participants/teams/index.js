@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import TeamsTable from 'components/tables/TeamsTable'

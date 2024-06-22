@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
@@ -18,7 +18,7 @@ import LayoutMap3 from 'assets/images/venueMap2023/LayoutMap-venue-03.jpg'
 import { Grid, Typography } from '@mui/material'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const floorNeg1 = () => {

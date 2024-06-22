@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import DashboardIcon from '@mui/icons-material/Dashboard'
-import AmpStoriesIcon from '@mui/icons-material/AmpStories'
+import WebStoriesOutlined from '@mui/icons-material/WebStoriesOutlined'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import EventIcon from '@mui/icons-material/Event'
 import WorkIcon from '@mui/icons-material/Work'
 import PlaceIcon from '@mui/icons-material/Place'
 import RateReviewIcon from '@mui/icons-material/RateReview'
-import { makeStyles } from '@mui/styles'
+
 import { Typography } from '@mui/material'
 
 import SidebarLayout from 'components/layouts/SidebarLayout'
@@ -53,7 +53,7 @@ export default ({
     lockedPages,
 }) => {
     const classes = useStyles()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
     const [alertCount, setAlertCount] = useState(originalAlertCount)
     const [alerts, setAlerts] = useState(originalAlerts)
@@ -125,7 +125,7 @@ export default ({
                     key: 'hackerpack',
                     path: '/hackerpack',
                     exact: true,
-                    icon: <AmpStoriesIcon />,
+                    icon: <WebStoriesOutlined />,
                     hidden: !shownPages?.hackerPack,
                     label: 'Hackerpack',
                     component: HackerpackPage,

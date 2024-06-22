@@ -10,9 +10,9 @@ import PageHeader from 'components/generic/PageHeader'
 import NewEventCard from 'components/events/NewEventCard'
 import Button from 'components/generic/Button'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'

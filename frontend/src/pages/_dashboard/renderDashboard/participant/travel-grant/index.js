@@ -5,7 +5,7 @@ import moment from 'moment-timezone'
 
 import PageHeader from 'components/generic/PageHeader'
 
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import TravelGrantForm from './TravelGrantForm'
 import GradientBox from 'components/generic/GradientBox'

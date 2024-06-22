@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { Box, Typography, Button } from '@mui/material'
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined'
 

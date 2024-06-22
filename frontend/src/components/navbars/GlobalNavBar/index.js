@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import UserMenu from 'components/UserMenu'
 import Button from 'components/generic/Button'
 

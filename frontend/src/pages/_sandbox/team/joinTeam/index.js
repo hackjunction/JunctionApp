@@ -26,10 +26,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Divider from '@mui/material/Divider'
 
 import { Formik } from 'formik'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { useRouteMatch, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import { UPDATE_EVENT } from 'graphql/mutations/eventOps'
@@ -76,7 +76,7 @@ export default () => {
             )
         },
     })
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const event = useSelector(OrganiserSelectors.event)

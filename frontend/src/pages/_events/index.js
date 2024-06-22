@@ -1,14 +1,14 @@
 import React from 'react'
 
 import { Route, Switch, Redirect } from 'react-router-dom'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 
 import EventDetailRouter from './slug'
 import PastEvents from './past'
 import EventTracking from './slug/tracking'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
 
     return (
         <Switch>

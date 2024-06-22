@@ -1,52 +1,30 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
 import { Box, Typography, Grid } from '@mui/material'
-
 import Markdown from 'components/generic/Markdown'
-
 import Button from 'components/generic/Button'
 import defaultLogo from 'assets/logos/JunctionPlatform_Emblem_Black.svg'
 import { OutboundLink } from 'react-ga'
 
-const useStyles = makeStyles(theme => ({
-    companyLogo: {
-        width: '200px',
-    },
-    outboundLink: {
-        '& a': {
-            textDecoration: 'none !important',
-        },
-    },
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-        },
-    },
-}))
-
-export default ({ name, logo, partner, description, link, redeemable }) => {
-    const classes = useStyles()
-
+const PartnerCard = ({
+    name,
+    logo,
+    partner,
+    description,
+    link,
+    redeemable,
+}) => {
     return (
-        <Box className={classes.wrapper}>
+        <Box className="flex flex-col items-center md:flex-row md:items-start">
             <Grid container direction="row" spacing={3}>
                 <Grid item xs={4}>
                     <Box p={3}>
                         {logo ? (
-                            <img
-                                alt={logo}
-                                src={logo.url}
-                                className={classes.companyLogo}
-                            />
+                            <img alt={logo} src={logo.url} className="w-52" />
                         ) : (
                             <img
                                 alt="default logo"
                                 src={defaultLogo}
-                                className={classes.companyLogo}
+                                className="w-52"
                             />
                         )}
                     </Box>
@@ -60,11 +38,12 @@ export default ({ name, logo, partner, description, link, redeemable }) => {
                             <Markdown source={description} />
                         </Typography>
                         {redeemable ? (
-                            <Box className={classes.outboundLink}>
+                            <Box>
                                 <OutboundLink
                                     eventLabel="myLabel"
                                     to={link}
                                     target="_blank"
+                                    className="no-underline"
                                 >
                                     <Button color="primary" variant="contained">
                                         Redeem
@@ -78,3 +57,5 @@ export default ({ name, logo, partner, description, link, redeemable }) => {
         </Box>
     )
 }
+
+export default PartnerCard

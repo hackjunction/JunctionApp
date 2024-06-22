@@ -15,14 +15,13 @@ import {
     FormControlLabel,
     Checkbox,
 } from '@mui/material'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import EventService from 'services/events'
 
 import Select from 'components/inputs/Select'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@mui/styles'
 import { useFormField } from 'hooks/formHooks'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 import { EventPageScripts } from '@hackjunction/shared'

@@ -11,7 +11,7 @@ import ImageUpload from 'components/inputs/ImageUpload'
 import Select from 'components/inputs/Select'
 import Timeline from '../timeline'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { useAllOrganizations } from 'graphql/queries/organization'
 import ColorSelect from 'components/inputs/Color'
 import Button from 'components/generic/Button'

@@ -13,8 +13,8 @@ import {
 import Empty from 'components/generic/Empty'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
 
 export default ({ onRevoke }) => {
     const dispatch = useDispatch()

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import EventsService from 'services/events'
 import VotingTokenService from 'services/votingToken'
 import EventDetailContext from '../context'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { EventHelpers } from '@hackjunction/shared'
 import moment from 'moment'
 

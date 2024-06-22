@@ -1,59 +1,19 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        position: 'fixed',
-        top: 0,
-        width: '100%',
-        height: '100%',
-        flex: 1,
-        padding: 0,
-        background: 'black',
-    },
-    backgroundImage: ({ backgroundOpacity }) => ({
-        zIndex: 2,
-        position: 'absolute',
-        objectFit: 'cover',
-        objectPosition: 'center',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        filter: 'blur(5px)',
-        opacity: backgroundOpacity,
-    }),
-    inner: {
-        position: 'absolute',
-        zIndex: 3,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-
-        overflowY: 'scroll',
-        [theme.breakpoints.up('md')]: {
-            padding: theme.spacing(5),
-        },
-    },
-}))
-
 export default ({ background, backgroundOpacity = 1, children }) => {
-    const classes = useStyles({ backgroundOpacity })
     return (
-        <div className={classes.wrapper}>
+        <div className="fixed top-0 w-full h-full flex bg-black">
             {background && (
                 <img
-                    className={classes.backgroundImage}
+                    className="absolute object-cover object-center top-0 left-0 w-full h-full filter blur-md"
+                    style={{ opacity: backgroundOpacity }}
                     src={background}
                     alt="Background"
                 />
             )}
-            <div className={classes.inner}>{children}</div>
+            <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center overflow-y-scroll md:p-5 z-3">
+                {children}
+            </div>
         </div>
     )
 }

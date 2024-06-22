@@ -9,7 +9,6 @@ import config from 'constants/config'
 import { useTranslation } from 'react-i18next'
 
 import { Box, Grid, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
 import BannerCarousel from 'components/generic/BannerCarousel'
 import Button from 'components/generic/Button'

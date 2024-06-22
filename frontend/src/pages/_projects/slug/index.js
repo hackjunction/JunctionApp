@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 
 import { Switch, Route, Redirect } from 'react-router-dom'
 import PageWrapper from 'components/layouts/PageWrapper'
@@ -14,7 +14,7 @@ import GalleryChallengeAdmin from './challenge/token'
 import GalleryTrackAdmin from './track/token'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const dispatch = useDispatch()
     const { slug } = match.params
     const [error, setError] = useState(false)

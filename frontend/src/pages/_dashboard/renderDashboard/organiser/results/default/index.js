@@ -2,9 +2,8 @@ import React from 'react'
 
 import { useDispatch } from 'react-redux'
 
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 
-import { makeStyles } from '@mui/styles'
 import { Grid, Paper, Box, Typography, ButtonBase } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
@@ -18,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
     const classes = useStyles()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     return (
         <Grid container spacing={3}>

@@ -7,8 +7,8 @@ import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import AdminTeamEdit from 'components/Team/AdminTeamEdit'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import TeamsService from 'services/teams'
 

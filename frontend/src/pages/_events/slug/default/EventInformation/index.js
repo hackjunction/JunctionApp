@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Typography, Box } from '@mui/material'
 import moment from 'moment'
-import { makeStyles } from '@mui/styles'
+
 import EventButtons from '../EventButtons'
 
 const useStyles = makeStyles(theme => ({

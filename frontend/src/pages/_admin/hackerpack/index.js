@@ -1,9 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Box, Grid } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+
 import { Formik, FastField } from 'formik'
 import * as yup from 'yup'
 
@@ -15,10 +15,10 @@ import MarkdownInput from 'components/inputs/MarkdownInput'
 
 import HackerpackService from 'services/hackerpack'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as AdminActions from 'redux/admin/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as AdminActions from 'reducers/admin/actions'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(theme => ({
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const { slug } = match.params

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { makeStyles } from '@mui/styles'
 import { Box, ListItem, ListItemText, Grid } from '@mui/material'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import JunctionTheme from 'junctionTheme.js'
 import Button from 'components/generic/Button'
 import UserAvatar from 'components/UserAvatar'

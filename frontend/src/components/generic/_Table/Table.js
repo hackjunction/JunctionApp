@@ -7,8 +7,6 @@ import {
     useRowSelect,
     useExpanded,
 } from 'react-table'
-
-import { makeStyles, darken } from '@mui/material/styles'
 import {
     Box,
     Table,
@@ -21,68 +19,11 @@ import {
     Checkbox,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-
 import Empty from 'components/generic/Empty'
-
 import Pagination from './Pagination'
 import ActionBar from './ActionBar'
 import FilterFunctions from './filterFunctions'
 import { Filters, Sorters } from './index'
-
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        width: '100%',
-        overflowX: 'scroll',
-        position: 'relative',
-    },
-    table: {
-        background: theme.palette.background.paper,
-    },
-    tableRow: ({ onRowClick, renderExpanded }) => {
-        const baseStyles = {}
-        const clickableStyles = {
-            cursor: 'pointer',
-            '&:hover': {
-                background: 'rgba(0,0,0,0.05)',
-                transition: 'all 0.2s ease',
-            },
-        }
-        if (
-            typeof onRowClick === 'function' ||
-            typeof renderExpanded === 'function'
-        ) {
-            return {
-                ...baseStyles,
-                ...clickableStyles,
-            }
-        } else {
-            return baseStyles
-        }
-    },
-    tableHead: {
-        background: darken(theme.palette.primary.main, 0.3),
-    },
-    tableHeadRow: {},
-    tableHeadCell: {
-        color: 'white !important',
-        fontWeight: 'bold',
-        fontSize: '12px',
-        lineHeight: '14px',
-        whiteSpace: 'nowrap',
-        transition: 'color 0.2s ease',
-    },
-    tableHeadCellActive: {
-        color: `white !important`,
-    },
-    tableHeadSortIcon: {
-        color: `white !important`,
-    },
-    tableCell: {},
-    tableFooter: {},
-    expandedRow: {
-        background: 'rgba(0,0,0,0.10)',
-    },
-}))
 
 const _Table = ({
     columns,
@@ -94,10 +35,8 @@ const _Table = ({
     enableExport,
     renderExpanded,
 }) => {
-    const classes = useStyles({ onRowClick })
-    const defaultColumn = React.useMemo(
+    const defaultColumn = useMemo(
         () => ({
-            // Let's set up our default Filter UI
             ...Filters.Disabled,
             ...Sorters.Disabled,
         }),
@@ -140,11 +79,8 @@ const _Table = ({
         hooks => {
             if (enableSelection) {
                 hooks.columns.push(columns => [
-                    // Let's make a column for selection
                     {
                         id: 'selection',
-                        // The header can use the table's getToggleAllRowsSelectedProps method
-                        // to render a checkbox
                         Header: ({ getToggleAllRowsSelectedProps }) => (
                             <div>
                                 <Checkbox
@@ -153,8 +89,6 @@ const _Table = ({
                                 />
                             </div>
                         ),
-                        // The cell can use the individual row's getToggleRowSelectedProps method
-                        // to the render a checkbox
                         Cell: ({ row }) => (
                             <div onClick={e => e.stopPropagation()}>
                                 <Checkbox
@@ -224,19 +158,19 @@ const _Table = ({
                         flatHeaders={flatHeaders}
                     />
                 )}
-                <Box className={classes.wrapper}>
-                    <Table {...getTableProps()} className={classes.table}>
-                        <TableHead className={classes.tableHead}>
+                <Box className="w-full overflow-x-scroll relative">
+                    <Table {...getTableProps()} className="bg-white">
+                        <TableHead className="bg-gray-800">
                             {headerGroups.map(headerGroup => (
                                 <TableRow
                                     {...headerGroup.getHeaderGroupProps()}
-                                    className={classes.tableHeadRow}
                                 >
                                     {headerGroup.headers.map(column => (
                                         <TableCell
                                             {...column.getHeaderProps(
                                                 column.getSortByToggleProps(),
                                             )}
+                                            className="text-white font-bold text-xs whitespace-nowrap transition-colors duration-200"
                                         >
                                             <TableSortLabel
                                                 active={
@@ -248,11 +182,7 @@ const _Table = ({
                                                         ? 'desc'
                                                         : 'asc'
                                                 }
-                                                classes={{
-                                                    root: classes.tableHeadCell,
-                                                    active: classes.tableHeadCellActive,
-                                                    icon: classes.tableHeadSortIcon,
-                                                }}
+                                                className="text-white"
                                                 IconComponent={ExpandMoreIcon}
                                                 hideSortIcon
                                             >
@@ -268,14 +198,18 @@ const _Table = ({
                         <TableBody {...getTableBodyProps()}>
                             {page.map((row, i) => {
                                 prepareRow(row)
-                                return [
-                                    <TableRow
-                                        {...row.getRowProps()}
-                                        className={classes.tableRow}
-                                        onClick={handleRowClick.bind(null, row)}
-                                    >
-                                        {row.cells.map(cell => {
-                                            return (
+                                return (
+                                    <React.Fragment key={row.id}>
+                                        <TableRow
+                                            {...row.getRowProps()}
+                                            className={`${
+                                                (onRowClick ||
+                                                    renderExpanded) &&
+                                                'cursor-pointer hover:bg-gray-100 transition-all duration-200'
+                                            }`}
+                                            onClick={() => handleRowClick(row)}
+                                        >
+                                            {row.cells.map(cell => (
                                                 <TableCell
                                                     {...cell.getCellProps()}
                                                     onClick={e => {
@@ -289,23 +223,22 @@ const _Table = ({
                                                 >
                                                     {cell.render('Cell')}
                                                 </TableCell>
-                                            )
-                                        })}
-                                    </TableRow>,
-                                    row.isExpanded && (
-                                        <TableRow
-                                            className={classes.expandedRow}
-                                            key={
-                                                row.getRowProps()?.key +
-                                                '_expanded'
-                                            }
-                                        >
-                                            <TableCell colSpan={columnCount}>
-                                                {renderExpanded(row)}
-                                            </TableCell>
+                                            ))}
                                         </TableRow>
-                                    ),
-                                ]
+                                        {row.isExpanded && (
+                                            <TableRow
+                                                className="bg-gray-100"
+                                                key={`${row.id}_expanded`}
+                                            >
+                                                <TableCell
+                                                    colSpan={columnCount}
+                                                >
+                                                    {renderExpanded(row)}
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </React.Fragment>
+                                )
                             })}
                         </TableBody>
                     </Table>

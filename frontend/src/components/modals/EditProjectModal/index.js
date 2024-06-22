@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux'
 import React, { useState, useMemo } from 'react'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import {
     Dialog,
     List,

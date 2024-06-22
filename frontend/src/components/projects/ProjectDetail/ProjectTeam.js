@@ -3,7 +3,7 @@ import ShowIfPermission from 'hocs/ShowIfPermission'
 import { Auth as AuthConstants } from '@hackjunction/shared'
 import ExternalLink from 'components/generic/ExternalLink'
 import { useSelector } from 'react-redux'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import {
     CircularProgress,

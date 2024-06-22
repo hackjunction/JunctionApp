@@ -4,13 +4,13 @@ import { useFormik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Typography, Box, Grid } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+
 import * as yup from 'yup'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserActions from 'redux/user/actions'
-import * as AuthActions from 'redux/auth/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserActions from 'reducers/user/actions'
+import * as AuthActions from 'reducers/auth/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
 import Button from 'components/generic/Button'
 import UserProfilesService from 'services/userProfiles'

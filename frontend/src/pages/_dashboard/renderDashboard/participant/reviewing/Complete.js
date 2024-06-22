@@ -2,7 +2,6 @@ import React from 'react'
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { Grid, Box, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(theme => ({
     icon: {

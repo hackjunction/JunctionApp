@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { Box, Typography } from '@mui/material'
 import Button from 'components/generic/Button'
 import TextInput from '../../submission/components/inputs/TextInput'

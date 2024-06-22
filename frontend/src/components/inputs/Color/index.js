@@ -1,48 +1,8 @@
-import { makeStyles } from '@mui/styles'
 import React, { useState } from 'react'
 import { CompactPicker } from 'react-color'
 
-const useStyles = makeStyles({
-    wrapper: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    previewCircle: {
-        height: 30,
-        width: 30,
-        border: '1px solid lightgray',
-        borderRadius: '50%',
-        background: props => props.backgroundColor,
-        display: 'inline-block',
-        marginRight: 8,
-        cursor: 'pointer',
-    },
-    previewText: {
-        padding: '8px 16px',
-        background: 'lightgray',
-        borderRadius: 6,
-        cursor: 'pointer',
-    },
-    picker: {
-        position: 'absolute',
-        zIndex: 501,
-
-        '& .compact-picker': {
-            boxShadow: 'rgba(0, 0, 0, 0.3) 0px 0px 8px !important',
-        },
-    },
-    pageCover: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-})
-
 const ColorSelect = ({ onChange = color => {}, value = '' }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const classes = useStyles({ backgroundColor: value })
 
     const togglePicker = () => {
         setIsOpen(!isOpen)
@@ -55,21 +15,29 @@ const ColorSelect = ({ onChange = color => {}, value = '' }) => {
 
     return (
         <div>
-            <div className={classes.wrapper}>
+            <div className="flex items-center">
                 <span
-                    className={classes.previewCircle}
+                    className="h-7 w-7 border border-lightgray rounded-full mr-2 cursor-pointer"
+                    style={{ backgroundColor: value }}
                     onClick={togglePicker}
                 />
-                <span className={classes.previewText} onClick={togglePicker}>
+                <span
+                    className="px-4 py-2 bg-lightgray rounded-md cursor-pointer"
+                    onClick={togglePicker}
+                >
                     {value}
                 </span>
             </div>
             {isOpen && (
-                <div className={classes.picker}>
-                    <div className={classes.pageCover} onClick={togglePicker} />
+                <div className="absolute z-50">
+                    <div
+                        className="fixed top-0 left-0 right-0 bottom-0"
+                        onClick={togglePicker}
+                    />
                     <CompactPicker
                         color={value}
                         onChangeComplete={onColorChange}
+                        className="shadow-md"
                     />
                 </div>
             )}

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import CheckIcon from '@mui/icons-material/Check'
 
 const useStyles = makeStyles(theme => ({

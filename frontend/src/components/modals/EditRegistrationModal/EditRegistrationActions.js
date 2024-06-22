@@ -8,7 +8,7 @@ import EventTagsSelect from 'components/inputs/EventTagsSelect'
 import OrganiserSelectModal from 'components/modals/OrganiserSelectModal'
 import RegistrationStatusSelect from 'components/inputs/RegistrationStatusSelect'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 import { useTranslation } from 'react-i18next'
 import { useFormField } from 'hooks/formHooks'
 

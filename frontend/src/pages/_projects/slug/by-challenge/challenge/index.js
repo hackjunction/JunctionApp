@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 
 import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { find, sortBy } from 'lodash-es'
 import { Box } from '@mui/material'
 
@@ -11,7 +11,7 @@ import ProjectsGrid from 'components/projects/ProjectsGrid'
 
 export default ({ event, projects }) => {
     const dispatch = useDispatch()
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
 
     const onProjectSelected = useCallback(
         project => {

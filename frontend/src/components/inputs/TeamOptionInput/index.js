@@ -1,19 +1,10 @@
 import React, { useCallback } from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { Grid, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import BooleanInput from 'components/inputs/BooleanInput'
 
-const useStyles = makeStyles(theme => ({
-    label: {
-        fontWeight: 'bold',
-    },
-    hint: {},
-}))
-
 const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
-    const classes = useStyles()
     const { t } = useTranslation()
     const handleChange = useCallback(
         (fieldName, fieldValue) => {
@@ -27,10 +18,10 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Typography className={classes.label} variant="subtitle2">
+                <Typography className=" tw-font-bold" variant="subtitle2">
                     {t('Apply_as_team_')}
                 </Typography>
-                <Typography className={classes.hint} variant="subtitle2">
+                <Typography variant="subtitle2">
                     {t('Please_note_apply_')}
                 </Typography>
                 <BooleanInput
@@ -44,10 +35,10 @@ const TeamOptionInput = ({ value, onChange, onBlur = () => {}, autoFocus }) => {
             </Grid>
             {value.applyAsTeam && (
                 <Grid item xs={12}>
-                    <Typography className={classes.label} variant="subtitle2">
+                    <Typography className=" tw-font-bold" variant="subtitle2">
                         {t('Apply_also_alone_')}
                     </Typography>
-                    <Typography className={classes.hint} variant="subtitle2">
+                    <Typography variant="subtitle2">
                         {t('Apply_also_entire_')}
                     </Typography>
                     <BooleanInput

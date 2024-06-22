@@ -6,8 +6,8 @@ import { Box, Typography, Checkbox } from '@mui/material'
 import { Misc } from '@hackjunction/shared'
 import FilterItem from './FilterItem'
 
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
 
 const LOOKING_FOR_CHANGE = Misc.relocationOptions.items['looking-for-change']
 const WILLING_TO_RELOCATE = Misc.relocationOptions.items['willing-to-relocate']

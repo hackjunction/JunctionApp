@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { Button as MuiButton, Badge } from '@mui/material'
 import Button from 'components/generic/Button'
 

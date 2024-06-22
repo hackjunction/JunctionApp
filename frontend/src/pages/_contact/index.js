@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { Button, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { TextField } from '@mui/material'
 
@@ -14,9 +14,9 @@ import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import config from 'constants/config'
 
-// import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as AuthActions from 'redux/auth/actions'
+// import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as AuthActions from 'reducers/auth/actions'
 import EmailService from 'services/email'
 import Shared from '@hackjunction/shared'
 import { useTranslation } from 'react-i18next'

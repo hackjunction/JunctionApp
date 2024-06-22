@@ -12,7 +12,6 @@ import Container from 'components/generic/Container'
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
 import PricingCard from 'components/generic/PricingCard'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { makeStyles } from '@mui/styles'
 
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

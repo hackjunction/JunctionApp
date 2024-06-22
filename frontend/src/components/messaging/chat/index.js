@@ -12,7 +12,7 @@ import schema from '@hackjunction/shared/schemas/validation/messageSchema'
 import { fieldNameFromStoreName } from '@apollo/client/cache'
 import { Button } from 'antd'
 import { useSelector } from 'react-redux'
-import { userProfile } from 'redux/user/selectors'
+import { userProfile } from 'reducers/user/selectors'
 
 /**
  * Functioncomponent that renders a chat

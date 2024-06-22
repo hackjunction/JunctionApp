@@ -12,7 +12,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import DescriptionItem from 'components/generic/DescriptionItem'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default React.memo(({ registration }) => {
     const event = useSelector(OrganiserSelectors.event)

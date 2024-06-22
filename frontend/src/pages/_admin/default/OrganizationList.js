@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { Grid, Box, Typography } from '@mui/material'
 
-import { makeStyles } from '@mui/styles'
-
 import Button from 'components/generic/Button'
 
 import { OutboundLink } from 'react-ga'
@@ -18,7 +16,7 @@ import Divider from 'components/generic/Divider'
 import { useTranslation } from 'react-i18next'
 
 import OrganizationService from 'services/organization'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 const useStyles = makeStyles(theme => ({
     outboundLink: {

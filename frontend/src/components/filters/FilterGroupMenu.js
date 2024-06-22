@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
-import { makeStyles } from '@mui/styles'
 import { useSelector } from 'react-redux'
 import { sortBy } from 'lodash-es'
 import {
@@ -18,11 +17,7 @@ import FilterForm from './FilterForm'
 import FilterList from './FilterList'
 import FilterSaveForm from './FilterSaveForm'
 import { useTranslation } from 'react-i18next'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-
-const useStyles = makeStyles(theme => ({
-    root: {},
-}))
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 export default ({
     onChange = () => {},
@@ -31,7 +26,6 @@ export default ({
 }) => {
     const filterGroups = useSelector(OrganiserSelectors.filterGroups)
     const { t } = useTranslation()
-    const classes = useStyles()
     const [anchorEl, setAnchorEl] = React.useState(null)
 
     const [selected, setSelected] = useState()
@@ -104,7 +98,7 @@ export default ({
     const reservedLabels = options.map(option => option.label)
 
     return (
-        <Paper className={classes.root}>
+        <Paper>
             <List component="nav" aria-label="Selected filter group">
                 <ListItem
                     button
