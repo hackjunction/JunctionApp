@@ -4,13 +4,7 @@ import { useSelector } from 'react-redux'
 import Button from 'components/generic/Button'
 import Switch from 'components/generic/Switch'
 
-import {
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    makeStyles,
-} from '@mui/material'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { getMeetingRooms } from 'graphql/queries/meetings'
 import * as DashboardSelectors from 'reducers/dashboard/selectors'
 

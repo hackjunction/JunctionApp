@@ -1,13 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react'
 import { useResolvedPath } from 'react-router'
 import { useDispatch } from 'react-redux'
-import {
-    Switch,
-    Route,
-    Redirect,
-    useLocation,
-    useParams,
-} from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import PageWrapper from 'components/layouts/PageWrapper'
 import * as RecruitmentActions from 'reducers/recruitment/actions'
@@ -26,7 +20,7 @@ export default () => {
     //console.log(match.url)
 
     return (
-        <Switch>
+        <Routes>
             <Route exact={true} path={`${match.url}`} component={SearchPage} />
             {/* <Route exact={true} path=`${match.url}/recruitment/admin` component={AdminPage} /> */}
             <Route
@@ -39,8 +33,8 @@ export default () => {
                 path={`${match.url}/admin`}
                 component={AdminPage}
             /> */}
-            <Redirect to={`${match.url}`} />
-        </Switch>
+            <Navigate to={`${match.url}`} />
+        </Routes>
     )
 }
 
@@ -64,7 +58,7 @@ export default () => {
 //                 color="primary"
 //                 variant="contained"
 //             >
-//                 Switch between participant / partner view (only for dev)
+//                 Routes between participant / partner view (only for dev)
 //             </Button> */
 //             }
 //             <div className="recruitment">

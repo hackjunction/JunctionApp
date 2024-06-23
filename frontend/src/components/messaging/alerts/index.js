@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment-timezone'
-import { Grid, Typography, makeStyles } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 
 const useStyles = makeStyles(theme => ({

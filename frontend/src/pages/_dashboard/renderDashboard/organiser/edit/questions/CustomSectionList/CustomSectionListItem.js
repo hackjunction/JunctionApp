@@ -20,19 +20,6 @@ import Empty from 'components/generic/Empty'
 import { now } from 'moment'
 import { debugGroup } from 'utils/debuggingTools'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: {
-        padding: theme.spacing(2),
-        background: 'white',
-        boxShadow: '2px 7px 30px rgba(0, 0, 0, 0.12)',
-        borderRadius: '7px',
-        marginBottom: theme.spacing(2),
-    },
-    descriptionWrapper: {
-        marginTop: theme.spacing(2),
-    },
-}))
-
 export default ({
     section,
     onChange,
@@ -44,7 +31,6 @@ export default ({
 }) => {
     debugGroup('Custom section')
     const { t } = useTranslation()
-    const classes = useStyles()
     const questions = section.questions || []
 
     const renderPlaceholderInput = question => {
@@ -72,7 +58,7 @@ export default ({
             case 'single-choice': {
                 return (
                     <div className=" tw-flex tw-flex-col tw-gap-2">
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1">
                             Options to choose from
                         </Typography>
                         <EditableOptions
@@ -122,9 +108,7 @@ export default ({
             case 'boolean': {
                 return (
                     <div className=" tw-flex tw-flex-col tw-gap-2">
-                        <Typography variant="body1" className={classes.label}>
-                            Default value
-                        </Typography>
+                        <Typography variant="body1">Default value</Typography>
                         <Switch
                             checked={question.settings.default || false}
                             onChange={value =>
@@ -149,7 +133,7 @@ export default ({
                 return (
                     <>
                         {/* <div className=" tw-flex tw-flex-col tw-gap-2">
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1" >
                             Maximum file size
                         </Typography>
                         <TextInput
@@ -168,7 +152,7 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Maximum file size in megabytes
                         </Typography>
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1" >
                             Allowed file types
                         </Typography>
                         <Checkbox
@@ -196,7 +180,7 @@ export default ({
             case 'link': {
                 return (
                     <div className=" tw-flex tw-flex-col tw-gap-2">
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1">
                             Link placeholder
                         </Typography>
                         <TextInput

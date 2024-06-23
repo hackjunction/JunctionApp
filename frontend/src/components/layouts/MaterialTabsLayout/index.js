@@ -1,11 +1,9 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { findIndex } from 'lodash-es'
 import { Tabs, Tab, Typography, Box, useMediaQuery } from '@mui/material'
-import { makeStyles, useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props
@@ -38,13 +36,13 @@ function a11yProps(index) {
 }
 
 const TabNavigation = ({ tabs, location, baseRoute, transparent = false }) => {
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const pushRoute = useCallback(
         path => {
-            dispatch(push(`${baseRoute}${path}`))
+            navigate(`${baseRoute}${path}`)
         },
-        [baseRoute, dispatch],
+        [baseRoute, navigate],
     )
 
     const handleChange = (event, newValue) => {
@@ -91,16 +89,16 @@ const TabNavigation = ({ tabs, location, baseRoute, transparent = false }) => {
                 ))}
             </Tabs>
             <Box mt={3} p={2}>
-                <Switch>
+                <Routes>
                     {tabs.map(({ key, path, component }) => (
                         <Route
                             key={key}
                             exact={true}
                             path={`${baseRoute}${path}`}
-                            component={component}
+                            element={component}
                         />
                     ))}
-                </Switch>
+                </Routes>
             </Box>
         </div>
     )

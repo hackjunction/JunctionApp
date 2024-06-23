@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, makeStyles } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 
 import PageHeader from 'components/generic/PageHeader'

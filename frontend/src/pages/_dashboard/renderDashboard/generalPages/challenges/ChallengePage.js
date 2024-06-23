@@ -1,4 +1,4 @@
-import { Box, makeStyles } from '@mui/material'
+import { Box } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
 import Button from 'components/generic/Button'
 import Markdown from 'components/generic/Markdown'

@@ -72,7 +72,7 @@ const RegistrationSectionLabel = ({
         <Box className={classes.wrapper}>
             <CheckCircleOutlineOutlinedIcon className={classes.check} />
             <Button disabled={active} onClick={onClick}>
-                <Typography className={classes.label} variant="subtitle1">
+                <Typography className="font-bold" variant="subtitle1">
                     {label}
                 </Typography>
             </Button>

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 
-import { Grid, Box, Typography, makeStyles } from '@mui/material'
+import { Grid, Box, Typography } from '@mui/material'
 import { useDispatch } from 'react-redux'
 
 import EventHeroImage from 'components/events/EventHeroImage'

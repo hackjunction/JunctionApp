@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import { useResolvedPath } from 'react-router'
 
 import EventDetailRouter from './slug'
@@ -11,7 +11,7 @@ export default () => {
     const url = useResolvedPath("").pathname;
 
     return (
-        <Switch>
+        <Routes>
             <Route
                 exact
                 path={`${match.url}/:slug/tracking/:pageId`}
@@ -20,7 +20,7 @@ export default () => {
             <Route path={`${match.url}/:slug`} component={EventDetailRouter} />
             {/** TODO: Consider adding a generic list of events at /events */}
             <Route path="/events" component={PastEvents} />
-            <Redirect to="/" />
-        </Switch>
+            <Navigate to="/" />
+        </Routes>
     )
 }

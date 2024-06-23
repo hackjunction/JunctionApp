@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useResolvedPath, useLocation } from 'react-router'
 
@@ -30,7 +30,7 @@ const EventDetailRouter = () => {
             render={() => {
                 return (
                     <AnimatePresence>
-                        <Switch location={location} key={location.pathname}>
+                        <Routes location={location} key={location.pathname}>
                             <Route
                                 exact
                                 path={`${match.url}`}
@@ -48,8 +48,8 @@ const EventDetailRouter = () => {
                                 path={`${match.url}/finalist-voting`}
                                 component={FinalistVoting}
                             />
-                            <Redirect to={`${match.url}`} />
-                        </Switch>
+                            <Navigate to={`${match.url}`} />
+                        </Routes>
                     </AnimatePresence>
                 )
             }}

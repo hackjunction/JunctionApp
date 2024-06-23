@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 
 import { useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useActiveEvents, usePastEvents } from 'graphql/queries/events'
 
 import config from 'constants/config'
@@ -40,9 +40,9 @@ export default () => {
         <>
             {
                 userIsAuthenticated ? (
-                    <Redirect to="/dashboard/default" />
+                    <Navigate to="/dashboard/default" />
                 ) : (
-                    <Redirect to="/home" />
+                    <Navigate to="/home" />
                 )
                 // <Route
                 //     exact={true}

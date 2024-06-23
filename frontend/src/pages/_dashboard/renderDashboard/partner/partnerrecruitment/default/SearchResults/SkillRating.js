@@ -1,6 +1,6 @@
 import React from 'react'
 import Rating from '@mui/lab/Rating'
-import { withStyles, makeStyles } from '@mui/material/styles'
+import { withStyles } from '@mui/material/styles'
 import { Typography, Tooltip, Grid } from '@mui/material/'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import PropTypes from 'prop-types'
@@ -53,7 +53,7 @@ const SkillRating = ({ data, small = false, showTooltip, size }) => {
                 <Grid key={data.skill} item xs={6} wrap="nowrap">
                     <Typography
                         variant={small ? 'caption' : 'inherit'}
-                        className={classes.label}
+                        className="font-bold"
                         align="left"
                     >
                         {data.skill}

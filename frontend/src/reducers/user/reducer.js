@@ -1,6 +1,5 @@
 import * as ActionTypes from './actionTypes'
 import * as AuthActionTypes from 'reducers/auth/actionTypes'
-import { handle } from 'redux-pack'
 
 const initialState = {
     profile: null,
@@ -15,25 +14,31 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.UPDATE_PROFILE: {
-            return handle(state, action, {
-                start: prevState => ({
-                    ...prevState,
-                    profileLoading: true,
-                    profileError: false,
-                }),
-                finish: prevState => ({
-                    ...prevState,
-                    profileLoading: false,
-                }),
-                failure: prevState => ({
-                    ...prevState,
-                    profileError: true,
-                }),
-                success: prevState => ({
-                    ...prevState,
-                    profile: action.payload,
-                }),
-            })
+            switch(action.status) {
+                case 'start':
+                    return {
+                        ...state,
+                        profileLoading: true,
+                        profileError: false,
+                    }
+                case 'finish':
+                    return {
+                        ...state,
+                        profileLoading: false,
+                    }
+                case 'failure':
+                    return {
+                        ...state,
+                        profileError: true,
+                    }
+                case 'success':
+                    return {
+                        ...state,
+                        profile: action.payload,
+                    }
+                default:
+                    return state
+            }
         }
         case ActionTypes.SET_PROFILE: {
             return {

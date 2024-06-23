@@ -1,8 +1,7 @@
 import React, { useMemo, useEffect, useCallback } from 'react'
-
 import { useDispatch } from 'react-redux'
 import { findIndex } from 'lodash-es'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Container from 'components/generic/Container/index'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -10,7 +9,6 @@ import LockIcon from '@mui/icons-material/Lock'
 import StorageIcon from '@mui/icons-material/Storage'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import {
     Drawer,
     List,
@@ -27,95 +25,6 @@ import EventsPage from 'pages/_dashboard/renderDashboard/default/events'
 import ProfilePage from 'pages/_account/profile' //TODO: fix the profile view
 
 import config from 'constants/config'
-
-const SIDEBAR_WIDTH = 300
-
-const useStyles = makeStyles(theme => ({
-    drawer: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        [theme.breakpoints.up('md')]: {
-            width: SIDEBAR_WIDTH,
-            flexShrink: 0,
-        },
-    },
-    menuIcon: {
-        transition: theme.transitions.create(['transform'], {
-            duration: theme.transitions.duration.standard,
-        }),
-    },
-    dashboardOpen: {
-        transform: 'rotate(-90deg)',
-    },
-    dashboardClosed: {
-        transform: 'rotate(0)',
-    },
-    wordmark: {
-        display: 'block',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        padding: '5px',
-        top: 0,
-        height: '70px',
-    },
-    drawerToggle: {
-        padding: '10px',
-        position: 'fixed',
-        top: theme.spacing(1),
-        left: theme.spacing(1),
-        zIndex: 100,
-    },
-    drawerToggleDesktop: {
-        padding: '10px',
-        position: 'fixed',
-        top: theme.spacing(1),
-        left: ({ desktopOpen }) =>
-            desktopOpen ? SIDEBAR_WIDTH + theme.spacing(1) : theme.spacing(1),
-        zIndex: 100,
-        transition: 'left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
-    },
-    content: {
-        flexGrow: 1,
-        position: 'relative',
-        transition: 'margin-left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
-        [theme.breakpoints.up('md')]: {
-            marginLeft: ({ desktopOpen }) => (desktopOpen ? SIDEBAR_WIDTH : 0),
-        },
-    },
-    drawerPaper: {
-        width: SIDEBAR_WIDTH,
-        maxWidth: '80%',
-        background: 'black',
-        zIndex: 998,
-    },
-
-    listItem: {
-        color: 'rgba(255,255,255,0.6)',
-    },
-    listItemSelected: {
-        color: 'white',
-    },
-    listItemTextPrimary: {
-        color: 'inherit',
-    },
-    listItemTextSecondary: {
-        color: 'inherit',
-    },
-    listItemIcon: {
-        color: 'inherit',
-    },
-    pageWrapper: {
-        padding: 0,
-        [theme.breakpoints.up('md')]: {
-            padding: theme.spacing(2),
-        },
-    },
-    pageWrapperInner: {
-        padding: theme.spacing(2),
-        maxWidth: '1400px',
-    },
-}))
 
 export default React.memo(
     ({
@@ -183,8 +92,6 @@ export default React.memo(
         const [mobileOpen, setMobileOpen] = React.useState(false)
         const [desktopOpen, setDesktopOpen] = React.useState(true)
 
-        const classes = useStyles({ desktopOpen })
-
         const handleDrawerToggle = () => {
             setMobileOpen(!mobileOpen)
         }
@@ -201,7 +108,7 @@ export default React.memo(
                             src={
                                 PlatformLogo /*config.LOGO_LIGHT_URL TODO: switch this to cloudinary*/
                             }
-                            className={classes.wordmark}
+                            className="block mx-auto p-1.5 h-18"
                             alt={config.PLATFORM_OWNER_NAME + ' logo'}
                         />
                     </a>
@@ -217,15 +124,14 @@ export default React.memo(
                                     button
                                     key={route.path}
                                     selected={index === safeIndex}
-                                    classes={{
-                                        root: classes.listItem,
-                                        selected: classes.listItemSelected,
-                                    }}
+                                    className={`${
+                                        index === safeIndex
+                                            ? 'text-white'
+                                            : 'text-gray-400'
+                                    }`}
                                     onClick={() => pushRoute(route.path)}
                                 >
-                                    <ListItemIcon
-                                        className={classes.listItemIcon}
-                                    >
+                                    <ListItemIcon className="text-inherit">
                                         {route.locked ? (
                                             <LockIcon />
                                         ) : (
@@ -233,12 +139,7 @@ export default React.memo(
                                         )}
                                     </ListItemIcon>
                                     <ListItemText
-                                        classes={{
-                                            primary:
-                                                classes.listItemTextPrimary,
-                                            secondary:
-                                                classes.listItemTextSecondary,
-                                        }}
+                                        className="text-inherit"
                                         primary={route.label}
                                         secondary={
                                             route.locked
@@ -249,28 +150,26 @@ export default React.memo(
                                 </ListItem>
                             )
                         })}
-                    <hr className="tw-h-px tw-my-8 tw-w-4/5 tw-bg-gray-500 tw-border-0 tw-dark:bg-gray-900"></hr>
-                    <div className="tw-grid tw-place-items-center">
+                    <hr className="h-px my-8 w-4/5 bg-gray-500 border-0 dark:bg-gray-900"></hr>
+                    <div className="grid place-items-center">
                         <ListItem
                             button
                             key={'/events'}
                             selected={routes.length === safeIndex}
-                            classes={{
-                                root: classes.listItem,
-                                selected: classes.listItemSelected,
-                            }}
+                            className={`${
+                                routes.length === safeIndex
+                                    ? 'text-white'
+                                    : 'text-gray-400'
+                            }`}
                             onClick={() => {
                                 pushRoute('/events')
                             }}
                         >
-                            <ListItemIcon className={classes.listItemIcon}>
+                            <ListItemIcon className="text-inherit">
                                 <StorageIcon />
                             </ListItemIcon>
                             <ListItemText
-                                classes={{
-                                    primary: classes.listItemTextPrimary,
-                                    secondary: classes.listItemTextSecondary,
-                                }}
+                                className="text-inherit"
                                 primary={'Events'}
                             />
                         </ListItem>
@@ -278,20 +177,18 @@ export default React.memo(
                             button
                             key={'/profile'}
                             selected={routes.length + 1 === safeIndex}
-                            classes={{
-                                root: classes.listItem,
-                                selected: classes.listItemSelected,
-                            }}
+                            className={`${
+                                routes.length + 1 === safeIndex
+                                    ? 'text-white'
+                                    : 'text-gray-400'
+                            }`}
                             onClick={() => pushRoute('/profile')}
                         >
-                            <ListItemIcon className={classes.listItemIcon}>
+                            <ListItemIcon className="text-inherit">
                                 <AccountBoxIcon />
                             </ListItemIcon>
                             <ListItemText
-                                classes={{
-                                    primary: classes.listItemTextPrimary,
-                                    secondary: classes.listItemTextSecondary,
-                                }}
+                                className="text-inherit"
                                 primary={'Profile'}
                             />
                         </ListItem>
@@ -299,20 +196,18 @@ export default React.memo(
                             button
                             key={'/logout'}
                             selected={routes.length + 2 === safeIndex}
-                            classes={{
-                                root: classes.listItem,
-                                selected: classes.listItemSelected,
-                            }}
+                            className={`${
+                                routes.length + 2 === safeIndex
+                                    ? 'text-white'
+                                    : 'text-gray-400'
+                            }`}
                             onClick={() => dispatch(push('/logout'))}
                         >
-                            <ListItemIcon className={classes.listItemIcon}>
+                            <ListItemIcon className="text-inherit">
                                 <ExitToAppIcon />
                             </ListItemIcon>
                             <ListItemText
-                                classes={{
-                                    primary: classes.listItemTextPrimary,
-                                    secondary: classes.listItemTextSecondary,
-                                }}
+                                className="text-inherit"
                                 primary={'Log Out'}
                             />
                         </ListItem>
@@ -322,12 +217,12 @@ export default React.memo(
         )
 
         return (
-            <div className={classes.root}>
+            <div>
                 <Hidden mdUp implementation="css">
                     <IconButton
                         variant="roundedBlack"
                         onClick={handleDrawerToggle}
-                        className={classes.drawerToggle}
+                        className="p-2 fixed top-2 left-2 z-50"
                         aria-label="toggle drawer"
                     >
                         <MenuIcon fontSize="large" />
@@ -337,27 +232,27 @@ export default React.memo(
                     <IconButton
                         variant="roundedBlack"
                         onClick={handleDrawerToggleDesktop}
-                        className={classes.drawerToggleDesktop}
+                        className={`p-2 fixed top-2 z-50 transition-all ${
+                            desktopOpen ? 'left-[calc(300px+0.5rem)]' : 'left-2'
+                        }`}
                         aria-label="toggle drawer desktop"
                     >
                         <MenuIcon
-                            className={`${classes.menuIcon} ${
-                                desktopOpen
-                                    ? classes.dashboardOpen
-                                    : classes.dashboardClosed
+                            className={`transition-transform ${
+                                desktopOpen ? 'rotate-[-90deg]' : 'rotate-0'
                             }`}
                         />
                     </IconButton>
                 </Hidden>
                 <Hidden mdUp implementation="css">
-                    <nav className={classes.drawer}>
+                    <nav className="fixed top-0 left-0 md:w-[300px] md:flex-shrink-0">
                         <Drawer
                             variant="temporary"
                             anchor="left"
                             open={mobileOpen}
                             onClose={handleDrawerToggle}
                             classes={{
-                                paper: classes.drawerPaper,
+                                paper: 'w-[300px] max-w-[80%] bg-black z-[998]',
                             }}
                             ModalProps={{
                                 keepMounted: true, // Better open performance on mobile.
@@ -368,10 +263,10 @@ export default React.memo(
                     </nav>
                 </Hidden>
                 <Hidden smDown implementation="css">
-                    <nav className={classes.drawerDesktop}>
+                    <nav className="fixed top-0 left-0 md:w-[300px] md:flex-shrink-0">
                         <Drawer
                             classes={{
-                                paper: classes.drawerPaper,
+                                paper: 'w-[300px] max-w-[80%] bg-black z-[998]',
                             }}
                             variant="persistent"
                             anchor="left"
@@ -382,60 +277,63 @@ export default React.memo(
                         </Drawer>
                     </nav>
                 </Hidden>
-                <main className={classes.content}>
+                <main
+                    className={`flex-grow relative transition-all ${
+                        desktopOpen ? 'ml-[300px]' : 'ml-0'
+                    }`}
+                >
                     {topContent}
-                    <Container
-                        className={classes.pageWrapperInner}
-                        wrapperClass={classes.pageWrapper}
-                    >
-                        <Switch>
-                            {routes.map(
-                                (
-                                    {
-                                        key,
-                                        path,
-                                        hidden,
-                                        component,
-                                        exact = false,
-                                        locked,
+                    <Container className="p-0 md:p-8">
+                        <div className="p-8 max-w-[1400px]">
+                            <Routes>
+                                {routes.map(
+                                    (
+                                        {
+                                            key,
+                                            path,
+                                            hidden,
+                                            component,
+                                            exact = false,
+                                            locked,
+                                        },
+                                        index,
+                                    ) => {
+                                        if (hidden || locked) {
+                                            return null
+                                        } else {
+                                            return (
+                                                <Route
+                                                    key={key}
+                                                    exact={exact}
+                                                    path={`${baseRoute}${path}`}
+                                                    component={component}
+                                                />
+                                            )
+                                        }
                                     },
-                                    index,
-                                ) => {
-                                    if (hidden || locked) {
-                                        return null
-                                    } else {
-                                        return (
-                                            <Route
-                                                key={key}
-                                                exact={exact}
-                                                path={`${baseRoute}${path}`}
-                                                component={component}
-                                            />
-                                        )
-                                    }
-                                },
-                            )}
+                                )}
 
-                            <Route
-                                key={'profile'}
-                                exact={true}
-                                path={`${baseRoute}/profile`}
-                                component={ProfilePage}
-                            />
-                            <Route
-                                key={'logout'}
-                                exact={true}
-                                path={`${baseRoute}/logout`}
-                            />
-                            <Route
-                                key={'events'}
-                                exact={false}
-                                path={`${baseRoute}/events`}
-                                component={EventsPage}
-                            />
+                                <Route
+                                    key={'profile'}
+                                    exact={true}
+                                    path={`${baseRoute}/profile`}
+                                    component={ProfilePage}
+                                />
+                                <Route
+                                    key={'logout'}
+                                    exact={true}
+                                    path={`${baseRoute}/logout`}
+                                />
+                                <Route
+                                    key={'events'}
+                                    exact={false}
+                                    path={`${baseRoute}/events`}
+                                    component={EventsPage}
+                                />
 
-                            <Redirect to={`${baseRoute}/events`} />
-                        </Switch>
+                                <Navigate to={`${baseRoute}/events`} />
+                            </Routes>
+                        </div>
                     </Container>
                 </main>
             </div>

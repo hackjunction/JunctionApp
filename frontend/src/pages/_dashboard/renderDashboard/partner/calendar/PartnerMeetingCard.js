@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Button from 'components/generic/Button'
-import { makeStyles, IconButton, Box } from '@mui/material'
+import { IconButton, Box } from '@mui/material'
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 

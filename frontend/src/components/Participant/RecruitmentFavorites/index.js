@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { makeStyles, lighten } from '@mui/material/styles'
+import { lighten } from '@mui/material/styles'
 import { Button as MuiButton, IconButton, Tooltip } from '@mui/material'
 
 import StarIcon from '@mui/icons-material/Star'

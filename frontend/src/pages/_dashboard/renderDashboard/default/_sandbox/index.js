@@ -1,6 +1,6 @@
 import React from 'react'
 import { useResolvedPath } from 'react-router'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 
 import DefaultPage from './default'
 import TeamPage from './team'
@@ -10,7 +10,7 @@ import FilesPage from './files'
 export default () => {
     const url = useResolvedPath("").pathname;
     return (
-        <Switch>
+        <Routes>
             <Route exact={true} path={`${match.url}`} component={DefaultPage} />
             <Route
                 exact={true}
@@ -22,7 +22,7 @@ export default () => {
                 path={`${match.url}/:slug`}
                 component={TeamPage}
             />
-            <Redirect to={match.url} />
-        </Switch>
+            <Navigate to={match.url} />
+        </Routes>
     )
 }

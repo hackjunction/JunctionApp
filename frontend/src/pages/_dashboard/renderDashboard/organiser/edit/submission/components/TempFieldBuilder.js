@@ -2,14 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 
 import { isEmpty } from 'lodash-es'
 
-import {
-    Box,
-    Typography,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-} from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 import Dropdown from './section/Dropdown'
 import Switch from '../../../../../../../components/generic/Switch'
@@ -28,12 +21,6 @@ const initialData = {
     fieldType: 'text',
 }
 
-const useStyles = makeStyles(theme => ({
-    label: {
-        fontWeight: 'bold',
-    },
-}))
-
 export default ({
     initialValue = initialData,
     sectionName,
@@ -45,7 +32,6 @@ export default ({
     onEditCancel,
     editing,
 }) => {
-    const classes = useStyles()
     const [data, setData] = useState(initialValue)
 
     useEffect(() => {
@@ -151,7 +137,7 @@ export default ({
     const renderPlaceholderInput = () => {
         return (
             <>
-                <Typography variant="body1" className={classes.label}>
+                <Typography variant="body1" className="font-bold">
                     Placeholder
                 </Typography>
                 <TextInput
@@ -172,7 +158,7 @@ export default ({
             case 'single-choice': {
                 return (
                     <>
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1" className="font-bold">
                             Options to choose from
                         </Typography>
                         <EditableOptions
@@ -219,7 +205,7 @@ export default ({
             case 'boolean': {
                 return (
                     <>
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1" className="font-bold">
                             Default value
                         </Typography>
                         <Switch
@@ -244,7 +230,7 @@ export default ({
             case 'attachment': {
                 return (
                     <>
-                        {/* <Typography variant="body1" className={classes.label}>
+                        {/* <Typography variant="body1" className="font-bold">
                             Maximum file size
                         </Typography>
                         <TextInput
@@ -261,7 +247,7 @@ export default ({
                         <Typography variant="caption" paragraph>
                             Maximum file size in megabytes
                         </Typography>
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1" className="font-bold">
                             Allowed file types
                         </Typography>
                         <Checkbox
@@ -284,7 +270,7 @@ export default ({
             case 'Link': {
                 return (
                     <>
-                        <Typography variant="body1" className={classes.label}>
+                        <Typography variant="body1" className="font-bold">
                             Link
                         </Typography>
                         <TextInput
@@ -311,7 +297,7 @@ export default ({
     return (
         <>
             <div>
-                <Typography variant="body1" className={classes.label}>
+                <Typography variant="body1" className="font-bold">
                     Label
                 </Typography>
                 <TextInput
@@ -322,7 +308,7 @@ export default ({
                 <Typography variant="caption" paragraph>
                     The name of your question
                 </Typography>
-                <Typography variant="body1" className={classes.label}>
+                <Typography variant="body1" className="font-bold">
                     Machine name
                 </Typography>
                 <TextInput
@@ -337,7 +323,7 @@ export default ({
                     field will not be visible to the end-user.
                 </Typography>
                 <div className="tw-flex tw-space-x-2 tw-items-center">
-                    <Typography variant="body1" className={classes.label}>
+                    <Typography variant="body1" className="font-bold">
                         Question type:
                     </Typography>
                     <Dropdown
@@ -380,7 +366,7 @@ export default ({
                     Choose question type to put in the submission form
                 </Typography>
                 {renderFieldTypeOptions()}
-                <Typography variant="body1" className={classes.label}>
+                <Typography variant="body1" className="font-bold">
                     Hint
                 </Typography>
                 <TextInput
@@ -393,7 +379,7 @@ export default ({
                     just like the one you're reading right now
                 </Typography>
                 <div className="tw-flex tw-space-x-2 tw-items-center">
-                    <Typography variant="body1" className={classes.label}>
+                    <Typography variant="body1" className="font-bold">
                         Required?
                     </Typography>
                     <Switch

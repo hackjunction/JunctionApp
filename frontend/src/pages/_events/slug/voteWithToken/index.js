@@ -1,4 +1,4 @@
-import { Box, Dialog, Grid, makeStyles, Paper } from '@mui/material'
+import { Box, Dialog, Grid, Paper } from '@mui/material'
 import Button from 'components/generic/Button'
 import Select from 'components/inputs/Select'
 import ProjectDetail from 'components/projects/ProjectDetail'

@@ -1,6 +1,5 @@
 import * as ActionTypes from './actionTypes'
 import * as AuthActionTypeas from 'reducers/auth/actionTypes'
-import { handle } from 'redux-pack'
 
 const initialState = {
     users: [],
@@ -20,36 +19,60 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case ActionTypes.LOAD_USERS: {
-            return handle(state, action, {
-                start: prevState => ({
-                    ...prevState,
-                    usersLoading: true,
-                    usersError: false,
-                }),
-                finish: prevState => ({ ...prevState, usersLoading: false }),
-                failure: prevState => ({ ...prevState, usersError: true }),
-                success: prevState => ({
-                    ...prevState,
-                    users: action.payload,
-                    usersUpdated: Date.now(),
-                }),
-            })
+            switch(action.status) {
+                case 'start':
+                    return {
+                        ...state,
+                        usersLoading: true,
+                        usersError: false,
+                    }
+                case 'finish':
+                    return {
+                        ...state,
+                        usersLoading: false,
+                    }
+                case 'failure':
+                    return {
+                        ...state,
+                        usersError: true,
+                    }
+                case 'success':
+                    return {
+                        ...state,
+                        users: action.payload,
+                        usersUpdated: Date.now(),
+                    }
+                default:
+                    return state
+            }
         }
         case ActionTypes.LOAD_ROLES: {
-            return handle(state, action, {
-                start: prevState => ({
-                    ...prevState,
-                    rolesLoading: true,
-                    rolesError: false,
-                }),
-                finish: prevState => ({ ...prevState, rolesLoading: false }),
-                failure: prevState => ({ ...prevState, rolesError: true }),
-                success: prevState => ({
-                    ...prevState,
-                    roles: action.payload,
-                    rolesUpdated: Date.now(),
-                }),
-            })
+            switch(action.status) {
+                case 'start':
+                    return {
+                        ...state,
+                        rolesLoading: true,
+                        rolesError: false,
+                    }
+                case 'finish':
+                    return {
+                        ...state,
+                        rolesLoading: false,
+                    }
+                case 'failure':
+                    return {
+                        ...state,
+                        rolesError: true,
+                    }
+                case 'success':
+                    return {
+                        ...state,
+                        roles: action.payload,
+                        rolesUpdated: Date.now(),
+                    }
+                default:
+                    return state
+            }
         }
         case ActionTypes.SET_USERS_FILTERS_ROLES: {
             return {

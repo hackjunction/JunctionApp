@@ -23,7 +23,7 @@ const DetailSection = ({ label, children }) => {
             flexDirection="column"
             mb={3}
         >
-            <Typography className={classes.label} variant="subtitle1">
+            <Typography className="font-bold" variant="subtitle1">
                 {label}
             </Typography>
             {children}

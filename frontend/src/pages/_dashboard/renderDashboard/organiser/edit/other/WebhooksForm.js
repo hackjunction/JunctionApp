@@ -12,8 +12,6 @@ import {
     Grid,
     Typography,
     ListItemIcon,
-    // Switch,
-    FormControlLabel,
 } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import BlockIcon from '@mui/icons-material/Block'
@@ -29,14 +27,7 @@ const ACTIONS = ['save', 'remove']
 
 const RESOURCES = ['Project', 'Registration']
 
-const useStyles = makeStyles(theme => ({
-    errorMessage: {
-        color: theme.palette.error.main,
-    },
-}))
-
 export default ({ value = [], fieldName, setFieldValue }) => {
-    const classes = useStyles()
     const name = useFormField('', value => {
         if (!value || value.length === 0) {
             return 'A webhook name is required'
@@ -163,9 +154,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={name.value}
                     onChange={name.setValue}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {name.error}
-                </Typography>
+                <Typography variant="caption">{name.error}</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
                 <Select
@@ -178,9 +167,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                         value: resource,
                     }))}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {resource.error}
-                </Typography>
+                <Typography variant="caption">{resource.error}</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
                 <Select
@@ -193,9 +180,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                         value: action,
                     }))}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {action.error}
-                </Typography>
+                <Typography variant="caption">{action.error}</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
                 <TextInput
@@ -203,9 +188,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     value={url.value}
                     onChange={url.setValue}
                 />
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {url.error}
-                </Typography>
+                <Typography variant="caption">{url.error}</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
                 <Switch
@@ -220,9 +203,7 @@ export default ({ value = [], fieldName, setFieldValue }) => {
                     //     color="primary"
                     //     name="enabled"
                     // /> */}
-                <Typography variant="caption" className={classes.errorMessage}>
-                    {enabled.error}
-                </Typography>
+                <Typography variant="caption">{enabled.error}</Typography>
             </Grid>
             <Grid item xs={12} md={3}>
                 <Button

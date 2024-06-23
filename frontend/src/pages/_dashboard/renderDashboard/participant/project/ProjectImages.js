@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Grid, Box, MobileStepper, Button } from '@mui/material'
 
-import SwipeableViews from 'react-swipeable-views'
+import { SwipeableViews } from 'components/animated/SwipeableViews'
 
 import ImageUpload from 'components/inputs/ImageUpload'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import { useResolvedPath } from 'react-router'
 
 import GlobalNavBar from 'components/navbars/GlobalNavBar'
@@ -11,14 +11,14 @@ export default () => {
     return (
         <>
             <GlobalNavBar />
-            <Switch>
+            <Routes>
                 <Route
                     exact={false}
                     path={`${match.url}/:slug`}
                     component={ProjectGallery}
                 />
-                <Redirect to="/" />
-            </Switch>
+                <Navigate to="/" />
+            </Routes>
         </>
     )
 }

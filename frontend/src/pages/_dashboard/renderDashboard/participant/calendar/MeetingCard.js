@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Button from 'components/generic/Button'
 import MuiButton from '@mui/material/Button'
 import { Grid, Box, IconButton } from '@mui/material'
-import { makeStyles, Tooltip, withStyles } from '@mui/material'
+import { Tooltip, withStyles } from '@mui/material'
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 

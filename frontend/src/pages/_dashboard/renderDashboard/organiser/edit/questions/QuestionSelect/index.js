@@ -19,14 +19,7 @@ const fieldsMapped = Object.keys(fields)
 const fieldsByCategory = groupBy(fieldsMapped, f => f.category.id)
 const categories = RegistrationFields.getCategoriesArray()
 
-const useStyles = makeStyles(theme => ({
-    sectionLabel: {
-        fontWeight: 'bold',
-    },
-}))
-
 export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
-    const classes = useStyles()
     const handleChange = useCallback(
         (fieldName, isOptional, isRequired) => {
             if (isOptional) {
@@ -109,7 +102,7 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
             {categories.map(({ id, label }) => (
                 <Box mb={2}>
                     <Typography
-                        className={classes.sectionLabel}
+                        className="font-bold"
                         variant="button"
                         gutterBottom
                     >

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, withStyles } from '@mui/material/styles'
+import { withStyles } from '@mui/material/styles'
 import {
     Stepper,
     Step,
@@ -194,7 +194,7 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
                         StepIconComponent={props => (
                             <TimelineDot {...props} accentColor={accentColor} />
                         )}
-                        className={classes.label}
+                        className="font-bold"
                     >
                         <Typography variant="button" className={classes.date}>
                             {item.date}

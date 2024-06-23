@@ -1,37 +1,40 @@
-/* eslint-disable react/prop-types */
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { withSnackbar } from 'notistack'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSnackbar } from 'notistack'
 import { Button } from '@mui/material'
 import { removeSnackbar } from 'reducers/snackbar/actions'
 import * as SnackbarSelectors from 'reducers/snackbar/selectors'
 
-class Notifier extends Component {
-    displayed = []
+const Notifier = () => {
+    //This is dumb, doesn't need redux :D
+    //TODO use hooks
+    const dispatch = useDispatch()
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+    const notifications = useSelector(SnackbarSelectors.notifications)
+    const [displayed, setDisplayed] = useState([])
 
-    storeDisplayed = id => {
-        this.displayed = [...this.displayed, id]
+    const storeDisplayed = id => {
+        setDisplayed(prevDisplayed => [...prevDisplayed, id])
     }
 
-    removeDisplayed = id => {
-        this.displayed = this.displayed.filter(key => id !== key)
+    const removeDisplayed = id => {
+        setDisplayed(prevDisplayed => prevDisplayed.filter(key => id !== key))
     }
 
-    buildMessage = (message, options, key) => {
+    const buildMessage = (message, options, key) => {
         if (options?.errorMessages?.length > 0) {
             return (
                 <div>
                     <p>{message}</p>
                     <ul>
-                        {options.errorMessages.map(message => {
-                            return <li key={message}>{message}</li>
-                        })}
+                        {options.errorMessages.map(msg => (
+                            <li key={msg}>{msg}</li>
+                        ))}
                     </ul>
                     <Button
                         style={{ color: '#fff' }}
                         onClick={() => {
-                            this.props.closeSnackbar(key)
+                            closeSnackbar(key)
                         }}
                     >
                         OK
@@ -43,25 +46,17 @@ class Notifier extends Component {
         }
     }
 
-    componentDidUpdate() {
-        const { notifications = [] } = this.props
-
+    useEffect(() => {
         notifications.forEach(
             ({ key, message, options = {}, dismissed = false }) => {
                 if (dismissed) {
-                    this.props.closeSnackbar(key)
+                    closeSnackbar(key)
                     return
                 }
-                // Do nothing if snackbar is already displayed
-                if (this.displayed.includes(key)) return
-                // Display snackbar using notistack
+                if (displayed.includes(key)) return
 
-                const formattedMessage = this.buildMessage(
-                    message,
-                    options,
-                    key,
-                )
-                this.props.enqueueSnackbar(formattedMessage, {
+                const formattedMessage = buildMessage(message, options, key)
+                enqueueSnackbar(formattedMessage, {
                     key,
                     ...options,
                     persist:
@@ -72,28 +67,16 @@ class Notifier extends Component {
                         }
                     },
                     onExited: (event, key) => {
-                        this.props.removeSnackbar(key)
-                        this.removeDisplayed(key)
+                        dispatch(removeSnackbar(key))
+                        removeDisplayed(key)
                     },
                 })
-                // Keep track of snackbars that we've displayed
-                this.storeDisplayed(key)
+                storeDisplayed(key)
             },
         )
-    }
+    }, [notifications, displayed, closeSnackbar, enqueueSnackbar, dispatch])
 
-    render() {
-        return null
-    }
+    return null
 }
 
-const mapStateToProps = state => ({
-    notifications: SnackbarSelectors.notifications(state),
-})
-
-const mapDispatchToProps = dispatch =>
-    bindActionCreators({ removeSnackbar }, dispatch)
-
-export default withSnackbar(
-    connect(mapStateToProps, mapDispatchToProps)(Notifier),
-)
+export default Notifier

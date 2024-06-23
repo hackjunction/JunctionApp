@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch } from 'react-redux'
-import { Grid, Box, Typography, makeStyles } from '@mui/material'
+import { Grid, Box, Typography } from '@mui/material'
 import EventCard from 'components/events/EventCard'
 import Button from 'components/generic/Button'
 import { useTranslation } from 'react-i18next'
