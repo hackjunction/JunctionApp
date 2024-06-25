@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { useQuery, gql } from '@apollo/client'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useSelector } from 'react-redux'
 import { EventStatuses } from '@hackjunction/shared'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import RegistrationsService from 'services/registrations'
 
 // TODO move to queries
@@ -168,7 +168,7 @@ const registrationQuery = gql`
 `
 const EventDetailContext = React.createContext({})
 export const EventDetailProvider = ({ children }) => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const idToken = useSelector(AuthSelectors.getIdToken)
     const { slug } = match.params
     const {

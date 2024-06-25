@@ -12,11 +12,11 @@ import {
     Tooltip,
     Typography,
     Checkbox,
-} from '@material-ui/core'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff'
-import EditIcon from '@material-ui/icons/Edit'
-import SaveIcon from '@material-ui/icons/Save'
-import CloseIcon from '@material-ui/icons/Close'
+} from '@mui/material'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import EditIcon from '@mui/icons-material/Edit'
+import SaveIcon from '@mui/icons-material/Save'
+import CloseIcon from '@mui/icons-material/Close'
 import Button from 'components/generic/Button'
 import DateTimeInput from 'components/inputs/DateTimeInput'
 
@@ -125,7 +125,6 @@ export default ({ value, onChange }) => {
         return start && end
         // && end > start
     }, [end, start])
-
 
     const minutesOptions = [
         { value: 0, label: '00' },

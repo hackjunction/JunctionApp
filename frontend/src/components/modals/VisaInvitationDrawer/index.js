@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
-import { Typography, Grid, Drawer, Box } from '@material-ui/core'
+import { Typography, Grid, Drawer, Box } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import DateInput from 'components/inputs/DateInput'
@@ -11,7 +11,7 @@ import Button from 'components/generic/Button'
 import { useFormField } from 'hooks/formHooks'
 
 import VisaInvitationPDF from './VisaInvitationPDF'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 export default () => {
     const registration = useSelector(DashboardSelectors.registration)

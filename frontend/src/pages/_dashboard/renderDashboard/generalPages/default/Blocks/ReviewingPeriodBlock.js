@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 
-import { Typography, Grid, Box } from '@material-ui/core'
-import { push } from 'connected-react-router'
+import { Typography, Grid, Box } from '@mui/material'
+
 import moment from 'moment-timezone'
 import { useDispatch, useSelector } from 'react-redux'
 import { EventHelpers } from '@hackjunction/shared'
 
 import Button from 'components/generic/Button'
 import GradientBox from 'components/generic/GradientBox'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-import * as DashboardActions from 'redux/dashboard/actions'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
+import * as DashboardActions from 'reducers/dashboard/actions'
 
 export default () => {
     const dispatch = useDispatch()

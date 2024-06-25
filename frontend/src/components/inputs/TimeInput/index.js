@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import Select from 'components/inputs/Select'
 
 const HOURS = Array.apply(null, Array(24)).map((value, index) => {

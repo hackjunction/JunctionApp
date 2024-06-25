@@ -1,16 +1,9 @@
 import React, { useCallback } from 'react'
 import { RegistrationFields } from '@hackjunction/shared'
 import { groupBy } from 'lodash-es'
-import {
-    FormControl,
-    FormGroup,
-    Typography,
-    Chip,
-    Box,
-} from '@material-ui/core'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
-import { makeStyles } from '@material-ui/core/styles'
+import { FormControl, FormGroup, Typography, Chip, Box } from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 const fields = RegistrationFields.getFields()
 const fieldsMapped = Object.keys(fields)
@@ -26,14 +19,7 @@ const fieldsMapped = Object.keys(fields)
 const fieldsByCategory = groupBy(fieldsMapped, f => f.category.id)
 const categories = RegistrationFields.getCategoriesArray()
 
-const useStyles = makeStyles(theme => ({
-    sectionLabel: {
-        fontWeight: 'bold',
-    },
-}))
-
 export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
-    const classes = useStyles()
     const handleChange = useCallback(
         (fieldName, isOptional, isRequired) => {
             if (isOptional) {
@@ -116,7 +102,7 @@ export default ({ onChange, optionalFields = [], requiredFields = [] }) => {
             {categories.map(({ id, label }) => (
                 <Box mb={2}>
                     <Typography
-                        className={classes.sectionLabel}
+                        className="font-bold"
                         variant="button"
                         gutterBottom
                     >

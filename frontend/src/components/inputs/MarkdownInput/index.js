@@ -1,38 +1,28 @@
 import React, { useState } from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography, Box, FormControlLabel, Switch } from '@material-ui/core'
+import { Typography, Box, FormControlLabel, Switch } from '@mui/material'
 import Markdown from 'components/generic/Markdown'
 import TextAreaInput from 'components/inputs/TextAreaInput'
 
-const useStyles = makeStyles(theme => ({
-    top: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        marginBottom: theme.spacing(2),
-    },
-    preview: {
-        minHeight: '100%',
-        background: '#f8f8f8',
-        padding: theme.spacing(2),
-    },
-}))
-
-export default ({ name, value, placeholder, onChange, onBlur, maxLength }) => {
-    const classes = useStyles()
+const MarkdownInput = ({
+    name,
+    value,
+    placeholder,
+    onChange,
+    onBlur,
+    maxLength,
+}) => {
     const [isPreview, setIsPreview] = useState(false)
 
     return (
         <Box>
-            <Box className={classes.top}>
+            <Box className="flex flex-wrap justify-between mb-4">
                 <Typography variant="body1">
                     This field supports{' '}
                     <a
                         rel="noopener noreferrer"
                         target="_blank"
                         href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+                        className="text-blue-500 hover:underline"
                     >
                         markdown
                     </a>
@@ -51,7 +41,10 @@ export default ({ name, value, placeholder, onChange, onBlur, maxLength }) => {
             </Box>
             <Box mt={2}>
                 {isPreview ? (
-                    <Markdown source={value} className={classes.preview} />
+                    <Markdown
+                        source={value}
+                        className="min-h-full bg-gray-100 p-4"
+                    />
                 ) : (
                     <TextAreaInput
                         placeholder={placeholder}
@@ -65,3 +58,5 @@ export default ({ name, value, placeholder, onChange, onBlur, maxLength }) => {
         </Box>
     )
 }
+
+export default MarkdownInput

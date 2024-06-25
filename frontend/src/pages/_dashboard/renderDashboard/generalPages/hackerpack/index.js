@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, Divider } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, Divider } from '@mui/material'
+
 import { Helmet } from 'react-helmet'
 import HackerpackDetail from 'components/hackerpack/HackerpackDetail'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
-import { useRouteMatch, useLocation } from 'react-router'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 import HackerpackService from 'services/hackerpack'
 import config from 'constants/config'
@@ -16,13 +16,12 @@ import EventsService from 'services/events'
 const useStyles = makeStyles(theme => ({
     wrapper: {
         padding: '5px',
-        marginBottom: '15px'
+        marginBottom: '15px',
     },
 }))
 
-
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const classes = useStyles()
     const { slug } = match.params
     const event = useSelector(DashboardSelectors.event)
@@ -84,7 +83,6 @@ export default () => {
                 <PageHeader
                     heading="Hackerpack"
                     subheading="We want you to be able to fully focus on making your hackathon project as cool as possible! These software provided by our partners will help you unleash your creativity and maximize your learning during our events."
-
                 />
             </div>
             <PageWrapper loading={false}>

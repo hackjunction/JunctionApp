@@ -1,18 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
+
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, makeStyles } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
+import { Box, Grid } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 
 import PageHeader from 'components/generic/PageHeader'
 import NewEventCard from 'components/events/NewEventCard'
 import Button from 'components/generic/Button'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as UserSelectors from 'redux/user/selectors'
-import * as UserActions from 'redux/user/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as UserActions from 'reducers/user/actions'
 
 import CreateEventCard from './CreateEventCard'
 import TextInput from '../../../../../components/inputs/TextInput'

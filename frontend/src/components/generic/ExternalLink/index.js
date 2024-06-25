@@ -1,50 +1,23 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
-    link: ({ _theme }) => {
-        let color
-        let hoverColor
-        // eslint-disable-next-line no-unused-vars
-        let textDecoration
+const getLinkClasses = theme => {
+    switch (theme) {
+        case 'dark':
+            return 'text-black hover:text-black underline'
+        case 'footer':
+            return 'text-white hover:text-white no-underline'
+        default:
+            return 'text-primary hover:text-primary-dark underline'
+    }
+}
 
-        switch (_theme) {
-            case 'dark': {
-                color = 'black'
-                hoverColor = 'black'
-                textDecoration = 'underline'
-                break
-            }
-            case 'footer': {
-                color = 'white'
-                hoverColor = 'white'
-                textDecoration = 'none'
-                break
-            }
-            default: {
-                color = theme.palette.primary.main
-                hoverColor = theme.palette.primary.dark
-                textDecoration = 'underline'
-                break
-            }
-        }
+const ExternalLink = ({ href, children, theme = 'default' }) => {
+    const linkClasses = getLinkClasses(theme)
 
-        return {
-            color: color,
-
-            cursor: 'pointer',
-            '&:hover': {
-                color: hoverColor,
-            },
-        }
-    },
-}))
-
-const ExternalLink = ({ href, children, theme = null }) => {
-    const classes = useStyles({ _theme: theme })
     return (
         <a
-            className={classes.link}
+            className={clsx(linkClasses, 'cursor-pointer')}
             href={href}
             target="_blank"
             rel="noopener noreferrer"

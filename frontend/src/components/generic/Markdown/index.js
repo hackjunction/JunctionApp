@@ -1,73 +1,38 @@
 import React from 'react'
-
 import ReactMarkdown from 'react-markdown'
 import breaks from 'remark-breaks'
 import { Link } from 'react-router-dom'
 import LineDivider from 'components/generic/LineDivider'
 import Divider from 'components/generic/Divider'
 import ExternalLink from 'components/generic/ExternalLink'
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Typography } from '@mui/material'
+import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
-    wrapper: ({ light, alignCenter }) => ({
-        color: light ? 'white' : theme.palette.text.primary,
-        textAlign: alignCenter ? 'center' : 'left',
-        '& img ': {
-            width: '100%',
-        },
-    }),
-    heading1: {
-        fontFamily: theme.typography.h1.fontFamily,
-        fontSize: theme.typography.h5.fontSize,
-        fontWeight: 'normal',
-        color: 'inherit',
-        textAlign: 'justify',
-        marginBottom: theme.spacing(3),
-    },
-    heading2: {
-        fontFamily: theme.typography.h1.fontFamily,
-        fontSize: theme.typography.h5.fontSize,
-        fontWeight: 'bold',
-        color: 'inherit',
-        marginBottom: theme.spacing(2),
-    },
-    heading3: {
-        fontFamily: theme.typography.h1.fontFamily,
-        fontSize: theme.typography.h6.fontSize,
-        fontWeight: 'bold',
-        color: 'inherit',
-        marginBottom: theme.spacing(1),
-    },
-    paragraph: {
-        marginBottom: theme.spacing(3),
-        color: 'inherit',
-    },
-    bold: {
-        fontWeight: 'bold',
-        color: 'inherit',
-    },
-    hyperlink: {
-        textDecoration: 'underline',
-        color: theme.palette.primary.main,
-    },
-}))
+const getWrapperClasses = ({ light, alignCenter }) => {
+    return clsx({
+        'text-white': light,
+        'text-gray-900': !light,
+        'text-center': alignCenter,
+        'text-left': !alignCenter,
+    })
+}
 
 const Markdown = React.memo(
     ({ className, source, light = false, alignCenter, large = false }) => {
-        const classes = useStyles({ light, alignCenter })
+        const wrapperClasses = getWrapperClasses({ light, alignCenter })
+
         return (
             <ReactMarkdown
                 source={source}
                 plugins={[breaks]}
-                className={classes.wrapper}
+                className={wrapperClasses}
                 renderers={{
                     heading: ({ level, children }) => {
                         switch (level) {
                             case 1:
                                 return (
                                     <Typography
-                                        className={classes.heading1}
+                                        className="font-sans text-xl text-inherit text-justify mb-6"
                                         variant="h1"
                                     >
                                         {children}
@@ -76,7 +41,7 @@ const Markdown = React.memo(
                             case 2:
                                 return (
                                     <Typography
-                                        className={classes.heading2}
+                                        className="font-sans text-xl font-bold text-inherit mb-4"
                                         variant="h2"
                                     >
                                         {children}
@@ -88,7 +53,7 @@ const Markdown = React.memo(
                             case 6:
                                 return (
                                     <Typography
-                                        className={classes.heading3}
+                                        className="font-sans text-lg font-bold text-inherit mb-2"
                                         variant="h3"
                                     >
                                         {children}
@@ -102,7 +67,7 @@ const Markdown = React.memo(
                         return (
                             <Typography
                                 variant="body1"
-                                className={classes.paragraph}
+                                className="mb-6 text-inherit"
                             >
                                 {children}
                             </Typography>
@@ -113,7 +78,7 @@ const Markdown = React.memo(
                             <Typography
                                 variant="body1"
                                 display="inline"
-                                className={classes.bold}
+                                className="font-bold text-inherit"
                             >
                                 {children}
                             </Typography>
@@ -124,7 +89,7 @@ const Markdown = React.memo(
                             <Typography
                                 variant="body1"
                                 display="inline"
-                                className={classes.bold}
+                                className="font-bold text-inherit"
                             >
                                 {children}
                             </Typography>
@@ -135,7 +100,7 @@ const Markdown = React.memo(
                             return (
                                 <Link to={props.href}>
                                     <Typography
-                                        className={classes.hyperlink}
+                                        className="underline text-primary"
                                         display="inline"
                                         variant="body1"
                                         color="primary"
@@ -148,7 +113,7 @@ const Markdown = React.memo(
                             return (
                                 <ExternalLink href={props.href}>
                                     <Typography
-                                        className={classes.hyperlink}
+                                        className="underline text-primary"
                                         display="inline"
                                         variant="body1"
                                         color="primary"
@@ -164,9 +129,9 @@ const Markdown = React.memo(
                             return (
                                 <Link to={props.href}>
                                     <Typography
-                                        className={classes.hyperlink}
+                                        className="underline text-primary"
                                         display="inline"
-                                        component={'span'}
+                                        component="span"
                                         variant="body1"
                                         color="primary"
                                     >
@@ -178,9 +143,9 @@ const Markdown = React.memo(
                             return (
                                 <ExternalLink href={props.href}>
                                     <Typography
-                                        className={classes.hyperlink}
+                                        className="underline text-primary"
                                         display="inline"
-                                        component={'span'}
+                                        component="span"
                                         variant="body1"
                                         color="primary"
                                     >
@@ -190,7 +155,7 @@ const Markdown = React.memo(
                             )
                         }
                     },
-                    thematicBreak: props => {
+                    thematicBreak: () => {
                         return (
                             <>
                                 <Divider size={2} />

@@ -1,16 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, RadioGroup, Radio, FormControlLabel } from '@material-ui/core'
-
-const useStyles = makeStyles(theme => ({
-    radioGroup: ({ alignCenter }) => ({
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: alignCenter ? 'center' : 'flex-start',
-    }),
-}))
+import { Box, RadioGroup, Radio, FormControlLabel } from '@mui/material'
 
 //Boolean radio buttons are on default unchecked. If value is already defined check the box
 
@@ -19,7 +9,6 @@ const ProjectStatusInput = ({
     onChange,
     alignCenter = false,
 }) => {
-    const classes = useStyles({ alignCenter })
     const [checked, setChecked] = useState(value)
 
     useEffect(() => {
@@ -45,7 +34,7 @@ const ProjectStatusInput = ({
     return (
         <Box>
             <RadioGroup
-                className={classes.radioGroup}
+                className="flex flex-row flex-wrap center"
                 aria-label="draft-or-final"
                 value={value}
                 onChange={handleChange}

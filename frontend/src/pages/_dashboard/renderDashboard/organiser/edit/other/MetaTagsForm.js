@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { findIndex } from 'lodash-es'
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
     List,
     ListItem,
@@ -9,12 +9,11 @@ import {
     IconButton,
     Grid,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
 
 const useStyles = makeStyles(theme => ({

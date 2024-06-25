@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router'
-import { push } from 'connected-react-router'
-import { Box } from '@material-ui/core'
+import { useResolvedPath } from 'react-router'
+
+import { Box } from '@mui/material'
 import PageWrapper from 'components/layouts/PageWrapper'
 import Container from 'components/generic/Container'
 import PageHeader from 'components/generic/PageHeader'
@@ -15,7 +15,7 @@ import _ from 'lodash'
 //TODO make this and track one into a component
 export default ({ event }) => {
     const baseFilter = { value: 'final', label: 'Final projects' }
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const { slug } = event
     const { token } = match.params

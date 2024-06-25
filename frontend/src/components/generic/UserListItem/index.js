@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Avatar,
-} from '@material-ui/core'
+import { ListItem, ListItemAvatar, ListItemText, Avatar } from '@mui/material'
 
 const UserListItem = ({
     user,

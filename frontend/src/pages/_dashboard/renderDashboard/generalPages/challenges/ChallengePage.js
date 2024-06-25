@@ -1,5 +1,5 @@
-import { Box, makeStyles } from '@material-ui/core'
-import { ArrowBack } from '@material-ui/icons'
+import { Box } from '@mui/material'
+import { ArrowBack } from '@mui/icons-material'
 import Button from 'components/generic/Button'
 import Markdown from 'components/generic/Markdown'
 import PageHeader from 'components/generic/PageHeader'

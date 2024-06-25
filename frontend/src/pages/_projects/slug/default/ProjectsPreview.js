@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
-import { push } from 'connected-react-router'
+
 import { useDispatch } from 'react-redux'
-import { Box, Typography, Button as MuiButton } from '@material-ui/core'
+import { Box, Typography, Button as MuiButton } from '@mui/material'
 import ProjectsGrid from 'components/projects/ProjectsGrid'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useTranslation } from 'react-i18next'
 
 export default ({

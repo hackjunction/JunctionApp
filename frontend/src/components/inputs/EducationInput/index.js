@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useCallback } from 'react'
 
 import { Universities, Countries } from '@hackjunction/shared'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Select from 'components/inputs/Select'

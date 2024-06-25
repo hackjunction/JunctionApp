@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import GradientBox from 'components/generic/GradientBox'
 import { Alerts } from '../../../../../../components/messaging/alerts'
 import TimeLineBlock from '../Blocks/TimeLineBlock'

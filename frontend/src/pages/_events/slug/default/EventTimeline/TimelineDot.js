@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-import CheckIcon from '@material-ui/icons/Check'
+import CheckIcon from '@mui/icons-material/Check'
 
 const useStyles = makeStyles(theme => ({
     root: {

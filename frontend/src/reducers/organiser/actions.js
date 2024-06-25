@@ -1,5 +1,5 @@
 import * as ActionTypes from './actionTypes'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 import UserProfilesService from 'services/userProfiles'
 import EventsService from 'services/events'
 import RegistrationsService from 'services/registrations'

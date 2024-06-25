@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
-import { Box, Typography, ButtonBase, Popover } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
+import { Box, Typography, ButtonBase, Popover } from '@mui/material'
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
 

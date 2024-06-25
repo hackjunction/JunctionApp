@@ -1,21 +1,16 @@
 import React, { useCallback, useState } from 'react'
 
-import { goBack } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { makeStyles, lighten } from '@material-ui/core/styles'
-import {
-    Button as MuiButton,
-    IconButton,
-    Tooltip,
-} from '@material-ui/core'
+import { lighten } from '@mui/material/styles'
+import { Button as MuiButton, IconButton, Tooltip } from '@mui/material'
 
-import StarIcon from '@material-ui/icons/Star'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import * as RecruitmentSelectors from 'redux/recruitment/selectors'
-import * as RecruitmentActions from 'redux/recruitment/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as UserSelectors from 'redux/user/selectors'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
+import StarIcon from '@mui/icons-material/Star'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import * as RecruitmentSelectors from 'reducers/recruitment/selectors'
+import * as RecruitmentActions from 'reducers/recruitment/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as UserSelectors from 'reducers/user/selectors'
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -100,14 +95,17 @@ export default ({ user = {} }) => {
     const event = useSelector(DashboardSelectors.event)._id
     const recEvents = useSelector(UserSelectors.userProfileRecruiterEvents)
 
-
     const handleFavorite = useCallback(async () => {
         const organisation = recEvents.find(e => {
             return e.eventId === event
         }).organisation
         setIsFavorite(!_isFavorite)
         const { error } = await dispatch(
-            RecruitmentActions.toggleFavorite(user.userId, _isFavorite, organisation),
+            RecruitmentActions.toggleFavorite(
+                user.userId,
+                _isFavorite,
+                organisation,
+            ),
         )
         if (error) {
             dispatch(SnackbarActions.error('Something went wrong...'))
@@ -116,7 +114,7 @@ export default ({ user = {} }) => {
     }, [_isFavorite, dispatch, user.userId])
     return (
         <div className="tw-flex tw-justify-between tw-items-center">
-            <MuiButton onClick={() => dispatch(goBack())}>
+            <MuiButton onClick={() => window.history.back()}>
                 <ArrowBackIosIcon style={{ fontSize: '16px' }} />
                 Back
             </MuiButton>

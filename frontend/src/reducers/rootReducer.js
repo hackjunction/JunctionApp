@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { connectRouter } from 'connected-react-router'
 
 // Import the reducer from each module here, and add it to the combined reducer
 import account from './account/reducer'
@@ -13,9 +12,8 @@ import recruitment from './recruitment/reducer'
 import user from './user/reducer'
 import snackbar from './snackbar/reducer'
 
-export default history =>
+export default () =>
     combineReducers({
-        router: connectRouter(history),
         account,
         admin,
         auth,

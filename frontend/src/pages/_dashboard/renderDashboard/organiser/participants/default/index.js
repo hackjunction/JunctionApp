@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { FilterHelpers, FilterValues } from '@hackjunction/shared'
 
-import * as OrganiserSelectors from 'redux/organiser/selectors'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
 
 import Divider from 'components/generic/Divider'
 import AttendeeTable from 'components/tables/AttendeeTable'

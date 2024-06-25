@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
-import { useRouteMatch } from 'react-router'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { useResolvedPath } from 'react-router'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import SlugPage from './renderDashboard'
 import DefaultPage from './renderDashboard/default'
 import { useDispatch } from 'react-redux'
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const dispatch = useDispatch()
 
     //redirect to right event page, default, or out
     return (
-        <Switch>
+        <Routes>
             <Route
                 exact={false}
                 path={
@@ -27,7 +27,7 @@ export default () => {
                 component={DefaultPage}
             />
             {/* For all other routes, redirect outta here */}
-            <Redirect to="/home" />
-        </Switch>
+            <Navigate to="/home" />
+        </Routes>
     )
 }

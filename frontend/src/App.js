@@ -1,21 +1,20 @@
 import React, { useState, useEffect, Suspense } from 'react'
 
-import { ConnectedRouter, push } from 'connected-react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ApolloProvider } from '@apollo/client'
 
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Route, Navigate, Routes } from 'react-router-dom'
 import routeConfig from './routes'
 import apolloClient from './graphql/client'
 import config from 'constants/config'
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as AuthActions from 'redux/auth/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as AuthActions from 'reducers/auth/actions'
 import AnalyticsService from 'services/analytics'
 import { getCookieConsentValue } from 'react-cookie-consent'
 import CookieConsentBar from 'components/layouts/CookieConsentBar'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 
-export default ({ history, location }) => {
+export default ({ location }) => {
     const dispatch = useDispatch()
     const idToken = useSelector(AuthSelectors.getIdToken)
     const isAuthenticated = useSelector(AuthSelectors.isAuthenticated)
@@ -26,12 +25,14 @@ export default ({ history, location }) => {
         if (getCookieConsentValue() === 'true') {
             AnalyticsService.init()
             AnalyticsService.pageView(window.location)
+            /**
             const unlisten = history.listen(AnalyticsService.pageView)
             return () => {
                 unlisten()
             }
+            */
         }
-    }, [location, history])
+    }, [location])
 
     useEffect(() => {
         setLoading(false)
@@ -57,10 +58,9 @@ export default ({ history, location }) => {
                 ) /*TODO: fails to fetch when renewing session causing a loop. fix! */
             }
         >
-            <ConnectedRouter history={history}>
                 <Suspense fallback={null}>
                     {!loading && (
-                        <Switch>
+                        <Routes>
                             {routeConfig.routes.map(route => (
                                 <Route key={route.path} {...route} />
                             ))}
@@ -128,12 +128,11 @@ export default ({ history, location }) => {
                                 src="https://platform.twitter.com/widgets.js"
                             ></script>
                             {/* {isAuthenticated ?
-                                <Redirect to="/dashboard" /> :} */}
-                            <Redirect to="/" />
-                        </Switch>
+                                <Navigate to="/dashboard" /> :} */}
+                            <Navigate to="/" />
+                        </Routes>
                     )}
                 </Suspense>
-            </ConnectedRouter>
             <CookieConsentBar />
         </ApolloProvider>
     )

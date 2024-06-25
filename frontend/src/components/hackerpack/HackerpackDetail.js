@@ -1,13 +1,10 @@
 import React from 'react'
-import { Box, Divider } from '@material-ui/core'
+import { Box, Divider } from '@mui/material'
 
 import CompanySection from './CompanySection'
 import GradientBox from 'components/generic/GradientBox'
 
-
-
 const HackerpackDetail = ({ hackerpack, redeemable = false }) => {
-
     return (
         <>
             <Box p={2}>

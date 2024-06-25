@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { push } from 'connected-react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
+
 import {
     Card,
     CardContent,
@@ -10,7 +9,7 @@ import {
     Typography,
     Grid,
     Box,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import TextInput from 'components/inputs/TextInput'
 import Button from 'components/generic/Button'
@@ -18,8 +17,8 @@ import Image from 'components/generic/Image'
 
 import EventsService from 'services/events'
 
-import * as AuthSelectors from 'redux/auth/selectors'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import * as AuthSelectors from 'reducers/auth/selectors'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import { useTranslation } from 'react-i18next'
 
 const fillerContent = makeStyles({

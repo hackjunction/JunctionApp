@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Grid, InputAdornment, Box, Typography } from '@material-ui/core'
+import { Grid, InputAdornment, Box, Typography } from '@mui/material'
 import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 

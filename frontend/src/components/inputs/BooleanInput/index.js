@@ -1,21 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
-import { Box, RadioGroup, Radio, FormControlLabel } from '@material-ui/core'
-
-const useStyles = makeStyles(theme => ({
-    radioGroup: ({ alignCenter }) => ({
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: alignCenter ? 'center' : 'flex-start',
-    }),
-}))
-
-//Boolean radio buttons are on default unchecked. If value is already defined check the box
+import { Box, RadioGroup, Radio, FormControlLabel } from '@mui/material'
 
 const BooleanInput = ({ value, onChange, alignCenter = false }) => {
-    const classes = useStyles({ alignCenter })
     const [isYesChecked, setYesChecked] = useState(false)
     const [isNoChecked, setNoChecked] = useState(false)
 
@@ -47,7 +33,6 @@ const BooleanInput = ({ value, onChange, alignCenter = false }) => {
         }
     }, [value])
 
-    // TODO Probably could be done better. Value came as string for some reason, and didn't have time to debug it
     const handleChange = useCallback(
         e => {
             strBoolToBoolean(e.target.value, true)
@@ -58,7 +43,9 @@ const BooleanInput = ({ value, onChange, alignCenter = false }) => {
     return (
         <Box>
             <RadioGroup
-                className={classes.radioGroup}
+                className={`flex flex-row flex-wrap ${
+                    alignCenter ? 'justify-center' : 'justify-start'
+                }`}
                 aria-label="yes-no"
                 value={value}
                 onChange={handleChange}

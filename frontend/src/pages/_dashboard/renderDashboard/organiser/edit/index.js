@@ -5,10 +5,10 @@ import yupSchema from '@hackjunction/shared/schemas/validation/eventSchema'
 import { Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { forOwn } from 'lodash-es'
-import { useRouteMatch, useLocation } from 'react-router'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
 import PageHeader from 'components/generic/PageHeader'
 import PageWrapper from 'components/layouts/PageWrapper'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
@@ -59,7 +59,7 @@ export default () => {
             )
         },
     })
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const location = useLocation()
 
     const event = useSelector(OrganiserSelectors.event)

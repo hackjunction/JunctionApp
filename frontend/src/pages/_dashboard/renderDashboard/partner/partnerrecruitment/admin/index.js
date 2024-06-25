@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { Auth } from '@hackjunction/shared'
-import { Typography, Dialog } from '@material-ui/core'
+import { Typography, Dialog } from '@mui/material'
 import RequiresPermission from 'hocs/RequiresPermission'
 
 import Container from 'components/generic/Container'

@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
-
 import Image from 'components/generic/Image'
 import PageWrapper from 'components/layouts/PageWrapper'
 import { useHighlightedEvents } from 'graphql/queries/events'

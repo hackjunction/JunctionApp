@@ -1,7 +1,7 @@
 import React from 'react'
-import { Grid, Typography, Box } from '@material-ui/core'
+import { Grid, Typography, Box } from '@mui/material'
 import moment from 'moment'
-import { makeStyles } from '@material-ui/core/styles'
+
 import EventButtons from '../EventButtons'
 
 const useStyles = makeStyles(theme => ({

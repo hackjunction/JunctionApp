@@ -4,15 +4,15 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import './i18n'
 import './styles/tailwind.css'
-import { CssBaseline } from '@material-ui/core'
-import { StylesProvider, ThemeProvider } from '@material-ui/styles'
+import { CssBaseline } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { CloudinaryContext } from 'cloudinary-react'
 import { SnackbarProvider } from 'notistack'
 import WebFont from 'webfontloader'
 import Notifier from './notifier'
-import configureStore, { history } from 'redux/configureStore'
+import configureStore from 'reducers/configureStore'
 import config from 'constants/config'
 // import theme from './material-ui-theme'
 import theme from './junctionTheme'
@@ -58,22 +58,20 @@ ReactDOM.render(
                 includeOwnBody={true}
                 cloudName={config.CLOUDINARY_CLOUD_NAME}
             >
-                <StylesProvider injectFirst>
-                    <ThemeProvider theme={theme}>
-                        <SnackbarProvider
-                            maxSnack={3}
-                            autoHideDuration={10000}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                        >
-                            <Notifier />
-                            <CssBaseline />
-                            <App history={history} />
-                        </SnackbarProvider>
-                    </ThemeProvider>
-                </StylesProvider>
+                <ThemeProvider theme={theme}>
+                    <SnackbarProvider
+                        maxSnack={3}
+                        autoHideDuration={10000}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                    >
+                        <Notifier />
+                        <CssBaseline />
+                        <App />
+                    </SnackbarProvider>
+                </ThemeProvider>
             </CloudinaryContext>
         </PersistGate>
     </Provider>,

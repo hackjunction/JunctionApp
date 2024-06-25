@@ -2,7 +2,7 @@ import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Button from 'components/generic/Button'
 
-import { Box, TextField } from '@material-ui/core'
+import { Box, TextField } from '@mui/material'
 
 const ScoreForm = ({ event, project, submit, score }) => {
     return (

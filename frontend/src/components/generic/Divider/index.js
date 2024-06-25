@@ -1,15 +1,10 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
-    root: ({ size }) => ({
-        width: theme.spacing(size),
-        height: theme.spacing(size),
-    }),
-}))
+const Spacer = ({ size = 1 }) => {
+    const sizeClass = `w-${size * 4} h-${size * 4}`
 
-export default ({ size = 1 }) => {
-    const classes = useStyles({ size })
-
-    return <div className={classes.root} />
+    return <div className={clsx(sizeClass)} />
 }
+
+export default Spacer

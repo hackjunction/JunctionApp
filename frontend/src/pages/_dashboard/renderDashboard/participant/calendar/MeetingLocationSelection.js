@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-
 import Button from 'components/generic/Button'
 import Switch from 'components/generic/Switch'
 
-import {
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    makeStyles,
-} from '@material-ui/core'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { getMeetingRooms } from 'graphql/queries/meetings'
-import * as DashboardSelectors from 'redux/dashboard/selectors'
-
+import * as DashboardSelectors from 'reducers/dashboard/selectors'
 
 const useStyles = makeStyles(theme => ({
     background: {
@@ -125,7 +117,7 @@ export default ({
         att = [...team.members, team.owner]
     } else {
         att = [user?.userId]
-    }//TODO: add selection to book alone or for the team
+    } //TODO: add selection to book alone or for the team
 
     const handleLocationChange = selection => {
         setOnlineSelected(selection)
@@ -139,7 +131,8 @@ export default ({
         setPartiComSelected(event.target.value)
     }
 
-    const confirmButtonEnabled = () => (onlineSelected || roomSelected !== '') && (team || !teamSelected)
+    const confirmButtonEnabled = () =>
+        (onlineSelected || roomSelected !== '') && (team || !teamSelected)
 
     const confirmButtonAction = () => {
         var attendees = []
@@ -177,12 +170,14 @@ export default ({
                     </span>
                     &nbsp;
                     <span>
-                        {`${start.getHours()}:${startMinutes === 0 ? '00' : startMinutes
-                            }`}
+                        {`${start.getHours()}:${
+                            startMinutes === 0 ? '00' : startMinutes
+                        }`}
                     </span>
                     <span> - </span>
-                    <span>{`${end.getHours()}:${endMinutes === 0 ? '00' : endMinutes
-                        }`}</span>
+                    <span>{`${end.getHours()}:${
+                        endMinutes === 0 ? '00' : endMinutes
+                    }`}</span>
                 </h2>
                 <h3 style={{ textAlign: 'center' }}>
                     Choose whether you want an online meeting or a physical
@@ -271,22 +266,21 @@ export default ({
                             Form my team
                         </Button>
                     </div>
-                    {(!team && teamSelected) && (
+                    {!team && teamSelected && (
                         <p
                             className={classes.warnColor}
                             style={{ fontSize: '1.25em' }}
                         >
                             You don't have a team yet {':('}
                         </p>
-                    )
-                    }
+                    )}
                     {!onlineSelected &&
                         (roomsLoaded && availableRooms.length > 0 ? (
                             <FormControl style={{ width: '70%' }}>
                                 <InputLabel id="challenge-selection-label">
                                     Rooms
                                 </InputLabel>
-                                { }
+                                {}
                                 <Select
                                     labelId="room-selection-label"
                                     id="room-selection"
@@ -312,8 +306,10 @@ export default ({
                                                         {' (capacity: '}
                                                         <span
                                                             className={
-                                                                teamSelected && roomInfo.capacity <
-                                                                    att.length + 1
+                                                                teamSelected &&
+                                                                roomInfo.capacity <
+                                                                    att.length +
+                                                                        1
                                                                     ? classes.warnColor
                                                                     : ''
                                                             }
@@ -340,7 +336,7 @@ export default ({
                         <InputLabel id="agenda-selection-label">
                             Choose an agenda for this meeting
                         </InputLabel>
-                        { }
+                        {}
                         <Select
                             labelId="agenda-selection-label"
                             id="agenda-selection"
@@ -348,18 +344,15 @@ export default ({
                             onChange={handlePartiComChange}
                             value={partiComSelected}
                         >
-                            <MenuItem
-                                value={"Recruiting"}
-
-                            >
-                                <span>{"Recruiting"}</span>
+                            <MenuItem value={'Recruiting'}>
+                                <span>{'Recruiting'}</span>
                             </MenuItem>
-                            <MenuItem
-                                value={"Mentoring"}
-                            ><span>{"Mentoring"}</span></MenuItem>
-                            <MenuItem
-                                value={"Other"}
-                            ><span>{"Other"}</span></MenuItem>
+                            <MenuItem value={'Mentoring'}>
+                                <span>{'Mentoring'}</span>
+                            </MenuItem>
+                            <MenuItem value={'Other'}>
+                                <span>{'Other'}</span>
+                            </MenuItem>
                         </Select>
                     </FormControl>
                 </div>

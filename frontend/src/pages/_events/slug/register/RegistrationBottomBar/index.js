@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@mui/material'
 
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import ErrorDisplay from './ErrorDisplay'
 import BlockExitIfDirty from 'components/inputs/BlockExitIfDirty'

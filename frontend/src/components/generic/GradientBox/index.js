@@ -1,28 +1,47 @@
 import React from 'react'
+import { Box } from '@mui/material'
+import clsx from 'clsx'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Box } from '@material-ui/core'
+const getGradientClasses = (color, theme) => {
+    const colorObj = theme.palette[color]
+    const bg = `linear-gradient(145deg, ${colorObj.dark} 0%, ${colorObj.main} 100%)`
+    return {
+        background: bg,
+        color: colorObj.contrastText,
+    }
+}
 
-const useStyles = makeStyles(theme => ({
-    root: ({ color, radius }) => {
-        const _color = theme.palette[color]
-        const bg = `linear-gradient(145deg, ${_color.dark} 0%, ${_color.main} 100%)`
-        return {
-            background: bg,
-            borderRadius: radius || '13px',
-            color: _color.contrastText,
-            boxShadow: '0px 3px 15px rgba(0,0,0,0.1)',
-            // transitionDuration: '2s',
-            // transitionProperty: 'all',
-            // transitionTimingFunction: 'ease'
-        }
-    },
-}))
+const GradientBox = ({ color, radius = '13px', children, ...boxProps }) => {
+    const theme = {
+        palette: {
+            primary: {
+                main: '#3f51b5',
+                dark: '#303f9f',
+                contrastText: '#fff',
+            },
+            secondary: {
+                main: '#f50057',
+                dark: '#ab003c',
+                contrastText: '#fff',
+            },
+            // Add other colors as needed
+        },
+    }
 
-const GradientBox = ({ color, radius, children, ...boxProps }) => {
-    const classes = useStyles({ color, radius })
+    const gradientClasses = getGradientClasses(color, theme)
+
     return (
-        <Box {...boxProps} className={classes.root}>
+        <Box
+            {...boxProps}
+            className={clsx(
+                'shadow-lg',
+                'p-4',
+                'transition-all',
+                'ease-in-out',
+                gradientClasses,
+            )}
+            style={{ borderRadius: radius }}
+        >
             {children}
         </Box>
     )

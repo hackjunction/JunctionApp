@@ -17,25 +17,25 @@ import {
     Tabs,
     Tooltip,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Yes, No, NotAvailable } from 'components/generic/Tag/Variants'
 
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
-import AccordionActions from '@material-ui/core/AccordionActions'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import DeleteIcon from '@material-ui/icons/Delete'
-import NavigateNextIcon from '@material-ui/icons/NavigateNext'
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import InfoTwoToneIcon from '@material-ui/icons/InfoTwoTone'
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined'
-import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined'
-import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined'
-import CheckIcon from '@material-ui/icons/Check'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionActions from '@mui/material/AccordionActions'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import DeleteIcon from '@mui/icons-material/Delete'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
+import CheckIcon from '@mui/icons-material/Check'
 import {
     Email,
     Check,
@@ -69,17 +69,13 @@ import {
     GitHub,
     LinkedIn,
     Brush,
-
     LocationOn,
-
     ThumbUp,
-
     Group,
     Dashboard,
     Fingerprint,
     FlightTakeoff,
-    AmpStories,
-
+    WebStoriesOutlined,
     AssignmentOutlined,
     StarRate,
     HowToVote,
@@ -92,44 +88,30 @@ import {
     CheckCircleOutline,
     SentimentVeryDissatisfied,
     Search,
-
-
-
-
-
-
     Tune,
     Settings,
     Equalizer,
     People,
     CropFree,
     Code,
-
     Assessment,
     HighlightOff,
     Save,
     Close,
     SettingsBrightnessSharp,
-
     Block,
-
     VisibilityOff,
-
     ExpandLess,
-
     KeyboardArrowDown,
-
-
-} from '@material-ui/icons'
-import Divider from '@material-ui/core/Divider'
-
+} from '@mui/icons-material'
+import Divider from '@mui/material/Divider'
 
 import { Formik } from 'formik'
-import * as OrganiserSelectors from 'redux/organiser/selectors'
-import * as OrganiserActions from 'redux/organiser/actions'
-import * as DashboardActions from 'redux/dashboard/actions'
-import * as SnackbarActions from 'redux/snackbar/actions'
-import { useRouteMatch, useLocation } from 'react-router'
+import * as OrganiserSelectors from 'reducers/organiser/selectors'
+import * as OrganiserActions from 'reducers/organiser/actions'
+import * as DashboardActions from 'reducers/dashboard/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import { useResolvedPath, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 import ConfigureTab from './configure'
@@ -142,7 +124,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Container from 'components/generic/Container'
 import Button from 'components/generic/Button'
 import Tag from 'components/generic/Tag'
-import { Skeleton, TabPanel } from '@material-ui/lab'
+import { Skeleton, TabPanel } from '@mui/lab'
 import TeamCard from 'components/cards/TeamCard'
 import MaterialTabsLayout from 'components/layouts/MaterialTabsLayout'
 import BottomBar from 'components/inputs/BottomBar'
@@ -191,7 +173,7 @@ export default () => {
             )
         },
     })
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const location = useLocation()
 
     const [project, setProject] = useState(null)
@@ -507,7 +489,6 @@ export default () => {
                                     height={40}
                                     animation="wave"
                                 />
-
                                 <Button
                                     color="outlined_button"
                                     variant="outlined"
@@ -598,12 +579,10 @@ export default () => {
                                 <ErrorOutline />
                                 Visibility
                                 <Visibility />
-
                                 Clear
                                 <Clear />
                                 Cancel
                                 <Cancel />
-
                                 Lock
                                 <Lock />
                                 Storage
@@ -617,8 +596,7 @@ export default () => {
                                 Edit
                                 <Edit />
                                 Star
-                                <Star
-                                />
+                                <Star />
                                 GitHub
                                 <GitHub />
                                 LinkedIn
@@ -644,7 +622,7 @@ export default () => {
                                 FlightTakeoff
                                 <FlightTakeoff />
                                 AmpStories
-                                <AmpStories />
+                                <WebStoriesOutlined />
                                 AssignmentOutlined
                                 <AssignmentOutlined />
                                 StarRate
@@ -681,7 +659,6 @@ export default () => {
                                 <CropFree />
                                 Code
                                 <Code />
-
                                 Assessment
                                 <Assessment />
                                 HighlightOff
@@ -700,20 +677,15 @@ export default () => {
                                 <ExpandLess />
                                 KeyboardArrowDown
                                 <KeyboardArrowDown />
-
                                 <ProjectStatusInput
                                     value={''}
-                                    onChange={() => console.log('ProjectStatusInput')
+                                    onChange={() =>
+                                        console.log('ProjectStatusInput')
                                     }
                                 />
-
                                 <BottomBar
-                                    onSubmit={
-                                        () => console.log('submit')
-                                    }
-                                    errors={
-                                        {}
-                                    }
+                                    onSubmit={() => console.log('submit')}
+                                    errors={{}}
                                     dirty={false}
                                     loading={false}
                                 />
@@ -734,32 +706,34 @@ export default () => {
                                 <TextAreaInput
                                     placeholder={'TextAreaInput'}
                                     value={''}
-                                    onChange={() => console.log('TextAreaInput')}
+                                    onChange={() =>
+                                        console.log('TextAreaInput')
+                                    }
                                     onBlur={() => console.log('TextAreaInput')}
                                 />
-                                <DateInput label={'DateInput'} value={''} onChange={() => console.log('date')} onBlur={() => console.log('date')} disableFutureYears={false} />
+                                <DateInput
+                                    label={'DateInput'}
+                                    value={''}
+                                    onChange={() => console.log('date')}
+                                    onBlur={() => console.log('date')}
+                                    disableFutureYears={false}
+                                />
                                 <DateTimeInput
                                     value={''}
-                                    onChange={() => console.log('DateTimeInput')}
+                                    onChange={() =>
+                                        console.log('DateTimeInput')
+                                    }
                                 />
                                 <MarkdownInput
                                     name={'markdown input'}
                                     value={'markdown input'}
-                                    onChange={
-                                        console.log('markdown')
-                                    }
-                                    onBlur={() =>
-                                        console.log('markdown')
-                                    }
-                                    placeholder={
-                                        "markdown input"
-                                    }
+                                    onChange={console.log('markdown')}
+                                    onBlur={() => console.log('markdown')}
+                                    placeholder={'markdown input'}
                                 />
                                 <BooleanInput
                                     value={'boolean input'}
-                                    onChange={
-                                        console.log('boolean')
-                                    }
+                                    onChange={console.log('boolean')}
                                 />
                                 <Select />
                             </CardContent>

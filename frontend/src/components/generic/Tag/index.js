@@ -1,17 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Chip, Avatar } from '@mui/material'
+import clsx from 'clsx'
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Chip, Avatar } from '@material-ui/core'
-
-const useStyles = makeStyles(theme => ({
-    label: ({ color }) => ({
-        ...theme.typography.overline,
-    }),
-    avatar: ({ color }) => ({
+const getColorClass = color => {
+    return {
         backgroundColor: color,
-    }),
-}))
+    }
+}
 
 const propTypes = {
     color: PropTypes.string.isRequired,
@@ -23,11 +19,16 @@ const defaultProps = {
 }
 
 const Tag = ({ color, label }) => {
-    const classes = useStyles({ color })
+    const avatarStyle = getColorClass(color)
+
     return (
         <Chip
-            avatar={<Avatar classes={{ root: classes.avatar }}>{''}</Avatar>}
-            classes={classes}
+            avatar={
+                <Avatar className="bg-current" style={avatarStyle}>
+                    {''}
+                </Avatar>
+            }
+            className="text-xs font-bold"
             size="small"
             label={label}
         />

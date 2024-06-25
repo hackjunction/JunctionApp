@@ -1,25 +1,22 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Grid, Box, Typography } from '@material-ui/core'
-
-import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Box, Typography } from '@mui/material'
 
 import Button from 'components/generic/Button'
 
 import { OutboundLink } from 'react-ga'
 
 import GradientBox from 'components/generic/GradientBox'
-import { IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
+import { IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import Divider from 'components/generic/Divider'
 
 import { useTranslation } from 'react-i18next'
 
 import OrganizationService from 'services/organization'
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 const useStyles = makeStyles(theme => ({
     outboundLink: {

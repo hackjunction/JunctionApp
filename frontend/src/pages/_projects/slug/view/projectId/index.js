@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { goBack } from 'connected-react-router'
-import { useDispatch } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import PageWrapper from 'components/layouts/PageWrapper'
 import ProjectDetail from 'components/projects/ProjectDetail'
 import ShareProject from 'components/projects/ProjectDetail/ShareProject'
 import moment from 'moment-timezone'
 import { EventHelpers } from '@hackjunction/shared'
 import ProjectsService from 'services/projects'
-import _ from 'lodash'
 
 export default ({ event, showFullTeam }) => {
-    const dispatch = useDispatch()
-    const match = useRouteMatch()
+    const url = useResolvedPath("").pathname;
     const { projectId } = match.params
     const [project, setProject] = useState()
     const [loading, setLoading] = useState(true)
@@ -33,8 +29,8 @@ export default ({ event, showFullTeam }) => {
     }, [projectId])
 
     const onBack = useCallback(() => {
-        dispatch(goBack())
-    }, [dispatch])
+        window.history.back()
+    }, [])
 
     useEffect(() => {
         fetchProject()

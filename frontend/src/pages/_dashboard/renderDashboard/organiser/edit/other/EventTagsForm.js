@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { findIndex } from 'lodash-es'
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
     List,
     ListItem,
@@ -12,14 +12,13 @@ import {
     Divider,
     Grid,
     Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 import Select from 'components/inputs/Select'
 import TextInput from 'components/inputs/TextInput'
 import Tag from 'components/generic/Tag'
 import Button from 'components/generic/Button'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { useFormField } from 'hooks/formHooks'
 
 const COLORS = [

@@ -1,10 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { push } from 'connected-react-router'
 
-import { Box, Grid, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography } from '@mui/material'
+
 import { Formik, FastField, FieldArray } from 'formik'
 import * as yup from 'yup'
 
@@ -14,10 +13,10 @@ import BottomBar from 'components/inputs/BottomBar'
 
 import BannerService from 'services/banner'
 
-import * as SnackbarActions from 'redux/snackbar/actions'
-import * as AdminActions from 'redux/admin/actions'
+import * as SnackbarActions from 'reducers/snackbar/actions'
+import * as AdminActions from 'reducers/admin/actions'
 
-import * as AuthSelectors from 'redux/auth/selectors'
+import * as AuthSelectors from 'reducers/auth/selectors'
 
 import { useTranslation } from 'react-i18next'
 import Button from 'components/generic/Button'
@@ -48,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    const match = useRouteMatch()
+    const url = useResolvedPath('').pathname
     const dispatch = useDispatch()
     const { t } = useTranslation()
     const { slug } = match.params
