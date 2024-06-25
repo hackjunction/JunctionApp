@@ -114,8 +114,8 @@ stages:
                             - task: CmdLine@2
                               inputs:
                                 script: |
-                                  pm2 restart index
-                                  sudo systemctl restart nginx
+                                  home/azureuser/.nvm/versions/node/v12.20.1/bin/pm2 restart index
+                                  echo $(user_pwd) | sudo -S systemctl restart nginx
 
                     routeTraffic:
                         steps:
