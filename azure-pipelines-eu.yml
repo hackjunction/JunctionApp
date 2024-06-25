@@ -116,6 +116,7 @@ stages:
                                 script: |
                                   home/azureuser/.nvm/versions/node/v12.20.1/bin/pm2 restart index
                                   echo $(user_pwd) | sudo -S systemctl restart nginx
+                                workingDirectory: '$(Pipeline.Workspace)'
 
                     routeTraffic:
                         steps:
