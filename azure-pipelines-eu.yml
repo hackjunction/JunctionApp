@@ -111,12 +111,11 @@ stages:
                                   SourceFolder: '$(Pipeline.Workspace)/drop_eu'
                                   Contents: '$(Build.BuildId).zip'
 
-                            - task: Bash@3
+                            - task: CmdLine@2
                               inputs:
-                                  targetType: 'inline'
-                                  script: |
-                                      cd /home/azureuser/azagent/_work/2/japp
-                                      pm2 restart index
+                                script: |
+                                  pm2 restart index
+                                  sudo systemctl restart nginx
 
                     routeTraffic:
                         steps:
