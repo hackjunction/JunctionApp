@@ -14,8 +14,8 @@ module.exports = {
             )
         console.log(
             'Done updating teamRoles field',
-            teamRolesField.n,
-            teamRolesField.nModified,
+            teamRolesField.matchedCount,
+            teamRolesField.modifiedCount,
         )
         const teamNameField = await mongoose
             .model('Team')
@@ -25,8 +25,8 @@ module.exports = {
             )
         console.log(
             'Done updating name field',
-            teamNameField.n,
-            teamNameField.nModified,
+            teamNameField.matchedCount,
+            teamNameField.modifiedCount,
         )
         const teamTaglineField = await mongoose
             .model('Team')
@@ -36,8 +36,8 @@ module.exports = {
             )
         console.log(
             'Done updating tagline field',
-            teamTaglineField.n,
-            teamTaglineField.nModified,
+            teamTaglineField.matchedCount,
+            teamTaglineField.modifiedCount,
         )
         const teamDescriptionField = await mongoose
             .model('Team')
@@ -47,8 +47,8 @@ module.exports = {
             )
         console.log(
             'Done updating description field',
-            teamDescriptionField.n,
-            teamDescriptionField.nModified,
+            teamDescriptionField.matchedCount,
+            teamDescriptionField.modifiedCount,
         )
         const teamChallengeField = await mongoose
             .model('Team')
@@ -58,8 +58,8 @@ module.exports = {
             )
         console.log(
             'Done updating challenge field',
-            teamChallengeField.n,
-            teamChallengeField.nModified,
+            teamChallengeField.matchedCount,
+            teamChallengeField.modifiedCount,
         )
         const teamIdeaTitleField = await mongoose
             .model('Team')
@@ -69,8 +69,8 @@ module.exports = {
             )
         console.log(
             'Done updating ideaTitle field',
-            teamIdeaTitleField.n,
-            teamIdeaTitleField.nModified,
+            teamIdeaTitleField.matchedCount,
+            teamIdeaTitleField.modifiedCount,
         )
         const teamIdeaDescriptionField = await mongoose
             .model('Team')
@@ -80,8 +80,8 @@ module.exports = {
             )
         console.log(
             'Done updating ideaDescription field',
-            teamIdeaDescriptionField.n,
-            teamIdeaDescriptionField.nModified,
+            teamIdeaDescriptionField.matchedCount,
+            teamIdeaDescriptionField.modifiedCount,
         )
         const teamEmailField = await mongoose
             .model('Team')
@@ -91,8 +91,8 @@ module.exports = {
             )
         console.log(
             'Done updating email field',
-            teamEmailField.n,
-            teamEmailField.nModified,
+            teamEmailField.matchedCount,
+            teamEmailField.modifiedCount,
         )
         const teamTelegramField = await mongoose
             .model('Team')
@@ -102,8 +102,8 @@ module.exports = {
             )
         console.log(
             'Done updating telegram field',
-            teamTelegramField.n,
-            teamTelegramField.nModified,
+            teamTelegramField.matchedCount,
+            teamTelegramField.modifiedCount,
         )
         const teamDiscordField = await mongoose
             .model('Team')
@@ -113,8 +113,8 @@ module.exports = {
             )
         console.log(
             'Done updating discord field',
-            teamDiscordField.n,
-            teamDiscordField.nModified,
+            teamDiscordField.matchedCount,
+            teamDiscordField.modifiedCount,
         )
         console.log('Done with migration 20')
         return Promise.resolve()

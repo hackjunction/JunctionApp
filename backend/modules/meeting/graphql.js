@@ -16,19 +16,19 @@ const MeetingType = new GraphQLObjectType({
         return {
             /** Fields from DB model */
             _id: {
-                type: GraphQLNonNull(GraphQLID),
+                type: new GraphQLNonNull(GraphQLID),
             },
             event: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             attendees: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             organizerEmail: {
                 type: GraphQLString,
             },
             challenge: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             title: {
                 type: GraphQLString,
@@ -70,7 +70,7 @@ const MeetingsMutationResponseType = new GraphQLObjectType({
     fields: () => {
         return {
             created: {
-                type: GraphQLList(MeetingType),
+                type: new GraphQLList(MeetingType),
             },
             deleted: {
                 type: MeetingMutationDeleteResponseType,
@@ -84,16 +84,16 @@ const MeetingInput = new GraphQLInputObjectType({
     fields: () => {
         return {
             event: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             attendees: {
-                type: GraphQLList(GraphQLString),
+                type: new GraphQLList(GraphQLString),
             },
             organizerEmail: {
                 type: GraphQLString,
             },
             challenge: {
-                type: GraphQLNonNull(GraphQLString),
+                type: new GraphQLNonNull(GraphQLString),
             },
             title: {
                 type: GraphQLString,
@@ -121,7 +121,7 @@ const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
         meetingSlots: {
-            type: GraphQLList(MeetingType),
+            type: new GraphQLList(MeetingType),
             args: {
                 eventId: {
                     type: GraphQLString,
@@ -149,21 +149,21 @@ const MutationType = new GraphQLObjectType({
         createMeetingSlot: {
             type: MeetingType,
             args: {
-                meeting: { type: GraphQLNonNull(MeetingInput) },
+                meeting: { type: new GraphQLNonNull(MeetingInput) },
             },
         },
         meetingSlotsBulkAction: {
             type: MeetingsMutationResponseType,
             args: {
-                create: { type: GraphQLList(GraphQLNonNull(MeetingInput)) },
-                delete: { type: GraphQLList(GraphQLNonNull(GraphQLID)) },
+                create: { type: new GraphQLList(new GraphQLNonNull(MeetingInput)) },
+                delete: { type: new GraphQLList(new GraphQLNonNull(GraphQLID)) },
             },
         },
         bookMeeting: {
             type: MeetingType,
             args: {
-                meetingId: { type: GraphQLNonNull(GraphQLString) },
-                attendees: { type: GraphQLNonNull(GraphQLList(GraphQLString)) },
+                meetingId: { type: new GraphQLNonNull(GraphQLString) },
+                attendees: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
                 location: { type: GraphQLString },
                 description: { type: GraphQLString },
             },
@@ -171,7 +171,7 @@ const MutationType = new GraphQLObjectType({
         cancelMeeting: {
             type: MeetingType,
             args: {
-                meetingId: { type: GraphQLNonNull(GraphQLString) },
+                meetingId: { type: new GraphQLNonNull(GraphQLString) },
             },
         },
     },

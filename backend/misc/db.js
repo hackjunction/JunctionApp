@@ -11,11 +11,9 @@ const connect = () => {
     logger.info('Establishing database connection...')
     return new Promise((resolve, reject) => {
         // mongoose.set('debug', true)
-        mongoose.connect(global.gConfig.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-
+        mongoose.connect(global.gConfig.MONGODB_URI)
+        // mongoose.set('strictQuery', false)
+        mongoose.set('strictQuery', false)
 
         mongoose.connection.on('error', err => {
             logger.error({
@@ -28,8 +26,7 @@ const connect = () => {
             reject(new Error('Connection to database failed'))
         })
 
-
-        mongoose.connection.on("connected", () => {
+        mongoose.connection.on('connected', () => {
             // var db = mongoose.connections[0].db
             // gfs = new mongoose.mongo.GridFSBucket(db, {
             //     bucketName: "uploads"
@@ -37,10 +34,7 @@ const connect = () => {
             // logger.info(`Mongoose GridFSBucket connected to ${gfs}`)
             logger.info(`Mongoose connected to ${global.gConfig.MONGODB_URI}`)
             resolve()
-
         })
-
-
     })
 }
 

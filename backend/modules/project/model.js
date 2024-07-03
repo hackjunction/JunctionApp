@@ -45,7 +45,7 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
     },
     images: {
-        type: [CloudinaryImageSchema.mongoose],
+        type: [new mongoose.Schema(CloudinaryImageSchema.mongoose)],
     },
     challenges: {
         type: [String],
@@ -68,7 +68,7 @@ const ProjectSchema = new mongoose.Schema({
     },
     achievements: [AchievementSchema],
     submissionFormAnswers: {
-        type: [CustomAnswer.mongoose],
+        type: [new mongoose.Schema(CustomAnswer.mongoose)],
     },
 })
 

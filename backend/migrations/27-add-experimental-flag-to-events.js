@@ -18,8 +18,8 @@ module.exports = {
 
         console.log(
             'Done adding experimental flag to events',
-            addExperimental.n,
-            addExperimental.nModified,
+            addExperimental.matchedCount,
+            addExperimental.modifiedCount,
         )
 
         return Promise.resolve()

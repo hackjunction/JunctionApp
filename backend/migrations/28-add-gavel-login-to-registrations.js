@@ -17,8 +17,8 @@ module.exports = {
 
         console.log(
             'Done adding gavel login link to registrations',
-            addGavelLogin.n,
-            addGavelLogin.nModified,
+            addGavelLogin.matchedCount,
+            addGavelLogin.modifiedCount,
         )
 
         return Promise.resolve()

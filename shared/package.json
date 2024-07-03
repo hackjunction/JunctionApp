@@ -59,7 +59,7 @@
         "graphql": "^15.0.0",
         "graphql-iso-date": "^3.6.1",
         "lodash": "^4.17.19",
-        "mongoose": "^5.9.16",
+        "mongoose": "6.12.9",
         "object-path": "^0.11.4",
         "yup": "^0.29.1"
     },
@@ -72,7 +72,7 @@
         "prettier": "^2.0.5"
     },
     "engines": {
-        "node": "12.3.1",
-        "npm": "6.9.0"
+        "node": "14.21.3",
+        "npm": "6.14.18"
     }
 }

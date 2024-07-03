@@ -140,12 +140,6 @@ export default () => {
                                 //     component: TimelineTab,
                                 // },
                                 {
-                                    path: '/rooms',
-                                    key: 'meetingRooms',
-                                    label: 'Meeting Rooms',
-                                    component: MeetingRoomsTab,
-                                },
-                                {
                                     path: '/questions',
                                     key: 'questions',
                                     label: 'Questions',
@@ -168,6 +162,14 @@ export default () => {
                                     key: 'other',
                                     label: 'Miscellaneous',
                                     component: OtherTab,
+                                },
+                                //experimental
+                                {
+                                    path: '/rooms',
+                                    key: 'meetingRooms',
+                                    label: 'Meeting Rooms',
+                                    component: MeetingRoomsTab,
+                                    hidden: !event?.experimental,
                                 },
                             ]}
                             location={location}

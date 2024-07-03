@@ -31,6 +31,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default ({ value = [], onChange, autoFocus }) => {
+    console.log('From JobRoleInput')
+    console.log(value)
     const dispatch = useDispatch()
     const classes = useStyles()
     const selectEl = useRef()

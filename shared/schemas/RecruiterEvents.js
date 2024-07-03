@@ -1,12 +1,17 @@
 const mongoose = require('mongoose')
-const { GraphQLObjectType, GraphQLInputObjectType, GraphQLString, GraphQLNonNull } = require('graphql')
+const { Schema } = mongoose
+const {
+    GraphQLObjectType,
+    GraphQLInputObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+} = require('graphql')
 const Misc = require('../constants/misc')
 
-const mongooseSchema = new mongoose.Schema({
+const mongooseSchema = new Schema({
     eventId: {
         type: String,
         required: true,
-
     },
     organisation: {
         type: String,
@@ -37,7 +42,6 @@ const RecruiterEventInput = new GraphQLInputObjectType({
         },
     },
 })
-
 
 module.exports = {
     mongoose: mongooseSchema,

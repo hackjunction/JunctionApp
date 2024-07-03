@@ -11,10 +11,7 @@ const UserProfileHelpers = {
             }
         })
 
-        validations.avatar = yup
-            .string()
-            .url()
-            .nullable()
+        validations.avatar = yup.string().url().nullable()
 
         const schema = yup.object().shape(validations)
         return schema.validate(data, { stripUnknown: true })

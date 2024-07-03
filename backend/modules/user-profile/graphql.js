@@ -42,12 +42,12 @@ const QueryType = new GraphQLObjectType({
             type: UserProfileType,
             args: {
                 userId: {
-                    type: GraphQLNonNull(GraphQLID),
+                    type: new GraphQLNonNull(GraphQLID),
                 },
             },
         },
         userProfiles: {
-            type: GraphQLNonNull(GraphQLList(UserProfileType)),
+            type: new GraphQLNonNull(new GraphQLList(UserProfileType)),
         },
     },
 })

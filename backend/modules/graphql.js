@@ -1,10 +1,13 @@
-const { ApolloServer } = require('apollo-server-express')
-const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core')
-const { mergeSchemas, makeExecutableSchema } = require('graphql-tools')
+const { ApolloServer } = require('@apollo/server')
+const {
+    ApolloServerPluginDrainHttpServer,
+} = require('@apollo/server/plugin/drainHttpServer')
+// const { makeExecutableSchema } = require('graphql-tools')
+const { mergeSchemas, makeExecutableSchema } = require('@graphql-tools/schema')
 const { GraphQLSchema, printSchema } = require('graphql')
 const { Server: WebSocketServer } = require('ws')
 const { useServer } = require('graphql-ws/lib/use/ws')
-const { createServer } = require('http')
+const http = require('http')
 // const { SharedSchema } = require('@hackjunction/shared/schemas')
 /** Schemas */
 const Registration = require('./registration/graphql')
@@ -14,12 +17,15 @@ const Organization = require('./organization/graphql')
 const Meeting = require('./meeting/graphql')
 const Message = require('./message/graphql')
 const Alert = require('./alert/graphql')
+const { expressMiddleware } = require('@apollo/server/express4')
+const cors = require('cors')
+const express = require('express')
 // const Team = require('./team/graphql')
 
 const buildGetController = require('./graphql-controller-factory')
 const { verifyWsToken } = require('../misc/jwt')
 
-module.exports = app => {
+module.exports = async app => {
     const modules = [
         UserProfile,
         Registration,
@@ -47,7 +53,34 @@ module.exports = app => {
         schemas: executableSchemas,
     })
 
-    const httpServer = createServer(app)
+    console.log('Before creating httpServer')
+
+    const httpServer = http.createServer(app)
+
+    console.log('Before creating server')
+
+    const server = new ApolloServer({
+        schema,
+        playground: false,
+        introspection: false,
+        plugins: [
+            // Proper shutdown for the HTTP server.
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+
+            // Proper shutdown for the WebSocket server.
+            {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            await serverCleanup.dispose()
+                        },
+                    }
+                },
+            },
+        ],
+    })
+    // console.log(httpServer)
+    console.log('Before creating wsServer')
 
     const wsServer = new WebSocketServer({
         // This is the `httpServer` we created in a previous step.
@@ -56,6 +89,7 @@ module.exports = app => {
         // a different path.
         path: '/graphql',
     })
+    console.log('Before creating serverCleanup')
 
     const serverCleanup = useServer(
         {
@@ -77,33 +111,37 @@ module.exports = app => {
         wsServer,
     )
 
-    const server = new ApolloServer({
-        schema,
-        playground: false,
-        introspection: false,
-        context: ({ req, res }) => ({
-            req,
-            res,
-            userId: req.user ? req.user.sub : null,
-            controller: buildGetController(),
+    console.log('Before server.start()')
+
+    await server.start()
+
+    app.use(
+        '/graphql',
+        cors(),
+        express.json(),
+        expressMiddleware(server, {
+            context: ({ req, res }) => ({
+                req,
+                res,
+                userId: req.user ? req.user.sub : null,
+                controller: buildGetController(),
+            }),
         }),
-        plugins: [
-            // Proper shutdown for the HTTP server.
-            ApolloServerPluginDrainHttpServer({ httpServer }),
+    )
 
-            // Proper shutdown for the WebSocket server.
-            {
-                async serverWillStart() {
-                    return {
-                        async drainServer() {
-                            await serverCleanup.dispose()
-                        },
-                    }
-                },
-            },
-        ],
+    const PORT = process.env.PORT || 2222
+
+    await new Promise(resolve => {
+        console.log('httpServer.listen', { port: PORT })
+        return httpServer.listen({ port: PORT }, resolve)
+    }).catch(err => {
+        console.error('httpServer.listen error')
+        console.error(err)
     })
+    // httpServer.listen(PORT, () => {
+    //     console.log('server started on port', PORT)
+    // })
 
-    server.applyMiddleware({ app })
-    return httpServer
+    // server.expressMiddleware({ app })
+    // return httpServer
 }

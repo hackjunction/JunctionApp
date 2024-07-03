@@ -7,7 +7,7 @@ const mongooseSchema = new mongoose.Schema({
         required: true,
     },
     roles: {
-        type: [TeamRole.mongoose],
+        type: [new mongoose.Schema(TeamRole.mongoose)],
         required: true,
         default: [],
     },

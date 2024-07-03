@@ -1,14 +1,13 @@
-
 const { Auth } = require('@hackjunction/shared')
 const DataLoader = require('dataloader')
 const Meeting = require('./model')
 const PermissionUtils = require('../../utils/permissions')
 const Event = require('../event/model')
 const UsersController = require('../user-profile/controller')
-const {
-    createGoogleEvent,
-    deleteGoogleEvent,
-} = require('../../common/services/google-calendar/google-calendar')
+// const {
+//     createGoogleEvent,
+// deleteGoogleEvent,
+// } = require('../../common/services/google-calendar/google-calendar')
 
 async function batchGetMeetingsByIds(ids) {
     const results = await Meeting.find({
@@ -62,7 +61,7 @@ class MeetingContorller {
             overrideChecks ||
             PermissionUtils.userHasPermission(
                 requestingUser,
-                Auth.Permissions.ACCESS_RECRUITMENT
+                Auth.Permissions.ACCESS_RECRUITMENT,
                 //Auth.Permissions.MANAGE_EVENT,
                 // TODO fix this to check for approriate right, ie partner rights
             )
@@ -88,7 +87,6 @@ class MeetingContorller {
         const challenge = event.challenges.find(
             c => c._id.toString() === meeting.challenge,
         )
-
 
         if (!(challenge && partnerEmail)) return null
         const newMeetingSlot = new Meeting({
@@ -117,7 +115,7 @@ class MeetingContorller {
             try {
                 const meetingToCancel = await Meeting.findOne({
                     _id: meetingId,
-                    organizerEmail: partnerEmail
+                    organizerEmail: partnerEmail,
                 })
                 if (!meetingToCancel) return null
                 if (
@@ -132,7 +130,8 @@ class MeetingContorller {
                     )
                 }
                 if (meetingToCancel.googleEventId) {
-                    deleteGoogleEvent(meetingToCancel.googleEventId)
+                    console.log('deleting google event')
+                    // deleteGoogleEvent(meetingToCancel.googleEventId)
                 }
             } catch (err) {
                 console.error(
@@ -150,7 +149,6 @@ class MeetingContorller {
     }
 
     async createMany(meetings) {
-
         if (!(this.isChallengePartner && meetings.length > 0)) return []
         const partner = this.requestingUser
         const event = await Event.findOne({ _id: meetings[0].event })
@@ -158,7 +156,6 @@ class MeetingContorller {
         const challenge = event.challenges.find(
             c => c._id.toString() === meetings[0].challenge,
         )
-
 
         if (!(challenge && partner.email))
             return new Error(
@@ -201,7 +198,7 @@ class MeetingContorller {
                 }
             }
         }
-        console.log("created", created)
+        console.log('created', created)
         return created
     }
 
@@ -225,17 +222,20 @@ class MeetingContorller {
             )
         }
 
-
         const newLocation =
             // eslint-disable-next-line no-nested-ternary
             location === 'ONLINE'
                 ? 'ONLINE'
                 : roomBookedSuccessfully
-                    ? location
-                    : ''
-        console.log("meetingToBook.description",meetingToBook.description)
-        const newDescription = meetingToBook.description.concat(...attendeeProfiles.map(a => ` ${a.firstName} ${a.lastName},`)).replace(/.$/, ".")
-        console.log("newDescription",newDescription)
+                ? location
+                : ''
+        console.log('meetingToBook.description', meetingToBook.description)
+        const newDescription = meetingToBook.description
+            .concat(
+                ...attendeeProfiles.map(a => ` ${a.firstName} ${a.lastName},`),
+            )
+            .replace(/.$/, '.')
+        console.log('newDescription', newDescription)
         const googleEvent = {
             title: meetingToBook.title,
             description: newDescription,
@@ -263,10 +263,10 @@ class MeetingContorller {
             meetingId,
             desc: partiComment,
         }
-        console.log("meetingToBook", meetingToBook.toObject())
+        console.log('meetingToBook', meetingToBook.toObject())
 
         // create google calednar event and meets link
-        createGoogleEvent(googleEvent)
+        // createGoogleEvent(googleEvent)
 
         return this._cleanOne(
             Meeting.findOneAndUpdate(
@@ -300,7 +300,8 @@ class MeetingContorller {
 
         // remove google calendar event
         if (meetingToCancel.googleEventId) {
-            deleteGoogleEvent(meetingToCancel.googleEventId)
+            console.log('deleting google event')
+            // deleteGoogleEvent(meetingToCancel.googleEventId)
         }
         meetingToCancel.attendees = []
         meetingToCancel.googleEventId = ''

@@ -20,7 +20,6 @@ module.exports = {
         //         { organizations: null },
         //         { $set: { organizations: [] } },
         //     )
-
         // const cursor = mongoose
         //     .model('Event')
         //     .find({ organizations: { $exists: true } })
@@ -42,7 +41,7 @@ module.exports = {
         //         event.save()
         //     })
         // })
-        // console.log('Done with event organization', nres.n, nres.nModified)
+        // console.log('Done with event organization', nres.matchedCount, nres.modifiedCount)
         // return Promise.resolve()
     },
 }

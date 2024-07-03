@@ -42,7 +42,7 @@ const ProjectScoreSchema = new mongoose.Schema(
             maxlength: 500,
         },
         scoreCriteria: {
-            type: [ScoreCriteriaSchema.mongoose],
+            type: [new mongoose.Schema(ScoreCriteriaSchema.mongoose)],
             required: false,
             default: [],
         },
@@ -64,7 +64,9 @@ const ProjectScoreSchema = new mongoose.Schema(
                         default: 0,
                     },
                     scoreCriteria: {
-                        type: [ScoreCriteriaSchema.mongoose],
+                        type: [
+                            new mongoose.Schema(ScoreCriteriaSchema.mongoose),
+                        ],
                         default: [],
                     },
                     message: {

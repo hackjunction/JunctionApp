@@ -17,7 +17,11 @@ module.exports = {
                 },
             },
         )
-        console.log('Done with countryCode', res.n, res.nModified)
+        console.log(
+            'Done with countryCode',
+            res.matchedCount,
+            res.modifiedCount,
+        )
         const psres = await mongoose.model('UserProfile').updateMany(
             { 'phoneNumber.country_code': { $exists: true } },
             {
@@ -27,7 +31,11 @@ module.exports = {
             },
             { multi: true },
         )
-        console.log('Done with countryCode', psres.n, psres.nModified)
+        console.log(
+            'Done with countryCode',
+            psres.matchedCount,
+            psres.modifiedCount,
+        )
 
         return Promise.resolve()
     },

@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const { GridFsStorage } = require('multer-gridfs-storage')
+// const { GridFsStorage } = require('multer-gridfs-storage')
 const ObjectId = require('mongodb').ObjectId
 
 const router = express.Router()
@@ -11,8 +11,8 @@ const { hasPermission } = require('../../common/middleware/permissions')
 const { hasToken } = require('../../common/middleware/token')
 const { ForbiddenError, NotFoundError } = require('../../common/errors/errors')
 
-const storage = require('../../misc/gridfs').storage
-const upload = require('../../misc/gridfs').upload
+// const storage = require('../../misc/gridfs').storage
+// const upload = require('../../misc/gridfs').upload
 
 // console.log(mongoose.connections[0].db)
 // let gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
@@ -299,56 +299,56 @@ router.post('/organization/:slug/icon', (req, res, next) => {
 
 //Upload, download and delete general files over 16mb
 //TODO: add hasToken for all calls. Left out for testing with postman
-router.post('/files', hasToken, upload.single('file'), (req, res, next) => {
-    console.log('Routes: Upload > POST > /files > file data', req.file)
-    // console.log('Res', res)
-    console.log('Post request from /files')
-    const fileMetaData = {
-        id: req.file.id,
-        filename: req.file.filename,
-        uploadData: req.file.uploadDate,
-        fileSize: req.file.size,
-    }
-    console.log('fileMetaData', fileMetaData)
-    res.status(200).send(fileMetaData)
-})
+// router.post('/files', hasToken, upload.single('file'), (req, res, next) => {
+//     console.log('Routes: Upload > POST > /files > file data', req.file)
+//     // console.log('Res', res)
+//     console.log('Post request from /files')
+//     const fileMetaData = {
+//         id: req.file.id,
+//         filename: req.file.filename,
+//         uploadData: req.file.uploadDate,
+//         fileSize: req.file.size,
+//     }
+//     console.log('fileMetaData', fileMetaData)
+//     res.status(200).send(fileMetaData)
+// })
 
-router.get('/files/:id', hasToken, (req, res, next) => {
-    console.log('Routes: Upload > GET > /files/:id > data', req)
-    var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
-        bucketName: 'uploads',
-    })
+// router.get('/files/:id', hasToken, (req, res, next) => {
+//     console.log('Routes: Upload > GET > /files/:id > data', req)
+//     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+//         bucketName: 'uploads',
+//     })
 
-    const file = gfs
-        .find({
-            _id: ObjectId(req.params.id),
-        })
-        .toArray((err, files) => {
-            console.log('files', files)
-            if (!files || files.length === 0) {
-                return new NotFoundError('file does not exist')
-            }
-            gfs.openDownloadStream(ObjectId(req.params.id)).pipe(res)
-        })
-})
+//     const file = gfs
+//         .find({
+//             _id: ObjectId(req.params.id),
+//         })
+//         .toArray((err, files) => {
+//             console.log('files', files)
+//             if (!files || files.length === 0) {
+//                 return new NotFoundError('file does not exist')
+//             }
+//             gfs.openDownloadStream(ObjectId(req.params.id)).pipe(res)
+//         })
+// })
 //TODO: make periodic delete function calling this
-router.delete('/files/:id', hasToken, (req, res, next) => {
-    console.log('Routes: Upload > DELETE > /files/:id > data', req)
+// router.delete('/files/:id', hasToken, (req, res, next) => {
+//     console.log('Routes: Upload > DELETE > /files/:id > data', req)
 
-    var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
-        bucketName: 'uploads',
-    })
-    console.log(req.params.id)
-    gfs.delete(ObjectId(req.params.id), (err, data) => {
-        if (err) {
-            return res.status(404).json({ err: err })
-        }
+//     var gfs = new mongoose.mongo.GridFSBucket(mongoose.connections[0].db, {
+//         bucketName: 'uploads',
+//     })
+//     console.log(req.params.id)
+//     gfs.delete(ObjectId(req.params.id), (err, data) => {
+//         if (err) {
+//             return res.status(404).json({ err: err })
+//         }
 
-        res.status(200).json({
-            success: true,
-            message: `File with ID ${req.params.id} is deleted`,
-        })
-    })
-})
+//         res.status(200).json({
+//             success: true,
+//             message: `File with ID ${req.params.id} is deleted`,
+//         })
+//     })
+// })
 
 module.exports = router

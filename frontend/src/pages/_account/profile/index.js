@@ -54,7 +54,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default () => {
-    debugGroup('Profile page')
     const dispatch = useDispatch()
     const userProfile = useSelector(UserSelectors.userProfile)
     const userProfileLoading = useSelector(UserSelectors.userProfileLoading)
@@ -62,6 +61,7 @@ export default () => {
     const loading = userProfileLoading || !hasProfile
     const { t } = useTranslation()
 
+    debugGroup('Profile page', [userProfile])
     const classes = useStyles()
 
     const validationSchema = useCallback(data => {

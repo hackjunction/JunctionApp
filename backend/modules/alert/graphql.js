@@ -22,10 +22,10 @@ const AlertInput = new GraphQLInputObjectType({
     name: 'AlertInput',
     fields: {
         eventId: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
         content: {
-            type: GraphQLNonNull(GraphQLString),
+            type: new GraphQLNonNull(GraphQLString),
         },
     },
 })
@@ -55,10 +55,10 @@ const QueryType = new GraphQLObjectType({
     name: 'Query',
     fields: {
         alerts: {
-            type: GraphQLList(AlertType),
+            type: new GraphQLList(AlertType),
             args: {
                 eventId: {
-                    type: GraphQLNonNull(GraphQLString),
+                    type: new GraphQLNonNull(GraphQLString),
                 },
             },
         },
@@ -71,7 +71,7 @@ const MutationType = new GraphQLObjectType({
         sendAlert: {
             type: AlertType,
             args: {
-                alert: { type: GraphQLNonNull(AlertInput) },
+                alert: { type: new GraphQLNonNull(AlertInput) },
             },
         },
     },

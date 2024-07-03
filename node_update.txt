@@ -1,0 +1,28 @@
+updated:
+
+@sendgrid/client
+@sendgrid/mail
+@apollo/server
+cors
+axios
+graphql
+graphql-subscriptions
+graphql-tools
+graphql-ws
+
+
+Removed
+discord.js
+
+
+To remove
+
+Joi
+celebrate
+
+
+
+
+Maybe remove?
+
+Cron
